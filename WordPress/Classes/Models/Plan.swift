@@ -12,8 +12,8 @@ struct Plan {
     let title: String
     let fullTitle: String
     let tagline: String
-    let iconUrl: NSURL
-    let activeIconUrl: NSURL
+    let iconUrl: URL
+    let activeIconUrl: URL
     let productIdentifier: String?
     let featureGroups: [PlanFeatureGroupPlaceholder]
 }
@@ -50,7 +50,7 @@ protocol Identifiable {
 extension Plan: Identifiable {}
 
 extension Array where Element: Identifiable {
-    func withID(searchID: Int) -> Element? {
+    func withID(_ searchID: Int) -> Element? {
         return filter({ $0.id == searchID }).first
     }
 }
@@ -59,7 +59,7 @@ struct PlanFeature {
     let slug: String
     let title: String
     let description: String
-    let iconURL: NSURL
+    let iconURL: URL
 }
 
 struct PlanFeatureGroupPlaceholder {

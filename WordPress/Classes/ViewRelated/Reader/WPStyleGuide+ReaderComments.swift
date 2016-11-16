@@ -12,11 +12,11 @@ extension WPStyleGuide
     // Styles used by Comments in the Reader
 
     public class func commentTitleFont() -> UIFont {
-        return WPFontManager.systemBoldFontOfSize(14)
+        return WPFontManager.systemBoldFont(ofSize: 14)
     }
 
     public class func commentBodyFont() -> UIFont {
-        return WPFontManager.systemRegularFontOfSize(14)
+        return WPFontManager.systemRegularFont(ofSize: 14)
     }
 
     public class func commentDTCoreTextOptions() -> NSDictionary {
@@ -36,10 +36,10 @@ extension WPStyleGuide
         ] as NSDictionary
     }
 
-    public class func defaultSearchBarTextAttributes(color: UIColor) -> [String:AnyObject] {
+    public class func defaultSearchBarTextAttributes(_ color: UIColor) -> [String:AnyObject] {
         return [
             NSForegroundColorAttributeName      : color,
-            NSFontAttributeName                 : WPFontManager.systemRegularFontOfSize(14)
+            NSFontAttributeName                 : WPFontManager.systemRegularFont(ofSize: 14)
         ]
     }
 }

@@ -16,8 +16,8 @@ extension Post {
 
     // These were added manually, since the code generator for Swift is not generating them.
     //
-    @NSManaged func addCategoriesObject(value: PostCategory)
-    @NSManaged func removeCategoriesObject(value: PostCategory)
-    @NSManaged func addCategories(values: Set<PostCategory>)
-    @NSManaged func removeCategories(values: Set<PostCategory>)
+    @NSManaged func addCategoriesObject(_ value: PostCategory)
+    @NSManaged func removeCategoriesObject(_ value: PostCategory)
+    @NSManaged func addCategories(_ values: Set<PostCategory>)
+    @NSManaged func removeCategories(_ values: Set<PostCategory>)
 }

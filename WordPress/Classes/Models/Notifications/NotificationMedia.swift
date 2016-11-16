@@ -16,11 +16,11 @@ class NotificationMedia
 
     /// Resource URL, if any.
     ///
-    private(set) var mediaURL: NSURL?
+    fileprivate(set) var mediaURL: URL?
 
     /// Resource Size, if any.
     ///
-    private(set) var size: CGSize?
+    fileprivate(set) var size: CGSize?
 
 
     /// Designated Initializer.
@@ -36,11 +36,11 @@ class NotificationMedia
         range = NSMakeRange(start, end - start)
 
         if let url = dictionary[MediaKeys.URL] as? String {
-            mediaURL = NSURL(string: url)
+            mediaURL = URL(string: url)
         }
 
         if let width = dictionary[MediaKeys.Width] as? NSNumber, let height = dictionary[MediaKeys.Height] as? NSNumber {
-            size = CGSize(width: width.integerValue, height: height.integerValue)
+            size = CGSize(width: width.intValue, height: height.intValue)
         }
     }
 }
@@ -52,7 +52,7 @@ extension NotificationMedia
 {
     /// Parses NotificationMedia instances, given an array of raw media.
     ///
-    class func mediaFromArray(media: [[String: AnyObject]]?) -> [NotificationMedia] {
+    class func mediaFromArray(_ media: [[String: AnyObject]]?) -> [NotificationMedia] {
         let parsed = media?.flatMap {
             return NotificationMedia(dictionary: $0)
         }
@@ -75,7 +75,7 @@ extension NotificationMedia
 
     /// Parsing Keys
     ///
-    private enum MediaKeys {
+    fileprivate enum MediaKeys {
         static let RawType      = "type"
         static let URL          = "url"
         static let Indices      = "indices"

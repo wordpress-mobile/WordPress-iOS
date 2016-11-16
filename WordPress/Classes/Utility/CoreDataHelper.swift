@@ -12,7 +12,7 @@ protocol ManagedObject
 
 // MARK: - Core Data Helpers
 //
-struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
+struct CoreDataHelper<T> where T: NSManagedObject, T: ManagedObject
 {
     /// CoreData ManagedObjectContext
     ///
@@ -21,7 +21,7 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
 
     /// Returns a new FetchRequest for the associated Entity
     ///
-    func newFetchRequest() -> NSFetchRequest {
+    func newFetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         return NSFetchRequest(entityName: T.entityName)
     }
 
@@ -47,12 +47,12 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
         request.predicate = predicate
         request.includesSubentities = false
         request.predicate = predicate
-        request.resultType = .CountResultType
+        request.resultType = .countResultType
 
         var result = 0
 
         do {
-            result = try context.countForFetchRequest(request)
+            result = try context.count(for: request)
         } catch {
             DDLogSwift.logError("Error counting objects [\(T.entityName)]: \(error)")
             assert(false)
@@ -63,8 +63,8 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
 
     /// Deletes the specified Object Instance
     ///
-    func deleteObject(object: T) {
-        context.deleteObject(object)
+    func deleteObject(_ object: T) {
+        context.delete(object)
     }
 
     /// Deletes all of the NSMO instances associated to the current kind
@@ -76,7 +76,7 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
 
         let objects = loadObjects(withFetchRequest: request)
         for object in objects  {
-            context.deleteObject(object)
+            context.delete(object)
         }
     }
 
@@ -97,7 +97,7 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
     ///
     func insertNewObject() -> T {
         let name = T.entityName
-        let entity = NSEntityDescription.insertNewObjectForEntityForName(name, inManagedObjectContext: context)
+        let entity = NSEntityDescription.insertNewObject(forEntityName: name, into: context)
 
         return entity as! T
     }
@@ -110,7 +110,7 @@ struct CoreDataHelper<T where T: NSManagedObject, T: ManagedObject>
         var result: T?
 
         do {
-            result = try context.existingObjectWithID(objectID) as? T
+            result = try context.existingObject(with: objectID) as? T
         } catch {
             DDLogSwift.logError("Error loading Object [\(T.entityName)]")
         }
@@ -126,11 +126,11 @@ private extension CoreDataHelper
 {
     /// Loads the collection of entities that match with a given Fetch Request
     ///
-    private func loadObjects(withFetchRequest request: NSFetchRequest) -> [T] {
+    func loadObjects(withFetchRequest request: NSFetchRequest<NSFetchRequestResult>) -> [T] {
         var objects: [T]?
 
         do {
-            objects = try context.executeFetchRequest(request) as? [T]
+            objects = try context.fetch(request) as? [T]
         } catch {
             DDLogSwift.logError("Error loading Objects [\(T.entityName)")
             assert(false)

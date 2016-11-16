@@ -12,8 +12,8 @@ import Foundation
         let service = AccountService(managedObjectContext: context)
         var available = false
 
-        context.performBlockAndWait {
-            available = service.defaultWordPressComAccount() != nil
+        context?.performAndWait {
+            available = service?.defaultWordPressComAccount() != nil
         }
 
         return available

@@ -16,7 +16,7 @@ extension WPNoResultsView {
         }
     }
 
-    func bindViewModel(viewModel: Model) {
+    func bindViewModel(_ viewModel: Model) {
         titleText = viewModel.title
         messageText = viewModel.message
         accessoryView = viewModel.accessoryView

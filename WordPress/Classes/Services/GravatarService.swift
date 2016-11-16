@@ -3,7 +3,7 @@ import Foundation
 
 /// This Service exposes all of the valid operations we can execute, to interact with the Gravatar Service.
 ///
-public class GravatarService
+open class GravatarService
 {
     /// Designated Initializer
     ///
@@ -28,7 +28,7 @@ public class GravatarService
     ///     - image: The new Gravatar Image, to be uploaded
     ///     - completion: An optional closure to be executed on completion.
     ///
-    public func uploadImage(image: UIImage, completion: ((error: NSError?) -> ())? = nil) {
+    open func uploadImage(_ image: UIImage, completion: ((_ error: NSError?) -> ())? = nil) {
         let remote = GravatarServiceRemote(accountToken: accountToken, accountEmail: accountEmail)
         remote.uploadImage(image) { (error) in
             if let theError = error {
@@ -43,6 +43,6 @@ public class GravatarService
 
 
     // MARK: - Private Properties
-    private let accountToken : String!
-    private let accountEmail : String!
+    fileprivate let accountToken : String!
+    fileprivate let accountEmail : String!
 }

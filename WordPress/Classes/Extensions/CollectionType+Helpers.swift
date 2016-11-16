@@ -1,13 +1,13 @@
 import Foundation
 
-extension CollectionType where Index: BidirectionalIndexType {
+extension Collection where Index: Comparable {
 
     /// Returns the last@ index where `predicate` returns `true` for the
     /// corresponding value, or `nil` if such value is not found.
     ///
     /// - Complexity: O(`self.count`).
-    @warn_unused_result
-    func lastIndexOf(@noescape predicate: (Self.Generator.Element) throws -> Bool) rethrows -> Self.Index? {
-        return try reverse().indexOf(predicate)?.base.predecessor()
+    
+    func lastIndexOf(predicate: (Self.Iterator.Element) throws -> Bool) rethrows -> Self.Index? {
+        return try <#T##BidirectionalCollection corresponding to your index##BidirectionalCollection#>.index(before: reversed().index(where: predicate)?.base)
     }
 }

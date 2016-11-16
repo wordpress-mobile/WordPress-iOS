@@ -65,10 +65,10 @@ class MediaSizeSliderCell: WPTableViewCell {
         }
     }
 
-    var onChange: (Int -> Void)?
+    var onChange: ((Int) -> Void)?
 
     // MARK: - Private properties
-    private var model: Model = Default.model {
+    fileprivate var model: Model = Default.model {
         didSet {
             updateSubviews()
         }
@@ -100,7 +100,7 @@ class MediaSizeSliderCell: WPTableViewCell {
     @IBOutlet var valueLabel: UILabel!
     @IBOutlet var slider: UISlider!
 
-    @IBAction func sliderChanged(sender: UISlider) {
+    @IBAction func sliderChanged(_ sender: UISlider) {
         model.value = Int(sender.value)
         onChange?(model.value)
     }

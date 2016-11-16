@@ -3,71 +3,71 @@ import WordPressShared
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol
 {
-    func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
-    func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
-    func readerCellImageRequestAuthToken(cell: ReaderPostCardCell) -> String?
+    func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
+    func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
+    func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String?
 }
 
-@objc public class ReaderPostCardCell: UITableViewCell
+@objc open class ReaderPostCardCell: UITableViewCell
 {
     // MARK: - Properties
 
     // Wrapper views
-    @IBOutlet private weak var contentStackView: UIStackView!
+    @IBOutlet fileprivate weak var contentStackView: UIStackView!
 
     // Header realated Views
-    @IBOutlet private weak var avatarImageView: UIImageView!
-    @IBOutlet private weak var headerBlogButton: UIButton!
-    @IBOutlet private weak var blogNameLabel: UILabel!
-    @IBOutlet private weak var bylineLabel: UILabel!
-    @IBOutlet private weak var menuButton: UIButton!
+    @IBOutlet fileprivate weak var avatarImageView: UIImageView!
+    @IBOutlet fileprivate weak var headerBlogButton: UIButton!
+    @IBOutlet fileprivate weak var blogNameLabel: UILabel!
+    @IBOutlet fileprivate weak var bylineLabel: UILabel!
+    @IBOutlet fileprivate weak var menuButton: UIButton!
 
     // Card views
-    @IBOutlet private weak var featuredImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: ReaderPostCardContentLabel!
-    @IBOutlet private weak var summaryLabel: ReaderPostCardContentLabel!
-    @IBOutlet private weak var tagButton: UIButton!
-    @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
-    @IBOutlet private weak var actionStackView: UIStackView!
+    @IBOutlet fileprivate weak var featuredImageView: UIImageView!
+    @IBOutlet fileprivate weak var titleLabel: ReaderPostCardContentLabel!
+    @IBOutlet fileprivate weak var summaryLabel: ReaderPostCardContentLabel!
+    @IBOutlet fileprivate weak var tagButton: UIButton!
+    @IBOutlet fileprivate weak var attributionView: ReaderCardDiscoverAttributionView!
+    @IBOutlet fileprivate weak var actionStackView: UIStackView!
 
     // Helper Views
-    @IBOutlet private weak var borderedView: UIView!
-    @IBOutlet private weak var interfaceVerticalSizingHelperView: UIView!
+    @IBOutlet fileprivate weak var borderedView: UIView!
+    @IBOutlet fileprivate weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
-    @IBOutlet private weak var likeActionButton: UIButton!
-    @IBOutlet private weak var commentActionButton: UIButton!
+    @IBOutlet fileprivate weak var likeActionButton: UIButton!
+    @IBOutlet fileprivate weak var commentActionButton: UIButton!
 
     // Layout Constraints
-    @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
+    @IBOutlet fileprivate weak var featuredMediaHeightConstraint: NSLayoutConstraint!
 
-    public weak var delegate: ReaderPostCellDelegate?
-    public weak var contentProvider: ReaderPostContentProvider?
+    open weak var delegate: ReaderPostCellDelegate?
+    open weak var contentProvider: ReaderPostContentProvider?
 
-    private let featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(196.0)
-    private var featuredImageDesiredWidth = CGFloat()
+    fileprivate let featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(196.0)
+    fileprivate var featuredImageDesiredWidth = CGFloat()
 
-    private let summaryMaxNumberOfLines = 3
-    private let avgWordsPerMinuteRead = 250
-    private let minimumMinutesToRead = 2
-    private var currentLoadedCardImageURL: String?
+    fileprivate let summaryMaxNumberOfLines = 3
+    fileprivate let avgWordsPerMinuteRead = 250
+    fileprivate let minimumMinutesToRead = 2
+    fileprivate var currentLoadedCardImageURL: String?
 
     // MARK: - Accessors
 
-    public var enableLoggedInFeatures = true
+    open var enableLoggedInFeatures = true
 
 
-    public override func setSelected(selected: Bool, animated: Bool) {
+    open override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         setHighlighted(selected, animated: animated)
     }
 
-    public override func setHighlighted(highlighted: Bool, animated: Bool) {
-        let previouslyHighlighted = self.highlighted
+    open override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        let previouslyHighlighted = self.isHighlighted
         super.setHighlighted(highlighted, animated: animated)
 
         if previouslyHighlighted == highlighted {
@@ -76,13 +76,13 @@ import WordPressShared
         applyHighlightedEffect(highlighted, animated: animated)
     }
 
-    public var headerBlogButtonIsEnabled: Bool {
+    open var headerBlogButtonIsEnabled: Bool {
         get {
-            return headerBlogButton.enabled
+            return headerBlogButton.isEnabled
         }
         set {
-            if headerBlogButton.enabled != newValue {
-                headerBlogButton.enabled = newValue
+            if headerBlogButton.isEnabled != newValue {
+                headerBlogButton.isEnabled = newValue
                 if newValue {
                     blogNameLabel.textColor = WPStyleGuide.readerCardBlogNameLabelTextColor()
                 } else {
@@ -92,21 +92,21 @@ import WordPressShared
         }
     }
 
-    private lazy var readerCardTitleAttributes: [String: AnyObject] = {
+    fileprivate lazy var readerCardTitleAttributes: [String: AnyObject] = {
         return WPStyleGuide.readerCardTitleAttributes()
     }()
 
-    private lazy var readerCardSummaryAttributes: [String: AnyObject] = {
+    fileprivate lazy var readerCardSummaryAttributes: [String: AnyObject] = {
         return WPStyleGuide.readerCardSummaryAttributes()
     }()
 
-    private lazy var readerCardReadingTimeAttributes: [String: AnyObject] = {
+    fileprivate lazy var readerCardReadingTimeAttributes: [String: AnyObject] = {
         return WPStyleGuide.readerCardReadingTimeAttributes()
     }()
 
     // MARK: - Lifecycle Methods
 
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
 
         // This view only exists to help IB with filling in the bottom space of
@@ -117,7 +117,7 @@ import WordPressShared
         // Set the helper to hidden on awake so that it is not included or calculated in the layout.
         // Note: Ideally IB would let us have a "Remove at build time" option for views, BUT IT DONT.
         // Brent C. Aug/25/2016
-        interfaceVerticalSizingHelperView.hidden = true
+        interfaceVerticalSizingHelperView.isHidden = true
 
         applyStyles()
         applyOpaqueBackgroundColors()
@@ -128,7 +128,7 @@ import WordPressShared
         setupLikeActionButton()
     }
 
-    public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureFeaturedImageIfNeeded()
     }
@@ -136,41 +136,41 @@ import WordPressShared
 
     // MARK: - Configuration
 
-    private func setupAttributionView() {
+    fileprivate func setupAttributionView() {
         attributionView.delegate = self
     }
 
-    private func setupFeaturedImageView() {
+    fileprivate func setupFeaturedImageView() {
         featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
     }
 
-    private func setupSummaryLabel() {
+    fileprivate func setupSummaryLabel() {
         summaryLabel.numberOfLines = summaryMaxNumberOfLines
-        summaryLabel.lineBreakMode = .ByTruncatingTail
+        summaryLabel.lineBreakMode = .byTruncatingTail
     }
 
-    private func setupCommentActionButton() {
+    fileprivate func setupCommentActionButton() {
         let image = UIImage(named: "icon-reader-comment")
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")
-        commentActionButton.setImage(image, forState: .Normal)
-        commentActionButton.setImage(highlightImage, forState: .Highlighted)
+        commentActionButton.setImage(image, for: UIControlState())
+        commentActionButton.setImage(highlightImage, for: .highlighted)
     }
 
-    private func setupLikeActionButton() {
+    fileprivate func setupLikeActionButton() {
         let image = UIImage(named: "icon-reader-like")
         let highlightImage = UIImage(named: "icon-reader-like-highlight")
         let selectedImage = UIImage(named: "icon-reader-liked")
-        likeActionButton.setImage(image, forState: .Normal)
-        likeActionButton.setImage(highlightImage, forState: .Highlighted)
-        likeActionButton.setImage(selectedImage, forState: .Selected)
+        likeActionButton.setImage(image, for: UIControlState())
+        likeActionButton.setImage(highlightImage, for: .highlighted)
+        likeActionButton.setImage(selectedImage, for: .selected)
     }
 
     /**
         Applies the default styles to the cell's subviews
     */
-    private func applyStyles() {
+    fileprivate func applyStyles() {
         contentView.backgroundColor = WPStyleGuide.greyLighten30()
-        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
+        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
 
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
@@ -186,17 +186,17 @@ import WordPressShared
     /**
         Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
     */
-    private func applyOpaqueBackgroundColors() {
-        blogNameLabel.backgroundColor = UIColor.whiteColor()
-        bylineLabel.backgroundColor = UIColor.whiteColor()
-        titleLabel.backgroundColor = UIColor.whiteColor()
-        summaryLabel.backgroundColor = UIColor.whiteColor()
-        tagButton.titleLabel?.backgroundColor = UIColor.whiteColor()
-        commentActionButton.titleLabel?.backgroundColor = UIColor.whiteColor()
-        likeActionButton.titleLabel?.backgroundColor = UIColor.whiteColor()
+    fileprivate func applyOpaqueBackgroundColors() {
+        blogNameLabel.backgroundColor = UIColor.white
+        bylineLabel.backgroundColor = UIColor.white
+        titleLabel.backgroundColor = UIColor.white
+        summaryLabel.backgroundColor = UIColor.white
+        tagButton.titleLabel?.backgroundColor = UIColor.white
+        commentActionButton.titleLabel?.backgroundColor = UIColor.white
+        likeActionButton.titleLabel?.backgroundColor = UIColor.white
     }
 
-    public func configureCell(contentProvider:ReaderPostContentProvider) {
+    open func configureCell(_ contentProvider:ReaderPostContentProvider) {
         self.contentProvider = contentProvider
 
         configureHeader()
@@ -209,18 +209,18 @@ import WordPressShared
         configureActionStackViewIfNeeded()
     }
 
-    private func configureHeader() {
+    fileprivate func configureHeader() {
         // Always reset
         avatarImageView.image = UIImage(named: "post-blavatar-placeholder")
 
-        let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        if let url = contentProvider?.siteIconForDisplayOfSize(Int(size)) {
-            avatarImageView.setImageWithURL(url)
+        let size = avatarImageView.frame.size.width * UIScreen.main.scale
+        if let url = contentProvider?.siteIconForDisplay(ofSize: Int(size)) {
+            avatarImageView.setImageWith(url)
         }
 
         blogNameLabel.text = contentProvider?.blogNameForDisplay()
 
-        var byline = contentProvider?.dateForDisplay()?.shortString() ?? ""
+        var byline = (contentProvider?.dateForDisplay() as NSDate?)?.shortString() ?? ""
         if let author = contentProvider?.authorForDisplay() {
             byline = String(format: "%@ · %@", author, byline)
         }
@@ -228,14 +228,14 @@ import WordPressShared
         bylineLabel.text = byline
     }
 
-    private func configureFeaturedImageIfNeeded() {
+    fileprivate func configureFeaturedImageIfNeeded() {
         guard let content = contentProvider else {
             return
         }
         guard let featuredImageURL = content.featuredImageURLForDisplay?() else {
             featuredImageView.image = nil
             currentLoadedCardImageURL = nil
-            featuredImageView.hidden = true
+            featuredImageView.isHidden = true
             return
         }
 
@@ -245,8 +245,8 @@ import WordPressShared
         }
     }
 
-    private func configureFeaturedImage(featuredImageURL: NSURL) {
-        featuredImageView.hidden = false
+    fileprivate func configureFeaturedImage(_ featuredImageURL: URL) {
+        featuredImageView.isHidden = false
 
         // Always clear the previous image so there is no stale or unexpected image
         // momentarily visible.
@@ -255,74 +255,74 @@ import WordPressShared
         featuredImageDesiredWidth = featuredImageView.frame.width
         let size = CGSize(width:featuredImageDesiredWidth, height:featuredMediaHeightConstraintConstant)
         if !(contentProvider!.isPrivate()) {
-            url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
-            featuredImageView.setImageWithURL(url, placeholderImage:nil)
+            url = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
+            featuredImageView.setImageWith(url, placeholderImage:nil)
 
         } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
             // private wpcom image needs special handling.
-            let scale = UIScreen.mainScreen().scale
+            let scale = UIScreen.main.scale
             let scaledSize = CGSize(width:size.width * scale, height: size.height * scale)
             url = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
             let request = requestForURL(url)
-            featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
+            featuredImageView.setImageWith(request, placeholderImage: nil, success: nil, failure: nil)
 
         } else {
             // private but not a wpcom hosted image
-            featuredImageView.setImageWithURL(url, placeholderImage:nil)
+            featuredImageView.setImageWith(url, placeholderImage:nil)
         }
         currentLoadedCardImageURL = featuredImageURL.absoluteString
     }
 
-    private func requestForURL(url:NSURL) -> NSURLRequest {
+    fileprivate func requestForURL(_ url:URL) -> URLRequest {
 
         var requestURL = url
 
         let absoluteString = requestURL.absoluteString ?? ""
         if !absoluteString.hasPrefix("https") {
-            let sslURL = absoluteString.stringByReplacingOccurrencesOfString("http", withString: "https")
-            requestURL = NSURL(string: sslURL)!
+            let sslURL = absoluteString.replacingOccurrences(of: "http", with: "https")
+            requestURL = URL(string: sslURL)!
         }
 
-        let request = NSMutableURLRequest(URL: requestURL)
+        let request = NSMutableURLRequest(url: requestURL)
         guard let token = delegate?.readerCellImageRequestAuthToken(self) else {
-            return request
+            return request as URLRequest
         }
         let headerValue = String(format: "Bearer %@", token)
         request.addValue(headerValue, forHTTPHeaderField: "Authorization")
-        return request
+        return request as URLRequest
     }
 
-    private func configureTitle() {
-        if let title = contentProvider?.titleForDisplay() where !title.isEmpty() {
+    fileprivate func configureTitle() {
+        if let title = contentProvider?.titleForDisplay(), !title.isEmpty() {
             titleLabel.attributedText = NSAttributedString(string: title, attributes: readerCardTitleAttributes)
-            titleLabel.hidden = false
+            titleLabel.isHidden = false
         } else {
             titleLabel.attributedText = nil
-            titleLabel.hidden = true
+            titleLabel.isHidden = true
         }
     }
 
-    private func configureSummary() {
-        if let summary = contentProvider?.contentPreviewForDisplay() where !summary.isEmpty() {
+    fileprivate func configureSummary() {
+        if let summary = contentProvider?.contentPreviewForDisplay(), !summary.isEmpty() {
             summaryLabel.attributedText = NSAttributedString(string: summary, attributes: readerCardSummaryAttributes)
-            summaryLabel.hidden = false
+            summaryLabel.isHidden = false
         } else {
             summaryLabel.attributedText = nil
-            summaryLabel.hidden = true
+            summaryLabel.isHidden = true
         }
     }
 
-    private func configureAttribution() {
-        if contentProvider == nil || contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.None {
+    fileprivate func configureAttribution() {
+        if contentProvider == nil || contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.none {
             attributionView.configureView(nil)
-            attributionView.hidden = true
+            attributionView.isHidden = true
         } else {
             attributionView.configureView(contentProvider)
-            attributionView.hidden = false
+            attributionView.isHidden = false
         }
     }
 
-    private func configureTag() {
+    fileprivate func configureTag() {
         var tag = ""
         if let rawTag = contentProvider?.primaryTag() {
             if (rawTag.characters.count > 0) {
@@ -330,13 +330,13 @@ import WordPressShared
             }
         }
         let hidden = tag.characters.count == 0
-        tagButton.hidden = hidden
-        tagButton.setTitle(tag, forState: .Normal)
-        tagButton.setTitle(tag, forState: .Highlighted)
+        tagButton.isHidden = hidden
+        tagButton.setTitle(tag, for: UIControlState())
+        tagButton.setTitle(tag, for: .highlighted)
     }
 
-    private func configureActionButtons() {
-        if contentProvider == nil || contentProvider?.sourceAttributionStyle() != SourceAttributionStyle.None {
+    fileprivate func configureActionButtons() {
+        if contentProvider == nil || contentProvider?.sourceAttributionStyle() != SourceAttributionStyle.none {
             resetActionButton(commentActionButton)
             resetActionButton(likeActionButton)
             return
@@ -346,41 +346,41 @@ import WordPressShared
         configureLikeActionButton()
     }
 
-    private func resetActionButton(button:UIButton) {
-        button.setTitle(nil, forState: .Normal)
-        button.selected = false
-        button.hidden = true
+    fileprivate func resetActionButton(_ button:UIButton) {
+        button.setTitle(nil, for: UIControlState())
+        button.isSelected = false
+        button.isHidden = true
     }
 
-    private func configureLikeActionButton() {
+    fileprivate func configureLikeActionButton() {
         // Show likes if logged in, or if likes exist, but not if external
-        guard (enableLoggedInFeatures || contentProvider!.likeCount().integerValue > 0) && !contentProvider!.isExternal() else {
+        guard (enableLoggedInFeatures || contentProvider!.likeCount().intValue > 0) && !contentProvider!.isExternal() else {
             resetActionButton(likeActionButton)
             return
         }
 
-        likeActionButton.tag = CardAction.Like.rawValue
-        likeActionButton.enabled = enableLoggedInFeatures
+        likeActionButton.tag = CardAction.like.rawValue
+        likeActionButton.isEnabled = enableLoggedInFeatures
 
         let title = contentProvider!.likeCountForDisplay()
-        likeActionButton.setTitle(title, forState: .Normal)
-        likeActionButton.selected = contentProvider!.isLiked()
-        likeActionButton.hidden = false
+        likeActionButton.setTitle(title, for: UIControlState())
+        likeActionButton.isSelected = contentProvider!.isLiked()
+        likeActionButton.isHidden = false
     }
 
-    private func configureCommentActionButton() {
+    fileprivate func configureCommentActionButton() {
 
         // Show comments if logged in and comments are enabled, or if comments exist.
         // But only if it is from wpcom (jetpack and external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
         if contentProvider!.isWPCom() {
-            if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().integerValue > 0 {
+            if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().intValue > 0 {
 
-                commentActionButton.tag = CardAction.Comment.rawValue
+                commentActionButton.tag = CardAction.comment.rawValue
 
                 let title = contentProvider?.commentCount().stringValue
-                commentActionButton.setTitle(title, forState: .Normal)
-                commentActionButton.hidden = false
+                commentActionButton.setTitle(title, for: UIControlState())
+                commentActionButton.isHidden = false
 
                 return
             }
@@ -388,22 +388,22 @@ import WordPressShared
         resetActionButton(commentActionButton)
     }
 
-    private func configureActionStackViewIfNeeded() {
-        let actionsHidden = commentActionButton.hidden && likeActionButton.hidden && tagButton.hidden
-        actionStackView.hidden = actionsHidden
+    fileprivate func configureActionStackViewIfNeeded() {
+        let actionsHidden = commentActionButton.isHidden && likeActionButton.isHidden && tagButton.isHidden
+        actionStackView.isHidden = actionsHidden
     }
 
-    private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
+    fileprivate func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
         func updateBorder() {
-            self.borderedView.layer.borderColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor().CGColor : WPStyleGuide.readerCardCellBorderColor().CGColor
+            self.borderedView.layer.borderColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor().cgColor : WPStyleGuide.readerCardCellBorderColor().cgColor
         }
         guard animated else {
             updateBorder()
             return
         }
-        UIView.animateWithDuration(0.25,
+        UIView.animate(withDuration: 0.25,
             delay: 0,
-            options: .CurveEaseInOut,
+            options: UIViewAnimationOptions(),
             animations: updateBorder,
             completion: nil)
     }
@@ -420,31 +420,31 @@ import WordPressShared
 
     // MARK: - Actions
 
-    @IBAction func didTapHeaderBlogButton(sender: UIButton) {
+    @IBAction func didTapHeaderBlogButton(_ sender: UIButton) {
         notifyDelegateHeaderWasTapped()
     }
 
-    @IBAction func didTapMenuButton(sender: UIButton) {
+    @IBAction func didTapMenuButton(_ sender: UIButton) {
         delegate?.readerCell(self, menuActionForProvider: contentProvider!, fromView: sender)
     }
 
-    @IBAction func didTapTagButton(sender: UIButton) {
+    @IBAction func didTapTagButton(_ sender: UIButton) {
         if contentProvider == nil {
             return
         }
         delegate?.readerCell(self, tagActionForProvider: contentProvider!)
     }
 
-    @IBAction func didTapActionButton(sender: UIButton) {
+    @IBAction func didTapActionButton(_ sender: UIButton) {
         if contentProvider == nil {
             return
         }
 
         let tag = CardAction(rawValue: sender.tag)!
         switch tag {
-        case .Comment :
+        case .comment :
             delegate?.readerCell(self, commentActionForProvider: contentProvider!)
-        case .Like :
+        case .like :
             delegate?.readerCell(self, likeActionForProvider: contentProvider!)
         }
     }
@@ -452,27 +452,27 @@ import WordPressShared
 
     // MARK: - Custom UI Actions
 
-    @IBAction func blogButtonTouchesDidHighlight(sender: UIButton) {
-        blogNameLabel.highlighted = true
+    @IBAction func blogButtonTouchesDidHighlight(_ sender: UIButton) {
+        blogNameLabel.isHighlighted = true
     }
 
-    @IBAction func blogButtonTouchesDidEnd(sender: UIButton) {
-        blogNameLabel.highlighted = false
+    @IBAction func blogButtonTouchesDidEnd(_ sender: UIButton) {
+        blogNameLabel.isHighlighted = false
     }
 
 
     // MARK: - Private Types
 
-    private enum CardAction: Int
+    fileprivate enum CardAction: Int
     {
-        case Comment = 1
-        case Like
+        case comment = 1
+        case like
     }
 }
 
 extension ReaderPostCardCell : ReaderCardDiscoverAttributionViewDelegate
 {
-    public func attributionActionSelectedForVisitingSite(view: ReaderCardDiscoverAttributionView) {
+    public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
     }
 }

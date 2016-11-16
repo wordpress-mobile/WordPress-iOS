@@ -20,7 +20,7 @@ import WordPressShared
 class NoticeAnimator: Animator {
 
     // MARK: - Private Constants
-    private struct Defaults {
+    fileprivate struct Defaults {
         static let animationDuration   = 0.3
         static let padding             = UIOffset(horizontal: 15, vertical: 20)
         static let labelFont           = WPStyleGuide.regularTextFont()
@@ -28,8 +28,8 @@ class NoticeAnimator: Animator {
 
 
     // MARK: - Private properties
-    private var previousHeight : CGFloat = 0
-    private var message : String? {
+    fileprivate var previousHeight : CGFloat = 0
+    fileprivate var message : String? {
         get {
             return noticeLabel.label.text
         }
@@ -40,13 +40,13 @@ class NoticeAnimator: Animator {
 
 
     // MARK: - Private Immutable Properties
-    private let targetView : UIView
-    private let noticeLabel : PaddedLabel = {
+    fileprivate let targetView : UIView
+    fileprivate let noticeLabel : PaddedLabel = {
         let label = PaddedLabel()
         label.backgroundColor = WPStyleGuide.mediumBlue()
         label.clipsToBounds = true
         label.padding.horizontal = Defaults.padding.horizontal
-        label.label.textColor = UIColor.whiteColor()
+        label.label.textColor = UIColor.white
         label.label.font = Defaults.labelFont
         label.label.numberOfLines = 0
         return label
@@ -54,10 +54,10 @@ class NoticeAnimator: Animator {
 
 
     // MARK: - Private Computed Properties
-    private var shouldDisplayMessage : Bool {
+    fileprivate var shouldDisplayMessage : Bool {
         return message != nil
     }
-    private var targetTableView: UITableView? {
+    fileprivate var targetTableView: UITableView? {
         return targetView as? UITableView
     }
 
@@ -79,7 +79,7 @@ class NoticeAnimator: Animator {
         noticeLabel.frame = targetFrame
     }
 
-    func animateMessage(message: String?) {
+    func animateMessage(_ message: String?) {
         let shouldAnimate = self.message != message
         self.message = message
 
@@ -91,19 +91,19 @@ class NoticeAnimator: Animator {
 
 
     // MARK: - Animation Methods
-    private func preamble() {
+    fileprivate func preamble() {
         UIView.performWithoutAnimation { [weak self] in
             self?.targetView.layoutIfNeeded()
         }
 
         if shouldDisplayMessage == true && noticeLabel.superview == nil {
             targetView.addSubview(noticeLabel)
-            noticeLabel.frame.size.height = CGSizeZero.height
+            noticeLabel.frame.size.height = CGSize.zero.height
             noticeLabel.label.alpha = 0
         }
     }
 
-    private func animations() {
+    fileprivate func animations() {
         let height = heightForMessage(message)
 
         if shouldDisplayMessage {
@@ -120,7 +120,7 @@ class NoticeAnimator: Animator {
 
         } else {
             // Size + Alpha
-            noticeLabel.frame.size.height = CGSizeZero.height
+            noticeLabel.frame.size.height = CGSize.zero.height
             noticeLabel.label.alpha = 0
 
             // Table Insets
@@ -130,22 +130,22 @@ class NoticeAnimator: Animator {
         previousHeight = height
     }
 
-    private func cleanup() {
+    fileprivate func cleanup() {
         if shouldDisplayMessage == false {
             noticeLabel.removeFromSuperview()
-            previousHeight = CGSizeZero.height
+            previousHeight = CGSize.zero.height
         }
     }
 
 
 
     // MARK: - Helpers
-    private func heightForMessage(message : String?) -> CGFloat {
+    fileprivate func heightForMessage(_ message : String?) -> CGFloat {
         guard let message = message else {
-            return CGSizeZero.height
+            return CGSize.zero.height
         }
 
-        let size = message.suggestedSizeWithFont(Defaults.labelFont, width: targetView.frame.width)
+        let size = message.suggestedSize(with: Defaults.labelFont, width: targetView.frame.width)
         return round(size.height + Defaults.padding.vertical)
     }
 }

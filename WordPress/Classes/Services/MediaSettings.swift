@@ -2,14 +2,14 @@ import Foundation
 
 class MediaSettings: NSObject {
     // MARK: - Constants
-    private let maxImageSizeKey = "SavedMaxImageSizeSetting"
-    private let removeLocationKey = "SavedRemoveLocationSetting"
+    fileprivate let maxImageSizeKey = "SavedMaxImageSizeSetting"
+    fileprivate let removeLocationKey = "SavedRemoveLocationSetting"
 
-    private let minImageDimension = 150
-    private let maxImageDimension = 3000
+    fileprivate let minImageDimension = 150
+    fileprivate let maxImageDimension = 3000
 
     // MARK: - Internal variables
-    private let database: KeyValueDatabase
+    fileprivate let database: KeyValueDatabase
 
     // MARK: - Initialization
     init(database: KeyValueDatabase) {
@@ -18,7 +18,7 @@ class MediaSettings: NSObject {
     }
 
     convenience override init() {
-        self.init(database: NSUserDefaults())
+        self.init(database: UserDefaults() as! KeyValueDatabase)
     }
 
     // MARK: Public accessors

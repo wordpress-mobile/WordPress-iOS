@@ -3,7 +3,7 @@ import Foundation
 
 /// This service encapsulates the Restful API related to WordPress Notifications.
 ///
-public class NotificationSettingsService: LocalCoreDataService
+open class NotificationSettingsService: LocalCoreDataService
 {
     // MARK: - Aliases
     public typealias Channel    = NotificationSettings.Channel
@@ -40,7 +40,7 @@ public class NotificationSettingsService: LocalCoreDataService
     ///     - success: Closure to be called on success.
     ///     - failure: Closure to be called on failure, with the associated error.
     ///
-    public func getAllSettings(success: ([NotificationSettings] -> Void)?, failure: (NSError! -> Void)?) {
+    open func getAllSettings(_ success: (([NotificationSettings]) -> Void)?, failure: ((NSError?) -> Void)?) {
         notificationsServiceRemote?.getAllSettings(deviceId,
             success: {
                 (remote: [RemoteNotificationSettings]) in
@@ -62,7 +62,7 @@ public class NotificationSettingsService: LocalCoreDataService
     ///     - success: Closure to be called on success.
     ///     - failure: Closure to be called on failure, with the associated error.
     ///
-    public func updateSettings(settings: NotificationSettings, stream: Stream, newValues: [String: Bool], success: (() -> ())?, failure: (NSError! -> Void)?) {
+    open func updateSettings(_ settings: NotificationSettings, stream: Stream, newValues: [String: Bool], success: (() -> ())?, failure: ((NSError?) -> Void)?) {
         let remote = remoteFromSettings(newValues, channel: settings.channel, stream: stream)
         let pristine = stream.preferences
 
@@ -90,7 +90,7 @@ public class NotificationSettingsService: LocalCoreDataService
     ///     - success: Closure to be called on success.
     ///     - failure: Closure to be called on failure, with the associated error.
     ///
-    public func registerDeviceForPushNotifications(token: String, success: ((deviceId: String) -> ())?, failure: (NSError -> Void)?) {
+    open func registerDeviceForPushNotifications(_ token: String, success: ((_ deviceId: String) -> ())?, failure: ((NSError) -> Void)?) {
         if token.isEmpty {
             DDLogSwift.logWarn("Error: registerDeviceForPushNotifications called with an empty token!")
             return
@@ -107,7 +107,7 @@ public class NotificationSettingsService: LocalCoreDataService
     ///     - success: Closure to be called on success.
     ///     - failure: Closure to be called on failure, with the associated error.
     ///
-    public func unregisterDeviceForPushNotifications(deviceId: String, success: (() -> ())?, failure: (NSError -> Void)?) {
+    open func unregisterDeviceForPushNotifications(_ deviceId: String, success: (() -> ())?, failure: ((NSError) -> Void)?) {
         if deviceId.isEmpty {
             DDLogSwift.logWarn("Error: unregisterDeviceForPushNotifications called with an empty deviceId!")
             return
@@ -125,7 +125,7 @@ public class NotificationSettingsService: LocalCoreDataService
     ///
     /// - Returns: An array of NotificationSettings objects
     ///
-    private func settingsFromRemote(remoteSettings: [RemoteNotificationSettings]) -> [NotificationSettings] {
+    fileprivate func settingsFromRemote(_ remoteSettings: [RemoteNotificationSettings]) -> [NotificationSettings] {
         var parsed       = [NotificationSettings]()
         let blogMap      = blogService.blogsForAllAccountsById() as? [Int: Blog]
 
@@ -148,14 +148,14 @@ public class NotificationSettingsService: LocalCoreDataService
     ///
     /// - Returns: Instance of NotificationSettings.Channel Enum
     ///
-    private func channelFromRemote(remote: RemoteNotificationSettings.Channel) -> NotificationSettings.Channel {
+    fileprivate func channelFromRemote(_ remote: RemoteNotificationSettings.Channel) -> NotificationSettings.Channel {
         switch remote {
-        case let .Blog(blogId):
-            return .Blog(blogId: blogId)
-        case .Other:
-            return .Other
-        case .WordPressCom:
-            return .WordPressCom
+        case let .blog(blogId):
+            return .blog(blogId: blogId)
+        case .other:
+            return .other
+        case .wordPressCom:
+            return .wordPressCom
         }
     }
 
@@ -167,7 +167,7 @@ public class NotificationSettingsService: LocalCoreDataService
     ///
     /// - Returns: An array of NotificationSettings.Stream
     ///
-    private func streamsFromRemote(remote: [RemoteNotificationSettings.Stream]) -> [NotificationSettings.Stream] {
+    fileprivate func streamsFromRemote(_ remote: [RemoteNotificationSettings.Stream]) -> [NotificationSettings.Stream] {
         var parsed = Array<NotificationSettings.Stream>()
 
         for remoteStream in remote {
@@ -188,11 +188,11 @@ public class NotificationSettingsService: LocalCoreDataService
     ///
     /// - Returns: Instance of the associated Blog, if any
     ///
-    private func blogForChannel(channel: NotificationSettings.Channel, blogMap: [Int : Blog]?) -> Blog? {
+    fileprivate func blogForChannel(_ channel: NotificationSettings.Channel, blogMap: [Int : Blog]?) -> Blog? {
         // We reuse a Blog Map by ID, since it's actually one order of magnitude faster than fetching
         // each time.
         switch channel {
-        case let .Blog(blogId):
+        case let .blog(blogId):
             return blogMap?[blogId]
         default:
             return nil
@@ -210,8 +210,8 @@ public class NotificationSettingsService: LocalCoreDataService
     ///
     /// - Returns: Dictionary of values, as expected by the Backend, for the specified Channel and Stream.
     ///
-    private func remoteFromSettings(settings: [String: Bool], channel: Channel, stream: Stream) -> [String: AnyObject] {
-        var wrappedSettings : AnyObject     = settings
+    fileprivate func remoteFromSettings(_ settings: [String: Bool], channel: Channel, stream: Stream) -> [String: AnyObject] {
+        var wrappedSettings : AnyObject     = settings as AnyObject
         var streamKey                       = stream.kind.rawValue
 
         switch stream.kind {
@@ -221,7 +221,7 @@ public class NotificationSettingsService: LocalCoreDataService
             // device_id set.
             //
             var updatedSettings             = settings as [String: AnyObject]
-            updatedSettings["device_id"]    = deviceId
+            updatedSettings["device_id"]    = deviceId as AnyObject?
 
             // Done!
             streamKey                       = "devices"
@@ -232,7 +232,7 @@ public class NotificationSettingsService: LocalCoreDataService
 
         // Prepare the Remote Settings Dictionary
         switch channel {
-        case let .Blog(blogId):
+        case let .blog(blogId):
             return [
                 "blogs": [
                     [   "blog_id" : blogId,
@@ -240,32 +240,32 @@ public class NotificationSettingsService: LocalCoreDataService
                     ]
                 ]
             ]
-        case .Other:
+        case .other:
             return [
                 "other": [
                     streamKey : wrappedSettings
                 ]
             ]
-        case .WordPressCom:
+        case .wordPressCom:
             return [ "wpcom": wrappedSettings ]
         }
     }
 
 
     // MARK: - Private Properties
-    private var remoteApi : WordPressComRestApi?
+    fileprivate var remoteApi : WordPressComRestApi?
 
 
     // MARK: - Private Computed Properties
-    private var notificationsServiceRemote : NotificationSettingsServiceRemote? {
+    fileprivate var notificationsServiceRemote : NotificationSettingsServiceRemote? {
         return NotificationSettingsServiceRemote(wordPressComRestApi: remoteApi)
     }
 
-    private var blogService : BlogService {
+    fileprivate var blogService : BlogService {
         return BlogService(managedObjectContext: managedObjectContext)
     }
 
-    private var deviceId : String {
+    fileprivate var deviceId : String {
         return PushNotificationsManager.sharedInstance.deviceId ?? String()
     }
 }
