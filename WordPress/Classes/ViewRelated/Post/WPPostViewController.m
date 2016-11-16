@@ -349,8 +349,6 @@ EditImageDetailsViewControllerDelegate
         self.shouldShowUnsavedChangesAlert = NO;
         [self showUnsavedChangesAlert];
     }
-
-    //[self showPostPost];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
