@@ -65,21 +65,23 @@ import UIKit
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
 
-        if let defaultAccount = accountService.defaultWordPressComAccount() {
-            if refreshUserDetails {
-                accountService.updateUserDetailsForAccount(defaultAccount, success: { 
-                    self.updateHelpshiftUserDetailsWithAccount(defaultAccount)
-                    completion()
-                    }, failure: { _ in
-                        completion()
-                })
-                return
-            } else {
-                updateHelpshiftUserDetailsWithAccount(defaultAccount)
-            }
+        guard let defaultAccount = accountService.defaultWordPressComAccount() else {
+            completion()
+            return
         }
 
-        completion()
+        guard refreshUserDetails else {
+            updateHelpshiftUserDetailsWithAccount(defaultAccount)
+            completion()
+            return
+        }
+
+        accountService.updateUserDetailsForAccount(defaultAccount, success: {
+            self.updateHelpshiftUserDetailsWithAccount(defaultAccount)
+            completion()
+            }, failure: { _ in
+                completion()
+        })
     }
 
     private var optionsDictionary: [NSObject: AnyObject] {
