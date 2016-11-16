@@ -51,9 +51,9 @@ import UIKit
         }
     }
 
-    private func updateHelpshiftUserDetailsWithUserID(userID: String, displayName: String, emailAddress: String) {
-        HelpshiftSupport.setUserIdentifier(userID)
-        HelpshiftCore.setName(displayName, andEmail: emailAddress)
+    private func updateHelpshiftUserDetailsWithAccount(account: WPAccount) {
+        HelpshiftSupport.setUserIdentifier(account.userID.stringValue)
+        HelpshiftCore.setName(account.displayName, andEmail: account.email)
     }
 
     private func prepareToDisplayHelpshiftWindow(refreshUserDetails: Bool, completion: () -> Void) {
@@ -67,21 +67,15 @@ import UIKit
 
         if let defaultAccount = accountService.defaultWordPressComAccount() {
             if refreshUserDetails {
-                let remote = AccountServiceRemoteREST(wordPressComRestApi: defaultAccount.wordPressComRestApi)
-                remote.getDetailsForAccount(defaultAccount, success: { remoteUser in
-                    self.updateHelpshiftUserDetailsWithUserID(remoteUser.userID.stringValue,
-                                                              displayName: remoteUser.displayName,
-                                                              emailAddress: remoteUser.email)
+                accountService.updateUserDetailsForAccount(defaultAccount, success: { 
+                    self.updateHelpshiftUserDetailsWithAccount(defaultAccount)
                     completion()
                     }, failure: { _ in
                         completion()
                 })
-
                 return
             } else {
-                updateHelpshiftUserDetailsWithUserID(defaultAccount.userID.stringValue,
-                                                     displayName: defaultAccount.displayName,
-                                                     emailAddress: defaultAccount.email)
+                updateHelpshiftUserDetailsWithAccount(defaultAccount)
             }
         }
 
