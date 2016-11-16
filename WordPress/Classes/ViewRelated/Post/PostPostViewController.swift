@@ -99,10 +99,13 @@ class PostPostViewController: UIViewController {
         self.post = post
 
         titleLabel.text = post.titleForDisplay()
-        if post.isScheduled() {let format = NSLocalizedString("Scheduled for %@ on", comment: "Precedes the name of the blog a post was just scheduled on. Variable is the date post was schedulde for.")
+        if post.isScheduled() {
+            let format = NSLocalizedString("Scheduled for %@ on", comment: "Precedes the name of the blog a post was just scheduled on. Variable is the date post was schedulde for.")
             postStatusLabel.text = String(format: format, post.dateStringForDisplay())
+            shareButton.hidden = true
         } else {
             postStatusLabel.text = NSLocalizedString("Published just now on", comment: "Precedes the name of the blog just posted on")
+            shareButton.hidden = false
         }
         siteNameLabel.text = blogSettings.name
         siteUrlLabel.text = post.blog.url

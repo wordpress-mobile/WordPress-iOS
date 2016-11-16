@@ -197,7 +197,7 @@ class EditPostViewController: UIViewController {
         self.onClose?(changesSaved: changesSaved)
 
         var dismissPostPostImmediately = true
-        if shouldShowPostPost(), let post = post {
+        if shouldShowPostPost(hasChanges: changesSaved), let post = post {
             postPost.setup(post: post)
             postPost.onClose = {
                 self.closePostPost()
@@ -217,14 +217,14 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    func shouldShowPostPost() -> Bool  {
+    func shouldShowPostPost(hasChanges hasChanges: Bool) -> Bool  {
         guard let post = post else {
             return false
         }
         if post.isDraft() {
             return false
         }
-        return true
+        return hasChanges
     }
 
     func previewPost() {
