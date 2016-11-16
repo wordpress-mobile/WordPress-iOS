@@ -62,7 +62,7 @@ import UIKit
         PushNotificationsManager.sharedInstance.registerForRemoteNotifications()
         InteractiveNotificationsManager.sharedInstance.registerForUserNotifications()
 
-        let context = ContextManager.sharedInstance().newDerivedContext()
+        let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
 
         if let defaultAccount = accountService.defaultWordPressComAccount() {
