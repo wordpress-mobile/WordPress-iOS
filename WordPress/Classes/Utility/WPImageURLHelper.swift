@@ -1,14 +1,20 @@
 import Foundation
 
-let photonImageQualityMax: UInt = 100
-let photonImageQualityDefault: UInt = 80
-let photonImageQualityMin: UInt = 1
-
 /// Helper class to create a WordPress URL for various download needs, like specifying image size or using Photon.
 public class WPImageURLHelper: NSObject
 {
     // FIXME: use base urls from constants.m and delete this one
     static let GravatarBaseUrl = "http://gravatar.com"
+
+    static let photonImageQualityMax: UInt = 100
+    static let photonImageQualityDefault: UInt = 80
+    static let photonImageQualityMin: UInt = 1
+}
+
+extension WPImageURLHelper
+{
+    // MARK: General URLs
+
     /**
      Adds to the provided url width and height parameters to allow the image to be resized on the server
 
