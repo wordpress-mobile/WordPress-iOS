@@ -238,11 +238,14 @@ import Gridicons
         }
 
         // Always reset
-        avatarImageView.image = UIImage(named: "post-blavatar-placeholder")
+        avatarImageView.image = nil
 
         let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
         if let url = provider.siteIconForDisplayOfSize(Int(size)) {
             avatarImageView.setImageWithURL(url)
+            avatarImageView.hidden = false
+        } else {
+            avatarImageView.hidden = true
         }
 
         var arr = [String]()
