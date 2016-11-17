@@ -144,7 +144,17 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 
 - (void)userRepliedToConversationWithMessage:(NSString *)newMessage
 {
-    [WPAnalytics track:WPAnalyticsStatSupportSentReplyToSupportMessage];
+    if ([newMessage isEqualToString:HelpshiftSupportUserAcceptedTheSolution]) {
+        [WPAnalytics track:WPAnalyticsStatSupportUserAcceptedTheSolution];
+    } else if ([newMessage isEqualToString:HelpshiftSupportUserRejectedTheSolution]) {
+        [WPAnalytics track:WPAnalyticsStatSupportUserRejectedTheSolution];
+    } else if ([newMessage isEqualToString:HelpshiftSupportUserSentScreenShot]) {
+        [WPAnalytics track:WPAnalyticsStatSupportUserSentScreenshot];
+    } else if ([newMessage isEqualToString:HelpshiftSupportUserReviewedTheApp]) {
+        [WPAnalytics track:WPAnalyticsStatSupportUserReviewedTheApp];
+    } else {
+        [WPAnalytics track:WPAnalyticsStatSupportUserRepliedToHelpshift];
+    }
 }
 
 @end
