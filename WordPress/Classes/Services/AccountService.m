@@ -187,7 +187,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return account;
 }
 
-- (void)retrieveAllAccountsWith:(WPAccountRetrieveCompletion)completion
+- (void)retrieveAllAccountsWith:(void (^)(NSArray* accounts))completion
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];

@@ -86,8 +86,8 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  
  @param completion the block where all the completed WPAccounts in the array will be returned
  */
-typedef void (^WPAccountRetrieveCompletion)(NSArray* accounts);
-- (void)retrieveAllAccountsWith:(WPAccountRetrieveCompletion)completion;
+
+- (void)retrieveAllAccountsWith:(void (^)(NSArray* accounts))completion;
 
 - (NSUInteger)numberOfAccounts;
 
