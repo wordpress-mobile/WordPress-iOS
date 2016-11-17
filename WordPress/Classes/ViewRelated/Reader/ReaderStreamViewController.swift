@@ -1321,10 +1321,14 @@ import WordPressComAnalytics
 
 
     public func configurePostCardCell(cell: UITableViewCell, post: ReaderPost) {
+        guard let topic = readerTopic else {
+            return
+        }
 
         let postCell = cell as! ReaderPostCardCell
 
         postCell.delegate = self
+        postCell.hidesFollowButton = ReaderHelpers.topicIsFollowing(topic)
         postCell.enableLoggedInFeatures = isLoggedIn
         postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
         postCell.configureCell(post)

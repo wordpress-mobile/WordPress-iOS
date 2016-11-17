@@ -58,7 +58,7 @@ import Gridicons
     private var currentLoadedCardImageURL: String?
 
     // MARK: - Accessors
-
+    public var hidesFollowButton = false
     public var enableLoggedInFeatures = true
 
 
@@ -259,6 +259,7 @@ import Gridicons
     }
 
     private func configureFollowButton() {
+        followButton.hidden = hidesFollowButton
         followButton.selected = contentProvider?.isFollowing() ?? false
     }
 
