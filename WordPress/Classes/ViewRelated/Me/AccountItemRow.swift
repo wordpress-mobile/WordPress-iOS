@@ -1,11 +1,3 @@
-//
-//  AccountCell.swift
-//  WordPress
-//
-//  Created by Gonzalo G Erro on 11/10/16.
-//  Copyright © 2016 WordPress. All rights reserved.
-//
-
 import Foundation
 import WordPressShared
 

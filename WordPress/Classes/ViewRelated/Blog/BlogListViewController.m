@@ -943,7 +943,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     WPAccount *defaultAccount = [self defaultWordPressComAccount];
     if (defaultAccount) {
-        return [NSPredicate predicateWithFormat:@"visible = YES AND account = %@", defaultAccount];
+        return [NSPredicate predicateWithFormat:@"visible = YES AND (account = %@ OR account = NULL)", defaultAccount];
     }
     else {
         return [NSPredicate predicateWithFormat:@"visible = YES"];

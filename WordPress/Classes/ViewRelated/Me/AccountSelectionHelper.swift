@@ -1,11 +1,3 @@
-//
-//  AccountSelectionView.swift
-//  WordPress
-//
-//  Created by Gonzalo G Erro on 11/8/16.
-//  Copyright © 2016 WordPress. All rights reserved.
-//
-
 import Foundation
 
 struct Account {
