@@ -1510,17 +1510,6 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
     }
 
 
-    public func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
-
-        let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
-        navigationController?.pushViewController(controller, animated: true)
-
-        let properties =  ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug, forKey: "tag")
-        WPAppAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
-    }
-
-
     public func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
         let post = provider as! ReaderPost
         showMenuForPost(post, fromView:sender)
