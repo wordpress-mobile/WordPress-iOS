@@ -36,6 +36,8 @@ class EditorSettings: NSObject {
     }
 
     var nativeEditorEnabled: Bool {
+        return false
+/* Aztec disabled for Swift 3 migration.
         get {
             if !FeatureFlag.nativeEditor.enabled {
                 return false
@@ -49,5 +51,6 @@ class EditorSettings: NSObject {
         set {
             database.setObject(newValue, forKey: nativeEditorEnabledKey)
         }
+ */
     }
 }

@@ -396,6 +396,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     fileprivate func createPostInNativeEditor() {
+/* Aztec disabled for Swift 3 migration.
         let context = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: context)
         let post = postService?.createDraftPost(for: blog)
@@ -404,6 +405,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true, completion: nil)
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
+ */
     }
 
     fileprivate func createPostInNewEditor() {
