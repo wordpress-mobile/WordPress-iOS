@@ -53,14 +53,14 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="top" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eiF-ng-Kvg" customClass="PostMetaButton">
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="top" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eiF-ng-Kvg" customClass="PostMetaButton">
                                         <rect key="frame" x="246" y="0.0" width="42" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="tjN-kA-gzY"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="32" id="vEX-wI-AX2"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="2" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Follow">
                                             <color key="titleColor" red="0.0" green="0.66666666666666663" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
@@ -144,9 +144,10 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
                                         <rect key="frame" x="0.0" y="89.5" width="288" height="24"/>
                                         <subviews>
-                                            <button contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AX6-q0-ijx" customClass="PostMetaButton">
-                                                <rect key="frame" x="0.0" y="0.0" width="30" height="24"/>
+                                            <button contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AX6-q0-ijx" customClass="PostMetaButton">
+                                                <rect key="frame" x="0.0" y="0.0" width="23" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <inset key="contentEdgeInsets" minX="-2" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <state key="normal" title="Visit">
                                                     <color key="titleColor" red="0.6588235294117647" green="0.74509803921568629" blue="0.80784313725490198" alpha="1" colorSpace="calibratedRGB"/>
@@ -156,7 +157,7 @@
                                                 </connections>
                                             </button>
                                             <view alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="RFs-ae-iqC" userLabel="View (Spacer)">
-                                                <rect key="frame" x="40" y="0.0" width="54" height="24"/>
+                                                <rect key="frame" x="33" y="0.0" width="61" height="24"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRe-Q4-Aq4" customClass="PostMetaButton">
