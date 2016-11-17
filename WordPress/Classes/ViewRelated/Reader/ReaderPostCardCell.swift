@@ -431,6 +431,7 @@ import Gridicons
             followButton.setTitle("", forState: .Selected)
             followButton.setTitle("", forState: .Highlighted)
 
+            insetFollowButtonIcon(false)
         } else {
             // show title text
 
@@ -447,7 +448,18 @@ import Gridicons
             followButton.setTitle(followTitle, forState: .Normal)
             followButton.setTitle(followingTitle, forState: .Selected)
             followButton.setTitle(followingTitle, forState: .Highlighted)
+
+            insetFollowButtonIcon(true)
         }
+    }
+
+    /// Adds some space between the button and title.
+    /// Setting the titleEdgeInset.left seems to be ignored in IB for whatever reason,
+    /// so we'll add/remove it from the image as needed.
+    private func insetFollowButtonIcon(bool: Bool) {
+        var insets = followButton.imageEdgeInsets
+        insets.right = bool ? 2.0 : 0.0
+        followButton.imageEdgeInsets = insets
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
