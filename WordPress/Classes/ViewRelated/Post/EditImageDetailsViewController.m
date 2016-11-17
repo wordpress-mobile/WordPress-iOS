@@ -6,7 +6,6 @@
 #import "AbstractPost.h"
 #import "SettingsSelectionViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPGUIConstants.h"
 #import "WordPress-Swift.h"
 
