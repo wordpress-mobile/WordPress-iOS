@@ -28,8 +28,6 @@ import Gridicons
     @IBOutlet private weak var headerBlogButton: UIButton!
     @IBOutlet private weak var blogNameLabel: UILabel!
     @IBOutlet private weak var bylineLabel: UILabel!
-    @IBOutlet private weak var tagLabelButton: UIButton!
-    @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var followButton: UIButton!
 
     // Card views
@@ -130,7 +128,6 @@ import Gridicons
         applyStyles()
         applyOpaqueBackgroundColors()
         setupFeaturedImageView()
-        setupTag()
         setupVisitButton()
         setupShareButton()
         setupSummaryLabel()
@@ -147,17 +144,6 @@ import Gridicons
 
 
     // MARK: - Configuration
-
-    private func setupTag() {
-        let size = CGSize(width: 12, height: 12)
-
-        let icon = Gridicon.iconOfType(.Tag, withSize: size)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.mediumBlue())
-        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
-
-        tagButton.setImage(tintedIcon, forState: .Normal)
-        tagButton.setImage(highlightIcon, forState: .Highlighted)
-    }
 
     private func setupAttributionView() {
         attributionView.delegate = self
@@ -224,7 +210,6 @@ import Gridicons
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
-        WPStyleGuide.applyReaderCardTagButtonStyle(tagLabelButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(commentActionButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeActionButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(visitButton)
@@ -240,7 +225,6 @@ import Gridicons
         bylineLabel.backgroundColor = UIColor.whiteColor()
         titleLabel.backgroundColor = UIColor.whiteColor()
         summaryLabel.backgroundColor = UIColor.whiteColor()
-        tagLabelButton.titleLabel?.backgroundColor = UIColor.whiteColor()
         commentActionButton.titleLabel?.backgroundColor = UIColor.whiteColor()
         likeActionButton.titleLabel?.backgroundColor = UIColor.whiteColor()
     }
@@ -254,7 +238,6 @@ import Gridicons
         configureTitle()
         configureSummary()
         configureAttribution()
-        configureTag()
         configureActionButtons()
         configureButtonTitles()
     }
@@ -381,16 +364,6 @@ import Gridicons
             attributionView.configureView(contentProvider)
             attributionView.hidden = false
         }
-    }
-
-    private func configureTag() {
-        let tag = contentProvider?.primaryTag() ?? ""
-        let hidden = tag.characters.count == 0
-        tagLabelButton.hidden = hidden
-        tagLabelButton.setTitle(tag, forState: .Normal)
-        tagLabelButton.setTitle(tag, forState: .Highlighted)
-
-        tagButton.enabled = !hidden
     }
 
     private func configureActionButtons() {
@@ -564,14 +537,6 @@ import Gridicons
 
     @IBAction func blogButtonTouchesDidEnd(sender: UIButton) {
         blogNameLabel.highlighted = false
-    }
-
-    @IBAction func tagButtonTouchesDidHighlight(sender: UIButton) {
-        tagLabelButton.highlighted = true
-    }
-
-    @IBAction func tagButtonTouchesDidEnd(sender: UIButton) {
-        tagLabelButton.highlighted = false
     }
 
 
