@@ -322,6 +322,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let editorSettings = EditorSettings()
         if editorSettings.visualEditorEnabled {
             let postViewController: UIViewController
+
+/* Aztec disabled for Swift 3 migration
             if editorSettings.nativeEditorEnabled {
                 let context = ContextManager.sharedInstance().mainContext
                 let postService = PostService(managedObjectContext: context)
@@ -335,6 +337,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
                 navController.restorationIdentifier = WPEditorNavigationRestorationID
                 navController.restorationClass = EditPageViewController.self
             }
+ */
         } else {
             let editPostViewController = WPLegacyEditPageViewController(draftForLastUsedBlog: ())
 
@@ -356,12 +359,15 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let editorSettings = EditorSettings()
         if editorSettings.visualEditorEnabled {
             let pageViewController: UIViewController
+
+/* Aztec disabled for Swift 3 migration
             if editorSettings.nativeEditorEnabled {
                 pageViewController = AztecPostViewController(post: apost)
             } else {
                 pageViewController = EditPageViewController(post: apost, mode: kWPPostViewControllerModePreview)
             }
-
+*/
+            pageViewController = EditPageViewController(post: apost, mode: kWPPostViewControllerModePreview)
             navigationController?.pushViewController(pageViewController, animated: true)
         } else {
             // In legacy mode, view means edit

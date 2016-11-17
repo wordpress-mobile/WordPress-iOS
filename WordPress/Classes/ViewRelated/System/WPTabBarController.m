@@ -395,6 +395,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     UINavigationController *navController;
     EditorSettings *editorSettings = [EditorSettings new];
     if ([editorSettings visualEditorEnabled]) {
+/* Aztec disabled for Swift 3 migration.
         if ([editorSettings nativeEditorEnabled]) {
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -408,6 +409,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             [self presentViewController:navController animated: YES completion: nil];
             return;
         }
+ */
         WPPostViewController *editPostViewController;
         if (!options) {
             editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
