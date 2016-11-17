@@ -1057,7 +1057,7 @@ import WordPressComAnalytics
     /// - The app must have a internet connection.
     /// - The current time must be greater than the last sync interval.
     func syncIfAppropriate() {
-        if WordPressAppDelegate.sharedInstance().testSuiteIsRunning {
+        guard UIApplication.sharedApplication().isRunningTestSuite() == false else {
             return
         }
 
