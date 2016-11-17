@@ -47,13 +47,9 @@ import Gridicons
     @IBOutlet private weak var commentActionButton: UIButton!
     @IBOutlet private weak var menuButton: UIButton!
 
-    // Layout Constraints
-    @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
-
     public weak var delegate: ReaderPostCellDelegate?
     public weak var contentProvider: ReaderPostContentProvider?
 
-    private let featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(196.0)
     private var featuredImageDesiredWidth = CGFloat()
 
     private let summaryMaxNumberOfLines = 3
@@ -126,7 +122,6 @@ import Gridicons
 
         applyStyles()
         applyOpaqueBackgroundColors()
-        setupFeaturedImageView()
         setupVisitButton()
         setupShareButton()
         setupSummaryLabel()
@@ -146,10 +141,6 @@ import Gridicons
 
     private func setupAttributionView() {
         attributionView.delegate = self
-    }
-
-    private func setupFeaturedImageView() {
-        featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
     }
 
     private func setupSummaryLabel() {
@@ -296,7 +287,7 @@ import Gridicons
         featuredImageView.image = nil
         var url = featuredImageURL
         featuredImageDesiredWidth = featuredImageView.frame.width
-        let size = CGSize(width:featuredImageDesiredWidth, height:featuredMediaHeightConstraintConstant)
+        let size = CGSize(width:featuredImageDesiredWidth, height:100)
         if !(contentProvider!.isPrivate()) {
             url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
             featuredImageView.setImageWithURL(url, placeholderImage:nil)
