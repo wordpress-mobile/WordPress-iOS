@@ -213,7 +213,7 @@
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" priority="999" constant="24" id="RDJ-jr-Y8h"/>
+                                            <constraint firstAttribute="height" constant="24" id="RDJ-jr-Y8h"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
