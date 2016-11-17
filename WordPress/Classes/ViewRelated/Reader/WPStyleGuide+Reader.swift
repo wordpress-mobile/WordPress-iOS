@@ -193,7 +193,7 @@ extension WPStyleGuide
     public class func applyReaderCardBylineLabelStyle(label:UILabel) {
         let fontSize:CGFloat = Cards.subtextFontSize
         label.font = WPFontManager.systemRegularFontOfSize(fontSize)
-        label.textColor = greyDarken10()
+        label.textColor = greyLighten10()
     }
 
     public class func applyReaderCardTitleLabelStyle(label:UILabel) {
