@@ -341,16 +341,24 @@ static NSInteger HideSearchMinSites = 3;
 {
     if (!_headerView) {
         _headerView = [[UIView alloc] initWithFrame:CGRectZero];
+        [_headerView addSubview:self.headerLabel];
+    }
+
+    return _headerView;
+}
+
+- (UILabel *)headerLabel
+{
+    if (!_headerLabel) {
         _headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _headerLabel.numberOfLines = 0;
         _headerLabel.textAlignment = NSTextAlignmentCenter;
         _headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
         _headerLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
         _headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
-        [_headerView addSubview:_headerLabel];
     }
 
-    return _headerView;
+    return _headerLabel;
 }
 
 - (void)updateHeaderSize
