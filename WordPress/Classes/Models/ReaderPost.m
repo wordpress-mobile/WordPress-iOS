@@ -166,11 +166,9 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         } else {
             str = [NSString stringWithFormat:@"%@?s=%d&d=404", self.siteIconURL, size];
         }
-    } else {
-        NSString *hash = [[[NSURL URLWithString:self.blogURL] host] md5];
-        str = [NSString stringWithFormat:@"https://secure.gravatar.com/blavatar/%@/?s=%d&d=404", hash, size];
+        return [NSURL URLWithString:str];
     }
-    return [NSURL URLWithString:str];
+    return nil;
 }
 
 - (NSString *)titleForDisplay
