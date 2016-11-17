@@ -33,14 +33,6 @@
     return @"";
 }
 
-+ (NSString *)simperiumAppId {
-	return @"";
-}
-
-+ (NSString *)simperiumAPIKey {
-	return @"";
-}
-
 + (NSString *)helpshiftAPIKey {
     return  @"";
 }
