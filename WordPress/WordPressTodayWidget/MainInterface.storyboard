@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="M4Y-Lb-cyx">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="M4Y-Lb-cyx">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Today View Controller-->
@@ -17,90 +21,108 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="215"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display your site stats for today here. Configure in the WordPress app under your Site, Stats, Today." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-lC-Jtw">
-                                <rect key="frame" x="16" y="8" width="288" height="56"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="OVa-bt-MTO">
-                                <rect key="frame" x="16" y="64" width="288" height="51"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="57z-E7-fbN">
+                                <rect key="frame" x="16" y="12" width="288" height="195"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-YC-Udf">
-                                        <rect key="frame" x="16" y="16" width="256" height="35"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="SgL-dy-2cu">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="97.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display your site stats for today here. Configure in the WordPress app under your Site, Stats, Today." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-lC-Jtw">
+                                                <rect key="frame" x="0.0" y="0.0" width="288" height="64.5"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-YC-Udf">
+                                                <rect key="frame" x="0.0" y="64.5" width="288" height="33"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <state key="normal" title="Open WordPress">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="launchContainingApp" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="kC0-eZ-6h4"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TbZ-Oq-ahc">
+                                        <rect key="frame" x="0.0" y="133" width="288" height="62"/>
+                                        <subviews>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
+                                                <rect key="frame" x="0.0" y="0.0" width="288" height="21"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="21" id="E8n-jC-Xnl"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="vd1-ys-xI8">
+                                                <rect key="frame" x="0.0" y="21" width="288" height="41"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pOr-4w-uA8">
+                                                        <rect key="frame" x="0.0" y="0.0" width="144" height="41"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="7,025" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-zT-oAD">
+                                                                <rect key="frame" x="0.0" y="0.0" width="69" height="33.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visitors" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ya5-b8-L12">
+                                                                <rect key="frame" x="0.0" y="7.5" width="66.5" height="33.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zY4-tK-hym">
+                                                        <rect key="frame" x="144" y="0.0" width="144" height="41"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10,394" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pyt-KX-qbk">
+                                                                <rect key="frame" x="0.0" y="0.0" width="86" height="33.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Views" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="d87-vS-4g1">
+                                                                <rect key="frame" x="0.0" y="7.5" width="54" height="33.5"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" priority="750" constant="35" id="4Bj-fd-zjx"/>
+                                            <constraint firstItem="Wcm-ss-zFo" firstAttribute="leading" secondItem="TbZ-Oq-ahc" secondAttribute="leading" id="3E7-hb-kCQ"/>
+                                            <constraint firstAttribute="trailing" secondItem="Wcm-ss-zFo" secondAttribute="trailing" id="4re-Bb-2eE"/>
+                                            <constraint firstItem="vd1-ys-xI8" firstAttribute="top" secondItem="Wcm-ss-zFo" secondAttribute="bottom" id="6ed-kI-WYZ"/>
+                                            <constraint firstItem="vd1-ys-xI8" firstAttribute="leading" secondItem="TbZ-Oq-ahc" secondAttribute="leading" id="HFP-yB-zuC"/>
+                                            <constraint firstItem="Wcm-ss-zFo" firstAttribute="top" secondItem="TbZ-Oq-ahc" secondAttribute="top" id="UzP-ia-oTh"/>
+                                            <constraint firstAttribute="trailing" secondItem="vd1-ys-xI8" secondAttribute="trailing" id="f0S-4g-7Wm"/>
                                         </constraints>
-                                        <state key="normal" title="Open WordPress">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="launchContainingApp" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="kC0-eZ-6h4"/>
-                                        </connections>
-                                    </button>
+                                    </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="sB2-YC-Udf" secondAttribute="trailing" constant="16" id="TAq-gc-X3s"/>
-                                    <constraint firstItem="sB2-YC-Udf" firstAttribute="top" relation="greaterThanOrEqual" secondItem="OVa-bt-MTO" secondAttribute="top" priority="750" constant="16" id="URX-Kp-sbO"/>
-                                    <constraint firstItem="sB2-YC-Udf" firstAttribute="leading" secondItem="OVa-bt-MTO" secondAttribute="leading" constant="16" id="W5S-am-e2I"/>
-                                    <constraint firstAttribute="height" constant="51" id="cpt-Q6-ahw"/>
-                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="sB2-YC-Udf" secondAttribute="bottom" id="mGa-TN-Rcm"/>
+                                    <constraint firstItem="SgL-dy-2cu" firstAttribute="top" secondItem="57z-E7-fbN" secondAttribute="top" id="0Ze-Rg-4jY"/>
+                                    <constraint firstAttribute="trailing" secondItem="TbZ-Oq-ahc" secondAttribute="trailing" id="1YW-lt-C2t"/>
+                                    <constraint firstAttribute="bottom" secondItem="TbZ-Oq-ahc" secondAttribute="bottom" id="L9x-tD-ssX"/>
+                                    <constraint firstItem="TbZ-Oq-ahc" firstAttribute="leading" secondItem="57z-E7-fbN" secondAttribute="leading" id="j9j-hx-ycm"/>
+                                    <constraint firstItem="SgL-dy-2cu" firstAttribute="leading" secondItem="57z-E7-fbN" secondAttribute="leading" id="pUZ-qW-3lK"/>
+                                    <constraint firstAttribute="trailing" secondItem="SgL-dy-2cu" secondAttribute="trailing" id="qjg-dJ-QwA"/>
                                 </constraints>
-                            </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
-                                <rect key="frame" x="16" y="115" width="288" height="20"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="k2f-Oz-8zX">
-                                <rect key="frame" x="16" y="135" width="288" height="80"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Visitors" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ya5-b8-L12">
-                                        <rect key="frame" x="8" y="47" width="56" height="20"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="10,394" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyt-KX-qbk">
-                                        <rect key="frame" x="194" y="5" width="86" height="34"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="28"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="7,025" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-zT-oAD">
-                                        <rect key="frame" x="8" y="5" width="288" height="34"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="28"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Views" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d87-vS-4g1">
-                                        <rect key="frame" x="194" y="47" width="45" height="20"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="80" identifier="ViewsVistorsSectionHeight" id="Uwf-6d-J4e"/>
-                                </constraints>
-                            </view>
+                            </stackView>
                         </subviews>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="OVa-bt-MTO" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="2JC-9z-VWn"/>
-                            <constraint firstItem="Wcm-ss-zFo" firstAttribute="top" secondItem="OVa-bt-MTO" secondAttribute="bottom" id="50T-mu-CUD"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="OVa-bt-MTO" secondAttribute="trailing" id="7ky-4U-6QM"/>
-                            <constraint firstItem="p3Z-lC-Jtw" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="8Gn-8a-8rs"/>
-                            <constraint firstItem="k2f-Oz-8zX" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="F6a-b7-xO1"/>
-                            <constraint firstItem="p3Z-lC-Jtw" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="8" id="FZs-ev-tHo"/>
-                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="k2f-Oz-8zX" secondAttribute="bottom" priority="751" id="Fjo-0D-Nkz"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="k2f-Oz-8zX" secondAttribute="trailing" id="Go6-Jp-kQh"/>
-                            <constraint firstItem="Wcm-ss-zFo" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="TTU-ts-wo2"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Wcm-ss-zFo" secondAttribute="trailing" id="WDB-41-QEa"/>
-                            <constraint firstItem="OVa-bt-MTO" firstAttribute="top" secondItem="p3Z-lC-Jtw" secondAttribute="bottom" id="grO-Ie-Qwj"/>
-                            <constraint firstItem="k2f-Oz-8zX" firstAttribute="top" secondItem="Wcm-ss-zFo" secondAttribute="bottom" id="kgO-xW-YgB"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="p3Z-lC-Jtw" secondAttribute="trailing" id="qhN-ep-D8F"/>
+                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="57z-E7-fbN" secondAttribute="bottom" constant="8" id="GOY-fN-4pW"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="57z-E7-fbN" secondAttribute="trailing" id="H8m-vH-Jtg"/>
+                            <constraint firstItem="57z-E7-fbN" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="12" id="WT2-LW-4kK"/>
+                            <constraint firstItem="57z-E7-fbN" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="chN-zF-Uvf"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="StW-vH-RTH" appends="YES" id="Uac-Xl-YJb"/>
@@ -114,14 +136,11 @@
                     <size key="freeformSize" width="320" height="215"/>
                     <connections>
                         <outlet property="configureMeButton" destination="sB2-YC-Udf" id="mJp-wY-qyy"/>
-                        <outlet property="configureMeButtonContainerView" destination="OVa-bt-MTO" id="JgC-Dc-nzN"/>
-                        <outlet property="configureMeButtonContainerViewHeightConstraint" destination="cpt-Q6-ahw" id="svr-vI-RLr"/>
-                        <outlet property="configureMeButtonContainerViewRightConstraint" destination="7ky-4U-6QM" id="5IB-yh-Z3W"/>
-                        <outlet property="configureMeLabel" destination="p3Z-lC-Jtw" id="K82-QZ-pI7"/>
-                        <outlet property="configureMeLabelRightConstraint" destination="qhN-ep-D8F" id="nT7-FT-t9H"/>
-                        <outlet property="countContainerView" destination="k2f-Oz-8zX" id="hHn-UU-Gpa"/>
-                        <outlet property="countContainerViewHeightConstraint" destination="Uwf-6d-J4e" id="wK4-np-Zt2"/>
+                        <outlet property="configureMeLabel" destination="p3Z-lC-Jtw" id="qc5-25-zMa"/>
+                        <outlet property="configuredView" destination="TbZ-Oq-ahc" id="d0S-UN-LQ3"/>
+                        <outlet property="countContainerView" destination="TbZ-Oq-ahc" id="Q9S-Zl-eIG"/>
                         <outlet property="siteNameLabel" destination="Wcm-ss-zFo" id="WsJ-6K-WZ5"/>
+                        <outlet property="unconfiguredView" destination="SgL-dy-2cu" id="0i2-YG-MCZ"/>
                         <outlet property="viewsCountLabel" destination="pyt-KX-qbk" id="fkK-Tp-fGM"/>
                         <outlet property="viewsLabel" destination="d87-vS-4g1" id="Ek2-Pv-AKA"/>
                         <outlet property="visitorsCountLabel" destination="IOg-zT-oAD" id="8TU-zn-Njk"/>
@@ -138,4 +157,9 @@
             <point key="canvasLocation" x="69" y="34.5"/>
         </scene>
     </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
 </document>
