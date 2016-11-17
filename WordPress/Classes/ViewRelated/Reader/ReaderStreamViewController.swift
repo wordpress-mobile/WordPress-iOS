@@ -703,15 +703,6 @@ import WordPressComAnalytics
                 })
         }
 
-        // Visit site
-        alertController.addActionWithTitle(ReaderPostMenuButtonTitles.visit,
-            style: .Default,
-            handler: { (action:UIAlertAction) in
-                if let post = self.postWithObjectID(post.objectID) {
-                    self.visitSiteForPost(post)
-                }
-        })
-
         // Share
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
             style: .Default,
