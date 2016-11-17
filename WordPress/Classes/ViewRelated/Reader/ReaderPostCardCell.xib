@@ -14,7 +14,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="484"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="IB3-vN-rW4" id="519-Nh-f7o">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="483.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="483"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kha-YG-ZlO">
@@ -35,7 +35,7 @@
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Pv6-I0-BNp">
-                                        <rect key="frame" x="42" y="0.0" width="194" height="32"/>
+                                        <rect key="frame" x="42" y="0.0" width="194" height="31.5"/>
                                         <subviews>
                                             <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalHuggingPriority="251" horizontalCompressionResistancePriority="740" text="Author, Blog name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wvp-3d-4a9">
                                                 <rect key="frame" x="0.0" y="0.0" width="194" height="17"/>
@@ -44,36 +44,23 @@
                                                 <color key="textColor" red="0.0" green="0.66666666666666663" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="BLa-Zy-rsd">
-                                                <rect key="frame" x="0.0" y="17" width="194" height="15"/>
-                                                <subviews>
-                                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQf-tj-ltv">
-                                                        <rect key="frame" x="0.0" y="0.0" width="28" height="15"/>
-                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <button clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="730" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YJw-y3-ygi">
-                                                        <rect key="frame" x="36" y="0.0" width="158" height="15"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <inset key="titleEdgeInsets" minX="14" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                        <state key="normal" title="#tag">
-                                                            <color key="titleColor" red="0.0" green="0.66666666669999997" blue="0.86274509799999999" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </state>
-                                                    </button>
-                                                </subviews>
-                                            </stackView>
+                                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EQf-tj-ltv">
+                                                <rect key="frame" x="0.0" y="17" width="194" height="14.5"/>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="top" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eiF-ng-Kvg">
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="top" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eiF-ng-Kvg" customClass="PostMetaButton">
                                         <rect key="frame" x="246" y="0.0" width="42" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="tjN-kA-gzY"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="32" id="vEX-wI-AX2"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="2" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" title="Follow">
                                             <color key="titleColor" red="0.0" green="0.66666666666666663" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
@@ -157,13 +144,12 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
                                         <rect key="frame" x="0.0" y="89.5" width="288" height="24"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AX6-q0-ijx" customClass="PostMetaButton">
+                                            <button contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AX6-q0-ijx" customClass="PostMetaButton">
                                                 <rect key="frame" x="0.0" y="0.0" width="30" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <state key="normal" title="Visit">
                                                     <color key="titleColor" red="0.6588235294117647" green="0.74509803921568629" blue="0.80784313725490198" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="didTapVisitButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="Urd-pN-gPN"/>
@@ -250,26 +236,6 @@
                             <action selector="didTapHeaderBlogButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="khN-2b-2n2"/>
                         </connections>
                     </button>
-                    <button clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cux-Cb-G2n">
-                        <rect key="frame" x="94" y="32.5" width="158" height="32"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="32" id="wrK-qy-bzL"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <state key="normal">
-                            <color key="titleColor" red="0.0" green="0.66666666669999997" blue="0.86274509799999999" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </state>
-                        <connections>
-                            <action selector="didTapTagButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="SHg-Ga-654"/>
-                            <action selector="tagButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchCancel" id="2rh-p1-9OE"/>
-                            <action selector="tagButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragOutside" id="3ht-8g-SYB"/>
-                            <action selector="tagButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchUpOutside" id="N9g-uo-tiM"/>
-                            <action selector="tagButtonTouchesDidEnd:" destination="IB3-vN-rW4" eventType="touchDragExit" id="cCt-Ap-117"/>
-                            <action selector="tagButtonTouchesDidHighlight:" destination="IB3-vN-rW4" eventType="touchDown" id="OXK-QI-ci4"/>
-                            <action selector="tagButtonTouchesDidHighlight:" destination="IB3-vN-rW4" eventType="touchUpInside" id="SPo-Xe-Xdq"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
@@ -280,14 +246,11 @@
                     <constraint firstAttribute="trailing" secondItem="k3b-5o-H9u" secondAttribute="trailing" id="SQx-7T-hZ3"/>
                     <constraint firstItem="l5X-fR-34a" firstAttribute="leading" secondItem="xwk-ft-EDo" secondAttribute="leading" id="Y8E-6u-aiv"/>
                     <constraint firstItem="k3b-5o-H9u" firstAttribute="trailing" secondItem="kha-YG-ZlO" secondAttribute="trailing" constant="-1" id="gD7-ug-WFu"/>
-                    <constraint firstItem="Cux-Cb-G2n" firstAttribute="width" secondItem="YJw-y3-ygi" secondAttribute="width" id="gda-G4-IRS"/>
                     <constraint firstItem="k3b-5o-H9u" firstAttribute="leading" secondItem="519-Nh-f7o" secondAttribute="leading" id="krG-RG-KFw"/>
                     <constraint firstItem="kha-YG-ZlO" firstAttribute="leading" secondItem="k3b-5o-H9u" secondAttribute="leading" constant="-1" id="lbK-St-20e"/>
-                    <constraint firstItem="Cux-Cb-G2n" firstAttribute="centerY" secondItem="YJw-y3-ygi" secondAttribute="centerY" id="n6L-y1-hef"/>
                     <constraint firstItem="l5X-fR-34a" firstAttribute="bottom" secondItem="xwk-ft-EDo" secondAttribute="bottom" id="of6-De-80c"/>
                     <constraint firstItem="l5X-fR-34a" firstAttribute="top" secondItem="xwk-ft-EDo" secondAttribute="top" id="up0-8u-OYB"/>
                     <constraint firstItem="l5X-fR-34a" firstAttribute="trailing" secondItem="Pv6-I0-BNp" secondAttribute="trailing" id="vVS-qW-Hfu"/>
-                    <constraint firstItem="Cux-Cb-G2n" firstAttribute="centerX" secondItem="YJw-y3-ygi" secondAttribute="centerX" id="yR7-7J-agh"/>
                 </constraints>
             </tableViewCellContentView>
             <gestureRecognizers/>
@@ -309,8 +272,6 @@
                 <outlet property="menuButton" destination="Z6l-P3-Z3i" id="4gf-Ii-bwa"/>
                 <outlet property="shareButton" destination="YRe-Q4-Aq4" id="bha-1c-bil"/>
                 <outlet property="summaryLabel" destination="u1n-gR-1xw" id="jsD-Vc-hr5"/>
-                <outlet property="tagButton" destination="Cux-Cb-G2n" id="KB4-mf-VjP"/>
-                <outlet property="tagLabelButton" destination="YJw-y3-ygi" id="OMo-rP-1Q3"/>
                 <outlet property="titleLabel" destination="Zf5-cD-Pd2" id="56V-Zc-1sF"/>
                 <outlet property="visitButton" destination="AX6-q0-ijx" id="cmb-bN-Q9y"/>
             </connections>
