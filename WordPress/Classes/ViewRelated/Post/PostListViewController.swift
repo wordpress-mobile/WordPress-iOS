@@ -308,7 +308,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return
         }
 
-        previewEditPost(post)
+        editPost(post)
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -420,12 +420,23 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
     }
 
-    private func previewEditPost(apost: AbstractPost) {
-        editPost(apost, withEditMode: kWPPostViewControllerModePreview)
-    }
-
     private func editPost(apost: AbstractPost) {
-        editPost(apost, withEditMode: kWPPostViewControllerModeEdit)
+        guard let post = apost as? Post else {
+            return
+        }
+        let editor = EditPostViewController(post: post)
+        editor.onClose = { [weak self] changesSaved in
+            if changesSaved {
+                if let postStatus = editor.post?.status {
+                    self?.updateFilterWithPostStatus(postStatus)
+                }
+            }
+
+            editor.navigationController?.popViewControllerAnimated(true)
+        }
+        editor.hidesBottomBarWhenPushed = true
+        editor.modalPresentationStyle = .FullScreen
+        presentViewController(editor, animated: false, completion: nil)
     }
 
     private func editPost(apost: AbstractPost, withEditMode mode: WPPostViewControllerMode) {
