@@ -766,6 +766,11 @@ EditImageDetailsViewControllerDelegate
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
                                                                              message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *quickSaveAction = [self quickSaveAlertAction];
+    if (quickSaveAction) {
+        [alertController addAction:quickSaveAction];
+    }
+    
     [alertController addAction:[self previewAlertAction]];
 
     if ([self isEditing]) {
@@ -1210,7 +1215,7 @@ EditImageDetailsViewControllerDelegate
         WPBlogSelectorButton *blogButton = (WPBlogSelectorButton*)self.blogPickerButton;
         NSString *blogName = self.post.blog.settings.name;
         if (blogName.length == 0) {
-            blogName = self.post.blog.url;   
+            blogName = self.post.blog.url;
         }
         
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
@@ -1292,6 +1297,37 @@ EditImageDetailsViewControllerDelegate
                                   handler:^(UIAlertAction * _Nonnull action) {
                                       [self showSettings];
                                   }];
+}
+
+- (UIAlertAction *)quickSaveAlertAction
+{
+    if ([self.post.status isEqualToString:PostStatusDraft]) {
+        if ([self.post.blog isPublishingPostsAllowed]) {
+            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Publish Now", "Title of button allowing the user to immediately publish the post they are editing.")
+                                            style:UIAlertActionStyleDestructive
+                                          handler:^(UIAlertAction * _Nonnull action) {
+                                              self.post.status = PostStatusPublish;
+                                              [self saveAction];
+                                          }];
+        } else {
+            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Submit for Review", "Title of button allowing a contributor to a site to submit the post they are editing for review.")
+                                            style:UIAlertActionStyleDestructive
+                                          handler:^(UIAlertAction * _Nonnull action) {
+                                              self.post.status = PostStatusPending;
+                                              [self saveAction];
+                                          }];
+        }
+    } else if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
+        return [UIAlertAction actionWithTitle:NSLocalizedString(@"Save as Draft", "Title of button allowing users to change the status of the post they are currently editing to Draft.")
+                                        style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * _Nonnull action) {
+                                          self.post.status = PostStatusDraft;
+                                          [self autosaveContent];
+                                          [self refreshNavigationBarButtons:NO];
+                                      }];
+    }
+
+    return nil;
 }
 
 # pragma mark - Model State Methods
