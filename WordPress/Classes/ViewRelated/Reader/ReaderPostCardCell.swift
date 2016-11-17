@@ -10,7 +10,6 @@ import Gridicons
     func readerCell(cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
     func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
     func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
     func readerCellImageRequestAuthToken(cell: ReaderPostCardCell) -> String?
@@ -491,13 +490,6 @@ import Gridicons
 
     @IBAction func didTapMenuButton(sender: UIButton) {
         delegate?.readerCell(self, menuActionForProvider: contentProvider!, fromView: sender)
-    }
-
-    @IBAction func didTapTagButton(sender: UIButton) {
-        if contentProvider == nil {
-            return
-        }
-        delegate?.readerCell(self, tagActionForProvider: contentProvider!)
     }
 
     @IBAction func didTapVisitButton(sender: UIButton) {
