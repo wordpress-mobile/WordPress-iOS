@@ -360,16 +360,17 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // TODO: replace this with new post-post capable VC
     override func createPost() {
-        let editorSettings = EditorSettings()
-        if editorSettings.visualEditorEnabled {
-            if editorSettings.nativeEditorEnabled {
-                createPostInNativeEditor()
-            } else {
-                createPostInNewEditor()
+        let editor = EditPostViewController(blog: blog)
+        editor.onClose = { [weak self] changesSaved in
+            if changesSaved {
+                if let postStatus = editor.post?.status {
+                    self?.updateFilterWithPostStatus(postStatus)
+                }
             }
-        } else {
-            createPostInOldEditor()
         }
+        //        editor.hidesBottomBarWhenPushed = true
+        editor.modalPresentationStyle = .FullScreen
+        presentViewController(editor, animated: false, completion: nil)
     }
 
     private func createPostInNativeEditor() {
@@ -434,7 +435,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
             editor.navigationController?.popViewControllerAnimated(true)
         }
-        editor.hidesBottomBarWhenPushed = true
+//        editor.hidesBottomBarWhenPushed = true
         editor.modalPresentationStyle = .FullScreen
         presentViewController(editor, animated: false, completion: nil)
     }
