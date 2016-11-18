@@ -310,6 +310,7 @@ class BlockquoteTagProcessor: HtmlTagProcessor
             paragraphScanner.scanUpToString("<p>", intoString: &tempStr)
 
             str += tempStr as! String
+            tempStr = ""
             if paragraphScanner.atEnd {
                 break
             }
