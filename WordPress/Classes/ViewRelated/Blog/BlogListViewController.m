@@ -926,7 +926,7 @@ static NSInteger HideSearchMinSites = 3;
         return [self fetchRequestPredicateForAllBlogs];
     }
     WPAccount *defaultAccount = [self defaultWordPressComAccount];
-    return [NSPredicate predicateWithFormat:@"(( settings.name contains[cd] %@ ) OR ( url contains[cd] %@)) AND account", searchText, searchText, defaultAccount];
+    return [NSPredicate predicateWithFormat:@"(( settings.name contains[cd] %@ ) OR ( url contains[cd] %@)) AND (account = %@ OR account = NULL)", searchText, searchText, defaultAccount];
 }
 
 - (NSPredicate *)fetchRequestPredicateForHideableBlogs
