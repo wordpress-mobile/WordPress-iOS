@@ -48,10 +48,10 @@ class MeViewControllerTest: XCTestCase {
         for row: ImmuTableRow in section.rows {
             let cell: WPTableViewCellDefault = WPTableViewCellDefault.init(style: .Value2, reuseIdentifier: "Identifier")
             row.configureCell(cell)
-            if cell.textLabel?.text == NSLocalizedDescriptionKey("Add WordPress.com account", "Add account for WordPress.com") {
+            let titleString = NSLocalizedString("Add WordPress.com account", comment: "Add account for WordPress.com")
+            if cell.textLabel?.text == titleString {
                 XCTAssertTrue(true)
             }
         }
     }
-
 }
