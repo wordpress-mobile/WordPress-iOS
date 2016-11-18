@@ -5,6 +5,10 @@ import Gridicons
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {
     static let restorationIdentifier = "WPMeRestorationID"
+
+    private static let preferredFiltersPopoverContentSize = CGSize(width: 320.0, height: 220.0)
+
+    var accountsButton : NavBarTitleDropdownButton!
     var handler: ImmuTableViewHandler!
     var accountHelper: AccountSelectionHelper?
 
@@ -39,8 +43,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.accountHelper = switchAccountHelper()
-        self.navigationItem.titleView = self.accountHelper?.titleView
+        self.accountsButton = NavBarTitleDropdownButton.init(frame: CGRectMake(0, 0, 300, 44))
+        self.accountsButton.addTarget(self, action: #selector(MeViewController.didTapMeButton(_:)), forControlEvents: .TouchUpInside)
+        self.navigationItem.titleView = self.accountsButton
 
         // Preventing MultiTouch Scenarios
         view.exclusiveTouch = true
@@ -73,6 +78,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         self.retrieveAccounts { (accounts: [Account]) in
             self.accountHelper?.accounts = accounts
         }
+    }
+
+    @IBAction func didTapMeButton(sender: AnyObject) {
+        displayAccounts()
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -431,6 +440,53 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     func logOut() {
         let accountService = AccountServiceFacade()
         accountService.removeAndReplaceWPAccountIfAvailable()
+    }
+
+    // MARK: - NavTitle
+
+    func displayAccounts() {
+
+        self.retrieveAccounts({ (retrievedAccounts: [Account]) in
+            let titles = retrievedAccounts.map({ (account: Account) -> String in
+                return account.username
+            })
+
+            let dict: [NSObject : AnyObject] = [SettingsSelectionDefaultValueKey: retrievedAccounts.first!,
+                SettingsSelectionTitleKey: NSLocalizedString("Me", comment: "Title of the list of logged users"),
+                SettingsSelectionTitlesKey: titles as [String],
+                SettingsSelectionValuesKey: retrievedAccounts as [Account],
+                SettingsSelectionCurrentValueKey: retrievedAccounts.first!]
+
+            let controller = SettingsSelectionViewController(style: .Plain, andDictionary: dict as [NSObject : AnyObject])
+            controller.onItemSelected = { [weak self] (selectedValue: AnyObject!) -> () in
+                if let strongSelf = self
+                    /*, let index = strongSelf.filterSettings.availablePostListFilters().indexOf(selectedValue as! PostListFilter) */
+                 {
+                    /*
+                    strongSelf.filterSettings.setCurrentFilterIndex(index)
+                    strongSelf.dismissViewControllerAnimated(true, completion: nil)
+
+                    strongSelf.refreshAndReload()
+                    strongSelf.syncItemsWithUserInteraction(false)*/
+                }
+            }
+
+            controller.tableView.scrollEnabled = false
+
+            self.displayAccountPopover(controller)
+        })
+    }
+
+    func displayAccountPopover(controller: UIViewController) {
+        //controller.preferredContentSize = self.dynamicType.preferredFiltersPopoverContentSize
+
+        guard let titleView = navigationItem.titleView else {
+            return
+        }
+
+        ForcePopoverPresenter.configurePresentationControllerForViewController(controller, presentingFromView: titleView)
+
+        presentViewController(controller, animated: true, completion: nil)
     }
 
     // MARK: - Private Properties

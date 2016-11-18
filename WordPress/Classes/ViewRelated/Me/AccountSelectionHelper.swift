@@ -1,6 +1,6 @@
 import Foundation
 
-struct Account {
+@objc class Account: NSObject {
     var userId: NSNumber
     var username: String
     var email: String
