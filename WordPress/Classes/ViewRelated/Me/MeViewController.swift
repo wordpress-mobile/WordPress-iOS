@@ -10,7 +10,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     var accountsButton : NavBarTitleDropdownButton!
     var handler: ImmuTableViewHandler!
-    var accountHelper: AccountSelectionHelper?
 
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         return self.init()
@@ -43,8 +42,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.accountsButton = NavBarTitleDropdownButton.init(frame: CGRectMake(0, 0, 300, 44))
+        self.accountsButton = NavBarTitleDropdownButton.init(frame: CGRectMake(0, 0, 75, 44))
         self.accountsButton.addTarget(self, action: #selector(MeViewController.didTapMeButton(_:)), forControlEvents: .TouchUpInside)
+        self.accountsButton.setAttributedTitleForTitle(NSLocalizedString("Me", comment: "Me title seccion for account selection"))
         self.navigationItem.titleView = self.accountsButton
 
         // Preventing MultiTouch Scenarios
@@ -75,9 +75,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         if splitViewControllerIsHorizontallyCompact {
             animateDeselectionInteractively()
         }
-        self.retrieveAccounts { (accounts: [Account]) in
-            self.accountHelper?.accounts = accounts
-        }
     }
 
     @IBAction func didTapMeButton(sender: AnyObject) {
@@ -91,31 +88,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         reloadViewModel()
     }
 
-    func switchAccountHelper() -> AccountSelectionHelper {
-        var navBarHeight = self.navigationController?.navigationBar.frame.size.height
-        if (navBarHeight == nil) {
-            navBarHeight = 44
-        }
-        let accountHelper = AccountSelectionHelper(parentView: self.view,
-                                                   accounts: [],
-                                                   delegate: self,
-                                                   height: navBarHeight!)
-
-        accountHelper.delegate = self
-
-        self.retrieveAccounts { (accounts: [Account]) in
-            self.accountHelper?.accounts = accounts
-        }
-
-        return accountHelper
-    }
-
     @objc private func accountDidChange(notification: NSNotification) {
         reloadViewModel()
-
-        self.retrieveAccounts { (accounts: [Account]) in
-            self.accountHelper?.accounts = accounts
-        }
 
         // Reload the detail pane if the split view isn't compact
         if let splitViewController = splitViewController as? WPSplitViewController,
@@ -416,20 +390,27 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         service.updateUserDetailsForAccount(account, success: { _ in }, failure: { _ in })
     }
 
+    private func selectedAccount(account: AccountSelectionItem) {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        guard let selectedAccount = service.findAccountWithUserID(account.userId) else { return }
+        service.setDefaultWordPressComAccount(selectedAccount)
+    }
+
     // MARK: - Public for testing purposes
 
-    func retrieveAccounts(completion: ([Account]) -> Void) {
+    func retrieveAccounts(completion: ([AccountSelectionItem]) -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         service.retrieveAllAccountsWith { ( accounts: [AnyObject] ) in
 
             let accountsParsed = accounts as! [WPAccount]
-            var accountsCompleted: [Account] = []
+            var accountsCompleted: [AccountSelectionItem] = []
             for account in accountsParsed {
 
-                let accountStruct = Account.init(userId: account.userID,
-                                                 username: account.username,
-                                                 email: account.email)
+                let accountStruct = AccountSelectionItem.init(userId: account.userID,
+                    username: account.username,
+                    email: account.email)
                 accountsCompleted.append(accountStruct)
             }
 
@@ -446,28 +427,31 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func displayAccounts() {
 
-        self.retrieveAccounts({ (retrievedAccounts: [Account]) in
-            let titles = retrievedAccounts.map({ (account: Account) -> String in
+        self.retrieveAccounts({ (retrievedAccounts: [AccountSelectionItem]) in
+            let titles = retrievedAccounts.map({ (account: AccountSelectionItem) -> String in
                 return account.username
             })
 
-            let dict: [NSObject : AnyObject] = [SettingsSelectionDefaultValueKey: retrievedAccounts.first!,
+            guard let defaultAccount = self.defaultAccount() else { return }
+            let currentAccount = AccountSelectionItem.init(userId: (defaultAccount.userID)!,
+                username: (defaultAccount.username)!,
+                email: (defaultAccount.email)!)
+
+            let dict: [NSObject : AnyObject] = [SettingsSelectionDefaultValueKey: currentAccount,
                 SettingsSelectionTitleKey: NSLocalizedString("Me", comment: "Title of the list of logged users"),
-                SettingsSelectionTitlesKey: titles as [String],
-                SettingsSelectionValuesKey: retrievedAccounts as [Account],
-                SettingsSelectionCurrentValueKey: retrievedAccounts.first!]
+                SettingsSelectionTitlesKey: titles,
+                SettingsSelectionValuesKey: retrievedAccounts,
+                SettingsSelectionCurrentValueKey: currentAccount]
 
             let controller = SettingsSelectionViewController(style: .Plain, andDictionary: dict as [NSObject : AnyObject])
             controller.onItemSelected = { [weak self] (selectedValue: AnyObject!) -> () in
                 if let strongSelf = self
-                    /*, let index = strongSelf.filterSettings.availablePostListFilters().indexOf(selectedValue as! PostListFilter) */
                  {
-                    /*
-                    strongSelf.filterSettings.setCurrentFilterIndex(index)
-                    strongSelf.dismissViewControllerAnimated(true, completion: nil)
-
-                    strongSelf.refreshAndReload()
-                    strongSelf.syncItemsWithUserInteraction(false)*/
+                    strongSelf.retrieveAccounts({ (accounts: [AccountSelectionItem]) in
+                        let parsedAccount = (selectedValue as! AccountSelectionItem)
+                        strongSelf.selectedAccount(parsedAccount)
+                        strongSelf.dismissViewControllerAnimated(true, completion: nil)
+                    })
                 }
             }
 
@@ -478,7 +462,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     func displayAccountPopover(controller: UIViewController) {
-        //controller.preferredContentSize = self.dynamicType.preferredFiltersPopoverContentSize
+        controller.preferredContentSize = self.dynamicType.preferredFiltersPopoverContentSize
 
         guard let titleView = navigationItem.titleView else {
             return
@@ -514,14 +498,5 @@ extension MeViewController: WPSplitViewControllerDetailProvider {
         }
 
         return myProfileViewController
-    }
-}
-
-extension MeViewController: AccountSelectionHelperDelegate {
-    func selectedAccount(account: Account) {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        guard let selectedAccount = service.findAccountWithUserID(account.userId) else { return }
-        service.setDefaultWordPressComAccount(selectedAccount)
     }
 }

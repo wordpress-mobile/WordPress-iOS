@@ -62,16 +62,4 @@ class MeViewControllerTest: XCTestCase {
         }
     }
 
-    func testSwitchAccountHelper() {
-        let accountHelper = meViewController?.switchAccountHelper()
-        XCTAssertNotNil(accountHelper)
-        XCTAssertNotNil(accountHelper?.titleView)
-        XCTAssertNotNil(accountHelper?.accounts.count == 2)
-    }
-
-    func testTitleViewSetup() {
-        let accountHelper: AccountSelectionHelper = meViewController!.switchAccountHelper()
-        let titleView = accountHelper.titleView
-        XCTAssertNotNil(titleView)
-    }
 }
