@@ -63,19 +63,19 @@ class ReaderTopicSwiftTest : XCTestCase
         post1.postID = NSNumber(int:1)
         post1.postTitle = "post1"
         post1.content = "post1"
-        post1.topic = topic
+        post1.addTopicsObject(topic)
 
         let post2 = NSEntityDescription.insertNewObjectForEntityForName(ReaderPost.classNameWithoutNamespaces(),inManagedObjectContext: context) as! ReaderPost
         post2.postID = NSNumber(int:2)
         post2.postTitle = "post2"
         post2.content = "post2"
-        post2.topic = topic
+        post2.addTopicsObject(topic)
 
         let post3 = NSEntityDescription.insertNewObjectForEntityForName(ReaderPost.classNameWithoutNamespaces(),inManagedObjectContext: context) as! ReaderPost
         post3.postID = NSNumber(int:3)
         post3.postTitle = "post3"
         post3.content = "post3"
-        post3.topic = topic
+        post3.addTopicsObject(topic)
 
         do {
             try context.save()
@@ -337,5 +337,32 @@ class ReaderTopicSwiftTest : XCTestCase
         let topic = service.searchTopicForSearchPhrase(phrase)
 
         XCTAssert(topic.type == "search")
+    }
+
+    /**
+     Ensure that the a new saved posts topic is created and returned if none exists
+     */
+    func testSavedPostsTopicCreated() {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderTopicService(managedObjectContext: context)
+
+        let topic = service.savedPostsTopic()
+
+        try! context.save()
+
+        XCTAssert(topic.type == "savedPosts")
+    }
+
+    /**
+    Ensure that the existing saved posts topic is returned if it exists
+    */
+    func testExistingSavedPostsTopic() {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderTopicService(managedObjectContext: context)
+
+        let topic = service.savedPostsTopic()
+        let secondTopic = service.savedPostsTopic()
+
+        XCTAssert(topic.objectID == secondTopic.objectID)
     }
 }

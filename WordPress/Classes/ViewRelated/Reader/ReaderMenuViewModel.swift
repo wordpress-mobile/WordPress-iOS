@@ -17,6 +17,7 @@ enum ReaderMenuSectionType: Int {
 enum ReaderMenuItemType: Int {
     case Topic
     case Search
+    case SavedPosts
     case Recommended
     case AddItem
 }
@@ -84,6 +85,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     case Followed
     case Discover
     case Search
+    case SavedPosts
     case Recommendations
     case Likes
     case Other
@@ -234,6 +236,12 @@ enum ReaderDefaultMenuItemOrder: Int {
         searchItem.icon = Gridicon.iconOfType(.Search)
         defaultSectionItems.append(searchItem)
 
+        // Create a menu item for saved posts
+        var savedPostsItem = savedPostsMenuItem()
+        savedPostsItem.order = ReaderDefaultMenuItemOrder.SavedPosts.rawValue
+        savedPostsItem.icon = Gridicon.iconOfType(.Time)
+        defaultSectionItems.append(savedPostsItem)
+
         // Sort the items into the desired order.
         defaultSectionItems.sortInPlace { (menuItem1, menuItem2) -> Bool in
             if menuItem1.order < menuItem2.order {
@@ -260,6 +268,12 @@ enum ReaderDefaultMenuItemOrder: Int {
         return ReaderMenuItem(title: title, type: .Search)
     }
 
+    /// Returns the menu item to use for the reader saved items
+    ///
+    func savedPostsMenuItem() -> ReaderMenuItem {
+        let title = NSLocalizedString("Saved Posts", comment: "Title of the reader's Saved Posts menu item.")
+        return ReaderMenuItem(title: title, type: .SavedPosts)
+    }
 
     /// Returns the number of items for the default section.
     ///

@@ -82,6 +82,21 @@ extern NSString * const ReaderPostServiceErrorDomain;
 - (void)refreshPostsForFollowedTopic;
 
 /**
+ Toggle the saved status of the specified post.
+
+ @param post The reader post to save/unsave.
+ @param failure block called if there is any error. `error` can be any underlying core data error.
+ */
+- (void)toggleSavedForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+/**
+ Fetch the saved posts from the context.
+
+ @return an array containing all posts with the isSaved flag set to true.
+ */
+- (NSArray<ReaderPost *> *)fetchSavedPosts;
+
+/**
  Toggle the liked status of the specified post.
 
  @param post The reader post to like/unlike.

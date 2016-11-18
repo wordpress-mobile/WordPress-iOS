@@ -231,8 +231,17 @@ import WordPressComAnalytics
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
+        refreshTableViewIfNeeded()
+
         // Trigger layouts, if needed, to correct for any inherited layout changes, such as margins.
         refreshTableHeaderIfNeeded()
+    }
+
+    func refreshTableViewIfNeeded() {
+        // For the saved post topic, posts could potentially be removed from the list on the details screen. This allows us to refresh the data when returning from that screen.
+        if let topic = readerTopic where ReaderHelpers.isTopicSavedPostsTopic(topic) {
+            tableViewHandler.refreshTableView()
+        }
     }
 
 
@@ -512,7 +521,7 @@ import WordPressComAnalytics
         // Enable the view now that we have a topic.
         view.userInteractionEnabled = true
 
-        if let topic = readerTopic where ReaderHelpers.isTopicSearchTopic(topic) {
+        if let topic = readerTopic where ReaderHelpers.isTopicSearchTopic(topic) || topic.path == nil {
             // Disable pull to refresh for search topics.
             // Searches are a snap shot in time, and ephemeral. There should be no
             // need to refresh.
@@ -856,6 +865,14 @@ import WordPressComAnalytics
         })
     }
 
+    private func toggleSavedForPost(post: ReaderPost) {
+        let service = ReaderPostService(managedObjectContext: managedObjectContext())
+        service.toggleSavedForPost(post, success: nil, failure: { (error:NSError?) in
+            if let anError = error {
+                DDLogSwift.logError("Error (un)saving post: \(anError.localizedDescription)")
+            }
+        })
+    }
 
     /// The fetch request can need a different predicate depending on how the content
     /// being displayed has changed (blocking sites for instance).  Call this method to
@@ -1039,7 +1056,7 @@ import WordPressComAnalytics
 
     func canSync() -> Bool {
         let appDelegate = WordPressAppDelegate.sharedInstance()
-        return (readerTopic != nil) && appDelegate.connectionAvailable
+        return (readerTopic != nil) && appDelegate.connectionAvailable && (readerTopic?.path != nil)
     }
 
 
@@ -1295,7 +1312,7 @@ import WordPressComAnalytics
         // avoids returning readerPosts that do not belong to a topic (e.g. those
         // loaded from a notification). We can do this by specifying that self
         // has to exist within an empty set.
-        let predicateForNilTopic = NSPredicate(format: "topic = NULL AND SELF in %@", [])
+        let predicateForNilTopic = NSPredicate(format: "topics.@count = 0 AND SELF in %@", [])
 
         guard let topic = readerTopic else {
             return predicateForNilTopic
@@ -1307,10 +1324,10 @@ import WordPressComAnalytics
         }
 
         if recentlyBlockedSitePostObjectIDs.count > 0 {
-            return NSPredicate(format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)", topicInContext, recentlyBlockedSitePostObjectIDs)
+            return NSPredicate(format: "ANY topics = %@ AND (isSiteBlocked = NO OR SELF in %@)", topicInContext, recentlyBlockedSitePostObjectIDs)
         }
 
-        return NSPredicate(format: "topic = %@ AND isSiteBlocked = NO", topicInContext)
+        return NSPredicate(format: "ANY topics = %@ AND isSiteBlocked = NO", topicInContext)
     }
 
 
@@ -1483,6 +1500,11 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
     public func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
         let post = provider as! ReaderPost
         toggleLikeForPost(post)
+    }
+
+    public func readerCell(cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
+        let post = provider as! ReaderPost
+        toggleSavedForPost(post)
     }
 
 
@@ -1685,7 +1707,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             return
         }
 
-        if let topic = post.topic where ReaderHelpers.isTopicSearchTopic(topic) {
+        if let topic = readerTopic where ReaderHelpers.isTopicSearchTopic(topic) {
             WPAppAnalytics.track(.ReaderSearchResultTapped)
 
             // We can use `if let` when `ReaderPost` adopts nullability.
@@ -1700,14 +1722,13 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
             post.sourceAttribution.postID != nil &&
             post.sourceAttribution.blogID != nil {
 
-            controller = ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
+            controller = ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!, topic: readerTopic)
 
         } else if post.isCrossPost() {
-            controller = ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
+            controller = ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID, topic: readerTopic)
 
         } else {
-            controller = ReaderDetailViewController.controllerWithPost(post)
-
+            controller = ReaderDetailViewController.controllerWithPost(post, topic: readerTopic)
         }
 
         navigationController?.pushViewController(controller, animated: true)

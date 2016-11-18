@@ -6,6 +6,7 @@ import WordPressShared
     func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
     func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
@@ -41,6 +42,7 @@ import WordPressShared
     // Action buttons
     @IBOutlet private weak var likeActionButton: UIButton!
     @IBOutlet private weak var commentActionButton: UIButton!
+    @IBOutlet weak var saveActionButton: UIButton!
 
     // Layout Constraints
     @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
@@ -336,6 +338,8 @@ import WordPressShared
     }
 
     private func configureActionButtons() {
+        configureSaveActionButton()
+
         if contentProvider == nil || contentProvider?.sourceAttributionStyle() != SourceAttributionStyle.None {
             resetActionButton(commentActionButton)
             resetActionButton(likeActionButton)
@@ -386,6 +390,14 @@ import WordPressShared
             }
         }
         resetActionButton(commentActionButton)
+    }
+
+    private func configureSaveActionButton() {
+        saveActionButton.tag = CardAction.Save.rawValue
+        saveActionButton.enabled = enableLoggedInFeatures
+
+        saveActionButton.selected = contentProvider!.isSaved()
+        saveActionButton.hidden = false
     }
 
     private func configureActionStackViewIfNeeded() {
@@ -440,12 +452,17 @@ import WordPressShared
             return
         }
 
-        let tag = CardAction(rawValue: sender.tag)!
+        guard let tag = CardAction(rawValue: sender.tag) else {
+            return
+        }
+
         switch tag {
         case .Comment :
             delegate?.readerCell(self, commentActionForProvider: contentProvider!)
         case .Like :
             delegate?.readerCell(self, likeActionForProvider: contentProvider!)
+        case .Save :
+            delegate?.readerCell(self, saveActionForProvider: contentProvider!)
         }
     }
 
@@ -467,6 +484,7 @@ import WordPressShared
     {
         case Comment = 1
         case Like
+        case Save
     }
 }
 

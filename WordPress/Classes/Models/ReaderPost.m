@@ -41,7 +41,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic summary;
 @dynamic comments;
 @dynamic tags;
-@dynamic topic;
+@dynamic topics;
 @dynamic globalID;
 @dynamic isLikesEnabled;
 @dynamic isSharingEnabled;
@@ -218,6 +218,10 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     }
 
     return title;
+}
+
+- (BOOL)isSaved {
+    return [ReaderHelpers containsSavedPostsTopic:self.topics];
 }
 
 - (SourceAttributionStyle)sourceAttributionStyle

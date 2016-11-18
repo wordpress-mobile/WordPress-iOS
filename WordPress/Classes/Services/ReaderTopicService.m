@@ -248,6 +248,23 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return topic;
 }
 
+- (ReaderSavedPostsTopic *)savedPostsTopic
+{
+    ReaderSavedPostsTopic *topic = [self findSavedPostsTopic];
+    if (!topic) {
+        topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSavedPostsTopic classNameWithoutNamespaces]
+                                              inManagedObjectContext:self.managedObjectContext];
+    }
+    topic.type = [ReaderSavedPostsTopic TopicType];
+    topic.path = nil;
+    topic.title = @"Saved For Later"; // TODO: Extract this
+    topic.showInMenu = YES;
+
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+
+    return topic;
+}
+
 - (void)subscribeToAndMakeTopicCurrent:(ReaderAbstractTopic *)topic
 {
     // Optimistically mark the topic subscribed.
@@ -862,7 +879,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
         if ([currentTopics count] > 0) {
             for (ReaderAbstractTopic *topic in currentTopics) {
-                if (![topic isKindOfClass:[ReaderSiteTopic class]] && ![topicsToKeep containsObject:topic]) {
+                if (![topic isKindOfClass:[ReaderSiteTopic class]] && ![topic isKindOfClass:[ReaderSavedPostsTopic class]] && ![topicsToKeep containsObject:topic]) {
                     DDLogInfo(@"Deleting Reader Topic: %@", topic);
                     if ([topic isEqual:self.currentTopic]) {
                         self.currentTopic = nil;
@@ -957,6 +974,19 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     return (ReaderSiteTopic *)[results firstObject];
+}
+
+- (ReaderSavedPostsTopic *)findSavedPostsTopic
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSavedPostsTopic classNameWithoutNamespaces]];
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+
+    return (ReaderSavedPostsTopic *)[results firstObject];
 }
 
 @end

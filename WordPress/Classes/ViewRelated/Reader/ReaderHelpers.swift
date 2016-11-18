@@ -20,6 +20,11 @@ import WordPressComAnalytics
         return topic.isKindOfClass(ReaderDefaultTopic)
     }
 
+    /// Check if a list of topics contains a search topic
+    public class func containsDefaultTopic(topics: Set<ReaderAbstractTopic>) -> Bool {
+        return !topics.filter(isTopicDefault).isEmpty
+    }
+
 
     /// Check if the specified topic is a list
     ///
@@ -30,6 +35,11 @@ import WordPressComAnalytics
     ///
     public class func isTopicList(topic:ReaderAbstractTopic) -> Bool {
         return topic.isKindOfClass(ReaderListTopic)
+    }
+
+    /// Check if a list of topics contains a search topic
+    public class func containsListTopic(topics: Set<ReaderAbstractTopic>) -> Bool {
+        return !topics.filter(isTopicList).isEmpty
     }
 
 
@@ -44,6 +54,10 @@ import WordPressComAnalytics
         return topic.isKindOfClass(ReaderSiteTopic)
     }
 
+    /// Check if a list of topics contains a site topic
+    public class func containsSiteTopic(topics: Set<ReaderAbstractTopic>) -> Bool {
+        return !topics.filter(isTopicSite).isEmpty
+    }
 
     /// Check if the specified topic is a tag topic
     ///
@@ -54,6 +68,11 @@ import WordPressComAnalytics
     ///
     public class func isTopicTag(topic:ReaderAbstractTopic) -> Bool {
         return topic.isKindOfClass(ReaderTagTopic)
+    }
+
+    /// Check if a list of topics contains a tag topic
+    public class func containsTagTopic(topics: Set<ReaderAbstractTopic>) -> Bool {
+        return !topics.filter(isTopicTag).isEmpty
     }
 
 
@@ -68,6 +87,26 @@ import WordPressComAnalytics
         return topic.isKindOfClass(ReaderSearchTopic)
     }
 
+    /// Check if a list of topics contains a search topic
+    public class func containsSearchTopic(topics: Set<ReaderAbstractTopic>) -> Bool {
+        return !topics.filter(isTopicSearchTopic).isEmpty
+    }
+
+    /// Check if the specified topic is a saved posts topic
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is a saved posts topic
+    ///
+    public class func isTopicSavedPostsTopic(topic: ReaderAbstractTopic) -> Bool {
+        return topic.isKindOfClass(ReaderSavedPostsTopic)
+    }
+
+    /// Check if a list of topics contains a search topic
+    public class func containsSavedPostsTopic(topics: Set<ReaderAbstractTopic>) -> Bool {
+        return !topics.filter(isTopicSavedPostsTopic).isEmpty
+    }
 
     /// Check if the specified topic is for Freshly Pressed
     ///
@@ -77,7 +116,13 @@ import WordPressComAnalytics
     /// - Returns: True if the topic is for Freshly Pressed
     ///
     public class func topicIsFreshlyPressed(topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.hasSuffix("/freshly-pressed")
+        guard let path = topic.path else { return false }
+        return path.hasSuffix("/freshly-pressed")
+    }
+
+    /// Check if a list of topics contains a search topic
+    public class func containsFreshlyPressedTopic(topics: Set<ReaderAbstractTopic>) -> Bool {
+        return !topics.filter(topicIsFreshlyPressed).isEmpty
     }
 
 
@@ -89,7 +134,13 @@ import WordPressComAnalytics
     /// - Returns: True if the topic is for Discover
     ///
     public class func topicIsDiscover(topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.containsString("/read/sites/53424024/posts")
+        guard let path = topic.path else { return false }
+        return path.containsString("/read/sites/53424024/posts")
+    }
+
+    /// Check if a list of topics contains a search topic
+    public class func containsDiscoverTopic(topics: Set<ReaderAbstractTopic>) -> Bool {
+        return !topics.filter(topicIsDiscover).isEmpty
     }
 
 
@@ -101,9 +152,14 @@ import WordPressComAnalytics
     /// - Returns: True if the topic is for Following
     ///
     public class func topicIsFollowing(topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.hasSuffix("/read/following")
+        guard let path = topic.path else { return false }
+        return path.hasSuffix("/read/following")
     }
 
+    /// Check if a list of topics contains a search topic
+    public class func containsFollowingTopic(topics: Set<ReaderAbstractTopic>) -> Bool {
+        return !topics.filter(topicIsFollowing).isEmpty
+    }
 
     /// Check if the specified topic is for Posts I Like
     ///
@@ -113,7 +169,13 @@ import WordPressComAnalytics
     /// - Returns: True if the topic is for Posts I Like
     ///
     public class func topicIsLiked(topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.hasSuffix("/read/liked")
+        guard let path = topic.path else { return false }
+        return path.hasSuffix("/read/liked")
+    }
+
+    /// Check if a list of topics contains a search topic
+    public class func containsLikedTopic(topics: Set<ReaderAbstractTopic>) -> Bool {
+        return !topics.filter(topicIsLiked).isEmpty
     }
 
 

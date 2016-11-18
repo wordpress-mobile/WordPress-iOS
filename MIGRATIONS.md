@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 54
+- @jeamesbone 2016-11-15
+- `ReaderPost` made `topics` relationship many-to-many.
+- `ReaderAbstractTopic` made `path` property optional.
+- Added `ReaderSavedPostsTopic` entity.
+
 ## WordPress 53
 - @jleandroperez 2016-10-27
 - `Notification` added `notificationHash` property.

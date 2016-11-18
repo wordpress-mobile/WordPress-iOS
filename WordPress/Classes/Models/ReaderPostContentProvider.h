@@ -23,6 +23,7 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 - (BOOL)isLikesEnabled;
 - (BOOL)isPrivate;
 - (BOOL)isLiked;
+- (BOOL)isSaved;
 - (BOOL)isExternal;
 - (BOOL)isJetpack;
 - (BOOL)isWPCom;

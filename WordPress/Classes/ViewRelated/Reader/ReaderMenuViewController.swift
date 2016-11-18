@@ -254,6 +254,12 @@ import WordPressShared
         navigationController?.pushViewController(controller, animated: true)
     }
 
+    /// Presents the post list for the saved posts topic
+    func showReaderSavedPosts() {
+        let topicService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let topic = topicService.savedPostsTopic()
+        showPostsForTopic(topic)
+    }
 
     /// Presents a new view controller for subscribing to a new tag.
     ///
@@ -428,6 +434,11 @@ import WordPressShared
 
         if menuItem.type == .Search {
             showReaderSearch()
+            return
+        }
+
+        if menuItem.type == .SavedPosts {
+            showReaderSavedPosts()
             return
         }
     }
