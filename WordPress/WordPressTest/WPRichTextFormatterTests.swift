@@ -89,20 +89,4 @@ class WPRichTextFormatterTests: XCTestCase {
         XCTAssert(pStyle.headIndent == formatter.blockquoteIndentation)
     }
 
-
-    func testFixLastParagraphSpacing() {
-        let mParaStyle = NSMutableParagraphStyle()
-        mParaStyle.paragraphSpacing = 16.0
-
-        let attributes: [String: AnyObject] = [NSParagraphStyleAttributeName: mParaStyle]
-        var mattrStr = NSMutableAttributedString(string: "Some text")
-        mattrStr.setAttributes(attributes, range: NSRange(location: 0, length: mattrStr.length))
-
-        let formatter = WPRichTextFormatter()
-        mattrStr = formatter.fixLastParagraphSpacing(mattrStr)
-
-        let pStyle = mattrStr.attribute(NSParagraphStyleAttributeName, atIndex: 0, longestEffectiveRange: nil, inRange: NSRange(location: 0, length: mattrStr.length)) as! NSParagraphStyle
-
-        XCTAssert(pStyle.paragraphSpacing == 0)
-    }
 }
