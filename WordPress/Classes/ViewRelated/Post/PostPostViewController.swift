@@ -84,17 +84,17 @@ class PostPostViewController: UIViewController {
         UIView.animateWithDuration(animationDuration * 0.66, delay: 0, options: .CurveEaseOut, animations: {
             self.postInfoView.alpha = 1
             }, completion: nil)
-        UIView.animateWithDuration(0.2, delay: animationDuration * 0.7, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(0.2, delay: animationDuration * 0.5, options: .CurveEaseOut, animations: {
             self.shareButton.alpha = 1
             self.shareButtonWidth.constant = 0
             self.view.layoutIfNeeded()
             }, completion: nil)
-        UIView.animateWithDuration(0.2, delay: animationDuration * 0.8, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(0.2, delay: animationDuration * 0.6, options: .CurveEaseOut, animations: {
             self.editButton.alpha = 1
             self.editButtonWidth.constant = 0
             self.view.layoutIfNeeded()
         }, completion: nil)
-        UIView.animateWithDuration(0.2, delay: animationDuration * 0.9, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(0.2, delay: animationDuration * 0.7, options: .CurveEaseOut, animations: {
             self.viewButton.alpha = 1
             self.viewButtonWidth.constant = 0
             self.view.layoutIfNeeded()
