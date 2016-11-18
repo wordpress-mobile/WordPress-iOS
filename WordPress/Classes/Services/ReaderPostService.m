@@ -61,7 +61,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         rank = [self rankForPostAtOffset:offset - 1 forTopic:topic];
     }
 
-    if (offset >= ReaderPostServiceMaxSearchPosts && [topic isKindOfClass:[ReaderSearchTopic class]]) {
+    if (offset >= ReaderPostServiceMaxSearchPosts && topic.isSearch) {
         // A search supports a max offset of 199. If more are requested we want to bail early.
         success(0, NO);
         return;
@@ -310,7 +310,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
     // If this post belongs to a site topic, let the topic service do the work.
-    if ([readerPost.topic isKindOfClass:[ReaderSiteTopic class]]) {
+    if (readerPost.topic.isSite) {
         ReaderSiteTopic *siteTopic = (ReaderSiteTopic *)readerPost.topic;
         [topicService toggleFollowingForSite:siteTopic success:success failure:failure];
         return;
@@ -510,12 +510,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 - (NSUInteger)numberToSyncForTopic:(ReaderAbstractTopic *)topic
 {
-    return [topic isKindOfClass:[ReaderSearchTopic class]] ? ReaderPostServiceNumberToSyncForSearch : ReaderPostServiceNumberToSync;
+    return topic.isSearch ? ReaderPostServiceNumberToSyncForSearch : ReaderPostServiceNumberToSync;
 }
 
 - (NSUInteger)maxPostsToSaveForTopic:(ReaderAbstractTopic *)topic
 {
-    return [topic isKindOfClass:[ReaderSearchTopic class]] ? ReaderPostServiceMaxSearchPosts : ReaderPostServiceMaxPosts;
+    return topic.isSearch ? ReaderPostServiceMaxSearchPosts : ReaderPostServiceMaxPosts;
 }
 
 - (NSUInteger)numberOfPostsForTopic:(ReaderAbstractTopic *)topic
@@ -609,7 +609,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                 // one extra post. Only remove the extra post if we received a
                 // full set of results. A partial set means we've reached
                 // the end of syncable content.
-                if ([posts count] == [self numberToSyncForTopic:readerTopic] && ![ReaderHelpers isTopicSearchTopic:readerTopic]) {
+                if ([posts count] == [self numberToSyncForTopic:readerTopic] && !readerTopic.isSearch) {
                     posts = [posts subarrayWithRange:NSMakeRange(0, [posts count] - 2)];
                     postsCount = [posts count];
                 }
@@ -1054,7 +1054,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     NSString *tag = remotePost.primaryTag;
     NSString *slug = remotePost.primaryTagSlug;
-    if ([topic isKindOfClass:[ReaderTagTopic class]]) {
+    if (topic.isTag) {
         ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
         if ([tagTopic.slug isEqualToString:remotePost.primaryTagSlug]) {
             tag = remotePost.secondaryTag;

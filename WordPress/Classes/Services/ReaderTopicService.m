@@ -187,7 +187,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     for (ReaderAbstractTopic *topic in results) {
         // Do not purge site topics that are followed. We want these to stay so they appear immediately when managing followed sites.
-        if ([topic isKindOfClass:[ReaderSiteTopic class]] && topic.following) {
+        if (topic.isSite && topic.following) {
             continue;
         }
         [self.managedObjectContext deleteObject:topic];
@@ -229,7 +229,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     NSString *path = [remote endpointUrlForSearchPhrase:[phrase lowercaseString]];
     ReaderSearchTopic *topic = (ReaderSearchTopic *)[self findWithPath:path];
-    if (!topic || ![topic isKindOfClass:[ReaderSearchTopic class]]) {
+    if (!topic || !topic.isSearch) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSearchTopic classNameWithoutNamespaces]
                                               inManagedObjectContext:self.managedObjectContext];
     }
@@ -720,7 +720,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (ReaderTagTopic *)tagTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
     ReaderTagTopic *topic = (ReaderTagTopic *)[self findWithPath:remoteTopic.path];
-    if (!topic || ![topic isKindOfClass:[ReaderTagTopic class]]) {
+    if (!topic || !topic.isTag) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderTagTopic classNameWithoutNamespaces]
                                                              inManagedObjectContext:self.managedObjectContext];
     }
@@ -738,7 +738,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (ReaderListTopic *)listTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
     ReaderListTopic *topic = (ReaderListTopic *)[self findWithPath:remoteTopic.path];
-    if (!topic || ![topic isKindOfClass:[ReaderListTopic class]]) {
+    if (!topic || !topic.isList) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderListTopic classNameWithoutNamespaces]
                                               inManagedObjectContext:self.managedObjectContext];
     }
@@ -757,7 +757,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (ReaderDefaultTopic *)defaultTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
     ReaderDefaultTopic *topic = (ReaderDefaultTopic *)[self findWithPath:remoteTopic.path];
-    if (!topic || ![topic isKindOfClass:[ReaderDefaultTopic class]]) {
+    if (!topic || !topic.isDefault) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderDefaultTopic classNameWithoutNamespaces]
                                               inManagedObjectContext:self.managedObjectContext];
     }
@@ -773,7 +773,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (ReaderTeamTopic *)teamTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
     ReaderTeamTopic *topic = (ReaderTeamTopic *)[self findWithPath:remoteTopic.path];
-    if (!topic || ![topic isKindOfClass:[ReaderTeamTopic class]]) {
+    if (!topic || !topic.isTeam) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderTeamTopic classNameWithoutNamespaces]
                                               inManagedObjectContext:self.managedObjectContext];
     }
@@ -790,7 +790,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (ReaderSiteTopic *)siteTopicForRemoteSiteInfo:(RemoteReaderSiteInfo *)siteInfo
 {
     ReaderSiteTopic *topic = (ReaderSiteTopic *)[self findWithPath:siteInfo.postsEndpoint];
-    if (!topic || ![topic isKindOfClass:[ReaderSiteTopic class]]) {
+    if (!topic || !topic.isSite) {
         topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSiteTopic classNameWithoutNamespaces]
                                               inManagedObjectContext:self.managedObjectContext];
     }
@@ -862,7 +862,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
         if ([currentTopics count] > 0) {
             for (ReaderAbstractTopic *topic in currentTopics) {
-                if (![topic isKindOfClass:[ReaderSiteTopic class]] && ![topicsToKeep containsObject:topic]) {
+                if (!topic.isSite && ![topicsToKeep containsObject:topic]) {
                     DDLogInfo(@"Deleting Reader Topic: %@", topic);
                     if ([topic isEqual:self.currentTopic]) {
                         self.currentTopic = nil;

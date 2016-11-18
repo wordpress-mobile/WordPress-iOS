@@ -36,7 +36,7 @@ import WordPressShared
     // MARK: - Configuration
 
     public func configureHeader(topic: ReaderAbstractTopic) {
-        assert(topic.isKindOfClass(ReaderSiteTopic), "Topic must be a site topic")
+        assert(topic.isSite, "Topic must be a site topic")
 
         let siteTopic = topic as! ReaderSiteTopic
 

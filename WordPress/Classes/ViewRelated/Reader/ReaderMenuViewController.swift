@@ -481,7 +481,7 @@ import WordPressShared
             return false
         }
 
-        return ReaderHelpers.isTopicTag(topic)
+        return topic.isTag
     }
 
 

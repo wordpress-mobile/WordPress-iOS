@@ -73,7 +73,7 @@ public class ReaderPostMenu
     private class func shouldShowBlockSiteMenuItemForPost(post:ReaderPost) -> Bool {
         if let topic = post.topic {
             if (ReaderHelpers.isLoggedIn()) {
-                return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsFreshlyPressed(topic)
+                return topic.isTag || topic.isFreshlyPressed
             }
         }
         return false

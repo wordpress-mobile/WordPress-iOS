@@ -366,7 +366,7 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
 
         // Enable button only if not previewing a site.
         if let topic = post!.topic {
-            blogNameButton.enabled = !ReaderHelpers.isTopicSite(topic)
+            blogNameButton.enabled = !topic.isSite
         }
 
         // If the button is enabled also listen for taps on the avatar.

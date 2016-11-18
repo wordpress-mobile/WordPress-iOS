@@ -212,13 +212,13 @@ enum ReaderDefaultMenuItemOrder: Int {
                 }
 
                 var item = ReaderMenuItem(title: abstractTopic.title, type: .Topic, icon: nil, topic: abstractTopic)
-                if ReaderHelpers.topicIsFollowing(abstractTopic) {
+                if abstractTopic.isFollowing {
                     item.order = ReaderDefaultMenuItemOrder.Followed.rawValue
                     item.icon = Gridicon.iconOfType(.CheckmarkCircle)
-                } else if ReaderHelpers.topicIsDiscover(abstractTopic) {
+                } else if abstractTopic.isDiscover {
                     item.order = ReaderDefaultMenuItemOrder.Discover.rawValue
                     item.icon = Gridicon.iconOfType(.MySites)
-                } else if ReaderHelpers.topicIsLiked(abstractTopic) {
+                } else if abstractTopic.isLiked {
                     item.order = ReaderDefaultMenuItemOrder.Likes.rawValue
                     item.icon = Gridicon.iconOfType(.Star)
                 } else {
