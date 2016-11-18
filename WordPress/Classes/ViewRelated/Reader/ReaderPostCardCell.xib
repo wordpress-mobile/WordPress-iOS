@@ -266,6 +266,7 @@
                 <outlet property="commentActionButton" destination="3W2-KV-isX" id="hpZ-8G-U5a"/>
                 <outlet property="contentStackView" destination="k3b-5o-H9u" id="B82-c0-vlU"/>
                 <outlet property="featuredImageView" destination="D4Q-6L-ZIL" id="Ikr-qP-2wv"/>
+                <outlet property="featuredMediaHeightConstraint" destination="6Qh-iW-StJ" id="bxu-gx-46h"/>
                 <outlet property="followButton" destination="eiF-ng-Kvg" id="Bou-hu-cDJ"/>
                 <outlet property="headerBlogButton" destination="l5X-fR-34a" id="kYK-6e-pwI"/>
                 <outlet property="interfaceVerticalSizingHelperView" destination="Aav-jm-io6" id="2VW-l9-UiQ"/>
