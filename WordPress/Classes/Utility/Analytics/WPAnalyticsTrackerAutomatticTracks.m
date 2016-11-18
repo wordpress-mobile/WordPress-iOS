@@ -771,11 +771,17 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatSupportReceivedResponseFromSupport:
             eventName = @"support_received_response_from_support";
             break;
-        case WPAnalyticsStatSupportSentMessage:
-            eventName = @"support_sent_message";
+        case WPAnalyticsStatSupportUserAcceptedTheSolution:
+            eventName = @"support_user_accepted_the_solution";
             break;
-        case WPAnalyticsStatSupportSentReplyToSupportMessage:
-            eventName = @"support_sent_reply_to_support_message";
+        case WPAnalyticsStatSupportUserRejectedTheSolution:
+            eventName = @"support_user_rejected_the_solution";
+            break;
+        case WPAnalyticsStatSupportUserSentScreenshot:
+            eventName = @"support_user_sent_screenshot";
+            break;
+        case WPAnalyticsStatSupportUserReviewedTheApp:
+            eventName = @"support_user_reviewed_the_app";
             break;
         case WPAnalyticsStatSupportUserRepliedToHelpshift:
             eventName = @"support_user_replied_to_helpshift";

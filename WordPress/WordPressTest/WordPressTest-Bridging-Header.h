@@ -9,6 +9,8 @@
 #import "Blog.h"
 #import "AccountService.h"
 #import "ReaderPost.h"
+#import "RemoteReaderSite.h"
+#import "ReaderSiteServiceRemote.h"
 #import "UIAlertControllerProxy.h"
 #import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
 #import <NSObject_SafeExpectations/NSObject+SafeExpectations.h>
