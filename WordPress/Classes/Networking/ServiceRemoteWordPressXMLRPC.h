@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "WordPress-Swift.h"
 
 @class WordPressOrgXMLRPCApi;
 
@@ -6,9 +7,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ServiceRemoteWordPressXMLRPC : NSObject
 
-- (id)initWithApi:(WordPressOrgXMLRPCApi *)api username:(NSString *)username password:(NSString *)password;
+- (id)initWithApi:(id<WordPressOrgXMLRPC>)api username:(NSString *)username password:(NSString *)password;
 
-@property (nonatomic, readonly) WordPressOrgXMLRPCApi *api;
+@property (nonatomic, readonly) id<WordPressOrgXMLRPC> api;
 
 - (NSArray *)defaultXMLRPCArguments;
 - (NSArray *)XMLRPCArgumentsWithExtra:(_Nullable id)extra;

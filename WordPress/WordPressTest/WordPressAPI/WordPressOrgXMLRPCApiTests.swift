@@ -1,6 +1,6 @@
 import XCTest
-import WordPress
 import OHHTTPStubs
+@testable import WordPress
 
 class WordPressOrgXMLRPCApiTests: XCTestCase {
 
