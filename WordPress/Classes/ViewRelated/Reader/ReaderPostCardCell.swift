@@ -291,7 +291,7 @@ import Gridicons
         featuredImageView.image = nil
         var url = featuredImageURL
         featuredImageDesiredWidth = featuredImageView.frame.width
-        let size = CGSize(width:featuredImageDesiredWidth, height:100)
+        let size = CGSize(width:featuredImageDesiredWidth, height:featuredImageView.frame.height)
         if !(contentProvider!.isPrivate()) {
             url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
             featuredImageView.setImageWithURL(url, placeholderImage:nil)
