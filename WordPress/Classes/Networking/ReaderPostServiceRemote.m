@@ -972,7 +972,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     static NSRegularExpression *regex;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        regex = [NSRegularExpression regularExpressionWithPattern:@"style=\"[^\"]*\"" options:NSRegularExpressionCaseInsensitive error:nil];
+        regex = [NSRegularExpression regularExpressionWithPattern:@"\\s*style=\"[^\"]*\"" options:NSRegularExpressionCaseInsensitive error:nil];
     });
 
     // Remove inline styles.
