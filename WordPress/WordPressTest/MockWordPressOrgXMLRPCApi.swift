@@ -1,12 +1,19 @@
 import Foundation
-@testable import WordPress
 
-class MockWordPressOrgXMLRPCApi: WordPressOrgXMLRPC {
+@objc class MockWordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPC {
 
     var methodPassedIn: String? = nil
-    var parametersPassedIn: AnyObject? = nil
+    var parametersPassedIn: [AnyObject]? = nil
     var successBlockPassedIn: WordPressOrgXMLRPCApi.SuccessResponseBlock? = nil
     var failureBlockPassedIn: WordPressOrgXMLRPCApi.FailureReponseBlock? = nil
+
+    required init(endpoint: NSURL = NSURL(fileURLWithPath: ""), userAgent: String? = nil) {}
+
+    func invalidateAndCancelTasks() {}
+    func checkCredentials(username: String,
+                          password: String,
+                          success: WordPressOrgXMLRPCApi.SuccessResponseBlock,
+                          failure: WordPressOrgXMLRPCApi.FailureReponseBlock) {}
 
     func callMethod(method: String,
                     parameters: [AnyObject]?,
