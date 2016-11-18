@@ -81,36 +81,7 @@ class WPRichTextFormatter
             attrString.replaceCharactersInRange(range, withAttributedString: attachmentString)
         }
 
-        attrString = fixLastParagraphSpacing(attrString)
-
         return NSAttributedString(attributedString: attrString)
-    }
-
-
-    /// Removes the paragraph spacing for the last paragraph in the supplied attributed string.
-    ///
-    /// - Paramters:
-    ///     - attrStr: A mutable attributed string.
-    ///
-    /// - Returns: The modified mutable attributed string.
-    ///
-    func fixLastParagraphSpacing(attrString: NSMutableAttributedString) -> NSMutableAttributedString {
-        guard attrString.length > 0 else {
-            return attrString
-        }
-
-        var effectiveRange = NSRange()
-        guard let pStyle = attrString.attribute(NSParagraphStyleAttributeName, atIndex: attrString.length - 1, effectiveRange: &effectiveRange) as? NSParagraphStyle else {
-            return attrString
-        }
-
-        let mParagraphStyle = NSMutableParagraphStyle()
-        mParagraphStyle.setParagraphStyle(pStyle)
-        mParagraphStyle.paragraphSpacing = 0
-
-        attrString.addAttribute(NSParagraphStyleAttributeName, value: mParagraphStyle, range: effectiveRange)
-
-        return attrString
     }
 
 
