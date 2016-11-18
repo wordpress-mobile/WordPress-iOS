@@ -213,10 +213,10 @@ extension WPStyleGuide
 
     public class func applyReaderCardActionButtonStyle(button:UIButton) {
         let fontSize = Cards.buttonFontSize
-        button.setTitleColor(greyDarken10(), forState: .Normal)
+        button.setTitleColor(greyLighten10(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
         button.setTitleColor(jazzyOrange(), forState: .Selected)
-        button.setTitleColor(greyDarken10(), forState: .Disabled)
+        button.setTitleColor(greyLighten10(), forState: .Disabled)
         button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
     }
 
