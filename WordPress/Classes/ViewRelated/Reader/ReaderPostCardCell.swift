@@ -129,6 +129,7 @@ import Gridicons
         setupFeaturedImageView()
         setupVisitButton()
         setupShareButton()
+        setupMenuButton()
         setupSummaryLabel()
         setupAttributionView()
         setupCommentActionButton()
@@ -195,6 +196,15 @@ import Gridicons
         shareButton.setImage(highlightIcon, forState: .Highlighted)
     }
 
+    private func setupMenuButton() {
+        let size = CGSize(width: 20, height: 20)
+        let icon = Gridicon.iconOfType(.Ellipsis, withSize: size)
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+
+        menuButton.setImage(tintedIcon, forState: .Normal)
+        menuButton.setImage(highlightIcon, forState: .Highlighted)
+    }
 
     /**
         Applies the default styles to the cell's subviews
