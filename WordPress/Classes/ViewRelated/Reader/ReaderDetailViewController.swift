@@ -13,6 +13,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
     private struct DetailConstants
     {
         static let LikeCountKeyPath = "likeCount"
+        static let MarginOffset = CGFloat(8.0)
     }
 
 
@@ -295,11 +296,21 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
         insets.bottom = textFooterStackView.frame.height
 
         let margin = view.readableContentGuide.layoutFrame.origin.x
-        insets.left = margin
-        insets.right = margin
+        insets.left = margin - DetailConstants.MarginOffset
+        insets.right = margin - DetailConstants.MarginOffset
         textView.textContainerInset = insets
 
-        textFooterTopConstraint.constant = textView.contentSize.height - textFooterStackView.frame.height
+        textFooterTopConstraint.constant = textFooterOffset()
+    }
+
+    private func textFooterOffset() -> CGFloat {
+        let length = textView.textStorage.length
+        if length == 0 {
+            return textView.contentSize.height - textFooterStackView.frame.height
+        }
+        let range = NSRange(location: length - 1, length: 0)
+        let frame = textView.frameForTextInRange(range)
+        return frame.maxY
     }
 
 
@@ -993,7 +1004,7 @@ extension ReaderDetailViewController : UIScrollViewDelegate
 {
 
     public func scrollViewDidScroll(scrollView: UIScrollView) {
-        let height = textView.contentSize.height - textFooterStackView.frame.size.height
+        let height = textFooterOffset()
         if height != textFooterTopConstraint.constant {
             textFooterTopConstraint.constant = height
         }
