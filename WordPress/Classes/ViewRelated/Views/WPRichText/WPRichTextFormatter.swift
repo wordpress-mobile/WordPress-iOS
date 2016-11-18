@@ -306,6 +306,8 @@ class BlockquoteTagProcessor: HtmlTagProcessor
         var str = ""
         var tempStr: NSString? = ""
         let paragraphScanner = NSScanner(string: parsedString)
+        paragraphScanner.charactersToBeSkipped = nil
+
         while !paragraphScanner.atEnd {
             paragraphScanner.scanUpToString("<p>", intoString: &tempStr)
 
