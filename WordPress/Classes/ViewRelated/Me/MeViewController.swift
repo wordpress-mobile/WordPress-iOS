@@ -178,7 +178,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             action: confirmLogout())
 
         let addAccount = ButtonRow(
-            title:  NSLocalizedString("Add WP Account", comment: "Add account for WordPress.com"),
+            title:  NSLocalizedString("Add WordPress.com account", comment: "Add account for WordPress.com"),
             action: addWPAccount())
 
         let wordPressComAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
@@ -399,23 +399,21 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     // MARK: - Public for testing purposes
 
-    func retrieveAccounts(completion: ([AccountSelectionItem]) -> Void) {
+    func retrieveAccounts() -> [AccountSelectionItem] {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
-        service.retrieveAllAccountsWith { ( accounts: [AnyObject] ) in
+        let accounts = service.retrieveAllAccounts()
+        let accountsParsed = accounts as! [WPAccount]
+        var accountSelectionItems: [AccountSelectionItem] = []
+        for account in accountsParsed {
 
-            let accountsParsed = accounts as! [WPAccount]
-            var accountsCompleted: [AccountSelectionItem] = []
-            for account in accountsParsed {
-
-                let accountStruct = AccountSelectionItem.init(userId: account.userID,
-                    username: account.username,
-                    email: account.email)
-                accountsCompleted.append(accountStruct)
-            }
-
-            completion(accountsCompleted)
+            let accountItem = AccountSelectionItem.init(userId: account.userID,
+                                                        username: account.username,
+                                                        email: account.email)
+            accountSelectionItems.append(accountItem)
         }
+
+        return accountSelectionItems
     }
 
     func logOut() {
@@ -427,38 +425,34 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func displayAccounts() {
 
-        self.retrieveAccounts({ (retrievedAccounts: [AccountSelectionItem]) in
-            let titles = retrievedAccounts.map({ (account: AccountSelectionItem) -> String in
-                return account.username
-            })
-
-            guard let defaultAccount = self.defaultAccount() else { return }
-            let currentAccount = AccountSelectionItem.init(userId: (defaultAccount.userID)!,
-                username: (defaultAccount.username)!,
-                email: (defaultAccount.email)!)
-
-            let dict: [NSObject : AnyObject] = [SettingsSelectionDefaultValueKey: currentAccount,
-                SettingsSelectionTitleKey: NSLocalizedString("Me", comment: "Title of the list of logged users"),
-                SettingsSelectionTitlesKey: titles,
-                SettingsSelectionValuesKey: retrievedAccounts,
-                SettingsSelectionCurrentValueKey: currentAccount]
-
-            let controller = SettingsSelectionViewController(style: .Plain, andDictionary: dict as [NSObject : AnyObject])
-            controller.onItemSelected = { [weak self] (selectedValue: AnyObject!) -> () in
-                if let strongSelf = self
-                 {
-                    strongSelf.retrieveAccounts({ (accounts: [AccountSelectionItem]) in
-                        let parsedAccount = (selectedValue as! AccountSelectionItem)
-                        strongSelf.selectedAccount(parsedAccount)
-                        strongSelf.dismissViewControllerAnimated(true, completion: nil)
-                    })
-                }
-            }
-
-            controller.tableView.scrollEnabled = false
-
-            self.displayAccountPopover(controller)
+        let retrievedAccounts = self.retrieveAccounts()
+        let titles = retrievedAccounts.map({ (account: AccountSelectionItem) -> String in
+            return account.username
         })
+
+        guard let defaultAccount = self.defaultAccount() else { return }
+        let currentAccount = AccountSelectionItem.init(userId: (defaultAccount.userID)!,
+                                                       username: (defaultAccount.username)!,
+                                                       email: (defaultAccount.email)!)
+
+        let dict: [NSObject : AnyObject] = [SettingsSelectionDefaultValueKey: currentAccount,
+                                            SettingsSelectionTitleKey: NSLocalizedString("Me", comment: "Title of the list of logged users"),
+                                            SettingsSelectionTitlesKey: titles,
+                                            SettingsSelectionValuesKey: retrievedAccounts,
+                                            SettingsSelectionCurrentValueKey: currentAccount]
+
+        let controller = SettingsSelectionViewController(style: .Plain, andDictionary: dict as [NSObject : AnyObject])
+        controller.onItemSelected = { [weak self] (selectedValue: AnyObject!) -> () in
+            if let strongSelf = self
+            {
+                let parsedAccount = (selectedValue as! AccountSelectionItem)
+                strongSelf.selectedAccount(parsedAccount)
+                strongSelf.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+
+        controller.tableView.scrollEnabled = false
+        self.displayAccountPopover(controller)
     }
 
     func displayAccountPopover(controller: UIViewController) {

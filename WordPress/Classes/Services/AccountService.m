@@ -190,52 +190,19 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return account;
 }
 
-- (void)retrieveAllAccountsWith:(void (^)(NSArray* accounts))completion
+- (NSArray *)retrieveAllAccounts
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = self.managedObjectContext;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    [request setIncludesSubentities:YES];
     [request setReturnsObjectsAsFaults:NO];
     NSError *error;
     NSArray* accounts = [context executeFetchRequest:request error:&error];
-
-    NSMutableArray *mutableCompletedAccounts = [NSMutableArray array];
-    __block NSInteger callbackCounter = 0;
-    for(WPAccount* account in accounts) {
-
-        if (account.email == nil) {
-
-            [self updateUserDetailsForAccount:account
-                                      success:^{
-                                          [mutableCompletedAccounts addObject:account];
-                                          callbackCounter++;
-                                          if (callbackCounter == accounts.count) {
-                                              completion(accounts);
-                                          }
-                                      } failure:^(NSError * _Nonnull error) {
-                                          callbackCounter++;
-                                          if (callbackCounter == accounts.count) {
-                                              completion(mutableCompletedAccounts);
-                                          }
-                                      }];
-        }
-        else {
-            [mutableCompletedAccounts addObject:account];
-            callbackCounter++;
-            if (callbackCounter == accounts.count) {
-                completion(mutableCompletedAccounts);
-            }
-        }
-    }
-
-    if (accounts.count == 0) {
-        completion(@[]);
-    }
+    return accounts;
 }
 
 - (NSUInteger)numberOfAccounts
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = self.managedObjectContext;
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Account"
                                    inManagedObjectContext:context]];

@@ -22,22 +22,13 @@ class MeViewControllerTest: XCTestCase {
             fatalError("init(coder:) has not been implemented")
         }
 
-        override func retrieveAccounts(completion: ([Account]) -> Void) {
-             let accounts = [Account.init(userId: 1, username: "user1", email: "some@thing.com"),
-             Account.init(userId: 2, username: "user2", email: "some@thingelse.com")]
-            completion(accounts)
+        override func retrieveAccounts() -> [AccountSelectionItem] {
+             return  [AccountSelectionItem.init(userId: 1, username: "user1", email: "some@thing.com"),
+             AccountSelectionItem.init(userId: 2, username: "user2", email: "some@thingelse.com")]
         }
     }
 
     var meViewController: MockedMeViewController?
-    var defaultWPAccount: WPAccount {
-        get {
-            let context = ContextManager.sharedInstance().mainContext
-            let service = AccountService(managedObjectContext: context)
-            let account = service.defaultWordPressComAccount()
-            return account!
-        }
-    }
 
     override func setUp() {
         super.setUp()
@@ -55,8 +46,9 @@ class MeViewControllerTest: XCTestCase {
         let tableImmutable: ImmuTable = (meViewController?.tableViewModel(true, helpshiftBadgeCount: 0))!
         let section: ImmuTableSection = tableImmutable.sections[2]
         for row: ImmuTableRow in section.rows {
-            row.action.debugDescription
-            if "\(row)" == "ButtonRow(title: \"Add WP Account\", action: Optional((Function)))" {
+            let cell: WPTableViewCellDefault = WPTableViewCellDefault.init(style: .Value2, reuseIdentifier: "Identifier")
+            row.configureCell(cell)
+            if cell.textLabel?.text == NSLocalizedDescriptionKey("Add WordPress.com account", "Add account for WordPress.com") {
                 XCTAssertTrue(true)
             }
         }
