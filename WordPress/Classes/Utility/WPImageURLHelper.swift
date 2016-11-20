@@ -9,6 +9,7 @@ public class WPImageURLHelper: NSObject
     static let photonImageQualityMax: UInt = 100
     static let photonImageQualityDefault: UInt = 80
     static let photonImageQualityMin: UInt = 1
+    static let defaultBlavatarSize: CGFloat = 40
 }
 
 extension WPImageURLHelper
@@ -205,6 +206,30 @@ extension WPImageURLHelper
         }
 
         return NSURL(string: String(format: "%@?s=%d&d=404", contentProvider.siteIconURL()))
+    }
+
+    public class func siteIconURL(forPath path: String?, imageViewBounds bounds: CGRect?) -> NSURL? {
+        guard
+            let path = path,
+            let bounds = bounds,
+            let url = NSURL(string: path),
+            let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)
+            else { return nil }
+
+        let size = blavatarSizeInPoints(forImageViewBounds: bounds)
+        components.query = String(format: "d=404&s=%d", size)
+
+        return components.URL
+    }
+
+    public static func blavatarSizeInPoints(forImageViewBounds bounds: CGRect) -> Int {
+        var size = defaultBlavatarSize
+
+        if !CGSizeEqualToSize(bounds.size, .zero) {
+            size = max(bounds.width, bounds.height)
+        }
+
+        return Int(size * UIScreen.mainScreen().scale)
     }
 }
 
