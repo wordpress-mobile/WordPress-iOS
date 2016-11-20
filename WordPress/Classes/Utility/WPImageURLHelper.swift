@@ -59,7 +59,7 @@ extension WPImageURLHelper
 
 extension WPImageURLHelper
 {
-    // MARK: {G|Bl}avatar URLs
+    // MARK: {Gr|Bl}avatar URLs
 
     public class func avatarURL(withHash hash: String, type: WPAvatarSourceType, size: CGSize) -> NSURL? {
         var url = GravatarBaseUrl
