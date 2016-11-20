@@ -1,21 +1,50 @@
 import Foundation
 
+private enum URLComponent: String {
+    case Blavatar = "blavatar"
+    case Gravatar = "avatar"
+}
+
+private let gravatarURLBase = "gravatar.com"
+
+private let insecureScheme = "http"
+private let secureScheme = "https"
+
 /// Helper class to create a WordPress URL for various download needs, like specifying image size or using Photon.
 public class WPImageURLHelper: NSObject
 {
-    // FIXME: use base urls from constants.m and delete this one
-    static let GravatarBaseUrl = "http://gravatar.com"
 
-    static let photonImageQualityMax: UInt = 100
-    static let photonImageQualityDefault: UInt = 80
-    static let photonImageQualityMin: UInt = 1
     static let defaultBlavatarSize: CGFloat = 40
+
+    private struct GravatarDefaults {
+        static let scheme = secureScheme
+        static let host = "secure.\(gravatarURLBase)"
+        // unknownHash = md5("unknown@gravatar.com")
+        static let unknownHash = "ad516503a11cd5ca435acc9bb6523536"
+    }
+
+    private static var photonRegex: NSRegularExpression? {
+        do {
+            return try NSRegularExpression(pattern: "i\\d+\\.wp\\.com", options: .CaseInsensitive)
+        } catch {
+            // TODO: handle error
+            return nil
+        }
+    }
+    private static let acceptedImageTypes = ["gif", "jpg", "jpeg", "png"]
+    private static let useSSLParameter = "ssl=1"
+
+    private enum PhotonImageQuality: UInt {
+        case Max = 100
+        case Default = 80
+        case Min = 1
+    }
 }
+
+// MARK: General URLs
 
 extension WPImageURLHelper
 {
-    // MARK: General URLs
-
     /**
      Adds to the provided url width and height parameters to allow the image to be resized on the server
 
@@ -58,65 +87,75 @@ extension WPImageURLHelper
     }
 }
 
+// MARK: {Gr|Bl}avatar URLs
+
 extension WPImageURLHelper
 {
-    // MARK: {Gr|Bl}avatar URLs
-
     public class func avatarURL(withHash hash: String, type: WPAvatarSourceType, size: CGSize) -> NSURL? {
-        var url = GravatarBaseUrl
-
+        var subPath: String? = nil
         switch type {
         case .Blavatar:
-            url.appendContentsOf("/blavatar/")
+            subPath = URLComponent.Blavatar.rawValue
             break
         case .Gravatar:
-            url.appendContentsOf("/avatar/")
+            subPath = URLComponent.Gravatar.rawValue
             break
         case .Unknown:
             break
         }
 
-        url.appendContentsOf(String(format:"%@?s=%d&d=identicon", hash, Int(size.width * UIScreen.mainScreen().scale)))
-        return NSURL(string: url)
+        var path = gravatarURLBase
+        if subPath != nil {
+            path = (path as NSString).stringByAppendingPathComponent(subPath!)
+        }
+        path = (path as NSString).stringByAppendingPathComponent(hash)
+
+        let components = NSURLComponents()
+        components.scheme = insecureScheme
+        components.path = path
+        components.queryItems = [
+            NSURLQueryItem(name: "d", value: "identicon"),
+            NSURLQueryItem(name: "s", value: "\(Int(size.width * UIScreen.mainScreen().scale))")
+        ]
+        return components.URL
     }
 }
 
+// MARK: Blavatar URLs
+
 extension WPImageURLHelper
 {
-    // MARK: Blavatar URLs
-
     public class func blavatarURL(forHost host: String, size: NSInteger) -> NSURL? {
-        let urlString = String(format: "%@/%@?d=404&s=%d", WPBlavatarBaseURL, host.md5(), size)
-        return NSURL(string: urlString)
+        let path = (WPGravatarBaseURL as NSString).stringByAppendingPathComponent(host.md5())
+        let components = NSURLComponents(string: path)
+        components?.queryItems = [
+            NSURLQueryItem(name: "d", value: "404"),
+            NSURLQueryItem(name: "s", value: "\(size)")
+        ]
+        return components?.URL
     }
 
     public class func blavatarURL(forBlavatarURL path: String, size: NSInteger) -> NSURL? {
         guard let components = NSURLComponents(string: path) else { return nil }
-        components.query = String(format: "d=404&s=%d", size)
+        components.queryItems = [
+            NSURLQueryItem(name: "d", value: "404"),
+            NSURLQueryItem(name: "s", value: "\(size)")
+        ]
         return components.URL
     }
 }
 
 extension NSString
 {
-    // MARK: Blavatar URLs
-
     func isBlavatarURL() -> Bool {
-        return self.containsString("gravatar.com/blavatar")
+        return self.containsString("\(gravatarURLBase)/\(URLComponent.Blavatar.rawValue)")
     }
 }
 
+// MARK: Gravatar URLs
+
 extension WPImageURLHelper
 {
-    private struct GravatarDefaults {
-        static let scheme = "https"
-        static let host = "secure.gravatar.com"
-        // unknownHash = md5("unknown@gravatar.com")
-        static let unknownHash = "ad516503a11cd5ca435acc9bb6523536"
-    }
-
-    // MARK: Gravatar URLs
-
     /**
      Returns the Gravatar URL, for a given email, with the specified size + rating.
 
@@ -128,8 +167,14 @@ extension WPImageURLHelper
      - Returns: Gravatar's URL
      */
     public class func gravatarURL(forEmail email: String, size: NSInteger, rating: String) -> NSURL? {
-        let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, email.md5(), size, rating)
-        return NSURL(string: targetURL)
+        let path = (WPGravatarBaseURL as NSString).stringByAppendingPathComponent(email.md5())
+        let components = NSURLComponents(string: path)
+        components?.queryItems = [
+            NSURLQueryItem(name: "d", value: "404"),
+            NSURLQueryItem(name: "s", value: "\(size)"),
+            NSURLQueryItem(name: "r", value: "\(rating)")
+        ]
+        return components?.URL
     }
 
     public class func gravatarURL(forURL url: NSURL) -> NSURL? {
@@ -161,20 +206,18 @@ extension WPImageURLHelper
 
 extension NSURL
 {
-    // MARK: Gravatar URLs
-
     func isGravatarURL() -> Bool {
         guard let components = NSURLComponents(URL: self, resolvingAgainstBaseURL: false) else {
             return false
         }
 
         guard let host = components.host
-            where host.hasSuffix(".gravatar.com") else {
+            where host.hasSuffix(".\(gravatarURLBase)") else {
                 return false
         }
 
         guard let path = self.path
-            where path.hasPrefix("/avatar/") else {
+            where path.hasPrefix("/\(URLComponent.Gravatar.rawValue)/") else {
                 return false
         }
 
@@ -182,13 +225,16 @@ extension NSURL
     }
 }
 
+// MARK: Site icon URLs
+
 extension WPImageURLHelper
 {
-    // MARK: Site icon URLs
-
     public class func siteIconURL(forSiteIconURL path: String, size: NSInteger) -> NSURL? {
         guard let components = NSURLComponents(string: path) else { return nil }
-        components.query = String(format: "w=%d&h=%d", size, size)
+        components.queryItems = [
+            NSURLQueryItem(name: "h", value: "\(size)"),
+            NSURLQueryItem(name: "w", value: "\(size)")
+        ]
         return components.URL
     }
 
@@ -198,14 +244,30 @@ extension WPImageURLHelper
                 return nil
             }
 
-            return NSURL(string: String(format: "https://secure.gravatar.com/blavatar/%@/?s=%d&d=404", hash, size))
+            var path = GravatarDefaults.host
+            path = (path as NSString).stringByAppendingPathComponent(URLComponent.Blavatar.rawValue)
+            path = (path as NSString).stringByAppendingPathComponent(hash)
+
+            let components = NSURLComponents()
+            components.scheme = GravatarDefaults.scheme
+            components.path = path
+            components.queryItems = [
+                NSURLQueryItem(name: "d", value: "404"),
+                NSURLQueryItem(name: "s", value: "\(size)")
+            ]
+            return components.URL
         }
 
         if !contentProvider.siteIconURL().containsString("/\(URLComponent.Blavatar.rawValue)/") {
             return NSURL(string: contentProvider.siteIconURL())
         }
 
-        return NSURL(string: String(format: "%@?s=%d&d=404", contentProvider.siteIconURL()))
+        let components = NSURLComponents(string: contentProvider.siteIconURL())
+        components?.queryItems = [
+            NSURLQueryItem(name: "d", value: "404"),
+            NSURLQueryItem(name: "s", value: "\(size)")
+        ]
+        return components?.URL
     }
 
     public class func siteIconURL(forPath path: String?, imageViewBounds bounds: CGRect?) -> NSURL? {
@@ -217,7 +279,10 @@ extension WPImageURLHelper
             else { return nil }
 
         let size = blavatarSizeInPoints(forImageViewBounds: bounds)
-        components.query = String(format: "d=404&s=%d", size)
+        components.queryItems = [
+            NSURLQueryItem(name: "d", value: "404"),
+            NSURLQueryItem(name: "s", value: "\(size)")
+        ]
 
         return components.URL
     }
@@ -233,23 +298,10 @@ extension WPImageURLHelper
     }
 }
 
+// MARK: Photon URLs
+
 extension WPImageURLHelper
 {
-    // MARK: Photon URLs
-
-    private static var photonRegex: NSRegularExpression? {
-        get {
-            do {
-                return try NSRegularExpression(pattern: "i\\d+\\.wp\\.com", options: .CaseInsensitive)
-            } catch {
-                // TODO: handle error
-                return nil
-            }
-        }
-    }
-    private static let acceptedImageTypes = ["gif", "jpg", "jpeg", "png"]
-    private static let useSSLParameter = "ssl=1"
-
     /**
      Create a "photonized" URL from the passed arguments. Kept as a convenient way to use default values for `forceResize` and `imageQuality` parameters from ObjC.
 
@@ -260,7 +312,7 @@ extension WPImageURLHelper
      - returns: A URL to the photon service with the source image as its subject.
      */
     public static func photonDefaultURL(withSize size: CGSize, forImageURL url: NSURL) -> NSURL? {
-        return photonURL(withSize: size, forImageURL: url, forceResize: true, imageQuality: photonImageQualityDefault)
+        return photonURL(withSize: size, forImageURL: url, forceResize: true, imageQuality: PhotonImageQuality.Default.rawValue)
     }
 
     /**
@@ -274,7 +326,7 @@ extension WPImageURLHelper
 
      - returns: A URL to the photon service with the source image as its subject.
      */
-    public static func photonURL(withSize size: CGSize, forImageURL url: NSURL, forceResize: Bool = true, imageQuality: UInt = photonImageQualityDefault) -> NSURL? {
+    public static func photonURL(withSize size: CGSize, forImageURL url: NSURL, forceResize: Bool = true, imageQuality: UInt = PhotonImageQuality.Default.rawValue) -> NSURL? {
 
         guard let urlString = url.absoluteString else {
             return url
@@ -284,14 +336,17 @@ extension WPImageURLHelper
         // Photon will fail if the URL doesn't end in one of the accepted extensions
         guard let pathExtension = url.pathExtension where acceptedImageTypes.contains(pathExtension) else {
             if url.scheme == nil {
-                return NSURL(string: String(format: "http://%@", mutableURLString))
+                let components = NSURLComponents()
+                components.scheme = insecureScheme
+                components.path = urlString
+                return components.URL
             }
             return url
         }
 
         let scale = UIScreen.mainScreen().scale
         let scaledSize = CGSizeApplyAffineTransform(size, CGAffineTransformMakeScale(scale, scale))
-        let boundedQuality = min(max(imageQuality, photonImageQualityMin), photonImageQualityMax)
+        let boundedQuality = min(max(imageQuality, PhotonImageQuality.Min.rawValue), PhotonImageQuality.Max.rawValue)
 
         // If the URL is already a Photon URL reject its photon params, and substitute our own.
         if isURLPhotonURL(url) {
@@ -320,7 +375,7 @@ extension WPImageURLHelper
 
         // Strip original resizing parameters, or we might get an image too small
         let sizeStrippedURL = mutableURLString.componentsSeparatedByString("?w=").first!
-        let queryString = photonQueryString(forSize: scaledSize, usingSSL: url.scheme == "https", forceResize: forceResize, quality: boundedQuality)
+        let queryString = photonQueryString(forSize: scaledSize, usingSSL: url.scheme == secureScheme, forceResize: forceResize, quality: boundedQuality)
         return NSURL(string: String(format: "https://i0.wp.com/%@?%@", sizeStrippedURL, queryString))
     }
 
@@ -352,8 +407,6 @@ extension WPImageURLHelper
 
 extension NSString
 {
-    // MARK: Photon URLs
-
     // Possible matches are "i0.wp.com", "i1.wp.com" & "i2.wp.com" -> https://developer.wordpress.com/docs/photon/
     func isPhotonURL() -> Bool {
         return self.containsString(".wp.com")
