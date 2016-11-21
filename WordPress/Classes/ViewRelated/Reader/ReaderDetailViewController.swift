@@ -283,7 +283,6 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
         textFooterTopConstraint = NSLayoutConstraint(item: textFooterStackView, attribute: .Top, relatedBy: .Equal, toItem: textView, attribute: .Top, multiplier: 1.0, constant: 0.0)
         textView.addConstraint(textFooterTopConstraint)
         textFooterTopConstraint.constant = textView.contentSize.height - textFooterStackView.frame.height
-        textView.setContentOffset(CGPoint.zero, animated: false)
 
         updateContentInsets()
         textView.setContentOffset(CGPoint.zero, animated: false)
