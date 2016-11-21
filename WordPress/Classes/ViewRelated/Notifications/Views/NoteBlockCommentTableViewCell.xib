@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="ipad12_9" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -28,20 +28,14 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="AOG-ko-gpf"/>
-                                <exclude reference="KEp-Kp-Vb8"/>
-                                <exclude reference="ejc-rj-Nvm"/>
                                 <exclude reference="yiY-al-iMr"/>
-                            </mask>
-                        </variation>
-                        <variation key="widthClass=compact">
-                            <mask key="constraints">
-                                <include reference="KEp-Kp-Vb8"/>
-                                <include reference="ejc-rj-Nvm"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="constraints">
                                 <include reference="AOG-ko-gpf"/>
+                                <exclude reference="KEp-Kp-Vb8"/>
+                                <exclude reference="ejc-rj-Nvm"/>
                                 <include reference="yiY-al-iMr"/>
                             </mask>
                         </variation>

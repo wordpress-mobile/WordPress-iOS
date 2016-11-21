@@ -354,10 +354,12 @@ public class ReaderDetailViewController : UIViewController, UIViewControllerRest
     private func configureHeader() {
         // Blavatar
         let placeholder = UIImage(named: "post-blavatar-placeholder")
-        let size = blavatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        let url = post?.siteIconForDisplayOfSize(Int(size))
-        blavatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
+        blavatarImageView.image = placeholder
 
+        let size = blavatarImageView.frame.size.width * UIScreen.mainScreen().scale
+        if let url = post?.siteIconForDisplayOfSize(Int(size)) {
+            blavatarImageView.setImageWithURL(url, placeholderImage: placeholder)
+        }
         // Site name
         let blogName = post?.blogNameForDisplay()
         blogNameButton.setTitle(blogName, forState: .Normal)
