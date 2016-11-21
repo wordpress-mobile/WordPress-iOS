@@ -13,7 +13,6 @@
 #import "WPAppAnalytics.h"
 #import "WPGUIConstants.h"
 #import "WPTableViewCell.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "MenusViewController.h"
