@@ -130,7 +130,7 @@
     ReaderPostServiceRemote *remoteService = nil;
     XCTAssertNoThrow(remoteService = [self service]);
 
-    NSString *str = @"<p>test</p><p >test</p>";
+    NSString *str = @"<p>test</p><p>test</p>";
     NSString *styleStr = @"<p style=\"background-color:#fff;\">test</p><p style=\"background-color:#fff;\">test</p>";
     NSString *sanitizedStr = [remoteService removeInlineStyles:styleStr];
     XCTAssertTrue([str isEqualToString:sanitizedStr], @"The inline styles were not removed.");
