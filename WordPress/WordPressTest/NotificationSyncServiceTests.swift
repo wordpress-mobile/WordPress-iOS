@@ -71,6 +71,46 @@ class NotificationSyncServiceTests: XCTestCase
     }
 
 
+    /// Verifies that the Sync call, when called repeatedly, won't duplicate our local dataset.
+    ///
+    func testMultipleSyncCallsWontInsertDuplicateNotes() {
+        // Stub Endpoint
+        let endpoint = "notifications/"
+        let stubPath = OHPathForFile("notifications-load-all.json", self.dynamicType)!
+        OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
+
+        // Make sure the collection is empty, to begin with
+        let helper = CoreDataHelper<Notification>(context: manager.mainContext)
+        XCTAssert(helper.countObjects() == 0)
+
+        // Shutdown Expectation Warnings. Please
+        manager.requiresTestExpectation = false
+
+        // Wait until all the workers complete
+        let group = dispatch_group_create()
+
+        // CoreData Expectations
+        for _ in 0..<100 {
+            dispatch_group_enter(group)
+
+            let newService = NotificationSyncService(manager: manager, dotcomAPI: dotcomAPI)
+            newService?.sync { _ in
+                dispatch_group_leave(group)
+            }
+        }
+
+        // Verify there's no duplication
+        let expectation = expectationWithDescription("Async!")
+
+        dispatch_group_notify(group, dispatch_get_main_queue()) {
+            XCTAssert(helper.countObjects() == 1)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+    }
+
+
     /// Verifies that RefreshNotification withID effectively loads a single Notification from the remote endpoint.
     ///
     func testSyncNoteEffectivelyReturnsASingleNotification() {
@@ -123,7 +163,6 @@ class NotificationSyncServiceTests: XCTestCase
 
         // Mark as Read!
         service.markAsRead(note) { success in
-
             XCTAssertTrue(note.read)
             expectation.fulfill()
         }
