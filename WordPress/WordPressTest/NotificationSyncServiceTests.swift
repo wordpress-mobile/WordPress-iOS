@@ -22,7 +22,7 @@ class NotificationSyncServiceTests: XCTestCase
 
     /// Expectation's Timeout
     ///
-    private let timeout = NSTimeInterval(0.5)
+    private let timeout = NSTimeInterval(3)
 
 
     // MARK: - Overriden Methods
@@ -33,6 +33,13 @@ class NotificationSyncServiceTests: XCTestCase
         manager = TestContextManager()
         dotcomAPI = WordPressComRestApi(oAuthToken: "1234", userAgent: "yosemite")
         service = NotificationSyncService(manager: manager, dotcomAPI: dotcomAPI)
+
+        // Note:
+        // Since the TestContextManager actually changed, and thus, the entire Core Data stack,
+        // we'll need to manually reset the global shared Derived Context.
+        // This definitely won't be needed in the actual app.
+        //
+        NotificationSyncService.resetSharedDerivedContext()
     }
 
     override func tearDown() {
