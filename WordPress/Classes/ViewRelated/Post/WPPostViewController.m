@@ -1307,6 +1307,7 @@ EditImageDetailsViewControllerDelegate
                                             style:UIAlertActionStyleDestructive
                                           handler:^(UIAlertAction * _Nonnull action) {
                                               self.post.status = PostStatusPublish;
+                                              [self trackSavePostAnalyticsWithStat:WPAnalyticsStatEditorQuickPublishedPost];
                                               [self saveAction];
                                           }];
         } else {
@@ -1314,6 +1315,7 @@ EditImageDetailsViewControllerDelegate
                                             style:UIAlertActionStyleDestructive
                                           handler:^(UIAlertAction * _Nonnull action) {
                                               self.post.status = PostStatusPending;
+                                              [self trackSavePostAnalyticsWithStat:WPAnalyticsStatEditorQuickPublishedPost];
                                               [self saveAction];
                                           }];
         }
@@ -1322,6 +1324,7 @@ EditImageDetailsViewControllerDelegate
                                         style:UIAlertActionStyleDefault
                                       handler:^(UIAlertAction * _Nonnull action) {
                                           self.post.status = PostStatusDraft;
+                                          [self trackSavePostAnalyticsWithStat:WPAnalyticsStatEditorQuickSavedDraft];
                                           [self autosaveContent];
                                           [self refreshNavigationBarButtons:NO];
                                       }];
@@ -1458,7 +1461,8 @@ EditImageDetailsViewControllerDelegate
 - (void)savePost
 {
     DDLogMethod();
-    [self logSavePostStats];
+    WPAnalyticsStat stat = [self statForSaveButtonTitle:[self saveBarButtonItemTitle]];
+    [self trackSavePostAnalyticsWithStat:stat];
 
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
@@ -1528,10 +1532,26 @@ EditImageDetailsViewControllerDelegate
     }
 }
 
-- (void)logSavePostStats
+- (WPAnalyticsStat)statForSaveButtonTitle:(NSString *)title
 {
-    NSString *buttonTitle = [self saveBarButtonItemTitle];
-    
+    if ([title isEqualToString:NSLocalizedString(@"Post", nil)]) {
+        return WPAnalyticsStatEditorPublishedPost;
+    } else if ([title isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
+        return WPAnalyticsStatEditorScheduledPost;
+    } else if ([title isEqualToString:NSLocalizedString(@"Save", nil)]) {
+        return WPAnalyticsStatEditorSavedDraft;
+    } else {
+        return WPAnalyticsStatEditorUpdatedPost;
+    }
+}
+
+- (void)trackSavePostAnalyticsWithStat:(WPAnalyticsStat)stat
+{
+    if (stat == WPAnalyticsStatEditorSavedDraft || stat == WPAnalyticsStatEditorQuickSavedDraft) {
+        [WPAnalytics track:stat];
+        return;
+    }
+
     NSInteger originalWordCount = [self.post.original.content wordCount];
     NSInteger wordCount = [self.post.content wordCount];
     
@@ -1546,20 +1566,14 @@ EditImageDetailsViewControllerDelegate
         properties[WPAppAnalyticsKeyBlogID] = dotComID;
     }
     
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"Post", nil)]) {
+    if (stat == WPAnalyticsStatEditorPublishedPost) {
         properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = @([self.post hasVideo]);
-        
-        [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
-        [WPAnalytics track:WPAnalyticsStatEditorScheduledPost withProperties:properties];
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Save", nil)]) {
-        [WPAnalytics track:WPAnalyticsStatEditorSavedDraft];
-    } else {
-        [WPAnalytics track:WPAnalyticsStatEditorUpdatedPost withProperties:properties];
     }
+
+    [WPAnalytics track:stat withProperties:properties];
 }
 
 /**
