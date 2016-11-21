@@ -15,7 +15,7 @@ class WPRichContentView: UITextView
 {
     struct Constants {
         static let photonQuality = 65
-        static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, -16.0, 0.0)
+        static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
         static let defaultAttachmentHeight = CGFloat(50.0)
     }
 
@@ -48,6 +48,47 @@ class WPRichContentView: UITextView
     }()
 
 
+    let topMarginAttachment = NSTextAttachment()
+    let bottomMarginAttachment = NSTextAttachment()
+
+    var topMargin: CGFloat {
+        get {
+            return topMarginAttachment.bounds.height
+        }
+
+        set {
+            var bounds = topMarginAttachment.bounds
+            bounds.size.height = newValue
+            bounds.size.width = textContainer.size.width
+            topMarginAttachment.bounds = bounds
+
+            if textStorage.length > 0 {
+                let rng = NSRange(location: 0, length: 1)
+                layoutManager.invalidateLayoutForCharacterRange(rng, actualCharacterRange: nil)
+                layoutManager.ensureLayoutForCharacterRange(rng)
+            }
+        }
+    }
+
+    var bottomMargin: CGFloat {
+        get {
+            return bottomMarginAttachment.bounds.height
+        }
+
+        set {
+            var bounds = bottomMarginAttachment.bounds
+            bounds.size.height = newValue
+            bounds.size.width = textContainer.size.width
+            bottomMarginAttachment.bounds = bounds
+
+            if textStorage.length > 1 {
+                let rng = NSRange(location: textStorage.length - 2, length: 1)
+                layoutManager.invalidateLayoutForCharacterRange(rng, actualCharacterRange: nil)
+                layoutManager.ensureLayoutForCharacterRange(rng)
+            }
+        }
+    }
+
     override var textContainerInset: UIEdgeInsets {
         didSet {
             attachmentManager.layoutAttachmentViews()
@@ -75,7 +116,16 @@ class WPRichContentView: UITextView
             let content = style + str
             do {
                 if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(content, defaultDocumentAttributes: nil) {
-                    attributedText = attrTxt
+                    let mattrTxt = NSMutableAttributedString(attributedString: attrTxt)
+
+                    // Ensure the starting paragraph style is applied to the topMarginAttachment else the
+                    // first paragraph might not have the correct line height.
+                    let paraStyle = attrTxt.attribute(NSParagraphStyleAttributeName, atIndex: 0, effectiveRange: nil) as? NSParagraphStyle ?? NSParagraphStyle.defaultParagraphStyle()
+                    mattrTxt.insertAttributedString(NSAttributedString(attachment: topMarginAttachment), atIndex: 0)
+                    mattrTxt.addAttributes([NSParagraphStyleAttributeName: paraStyle], range: NSRange(location: 0, length: 1))
+                    mattrTxt.appendAttributedString(NSAttributedString(attachment: bottomMarginAttachment))
+
+                    attributedText = mattrTxt
                 }
             } catch let error {
                 DDLogSwift.logError("Error converting post content to attributed string: \(error)")
@@ -111,7 +161,6 @@ class WPRichContentView: UITextView
         // Because the attachment manager is a lazy property.
         _ = attachmentManager
 
-        // Remove some of the unnecessary space at the bottom of the scrollable area.
         textContainerInset = Constants.textContainerInset
     }
 
