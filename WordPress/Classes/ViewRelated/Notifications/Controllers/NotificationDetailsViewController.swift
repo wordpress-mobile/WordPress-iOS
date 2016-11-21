@@ -555,7 +555,7 @@ private extension NotificationDetailsViewController
         }
 
         // Setup: Properties
-        // Note: Approve Action is actually a synonym for 'Edition' (Based on Calypso's basecode)
+        // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
         //
         cell.isReplyEnabled     = !hasHorizontallyCompactView() && commentBlock.isActionOn(.Reply)
         cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)

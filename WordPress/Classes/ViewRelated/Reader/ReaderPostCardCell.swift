@@ -1,12 +1,15 @@
 import Foundation
 import WordPressShared
+import Gridicons
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol
 {
     func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
+    func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
     func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
     func readerCellImageRequestAuthToken(cell: ReaderPostCardCell) -> String?
@@ -24,13 +27,12 @@ import WordPressShared
     @IBOutlet private weak var headerBlogButton: UIButton!
     @IBOutlet private weak var blogNameLabel: UILabel!
     @IBOutlet private weak var bylineLabel: UILabel!
-    @IBOutlet private weak var menuButton: UIButton!
+    @IBOutlet private weak var followButton: UIButton!
 
     // Card views
     @IBOutlet private weak var featuredImageView: UIImageView!
     @IBOutlet private weak var titleLabel: ReaderPostCardContentLabel!
     @IBOutlet private weak var summaryLabel: ReaderPostCardContentLabel!
-    @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
     @IBOutlet private weak var actionStackView: UIStackView!
 
@@ -39,8 +41,11 @@ import WordPressShared
     @IBOutlet private weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
+    @IBOutlet private weak var shareButton: UIButton!
+    @IBOutlet private weak var visitButton: UIButton!
     @IBOutlet private weak var likeActionButton: UIButton!
     @IBOutlet private weak var commentActionButton: UIButton!
+    @IBOutlet private weak var menuButton: UIButton!
 
     // Layout Constraints
     @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
@@ -48,7 +53,7 @@ import WordPressShared
     public weak var delegate: ReaderPostCellDelegate?
     public weak var contentProvider: ReaderPostContentProvider?
 
-    private let featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(196.0)
+    private let featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(100.0)
     private var featuredImageDesiredWidth = CGFloat()
 
     private let summaryMaxNumberOfLines = 3
@@ -57,7 +62,7 @@ import WordPressShared
     private var currentLoadedCardImageURL: String?
 
     // MARK: - Accessors
-
+    public var hidesFollowButton = false
     public var enableLoggedInFeatures = true
 
 
@@ -122,6 +127,9 @@ import WordPressShared
         applyStyles()
         applyOpaqueBackgroundColors()
         setupFeaturedImageView()
+        setupVisitButton()
+        setupShareButton()
+        setupMenuButton()
         setupSummaryLabel()
         setupAttributionView()
         setupCommentActionButton()
@@ -131,6 +139,7 @@ import WordPressShared
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureFeaturedImageIfNeeded()
+        configureButtonTitles()
     }
 
 
@@ -165,6 +174,38 @@ import WordPressShared
         likeActionButton.setImage(selectedImage, forState: .Selected)
     }
 
+    private func setupVisitButton() {
+        let size = CGSize(width: 20, height: 20)
+        let title = NSLocalizedString("Visit", comment: "Verb. Button title.  Tap to visit a website.")
+        let icon = Gridicon.iconOfType(.External, withSize: size)
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+
+        visitButton.setTitle(title, forState: .Normal)
+        visitButton.setImage(tintedIcon, forState: .Normal)
+        visitButton.setImage(highlightIcon, forState: .Highlighted)
+    }
+
+    private func setupShareButton() {
+        let size = CGSize(width: 20, height: 20)
+        let icon = Gridicon.iconOfType(.Share, withSize: size)
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+
+        shareButton.setImage(tintedIcon, forState: .Normal)
+        shareButton.setImage(highlightIcon, forState: .Highlighted)
+    }
+
+    private func setupMenuButton() {
+        let size = CGSize(width: 20, height: 20)
+        let icon = Gridicon.iconOfType(.Ellipsis, withSize: size)
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+
+        menuButton.setImage(tintedIcon, forState: .Normal)
+        menuButton.setImage(highlightIcon, forState: .Highlighted)
+    }
+
     /**
         Applies the default styles to the cell's subviews
     */
@@ -173,13 +214,15 @@ import WordPressShared
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
         borderedView.layer.borderWidth = 1.0
 
+        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(blogNameLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
-        WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(commentActionButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeActionButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(visitButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(shareButton)
     }
 
 
@@ -191,7 +234,6 @@ import WordPressShared
         bylineLabel.backgroundColor = UIColor.whiteColor()
         titleLabel.backgroundColor = UIColor.whiteColor()
         summaryLabel.backgroundColor = UIColor.whiteColor()
-        tagButton.titleLabel?.backgroundColor = UIColor.whiteColor()
         commentActionButton.titleLabel?.backgroundColor = UIColor.whiteColor()
         likeActionButton.titleLabel?.backgroundColor = UIColor.whiteColor()
     }
@@ -200,32 +242,47 @@ import WordPressShared
         self.contentProvider = contentProvider
 
         configureHeader()
+        configureFollowButton()
         configureFeaturedImageIfNeeded()
         configureTitle()
         configureSummary()
         configureAttribution()
-        configureTag()
         configureActionButtons()
-        configureActionStackViewIfNeeded()
+        configureButtonTitles()
     }
 
     private func configureHeader() {
+        guard let provider = contentProvider else {
+            return
+        }
+
         // Always reset
-        avatarImageView.image = UIImage(named: "post-blavatar-placeholder")
+        avatarImageView.image = nil
 
         let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        if let url = contentProvider?.siteIconForDisplayOfSize(Int(size)) {
+        if let url = provider.siteIconForDisplayOfSize(Int(size)) {
             avatarImageView.setImageWithURL(url)
+            avatarImageView.hidden = false
+        } else {
+            avatarImageView.hidden = true
         }
 
-        blogNameLabel.text = contentProvider?.blogNameForDisplay()
-
-        var byline = contentProvider?.dateForDisplay()?.shortString() ?? ""
-        if let author = contentProvider?.authorForDisplay() {
-            byline = String(format: "%@ · %@", author, byline)
+        var arr = [String]()
+        if let authorName = provider.authorForDisplay() {
+            arr.append(authorName)
         }
+        if let blogName = provider.blogNameForDisplay() {
+            arr.append(blogName)
+        }
+        blogNameLabel.text = arr.joinWithSeparator(", ")
 
+        let byline = contentProvider?.dateForDisplay()?.shortString() ?? ""
         bylineLabel.text = byline
+    }
+
+    private func configureFollowButton() {
+        followButton.hidden = hidesFollowButton
+        followButton.selected = contentProvider?.isFollowing() ?? false
     }
 
     private func configureFeaturedImageIfNeeded() {
@@ -322,19 +379,6 @@ import WordPressShared
         }
     }
 
-    private func configureTag() {
-        var tag = ""
-        if let rawTag = contentProvider?.primaryTag() {
-            if (rawTag.characters.count > 0) {
-                tag = "#\(rawTag)"
-            }
-        }
-        let hidden = tag.characters.count == 0
-        tagButton.hidden = hidden
-        tagButton.setTitle(tag, forState: .Normal)
-        tagButton.setTitle(tag, forState: .Highlighted)
-    }
-
     private func configureActionButtons() {
         if contentProvider == nil || contentProvider?.sourceAttributionStyle() != SourceAttributionStyle.None {
             resetActionButton(commentActionButton)
@@ -361,9 +405,6 @@ import WordPressShared
 
         likeActionButton.tag = CardAction.Like.rawValue
         likeActionButton.enabled = enableLoggedInFeatures
-
-        let title = contentProvider!.likeCountForDisplay()
-        likeActionButton.setTitle(title, forState: .Normal)
         likeActionButton.selected = contentProvider!.isLiked()
         likeActionButton.hidden = false
     }
@@ -377,9 +418,6 @@ import WordPressShared
             if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().integerValue > 0 {
 
                 commentActionButton.tag = CardAction.Comment.rawValue
-
-                let title = contentProvider?.commentCount().stringValue
-                commentActionButton.setTitle(title, forState: .Normal)
                 commentActionButton.hidden = false
 
                 return
@@ -388,9 +426,54 @@ import WordPressShared
         resetActionButton(commentActionButton)
     }
 
-    private func configureActionStackViewIfNeeded() {
-        let actionsHidden = commentActionButton.hidden && likeActionButton.hidden && tagButton.hidden
-        actionStackView.hidden = actionsHidden
+    private func configureButtonTitles() {
+        guard let provider = contentProvider else {
+            return
+        }
+
+        let likeCount = provider.likeCount().integerValue
+        let commentCount = provider.commentCount().integerValue
+
+        if superview?.frame.width < 480 {
+            // remove title text
+            let likeTitle = likeCount > 0 ?  provider.likeCount().stringValue : ""
+            let commentTitle = commentCount > 0 ? provider.commentCount().stringValue : ""
+            likeActionButton.setTitle(likeTitle, forState: .Normal)
+            commentActionButton.setTitle(commentTitle, forState: .Normal)
+            shareButton.setTitle("", forState: .Normal)
+            followButton.setTitle("", forState: .Normal)
+            followButton.setTitle("", forState: .Selected)
+            followButton.setTitle("", forState: .Highlighted)
+
+            insetFollowButtonIcon(false)
+        } else {
+            // show title text
+
+            let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
+            let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
+            let shareTitle = NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
+            let followTitle = WPStyleGuide.followStringForDisplay(false)
+            let followingTitle = WPStyleGuide.followStringForDisplay(true)
+
+            likeActionButton.setTitle(likeTitle, forState: .Normal)
+            commentActionButton.setTitle(commentTitle, forState: .Normal)
+            shareButton.setTitle(shareTitle, forState: .Normal)
+
+            followButton.setTitle(followTitle, forState: .Normal)
+            followButton.setTitle(followingTitle, forState: .Selected)
+            followButton.setTitle(followingTitle, forState: .Highlighted)
+
+            insetFollowButtonIcon(true)
+        }
+    }
+
+    /// Adds some space between the button and title.
+    /// Setting the titleEdgeInset.left seems to be ignored in IB for whatever reason,
+    /// so we'll add/remove it from the image as needed.
+    private func insetFollowButtonIcon(bool: Bool) {
+        var insets = followButton.imageEdgeInsets
+        insets.right = bool ? 2.0 : 0.0
+        followButton.imageEdgeInsets = insets
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
@@ -420,6 +503,13 @@ import WordPressShared
 
     // MARK: - Actions
 
+    @IBAction func didTapFollowButton(sender: UIButton) {
+        guard let provider = contentProvider else {
+            return
+        }
+        delegate?.readerCell(self, followActionForProvider: provider)
+    }
+
     @IBAction func didTapHeaderBlogButton(sender: UIButton) {
         notifyDelegateHeaderWasTapped()
     }
@@ -428,11 +518,18 @@ import WordPressShared
         delegate?.readerCell(self, menuActionForProvider: contentProvider!, fromView: sender)
     }
 
-    @IBAction func didTapTagButton(sender: UIButton) {
-        if contentProvider == nil {
+    @IBAction func didTapVisitButton(sender: UIButton) {
+        guard let provider = contentProvider else {
             return
         }
-        delegate?.readerCell(self, tagActionForProvider: contentProvider!)
+        delegate?.readerCell(self, visitActionForProvider: provider)
+    }
+
+    @IBAction func didTapShareButton(sender: UIButton) {
+        guard let provider = contentProvider else {
+            return
+        }
+        delegate?.readerCell(self, shareActionForProvider: provider, fromView: sender)
     }
 
     @IBAction func didTapActionButton(sender: UIButton) {

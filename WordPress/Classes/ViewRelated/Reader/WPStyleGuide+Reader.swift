@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import Gridicons
 
 /// A WPStyleGuide extension with styles and methods specific to the Reader feature.
 ///
@@ -192,7 +193,7 @@ extension WPStyleGuide
     public class func applyReaderCardBylineLabelStyle(label:UILabel) {
         let fontSize:CGFloat = Cards.subtextFontSize
         label.font = WPFontManager.systemRegularFontOfSize(fontSize)
-        label.textColor = greyDarken10()
+        label.textColor = greyLighten10()
     }
 
     public class func applyReaderCardTitleLabelStyle(label:UILabel) {
@@ -204,7 +205,7 @@ extension WPStyleGuide
     }
 
     public class func applyReaderCardTagButtonStyle(button:UIButton) {
-        let fontSize = Cards.buttonFontSize
+        let fontSize = Cards.subtextFontSize
         button.setTitleColor(mediumBlue(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
         button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
@@ -212,10 +213,10 @@ extension WPStyleGuide
 
     public class func applyReaderCardActionButtonStyle(button:UIButton) {
         let fontSize = Cards.buttonFontSize
-        button.setTitleColor(greyDarken10(), forState: .Normal)
+        button.setTitleColor(greyLighten10(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
         button.setTitleColor(jazzyOrange(), forState: .Selected)
-        button.setTitleColor(greyDarken10(), forState: .Disabled)
+        button.setTitleColor(greyLighten10(), forState: .Disabled)
         button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
     }
 
@@ -234,36 +235,6 @@ extension WPStyleGuide
         label.textColor = greyDarken10()
     }
 
-    public class func applyReaderStreamHeaderFollowingStyle(button:UIButton) {
-        let fontSize = Cards.buttonFontSize
-        let title = NSLocalizedString("Following", comment: "Gerund. A button label indicating the user is currently subscribed to a topic or site in ther eader. Tapping unsubscribes the user.")
-
-        button.setTitle(title, forState: .Normal)
-        button.setTitle(title, forState: .Highlighted)
-
-        button.setTitleColor(validGreen(), forState: .Normal)
-        button.setTitleColor(lightBlue(), forState: .Highlighted)
-        button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
-
-        button.setImage(UIImage(named: "icon-reader-following"), forState: .Normal)
-        button.setImage(UIImage(named: "icon-reader-follow-highlight"), forState: .Highlighted)
-    }
-
-    public class func applyReaderStreamHeaderNotFollowingStyle(button:UIButton) {
-        let fontSize = Cards.buttonFontSize
-        let title = NSLocalizedString("Follow", comment: "Verb. A button label. Tapping subscribes the user to a topic or site in the reader")
-
-        button.setTitle(title, forState: .Normal)
-        button.setTitle(title, forState: .Highlighted)
-
-        button.setTitleColor(greyLighten10(), forState: .Normal)
-        button.setTitleColor(lightBlue(), forState: .Highlighted)
-        button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
-
-        button.setImage(UIImage(named: "icon-reader-follow"), forState: .Normal)
-        button.setImage(UIImage(named: "icon-reader-follow-highlight"), forState: .Highlighted)
-    }
-
     public class func applyReaderSiteStreamDescriptionStyle(label:UILabel) {
         let fontSize = Cards.contentFontSize
         label.font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
@@ -274,6 +245,64 @@ extension WPStyleGuide
         let fontSize:CGFloat = 12.0
         label.font = WPFontManager.systemRegularFontOfSize(fontSize)
         label.textColor = grey()
+    }
+
+
+    // MARK: - Button Styles and Text
+
+    public class func applyReaderFollowButtonStyle(button: UIButton) {
+        let side = button.titleLabel?.font.pointSize ?? Cards.buttonFontSize
+        let size = CGSize(width: side, height: side)
+        let followStr = followStringForDisplay(false)
+        let followingStr = followStringForDisplay(true)
+
+        let followIcon = Gridicon.iconOfType(.ReaderFollow, withSize: size)
+        let followingIcon = Gridicon.iconOfType(.ReaderFollowing, withSize: size)
+        let tintedFollowIcon = followIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(WPStyleGuide.validGreen())
+        let highlightIcon = followingIcon.imageWithTintColor(WPStyleGuide.lightBlue())
+
+        button.setImage(tintedFollowIcon, forState: .Normal)
+        button.setImage(tintedFollowingIcon, forState: .Selected)
+        button.setImage(highlightIcon, forState: .Highlighted)
+
+        button.setTitle(followStr, forState: .Normal)
+        button.setTitle(followingStr, forState: .Selected)
+        button.setTitle(followingStr, forState: .Highlighted)
+    }
+
+    public class func likeCountForDisplay(count: Int) -> String {
+        let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
+        let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
+
+        if count == 0 {
+            return likeStr
+        } else if count == 1 {
+            return "\(count) \(likeStr)"
+        } else {
+            return "\(count) \(likesStr)"
+        }
+    }
+
+    public class func commentCountForDisplay(count: Int) -> String {
+        let commentStr = NSLocalizedString("Comment", comment: "Text for the 'comment' when there is 1 or 0 comments")
+        let commentsStr = NSLocalizedString("Comments", comment: "Text for the 'comment' button when there are multiple comments")
+
+        if count == 0 {
+            return commentStr
+        } else if count == 1 {
+            return "\(count) \(commentStr)"
+        } else {
+            return "\(count) \(commentsStr)"
+        }
+    }
+
+    public class func followStringForDisplay(isFollowing: Bool) -> String {
+        if isFollowing {
+            return NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
+        } else {
+            return NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
+        }
     }
 
 
