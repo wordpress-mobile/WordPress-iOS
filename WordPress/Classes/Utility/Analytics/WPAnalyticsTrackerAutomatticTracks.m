@@ -251,6 +251,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatEditorPublishedPost:
             eventName = @"editor_post_published";
             break;
+        case WPAnalyticsStatEditorQuickPublishedPost:
+            eventName = @"editor_quick_post_published";
+            break;
+        case WPAnalyticsStatEditorQuickSavedDraft:
+            eventName = @"editor_quick_draft_saved";
+            break;
         case WPAnalyticsStatEditorTappedBlockquote:
             eventName = @"editor_button_tapped";
             eventProperties = @{ TracksEventPropertyButtonKey : @"blockquote" };
