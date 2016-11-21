@@ -22,11 +22,19 @@ class NotificationSyncService
     ///
     private let maximumNotes = 100
 
-    /// Returns the main CoredAta Context
+    /// Main CoreData Context
     ///
     private var mainContext: NSManagedObjectContext {
         return contextManager.mainContext
     }
+
+    /// Thread Safety Helper!
+    ///
+    private static let lock = NSLock()
+
+    /// Shared PrivateContext among all of the Sync Service Instances
+    ///
+    private static var privateContext: NSManagedObjectContext!
 
 
 
@@ -190,7 +198,7 @@ private extension NotificationSyncService
     ///     - completion: Callback to be executed on completion
     ///
     func determineUpdatedNotes(with remoteHashes: [RemoteNotification], completion: ([String] -> Void)) {
-        let derivedContext = contextManager.newDerivedContext()
+        let derivedContext = self.dynamicType.sharedDerivedContext(with: contextManager)
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
         derivedContext.performBlock {
@@ -226,7 +234,7 @@ private extension NotificationSyncService
     ///     - completion: Callback to be executed on completion
     ///
     func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (Void -> Void)? = nil) {
-        let derivedContext = contextManager.newDerivedContext()
+        let derivedContext = self.dynamicType.sharedDerivedContext(with: contextManager)
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
         derivedContext.performBlock {
@@ -252,7 +260,7 @@ private extension NotificationSyncService
     /// - Parameter remoteHashes: Collection of remoteNotifications.
     ///
     func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: (Void -> Void)) {
-        let derivedContext = contextManager.newDerivedContext()
+        let derivedContext = self.dynamicType.sharedDerivedContext(with: contextManager)
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
         derivedContext.performBlock {
@@ -295,5 +303,31 @@ private extension NotificationSyncService
     func notifyNotificationsWereUpdated() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.postNotificationName(NotificationSyncServiceDidUpdateNotifications, object: nil)
+    }
+}
+
+
+
+// MARK: - Thread Safety Helpers
+//
+extension NotificationSyncService
+{
+    /// Returns the current Shared Derived Context, if any. Otherwise, proceeds to create a new 
+    /// derived context, given a specified ContextManager.
+    ///
+    static func sharedDerivedContext(with manager: ContextManager) -> NSManagedObjectContext {
+        lock.lock()
+        if privateContext == nil {
+            privateContext = manager.newDerivedContext()
+        }
+        lock.unlock()
+
+        return privateContext
+    }
+
+    /// Nukes the private Shared Derived Context instance. For unit testing purposes.
+    ///
+    static func resetSharedDerivedContext() {
+        privateContext = nil
     }
 }
