@@ -214,13 +214,13 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="fO8-Q5-Boc">
-                                <rect key="frame" x="12" y="0.0" width="347" height="50"/>
+                                <rect key="frame" x="14" y="0.0" width="345" height="50"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJH-3y-QkU" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
-                                        <rect key="frame" x="0.0" y="0.0" width="347" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="345" height="50"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="lUA-Mu-a4u">
-                                                <rect key="frame" x="0.0" y="8" width="347" height="42"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="345" height="34"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TAQ-jD-BAz" customClass="CircularImageView" customModule="WordPress">
                                                         <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -237,7 +237,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="YBQ-xA-5CN" userLabel="View (spacer)">
-                                                        <rect key="frame" x="117" y="0.0" width="230" height="0.0"/>
+                                                        <rect key="frame" x="117" y="0.0" width="228" height="0.0"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </view>
                                                 </subviews>
@@ -246,8 +246,8 @@
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="lUA-Mu-a4u" secondAttribute="trailing" id="29T-ZN-CUn"/>
-                                            <constraint firstItem="lUA-Mu-a4u" firstAttribute="top" secondItem="UJH-3y-QkU" secondAttribute="top" constant="8" id="Jbh-tW-3mu"/>
-                                            <constraint firstAttribute="bottom" secondItem="lUA-Mu-a4u" secondAttribute="bottom" id="Wvl-3O-WyW"/>
+                                            <constraint firstItem="lUA-Mu-a4u" firstAttribute="top" secondItem="UJH-3y-QkU" secondAttribute="top" id="Jbh-tW-3mu"/>
+                                            <constraint firstAttribute="bottom" secondItem="lUA-Mu-a4u" secondAttribute="bottom" constant="16" id="Wvl-3O-WyW"/>
                                             <constraint firstItem="lUA-Mu-a4u" firstAttribute="leading" secondItem="UJH-3y-QkU" secondAttribute="leading" id="f82-aL-C6b"/>
                                         </constraints>
                                         <connections>
@@ -341,7 +341,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="fO8-Q5-Boc" secondAttribute="trailing" id="UYP-vl-LPm"/>
                             <constraint firstItem="zkd-Io-waS" firstAttribute="top" secondItem="vSH-j9-J3c" secondAttribute="bottom" id="Vka-Mb-bVI"/>
                             <constraint firstItem="fO8-Q5-Boc" firstAttribute="top" secondItem="Ix7-KK-iap" secondAttribute="top" placeholder="YES" id="WVL-tU-5F1"/>
-                            <constraint firstItem="fO8-Q5-Boc" firstAttribute="leading" secondItem="dbo-c9-92a" secondAttribute="leadingMargin" constant="-4" id="ZZ3-Gn-695"/>
+                            <constraint firstItem="fO8-Q5-Boc" firstAttribute="leading" secondItem="dbo-c9-92a" secondAttribute="leadingMargin" constant="-2" id="ZZ3-Gn-695"/>
                             <constraint firstAttribute="trailingMargin" secondItem="vSH-j9-J3c" secondAttribute="trailing" constant="-20" id="b2V-TS-HZt"/>
                             <constraint firstItem="vSH-j9-J3c" firstAttribute="leading" secondItem="dbo-c9-92a" secondAttribute="leadingMargin" constant="-20" id="nJ2-D6-1HV"/>
                             <constraint firstItem="Ix7-KK-iap" firstAttribute="top" secondItem="hvd-Zh-euc" secondAttribute="bottom" id="smk-m1-FPg"/>
