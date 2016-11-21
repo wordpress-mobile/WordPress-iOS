@@ -189,7 +189,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, commit `7d02c77349245c6e4d3bcdf63a878f90eb4a4e39`)
   - WordPress-iOS-Editor (= 1.8.1)
   - WordPress-iOS-Shared (= 0.7.0)
-  - WordPressCom-Analytics-iOS (= 0.1.20)
+  - WordPressCom-Analytics-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git`, branch `try/add-quick-save-events`)
   - WordPressCom-Stats-iOS (= 0.8.0)
   - WordPressComKit (= 0.0.5)
   - WPMediaPicker (~> 0.10.2)
@@ -208,6 +208,9 @@ EXTERNAL SOURCES:
   WordPress-Aztec-iOS:
     :commit: 7d02c77349245c6e4d3bcdf63a878f90eb4a4e39
     :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
+  WordPressCom-Analytics-iOS:
+    :branch: try/add-quick-save-events
+    :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -222,6 +225,9 @@ CHECKOUT OPTIONS:
   WordPress-Aztec-iOS:
     :commit: 7d02c77349245c6e4d3bcdf63a878f90eb4a4e39
     :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
+  WordPressCom-Analytics-iOS:
+    :commit: aef9957069eac3702f70cdf5bbe0f94944ed9d77
+    :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 00d6f4caae77c19ba33045b8569fbeb9689f0d1d
@@ -263,6 +269,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 9ba8c29a1de4b07696356f541c01eeaa6dd14c47
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 886887e9e707c41aa2da8cf72bb29f8e84bc3f5e
+PODFILE CHECKSUM: f85f281a27ef394c9bfe2ff050efa3d140fa32f3
 
 COCOAPODS: 1.1.1
