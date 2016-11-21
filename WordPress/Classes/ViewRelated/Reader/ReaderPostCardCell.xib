@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="484"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="IB3-vN-rW4" id="519-Nh-f7o">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="483"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="483.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kha-YG-ZlO">
@@ -58,7 +58,7 @@
                                         <rect key="frame" x="246" y="0.0" width="42" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="tjN-kA-gzY"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="32" id="vEX-wI-AX2"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="32" id="vEX-wI-AX2"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
