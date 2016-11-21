@@ -113,6 +113,18 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     }
 
     func loadContentURL(url: NSURL) {
+        var url = url
+        if  let absoluteString = url.absoluteString,
+            let components = NSURLComponents(string: absoluteString) {
+                if components.scheme == nil {
+                    components.scheme = "http"
+                }
+            if  let componentStr = components.string,
+                let componentURL = NSURL(string: componentStr) {
+                    url = componentURL
+            }
+        }
+
         contentURL = url
         let request = NSURLRequest(URL: url)
         webView.loadRequest(request)
@@ -165,7 +177,10 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     }
 
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
-        DDLogSwift.logError(error.localizedDescription)
+        if let url = contentURL {
+            DDLogSwift.logError("RichTextEmbed failed to load content URL: \(url).")
+        }
+        DDLogSwift.logError("Error: \(error.localizedDescription)")
     }
 
 }
