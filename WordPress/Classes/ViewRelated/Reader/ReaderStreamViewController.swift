@@ -672,10 +672,6 @@ import WordPressComAnalytics
     ///     - fromView: The view to anchor a popover.
     ///
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
-        guard let topic = readerTopic else {
-            return
-        }
-
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
@@ -692,7 +688,7 @@ import WordPressComAnalytics
         }
 
         // Following
-        if ReaderHelpers.topicIsFollowing(topic) {
+        if isLoggedIn {
             let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
             alertController.addActionWithTitle(buttonTitle,
                 style: .Default,
