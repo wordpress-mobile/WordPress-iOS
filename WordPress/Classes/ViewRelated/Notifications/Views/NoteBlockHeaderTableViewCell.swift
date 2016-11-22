@@ -57,12 +57,6 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
         headerDetailsLabel.font = Style.headerDetailsRegularFont
         headerDetailsLabel.textColor = Style.headerDetailsColor
         gravatarImageView.image = Style.gravatarPlaceholderImage
-
-        // iPad: Use a bigger image size!
-        if UIDevice.isPad() {
-            gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
-            gravatarImageView.updateConstraint(.Width, constant: gravatarImageSizePad.height)
-        }
     }
 
     // MARK: - Overriden Methods
@@ -76,7 +70,6 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
     private typealias Style = WPStyleGuide.Notifications
 
     // MARK: - Private
-    private let gravatarImageSizePad = CGSize(width: 36.0, height: 36.0)
     private var gravatarURL: NSURL?
 
     // MARK: - IBOutlets
