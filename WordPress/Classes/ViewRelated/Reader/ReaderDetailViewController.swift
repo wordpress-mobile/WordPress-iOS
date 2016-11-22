@@ -303,6 +303,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
         insets.left = margin - DetailConstants.MarginOffset
         insets.right = margin - DetailConstants.MarginOffset
         textView.textContainerInset = insets
+        textView.layoutIfNeeded()
     }
 
 
