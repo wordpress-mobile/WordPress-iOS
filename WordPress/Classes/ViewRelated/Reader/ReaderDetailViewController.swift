@@ -165,7 +165,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        composeViews()
+        setupContentHeaderAndFooter()
         textView.alpha = 0
         footerView.hidden = true
 
@@ -216,9 +216,10 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-        coordinator.animateAlongsideTransition(nil) { (_) in
+        coordinator.animateAlongsideTransition(nil, completion: { (_) in
             self.updateContentInsets()
-        }
+            self.updateTextViewMargins()
+        })
 
         // Make sure that the bars are visible after switching from landscape
         // to portrait orientation.  The content might have been scrollable in landscape
@@ -275,41 +276,56 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
     }
 
 
-    private func composeViews() {
+    /// Composes the views for the post header and Discover attribution.
+    private func setupContentHeaderAndFooter() {
         textView.addSubview(textHeaderStackView)
         textHeaderStackView.topAnchor.constraintEqualToAnchor(textView.topAnchor).active = true
 
         textView.addSubview(textFooterStackView)
-        textFooterTopConstraint = NSLayoutConstraint(item: textFooterStackView, attribute: .Top, relatedBy: .Equal, toItem: textView, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        textFooterTopConstraint = NSLayoutConstraint(item: textFooterStackView,
+                                                     attribute: .Top,
+                                                     relatedBy: .Equal,
+                                                     toItem: textView,
+                                                     attribute: .Top,
+                                                     multiplier: 1.0,
+                                                     constant: 0.0)
         textView.addConstraint(textFooterTopConstraint)
         textFooterTopConstraint.constant = textView.contentSize.height - textFooterStackView.frame.height
-
-        updateContentInsets()
         textView.setContentOffset(CGPoint.zero, animated: false)
     }
 
 
+    /// Sets the left and right textContainerInset to preserve readable content margins.
     private func updateContentInsets() {
         var insets = textView.textContainerInset
-        insets.top = textHeaderStackView.frame.height
-        insets.bottom = textFooterStackView.frame.height
 
         let margin = view.readableContentGuide.layoutFrame.origin.x
         insets.left = margin - DetailConstants.MarginOffset
         insets.right = margin - DetailConstants.MarginOffset
         textView.textContainerInset = insets
-
-        textFooterTopConstraint.constant = textFooterOffset()
     }
 
-    private func textFooterOffset() -> CGFloat {
+
+    /// Returns the y position for the textfooter. Assign to the textFooter's top
+    /// constraint constant to correctly position the view.
+    private func textFooterYOffset() -> CGFloat {
         let length = textView.textStorage.length
         if length == 0 {
             return textView.contentSize.height - textFooterStackView.frame.height
         }
         let range = NSRange(location: length - 1, length: 0)
         let frame = textView.frameForTextInRange(range)
-        return frame.maxY
+        return frame.minY
+    }
+
+
+    /// Updates the bounds of the placeholder top and bottom text attachments so
+    /// there is enough vertical space for the text header and footer views.
+    private func updateTextViewMargins() {
+        textView.topMargin = textHeaderStackView.frame.height
+        textView.bottomMargin = textFooterStackView.frame.height
+
+        textFooterTopConstraint.constant = textFooterYOffset()
     }
 
 
@@ -457,6 +473,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
         super.viewWillLayoutSubviews()
 
         updateContentInsets()
+        updateTextViewMargins()
     }
 
 
@@ -485,7 +502,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
         featuredImageView.addGestureRecognizer(tgr)
 
         view.layoutIfNeeded()
-        updateContentInsets()
+        updateTextViewMargins()
     }
 
 
@@ -548,6 +565,8 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
         }
         textView.isPrivate = post.isPrivate()
         textView.content = post.contentForDisplay()
+
+        updateTextViewMargins()
     }
 
 
@@ -1003,14 +1022,6 @@ extension ReaderDetailViewController: WPRichContentViewDelegate
 
 extension ReaderDetailViewController : UIScrollViewDelegate
 {
-
-    public func scrollViewDidScroll(scrollView: UIScrollView) {
-        let height = textFooterOffset()
-        if height != textFooterTopConstraint.constant {
-            textFooterTopConstraint.constant = height
-        }
-    }
-
 
     public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if UIDevice.isPad() || footerView.hidden || !isLoaded {
