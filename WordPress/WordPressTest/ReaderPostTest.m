@@ -15,23 +15,22 @@
     ReaderPost *post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
                                          inManagedObjectContext:context];
 
-    XCTAssertNil([post siteIconForDisplayOfSize:50]);
-    NSString *hash = [@"blog.example.com" md5];
-    NSURL *blavatarURL = [WPImageURLHelper siteIconURLForContentProvider:post size:50];
+    XCTAssertNil([WPImageURLHelper siteIconURLForContentProvider:post size:50]);
 
     NSString *iconURL = @"http://example.com/icon.png";
     post.siteIconURL = iconURL;
 
-    NSString *iconForDisplay = [[post siteIconForDisplayOfSize:50] absoluteString];
+    NSString *iconForDisplay = [[WPImageURLHelper siteIconURLForContentProvider:post size:50] absoluteString];
 
-    XCTAssertTrue([iconURL isEqualToString:iconForDisplay]);
+    XCTAssertTrue([iconURL isEqualToString:iconForDisplay], @"Expected %@ but got %@", iconURL, iconForDisplay);
 
 
     iconURL = @"http://example.com/blavatar/icon.png";
     post.siteIconURL = iconURL;
-    iconForDisplay = [[post siteIconForDisplayOfSize:50] absoluteString];
+    iconForDisplay = [[WPImageURLHelper siteIconURLForContentProvider:post size:50] absoluteString];
 
-    XCTAssertTrue([@"http://example.com/blavatar/icon.png?s=50&d=404" isEqualToString:iconForDisplay]);
+    NSString *blavatarURL = @"http://example.com/blavatar/icon.png?d=404&s=50";
+    XCTAssertTrue([blavatarURL isEqualToString:iconForDisplay], @"Expected %@ but got %@", blavatarURL, iconForDisplay);
 }
 
 - (void)testDisplayDate

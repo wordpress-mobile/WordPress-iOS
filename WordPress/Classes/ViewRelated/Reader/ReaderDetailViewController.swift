@@ -403,7 +403,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
         blavatarImageView.image = placeholder
 
         let size = blavatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        if let url = post?.siteIconForDisplayOfSize(Int(size)) {
+        if let post = post, let url = WPImageURLHelper.siteIconURL(forContentProvider: post, size: Int(size)) {
             blavatarImageView.setImageWithURL(url, placeholderImage: placeholder)
         } else {
             blavatarImageView.image = placeholder

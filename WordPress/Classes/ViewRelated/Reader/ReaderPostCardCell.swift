@@ -260,7 +260,7 @@ import Gridicons
         avatarImageView.image = nil
 
         let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        if let url = provider.siteIconForDisplayOfSize(Int(size)) {
+        if let url = WPImageURLHelper.siteIconURL(forContentProvider: provider, size: Int(size)) {
             avatarImageView.setImageWithURL(url)
             avatarImageView.hidden = false
         } else {
