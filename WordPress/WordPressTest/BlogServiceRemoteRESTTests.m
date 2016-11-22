@@ -14,6 +14,15 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
 @implementation BlogServiceRemoteRESTTests
 
+#pragma mark - Overriden Methods
+
+- (void)tearDown
+{
+    [super tearDown];
+    [OHHTTPStubs removeAllStubs];
+}
+
+
 #pragma mark - Checking multi author for a blog
 
 - (void)testThatCheckMultiAuthorForBlogWorks
@@ -112,20 +121,14 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 - (void)testSyncBlogSettingsParsesCorrectlyEveryField
 {
     NSNumber *blogID                = @(123);
-    NSString *path                  = [NSString stringWithFormat:@"v1.1/sites/%@/settings", blogID];
-    NSString *mockResponse          = @"rest-site-settings.json";
-    
-    WordPressComRestApi *api            = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
+    NSString *endpoint              = [NSString stringWithFormat:@"v1.1/sites/%@/settings", blogID];
+    NSString *responsePath          = OHPathForFile(@"rest-site-settings.json", self.class);
+
+    WordPressComRestApi *api        = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
     BlogServiceRemoteREST *service  = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blogID];
     XCTAssertNotNil(service, @"Error while creating the new service");
-    
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-        return [[request.URL absoluteString] containsString:path];
-    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        NSString* fixture = OHPathForFile(mockResponse, self.class);
-        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
-                                                statusCode:200 headers:@{@"Content-Type":@"application/json"}];
-    }];
+
+    [OHHTTPStubs stubRequestForEndpoint:endpoint withFileAtPath:responsePath];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Site Settings"];
     
