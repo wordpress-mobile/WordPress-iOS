@@ -4,7 +4,6 @@
 #import "ContextManager.h"
 #import "ReaderPostService.h"
 #import "ReaderPost.h"
-#import "ReaderSiteServiceRemote.h"
 #import "ReaderTopicService.h"
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
