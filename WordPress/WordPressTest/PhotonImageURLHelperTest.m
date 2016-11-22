@@ -42,17 +42,13 @@
 {
     // arbitrary size
     CGSize size = CGSizeMake(300, 150);
-    NSString *domainPathQueryStringForImage = @"https://blog.example.com/mshots/wp-content/images/image-name.jpg?w=1000";
+    NSString *basePath = @"https://blog.example.com/mshots/wp-content/images/image-name.jpg";
+    NSString *query = @"?w=1000";
+    NSString *domainPathQueryStringForImage = [NSString stringWithFormat:@"%@%@", basePath, query];
     NSURL *photonURL = [WPImageURLHelper photonDefaultURLWithSize:size forImageURL:[NSURL URLWithString:domainPathQueryStringForImage]];
 
-    // FIXME: there are several bugs in the mshots codepath that will be fixed in a later commit:
-    // - should have a scheme
-    // - should not append a query string after the existing query string
-    // - the width and height parameter values in the url string seem to be accidentally computed with the value of a pointer location: it changes every run of the test
-    NSString *expectedString = @"blog.example.com/mshots/wp-content/images/image-name.jpg?w=";
-    XCTAssert([photonURL.absoluteString containsString:expectedString], @"expected \"%@\" to contain the substring \"%@\"", photonURL.absoluteString, expectedString);
-    XCTAssertFalse([photonURL.absoluteString containsString:@"http"]);
-    XCTAssert([[photonURL.absoluteString stringByReplacingOccurrencesOfString:expectedString withString:@""] containsString:@"?w="]);
+    XCTAssert([photonURL.absoluteString containsString:basePath], @"expected \"%@\" to contain the substring \"%@\"", photonURL.absoluteString, basePath);
+    XCTAssert([[photonURL.absoluteString stringByReplacingOccurrencesOfString:basePath withString:@""] isEqualToString:@"?w=300&h=150"]);
 }
 
 - (void)testPhotonURLReturnsUnChanged

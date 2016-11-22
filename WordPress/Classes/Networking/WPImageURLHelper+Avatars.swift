@@ -35,8 +35,8 @@ extension WPImageURLHelper
         components.scheme = RequestScheme.Insecure.rawValue
         components.path = path
         components.queryItems = [
-            NSURLQueryItem(name: "d", value: "identicon"),
-            NSURLQueryItem(name: "s", value: "\(Int(size.width * UIScreen.mainScreen().scale))")
+            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.Identicon.rawValue),
+            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(Int(size.width * UIScreen.mainScreen().scale))")
         ]
         return components.URL
     }
@@ -50,8 +50,8 @@ extension WPImageURLHelper
         let path = (WPGravatarBaseURL as NSString).stringByAppendingPathComponent(host.md5())
         let components = NSURLComponents(string: path)
         components?.queryItems = [
-            NSURLQueryItem(name: "d", value: "404"),
-            NSURLQueryItem(name: "s", value: "\(size)")
+            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
+            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
         ]
         return components?.URL
     }
@@ -59,8 +59,8 @@ extension WPImageURLHelper
     public class func blavatarURL(forBlavatarURL path: String, size: NSInteger) -> NSURL? {
         guard let components = NSURLComponents(string: path) else { return nil }
         components.queryItems = [
-            NSURLQueryItem(name: "d", value: "404"),
-            NSURLQueryItem(name: "s", value: "\(size)")
+            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
+            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
         ]
         return components.URL
     }
@@ -84,9 +84,9 @@ extension WPImageURLHelper
         let path = (WPGravatarBaseURL as NSString).stringByAppendingPathComponent(email.md5())
         let components = NSURLComponents(string: path)
         components?.queryItems = [
-            NSURLQueryItem(name: "d", value: "404"),
-            NSURLQueryItem(name: "s", value: "\(size)"),
-            NSURLQueryItem(name: "r", value: "\(rating)")
+            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
+            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)"),
+            NSURLQueryItem(name: ImageURLQueryField.Rating.rawValue, value: "\(rating)")
         ]
         return components?.URL
     }

@@ -15,8 +15,8 @@ extension WPImageURLHelper
     public class func siteIconURL(forSiteIconURL path: String, size: NSInteger) -> NSURL? {
         guard let components = NSURLComponents(string: path) else { return nil }
         components.queryItems = [
-            NSURLQueryItem(name: "h", value: "\(size)"),
-            NSURLQueryItem(name: "w", value: "\(size)")
+            NSURLQueryItem(name: ImageURLQueryField.Height.rawValue, value: "\(size)"),
+            NSURLQueryItem(name: ImageURLQueryField.Width.rawValue, value: "\(size)")
         ]
         return components.URL
     }
@@ -35,8 +35,8 @@ extension WPImageURLHelper
             components.scheme = GravatarDefaults.scheme
             components.path = path
             components.queryItems = [
-                NSURLQueryItem(name: "d", value: "404"),
-                NSURLQueryItem(name: "s", value: "\(size)")
+                NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
+                NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
             ]
             return components.URL
         }
@@ -47,8 +47,8 @@ extension WPImageURLHelper
 
         let components = NSURLComponents(string: contentProvider.siteIconURL())
         components?.queryItems = [
-            NSURLQueryItem(name: "d", value: "404"),
-            NSURLQueryItem(name: "s", value: "\(size)")
+            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
+            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
         ]
         return components?.URL
     }
@@ -63,8 +63,8 @@ extension WPImageURLHelper
 
         let size = blavatarSizeInPoints(forImageViewBounds: bounds)
         components.queryItems = [
-            NSURLQueryItem(name: "d", value: "404"),
-            NSURLQueryItem(name: "s", value: "\(size)")
+            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
+            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
         ]
 
         return components.URL

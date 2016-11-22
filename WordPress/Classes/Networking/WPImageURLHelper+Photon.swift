@@ -10,16 +10,49 @@ import Foundation
 
 extension WPImageURLHelper
 {
-    private static var photonRegex: NSRegularExpression? {
-        do {
-            return try NSRegularExpression(pattern: "i\\d+\\.wp\\.com", options: .CaseInsensitive)
-        } catch {
-            // TODO: handle error
-            return nil
-        }
-    }
     private static let acceptedImageTypes = ["gif", "jpg", "jpeg", "png"]
-    private static let useSSLParameter = "ssl=1"
+
+    private enum PhotonSubdomain: String {
+        case Zero = "i0"
+        case One = "i1"
+        case Two = "i2"
+    }
+
+    private enum PhotonQueryFields: String {
+        case SSL = "ssl"
+        case Quality = "quality"
+        case Resize = "resize"
+        case Fit = "fit"
+        case Crop = "crop"
+        case AddLetterbox = "lb"
+        case RemoveLetterBox = "ulb"
+        case Filter = "filter"
+        case Brightness = "brightness"
+        case Contrast = "contrast"
+        case Colorize = "colorize"
+        case Smooth = "smooth"
+        case Zoom = "zoom"
+        case Strip = "strip"
+    }
+
+    private enum PhotonFilterValue: String {
+        case Negate = "negate"
+        case Grayscale = "grayscale"
+        case Sepia = "sepia"
+        case EdgeDetect = "edgedetect"
+        case Emboss = "emboss"
+        case BlurGaussian = "blurgaussian"
+        case BlurSelective = "blurselective"
+        case MeanRemoval = "meanremoval"
+    }
+
+    private enum PhotonStipValue: String {
+        case All = "all"
+    }
+
+    private enum PhotonSSLValue: String {
+        case Enabled = "1"
+    }
 
     private enum PhotonImageQuality: UInt {
         case Max = 100
@@ -52,11 +85,13 @@ extension WPImageURLHelper
      - returns: A URL to the photon service with the source image as its subject.
      */
     public static func photonURL(withSize size: CGSize, forImageURL url: NSURL, forceResize: Bool = true, imageQuality: UInt = PhotonImageQuality.Default.rawValue) -> NSURL? {
-
-        guard let urlString = url.absoluteString else {
-            return url
+        guard
+            let urlString = url.absoluteString,
+            let urlComponents = NSURLComponents(URL: url, resolvingAgainstBaseURL: true),
+            let urlPath = urlComponents.path
+            else {
+                return url
         }
-        let mutableURLString = NSMutableString(string: urlString)
 
         // Photon will fail if the URL doesn't end in one of the accepted extensions
         guard let pathExtension = url.pathExtension where acceptedImageTypes.contains(pathExtension) else {
@@ -74,58 +109,55 @@ extension WPImageURLHelper
         let boundedQuality = min(max(imageQuality, PhotonImageQuality.Min.rawValue), PhotonImageQuality.Max.rawValue)
 
         // If the URL is already a Photon URL reject its photon params, and substitute our own.
-        if isURLPhotonURL(url) {
-            var components = mutableURLString.componentsSeparatedByString("?")
-            if components.count == 2 {
-                let useSSL = mutableURLString.containsString(useSSLParameter)
-                components[1] = self.photonQueryString(forSize: scaledSize, usingSSL: useSSL, forceResize: forceResize, quality: boundedQuality)
-                return NSURL(string: components.joinWithSeparator("?"))
+        if urlString.isPhotonURL() {
+            if urlComponents.queryItems != nil {
+                let useSSL = urlComponents.queryItems!.contains({ queryItem -> Bool in
+                    return queryItem.name == PhotonQueryFields.SSL.rawValue && queryItem.value == PhotonSSLValue.Enabled.rawValue
+                })
+                urlComponents.queryItems = self.photonQueryItems(forSize: scaledSize, usingSSL: useSSL, forceResize: forceResize, quality: boundedQuality)
+                return urlComponents.URL
             }
+
             // Saftey net. Don't photon photon!
             return url
         }
 
-        // remove the protocol ("http" or "https") from the working url string
-        let protocolRange = mutableURLString.rangeOfString("^https?://", options: .RegularExpressionSearch)
-        mutableURLString.deleteCharactersInRange(protocolRange)
-
         // Photon rejects resizing mshots
-        if mutableURLString.containsString("/mshots/") {
-            mutableURLString.appendFormat("?w=%i", size.width)
+        if urlPath.containsString("/mshots/") {
+            urlComponents.queryItems = [ NSURLQueryItem(name: ImageURLQueryField.Width.rawValue, value: "\(Int(size.width))") ]
+
             if scaledSize.height != 0 { // ???: the original only tested for equality to 0. What if height < 0?
-                mutableURLString.appendFormat("&h=%i", size.height)
+                urlComponents.queryItems!.append(NSURLQueryItem(name: ImageURLQueryField.Height.rawValue, value: "\(Int(size.height))"))
             }
-            return NSURL(string: mutableURLString as String)
+            return urlComponents.URL
         }
 
         // Strip original resizing parameters, or we might get an image too small
-        let sizeStrippedURL = mutableURLString.componentsSeparatedByString("?w=").first!
-        let queryString = photonQueryString(forSize: scaledSize, usingSSL: url.scheme == RequestScheme.Secure.rawValue, forceResize: forceResize, quality: boundedQuality)
-        return NSURL(string: String(format: "https://i0.wp.com/%@?%@", sizeStrippedURL, queryString))
+        urlComponents.scheme = RequestScheme.Secure.rawValue
+        urlComponents.host = "\(PhotonSubdomain.Zero.rawValue).\(wordpressURLBase)"
+        urlComponents.queryItems = photonQueryItems(forSize: scaledSize, usingSSL: url.scheme == RequestScheme.Secure.rawValue, forceResize: forceResize, quality: boundedQuality)
+        return urlComponents.URL
     }
 
-    private static func photonQueryString(forSize size: CGSize, usingSSL useSSL: Bool, forceResize: Bool, quality: UInt) -> String {
-        var queryString: NSMutableString
+    private static func photonQueryItems(forSize size: CGSize, usingSSL useSSL: Bool, forceResize: Bool, quality: UInt) -> [NSURLQueryItem] {
+        var items: [NSURLQueryItem] = []
+
+        // size query item
         if size.height == 0 {
-            queryString = NSMutableString(format: "w=%i", size.width)
+            items.append(NSURLQueryItem(name: ImageURLQueryField.Width.rawValue, value: "\(size.width)"))
         } else {
-            let method = forceResize ? "resize" : "fit"
-            queryString = NSMutableString(format: "%@=%.0f,%.0f", method, size.width, size.height)
+            let method = forceResize ? PhotonQueryFields.Resize : PhotonQueryFields.Fit
+            items.append(NSURLQueryItem(name: method.rawValue, value: "\(Int(size.width)),\(Int(size.height))"))
         }
 
+        // ssl
         if useSSL {
-            queryString.appendFormat("&%@", useSSLParameter)
+            items.append(NSURLQueryItem(name: PhotonQueryFields.SSL.rawValue, value: PhotonSSLValue.Enabled.rawValue))
         }
 
-        return String(format: "quality=%d&%@", quality, queryString)
+        // quality
+        items.append(NSURLQueryItem(name: PhotonQueryFields.Quality.rawValue, value: "\(quality)"))
+
+        return items
     }
-
-    private static func isURLPhotonURL(url: NSURL) -> Bool {
-        guard let host = url.host else {
-            return false
-        }
-
-        return photonRegex?.numberOfMatchesInString(host, options: NSMatchingOptions(rawValue: UInt(0)), range: NSRange(location: 0, length: host.characters.count)) > 0
-    }
-
 }

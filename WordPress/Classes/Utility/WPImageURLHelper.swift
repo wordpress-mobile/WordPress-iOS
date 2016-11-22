@@ -20,7 +20,34 @@ public class WPImageURLHelper: NSObject
         case Gravatar = "avatar"
     }
 
+    enum ImageURLQueryField: String {
+        case Width = "w"
+        case Height = "h"
+        case Size = "s"
+        case Default = "d"
+        case ForceDefault = "f"
+        case Rating = "r"
+    }
+
+    enum ImageDefaultValue: String {
+        case None = "404"
+        case MysteryMan = "mm"
+        case Identicon = "identicon"
+        case MonsterID = "monsterid"
+        case Wavatar = "wavatar"
+        case Retro = "retro"
+        case Blank = "blank"
+    }
+
+    enum ImageRatingValue: String {
+        case G = "g"
+        case PG = "pg"
+        case R = "r"
+        case X = "x"
+    }
+
     static let gravatarURLBase = "gravatar.com"
+    static let wordpressURLBase = "wp.com"
 }
 
 // MARK: General URLs
@@ -44,7 +71,7 @@ extension WPImageURLHelper
         var newQueryItems = [NSURLQueryItem]()
         if let queryItems = urlComponents.queryItems {
             for queryItem in queryItems {
-                if queryItem.name != "w" && queryItem.name != "h" {
+                if queryItem.name != ImageURLQueryField.Width.rawValue && queryItem.name != ImageURLQueryField.Height.rawValue {
                     newQueryItems.append(queryItem)
                 }
             }
@@ -52,12 +79,12 @@ extension WPImageURLHelper
         let height = Int(size.height)
         let width = Int(size.width)
         if height != 0 {
-            let heightItem = NSURLQueryItem(name:"h", value:"\(height)")
+            let heightItem = NSURLQueryItem(name:ImageURLQueryField.Height.rawValue, value:"\(height)")
             newQueryItems.append(heightItem)
         }
 
         if width != 0 {
-            let widthItem = NSURLQueryItem(name:"w", value:"\(width)")
+            let widthItem = NSURLQueryItem(name:ImageURLQueryField.Width.rawValue, value:"\(width)")
             newQueryItems.append(widthItem)
         }
 
