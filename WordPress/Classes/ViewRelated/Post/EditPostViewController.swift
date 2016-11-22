@@ -10,6 +10,11 @@ import UIKit
 
 class EditPostViewController: UIViewController {
 
+    /// appear instantly, without animations
+    var showImmediately: Bool = false
+    /// appear with the media picker open
+    var openWithMediaPicker: Bool = false
+
     private(set) var post:Post?
     private var hasShownEditor = false
     private(set) lazy var blog:Blog = {
@@ -18,7 +23,6 @@ class EditPostViewController: UIViewController {
         return blogService.lastUsedOrFirstBlog()!
     }()
     private lazy var postPost: PostPostViewController = {
-//        PostPostViewController *postPostVC = (PostPostViewController *) [[UIStoryboard storyboardWithName:@"PostPost" bundle:nil] instantiateViewControllerWithIdentifier:@"PostPostViewController"];
         return UIStoryboard(name: "PostPost", bundle: nil).instantiateViewControllerWithIdentifier("PostPostViewController") as! PostPostViewController
     }()
 
@@ -78,6 +82,8 @@ class EditPostViewController: UIViewController {
         }
         self.modalPresentationStyle = .FullScreen
         self.modalTransitionStyle = .CrossDissolve
+        self.restorationIdentifier = RestorationKey.viewController.rawValue
+        self.restorationClass = EditPostViewController.self
     }
 
     // TODO: make sure state restoration is working
@@ -186,8 +192,6 @@ class EditPostViewController: UIViewController {
         }
 
         let navController = UINavigationController(rootViewController: editPostViewController)
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
-        navController.restorationClass = WPLegacyEditPostViewController.self
         navController.modalPresentationStyle = .FullScreen
 
         return navController
@@ -246,6 +250,45 @@ class EditPostViewController: UIViewController {
         self.dismissViewControllerAnimated(false) {
             // dismiss self
             self.dismissViewControllerAnimated(false) {}
+        }
+    }
+}
+
+// MARK: - State Restoration
+//
+extension EditPostViewController: UIViewControllerRestoration
+{
+    enum RestorationKey: String {
+        case viewController = "EditPostViewControllerRestorationID"
+        case post = "EditPostViewControllerPostRestorationID"
+    }
+
+    class func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        guard let identifier = identifierComponents.last as? String where identifier == RestorationKey.viewController.rawValue else {
+            return nil
+        }
+
+        var post: Post?
+        if let postURL = coder.decodeObjectForKey(RestorationKey.post.rawValue) as? NSURL {
+            let context = ContextManager.sharedInstance().mainContext
+            if let postID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(postURL) {
+                post = context.objectWithID(postID) as? Post
+            }
+        }
+        var vc: EditPostViewController
+        if let post = post {
+            vc = EditPostViewController(post: post)
+        } else {
+            vc = EditPostViewController()
+        }
+
+        return vc
+    }
+
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        super.encodeRestorableStateWithCoder(coder)
+        if let post = post {
+            coder.encodeObject(post.objectID.URIRepresentation(), forKey: RestorationKey.post.rawValue)
         }
     }
 }
