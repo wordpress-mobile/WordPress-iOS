@@ -1285,6 +1285,7 @@ EditImageDetailsViewControllerDelegate
                                             style:UIAlertActionStyleDestructive
                                           handler:^(UIAlertAction * _Nonnull action) {
                                               self.post.status = PostStatusPublish;
+                                              self.post.dateCreated = [NSDate date];
                                               [self saveAction:action];
                                           }];
         } else {
@@ -1292,6 +1293,7 @@ EditImageDetailsViewControllerDelegate
                                             style:UIAlertActionStyleDestructive
                                           handler:^(UIAlertAction * _Nonnull action) {
                                               self.post.status = PostStatusPending;
+                                              self.post.dateCreated = [NSDate date];
                                               [self saveAction:action];
                                           }];
         }
