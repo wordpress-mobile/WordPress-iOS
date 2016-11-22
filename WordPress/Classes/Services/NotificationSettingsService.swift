@@ -47,9 +47,7 @@ open class NotificationSettingsService: LocalCoreDataService
                 let parsed = self.settingsFromRemote(remote)
                 success?(parsed)
             },
-            failure: { (error: NSError!) in
-                failure?(error)
-            })
+            failure: failure)
     }
 
 
@@ -71,11 +69,11 @@ open class NotificationSettingsService: LocalCoreDataService
             stream.preferences?[key] = value
         }
 
-        notificationsServiceRemote?.updateSettings(remote,
+        notificationsServiceRemote?.updateSettings(remote as [String : AnyObject],
             success: {
                 success?()
             },
-            failure: { (error: NSError!) in
+            failure: { (error: NSError?) in
                 // Fall back to Pristine Settings
                 stream.preferences = pristine
                 failure?(error)
@@ -210,9 +208,9 @@ open class NotificationSettingsService: LocalCoreDataService
     ///
     /// - Returns: Dictionary of values, as expected by the Backend, for the specified Channel and Stream.
     ///
-    fileprivate func remoteFromSettings(_ settings: [String: Bool], channel: Channel, stream: Stream) -> [String: AnyObject] {
-        var wrappedSettings : AnyObject     = settings as AnyObject
-        var streamKey                       = stream.kind.rawValue
+    fileprivate func remoteFromSettings(_ settings: [String: Bool], channel: Channel, stream: Stream) -> [String: Any] {
+        var wrappedSettings : Any     = settings as Any
+        var streamKey                 = stream.kind.rawValue
 
         switch stream.kind {
         case .Device:

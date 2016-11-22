@@ -126,7 +126,7 @@ import WordPressShared.WPStyleGuide
         if shouldChange && respondsToDidType {
             let textViewText: NSString = textView.text as NSString
             let prerange = NSMakeRange(0, range.location)
-            let pretext: NSString = textViewText.substring(with: prerange) + text
+            let pretext = textViewText.substring(with: prerange) + text
             let words = pretext.components(separatedBy: CharacterSet.whitespacesAndNewlines)
             let lastWord: NSString = words.last! as NSString
 
@@ -166,7 +166,7 @@ import WordPressShared.WPStyleGuide
 
     // MARK: - Gestures Recognizers
     open func backgroundWasTapped() {
-        becomeFirstResponder()
+        _ = becomeFirstResponder()
     }
 
 

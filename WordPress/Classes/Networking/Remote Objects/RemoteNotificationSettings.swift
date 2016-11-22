@@ -78,6 +78,7 @@ open class RemoteNotificationSettings
                 if let stringKey = key   as? String,
                    let boolValue = value as? Bool
                 {
+                    let value = value as AnyObject
                     // NSNumbers might get converted to Bool anyways
                     if value === kCFBooleanFalse || value === kCFBooleanTrue {
                         filtered[stringKey] = boolValue

@@ -50,7 +50,7 @@ open class ThemeWebViewController: WPWebViewController
 
     override open func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
 
-        if let url = request.url, let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+        if let url = request.url, var components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
 
             if components.path == Customize.path {
                 let hideCloseItem = URLQueryItem(name: Customize.hideClose.name, value: Customize.hideClose.value)

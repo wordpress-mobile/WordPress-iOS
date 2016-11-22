@@ -469,7 +469,7 @@ private extension NotificationDetailsViewController
         }
 
         let hasHomeURL = userBlock.metaLinksHome != nil
-        let hasHomeTitle = (userBlock.metaTitlesHome?.isEmpty == false) ?? false
+        let hasHomeTitle = userBlock.metaTitlesHome?.isEmpty == false
 
         cell.accessoryType = hasHomeURL ? .disclosureIndicator : .none
         cell.name = userBlock.text
@@ -656,7 +656,7 @@ extension NotificationDetailsViewController
 
         // Dismiss this ViewController if *our* notification... just got deleted
         if deleted.contains(note) {
-            navigationController?.popToRootViewController(animated: true)
+            _ = navigationController?.popToRootViewController(animated: true)
         }
     }
 }
@@ -931,7 +931,7 @@ private extension NotificationDetailsViewController
         let request = NotificationDeletionRequest(kind: .spamming, action: { onCompletion in
             let mainContext = ContextManager.sharedInstance().mainContext
             let service = NotificationActionsService(managedObjectContext: mainContext)
-            service.spamCommentWithBlock(block) { success in
+            service?.spamCommentWithBlock(block) { (success) in
                 onCompletion(success)
             }
 
@@ -941,7 +941,7 @@ private extension NotificationDetailsViewController
         onDeletionRequestCallback?(request)
 
         // We're thru
-        navigationController?.popToRootViewController(animated: true)
+        _ = navigationController?.popToRootViewController(animated: true)
     }
 
     func trashCommentWithBlock(_ block: NotificationBlock) {
@@ -951,7 +951,7 @@ private extension NotificationDetailsViewController
         let request = NotificationDeletionRequest(kind: .deletion, action: { onCompletion in
             let mainContext = ContextManager.sharedInstance().mainContext
             let service = NotificationActionsService(managedObjectContext: mainContext)
-            service.deleteCommentWithBlock(block) { success in
+            service?.deleteCommentWithBlock(block) { (success) in
                 onCompletion(success)
             }
 
@@ -961,7 +961,7 @@ private extension NotificationDetailsViewController
         onDeletionRequestCallback?(request)
 
         // We're thru
-        navigationController?.popToRootViewController(animated: true)
+        _ = navigationController?.popToRootViewController(animated: true)
     }
 
     func replyCommentWithBlock(_ block: NotificationBlock, content: String) {
@@ -1122,7 +1122,7 @@ extension NotificationDetailsViewController: UIScrollViewDelegate
 extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 {
     func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
-        replyTextView.replaceTextAtCaret(text, withText: suggestion)
+        replyTextView.replaceTextAtCaret(text as NSString?, withText: suggestion)
         suggestionsTableView.showSuggestions(forWord: String())
     }
 }

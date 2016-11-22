@@ -15,7 +15,7 @@ class DomainListDomainCell: WPTableViewCell {
 }
 
 struct DomainListStaticRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellDefault)
+    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
     static var customHeight: Float?
 
     let title: String
@@ -29,7 +29,7 @@ struct DomainListStaticRow: ImmuTableRow {
 }
 
 struct DomainListRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(DomainListDomainCell)
+    static let cell = ImmuTableCell.class(DomainListDomainCell.self)
     static var customHeight: Float? = 77
 
     let domain: String

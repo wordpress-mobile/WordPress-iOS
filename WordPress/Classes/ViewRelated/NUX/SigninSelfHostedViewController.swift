@@ -83,7 +83,7 @@ import WordPressShared
         passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
         siteURLField.placeholder = NSLocalizedString("Site Address (URL)", comment: "Site Address placeholder")
 
-        let submitButtonTitle = NSLocalizedString("Add Site", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        let submitButtonTitle = NSLocalizedString("Add Site", comment: "Title of a button. The text should be uppercase.").localizedUppercase
         submitButton.setTitle(submitButtonTitle, for: UIControlState())
         submitButton.setTitle(submitButtonTitle, for: .highlighted)
 
@@ -302,10 +302,10 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
     }
 
 
-    func displayRemoteError(_ error: NSError!) {
+    func displayRemoteError(_ error: Error!) {
         displayLoginMessage("")
         configureViewLoading(false)
-        displayError(error)
+        displayError(error as NSError)
     }
 
 

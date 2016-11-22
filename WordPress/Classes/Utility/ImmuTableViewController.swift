@@ -4,12 +4,12 @@ import WordPressShared
 typealias ImmuTableRowControllerGenerator = (ImmuTableRow) -> UIViewController
 
 protocol ImmuTablePresenter: class {
-    func push(_ controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction
-    func present(_ controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction
+    func push(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction
+    func present(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction
 }
 
 extension ImmuTablePresenter where Self: UIViewController {
-    func push(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction {
+    internal func push(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction {
         return {
             [unowned self] in
             let controller = controllerGenerator($0)
@@ -17,7 +17,7 @@ extension ImmuTablePresenter where Self: UIViewController {
         }
     }
 
-    func present(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction {
+    internal func present(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction {
         return {
             [unowned self] in
             let controller = controllerGenerator($0)
@@ -27,7 +27,7 @@ extension ImmuTablePresenter where Self: UIViewController {
 }
 
 extension ImmuTablePresenter {
-    func prompt<T: UIViewController>(_ controllerGenerator: (ImmuTableRow) -> T) -> ImmuTableAction where T: Confirmable {
+    func prompt<T: UIViewController>(_ controllerGenerator: @escaping (ImmuTableRow) -> T) -> ImmuTableAction where T: Confirmable {
         return present({
             let controller = controllerGenerator($0)
             return PromptViewController(controller)

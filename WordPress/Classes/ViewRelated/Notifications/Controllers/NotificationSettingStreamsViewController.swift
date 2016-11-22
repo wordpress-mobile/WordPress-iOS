@@ -141,7 +141,7 @@ open class NotificationSettingStreamsViewController : UITableViewController
 
         cell.imageView?.image       = imageForStreamKind(stream.kind)
         cell.imageView?.tintColor   = WPStyleGuide.greyLighten10()
-        cell.textLabel?.text        = stream.kind.description() ?? String()
+        cell.textLabel?.text        = stream.kind.description()
         cell.detailTextLabel?.text  = disabled ? NSLocalizedString("Off", comment: "Disabled") : String()
         cell.accessoryType          = .disclosureIndicator
 

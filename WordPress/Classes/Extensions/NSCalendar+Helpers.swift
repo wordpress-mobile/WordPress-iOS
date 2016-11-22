@@ -7,8 +7,7 @@ extension Calendar
         let fromDate = date.normalizedDate()
         let toDate = Date().normalizedDate()
 
-        let delta = components(.day, from: fromDate, to: toDate, options: .matchFirst)
-
-        return delta.day
+        let components = dateComponents([.day], from: fromDate, to: toDate)
+        return components.day!
     }
 }

@@ -53,7 +53,7 @@ class PostStatusPickerViewController : UITableViewController
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let status = sortedStatuses[indexPath.row]
         onChange?(status.0, status.1)
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
 
 

@@ -116,7 +116,7 @@ open class NotificationSettingsViewController : UIViewController
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         alertController.addCancelActionWithTitle(cancelText) { (action: UIAlertAction) in
-            self.navigationController?.popViewController(animated: true)
+            _ = self.navigationController?.popViewController(animated: true)
         }
 
         alertController.addDefaultActionWithTitle(retryText) { (action: UIAlertAction) in

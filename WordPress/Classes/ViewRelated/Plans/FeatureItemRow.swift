@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 
 struct FeatureItemRow : ImmuTableRow {
-    static let cell = ImmuTableCell.class(FeatureItemCell)
+    static let cell = ImmuTableCell.class(FeatureItemCell.self)
 
     let title: String
     let description: String

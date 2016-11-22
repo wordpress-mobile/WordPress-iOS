@@ -33,7 +33,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
 
     var dataDetectors: UIDataDetectorTypes {
         set {
-            textView.dataDetectorTypes = newValue ?? UIDataDetectorTypes()
+            textView.dataDetectorTypes = newValue
         }
         get {
             return textView.dataDetectorTypes

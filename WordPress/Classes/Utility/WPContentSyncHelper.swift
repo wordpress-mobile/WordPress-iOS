@@ -29,17 +29,17 @@ class WPContentSyncHelper: NSObject {
 
     // MARK: - Syncing
 
-    func syncContent() -> Bool {
+    @discardableResult func syncContent() -> Bool {
         return syncContentWithUserInteraction(false)
     }
 
 
-    func syncContentWithUserInteraction() -> Bool {
+    @discardableResult func syncContentWithUserInteraction() -> Bool {
         return syncContentWithUserInteraction(true)
     }
 
 
-    func syncContentWithUserInteraction(_ userInteraction:Bool) -> Bool {
+    @discardableResult func syncContentWithUserInteraction(_ userInteraction:Bool) -> Bool {
         if isSyncing {
             return false
         }
@@ -63,7 +63,7 @@ class WPContentSyncHelper: NSObject {
     }
 
 
-    func syncMoreContent() -> Bool {
+    @discardableResult func syncMoreContent() -> Bool {
         if isSyncing {
             return false
         }

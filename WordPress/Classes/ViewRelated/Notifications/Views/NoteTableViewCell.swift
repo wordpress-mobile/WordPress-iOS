@@ -100,10 +100,10 @@ class NoteTableViewCell: WPTableViewCell
 
         // Handle non-gravatar images
         let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
-        iconImageView.downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: { (error) in
+        iconImageView.downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: {[weak self] (error) in
             // Note: Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
-            if (self.gravatarURL? == url) == true {
-                self.gravatarURL = nil
+            if (self?.gravatarURL == url) == true {
+                self?.gravatarURL = nil
             }
         })
 
@@ -131,10 +131,10 @@ class NoteTableViewCell: WPTableViewCell
         iconImageView.downloadGravatar(gravatar,
             placeholder: placeholderImage,
             animate: false,
-            failure: { (error: NSError!) in
+            failure: {[weak self] (error: NSError?) in
                 // Note: Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
-                if (self.gravatarURL? == url) == true {
-                    self.gravatarURL = nil
+                if (self?.gravatarURL == url) == true {
+                    self?.gravatarURL = nil
                 }
         })
 

@@ -338,6 +338,11 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
                 navController.restorationClass = EditPageViewController.self
             }
  */
+            postViewController = EditPageViewController(draftFor: blog)
+
+            navController = UINavigationController(rootViewController: postViewController)
+            navController.restorationIdentifier = WPEditorNavigationRestorationID
+            navController.restorationClass = EditPageViewController.self
         } else {
             let editPostViewController = WPLegacyEditPageViewController(draftForLastUsedBlog: ())
 

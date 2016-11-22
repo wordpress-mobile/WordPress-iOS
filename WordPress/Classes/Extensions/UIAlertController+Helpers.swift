@@ -3,19 +3,19 @@ import Foundation
 
 extension UIAlertController
 {
-    public func addCancelActionWithTitle(_ title: String?, handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
+    @discardableResult public func addCancelActionWithTitle(_ title: String?, handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
         return addActionWithTitle(title, style: .cancel, handler: handler)
     }
 
-    public func addDestructiveActionWithTitle(_ title: String?, handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
+    @discardableResult public func addDestructiveActionWithTitle(_ title: String?, handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
         return addActionWithTitle(title, style: .destructive, handler: handler)
     }
 
-    public func addDefaultActionWithTitle(_ title: String?, handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
+    @discardableResult public func addDefaultActionWithTitle(_ title: String?, handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
         return addActionWithTitle(title, style: .default, handler: handler)
     }
 
-    public func addActionWithTitle(_ title: String?, style: UIAlertActionStyle, handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
+    @discardableResult public func addActionWithTitle(_ title: String?, style: UIAlertActionStyle, handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
         let action = UIAlertAction(title: title, style: style, handler: handler)
         addAction(action)
 

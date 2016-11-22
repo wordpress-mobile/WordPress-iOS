@@ -45,7 +45,7 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
 
     func testThrottledFailureCall() {
         stub(isRestAPIUsersNewRequest()) { request in
-            let stubPath = OHPathForFile("WordPressComRestApiFailThrottled.json", self.dynamicType)
+            let stubPath = OHPathForFile("WordPressComRestApiFailThrottled.json", type(of: self))
             return fixture(stubPath!, status:500, headers: ["Content-Type":"application/html"])
         }
 

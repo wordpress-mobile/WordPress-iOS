@@ -187,7 +187,7 @@ class PlanDetailViewController: UIViewController {
             Set([identifier]),
             success: { [viewModel] products in
                 do {
-                    try StoreKitCoordinator.instance.purchaseProduct(products[0], forSite: viewModel.siteID)
+                    try StoreKitCoordinator.instance.purchaseProduct(products[0], forSite: (viewModel?.siteID)!)
                 } catch StoreCoordinatorError.paymentAlreadyInProgress {
                     self.purchaseButton?.isSelected = false
                 } catch {}

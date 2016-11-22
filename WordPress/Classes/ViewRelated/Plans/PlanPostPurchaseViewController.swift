@@ -17,7 +17,7 @@ class PlanPostPurchaseViewController: UIViewController {
     var plan: Plan
 
     lazy fileprivate var cancelXButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.Cross), style: .Plain, target: self, action: #selector(PlanPostPurchaseViewController.closeTapped))
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(PlanPostPurchaseViewController.closeTapped))
         button.accessibilityLabel = NSLocalizedString("Close", comment: "Dismiss the current view")
 
         return button
@@ -212,7 +212,7 @@ extension PlanPostPurchaseViewController: UIScrollViewDelegate {
     }
 
     /// - Returns: True if there was valid page to scroll to, false if we've reached the beginning / end
-    fileprivate func scrollToPage(_ page: Int, animated: Bool) -> Bool {
+    @discardableResult fileprivate func scrollToPage(_ page: Int, animated: Bool) -> Bool {
         guard pages.indices.contains(page) else { return false }
 
         let pageWidth = view.bounds.width

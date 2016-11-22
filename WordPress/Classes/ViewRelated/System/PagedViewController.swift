@@ -164,7 +164,7 @@ extension PagedViewController: UIScrollViewDelegate {
     }
 
     /// - Returns: True if there was valid page to scroll to, false if we've reached the beginning / end
-    fileprivate func scrollToPage(_ page: Int, animated: Bool) -> Bool {
+    @discardableResult fileprivate func scrollToPage(_ page: Int, animated: Bool) -> Bool {
         guard viewControllers.indices.contains(page) else { return false }
 
         let pageWidth = view.bounds.width

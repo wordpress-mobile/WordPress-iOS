@@ -4,7 +4,7 @@ import WordPressShared
 
 class PlanComparisonViewController: PagedViewController {
     lazy fileprivate var cancelXButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.Cross), style: .Plain, target: self, action: #selector(PlanComparisonViewController.closeTapped))
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(PlanComparisonViewController.closeTapped))
         button.accessibilityLabel = NSLocalizedString("Close", comment: "Dismiss the current view")
 
         return button
@@ -64,12 +64,12 @@ class PlanComparisonViewController: PagedViewController {
                         let groups = try service.featureGroupsForPlan(plan, features: features)
                         controller.viewModel = controller.viewModel.withFeatures(.ready(groups))
                     } catch {
-                        controller.viewModel = controller.viewModel.withFeatures(.error(String(error)))
+                        controller.viewModel = controller.viewModel.withFeatures(.error(String(describing: error)))
                     }
                 }
             }, failure: { [weak self] error in
                 self?.detailViewControllers.forEach { controller in
-                    controller.viewModel = controller.viewModel.withFeatures(.error(String(error)))
+                    controller.viewModel = controller.viewModel.withFeatures(.error(String(describing: error)))
                 }
             })
     }

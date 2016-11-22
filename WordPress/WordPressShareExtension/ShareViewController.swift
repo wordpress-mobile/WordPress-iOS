@@ -134,17 +134,17 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     override func configurationItems() -> [Any]! {
-        let blogPickerItem = SLComposeSheetConfigurationItem()
-        blogPickerItem?.title = NSLocalizedString("Post to:", comment: "Upload post to the selected Site")
-        blogPickerItem?.value = selectedSiteName ?? NSLocalizedString("Select a site", comment: "Select a site in the share extension")
-        blogPickerItem?.tapHandler = { [weak self] in
+        let blogPickerItem = SLComposeSheetConfigurationItem()!
+        blogPickerItem.title = NSLocalizedString("Post to:", comment: "Upload post to the selected Site")
+        blogPickerItem.value = selectedSiteName ?? NSLocalizedString("Select a site", comment: "Select a site in the share extension")
+        blogPickerItem.tapHandler = { [weak self] in
             self?.displaySitePicker()
         }
 
-        let statusPickerItem = SLComposeSheetConfigurationItem()
-        statusPickerItem?.title = NSLocalizedString("Post Status:", comment: "Post status picker title in Share Extension")
-        statusPickerItem?.value = postStatuses[postStatus]!
-        statusPickerItem?.tapHandler = { [weak self] in
+        let statusPickerItem = SLComposeSheetConfigurationItem()!
+        statusPickerItem.title = NSLocalizedString("Post Status:", comment: "Post status picker title in Share Extension")
+        statusPickerItem.value = postStatuses[postStatus]!
+        statusPickerItem.tapHandler = { [weak self] in
             self?.displayStatusPicker()
         }
 

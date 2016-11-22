@@ -292,7 +292,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
             // (this is the default behaviour of a collapse), then we'll split the view controllers
             // apart at that point.
             separateViewControllersAtIndex(index)
-        } else if let index = primaryNavigationController.viewControllers.lastIndexOf({ $0 is WPSplitViewControllerDetailProvider }) {
+        } else if let index = primaryNavigationController.viewControllers.lastIndex(where: { $0 is WPSplitViewControllerDetailProvider }) {
             // Otherwise, if there's a detail provider somewhere in the stack, find the last one
             separateViewControllersAtIndex(index + 1)
         }

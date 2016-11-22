@@ -156,7 +156,7 @@ import WordPressShared
     ///
     func handleAccountChanged(_ notification: Foundation.Notification) {
         // Return to the root vc.
-        navigationController?.popToRootViewController(animated: false)
+        _ = navigationController?.popToRootViewController(animated: false)
 
         // Clear the flag so Discover will be present and ready to view.
         readerHasBeenPreviouslyViewed = false
@@ -455,7 +455,7 @@ import WordPressShared
         WPStyleGuide.configureTableViewActionCell(cell)
 
         if cell.accessoryView == nil {
-            let image = Gridicon.iconOfType(.Plus)
+            let image = Gridicon.iconOfType(.plus)
             let imageView = UIImageView(image: image)
             imageView.tintColor = WPStyleGuide.wordPressBlue()
             cell.accessoryView = imageView

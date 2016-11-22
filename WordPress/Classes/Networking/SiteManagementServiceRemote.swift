@@ -16,7 +16,7 @@ open class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
         let endpoint = "sites/\(siteID)/delete"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.POST(path,
+        wordPressComRestApi.POST(path!,
             parameters: nil,
             success: { response, httpResponse in
                 guard let results = response as? [String: AnyObject] else {
@@ -53,7 +53,7 @@ open class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
         let endpoint = "sites/\(siteID)/exports/start"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.POST(path,
+        wordPressComRestApi.POST(path!,
             parameters: nil,
             success: { response, httpResponse in
                 guard let results = response as? [String: AnyObject] else {
@@ -87,7 +87,7 @@ open class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
         let endpoint = "sites/\(siteID)/purchases"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.GET(path,
+        wordPressComRestApi.GET(path!,
             parameters: nil,
             success: { response, httpResponse in
                 guard let results = response as? [SitePurchase] else {
