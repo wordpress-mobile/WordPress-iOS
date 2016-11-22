@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="147" id="byi-Wo-fAK">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="147" id="byi-Wo-fAK" customClass="ReaderCommentCell" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="147"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="byi-Wo-fAK" id="9mZ-R9-DZW">
@@ -34,6 +34,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wUR-85-LXr">
                                         <rect key="frame" x="0.0" y="0.0" width="332" height="30"/>
                                         <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="handleAuthorTapped:" destination="byi-Wo-fAK" eventType="touchUpInside" id="kUQ-DX-ncJ"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srn-Fn-Of7">
                                         <rect key="frame" x="0.0" y="30" width="332" height="20.5"/>
@@ -54,10 +57,16 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BlX-um-sZ8">
                                                 <rect key="frame" x="0.0" y="0.0" width="46" height="50"/>
                                                 <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="handleReplyTapped:" destination="byi-Wo-fAK" eventType="touchUpInside" id="hCt-lB-l0N"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yhR-P3-CEb">
                                                 <rect key="frame" x="46" y="0.0" width="46" height="50"/>
                                                 <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="handleLikeTapped:" destination="byi-Wo-fAK" eventType="touchUpInside" id="9gG-z2-vUl"/>
+                                                </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TwD-Em-50O">
                                                 <rect key="frame" x="92" y="0.0" width="240" height="50"/>
@@ -77,6 +86,15 @@
                     <constraint firstItem="tuz-Kk-vW9" firstAttribute="leading" secondItem="9mZ-R9-DZW" secondAttribute="leadingMargin" constant="-8" id="zOD-a0-VKC"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="actionBar" destination="fSc-Wq-XZ6" id="xX2-yQ-PFG"/>
+                <outlet property="authorButton" destination="wUR-85-LXr" id="V7Q-yP-YEZ"/>
+                <outlet property="avatarImageView" destination="XPU-fY-7js" id="4eM-MZ-zDm"/>
+                <outlet property="likeButton" destination="yhR-P3-CEb" id="9Z2-HS-Lqa"/>
+                <outlet property="replyButton" destination="BlX-um-sZ8" id="XaA-1v-rgG"/>
+                <outlet property="textView" destination="MZj-2b-1Xd" id="ObL-MN-eQT"/>
+                <outlet property="timeLabel" destination="srn-Fn-Of7" id="uZB-qi-zhU"/>
+            </connections>
             <point key="canvasLocation" x="157.5" y="-325.5"/>
         </tableViewCell>
     </objects>
