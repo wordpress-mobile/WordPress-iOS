@@ -515,6 +515,11 @@ NSString *const SessionCount = @"session_count";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_published_post"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_published_post"];
             break;
+        case WPAnalyticsStatEditorQuickPublishedPost:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Quick Published Post"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_published_post"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_published_post"];
+            break;
         case WPAnalyticsStatGravatarCropped:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Gravatar Cropped"];
             break;
@@ -611,6 +616,11 @@ NSString *const SessionCount = @"session_count";
             break;
         case WPAnalyticsStatEditorSavedDraft:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Saved Draft"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_saved_draft"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_saved_draft"];
+            break;
+        case WPAnalyticsStatEditorQuickSavedDraft:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Quick Saved Draft"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_saved_draft"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_saved_draft"];
             break;
