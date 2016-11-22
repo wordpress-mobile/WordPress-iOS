@@ -201,7 +201,7 @@ extension WPImageURLHelper
             return NSURL(string: String(format: "https://secure.gravatar.com/blavatar/%@/?s=%d&d=404", hash, size))
         }
 
-        if contentProvider.siteIconURL().containsString("/blavatar/") {
+        if !contentProvider.siteIconURL().containsString("/\(URLComponent.Blavatar.rawValue)/") {
             return NSURL(string: contentProvider.siteIconURL())
         }
 
