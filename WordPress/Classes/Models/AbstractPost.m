@@ -247,7 +247,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 - (void)deleteRevision
 {
     if (self.revision) {
-        [self.managedObjectContext performBlock:^{
+        [self.managedObjectContext performBlockAndWait :^{
             [self.managedObjectContext deleteObject:self.revision];
             [self willChangeValueForKey:@"revision"];
             [self setPrimitiveValue:nil forKey:@"revision"];
