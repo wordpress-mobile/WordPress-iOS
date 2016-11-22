@@ -38,15 +38,38 @@
     XCTAssertFalse(([[photonURL query] rangeOfString:@"&ssl=1"].location != NSNotFound), @"The Photon URL should not be formatted for ssl.");
 }
 
+- (void)testPhotonMShotURL
+{
+    // arbitrary size
+    CGSize size = CGSizeMake(300, 150);
+    NSString *domainPathQueryStringForImage = @"https://blog.example.com/mshots/wp-content/images/image-name.jpg?w=1000";
+    NSURL *photonURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:[NSURL URLWithString:domainPathQueryStringForImage]];
+
+    // FIXME: there are several bugs in the mshots codepath that will be fixed in a later commit:
+    // - should have a scheme
+    // - should not append a query string after the existing query string
+    // - the width and height parameter values in the url string seem to be accidentally computed with the value of a pointer location: it changes every run of the test
+    NSString *expectedString = @"blog.example.com/mshots/wp-content/images/image-name.jpg?w=";
+    XCTAssert([photonURL.absoluteString containsString:expectedString], @"expected \"%@\" to contain the substring \"%@\"", photonURL.absoluteString, expectedString);
+    XCTAssertFalse([photonURL.absoluteString containsString:@"http"]);
+    XCTAssert([[photonURL.absoluteString stringByReplacingOccurrencesOfString:expectedString withString:@""] containsString:@"?w="]);
+}
+
 - (void)testPhotonURLReturnsUnChanged
 {
     // arbitrary size
     CGSize size = CGSizeMake(300, 150);
-    NSString *path = @"https://i0.wp.com/path/to/image.jpg";
-    NSURL *url = [NSURL URLWithString:path];
-    NSURL *photonURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:url];
+    NSArray<NSString *> *paths = @[
+                                   @"https://i0.wp.com/path/to/image.jpg",
+                                   @"https://i1.wp.com/path/to/image.jpg",
+                                   @"https://i2.wp.com/path/to/image.jpg"
+                                   ];
+    for (NSString *path in paths) {
+        NSURL *url = [NSURL URLWithString:path];
+        NSURL *photonURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:url];
 
-    XCTAssertTrue([[photonURL absoluteString] isEqualToString:path]);
+        XCTAssertTrue([[photonURL absoluteString] isEqualToString:path], @"expected %@ but got %@", path, [photonURL absoluteString]);
+    }
 }
 
 @end
