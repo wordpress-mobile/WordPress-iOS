@@ -13,10 +13,11 @@ import Foundation
     /**
      Check if username and password are valid credentials for the xmlrpc endpoint.
 
-     - parameter username: username to check
-     - parameter password: password to check
-     - parameter success:  callback block to be invoked if credentials are valid, the object returned in the block is the options dictionary for the site.
-     - parameter failure:  callback block to be invoked is credentials fail
+     - Parameters: 
+        - username: username to check
+        - password: password to check
+        - success:  callback block to be invoked if credentials are valid, the object returned in the block is the options dictionary for the site.
+        - failure:  callback block to be invoked is credentials fail
      */
     func checkCredentials(username: String,
                           password: String,
@@ -26,12 +27,13 @@ import Foundation
     /**
      Executes a XMLRPC call for the method specificied with the arguments provided.
 
-     - parameter method:  the xmlrpc method to be invoked
-     - parameter parameters: the parameters to be encoded on the request
-     - parameter success:    callback to be called on successful request
-     - parameter failure:    callback to be called on failed request
+     - Parameters: 
+        - method:  the xmlrpc method to be invoked
+        - parameters: the parameters to be encoded on the request
+        - success:    callback to be called on successful request
+        - failure:    callback to be called on failed request
 
-     - returns:  a NSProgress object that can be used to track the progress of the request and to cancel the request. If the method
+     - Returns:  a NSProgress object that can be used to track the progress of the request and to cancel the request. If the method
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
@@ -44,12 +46,13 @@ import Foundation
      Executes a XMLRPC call for the method specificied with the arguments provided, by streaming the request from a file.
      This allows to do requests that can use a lot of memory, like media uploads.
 
-     - parameter method:  the xmlrpc method to be invoked
-     - parameter parameters: the parameters to be encoded on the request
-     - parameter success:    callback to be called on successful request
-     - parameter failure:    callback to be called on failed request
+     - Parameters: 
+        - method:  the xmlrpc method to be invoked
+        - parameters: the parameters to be encoded on the request
+        - success:    callback to be called on successful request
+        - failure:    callback to be called on failed request
 
-     - returns:  a NSProgress object that can be used to track the progress of the request and to cancel the request. If the method
+     - Returns:  a NSProgress object that can be used to track the progress of the request and to cancel the request. If the method
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
