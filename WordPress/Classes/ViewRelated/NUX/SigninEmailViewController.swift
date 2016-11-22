@@ -109,7 +109,7 @@ import WordPressShared
     func localizeControls() {
         emailTextField.placeholder = NSLocalizedString("Email or username", comment: "Placeholder for a textfield. The user may enter their email address or their username.")
 
-        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be uppercase.").localizedUppercase
         submitButton.setTitle(submitButtonTitle, for: UIControlState())
         submitButton.setTitle(submitButtonTitle, for: .highlighted)
 
@@ -319,10 +319,10 @@ import WordPressShared
                     self?.requestLink()
                 }
             },
-            failure: { [weak self] (error: NSError!) in
+            failure: { [weak self] (error: Error) in
                 DDLogSwift.logError(error.localizedDescription)
                 self?.configureViewLoading(false)
-                self?.displayError(error)
+                self?.displayError(error as NSError)
             })
     }
 

@@ -37,7 +37,7 @@ open class GravatarService
                 DDLogSwift.logInfo("GravatarService.uploadImage Success!")
             }
 
-            completion?(error: error)
+            completion?(error)
         }
     }
 

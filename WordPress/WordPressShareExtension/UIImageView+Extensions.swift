@@ -25,7 +25,7 @@ extension UIImageView
         let size = CGSize(width: blavatarSizeInPoints, height: blavatarSizeInPoints)
 
         // Hit the Backend
-        let request = NSMutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
 
@@ -46,10 +46,10 @@ extension UIImageView
                 }
 
                 // Update the Cache
-                Downloader.cache.setObject(resizedImage, forKey: url)
+                Downloader.cache.setObject(resizedImage, forKey: url as AnyObject)
                 self?.image = resizedImage
             }
-        }) 
+        })
 
         downloadTask = task
         task.resume()

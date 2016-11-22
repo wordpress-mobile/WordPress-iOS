@@ -118,7 +118,7 @@ public final class WordPressComOAuthClient: NSObject {
         sessionManager.post("token", parameters:parameters, progress:nil, success:{ (task, responseObject) in
             success()
             }, failure: { (task, error) in
-                failure(error)
+                failure(error as NSError)
             }
         )
     }
@@ -142,8 +142,8 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
 
     override init() {
         super.init()
-        let extraStatusCodes = NSMutableIndexSet(self.acceptableStatusCodes!)
-        extraStatusCodes.add(400)
+        var extraStatusCodes = self.acceptableStatusCodes!
+        extraStatusCodes.insert(400)
         self.acceptableStatusCodes = extraStatusCodes
     }
 
@@ -151,7 +151,7 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
         super.init(coder: aDecoder)
     }
 
-    override func responseObject(for response: URLResponse?, data: Data?, error: NSErrorPointer) -> AnyObject? {
+    override func responseObject(for response: URLResponse?, data: Data?, error: NSErrorPointer) -> Any? {
         let responseObject = super.responseObject(for: response, data: data, error: error)
 
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 400,

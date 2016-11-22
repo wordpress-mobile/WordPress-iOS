@@ -124,13 +124,13 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         let api = WordPressOrgXMLRPCApi(endpoint: url)
         api.callMethod("system.listMethods", parameters: nil, success: { (responseObject, httpResponse) in
                 guard let methods = responseObject as? [String], methods.contains("wp.getUsersBlogs") else {
-                        failure(error:WordPressOrgXMLRPCValidatorError.notWordPressError.convertToNSError())
+                        failure(WordPressOrgXMLRPCValidatorError.notWordPressError.convertToNSError())
                         return
                 }
                 if let finalURL = httpResponse?.url {
-                    success(xmlrpcURL: finalURL)
+                    success(finalURL)
                 } else {
-                    failure(error:WordPressOrgXMLRPCValidatorError.invalid.convertToNSError())
+                    failure(WordPressOrgXMLRPCValidatorError.invalid.convertToNSError())
                 }
             }, failure: { (error, httpResponse) in
                 if httpResponse?.url != url {
@@ -138,11 +138,11 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                     if let data = error.userInfo[WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyData] as? Data,
                         let responseString = String(data:data, encoding: String.Encoding.utf8), responseString.range(of: "<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">") != nil
                             || responseString.range(of: "dm404Container") != nil {
-                        failure(error: WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.convertToNSError())
+                        failure(WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.convertToNSError())
                         return
                     }
                 }
-                failure(error: error)
+                failure(error)
             })
     }
 
@@ -179,7 +179,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                 //Try to validate by using the RSD file directly
                 self.guessXMLRPCURLFromRSD(rsdURL, success: success, failure: failure)
             }
-        }) 
+        })
         dataTask.resume()
     }
 
@@ -230,7 +230,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
             }
             DDLogSwift.logInfo("Bingo! We found the WordPress XML-RPC element: \(xmlrpcURL)")
             self.validateXMLRPCURL(xmlrpcURL, success: success, failure: failure)
-        }) 
+        })
         dataTask.resume()
     }
 }

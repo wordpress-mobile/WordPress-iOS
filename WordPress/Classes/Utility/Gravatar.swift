@@ -25,7 +25,7 @@ struct Gravatar {
                 return false
         }
 
-        guard let path = url.path, path.hasPrefix("/avatar/") else {
+        guard url.path.hasPrefix("/avatar/") else {
                 return false
         }
 
@@ -45,7 +45,7 @@ extension Gravatar {
             return nil
         }
 
-        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
             return nil
         }
 
@@ -54,7 +54,7 @@ extension Gravatar {
         components.query = nil
 
         // Treat unknown@gravatar.com as a nil url
-        guard let hash = url.lastPathComponent, hash != Defaults.unknownHash else {
+        guard url.lastPathComponent != Defaults.unknownHash else {
                 return nil
         }
 

@@ -70,7 +70,7 @@ typealias ErrorHandler = (_ error: NSError) -> ()
 
 extension PHAsset: ExportableAsset {
 
-    func exportToURL(_ url: URL,
+    internal func exportToURL(_ url: URL,
         targetUTI: String,
         maximumResolution: CGSize,
         stripGeoLocation: Bool,
@@ -101,7 +101,7 @@ extension PHAsset: ExportableAsset {
         }
     }
 
-    func exportImageToURL(_ url: URL,
+    internal func exportImageToURL(_ url: URL,
         targetUTI: String,
         maximumResolution: CGSize,
         stripGeoLocation: Bool,
@@ -365,7 +365,7 @@ extension PHAsset: ExportableAsset {
             types = [PHAssetResourceType.video.rawValue]
         }
         for resource in resources {
-            if (types.contains(resource.type.rawValue) ) {
+            if (types.contains(where: resource.type.rawValue) ) {
                 return resource.uniformTypeIdentifier
             }
         }
@@ -381,7 +381,7 @@ extension PHAsset: ExportableAsset {
             types = [PHAssetResourceType.video.rawValue]
         }
         for resource in resources {
-            if (types.contains(resource.type.rawValue) ) {
+            if (types.contains(where: resource.type.rawValue) ) {
                 return resource.originalFilename
             }
         }

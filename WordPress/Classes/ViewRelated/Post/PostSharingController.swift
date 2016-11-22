@@ -27,11 +27,9 @@ import SVProgressHUD
         if let str = title {
             controller.setValue(str, forKey:"subject")
         }
-        controller.completionWithItemsHandler = {
-            (activityType:String?, completed:Bool, items: [AnyObject]?, error: NSError?) in
-
+        controller.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
             if completed {
-                WPActivityDefaults.trackActivityType(activityType)
+                WPActivityDefaults.trackActivityType((activityType).map { $0.rawValue })
             }
         }
 

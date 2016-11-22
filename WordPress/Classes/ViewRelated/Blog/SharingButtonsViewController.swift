@@ -199,7 +199,7 @@ import WordPressShared
                     self.saveBlogSettingsChanges(false)
 
                     let properties = [
-                        "checked": String(Int(newValue))
+                        "checked": NSNumber(value: newValue)
                     ]
                     WPAppAnalytics.track(.sharingButtonShowReblogChanged, withProperties:properties, with: self.blog)
                 }
@@ -471,10 +471,8 @@ import WordPressShared
         configureButtonRows()
         configureTwitterNameSection()
 
-        let indexSet = NSMutableIndexSet(integer: buttonSectionIndex)
-        indexSet.add(sections.count - 1)
-
-        tableView.reloadSections(indexSet, with: .automatic)
+        let indexes: IndexSet = [buttonSectionIndex, sections.count - 1]
+        tableView.reloadSections(indexes, with: .automatic)
     }
 
 
@@ -485,10 +483,8 @@ import WordPressShared
         configureMoreRows()
         configureTwitterNameSection()
 
-        let indexSet = NSMutableIndexSet(integer: moreSectionIndex)
-        indexSet.add(sections.count - 1)
-
-        tableView.reloadSections(indexSet, with: .automatic)
+        let indexes: IndexSet = [moreSectionIndex, sections.count - 1]
+        tableView.reloadSections(indexes, with: .automatic)
     }
 
 
@@ -499,7 +495,7 @@ import WordPressShared
     /// - Returns: The UIImage for the icon
     ///
     func iconForSharingButton(_ button: SharingButton) -> UIImage {
-        return WPStyleGuide.iconForService(button.buttonID)
+        return WPStyleGuide.iconForService(button.buttonID as NSString)
     }
 
 
@@ -538,7 +534,8 @@ import WordPressShared
             success: {
                 WPAppAnalytics.track(.sharingButtonSettingsChanged, withBlogID: dotComID)
             },
-            failure: { [weak self] (error: NSError!) in
+            failure: { [weak self] (error: Error) in
+                let error = error as NSError
                 DDLogSwift.logError(error.description)
                 self?.showErrorSyncingMessage(error)
             })
@@ -554,8 +551,8 @@ import WordPressShared
             success: { [weak self] in
                 self?.reloadButtons()
             },
-            failure: { (error: NSError!) in
-                DDLogSwift.logError(error.description)
+            failure: { (error: NSError?) in
+                DDLogSwift.logError(error?.description)
         })
     }
 
@@ -568,7 +565,8 @@ import WordPressShared
         service?.syncSettings(for: blog, success: { [weak self] in
                 self?.reloadSettingsSections()
             },
-            failure: { (error: NSError!) in
+            failure: { (error: Error) in
+                let error = error as NSError
                 DDLogSwift.logError(error.description)
         })
     }
@@ -606,17 +604,17 @@ import WordPressShared
 
         var order = 0
         for button in buttonsForButtonSection {
-            button.order = NSNumber(order)
+            button.order = NSNumber(value: order)
             order += 1
         }
         for button in buttonsForMoreSection {
-            button.order = NSNumber(order)
+            button.order = NSNumber(value: order)
             order += 1
         }
         for button in remainingButtons {
             // we'll update the order for the remaining buttons but this is not
             // respected by the REST API and changes after syncing.
-            button.order = NSNumber(order)
+            button.order = NSNumber(value: order)
             order += 1
         }
     }
@@ -661,8 +659,8 @@ import WordPressShared
                     self?.reloadButtons()
                 }
             },
-            failure: { [weak self] (error: NSError!) in
-                DDLogSwift.logError(error.description)
+            failure: { [weak self] (error: NSError?) in
+                DDLogSwift.logError(error?.description)
                 self?.showErrorSyncingMessage(error)
         })
     }
@@ -673,10 +671,13 @@ import WordPressShared
     ///
     /// - Parameter error: An NSError object.
     ///
-    func showErrorSyncingMessage(_ error: NSError) {
+    func showErrorSyncingMessage(_ error: NSError?) {
         let title = NSLocalizedString("Could Not Save Changes", comment: "Title of an prompt letting the user know there was a problem saving.")
-        let message = NSLocalizedString("There was a problem saving changes to sharing management.", comment: "A short error message shown in a prompt.")
-        let controller = UIAlertController(title: title, message: "\(message) \(error.localizedDescription)", preferredStyle: .alert)
+        var message = NSLocalizedString("There was a problem saving changes to sharing management.", comment: "A short error message shown in a prompt.")
+        if let error = error {
+            message.append(error.localizedDescription)
+        }
+        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
         controller.addCancelActionWithTitle(NSLocalizedString("OK", comment: "A button title."), handler: nil)
 
         controller.presentFromRootViewController()
@@ -879,7 +880,7 @@ import WordPressShared
         // Update the order for all buttons
         for (index, button) in buttonsArr.enumerated() {
             let sharingButton = button as! SharingButton
-            sharingButton.order = NSNumber(index)
+            sharingButton.order = NSNumber(value: index)
         }
 
         self.saveButtonChanges(false)

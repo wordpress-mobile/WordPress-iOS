@@ -3,7 +3,7 @@ import WordPressShared
 
 
 struct NavigationItemRow : ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellDefault)
+    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 
     let title: String
     let icon: UIImage?
@@ -27,7 +27,7 @@ struct NavigationItemRow : ImmuTableRow {
 }
 
 struct BadgeNavigationItemRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellBadge)
+    static let cell = ImmuTableCell.class(WPTableViewCellBadge.self)
 
     let title: String
     let icon: UIImage?
@@ -56,7 +56,7 @@ struct BadgeNavigationItemRow: ImmuTableRow {
 }
 
 struct EditableTextRow : ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellValue1)
+    static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
     let title: String
     let value: String
@@ -72,7 +72,7 @@ struct EditableTextRow : ImmuTableRow {
 }
 
 struct TextRow : ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellValue1)
+    static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
     let title: String
     let value: String
@@ -88,7 +88,7 @@ struct TextRow : ImmuTableRow {
 }
 
 struct LinkRow : ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellValue1)
+    static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
     let title: String
     let action: ImmuTableAction?
@@ -101,7 +101,7 @@ struct LinkRow : ImmuTableRow {
 }
 
 struct LinkWithValueRow : ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellValue1)
+    static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
     let title: String
     let value: String
@@ -116,7 +116,7 @@ struct LinkWithValueRow : ImmuTableRow {
 }
 
 struct ButtonRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellDefault)
+    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 
     let title: String
     let action: ImmuTableAction?
@@ -132,7 +132,7 @@ struct ButtonRow: ImmuTableRow {
 }
 
 struct DestructiveButtonRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellDefault)
+    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 
     let title: String
     let action: ImmuTableAction?
@@ -147,7 +147,7 @@ struct DestructiveButtonRow: ImmuTableRow {
 }
 
 struct SwitchRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(SwitchTableViewCell)
+    static let cell = ImmuTableCell.class(SwitchTableViewCell.self)
 
     let title: String
     let value: Bool

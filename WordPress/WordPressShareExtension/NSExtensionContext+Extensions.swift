@@ -9,7 +9,7 @@ extension NSExtensionContext {
     /// Attempts to load the Website URL, and returns, asynchronously, the result.
     ///
     func loadWebsiteUrl(_ completion: @escaping ((URL?) -> Void)) {
-        loadItemOfType(NSURL.self, identifier: Identifier.PublicURL, completion: completion)
+        loadItemOfType(URL.self, identifier: Identifier.PublicURL, completion: completion)
     }
 
     /// Attempts to load the Image Attachment, and returns, asynchronously, the result.

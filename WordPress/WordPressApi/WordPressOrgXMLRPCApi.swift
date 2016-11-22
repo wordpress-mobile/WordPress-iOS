@@ -82,7 +82,7 @@ open class WordPressOrgXMLRPCApi: NSObject
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
-    open func callMethod(_ method: String,
+    @discardableResult open func callMethod(_ method: String,
                            parameters: [AnyObject]?,
                            success: @escaping SuccessResponseBlock,
                            failure: @escaping FailureReponseBlock) -> Progress?
@@ -105,7 +105,7 @@ open class WordPressOrgXMLRPCApi: NSObject
                 failure(error, urlResponse as? HTTPURLResponse)
                 return
             }
-        }) 
+        })
         task.resume()
         return createProgresForTask(task)
     }
@@ -123,7 +123,7 @@ open class WordPressOrgXMLRPCApi: NSObject
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
-    open func streamCallMethod(_ method: String,
+    @discardableResult open func streamCallMethod(_ method: String,
                                  parameters: [AnyObject]?,
                                  success: @escaping SuccessResponseBlock,
                                  failure: @escaping FailureReponseBlock) -> Progress?
@@ -240,7 +240,7 @@ open class WordPressOrgXMLRPCApi: NSObject
 
     fileprivate func convertError(_ error: NSError, data: Data?) -> NSError {
         if let data = data {
-            var userInfo:[AnyHashable: Any] = error.userInfo ?? [:]
+            var userInfo:[AnyHashable: Any] = error.userInfo
             userInfo[type(of: self).WordPressOrgXMLRPCApiErrorKeyData] = data
             return NSError(domain: error.domain, code: error.code, userInfo: userInfo)
         }

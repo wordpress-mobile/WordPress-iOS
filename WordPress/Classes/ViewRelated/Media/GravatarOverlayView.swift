@@ -36,7 +36,7 @@ class GravatarOverlayView : UIView
         outerColor?.setFill()
         context.addRect(bounds)
         context.addEllipse(in: ellipseRect)
-        CGContextEOFillPath(context)
+        context.fillPath(using: .evenOdd)
 
         // Border
         borderColor?.setStroke()

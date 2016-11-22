@@ -10,25 +10,25 @@ extension Notification
     ///
     func sectionIdentifier() -> String {
         // Normalize Dates: Time must not be considered. Just the raw dates
-        let fromDate    = timestampAsDate.normalizedDate()
-        let toDate      = Date().normalizedDate()
+        let fromDate = timestampAsDate.normalizedDate()
+        let toDate = Date().normalizedDate()
 
         // Analyze the Delta-Components
-        let calendar    = Calendar.current
-        let flags       = [.day, .weekOfYear, .month] as NSCalendar.Unit
-        let components  = (calendar as NSCalendar).components(flags, from: fromDate, to: toDate, options: .matchFirst)
+        let calendar = Calendar.current
+        let components = [.day, .weekOfYear, .month] as Set<Calendar.Component>
+        let dateComponents = calendar.dateComponents(components, from: fromDate, to: toDate)
         let identifier: Sections
 
         // Months
-        if components.month >= 1 {
+        if let month = dateComponents.month, month >= 1 {
             identifier = .Months
         // Weeks
-        } else if components.weekOfYear >= 1 {
+        } else if let week = dateComponents.weekOfYear, week >= 1 {
             identifier = .Weeks
         // Days
-        } else if components.day > 1 {
+        } else if let day = dateComponents.day, day > 1 {
             identifier = .Days
-        } else if components.day == 1 {
+        } else if let day = dateComponents.day, day == 1 {
             identifier = .Yesterday
         } else {
             identifier = .Today

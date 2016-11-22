@@ -221,7 +221,7 @@ private extension PersonViewController {
 
         let service = PeopleService(blog: blog, context: context)
         service?.deleteUser(user)
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
 
         WPAnalytics.track(.personRemoved)
     }

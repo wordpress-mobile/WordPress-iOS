@@ -256,7 +256,7 @@ extension NotificationsViewController
         if block.isActionEnabled(.Trash) {
             let title = NSLocalizedString("Trash", comment: "Trashes a comment")
 
-            let trash = UITableViewRowAction(style: UITableViewRowActionStyle(), title: title, handler: { [weak self] _ in
+            let trash = UITableViewRowAction(style: .destructive, title: title, handler: { [weak self] (action, indexPath) in
                 let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
                     self?.actionsService.deleteCommentWithBlock(block) { success in
                         onCompletion(success)
@@ -493,7 +493,7 @@ extension NotificationsViewController
 
         // Failsafe: Don't push nested!
         if navigationController?.visibleViewController != self {
-            navigationController?.popViewController(animated: false)
+            _ = navigationController?.popViewController(animated: false)
         }
 
         // Mark as Read
@@ -760,7 +760,7 @@ private extension NotificationsViewController
 
         UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
             self.tableHeaderView.alpha = WPAlphaFull
-        }) 
+        })
     }
 
     func hideFiltersSegmentedControlIfApplicable() {
@@ -897,7 +897,7 @@ private extension NotificationsViewController
             self.ratingsHeightConstraint.constant = Ratings.heightZero
 
             self.setupTableHeaderView()
-        }) 
+        })
     }
 }
 
@@ -929,7 +929,7 @@ private extension NotificationsViewController
             }
 
             DDLogSwift.logInfo("Notification Sync'ed in \(startDate.timeIntervalSinceNow) seconds")
-            success(note: note)
+            success(note)
         }
     }
 

@@ -53,23 +53,23 @@ class StoreCoordinator<S: Store> {
     fileprivate var pendingPayment: PendingPayment? {
         set {
             if let pending = newValue {
-                database.setObject(pending.productID, forKey: DatabaseKeys.pendingPaymentProductID)
-                database.setObject(pending.siteID, forKey:DatabaseKeys.pendingPaymentSiteID)
+                database.set(pending.productID, forKey: DatabaseKeys.pendingPaymentProductID)
+                database.set(pending.siteID, forKey: DatabaseKeys.pendingPaymentSiteID)
             } else {
-                database.removeObjectForKey(DatabaseKeys.pendingPaymentProductID)
-                database.removeObjectForKey(DatabaseKeys.pendingPaymentSiteID)
+                database.removeObject(forKey: DatabaseKeys.pendingPaymentProductID)
+                database.removeObject(forKey: DatabaseKeys.pendingPaymentSiteID)
             }
         }
 
         get {
-            guard let productID = database.objectForKey(DatabaseKeys.pendingPaymentProductID) as? String,
-                let siteID = database.objectForKey(DatabaseKeys.pendingPaymentSiteID) as? Int, siteID != 0 else { return nil }
+            guard let productID = database.object(forKey: DatabaseKeys.pendingPaymentProductID) as? String,
+                let siteID = database.object(forKey: DatabaseKeys.pendingPaymentSiteID) as? Int, siteID != 0 else { return nil }
 
             return (productID, siteID)
         }
     }
 
-    init(store: S, database: KeyValueDatabase = UserDefaults()) {
+    init(store: S, database: KeyValueDatabase = UserDefaults() as! KeyValueDatabase) {
         self.store = store
         self.database = database
     }
@@ -145,7 +145,7 @@ class StoreCoordinator<S: Store> {
 
         var userInfo: [String: AnyObject] = [StoreKitCoordinator.NotificationProductIdentifierKey: productID as AnyObject]
 
-        if let error = transaction.error {
+        if let error = transaction.error as? NSError {
             if error.code != SKError.paymentCancelled.rawValue {
                 userInfo[NSUnderlyingErrorKey] = error as AnyObject?
             }
@@ -197,7 +197,7 @@ private struct DatabaseKeys {
 
 protocol Store {
     associatedtype ProductType: Product
-    func getProductsWithIdentifiers(_ identifiers: Set<String>, success: ([ProductType]) -> Void, failure: (Error) -> Void)
+    func getProductsWithIdentifiers(_ identifiers: Set<String>, success: @escaping ([ProductType]) -> Void, failure: @escaping (Error) -> Void)
     func requestPayment(_ product: ProductType)
     var canMakePayments: Bool { get }
 }
@@ -218,7 +218,7 @@ extension Store {
     /// On success, it calls the `success` function with an array of prices. If
     /// one of the plans didn't have a product identifier, it's treated as a
     /// "free" plan and the returned price will be an empty string.
-    func getPricesForPlans(_ plans: [Plan], success: @escaping ([PricedPlan]) -> Void, failure: (Error) -> Void) {
+    func getPricesForPlans(_ plans: [Plan], success: @escaping ([PricedPlan]) -> Void, failure: @escaping (Error) -> Void) {
         let identifiers = Set(plans.flatMap({ $0.productIdentifier }))
         getProductsWithIdentifiers(
             identifiers,
@@ -239,8 +239,9 @@ extension Store {
 }
 
 class StoreKitStore: Store {
+
     typealias ProductType = SKProduct
-    func getProductsWithIdentifiers(_ identifiers: Set<String>, success: @escaping ([ProductType]) -> Void, failure: @escaping (Error) -> Void) {
+    internal func getProductsWithIdentifiers(_ identifiers: Set<String>, success: @escaping ([ProductType]) -> Void, failure: @escaping (Error) -> Void) {
         let request = SKProductsRequest(productIdentifiers: identifiers)
         let delegate = ProductRequestDelegate(onSuccess: success, onError: failure)
         delegate.retainUntilFinished(request)
@@ -298,19 +299,19 @@ struct MockStore: Store {
             localizedDescription: "1 year of WordPress.com Premium",
             localizedTitle: "WordPress.com Premium 1 year",
             price: NSDecimalNumber(value: 99.88 as Float),
-            priceLocale: Locale(localeIdentifier: "en-US"),
+            priceLocale: Locale(identifier: "en-US"),
             productIdentifier: "com.wordpress.test.premium.subscription.1year"
         ),
         MockProduct(
             localizedDescription: "1 year of WordPress.com Business",
             localizedTitle: "WordPress.com Business 1 year",
             price: NSDecimalNumber(value: 299.88 as Float),
-            priceLocale: Locale(localeIdentifier: "en-US"),
+            priceLocale: Locale(identifier: "en-US"),
             productIdentifier: "com.wordpress.test.business.subscription.1year"
         )
     ]
 
-    func getProductsWithIdentifiers(_ identifiers: Set<String>, success: @escaping ([ProductType]) -> Void, failure: @escaping (Error) -> Void) {
+    internal func getProductsWithIdentifiers(_ identifiers: Set<String>, success: @escaping ([MockProduct]) -> Void, failure: @escaping (Error) -> Void) {
         let products = identifiers.map({ identifier in
             return self.products.filter({ $0.productIdentifier == identifier }).first
         })

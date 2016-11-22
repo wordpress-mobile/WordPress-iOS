@@ -59,7 +59,7 @@ import WordPressComAnalytics
     fileprivate var didBumpStats = false
 
     /// Used for fetching content.
-    fileprivate lazy var displayContext = ContextManager.sharedInstance().newMainContextChildContext()
+    fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
 
     fileprivate var siteID:NSNumber? {
@@ -285,10 +285,10 @@ import WordPressComAnalytics
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service?.siteTopicForSite(withID: siteID!,
             isFeed:isFeed,
-            success: { [weak self] (objectID:NSManagedObjectID!, isFollowing:Bool) in
+            success: { [weak self] (objectID:NSManagedObjectID?, isFollowing:Bool) in
 
                 let context = ContextManager.sharedInstance().mainContext
-                guard let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
+                guard let objectID = objectID, let topic = (try? context?.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogSwift.logError("Reader: Error retriving an existing site topic by its objectID")
                     self?.displayLoadingStreamFailed()
                     return
@@ -296,7 +296,7 @@ import WordPressComAnalytics
                 self?.readerTopic = topic
 
             },
-            failure: { [weak self] (error:NSError!) in
+            failure: { [weak self] (error: Error?) in
                 self?.displayLoadingStreamFailed()
             })
     }
@@ -311,10 +311,10 @@ import WordPressComAnalytics
         assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic")
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service?.tagTopicForTag(withSlug: tagSlug,
-            success: { [weak self] (objectID:NSManagedObjectID!) in
+            success: { [weak self] (objectID:NSManagedObjectID?) in
 
                 let context = ContextManager.sharedInstance().mainContext
-                guard let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
+                guard let objectID = objectID, let topic = (try? context?.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogSwift.logError("Reader: Error retriving an existing tag topic by its objectID")
                     self?.displayLoadingStreamFailed()
                     return
@@ -322,7 +322,7 @@ import WordPressComAnalytics
                 self?.readerTopic = topic
 
             },
-            failure: { [weak self] (error:NSError!) in
+            failure: { [weak self] (error: Error?) in
                 self?.displayLoadingStreamFailed()
             })
     }
@@ -642,7 +642,7 @@ import WordPressComAnalytics
             assertionFailure("A reader topic is required")
             return nil
         }
-        let title = topic.title ?? ""
+        let title = topic.title
         var key: String = "list"
         if ReaderHelpers.isTopicTag(topic) {
             key = "tag"
@@ -786,7 +786,7 @@ import WordPressComAnalytics
                                             success: {
                                                 SVProgressHUD.showSuccess(withStatus: successMessage)
                                             },
-                                            failure: { (error:NSError!) in
+                                            failure: { (error: Error?) in
                                                 SVProgressHUD.dismiss()
 
                                                 let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
@@ -849,7 +849,7 @@ import WordPressComAnalytics
             WPNotificationFeedbackGenerator.notificationOccurred(.success)
         }
         let service = ReaderPostService(managedObjectContext: managedObjectContext())
-        service?.toggleLiked(for: post, success: nil, failure: { (error:NSError?) in
+        service?.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
             if let anError = error {
                 DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
             }
@@ -909,7 +909,7 @@ import WordPressComAnalytics
         service?.flagSite(withID: post.siteID,
             asBlocked: true,
             success: nil,
-            failure: { [weak self] (error:NSError?) in
+            failure: { [weak self] (error: Error?) in
                 self?.recentlyBlockedSitePostObjectIDs.remove(objectID)
                 self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
@@ -939,7 +939,7 @@ import WordPressComAnalytics
         service?.flagSite(withID: post.siteID,
             asBlocked: false,
             success: nil,
-            failure: { [weak self] (error:NSError?) in
+            failure: { [weak self] (error:Error?) in
                 self?.recentlyBlockedSitePostObjectIDs.add(objectID)
                 self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
@@ -1143,18 +1143,18 @@ import WordPressComAnalytics
                 }
             }
 
-            let failureBlock = { (error:NSError?) in
+            let failureBlock = { (error:Error?) in
                 DispatchQueue.main.async {
                     if let error = error {
-                        failure?(error)
+                        failure?(error as NSError)
                     }
                 }
             }
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
-                service.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: false, success: successBlock, failure: failureBlock)
+                service?.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: false, success: successBlock, failure: failureBlock)
             } else {
-                service.fetchPosts(for: topicInContext, earlierThan: Date(), success: successBlock, failure: failureBlock)
+                service?.fetchPosts(for: topicInContext, earlierThan: Date(), success: successBlock, failure: failureBlock)
             }
         }
     }
@@ -1203,17 +1203,17 @@ import WordPressComAnalytics
                 }
             }
 
-            let failureBlock = { (error:NSError!) in
+            let failureBlock = { (error:Error?) in
                 DispatchQueue.main.async {
-                    failure?(error)
+                    failure?(error as! NSError)
                 }
             }
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
                 assertionFailure("Search topics should no have a gap to fill.")
-                service.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
+                service?.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
             } else {
-                service.fetchPosts(for: topicInContext, earlierThan: sortDate, deletingEarlier: true, success: successBlock, failure: failureBlock)
+                service?.fetchPosts(for: topicInContext, earlierThan: sortDate, deletingEarlier: true, success: successBlock, failure: failureBlock)
             }
         }
     }
@@ -1248,16 +1248,16 @@ import WordPressComAnalytics
                 })
             }
 
-            let failureBlock = { (error:NSError!) in
+            let failureBlock = { (error:Error?) in
                 DispatchQueue.main.async(execute: {
-                    failure?(error)
+                    failure?(error as! NSError)
                 })
             }
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
-                service.fetchPosts(for: topicInContext, atOffset: UInt(offset), deletingEarlier: false, success: successBlock, failure: failureBlock)
+                service?.fetchPosts(for: topicInContext, atOffset: UInt(offset), deletingEarlier: false, success: successBlock, failure: failureBlock)
             } else {
-                service.fetchPosts(for: topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
+                service?.fetchPosts(for: topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
             }
         }
 
@@ -1368,7 +1368,7 @@ import WordPressComAnalytics
 
 
     func handleContextDidSaveNotification(_ notification:Foundation.Notification) {
-        displayContext?.mergeChanges(fromContextDidSave: notification)
+        displayContext.mergeChanges(fromContextDidSave: notification)
     }
 
 
@@ -1381,7 +1381,7 @@ import WordPressComAnalytics
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
-        service.toggleFollowing(forTag: topic, success: nil, failure: { (error:NSError?) in
+        service?.toggleFollowing(forTag: topic, success: nil, failure: { (error:Error?) in
             WPNotificationFeedbackGenerator.notificationOccurred(.error)
             self.updateStreamHeaderIfNeeded()
         })
@@ -1395,7 +1395,7 @@ import WordPressComAnalytics
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
-        service.toggleFollowing(forSite: topic, success:nil, failure: { (error:NSError?) in
+        service?.toggleFollowing(forSite: topic, success:nil, failure: { (error:Error?) in
             WPNotificationFeedbackGenerator.notificationOccurred(.error)
             self.updateStreamHeaderIfNeeded()
         })
@@ -1467,7 +1467,7 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
         let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
         navigationController?.pushViewController(controller, animated: true)
 
-        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL, forKey: "url")
+        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL as AnyObject?, forKey: "url")
         WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
     }
 
@@ -1492,7 +1492,7 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
         let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
         navigationController?.pushViewController(controller, animated: true)
 
-        let properties =  ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug, forKey: "tag")
+        let properties =  ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug as AnyObject?, forKey: "tag")
         WPAppAnalytics.track(.readerTagPreviewed, withProperties: properties)
     }
 
@@ -1548,7 +1548,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     // MARK: - Fetched Results Related
 
     public func managedObjectContext() -> NSManagedObjectContext {
-        return displayContext!
+        return displayContext
     }
 
 

@@ -260,7 +260,7 @@ import Gridicons
             views: views))
         // Center on the search bar.
         view.addConstraint(NSLayoutConstraint(
-            item: autoView,
+            item: autoView!,
             attribute: .centerX,
             relatedBy: .equal,
             toItem: searchBar,

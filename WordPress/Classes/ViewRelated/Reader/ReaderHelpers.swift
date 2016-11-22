@@ -197,7 +197,7 @@ import WordPressComAnalytics
         request.addValue(pixelStatReferrer, forHTTPHeaderField: "Referer")
 
         let session = URLSession.shared
-        let task = session.dataTask(with: request)
+        let task = session.dataTask(with: request as URLRequest)
         task.resume()
     }
 

@@ -38,9 +38,9 @@ extension WPStyleGuide
         // Handle special cases
         switch name {
         case "print" :
-            return Gridicon.iconOfType(.Print)
+            return Gridicon.iconOfType(.print)
         case "email" :
-            return Gridicon.iconOfType(.Mail)
+            return Gridicon.iconOfType(.mail)
         case "google-plus-1" :
             iconName = "social-google-plus"
         case "press-this" :

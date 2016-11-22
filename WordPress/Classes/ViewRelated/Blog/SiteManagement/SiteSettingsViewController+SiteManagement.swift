@@ -62,7 +62,7 @@ public extension SiteSettingsViewController
                 let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .alert)
 
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
-                alertController.addDefaultActionWithTitle(okTitle, handler: nil)
+                _ = alertController.addDefaultActionWithTitle(okTitle, handler: nil)
 
                 alertController.presentFromRootViewController()
             })
@@ -166,7 +166,7 @@ public extension SiteSettingsViewController
                 self?.updateNavigationStackAfterSiteDeletion()
 
                 let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-                accountService.updateUserDetails(for: accountService.defaultWordPressComAccount()!, success: { _ in }, failure: { _ in })
+                accountService?.updateUserDetails(for: (accountService?.defaultWordPressComAccount()!)!, success: { _ in }, failure: { _ in })
             },
             failure: { error in
                 DDLogSwift.logError("Error deleting site: \(error.localizedDescription)")

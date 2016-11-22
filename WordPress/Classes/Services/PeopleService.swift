@@ -41,10 +41,10 @@ struct PeopleService {
     func loadUsersPage(_ offset: Int = 0, count: Int = 20, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void), failure: ((Error) -> Void)? = nil) {
         remote.getUsers(siteID, offset: offset, count: count, success: { users, hasMore in
             self.mergePeople(users)
-            success(retrieved: users.count, shouldLoadMore: hasMore)
+            success(users.count, hasMore)
 
         }, failure: { error in
-            DDLogSwift.logError(String(error))
+            DDLogSwift.logError(String(describing: error))
             failure?(error)
         })
     }
@@ -60,10 +60,10 @@ struct PeopleService {
     func loadFollowersPage(_ offset: Int = 0, count: Int = 20, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void), failure: ((Error) -> Void)? = nil) {
         remote.getFollowers(siteID, offset: offset, count: count, success: { followers, hasMore in
             self.mergePeople(followers)
-            success(retrieved: followers.count, shouldLoadMore: hasMore)
+            success(followers.count, hasMore)
 
         }, failure: { error in
-            DDLogSwift.logError(String(error))
+            DDLogSwift.logError(String(describing: error))
             failure?(error)
         })
     }
@@ -79,10 +79,10 @@ struct PeopleService {
     func loadViewersPage(_ offset: Int = 0, count: Int = 20, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void), failure: ((Error) -> Void)? = nil) {
         remote.getViewers(siteID, offset: offset, count: count, success: { viewers, hasMore in
             self.mergePeople(viewers)
-            success(retrieved: viewers.count, shouldLoadMore: hasMore)
+            success(viewers.count, hasMore)
 
         }, failure: { error in
-            DDLogSwift.logError(String(error))
+            DDLogSwift.logError(String(describing: error))
             failure?(error)
         })
     }
@@ -177,8 +177,8 @@ struct PeopleService {
     ///
     func validateInvitation(_ usernameOrEmail: String,
                             role: Role,
-                            success: ((Void) -> Void),
-                            failure: ((Error) -> Void))
+                            success: @escaping ((Void) -> Void),
+                            failure: @escaping ((Error) -> Void))
     {
         remote.validateInvitation(siteID,
                                   usernameOrEmail: usernameOrEmail,
@@ -200,8 +200,8 @@ struct PeopleService {
     func sendInvitation(_ usernameOrEmail: String,
                         role: Role,
                         message: String = "",
-                        success: ((Void) -> Void),
-                        failure: ((Error) -> Void))
+                        success: @escaping ((Void) -> Void),
+                        failure: @escaping ((Error) -> Void))
     {
         remote.sendInvitation(siteID,
                               usernameOrEmail: usernameOrEmail,

@@ -72,7 +72,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
             "counts": ["\(notificationID)": value]
         ]
 
-        wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (response, _)  in
+        wordPressComRestApi.POST(requestUrl!, parameters: parameters as [String : AnyObject]?, success: { (response, _)  in
             let error = self.errorFromResponse(response)
             completion(error)
 
@@ -96,7 +96,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
             "time": timestamp
         ]
 
-        wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (response, _)  in
+        wordPressComRestApi.POST(requestUrl!, parameters: parameters as [String : AnyObject]?, success: { (response, _)  in
             let error = self.errorFromResponse(response)
             completion(error)
 
@@ -155,7 +155,7 @@ private extension NotificationSyncServiceRemote
             parameters["fields"] = fields as AnyObject?
         }
 
-        wordPressComRestApi.GET(requestUrl, parameters: parameters, success: { response, _  in
+        wordPressComRestApi.GET(requestUrl!, parameters: parameters, success: { response, _  in
             let document = response as? [String: AnyObject]
             let notes = document?["notes"] as? [[String: AnyObject]]
             let parsed = notes?.flatMap { RemoteNotification(document: $0) }

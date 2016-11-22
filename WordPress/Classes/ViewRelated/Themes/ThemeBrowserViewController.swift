@@ -97,13 +97,13 @@ public protocol ThemePresenter: class
     /**
      *  @brief      The FRC this VC will use to display filtered content.
      */
-    fileprivate lazy var themesController: NSFetchedResultsController = {
+    fileprivate lazy var themesController: NSFetchedResultsController<NSFetchRequestResult> = {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Theme.entityName())
         fetchRequest.fetchBatchSize = 20
         let sort = NSSortDescriptor(key: "order", ascending: true)
         fetchRequest.sortDescriptors = [sort]
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
-            managedObjectContext: self.themeService.managedObjectContext,
+            managedObjectContext: (self.themeService?.managedObjectContext)!,
             sectionNameKeyPath: nil,
             cacheName: nil)
         frc.delegate = self
@@ -336,14 +336,14 @@ public protocol ThemePresenter: class
     fileprivate func updateActiveTheme() {
         let lastActiveThemeId = blog.currentThemeId
 
-        themeService?.getActiveTheme(for: blog,
+        _ = themeService?.getActiveTheme(for: blog,
             success: { [weak self] (theme: Theme?) in
                 if lastActiveThemeId != theme?.themeId {
                     self?.collectionView?.collectionViewLayout.invalidateLayout()
                 }
             },
-            failure: { (error : NSError!) in
-                DDLogSwift.logError("Error updating active theme: \(error.localizedDescription)")
+            failure: { (error) in
+                DDLogSwift.logError("Error updating active theme: \(error?.localizedDescription)")
         })
     }
 
@@ -367,18 +367,18 @@ public protocol ThemePresenter: class
         assert(page > 0)
 
         syncingPage = page
-        themeService.getThemesFor(blog,
+        _ = themeService?.getThemesFor(blog,
             page: syncingPage,
             sync: page == 1,
             success: {(themes: [Theme]?, hasMore: Bool) in
                 if let success = success {
-                    success(hasMore: hasMore)
+                    success(hasMore)
                 }
             },
-            failure: { (error : NSError!) in
-                DDLogSwift.logError("Error syncing themes: \(error.localizedDescription)")
+            failure: { (error) in
+                DDLogSwift.logError("Error syncing themes: \(error?.localizedDescription)")
                 if let failure = failure {
-                    failure(error: error)
+                    failure(error as! NSError)
                 }
             })
     }
@@ -660,7 +660,7 @@ public protocol ThemePresenter: class
         }
 
         searchController.isActive = false
-        themeService?.activate(theme,
+        _ = themeService?.activate(theme,
             for: blog,
             success: { [weak self] (theme: Theme?) in
                 WPAppAnalytics.track(.themesChangedTheme, withProperties: ["themeId": theme?.themeId ?? ""], with: self?.blog)
@@ -678,18 +678,18 @@ public protocol ThemePresenter: class
                 alertController.addActionWithTitle(manageTitle,
                     style: .default,
                     handler: { [weak self] (action: UIAlertAction) in
-                        self?.navigationController?.popViewController(animated: true)
+                        _ = self?.navigationController?.popViewController(animated: true)
                     })
                 alertController.addDefaultActionWithTitle(okTitle, handler: nil)
                 alertController.presentFromRootViewController()
             },
-            failure: { (error : NSError!) in
-                DDLogSwift.logError("Error activating theme \(theme.themeId): \(error.localizedDescription)")
+            failure: { (error) in
+                DDLogSwift.logError("Error activating theme \(theme.themeId): \(error?.localizedDescription)")
 
                 let errorTitle = NSLocalizedString("Activation Error", comment:"Title of alert when theme activation fails")
                 let okTitle = NSLocalizedString("OK", comment:"Alert dismissal title")
                 let alertController = UIAlertController(title: errorTitle,
-                    message: error.localizedDescription,
+                    message: error?.localizedDescription,
                     preferredStyle: .alert)
                 alertController.addDefaultActionWithTitle(okTitle, handler: nil)
                 alertController.presentFromRootViewController()
@@ -752,7 +752,7 @@ public protocol ThemePresenter: class
 
     open func activatePresentingTheme() {
         suspendedSearch = ""
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
         activateTheme(presentingTheme)
         presentingTheme = nil
     }

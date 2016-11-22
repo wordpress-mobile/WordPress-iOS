@@ -31,7 +31,7 @@ open class SiteManagementService : LocalCoreDataService
             success: {
                 self.managedObjectContext.perform {
                     let blogService = BlogService(managedObjectContext: self.managedObjectContext)
-                    blogService.remove(blog)
+                    blogService?.remove(blog)
 
                     ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
                         success?()

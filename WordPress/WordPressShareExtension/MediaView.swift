@@ -88,7 +88,7 @@ class MediaView : UIView
         let scale = UIScreen.main.scale
         let scaledMaximumSize = CGSize(width: maximumSize.width * scale, height: maximumSize.height * scale)
 
-        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
             let resizedImage = image.resizeWithMaximumSize(scaledMaximumSize)
 
             DispatchQueue.main.async {

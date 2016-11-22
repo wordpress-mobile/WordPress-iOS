@@ -65,8 +65,7 @@ class PlanFeaturesRemote: ServiceRemoteWordPressComREST {
     /// - Returns: An optional tuple containing a collection of cached plan features and the date when they were fetched
     fileprivate func cachedPlanFeaturesWithDate() -> (PlanFeatures, Date)? {
         guard let cacheFileURL = cacheFileURL,
-            let path = cacheFileURL.path,
-            let attributes = try? FileManager.default.attributesOfItem(atPath: path),
+            let attributes = try? FileManager.default.attributesOfItem(atPath: cacheFileURL.path),
             let modificationDate = attributes[FileAttributeKey.modificationDate] as? Date, cacheDateIsValid(modificationDate) else { return nil }
 
         guard let response = try? Data(contentsOf: cacheFileURL),
@@ -86,8 +85,8 @@ class PlanFeaturesRemote: ServiceRemoteWordPressComREST {
         let locale = languageDatabase.deviceLanguage.slug
         let parameters = ["locale": locale]
 
-        wordPressComRestApi.GET(path,
-                parameters: parameters,
+        wordPressComRestApi.GET(path!,
+                parameters: parameters as [String : AnyObject]?,
                 success: {
                     [weak self] responseObject, _ in
                     do {
@@ -131,10 +130,10 @@ private func mapPlanFeaturesResponse(_ response: AnyObject) throws -> PlanFeatur
             var description = featureDetails["description"] as? String,
             let iconURLString = featureDetails["icon"] as? String,
             let iconURL = URL(string: iconURLString),
-            let planDetails = featureDetails["plans"] as? [String: AnyObject] else { throw PlansRemote.Error.decodeError }
+            let planDetails = featureDetails["plans"] as? [String: AnyObject] else { throw PlansRemote.ResponseError.decodingFailure }
 
         for (planID, planInfo) in planDetails {
-            guard let planID = Int(planID) else { throw PlansRemote.Error.decodeError }
+            guard let planID = Int(planID) else { throw PlansRemote.ResponseError.decodingFailure }
 
             if features[planID] == nil {
                 features[planID] = [PlanFeature]()

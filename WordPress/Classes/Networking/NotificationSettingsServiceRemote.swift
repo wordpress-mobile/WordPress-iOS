@@ -29,7 +29,7 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST
         let path = String(format: "me/notifications/settings/?device_id=%@", deviceId)
         let requestUrl = self.path(forEndpoint: path, with: .version_1_1)
 
-        wordPressComRestApi.GET(requestUrl,
+        wordPressComRestApi.GET(requestUrl!,
             parameters: nil,
             success: { (response: AnyObject, httpResponse: HTTPURLResponse?) -> Void in
                 let settings = RemoteNotificationSettings.fromDictionary(response as? NSDictionary)
@@ -54,7 +54,7 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST
 
         let parameters = settings
 
-        wordPressComRestApi.POST(requestUrl,
+        wordPressComRestApi.POST(requestUrl!,
             parameters: parameters,
             success: { (response: AnyObject, httpResponse: HTTPURLResponse?) -> Void in
                 success?()
@@ -89,15 +89,15 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST
             "device_uuid"     : device.wordPressIdentifier()
         ]
 
-        wordPressComRestApi.POST(requestUrl,
-            parameters: parameters,
+        wordPressComRestApi.POST(requestUrl!,
+            parameters: parameters as [String : AnyObject]?,
             success: { (response: AnyObject, httpResponse: HTTPURLResponse?) -> Void in
                 if let responseDict = response as? NSDictionary,
                     let rawDeviceId = responseDict.object(forKey: "ID")
                 {
                     // Failsafe: Make sure deviceId is always a string
                     let deviceId = String(format: "\(rawDeviceId)")
-                    success?(deviceId: deviceId)
+                    success?(deviceId)
                 } else {
                     let innerError = Error.invalidResponse
                     let outerError = NSError(domain: innerError.domain, code: innerError.code, userInfo: nil)
@@ -122,7 +122,7 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST
         let endpoint = String(format: "devices/%@/delete", deviceId)
         let requestUrl = path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.POST(requestUrl,
+        wordPressComRestApi.POST(requestUrl!,
             parameters: nil,
             success: { (response: AnyObject!, httpResponse: HTTPURLResponse?) -> Void in
                 success?()

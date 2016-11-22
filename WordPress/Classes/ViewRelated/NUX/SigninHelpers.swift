@@ -419,8 +419,8 @@ import Mixpanel
 
         SecAddSharedWebCredential(LoginSharedWebCredentialFQDN, username, password, { (error: CFError?) in
             guard error == nil else {
-                let err = error! as NSError
-                DDLogSwift.logError("Error occurred updating shared web credential: \(err.localizedDescription)")
+                let err = error as? Error
+                DDLogSwift.logError("Error occurred updating shared web credential: \(err?.localizedDescription)")
                 return
             }
             DispatchQueue.main.async(execute: {
@@ -438,12 +438,12 @@ import Mixpanel
         SecRequestSharedWebCredential(LoginSharedWebCredentialFQDN, nil, { (credentials: CFArray?, error: CFError?) in
             DDLogSwift.logInfo("Completed requesting shared web credentials")
             guard error == nil else {
-                let err = error! as NSError
-                if err.code == -25300 {
+                let err = error as? Error
+                if let error = err as? NSError, error.code == -25300 {
                     // An OSStatus of -25300 is expected when no saved credentails are found.
                     DDLogSwift.logInfo("No shared web credenitals found.")
                 } else {
-                    DDLogSwift.logError("Error requesting shared web credentials: \(err.localizedDescription)")
+                    DDLogSwift.logError("Error requesting shared web credentials: \(err?.localizedDescription)")
                 }
                 DispatchQueue.main.async(execute: {
                     completion(false, nil, nil)

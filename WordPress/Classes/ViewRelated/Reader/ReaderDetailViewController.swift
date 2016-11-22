@@ -270,17 +270,17 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
         service?.fetchPost(
             postID.uintValue,
             forSite: siteID.uintValue,
-            success: {[weak self] (post:ReaderPost!) in
+            success: {[weak self] (post: ReaderPost?) in
+
                 self?.post = post
                 WPNoResultsView.remove(from: self?.view)
-            },
-            failure: {[weak self] (error:NSError!) in
-                DDLogSwift.logError("Error fetching post for detail: \(error.localizedDescription)")
+
+            }, failure: {[weak self] (error: Error?) in
+                DDLogSwift.logError("Error fetching post for detail: \(error?.localizedDescription)")
 
                 let title = NSLocalizedString("Error Loading Post", comment:"Text displayed when load post fails.")
                 WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: self?.view)
-            }
-        )
+        })
     }
 
 
@@ -451,7 +451,7 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
     fileprivate func requestForURL(_ url:URL) -> URLRequest {
         var requestURL = url
 
-        let absoluteString = requestURL.absoluteString ?? ""
+        let absoluteString = requestURL.absoluteString
         if !absoluteString.hasPrefix("https") {
             let sslURL = absoluteString.replacingOccurrences(of: "http", with: "https")
             requestURL = URL(string: sslURL)!
@@ -492,7 +492,8 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
         }
 
         // Byline
-        var byline = post?.dateForDisplay().shortString()
+        let date = NSDate(timeIntervalSinceReferenceDate: (post?.dateForDisplay().timeIntervalSinceReferenceDate)!)
+        var byline = date.shortString()
         if let author = post?.authorForDisplay() {
             byline = String(format: "%@ · %@", author, byline!)
         }
@@ -691,7 +692,7 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
         let controller = ReaderStreamViewController.controllerWithSiteID(post!.siteID, isFeed: post!.isExternal)
         navigationController?.pushViewController(controller, animated: true)
 
-        let properties = ReaderHelpers.statsPropertiesForPost(post!, andValue: post!.blogURL, forKey: "URL")
+        let properties = ReaderHelpers.statsPropertiesForPost(post!, andValue: post!.blogURL as AnyObject?, forKey: "URL")
         WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
     }
 
@@ -792,7 +793,7 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
         let controller = ReaderStreamViewController.controllerWithTagSlug(post!.primaryTagSlug)
         navigationController?.pushViewController(controller, animated: true)
 
-        let properties =  ReaderHelpers.statsPropertiesForPost(post!, andValue: post!.primaryTagSlug, forKey: "tag")
+        let properties =  ReaderHelpers.statsPropertiesForPost(post!, andValue: post!.primaryTagSlug as AnyObject?, forKey: "tag")
         WPAppAnalytics.track(.readerTagPreviewed, withProperties: properties)
     }
 
@@ -821,7 +822,7 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
         }
 
         let service = ReaderPostService(managedObjectContext: post.managedObjectContext)
-        service?.toggleLiked(for: post, success: nil, failure: { (error:NSError?) in
+        service?.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
             if let anError = error {
                 DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
             }
@@ -891,7 +892,7 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
     func handleBlockSiteNotification(_ notification:Foundation.Notification) {
         if let userInfo = notification.userInfo, let aPost = userInfo["post"] as? NSObject {
             if aPost == post! {
-                navigationController?.popViewController(animated: true)
+                _ = navigationController?.popViewController(animated: true)
             }
         }
     }

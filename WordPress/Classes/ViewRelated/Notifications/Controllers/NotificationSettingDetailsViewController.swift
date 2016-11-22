@@ -223,7 +223,7 @@ open class NotificationSettingDetailsViewController : UITableViewController
             success             : {
                 WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success" : true])
             },
-            failure             : { (error: NSError!) in
+            failure             : { (error: Error?) in
                 WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success" : false])
                 self.handleUpdateError()
             })

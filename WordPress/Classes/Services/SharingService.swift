@@ -26,9 +26,7 @@ open class SharingService : LocalCoreDataService
             // Process the results
             self.mergePublicizeServices(remoteServices, success: success)
         },
-        failure: { (error: NSError!) in
-            failure?(error)
-        })
+        failure: failure)
     }
 
 
@@ -48,9 +46,7 @@ open class SharingService : LocalCoreDataService
             // Just return the result
             success?(keyringConnections)
         },
-        failure: { (error: NSError!) in
-            failure?(error)
-        })
+        failure: failure)
     }
 
 
@@ -71,9 +67,7 @@ open class SharingService : LocalCoreDataService
             // Process the results
             self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: success)
         },
-        failure: { (error: NSError!) in
-            failure?(error)
-        })
+        failure: failure)
     }
 
 
@@ -118,7 +112,7 @@ open class SharingService : LocalCoreDataService
                 }
 
             },
-            failure: { (error: NSError!) in
+            failure: { (error: NSError?) in
                 failure?(error)
             })
     }
@@ -159,7 +153,7 @@ open class SharingService : LocalCoreDataService
                 success: {(remoteConnection: RemotePublicizeConnection) in
                     let properties = [
                         "service" : pubConn.service,
-                        "is_site_wide" : String(Int(shared))
+                        "is_site_wide" : NSNumber(value: shared).stringValue
                     ]
                     WPAppAnalytics.track(.sharingPublicizeConnectionAvailableToAllChanged, withProperties: properties, withBlogID: siteID)
                     do {
@@ -174,7 +168,7 @@ open class SharingService : LocalCoreDataService
                     }
 
                 },
-                failure: { (error: NSError!) in
+                failure: { (error: NSError?) in
                     pubConn.shared = oldValue
                     ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
                         failure?(error)
@@ -223,10 +217,7 @@ open class SharingService : LocalCoreDataService
                     }
 
                 },
-                failure: { (error: NSError!) in
-                    failure?(error)
-
-            })
+                failure: failure)
     }
 
 
@@ -257,8 +248,8 @@ open class SharingService : LocalCoreDataService
                 WPAppAnalytics.track(.sharingPublicizeDisconnected, withProperties: properties, withBlogID: siteID)
                 success?()
             },
-            failure: { (error:NSError!) in
-                if let errorCode = error.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String {
+            failure: { (error:NSError?) in
+                if let errorCode = error?.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String {
                     if errorCode == self.SharingAPIErrorNotFound {
                         // This is a special situation. If the call to disconnect the service returns not_found then the service
                         // has probably already been disconnected and the call was made with stale data.
@@ -550,9 +541,7 @@ open class SharingService : LocalCoreDataService
             success: { (remoteButtons:[RemoteSharingButton]) in
                 self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)
             },
-            failure: { (error: NSError!) in
-                failure?(error)
-        })
+            failure: failure)
     }
 
 
@@ -575,9 +564,7 @@ open class SharingService : LocalCoreDataService
             success: { (remoteButtons:[RemoteSharingButton]) in
                 self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)
             },
-            failure: { (error: NSError!) in
-                failure?(error)
-        })
+            failure: failure)
     }
 
 

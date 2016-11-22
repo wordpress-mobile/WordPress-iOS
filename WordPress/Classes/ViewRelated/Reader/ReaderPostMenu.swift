@@ -107,7 +107,7 @@ open class ReaderPostMenu
         let postService = ReaderPostService(managedObjectContext: post.managedObjectContext)
         postService?.toggleFollowing(for: post, success: { () in
             SVProgressHUD.showSuccess(withStatus: successMessage)
-            }, failure: { (error:NSError!) in
+            }, failure: { (error: Error?) in
                 SVProgressHUD.dismiss()
 
                 WPNotificationFeedbackGenerator.notificationOccurred(.error)

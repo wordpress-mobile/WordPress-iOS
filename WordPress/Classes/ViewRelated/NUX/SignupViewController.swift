@@ -112,7 +112,7 @@ import WordPressShared
         passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
         siteURLField.placeholder = NSLocalizedString("Site Address (URL)", comment: "Site Address placeholder")
 
-        let submitButtonTitle = NSLocalizedString("Create Account", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        let submitButtonTitle = NSLocalizedString("Create Account", comment: "Title of a button. The text should be uppercase.").localizedUppercase
         submitButton.setTitle(submitButtonTitle, for: UIControlState())
         submitButton.setTitle(submitButtonTitle, for: .highlighted)
     }
@@ -414,8 +414,8 @@ import WordPressShared
                                                     password: loginFields.password,
                                                     for: self,
                                                     sender: sender,
-                                                    completion: { (username, password, error: NSError?) in
-                                                        if let error = error {
+                                                    completion: { (username, password, error: Error?) in
+                                                        if let error = error as? NSError {
                                                             if error.code != WPOnePasswordErrorCodeCancelledByUser {
                                                                 DDLogSwift.logError("Failed to use 1Password App Extension to save a new Login: \(error)")
                                                                 WPAnalytics.track(.onePasswordFailed)

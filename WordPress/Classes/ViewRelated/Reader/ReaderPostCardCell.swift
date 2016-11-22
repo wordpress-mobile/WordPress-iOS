@@ -277,7 +277,7 @@ import WordPressShared
 
         var requestURL = url
 
-        let absoluteString = requestURL.absoluteString ?? ""
+        let absoluteString = requestURL.absoluteString
         if !absoluteString.hasPrefix("https") {
             let sslURL = absoluteString.replacingOccurrences(of: "http", with: "https")
             requestURL = URL(string: sslURL)!

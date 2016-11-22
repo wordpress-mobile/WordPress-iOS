@@ -16,7 +16,7 @@ class ManagedAccountSettings: NSManagedObject {
         email = accountSettings.email
         emailPendingAddress = accountSettings.emailPendingAddress
         emailPendingChange = accountSettings.emailPendingChange
-        primarySiteID = NSNumber(accountSettings.primarySiteID)
+        primarySiteID = NSNumber(value: accountSettings.primarySiteID)
         webAddress = accountSettings.webAddress
         language = accountSettings.language
     }
@@ -47,7 +47,7 @@ class ManagedAccountSettings: NSManagedObject {
             self.emailPendingAddress = nil
             self.emailPendingChange = false
         case .primarySite(let value):
-            self.primarySiteID = NSNumber(value)
+            self.primarySiteID = NSNumber(value: value)
         case .webAddress(let value):
             self.webAddress = value
         case .language(let value):
