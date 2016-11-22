@@ -31,8 +31,8 @@ class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         let parameters = ["context": "edit"]
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.GET(path,
-                parameters: parameters,
+        wordPressComRestApi.GET(path!,
+                parameters: parameters as [String : AnyObject]?,
                 success: {
                     responseObject, httpResponse in
 
@@ -53,8 +53,8 @@ class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
         let parameters = [fieldNameForChange(change): change.stringValue]
 
-        wordPressComRestApi.POST(path,
-            parameters: parameters,
+        wordPressComRestApi.POST(path!,
+            parameters: parameters as [String : AnyObject]?,
             success: {
                 responseObject, httpResponse in
 
@@ -80,7 +80,7 @@ class AccountSettingsRemote: ServiceRemoteWordPressComREST {
             let webAddress = response["user_URL"] as? String,
             let language = response["language"] as? String else {
                 DDLogSwift.logError("Error decoding me/settings response: \(responseObject)")
-                throw Error.decodeError
+                throw ResponseError.decodingFailure
         }
 
         let aboutMeText = aboutMe.stringByDecodingXMLCharacters()
@@ -121,7 +121,7 @@ class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         }
     }
 
-    enum Error: Error {
-        case decodeError
+    enum ResponseError: Error {
+        case decodingFailure
     }
 }

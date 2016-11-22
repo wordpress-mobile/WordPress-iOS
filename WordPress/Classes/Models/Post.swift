@@ -72,7 +72,7 @@ class Post: AbstractPost {
 
         assert(blog.postFormats is [String:String])
         guard let postFormats = blog.postFormats as? [String:String] else {
-            DDLogSwift.logError("Expected blog.postFormats to be \(String(describing: [String:String])).")
+            DDLogSwift.logError("Expected blog.postFormats to be \(String(describing: [String:String].self)).")
             return
         }
 
@@ -119,7 +119,7 @@ class Post: AbstractPost {
 
             assert(blog.categories is Set<PostCategory>)
             guard let blogCategories = blog.categories as? Set<PostCategory> else {
-                DDLogSwift.logError("Expected blog.categories to be \(String(describing: Set<PostCategory>)).")
+                DDLogSwift.logError("Expected blog.categories to be \(String(describing: Set<PostCategory>.self)).")
                 return
             }
 
@@ -169,11 +169,11 @@ class Post: AbstractPost {
     }
 
     override func hasCategories() -> Bool {
-        return (categories?.count > 0) ?? false
+        return (categories?.count > 0)
     }
 
     override func hasTags() -> Bool {
-        return (tags?.trim().characters.count > 0) ?? false
+        return (tags?.trim().characters.count > 0)
     }
 
     // MARK: - BasePost

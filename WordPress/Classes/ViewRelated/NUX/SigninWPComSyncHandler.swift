@@ -15,7 +15,7 @@ protocol SigninWPComSyncHandler: class
 
     func syncWPCom(_ username: String, authToken: String, requiredMultifactor: Bool)
     func handleSyncSuccess(_ requiredMultifactor: Bool)
-    func handleSyncFailure(_ error: NSError)
+    func handleSyncFailure(_ error: NSError?)
 }
 
 
@@ -42,12 +42,12 @@ extension SigninWPComSyncHandler
                 accountFacade.updateUserDetails(for: account, success: { [weak self] in
                 self?.handleSyncSuccess(requiredMultifactor)
 
-                }, failure: { [weak self] (error: NSError!) in
-                    self?.handleSyncFailure(error)
+                }, failure: { [weak self] (error: Error?) in
+                    self?.handleSyncFailure(error as? NSError)
                 })
 
-            }, failure: { [weak self] (error: NSError!) in
-                self?.handleSyncFailure(error)
+            }, failure: { [weak self] (error: Error?) in
+                self?.handleSyncFailure(error as? NSError)
             })
     }
 
@@ -66,7 +66,7 @@ extension SigninWPComSyncHandler
         dismiss()
 
         let properties = [
-            "multifactor": String(Int(requiredMultifactor)),
+            "multifactor": requiredMultifactor ? "1" : "0",
             "dotcom_user": "1"
         ]
 
@@ -77,7 +77,7 @@ extension SigninWPComSyncHandler
     /// Handles an error while syncing account and blog information for the
     /// authenticated user.
     ///
-    func handleSyncFailure(_ error: NSError) {
+    func handleSyncFailure(_ error: NSError?) {
         configureStatusLabel("")
         configureViewLoading(false)
 

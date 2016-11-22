@@ -48,9 +48,9 @@ import WordPressShared
     /// Configures the appearance of the nav bar.
     ///
     fileprivate func configureNavbar() {
-        let image = Gridicon.iconOfType(.Cross)
-        let closeButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(SharingAccountViewController.handleCloseTapped(_:)))
-        closeButton.tintColor = UIColor.whiteColor()
+        let image = Gridicon.iconOfType(.cross)
+        let closeButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(SharingAccountViewController.handleCloseTapped(_:)))
+        closeButton.tintColor = UIColor.white
         navigationItem.leftBarButtonItem = closeButton
 
         // The preceding WPWebViewController changes the default navbar appearance. Restore it.
@@ -262,7 +262,7 @@ import WordPressShared
     /// An ImmuTableRow class.
     ///
     struct KeyringRow : ImmuTableRow {
-        static let cell = ImmuTableCell.class(WPTableViewCellValue1)
+        static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
         let title: String
         let value: String

@@ -457,6 +457,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
         let editorSettings = EditorSettings()
         if editorSettings.visualEditorEnabled {
+/* Aztec disabled for Swift 3 migration
             if editorSettings.nativeEditorEnabled {
                 let postViewController = AztecPostViewController(post: apost)
                 let navController = UINavigationController(rootViewController: postViewController)
@@ -464,6 +465,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
                 present(navController, animated: true, completion: nil)
                 return
             }
+*/
             let postViewController = WPPostViewController(post: apost, mode: mode)
 
             postViewController?.onClose = {[weak self] viewController, changesSaved in
@@ -474,7 +476,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
                     }
                 }
 
-                viewController?.navigationController?.popViewController(animated: true)
+                _ = viewController?.navigationController?.popViewController(animated: true)
             }
 
             postViewController?.hidesBottomBarWhenPushed = true

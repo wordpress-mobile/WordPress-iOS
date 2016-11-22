@@ -28,7 +28,7 @@ private class PromptContainerViewController : UIViewController
         childViewController = viewController
 
         super.init(nibName: nil, bundle: nil)
-        precondition(viewController.conforms(to: Confirmable))
+        precondition(viewController.conforms(to: Confirmable.self))
 
         setupNavigationButtons()
         attachChildViewController(viewController)

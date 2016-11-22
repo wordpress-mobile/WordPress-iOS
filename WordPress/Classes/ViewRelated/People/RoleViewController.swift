@@ -134,7 +134,7 @@ class RoleViewController : UITableViewController {
 
         // Callback
         onChange?(roleForSelectedRow)
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
 
 

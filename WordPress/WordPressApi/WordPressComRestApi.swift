@@ -105,7 +105,7 @@ open class WordPressComRestApi: NSObject
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
-    open func GET(_ URLString: String,
+    @discardableResult open func GET(_ URLString: String,
                      parameters: [String:AnyObject]?,
                      success: @escaping SuccessResponseBlock,
                      failure: @escaping FailureReponseBlock) -> Progress?
@@ -119,13 +119,13 @@ open class WordPressComRestApi: NSObject
 
         let task = sessionManager.get(URLString, parameters: parameters, progress: progressUpdater, success: { (dataTask, result) in
                 guard let responseObject = result else {
-                    failure(error:WordPressComRestApiError.unknown as NSError , httpResponse: dataTask.response as? HTTPURLResponse)
+                    failure(WordPressComRestApiError.unknown as NSError , dataTask.response as? HTTPURLResponse)
                     return
                 }
-                success(responseObject: responseObject, httpResponse: dataTask.response as? HTTPURLResponse)
+                success(responseObject as AnyObject, dataTask.response as? HTTPURLResponse)
                 progress.completedUnitCount = progress.totalUnitCount
-            }, failure: { (dataTask, error) in
-                failure(error, dataTask?.response as? HTTPURLResponse)
+        }, failure: { (dataTask: URLSessionDataTask?, error) in
+                failure(error as NSError, dataTask?.response as? HTTPURLResponse)
             }
         )
         if let task = task {
@@ -150,7 +150,7 @@ open class WordPressComRestApi: NSObject
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
-    open func POST(_ URLString: String,
+    @discardableResult open func POST(_ URLString: String,
                      parameters: [String:AnyObject]?,
                      success: @escaping SuccessResponseBlock,
                      failure: @escaping FailureReponseBlock) -> Progress?
@@ -163,13 +163,13 @@ open class WordPressComRestApi: NSObject
         }
         let task = sessionManager.post(URLString, parameters: parameters, progress: progressUpdater, success: { (dataTask, result) in
                 guard let responseObject = result else {
-                    failure(error:WordPressComRestApiError.unknown as NSError , httpResponse: dataTask.response as? HTTPURLResponse)
+                    failure(WordPressComRestApiError.unknown as NSError , dataTask.response as? HTTPURLResponse)
                     return
                 }
-                success(responseObject: responseObject, httpResponse: dataTask.response as? HTTPURLResponse)
+                success(responseObject as AnyObject, dataTask.response as? HTTPURLResponse)
                 progress.completedUnitCount = progress.totalUnitCount
-            }, failure: { (dataTask, error) in
-                failure(error, dataTask?.response as? HTTPURLResponse)
+        }, failure: { (dataTask: URLSessionDataTask?, error) in
+            failure(error as NSError, dataTask?.response as? HTTPURLResponse)
             }
         )
         if let task = task {
@@ -196,7 +196,7 @@ open class WordPressComRestApi: NSObject
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
-    open func multipartPOST(_ URLString: String,
+    @discardableResult open func multipartPOST(_ URLString: String,
                               parameters: [String:AnyObject]?,
                               fileParts: [FilePart],
                               success: @escaping SuccessResponseBlock,
@@ -207,7 +207,7 @@ open class WordPressComRestApi: NSObject
             let baseURL = URL(string: WordPressComRestApi.apiBaseURLString),
             let requestURLString = URL(string:URLString, relativeTo:baseURL)?.absoluteString
         else {
-            let error = NSError(domain:String(describing: WordPressComRestApiError),
+            let error = NSError(domain:String(describing: WordPressComRestApiError.self),
                                 code:WordPressComRestApiError.requestSerializationFailed.rawValue,
                                 userInfo:[NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
             failure(error, nil)
@@ -314,8 +314,8 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
 {
     override init() {
         super.init()
-        let extraStatusCodes = NSMutableIndexSet(self.acceptableStatusCodes!)
-        extraStatusCodes.add(in: NSRange(400...500))
+        var extraStatusCodes = self.acceptableStatusCodes
+        extraStatusCodes?.insert(integersIn: 400...500)
         self.acceptableStatusCodes = extraStatusCodes
     }
 
@@ -323,7 +323,7 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
         super.init(coder: aDecoder)
     }
 
-    override func responseObject(for response: URLResponse?, data: Data?, error: NSErrorPointer) -> AnyObject? {
+    override func responseObject(for response: URLResponse?, data: Data?, error: NSErrorPointer) -> Any? {
 
         let responseObject = super.responseObject(for: response, data: data, error: error)
 

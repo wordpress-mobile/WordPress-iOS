@@ -81,7 +81,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
                 self.viewModel = .ready(result)
             },
             failure: { error in
-                self.viewModel = .error(String(error))
+                self.viewModel = .error(String(describing: error))
             }
         )
     }

@@ -73,7 +73,7 @@ open class ThemeBrowserHeaderView: UICollectionReusableView
         currentThemeName.textColor = Styles.currentThemeNameColor
 
         let currentThemeButtons = [customizeButton, detailsButton, supportButton]
-        currentThemeButtons.forEach { Styles.styleCurrentThemeButton($0) }
+        currentThemeButtons.forEach { Styles.styleCurrentThemeButton($0!) }
 
         filterBar.backgroundColor = Styles.searchBarBackgroundColor
         filterBarBorders.forEach { $0.backgroundColor = Styles.searchBarBorderColor }

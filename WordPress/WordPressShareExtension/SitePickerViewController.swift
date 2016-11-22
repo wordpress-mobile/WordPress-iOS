@@ -43,8 +43,8 @@ class SitePickerViewController : UITableViewController
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let site = sites[indexPath.row]
-        onChange?(siteId: site.ID, description: site.name?.characters.count > 0 ? site.name : site.URL.host)
-        navigationController?.popViewController(animated: true)
+        onChange?(site.ID, (site.name?.characters.count)! > 0 ? site.name : site.URL.host)
+        _ = navigationController?.popViewController(animated: true)
     }
 
 
@@ -123,7 +123,7 @@ class SitePickerViewController : UITableViewController
     fileprivate func showEmptySitesIfNeeded() {
         let hasSites = (sites.isEmpty == false)
         noResultsView.titleText = NSLocalizedString("No Sites", comment: "Legend displayed when the user has no sites")
-        noResultsView.hidden = hasSites
+        noResultsView.isHidden = hasSites
     }
 
 

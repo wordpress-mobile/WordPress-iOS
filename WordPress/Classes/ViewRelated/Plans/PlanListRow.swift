@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 
 struct PlanListRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellSubtitle)
+    static let cell = ImmuTableCell.class(WPTableViewCellSubtitle.self)
     static let customHeight: Float? = 92
     fileprivate let iconSize = CGSize(width: 60, height: 60)
 

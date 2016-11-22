@@ -48,11 +48,11 @@ enum Build: Int {
         }
 
         #if DEBUG
-            return .Debug
+            return .debug
         #elseif ALPHA_BUILD
-            return .Alpha
+            return .alpha
         #elseif INTERNAL_BUILD
-            return .Internal
+            return .`internal`
         #else
             return .appStore
         #endif

@@ -6,8 +6,8 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
 
     /// Defines the PeopleRemote possible errors.
     ///
-    enum Error: Error {
-        case decodeError
+    enum ResponseError: Error {
+        case decodingFailure
         case invalidInputError
         case userAlreadyHasRoleError
         case unknownError
@@ -41,17 +41,17 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
             "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID" as AnyObject,
         ]
 
-        wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
+        wordPressComRestApi.GET(path!, parameters: parameters, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
                 let users = response["users"] as? [[String: AnyObject]],
                 let people = try? self.peopleFromResponse(users, siteID: siteID, type: User.self) else
             {
-                failure(Error.decodeError)
+                failure(ResponseError.decodingFailure)
                 return
             }
 
             let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
-            success(users: people, hasMore: hasMore)
+            success(people, hasMore)
 
         }, failure: { (error, httpResponse) in
             failure(error)
@@ -84,17 +84,17 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
             "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL" as AnyObject
         ]
 
-        wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
+        wordPressComRestApi.GET(path!, parameters: parameters, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
                 let followers = response["users"] as? [[String: AnyObject]],
                 let people = try? self.peopleFromResponse(followers, siteID: siteID, type: Follower.self) else
             {
-                failure(Error.decodeError)
+                failure(ResponseError.decodingFailure)
                 return
             }
 
             let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
-            success(followers: people, hasMore: hasMore)
+            success(people, hasMore)
 
         }, failure: { (error, httpResponse) in
             failure(error)
@@ -126,17 +126,17 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
             "page"      : pageNumber as AnyObject
         ]
 
-        wordPressComRestApi.GET(path, parameters: parameters, success: { responseObject, httpResponse in
+        wordPressComRestApi.GET(path!, parameters: parameters, success: { responseObject, httpResponse in
             guard let response = responseObject as? [String: AnyObject],
                 let viewers = response["viewers"] as? [[String: AnyObject]],
                 let people = try? self.peopleFromResponse(viewers, siteID: siteID, type: Viewer.self) else
             {
-                failure(Error.decodeError)
+                failure(ResponseError.decodingFailure)
                 return
             }
 
             let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
-            success(followers: people, hasMore: hasMore)
+            success(people, hasMore)
 
         }, failure: { (error, httpResponse) in
             failure(error)
@@ -164,13 +164,13 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
         let parameters = ["roles" : [newRole.description]]
 
-        wordPressComRestApi.POST(path,
-                parameters: parameters,
+        wordPressComRestApi.POST(path!,
+                parameters: parameters as [String : AnyObject]?,
                 success: { (responseObject, httpResponse) in
                     guard let response = responseObject as? [String: AnyObject],
                                 let person = try? self.personFromResponse(response, siteID: siteID, type: User.self) else
                     {
-                        failure?(Error.decodeError)
+                        failure?(ResponseError.decodingFailure)
                         return
                     }
 
@@ -206,7 +206,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
             parameters["reassign"] = reassignID as AnyObject?
         }
 
-        wordPressComRestApi.POST(path, parameters: nil, success: { (responseObject, httpResponse) in
+        wordPressComRestApi.POST(path!, parameters: nil, success: { (responseObject, httpResponse) in
             success?()
         }, failure: { (error, httpResponse) in
             failure?(error)
@@ -230,11 +230,11 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         let endpoint = "sites/\(siteID)/roles"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.GET(path, parameters: nil, success: { (responseObject, httpResponse) in
+        wordPressComRestApi.GET(path!, parameters: nil, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
                     let roles = try? self.rolesFromResponse(response) else
             {
-                failure?(Error.decodeError)
+                failure?(ResponseError.decodingFailure)
                 return
             }
 
@@ -268,9 +268,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
             "role"      : role.remoteValue
         ]
 
-        wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
+        wordPressComRestApi.POST(path!, parameters: parameters as [String : AnyObject]?, success: { (responseObject, httpResponse) in
             guard let responseDict = responseObject as? [String: AnyObject] else {
-                failure(Error.decodeError)
+                failure(ResponseError.decodingFailure)
                 return
             }
 
@@ -313,9 +313,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
             "message"   : message
         ]
 
-        wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
+        wordPressComRestApi.POST(path!, parameters: parameters as [String : AnyObject]?, success: { (responseObject, httpResponse) in
             guard let responseDict = responseObject as? [String: AnyObject] else {
-                failure(Error.decodeError)
+                failure(ResponseError.decodingFailure)
                 return
             }
 
@@ -370,15 +370,15 @@ private extension PeopleRemote {
                                         type: T.Type) throws -> T
     {
         guard let ID = user["ID"] as? Int else {
-            throw Error.decodeError
+            throw ResponseError.decodingFailure
         }
 
         guard let username = user["nice_name"] as? String else {
-            throw Error.decodeError
+            throw ResponseError.decodingFailure
         }
 
         guard let displayName = user["name"] as? String else {
-            throw Error.decodeError
+            throw ResponseError.decodingFailure
         }
 
         let firstName = user["first_name"] as? String
@@ -426,12 +426,12 @@ private extension PeopleRemote {
     ///
     func rolesFromResponse(_ roles: [String: AnyObject]) throws -> [Role] {
         guard let rawRoles = roles["roles"] as? [[String: AnyObject]] else {
-            throw Error.decodeError
+            throw ResponseError.decodingFailure
         }
 
         let parsed = try rawRoles.map { (rawRole) -> Role in
             guard let name = rawRole["name"] as? String else {
-                throw Error.decodeError
+                throw ResponseError.decodingFailure
             }
 
             return Role(string: name)
@@ -459,13 +459,13 @@ private extension PeopleRemote {
 
         switch code {
         case "invalid_input":
-            return Error.invalidInputError
+            return ResponseError.invalidInputError
         case "invalid_input_has_role":
-            return Error.userAlreadyHasRoleError
+            return ResponseError.userAlreadyHasRoleError
         case "invalid_input_following":
-            return Error.userAlreadyHasRoleError
+            return ResponseError.userAlreadyHasRoleError
         default:
-            return Error.unknownError
+            return ResponseError.unknownError
         }
     }
 }

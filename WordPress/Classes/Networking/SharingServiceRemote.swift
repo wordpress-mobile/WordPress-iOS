@@ -46,8 +46,8 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
         let params = ["type":"publicize"]
 
-        wordPressComRestApi.GET(path,
-            parameters: params,
+        wordPressComRestApi.GET(path!,
+            parameters: params as [String : AnyObject]?,
             success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                 guard let onSuccess = success else {
                     return
@@ -59,10 +59,10 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
                 }
 
                 let responseString = responseObject.description as NSString
-                let services: NSDictionary = responseDict.forKey(ServiceDictionaryKeys.services)
+                let services = responseDict.forKey(ServiceDictionaryKeys.services) as NSDictionary
 
                 let publicizeServices: [RemotePublicizeService] = services.allKeys.map { (key) -> RemotePublicizeService in
-                    let dict: NSDictionary = services.forKey(key)
+                    let dict = services.forKey(key) as NSDictionary
                     let pub = RemotePublicizeService()
 
                     pub.connectURL = dict.string(forKey: ServiceDictionaryKeys.connectURL)
@@ -78,7 +78,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
                     // We're not guarenteed to get the right order by inspecting the
                     // response dictionary's keys. Instead, we can check the index
                     // of each service in the response string.
-                    pub.order = responseString.range(of: pub.serviceID).location
+                    pub.order = NSNumber(value: responseString.range(of: pub.serviceID).location)
 
                     return pub
                 }
@@ -102,7 +102,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
         let endpoint = "me/keyring-connections"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.GET(path,
+        wordPressComRestApi.GET(path!,
             parameters: nil,
             success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                 guard let onSuccess = success else {
@@ -117,8 +117,9 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
                 let connections: Array = responseDict.array(forKey: ConnectionDictionaryKeys.connections)
                 let keyringConnections: [KeyringConnection] = connections.map { (dict) -> KeyringConnection in
                     let conn = KeyringConnection()
+                    let dict = dict as AnyObject
                     let externalUsers = dict.array(forKey: ConnectionDictionaryKeys.additionalExternalUsers) ?? []
-                    conn.additionalExternalUsers = self.externalUsersForKeyringConnection(externalUsers)
+                    conn.additionalExternalUsers = self.externalUsersForKeyringConnection(externalUsers as NSArray)
                     conn.dateExpires = DateUtils.date(fromISOString: dict.string(forKey: ConnectionDictionaryKeys.expires))
                     conn.dateIssued = DateUtils.date(fromISOString: dict.string(forKey: ConnectionDictionaryKeys.issued))
                     conn.externalDisplay = dict.string(forKey: ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
@@ -177,7 +178,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
         let endpoint = "sites/\(siteID)/publicize-connections"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.GET(path,
+        wordPressComRestApi.GET(path!,
             parameters: nil,
             success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                 guard let onSuccess = success else {
@@ -226,7 +227,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
                 parameters[PublicizeConnectionParams.externalUserID] = userID as AnyObject?
             }
 
-            wordPressComRestApi.POST(path,
+            wordPressComRestApi.POST(path!,
                 parameters: parameters,
                 success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                     guard let onSuccess = success else {
@@ -272,8 +273,8 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
                 PublicizeConnectionParams.externalUserID : externalUserID
             ]
 
-            wordPressComRestApi.POST(path,
-                parameters: parameters,
+            wordPressComRestApi.POST(path!,
+                parameters: parameters as [String : AnyObject]?,
                 success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                     guard let onSuccess = success else {
                         return
@@ -314,8 +315,8 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
                 PublicizeConnectionParams.shared : shared
             ]
 
-            wordPressComRestApi.POST(path,
-                parameters: parameters,
+            wordPressComRestApi.POST(path!,
+                parameters: parameters as [String : AnyObject]?,
                 success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                     guard let onSuccess = success else {
                         return
@@ -348,7 +349,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
         let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)/delete"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.POST(path,
+        wordPressComRestApi.POST(path!,
             parameters: nil,
             success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                 success?()
@@ -382,9 +383,16 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
         conn.refreshURL = dict.string(forKey: ConnectionDictionaryKeys.refreshURL) ?? conn.refreshURL
         conn.status = dict.string(forKey: ConnectionDictionaryKeys.status) ?? conn.status
         conn.service = dict.string(forKey: ConnectionDictionaryKeys.service) ?? conn.service
-        conn.shared = dict.number(forKey: ConnectionDictionaryKeys.shared).boolValue ?? conn.shared
-        conn.siteID = dict.number(forKey: ConnectionDictionaryKeys.siteID) ?? conn.siteID
-        conn.userID = dict.number(forKey: ConnectionDictionaryKeys.userID) ?? conn.userID
+
+        if let sharedDictNumber = dict.number(forKey: ConnectionDictionaryKeys.shared) {
+            conn.shared = sharedDictNumber.boolValue
+        }
+        if let siteIDDictNumber = dict.number(forKey: ConnectionDictionaryKeys.siteID) {
+            conn.siteID = siteIDDictNumber
+        }
+        if let userIDDictNumber = dict.number(forKey: ConnectionDictionaryKeys.userID) {
+            conn.userID = userIDDictNumber
+        }
 
         return conn
     }
@@ -403,7 +411,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
         let endpoint = "sites/\(siteID)/sharing-buttons"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.GET(path,
+        wordPressComRestApi.GET(path!,
             parameters: nil,
             success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                 guard let onSuccess = success else {
@@ -415,7 +423,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
                     return
                 }
 
-                let buttons = responseDict.array(forKey: SharingButtonsKeys.sharingButtons)
+                let buttons = responseDict.array(forKey: SharingButtonsKeys.sharingButtons) as NSArray
                 let sharingButtons = self.remoteSharingButtonsFromDictionary(buttons)
 
                 onSuccess(sharingButtons)
@@ -440,8 +448,8 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
         let buttons = dictionariesFromRemoteSharingButtons(sharingButtons)
         let parameters = [SharingButtonsKeys.sharingButtons : buttons]
 
-        wordPressComRestApi.POST(path,
-            parameters: parameters,
+        wordPressComRestApi.POST(path!,
+            parameters: parameters as [String : AnyObject]?,
             success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                 guard let onSuccess = success else {
                     return
@@ -452,7 +460,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
                     return
                 }
 
-                let buttons = responseDict.array(forKey: SharingButtonsKeys.updated)
+                let buttons = responseDict.array(forKey: SharingButtonsKeys.updated) as NSArray
                 let sharingButtons = self.remoteSharingButtonsFromDictionary(buttons)
 
                 onSuccess(sharingButtons)
@@ -476,10 +484,14 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
             btn.buttonID = (dict as AnyObject).string(forKey: SharingButtonsKeys.buttonID) ?? btn.buttonID
             btn.name = (dict as AnyObject).string(forKey: SharingButtonsKeys.name) ?? btn.name
             btn.shortname = (dict as AnyObject).string(forKey: SharingButtonsKeys.shortname) ?? btn.shortname
-            btn.custom = (dict as AnyObject).number(forKey: SharingButtonsKeys.custom).boolValue ?? btn.custom
-            btn.enabled = (dict as AnyObject).number(forKey: SharingButtonsKeys.enabled).boolValue ?? btn.enabled
+            if let customDictNumber = (dict as AnyObject).number(forKey: SharingButtonsKeys.custom) {
+                btn.custom = customDictNumber.boolValue
+            }
+            if let enabledDictNumber = (dict as AnyObject).number(forKey: SharingButtonsKeys.enabled) {
+                btn.enabled = enabledDictNumber.boolValue
+            }
             btn.visibility = (dict as AnyObject).string(forKey: SharingButtonsKeys.visibility) ?? btn.visibility
-            btn.order = NSNumber(order)
+            btn.order = NSNumber(value: order)
             order += 1
 
             return btn

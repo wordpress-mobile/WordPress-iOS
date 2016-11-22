@@ -16,7 +16,7 @@ enum SignupStatus: Int {
 
 typealias SignupStatusBlock = (_ status: SignupStatus) -> Void
 typealias SignupSuccessBlock = () -> Void
-typealias SignupFailureBlock = (_ error: NSError?) -> Void
+typealias SignupFailureBlock = (_ error: Error) -> Void
 
 
 /// SignupService is responsible for creating a new WPCom user and blog.
@@ -166,20 +166,20 @@ open class SignupService : LocalCoreDataService
                                                 assertionFailure()
 
                                                 let error = SignupError.invalidResponse as NSError
-                                                failure(error: error)
+                                                failure(error)
                                                 return
                                             }
 
                                             // Now that we have an auth token, create the user account.
                                             let service = AccountService(managedObjectContext: self.managedObjectContext)
 
-                                            let account = service.createOrUpdateAccount(withUsername: params.username, authToken: authToken)
-                                            account.email = params.email
-                                            if service.defaultWordPressComAccount() == nil {
-                                                service.setDefaultWordPressComAccount(account)
+                                            let account = service?.createOrUpdateAccount(withUsername: params.username, authToken: authToken)
+                                            account?.email = params.email
+                                            if service?.defaultWordPressComAccount() == nil {
+                                                service?.setDefaultWordPressComAccount(account!)
                                             }
 
-                                            success(account: account)
+                                            success(account!)
                                         },
                                         failure: failure)
     }

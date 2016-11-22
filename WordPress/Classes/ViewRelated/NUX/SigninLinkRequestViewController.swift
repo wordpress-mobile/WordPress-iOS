@@ -55,7 +55,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
         let format = NSLocalizedString("Get a link sent to %@ to log in instantly.", comment: "Short instructional text. The %@ is a placeholder for the user's email address.")
         label.text = NSString(format: format as NSString, loginFields.username) as String
 
-        let sendLinkButtonTitle = NSLocalizedString("Send Link", comment: "Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user.").localizedUppercaseString
+        let sendLinkButtonTitle = NSLocalizedString("Send Link", comment: "Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user.").localizedUppercase
         sendLinkButton.setTitle(sendLinkButtonTitle, for: UIControlState())
         sendLinkButton.setTitle(sendLinkButtonTitle, for: .highlighted)
 
@@ -95,9 +95,9 @@ class SigninLinkRequestViewController : NUXAbstractViewController
                 self?.didRequestAuthenticationLink()
                 self?.configureLoading(false)
 
-            }, failure: { [weak self] (error: NSError!) in
+            }, failure: { [weak self] (error: Error) in
                 WPAppAnalytics.track(.loginMagicLinkFailed)
-                self?.displayError(error)
+                self?.displayError(error as NSError)
                 self?.configureLoading(false)
             })
     }

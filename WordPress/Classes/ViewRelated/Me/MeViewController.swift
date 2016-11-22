@@ -127,31 +127,31 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         let myProfile = NavigationItemRow(
             title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
-            icon: Gridicon.iconOfType(.User),
+            icon: Gridicon.iconOfType(.user),
             accessoryType: accessoryType,
             action: pushMyProfile())
 
         let accountSettings = NavigationItemRow(
             title: NSLocalizedString("Account Settings", comment: "Link to Account Settings section"),
-            icon: Gridicon.iconOfType(.Cog),
+            icon: Gridicon.iconOfType(.cog),
             accessoryType: accessoryType,
             action: pushAccountSettings())
 
         let appSettings = NavigationItemRow(
             title: NSLocalizedString("App Settings", comment: "Link to App Settings section"),
-            icon: Gridicon.iconOfType(.Phone),
+            icon: Gridicon.iconOfType(.phone),
             accessoryType: accessoryType,
             action: pushAppSettings())
 
         let notificationSettings = NavigationItemRow(
             title: NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section"),
-            icon: Gridicon.iconOfType(.Bell),
+            icon: Gridicon.iconOfType(.bell),
             accessoryType: accessoryType,
             action: pushNotificationSettings())
 
         let helpAndSupport = BadgeNavigationItemRow(
             title: NSLocalizedString("Help & Support", comment: "Link to Help section"),
-            icon: Gridicon.iconOfType(.Help),
+            icon: Gridicon.iconOfType(.help),
             badgeCount: helpshiftBadgeCount,
             accessoryType: accessoryType,
             action: pushHelp())

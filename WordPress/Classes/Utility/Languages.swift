@@ -66,7 +66,7 @@ class WordPressComLanguageDatabase : NSObject
     ///
     @objc(deviceLanguageId)
     func deviceLanguageIdNumber() -> NSNumber {
-        return NSNumber(deviceLanguage.id)
+        return NSNumber(value: deviceLanguage.id)
     }
 
     /// Returns the slug string for the current device language.

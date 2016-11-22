@@ -24,21 +24,21 @@ class EditorSettings: NSObject {
 
     var visualEditorEnabled: Bool {
         get {
-            if let visualEditorEnabled = database.objectForKey(newEditorEnabledKey) as? Bool {
+            if let visualEditorEnabled = database.object(forKey: newEditorEnabledKey) as? Bool {
                 return visualEditorEnabled
             } else {
                 return true
             }
         }
         set {
-            database.setObject(newValue, forKey: newEditorEnabledKey)
+            database.set(newValue, forKey: newEditorEnabledKey)
         }
     }
 
     var nativeEditorEnabled: Bool {
-        return false
-/* Aztec disabled for Swift 3 migration.
         get {
+            return false
+            /* Aztec disabled for Swift 3 migration.
             if !FeatureFlag.nativeEditor.enabled {
                 return false
             }
@@ -47,10 +47,10 @@ class EditorSettings: NSObject {
             } else {
                 return false
             }
+            */
         }
         set {
-            database.setObject(newValue, forKey: nativeEditorEnabledKey)
+            database.set(newValue, forKey: nativeEditorEnabledKey)
         }
- */
     }
 }

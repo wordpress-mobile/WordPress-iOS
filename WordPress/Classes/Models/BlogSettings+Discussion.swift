@@ -176,7 +176,7 @@ extension BlogSettings
             optionsMap[disabledValue] = NSLocalizedString("Disabled", comment: "")
 
             for currentLevel in minimumValue...maximumValue {
-                let level = NumberFormatter.localizedString(from: NSNumber(currentLevel), number: .spellOut)
+                let level = NumberFormatter.localizedString(from: NSNumber(value: currentLevel), number: .spellOut)
                 optionsMap[currentLevel] = String(format: descriptionFormat, level.capitalized)
             }
 
@@ -229,10 +229,10 @@ extension BlogSettings
     ///
     var commentsSortOrderAscending : Bool {
         get {
-            return commentsSortOrder == CommentsSorting.ascending.rawValue
+            return commentsSortOrder?.intValue == CommentsSorting.ascending.rawValue
         }
         set {
-            commentsSortOrder = newValue ? CommentsSorting.ascending.rawValue : CommentsSorting.descending.rawValue as NSNumber?
+            commentsSortOrder = newValue ? CommentsSorting.ascending.rawValue as NSNumber? : CommentsSorting.descending.rawValue as NSNumber?
         }
     }
 

@@ -60,7 +60,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         //
         switch filter {
         case .Followers:
-            return [NSSortDescriptor(key: "creationDate", ascending: true, selector: #selector(Date.compare(_:)))]
+            return [NSSortDescriptor(key: "creationDate", ascending: true, selector: #selector(NSDate.compare(_:)))]
         default:
             return [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
         }
@@ -74,7 +74,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     /// Core Data FRC
     ///
-    fileprivate lazy var resultsController: NSFetchedResultsController = {
+    fileprivate lazy var resultsController: NSFetchedResultsController<NSFetchRequestResult> = {
         // FIXME(@koke, 2015-11-02): my user should be first
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
         request.predicate = self.predicate
@@ -261,7 +261,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         }
     }
 
-    fileprivate func loadPeoplePage(_ offset: Int = 0, success: ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
+    fileprivate func loadPeoplePage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
         guard let blog = blog, let service = PeopleService(blog: blog, context: context) else {
             return
         }

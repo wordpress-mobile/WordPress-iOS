@@ -40,9 +40,8 @@ extension UIImageView
                 self?.image = processedImage
                 success?(processedImage)
             },
-            failure: {
-                (request: URLRequest, response: HTTPURLResponse?, error: NSError) -> Void in
-                (failure?(error))!
+            failure: { (urlRequest, response: HTTPURLResponse?, error) in
+                failure?(error)
             }
         )
     }

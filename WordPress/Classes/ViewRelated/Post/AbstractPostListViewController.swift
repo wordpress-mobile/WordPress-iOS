@@ -72,7 +72,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return tableViewHandler
     }()
 
-    lazy var estimatedHeightsCache : NSCache = {
+    lazy var estimatedHeightsCache : NSCache = { () -> NSCache<AnyObject, AnyObject> in
         let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
         return estimatedHeightsCache
     }()
@@ -405,7 +405,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
             // Filter posts by any posts newer than the filter's oldestPostDate.
             // Also include any posts that don't have a date set, such as local posts created without a connection.
-            let datePredicate = NSPredicate(format: "(date_created_gmt = NULL) OR (date_created_gmt >= %@)", oldestPostDate)
+            let datePredicate = NSPredicate(format: "(date_created_gmt = NULL) OR (date_created_gmt >= %@)", oldestPostDate as CVarArg)
 
             predicate = NSCompoundPredicate.init(andPredicateWithSubpredicates: [predicate, datePredicate])
         }
@@ -456,7 +456,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         // the cell heights during reload animations.
         // Note: There may (and should) be a way to get around this, but there is currently no obvious solution.
         // Brent C. August 2/2016
-        if let height = estimatedHeightsCache.object(forKey: indexPath) as? CGFloat {
+        if let height = estimatedHeightsCache.object(forKey: indexPath as AnyObject) as? CGFloat {
             // Return the previously known height as it was cached via willDisplayCell.
             return height
         }
@@ -480,7 +480,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         // Cache the cell's layout height as the currently known height, for estimation.
         // See estimatedHeightForRowAtIndexPath
-        estimatedHeightsCache.setObject(cell.frame.height, forKey: indexPath)
+        estimatedHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
 
         guard isViewOnScreen() && !isSearching() else {
             return
@@ -600,7 +600,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.number = numberOfPostsPerSync() as NSNumber!
         options.purgesLocalSync = true
 
-        postService.syncPosts(
+        postService?.syncPosts(
             ofType: postTypeToSync() as String,
             with: options,
             for: blog,
@@ -614,7 +614,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                     strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
                 }
 
-                success?(hasMore: filter.hasMore)
+                success?(filter.hasMore)
 
                 if strongSelf.isSearching() {
                     // If we're currently searching, go ahead and request a sync with the searchText since
@@ -622,17 +622,17 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                     strongSelf.syncPostsMatchingSearchText()
                 }
 
-            }, failure: {[weak self] (error: NSError?) -> () in
+            }, failure: {[weak self] (error: Error?) -> () in
 
                 guard let strongSelf = self,
                     let error = error else {
                     return
                 }
 
-                failure?(error: error)
+                failure?(error as NSError)
 
                 if userInteraction == true {
-                    strongSelf.handleSyncFailure(error)
+                    strongSelf.handleSyncFailure(error as NSError)
                 }
         })
     }
@@ -653,7 +653,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.number = numberOfPostsPerSync() as NSNumber!
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber!
 
-        postService.syncPosts(
+        postService?.syncPosts(
             ofType: postTypeToSync() as String,
             with: options,
             for: blog,
@@ -667,17 +667,16 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                     strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
                 }
 
-                success?(hasMore: filter.hasMore)
-            }, failure: {[weak self] (error: NSError?) -> () in
+                success?(filter.hasMore)
+            }, failure: {[weak self] (error) -> () in
 
                 guard let strongSelf = self,
                     let error = error else {
                         return
                 }
 
-                failure?(error: error)
-
-                strongSelf.handleSyncFailure(error)
+                failure?(error as NSError)
+                strongSelf.handleSyncFailure(error as NSError)
             })
     }
 
@@ -790,13 +789,13 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         options.purgesLocalSync = false
         options.search = searchText
 
-        postService.syncPosts(
+        postService?.syncPosts(
             ofType: postTypeToSync() as String,
             with: options,
             for: blog,
             success: { [weak self] posts in
                 self?.postsSyncWithSearchEnded()
-            }, failure: { [weak self] (error: NSError?) in
+            }, failure: { [weak self] (error) in
                 self?.postsSyncWithSearchEnded()
             }
         )
@@ -814,13 +813,14 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService?.uploadPost(apost, success: nil) { [weak self] (error: NSError!) in
+        postService?.uploadPost(apost, success: nil) { [weak self] (error: Error?) in
 
+            let error = error as? NSError
             guard let strongSelf = self else {
                 return
             }
 
-            if error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
+            if error?.code == type(of: strongSelf).HTTPErrorCodeForbidden {
                 strongSelf.promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)
@@ -858,13 +858,13 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService?.trashPost(apost, success: nil) { [weak self] (error: NSError!) in
+        postService?.trashPost(apost, success: nil) { [weak self] (error) in
 
             guard let strongSelf = self else {
                 return
             }
 
-            if error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
+            if let error = error as? NSError, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
                 strongSelf.promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)
@@ -919,13 +919,13 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
                 strongSelf.promptThatPostRestoredToFilter(filter)
             }
-        }) { [weak self] (error: NSError!) in
+        }) { [weak self] (error) in
 
             guard let strongSelf = self else {
                 return
             }
 
-            if error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
+            if let error = error as? NSError, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
                 strongSelf.promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)
@@ -989,7 +989,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                     SettingsSelectionCurrentValueKey: filterSettings.currentPostListFilter()] as [String : Any]
 
         let controller = SettingsSelectionViewController(style: .plain, andDictionary: dict as [AnyHashable: Any])
-        controller?.onItemSelected = { [weak self] (selectedValue: AnyObject!) -> () in
+        controller?.onItemSelected = { [weak self] (selectedValue: Any!) -> () in
             if let strongSelf = self,
                 let index = strongSelf.filterSettings.availablePostListFilters().index(of: selectedValue as! PostListFilter) {
 

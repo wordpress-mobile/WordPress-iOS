@@ -23,7 +23,7 @@ open class Tracks
 
 
     // MARK: - Public Methods
-    open func track(_ eventName: String, properties: [String: AnyObject]? = nil) {
+    open func track(_ eventName: String, properties: [String: Any]? = nil) {
         let payload  = payloadWithEventName(eventName, properties: properties)
         uploader.send(payload)
     }
@@ -31,7 +31,7 @@ open class Tracks
 
 
     // MARK: - Private Helpers
-    fileprivate func payloadWithEventName(_ eventName: String, properties: [String: AnyObject]?) -> [String: AnyObject] {
+    fileprivate func payloadWithEventName(_ eventName: String, properties: [String: Any]?) -> [String: Any] {
         let timestamp   = NSNumber(value: Int64(Date().timeIntervalSince1970 * 1000) as Int64)
         let userID      = UUID().uuidString
         let device      = UIDevice.current
@@ -42,16 +42,16 @@ open class Tracks
 
         // Main Payload
         var payload = [
-            "_en"                           : eventName as AnyObject,
+            "_en"                           : eventName as Any,
             "_ts"                           : timestamp,
-            "_via_ua"                       : Tracks.userAgent as AnyObject,
+            "_via_ua"                       : Tracks.userAgent as Any,
             "_rt"                           : timestamp,
-            "device_info_app_name"          : appName as AnyObject?       ?? "WordPress" as AnyObject,
-            "device_info_app_version"       : appVersion as AnyObject?    ?? "Unknown",
+            "device_info_app_name"          : appName as Any?       ?? "WordPress" as Any,
+            "device_info_app_version"       : appVersion as Any?    ?? "Unknown",
             "device_info_app_version_code"  : appCode       ?? "Unknown",
             "device_info_os"                : device.systemName,
             "device_info_os_version"        : device.systemVersion
-        ] as [String: AnyObject]
+        ] as [String: Any]
 
         // Username
         if let username = wpcomUsername {
@@ -114,7 +114,7 @@ open class Tracks
 
 
         // MARK: - Public Methods
-        func send(_ event: [String: AnyObject]) {
+        func send(_ event: [String: Any]) {
             // Build the targetURL
             let targetURL = URL(string: tracksURL)!
 
@@ -123,7 +123,7 @@ open class Tracks
             let requestBody = try? JSONSerialization.data(withJSONObject: dataToSend, options: .prettyPrinted)
 
             // Request
-            let request = NSMutableURLRequest(url: targetURL)
+            var request = URLRequest(url: targetURL)
             request.httpMethod = httpMethod
             request.httpBody = requestBody
 

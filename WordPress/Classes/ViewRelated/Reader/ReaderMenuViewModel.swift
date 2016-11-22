@@ -238,13 +238,13 @@ enum ReaderDefaultMenuItemOrder: Int {
                 var item = ReaderMenuItem(title: abstractTopic.title, type: .topic, icon: nil, topic: abstractTopic)
                 if ReaderHelpers.topicIsFollowing(abstractTopic) {
                     item.order = ReaderDefaultMenuItemOrder.followed.rawValue
-                    item.icon = Gridicon.iconOfType(.CheckmarkCircle)
+                    item.icon = Gridicon.iconOfType(.checkmarkCircle)
                 } else if ReaderHelpers.topicIsDiscover(abstractTopic) {
                     item.order = ReaderDefaultMenuItemOrder.discover.rawValue
-                    item.icon = Gridicon.iconOfType(.MySites)
+                    item.icon = Gridicon.iconOfType(.mySites)
                 } else if ReaderHelpers.topicIsLiked(abstractTopic) {
                     item.order = ReaderDefaultMenuItemOrder.likes.rawValue
-                    item.icon = Gridicon.iconOfType(.Star)
+                    item.icon = Gridicon.iconOfType(.star)
                 } else {
                     item.order = ReaderDefaultMenuItemOrder.other.rawValue
                 }
@@ -255,7 +255,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         // Create a menu item for search
         var searchItem = searchMenuItem()
         searchItem.order = ReaderDefaultMenuItemOrder.search.rawValue
-        searchItem.icon = Gridicon.iconOfType(.Search)
+        searchItem.icon = Gridicon.iconOfType(.search)
         defaultSectionItems.append(searchItem)
 
         // Sort the items into the desired order.

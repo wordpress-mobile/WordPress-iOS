@@ -4,8 +4,8 @@ import Reachability
 let AccountSettingsServiceChangeSaveFailedNotification = "AccountSettingsServiceChangeSaveFailed"
 
 protocol AccountSettingsRemoteInterface {
-    func getSettings(success: (AccountSettings) -> Void, failure: (Error) -> Void)
-    func updateSetting(_ change: AccountSettingsChange, success: () -> Void, failure: (Error) -> Void)
+    func getSettings(success: @escaping (AccountSettings) -> Void, failure: @escaping (Error) -> Void)
+    func updateSetting(_ change: AccountSettingsChange, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
 }
 
 extension AccountSettingsRemote: AccountSettingsRemoteInterface {}
@@ -116,7 +116,7 @@ class AccountSettingsService {
 
     func primarySiteNameForSettings(_ settings: AccountSettings) -> String? {
         let service = BlogService(managedObjectContext: context)
-        let blog = service?.blog(byBlogId: NSNumber(settings.primarySiteID))
+        let blog = service?.blog(byBlogId: NSNumber(value: settings.primarySiteID))
 
         return blog?.settings?.name
     }
@@ -125,7 +125,7 @@ class AccountSettingsService {
         settings = accountSettingsWithID(self.userID)
     }
 
-    fileprivate func applyChange(_ change: AccountSettingsChange) throws -> AccountSettingsChange {
+    @discardableResult fileprivate func applyChange(_ change: AccountSettingsChange) throws -> AccountSettingsChange {
         guard let settings = managedAccountSettingsWithID(userID) else {
             DDLogSwift.logError("Tried to apply a change to nonexistent settings (ID: \(userID)")
             throw Errors.notFound
@@ -167,7 +167,7 @@ class AccountSettingsService {
 
     fileprivate func createAccountSettings(_ userID: Int, settings: AccountSettings) {
         let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.findAccount(withUserID: NSNumber(userID)) else {
+        guard let account = accountService?.findAccount(withUserID: NSNumber(value: userID)) else {
             DDLogSwift.logError("Tried to create settings for a missing account (ID: \(userID)): \(settings)")
             return
         }

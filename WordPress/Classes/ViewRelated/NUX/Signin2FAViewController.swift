@@ -79,7 +79,7 @@ import WordPressShared
     func localizeControls() {
         verificationCodeField.placeholder = NSLocalizedString("Verification code", comment: "two factor code placeholder")
 
-        let submitButtonTitle = NSLocalizedString("Verify", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
+        let submitButtonTitle = NSLocalizedString("Verify", comment: "Title of a button. The text should be uppercase.").localizedUppercase
         submitButton.setTitle(submitButtonTitle, for: UIControlState())
         submitButton.setTitle(submitButtonTitle, for: .highlighted)
     }
@@ -246,9 +246,9 @@ extension Signin2FAViewController: LoginFacadeDelegate {
     }
 
 
-    func displayRemoteError(_ error: NSError!) {
+    func displayRemoteError(_ error: Error!) {
         configureStatusLabel("")
         configureViewLoading(false)
-        displayError(error)
+        displayError(error as NSError)
     }
 }

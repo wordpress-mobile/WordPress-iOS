@@ -78,7 +78,7 @@ open class StartOverViewController: UITableViewController
 
     override open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         headerView.layoutWidth = tableView.frame.width
-        let height = headerView.intrinsicContentSize().height
+        let height = headerView.intrinsicContentSize.height
 
         return height
     }

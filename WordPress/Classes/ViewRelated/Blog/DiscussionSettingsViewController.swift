@@ -71,7 +71,7 @@ open class DiscussionSettingsViewController : UITableViewController
                 self?.tableView.reloadData()
                 DDLogSwift.logInfo("Reloaded Settings")
             },
-            failure: { (error: NSError!) in
+            failure: { (error: Error) in
                 DDLogSwift.logError("Error while sync'ing blog settings: \(error)")
             })
     }
@@ -84,7 +84,7 @@ open class DiscussionSettingsViewController : UITableViewController
         let service = BlogService(managedObjectContext: settings.managedObjectContext)
         service?.updateSettings(for: blog,
             success: nil,
-            failure: { (error: NSError!) -> Void in
+            failure: { (error: Error) -> Void in
                 DDLogSwift.logError("Error while persisting settings: \(error)")
         })
     }
@@ -254,7 +254,7 @@ open class DiscussionSettingsViewController : UITableViewController
         settingsViewController.currentValue     = settings.commentsSortOrder
         settingsViewController.titles           = CommentsSorting.allTitles
         settingsViewController.values           = CommentsSorting.allValues
-        settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
+        settingsViewController.onItemSelected   = { [weak self] (selected: Any?) in
             guard let newSortOrder = CommentsSorting(rawValue: selected as! Int) else {
                 return
             }
@@ -271,7 +271,7 @@ open class DiscussionSettingsViewController : UITableViewController
         settingsViewController.currentValue     = settings.commentsThreading.rawValue as NSObject!
         settingsViewController.titles           = CommentsThreading.allTitles
         settingsViewController.values           = CommentsThreading.allValues
-        settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
+        settingsViewController.onItemSelected   = { [weak self] (selected: Any?) in
             guard let newThreadingDepth = CommentsThreading(rawValue: selected as! Int) else {
                 return
             }
@@ -308,7 +308,7 @@ open class DiscussionSettingsViewController : UITableViewController
         settingsViewController.titles           = CommentsAutoapproval.allTitles
         settingsViewController.values           = CommentsAutoapproval.allValues
         settingsViewController.hints            = CommentsAutoapproval.allHints
-        settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
+        settingsViewController.onItemSelected   = { [weak self] (selected: Any?) in
             guard let newApprovalStatus = CommentsAutoapproval(rawValue: selected as! Int) else {
                 return
             }

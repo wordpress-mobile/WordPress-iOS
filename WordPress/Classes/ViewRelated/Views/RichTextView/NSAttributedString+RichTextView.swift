@@ -15,11 +15,11 @@ extension NSAttributedString
         let range = NSMakeRange(0, length)
 
         enumerateAttribute(UIKitAttachmentAttributeName, in: range, options: .longestEffectiveRangeNotRequired) {
-            (value: AnyObject?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+            (value: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
 
             if let attachment = value as? NSTextAttachment {
-                block(attachment: attachment, range: range)
+                block(attachment, range)
             }
-        } as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void
+        }
     }
 }
