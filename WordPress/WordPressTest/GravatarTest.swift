@@ -53,6 +53,6 @@ class GravatarTest: XCTestCase {
         let expected = NSURL(string: "https://secure.gravatar.com/avatar/5b415e3c9c245e557af9f580eeb8760a?s=128&d=404")!
         let gravatar = Gravatar(url)
         XCTAssertNotNil(gravatar)
-        XCTAssertEqual(gravatar!.urlWithSize(128), expected)
+        XCTAssertEqual(WPImageURLHelper.gravatarURL(forURL: gravatar!.canonicalURL, size: 128), expected)
     }
 }

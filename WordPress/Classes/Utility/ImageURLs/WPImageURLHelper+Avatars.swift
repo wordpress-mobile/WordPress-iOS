@@ -110,10 +110,15 @@ extension WPImageURLHelper
                 return nil
         }
 
-        guard let sanitizedURL = components.URL else {
-            return nil
-        }
+        return components.URL
+    }
 
-        return sanitizedURL
+    public class func gravatarURL(forURL url: NSURL, size: Int) -> NSURL? {
+        guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true) else { return nil }
+        components.queryItems = [
+            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
+            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
+        ]
+        return components.URL
     }
 }

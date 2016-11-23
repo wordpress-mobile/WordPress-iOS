@@ -2,12 +2,6 @@ import Foundation
 
 struct Gravatar {
     let canonicalURL: NSURL
-
-    func urlWithSize(size: Int) -> NSURL {
-        let components = NSURLComponents(URL: canonicalURL, resolvingAgainstBaseURL: false)!
-        components.query = "s=\(size)&d=404"
-        return components.URL!
-    }
 }
 
 extension Gravatar: Equatable {}
@@ -33,7 +27,7 @@ extension UIImageView {
         }
 
         let size = Int(ceil(frame.width * contentScaleFactor))
-        let url = gravatar.urlWithSize(size)
+        let url = WPImageURLHelper.gravatarURL(forURL: gravatar.canonicalURL, size: size)
 
         self.downloadImage(url,
             placeholderImage: placeholder,
