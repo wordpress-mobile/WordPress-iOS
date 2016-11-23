@@ -515,6 +515,11 @@ NSString *const SessionCount = @"session_count";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_published_post"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_published_post"];
             break;
+        case WPAnalyticsStatEditorQuickPublishedPost:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Quick Published Post"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_published_post"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_published_post"];
+            break;
         case WPAnalyticsStatGravatarCropped:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Gravatar Cropped"];
             break;
@@ -611,6 +616,11 @@ NSString *const SessionCount = @"session_count";
             break;
         case WPAnalyticsStatEditorSavedDraft:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Saved Draft"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_saved_draft"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_saved_draft"];
+            break;
+        case WPAnalyticsStatEditorQuickSavedDraft:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Quick Saved Draft"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_saved_draft"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_saved_draft"];
             break;
@@ -834,9 +844,25 @@ NSString *const SessionCount = @"session_count";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - Opened Helpshift Screen"];
             [instructions addSuperPropertyToFlag:@"opened_helpshift_screen"];
             break;
-        case WPAnalyticsStatSupportSentReplyToSupportMessage:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - Replied to Helpshift"];
-            [instructions addSuperPropertyToFlag:@"support_replied_to_helpshift"];
+        case WPAnalyticsStatSupportUserAcceptedTheSolution:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - User Accepted the Solution"];
+            [instructions addSuperPropertyToFlag:@"support_user_accepted_the_solution"];
+            break;
+        case WPAnalyticsStatSupportUserRejectedTheSolution:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - User Rejected the Solution"];
+            [instructions addSuperPropertyToFlag:@"support_user_rejected_the_solution"];
+            break;
+        case WPAnalyticsStatSupportUserSentScreenshot:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - User Sent a Screenshot"];
+            [instructions addSuperPropertyToFlag:@"support_user_sent_screenshot"];
+            break;
+        case WPAnalyticsStatSupportUserReviewedTheApp:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - User Reviewed the App"];
+            [instructions addSuperPropertyToFlag:@"support_user_reviewed_the_app"];
+            break;
+        case WPAnalyticsStatSupportUserRepliedToHelpshift:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - User Replied to Helpshift"];
+            [instructions addSuperPropertyToFlag:@"support_user_replied_to_helpshift"];
             break;
         case WPAnalyticsStatSupportReceivedResponseFromSupport:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyFlagger:@"received_response_from_support"];
@@ -1070,8 +1096,6 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatPostListStatusFilterChanged:
         case WPAnalyticsStatPostListTrashAction:
         case WPAnalyticsStatPostListViewAction:
-        case WPAnalyticsStatSupportSentMessage:
-        case WPAnalyticsStatSupportUserRepliedToHelpshift:
             // Unimplemented events
             break;
     }
