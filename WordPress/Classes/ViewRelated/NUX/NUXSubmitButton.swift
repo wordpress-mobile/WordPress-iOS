@@ -62,8 +62,6 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
             frm.origin.y = (frame.height - frm.height) / 2.0
             activityIndicator.frame = frm
         }
-
-
     }
 
 
