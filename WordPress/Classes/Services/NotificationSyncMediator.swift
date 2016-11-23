@@ -3,12 +3,12 @@ import Foundation
 
 // MARK: - Notifications
 //
-let NotificationSyncServiceDidUpdateNotifications = "NotificationSyncServiceDidUpdateNotifications"
+let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDidUpdateNotifications"
 
 
-// MARK: - NotificationSyncService
+// MARK: - NotificationSyncMediator
 //
-class NotificationSyncService
+class NotificationSyncMediator
 {
     /// Returns the Main Managed Context
     ///
@@ -188,7 +188,7 @@ class NotificationSyncService
 
 // MARK: - Private Helpers
 //
-private extension NotificationSyncService
+private extension NotificationSyncMediator
 {
     /// Given a collection of RemoteNotification Hashes, this method will determine the NotificationID's
     /// that are either missing in our database, or have been remotely updated.
@@ -297,12 +297,12 @@ private extension NotificationSyncService
     }
 
 
-    /// Posts a `NotificationSyncServiceDidUpdateNotifications` Notification, so that (potential listeners)
+    /// Posts a `NotificationSyncMediatorDidUpdateNotifications` Notification, so that (potential listeners)
     /// may react upon new content.
     ///
     func notifyNotificationsWereUpdated() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.postNotificationName(NotificationSyncServiceDidUpdateNotifications, object: nil)
+        notificationCenter.postNotificationName(NotificationSyncMediatorDidUpdateNotifications, object: nil)
     }
 }
 
@@ -310,9 +310,9 @@ private extension NotificationSyncService
 
 // MARK: - Thread Safety Helpers
 //
-extension NotificationSyncService
+extension NotificationSyncMediator
 {
-    /// Returns the current Shared Derived Context, if any. Otherwise, proceeds to create a new 
+    /// Returns the current Shared Derived Context, if any. Otherwise, proceeds to create a new
     /// derived context, given a specified ContextManager.
     ///
     static func sharedDerivedContext(with manager: ContextManager) -> NSManagedObjectContext {
