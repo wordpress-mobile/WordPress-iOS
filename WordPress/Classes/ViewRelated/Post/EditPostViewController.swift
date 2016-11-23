@@ -122,7 +122,7 @@ class EditPostViewController: UIViewController {
             editor = editPostInOldEditor()
         }
 
-        postPost.presentViewController(editor, animated: true) {
+        postPost.presentViewController(editor, animated: !showImmediately) {
             let generator = WPImpactFeedbackGenerator(style: .Medium)
             generator.impactOccurred()
         }
@@ -146,8 +146,6 @@ class EditPostViewController: UIViewController {
     }
 
     private func editPostInNewEditor() -> UIViewController {
-
-        let postViewController: WPPostViewController
         let targetPost: Post
         if let post = post {
             targetPost = post
@@ -158,7 +156,8 @@ class EditPostViewController: UIViewController {
             post = targetPost
             WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
         }
-        postViewController = WPPostViewController(post: targetPost, mode: kWPPostViewControllerModeEdit)
+        let postViewController = WPPostViewController(post: targetPost, mode: kWPPostViewControllerModeEdit)
+        postViewController.isOpenedDirectlyForPhotoPost = openWithMediaPicker
 
         postViewController.onClose = { [weak self] (viewController, changesSaved) in
             self?.closeEditor(changesSaved)
