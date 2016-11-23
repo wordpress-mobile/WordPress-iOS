@@ -132,10 +132,17 @@ extension WPImageURLHelper
             return urlComponents.URL
         }
 
-        // Strip original resizing parameters, or we might get an image too small
         urlComponents.scheme = RequestScheme.Secure.rawValue
+
+        // the host will become i0.wp.com, and the path will be the original host+path
+        if let host = urlComponents.host, let path = urlComponents.path {
+            urlComponents.path = ("/\(host)" as NSString).stringByAppendingPathComponent(path)
+        }
         urlComponents.host = "\(PhotonSubdomain.Zero.rawValue).\(wordpressURLBase)"
+
+        // Strip original resizing parameters, or we might get an image too small
         urlComponents.queryItems = photonQueryItems(forSize: scaledSize, usingSSL: url.scheme == RequestScheme.Secure.rawValue, forceResize: forceResize, quality: boundedQuality)
+
         return urlComponents.URL
     }
 
