@@ -413,7 +413,7 @@ private extension NotificationsViewController
     func startListeningToNotifications() {
         let nc = NSNotificationCenter.defaultCenter()
         nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name:UIApplicationDidBecomeActiveNotification, object: nil)
-        nc.addObserver(self, selector: #selector(notificationsWereUpdated), name:NotificationSyncServiceDidUpdateNotifications, object: nil)
+        nc.addObserver(self, selector: #selector(notificationsWereUpdated), name:NotificationSyncMediatorDidUpdateNotifications, object: nil)
     }
 
     func startListeningToAccountNotifications() {
@@ -424,7 +424,7 @@ private extension NotificationsViewController
     func stopListeningToNotifications() {
         let nc = NSNotificationCenter.defaultCenter()
         nc.removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
-        nc.removeObserver(self, name:NotificationSyncServiceDidUpdateNotifications, object: nil)
+        nc.removeObserver(self, name:NotificationSyncMediatorDidUpdateNotifications, object: nil)
     }
 
     @objc func applicationDidBecomeActive(note: NSNotification) {
@@ -498,8 +498,8 @@ extension NotificationsViewController
 
         // Mark as Read
         if note.read == false {
-            let service = NotificationSyncService()
-            service?.markAsRead(note)
+            let mediator = NotificationSyncMediator()
+            mediator?.markAsRead(note)
         }
 
         // Display Details
@@ -626,14 +626,14 @@ private extension NotificationsViewController
 extension NotificationsViewController
 {
     func refresh() {
-        guard let service = NotificationSyncService() else {
+        guard let mediator = NotificationSyncMediator() else {
             refreshControl?.endRefreshing()
             return
         }
 
         let start = NSDate()
 
-        service.sync { _ in
+        mediator.sync { _ in
 
             let delta = max(Syncing.minimumPullToRefreshDelay + start.timeIntervalSinceNow, 0)
             let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(delta * Double(NSEC_PER_SEC)))
@@ -907,17 +907,17 @@ private extension NotificationsViewController
 private extension NotificationsViewController
 {
     func syncNewNotifications() {
-        let service = NotificationSyncService()
-        service?.sync()
+        let mediator = NotificationSyncMediator()
+        mediator?.sync()
     }
 
     func syncNotificationWithID(noteId: String, timeout: NSTimeInterval, success: (note: Notification) -> Void) {
-        let service = NotificationSyncService()
+        let mediator = NotificationSyncMediator()
         let startDate = NSDate()
 
         DDLogSwift.logInfo("Sync'ing Notification [\(noteId)]")
 
-        service?.syncNote(with: noteId) { error, note in
+        mediator?.syncNote(with: noteId) { error, note in
             guard abs(startDate.timeIntervalSinceNow) <= timeout else {
                 DDLogSwift.logError("Error: Timeout while trying to load Notification [\(noteId)]")
                 return
@@ -942,8 +942,8 @@ private extension NotificationsViewController
             return
         }
 
-        let service = NotificationSyncService()
-        service?.updateLastSeen(timestamp) { error in
+        let mediator = NotificationSyncMediator()
+        mediator?.updateLastSeen(timestamp) { error in
             guard error == nil else {
                 return
             }
