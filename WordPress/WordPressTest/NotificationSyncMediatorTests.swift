@@ -4,9 +4,9 @@ import OHHTTPStubs
 @testable import WordPress
 
 
-// MARK: - NotificationSyncServiceTests
+// MARK: - NotificationSyncMediatorTests
 //
-class NotificationSyncServiceTests: XCTestCase
+class NotificationSyncMediatorTests: XCTestCase
 {
     /// CoreData Context Manager
     ///
@@ -16,9 +16,9 @@ class NotificationSyncServiceTests: XCTestCase
     ///
     private var dotcomAPI: WordPressComRestApi!
 
-    /// Sync Service
+    /// Sync Mediator
     ///
-    private var service: NotificationSyncService!
+    private var mediator: NotificationSyncMediator!
 
     /// Expectation's Timeout
     ///
@@ -32,14 +32,14 @@ class NotificationSyncServiceTests: XCTestCase
 
         manager = TestContextManager()
         dotcomAPI = WordPressComRestApi(oAuthToken: "1234", userAgent: "yosemite")
-        service = NotificationSyncService(manager: manager, dotcomAPI: dotcomAPI)
+        mediator = NotificationSyncMediator(manager: manager, dotcomAPI: dotcomAPI)
 
         // Note:
         // Since the TestContextManager actually changed, and thus, the entire Core Data stack,
         // we'll need to manually reset the global shared Derived Context.
         // This definitely won't be needed in the actual app.
         //
-        NotificationSyncService.resetSharedDerivedContext()
+        NotificationSyncMediator.resetSharedDerivedContext()
     }
 
     override func tearDown() {
@@ -49,7 +49,7 @@ class NotificationSyncServiceTests: XCTestCase
     }
 
 
-    /// Verifies that NotificationsSyncService effectively inserts a single Notification when *sync* is called.
+    /// Verifies that NotificationsSyncMediator effectively inserts a single Notification when *sync* is called.
     /// Normally it'd insert 100, but... that's how our Testing Data looks like!
     ///
     func testSyncEffectivelyInsertsASingleNotification() {
@@ -65,11 +65,11 @@ class NotificationSyncServiceTests: XCTestCase
         // CoreData Expectations
         manager.testExpectation = expectationWithDescription("Context save expectation")
 
-        // Service Expectations
+        // Mediator Expectations
         let expectation = expectationWithDescription("Sync")
 
         // Sync!
-        service.sync { _ in
+        mediator.sync { _ in
             XCTAssert(helper.countObjects() == 1)
             expectation.fulfill()
         }
@@ -100,8 +100,8 @@ class NotificationSyncServiceTests: XCTestCase
         for _ in 0..<100 {
             dispatch_group_enter(group)
 
-            let newService = NotificationSyncService(manager: manager, dotcomAPI: dotcomAPI)
-            newService?.sync { _ in
+            let newMediator = NotificationSyncMediator(manager: manager, dotcomAPI: dotcomAPI)
+            newMediator?.sync { _ in
                 dispatch_group_leave(group)
             }
         }
@@ -133,11 +133,11 @@ class NotificationSyncServiceTests: XCTestCase
         // CoreData Expectations
         manager.testExpectation = expectationWithDescription("Context save expectation")
 
-        // Service Expectations
+        // Mediator Expectations
         let expectation = expectationWithDescription("Sync")
 
         // Sync!
-        service.syncNote(with: "2674124016") { error, note in
+        mediator.syncNote(with: "2674124016") { error, note in
             XCTAssertNil(error)
             XCTAssertNotNil(note)
             expectation.fulfill()
@@ -165,11 +165,11 @@ class NotificationSyncServiceTests: XCTestCase
         // CoreData Expectations
         manager.testExpectation = expectationWithDescription("Context save expectation")
 
-        // Service Expectations
+        // Mediator Expectations
         let expectation = expectationWithDescription("Mark as Read")
 
         // Mark as Read!
-        service.markAsRead(note) { success in
+        mediator.markAsRead(note) { success in
             XCTAssertTrue(note.read)
             expectation.fulfill()
         }
@@ -186,11 +186,11 @@ class NotificationSyncServiceTests: XCTestCase
         let stubPath = OHPathForFile("notifications-last-seen.json", self.dynamicType)!
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
-        // Service Expectations
+        // Mediator Expectations
         let expectation = expectationWithDescription("Update Last Seen")
 
         // Update Last Seen!
-        service.updateLastSeen("1234") { error in
+        mediator.updateLastSeen("1234") { error in
             XCTAssertNil(error)
             expectation.fulfill()
         }
