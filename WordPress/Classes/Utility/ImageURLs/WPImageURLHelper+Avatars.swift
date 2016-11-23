@@ -13,26 +13,26 @@ import Foundation
 extension WPImageURLHelper
 {
     public class func avatarURL(withHash hash: String, type: WPAvatarSourceType, size: CGSize) -> NSURL? {
-        var subPath: String? = nil
+        var path: String? = nil
         switch type {
         case .Blavatar:
-            subPath = URLComponent.Blavatar.rawValue
+            path = URLComponent.Blavatar.rawValue
             break
         case .Gravatar:
-            subPath = URLComponent.Gravatar.rawValue
+            path = URLComponent.Gravatar.rawValue
             break
         case .Unknown:
             break
         }
-
-        var path = gravatarURLBase
-        if subPath != nil {
-            path = (path as NSString).stringByAppendingPathComponent(subPath!)
+        if path == nil {
+            path = "/\(hash)"
+        } else {
+            path = ("/\(path!)" as NSString).stringByAppendingPathComponent(hash)
         }
-        path = (path as NSString).stringByAppendingPathComponent(hash)
 
         let components = NSURLComponents()
         components.scheme = RequestScheme.Insecure.rawValue
+        components.host = gravatarURLBase
         components.path = path
         components.queryItems = [
             NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.Identicon.rawValue),
