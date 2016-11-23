@@ -358,7 +358,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Post Actions
 
-    // TODO: replace this with new post-post capable VC
     override func createPost() {
         let editor = EditPostViewController(blog: blog)
         editor.onClose = { [weak self] changesSaved in
@@ -368,56 +367,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
                 }
             }
         }
-        //        editor.hidesBottomBarWhenPushed = true
         editor.modalPresentationStyle = .FullScreen
         presentViewController(editor, animated: false, completion: nil)
-    }
-
-    private func createPostInNativeEditor() {
-        let context = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: context)
-        let post = postService.createDraftPostForBlog(blog)
-        let postViewController = AztecPostViewController(post: post)
-        let navController = UINavigationController(rootViewController: postViewController)
-        navController.modalPresentationStyle = .FullScreen
-        presentViewController(navController, animated: true, completion: nil)
-        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
-    }
-
-    private func createPostInNewEditor() {
-        let postViewController = WPPostViewController(draftForBlog: blog)
-
-        postViewController.onClose = { [weak self] (viewController, changesSaved) in
-            if changesSaved {
-                if let postStatus = viewController.post.status {
-                    self?.updateFilterWithPostStatus(postStatus)
-                }
-            }
-
-            viewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-        }
-
-        let navController = UINavigationController(rootViewController: postViewController)
-        navController.restorationIdentifier = WPEditorNavigationRestorationID
-        navController.restorationClass = WPPostViewController.self
-        navController.toolbarHidden = false // Fixes incorrect toolbar animation.
-        navController.modalPresentationStyle = .FullScreen
-
-        presentViewController(navController, animated: true, completion: nil)
-
-        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
-    }
-
-    private func createPostInOldEditor() {
-        let editPostViewController = WPLegacyEditPostViewController(draftForLastUsedBlog: ())
-
-        let navController = UINavigationController(rootViewController: editPostViewController)
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
-        navController.restorationClass = WPLegacyEditPostViewController.self
-        navController.modalPresentationStyle = .FullScreen
-
-        presentViewController(navController, animated: true, completion: nil)
-
         WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
     }
 
@@ -435,47 +386,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
             editor.navigationController?.popViewControllerAnimated(true)
         }
-//        editor.hidesBottomBarWhenPushed = true
         editor.modalPresentationStyle = .FullScreen
         presentViewController(editor, animated: false, completion: nil)
-    }
-
-    private func editPost(apost: AbstractPost, withEditMode mode: WPPostViewControllerMode) {
         WPAnalytics.track(.PostListEditAction, withProperties: propertiesForAnalytics())
-        let editorSettings = EditorSettings()
-        if editorSettings.visualEditorEnabled {
-            if editorSettings.nativeEditorEnabled {
-                let postViewController = AztecPostViewController(post: apost)
-                let navController = UINavigationController(rootViewController: postViewController)
-                navController.modalPresentationStyle = .FullScreen
-                presentViewController(navController, animated: true, completion: nil)
-                return
-            }
-            let postViewController = WPPostViewController(post: apost, mode: mode)
-
-            postViewController.onClose = {[weak self] viewController, changesSaved in
-
-                if changesSaved {
-                    if let postStatus = viewController.post.status {
-                        self?.updateFilterWithPostStatus(postStatus)
-                    }
-                }
-
-                viewController.navigationController?.popViewControllerAnimated(true)
-            }
-
-            postViewController.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(postViewController, animated: true)
-        } else {
-            // In legacy mode, view means edit
-            let editPostViewController = WPLegacyEditPostViewController(post: apost)
-            let navController = UINavigationController(rootViewController: editPostViewController)
-            navController.modalPresentationStyle = .FullScreen
-            navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
-            navController.restorationClass = WPLegacyEditPostViewController.self
-
-            presentViewController(navController, animated: true, completion: nil)
-        }
     }
 
     override func promptThatPostRestoredToFilter(filter: PostListFilter) {
