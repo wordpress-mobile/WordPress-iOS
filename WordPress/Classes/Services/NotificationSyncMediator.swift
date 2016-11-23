@@ -1,6 +1,19 @@
 import Foundation
 
 
+/// Notes:
+///
+/// You may have noticed this is a *Mediator*, not a service. Reason we're adopting a different name here,
+/// briefly, is because this entity needs to be aware of other instances, in order to successfully
+/// prevent race conditions / data duplication.
+///
+/// IE multiple SyncService's running concurrently, with no shared MOC / Locks, may end up retrieving and
+/// inserting the same set of notifications. Which leads to loss of data integrity.
+///
+/// Details in #6220.
+///
+
+
 // MARK: - Notifications
 //
 let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDidUpdateNotifications"
