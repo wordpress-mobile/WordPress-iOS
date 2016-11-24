@@ -95,6 +95,7 @@ class EditPostViewController: UIViewController {
         if (!hasShownEditor) {
             // show postpost, which will be transparent
             postPost.modalPresentationStyle = .FullScreen
+            postPost.modalTransitionStyle = .CoverVertical
             presentViewController(postPost, animated: true) {
                 // then show editor
                 self.showEditor()
@@ -203,7 +204,7 @@ class EditPostViewController: UIViewController {
         if shouldShowPostPost(hasChanges: changesSaved), let post = post {
             postPost.setup(post: post)
             postPost.onClose = {
-                self.closePostPost()
+                self.closePostPost(animated: true)
             }
             postPost.reshowEditor = {
                 self.showEditor()
@@ -216,7 +217,7 @@ class EditPostViewController: UIViewController {
 
         self.postPost.dismissViewControllerAnimated(true) {
             if dismissPostPostImmediately {
-                self.closePostPost()
+                self.closePostPost(animated: false)
             }
         }
     }
@@ -244,9 +245,9 @@ class EditPostViewController: UIViewController {
         postPost.presentViewController(navWrapper, animated: true) {}
     }
 
-    func closePostPost() {
+    func closePostPost(animated animated: Bool) {
         // dismiss PostPost
-        self.dismissViewControllerAnimated(false) {
+        self.dismissViewControllerAnimated(animated) {
             // dismiss self
             self.dismissViewControllerAnimated(false) {}
         }
