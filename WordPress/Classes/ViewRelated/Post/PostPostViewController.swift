@@ -150,11 +150,7 @@ class PostPostViewController: UIViewController {
     }
 
     @IBAction func doneTapped() {
-        UIView.animateWithDuration(0.66, animations: {
-                self.view.alpha = 0.0
-            }) { (success) in
-                self.onClose?()
-        }
+        self.onClose?()
     }
 
     override func dismissViewControllerAnimated(flag: Bool, completion: (() -> Void)?) {
