@@ -328,6 +328,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         _readerSplitViewController = [WPSplitViewController new];
         _readerSplitViewController.restorationIdentifier = WPReaderSplitViewRestorationID;
         _readerSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
+        _readerSplitViewController.collapseMode = WPSplitViewControllerCollapseModeAlwaysKeepDetail;
 
         [_readerSplitViewController setInitialPrimaryViewController:self.readerNavigationController];
 
