@@ -6,8 +6,17 @@ import WordPressShared
 import WordPressComStatsiOS
 
 
-/// Renders a given Notification entity, onscreen
 ///
+///
+protocol NotificationsNavigationDelegate: class
+{
+    func notification(succeeding note: Notification) -> Notification?
+    func notification(preceeding note: Notification) -> Notification?
+}
+
+
+// MARK: - Renders a given Notification entity, onscreen
+//
 class NotificationDetailsViewController: UIViewController
 {
     // MARK: - Properties
@@ -56,7 +65,10 @@ class NotificationDetailsViewController: UIViewController
     ///
     private var nextNavigationButton: UIBarButtonItem!
 
+    /// Arrows Navigation Delegate
     ///
+    weak var navigationDelegate: NotificationsNavigationDelegate?
+
     /// Notification to-be-displayed
     ///
     var note: Notification! {
@@ -240,21 +252,21 @@ extension NotificationDetailsViewController
                                          target: nil,
                                          action: nil)
 
-        let leftButton = UIBarButtonItem(image: Gridicon.iconOfType(.ChevronLeft),
-                                       style: .Plain,
-                                       target: self,
-                                       action: #selector(leftArrowWasPressed))
+        let previousButton = UIBarButtonItem(image: Gridicon.iconOfType(.ChevronLeft),
+                                             style: .Plain,
+                                             target: self,
+                                             action: #selector(previousNotificationWasPressed))
 
-        let rightButton = UIBarButtonItem(image: Gridicon.iconOfType(.ChevronRight),
+        let nextButton = UIBarButtonItem(image: Gridicon.iconOfType(.ChevronRight),
                                          style: .Plain,
                                          target: self,
-                                         action: #selector(rightArrowWasPressed))
+                                         action: #selector(nextNotificationWasPressed))
 
         navigationItem.backBarButtonItem = backButton
-        navigationItem.rightBarButtonItems = [rightButton, leftButton]
+        navigationItem.rightBarButtonItems = [nextButton, previousButton]
 
-        previousNavigationButton = leftButton
-        nextNavigationButton = rightButton
+        previousNavigationButton = previousButton
+        nextNavigationButton = nextButton
     }
 
     func setupMainView() {
@@ -1160,43 +1172,28 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 //
 extension NotificationDetailsViewController
 {
-    @IBAction func leftArrowWasPressed() {
-        guard let previous = notification(withIndexDelta: -1) else {
+    @IBAction func previousNotificationWasPressed() {
+        guard let previous = navigationDelegate?.notification(preceeding: note) else {
             return
         }
 
         note = previous
     }
 
-    @IBAction func rightArrowWasPressed() {
-        guard let next = notification(withIndexDelta: +1) else {
+    @IBAction func nextNotificationWasPressed() {
+        guard let next = navigationDelegate?.notification(succeeding: note) else {
             return
         }
 
         note = next
     }
 
-    private var shouldEnableNextButton: Bool {
-        return notification(withIndexDelta: +1) != nil
-    }
-
     private var shouldEnablePreviousButton: Bool {
-        return notification(withIndexDelta: -1) != nil
+        return navigationDelegate?.notification(preceeding: note) != nil
     }
 
-    private func notification(withIndexDelta delta: Int) -> Notification? {
-        guard let results = resultsController.fetchedObjects as? [Notification],
-            let currentIndex = results.indexOf(note) else
-        {
-            return nil
-        }
-
-        let targetIndex = currentIndex - delta
-        guard targetIndex >= 0 && targetIndex < results.count else {
-            return nil
-        }
-
-        return results[targetIndex]
+    private var shouldEnableNextButton: Bool {
+        return navigationDelegate?.notification(succeeding: note) != nil
     }
 }
 
