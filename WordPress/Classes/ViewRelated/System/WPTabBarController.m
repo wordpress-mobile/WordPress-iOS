@@ -55,7 +55,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
-@property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) MeViewController *meViewController;
 @property (nonatomic, strong) UIViewController *newPostViewController;
@@ -217,21 +216,17 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (UINavigationController *)readerNavigationController
 {
-    if (_readerNavigationController) {
-        return _readerNavigationController;
+    if (!_readerNavigationController) {
+        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:[ReaderMenuViewController controller]];
+
+        _readerNavigationController.navigationBar.translucent = NO;
+        UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
+        _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
+        _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
+        _readerNavigationController.tabBarItem.accessibilityIdentifier = @"Reader";
+        _readerNavigationController.tabBarItem.title = @"Reader";
     }
-
-    self.readerMenuViewController = [ReaderMenuViewController controller];
-
-    _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
-
-    _readerNavigationController.navigationBar.translucent = NO;
-    UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
-    _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
-    _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
-    _readerNavigationController.tabBarItem.accessibilityIdentifier = @"Reader";
-    _readerNavigationController.tabBarItem.title = @"Reader";
 
     return _readerNavigationController;
 }
@@ -473,6 +468,15 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         WPImpactFeedbackGenerator *generator = [[WPImpactFeedbackGenerator alloc] initWithStyle:WPImpactFeedbackStyleMedium];
         [generator impactOccurred];
     }];
+}
+
+- (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
+{
+    ReaderMenuViewController *readerMenuViewController = (ReaderMenuViewController *)[self.readerNavigationController.viewControllers firstObject];
+    if ([ReaderMenuViewController isKindOfClass:[ReaderMenuViewController class]]) {
+        [self showReaderTab];
+        [readerMenuViewController openPost:postId onBlog:blogId];
+    }
 }
 
 - (void)switchTabToPostsListForPost:(AbstractPost *)post

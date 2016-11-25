@@ -23,7 +23,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 
 @property (nonatomic, strong, readonly) WPSplitViewController *blogListSplitViewController;
 @property (nonatomic, strong, readonly) BlogListViewController *blogListViewController;
-@property (nonatomic, strong, readonly) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong, readonly) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong, readonly) MeViewController *meViewController;
 
@@ -36,11 +35,14 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)showReaderTab;
 - (void)showPostTab;
 - (void)showNotificationsTab;
+- (void)showPostTabWithOptions:(NSDictionary *)options;
+- (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId;
+
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog;
 - (void)switchMySitesTabToCustomizeViewForBlog:(Blog *)blog;
 - (void)switchMySitesTabToThemesViewForBlog:(Blog *)blog;
-- (void)showPostTabWithOptions:(NSDictionary *)options;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
+
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID;
 - (void)updateNotificationBadgeVisibility;
 
