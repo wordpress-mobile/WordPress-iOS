@@ -14,11 +14,11 @@ import WordPressShared
     let defaultCellIdentifier = "DefaultCellIdentifier"
     let actionCellIdentifier = "ActionCellIdentifier"
     let manageCellIdentifier = "ManageCellIdentifier"
-    let readerHasBeenPreviouslyViewedKey = "ReaderHasBeenPreviouslyViewedKey"
+
     var isSyncing = false
     var didSyncTopics = false
 
-    private static let defaultIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+    private static let defaultIndexPath = NSIndexPath(forRow: ReaderDefaultMenuItemOrder.Discover.rawValue, inSection: ReaderMenuSectionType.Defaults.rawValue)
     var restorableSelectedIndexPath = ReaderMenuViewController.defaultIndexPath
 
     lazy var viewModel: ReaderMenuViewModel = {
@@ -26,22 +26,6 @@ import WordPressShared
         vm.delegate = self
         return vm
     }()
-
-    var readerHasBeenPreviouslyViewed: Bool {
-        get {
-            return NSUserDefaults.standardUserDefaults().boolForKey(readerHasBeenPreviouslyViewedKey)
-        }
-
-        set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            if newValue {
-                defaults.setBool(true, forKey: readerHasBeenPreviouslyViewedKey)
-            } else {
-                defaults.removeObjectForKey(readerHasBeenPreviouslyViewedKey)
-            }
-            defaults.synchronize()
-        }
-    }
 
     /// A convenience method for instantiating the controller.
     ///
@@ -132,12 +116,6 @@ import WordPressShared
         reloadTableViewPreservingSelection()
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-
-        handleFirstLaunchIfNeeded()
-    }
-
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -191,12 +169,6 @@ import WordPressShared
     /// When logged out return the nav stack to the menu
     ///
     func handleAccountChanged(notification: NSNotification) {
-        // Return to the root vc.
-        navigationController?.popToRootViewControllerAnimated(false)
-
-        // Clear the flag so Discover will be present and ready to view.
-        readerHasBeenPreviouslyViewed = false
-
         // Clean up obsolete content.
         cleanupStaleContent(removeAllTopics: true)
 
@@ -207,29 +179,6 @@ import WordPressShared
         // Sync the menu fresh
         syncTopics()
     }
-
-
-    /// The first time the Reader is launched, we want to show the Discover topic,
-    /// not the menu.
-    ///
-    func handleFirstLaunchIfNeeded() {
-        if readerHasBeenPreviouslyViewed {
-            return
-        }
-
-        // Wait til the view is loaded, and only proceed if there are topics synced.
-        if !isViewLoaded() || !didSyncTopics {
-            return
-        }
-
-        // Show the Discover topic if it exists.
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let topic = service.topicForDiscover() {
-            showPostsForTopic(topic)
-            readerHasBeenPreviouslyViewed = true
-        }
-    }
-
 
     /// Sync the Reader's menu
     ///
@@ -243,7 +192,6 @@ import WordPressShared
         service.fetchReaderMenuWithSuccess({ [weak self] in
                 self?.didSyncTopics = true
                 self?.cleanupAfterSync()
-                self?.handleFirstLaunchIfNeeded()
             }, failure: { [weak self] (error) in
                 self?.cleanupAfterSync()
                 DDLogSwift.logError("Error syncing menu: \(error)")
@@ -578,11 +526,13 @@ extension ReaderMenuViewController : ReaderMenuViewModelDelegate
 
 extension ReaderMenuViewController : WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(splitView: WPSplitViewController) -> UIViewController? {
-        guard let menuItem = viewModel.menuItemAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)),
-            let topic = menuItem.topic else {
-            return UIViewController()
+        if restorableSelectedIndexPath == ReaderMenuViewController.defaultIndexPath {
+            let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            if let topic = service.topicForDiscover() {
+                return ReaderStreamViewController.controllerWithTopic(topic)
+            }
         }
 
-        return ReaderStreamViewController.controllerWithTopic(topic)
+        return nil
     }
 }
