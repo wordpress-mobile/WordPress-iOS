@@ -8,7 +8,7 @@ import WordPressComStatsiOS
 
 ///
 ///
-protocol NotificationsNavigationDelegate: class
+protocol NotificationsNavigationDatasource: class
 {
     func notification(succeeding note: Notification) -> Notification?
     func notification(preceeding note: Notification) -> Notification?
@@ -65,9 +65,9 @@ class NotificationDetailsViewController: UIViewController
     ///
     private var nextNavigationButton: UIBarButtonItem!
 
-    /// Arrows Navigation Delegate
+    /// Arrows Navigation Datasource
     ///
-    weak var navigationDelegate: NotificationsNavigationDelegate?
+    weak var datasource: NotificationsNavigationDatasource?
 
     /// Notification to-be-displayed
     ///
@@ -87,6 +87,11 @@ class NotificationDetailsViewController: UIViewController
     /// in the eventuallity of a failure.
     ///
     var onDeletionRequestCallback: (NotificationDeletionRequest -> Void)?
+
+    /// Closure to be executed whenever the notification that's being currently displayed, changes.
+    /// This happens due to Navigation Events (Next / Previous)
+    ///
+    var onSelectedNoteChange: (Notification -> Void)?
 
 
 
@@ -1173,27 +1178,29 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 extension NotificationDetailsViewController
 {
     @IBAction func previousNotificationWasPressed() {
-        guard let previous = navigationDelegate?.notification(preceeding: note) else {
+        guard let previous = datasource?.notification(preceeding: note) else {
             return
         }
 
+        onSelectedNoteChange?(previous)
         note = previous
     }
 
     @IBAction func nextNotificationWasPressed() {
-        guard let next = navigationDelegate?.notification(succeeding: note) else {
+        guard let next = datasource?.notification(succeeding: note) else {
             return
         }
 
+        onSelectedNoteChange?(next)
         note = next
     }
 
     private var shouldEnablePreviousButton: Bool {
-        return navigationDelegate?.notification(preceeding: note) != nil
+        return datasource?.notification(preceeding: note) != nil
     }
 
     private var shouldEnableNextButton: Bool {
-        return navigationDelegate?.notification(succeeding: note) != nil
+        return datasource?.notification(succeeding: note) != nil
     }
 }
 
