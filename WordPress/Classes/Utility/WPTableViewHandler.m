@@ -1,5 +1,4 @@
 #import "WPTableViewHandler.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPTableViewCell.h"
 #import "WordPress-Swift.h"
 

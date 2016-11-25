@@ -109,6 +109,37 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     return imageSrc;
 }
 
++ (NSSet *)searchPostContentForAttachmentIdsInGalleries:(NSString *)content
+{
+    NSMutableSet *resultSet = [NSMutableSet set];
+    // If there is no gallery shortcode in the content, just bail.
+    if (!content || [content rangeOfString:@"[gallery "].location == NSNotFound) {
+        return resultSet;
+    }
+
+    // Get all the things
+    static NSRegularExpression *regexGallery;
+    static dispatch_once_t onceTokenRegexGallery;
+    dispatch_once(&onceTokenRegexGallery, ^{
+        NSError *error;
+        NSString *galleryPattern = @"\\[gallery[^]]+ids=\"([0-9,]*)\"[^]]*\\]";
+        regexGallery = [NSRegularExpression regularExpressionWithPattern:galleryPattern options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    // Find all the gallery shortcodes in the content passed.
+    NSArray *matches = [regexGallery matchesInString:content options:0 range:NSMakeRange(0, [content length])];
+
+    for (NSTextCheckingResult *match in matches) {
+        if (match.numberOfRanges < 2) {
+            continue;
+        }
+        NSString *tag = [content substringWithRange:[match rangeAtIndex:1]];
+        NSSet *tagIds = [self idsFromGallery:tag];
+        [resultSet unionSet:tagIds];
+    }
+    return resultSet;
+}
+
 /**
  Extract the path to an image from an image tag.
  
@@ -196,7 +227,7 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
         return 0;
     }
 
-    NSString *widthStr = [tag substringWithRange:NSMakeRange(startingIdx, [tag length] - rng.location)];
+    NSString *widthStr = [tag substringWithRange:NSMakeRange(startingIdx, rng.location - startingIdx)];
     return [widthStr integerValue];
 }
 
@@ -215,4 +246,16 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     return [widthStr integerValue];
 }
 
++ (NSSet *)idsFromGallery:(NSString *)idsStr
+{
+    NSArray * imageIds = [idsStr componentsSeparatedByString:@","];
+    NSMutableSet *result = [NSMutableSet set];
+    for (NSString *imageIdStr in imageIds) {
+        NSNumber *numberId = [imageIdStr numericValue];
+        if (numberId) {
+            [result addObject:numberId];
+        }
+    }
+    return result;
+}
 @end

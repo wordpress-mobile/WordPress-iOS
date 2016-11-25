@@ -5,7 +5,6 @@
 #import "ContextManager.h"
 #import "SettingTableViewCell.h"
 #import "RelatedPostsPreviewTableViewCell.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 
 #import <WordPressShared/WPStyleGuide.h>
 #import <SVProgressHUD/SVProgressHUD.h>

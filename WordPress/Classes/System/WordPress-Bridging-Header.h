@@ -28,7 +28,11 @@
 
 #import "DDLogSwift.h"
 
+#import "EditCommentViewController.h"
 #import "EditPageViewController.h"
+#import "EditReplyViewController.h"
+
+#import <FLAnimatedImage/FLAnimatedImage.h>
 
 #import "HelpshiftUtils.h"
 
@@ -44,9 +48,6 @@
 #import "MixpanelTweaks.h"
 
 #import "NavbarTitleDropdownButton.h"
-#import "SuggestionService.h"
-#import "StatsViewController.h"
-#import "Meta.h"
 #import "NSString+Helpers.h"
 #import "NSAttributedString+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
@@ -54,8 +55,6 @@
 #import "NSObject+Helpers.h"
 #import "NSString+Helpers.h"
 #import "NSURL+Util.h"
-#import "EditCommentViewController.h"
-#import "EditReplyViewController.h"
 
 #import "OnePasswordFacade.h"
 
@@ -72,7 +71,6 @@
 #import "PostService.h"
 #import "PostServiceOptions.h"
 #import "PrivateSiteURLProtocol.h"
-#import "WPPostViewController.h"
 
 #import "ReachabilityUtils.h"
 #import "ReaderCommentsViewController.h"
@@ -95,6 +93,8 @@
 #import "SFHFKeychainUtils.h"
 #import "SiteSettingsViewController.h"
 #import "SourcePostAttribution.h"
+#import "StatsViewController.h"
+#import "SuggestionService.h"
 #import "SuggestionsTableView.h"
 #import "SupportViewController.h"
 
@@ -130,6 +130,7 @@
 #import "WPRichTextView.h"
 #import "WPStyleGuide+Posts.h"
 #import "WPStyleGuide+ReadableMargins.h"
+#import "WPTableImageSource.h"
 #import "WPTableViewHandler.h"
 #import "WPUserAgent.h"
 #import "WPWalkthroughOverlayView.h"
@@ -155,7 +156,4 @@
 #import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressShared/WPTableViewCell.h>
-#import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
 #import <WordPressShared/UIImage+Util.h>
-
-#import <FLAnimatedImage/FLAnimatedImage.h>

@@ -26,7 +26,6 @@ NSString *const WPGravatarBaseURL                                   = @"http://g
 
 /// Notifications Constants
 ///
-NSString *const WPNotificationsBucketName                           = @"note20";
 #ifdef DEBUG
 NSString *const  WPPushNotificationAppId                            = @"org.wordpress.appstore.dev";
 #else

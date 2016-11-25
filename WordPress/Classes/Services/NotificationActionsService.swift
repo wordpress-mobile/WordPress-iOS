@@ -87,7 +87,7 @@ public class NotificationActionsService: LocalCoreDataService
             return
         }
 
-        // Local Override: Temporary hack until Simperium reflects the REST op
+        // Local Override: Temporary hack until the Notification is updated
         block.textOverride = content
 
         // Hit the backend
