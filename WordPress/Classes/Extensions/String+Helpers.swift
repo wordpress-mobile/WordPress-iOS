@@ -14,6 +14,12 @@ extension String {
         return stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
     }
 
+    /// Returns the NSRange instance matching the full string contents.
+    ///
+    func rangeOfFullString() -> NSRange {
+        return NSMakeRange(0, characters.count)
+    }
+
     /// Returns `self` if not empty, or `nil` otherwise
     ///
     func nonEmptyString() -> String? {
@@ -38,5 +44,4 @@ extension String {
         copy.removeAtIndex(index)
         return copy
     }
-
 }
