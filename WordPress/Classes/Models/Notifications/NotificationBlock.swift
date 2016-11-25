@@ -90,7 +90,10 @@ extension NotificationBlock
             return .Comment
         }
 
-        if let firstMedia = media.first where (firstMedia.kind == .Image || firstMedia.kind == .Badge) {
+
+        if let mediaRange = media.first?.range, let textRange = text?.rangeOfFullString()
+            where media.count == 1 && NSEqualRanges(textRange, mediaRange)
+        {
             return .Image
         }
 
