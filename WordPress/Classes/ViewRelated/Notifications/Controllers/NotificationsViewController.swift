@@ -216,10 +216,13 @@ class NotificationsViewController : UITableViewController
             return
         }
 
-        detailsViewController.navigationDelegate = self
+        detailsViewController.datasource = self
         detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { request in
             self.showUndeleteForNoteWithID(note.objectID, request: request)
+        }
+        detailsViewController.onSelectedNoteChange = { note in
+            self.selectRowForNotification(note)
         }
     }
 }
@@ -994,6 +997,13 @@ private extension NotificationsViewController
     func resetApplicationBadge() {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
+
+    func selectRowForNotification(note: Notification) {
+        guard let targetIndexPath = tableViewHandler.resultsController.indexPathForObject(note) else {
+            return
+        }
+        tableView.selectRowAtIndexPath(targetIndexPath, animated: false, scrollPosition: .Middle)
+    }
 }
 
 
@@ -1045,9 +1055,9 @@ extension NotificationsViewController: ABXPromptViewDelegate
 }
 
 
-// MARK: - Navigation Delegate
+// MARK: - Details Navigation Datasource
 //
-extension NotificationsViewController: NotificationsNavigationDelegate
+extension NotificationsViewController: NotificationsNavigationDatasource
 {
     func notification(succeeding note: Notification) -> Notification? {
         return loadNotification(near: note, withIndexDelta: -1)
