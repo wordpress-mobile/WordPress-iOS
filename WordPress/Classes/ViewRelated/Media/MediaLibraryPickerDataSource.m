@@ -151,23 +151,40 @@
         metadata:(NSDictionary *)metadata
  completionBlock:(WPMediaAddedBlock)completionBlock
 {
-    [self addAssetWithChangeRequest:^PHAssetChangeRequest *{
-        NSString *fileName = [NSString stringWithFormat:@"%@_%@", [[NSProcessInfo processInfo] globallyUniqueString], @".jpg"];
+    if ( PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusAuthorized ) {
+        [self addAssetWithChangeRequest:^PHAssetChangeRequest *{
+            NSString *fileName = [NSString stringWithFormat:@"%@_%@", [[NSProcessInfo processInfo] globallyUniqueString], @".jpg"];
+            NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
+            NSError *error;
+            if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:0.9 metadata:metadata error:&error]){
+                return [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileURL];
+            }
+            return nil;
+        } completionBlock:completionBlock];
+    } else {
+        NSString *fileName = [NSString stringWithFormat:@"%@_%@", [[NSProcessInfo processInfo] globallyUniqueString], @".jpg"];        
         NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
         NSError *error;
         if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:0.9 metadata:metadata error:&error]){
-            return [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileURL];
+            [self addMediaFromURL:fileURL completionBlock:completionBlock];
+        } else {
+            if (completionBlock) {
+                completionBlock(nil, error);;
+            }
         }
-        return nil;
-    } completionBlock:completionBlock];
+    }
 }
 
 - (void)addVideoFromURL:(NSURL *)url
         completionBlock:(WPMediaAddedBlock)completionBlock
 {
-    [self addAssetWithChangeRequest:^PHAssetChangeRequest *{
-        return [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
-    } completionBlock:completionBlock];
+    if ( PHPhotoLibrary.authorizationStatus == PHAuthorizationStatusAuthorized ) {
+        [self addAssetWithChangeRequest:^PHAssetChangeRequest *{
+            return [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
+        } completionBlock:completionBlock];
+    } else {
+        [self addMediaFromURL:url completionBlock:completionBlock];
+    }
 }
 
 - (void)addAssetWithChangeRequest:(PHAssetChangeRequest *(^)())changeRequestBlock
@@ -201,6 +218,25 @@
     PHAsset *asset = [result firstObject];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [mediaService createMediaWithPHAsset:asset forPostObjectID:objectID thumbnailCallback:nil completion:^(Media *media, NSError *error) {
+        [self loadDataWithSuccess:^{
+            completionBlock(media, error);
+        } failure:^(NSError *error) {
+            if (completionBlock) {
+                completionBlock(nil, error);
+            }
+        }];
+    }];
+}
+
+-(void)addMediaFromURL:(NSURL *)url
+           completionBlock:(WPMediaAddedBlock)completionBlock
+{
+    NSManagedObjectID *objectID = [self.post objectID];
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [mediaService createMediaWithURL:url
+                     forPostObjectID:objectID
+                   thumbnailCallback:nil
+                          completion:^(Media *media, NSError *error) {
         [self loadDataWithSuccess:^{
             completionBlock(media, error);
         } failure:^(NSError *error) {
