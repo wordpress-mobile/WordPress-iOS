@@ -216,6 +216,7 @@ class NotificationsViewController : UITableViewController
             return
         }
 
+        detailsViewController.navigationDelegate = self
         detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { request in
             self.showUndeleteForNoteWithID(note.objectID, request: request)
@@ -959,6 +960,23 @@ private extension NotificationsViewController
         return helper.firstObject(matchingPredicate: predicate)
     }
 
+    func loadNotification(near note: Notification, withIndexDelta delta: Int) -> Notification? {
+        guard let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+            return nil
+        }
+
+        guard let noteIndex = notifications.indexOf(note) else {
+            return nil
+        }
+
+        let targetIndex = noteIndex + delta
+        guard targetIndex >= 0 && targetIndex < notifications.count else {
+            return nil
+        }
+
+        return notifications[targetIndex]
+    }
+
     func resetNotifications() {
         do {
             let helper = CoreDataHelper<Notification>(context: mainContext)
@@ -1026,6 +1044,19 @@ extension NotificationsViewController: ABXPromptViewDelegate
     }
 }
 
+
+// MARK: - Navigation Delegate
+//
+extension NotificationsViewController: NotificationsNavigationDelegate
+{
+    func notification(succeeding note: Notification) -> Notification? {
+        return loadNotification(near: note, withIndexDelta: +1)
+    }
+
+    func notification(preceeding note: Notification) -> Notification? {
+        return loadNotification(near: note, withIndexDelta: -1)
+    }
+}
 
 
 // MARK: - Private Properties
