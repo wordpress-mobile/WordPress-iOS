@@ -47,7 +47,8 @@ class PostPostViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        navBar.barTintColor = WPStyleGuide.wordPressBlue()
+        navBar.translucent = true
+        navBar.barTintColor = UIColor.clearColor() //WPStyleGuide.wordPressBlue()
         self.view.backgroundColor = WPStyleGuide.wordPressBlue()
         navBar.tintColor = UIColor.whiteColor()
         let clearImage = UIImage(color: UIColor.clearColor(), havingSize: CGSizeMake(320, 4))
