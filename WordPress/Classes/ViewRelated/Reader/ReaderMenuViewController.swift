@@ -18,8 +18,11 @@ import WordPressShared
     var isSyncing = false
     var didSyncTopics = false
 
-    private static let defaultIndexPath = NSIndexPath(forRow: ReaderDefaultMenuItemOrder.Discover.rawValue, inSection: ReaderMenuSectionType.Defaults.rawValue)
-    var restorableSelectedIndexPath = ReaderMenuViewController.defaultIndexPath
+    private var defaultIndexPath: NSIndexPath {
+        return viewModel.indexPathOfDefaultMenuItemWithOrder(.Discover)
+    }
+
+    private var restorableSelectedIndexPath: NSIndexPath?
 
     lazy var viewModel: ReaderMenuViewModel = {
         let vm = ReaderMenuViewModel()
@@ -79,6 +82,10 @@ import WordPressShared
 
         clearsSelectionOnViewWillAppear = false
 
+        if restorableSelectedIndexPath == nil {
+            restorableSelectedIndexPath = defaultIndexPath
+        }
+
         cleanupStaleContent(removeAllTopics: false)
         setupRefreshControl()
         setupAccountChangeNotificationObserver()
@@ -110,7 +117,7 @@ import WordPressShared
         if (splitViewControllerIsHorizontallyCompact) {
             animateDeselectionInteractively()
 
-            restorableSelectedIndexPath = ReaderMenuViewController.defaultIndexPath
+            restorableSelectedIndexPath = defaultIndexPath
         }
 
         reloadTableViewPreservingSelection()
@@ -526,7 +533,7 @@ extension ReaderMenuViewController : ReaderMenuViewModelDelegate
 
 extension ReaderMenuViewController : WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(splitView: WPSplitViewController) -> UIViewController? {
-        if restorableSelectedIndexPath == ReaderMenuViewController.defaultIndexPath {
+        if restorableSelectedIndexPath == defaultIndexPath {
             let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             if let topic = service.topicForDiscover() {
                 return ReaderStreamViewController.controllerWithTopic(topic)

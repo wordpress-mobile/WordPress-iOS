@@ -641,6 +641,26 @@ enum ReaderDefaultMenuItemOrder: Int {
     }
 
 
+    /// Get the indexPath of a specific item in the default menu section
+    /// e.g. Discover.
+    ///
+    /// - Parameter order: The ReaderDefaultMenuItemOrder representing the item
+    ///                    to find.
+    ///
+    /// - Returns: An NSIndexPath representing the item.
+    ///
+    func indexPathOfDefaultMenuItemWithOrder(order: ReaderDefaultMenuItemOrder) -> NSIndexPath {
+        if let sectionIndex = indexOfSectionWithType(.Defaults) {
+            for (index, item) in defaultSectionItems.enumerate() {
+                if item.order == order.rawValue {
+                    return NSIndexPath(forRow: index, inSection: sectionIndex)
+                }
+            }
+        }
+
+        return NSIndexPath(forRow: order.rawValue, inSection: ReaderMenuSectionType.Defaults.rawValue)
+    }
+
     /// Get the indexPath of the specified tag
     ///
     /// - Parameters:
