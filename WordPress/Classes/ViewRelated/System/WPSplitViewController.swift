@@ -7,10 +7,23 @@ import WordPressShared
     case Full
 }
 
+@objc enum WPSplitViewControllerCollapseMode: Int {
+    case Automatic
+    case AlwaysKeepDetail
+}
+
 class WPSplitViewController: UISplitViewController {
 
     static let navigationControllerRestorationIdentifier = "WPSplitViewDetailNavigationControllerRestorationID"
     static let detailNavigationStackModifiedRestorationKey = "WPSplitViewDetailNavigationStackModifiedRestorationKey"
+
+    /// Determines how the split view handles the detail pane when collapsing itself.
+    /// If 'Automatic', then the detail pane will be pushed onto the primary navigation stack
+    /// if the user has manually changed the selection in the primary pane. Otherwise,
+    /// if the detail pane is still showing its default content, it will be discarded.
+    /// If 'AlwaysKeepDetail', the detail pane will always be pushed onto the
+    /// primary navigation stack.
+    var collapseMode: WPSplitViewControllerCollapseMode = .Automatic
 
     var wpPrimaryColumnWidth: WPSplitViewControllerPrimaryColumnWidth = .Default {
         didSet {
@@ -339,11 +352,10 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         // Otherwise, concatenate the primary and detail navigation controllers' content
         // (the iOS default behavior here is to just push the detail navigation controller
         // itself onto the primary navigation controller, which is just weird)
-        if let primaryViewController = primaryViewController as? UINavigationController,
-            let secondaryViewController = secondaryViewController as? UINavigationController {
-
-            if detailNavigationStackHasBeenModified {
-                primaryViewController.viewControllers.appendContentsOf(secondaryViewController.viewControllers)
+        if let primaryViewController = primaryViewController as? UINavigationController {
+            if let secondaryViewController = secondaryViewController as? UINavigationController
+                where detailNavigationStackHasBeenModified || collapseMode == .AlwaysKeepDetail {
+                    primaryViewController.viewControllers.appendContentsOf(secondaryViewController.viewControllers)
             }
 
             return true
