@@ -4,7 +4,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
 #import <CocoaLumberjack/DDFileLogger.h>
-#import "WPTableViewSectionHeaderFooterView.h"
 #import <Helpshift/HelpshiftSupport.h>
 #import "WPAnalytics.h"
 #import <WordPressShared/WPStyleGuide.h>

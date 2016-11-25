@@ -1,13 +1,19 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-@objc public protocol ReplyTextViewDelegate : UITextViewDelegate
+
+
+// MARK: - ReplyTextViewDelegate
+//
+@objc public protocol ReplyTextViewDelegate: UITextViewDelegate
 {
     optional func textView(textView: UITextView, didTypeWord word: String)
 }
 
 
-@objc public class ReplyTextView : UIView, UITextViewDelegate
+// MARK: - ReplyTextView
+//
+@objc public class ReplyTextView: UIView, UITextViewDelegate
 {
     // MARK: - Initializers
     public convenience init(width: CGFloat) {
@@ -142,17 +148,19 @@ import WordPressShared.WPStyleGuide
 
     // MARK: - IBActions
     @IBAction private func btnReplyPressed() {
-        if let handler = onReply {
-            // Load the new text
-            let newText = textView.text
-            textView.resignFirstResponder()
-
-            // Cleanup + Shrink
-            text = String()
-
-            // Hit the handler
-            handler(newText)
+        guard let handler = onReply else {
+            return
         }
+
+        // Load the new text
+        let newText = textView.text
+        textView.resignFirstResponder()
+
+        // Cleanup + Shrink
+        text = String()
+
+        // Hit the handler
+        handler(newText)
     }
 
 
@@ -282,17 +290,10 @@ import WordPressShared.WPStyleGuide
     }
 
     private func refreshScrollPosition() {
-        // FIX: In iOS 8, scrollRectToVisible causes a weird flicker
-        if UIDevice.isOS8() {
-            // FIX: Force layout right away. This prevents the TextView from "Jumping"
-            textView.layoutIfNeeded()
-            textView.scrollRangeToVisible(textView.selectedRange)
-        } else {
-            let selectedRangeStart      = textView.selectedTextRange?.start ?? UITextPosition()
-            var caretRect               = textView.caretRectForPosition(selectedRangeStart)
-            caretRect                   = CGRectIntegral(caretRect)
-            textView.scrollRectToVisible(caretRect, animated: false)
-        }
+        let selectedRangeStart      = textView.selectedTextRange?.start ?? UITextPosition()
+        var caretRect               = textView.caretRectForPosition(selectedRangeStart)
+        caretRect                   = CGRectIntegral(caretRect)
+        textView.scrollRectToVisible(caretRect, animated: false)
     }
 
 

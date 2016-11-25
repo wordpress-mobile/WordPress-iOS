@@ -8,8 +8,6 @@
 + (NSString *)crashlyticsApiKey;
 + (NSString *)hockeyappAppId;
 + (NSString *)googlePlusClientId;
-+ (NSString *)simperiumAppId;
-+ (NSString *)simperiumAPIKey;
 + (NSString *)helpshiftAPIKey;
 + (NSString *)helpshiftDomainName;
 + (NSString *)helpshiftAppId;

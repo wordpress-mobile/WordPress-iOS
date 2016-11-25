@@ -13,4 +13,10 @@
     return NO;
 }
 
+- (BOOL)isRunningTestSuite
+{
+    Class testSuite = NSClassFromString(@"XCTestCase");
+    return testSuite != nil;
+}
+
 @end

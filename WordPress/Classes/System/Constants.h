@@ -26,7 +26,6 @@ extern NSString *const WPGravatarBaseURL;
 
 /// Notifications Constants
 ///
-extern NSString *const WPNotificationsBucketName;
 extern NSString *const WPPushNotificationAppId;
 
 /// Keychain + User Defaults Constants

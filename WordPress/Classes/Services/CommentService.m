@@ -337,11 +337,19 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                                                  return;
                                              }
 
-                                             [self mergeHierarchicalComments:comments forPage:page forPost:aPost];
+                                             BOOL includesNewComments = [self mergeHierarchicalComments:comments forPage:page forPost:aPost];
 
                                              if (success) {
+                                                 // There are no more comments when:
+                                                 // - There are fewer top level comments in the results than requested
+                                                 // - Page > 1, the number of top level comments matches those requested, but there are no new comments
+                                                 // We check this way because the API can return the last page of results instead
+                                                 // of returning zero results when the requested page is the last + 1.
                                                  NSArray *parents = [self topLevelCommentsForPage:page forPost:aPost];
-                                                 BOOL hasMore = [parents count] == WPTopLevelHierarchicalCommentsPerPage;
+                                                 BOOL hasMore = YES;
+                                                 if (([parents count] < WPTopLevelHierarchicalCommentsPerPage) || (page > 1 && !includesNewComments)) {
+                                                     hasMore = NO;
+                                                 }
                                                  success([comments count], hasMore);
                                              }
                                          }];
@@ -839,19 +847,21 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
-- (void)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post
+- (BOOL)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post
 {
     if (![comments count]) {
-        return;
+        return NO;
     }
 
     NSMutableArray *ancestors = [NSMutableArray array];
     NSMutableArray *commentsToKeep = [NSMutableArray array];
     NSString *entityName = NSStringFromClass([Comment class]);
+    NSUInteger newCommentCount = 0;
 
     for (RemoteComment *remoteComment in comments) {
         Comment *comment = [self findCommentWithID:remoteComment.commentID fromPost:post];
         if (!comment) {
+            newCommentCount++;
             comment = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
         }
         [self updateComment:comment withRemoteComment:remoteComment];
@@ -880,6 +890,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+    return newCommentCount > 0;
 }
 
 // Does not save context

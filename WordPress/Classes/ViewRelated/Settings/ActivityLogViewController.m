@@ -2,7 +2,6 @@
 #import "WordPressAppDelegate.h"
 #import "ActivityLogDetailViewController.h"
 #import <CocoaLumberjack/DDFileLogger.h>
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "WordPress-Swift.h"
 #import "WPLogger.h"
 #import "WPGUIConstants.h"

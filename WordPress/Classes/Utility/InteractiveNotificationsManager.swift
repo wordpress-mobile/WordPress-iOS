@@ -115,7 +115,7 @@ final public class InteractiveNotificationsManager : NSObject
     }
 
 
-    /// Opens the details for a given notificationID
+    /// Opens the details for a given notificationId
     ///
     /// - Parameter noteID: The Notification's Identifier
     ///

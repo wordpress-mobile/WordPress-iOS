@@ -11,6 +11,16 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
 
     var onCompletion : (UIImage? -> Void)?
 
+    // MARK: - Private Properties
+
+    private lazy var mediaPickerAssetDataSource: WPPHAssetDataSource? = {
+        let collectionsFetchResult = PHAssetCollection.fetchAssetCollectionsWithType(.SmartAlbum, subtype: .SmartAlbumSelfPortraits, options: nil)
+        guard let assetCollection = collectionsFetchResult.firstObject as? PHAssetCollection else { return nil }
+
+        let dataSource = WPPHAssetDataSource()
+        dataSource.setSelectedGroup(PHAssetCollectionForWPMediaGroup(collection: assetCollection, mediaType: .Image))
+        return dataSource
+    }()
 
     // MARK: - View Lifecycle Methods
 
@@ -76,7 +86,7 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
         pickerViewController.allowMultipleSelection = false
         pickerViewController.filter = .Image
         pickerViewController.preferFrontCamera = true
-
+        pickerViewController.dataSource = mediaPickerAssetDataSource
         return pickerViewController
     }
 

@@ -55,6 +55,7 @@ import WordPressComAnalytics
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
     private var imageRequestAuthToken: String?
+    private var didBumpStats = false
 
     /// Used for fetching content.
     private lazy var displayContext = ContextManager.sharedInstance().newMainContextChildContext()
@@ -240,6 +241,8 @@ import WordPressComAnalytics
 
         let mainContext = ContextManager.sharedInstance().mainContext
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NSManagedObjectContextDidSaveNotification, object: mainContext)
+
+        bumpStats()
     }
 
 
@@ -511,15 +514,11 @@ import WordPressComAnalytics
         // Enable the view now that we have a topic.
         view.userInteractionEnabled = true
 
-        if let topic = readerTopic, properties = topicPropertyForStats() {
-            ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
-
+        if let topic = readerTopic where ReaderHelpers.isTopicSearchTopic(topic) {
             // Disable pull to refresh for search topics.
             // Searches are a snap shot in time, and ephemeral. There should be no
             // need to refresh.
-            if ReaderHelpers.isTopicSearchTopic(topic) {
-                tableViewController.refreshControl = nil
-            }
+            tableViewController.refreshControl = nil
         }
 
         // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
@@ -536,6 +535,8 @@ import WordPressComAnalytics
         tableView.setContentOffset(CGPointZero, animated: false)
         tableViewHandler.refreshTableView()
         syncIfAppropriate()
+
+        bumpStats()
 
         let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
 
@@ -673,10 +674,6 @@ import WordPressComAnalytics
     ///     - fromView: The view to anchor a popover.
     ///
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
-        guard let topic = readerTopic else {
-            return
-        }
-
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
@@ -693,7 +690,7 @@ import WordPressComAnalytics
         }
 
         // Following
-        if ReaderHelpers.topicIsFollowing(topic) {
+        if isLoggedIn {
             let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
             alertController.addActionWithTitle(buttonTitle,
                 style: .Default,
@@ -703,15 +700,6 @@ import WordPressComAnalytics
                     }
                 })
         }
-
-        // Visit site
-        alertController.addActionWithTitle(ReaderPostMenuButtonTitles.visit,
-            style: .Default,
-            handler: { (action:UIAlertAction) in
-                if let post = self.postWithObjectID(post.objectID) {
-                    self.visitSiteForPost(post)
-                }
-        })
 
         // Share
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
@@ -998,6 +986,25 @@ import WordPressComAnalytics
     }
 
 
+    // MARK: - Analytics
+
+
+    /// Bump tracked analytics stats if necessary.
+    ///
+    func bumpStats() {
+        if didBumpStats {
+            return
+        }
+
+        guard let topic = readerTopic, properties = topicPropertyForStats() where isViewLoaded() && view.window != nil else {
+            return
+        }
+
+        didBumpStats = true
+        ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
+    }
+
+
     // MARK: - Sync Methods
 
 
@@ -1039,7 +1046,7 @@ import WordPressComAnalytics
     /// - The app must have a internet connection.
     /// - The current time must be greater than the last sync interval.
     func syncIfAppropriate() {
-        if WordPressAppDelegate.sharedInstance().testSuiteIsRunning {
+        guard UIApplication.sharedApplication().isRunningTestSuite() == false else {
             return
         }
 
@@ -1303,10 +1310,14 @@ import WordPressComAnalytics
 
 
     public func configurePostCardCell(cell: UITableViewCell, post: ReaderPost) {
+        guard let topic = readerTopic else {
+            return
+        }
 
         let postCell = cell as! ReaderPostCardCell
 
         postCell.delegate = self
+        postCell.hidesFollowButton = ReaderHelpers.topicIsFollowing(topic)
         postCell.enableLoggedInFeatures = isLoggedIn
         postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
         postCell.configureCell(post)
@@ -1468,14 +1479,27 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
     }
 
 
-    public func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
+    public func readerCell(cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        toggleFollowingForPost(post)
+    }
 
-        let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
-        navigationController?.pushViewController(controller, animated: true)
 
-        let properties =  ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug, forKey: "tag")
-        WPAppAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
+    public func readerCell(cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        sharePost(post.objectID, fromView: sender)
+    }
+
+
+    public func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        visitSiteForPost(post)
     }
 
 

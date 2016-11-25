@@ -224,8 +224,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
         _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
-        _readerNavigationController.tabBarItem.accessibilityIdentifier = @"Reader";
-        _readerNavigationController.tabBarItem.title = @"Reader";
+        _readerNavigationController.tabBarItem.accessibilityIdentifier = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
+        _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
     }
 
     return _readerNavigationController;
@@ -243,7 +243,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _newPostViewController.tabBarItem.image = newPostImage;
     _newPostViewController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
     _newPostViewController.tabBarItem.accessibilityIdentifier = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-    _newPostViewController.tabBarItem.title = @"New Post";
+    _newPostViewController.tabBarItem.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
     _newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
 
     return _newPostViewController;

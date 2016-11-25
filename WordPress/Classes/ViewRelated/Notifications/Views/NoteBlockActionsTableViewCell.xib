@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -11,12 +14,14 @@
             <rect key="frame" x="0.0" y="0.0" width="389" height="57"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vbp-eh-kPo" id="g83-Wv-yJ5">
-                <frame key="frameInset" width="389" height="56.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="389" height="56.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="V3D-QS-G4g">
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="V3D-QS-G4g">
+                        <rect key="frame" x="30" y="11" width="330" height="34"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DXE-y2-DWd" userLabel="Reply" customClass="VerticallyStackedButton">
+                                <rect key="frame" x="0.0" y="0.0" width="55" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" priority="750" constant="55" id="bGa-bG-COl"/>
                                     <constraint firstAttribute="height" priority="750" constant="34" id="pOv-Wo-AuU"/>
@@ -32,7 +37,8 @@
                                     <action selector="replyWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="llo-Tq-bVM"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8r-Uo-uFk" customClass="VerticallyStackedButton">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8r-Uo-uFk" userLabel="Like" customClass="VerticallyStackedButton">
+                                <rect key="frame" x="55" y="0.0" width="55" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="34" id="4s5-KZ-g7U"/>
                                     <constraint firstAttribute="width" constant="55" id="bXC-wE-QDO"/>
@@ -48,7 +54,8 @@
                                     <action selector="likeWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="Gij-LE-gQ5"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agc-K2-0vs" customClass="VerticallyStackedButton">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agc-K2-0vs" userLabel="Approve" customClass="VerticallyStackedButton">
+                                <rect key="frame" x="110" y="0.0" width="55" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="55" id="2hn-PC-Yxs"/>
                                     <constraint firstAttribute="height" priority="750" constant="34" id="Tfs-lE-WZO"/>
@@ -64,7 +71,8 @@
                                     <action selector="approveWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="SJC-Dn-jzf"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYK-fl-vc7" customClass="VerticallyStackedButton">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYK-fl-vc7" userLabel="Trash" customClass="VerticallyStackedButton">
+                                <rect key="frame" x="165" y="0.0" width="55" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="34" id="0ou-ht-WQC"/>
                                     <constraint firstAttribute="width" constant="55" id="Cvd-xS-e5I"/>
@@ -78,7 +86,8 @@
                                     <action selector="trashWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="ayd-CK-vjN"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hU3-yd-ZtO" customClass="VerticallyStackedButton">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hU3-yd-ZtO" userLabel="Spam" customClass="VerticallyStackedButton">
+                                <rect key="frame" x="220" y="0.0" width="55" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="34" id="OBj-Qu-Mty"/>
                                     <constraint firstAttribute="width" constant="55" id="Rq6-Ta-vBZ"/>
@@ -90,6 +99,23 @@
                                 </state>
                                 <connections>
                                     <action selector="spamWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="pG5-AN-pz0"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LLz-LW-VxX" userLabel="Edit" customClass="VerticallyStackedButton">
+                                <rect key="frame" x="275" y="0.0" width="55" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="55" id="5ti-dt-dqt"/>
+                                    <constraint firstAttribute="height" priority="750" constant="34" id="ejb-LG-iQi"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <state key="normal" title="Edit" image="icon-pencil">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="selected" image="icon-pencil"/>
+                                <state key="highlighted" image="icon-pencil"/>
+                                <connections>
+                                    <action selector="editWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="7Vz-WB-sXZ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -104,6 +130,7 @@
             <connections>
                 <outlet property="actionsView" destination="V3D-QS-G4g" id="JZg-7z-Y8g"/>
                 <outlet property="btnApprove" destination="Agc-K2-0vs" id="7mX-9C-ieh"/>
+                <outlet property="btnEdit" destination="LLz-LW-VxX" id="nXr-bK-lSP"/>
                 <outlet property="btnLike" destination="e8r-Uo-uFk" id="zQu-vq-aFT"/>
                 <outlet property="btnReply" destination="DXE-y2-DWd" id="a3c-Jw-2bD"/>
                 <outlet property="btnSpam" destination="hU3-yd-ZtO" id="H1K-eP-bp7"/>
@@ -113,6 +140,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="icon-pencil" width="20" height="20"/>
         <image name="notifications-approve" width="21" height="21"/>
         <image name="notifications-approved" width="21" height="21"/>
         <image name="notifications-like" width="21" height="21"/>

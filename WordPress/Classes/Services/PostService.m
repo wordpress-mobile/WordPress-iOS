@@ -12,6 +12,7 @@
 #import "CommentService.h"
 #import "MediaService.h"
 #import "Media.h"
+#import "DisplayableImageHelper.h"
 #import "WordPress-Swift.h"
 
 PostServiceType const PostServiceTypePost = @"post";
@@ -517,6 +518,16 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.password = remotePost.password;
     post.post_thumbnail = remotePost.postThumbnailID;
     post.pathForDisplayImage = remotePost.pathForDisplayImage;
+    if (post.pathForDisplayImage.length == 0) {
+        // Let's see if some galleries are available
+        NSSet *mediaIDs = [DisplayableImageHelper searchPostContentForAttachmentIdsInGalleries:post.content];
+        for (Media *media in post.blog.media) {
+            NSNumber *mediaID = media.mediaID;
+            if (mediaID && [mediaIDs containsObject:mediaID]) {
+                post.pathForDisplayImage = media.remoteURL;
+            }
+        }
+    }
     post.authorAvatarURL = remotePost.authorAvatarURL;
     post.mt_excerpt = remotePost.excerpt;
 
