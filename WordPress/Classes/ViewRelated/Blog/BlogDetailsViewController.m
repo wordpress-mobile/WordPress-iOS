@@ -13,12 +13,12 @@
 #import "WPAppAnalytics.h"
 #import "WPGUIConstants.h"
 #import "WPTableViewCell.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "MenusViewController.h"
 #import <Reachability/Reachability.h>
 
+@import WordPressComStatsiOS;
 @import Gridicons;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
@@ -646,6 +646,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 // preloads posts or pages.
 - (void)preloadPostsOfType:(PostServiceType)postType
 {
+    // Temporarily disable posts preloading until we can properly resolve the issues on:
+    // https://github.com/wordpress-mobile/WordPress-iOS/issues/6151
+    // Brent C. Nov 3/2016
+    BOOL preloadingPostsDisabled = YES;
+    if (preloadingPostsDisabled) {
+        return;
+    }
+
     NSDate *lastSyncDate;
     if ([postType isEqual:PostServiceTypePage]) {
         lastSyncDate = self.blog.lastPagesSync;

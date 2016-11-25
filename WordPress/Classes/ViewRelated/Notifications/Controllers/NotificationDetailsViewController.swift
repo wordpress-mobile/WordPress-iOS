@@ -1,13 +1,11 @@
 import Foundation
 import CoreData
-import Simperium
 import SVProgressHUD
 import WordPressShared
 import WordPressComStatsiOS
 
 
-/// Renders a given Notification entity, onscreen. Whenever the Notification is remotely updated,
-/// this class will automatically take care of refreshing the UI for you, thanks to Simperium's Awesomeness
+/// Renders a given Notification entity, onscreen
 ///
 class NotificationDetailsViewController: UIViewController
 {
@@ -51,11 +49,11 @@ class NotificationDetailsViewController: UIViewController
 
     /// Notification to-be-displayed
     ///
-    private var note: Notification!
-
-    /// Arranged collection of groups to render
-    ///
-    private var blockGroups = [NotificationBlockGroup]()
+    var note: Notification! {
+        didSet {
+            refreshInterfaceIfNeeded()
+        }
+    }
 
     /// Whenever the user performs a destructive action, the Deletion Request Callback will be called,
     /// and a closure that will effectively perform the deletion action will be passed over.
@@ -102,6 +100,8 @@ class NotificationDetailsViewController: UIViewController
 
         tableView.deselectSelectedRowWithAnimation(true)
         keyboardManager.startListeningToKeyboardNotifications()
+
+        refreshInterface()
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -109,35 +109,26 @@ class NotificationDetailsViewController: UIViewController
         keyboardManager.stopListeningToKeyboardNotifications()
     }
 
-
-    /// Renders the details view, for any given notification
-    ///
-    /// -   Parameter notification: The Notification to display.
-    ///
-    func setupWithNotification(notification: Notification) {
-        note = notification
-
-        loadViewIfNeeded()
-        attachReplyViewIfNeeded()
-        attachSuggestionsViewIfNeeded()
-        attachEditActionIfNeeded()
-        reloadData()
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        refreshInterface()
     }
 
-    private func reloadData() {
-        // Hide the header, if needed
-        var mergedGroups = [NotificationBlockGroup]()
 
-        if let header = note.headerBlockGroup {
-            mergedGroups.append(header)
+    private func refreshInterfaceIfNeeded() {
+        guard isViewLoaded() else {
+            return
         }
 
-        mergedGroups.appendContentsOf(note.bodyBlockGroups)
-        blockGroups = mergedGroups
+        refreshInterface()
+    }
 
-        // Reload UI
+    private func refreshInterface() {
         title = note.title
         tableView.reloadData()
+
+        attachReplyViewIfNeeded()
+        attachSuggestionsViewIfNeeded()
         adjustLayoutConstraintsIfNeeded()
     }
 }
@@ -166,7 +157,7 @@ extension NotificationDetailsViewController: UIViewControllerRestoration
             return nil
         }
 
-        vc.setupWithNotification(restoredNotification)
+        vc.note = restoredNotification
 
         return vc
     }
@@ -188,7 +179,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return blockGroups.count
+        return note.headerAndBodyBlockGroups.count
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -337,7 +328,7 @@ extension NotificationDetailsViewController
             return false
         }
 
-        return block.isActionOn(.Reply) && !WPDeviceIdentification.isiPad()
+        return block.isActionOn(.Reply) && hasHorizontallyCompactView()
     }
 }
 
@@ -370,39 +361,6 @@ private extension NotificationDetailsViewController
 
         let suggestionsService = SuggestionService()
         return shouldAttachReplyView && suggestionsService.shouldShowSuggestionsForSiteID(siteID)
-    }
-}
-
-
-// MARK: - Edition Helpers
-//
-private extension NotificationDetailsViewController
-{
-    func attachEditActionIfNeeded() {
-        guard shouldAttachEditAction else {
-            return
-        }
-
-        let title = NSLocalizedString("Edit", comment: "Verb, start editing")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: title,
-                                                            style: .Plain,
-                                                            target: self,
-                                                            action: #selector(editButtonWasPressed))
-    }
-
-    var shouldAttachEditAction: Bool {
-        // Note: Approve Action is actually a synonym for 'Edition' (Based on Calypso's basecode)
-        let block = note.blockGroupOfKind(.Comment)?.blockOfKind(.Comment)
-        return block?.isActionOn(.Approve) ?? false
-    }
-
-    @objc @IBAction func editButtonWasPressed() {
-        // Note: Approve Action is actually a synonym for 'Edition' (Based on Calypso's basecode)
-        guard let block = note.blockGroupOfKind(.Comment)?.blockOfKind(.Comment) where block.isActionOn(.Approve) else {
-            return
-        }
-
-        displayCommentEditorWithBlock(block)
     }
 }
 
@@ -495,7 +453,7 @@ private extension NotificationDetailsViewController
 
     func setupFooterCell(cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let textBlock = blockGroup.blocks.first else {
-            assertionFailure("Missing Text Block for Notification [\(note.simperiumKey)")
+            assertionFailure("Missing Text Block for Notification [\(note.notificationId)")
             return
         }
 
@@ -506,7 +464,7 @@ private extension NotificationDetailsViewController
 
     func setupUserCell(cell: NoteBlockUserTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let userBlock = blockGroup.blocks.first else {
-            assertionFailure("Missing User Block for Notification [\(note.simperiumKey)]")
+            assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
             return
         }
 
@@ -541,12 +499,12 @@ private extension NotificationDetailsViewController
         //  -   A left separator is displayed.
         //
         guard let commentBlock = blockGroup.blockOfKind(.Comment) else {
-            assertionFailure("Missing Comment Block for Notification [\(note.simperiumKey)]")
+            assertionFailure("Missing Comment Block for Notification [\(note.notificationId)]")
             return
         }
 
         guard let userBlock = blockGroup.blockOfKind(.User) else {
-            assertionFailure("Missing User Block for Notification [\(note.simperiumKey)]")
+            assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
             return
         }
 
@@ -592,16 +550,19 @@ private extension NotificationDetailsViewController
 
     func setupActionsCell(cell: NoteBlockActionsTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let commentBlock = blockGroup.blockOfKind(.Comment) else {
-            assertionFailure("Missing Comment Block for Notification \(note.simperiumKey)")
+            assertionFailure("Missing Comment Block for Notification \(note.notificationId)")
             return
         }
 
         // Setup: Properties
-        cell.isReplyEnabled     = WPDeviceIdentification.isiPad() && commentBlock.isActionOn(.Reply)
+        // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
+        //
+        cell.isReplyEnabled     = !hasHorizontallyCompactView() && commentBlock.isActionOn(.Reply)
         cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
         cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
         cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
         cell.isSpamEnabled      = commentBlock.isActionEnabled(.Spam)
+        cell.isEditEnabled      = commentBlock.isActionOn(.Approve)
         cell.isLikeOn           = commentBlock.isActionOn(.Like)
         cell.isApproveOn        = commentBlock.isActionOn(.Approve)
 
@@ -633,11 +594,15 @@ private extension NotificationDetailsViewController
         cell.onSpamClick = { [weak self] _ in
             self?.spamCommentWithBlock(commentBlock)
         }
+
+        cell.onEditClick = { [weak self] _ in
+            self?.displayCommentEditorWithBlock(commentBlock)
+        }
     }
 
     func setupImageCell(cell: NoteBlockImageTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let imageBlock = blockGroup.blocks.first else {
-            assertionFailure("Missing Image Block for Notification [\(note.simperiumKey)")
+            assertionFailure("Missing Image Block for Notification [\(note.notificationId)")
             return
         }
 
@@ -647,7 +612,7 @@ private extension NotificationDetailsViewController
 
     func setupTextCell(cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
         guard let textBlock = blockGroup.blocks.first else {
-            assertionFailure("Missing Text Block for Notification \(note.simperiumKey)")
+            assertionFailure("Missing Text Block for Notification \(note.notificationId)")
             return
         }
 
@@ -669,7 +634,7 @@ private extension NotificationDetailsViewController
 
     func setupSeparators(cell: NoteBlockTableViewCell, indexPath: NSIndexPath) {
         cell.isBadge = note.isBadge
-        cell.isLastRow = (indexPath.row >= blockGroups.count - 1)
+        cell.isLastRow = (indexPath.row >= note.headerAndBodyBlockGroups.count - 1)
     }
 }
 
@@ -686,7 +651,7 @@ extension NotificationDetailsViewController
 
         // Reload the table, if *our* notification got updated
         if updated.contains(note) || refreshed.contains(note) {
-            reloadData()
+            refreshInterface()
         }
 
         // Dismiss this ViewController if *our* notification... just got deleted
@@ -848,7 +813,7 @@ private extension NotificationDetailsViewController
 private extension NotificationDetailsViewController
 {
     func blockGroupForIndexPath(indexPath: NSIndexPath) -> NotificationBlockGroup {
-        return blockGroups[indexPath.row]
+        return note.headerAndBodyBlockGroups[indexPath.row]
     }
 
     func blogWithBlogID(blogID: NSNumber?) -> Blog? {
@@ -913,7 +878,7 @@ private extension NotificationDetailsViewController
 
     var maxMediaEmbedWidth: CGFloat {
         let textPadding = NoteBlockTextTableViewCell.defaultLabelPadding
-        let portraitWidth = WPDeviceIdentification.isiPad() ? WPTableViewFixedWidth : view.bounds.width
+        let portraitWidth = hasHorizontallyCompactView() ? view.bounds.width : WPTableViewFixedWidth
         let maxWidth = portraitWidth - (textPadding.left + textPadding.right)
 
         return maxWidth
@@ -1109,7 +1074,7 @@ private extension NotificationDetailsViewController
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
         alertController.addCancelActionWithTitle(cancelTitle) { action in
             block.textOverride = nil
-            self.reloadData()
+            self.refreshInterface()
         }
         alertController.addDefaultActionWithTitle(retryTitle) { action in
             self.updateCommentWithBlock(block, content: content)

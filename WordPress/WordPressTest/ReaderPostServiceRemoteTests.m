@@ -25,6 +25,7 @@
 - (NSDictionary *)primaryAndSecondaryTagsFromPostDictionary:(NSDictionary *)dict;
 - (NSNumber *)readingTimeForWordCount:(NSNumber *)wordCount;
 - (NSString *)removeInlineStyles:(NSString *)string;
+- (NSString *)removeForbiddenTags:(NSString *)string;
 - (NSString *)postTitleFromPostDictionary:(NSDictionary *)dict;
 - (NSString *)postSummaryFromPostDictionary:(NSDictionary *)dict orPostContent:(NSString *)content;
 - (NSString *)resizeGalleryImageURLsForContent:(NSString *)content isPrivateSite:(BOOL)isPrivateSite;
@@ -129,11 +130,22 @@
     ReaderPostServiceRemote *remoteService = nil;
     XCTAssertNoThrow(remoteService = [self service]);
 
-    NSString *str = @"<p >test</p><p >test</p>";
+    NSString *str = @"<p>test</p><p>test</p>";
     NSString *styleStr = @"<p style=\"background-color:#fff;\">test</p><p style=\"background-color:#fff;\">test</p>";
     NSString *sanitizedStr = [remoteService removeInlineStyles:styleStr];
     XCTAssertTrue([str isEqualToString:sanitizedStr], @"The inline styles were not removed.");
     
+}
+
+- (void)testRemoveForbiddenTags {
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+    NSString *str = @"<p>test</p><p>test</p>";
+    NSString *styleStr = @"<script>alert();</script><style>body{color:#000;}</style><p>test</p><script>alert();</script><style>body{color:#000;}</style><p>test</p><script>alert();</script><style>body{color:#000;}</style>";
+    NSString *sanitizedStr = [remoteService removeForbiddenTags:styleStr];
+    XCTAssertTrue([str isEqualToString:sanitizedStr], @"The forbidden tags were not removed.");
+
 }
 
 - (void)testSiteIsPrivate {
@@ -442,7 +454,7 @@
 
     XCTAssertTrue([content rangeOfString:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?w=181&#038;h=135&#038;crop=1\""].length > 0);
     XCTAssertTrue([resultContent rangeOfString:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?w=181&#038;h=135&#038;crop=1\""].length == 0);
-    NSString *expectedURL = [NSString stringWithFormat:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?h=%.1f&w=%.1f\"", scaledSize.height, scaledSize.width];
+    NSString *expectedURL = [NSString stringWithFormat:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?h=%ld&w=%ld\"", (long)(scaledSize.height), (long)(scaledSize.width)];
     XCTAssertTrue([resultContent rangeOfString:expectedURL].length > 0);
 }
 

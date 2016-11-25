@@ -7,7 +7,6 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "TodayExtensionService.h"
@@ -233,12 +232,15 @@ static NSInteger HideSearchMinSites = 3;
 - (void)updateViewsForCurrentSiteCount
 {
     NSUInteger count = [self countForAllBlogs];
-    if (count == NSNotFound) {
-        count = 0;
-    }
+    NSUInteger visibleSitesCount = [self countForVisibleBlogs];
 
-    [self showNoResultsViewForSiteCount:count];
-    [self updateSplitViewAppearanceForSiteCount:count];
+    // If the user has sites, but they're all hidden...
+    if (count > 0 && visibleSitesCount == 0 && !self.isEditing) {
+        [self showNoResultsViewForAllSitesHidden];
+    } else {
+        [self showNoResultsViewForSiteCount:count];
+        [self updateSplitViewAppearanceForSiteCount:count];
+    }
 }
 
 - (void)showNoResultsViewForSiteCount:(NSUInteger)siteCount
@@ -249,7 +251,30 @@ static NSInteger HideSearchMinSites = 3;
         [self bypassBlogListViewController];
     }
 
-    self.noResultsView.hidden = (siteCount > 0);
+    self.noResultsView.hidden = siteCount > 0;
+
+    if (!self.noResultsView.hidden) {
+        self.noResultsView.titleText = NSLocalizedString(@"You don't have any WordPress sites yet.", @"Title shown when the user has no sites.");
+        self.noResultsView.messageText = NSLocalizedString(@"Would you like to start one?", @"Prompt asking user whether they'd like to create a new site if they don't already have one.");
+        self.noResultsView.buttonTitle = NSLocalizedString(@"Create Site", nil);
+    }
+}
+
+- (void)showNoResultsViewForAllSitesHidden
+{
+    NSUInteger count = [self countForAllBlogs];
+
+    if (count == 1) {
+        self.noResultsView.titleText = NSLocalizedString(@"You have 1 hidden WordPress site.", "Message informing the user that all of their sites are currently hidden (singular)");
+        self.noResultsView.messageText = NSLocalizedString(@"To manage it here, set it to visible.", @"Prompt asking user to make sites visible in order to use them in the app (singular)");
+    } else {
+        self.noResultsView.titleText = [NSString stringWithFormat:NSLocalizedString(@"You have %lu hidden WordPress sites.", "Message informing the user that all of their sites are currently hidden (plural)"), count];
+        self.noResultsView.messageText = NSLocalizedString(@"To manage them here, set them to visible.", @"Prompt asking user to make sites visible in order to use them in the app (plural)");
+    }
+
+    self.noResultsView.buttonTitle = NSLocalizedString(@"Change Visibility", "Button title to edit visibility of sites.");
+
+    self.noResultsView.hidden = NO;
 }
 
 - (void)updateSplitViewAppearanceForSiteCount:(NSUInteger)siteCount
@@ -274,10 +299,26 @@ static NSInteger HideSearchMinSites = 3;
 
 - (NSUInteger)countForAllBlogs
 {
+    return [self countForPredicate:[self fetchRequestPredicateForAllBlogs]];
+}
+
+- (NSUInteger)countForVisibleBlogs
+{
+    return [self countForPredicate:[self fetchRequestPredicateForVisibleBlogs]];
+}
+
+- (NSUInteger)countForPredicate:(NSPredicate *)predicate
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:BlogEntityName];
-    request.predicate = [self fetchRequestPredicateForAllBlogs];
-    return [context countForFetchRequest:request error:nil];
+    request.predicate = predicate;
+
+    NSUInteger count = [context countForFetchRequest:request error:nil];
+    if (count == NSNotFound) {
+        count = 0;
+    }
+
+    return count;
 }
 
 - (void)syncBlogs
@@ -300,16 +341,24 @@ static NSInteger HideSearchMinSites = 3;
 {
     if (!_headerView) {
         _headerView = [[UIView alloc] initWithFrame:CGRectZero];
+        [_headerView addSubview:self.headerLabel];
+    }
+
+    return _headerView;
+}
+
+- (UILabel *)headerLabel
+{
+    if (!_headerLabel) {
         _headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _headerLabel.numberOfLines = 0;
         _headerLabel.textAlignment = NSTextAlignmentCenter;
         _headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
         _headerLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
         _headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
-        [_headerView addSubview:_headerLabel];
     }
 
-    return _headerView;
+    return _headerLabel;
 }
 
 - (void)updateHeaderSize
@@ -413,14 +462,14 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)configureNoResultsView
 {
-    self.noResultsView = [WPNoResultsView noResultsViewWithTitle:NSLocalizedString(@"You don't have any WordPress sites yet.", @"Title shown when the user has no sites.")
-                                                         message:NSLocalizedString(@"Would you like to start one?", @"Prompt asking user whether they'd like to create a new site if they don't already have one.")
+    self.noResultsView = [WPNoResultsView noResultsViewWithTitle:nil
+                                                         message:nil
                                                    accessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"theme-empty-results"]]
-                                                     buttonTitle:NSLocalizedString(@"Create Site", nil)];
-    [self.view addSubview:self.noResultsView];
+                                                     buttonTitle:nil];
+    [self.tableView addSubview:self.noResultsView];
     [self.noResultsView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [self.view pinSubviewAtCenter:self.noResultsView];
+    [self.tableView pinSubviewAtCenter:self.noResultsView];
     [self.noResultsView layoutIfNeeded];
 
     self.noResultsView.hidden = YES;
@@ -630,7 +679,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return (self.tableView.isEditing) ? CGFLOAT_MIN : UITableViewAutomaticDimension;
+    return UITableViewAutomaticDimension;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -661,7 +710,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated
 {
-    if (selectedBlog != _selectedBlog) {
+    if (selectedBlog != _selectedBlog || !_blogDetailsViewController) {
         _selectedBlog = selectedBlog;
 
         self.blogDetailsViewController = [[BlogDetailsViewController alloc] init];
@@ -715,9 +764,11 @@ static NSInteger HideSearchMinSites = 3;
 
         self.firstHide = nil;
         self.hideCount = 0;
+        self.noResultsView.hidden = YES;
     }
     else {
         self.tableView.tableHeaderView = self.searchController.searchBar;
+        [self updateViewsForCurrentSiteCount];
     }
 
     // Animate view to editing mode
@@ -980,23 +1031,18 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
-    // Find the button in the NoResultsView
-    UIButton *button = nil;
-    for (UIView *subview in noResultsView.subviews) {
-        if ([subview isKindOfClass:[UIButton class]]) {
-            button = (UIButton *)subview;
-            break;
-        }
+    if ([self countForAllBlogs] == 0) {
+        UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
+        addSiteAlertController.popoverPresentationController.sourceView = self.view;
+        addSiteAlertController.popoverPresentationController.sourceRect = [self.view convertRect:noResultsView.button.frame
+                                                                                        fromView:noResultsView];
+        addSiteAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+
+        [self presentViewController:addSiteAlertController animated:YES completion:nil];
+        self.addSiteAlertController = addSiteAlertController;
+    } else if ([self countForVisibleBlogs] == 0) {
+        [self setEditing:YES animated:YES];
     }
-
-    UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
-    addSiteAlertController.popoverPresentationController.sourceView = self.view;
-    addSiteAlertController.popoverPresentationController.sourceRect = [self.view convertRect:noResultsView.button.frame
-                                                                                    fromView:noResultsView];
-    addSiteAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-
-    [self presentViewController:addSiteAlertController animated:YES completion:nil];
-    self.addSiteAlertController = addSiteAlertController;
 }
 
 #pragma mark - WPSplitViewControllerDetailProvider

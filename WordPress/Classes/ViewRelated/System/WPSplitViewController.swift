@@ -103,6 +103,7 @@ class WPSplitViewController: UISplitViewController {
         super.viewWillAppear(animated)
 
         updateInitialViewControllers()
+        updateDimmingViewFrame()
     }
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {

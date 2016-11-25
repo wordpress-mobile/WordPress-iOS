@@ -33,6 +33,10 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     ///
     @IBOutlet private var btnSpam: UIButton!
 
+    /// Edit Action Button
+    ///
+    @IBOutlet private var btnEdit: UIButton!
+
     /// Handler to be executed on Reply event
     ///
     var onReplyClick: EventHandler?
@@ -60,6 +64,10 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     /// Handler to be executed on Spam event
     ///
     var onSpamClick: EventHandler?
+
+    // Handler to be executed on Edition event
+    //
+    var onEditClick: EventHandler?
 
     /// Indicates whether the Reply Action is enabled, or not
     ///
@@ -101,6 +109,14 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
         }
     }
 
+    /// Indicates whether the Edit Action is enabled, or not
+    ///
+    var isEditEnabled: Bool = false {
+        didSet {
+            btnEdit.hidden = !isEditEnabled
+        }
+    }
+
     /// Indicates whether Like is in it's "Selected" state, or not
     ///
     var isLikeOn: Bool {
@@ -134,7 +150,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     /// Returns the required button spacing
     ///
     private var buttonSpacingForCurrentTraits : CGFloat {
-        let isHorizontallyCompact = traitCollection.horizontalSizeClass == .Compact && UIDevice.isPad()
+        let isHorizontallyCompact = traitCollection.horizontalSizeClass == .Compact
         return isHorizontallyCompact ? Constants.buttonSpacingCompact : Constants.buttonSpacing
     }
 
@@ -175,13 +191,9 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
         let textNormalColor = WPStyleGuide.Notifications.blockActionDisabledColor
         let textSelectedColor = WPStyleGuide.Notifications.blockActionEnabledColor
 
-        let replyTitle = NSLocalizedString("Reply", comment: "Verb, reply to a comment")
-        let spamTitle = NSLocalizedString("Spam", comment: "Verb, spam a comment")
-        let trashTitle = NSLocalizedString("Trash", comment: "Move a comment to the trash")
-
-        btnReply.setTitle(replyTitle, forState: .Normal)
+        btnReply.setTitle(Reply.normalTitle, forState: .Normal)
         btnReply.setTitleColor(textNormalColor, forState: .Normal)
-        btnReply.accessibilityLabel = replyTitle
+        btnReply.accessibilityLabel = Reply.normalHint
 
         btnLike.setTitle(Like.normalTitle, forState: .Normal)
         btnLike.setTitle(Like.selectedTitle, forState: .Highlighted)
@@ -199,13 +211,17 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
         btnApprove.setTitleColor(textSelectedColor, forState: .Selected)
         btnApprove.accessibilityLabel = Approve.normalTitle
 
-        btnSpam.setTitle(spamTitle, forState: .Normal)
-        btnSpam.setTitleColor(textNormalColor, forState: .Normal)
-        btnSpam.accessibilityLabel = spamTitle
+        btnEdit.setTitle(Edit.normalTitle, forState: .Normal)
+        btnEdit.setTitleColor(textNormalColor, forState: .Normal)
+        btnEdit.accessibilityLabel = Edit.normalHint
 
-        btnTrash.setTitle(trashTitle, forState: .Normal)
+        btnSpam.setTitle(Spam.normalTitle, forState: .Normal)
+        btnSpam.setTitleColor(textNormalColor, forState: .Normal)
+        btnSpam.accessibilityLabel = Spam.normalHint
+
+        btnTrash.setTitle(Trash.normalTitle, forState: .Normal)
         btnTrash.setTitleColor(textNormalColor, forState: .Normal)
-        btnTrash.accessibilityLabel = trashTitle
+        btnTrash.accessibilityLabel = Trash.normalHint
     }
 
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -244,6 +260,10 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
 
     @IBAction func spamWasPressed(sender: AnyObject) {
         onSpamClick?(sender: sender)
+    }
+
+    @IBAction func editWasPressed(sender: AnyObject) {
+        onEditClick?(sender: sender)
     }
 }
 
@@ -305,11 +325,32 @@ private extension NoteBlockActionsTableViewCell
         static let selectedHint     = NSLocalizedString("Unapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
     }
 
+    struct Edit {
+        static let normalTitle      = NSLocalizedString("Edit", comment: "Verb, edit a comment")
+        static let normalHint       = NSLocalizedString("Edits a comment", comment: "Edit Action Spoken hint.")
+    }
+
     struct Like {
         static let normalTitle      = NSLocalizedString("Like", comment: "Like a comment")
         static let selectedTitle    = NSLocalizedString("Liked", comment: "A comment has been liked")
         static let normalHint       = NSLocalizedString("Likes the comment", comment: "Likes a comment. Spoken Hint.")
         static let selectedHint     = NSLocalizedString("Unlikes the comment", comment: "Unlikes a comment. Spoken Hint.")
+    }
+
+    struct Reply {
+        static let normalTitle      = NSLocalizedString("Reply", comment: "Verb, reply to a comment")
+        static let normalHint       = NSLocalizedString("Replies to a comment", comment: "Reply Action Spoken hint.")
+    }
+
+    struct Spam {
+        static let normalTitle      = NSLocalizedString("Spam", comment: "Verb, spam a comment")
+        static let normalHint       = NSLocalizedString("Moves a comment to Spam", comment: "Spam Action Spoken hint.")
+
+    }
+
+    struct Trash {
+        static let normalTitle      = NSLocalizedString("Trash", comment: "Move a comment to the trash")
+        static let normalHint       = NSLocalizedString("Moves the comment to Trash", comment: "Trash Action Spoken hint")
     }
 
     struct Constants {

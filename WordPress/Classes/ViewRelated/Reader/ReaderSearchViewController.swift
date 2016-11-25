@@ -22,6 +22,7 @@ import Gridicons
     private let searchBarSearchIconSize = CGFloat(13.0)
     private var suggestionsController: ReaderSearchSuggestionsViewController?
     private var restoredSearchTopic: ReaderSearchTopic?
+    private var didBumpStats = false
 
 
     /// A convenience method for instantiating the controller from the storyboard.
@@ -31,7 +32,6 @@ import Gridicons
     public class func controller() -> ReaderSearchViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderSearchViewController") as! ReaderSearchViewController
-        WPAppAnalytics.track(.ReaderSearchLoaded)
         return controller
     }
 
@@ -115,6 +115,14 @@ import Gridicons
         ReaderTopicService(managedObjectContext: context).deleteAllSearchTopics()
     }
 
+
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        bumpStats()
+    }
+
+
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
@@ -123,6 +131,18 @@ import Gridicons
 
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
+
+
+    // MARK: - Analytics
+
+
+    func bumpStats() {
+        if didBumpStats {
+            return
+        }
+        WPAppAnalytics.track(.ReaderSearchLoaded)
+        didBumpStats = true
     }
 
 

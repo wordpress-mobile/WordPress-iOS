@@ -73,4 +73,21 @@ static NSString * const PathForAttachmentD = @"http://www.example.com/exampleD.p
     XCTAssertTrue([mAttachments count] == 1, @"The video attachment should be missing from the filtered array");
 }
 
+- (void)testSearchPostContentForAttachmentIdsInGalleries
+{
+    NSSet *idsSet = [DisplayableImageHelper searchPostContentForAttachmentIdsInGalleries:@"Hello gallery [gallery ids=\"823,822,821\" type=\"rectangular\"] Another gallery [gallery ids=\"823,900\"]"];
+
+    XCTAssertTrue([idsSet count] == 4, @"It should find four elements");
+    XCTAssertTrue([idsSet containsObject:@(823)], "It should find 823");
+    XCTAssertTrue([idsSet containsObject:@(900)], "It should find 900");
+}
+
+- (void)testSearchPostContentForImageToDisplay
+{
+    NSString *imageSrc= [DisplayableImageHelper searchPostContentForImageToDisplay:@"Img200 <img width=\"100\" src=\"http://photo.com/200.jpg\" /> Img300<img width=\"300\" src=\"http://photo.com/300.jpg\" /> Img100<img width=\"100\" src=\"http://photo.com/100.jpg\" />"];
+
+    XCTAssertTrue([imageSrc isEqualToString:@"http://photo.com/300.jpg"], @"It should find the 300.jpg");
+}
+
+
 @end

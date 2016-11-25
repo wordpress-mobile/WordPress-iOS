@@ -2,8 +2,7 @@ import Foundation
 import UIDeviceIdentifier
 
 /// The purpose of this class is to encapsulate all of the interaction with the Notifications REST endpoints.
-/// Note that Notification Sync'ing itself is handled via Simperium, and here we'll deal mostly with the
-/// Settings / Push Notifications API.
+/// Here we'll deal mostly with the Settings / Push Notifications API.
 ///
 public class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST
 {
