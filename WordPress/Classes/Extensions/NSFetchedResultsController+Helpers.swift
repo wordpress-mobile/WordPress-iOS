@@ -29,7 +29,7 @@ extension NSFetchedResultsController
             return nil
         }
 
-        guard indexPath.row < sections[indexPath.section].numberOfObjects else {
+        guard indexPath.row < sections[indexPath.section].numberOfObjects && indexPath.row >= 0 else {
             return nil
         }
 
