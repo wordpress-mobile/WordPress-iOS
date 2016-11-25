@@ -29,19 +29,12 @@ class EditPostViewController: UIViewController {
     var onClose: ((changesSaved: Bool) -> ())?
 
     private var editorModalPresentationStyle: UIModalPresentationStyle?
-    private var editorModalTransitionSylte: UIModalTransitionStyle?
     override var modalPresentationStyle: UIModalPresentationStyle
         {
         didSet(newValue) {
-            super.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+            // make sure this view is transparent with the previous VC visible
+            super.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
             editorModalPresentationStyle = newValue
-        }
-    }
-    override var modalTransitionStyle: UIModalTransitionStyle
-        {
-        didSet(newValue) {
-            super.modalTransitionStyle = .CrossDissolve
-            editorModalTransitionSylte = newValue
         }
     }
 
@@ -71,7 +64,7 @@ class EditPostViewController: UIViewController {
     /// - Parameters:
     ///   - post: the post to edit
     ///   - blog: the blog to create a post for, if post is nil
-    /// - Note: it's likely preferable to use one of the convenience initializers
+    /// - Note: it's preferable to use one of the convenience initializers
     private init(post: Post?, blog: Blog?) {
         if let post = post {
             self.post = post
@@ -80,27 +73,36 @@ class EditPostViewController: UIViewController {
         if let blog = blog {
             self.blog = blog
         }
-        self.modalPresentationStyle = .FullScreen
-        self.modalTransitionStyle = .CrossDissolve
+        super.modalPresentationStyle = .OverCurrentContext
         self.restorationIdentifier = RestorationKey.viewController.rawValue
         self.restorationClass = EditPostViewController.self
+
+        addChildViewController(postPost)
+        view.addSubview(postPost.view)
+        postPost.didMoveToParentViewController(self)
     }
 
-    // TODO: make sure state restoration is working
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
 
+    override func viewWillAppear(animated: Bool) {
+        // show postpost, which will be transparent
+        postPost.modalPresentationStyle = .FullScreen
+        postPost.modalTransitionStyle = .CoverVertical
+        self.view.opaque = false
+        self.view.backgroundColor = UIColor.clearColor()
+
+        postPost.view.topAnchor.constraintEqualToAnchor(view.topAnchor)
+        postPost.view.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor)
+        postPost.view.leftAnchor.constraintEqualToAnchor(view.leftAnchor)
+        postPost.view.rightAnchor.constraintEqualToAnchor(view.rightAnchor)
+    }
+
     override func viewDidAppear(animated: Bool) {
         if (!hasShownEditor) {
-            // show postpost, which will be transparent
-            postPost.modalPresentationStyle = .FullScreen
-            postPost.modalTransitionStyle = .CoverVertical
-            presentViewController(postPost, animated: true) {
-                // then show editor
-                self.showEditor()
-                self.hasShownEditor = true
-            }
+            self.showEditor()
+            self.hasShownEditor = true
         }
     }
 
@@ -246,11 +248,8 @@ class EditPostViewController: UIViewController {
     }
 
     func closePostPost(animated animated: Bool) {
-        // dismiss PostPost
-        self.dismissViewControllerAnimated(animated) {
-            // dismiss self
-            self.dismissViewControllerAnimated(false) {}
-        }
+        // will dismiss self
+        self.dismissViewControllerAnimated(animated) {}
     }
 }
 
