@@ -81,18 +81,6 @@ class WPSplitViewController: UISplitViewController {
         extendedLayoutIncludesOpaqueBars = true
     }
 
-    override func encodeRestorableStateWithCoder(coder: NSCoder) {
-        super.encodeRestorableStateWithCoder(coder)
-
-        coder.encodeBool(detailNavigationStackHasBeenModified, forKey: self.dynamicType.detailNavigationStackModifiedRestorationKey)
-    }
-
-    override func decodeRestorableStateWithCoder(coder: NSCoder) {
-        super.decodeRestorableStateWithCoder(coder)
-
-        detailNavigationStackHasBeenModified = coder.decodeBoolForKey(self.dynamicType.detailNavigationStackModifiedRestorationKey)
-    }
-
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
@@ -109,6 +97,12 @@ class WPSplitViewController: UISplitViewController {
 
         let overrideCollection = UITraitCollection(horizontalSizeClass: self.traitCollection.horizontalSizeClass)
         return UITraitCollection(traitsFromCollections: [collection, overrideCollection])
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        updateInitialViewControllers()
     }
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -235,18 +229,28 @@ class WPSplitViewController: UISplitViewController {
      *  detail view controller.
      */
     func setInitialPrimaryViewController(viewController: UIViewController) {
-        var initialViewControllers = [viewController]
+        viewControllers = [viewController]
+    }
 
-        if let navigationController = viewController as? UINavigationController,
+    // We defer initializing the detail view controller until the view is ready to
+    // appear, which should account for state restoration having already put
+    // a view controller in place there.
+    private var initializedDetailViewController = false
+
+    func updateInitialViewControllers() {
+        guard !initializedDetailViewController && viewControllers.count == 1 else {
+            return
+        }
+
+        initializedDetailViewController = true
+
+        if let navigationController = viewControllers.first as? UINavigationController,
             let rootViewController = navigationController.viewControllers.last,
             let detailViewController = initialDetailViewControllerForPrimaryViewController(rootViewController) {
 
             navigationController.delegate = self
 
-            initialViewControllers.append(detailViewController)
-            viewControllers = initialViewControllers
-        } else {
-            viewControllers = [viewController, UIViewController()]
+            viewControllers = [navigationController, detailViewController]
         }
     }
 
