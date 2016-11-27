@@ -47,12 +47,11 @@ static NSInteger WPPickerToolBarHeight = 44.0f;
 
 - (void)configureView
 {
-    [self configureToolbar];
-
     UIView *picker = [self viewForPicker];
-    picker.frame = CGRectMake(0.0f, CGRectGetMaxY(self.toolbar.frame), CGRectGetWidth(picker.frame), CGRectGetHeight(picker.frame));
-
+    picker.frame = CGRectMake(0.0f, WPPickerToolBarHeight, CGRectGetWidth(picker.frame), CGRectGetHeight(picker.frame));
     self.frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(picker.frame), CGRectGetMaxY(picker.frame));
+
+    [self configureToolbar];
 
     [self addSubview:picker];
     [self addSubview:self.toolbar];
@@ -61,7 +60,7 @@ static NSInteger WPPickerToolBarHeight = 44.0f;
 - (void)configureToolbar
 {
     self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.frame), WPPickerToolBarHeight)];
-    self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
+    self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *leftSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
