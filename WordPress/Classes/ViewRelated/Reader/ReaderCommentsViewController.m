@@ -470,8 +470,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         return _activityFooter;
     }
 
-    CGRect rect = CGRectMake(145.0f, 10.0f, 30.0f, 30.0f);
-    _activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
+    _activityFooter = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     _activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     _activityFooter.hidesWhenStopped = YES;
     _activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -571,6 +570,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         CGFloat width = CGRectGetWidth(self.tableView.bounds);
         UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 50.0f)];
         footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        CGRect rect = self.activityFooter.frame;
+        rect.origin.x = (width - rect.size.width) / 2.0;
+        self.activityFooter.frame = rect;
+
         [footerView addSubview:self.activityFooter];
         self.tableView.tableFooterView = footerView;
         
