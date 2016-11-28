@@ -142,6 +142,8 @@ extension WPImageURLHelper
 
         // Strip original resizing parameters, or we might get an image too small
         urlComponents.queryItems = photonQueryItems(forSize: scaledSize, usingSSL: url.scheme == RequestScheme.Secure.rawValue, forceResize: forceResize, quality: boundedQuality)
+        
+        urlComponents.fragment = nil
 
         return urlComponents.URL
     }
