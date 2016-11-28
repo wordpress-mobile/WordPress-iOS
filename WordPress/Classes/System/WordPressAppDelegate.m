@@ -406,6 +406,11 @@ int ddLogLevel = DDLogLevelInfo;
     [WPFontManager merriweatherRegularFontOfSize:16.0];
 
     [self customizeAppearance];
+
+    // Push notifications
+    // This is silent (the user is prompted) so we can do it on launch.
+    // We'll ask for user notification permission after signin.
+    [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
