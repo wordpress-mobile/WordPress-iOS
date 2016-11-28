@@ -23,6 +23,8 @@
 // If the estimated is bigger than needed, UITableView might actually use that size, and shrink using an undesired animation.
 static CGFloat const EstimatedCommentRowHeight = 100.0;
 static CGFloat const PostHeaderHeight = 54.0;
+static NSInteger const MaxCommentDepth = 4.0;
+static CGFloat const CommentIndentationWidth = 40.0;
 
 static NSString *CommentCellIdentifier = @"CommentDepth0CellIdentifier";
 static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
@@ -761,8 +763,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
-    cell.indentationWidth = 40.0;
-    cell.indentationLevel = MIN([comment.depth integerValue], 5);
+    cell.indentationWidth = CommentIndentationWidth;
+    cell.indentationLevel = MIN([comment.depth integerValue], MaxCommentDepth);
     cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.enableLoggedInFeatures = [self isLoggedIn];
