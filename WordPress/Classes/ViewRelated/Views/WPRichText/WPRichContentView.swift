@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 
-protocol WPRichContentViewDelegate: UITextViewDelegate
+@objc protocol WPRichContentViewDelegate: UITextViewDelegate
 {
     func richContentView(richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
 }
