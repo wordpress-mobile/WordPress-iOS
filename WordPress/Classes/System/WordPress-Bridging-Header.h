@@ -18,6 +18,7 @@
 #import "BlogSyncFacade.h"
 #import "BlogSelectorViewController.h"
 
+#import "Comment.h"
 #import "CommentService.h"
 #import "ConfigurablePostView.h"
 #import "Confirmable.h"
