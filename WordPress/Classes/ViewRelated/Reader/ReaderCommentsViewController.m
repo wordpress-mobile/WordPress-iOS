@@ -1,21 +1,14 @@
 #import "ReaderCommentsViewController.h"
 
-#import <WordPressShared/UIImage+Util.h>
-#import <DTCoreText/DTCoreText.h>
-
 #import "Comment.h"
-#import "CommentContentView.h"
 #import "CommentService.h"
 #import "ContextManager.h"
-#import "CustomHighlightButton.h"
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderPostHeaderView.h"
 #import "UIView+Subviews.h"
-#import "WPAvatarSource.h"
 #import "WPNoResultsView.h"
 #import "WPImageViewController.h"
-#import "WPRichTextView.h"
 #import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
 #import "SuggestionsTableView.h"
@@ -35,7 +28,7 @@ static NSString *CommentCellIdentifier = @"CommentDepth0CellIdentifier";
 static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
-                                            CommentContentViewDelegate,
+                                            ReaderCommentCellDelegate,
                                             ReplyTextViewDelegate,
                                             UIViewControllerRestoration,
                                             WPContentSyncHelperDelegate,
@@ -860,17 +853,18 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 }
 
 
-#pragma mark - CommentContentView Delegate methods
+#pragma mark - ReaderCommentCell Delegate Methods
 
-- (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url
+- (void)cell:(ReaderCommentCell *)cell didTapAuthor:(Comment *)comment
 {
+    NSURL *url = [comment authorURL];
     WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:url];
     webViewController.addsWPComReferrer = YES;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)handleReplyTapped:(id<PostContentProvider>)contentProvider
+- (void)cell:(ReaderCommentCell *)cell didTapReply:(Comment *)comment
 {
     // if a row is already selected don't allow selection of another
     if (self.replyTextView.isFirstResponder) {
@@ -884,15 +878,13 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     [self.replyTextView becomeFirstResponder];
 
-    Comment *comment = (Comment *)contentProvider;
     self.indexPathForCommentRepliedTo = [self.tableViewHandler.resultsController indexPathForObject:comment];
     [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
     [self refreshReplyTextViewPlaceholder];
 }
 
-- (void)toggleLikeStatus:(id<PostContentProvider>)contentProvider
+- (void)cell:(ReaderCommentCell *)cell didTapLike:(Comment *)comment
 {
-    Comment *comment = (Comment *)contentProvider;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
 
@@ -903,40 +895,50 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:nil failure:nil];
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
 {
-    if (linkURL.path && !linkURL.host) {
-        NSURL *url = [NSURL URLWithString:self.post.blogURL];
-        linkURL = [NSURL URLWithString:linkURL.path relativeToURL:url];
+    [self presentWebViewControllerWithURL:URL];
+    return NO;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction
+{
+    [self presentWebViewControllerWithURL:URL];
+    return NO;
+}
+
+- (void)richContentView:(WPRichContentView *)richContentView didReceiveImageAction:(WPRichTextImage *)image
+{
+    UIViewController *controller = nil;
+    BOOL isSupportedNatively = [WPImageViewController isUrlSupported:image.linkURL];
+
+    if (isSupportedNatively) {
+        controller = [[WPImageViewController alloc] initWithImage:image.imageView.image andURL:image.linkURL];
+    } else if (image.linkURL) {
+        [self presentWebViewControllerWithURL:image.linkURL];
+        return;
+    } else {
+        controller = [[WPImageViewController alloc] initWithImage:image.imageView.image];
+    }
+
+    controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    controller.modalPresentationStyle = UIModalPresentationFullScreen;
+
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void)presentWebViewControllerWithURL:(NSURL *)URL
+{
+    NSURL *linkURL = URL;
+    NSURLComponents *components = [NSURLComponents componentsWithString:[URL absoluteString]];
+    if (!components.host) {
+        linkURL = [components URLRelativeToURL:[NSURL URLWithString:self.post.blogURL]];
     }
 
     WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:linkURL];
     webViewController.addsWPComReferrer = YES;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
-{
-    UIViewController *controller = nil;
-    BOOL isSupportedNatively = [WPImageViewController isUrlSupported:imageControl.linkURL];
-    
-    if (isSupportedNatively) {
-        controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
-    } else if (imageControl.linkURL) {
-        WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:imageControl.linkURL];
-        webViewController.addsWPComReferrer = YES;
-        controller = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    } else {
-        controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];
-    }
-    
-    if ([controller isKindOfClass:[WPImageViewController class]]) {
-        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        controller.modalPresentationStyle = UIModalPresentationFullScreen;
-    }
-    
-    [self presentViewController:controller animated:YES completion:nil];
 }
 
 
