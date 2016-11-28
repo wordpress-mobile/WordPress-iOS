@@ -75,7 +75,7 @@
                         parameters:parameters
                            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                                // TODO: validate response
-                               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject];
+                               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject sanitizeContent:NO];
                                if (success) {
                                    success(comment);
                                }
@@ -102,7 +102,7 @@
                         parameters:parameters
                            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                                // TODO: validate response
-                               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject];
+                               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject sanitizeContent:NO];
                                if (success) {
                                    success(comment);
                                }
@@ -129,7 +129,7 @@
                         parameters:parameters
                            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                                // TODO: validate response
-                               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject];
+                               RemoteComment *comment = [self remoteCommentFromJSONDictionary:responseObject sanitizeContent:NO];
                                if (success) {
                                    success(comment);
                                }
@@ -177,7 +177,7 @@
     [self.wordPressComRestApi GET:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (success) {
             NSDictionary *dict = (NSDictionary *)responseObject;
-            NSArray *comments = [self remoteCommentsFromJSONArray:[dict arrayForKey:@"comments"]];
+            NSArray *comments = [self remoteCommentsFromJSONArray:[dict arrayForKey:@"comments"] sanitizeContent:YES];
             success(comments);
         }
     } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
@@ -232,7 +232,7 @@
            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                if (success) {
                    NSDictionary *commentDict = (NSDictionary *)responseObject;
-                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict];
+                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict sanitizeContent:NO];
                    success(comment);
                }
            } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
@@ -260,7 +260,7 @@
                            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                                if (success) {
                                    NSDictionary *commentDict = (NSDictionary *)responseObject;
-                                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict];
+                                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict sanitizeContent:NO];
                                    success(comment);
                                }
                            } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
@@ -365,12 +365,17 @@
 
 - (NSArray *)remoteCommentsFromJSONArray:(NSArray *)jsonComments
 {
+    return [self remoteCommentsFromJSONArray:jsonComments sanitizeContent:NO];
+}
+
+- (NSArray *)remoteCommentsFromJSONArray:(NSArray *)jsonComments sanitizeContent:(BOOL)sanitizeContent
+{
     return [jsonComments wp_map:^id(NSDictionary *jsonComment) {
-        return [self remoteCommentFromJSONDictionary:jsonComment];
+        return [self remoteCommentFromJSONDictionary:jsonComment sanitizeContent:sanitizeContent];
     }];
 }
 
-- (RemoteComment *)remoteCommentFromJSONDictionary:(NSDictionary *)jsonDictionary
+- (RemoteComment *)remoteCommentFromJSONDictionary:(NSDictionary *)jsonDictionary sanitizeContent:(BOOL)sanitizeContent
 {
     RemoteComment *comment = [RemoteComment new];
 
@@ -380,7 +385,11 @@
     comment.authorUrl = jsonDictionary[@"author"][@"URL"];
     comment.authorAvatarURL = [jsonDictionary stringForKeyPath:@"author.avatar_URL"];
     comment.commentID = jsonDictionary[@"ID"];
-    comment.content = jsonDictionary[@"content"];
+    NSString *content = jsonDictionary[@"content"];
+    if (sanitizeContent) {
+        content = [self sanitizedContentStringForDisplay:content];
+    }
+    comment.content = content;
     comment.date = [NSDate dateWithWordPressComJSONString:jsonDictionary[@"date"]];
     comment.link = jsonDictionary[@"URL"];
     comment.parentID = [jsonDictionary numberForKeyPath:@"parent.ID"];
@@ -393,6 +402,37 @@
 
     return comment;
 }
+
+/**
+ Returns a string for the specified `string`, formatted for the content view.
+
+ @param string The string to convert to an attriubted string.
+ @return A string formatted to display in the comment view.
+ */
+- (NSString *)sanitizedContentStringForDisplay:(NSString *)string
+{
+    NSString *str = [string trim];
+    if (str == nil) {
+        str = @"";
+    }
+
+    // remove trailing br tags so we don't have a bunch of whitespace
+    static NSRegularExpression *brRegex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        brRegex = [NSRegularExpression regularExpressionWithPattern:@"(\\s*<br\\s*(/?)\\s*>\\s*)*$" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    NSArray *matches = [brRegex matchesInString:str options:NSMatchingReportCompletion range:NSMakeRange(0, [str length])];
+    if ([matches count]) {
+        NSTextCheckingResult *match = [matches firstObject];
+        str = [str substringToIndex:match.range.location];
+    }
+
+    return str;
+}
+
 
 - (NSString *)statusWithRemoteStatus:(NSString *)remoteStatus
 {
