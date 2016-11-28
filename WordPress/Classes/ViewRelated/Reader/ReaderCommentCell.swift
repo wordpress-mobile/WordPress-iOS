@@ -2,6 +2,13 @@ import UIKit
 import WordPressShared
 import Gridicons
 
+@objc protocol ReaderCommentCellDelegate: WPRichContentViewDelegate
+{
+    func cell(cell: ReaderCommentCell, didTapAuthor comment: Comment)
+    func cell(cell: ReaderCommentCell, didTapLike comment: Comment)
+    func cell(cell: ReaderCommentCell, didTapReply comment: Comment)
+}
+
 class ReaderCommentCell : UITableViewCell
 {
     var enableLoggedInFeatures = false
@@ -15,7 +22,12 @@ class ReaderCommentCell : UITableViewCell
     @IBOutlet var actionBar: UIStackView!
     @IBOutlet var leadingContentConstraint: NSLayoutConstraint!
 
-    weak var delegate: AnyObject?
+    weak var delegate: ReaderCommentCellDelegate? {
+        didSet {
+            textView.delegate = delegate
+        }
+    }
+
     var comment: Comment?
 
     var showReply: Bool {
@@ -180,17 +192,26 @@ class ReaderCommentCell : UITableViewCell
 
 
     @IBAction func handleAuthorTapped(sender: UIButton) {
-
+        guard let comment = comment else {
+            return
+        }
+        delegate?.cell(self, didTapAuthor: comment)
     }
 
 
     @IBAction func handleReplyTapped(sender: UIButton) {
-
+        guard let comment = comment else {
+            return
+        }
+        delegate?.cell(self, didTapReply: comment)
     }
 
 
     @IBAction func handleLikeTapped(sender: UIButton) {
-
+        guard let comment = comment else {
+            return
+        }
+        delegate?.cell(self, didTapLike: comment)
     }
 
 }
