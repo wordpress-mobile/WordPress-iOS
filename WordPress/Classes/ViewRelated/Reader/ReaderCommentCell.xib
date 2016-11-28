@@ -29,47 +29,50 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YXw-gg-IAV">
-                                <rect key="frame" x="43" y="0.0" width="332" height="133.5"/>
+                                <rect key="frame" x="53" y="0.0" width="322" height="132"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wUR-85-LXr">
-                                        <rect key="frame" x="0.0" y="0.0" width="332" height="30"/>
-                                        <state key="normal" title="Button"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="322" height="32"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="Author"/>
                                         <connections>
                                             <action selector="handleAuthorTapped:" destination="byi-Wo-fAK" eventType="touchUpInside" id="kUQ-DX-ncJ"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srn-Fn-Of7">
-                                        <rect key="frame" x="0.0" y="30" width="332" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srn-Fn-Of7">
+                                        <rect key="frame" x="0.0" y="32" width="322" height="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Lorem ipsum dolor sit er elit lamet, " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MZj-2b-1Xd" customClass="WPRichContentView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50.5" width="332" height="33"/>
+                                        <rect key="frame" x="0.0" y="49" width="322" height="33"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                     </textView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fSc-Wq-XZ6">
-                                        <rect key="frame" x="0.0" y="83.5" width="332" height="50"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fSc-Wq-XZ6">
+                                        <rect key="frame" x="0.0" y="82" width="322" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BlX-um-sZ8">
-                                                <rect key="frame" x="0.0" y="0.0" width="46" height="50"/>
-                                                <state key="normal" title="Button"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="36" height="50"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <state key="normal" title="Reply"/>
                                                 <connections>
                                                     <action selector="handleReplyTapped:" destination="byi-Wo-fAK" eventType="touchUpInside" id="hCt-lB-l0N"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yhR-P3-CEb">
-                                                <rect key="frame" x="46" y="0.0" width="46" height="50"/>
-                                                <state key="normal" title="Button"/>
+                                                <rect key="frame" x="44" y="0.0" width="30" height="50"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <state key="normal" title="Like"/>
                                                 <connections>
                                                     <action selector="handleLikeTapped:" destination="byi-Wo-fAK" eventType="touchUpInside" id="9gG-z2-vUl"/>
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TwD-Em-50O">
-                                                <rect key="frame" x="92" y="0.0" width="240" height="50"/>
+                                                <rect key="frame" x="82" y="0.0" width="240" height="50"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
                                         </subviews>
