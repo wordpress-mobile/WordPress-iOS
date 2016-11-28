@@ -13,6 +13,7 @@ class ReaderCommentCell : UITableViewCell
     @IBOutlet var replyButton: UIButton!
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var actionBar: UIStackView!
+    @IBOutlet var leadingContentConstraint: NSLayoutConstraint!
 
     weak var delegate: AnyObject?
     var comment: Comment?
@@ -26,22 +27,45 @@ class ReaderCommentCell : UITableViewCell
         }
     }
 
+    override var indentationLevel: Int {
+        didSet {
+            leadingContentConstraint.constant = CGFloat(indentationLevel) * indentationWidth
+        }
+    }
+
+    override var indentationWidth: CGFloat {
+        didSet {
+            leadingContentConstraint.constant = CGFloat(indentationLevel) * indentationWidth
+        }
+    }
 
     // MARK: - Lifecycle Methods
 
 
     override func awakeFromNib() {
+        super.awakeFromNib()
+
         setupReplyButton()
         setupLikeButton()
+        applyStyles()
     }
 
 
     // MARK: = Setup
 
 
+    func applyStyles() {
+        WPStyleGuide.applyReaderCardSiteButtonStyle(authorButton)
+        WPStyleGuide.applyReaderCardBylineLabelStyle(timeLabel)
+
+        authorButton.titleLabel?.lineBreakMode = .ByTruncatingTail
+        textView.textContainerInset = UIEdgeInsets(top: 2, left: -4, bottom: -16, right: 0)
+    }
+
+
     func setupReplyButton() {
         let icon = Gridicon.iconOfType(.Reply, withSize: CGSize(width: 20, height: 20))
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.darkGrey())
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.grey())
         let highlightedIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
 
         replyButton.setImage(tintedIcon, forState: .Normal)
@@ -54,7 +78,7 @@ class ReaderCommentCell : UITableViewCell
 
     func setupLikeButton() {
         let size = CGSize(width: 20, height: 20)
-        let tintedIcon = Gridicon.iconOfType(.StarOutline, withSize: size).imageWithTintColor(WPStyleGuide.darkGrey())
+        let tintedIcon = Gridicon.iconOfType(.StarOutline, withSize: size).imageWithTintColor(WPStyleGuide.grey())
         let highlightedIcon = Gridicon.iconOfType(.Star, withSize: size).imageWithTintColor(WPStyleGuide.lightBlue())
         let selectedIcon = Gridicon.iconOfType(.Star, withSize: size).imageWithTintColor(WPStyleGuide.jazzyOrange())
 
@@ -124,7 +148,7 @@ class ReaderCommentCell : UITableViewCell
         guard let comment = comment else {
             return
         }
-        textView.textContainerInset = UIEdgeInsets.init(top: 0, left: 0, bottom: -16, right: 0)
+
         textView.isPrivate = comment.isPrivateContent()
         textView.content = comment.contentForDisplay()
     }
