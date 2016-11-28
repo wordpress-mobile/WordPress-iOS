@@ -13,4 +13,6 @@ extern NSString *const HelpshiftUnreadCountUpdatedNotification;
 + (void)refreshUnreadNotificationCount;
 + (NSArray<NSString *> *)planTagsForAccount:(WPAccount *)account;
 
++ (NSDictionary<NSString *, NSObject *> *)helpshiftMetadata;
+
 @end
