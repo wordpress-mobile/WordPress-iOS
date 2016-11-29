@@ -56,6 +56,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
+@property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong) MeViewController *meViewController;
 @property (nonatomic, strong) UIViewController *newPostViewController;
 
@@ -217,7 +218,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (UINavigationController *)readerNavigationController
 {
     if (!_readerNavigationController) {
-        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:[ReaderMenuViewController controller]];
+        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
 
         _readerNavigationController.navigationBar.translucent = NO;
         UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
@@ -229,6 +230,15 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 
     return _readerNavigationController;
+}
+
+- (ReaderMenuViewController *)readerMenuViewController
+{
+    if (!_readerMenuViewController) {
+        _readerMenuViewController = [ReaderMenuViewController controller];
+    }
+
+    return _readerMenuViewController;
 }
 
 - (UIViewController *)newPostViewController
@@ -251,18 +261,15 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (UINavigationController *)meNavigationController
 {
-    if (_meNavigationController) {
-        return _meNavigationController;
+    if (!_meNavigationController) {
+        _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
+        UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
+        _meNavigationController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _meNavigationController.tabBarItem.selectedImage = meTabBarImage;
+        _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
+        _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
+        _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
     }
-
-    _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
-    UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
-    _meNavigationController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    _meNavigationController.tabBarItem.selectedImage = meTabBarImage;
-    _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
-    _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
-    _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
-
 
     return _meNavigationController;
 }
