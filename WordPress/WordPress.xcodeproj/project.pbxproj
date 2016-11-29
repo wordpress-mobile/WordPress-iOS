@@ -162,6 +162,7 @@
 		49E296F31DE4BA6E0011C864 /* WPImageURLHelper+SiteIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E296ED1DE4B9000011C864 /* WPImageURLHelper+SiteIcons.swift */; };
 		49E296F51DE4BC650011C864 /* NSString+BlavatarURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E296F41DE4BC650011C864 /* NSString+BlavatarURL.swift */; };
 		49E296F71DE4BC820011C864 /* NSURL+GravatarURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E296F61DE4BC820011C864 /* NSURL+GravatarURL.swift */; };
+		49E297021DED15A50011C864 /* AvatarURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E297011DED15A50011C864 /* AvatarURLTests.swift */; };
 		5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */; };
 		590E873B1CB8205700D1B734 /* PostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590E873A1CB8205700D1B734 /* PostListViewController.swift */; };
 		591232691CCEAA5100B86207 /* AbstractPostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591232681CCEAA5100B86207 /* AbstractPostListViewController.swift */; };
@@ -1220,6 +1221,7 @@
 		49E296F11DE4B9C20011C864 /* NSString+PhotonURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+PhotonURL.swift"; sourceTree = "<group>"; };
 		49E296F41DE4BC650011C864 /* NSString+BlavatarURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+BlavatarURL.swift"; sourceTree = "<group>"; };
 		49E296F61DE4BC820011C864 /* NSURL+GravatarURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+GravatarURL.swift"; sourceTree = "<group>"; };
+		49E297011DED15A50011C864 /* AvatarURLTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarURLTests.swift; sourceTree = "<group>"; };
 		57950E0C33688D8EA5C9C9A2 /* Pods-WordPressTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release.xcconfig"; sourceTree = "<group>"; };
 		5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPButtonForNavigationBar.m; sourceTree = "<group>"; usesTabs = 0; };
 		5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPButtonForNavigationBar.h; sourceTree = "<group>"; usesTabs = 0; };
@@ -3347,6 +3349,7 @@
 			children = (
 				93B853211B44165B0064FE72 /* Analytics */,
 				852416D11A12ED690030700C /* AppRatingUtilityTests.m */,
+				49E297011DED15A50011C864 /* AvatarURLTests.swift */,
 				17AF92241C46634000A99CFB /* BlogSiteVisibilityHelperTest.m */,
 				5DA988051AEEA594002AFB12 /* DisplayableImageHelperTest.m */,
 				E1C3C8541CE4684800D5DB36 /* EmailTypoCheckerTests.swift */,
@@ -3360,10 +3363,10 @@
 				8514B8D31AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m */,
 				5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */,
 				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
+				175DBCD51DAE41A6003CBFBE /* WPFeedbackGeneratorTests.swift */,
 				E1E1AA8E1B7DF54B001C8645 /* WPMapFilterReduceTest.m */,
 				E19A10C91B010AA0006192B0 /* WPURLRequestTest.m */,
 				5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */,
-				175DBCD51DAE41A6003CBFBE /* WPFeedbackGeneratorTests.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -6548,6 +6551,7 @@
 				B532ACD11DC3ABF600FFFA57 /* NotificationSyncServiceRemoteTests.swift in Sources */,
 				B5ECA6CD1DBAAD510062D7E0 /* CoreDataHelperTests.swift in Sources */,
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
+				49E297021DED15A50011C864 /* AvatarURLTests.swift in Sources */,
 				E6B9B8AA1B94E1FE0001B92F /* ReaderPostTest.m in Sources */,
 				85D790AC1AE5D95E0033AE83 /* MixpanelProxyTests.m in Sources */,
 				931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */,
