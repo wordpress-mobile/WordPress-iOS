@@ -101,11 +101,6 @@ class EditPostViewController: UIViewController {
         // show postpost, which will be transparent
         self.view.opaque = false
         self.view.backgroundColor = UIColor.clearColor()
-
-        postPost.view.topAnchor.constraintEqualToAnchor(view.topAnchor)
-        postPost.view.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor)
-        postPost.view.leftAnchor.constraintEqualToAnchor(view.leftAnchor)
-        postPost.view.rightAnchor.constraintEqualToAnchor(view.rightAnchor)
     }
 
     override func viewDidAppear(animated: Bool) {
