@@ -25,15 +25,15 @@ class ReaderPostCacheProviderTests: XCTestCase {
         cacheProvider = ReaderPostCacheProvider(context: context)
     }
 
-    func testCouldntFindNormalPost() {
+    func testCouldntFindOriginalPost() {
 
         let cachedPost = cacheProvider.getPostByID(9999, siteID: 10000)
         XCTAssertNil(cachedPost)
     }
 
-    func testGetNormalPost() {
+    func testGetOriginalPost() {
 
-        let insertedPost = insertNormalPostWithID(1, siteID: 2)
+        let insertedPost = insertOriginalPostWithID(1, siteID: 2)
         let cachedPost = cacheProvider.getPostByID(1, siteID: 2)
         XCTAssertEqual(insertedPost, cachedPost)
     }
@@ -52,7 +52,15 @@ class ReaderPostCacheProviderTests: XCTestCase {
         XCTAssertEqual(insertedPost, cachedPost)
     }
 
-    func insertNormalPostWithID(postID: Int, siteID: Int) -> ReaderPost {
+    func testGetOriginalPostFromMultiplePosts() {
+
+        let originalPost = insertOriginalPostWithID(2, siteID: 3)
+        _ = insertAttributionPostWithID(2, siteID: 3)
+        let cachedPost = cacheProvider.getPostByID(2, siteID: 3)
+        XCTAssertEqual(originalPost, cachedPost)
+    }
+
+    func insertOriginalPostWithID(postID: Int, siteID: Int) -> ReaderPost {
 
         let post = postHelper.insertNewObject()
         post.postID = postID

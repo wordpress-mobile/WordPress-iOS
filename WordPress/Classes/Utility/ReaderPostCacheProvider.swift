@@ -2,50 +2,30 @@ import Foundation
 
 @objc class ReaderPostCacheProvider: NSObject {
 
-    private enum ReaderPostType {
-
-        case normal
-        case cross
-        case attribution
-
-        static let allTypes = [normal, cross, attribution]
-    }
-
     let context: NSManagedObjectContext
     init(context: NSManagedObjectContext) {
         self.context = context
     }
 
     /**
-     Gets an stored ReaderPost from the local database, it searches for a Normal Post, 
+     Gets an stored ReaderPost from the local database, it searches for an Original Post,
      a SourceAttribution Post or a Cross Post.
-     
+
      - Parameters:
         - postID: the postID of the post to fetch
         - siteID: the siteID of the post to fetch, can be a blogID if it has source attribution information
-     
+
      - Returns: A ReaderPost object if it is cached localy or nil if not found
      */
     func getPostByID(postID: Int, siteID: Int) -> ReaderPost? {
 
-        for type in ReaderPostType.allTypes {
-            if let post = getPostByID(postID, siteID: siteID, type: type) {
-                return post
-            }
-        }
-
-        return nil
-    }
-
-    private func getPostByID(postID: Int, siteID: Int, type: ReaderPostType) -> ReaderPost? {
-
-        let fetchRequest = searchPostRequestForID(postID, siteID: siteID, type: type)
+        let fetchRequest = searchPostRequestForID(postID, siteID: siteID)
         var post: ReaderPost? = nil
 
         do {
 
             let results = try context.executeFetchRequest(fetchRequest)
-            post = results.first as? ReaderPost
+            post = suitablePostFromPosts(results)
 
         } catch {
             DDLogSwift.logError("Error fetching post from database")
@@ -54,25 +34,41 @@ import Foundation
         return post
     }
 
-    private func searchPostRequestForID(postID: Int, siteID: Int, type: ReaderPostType) -> NSFetchRequest {
+    // This functions checks from a multiple cachedPosts the original one and returns it
+    // If it can't find one, then returns the first one.
+    private func suitablePostFromPosts(posts: [AnyObject]?) -> ReaderPost? {
+
+        guard let cachedPosts = posts as? [ReaderPost] else {
+            return nil
+        }
+
+        let originalPosts = cachedPosts.filter { $0.sourceAttribution == nil }
+        return originalPosts.first ?? cachedPosts.first
+    }
+
+    private func searchPostRequestForID(postID: Int, siteID: Int) -> NSFetchRequest {
         let fetchRequest = NSFetchRequest(entityName: "ReaderPost")
-        fetchRequest.predicate = searchPostPredicateForID(postID, siteID: siteID, type: type)
+        fetchRequest.predicate = searchPostPredicateForID(postID, siteID: siteID)
         return fetchRequest
     }
 
-    private func searchPostPredicateForID(postID: Int, siteID: Int, type: ReaderPostType) -> NSPredicate {
+    private func searchPostPredicateForID(postID: Int, siteID: Int) -> NSPredicate {
 
-        var predicateFormat: String
-        switch type {
-        case .normal:
-            predicateFormat = "postID = %d AND siteID = %d"
-        case .attribution:
-            predicateFormat = "sourceAttribution.postID = %d AND sourceAttribution.blogID = %d"
-        case .cross:
-            predicateFormat = "crossPostMeta.postID = %d AND crossPostMeta.siteID = %d"
-        }
+        let subPredicates = [originalPredicateWithPostID(postID, siteID: siteID),
+                             crossPredicateWithPostID(postID, siteID: siteID),
+                             attributionPredicateWithPostID(postID, blogID: siteID)]
+        return NSCompoundPredicate(orPredicateWithSubpredicates: subPredicates)
+    }
 
-        let predicate = NSPredicate(format:predicateFormat, postID, siteID)
-        return predicate
+    private func originalPredicateWithPostID(postID: Int, siteID: Int) -> NSPredicate {
+        return NSPredicate(format: "postID = %d AND siteID = %d AND sourceAttribution = NULL", postID, siteID)
+    }
+
+    private func attributionPredicateWithPostID(postID: Int, blogID: Int) -> NSPredicate {
+        return NSPredicate(format: "sourceAttribution.postID = %d AND sourceAttribution.blogID = %d", postID, blogID)
+    }
+
+    private func crossPredicateWithPostID(postID: Int, siteID: Int) -> NSPredicate {
+        return NSPredicate(format: "crossPostMeta.postID = %d AND crossPostMeta.siteID = %d", postID, siteID)
     }
 }
