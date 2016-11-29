@@ -3,7 +3,7 @@ import UIKit
 import WordPressShared
 import WordPressComAnalytics
 
-public class AppSettingsViewController: UITableViewController {
+class AppSettingsViewController: UITableViewController {
 
     private var handler: ImmuTableViewHandler!
     // MARK: - Initialization
@@ -13,15 +13,15 @@ public class AppSettingsViewController: UITableViewController {
         navigationItem.title = NSLocalizedString("App Settings", comment: "App Settings Title")
     }
 
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public required convenience init() {
+    required convenience init() {
         self.init(style: .Grouped)
     }
 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         ImmuTable.registerRows([
