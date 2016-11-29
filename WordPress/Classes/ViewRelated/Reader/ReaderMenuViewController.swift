@@ -42,11 +42,7 @@ import WordPressShared
 
 
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
-        let controller = self.controller()
-
-        controller.decodeRestorableSelectedIndexPathWithCoder(coder)
-
-        return controller
+        return WPTabBarController.sharedInstance().readerMenuViewController
     }
 
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
