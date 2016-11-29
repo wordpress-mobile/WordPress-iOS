@@ -56,9 +56,9 @@ import Foundation
         switch type {
         case .normal:
             predicateFormat = "postID = %d AND siteID = %d"
-        case .cross:
-            predicateFormat = "sourceAttribution.postID = %d AND sourceAttribution.blogID = %d"
         case .attribution:
+            predicateFormat = "sourceAttribution.postID = %d AND sourceAttribution.blogID = %d"
+        case .cross:
             predicateFormat = "crossPostMeta.postID = %d AND crossPostMeta.siteID = %d"
         }
 
