@@ -123,6 +123,8 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		261FF32C1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261FF32B1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift */; };
+		268D5DAC1DEE35E300CBEAB3 /* ReaderPost+ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268D5DAB1DEE35E300CBEAB3 /* ReaderPost+ManagedObject.swift */; };
+		268D5DB01DEE367A00CBEAB3 /* SourcePostAttribution+ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268D5DAF1DEE367A00CBEAB3 /* SourcePostAttribution+ManagedObject.swift */; };
 		26A1B5A01DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */; };
 		26AE46241DE891B400043CC9 /* ReaderPostCacheProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26AE46231DE891B400043CC9 /* ReaderPostCacheProvider.swift */; };
 		26AE46261DE89FBF00043CC9 /* ReaderPostCacheProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26AE46251DE89FBF00043CC9 /* ReaderPostCacheProviderTests.swift */; };
@@ -1149,6 +1151,8 @@
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26165C3E18786662761456D6 /* Pods-WordPress_Base-WordPress.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress_Base-WordPress.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress_Base-WordPress/Pods-WordPress_Base-WordPress.release-internal.xcconfig"; sourceTree = "<group>"; };
 		261FF32B1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaServiceRemoteRESTTests.swift; sourceTree = "<group>"; };
+		268D5DAB1DEE35E300CBEAB3 /* ReaderPost+ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderPost+ManagedObject.swift"; sourceTree = "<group>"; };
+		268D5DAF1DEE367A00CBEAB3 /* SourcePostAttribution+ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SourcePostAttribution+ManagedObject.swift"; sourceTree = "<group>"; };
 		26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSiteServiceRemoteTests.swift; sourceTree = "<group>"; };
 		26AE46231DE891B400043CC9 /* ReaderPostCacheProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostCacheProvider.swift; sourceTree = "<group>"; };
 		26AE46251DE89FBF00043CC9 /* ReaderPostCacheProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostCacheProviderTests.swift; sourceTree = "<group>"; };
@@ -2800,6 +2804,7 @@
 				E6374DBE1C444D8B00F24720 /* PublicizeService.swift */,
 				5D42A3DC175E7452005CFF05 /* ReaderPost.h */,
 				5D42A3DD175E7452005CFF05 /* ReaderPost.m */,
+				268D5DAB1DEE35E300CBEAB3 /* ReaderPost+ManagedObject.swift */,
 				E6C09B3D1BF0FDEB003074CB /* ReaderCrossPostMeta.swift */,
 				5DE471B71B4C710E00665C44 /* ReaderPostContentProvider.h */,
 				E6A3384A1BB08E3F00371587 /* ReaderGapMarker.h */,
@@ -2815,6 +2820,7 @@
 				E6E27D611C6144DB0063F821 /* SharingButton.swift */,
 				5DED0E161B432E0400431FCD /* SourcePostAttribution.h */,
 				5DED0E171B432E0400431FCD /* SourcePostAttribution.m */,
+				268D5DAF1DEE367A00CBEAB3 /* SourcePostAttribution+ManagedObject.swift */,
 				319D6E7919E447500013871C /* Suggestion.h */,
 				319D6E7A19E447500013871C /* Suggestion.m */,
 				5DA5BF3318E32DCF005F11F9 /* Theme.h */,
@@ -5811,6 +5817,7 @@
 				B587798619B799EB00E57C5A /* Notification+Interface.swift in Sources */,
 				5D1D9C50198837D0009D13B7 /* RemoteReaderPost.m in Sources */,
 				5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */,
+				268D5DB01DEE367A00CBEAB3 /* SourcePostAttribution+ManagedObject.swift in Sources */,
 				591AA5011CEF9BF20074934F /* Post.swift in Sources */,
 				5D1D9C52198837D0009D13B7 /* RemoteReaderTopic.m in Sources */,
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
@@ -6297,6 +6304,7 @@
 				931D26FE19EDA10D00114F17 /* ALIterativeMigrator.m in Sources */,
 				E1F8E1231B0B411E0073E628 /* JetpackService.m in Sources */,
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
+				268D5DAC1DEE35E300CBEAB3 /* ReaderPost+ManagedObject.swift in Sources */,
 				E65219FB1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift in Sources */,
 				43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */,
 				E64E17661CA8518800BE7744 /* NUXSubmitButton.swift in Sources */,

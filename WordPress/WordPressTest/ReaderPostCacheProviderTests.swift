@@ -3,14 +3,6 @@ import XCTest
 import CoreData
 @testable import WordPress
 
-extension ReaderPost: ManagedObject {
-    @nonobjc static let entityName = "ReaderPost"
-}
-
-extension SourcePostAttribution: ManagedObject {
-    @nonobjc static let entityName = "SourcePostAttribution"
-}
-
 class ReaderPostCacheProviderTests: XCTestCase {
 
     var context: NSManagedObjectContext!
