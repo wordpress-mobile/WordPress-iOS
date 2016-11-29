@@ -34,10 +34,7 @@ extension WPImageURLHelper
             let components = NSURLComponents()
             components.scheme = GravatarDefaults.scheme
             components.path = path
-            components.queryItems = [
-                NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
-                NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
-            ]
+            components.queryItems = commonQueryItems(withSize: size)
             return components.URL
         }
 
@@ -46,10 +43,7 @@ extension WPImageURLHelper
         }
 
         let components = NSURLComponents(string: contentProvider.siteIconURL())
-        components?.queryItems = [
-            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
-            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
-        ]
+        components?.queryItems = commonQueryItems(withSize: size)
         return components?.URL
     }
 
@@ -62,11 +56,7 @@ extension WPImageURLHelper
             else { return nil }
 
         let size = blavatarSizeInPoints(forImageViewBounds: bounds)
-        components.queryItems = [
-            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
-            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
-        ]
-
+        components.queryItems = commonQueryItems(withSize: size)
         return components.URL
     }
 
@@ -78,5 +68,12 @@ extension WPImageURLHelper
         }
 
         return Int(size * UIScreen.mainScreen().scale)
+    }
+
+    private static func commonQueryItems(withSize size: Int) -> [NSURLQueryItem] {
+        return [
+            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
+            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
+        ]
     }
 }
