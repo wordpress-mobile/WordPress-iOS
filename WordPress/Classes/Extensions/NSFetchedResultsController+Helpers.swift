@@ -17,6 +17,10 @@ extension NSFetchedResultsController
         return indexPath.row == sections[indexPath.section].numberOfObjects - 1
     }
 
+/*
+     Nuked for Swift 3 migration, see: https://swift.org/migration-guide/
+     Ref: "Objective-C lightweight generic classes are now imported as generic types"
+     - Brent Nov 28/16
 
     /// Returns an object of the specified type. Nil if the indexPath is out of bounds.
     ///
@@ -35,4 +39,5 @@ extension NSFetchedResultsController
 
         return object(at: indexPath) as? T
     }
+*/
 }
