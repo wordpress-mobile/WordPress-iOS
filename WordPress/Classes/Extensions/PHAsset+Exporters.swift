@@ -27,8 +27,8 @@ typealias ErrorHandler = (_ error: NSError) -> ()
                      maximumResolution: CGSize,
                      stripGeoLocation: Bool,
                      synchronous: Bool,
-                     successHandler: SuccessHandler,
-                     errorHandler: ErrorHandler)
+                     successHandler: @escaping SuccessHandler,
+                     errorHandler: @escaping ErrorHandler)
 
     /// Exports an image thumbnail of the asset to a file URL that respects the targetSize.
     /// The targetSize is the maximum resulting resolution  the resultSize will normally be a lower value that
@@ -44,8 +44,8 @@ typealias ErrorHandler = (_ error: NSError) -> ()
     func exportThumbnailToURL(_ url: URL,
                               targetSize: CGSize,
                               synchronous: Bool,
-                              successHandler: SuccessHandler,
-                              errorHandler: ErrorHandler)
+                              successHandler: @escaping SuccessHandler,
+                              errorHandler: @escaping ErrorHandler)
 
     /**
      Export the original asset without any modification to the specified URL
@@ -55,7 +55,7 @@ typealias ErrorHandler = (_ error: NSError) -> ()
      - parameter errorHandler:   A handler that will be invoked when some error occurs.
 
      */
-    func exportOriginalImage(_ toURL: URL, successHandler: SuccessHandler, errorHandler: ErrorHandler)
+    func exportOriginalImage(_ toURL: URL, successHandler: @escaping SuccessHandler, errorHandler: @escaping ErrorHandler)
 
     func originalUTI() -> String?
 
@@ -358,14 +358,14 @@ extension PHAsset: ExportableAsset {
 
     func originalUTI() -> String? {
         let resources = PHAssetResource.assetResources(for: self)
-        var types = []
+        var types: [PHAssetResourceType.RawValue] = []
         if (mediaType == PHAssetMediaType.image) {
             types = [PHAssetResourceType.photo.rawValue]
         } else if (mediaType == PHAssetMediaType.video){
             types = [PHAssetResourceType.video.rawValue]
         }
         for resource in resources {
-            if (types.contains(where: resource.type.rawValue) ) {
+            if (types.contains(resource.type.rawValue) ) {
                 return resource.uniformTypeIdentifier
             }
         }
@@ -374,14 +374,14 @@ extension PHAsset: ExportableAsset {
 
     func originalFilename() -> String? {
         let resources = PHAssetResource.assetResources(for: self)
-        var types = []
+        var types: [PHAssetResourceType.RawValue] = []
         if (mediaType == PHAssetMediaType.image) {
             types = [PHAssetResourceType.photo.rawValue]
         } else if (mediaType == PHAssetMediaType.video){
             types = [PHAssetResourceType.video.rawValue]
         }
         for resource in resources {
-            if (types.contains(where: resource.type.rawValue) ) {
+            if (types.contains(resource.type.rawValue) ) {
                 return resource.originalFilename
             }
         }

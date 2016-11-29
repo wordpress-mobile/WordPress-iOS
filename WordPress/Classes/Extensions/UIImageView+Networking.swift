@@ -14,7 +14,7 @@ extension UIImageView
         downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: nil, processImage: processor)
     }
 
-    public func downloadImage(_ url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())?, failure: ((NSError?) -> ())? = nil, processImage processor: ((UIImage) -> UIImage)? = nil) {
+    public func downloadImage(_ url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())?, failure: ((Error?) -> ())? = nil, processImage processor: ((UIImage) -> UIImage)? = nil) {
         // Failsafe: Halt if the URL is empty
         guard let unwrappedUrl = url else {
             image = placeholderImage
@@ -41,7 +41,7 @@ extension UIImageView
                 success?(processedImage)
             },
             failure: { (urlRequest, response: HTTPURLResponse?, error) in
-                failure?(error)
+                failure?(error as Error)
             }
         )
     }

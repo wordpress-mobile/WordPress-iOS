@@ -64,7 +64,7 @@ open class NotificationSettingsViewController : UIViewController
                 self?.activityIndicatorView.stopAnimating()
                 self?.tableView.reloadData()
             },
-            failure: { [weak self] (error: NSError!) in
+            failure: { [weak self] (error: NSError?) in
                 self?.handleLoadError()
             })
     }

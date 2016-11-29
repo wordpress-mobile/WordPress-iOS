@@ -131,7 +131,7 @@ class NoteTableViewCell: WPTableViewCell
         iconImageView.downloadGravatar(gravatar,
             placeholder: placeholderImage,
             animate: false,
-            failure: {[weak self] (error: NSError?) in
+            failure: {[weak self] (error: Error?) in
                 // Note: Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
                 if (self?.gravatarURL == url) == true {
                     self?.gravatarURL = nil

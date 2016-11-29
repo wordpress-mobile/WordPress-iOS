@@ -15,7 +15,7 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
 
     fileprivate lazy var mediaPickerAssetDataSource: WPPHAssetDataSource? = {
         let collectionsFetchResult = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumSelfPortraits, options: nil)
-        guard let assetCollection = collectionsFetchResult.firstObject as PHAssetCollection else { return nil }
+        guard let assetCollection = collectionsFetchResult.firstObject else { return nil }
 
         let dataSource = WPPHAssetDataSource()
         dataSource.setSelectedGroup(PHAssetCollectionForWPMediaGroup(collection: assetCollection, mediaType: .image))
