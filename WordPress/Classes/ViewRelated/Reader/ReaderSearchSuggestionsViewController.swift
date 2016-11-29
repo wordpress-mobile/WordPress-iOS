@@ -198,7 +198,7 @@ extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let suggestion = tableViewHandler.resultsController.objectOfType(ReaderSearchSuggestion.self, atIndexPath: indexPath) else {
+        guard let suggestion = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSearchSuggestion else {
             return
         }
         delegate?.searchSuggestionsController(self, selectedItem: suggestion.searchPhrase)
@@ -216,7 +216,7 @@ extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
 
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        guard let suggestion = tableViewHandler.resultsController.objectOfType(ReaderSearchSuggestion.self, atIndexPath: indexPath) else {
+        guard let suggestion = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSearchSuggestion else {
             return
         }
         managedObjectContext().delete(suggestion)
