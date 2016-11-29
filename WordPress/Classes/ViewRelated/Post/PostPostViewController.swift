@@ -49,33 +49,19 @@ class PostPostViewController: UIViewController {
 
         navBar.translucent = true
         navBar.barTintColor = UIColor.clearColor() //WPStyleGuide.wordPressBlue()
-        self.view.backgroundColor = WPStyleGuide.wordPressBlue()
+        view.backgroundColor = WPStyleGuide.wordPressBlue()
         navBar.tintColor = UIColor.whiteColor()
         let clearImage = UIImage(color: UIColor.clearColor(), havingSize: CGSizeMake(320, 4))
         navBar.shadowImage = clearImage
         navBar.setBackgroundImage(clearImage, forBarMetrics: .Default)
 
-        self.view.alpha = 0
-        self.shareButton.alpha = 0
-        self.editButton.alpha = 0
-        self.viewButton.alpha = 0
+        view.alpha = 0
+        shareButton.alpha = 0
+        editButton.alpha = 0
+        viewButton.alpha = 0
 
-        if self.revealPost {
-            self.view.alpha = 1
-            self.shadeView.backgroundColor = UIColor.blackColor()
-            self.shadeView.alpha = 0.5
-            self.postInfoView.alpha = 0
-
-            shareButtonWidth.constant = self.shareButton.frame.size.width * -0.75
-            editButtonWidth.constant = self.shareButton.frame.size.width * -0.75
-            viewButtonWidth.constant = self.shareButton.frame.size.width * -0.75
-            view.layoutIfNeeded()
-
-            let animationCoordinator = self.transitionCoordinator()
-            animationCoordinator?.animateAlongsideTransition({ (context) in
-                self.showPostPost(context)
-                self.revealPost = false
-            }) { (context) in }
+        if revealPost {
+            showPostPost()
         }
     }
 
@@ -83,34 +69,48 @@ class PostPostViewController: UIViewController {
         super.viewDidAppear(animated)
     }
 
-    func showPostPost(context: UIViewControllerTransitionCoordinatorContext) {
-        let animationDuration = context.transitionDuration()
+    func showPostPost() {
+        view.alpha = 1
+        shadeView.hidden = false
+        shadeView.backgroundColor = UIColor.blackColor()
+        shadeView.alpha = 0.5
+        postInfoView.alpha = 0
 
-        self.postInfoView.alpha = 1
+        shareButtonWidth.constant = shareButton.frame.size.width * -0.75
+        editButtonWidth.constant = shareButton.frame.size.width * -0.75
+        viewButtonWidth.constant = shareButton.frame.size.width * -0.75
+        view.layoutIfNeeded()
 
-        UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {
-            self.shadeView.alpha = 0
-            }, completion: nil)
+        let animationCoordinator = self.transitionCoordinator()
+        animationCoordinator?.animateAlongsideTransition({ (context) in
+            let animationDuration = context.transitionDuration()
 
-        UIView.animateWithDuration(animationDuration * 0.66, delay: 0, options: .CurveEaseOut, animations: {
-            self.postInfoView.alpha = 1
-            }, completion: nil)
+            UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {
+                self.shadeView.alpha = 0
+                }, completion: nil)
 
-        UIView.animateWithDuration(0.2, delay: animationDuration * 0.5, options: .CurveEaseOut, animations: {
-            self.shareButton.alpha = 1
-            self.shareButtonWidth.constant = 0
-            self.actionsStackView.layoutIfNeeded()
-            }, completion: nil)
-        UIView.animateWithDuration(0.2, delay: animationDuration * 0.6, options: .CurveEaseOut, animations: {
-            self.editButton.alpha = 1
-            self.editButtonWidth.constant = 0
-            self.actionsStackView.layoutIfNeeded()
-        }, completion: nil)
-        UIView.animateWithDuration(0.2, delay: animationDuration * 0.7, options: .CurveEaseOut, animations: {
-            self.viewButton.alpha = 1
-            self.viewButtonWidth.constant = 0
-            self.actionsStackView.layoutIfNeeded()
-        }, completion: nil)
+            UIView.animateWithDuration(animationDuration * 0.66, delay: 0, options: .CurveEaseOut, animations: {
+                self.postInfoView.alpha = 1
+                }, completion: nil)
+
+            UIView.animateWithDuration(0.2, delay: animationDuration * 0.5, options: .CurveEaseOut, animations: {
+                self.shareButton.alpha = 1
+                self.shareButtonWidth.constant = 0
+                self.actionsStackView.layoutIfNeeded()
+                }, completion: nil)
+            UIView.animateWithDuration(0.2, delay: animationDuration * 0.6, options: .CurveEaseOut, animations: {
+                self.editButton.alpha = 1
+                self.editButtonWidth.constant = 0
+                self.actionsStackView.layoutIfNeeded()
+                }, completion: nil)
+            UIView.animateWithDuration(0.2, delay: animationDuration * 0.7, options: .CurveEaseOut, animations: {
+                self.viewButton.alpha = 1
+                self.viewButtonWidth.constant = 0
+                self.actionsStackView.layoutIfNeeded()
+                }, completion: nil)
+        }) { (context) in }
+
+        revealPost = false
     }
 
     func setup(post post: Post) {
