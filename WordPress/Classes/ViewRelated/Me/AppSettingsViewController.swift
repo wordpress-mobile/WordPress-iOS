@@ -102,23 +102,20 @@ class AppSettingsViewController: UITableViewController {
     // MARK: - Actions
 
     func mediaSizeChanged() -> Int -> Void {
-        return {
-            value in
+        return { value in
             MediaSettings().maxImageSizeSetting = value
             ShareExtensionService.configureShareExtensionMaximumMediaDimension(value)
         }
     }
 
     func mediaRemoveLocationChanged() -> Bool -> Void {
-        return {
-            value in
+        return { value in
             MediaSettings().removeLocationSetting = value
         }
     }
 
     func visualEditorChanged() -> Bool -> Void {
-        return {
-            enabled in
+        return { enabled in
             if enabled {
                 WPAnalytics.track(.EditorToggledOn)
             } else {
@@ -130,8 +127,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func nativeEditorChanged() -> Bool -> Void {
-        return {
-            enabled in
+        return { enabled in
             EditorSettings().nativeEditorEnabled = enabled
         }
     }
