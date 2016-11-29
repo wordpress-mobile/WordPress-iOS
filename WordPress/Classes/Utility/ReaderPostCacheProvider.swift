@@ -16,6 +16,16 @@ import Foundation
         self.context = context
     }
 
+    /**
+     Gets an stored ReaderPost from the local database, it searches for a Normal Post, 
+     a SourceAttribution Post or a Cross Post.
+     
+     - Parameters:
+        - postID: the postID of the post to fetch
+        - siteID: the siteID of the post to fetch, can be a blogID if it has source attribution information
+     
+     - Returns: A ReaderPost object if it is cached localy or nil if not found
+     */
     func getPostByID(postID: Int, siteID: Int) -> ReaderPost? {
 
         for type in ReaderPostType.allTypes {
