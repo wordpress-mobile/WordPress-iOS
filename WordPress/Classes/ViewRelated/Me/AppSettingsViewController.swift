@@ -147,11 +147,13 @@ class AppSettingsViewController: UITableViewController {
 
     func openApplicationSettings() -> ImmuTableAction {
         return { row in
-            let targetURL = NSURL(string: UIApplicationOpenSettingsURLString)
-            precondition(targetURL != nil)
+            if let targetURL = NSURL(string: UIApplicationOpenSettingsURLString) {
+                UIApplication.sharedApplication().openURL(targetURL)
+            } else {
+                assertionFailure("Couldn't unwrap Settings URL")
+            }
 
             self.tableView.deselectSelectedRowWithAnimation(true)
-            UIApplication.sharedApplication().openURL(targetURL!)
         }
     }
 }
