@@ -1,8 +1,8 @@
 import Foundation
 import UserNotifications
 
-/// In this class, we'll encapsulate all of the code related to UIUserNotificationCategory and
-/// UIUserNotificationAction instantiation, along with the required handlers.
+/// In this class, we'll encapsulate all of the code related to UNNotificationCategory and
+/// UNNotificationAction instantiation, along with the required handlers.
 ///
 final public class InteractiveNotificationsManager : NSObject
 {
@@ -132,7 +132,7 @@ final public class InteractiveNotificationsManager : NSObject
 
 
 
-    // MARK: - Private: UIUserNotification Helpers
+    // MARK: - Private: UNNotification Helpers
 
 
     /// Returns a collection of *UNNotificationCategory* instances, for each one of the
