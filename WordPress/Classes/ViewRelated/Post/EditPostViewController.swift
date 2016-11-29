@@ -29,12 +29,20 @@ class EditPostViewController: UIViewController {
     var onClose: ((changesSaved: Bool) -> ())?
 
     private var editorModalPresentationStyle: UIModalPresentationStyle?
+    private var editorModalTransitionStyle: UIModalTransitionStyle?
     override var modalPresentationStyle: UIModalPresentationStyle
         {
         didSet(newValue) {
             // make sure this view is transparent with the previous VC visible
-            super.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+            super.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
             editorModalPresentationStyle = newValue
+        }
+    }
+    override var modalTransitionStyle: UIModalTransitionStyle
+        {
+        didSet(newValue) {
+            super.modalTransitionStyle = .CoverVertical
+            editorModalTransitionStyle = newValue
         }
     }
 
@@ -73,7 +81,8 @@ class EditPostViewController: UIViewController {
         if let blog = blog {
             self.blog = blog
         }
-        super.modalPresentationStyle = .OverCurrentContext
+        self.modalPresentationStyle = .FullScreen
+        self.modalTransitionStyle = .CoverVertical
         self.restorationIdentifier = RestorationKey.viewController.rawValue
         self.restorationClass = EditPostViewController.self
 
@@ -87,9 +96,9 @@ class EditPostViewController: UIViewController {
     }
 
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
         // show postpost, which will be transparent
-        postPost.modalPresentationStyle = .FullScreen
-        postPost.modalTransitionStyle = .CoverVertical
         self.view.opaque = false
         self.view.backgroundColor = UIColor.clearColor()
 
@@ -199,7 +208,7 @@ class EditPostViewController: UIViewController {
         return navController
     }
 
-    func closeEditor(changesSaved: Bool = true) {
+    func closeEditor(changesSaved: Bool = true, from presentingViewController: UIViewController? = nil) {
         self.onClose?(changesSaved: changesSaved)
 
         var dismissPostPostImmediately = true
@@ -217,7 +226,7 @@ class EditPostViewController: UIViewController {
             dismissPostPostImmediately = false
         }
 
-        self.postPost.dismissViewControllerAnimated(true) {
+        dismissViewControllerAnimated(true) {
             if dismissPostPostImmediately {
                 self.closePostPost(animated: false)
             }

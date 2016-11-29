@@ -65,6 +65,12 @@ class PostPostViewController: UIViewController {
             self.shadeView.backgroundColor = UIColor.blackColor()
             self.shadeView.alpha = 0.5
             self.postInfoView.alpha = 0.0
+
+            let animationCoordinator = self.transitionCoordinator()
+            animationCoordinator?.animateAlongsideTransition({ (context) in
+                self.showPostPost(context)
+                self.revealPost = false
+            }) { (context) in }
         }
     }
 
@@ -152,19 +158,5 @@ class PostPostViewController: UIViewController {
 
     @IBAction func doneTapped() {
         self.onClose?()
-    }
-
-    override func dismissViewControllerAnimated(flag: Bool, completion: (() -> Void)?) {
-        super.dismissViewControllerAnimated(flag, completion: completion)
-
-        let animationCoordinator = self.transitionCoordinator()
-        animationCoordinator?.animateAlongsideTransition({ (context) in
-                if self.revealPost {
-                    self.showPostPost(context)
-                    self.revealPost = false
-                }
-            }, completion: { (context) in
-
-        })
     }
 }
