@@ -72,7 +72,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
  */
 - (void)fetchPost:(NSUInteger)postID
           forSite:(NSUInteger)siteID
-          success:(void (^)(ReaderPost *post))success
+          success:(void (^)(ReaderPost *post, BOOL cached))success
           failure:(void (^)(NSError *error))failure;
 
 

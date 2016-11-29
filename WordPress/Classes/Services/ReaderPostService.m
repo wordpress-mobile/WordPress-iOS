@@ -144,7 +144,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                                   }];
 }
 
-- (void)fetchPost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)(ReaderPost *post))success failure:(void (^)(NSError *error))failure
+- (void)fetchPost:(NSUInteger)postID
+          forSite:(NSUInteger)siteID
+          success:(void (^)(ReaderPost *post, BOOL cached))success
+          failure:(void (^)(NSError *error))failure
 {
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService fetchPost:postID fromSite:siteID success:^(RemoteReaderPost *remotePost) {
@@ -161,13 +164,35 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         }
 
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        success(post);
+        success(post, NO);
 
     } failure:^(NSError *error) {
+
+        if (success) {
+            ReaderPost *post = [self fetchCachedPostForError:error postID:postID siteID:siteID];
+            if (post) {
+                success(post, YES);
+                return;
+            }
+        }
+        
         if (failure) {
             failure(error);
         }
     }];
+}
+
+- (nullable ReaderPost *)fetchCachedPostForError:(NSError *)error
+                                          postID:(NSUInteger)postID
+                                          siteID:(NSUInteger)siteID {
+    
+    URLErrorDecoder *decoder = [[URLErrorDecoder alloc] initWithError:error];
+    if (![decoder hasInternetConnectionRelatedError]) {
+        return nil;
+    }
+    
+    ReaderPostCacheProvider *provider = [[ReaderPostCacheProvider alloc] initWithContext:self.managedObjectContext];
+    return [provider getPostByID:postID siteID:siteID];
 }
 
 - (void)refreshPostsForFollowedTopic

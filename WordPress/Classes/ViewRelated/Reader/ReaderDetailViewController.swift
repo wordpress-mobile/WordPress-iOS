@@ -262,19 +262,17 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
         service.fetchPost(
             postID.unsignedIntegerValue,
             forSite: siteID.unsignedIntegerValue,
-            success: {[weak self] (post:ReaderPost!) in
+            success: {[weak self] (post:ReaderPost!, cached: Bool) in
                 self?.post = post
                 WPNoResultsView.removeFromView(self?.view)
             },
             failure: {[weak self] (error:NSError!) in
                 DDLogSwift.logError("Error fetching post for detail: \(error.localizedDescription)")
-
                 let title = NSLocalizedString("Error Loading Post", comment:"Text displayed when load post fails.")
                 WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: self?.view)
             }
         )
     }
-
 
     /// Composes the views for the post header and Discover attribution.
     private func setupContentHeaderAndFooter() {
