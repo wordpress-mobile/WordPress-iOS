@@ -27,13 +27,10 @@ extension WPImageURLHelper
                 return nil
             }
 
-            var path = GravatarDefaults.host
-            path = (path as NSString).stringByAppendingPathComponent(URLComponent.Blavatar.rawValue)
-            path = (path as NSString).stringByAppendingPathComponent(hash)
-
             let components = NSURLComponents()
+            components.host = GravatarDefaults.host
             components.scheme = GravatarDefaults.scheme
-            components.path = path
+            components.path = ["", URLComponent.Blavatar.rawValue, hash].joinWithSeparator("/")
             components.queryItems = commonQueryItems(withSize: size)
             return components.URL
         }
