@@ -48,12 +48,7 @@ extension WPImageURLHelper
 {
     public class func blavatarURL(forHost host: String, size: NSInteger) -> NSURL? {
         let path = (WPGravatarBaseURL as NSString).stringByAppendingPathComponent(host.md5())
-        let components = NSURLComponents(string: path)
-        components?.queryItems = [
-            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
-            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
-        ]
-        return components?.URL
+        return blavatarURL(forBlavatarURL: path, size: size)
     }
 
     public class func blavatarURL(forBlavatarURL path: String, size: NSInteger) -> NSURL? {
@@ -64,6 +59,8 @@ extension WPImageURLHelper
         ]
         return components.URL
     }
+
+
 }
 
 // MARK: Gravatar URLs
@@ -86,7 +83,7 @@ extension WPImageURLHelper
         components?.queryItems = [
             NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
             NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)"),
-            NSURLQueryItem(name: ImageURLQueryField.Rating.rawValue, value: "\(rating)")
+            NSURLQueryItem(name: ImageURLQueryField.Rating.rawValue, value: rating)
         ]
         return components?.URL
     }
