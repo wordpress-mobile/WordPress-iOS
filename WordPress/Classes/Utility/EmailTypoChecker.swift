@@ -104,7 +104,7 @@ private func deletes(_ word: String) -> [String] {
 
 private func transposes(_ word: String) -> [String] {
     return word.characters.indices.flatMap({ index in
-        let (i, j) = (index, String.CharacterView.index(after: index))
+        let (i, j) = (index, word.index(after: index))
         guard j < word.endIndex else {
             return nil
         }
