@@ -2,8 +2,6 @@ import Foundation
 
 @objc protocol WordPressOrgXMLRPC {
 
-    init(endpoint: NSURL, userAgent: String?)
-
     /**
      Cancels all ongoing and makes the session so the object will not fullfil any more request
      */
@@ -13,7 +11,7 @@ import Foundation
     /**
      Check if username and password are valid credentials for the xmlrpc endpoint.
 
-     - Parameters: 
+     - Parameters:
         - username: username to check
         - password: password to check
         - success:  callback block to be invoked if credentials are valid, the object returned in the block is the options dictionary for the site.
@@ -27,7 +25,7 @@ import Foundation
     /**
      Executes a XMLRPC call for the method specificied with the arguments provided.
 
-     - Parameters: 
+     - Parameters:
         - method:  the xmlrpc method to be invoked
         - parameters: the parameters to be encoded on the request
         - success:    callback to be called on successful request
@@ -46,7 +44,7 @@ import Foundation
      Executes a XMLRPC call for the method specificied with the arguments provided, by streaming the request from a file.
      This allows to do requests that can use a lot of memory, like media uploads.
 
-     - Parameters: 
+     - Parameters:
         - method:  the xmlrpc method to be invoked
         - parameters: the parameters to be encoded on the request
         - success:    callback to be called on successful request

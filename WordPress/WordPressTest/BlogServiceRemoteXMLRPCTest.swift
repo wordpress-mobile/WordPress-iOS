@@ -13,11 +13,12 @@ class BlogServiceRemoteXMLRPCTest: XCTestCase {
 
     func testCheckMultiAuthorRequest() {
 
-        let expectedParams = ["who" : "authors"]
+        var expectedParams = blogServiceRemote.defaultXMLRPCArguments() as! [NSObject]
+        expectedParams.append(["who" : "authors"])
+
         blogServiceRemote.checkMultiAuthorWithSuccess(nil, failure: nil)
         XCTAssertEqual(mockApi.methodPassedIn, "wp.getUsers")
-        XCTAssertTrue(checkParametersArray(mockApi.parametersPassedIn, expected: expectedParams),
-                      "\(expectedParams) not found in the parameter list")
+        XCTAssertEqual(mockApi.parametersPassedIn as! [NSObject], expectedParams)
     }
 
     func testIsMultiAuthor() {
@@ -44,16 +45,19 @@ class BlogServiceRemoteXMLRPCTest: XCTestCase {
 
     func testSyncPostTypesRequest() {
 
+        let expectedParams = blogServiceRemote.defaultXMLRPCArguments() as! [NSObject]
         blogServiceRemote.syncPostTypesWithSuccess(nil, failure: nil)
         XCTAssertEqual(mockApi.methodPassedIn, "wp.getPostTypes")
-        XCTAssertTrue(checkParametersArray(mockApi.parametersPassedIn, expected: nil),
-                      "Default parameters not found in the parameter list")
+        XCTAssertEqual(mockApi.parametersPassedIn as! [NSObject], expectedParams)
     }
 
     func testSingleSyncPostTypes() {
 
-        let name = "name"
-        let response = [1 : [name : name]]
+        let name = "My Post"
+        let label = "My Label"
+        let privacy = 10
+        let post = postTypeDictionary(name, label: label, privacy: privacy)
+        let response = [1 : post]
         var remotePost = [RemotePostType]()
         blogServiceRemote.syncPostTypesWithSuccess({
             remotePost = $0
@@ -61,12 +65,17 @@ class BlogServiceRemoteXMLRPCTest: XCTestCase {
         mockApi.successBlockPassedIn?(response, NSHTTPURLResponse())
         XCTAssertEqual(remotePost.count, 1)
         XCTAssertEqual(remotePost[0].name, name)
+        XCTAssertEqual(remotePost[0].label, label)
+        XCTAssertEqual(remotePost[0].apiQueryable, privacy)
     }
 
     func testMultipleSyncPostTypes() {
 
-        let name = "name"
-        let response = ["1" : [name : name], "2" : [ name : name]]
+        let name = "My Post"
+        let post1 = postTypeDictionary(name, label: "label", privacy: 1)
+        let post2 = postTypeDictionary(name, label: "label", privacy: 1)
+
+        let response = ["1" : post1, "2" : post2]
         var remotePost = [RemotePostType]()
         blogServiceRemote.syncPostTypesWithSuccess({
             remotePost = $0
@@ -90,65 +99,68 @@ class BlogServiceRemoteXMLRPCTest: XCTestCase {
 
     func testSyncPostFormatsRequest() {
 
-        let expectedParams = ["show-supported" : "1"]
+        var expectedParams = blogServiceRemote.defaultXMLRPCArguments() as! [NSObject]
+        expectedParams.append(["show-supported" : "1"])
         blogServiceRemote.syncPostFormatsWithSuccess(nil, failure: nil)
         XCTAssertEqual(mockApi.methodPassedIn, "wp.getPostFormats")
-        XCTAssertTrue(checkParametersArray(mockApi.parametersPassedIn, expected: expectedParams),
-                      "\(expectedParams) not found in the parameter list")
+        XCTAssertEqual(mockApi.parametersPassedIn as! [NSObject], expectedParams)
     }
 
     func testSyncPostFormatsAsArray() {
 
-        let response = ["supported" : ["f1", "f2", "f3"],
-                        "all" : ["f1" : "a" , "f2" : "b", "f3" : "c", "f4" : "d", "standard" : "e"]]
-        var responseFormats = [NSObject : NSObject]()
+        let response = supportedFileFormatsArray()
+        var responseFormats = [String : AnyObject]()
         blogServiceRemote.syncPostFormatsWithSuccess({
-            if let formats = $0 as? [NSObject : NSObject] {
+            if let formats = $0 as? [String : AnyObject] {
                 responseFormats = formats
             }
         }, failure: nil)
         mockApi.successBlockPassedIn?(response, NSHTTPURLResponse())
-        XCTAssertEqual(responseFormats["f1"], "a")
-        XCTAssertEqual(responseFormats["f2"], "b")
-        XCTAssertEqual(responseFormats["f3"], "c")
+        XCTAssertEqual(responseFormats["f1"] as? String, "a")
+        XCTAssertEqual(responseFormats["f2"] as? String, "b")
+        XCTAssertEqual(responseFormats["f3"] as? String, "c")
         XCTAssertEqual(responseFormats.count, 4)
     }
 
     func testSyncPostFormatsAsDictionary() {
 
-        let response = ["supported" : [1 : "f1", 2 : "f2", 3 : "f3"],
-                        "all" : ["f1" : "a" , "f2" : "b", "f3" : "c", "f4" : "d", "standard" : "e"]]
-        var responseFormats = [NSObject : NSObject]()
+        let response = supportedFileFormatsDictionary()
+        var responseFormats = [String : AnyObject]()
         blogServiceRemote.syncPostFormatsWithSuccess({
-            if let formats = $0 as? [NSObject : NSObject] {
+            if let formats = $0 as?  [String : AnyObject] {
                 responseFormats = formats
             }
             }, failure: nil)
         mockApi.successBlockPassedIn?(response, NSHTTPURLResponse())
-        XCTAssertEqual(responseFormats["f1"], "a")
-        XCTAssertEqual(responseFormats["f2"], "b")
-        XCTAssertEqual(responseFormats["f3"], "c")
+        XCTAssertEqual(responseFormats["f1"] as? String, "a")
+        XCTAssertEqual(responseFormats["f2"] as? String, "b")
+        XCTAssertEqual(responseFormats["f3"] as? String, "c")
         XCTAssertEqual(responseFormats.count, 4)
     }
 
     func testSyncSettingRequest() {
 
+        let expectedParams = blogServiceRemote.defaultXMLRPCArguments() as! [NSObject]
         blogServiceRemote.syncSettingsWithSuccess(nil, failure: nil)
         XCTAssertEqual(mockApi.methodPassedIn, "wp.getOptions")
-        XCTAssertTrue(checkParametersArray(mockApi.parametersPassedIn, expected: nil),
-                      "Default parameters not found in the parameter list")
+        XCTAssertEqual(mockApi.parametersPassedIn as! [NSObject], expectedParams)
     }
 
     func testSyncSetting() {
 
-        let name = "name"
-        let response = ["blog_title" : ["value" : name]]
+        let name = "My Name"
+        let tagline = "My tagline"
+        let privacy = 20
+        let response = blogSettingsDictionary(name, tagline: tagline, privacy: privacy)
+
         var remoteBlogSettings: RemoteBlogSettings? = nil
         blogServiceRemote.syncSettingsWithSuccess({
             remoteBlogSettings = $0
         }, failure: nil)
         mockApi.successBlockPassedIn?(response, NSHTTPURLResponse())
         XCTAssertEqual(remoteBlogSettings?.name, name)
+        XCTAssertEqual(remoteBlogSettings?.tagline, tagline)
+        XCTAssertEqual(remoteBlogSettings?.privacy, privacy)
     }
 
     func testSyncSettingArrayResponse() {
@@ -169,11 +181,11 @@ class BlogServiceRemoteXMLRPCTest: XCTestCase {
         remoteBlogSettings.name = "name"
         remoteBlogSettings.tagline = "tagline"
 
-        let expectedParams = ["blog_title" : "name", "blog_tagline" : "tagline"]
+        var expectedParams = blogServiceRemote.defaultXMLRPCArguments() as! [NSObject]
+        expectedParams.append(["blog_title" : "name", "blog_tagline" : "tagline"])
         blogServiceRemote.updateBlogSettings(remoteBlogSettings, success: nil, failure: nil)
         XCTAssertEqual(mockApi.methodPassedIn, "wp.setOptions")
-        XCTAssertTrue(checkParametersArray(mockApi.parametersPassedIn, expected: expectedParams),
-                      "\(expectedParams) not found in the parameter list")
+        XCTAssertEqual(mockApi.parametersPassedIn as! [NSObject], expectedParams)
     }
 
     func testUpdateBlogSettings() {
@@ -182,7 +194,9 @@ class BlogServiceRemoteXMLRPCTest: XCTestCase {
         remoteBlogSettings.name = "name"
         remoteBlogSettings.tagline = "tagline"
 
-        let response = ["blog_title" : ["value" : "name"]]
+        let response = blogSettingsDictionary(remoteBlogSettings.name!,
+                                              tagline: remoteBlogSettings.tagline!,
+                                              privacy: 1)
         var success = false
         blogServiceRemote.updateBlogSettings(remoteBlogSettings, success: {
             success = true
@@ -196,8 +210,10 @@ class BlogServiceRemoteXMLRPCTest: XCTestCase {
         let remoteBlogSettings = RemoteBlogSettings()
         remoteBlogSettings.name = "name"
         remoteBlogSettings.tagline = "tagline"
-
-        let response = [["blog_title" : ["value" : "name"]]]
+        let blogSettingResponse = blogSettingsDictionary(remoteBlogSettings.name!,
+                                                         tagline: remoteBlogSettings.tagline!,
+                                                         privacy: 1)
+        let response = [blogSettingResponse]
         var fail = false
         blogServiceRemote.updateBlogSettings(remoteBlogSettings, success: nil, failure: { _ in
             fail = true
@@ -208,64 +224,44 @@ class BlogServiceRemoteXMLRPCTest: XCTestCase {
 
     func testSyncOptionsRequest() {
 
+        let expectedParams = blogServiceRemote.defaultXMLRPCArguments() as! [NSObject]
         blogServiceRemote.syncOptionsWithSuccess(nil, failure: nil)
         XCTAssertEqual(mockApi.methodPassedIn, "wp.getOptions")
-        XCTAssertTrue(checkParametersArray(mockApi.parametersPassedIn, expected: nil),
-                      "Default parameters not found")
+        XCTAssertEqual(mockApi.parametersPassedIn as! [NSObject], expectedParams)
     }
 
     func testSyncOptions() {
 
         let response = ["option" : ["a" : "b"]]
-        var remoteOptions = [NSObject : NSObject]()
+        var remoteOptions = [String : AnyObject]()
         blogServiceRemote.syncOptionsWithSuccess({
-            if let options = $0 as? [NSObject : NSObject] {
+            if let options = $0 as? [String : AnyObject] {
                 remoteOptions = options
             }
         }, failure: nil)
         mockApi.successBlockPassedIn?(response, NSHTTPURLResponse())
-        XCTAssertEqual(response, remoteOptions)
+        XCTAssertTrue(NSDictionary(dictionary: response).isEqualToDictionary(remoteOptions))
     }
 
-    func testRemotePostFromXMLDictionary() {
-
-        let name = "name"
-        let label = "label"
-        let apiQueryable = NSNumber(integer: 1)
-        let response = [name: name, label: label, "public": apiQueryable]
-        let remotePost = blogServiceRemote.remotePostTypeFromXMLRPCDictionary(response)
-        XCTAssertEqual(remotePost.name, name)
-        XCTAssertEqual(remotePost.label, label)
-        XCTAssertEqual(remotePost.apiQueryable, apiQueryable)
+    func postTypeDictionary(name: String, label: String, privacy: Int) -> [String: AnyObject] {
+        return ["name": name,
+                "label" : label,
+                "public": privacy]
     }
 
-    func testRemoteBlogFromXMLDictionary() {
-
-        let name = "name"
-        let tagline = "tagline"
-        let privacy = 1
-        let response = ["blog_title" : ["value" : name],
-                        "blog_tagline" : ["value" : tagline],
-                        "blog_public" : ["value" : privacy]]
-        let remoteBlogSettings = blogServiceRemote.remoteBlogSettingFromXMLRPCDictionary(response)
-        XCTAssertEqual(remoteBlogSettings.name, name)
-        XCTAssertEqual(remoteBlogSettings.tagline, tagline)
-        XCTAssertEqual(remoteBlogSettings.privacy, privacy)
-    }
-
-    func checkParametersArray(passedIn: [AnyObject]?, expected: AnyObject?) -> Bool {
-
-        var fullExpectedParams = blogServiceRemote.defaultXMLRPCArguments()
-        if let e = expected {
-            fullExpectedParams.append(e)
+    func blogSettingsDictionary(name: String, tagline: String, privacy: Int) -> [String: AnyObject] {
+        return ["blog_title" : ["value" : name],
+                "blog_tagline" : ["value" : tagline],
+                "blog_public" : ["value" : privacy]]
         }
 
-        guard let parametersPassedIn = passedIn as? [NSObject],
-            let parametersExpected = fullExpectedParams as? [NSObject] else {
-                return false
-        }
+    func supportedFileFormatsDictionary() -> [String: AnyObject] {
+        return ["supported" : ["f1", "f2", "f3"],
+                "all" : ["f1" : "a" , "f2" : "b", "f3" : "c", "f4" : "d", "standard" : "e"]]
+    }
 
-        let finalSet = Set(parametersPassedIn).subtract(parametersExpected)
-        return finalSet.count == 0
+    func supportedFileFormatsArray() -> [String: AnyObject] {
+        return ["supported" : [1 : "f1", 2 : "f2", 3 : "f3"],
+                "all" : ["f1" : "a" , "f2" : "b", "f3" : "c", "f4" : "d", "standard" : "e"]]
     }
 }
