@@ -8,10 +8,6 @@ class AppSettingsViewController: UITableViewController {
     private var handler: ImmuTableViewHandler!
     // MARK: - Initialization
 
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-
     override init(style: UITableViewStyle) {
         super.init(style: style)
         navigationItem.title = NSLocalizedString("App Settings", comment: "App Settings Title")
@@ -38,18 +34,6 @@ class AppSettingsViewController: UITableViewController {
         handler.viewModel = tableViewModel()
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-    }
-
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
-        let nc = NSNotificationCenter.defaultCenter()
-        nc.addObserver(self, selector: #selector(applicationWillEnterForeground), name: UIApplicationWillEnterForegroundNotification, object: nil)
-    }
-
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
 
@@ -163,19 +147,11 @@ class AppSettingsViewController: UITableViewController {
 
     func openApplicationSettings() -> ImmuTableAction {
         return { row in
-            guard let targetURL = NSURL(string: UIApplicationOpenSettingsURLString) else {
-                NSLog("Error while unwrapping Settings URL")
-                return
-            }
+            let targetURL = NSURL(string: UIApplicationOpenSettingsURLString)
+            precondition(targetURL != nil)
 
-            UIApplication.sharedApplication().openURL(targetURL)
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            UIApplication.sharedApplication().openURL(targetURL!)
         }
-    }
-
-
-    // MARK: - Notification Handlers
-
-    @objc func applicationWillEnterForeground(sender: AnyObject) {
-        tableView.deselectSelectedRowWithAnimation(true)
     }
 }
