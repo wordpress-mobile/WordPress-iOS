@@ -64,7 +64,12 @@ class PostPostViewController: UIViewController {
             self.view.alpha = 1
             self.shadeView.backgroundColor = UIColor.blackColor()
             self.shadeView.alpha = 0.5
-            self.postInfoView.alpha = 0.0
+            self.postInfoView.alpha = 0
+
+            shareButtonWidth.constant = self.shareButton.frame.size.width * -0.75
+            editButtonWidth.constant = self.shareButton.frame.size.width * -0.75
+            viewButtonWidth.constant = self.shareButton.frame.size.width * -0.75
+            view.layoutIfNeeded()
 
             let animationCoordinator = self.transitionCoordinator()
             animationCoordinator?.animateAlongsideTransition({ (context) in
@@ -80,31 +85,31 @@ class PostPostViewController: UIViewController {
 
     func showPostPost(context: UIViewControllerTransitionCoordinatorContext) {
         let animationDuration = context.transitionDuration()
-        shareButtonWidth.constant = self.shareButton.frame.size.width * -0.75
-        editButtonWidth.constant = self.shareButton.frame.size.width * -0.75
-        viewButtonWidth.constant = self.shareButton.frame.size.width * -0.75
-        view.layoutIfNeeded()
+
+        self.postInfoView.alpha = 1
 
         UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {
             self.shadeView.alpha = 0
             }, completion: nil)
+
         UIView.animateWithDuration(animationDuration * 0.66, delay: 0, options: .CurveEaseOut, animations: {
             self.postInfoView.alpha = 1
             }, completion: nil)
+
         UIView.animateWithDuration(0.2, delay: animationDuration * 0.5, options: .CurveEaseOut, animations: {
             self.shareButton.alpha = 1
             self.shareButtonWidth.constant = 0
-            self.view.layoutIfNeeded()
+            self.actionsStackView.layoutIfNeeded()
             }, completion: nil)
         UIView.animateWithDuration(0.2, delay: animationDuration * 0.6, options: .CurveEaseOut, animations: {
             self.editButton.alpha = 1
             self.editButtonWidth.constant = 0
-            self.view.layoutIfNeeded()
+            self.actionsStackView.layoutIfNeeded()
         }, completion: nil)
         UIView.animateWithDuration(0.2, delay: animationDuration * 0.7, options: .CurveEaseOut, animations: {
             self.viewButton.alpha = 1
             self.viewButtonWidth.constant = 0
-            self.view.layoutIfNeeded()
+            self.actionsStackView.layoutIfNeeded()
         }, completion: nil)
     }
 

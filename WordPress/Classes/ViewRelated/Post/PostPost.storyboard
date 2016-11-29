@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -27,19 +26,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HyV-qN-PlX">
-                                <rect key="frame" x="32" y="0.0" width="672" height="382"/>
+                                <rect key="frame" x="43" y="-101" width="650" height="584"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="JGq-VA-WZT">
-                                        <rect key="frame" x="0.0" y="0.0" width="672" height="382"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="650" height="584"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FbN-Zr-116">
-                                                <rect key="frame" x="0.0" y="0.0" width="672" height="222"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="650" height="424"/>
                                                 <subviews>
                                                     <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="IBk-Np-qMf">
-                                                        <rect key="frame" x="0.0" y="54.666666666666657" width="672" height="114"/>
+                                                        <rect key="frame" x="0.0" y="155" width="650" height="114"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Post Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5kn-tC-4Xg">
-                                                                <rect key="frame" x="0.0" y="0.0" width="672" height="28.000000000000007"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="650" height="28"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="28" id="GcR-J5-grU"/>
                                                                 </constraints>
@@ -48,16 +47,16 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Published just now on" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IEW-y3-Pzp">
-                                                                <rect key="frame" x="0.0" y="40.000000000000007" width="672" height="18"/>
+                                                                <rect key="frame" x="0.0" y="40" width="650" height="18"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                 <color key="textColor" red="0.47058823529999999" green="0.86274509799999999" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="rKW-qs-6cA">
-                                                                <rect key="frame" x="0.0" y="70" width="672" height="43.999999999999986"/>
+                                                                <rect key="frame" x="0.0" y="70" width="650" height="44"/>
                                                                 <subviews>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yOQ-OH-S9P">
-                                                                        <rect key="frame" x="0.0" y="3.9999999999999858" width="36" height="36"/>
+                                                                        <rect key="frame" x="0.0" y="4" width="36" height="36"/>
                                                                         <subviews>
                                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JVi-Ph-TTu">
                                                                                 <rect key="frame" x="2" y="2" width="32" height="32"/>
@@ -76,10 +75,10 @@
                                                                         </constraints>
                                                                     </view>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Tsp-9N-9v1">
-                                                                        <rect key="frame" x="48" y="0.0" width="624" height="43.999999999999986"/>
+                                                                        <rect key="frame" x="48" y="0.0" width="602" height="44"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blog Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bGL-0c-A6z">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="624" height="21.999999999999986"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="602" height="22"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="w6b-ZM-JsE"/>
                                                                                 </constraints>
@@ -88,7 +87,7 @@
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blog Url" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B9s-7Y-oQQ">
-                                                                                <rect key="frame" x="0.0" y="21.999999999999986" width="624" height="22"/>
+                                                                                <rect key="frame" x="0.0" y="22" width="602" height="22"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="yos-Ix-MsU"/>
                                                                                 </constraints>
@@ -119,10 +118,10 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="LUm-wG-tAL">
-                                                <rect key="frame" x="0.0" y="222" width="672" height="160"/>
+                                                <rect key="frame" x="0.0" y="424" width="650" height="160"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mew-dP-u74" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="672" height="44"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="650" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="J1M-dU-b8B"/>
                                                         </constraints>
@@ -137,7 +136,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wfC-rz-tLa" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="58" width="672" height="44"/>
+                                                        <rect key="frame" x="0.0" y="58" width="650" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="vDI-tK-HOm"/>
                                                         </constraints>
@@ -149,7 +148,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGH-Vv-Uun" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="116" width="672" height="44"/>
+                                                        <rect key="frame" x="0.0" y="116" width="650" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="r9K-HZ-toB"/>
                                                         </constraints>
@@ -176,6 +175,8 @@
                                     <constraint firstAttribute="trailing" secondItem="JGq-VA-WZT" secondAttribute="trailing" id="CJa-9K-wJn"/>
                                     <constraint firstAttribute="bottom" secondItem="JGq-VA-WZT" secondAttribute="bottom" id="FFd-k3-WLp"/>
                                     <constraint firstItem="JGq-VA-WZT" firstAttribute="leading" secondItem="HyV-qN-PlX" secondAttribute="leading" id="Fdd-3n-i2i"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="600" id="Ilz-Uv-Yh3"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="650" id="Kek-wg-9p8"/>
                                     <constraint firstItem="JGq-VA-WZT" firstAttribute="top" secondItem="HyV-qN-PlX" secondAttribute="top" id="qm6-2U-frd"/>
                                 </constraints>
                             </view>
@@ -201,14 +202,14 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="HyV-qN-PlX" firstAttribute="height" secondItem="2Pd-T6-hcw" secondAttribute="height" priority="750" constant="-32" id="2MU-G6-Bg5"/>
+                            <constraint firstItem="HyV-qN-PlX" firstAttribute="centerX" secondItem="2Pd-T6-hcw" secondAttribute="centerX" id="H0w-X7-Hck"/>
                             <constraint firstItem="Fmh-Yp-NIl" firstAttribute="leading" secondItem="2Pd-T6-hcw" secondAttribute="leading" id="Rk9-It-Cw6"/>
-                            <constraint firstItem="HyV-qN-PlX" firstAttribute="top" secondItem="2Pd-T6-hcw" secondAttribute="topMargin" id="ZMC-zS-Cc1"/>
                             <constraint firstAttribute="trailing" secondItem="Fmh-Yp-NIl" secondAttribute="trailing" id="c3V-j3-PXM"/>
-                            <constraint firstItem="HyV-qN-PlX" firstAttribute="leading" secondItem="2Pd-T6-hcw" secondAttribute="leading" constant="32" id="jSO-y3-2Ik"/>
-                            <constraint firstItem="8Oz-au-Onc" firstAttribute="top" secondItem="HyV-qN-PlX" secondAttribute="bottom" constant="32" id="kUR-b8-VuK"/>
-                            <constraint firstAttribute="trailing" secondItem="HyV-qN-PlX" secondAttribute="trailing" constant="32" id="nYI-OQ-ElR"/>
+                            <constraint firstItem="HyV-qN-PlX" firstAttribute="centerY" secondItem="2Pd-T6-hcw" secondAttribute="centerY" constant="-16" id="oJd-r7-ndv"/>
                             <constraint firstItem="Fmh-Yp-NIl" firstAttribute="height" secondItem="2Pd-T6-hcw" secondAttribute="height" id="oqi-kc-5rK"/>
                             <constraint firstItem="Fmh-Yp-NIl" firstAttribute="top" secondItem="2Pd-T6-hcw" secondAttribute="top" id="pHx-pm-5En"/>
+                            <constraint firstItem="HyV-qN-PlX" firstAttribute="width" secondItem="2Pd-T6-hcw" secondAttribute="width" priority="750" constant="-64" id="rcL-v9-I3y"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="mYP-bF-EKS"/>
