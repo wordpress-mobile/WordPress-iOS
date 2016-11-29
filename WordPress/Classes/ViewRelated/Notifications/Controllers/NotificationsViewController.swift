@@ -66,7 +66,10 @@ class NotificationsViewController : UITableViewController
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        restorationClass = type(of: self)
+
+        // Note: This class doesn't actually conform to restoration?
+        // Swift 3 migration: Brent Nov. 28/16
+        //restorationClass = NotificationsViewController.self
 
         startListeningToAccountNotifications()
     }
@@ -181,7 +184,7 @@ class NotificationsViewController : UITableViewController
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // Load the Subject + Snippet
-        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
             return CGFloat.leastNormalMagnitude
         }
 
@@ -194,7 +197,7 @@ class NotificationsViewController : UITableViewController
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Failsafe: Make sure that the Notification (still) exists
-        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
             tableView.deselectSelectedRowWithAnimation(true)
             return
         }
@@ -237,7 +240,7 @@ extension NotificationsViewController
     }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        guard let note = tableViewHandler?.resultsController.objectOfType(Notification.self, atIndexPath: indexPath),
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
             let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else
         {
             // Not every single row will have actions: Slight hack so that the UX isn't terrible:
@@ -695,7 +698,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
         // For that reason, we draw our own separators.
         //
-        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
             return
         }
 
