@@ -153,7 +153,7 @@ extension WPImageURLHelper
 
         // size query item
         if size.height == 0 {
-            items.append(NSURLQueryItem(name: ImageURLQueryField.Width.rawValue, value: "\(size.width)"))
+            items.append(NSURLQueryItem(name: ImageURLQueryField.Width.rawValue, value: "\(Int(size.width))"))
         } else {
             let method = forceResize ? PhotonQueryFields.Resize : PhotonQueryFields.Fit
             items.append(NSURLQueryItem(name: method.rawValue, value: "\(Int(size.width)),\(Int(size.height))"))
