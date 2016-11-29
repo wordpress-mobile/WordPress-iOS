@@ -128,6 +128,8 @@
 		261FF32C1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261FF32B1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift */; };
 		268D5DAC1DEE35E300CBEAB3 /* ReaderPost+ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268D5DAB1DEE35E300CBEAB3 /* ReaderPost+ManagedObject.swift */; };
 		268D5DB01DEE367A00CBEAB3 /* SourcePostAttribution+ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268D5DAF1DEE367A00CBEAB3 /* SourcePostAttribution+ManagedObject.swift */; };
+		268D5DB21DEE3C8900CBEAB3 /* URLErrorDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268D5DB11DEE3C8900CBEAB3 /* URLErrorDecoder.swift */; };
+		268D5DB41DEE3F0D00CBEAB3 /* URLErrorDecoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268D5DB31DEE3F0D00CBEAB3 /* URLErrorDecoderTests.swift */; };
 		26A1B5A01DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */; };
 		26AE46241DE891B400043CC9 /* ReaderPostCacheProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26AE46231DE891B400043CC9 /* ReaderPostCacheProvider.swift */; };
 		26AE46261DE89FBF00043CC9 /* ReaderPostCacheProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26AE46251DE89FBF00043CC9 /* ReaderPostCacheProviderTests.swift */; };
@@ -1158,6 +1160,8 @@
 		261FF32B1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaServiceRemoteRESTTests.swift; sourceTree = "<group>"; };
 		268D5DAB1DEE35E300CBEAB3 /* ReaderPost+ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderPost+ManagedObject.swift"; sourceTree = "<group>"; };
 		268D5DAF1DEE367A00CBEAB3 /* SourcePostAttribution+ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SourcePostAttribution+ManagedObject.swift"; sourceTree = "<group>"; };
+		268D5DB11DEE3C8900CBEAB3 /* URLErrorDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLErrorDecoder.swift; sourceTree = "<group>"; };
+		268D5DB31DEE3F0D00CBEAB3 /* URLErrorDecoderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLErrorDecoderTests.swift; sourceTree = "<group>"; };
 		26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSiteServiceRemoteTests.swift; sourceTree = "<group>"; };
 		26AE46231DE891B400043CC9 /* ReaderPostCacheProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostCacheProvider.swift; sourceTree = "<group>"; };
 		26AE46251DE89FBF00043CC9 /* ReaderPostCacheProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostCacheProviderTests.swift; sourceTree = "<group>"; };
@@ -3349,6 +3353,7 @@
 				5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */,
 				175DBCD51DAE41A6003CBFBE /* WPFeedbackGeneratorTests.swift */,
 				26AE46251DE89FBF00043CC9 /* ReaderPostCacheProviderTests.swift */,
+				268D5DB31DEE3F0D00CBEAB3 /* URLErrorDecoderTests.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -3449,6 +3454,7 @@
 				FFB0DEA91D38061B00DD4A50 /* WPImageURLHelper.swift */,
 				17D33ADF1D9E9C6900FBB621 /* WPFeedbackGenerators.swift */,
 				26AE46231DE891B400043CC9 /* ReaderPostCacheProvider.swift */,
+				268D5DB11DEE3C8900CBEAB3 /* URLErrorDecoder.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -6137,6 +6143,7 @@
 				E1249B4B1940AECC0035E895 /* CommentServiceRemoteREST.m in Sources */,
 				E1266D2D1BBE8B9A00FCB6B6 /* Gravatar.swift in Sources */,
 				0857C2791CE5375F0014AE99 /* MenuItemsVisualOrderingView.m in Sources */,
+				268D5DB21DEE3C8900CBEAB3 /* URLErrorDecoder.swift in Sources */,
 				595CB3761D2317D50082C7E9 /* PostListFilter.swift in Sources */,
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				08472A201C727E020040769D /* PostServiceOptions.m in Sources */,
@@ -6483,6 +6490,7 @@
 				E66969CA1B9E0C4F00EC9C00 /* ReaderTopicServiceRemoteTests.m in Sources */,
 				E1926C091C779868009F3C2C /* PlanListViewControllerTest.swift in Sources */,
 				59ECF87B1CB7061D00E68F25 /* PostSharingControllerTests.swift in Sources */,
+				268D5DB41DEE3F0D00CBEAB3 /* URLErrorDecoderTests.swift in Sources */,
 				E157D5E01C690A6C00F04FB9 /* ImmuTableTestUtils.swift in Sources */,
 				E1C9AA561C10427100732665 /* MathTest.swift in Sources */,
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
