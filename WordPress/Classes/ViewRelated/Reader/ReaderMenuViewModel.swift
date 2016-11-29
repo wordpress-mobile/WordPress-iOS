@@ -61,7 +61,7 @@ struct ReaderMenuItem
 
 /// Protocol allowing a reader menu view model to notify content changes.
 ///
-protocol ReaderMenuViewModelDelegate
+protocol ReaderMenuViewModelDelegate: class
 {
 
     /// Notifies the delegate that the menu did reload its content.
@@ -101,7 +101,7 @@ enum ReaderDefaultMenuItemOrder: Int {
 
     var sections = [ReaderMenuSection]()
     var defaultSectionItems = [ReaderMenuItem]()
-    var delegate: ReaderMenuViewModelDelegate?
+    weak var delegate: ReaderMenuViewModelDelegate?
 
 
     // MARK: - Lifecycle Methods
