@@ -10,8 +10,8 @@ extension Notification
     ///
     func sectionIdentifier() -> String {
         // Normalize Dates: Time must not be considered. Just the raw dates
-        let fromDate = timestampAsDate.normalizedDate()
-        let toDate = Date().normalizedDate()
+        let fromDate = (timestampAsDate as NSDate).normalizedDate()
+        let toDate = NSDate().normalizedDate()
 
         // Analyze the Delta-Components
         let calendar = Calendar.current

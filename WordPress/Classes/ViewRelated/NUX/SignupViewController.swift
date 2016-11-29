@@ -336,10 +336,10 @@ import WordPressShared
             self.dismiss()
         }
 
-        let failureBlock = { (error: NSError?) in
+        let failureBlock = { (error: Error?) in
             self.displayLoginMessage("")
             self.configureLoading(false)
-            if let error = error {
+            if let error = error as? NSError {
                 self.displayError(error)
             }
         }

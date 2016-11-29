@@ -67,7 +67,7 @@ extension Gravatar {
 }
 
 extension UIImageView {
-    func downloadGravatar(_ gravatar: Gravatar?, placeholder: UIImage, animate: Bool, failure: ((NSError?) -> ())? = nil) {
+    func downloadGravatar(_ gravatar: Gravatar?, placeholder: UIImage, animate: Bool, failure: ((Error?) -> ())? = nil) {
         guard let gravatar = gravatar else {
             self.image = placeholder
             return
@@ -83,8 +83,7 @@ extension UIImageView {
                 if animate {
                     self.fadeInAnimation()
                 }
-            }, failure: {
-                error in
+            }, failure: { error in
                 failure?(error)
         })
     }

@@ -16,7 +16,7 @@ enum SignupStatus: Int {
 
 typealias SignupStatusBlock = (_ status: SignupStatus) -> Void
 typealias SignupSuccessBlock = () -> Void
-typealias SignupFailureBlock = (_ error: Error) -> Void
+typealias SignupFailureBlock = (_ error: Error?) -> Void
 
 
 /// SignupService is responsible for creating a new WPCom user and blog.
@@ -223,12 +223,12 @@ open class SignupService : LocalCoreDataService
                                             // The account was created so bump the stat, even if there are problems later on.
                                             WPAppAnalytics.track(.createdAccount)
 
-                                            guard let blogOptions = responseDictionary[self.BlogDetailsKey] as? [String: AnyObject] else {
+                                            guard let blogOptions = responseDictionary?[self.BlogDetailsKey] as? [String: AnyObject] else {
                                                 DDLogSwift.logError("Failed creating blog. The response dictionary did not contain the expected results")
                                                 assertionFailure()
 
                                                 let error = SignupError.invalidResponse as NSError
-                                                failure(error: error)
+                                                failure(error)
                                                 return
                                             }
 
@@ -238,7 +238,7 @@ open class SignupService : LocalCoreDataService
                                                 return
                                             }
 
-                                            success(blog: blog)
+                                            success(blog)
                                         },
                                         failure: failure)
     }
