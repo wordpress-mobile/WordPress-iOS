@@ -104,7 +104,7 @@ extension WPImageURLHelper
         let boundedQuality = min(max(imageQuality, PhotonImageQuality.Min.rawValue), PhotonImageQuality.Max.rawValue)
 
         // If the URL is already a Photon URL reject its photon params, and substitute our own.
-        if urlString.isPhotonURL() {
+        if isPhotonURL(urlString) {
             if urlComponents.queryItems != nil {
                 let useSSL = urlComponents.queryItems!.contains({ queryItem -> Bool in
                     return queryItem.name == PhotonQueryFields.SSL.rawValue && queryItem.value == PhotonSSLValue.Enabled.rawValue

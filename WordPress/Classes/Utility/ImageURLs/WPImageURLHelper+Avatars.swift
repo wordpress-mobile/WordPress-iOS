@@ -58,6 +58,11 @@ extension WPImageURLHelper
         ]
         return components.URL
     }
+
+    /// - returns: `true` if `url` is a blavatar URL, specifically if it contains "gravatar.com/blavatar", and `false` otherwise
+    public class func isBlavatarURL(url: NSString) -> Bool {
+        return url.containsString("\(gravatarURLBase)/\(URLComponent.Blavatar.rawValue)")
+    }
 }
 
 // MARK: Gravatar URLs
@@ -84,7 +89,7 @@ extension WPImageURLHelper
     }
 
     public class func gravatarURL(forURL url: NSURL) -> NSURL? {
-        guard url.isGravatarURL() else {
+        guard isGravatarURL(url) else {
             return nil
         }
 
@@ -112,5 +117,24 @@ extension WPImageURLHelper
             NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
         ]
         return components.URL
+    }
+
+    /// - returns: `true` if the URL's host has the suffix "gravatar.com" and the path contains "/gravatar/"
+    public class func isGravatarURL(url: NSURL) -> Bool {
+        guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else {
+            return false
+        }
+
+        guard let host = components.host
+            where host.hasSuffix(".\(gravatarURLBase)") else {
+                return false
+        }
+
+        guard let path = url.path
+            where path.hasPrefix("/\(URLComponent.Gravatar.rawValue)/") else {
+                return false
+        }
+
+        return true
     }
 }

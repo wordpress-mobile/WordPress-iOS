@@ -28,9 +28,9 @@ NSString *const BlavatarDefault = @"blavatar-default";
 
 - (void)setImageWithSiteIcon:(NSString *)siteIcon placeholderImage:(UIImage *)placeholderImage
 {
-    if ([siteIcon isPhotonURL]) {
+    if ([WPImageURLHelper isPhotonURL:siteIcon]) {
         [self setImageWithURL:[WPImageURLHelper siteIconURLForSiteIconURL:siteIcon size:[self sizeForBlavatarDownload]] placeholderImage:placeholderImage];
-    } else if ([siteIcon isBlavatarURL]) {
+    } else if ([WPImageURLHelper isBlavatarURL:siteIcon]) {
         [self setImageWithURL:[WPImageURLHelper blavatarURLForBlavatarURL:siteIcon size:[self sizeForBlavatarDownload]] placeholderImage:placeholderImage];
     } else {
         [self setImageWithURL:[WPImageURLHelper blavatarURLForHost:siteIcon size:[self sizeForBlavatarDownload]] placeholderImage:placeholderImage];
