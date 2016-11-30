@@ -212,32 +212,21 @@ extension NSURL: ExportableAsset {
         get {
             if isVideo {
                 let asset = AVAsset(URL: self)
-                guard let track = asset.tracksWithMediaType(AVMediaTypeVideo).first else {
-                    return CGSizeZero
+                if let track = asset.tracksWithMediaType(AVMediaTypeVideo).first {
+                    return CGSizeApplyAffineTransform(track.naturalSize, track.preferredTransform)
                 }
-                let size = CGSizeApplyAffineTransform(track.naturalSize, track.preferredTransform)
-                return size
             } else if isImage {
                 let options: [NSString:NSObject] = [kCGImageSourceShouldCache: false]
-                guard
+                if
                     let imageSource = CGImageSourceCreateWithURL(self, nil),
-                    let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, options)
-                    else {
-                        return CGSizeZero
+                    let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, options) as NSDictionary?,
+                    let pixelWidth = imageProperties[kCGImagePropertyPixelWidth as NSString] as? Int,
+                    let pixelHeight = imageProperties[kCGImagePropertyPixelHeight as NSString] as? Int
+                {
+                        return CGSize(width: pixelWidth, height: pixelHeight)
                 }
-
-                let imageDictionary = imageProperties as NSDictionary
-                guard
-                    let pixelWidth = imageDictionary[kCGImagePropertyPixelWidth as NSString] as? Int,
-                    let pixelHeight = imageDictionary[kCGImagePropertyPixelHeight as NSString] as? Int
-                    else {
-                        return CGSizeZero
-                }
-
-                return CGSize(width: pixelWidth, height: pixelHeight)
-            } else {
-                return CGSizeZero
             }
+            return CGSizeZero
         }
     }
 

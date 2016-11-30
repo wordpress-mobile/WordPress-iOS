@@ -169,7 +169,7 @@
             [self addMediaFromURL:fileURL completionBlock:completionBlock];
         } else {
             if (completionBlock) {
-                completionBlock(nil, error);;
+                completionBlock(nil, error);
             }
         }
     }
