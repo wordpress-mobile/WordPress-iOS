@@ -19,7 +19,9 @@ extension WPImageURLHelper
     ///
     /// - returns: the original URL with the size query appended, or `nil` if the URL is invalid
     public class func siteIconURL(forSiteIconURL path: String, size: NSInteger) -> NSURL? {
-        guard let components = NSURLComponents(string: path) else { return nil }
+        guard let components = NSURLComponents(string: path) else {
+            return nil
+        }
         components.queryItems = [
             NSURLQueryItem(name: ImageURLQueryField.Height.rawValue, value: "\(size)"),
             NSURLQueryItem(name: ImageURLQueryField.Width.rawValue, value: "\(size)")
@@ -38,7 +40,10 @@ extension WPImageURLHelper
     /// or `contentProvider` does not contain a siteIconURL or blogURL,
     public class func siteIconURL(forContentProvider contentProvider: ReaderPostContentProvider, size: Int) -> NSURL? {
         if (contentProvider.siteIconURL() == nil || contentProvider.siteIconURL().characters.count == 0) {
-            guard let blogURL = contentProvider.blogURL(), let hash = NSURL(string: blogURL)?.host?.md5() else {
+            guard
+                let blogURL = contentProvider.blogURL(),
+                let hash = NSURL(string: blogURL)?.host?.md5()
+            else {
                 return nil
             }
 
@@ -73,7 +78,9 @@ extension WPImageURLHelper
             let bounds = bounds,
             let url = NSURL(string: path),
             let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)
-            else { return nil }
+        else {
+            return nil
+        }
 
         let size = blavatarSizeInPoints(forImageViewBounds: bounds)
         components.queryItems = commonQueryItems(withSize: size)

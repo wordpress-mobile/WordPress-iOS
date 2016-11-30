@@ -73,7 +73,9 @@ extension WPImageURLHelper
     ///
     /// - returns: the blavatar URL, or `nil` if the URL is invalid, e.g. if `path` is not a valid internet path
     public class func blavatarURL(forBlavatarURL path: String, size: NSInteger) -> NSURL? {
-        guard let components = NSURLComponents(string: path) else { return nil }
+        guard let components = NSURLComponents(string: path) else {
+            return nil
+        }
         components.queryItems = [
             NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
             NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")
@@ -145,7 +147,9 @@ extension WPImageURLHelper
     ///
     /// - returns: the transformed URL or `nil` if the URL is invalid
     public class func gravatarURL(forURL url: NSURL, size: Int) -> NSURL? {
-        guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true) else { return nil }
+        guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true) else {
+            return nil
+        }
         components.queryItems = [
             NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.None.rawValue),
             NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(size)")

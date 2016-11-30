@@ -89,12 +89,14 @@ extension WPImageURLHelper
             let urlString = url.absoluteString,
             let urlComponents = NSURLComponents(URL: url, resolvingAgainstBaseURL: true),
             let urlPath = urlComponents.path
-            else {
-                return url
+        else {
+            return url
         }
 
         // Photon will fail if the URL doesn't end in one of the accepted extensions
-        guard let pathExtension = url.pathExtension where acceptedImageTypes.contains(pathExtension) else {
+        guard let pathExtension = url.pathExtension
+            where acceptedImageTypes.contains(pathExtension)
+        else {
             if url.scheme == nil {
                 let components = NSURLComponents()
                 components.scheme = RequestScheme.Insecure.rawValue
