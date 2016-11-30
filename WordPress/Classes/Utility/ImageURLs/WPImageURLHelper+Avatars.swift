@@ -20,7 +20,20 @@ extension WPImageURLHelper
     ///
     /// - returns: the URL for the avatar of given type/size, or `nil` if the URL could not be constructed (for instance, if one of the components turns out to be invalid)
     public class func avatarURL(withHash hash: String, type: WPAvatarSourceType, size: CGSize) -> NSURL? {
+        let components = NSURLComponents()
+        components.scheme = RequestScheme.Insecure.rawValue
+        components.host = gravatarURLBase
+        components.path = avatarPath(withHash: hash, type: type)
+        components.queryItems = [
+            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.Identicon.rawValue),
+            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(Int(size.width * UIScreen.mainScreen().scale))")
+        ]
+        return components.URL
+    }
+
+    private class func avatarPath(withHash hash: String, type: WPAvatarSourceType) -> String? {
         var path: String? = nil
+
         switch type {
         case .Blavatar:
             path = URLComponent.Blavatar.rawValue
@@ -31,21 +44,14 @@ extension WPImageURLHelper
         case .Unknown:
             break
         }
+
         if path == nil {
             path = "/\(hash)"
         } else {
             path = ("/\(path!)" as NSString).stringByAppendingPathComponent(hash)
         }
 
-        let components = NSURLComponents()
-        components.scheme = RequestScheme.Insecure.rawValue
-        components.host = gravatarURLBase
-        components.path = path
-        components.queryItems = [
-            NSURLQueryItem(name: ImageURLQueryField.Default.rawValue, value: ImageDefaultValue.Identicon.rawValue),
-            NSURLQueryItem(name: ImageURLQueryField.Size.rawValue, value: "\(Int(size.width * UIScreen.mainScreen().scale))")
-        ]
-        return components.URL
+        return path
     }
 }
 
