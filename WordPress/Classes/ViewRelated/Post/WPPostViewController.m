@@ -1031,20 +1031,13 @@ EditImageDetailsViewControllerDelegate
 {
     UIBarButtonItem *secondaryleftHandButton = self.secondaryLeftUIBarButtonItem;
     NSArray* leftBarButtons;
-    
-    if ([self isEditing] && !self.post.hasRemote) {
-        // Editing a new post
-        leftBarButtons = @[self.negativeSeparator, self.cancelXButton, secondaryleftHandButton];
+
+    if ([self isModal]) {
         self.currentCancelButton = self.cancelXButton;
-    } else if ([self isEditing] && self.post.hasRemote) {
-        // Editing an existing post (draft or published)
-        leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
+    } else {
         self.currentCancelButton = self.cancelChevronButton;
-	} else {
-        // Previewing a post (no edit)
-        leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
-        self.currentCancelButton = self.cancelChevronButton;
-	}
+    }
+    leftBarButtons = @[self.negativeSeparator, self.currentCancelButton, secondaryleftHandButton];
     
     if (![leftBarButtons isEqualToArray:self.navigationItem.leftBarButtonItems]) {
         [self.navigationItem setLeftBarButtonItems:nil];
@@ -1386,7 +1379,7 @@ EditImageDetailsViewControllerDelegate
     if (self.onClose) {
         self.onClose(self, changesSaved);
         self.onClose = nil;
-    } else if (self.presentingViewController) {
+    } else if ([self isModal]) {
         [self.presentingViewController dismissViewControllerAnimated:animated completion:nil];
     } else {
         [self.navigationController popViewControllerAnimated:animated];
@@ -1420,7 +1413,7 @@ EditImageDetailsViewControllerDelegate
 - (void)savePost
 {
     PostEditorSaveAction saveAction = [self currentSaveAction];
-    BOOL shouldDismiss = (saveAction == PostEditorSaveActionPost || saveAction == PostEditorSaveActionSchedule);
+    BOOL shouldDismiss = saveAction != PostEditorSaveActionSave;
     [self savePostAndDismiss:shouldDismiss];
 
     [self trackSavePostAnalyticsWithStat:[self analyticsStatForSaveAction:saveAction]];
@@ -1522,7 +1515,7 @@ EditImageDetailsViewControllerDelegate
 {
     if ([self.post hasLocalChanges]) {
         // Only attempt to switch to the posts list if the editor was presented modally
-        if ([self presentingViewController]) {
+        if ([self isModal]) {
             [[WPTabBarController sharedInstance] switchTabToPostsListForPost:self.post];
         }
     }
