@@ -30,11 +30,8 @@ import WordPressShared
 
     open func configureHeader(_ topic: ReaderAbstractTopic) {
         titleLabel.text = topic.title
-        if topic.following {
-            WPStyleGuide.applyReaderStreamHeaderFollowingStyle(followButton)
-        } else {
-            WPStyleGuide.applyReaderStreamHeaderNotFollowingStyle(followButton)
-        }
+        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
+        followButton.selected = topic.following
     }
 
     open func enableLoggedInFeatures(_ enable: Bool) {

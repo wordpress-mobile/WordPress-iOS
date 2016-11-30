@@ -1,10 +1,9 @@
 import Foundation
-import DTCoreText
 import WordPressShared
 import WordPressComAnalytics
 
 
-open class ReaderDetailViewController : UIViewController, UIViewControllerRestoration
+open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration
 {
 
     static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
@@ -14,6 +13,7 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
     fileprivate struct DetailConstants
     {
         static let LikeCountKeyPath = "likeCount"
+        static let MarginOffset = CGFloat(8.0)
     }
 
 
@@ -37,8 +37,9 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
     @IBOutlet fileprivate weak var footerViewHeightConstraint: NSLayoutConstraint!
 
     // Wrapper views
-    @IBOutlet fileprivate weak var scrollView: UIScrollView!
-    @IBOutlet fileprivate weak var contentStackView: UIStackView!
+    @IBOutlet fileprivate weak var textHeaderStackView: UIStackView!
+    @IBOutlet fileprivate weak var textFooterStackView: UIStackView!
+    fileprivate weak var textFooterTopConstraint: NSLayoutConstraint!
 
     // Header realated Views
     @IBOutlet fileprivate weak var headerView: UIView!
@@ -53,14 +54,13 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
     @IBOutlet fileprivate weak var bylineView: UIView!
     @IBOutlet fileprivate weak var avatarImageView: CircularImageView!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
-    @IBOutlet fileprivate weak var richTextView: WPRichTextView!
+    @IBOutlet fileprivate weak var textView: WPRichContentView!
     @IBOutlet fileprivate weak var attributionView: ReaderCardDiscoverAttributionView!
 
     // Spacers
     @IBOutlet fileprivate weak var featuredImageBottomPaddingView: UIView!
     @IBOutlet fileprivate weak var titleBottomPaddingView: UIView!
     @IBOutlet fileprivate weak var bylineBottomPaddingView: UIView!
-    @IBOutlet fileprivate weak var richtTextBottomPaddingView: UIView!
 
     open var shouldHideComments = false
     fileprivate var didBumpStats = false
@@ -164,7 +164,9 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-        scrollView.alpha = 0
+
+        setupContentHeaderAndFooter()
+        textView.alpha = 0
         footerView.isHidden = true
 
         // Hide the featured image and its padding until we know there is one to load.
@@ -209,14 +211,14 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
         // This is something we do to help with the resizing that can occur with
         // split screen multitasking on the iPad.
         view.layoutIfNeeded()
-
-        richTextView.refreshLayout()
-
     }
-
 
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animateAlongsideTransition(nil, completion: { (_) in
+            self.updateContentInsets()
+            self.updateTextViewMargins()
+        })
 
         // Make sure that the bars are visible after switching from landscape
         // to portrait orientation.  The content might have been scrollable in landscape
@@ -226,13 +228,6 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
         // in the completion handler below.
         if size.height > size.width {
             self.setBarsHidden(false)
-        }
-
-        // The image frames in the WPRichTextView are a little bit dumb about their
-        // resizing after an orientation change. Use the completion block to
-        // refresh media layout.
-        coordinator.animate(alongsideTransition: nil) { (_) in
-            self.richTextView.refreshLayout()
         }
     }
 
@@ -251,10 +246,6 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
 
     func handleApplicationDidBecomeActive(_ notification: Foundation.Notification) {
         view.layoutIfNeeded()
-
-        // Refresh media layout as our sizing may have changed if the user expanded
-        // or shrank the split screen handle.
-        richTextView.refreshLayout()
     }
 
 
@@ -284,7 +275,62 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
     }
 
 
-    fileprivate func setupNavBar() {
+
+    /// Composes the views for the post header and Discover attribution.
+    private func setupContentHeaderAndFooter() {
+        textView.addSubview(textHeaderStackView)
+        textHeaderStackView.topAnchor.constraintEqualToAnchor(textView.topAnchor).active = true
+
+        textView.addSubview(textFooterStackView)
+        textFooterTopConstraint = NSLayoutConstraint(item: textFooterStackView,
+                                                     attribute: .Top,
+                                                     relatedBy: .Equal,
+                                                     toItem: textView,
+                                                     attribute: .Top,
+                                                     multiplier: 1.0,
+                                                     constant: 0.0)
+        textView.addConstraint(textFooterTopConstraint)
+        textFooterTopConstraint.constant = textView.contentSize.height - textFooterStackView.frame.height
+        textView.setContentOffset(CGPoint.zero, animated: false)
+    }
+
+
+    /// Sets the left and right textContainerInset to preserve readable content margins.
+    private func updateContentInsets() {
+        var insets = textView.textContainerInset
+
+        let margin = view.readableContentGuide.layoutFrame.origin.x
+        insets.left = margin - DetailConstants.MarginOffset
+        insets.right = margin - DetailConstants.MarginOffset
+        textView.textContainerInset = insets
+        textView.layoutIfNeeded()
+    }
+
+
+    /// Returns the y position for the textfooter. Assign to the textFooter's top
+    /// constraint constant to correctly position the view.
+    private func textFooterYOffset() -> CGFloat {
+        let length = textView.textStorage.length
+        if length == 0 {
+            return textView.contentSize.height - textFooterStackView.frame.height
+        }
+        let range = NSRange(location: length - 1, length: 0)
+        let frame = textView.frameForTextInRange(range)
+        return frame.minY
+    }
+
+
+    /// Updates the bounds of the placeholder top and bottom text attachments so
+    /// there is enough vertical space for the text header and footer views.
+    private func updateTextViewMargins() {
+        textView.topMargin = textHeaderStackView.frame.height
+        textView.bottomMargin = textFooterStackView.frame.height
+
+        textFooterTopConstraint.constant = textFooterYOffset()
+    }
+
+
+    private func setupNavBar() {
         configureNavTitle()
 
         // Don't show 'Reader' in the next-view back button
@@ -309,7 +355,7 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
 
 
     fileprivate func configureView() {
-        scrollView.alpha = 1
+        textView.alpha = 1
         configureNavTitle()
         configureShareButton()
         configureHeader()
@@ -354,10 +400,12 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
     fileprivate func configureHeader() {
         // Blavatar
         let placeholder = UIImage(named: "post-blavatar-placeholder")
-        let size = blavatarImageView.frame.size.width * UIScreen.main.scale
-        let url = post?.siteIconForDisplay(ofSize: Int(size))
-        blavatarImageView.setImageWith(url!, placeholderImage: placeholder)
+        blavatarImageView.image = placeholder
 
+        let size = blavatarImageView.frame.size.width * UIScreen.mainScreen().scale
+        if let url = post?.siteIconForDisplayOfSize(Int(size)) {
+            blavatarImageView.setImageWithURL(url, placeholderImage: placeholder)
+        }
         // Site name
         let blogName = post?.blogNameForDisplay()
         blogNameButton.setTitle(blogName, for: UIControlState())
@@ -422,6 +470,16 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
     }
 
 
+
+    public override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        updateContentInsets()
+        updateTextViewMargins()
+    }
+
+
+
     fileprivate func configureFeaturedImageWithImage(_ image: UIImage) {
         // Unhide the views
         featuredImageView.isHidden = false
@@ -445,6 +503,9 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
         // Listen for taps so we can display the image detail
         let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderDetailViewController.didTapFeaturedImage(_:)))
         featuredImageView.addGestureRecognizer(tgr)
+
+        view.layoutIfNeeded()
+        updateTextViewMargins()
     }
 
 
@@ -501,16 +562,16 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
 
     }
 
+
+
     fileprivate func configureRichText() {
-        richTextView.delegate = self
-        let fontSize = WPStyleGuide.Detail.contentFontSize
-        let lineHeight = WPStyleGuide.Detail.contentLineHeight
-        var textOptions = richTextView.textOptions
-        textOptions?[DTDefaultFontSize] = WPStyleGuide.Cards.contentFontSize
-        textOptions?[DTDefaultLineHeightMultiplier] = lineHeight / fontSize
-        richTextView.textOptions = textOptions
-        richTextView.content = post!.contentForDisplay()
-        richTextView.privateContent = post!.isPrivate()
+        guard let post = post else {
+            return
+        }
+        textView.isPrivate = post.isPrivate()
+        textView.content = post.contentForDisplay()
+
+        updateTextViewMargins()
     }
 
 
@@ -681,6 +742,13 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
     // MARK: - Instance Methods
 
     func presentWebViewControllerWithURL(_ url:URL) {
+        var url = url
+        if url.host == nil {
+            if let postURLString = post?.permaLink {
+                let postURL = NSURL(string: postURLString)
+                url = NSURL(string: url.absoluteString!, relativeToURL: postURL)!
+            }
+        }
         let controller = WPWebViewController.authenticatedWebViewController(url)
         controller.addsWPComReferrer = true
         let navController = UINavigationController(rootViewController: controller)
@@ -725,8 +793,8 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
                 animations: {
                     self.view.layoutIfNeeded()
                     if pinToBottom {
-                        let y = self.scrollView.contentSize.height - self.scrollView.frame.height
-                        self.scrollView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
+                        let y = self.textView.contentSize.height - self.textView.frame.height
+                        self.textView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
                     }
 
                 }, completion: nil)
@@ -736,7 +804,7 @@ open class ReaderDetailViewController : UIViewController, UIViewControllerRestor
 
 
     func isScrollViewAtBottom() -> Bool {
-        return scrollView.contentOffset.y + scrollView.frame.height == scrollView.contentSize.height
+        return textView.contentOffset.y + textView.frame.height == textView.contentSize.height
     }
 
     // MARK: - Analytics
@@ -908,22 +976,43 @@ extension ReaderDetailViewController : ReaderCardDiscoverAttributionViewDelegate
 }
 
 
-// MARK: - WPRichTextView Delegate Methods
+// MARK: - UITextView/WPRichContentView Delegate Methods
 
-extension ReaderDetailViewController : WPRichTextViewDelegate
+extension ReaderDetailViewController: WPRichContentViewDelegate
 {
-    public func richTextView(_ richTextView: WPRichTextView, didReceiveImageLinkAction imageControl: WPRichTextImage) {
+
+    public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        presentWebViewControllerWithURL(URL)
+        return false
+    }
+
+
+    @available(iOS 10, *)
+    public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        if interaction == .presentActions {
+            // show
+            let frame = textView.frameForTextInRange(characterRange)
+            let shareController = PostSharingController()
+            shareController.shareURL(URL, fromRect: frame, inView: textView, inViewController: self)
+        } else {
+            presentWebViewControllerWithURL(URL)
+        }
+        return false
+    }
+
+
+    func richContentView(richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage) {
         var controller: WPImageViewController
 
-        if WPImageViewController.isUrlSupported(imageControl.linkURL as URL!) {
-            controller = WPImageViewController(image: imageControl.imageView.image, andURL: imageControl.linkURL as URL!)
+        if WPImageViewController.isUrlSupported(image.linkURL) {
+            controller = WPImageViewController(image: image.imageView.image, andURL: image.linkURL)
 
-        } else if let linkURL = imageControl.linkURL {
-            presentWebViewControllerWithURL(linkURL as URL)
+        } else if let linkURL = image.linkURL {
+            presentWebViewControllerWithURL(linkURL)
             return
 
         } else {
-            controller = WPImageViewController(image: imageControl.imageView.image)
+            controller = WPImageViewController(image: image.imageView.image)
         }
 
         controller.modalTransitionStyle = .crossDissolve
@@ -931,19 +1020,6 @@ extension ReaderDetailViewController : WPRichTextViewDelegate
 
         present(controller, animated: true, completion: nil)
     }
-
-
-    public func richTextView(_ richTextView: WPRichTextView, didReceiveLinkAction linkURL: URL) {
-        var url = linkURL
-        if url.host != nil {
-            if let postURLString = post?.permaLink {
-                let postURL = URL(string: postURLString)
-                url = URL(string: linkURL.absoluteString, relativeTo: postURL)!
-            }
-        }
-        presentWebViewControllerWithURL(url)
-    }
-
 }
 
 
