@@ -8,6 +8,7 @@
 
 import UIKit
 import WordPressShared
+import Gridicons
 
 class PostPostViewController: UIViewController {
 
@@ -57,8 +58,13 @@ class PostPostViewController: UIViewController {
 
         view.alpha = 0
         shareButton.alpha = 0
+        shareButton.setTitle(NSLocalizedString("Share", comment: "Button label to share a post"), forState: .Normal)
+        shareButton.setImage(Gridicon.iconOfType(.ShareIOS, withSize: CGSize(width: 18, height: 18)), forState: .Normal)
+        shareButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
         editButton.alpha = 0
+        editButton.setTitle(NSLocalizedString("Edit Post", comment: "Button label for editing a post"), forState: .Normal)
         viewButton.alpha = 0
+        viewButton.setTitle(NSLocalizedString("View Post", comment: "Button label for viewing a post"), forState: .Normal)
 
         if revealPost {
             showPostPost()
