@@ -12,6 +12,7 @@
 #import "RemoteMedia.h"
 #import "RemoteReaderSite.h"
 #import "MediaServiceRemote.h"
+#import "SourcePostAttribution.h"
 #import "MediaServiceRemoteREST.h"
 #import "ReaderSiteServiceRemote.h"
 #import "UIAlertControllerProxy.h"

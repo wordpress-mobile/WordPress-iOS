@@ -1,8 +1,10 @@
 import Foundation
 import CoreData
 
-@objc public class ReaderCrossPostMeta : NSManagedObject
+@objc public class ReaderCrossPostMeta : NSManagedObject, ManagedObject
 {
+    static let entityName = "ReaderCrossPostMeta"
+
     // Relations
     @NSManaged public var post: ReaderPost
 
