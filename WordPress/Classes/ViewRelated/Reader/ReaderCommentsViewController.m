@@ -246,11 +246,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     // Layout
     NSDictionary *views = NSDictionaryOfVariableBindings(headerView, borderView);
     NSDictionary *metrics = @{@"margin":@12};
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[headerView]|"
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(15)-[headerView]-(15)-|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(margin)-[headerView]-(>=1)-[borderView(1)]|"
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(margin)-[headerView(44)]-(>=1)-[borderView(1@1000)]|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
@@ -362,23 +362,23 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     };
     
     // PostHeader Constraints
-    [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.view.readableContentGuide.leftAnchor] setActive:YES];
-    [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.view.readableContentGuide.rightAnchor] setActive:YES];
+    [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.layoutMarginsGuide.leftAnchor constant:-15] setActive:YES];
+    [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.layoutMarginsGuide.rightAnchor constant:15] setActive:YES];
 
     // TableView Contraints
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader(headerHeight)][tableView][replyTextView]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
-    
+
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
 
     // ReplyTextView Constraints
-    [[self.replyTextView.leftAnchor constraintEqualToAnchor:self.view.readableContentGuide.leftAnchor] setActive:YES];
-    [[self.replyTextView.rightAnchor constraintEqualToAnchor:self.view.readableContentGuide.rightAnchor] setActive:YES];
+    [[self.replyTextView.leftAnchor constraintEqualToAnchor:self.tableView.layoutMarginsGuide.leftAnchor constant:-16] setActive:YES];
+    [[self.replyTextView.rightAnchor constraintEqualToAnchor:self.tableView.layoutMarginsGuide.rightAnchor constant:16] setActive:YES];
 
     self.replyTextViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
                                                                       attribute:NSLayoutAttributeBottom
