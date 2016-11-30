@@ -59,11 +59,16 @@ extension WPImageURLHelper
         case Min = 1
     }
 
+    /// - returns: `true` for "i0.wp.com", "i1.wp.com" & "i2.wp.com", `false` otherwise (see https://developer.wordpress.com/docs/photon/)
+    public static func isPhotonURL(url: NSString) -> Bool {
+        return url.containsString(".\(wordpressURLBase)")
+    }
+
     /// Create a "photonized" URL from the passed arguments. Kept as a convenient way to use default values for `forceResize` and `imageQuality` parameters from ObjC.
     ///
     /// - parameters:
-    /// - size: The desired size of the photon image. If height is set to zero the returned image will have a height proportional to the requested width.
-    /// - url: The URL to the source image.
+    ///     - size: The desired size of the photon image. If height is set to zero the returned image will have a height proportional to the requested width.
+    ///     - url: The URL to the source image.
     ///
     /// - returns: A URL to the photon service with the source image as its subject.
     public static func photonDefaultURL(withSize size: CGSize, forImageURL url: NSURL) -> NSURL? {
@@ -73,10 +78,10 @@ extension WPImageURLHelper
     /// Create a "photonized" URL from the passed arguments.
     ///
     /// - parameters:
-    /// - size: The desired size of the photon image. If height is set to zero the returned image will have a height proportional to the requested width.
-    /// - url: The URL to the source image.
-    /// - forceResize: By default Photon does not upscale beyond a certain percentage. Setting this to `true` forces the returned image to match the specified size. Default is `true`.
-    /// - quality: An integer value 1 - 100. Passed values are constrained to this range. Default is 80%.
+    ///     - size: The desired size of the photon image. If height is set to zero the returned image will have a height proportional to the requested width.
+    ///     - url: The URL to the source image.
+    ///     - forceResize: By default Photon does not upscale beyond a certain percentage. Setting this to `true` forces the returned image to match the specified size. Default is `true`.
+    ///     - quality: An integer value 1 - 100. Passed values are constrained to this range. Default is 80%.
     ///
     /// - returns: A URL to the photon service with the source image as its subject.
     public static func photonURL(withSize size: CGSize, forImageURL url: NSURL, forceResize: Bool = true, imageQuality: UInt = PhotonImageQuality.Default.rawValue) -> NSURL? {
@@ -137,7 +142,7 @@ extension WPImageURLHelper
 
         // Strip original resizing parameters, or we might get an image too small
         urlComponents.queryItems = photonQueryItems(forSize: scaledSize, usingSSL: url.scheme == RequestScheme.Secure.rawValue, forceResize: forceResize, quality: boundedQuality)
-        
+
         urlComponents.fragment = nil
 
         return urlComponents.URL

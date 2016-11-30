@@ -11,6 +11,13 @@ extension WPImageURLHelper
 {
     private static let defaultBlavatarSize: CGFloat = 40
 
+    /// Transform a site icon URL to contain a size query specifying the width and height of the square.
+    ///
+    /// - parameters:
+    ///     - path: the original site icon URL
+    ///     - size: the square size of the image to download
+    ///
+    /// - returns: the original URL with the size query appended, or `nil` if the URL is invalid
     public class func siteIconURL(forSiteIconURL path: String, size: NSInteger) -> NSURL? {
         guard let components = NSURLComponents(string: path) else { return nil }
         components.queryItems = [
@@ -20,6 +27,15 @@ extension WPImageURLHelper
         return components.URL
     }
 
+    /// Construct the URL for a site icon using data extracted from a `ReaderPostContentProvided`, 
+    /// namely the site icon URl or blog URL.
+    ///
+    /// - parameters:
+    ///     - contentProvider: the object conforming to the `ReaderPostContentProvided` protocol
+    ///     - size: the square size of the image to download
+    ///
+    /// - returns: the URL for the site icon of specified size, or `nil` if the URL is invalid, 
+    /// or `contentProvider` does not contain a siteIconURL or blogURL,
     public class func siteIconURL(forContentProvider contentProvider: ReaderPostContentProvider, size: Int) -> NSURL? {
         if (contentProvider.siteIconURL() == nil || contentProvider.siteIconURL().characters.count == 0) {
             guard let blogURL = contentProvider.blogURL(), let hash = NSURL(string: blogURL)?.host?.md5() else {
@@ -43,6 +59,14 @@ extension WPImageURLHelper
         return components?.URL
     }
 
+    /// Given a site path and bounds for a `UIImageView`, construct the URL to the
+    /// site's icon image of appropriate size.
+    ///
+    /// - parameters:
+    ///     - path: the path to the original site icon image
+    ///     - bounds: the `CGRect` in which the image will be displayed
+    ///
+    /// - returns: a URL derived from the original URL with a size query appended
     public class func siteIconURL(forPath path: String?, imageViewBounds bounds: CGRect?) -> NSURL? {
         guard
             let path = path,
@@ -56,6 +80,10 @@ extension WPImageURLHelper
         return components.URL
     }
 
+    /// Computes the size needed for a blavatar to fit inside a specified `CGRect` 
+    /// (usually that of a `UIImageView`). If the `CGRect`'s size is `.zero`, then
+    /// the default blavatar size is returned; otherwise, the maximum of its
+    /// width or height is returned.
     public static func blavatarSizeInPoints(forImageViewBounds bounds: CGRect) -> Int {
         var size = defaultBlavatarSize
 

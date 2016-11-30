@@ -11,6 +11,14 @@ import Foundation
 
 extension WPImageURLHelper
 {
+    /// Construct a URL for an avatar given the type of avatar, the hash and  desired size.
+    ///
+    /// - parameters:
+    ///     - hash: the precomputed hash for the avatar
+    ///     - type: type of the avatar, see `WPAvatarSourceType`
+    ///     - size: the size of avatar to be retrieved from the server
+    ///
+    /// - returns: the URL for the avatar of given type/size, or `nil` if the URL could not be constructed (for instance, if one of the components turns out to be invalid)
     public class func avatarURL(withHash hash: String, type: WPAvatarSourceType, size: CGSize) -> NSURL? {
         var path: String? = nil
         switch type {
@@ -45,11 +53,25 @@ extension WPImageURLHelper
 
 extension WPImageURLHelper
 {
+    /// Construct the URL for a blavatar given the blog host and desired square image size.
+    ///
+    /// - parameters:
+    ///     - host: the blog host, e.g. myblog.wordpress.com
+    ///     - size: square size of the image to retrieve
+    ///
+    /// - returns: the blavatar URL, or `nil` if the URL is invalid, e.g. if `host` is not a valid web host
     public class func blavatarURL(forHost host: String, size: NSInteger) -> NSURL? {
         let path = (WPGravatarBaseURL as NSString).stringByAppendingPathComponent(host.md5())
         return blavatarURL(forBlavatarURL: path, size: size)
     }
 
+    /// Construct URL for a blavatar given the host/path and desired square image size.
+    ///
+    /// - parameters:
+    ///     - path: the host/path of the image, e.g. myblog.wordpress.com/image.jpg
+    ///     - size: square size of the image to retrieve
+    ///
+    /// - returns: the blavatar URL, or `nil` if the URL is invalid, e.g. if `path` is not a valid internet path
     public class func blavatarURL(forBlavatarURL path: String, size: NSInteger) -> NSURL? {
         guard let components = NSURLComponents(string: path) else { return nil }
         components.queryItems = [
@@ -72,9 +94,9 @@ extension WPImageURLHelper
     /// Returns the Gravatar URL, for a given email, with the specified size + rating.
     ///
     /// - Parameters:
-    /// - email: the user's email
-    /// - size: required download size
-    /// - rating: image rating filtering
+    ///     - email: the user's email
+    ///     - size: required download size
+    ///     - rating: image rating filtering
     ///
     /// - Returns: Gravatar's URL
     public class func gravatarURL(forEmail email: String, size: NSInteger, rating: String) -> NSURL? {
@@ -88,6 +110,11 @@ extension WPImageURLHelper
         return components?.URL
     }
 
+    /// Transform a gravatar URL into canonical form, by prepending "secure." to the host and using the "https" scheme.
+    ///
+    /// - parameter url: the original gravatar URL to transform
+    ///
+    /// - returns: the transformed URL or `nil` if the URL is invalid or the hash in the original URL's path is computed from "unknown@gravatar.com"
     public class func gravatarURL(forURL url: NSURL) -> NSURL? {
         guard isGravatarURL(url) else {
             return nil
@@ -110,6 +137,13 @@ extension WPImageURLHelper
         return components.URL
     }
 
+    /// Transform a gravatar URL to a form that can request the gravatar of the specified size.
+    ///
+    /// - parameters:
+    ///     - url: the original gravatar URL to add size query onto
+    ///     - size: the desired size of the image to download
+    ///
+    /// - returns: the transformed URL or `nil` if the URL is invalid
     public class func gravatarURL(forURL url: NSURL, size: Int) -> NSURL? {
         guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true) else { return nil }
         components.queryItems = [
