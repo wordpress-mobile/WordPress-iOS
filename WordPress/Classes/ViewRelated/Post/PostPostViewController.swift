@@ -160,6 +160,7 @@ class PostPostViewController: UIViewController {
 
     @IBAction func editTapped() {
         self.reshowEditor?()
+        revealPost = true
     }
 
     @IBAction func viewTapped() {
