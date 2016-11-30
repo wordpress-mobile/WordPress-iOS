@@ -4,46 +4,46 @@ import Foundation
 public class WPImageURLHelper: NSObject
 {
     struct GravatarDefaults {
-        static let scheme = RequestScheme.Secure.rawValue
+        static let scheme = RequestScheme.Secure
         static let host = "secure.\(gravatarURLBase)"
         // unknownHash = md5("unknown@gravatar.com")
         static let unknownHash = "ad516503a11cd5ca435acc9bb6523536"
     }
 
-    enum RequestScheme: String {
-        case Insecure = "http"
-        case Secure = "https"
+    struct RequestScheme {
+        static let Insecure = "http"
+        static let Secure = "https"
     }
 
-    enum URLComponent: String {
-        case Blavatar = "blavatar"
-        case Gravatar = "avatar"
+    struct URLComponent {
+        static let Blavatar = "blavatar"
+        static let Gravatar = "avatar"
     }
 
-    enum ImageURLQueryField: String {
-        case Width = "w"
-        case Height = "h"
-        case Size = "s"
-        case Default = "d"
-        case ForceDefault = "f"
-        case Rating = "r"
+    struct ImageURLQueryField {
+        static let Width = "w"
+        static let Height = "h"
+        static let Size = "s"
+        static let Default = "d"
+        static let ForceDefault = "f"
+        static let Rating = "r"
     }
 
-    enum ImageDefaultValue: String {
-        case None = "404"
-        case MysteryMan = "mm"
-        case Identicon = "identicon"
-        case MonsterID = "monsterid"
-        case Wavatar = "wavatar"
-        case Retro = "retro"
-        case Blank = "blank"
+    struct ImageDefaultValue {
+        static let None = "404"
+        static let MysteryMan = "mm"
+        static let Identicon = "identicon"
+        static let MonsterID = "monsterid"
+        static let Wavatar = "wavatar"
+        static let Retro = "retro"
+        static let Blank = "blank"
     }
 
-    enum ImageRatingValue: String {
-        case G = "g"
-        case PG = "pg"
-        case R = "r"
-        case X = "x"
+    struct ImageRatingValue {
+        static let G = "g"
+        static let PG = "pg"
+        static let R = "r"
+        static let X = "x"
     }
 
     static let gravatarURLBase = "gravatar.com"
@@ -70,7 +70,7 @@ extension WPImageURLHelper
         var newQueryItems = [NSURLQueryItem]()
         if let queryItems = urlComponents.queryItems {
             for queryItem in queryItems {
-                if queryItem.name != ImageURLQueryField.Width.rawValue && queryItem.name != ImageURLQueryField.Height.rawValue {
+                if queryItem.name != ImageURLQueryField.Width && queryItem.name != ImageURLQueryField.Height {
                     newQueryItems.append(queryItem)
                 }
             }
@@ -78,12 +78,12 @@ extension WPImageURLHelper
         let height = Int(size.height)
         let width = Int(size.width)
         if height != 0 {
-            let heightItem = NSURLQueryItem(name:ImageURLQueryField.Height.rawValue, value:"\(height)")
+            let heightItem = NSURLQueryItem(name:ImageURLQueryField.Height, value:"\(height)")
             newQueryItems.append(heightItem)
         }
 
         if width != 0 {
-            let widthItem = NSURLQueryItem(name:ImageURLQueryField.Width.rawValue, value:"\(width)")
+            let widthItem = NSURLQueryItem(name:ImageURLQueryField.Width, value:"\(width)")
             newQueryItems.append(widthItem)
         }
 
