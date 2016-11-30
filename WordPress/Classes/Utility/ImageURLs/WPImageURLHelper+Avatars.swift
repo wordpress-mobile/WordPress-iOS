@@ -59,24 +59,20 @@ extension WPImageURLHelper
         ]
         return components.URL
     }
-
-
 }
 
 // MARK: Gravatar URLs
 
 extension WPImageURLHelper
 {
-    /**
-     Returns the Gravatar URL, for a given email, with the specified size + rating.
-
-     - Parameters:
-     - email: the user's email
-     - size: required download size
-     - rating: image rating filtering
-
-     - Returns: Gravatar's URL
-     */
+    /// Returns the Gravatar URL, for a given email, with the specified size + rating.
+    ///
+    /// - Parameters:
+    /// - email: the user's email
+    /// - size: required download size
+    /// - rating: image rating filtering
+    ///
+    /// - Returns: Gravatar's URL
     public class func gravatarURL(forEmail email: String, size: NSInteger, rating: String) -> NSURL? {
         let path = (WPGravatarBaseURL as NSString).stringByAppendingPathComponent(email.md5())
         let components = NSURLComponents(string: path)

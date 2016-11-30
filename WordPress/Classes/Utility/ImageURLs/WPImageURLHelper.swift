@@ -54,16 +54,15 @@ public class WPImageURLHelper: NSObject
 
 extension WPImageURLHelper
 {
-    /**
-     Adds to the provided url width and height parameters to allow the image to be resized on the server
 
-     - parameter size: the required size for the image
-     - parameter url:  the original url for the image
-
-     - returns: an URL with the added query parameters.
-
-     - note: If there is any problem with the original URL parsing, the original URL is returned with no changes.
-     */
+    /// Adds to the provided url width and height parameters to allow the image to be resized on the server
+    ///
+    /// - parameter size: the required size for the image
+    /// - parameter url:  the original url for the image
+    ///
+    /// - returns: an URL with the added query parameters.
+    ///
+    /// - note: If there is any problem with the original URL parsing, the original URL is returned with no changes.
     public class func imageURLWithSize(size: CGSize, forImageURL url:NSURL) -> NSURL {
         guard let urlComponents = NSURLComponents(URL: url, resolvingAgainstBaseURL: true) else {
             return url
