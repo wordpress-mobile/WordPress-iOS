@@ -365,6 +365,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _blogListNavigationController = nil;
     _blogListSplitViewController = nil;
     _readerNavigationController = nil;
+    _readerMenuViewController = nil;
     _readerSplitViewController = nil;
     _meSplitViewController = nil;
 
