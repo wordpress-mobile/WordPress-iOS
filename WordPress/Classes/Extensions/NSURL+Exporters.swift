@@ -151,22 +151,33 @@ extension NSURL: ExportableAsset {
                         successHandler: successHandler,
                         errorHandler: errorHandler)
         } else if isVideo {
-            do {
-                let asset = AVURLAsset(URL: self, options: nil)
-                let imgGenerator = AVAssetImageGenerator(asset: asset)
-                imgGenerator.maximumSize = targetSize
-                imgGenerator.appliesPreferredTrackTransform = true
-                let cgImage = try imgGenerator.copyCGImageAtTime(CMTimeMake(0, 1), actualTime: nil)
+            let asset = AVURLAsset(URL: self, options: nil)
+            let imgGenerator = AVAssetImageGenerator(asset: asset)
+            imgGenerator.maximumSize = targetSize
+            imgGenerator.appliesPreferredTrackTransform = true
+            imgGenerator.generateCGImagesAsynchronouslyForTimes([NSValue(CMTime:CMTimeMake(0, 1))], completionHandler: { (time, cgImage, actualTime, result, error) in
+                guard let cgImage = cgImage else {
+                    if let error = error {
+                        errorHandler(error:error)
+                    } else {
+                        errorHandler(error: self.errorForCode(.FailedToExport,
+                            failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
+                            ))
+                    }
+                    return
+                }
                 let uiImage = UIImage(CGImage: cgImage)
-                try uiImage.writeJPEGToURL(url)
-                successHandler(resultingSize: uiImage.size)
-            } catch let error as NSError {
-                errorHandler(error: error)
-            } catch {
-                errorHandler(error: errorForCode(.FailedToExport,
-                    failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
-                    ))
-            }
+                do {
+                    try uiImage.writeJPEGToURL(url)
+                        successHandler(resultingSize: uiImage.size)
+                } catch let error as NSError {
+                    errorHandler(error: error)
+                } catch {
+                    errorHandler(error: self.errorForCode(.FailedToExport,
+                        failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
+                        ))
+                }
+            })
         } else {
             errorHandler(error: errorForCode(.FailedToExport,
                 failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
