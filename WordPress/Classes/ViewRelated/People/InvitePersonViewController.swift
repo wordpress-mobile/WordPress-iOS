@@ -50,6 +50,12 @@ class InvitePersonViewController : UITableViewController {
         }
     }
 
+    /// Roles available for the current site
+    ///
+    private var availableRoles: [Role] {
+        return (blog.siteVisibility == .Private) ? Role.inviteRolesForPrivateSite : Role.inviteRoles
+    }
+
     /// Last Section Index
     ///
     private var lastSectionIndex: Int {
@@ -97,6 +103,7 @@ class InvitePersonViewController : UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        setupDefaultRole()
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
@@ -165,9 +172,7 @@ class InvitePersonViewController : UITableViewController {
             return
         }
 
-        let roles = (blog.siteVisibility == .Private) ? Role.inviteRolesForPrivateSite : Role.inviteRoles
-
-        roleViewController.mode = .Static(roles: roles)
+        roleViewController.mode = .Static(roles: availableRoles)
         roleViewController.selectedRole = role
         roleViewController.onChange = { [unowned self] newRole in
             self.role = newRole
@@ -362,6 +367,14 @@ private extension InvitePersonViewController {
 
         // By default, Send is disabled
         navigationItem.rightBarButtonItem?.enabled = false
+    }
+
+    func setupDefaultRole() {
+        guard let firstRole = availableRoles.first else {
+            return
+        }
+
+        role = firstRole
     }
 }
 
