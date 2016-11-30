@@ -1,10 +1,15 @@
 #import "HelpShiftUtils.h"
-#import <Mixpanel/MPTweakInline.h>
-#import "ApiCredentials.h"
+
 #import <Helpshift/HelpshiftCore.h>
 #import <Helpshift/HelpshiftSupport.h>
-#import "WPAccount.h"
+#import <Mixpanel/MPTweakInline.h>
+
+#import "AccountService.h"
+#import "ApiCredentials.h"
 #import "Blog.h"
+#import "BlogService.h"
+#import "ContextManager.h"
+#import "WPAccount.h"
 
 NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
 NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
@@ -123,6 +128,36 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
     return [tags allObjects];
 }
 
++ (NSDictionary<NSString *, NSObject *> *)helpshiftMetadata
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    NSString *isWPCom = (defaultAccount != nil) ? @"Yes" : @"No";
+    NSMutableDictionary *metaData = [NSMutableDictionary dictionaryWithDictionary:@{ @"isWPCom" : isWPCom }];
+
+    NSArray *allBlogs = [blogService blogsForAllAccounts];
+    for (int i = 0; i < allBlogs.count; i++) {
+        Blog *blog = allBlogs[i];
+
+        NSDictionary *blogData = @{[NSString stringWithFormat:@"blog-%i", i+1]: [blog logDescription]};
+
+        [metaData addEntriesFromDictionary:blogData];
+
+        if (defaultAccount) {
+            [metaData addEntriesFromDictionary:@{@"WPCom Username": defaultAccount.username}];
+            NSArray *tags = [HelpshiftUtils planTagsForAccount:defaultAccount];
+            if (tags) {
+                [metaData setObject:tags forKey:HelpshiftSupportTagsKey];
+            }
+        }
+    }
+
+    return [metaData copy];
+}
+
 #pragma mark - HelpshiftSupport Delegate
 
 - (void)didReceiveInAppNotificationWithMessageCount:(NSInteger)count
@@ -144,7 +179,17 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 
 - (void)userRepliedToConversationWithMessage:(NSString *)newMessage
 {
-    [WPAnalytics track:WPAnalyticsStatSupportSentReplyToSupportMessage];
+    if ([newMessage isEqualToString:HelpshiftSupportUserAcceptedTheSolution]) {
+        [WPAnalytics track:WPAnalyticsStatSupportUserAcceptedTheSolution];
+    } else if ([newMessage isEqualToString:HelpshiftSupportUserRejectedTheSolution]) {
+        [WPAnalytics track:WPAnalyticsStatSupportUserRejectedTheSolution];
+    } else if ([newMessage isEqualToString:HelpshiftSupportUserSentScreenShot]) {
+        [WPAnalytics track:WPAnalyticsStatSupportUserSentScreenshot];
+    } else if ([newMessage isEqualToString:HelpshiftSupportUserReviewedTheApp]) {
+        [WPAnalytics track:WPAnalyticsStatSupportUserReviewedTheApp];
+    } else {
+        [WPAnalytics track:WPAnalyticsStatSupportUserRepliedToHelpshift];
+    }
 }
 
 @end

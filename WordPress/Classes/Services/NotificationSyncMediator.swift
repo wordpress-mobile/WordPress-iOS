@@ -1,14 +1,27 @@
 import Foundation
 
 
+/// Notes:
+///
+/// You may have noticed this is a *Mediator*, not a service. Reason we're adopting a different name here,
+/// briefly, is because this entity needs to be aware of other instances, in order to successfully
+/// prevent race conditions / data duplication.
+///
+/// IE multiple SyncService's running concurrently, with no shared MOC / Locks, may end up retrieving and
+/// inserting the same set of notifications. Which leads to loss of data integrity.
+///
+/// Details in #6220.
+///
+
+
 // MARK: - Notifications
 //
-let NotificationSyncServiceDidUpdateNotifications = "NotificationSyncServiceDidUpdateNotifications"
+let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDidUpdateNotifications"
 
 
-// MARK: - NotificationSyncService
+// MARK: - NotificationSyncMediator
 //
-class NotificationSyncService
+class NotificationSyncMediator
 {
     /// Returns the Main Managed Context
     ///
@@ -22,11 +35,19 @@ class NotificationSyncService
     ///
     fileprivate let maximumNotes = 100
 
-    /// Returns the main CoredAta Context
+    /// Main CoreData Context
     ///
     fileprivate var mainContext: NSManagedObjectContext {
         return contextManager.mainContext
     }
+
+    /// Thread Safety Helper!
+    ///
+    private static let lock = NSLock()
+
+    /// Shared PrivateContext among all of the Sync Service Instances
+    ///
+    private static var privateContext: NSManagedObjectContext!
 
 
 
@@ -180,7 +201,7 @@ class NotificationSyncService
 
 // MARK: - Private Helpers
 //
-private extension NotificationSyncService
+private extension NotificationSyncMediator
 {
     /// Given a collection of RemoteNotification Hashes, this method will determine the NotificationID's
     /// that are either missing in our database, or have been remotely updated.
@@ -190,8 +211,8 @@ private extension NotificationSyncService
     ///     - completion: Callback to be executed on completion
     ///
     func determineUpdatedNotes(with remoteHashes: [RemoteNotification], completion: @escaping (([String]) -> Void)) {
-        let derivedContext = contextManager.newDerivedContext()
-        let helper = CoreDataHelper<Notification>(context: derivedContext!)
+        let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
+        let helper = CoreDataHelper<Notification>(context: derivedContext)
 
         derivedContext?.perform {
             let remoteIds = remoteHashes.map { $0.notificationId }
@@ -226,8 +247,8 @@ private extension NotificationSyncService
     ///     - completion: Callback to be executed on completion
     ///
     func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: ((Void) -> Void)? = nil) {
-        let derivedContext = contextManager.newDerivedContext()
-        let helper = CoreDataHelper<Notification>(context: derivedContext!)
+        let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
+        let helper = CoreDataHelper<Notification>(context: derivedContext)
 
         derivedContext?.perform {
             for remoteNote in remoteNotes {
@@ -252,8 +273,8 @@ private extension NotificationSyncService
     /// - Parameter remoteHashes: Collection of remoteNotifications.
     ///
     func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: @escaping ((Void) -> Void)) {
-        let derivedContext = contextManager.newDerivedContext()
-        let helper = CoreDataHelper<Notification>(context: derivedContext!)
+        let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
+        let helper = CoreDataHelper<Notification>(context: derivedContext)
 
         derivedContext?.perform {
             let remoteIds = remoteHashes.map { $0.notificationId }
@@ -289,11 +310,36 @@ private extension NotificationSyncService
     }
 
 
-    /// Posts a `NotificationSyncServiceDidUpdateNotifications` Notification, so that (potential listeners)
+    /// Posts a `NotificationSyncMediatorDidUpdateNotifications` Notification, so that (potential listeners)
     /// may react upon new content.
     ///
     func notifyNotificationsWereUpdated() {
         let notificationCenter = NotificationCenter.default
-        notificationCenter.post(name: Foundation.Notification.Name(rawValue: NotificationSyncServiceDidUpdateNotifications), object: nil)
+        notificationCenter.post(name: Foundation.Notification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+}
+
+
+
+// MARK: - Thread Safety Helpers
+//
+extension NotificationSyncMediator
+{
+    /// Returns the current Shared Derived Context, if any. Otherwise, proceeds to create a new
+    /// derived context, given a specified ContextManager.
+    ///
+    static func sharedDerivedContext(with manager: ContextManager) -> NSManagedObjectContext {
+        lock.lock()
+        if privateContext == nil {
+            privateContext = manager.newDerivedContext()
+        }
+        lock.unlock()
+
+        return privateContext
+    }
+
+    /// Nukes the private Shared Derived Context instance. For unit testing purposes.
+    ///
+    static func resetSharedDerivedContext() {
+        privateContext = nil
     }
 }

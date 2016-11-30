@@ -1,9 +1,8 @@
 import Foundation
-import DTCoreText
 
 class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 {
-    typealias successBlock = ((WPRichTextEmbed)->())
+    typealias successBlock = ((WPRichTextEmbed)->Void)
 
 
     // MARK: Properties
@@ -12,7 +11,13 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     var attachmentSize = CGSize.zero
     var documentSize : CGSize {
         get {
-            return webView.scrollView.contentSize
+            var contentSize = webView.scrollView.contentSize
+            if let heightStr = webView.stringByEvaluatingJavaScriptFromString("document.documentElement.scrollHeight") {
+                if let height = NSNumberFormatter().numberFromString(heightStr) {
+                    contentSize.height = CGFloat(height)
+                }
+            }
+            return contentSize
         }
     }
     var success : successBlock?
@@ -34,7 +39,8 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     // MARK: LifeCycle
 
     override init(frame: CGRect) {
-        webView = UIWebView(frame: CGRect(x: 0.0, y: 0.0, width: 100.0, height: 100.0)) // arbitrary frame
+        // A small starting frame to avoid being sized too tall
+        webView = UIWebView(frame: CGRect(x: 0.0, y: 0.0, width: 20.0, height: 20.0))
 
         super.init(frame: frame)
 
@@ -46,7 +52,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
         if let decodedWebView = aDecoder.decodeObject(forKey: "webView") as? UIWebView {
             webView = decodedWebView
         } else {
-            webView = UIWebView(frame: CGRect(x: 0.0, y: 0.0, width: 100.0, height: 100.0))
+            webView = UIWebView(frame: CGRect(x: 0.0, y: 0.0, width: 20.0, height: 20.0))
         }
 
         super.init(coder: aDecoder)
@@ -80,7 +86,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 
         // embeds, unlike images, typically have no intrinsic content size that we can use to fall back on
         if (fixedHeight > 0) {
-            return CGSize(width: CGFloat(CGFLOAT_WIDTH_UNKNOWN), height: fixedHeight)
+            return CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedHeight)
         }
 
         if !attachmentSize.equalTo(CGSize.zero) {
@@ -107,6 +113,18 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     }
 
     func loadContentURL(_ url: URL) {
+        var url = url
+        if let absoluteString = url.absoluteString,
+            let components = NSURLComponents(string: absoluteString) {
+                if components.scheme == nil {
+                    components.scheme = "http"
+                }
+            if  let componentStr = components.string,
+                let componentURL = NSURL(string: componentStr) {
+                    url = componentURL
+            }
+        }
+
         contentURL = url
         let request = URLRequest(url: url)
         webView.loadRequest(request)
@@ -117,6 +135,18 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
 
+
+    func checkIfDoneLoading() {
+        if webView.loading {
+            return
+        }
+
+        if let callback = success {
+            callback(self)
+        }
+        success = nil
+        webView.delegate = nil
+    }
 
     // MARK: WebView delegate methods
 
@@ -138,15 +168,19 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
             addSubview(webView)
         }
 
-        // Perform the callback, but only once.
-        if let callback = success {
-            callback(self)
+        // The webViewDidFinishLoad method can be called many times for a single
+        // web page. Wait a brief moment then check if the webview is done loading content.
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
+            self?.checkIfDoneLoading()
         }
-        success = nil
     }
 
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        DDLogSwift.logError(error.localizedDescription)
+        if let url = contentURL {
+            DDLogSwift.logError("RichTextEmbed failed to load content URL: \(url).")
+        }
+        DDLogSwift.logError("Error: \(error.localizedDescription)")
     }
 
 }

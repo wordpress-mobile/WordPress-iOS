@@ -345,15 +345,6 @@ open class NotificationSettingsViewController : UIViewController
             }
         }
 
-        func footerPadding() -> CGFloat {
-            switch self {
-            case .wordPressCom:
-                return UIDevice.isPad() ? Section.paddingWordPress : Section.paddingZero
-            default:
-                return Section.paddingZero
-            }
-        }
-
         // MARK: - Private Constants
         fileprivate static let paddingZero      = CGFloat(0)
         fileprivate static let paddingWordPress = CGFloat(40)

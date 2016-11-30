@@ -214,7 +214,8 @@ extension Role {
     // MARK: - Static Properties
     //
     static let inviteRoles: [Role] = [.Follower, .Admin, .Editor, .Author, .Contributor]
-    static let inviteRolesForPrivateSite: [Role] = [.Viewer, .Follower, .Admin, .Editor, .Author, .Contributor]
+    static let inviteRolesForPrivateSite: [Role] = [.Viewer, .Admin, .Editor, .Author, .Contributor]
+
 
     // MARK: - Private Properties
     //

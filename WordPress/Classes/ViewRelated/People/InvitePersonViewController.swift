@@ -32,7 +32,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Invitation Role
     ///
-    fileprivate var role : Role = .Follower {
+    fileprivate var role: Role = .Follower {
         didSet {
             refreshRoleCell()
             validateInvitation()
@@ -41,7 +41,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Invitation Message
     ///
-    fileprivate var message : String? {
+    fileprivate var message: String? {
         didSet {
             refreshMessageTextView()
 
@@ -50,9 +50,15 @@ class InvitePersonViewController : UITableViewController {
         }
     }
 
+    /// Roles available for the current site
+    ///
+    private var availableRoles: [Role] {
+        return (blog.siteVisibility == .Private) ? Role.inviteRolesForPrivateSite : Role.inviteRoles
+    }
+
     /// Last Section Index
     ///
-    fileprivate var lastSectionIndex : Int {
+    fileprivate var lastSectionIndex: Int {
         return tableView.numberOfSections - 1
     }
 
@@ -65,7 +71,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Username Cell
     ///
-    @IBOutlet fileprivate var usernameCell : UITableViewCell! {
+    @IBOutlet fileprivate var usernameCell: UITableViewCell! {
         didSet {
             setupUsernameCell()
             refreshUsernameCell()
@@ -74,7 +80,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Role Cell
     ///
-    @IBOutlet fileprivate var roleCell : UITableViewCell! {
+    @IBOutlet fileprivate var roleCell: UITableViewCell! {
         didSet {
             setupRoleCell()
             refreshRoleCell()
@@ -83,7 +89,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Message Cell
     ///
-    @IBOutlet fileprivate var messageTextView : UITextView! {
+    @IBOutlet fileprivate var messageTextView: UITextView! {
         didSet {
             setupMessageTextView()
             refreshMessageTextView()
@@ -97,6 +103,7 @@ class InvitePersonViewController : UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        setupDefaultRole()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
@@ -165,9 +172,7 @@ class InvitePersonViewController : UITableViewController {
             return
         }
 
-        let roles = (blog.siteVisibility == .private) ? Role.inviteRolesForPrivateSite : Role.inviteRoles
-
-        roleViewController.mode = .static(roles: roles)
+        roleViewController.mode = .static(roles: availableRoles)
         roleViewController.selectedRole = role
         roleViewController.onChange = { [unowned self] newRole in
             self.role = newRole
@@ -362,6 +367,14 @@ private extension InvitePersonViewController {
 
         // By default, Send is disabled
         navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+
+    func setupDefaultRole() {
+        guard let firstRole = availableRoles.first else {
+            return
+        }
+
+        role = firstRole
     }
 }
 
