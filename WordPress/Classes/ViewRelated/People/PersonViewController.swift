@@ -186,8 +186,9 @@ private extension PersonViewController {
     }
 
     func removeWasPressed() {
+        let title = NSLocalizedString("Remove", comment: "Remove Alert Title") + " " + person.username
+
         let name = person.firstName?.nonEmptyString() ?? person.username
-        let title = NSLocalizedString("Remove User", comment: "Remove User Alert Title")
         let messageFirstLine = NSLocalizedString(
             "If you remove " + name + ", that user will no longer be able to access this site, " +
             "but any content that was created by " + name + " will remain on the site.",
@@ -250,11 +251,13 @@ private extension PersonViewController {
     }
 
     func retryUpdatingRole(newRole: Role) {
-        let retryTitle      = NSLocalizedString("Retry", comment: "Retry updating User's Role")
-        let cancelTitle     = NSLocalizedString("Cancel", comment: "Cancel updating User's Role")
-        let title           = NSLocalizedString("Sorry!", comment: "Update User Failed Title")
-        let message         = NSLocalizedString("Something went wrong while updating the User's Role.", comment: "Updating Role failed error message")
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let retryTitle          = NSLocalizedString("Retry", comment: "Retry updating User's Role")
+        let cancelTitle         = NSLocalizedString("Cancel", comment: "Cancel updating User's Role")
+        let title               = NSLocalizedString("Sorry!", comment: "Update User Failed Title")
+        let localizedError      = NSLocalizedString("There was an error updating @", comment: "Updating Role failed error message")
+        let messageText         = localizedError + person.username
+
+        let alertController = UIAlertController(title: title, message: messageText, preferredStyle: .Alert)
 
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
         alertController.addDefaultActionWithTitle(retryTitle) { action in
@@ -302,7 +305,8 @@ private extension PersonViewController {
     }
 
     func setupRemoveCell() {
-        removeCell.textLabel?.text = NSLocalizedString("Remove User", comment: "Remove User. Verb")
+        let removeText = NSLocalizedString("Remove", comment: "Remove. Verb")
+        removeCell.textLabel?.text = removeText + " " + person.username
         WPStyleGuide.configureTableViewDestructiveActionCell(removeCell)
     }
 }
@@ -383,13 +387,13 @@ private extension PersonViewController {
         return isUser == false
     }
 
-    var isPromoteEnabled : Bool {
+    var isPromoteEnabled: Bool {
         // Note: *Only* users can be promoted.
         //
         return blog.isUserCapableOf(.PromoteUsers) && isMyself == false && isUser == true
     }
 
-    var isRemoveEnabled : Bool {
+    var isRemoveEnabled: Bool {
         // Notes:
         //  -   YES, ListUsers. Brought from Calypso's code
         //  -   Followers, for now, cannot be deleted.
@@ -397,11 +401,11 @@ private extension PersonViewController {
         return blog.isUserCapableOf(.ListUsers) && isMyself == false && isUser == true
     }
 
-    var isUser : Bool {
+    var isUser: Bool {
         return user != nil
     }
 
-    var user : User? {
+    var user: User? {
         return person as? User
     }
 }
