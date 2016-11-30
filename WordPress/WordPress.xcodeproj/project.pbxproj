@@ -122,10 +122,10 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		261FF32C1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261FF32B1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift */; };
-		263F3FC81DE3601400C209E1 /* MockWordPressOrgXMLRPCApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26161A541DDEB0F5004552D3 /* MockWordPressOrgXMLRPCApi.swift */; };
 		26A1B5A01DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */; };
 		26CB48311DDE66CB004DFEC5 /* BlogServiceRemoteXMLRPCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CB48301DDE66CB004DFEC5 /* BlogServiceRemoteXMLRPCTest.swift */; };
 		26CB48331DDEA13C004DFEC5 /* WordPressOrgXMLRPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CB48321DDEA13C004DFEC5 /* WordPressOrgXMLRPC.swift */; };
+		26D9FA2E1DEF29DE009CFAAE /* MockWordPressOrgXMLRPCApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26161A541DDEB0F5004552D3 /* MockWordPressOrgXMLRPCApi.swift */; };
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 296526FD105810E100597FA3 /* NSString+Helpers.m */; };
@@ -5955,7 +5955,7 @@
 				B5C7D7B81BC6B5A3008E668A /* UIAlertController+Helpers.swift in Sources */,
 				B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
-				263F3FC81DE3601400C209E1 /* MockWordPressOrgXMLRPCApi.swift in Sources */,
+				26D9FA2E1DEF29DE009CFAAE /* MockWordPressOrgXMLRPCApi.swift in Sources */,
 				B5176CC31CDCE1C30083CF2D /* ManagedPerson+CoreDataProperties.swift in Sources */,
 				08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */,
 				E18EE95119349EC300B0A40C /* ReaderTopicServiceRemote.m in Sources */,

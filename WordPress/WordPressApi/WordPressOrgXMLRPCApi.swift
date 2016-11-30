@@ -3,9 +3,6 @@ import wpxmlrpc
 
 public class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPC
 {
-    public typealias SuccessResponseBlock = (AnyObject, NSHTTPURLResponse?) -> ()
-    public typealias FailureReponseBlock = (error: NSError, httpResponse: NSHTTPURLResponse?) -> ()
-
     private let endpoint: NSURL
     private let userAgent: String?
     private var ongoingProgress = [NSURLSessionTask:NSProgress]()
@@ -57,23 +54,23 @@ public class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPC
     //MARK: - Network requests
     func checkCredentials(username: String,
                           password: String,
-                          success: SuccessResponseBlock,
-                          failure: FailureReponseBlock) {
+                          success: (AnyObject, NSHTTPURLResponse?) -> Void,
+                          failure: (NSError, NSHTTPURLResponse?) -> Void) {
         let parameters:[AnyObject] = [0, username, password]
         callMethod("wp.getOptions", parameters: parameters, success: success, failure: failure)
     }
 
     func callMethod(method: String,
                     parameters: [AnyObject]?,
-                    success: SuccessResponseBlock,
-                    failure: FailureReponseBlock) -> NSProgress?
+                    success: (AnyObject, NSHTTPURLResponse?) -> Void,
+                    failure: (NSError, NSHTTPURLResponse?) -> Void) -> NSProgress?
     {
         //Encode request
         let request: NSURLRequest
         do {
             request = try requestWithMethod(method, parameters: parameters)
         } catch let encodingError as NSError {
-            failure(error: encodingError, httpResponse: nil)
+            failure(encodingError, nil)
             return nil
         }
 
@@ -83,7 +80,7 @@ public class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPC
                 let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error)
                 success(responseObject, urlResponse as? NSHTTPURLResponse)
             } catch let error as NSError {
-                failure(error: error, httpResponse: urlResponse as? NSHTTPURLResponse)
+                failure(error, urlResponse as? NSHTTPURLResponse)
                 return
             }
         }
@@ -93,8 +90,8 @@ public class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPC
 
     func streamCallMethod(method: String,
                           parameters: [AnyObject]?,
-                          success: SuccessResponseBlock,
-                          failure: FailureReponseBlock) -> NSProgress?
+                          success: (AnyObject, NSHTTPURLResponse?) -> Void,
+                          failure: (NSError, NSHTTPURLResponse?) -> Void) -> NSProgress?
     {
         let fileURL = URLForTemporaryFile()
         //Encode request
@@ -102,7 +99,7 @@ public class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPC
         do {
             request = try streamingRequestWithMethod(method, parameters: parameters, usingFileURLForCache: fileURL)
         } catch let encodingError as NSError {
-            failure(error: encodingError, httpResponse: nil)
+            failure(encodingError, nil)
             return nil
         }
 
@@ -117,7 +114,7 @@ public class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPC
                 let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error)
                 success(responseObject, urlResponse as? NSHTTPURLResponse)
             } catch let error as NSError {
-                failure(error: error, httpResponse: urlResponse as? NSHTTPURLResponse)
+                failure(error, urlResponse as? NSHTTPURLResponse)
             }
         })
         task.resume()

@@ -4,37 +4,37 @@ import Foundation
 
     var methodPassedIn: String? = nil
     var parametersPassedIn: [AnyObject]? = nil
-    var successBlockPassedIn: WordPressOrgXMLRPCApi.SuccessResponseBlock? = nil
-    var failureBlockPassedIn: WordPressOrgXMLRPCApi.FailureReponseBlock? = nil
+    var successBlockPassedIn: ((AnyObject, NSHTTPURLResponse?) -> Void)? = nil
+    var failureBlockPassedIn: ((NSError, NSHTTPURLResponse?) -> Void)? = nil
 
     required init(endpoint: NSURL = NSURL(fileURLWithPath: ""), userAgent: String? = nil) {}
 
     func invalidateAndCancelTasks() {}
     func checkCredentials(username: String,
                           password: String,
-                          success: WordPressOrgXMLRPCApi.SuccessResponseBlock,
-                          failure: WordPressOrgXMLRPCApi.FailureReponseBlock) {}
+                          success: (AnyObject, NSHTTPURLResponse?) -> Void,
+                          failure: (NSError, NSHTTPURLResponse?) -> Void) {}
 
     func callMethod(method: String,
                     parameters: [AnyObject]?,
-                    success: WordPressOrgXMLRPCApi.SuccessResponseBlock,
-                    failure: WordPressOrgXMLRPCApi.FailureReponseBlock) -> NSProgress? {
+                    success: (AnyObject, NSHTTPURLResponse?) -> Void,
+                    failure: (NSError, NSHTTPURLResponse?) -> Void) -> NSProgress? {
 
         return capture(method, parameters: parameters, success: success, failure: failure)
     }
 
     func streamCallMethod(method: String,
                           parameters: [AnyObject]?,
-                          success: WordPressOrgXMLRPCApi.SuccessResponseBlock,
-                          failure: WordPressOrgXMLRPCApi.FailureReponseBlock) -> NSProgress? {
+                          success: (AnyObject, NSHTTPURLResponse?) -> Void,
+                          failure: (NSError, NSHTTPURLResponse?) -> Void) -> NSProgress? {
 
         return capture(method, parameters: parameters, success: success, failure: failure)
     }
 
     private func capture(method: String,
                          parameters: [AnyObject]?,
-                         success: WordPressOrgXMLRPCApi.SuccessResponseBlock,
-                         failure: WordPressOrgXMLRPCApi.FailureReponseBlock) -> NSProgress {
+                         success: (AnyObject, NSHTTPURLResponse?) -> Void,
+                         failure: (NSError, NSHTTPURLResponse?) -> Void) -> NSProgress {
         methodPassedIn = method
         parametersPassedIn = parameters
         successBlockPassedIn = success

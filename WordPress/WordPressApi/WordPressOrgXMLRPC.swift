@@ -19,8 +19,8 @@ import Foundation
      */
     func checkCredentials(username: String,
                           password: String,
-                          success: SuccessResponseBlock,
-                          failure: FailureReponseBlock)
+                          success: (AnyObject, NSHTTPURLResponse?) -> Void,
+                          failure: (NSError, NSHTTPURLResponse?) -> Void)
 
     /**
      Executes a XMLRPC call for the method specificied with the arguments provided.
@@ -37,8 +37,8 @@ import Foundation
      */
     func callMethod(method: String,
                     parameters: [AnyObject]?,
-                    success: SuccessResponseBlock,
-                    failure: FailureReponseBlock) -> NSProgress?
+                    success: (AnyObject, NSHTTPURLResponse?) -> Void,
+                    failure: (NSError, NSHTTPURLResponse?) -> Void) -> NSProgress?
 
     /**
      Executes a XMLRPC call for the method specificied with the arguments provided, by streaming the request from a file.
@@ -57,12 +57,6 @@ import Foundation
 
     func streamCallMethod(method: String,
                           parameters: [AnyObject]?,
-                          success: SuccessResponseBlock,
-                          failure: FailureReponseBlock) -> NSProgress?
-}
-
-extension WordPressOrgXMLRPC {
-
-    typealias SuccessResponseBlock = (AnyObject, NSHTTPURLResponse?) -> ()
-    typealias FailureReponseBlock = (error: NSError, httpResponse: NSHTTPURLResponse?) -> ()
+                          success: (AnyObject, NSHTTPURLResponse?) -> Void,
+                          failure: (NSError, NSHTTPURLResponse?) -> Void) -> NSProgress?
 }
