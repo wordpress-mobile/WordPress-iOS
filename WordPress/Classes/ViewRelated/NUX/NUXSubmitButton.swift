@@ -78,7 +78,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
         layer.borderColor = UIColor.whiteColor().CGColor
         clipsToBounds = true
 
-        titleLabel?.font = WPFontManager.systemRegularFontOfSize(14.0)
+        titleLabel?.font = WPFontManager.systemSemiBoldFontOfSize(17.0)
 
         let capInsets = UIEdgeInsets(top: cornerRadius, left: cornerRadius, bottom: cornerRadius, right: cornerRadius)
         var backgroundColor = UIColor.clearColor()
