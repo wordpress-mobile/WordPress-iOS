@@ -3,7 +3,6 @@
 //  WordPress
 //
 //  Created by Andrew McKnight on 11/28/16.
-//  Copyright © 2016 WordPress. All rights reserved.
 //
 
 import XCTest
