@@ -32,7 +32,7 @@ extension NSURL: ExportableAsset {
         default:
             errorHandler(error: errorForCode(.UnsupportedAssetType,
                 failureReason: NSLocalizedString("This media type is not supported on WordPress.",
-                                                 comment: "Error reason to display when exporting an unknow asset type from the device library")))
+                                                 comment: "Error reason to display when exporting an unknown asset type.")))
         }
     }
 
@@ -56,7 +56,7 @@ extension NSURL: ExportableAsset {
               let scaledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, scaleOptions)
         else {
             errorHandler(error: errorForCode(.FailedToExport,
-                failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
+                failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image fails.")
                 ))
             return
         }
@@ -106,7 +106,7 @@ extension NSURL: ExportableAsset {
         let asset = AVURLAsset(URL: self)
         guard let track = asset.tracksWithMediaType(AVMediaTypeVideo).first else {
             errorHandler(error: errorForCode(.FailedToExport,
-                failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
+                failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of an media asset fails")
                 ))
             return
         }
@@ -119,7 +119,7 @@ extension NSURL: ExportableAsset {
         else {
 
             errorHandler(error: errorForCode(.FailedToExport,
-                failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
+                failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of an media asset fails")
                 ))
             return
         }
