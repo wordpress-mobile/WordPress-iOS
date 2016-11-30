@@ -32,7 +32,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Invitation Role
     ///
-    private var role : Role = .Follower {
+    private var role: Role = .Follower {
         didSet {
             refreshRoleCell()
             validateInvitation()
@@ -41,7 +41,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Invitation Message
     ///
-    private var message : String? {
+    private var message: String? {
         didSet {
             refreshMessageTextView()
 
@@ -52,7 +52,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Last Section Index
     ///
-    private var lastSectionIndex : Int {
+    private var lastSectionIndex: Int {
         return tableView.numberOfSections - 1
     }
 
@@ -65,7 +65,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Username Cell
     ///
-    @IBOutlet private var usernameCell : UITableViewCell! {
+    @IBOutlet private var usernameCell: UITableViewCell! {
         didSet {
             setupUsernameCell()
             refreshUsernameCell()
@@ -74,7 +74,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Role Cell
     ///
-    @IBOutlet private var roleCell : UITableViewCell! {
+    @IBOutlet private var roleCell: UITableViewCell! {
         didSet {
             setupRoleCell()
             refreshRoleCell()
@@ -83,7 +83,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Message Cell
     ///
-    @IBOutlet private var messageTextView : UITextView! {
+    @IBOutlet private var messageTextView: UITextView! {
         didSet {
             setupMessageTextView()
             refreshMessageTextView()
