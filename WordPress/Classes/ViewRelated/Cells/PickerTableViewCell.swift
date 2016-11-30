@@ -76,9 +76,9 @@ open class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPicker
         // ContentView: Pin to Left + Right + Top + Bottom edges
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        contentView.leadingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        contentView.leadingAnchor.constraint(equalTo: topAnchor).isActive = true
-        contentView.leadingAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        contentView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
 
         // Picker: Pin to Top + Bottom + CenterX edges
         picker.translatesAutoresizingMaskIntoConstraints = false
