@@ -241,7 +241,7 @@
     } else if ([errorCode isEqualToString:@"blog_name_reserved_but_may_be_available"]) {
         return NSLocalizedString(@"That site is currently reserved but may be available in a couple days.", nil);
     } else if ([errorCode isEqualToString:@"password_invalid"]) {
-        return NSLocalizedString(@"Sorry, that password does not meet our security guidelines. Please choose a password with a mix of uppercase letters, lowercase letters, numbers and symbols.", @"This error message occurs when a user tries to create an account with a weak password.");
+        return NSLocalizedString(@"Sorry, that password does not meet our security guidelines. Please choose a password with a minimum length of six characters, mixing uppercase letters, lowercase letters, numbers and symbols.", @"This error message occurs when a user tries to create an account with a weak password.");
     } else if ([errorCode isEqualToString:@"blog_title_invalid"]) {
         return NSLocalizedString(@"Invalid Site Title", @"");
     } else if ([errorCode isEqualToString:@"username_illegal_wpcom"]) {
