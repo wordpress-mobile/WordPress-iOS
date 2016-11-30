@@ -113,11 +113,7 @@ extension WPImageURLHelper
         // If the URL is already a Photon URL reject its photon params, and substitute our own.
         if isPhotonURL(urlString) {
             if urlComponents.queryItems != nil {
-                let useSSL = urlComponents.queryItems!.contains({ queryItem -> Bool in
-                    return queryItem.name == PhotonQueryFields.SSL.rawValue && queryItem.value == PhotonSSLValue.Enabled.rawValue
-                })
-                urlComponents.queryItems = self.photonQueryItems(forSize: scaledSize, usingSSL: useSSL, forceResize: forceResize, quality: boundedQuality)
-                return urlComponents.URL
+                return photonURL(withPhotonURLComponents: urlComponents, scaledSize: scaledSize, forceResize: forceResize, quality: boundedQuality)
             }
 
             // Saftey net. Don't photon photon!
@@ -126,14 +122,13 @@ extension WPImageURLHelper
 
         // Photon rejects resizing mshots
         if urlPath.containsString("/mshots/") {
-            urlComponents.queryItems = [ NSURLQueryItem(name: ImageURLQueryField.Width.rawValue, value: "\(Int(size.width))") ]
-
-            if scaledSize.height != 0 { // ???: the original only tested for equality to 0. What if height < 0?
-                urlComponents.queryItems!.append(NSURLQueryItem(name: ImageURLQueryField.Height.rawValue, value: "\(Int(size.height))"))
-            }
-            return urlComponents.URL
+            return photonURL(forMshotURLComponents: urlComponents, scaledSize: scaledSize)
         }
 
+        return photonURL(withURLComponents: urlComponents, url: url, scaledSize: scaledSize, forceResize: forceResize, quality: boundedQuality)
+    }
+
+    private static func photonURL(withURLComponents urlComponents: NSURLComponents, url: NSURL, scaledSize: CGSize, forceResize: Bool, quality: UInt) -> NSURL? {
         urlComponents.scheme = RequestScheme.Secure.rawValue
 
         // the host will become i0.wp.com, and the path will be the original host+path
@@ -143,10 +138,27 @@ extension WPImageURLHelper
         urlComponents.host = "\(PhotonSubdomain.Zero.rawValue).\(wordpressURLBase)"
 
         // Strip original resizing parameters, or we might get an image too small
-        urlComponents.queryItems = photonQueryItems(forSize: scaledSize, usingSSL: url.scheme == RequestScheme.Secure.rawValue, forceResize: forceResize, quality: boundedQuality)
+        urlComponents.queryItems = photonQueryItems(forSize: scaledSize, usingSSL: url.scheme == RequestScheme.Secure.rawValue, forceResize: forceResize, quality: quality)
 
         urlComponents.fragment = nil
 
+        return urlComponents.URL
+    }
+
+    private static func photonURL(forMshotURLComponents urlComponents: NSURLComponents, scaledSize: CGSize) -> NSURL? {
+        urlComponents.queryItems = [ NSURLQueryItem(name: ImageURLQueryField.Width.rawValue, value: "\(Int(scaledSize.width))") ]
+
+        if scaledSize.height != 0 {
+            urlComponents.queryItems!.append(NSURLQueryItem(name: ImageURLQueryField.Height.rawValue, value: "\(Int(scaledSize.height))"))
+        }
+        return urlComponents.URL
+    }
+
+    private static func photonURL(withPhotonURLComponents urlComponents: NSURLComponents, scaledSize: CGSize, forceResize: Bool, quality: UInt) -> NSURL? {
+        let useSSL = urlComponents.queryItems!.contains({ queryItem -> Bool in
+            return queryItem.name == PhotonQueryFields.SSL.rawValue && queryItem.value == PhotonSSLValue.Enabled.rawValue
+        })
+        urlComponents.queryItems = self.photonQueryItems(forSize: scaledSize, usingSSL: useSSL, forceResize: forceResize, quality: quality)
         return urlComponents.URL
     }
 
