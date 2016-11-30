@@ -18,10 +18,10 @@
 #import "WordPress-Swift.h"
 
 
-// Note:
-// Due to a UITableView bug on iOS 8, let's keep the estimated height to the bare minimum.
-// If the estimated is bigger than needed, UITableView might actually use that size, and shrink using an undesired animation.
-static CGFloat const EstimatedCommentRowHeight = 100.0;
+// NOTE: We want the cells to have a rather large estimated height.  This avoids a peculiar
+// crash in certain circumstances when the tableView lays out its visible cells,
+// and those cells contain WPRichTextEmbeds. -- Aerych, 2016.11.30
+static CGFloat const EstimatedCommentRowHeight = 300.0;
 static CGFloat const PostHeaderHeight = 54.0;
 static NSInteger const MaxCommentDepth = 4.0;
 static CGFloat const CommentIndentationWidth = 40.0;
@@ -282,7 +282,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)configureTableViewHandler
 {
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationAutomatic;
+    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
     self.tableViewHandler.delegate = self;
 }
 
@@ -806,6 +806,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Cache the cell's layout height as the currently known height, for estimation.
+    // See estimatedHeightForRowAtIndexPath
+    [self.estimatedHeightCache setObject:@(cell.frame.size.height) forKey:indexPath];
+
+
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self.tableViewHandler numberOfSectionsInTableView:tableView]) &&
         (indexPath.row + 4 >= [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section])) {
