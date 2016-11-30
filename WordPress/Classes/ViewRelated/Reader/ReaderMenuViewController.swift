@@ -229,18 +229,22 @@ import WordPressShared
     ///     - topic: The topic to show.
     ///
     func showPostsForTopic(topic: ReaderAbstractTopic) {
-        let controller = ReaderStreamViewController.controllerWithTopic(topic)
-        showDetailViewController(controller, sender: self)
+        showDetailViewController(viewControllerForTopic(topic), sender: self)
     }
 
+    private func viewControllerForTopic(topic: ReaderAbstractTopic) -> UIViewController {
+        return ReaderStreamViewController.controllerWithTopic(topic)
+    }
 
     /// Presents the reader's search view controller.
     ///
     func showReaderSearch() {
-        let controller = ReaderSearchViewController.controller()
-        showDetailViewController(controller, sender: self)
+        showDetailViewController(viewControllerForSearch(), sender: self)
     }
 
+    private func viewControllerForSearch() -> UIViewController {
+        return ReaderSearchViewController.controller()
+    }
 
     /// Presents a new view controller for subscribing to a new tag.
     ///
@@ -414,15 +418,21 @@ import WordPressShared
 
         restorableSelectedIndexPath = indexPath
 
+        if let viewController = viewControllerForMenuItem(menuItem) {
+            showDetailViewController(viewController, sender: self)
+        }
+    }
+
+    private func viewControllerForMenuItem(menuItem: ReaderMenuItem) -> UIViewController? {
         if let topic = menuItem.topic {
-            showPostsForTopic(topic)
-            return
+            return viewControllerForTopic(topic)
         }
 
         if menuItem.type == .Search {
-            showReaderSearch()
-            return
+            return viewControllerForSearch()
         }
+
+        return nil
     }
 
 
@@ -533,6 +543,11 @@ extension ReaderMenuViewController : WPSplitViewControllerDetailProvider {
             let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             if let topic = service.topicForDiscover() {
                 return ReaderStreamViewController.controllerWithTopic(topic)
+            } else {
+                restorableSelectedIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+                if let item = viewModel.menuItemAtIndexPath(restorableSelectedIndexPath!) {
+                    return viewControllerForMenuItem(item)
+                }
             }
         }
 
