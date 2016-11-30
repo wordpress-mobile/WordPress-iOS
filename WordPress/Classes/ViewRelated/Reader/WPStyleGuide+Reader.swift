@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import Gridicons
 
 /// A WPStyleGuide extension with styles and methods specific to the Reader feature.
 ///
@@ -192,7 +193,7 @@ extension WPStyleGuide
     public class func applyReaderCardBylineLabelStyle(_ label:UILabel) {
         let fontSize:CGFloat = Cards.subtextFontSize
         label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
-        label.textColor = greyDarken10()
+        label.textColor = greyLighten10()
     }
 
     public class func applyReaderCardTitleLabelStyle(_ label:UILabel) {
@@ -204,18 +205,18 @@ extension WPStyleGuide
     }
 
     public class func applyReaderCardTagButtonStyle(_ button:UIButton) {
-        let fontSize = Cards.buttonFontSize
-        button.setTitleColor(mediumBlue(), for: UIControlState())
+        let fontSize = Cards.subtextFontSize
+        button.setTitleColor(mediumBlue(), for: .normal)
         button.setTitleColor(lightBlue(), for: .highlighted)
         button.titleLabel?.font = WPFontManager.systemRegularFont(ofSize: fontSize)
     }
 
     public class func applyReaderCardActionButtonStyle(_ button:UIButton) {
         let fontSize = Cards.buttonFontSize
-        button.setTitleColor(greyDarken10(), for: UIControlState())
+        button.setTitleColor(greyLighten10(), for: .normal)
         button.setTitleColor(lightBlue(), for: .highlighted)
         button.setTitleColor(jazzyOrange(), for: .selected)
-        button.setTitleColor(greyDarken10(), for: .disabled)
+        button.setTitleColor(greyLighten10(), for: .disabled)
         button.titleLabel?.font = WPFontManager.systemRegularFont(ofSize: fontSize)
     }
 
@@ -234,46 +235,74 @@ extension WPStyleGuide
         label.textColor = greyDarken10()
     }
 
-    public class func applyReaderStreamHeaderFollowingStyle(_ button:UIButton) {
-        let fontSize = Cards.buttonFontSize
-        let title = NSLocalizedString("Following", comment: "Gerund. A button label indicating the user is currently subscribed to a topic or site in ther eader. Tapping unsubscribes the user.")
-
-        button.setTitle(title, for: UIControlState())
-        button.setTitle(title, for: .highlighted)
-
-        button.setTitleColor(validGreen(), for: UIControlState())
-        button.setTitleColor(lightBlue(), for: .highlighted)
-        button.titleLabel?.font = WPFontManager.systemRegularFont(ofSize: fontSize)
-
-        button.setImage(UIImage(named: "icon-reader-following"), for: UIControlState())
-        button.setImage(UIImage(named: "icon-reader-follow-highlight"), for: .highlighted)
-    }
-
-    public class func applyReaderStreamHeaderNotFollowingStyle(_ button:UIButton) {
-        let fontSize = Cards.buttonFontSize
-        let title = NSLocalizedString("Follow", comment: "Verb. A button label. Tapping subscribes the user to a topic or site in the reader")
-
-        button.setTitle(title, for: UIControlState())
-        button.setTitle(title, for: .highlighted)
-
-        button.setTitleColor(greyLighten10(), for: UIControlState())
-        button.setTitleColor(lightBlue(), for: .highlighted)
-        button.titleLabel?.font = WPFontManager.systemRegularFont(ofSize: fontSize)
-
-        button.setImage(UIImage(named: "icon-reader-follow"), for: UIControlState())
-        button.setImage(UIImage(named: "icon-reader-follow-highlight"), for: .highlighted)
-    }
-
     public class func applyReaderSiteStreamDescriptionStyle(_ label:UILabel) {
         let fontSize = Cards.contentFontSize
-        label.font = WPFontManager.merriweatherRegularFont(ofSize: fontSize)
+        label.font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
         label.textColor = darkGrey()
     }
 
     public class func applyReaderSiteStreamCountStyle(_ label:UILabel) {
         let fontSize:CGFloat = 12.0
-        label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
+        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
         label.textColor = grey()
+    }
+
+
+    // MARK: - Button Styles and Text
+
+    public class func applyReaderFollowButtonStyle(_ button: UIButton) {
+        let side = button.titleLabel?.font.pointSize ?? Cards.buttonFontSize
+        let size = CGSize(width: side, height: side)
+        let followStr = followStringForDisplay(false)
+        let followingStr = followStringForDisplay(true)
+
+        let followIcon = Gridicon.iconOfType(.ReaderFollow, withSize: size)
+        let followingIcon = Gridicon.iconOfType(.ReaderFollowing, withSize: size)
+        let tintedFollowIcon = followIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
+        let tintedFollowingIcon = followingIcon.imageWithTintColor(WPStyleGuide.validGreen())
+        let highlightIcon = followingIcon.imageWithTintColor(WPStyleGuide.lightBlue())
+
+        button.setImage(tintedFollowIcon, forState: .Normal)
+        button.setImage(tintedFollowingIcon, forState: .Selected)
+        button.setImage(highlightIcon, forState: .Highlighted)
+
+        button.setTitle(followStr, forState: .Normal)
+        button.setTitle(followingStr, forState: .Selected)
+        button.setTitle(followingStr, forState: .Highlighted)
+    }
+
+    public class func likeCountForDisplay(_ count: Int) -> String {
+        let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
+        let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
+
+        if count == 0 {
+            return likeStr
+        } else if count == 1 {
+            return "\(count) \(likeStr)"
+        } else {
+            return "\(count) \(likesStr)"
+        }
+    }
+
+    public class func commentCountForDisplay(count: Int) -> String {
+        let commentStr = NSLocalizedString("Comment", comment: "Text for the 'comment' when there is 1 or 0 comments")
+        let commentsStr = NSLocalizedString("Comments", comment: "Text for the 'comment' button when there are multiple comments")
+
+        if count == 0 {
+            return commentStr
+        } else if count == 1 {
+            return "\(count) \(commentStr)"
+        } else {
+            return "\(count) \(commentsStr)"
+        }
+    }
+
+    public class func followStringForDisplay(isFollowing: Bool) -> String {
+        if isFollowing {
+            return NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
+        } else {
+            return NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
+        }
     }
 
 

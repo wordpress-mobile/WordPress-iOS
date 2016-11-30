@@ -37,4 +37,10 @@ extension Blog
     public func isListingUsersAllowed() -> Bool {
         return isUserCapableOf(.ListUsers)
     }
+
+    /// Returns true if the current user is allowed to publish to the Blog
+    ///
+    public func isPublishingPostsAllowed() -> Bool {
+        return isUserCapableOf(.PublishPosts)
+    }
 }

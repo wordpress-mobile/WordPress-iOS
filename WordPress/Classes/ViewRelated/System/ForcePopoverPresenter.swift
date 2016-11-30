@@ -24,7 +24,7 @@ class ForcePopoverPresenter: NSObject, UIPopoverPresentationControllerDelegate {
         controller.view.sizeToFit()
     }
 
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
     }
 }

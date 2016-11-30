@@ -841,6 +841,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     if ([self containsVideoPress:content]) {
         content = [self formatVideoPress:content];
     }
+    content = [self removeForbiddenTags:content];
     content = [self normalizeParagraphs:content];
     content = [self removeInlineStyles:content];
     content = [content stringByReplacingHTMLEmoticonsWithEmoji];
@@ -894,6 +895,35 @@ static const NSUInteger ReaderPostTitleLength = 30;
 }
 
 /**
+ Removes style and script tags from the specified string.
+ 
+ @param string The string to sanitize.
+ @return A the sanitized string.
+ */
+- (NSString *)removeForbiddenTags:(NSString *)string
+{
+    if (!string) {
+        return @"";
+    }
+
+    static NSRegularExpression *regexStyle;
+    static NSRegularExpression *regexScript;
+    static NSRegularExpression *regexTable;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        regexStyle = [NSRegularExpression regularExpressionWithPattern:@"<style[^>]*?>[\\s\\S]*?</style>" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexScript = [NSRegularExpression regularExpressionWithPattern:@"<script[^>]*?>[\\s\\S]*?</script>" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexTable = [NSRegularExpression regularExpressionWithPattern:@"<table[^>]*?>[\\s\\S]*?</table>" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    string = [regexStyle stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@""];
+    string = [regexScript stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@""];
+    string = [regexTable stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@""];
+    return string;
+}
+
+/**
  Clean up paragraphs and in an HTML string. Removes duplicate paragraph tags and unnecessary DIVs.
 
  @param string The string to normalize.
@@ -944,7 +974,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     static NSRegularExpression *regex;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        regex = [NSRegularExpression regularExpressionWithPattern:@"style=\"[^\"]*\"" options:NSRegularExpressionCaseInsensitive error:nil];
+        regex = [NSRegularExpression regularExpressionWithPattern:@"\\s*style=\"[^\"]*\"" options:NSRegularExpressionCaseInsensitive error:nil];
     });
 
     // Remove inline styles.

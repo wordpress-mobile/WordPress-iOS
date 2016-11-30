@@ -67,12 +67,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         configureHeaderImage(siteTopic.siteBlavatar)
 
         titleLabel.text = siteTopic.title
-        detailLabel.text = URL(string: siteTopic.siteURL)?.host
-        if siteTopic.following {
-            WPStyleGuide.applyReaderStreamHeaderFollowingStyle(followButton)
-        } else {
-            WPStyleGuide.applyReaderStreamHeaderNotFollowingStyle(followButton)
-        }
+        detailLabel.text = NSURL(string: siteTopic.siteURL)?.host
+
+        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
+        followButton.selected = topic.following
 
         descriptionLabel.attributedText = attributedSiteDescriptionForTopic(siteTopic)
         followCountLabel.text = formattedFollowerCountForTopic(siteTopic)

@@ -672,10 +672,6 @@ import WordPressComAnalytics
     ///     - fromView: The view to anchor a popover.
     ///
     fileprivate func showMenuForPost(_ post:ReaderPost, fromView anchorView:UIView) {
-        guard let topic = readerTopic else {
-            return
-        }
-
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
@@ -692,7 +688,7 @@ import WordPressComAnalytics
         }
 
         // Following
-        if ReaderHelpers.topicIsFollowing(topic) {
+        if isLoggedIn {
             let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
             alertController.addActionWithTitle(buttonTitle,
                 style: .default,
@@ -702,15 +698,6 @@ import WordPressComAnalytics
                     }
                 })
         }
-
-        // Visit site
-        alertController.addActionWithTitle(ReaderPostMenuButtonTitles.visit,
-            style: .default,
-            handler: { (action:UIAlertAction) in
-                if let post = self.postWithObjectID(post.objectID) {
-                    self.visitSiteForPost(post)
-                }
-        })
 
         // Share
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
@@ -1321,10 +1308,14 @@ import WordPressComAnalytics
 
 
     open func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
+        guard let topic = readerTopic else {
+            return
+        }
 
         let postCell = cell as! ReaderPostCardCell
 
         postCell.delegate = self
+        postCell.hidesFollowButton = ReaderHelpers.topicIsFollowing(topic)
         postCell.enableLoggedInFeatures = isLoggedIn
         postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
         postCell.configureCell(post)
@@ -1486,14 +1477,26 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
     }
 
 
-    public func readerCell(_ cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
+    public func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        toggleFollowingForPost(post)
+    }
 
-        let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
-        navigationController?.pushViewController(controller, animated: true)
+    public func readerCell(cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        sharePost(post.objectID, fromView: sender)
+    }
 
-        let properties =  ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug as AnyObject?, forKey: "tag")
-        WPAppAnalytics.track(.readerTagPreviewed, withProperties: properties)
+
+    public func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        visitSiteForPost(post)
     }
 
 

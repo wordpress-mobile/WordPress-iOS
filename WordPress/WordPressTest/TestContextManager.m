@@ -22,7 +22,9 @@
     if (self) {
         // Override the shared ContextManager
         [ContextManager overrideSharedInstance:self];
+        _requiresTestExpectation = YES;
     }
+
     return self;
 }
 
@@ -82,7 +84,7 @@
         if (self.testExpectation) {
             [self.testExpectation fulfill];
             self.testExpectation = nil;
-        } else {
+        } else if (self.requiresTestExpectation) {
             NSLog(@"No test expectation present for context save");
         }
     }];
@@ -94,7 +96,7 @@
     if (self.testExpectation) {
         [self.testExpectation fulfill];
         self.testExpectation = nil;
-    } else {
+        } else if (self.requiresTestExpectation) {
         NSLog(@"No test expectation present for context save");
     }
 }

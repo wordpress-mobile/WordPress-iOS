@@ -74,12 +74,6 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell
         blogLabel.font = WPStyleGuide.Notifications.blockRegularFont
         blogLabel.textColor = WPStyleGuide.Notifications.blockSubtitleColor
         blogLabel.adjustsFontSizeToFitWidth = false
-
-        // iPad: Use a bigger image size!
-        if UIDevice.isPad() {
-            gravatarImageView.updateConstraint(.height, constant: gravatarImageSizePad.width)
-            gravatarImageView.updateConstraint(.width, constant: gravatarImageSizePad.height)
-        }
     }
 
     // MARK: - IBActions

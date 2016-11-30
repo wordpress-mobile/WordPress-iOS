@@ -8,23 +8,27 @@
 
 @implementation ReaderPostTest
 
-- (void)testBlavatarForSize
+- (void)testSiteIconForDisplay
 {
     NSManagedObjectContext *context = [[TestContextManager sharedInstance] mainContext];
     ReaderPost *post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
                                          inManagedObjectContext:context];
 
-    post.blogURL = @"http://blog.example.com/";
-    NSString *hash = [@"blog.example.com" md5];
-    NSURL *blavatarURL = [post siteIconForDisplayOfSize:50];
+    XCTAssertNil([post siteIconForDisplayOfSize:50]);
 
-    XCTAssertNotNil(blavatarURL);
-    XCTAssertNotNil([blavatarURL absoluteString]);
-    XCTAssertTrue([[blavatarURL host] isEqualToString:@"secure.gravatar.com"]);
+    NSString *iconURL = @"http://example.com/icon.png";
+    post.siteIconURL = iconURL;
 
-    NSString *path = [NSString stringWithFormat:@"/blavatar/%@", hash];
-    XCTAssertTrue([[blavatarURL path] isEqualToString:path]);
-    XCTAssertTrue([[blavatarURL absoluteString] rangeOfString:@"s=50"].location != NSNotFound);
+    NSString *iconForDisplay = [[post siteIconForDisplayOfSize:50] absoluteString];
+
+    XCTAssertTrue([iconURL isEqualToString:iconForDisplay]);
+
+
+    iconURL = @"http://example.com/blavatar/icon.png";
+    post.siteIconURL = iconURL;
+    iconForDisplay = [[post siteIconForDisplayOfSize:50] absoluteString];
+
+    XCTAssertTrue([@"http://example.com/blavatar/icon.png?s=50&d=404" isEqualToString:iconForDisplay]);
 }
 
 - (void)testDisplayDate
