@@ -1,8 +1,8 @@
 import Foundation
+import UserNotifications
 
-
-/// In this class, we'll encapsulate all of the code related to UIUserNotificationCategory and
-/// UIUserNotificationAction instantiation, along with the required handlers.
+/// In this class, we'll encapsulate all of the code related to UNNotificationCategory and
+/// UNNotificationAction instantiation, along with the required handlers.
 ///
 final public class InteractiveNotificationsManager : NSObject
 {
@@ -32,8 +32,14 @@ final public class InteractiveNotificationsManager : NSObject
             return
         }
 
-        let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: supportedNotificationCategories())
-        sharedApplication.registerUserNotificationSettings(settings)
+        if #available(iOS 10.0, *) {
+            let notificationCenter = UNUserNotificationCenter.currentNotificationCenter()
+            notificationCenter.requestAuthorizationWithOptions([.Badge, .Sound, .Alert], completionHandler: { _ in })
+            notificationCenter.setNotificationCategories(supportedNotificationCategories())
+        } else {
+            let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: supportedNotificationCategories())
+            sharedApplication.registerUserNotificationSettings(settings)
+        }
     }
 
 
@@ -126,69 +132,32 @@ final public class InteractiveNotificationsManager : NSObject
 
 
 
-    // MARK: - Private: UIUserNotification Helpers
+    // MARK: - Private: UNNotification Helpers
+
+
+    /// Returns a collection of *UNNotificationCategory* instances, for each one of the
+    /// supported NoteCategoryDefinition enum case's.
+    ///
+    /// - Returns: A set of *UNNotificationCategory* instances.
+    ///
+    @available(iOS 10.0, *)
+    private func supportedNotificationCategories() -> Set<UNNotificationCategory> {
+        let categories: [UNNotificationCategory] = NoteCategoryDefinition.allDefinitions.map({ $0.notificationCategory() })
+        return Set(categories)
+    }
+
+
 
 
     /// Returns a collection of *UIUserNotificationCategory* instances, for each one of the
     /// supported NoteCategoryDefinition enum case's.
     ///
     /// - Returns: A set of *UIUserNotificationCategory* instances.
+    /// - Note: This method is only used for iOS 9 compatibility
     ///
     private func supportedNotificationCategories() -> Set<UIUserNotificationCategory> {
-        return notificationCategoriesWithDefinitions(NoteCategoryDefinition.allDefinitions)
-    }
-
-
-
-    /// Parses a given array of NoteCategoryDefinition, and returns a collection of their
-    /// *UIUserNotificationCategory* counterparts.
-    ///
-    /// - Parameter definitions: A collection of definitions to be instantiated.
-    ///
-    /// - Returns: A collection of UIUserNotificationCategory instances
-    ///
-    private func notificationCategoriesWithDefinitions(definitions: [NoteCategoryDefinition]) -> Set<UIUserNotificationCategory> {
-        var categories  = Set<UIUserNotificationCategory>()
-        let rawActions  = definitions.flatMap { $0.actions }
-        let actionsMap  = notificationActionsMapWithDefinitions(rawActions)
-
-        for definition in definitions {
-            let category = UIMutableUserNotificationCategory()
-            category.identifier = definition.identifier
-
-            let actions = definition.actions.flatMap { actionsMap[$0] }
-            category.setActions(actions, forContext: .Default)
-
-            categories.insert(category)
-        }
-
-        return categories
-    }
-
-
-
-    /// Parses a given array of NoteActionDefinition, and returns a collection mapping them with their
-    /// *UIUserNotificationAction* counterparts.
-    ///
-    /// - Parameter definitions: A collection of definitions to be instantiated.
-    ///
-    /// - Returns: A map of Definition > NotificationAction instances
-    ///
-    private func notificationActionsMapWithDefinitions(definitions: [NoteActionDefinition]) -> [NoteActionDefinition : UIUserNotificationAction] {
-        var actionMap = [NoteActionDefinition : UIUserNotificationAction]()
-
-        for definition in definitions {
-            let action = UIMutableUserNotificationAction()
-            action.identifier = definition.identifier
-            action.title = definition.description
-            action.activationMode = definition.requiresBackground ? .Background : .Foreground
-            action.destructive = definition.destructive
-            action.authenticationRequired = definition.requiresAuthentication
-
-            actionMap[definition] = action
-        }
-
-        return actionMap
+        let categories: [UIUserNotificationCategory] = NoteCategoryDefinition.allDefinitions.map({ $0.notificationCategory() })
+        return Set(categories)
     }
 
 
@@ -217,6 +186,23 @@ final public class InteractiveNotificationsManager : NSObject
 
         var identifier : String {
             return rawValue
+        }
+
+        @available(iOS 10.0, *)
+        func notificationCategory() -> UNNotificationCategory {
+            return UNNotificationCategory(
+                identifier: identifier,
+                actions: actions.map({ $0.notificationAction() }),
+                intentIdentifiers: [],
+                options: [])
+        }
+
+        // iOS 9 compatibility
+        func notificationCategory() -> UIUserNotificationCategory {
+            let category = UIMutableUserNotificationCategory()
+            category.identifier = identifier
+            category.setActions(actions.map({ $0.notificationAction() }), forContext: .Default)
+            return category
         }
 
         static var allDefinitions = [CommentApprove, CommentLike, CommentReply, CommentReplyWithLike]
@@ -256,6 +242,37 @@ final public class InteractiveNotificationsManager : NSObject
 
         var requiresBackground : Bool {
             return self != .CommentReply
+        }
+
+        @available(iOS 10.0, *)
+        var notificationActionOptions: UNNotificationActionOptions {
+            var options = UNNotificationActionOptions()
+            if requiresAuthentication {
+                options.insert(.AuthenticationRequired)
+            }
+            if destructive {
+                options.insert(.Destructive)
+            }
+            if !requiresBackground {
+                options.insert(.Foreground)
+            }
+            return options
+        }
+
+        @available(iOS 10.0, *)
+        func notificationAction() -> UNNotificationAction {
+            return UNNotificationAction(identifier: identifier, title: description, options: notificationActionOptions)
+        }
+
+        // iOS 9 compatibility
+        func notificationAction() -> UIUserNotificationAction {
+            let action = UIMutableUserNotificationAction()
+            action.identifier = identifier
+            action.title = description
+            action.activationMode = requiresBackground ? .Background : .Foreground
+            action.destructive = destructive
+            action.authenticationRequired = requiresAuthentication
+            return action
         }
 
         static var allDefinitions = [CommentApprove, CommentLike, CommentReply]
