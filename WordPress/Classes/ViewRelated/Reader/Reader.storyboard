@@ -247,7 +247,7 @@
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="lUA-Mu-a4u" secondAttribute="trailing" id="29T-ZN-CUn"/>
                                             <constraint firstItem="lUA-Mu-a4u" firstAttribute="top" secondItem="UJH-3y-QkU" secondAttribute="top" id="Jbh-tW-3mu"/>
-                                            <constraint firstAttribute="bottom" secondItem="lUA-Mu-a4u" secondAttribute="bottom" constant="16" id="Wvl-3O-WyW"/>
+                                            <constraint firstAttribute="bottom" secondItem="lUA-Mu-a4u" secondAttribute="bottom" priority="999" constant="16" id="Wvl-3O-WyW"/>
                                             <constraint firstItem="lUA-Mu-a4u" firstAttribute="leading" secondItem="UJH-3y-QkU" secondAttribute="leading" id="f82-aL-C6b"/>
                                         </constraints>
                                         <connections>
