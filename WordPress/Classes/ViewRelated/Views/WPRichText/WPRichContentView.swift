@@ -58,7 +58,7 @@ class WPRichContentView: UITextView
 
         set {
             var bounds = topMarginAttachment.bounds
-            bounds.size.height = newValue
+            bounds.size.height = max(1, newValue)
             bounds.size.width = textContainer.size.width
             topMarginAttachment.bounds = bounds
 
@@ -70,6 +70,9 @@ class WPRichContentView: UITextView
         }
     }
 
+    // NOTE: Avoid setting attachment bounds with a zero height. A zero height
+    // for an attachment at the end of a text run can glitch TextKit's layout
+    // causing glyphs to not be drawn.
     var bottomMargin: CGFloat {
         get {
             return bottomMarginAttachment.bounds.height
@@ -77,7 +80,7 @@ class WPRichContentView: UITextView
 
         set {
             var bounds = bottomMarginAttachment.bounds
-            bounds.size.height = newValue
+            bounds.size.height = max(1, newValue)
             bounds.size.width = textContainer.size.width
             bottomMarginAttachment.bounds = bounds
 
