@@ -27,6 +27,8 @@ final public class InteractiveNotificationsManager : NSObject
 
     /// Registers the device for User Notifications.
     ///
+    /// This method should be called once during the app initialization process.
+    ///
     public func registerForUserNotifications() {
         if sharedApplication.isRunningSimulator() || build(.Alpha) {
             return
@@ -34,14 +36,29 @@ final public class InteractiveNotificationsManager : NSObject
 
         if #available(iOS 10.0, *) {
             let notificationCenter = UNUserNotificationCenter.currentNotificationCenter()
-            notificationCenter.requestAuthorizationWithOptions([.Badge, .Sound, .Alert], completionHandler: { _ in })
+            notificationCenter.delegate = self
             notificationCenter.setNotificationCategories(supportedNotificationCategories())
+        }
+    }
+
+    /// Requests authorization to interact with the user when notifications arrive.
+    ///
+    /// The first time this method is called it will ask the user for permission to show notifications.
+    /// Because of this, this should be called only when we know we will need to show notifications (for instance, after login).
+    ///
+    public func requestAuthorization() {
+        if sharedApplication.isRunningSimulator() || build(.Alpha) {
+            return
+        }
+
+        if #available(iOS 10.0, *) {
+            let notificationCenter = UNUserNotificationCenter.currentNotificationCenter()
+            notificationCenter.requestAuthorizationWithOptions([.Badge, .Sound, .Alert], completionHandler: { _ in })
         } else {
             let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: supportedNotificationCategories())
             sharedApplication.registerUserNotificationSettings(settings)
         }
     }
-
 
     /// Handle an action taken from a remote notification
     ///
@@ -49,16 +66,12 @@ final public class InteractiveNotificationsManager : NSObject
     ///     - identifier: The identifier of the action
     ///     - remoteNotification: the notification object
     ///
-    public func handleActionWithIdentifier(identifier: String, remoteNotification: NSDictionary) {
+    public func handleActionWithIdentifier(identifier: String, remoteNotification: NSDictionary, responseText: String?) {
         guard AccountHelper.isDotcomAvailable() else {
             return
         }
 
         guard let action = NoteActionDefinition(rawValue: identifier) else {
-            return
-        }
-
-        guard let noteId = remoteNotification.objectForKey("note_id") as? NSNumber else {
             return
         }
 
@@ -76,7 +89,11 @@ final public class InteractiveNotificationsManager : NSObject
         case .CommentLike:
             likeCommentWithCommentID(commentID, siteID: siteID)
         case .CommentReply:
-            showDetailsWithNoteID(noteId)
+            if let responseText = responseText {
+                replyToCommentWithCommentID(commentID, siteID: siteID, content: responseText)
+            } else {
+                DDLogSwift.logError("Tried to reply to a comment notification with no text")
+            }
         }
     }
 
@@ -120,13 +137,22 @@ final public class InteractiveNotificationsManager : NSObject
         })
     }
 
+    /// Replies to a comment
+    ///
+    /// - Parameters:
+    ///     - commentID: The comment identifier
+    ///     - siteID: The site identifier
+    ///     - content: The text for the comment reply
+    ///
+    private func replyToCommentWithCommentID(commentID: NSNumber, siteID: NSNumber, content: String) {
+        let context = ContextManager.sharedInstance().newDerivedContext()
+        let service = CommentService(managedObjectContext: context)
 
-    /// Opens the details for a given notificationId
-    ///
-    /// - Parameter noteID: The Notification's Identifier
-    ///
-    private func showDetailsWithNoteID(noteId: NSNumber) {
-        WPTabBarController.sharedInstance().showNotificationsTabForNoteWithID(noteId.stringValue)
+        service.replyToCommentWithID(commentID, siteID: siteID, content: content, success: {
+            DDLogSwift.logInfo("Successfully replied comment from push notification")
+        }, failure: { error in
+            DDLogSwift.logInfo("Couldn't reply to comment from push notification")
+        })
     }
 
 
@@ -180,7 +206,7 @@ final public class InteractiveNotificationsManager : NSObject
             case CommentReply:
                 return [.CommentReply]
             case CommentReplyWithLike:
-                return [.CommentLike, .CommentReply]
+                return [.CommentReply, .CommentLike]
             }
         }
 
@@ -240,8 +266,8 @@ final public class InteractiveNotificationsManager : NSObject
             return false
         }
 
-        var requiresBackground : Bool {
-            return self != .CommentReply
+        var requiresForeground : Bool {
+            return false
         }
 
         @available(iOS 10.0, *)
@@ -253,7 +279,7 @@ final public class InteractiveNotificationsManager : NSObject
             if destructive {
                 options.insert(.Destructive)
             }
-            if !requiresBackground {
+            if requiresForeground {
                 options.insert(.Foreground)
             }
             return options
@@ -261,7 +287,16 @@ final public class InteractiveNotificationsManager : NSObject
 
         @available(iOS 10.0, *)
         func notificationAction() -> UNNotificationAction {
-            return UNNotificationAction(identifier: identifier, title: description, options: notificationActionOptions)
+            switch self {
+            case .CommentReply:
+                return UNTextInputNotificationAction(identifier: identifier,
+                                                     title: description,
+                                                     options: notificationActionOptions,
+                                                     textInputButtonTitle: NSLocalizedString("Reply", comment: ""),
+                                                     textInputPlaceholder: NSLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view"))
+            default:
+                return UNNotificationAction(identifier: identifier, title: description, options: notificationActionOptions)
+            }
         }
 
         // iOS 9 compatibility
@@ -269,12 +304,24 @@ final public class InteractiveNotificationsManager : NSObject
             let action = UIMutableUserNotificationAction()
             action.identifier = identifier
             action.title = description
-            action.activationMode = requiresBackground ? .Background : .Foreground
+            action.activationMode = requiresForeground ? .Foreground : .Background
             action.destructive = destructive
             action.authenticationRequired = requiresAuthentication
+            if self == CommentReply {
+                action.behavior = .TextInput
+            }
             return action
         }
 
         static var allDefinitions = [CommentApprove, CommentLike, CommentReply]
+    }
+}
+
+@available(iOS 10.0, *)
+extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
+    public func userNotificationCenter(center: UNUserNotificationCenter, didReceiveNotificationResponse response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {
+        let responseText = (response as? UNTextInputNotificationResponse)?.userText
+        handleActionWithIdentifier(response.actionIdentifier, remoteNotification: response.notification.request.content.userInfo, responseText: responseText)
+        completionHandler()
     }
 }
