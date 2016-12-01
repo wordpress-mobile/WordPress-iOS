@@ -147,6 +147,9 @@ class EditPostViewController: UIViewController {
         }
 
         let postViewController = AztecPostViewController(post: postToEdit)
+        postViewController.onClose = { [weak self] (changesSaved) in
+            self?.closeEditor(changesSaved)
+        }
         let navController = UINavigationController(rootViewController: postViewController)
         navController.modalPresentationStyle = .FullScreen
         return navController
@@ -248,7 +251,7 @@ class EditPostViewController: UIViewController {
         let controller = PostPreviewViewController(post: post)
         controller.hidesBottomBarWhenPushed = true
         controller.onClose = {
-            self.postPost.dismissViewControllerAnimated(true) {}
+            self.dismissViewControllerAnimated(true) {}
         }
         let navWrapper = UINavigationController(rootViewController: controller)
         postPost.presentViewController(navWrapper, animated: true) {}
