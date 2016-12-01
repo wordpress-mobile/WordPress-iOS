@@ -3,7 +3,7 @@ import UIKit
 import WordPressShared
 import WordPressComAnalytics
 
-open class AppSettingsViewController: UITableViewController {
+class AppSettingsViewController: UITableViewController {
 
     fileprivate var handler: ImmuTableViewHandler!
     // MARK: - Initialization
@@ -17,11 +17,11 @@ open class AppSettingsViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public required convenience init() {
+    required convenience init() {
         self.init(style: .grouped)
     }
 
-    open override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         ImmuTable.registerRows([
@@ -147,8 +147,8 @@ open class AppSettingsViewController: UITableViewController {
 
     func openApplicationSettings() -> ImmuTableAction {
         return { row in
-            if let targetURL = NSURL(string: UIApplicationOpenSettingsURLString) {
-                UIApplication.sharedApplication().openURL(targetURL)
+            if let targetURL = URL(string: UIApplicationOpenSettingsURLString) {
+                UIApplication.shared.openURL(targetURL)
             } else {
                 assertionFailure("Couldn't unwrap Settings URL")
             }

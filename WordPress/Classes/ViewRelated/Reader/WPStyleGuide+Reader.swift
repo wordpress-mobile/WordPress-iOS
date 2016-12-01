@@ -206,14 +206,14 @@ extension WPStyleGuide
 
     public class func applyReaderCardTagButtonStyle(_ button:UIButton) {
         let fontSize = Cards.subtextFontSize
-        button.setTitleColor(mediumBlue(), for: .normal)
+        button.setTitleColor(mediumBlue(), for: UIControlState())
         button.setTitleColor(lightBlue(), for: .highlighted)
         button.titleLabel?.font = WPFontManager.systemRegularFont(ofSize: fontSize)
     }
 
     public class func applyReaderCardActionButtonStyle(_ button:UIButton) {
         let fontSize = Cards.buttonFontSize
-        button.setTitleColor(greyLighten10(), for: .normal)
+        button.setTitleColor(greyLighten10(), for: UIControlState())
         button.setTitleColor(lightBlue(), for: .highlighted)
         button.setTitleColor(jazzyOrange(), for: .selected)
         button.setTitleColor(greyLighten10(), for: .disabled)
@@ -237,13 +237,13 @@ extension WPStyleGuide
 
     public class func applyReaderSiteStreamDescriptionStyle(_ label:UILabel) {
         let fontSize = Cards.contentFontSize
-        label.font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
+        label.font = WPFontManager.merriweatherRegularFont(ofSize: fontSize)
         label.textColor = darkGrey()
     }
 
     public class func applyReaderSiteStreamCountStyle(_ label:UILabel) {
         let fontSize:CGFloat = 12.0
-        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
+        label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
         label.textColor = grey()
     }
 
@@ -256,19 +256,20 @@ extension WPStyleGuide
         let followStr = followStringForDisplay(false)
         let followingStr = followStringForDisplay(true)
 
-        let followIcon = Gridicon.iconOfType(.ReaderFollow, withSize: size)
-        let followingIcon = Gridicon.iconOfType(.ReaderFollowing, withSize: size)
+        let followIcon = Gridicon.iconOfType(.readerFollow, withSize: size)
+        let followingIcon = Gridicon.iconOfType(.readerFollowing, withSize: size)
         let tintedFollowIcon = followIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
+
         let tintedFollowingIcon = followingIcon.imageWithTintColor(WPStyleGuide.validGreen())
         let highlightIcon = followingIcon.imageWithTintColor(WPStyleGuide.lightBlue())
 
-        button.setImage(tintedFollowIcon, forState: .Normal)
-        button.setImage(tintedFollowingIcon, forState: .Selected)
-        button.setImage(highlightIcon, forState: .Highlighted)
+        button.setImage(tintedFollowIcon, for: .normal)
+        button.setImage(tintedFollowingIcon, for: .selected)
+        button.setImage(highlightIcon, for: .highlighted)
 
-        button.setTitle(followStr, forState: .Normal)
-        button.setTitle(followingStr, forState: .Selected)
-        button.setTitle(followingStr, forState: .Highlighted)
+        button.setTitle(followStr, for: UIControlState())
+        button.setTitle(followingStr, for: .selected)
+        button.setTitle(followingStr, for: .highlighted)
     }
 
     public class func likeCountForDisplay(_ count: Int) -> String {
@@ -284,7 +285,7 @@ extension WPStyleGuide
         }
     }
 
-    public class func commentCountForDisplay(count: Int) -> String {
+    public class func commentCountForDisplay(_ count: Int) -> String {
         let commentStr = NSLocalizedString("Comment", comment: "Text for the 'comment' when there is 1 or 0 comments")
         let commentsStr = NSLocalizedString("Comments", comment: "Text for the 'comment' button when there are multiple comments")
 
@@ -297,7 +298,7 @@ extension WPStyleGuide
         }
     }
 
-    public class func followStringForDisplay(isFollowing: Bool) -> String {
+    public class func followStringForDisplay(_ isFollowing: Bool) -> String {
         if isFollowing {
             return NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
         } else {

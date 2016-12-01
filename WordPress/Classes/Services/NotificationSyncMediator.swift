@@ -43,11 +43,11 @@ class NotificationSyncMediator
 
     /// Thread Safety Helper!
     ///
-    private static let lock = NSLock()
+    fileprivate static let lock = NSLock()
 
     /// Shared PrivateContext among all of the Sync Service Instances
     ///
-    private static var privateContext: NSManagedObjectContext!
+    fileprivate static var privateContext: NSManagedObjectContext!
 
 
 
@@ -214,7 +214,7 @@ private extension NotificationSyncMediator
         let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
-        derivedContext?.perform {
+        derivedContext.perform {
             let remoteIds = remoteHashes.map { $0.notificationId }
             let predicate = NSPredicate(format: "(notificationId IN %@)", remoteIds)
             var localHashes = [String: String]()
@@ -228,7 +228,7 @@ private extension NotificationSyncMediator
                 return localHash == nil || localHash != remote.notificationHash
             }
 
-            derivedContext?.reset()
+            derivedContext.reset()
 
             let outdatedIds = filtered.map { $0.notificationId }
 
@@ -250,7 +250,7 @@ private extension NotificationSyncMediator
         let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
-        derivedContext?.perform {
+        derivedContext.perform {
             for remoteNote in remoteNotes {
                 let predicate = NSPredicate(format: "(notificationId == %@)", remoteNote.notificationId)
                 let localNote = helper.firstObject(matchingPredicate: predicate) ?? helper.insertNewObject()
@@ -276,7 +276,7 @@ private extension NotificationSyncMediator
         let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
-        derivedContext?.perform {
+        derivedContext.perform {
             let remoteIds = remoteHashes.map { $0.notificationId }
             let predicate = NSPredicate(format: "NOT (notificationId IN %@)", remoteIds)
 
@@ -316,6 +316,7 @@ private extension NotificationSyncMediator
     func notifyNotificationsWereUpdated() {
         let notificationCenter = NotificationCenter.default
         notificationCenter.post(name: Foundation.Notification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+    }
 }
 
 
