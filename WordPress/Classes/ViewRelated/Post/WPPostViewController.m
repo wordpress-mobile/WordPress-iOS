@@ -582,6 +582,8 @@ EditImageDetailsViewControllerDelegate
 
 - (void)showUnsavedChangesAlert
 {
+    [self.editorView endEditing];
+
     NSString *title = NSLocalizedString(@"Unsaved changes.",
                                         @"Title of the alert that lets the users know there are unsaved changes in a post they're opening.");
     NSString *message = NSLocalizedString(@"This post has local changes that were not saved. You can now save them or discard them.",

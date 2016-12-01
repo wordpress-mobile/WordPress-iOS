@@ -3,7 +3,7 @@ import UIKit
 import WordPressShared
 import WordPressComAnalytics
 
-public class AppSettingsViewController: UITableViewController {
+class AppSettingsViewController: UITableViewController {
 
     private var handler: ImmuTableViewHandler!
     // MARK: - Initialization
@@ -13,15 +13,15 @@ public class AppSettingsViewController: UITableViewController {
         navigationItem.title = NSLocalizedString("App Settings", comment: "App Settings Title")
     }
 
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public required convenience init() {
+    required convenience init() {
         self.init(style: .Grouped)
     }
 
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         ImmuTable.registerRows([
@@ -71,9 +71,14 @@ public class AppSettingsViewController: UITableViewController {
             editorRows.append(nativeEditor)
         }
 
-        let aboutHeader = NSLocalizedString("About", comment: "Link to About section (contains info about the app)")
-        let aboutApp = NavigationItemRow(
-            title: NSLocalizedString("WordPress for iOS", comment: "Link to About screen for WordPress for iOS"),
+        let aboutHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
+        let settingsRow = NavigationItemRow(
+            title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
+            action: openApplicationSettings()
+        )
+
+        let aboutRow = NavigationItemRow(
+            title: NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS"),
             action: pushAbout()
         )
 
@@ -92,7 +97,8 @@ public class AppSettingsViewController: UITableViewController {
             ImmuTableSection(
                 headerText: aboutHeader,
                 rows: [
-                    aboutApp
+                    settingsRow,
+                    aboutRow
                 ],
                 footerText: nil)
             ])
@@ -102,23 +108,20 @@ public class AppSettingsViewController: UITableViewController {
     // MARK: - Actions
 
     func mediaSizeChanged() -> Int -> Void {
-        return {
-            value in
+        return { value in
             MediaSettings().maxImageSizeSetting = value
             ShareExtensionService.configureShareExtensionMaximumMediaDimension(value)
         }
     }
 
     func mediaRemoveLocationChanged() -> Bool -> Void {
-        return {
-            value in
+        return { value in
             MediaSettings().removeLocationSetting = value
         }
     }
 
     func visualEditorChanged() -> Bool -> Void {
-        return {
-            enabled in
+        return { enabled in
             if enabled {
                 WPAnalytics.track(.EditorToggledOn)
             } else {
@@ -130,8 +133,7 @@ public class AppSettingsViewController: UITableViewController {
     }
 
     func nativeEditorChanged() -> Bool -> Void {
-        return {
-            enabled in
+        return { enabled in
             EditorSettings().nativeEditorEnabled = enabled
         }
     }
@@ -140,6 +142,18 @@ public class AppSettingsViewController: UITableViewController {
         return { [unowned self] row in
             let controller = AboutViewController()
             self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
+    func openApplicationSettings() -> ImmuTableAction {
+        return { row in
+            if let targetURL = NSURL(string: UIApplicationOpenSettingsURLString) {
+                UIApplication.sharedApplication().openURL(targetURL)
+            } else {
+                assertionFailure("Couldn't unwrap Settings URL")
+            }
+
+            self.tableView.deselectSelectedRowWithAnimation(true)
         }
     }
 }
