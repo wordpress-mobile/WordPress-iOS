@@ -39,6 +39,15 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 
 + (void)setup
 {
+    // Don't set up helpshift if we are debugging and there is not a valid API Key.
+    // Allows testing of the app without helpshift credentials.
+#if !DEBUG
+    NSString *apiKey = [ApiCredentials helpshiftAPIKey];
+    if (apiKey == nil || [apiKey isEqualToString:@""]) {
+        return;
+    }
+#endif
+
     [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
     [[HelpshiftSupport sharedInstance] setDelegate:[HelpshiftUtils sharedInstance]];
     [HelpshiftCore installForApiKey:[ApiCredentials helpshiftAPIKey] domainName:[ApiCredentials helpshiftDomainName] appID:[ApiCredentials helpshiftAppId]];

@@ -393,8 +393,9 @@ int ddLogLevel = DDLogLevelInfo;
     [KeychainTools processKeychainDebugArguments];
 #endif
 
+
     [HelpshiftUtils setup];
-    
+
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
