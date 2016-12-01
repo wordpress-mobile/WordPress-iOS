@@ -1484,7 +1484,8 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
         toggleFollowingForPost(post)
     }
 
-    public func readerCell(cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
+
+    public func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
         guard let post = provider as? ReaderPost else {
             return
         }
@@ -1492,7 +1493,7 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
     }
 
 
-    public func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
+    public func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
         guard let post = provider as? ReaderPost else {
             return
         }

@@ -1,17 +1,30 @@
 import Foundation
 import WordPressShared
 import Gridicons
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol
 {
-    func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
-    func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
-    func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
+    func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
+    func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
     func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String?
 }
 
@@ -64,6 +77,7 @@ import Gridicons
     // MARK: - Accessors
     open var hidesFollowButton = false
     open var enableLoggedInFeatures = true
+
 
     open override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -173,36 +187,36 @@ import Gridicons
         likeActionButton.setImage(selectedImage, for: .selected)
     }
 
-    private func setupVisitButton() {
+    fileprivate func setupVisitButton() {
         let size = CGSize(width: 20, height: 20)
         let title = NSLocalizedString("Visit", comment: "Verb. Button title.  Tap to visit a website.")
-        let icon = Gridicon.iconOfType(.External, withSize: size)
+        let icon = Gridicon.iconOfType(.external, withSize: size)
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
         let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
 
-        visitButton.setTitle(title, forState: .Normal)
-        visitButton.setImage(tintedIcon, forState: .Normal)
-        visitButton.setImage(highlightIcon, forState: .Highlighted)
+        visitButton.setTitle(title, for: UIControlState())
+        visitButton.setImage(tintedIcon, for: .normal)
+        visitButton.setImage(highlightIcon, for: .highlighted)
     }
 
-    private func setupShareButton() {
+    fileprivate func setupShareButton() {
         let size = CGSize(width: 20, height: 20)
-        let icon = Gridicon.iconOfType(.Share, withSize: size)
+        let icon = Gridicon.iconOfType(.share, withSize: size)
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
         let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
 
-        shareButton.setImage(tintedIcon, forState: .Normal)
-        shareButton.setImage(highlightIcon, forState: .Highlighted)
+        shareButton.setImage(tintedIcon, for: .normal)
+        shareButton.setImage(highlightIcon, for: .highlighted)
     }
 
-    private func setupMenuButton() {
+    fileprivate func setupMenuButton() {
         let size = CGSize(width: 20, height: 20)
-        let icon = Gridicon.iconOfType(.Ellipsis, withSize: size)
+        let icon = Gridicon.iconOfType(.ellipsis, withSize: size)
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
         let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
 
-        menuButton.setImage(tintedIcon, forState: .Normal)
-        menuButton.setImage(highlightIcon, forState: .Highlighted)
+        menuButton.setImage(tintedIcon, for: .normal)
+        menuButton.setImage(highlightIcon, for: .highlighted)
     }
 
     /**
@@ -229,12 +243,12 @@ import Gridicons
         Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
     */
     fileprivate func applyOpaqueBackgroundColors() {
-        blogNameLabel.backgroundColor = UIColor.whiteColor()
-        bylineLabel.backgroundColor = UIColor.whiteColor()
-        titleLabel.backgroundColor = UIColor.whiteColor()
-        summaryLabel.backgroundColor = UIColor.whiteColor()
-        commentActionButton.titleLabel?.backgroundColor = UIColor.whiteColor()
-        likeActionButton.titleLabel?.backgroundColor = UIColor.whiteColor()
+        blogNameLabel.backgroundColor = UIColor.white
+        bylineLabel.backgroundColor = UIColor.white
+        titleLabel.backgroundColor = UIColor.white
+        summaryLabel.backgroundColor = UIColor.white
+        commentActionButton.titleLabel?.backgroundColor = UIColor.white
+        likeActionButton.titleLabel?.backgroundColor = UIColor.white
     }
 
     open func configureCell(_ contentProvider:ReaderPostContentProvider) {
@@ -258,12 +272,12 @@ import Gridicons
         // Always reset
         avatarImageView.image = nil
 
-        let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        if let url = provider.siteIconForDisplayOfSize(Int(size)) {
-            avatarImageView.setImageWithURL(url)
-            avatarImageView.hidden = false
+        let size = avatarImageView.frame.size.width * UIScreen.main.scale
+        if let url = provider.siteIconForDisplay(ofSize: Int(size)) {
+            avatarImageView.setImageWith(url)
+            avatarImageView.isHidden = false
         } else {
-            avatarImageView.hidden = true
+            avatarImageView.isHidden = true
         }
 
         var arr = [String]()
@@ -273,15 +287,15 @@ import Gridicons
         if let blogName = provider.blogNameForDisplay() {
             arr.append(blogName)
         }
-        blogNameLabel.text = arr.joinWithSeparator(", ")
+        blogNameLabel.text = arr.joined(separator: ", ")
 
-        let byline = contentProvider?.dateForDisplay()?.shortString() ?? ""
+        let byline = (contentProvider?.dateForDisplay() as NSDate?)?.shortString() ?? ""
         bylineLabel.text = byline
     }
 
     fileprivate func configureFollowButton() {
-        followButton.hidden = hidesFollowButton
-        followButton.selected = contentProvider?.isFollowing() ?? false
+        followButton.isHidden = hidesFollowButton
+        followButton.isSelected = contentProvider?.isFollowing() ?? false
     }
 
     fileprivate func configureFeaturedImageIfNeeded() {
@@ -379,7 +393,7 @@ import Gridicons
     }
 
     fileprivate func configureActionButtons() {
-        if contentProvider == nil || contentProvider?.sourceAttributionStyle() != SourceAttributionStyle.None {
+        if contentProvider == nil || contentProvider?.sourceAttributionStyle() != SourceAttributionStyle.none {
             resetActionButton(commentActionButton)
             resetActionButton(likeActionButton)
             return
@@ -402,7 +416,7 @@ import Gridicons
             return
         }
 
-        likeActionButton.tag = CardAction.Like.rawValue
+        likeActionButton.tag = CardAction.like.rawValue
         likeActionButton.isEnabled = enableLoggedInFeatures
         likeActionButton.isSelected = contentProvider!.isLiked()
         likeActionButton.isHidden = false
@@ -416,7 +430,7 @@ import Gridicons
         if contentProvider!.isWPCom() {
             if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().intValue > 0 {
 
-                commentActionButton.tag = CardAction.Comment.rawValue
+                commentActionButton.tag = CardAction.comment.rawValue
                 commentActionButton.isHidden = false
 
                 return
@@ -425,24 +439,24 @@ import Gridicons
         resetActionButton(commentActionButton)
     }
 
-    private func configureButtonTitles() {
+    fileprivate func configureButtonTitles() {
         guard let provider = contentProvider else {
             return
         }
 
-        let likeCount = provider.likeCount().integerValue
-        let commentCount = provider.commentCount().integerValue
+        let likeCount = provider.likeCount().intValue
+        let commentCount = provider.commentCount().intValue
 
         if superview?.frame.width < 480 {
             // remove title text
             let likeTitle = likeCount > 0 ?  provider.likeCount().stringValue : ""
             let commentTitle = commentCount > 0 ? provider.commentCount().stringValue : ""
-            likeActionButton.setTitle(likeTitle, forState: .Normal)
-            commentActionButton.setTitle(commentTitle, forState: .Normal)
-            shareButton.setTitle("", forState: .Normal)
-            followButton.setTitle("", forState: .Normal)
-            followButton.setTitle("", forState: .Selected)
-            followButton.setTitle("", forState: .Highlighted)
+            likeActionButton.setTitle(likeTitle, for: UIControlState())
+            commentActionButton.setTitle(commentTitle, for: UIControlState())
+            shareButton.setTitle("", for: UIControlState())
+            followButton.setTitle("", for: UIControlState())
+            followButton.setTitle("", for: .selected)
+            followButton.setTitle("", for: .highlighted)
 
             insetFollowButtonIcon(false)
         } else {
@@ -454,13 +468,13 @@ import Gridicons
             let followTitle = WPStyleGuide.followStringForDisplay(false)
             let followingTitle = WPStyleGuide.followStringForDisplay(true)
 
-            likeActionButton.setTitle(likeTitle, forState: .Normal)
-            commentActionButton.setTitle(commentTitle, forState: .Normal)
-            shareButton.setTitle(shareTitle, forState: .Normal)
+            likeActionButton.setTitle(likeTitle, for: UIControlState())
+            commentActionButton.setTitle(commentTitle, for: UIControlState())
+            shareButton.setTitle(shareTitle, for: UIControlState())
 
-            followButton.setTitle(followTitle, forState: .Normal)
-            followButton.setTitle(followingTitle, forState: .Selected)
-            followButton.setTitle(followingTitle, forState: .Highlighted)
+            followButton.setTitle(followTitle, for: UIControlState())
+            followButton.setTitle(followingTitle, for: .selected)
+            followButton.setTitle(followingTitle, for: .highlighted)
 
             insetFollowButtonIcon(true)
         }
@@ -469,7 +483,7 @@ import Gridicons
     /// Adds some space between the button and title.
     /// Setting the titleEdgeInset.left seems to be ignored in IB for whatever reason,
     /// so we'll add/remove it from the image as needed.
-    private func insetFollowButtonIcon(bool: Bool) {
+    fileprivate func insetFollowButtonIcon(_ bool: Bool) {
         var insets = followButton.imageEdgeInsets
         insets.right = bool ? 2.0 : 0.0
         followButton.imageEdgeInsets = insets
@@ -509,7 +523,7 @@ import Gridicons
         delegate?.readerCell(self, followActionForProvider: provider)
     }
 
-    @IBAction func didTapHeaderBlogButton(sender: UIButton) {
+    @IBAction func didTapHeaderBlogButton(_ sender: UIButton) {
         notifyDelegateHeaderWasTapped()
     }
 

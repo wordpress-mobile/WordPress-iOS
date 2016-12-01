@@ -12,8 +12,8 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     var documentSize : CGSize {
         get {
             var contentSize = webView.scrollView.contentSize
-            if let heightStr = webView.stringByEvaluatingJavaScriptFromString("document.documentElement.scrollHeight") {
-                if let height = NSNumberFormatter().numberFromString(heightStr) {
+            if let heightStr = webView.stringByEvaluatingJavaScript(from: "document.documentElement.scrollHeight") {
+                if let height = NumberFormatter().number(from: heightStr) {
                     contentSize.height = CGFloat(height)
                 }
             }
@@ -114,13 +114,12 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 
     func loadContentURL(_ url: URL) {
         var url = url
-        if let absoluteString = url.absoluteString,
-            let components = NSURLComponents(string: absoluteString) {
+        if var components = URLComponents(string: url.absoluteString) {
                 if components.scheme == nil {
                     components.scheme = "http"
                 }
             if  let componentStr = components.string,
-                let componentURL = NSURL(string: componentStr) {
+                let componentURL = URL(string: componentStr) {
                     url = componentURL
             }
         }
@@ -137,7 +136,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 
 
     func checkIfDoneLoading() {
-        if webView.loading {
+        if webView.isLoading {
             return
         }
 
@@ -170,8 +169,8 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 
         // The webViewDidFinishLoad method can be called many times for a single
         // web page. Wait a brief moment then check if the webview is done loading content.
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
+        let delayTime = DispatchTime.now() + Double(Int64(0.3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) { [weak self] in
             self?.checkIfDoneLoading()
         }
     }

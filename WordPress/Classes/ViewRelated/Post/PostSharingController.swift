@@ -116,16 +116,16 @@ import SVProgressHUD
         let controller = shareController("", summary: "", tags: "", link: url.absoluteString)
 
         if !UIDevice.isPad() {
-            viewController.presentViewController(controller, animated: true, completion: nil)
+            viewController.present(controller, animated: true, completion: nil)
             return
         }
 
         // Silly iPad popover rules.
-        controller.modalPresentationStyle = .Popover
+        controller.modalPresentationStyle = .popover
 
-        viewController.presentViewController(controller, animated: true, completion: nil)
+        viewController.present(controller, animated: true, completion: nil)
         if let presentationController = controller.popoverPresentationController {
-            presentationController.permittedArrowDirections = .Any
+            presentationController.permittedArrowDirections = .any
             presentationController.sourceView = view
             presentationController.sourceRect = rect
         }

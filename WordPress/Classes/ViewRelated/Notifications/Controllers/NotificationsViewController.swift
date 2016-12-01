@@ -915,7 +915,7 @@ private extension NotificationsViewController
     }
 
     func syncNotificationWithID(_ noteId: String, timeout: TimeInterval, success: @escaping (_ note: Notification) -> Void) {
-        let service = NotificationSyncMediator()
+        let mediator = NotificationSyncMediator()
         let startDate = Date()
 
         DDLogSwift.logInfo("Sync'ing Notification [\(noteId)]")
