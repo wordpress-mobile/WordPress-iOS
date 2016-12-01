@@ -52,8 +52,8 @@ class InvitePersonViewController : UITableViewController {
 
     /// Roles available for the current site
     ///
-    private var availableRoles: [Role] {
-        return (blog.siteVisibility == .Private) ? Role.inviteRolesForPrivateSite : Role.inviteRoles
+    fileprivate var availableRoles: [Role] {
+        return (blog.siteVisibility == .private) ? Role.inviteRolesForPrivateSite : Role.inviteRoles
     }
 
     /// Last Section Index
