@@ -232,7 +232,7 @@ extension NUXAbstractViewController : SigninErrorViewControllerDelegate
             "Username": loginFields.username,
             "SiteURL": loginFields.siteUrl
         ]
-        HelpshiftSupport.showConversation(self, withOptions: [HelpshiftSupportCustomMetadataKey: metaData])
+        HelpshiftSupport.showConversation(self, withOptions: [HelpshiftSupportCustomMetadataKey: metaData, "showSearchOnNewConversation": "YES"])
         WPAppAnalytics.track(.SupportOpenedHelpshiftScreen)
     }
 
