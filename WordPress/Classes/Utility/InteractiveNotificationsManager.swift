@@ -71,7 +71,7 @@ final public class InteractiveNotificationsManager : NSObject
             return
         }
 
-        guard let action = NoteActionDefinition(rawValue: identifier) else {
+        guard let noteId = remoteNotification.objectForKey("note_id") as? NSNumber else {
             return
         }
 
@@ -80,6 +80,17 @@ final public class InteractiveNotificationsManager : NSObject
         }
 
         guard let commentID = remoteNotification.objectForKey("comment_id") as? NSNumber else {
+            return
+        }
+
+        if #available(iOS 10.0, *) {
+            if identifier == UNNotificationDefaultActionIdentifier {
+                showDetailsWithNoteID(noteId)
+                return
+            }
+        }
+
+        guard let action = NoteActionDefinition(rawValue: identifier) else {
             return
         }
 
@@ -136,6 +147,16 @@ final public class InteractiveNotificationsManager : NSObject
             DDLogSwift.logInfo("Couldn't moderate comment from push notification")
         })
     }
+
+
+    /// Opens the details for a given notificationId
+    ///
+    /// - Parameter noteID: The Notification's Identifier
+    ///
+    private func showDetailsWithNoteID(noteId: NSNumber) {
+        WPTabBarController.sharedInstance().showNotificationsTabForNoteWithID(noteId.stringValue)
+    }
+
 
     /// Replies to a comment
     ///
