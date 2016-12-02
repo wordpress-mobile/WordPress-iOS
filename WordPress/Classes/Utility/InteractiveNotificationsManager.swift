@@ -120,7 +120,7 @@ final public class InteractiveNotificationsManager : NSObject
     ///     - siteID: The site identifier
     ///
     private func likeCommentWithCommentID(commentID: NSNumber, siteID: NSNumber) {
-        let context = ContextManager.sharedInstance().newDerivedContext()
+        let context = ContextManager.sharedInstance().mainContext
         let service = CommentService(managedObjectContext: context)
 
         service.likeCommentWithID(commentID, siteID: siteID, success: {
@@ -138,7 +138,7 @@ final public class InteractiveNotificationsManager : NSObject
     ///     - siteID: The site identifier
     ///
     private func approveCommentWithCommentID(commentID: NSNumber, siteID: NSNumber) {
-        let context = ContextManager.sharedInstance().newDerivedContext()
+        let context = ContextManager.sharedInstance().mainContext
         let service = CommentService(managedObjectContext: context)
 
         service.approveCommentWithID(commentID, siteID: siteID, success: {
@@ -166,7 +166,7 @@ final public class InteractiveNotificationsManager : NSObject
     ///     - content: The text for the comment reply
     ///
     private func replyToCommentWithCommentID(commentID: NSNumber, siteID: NSNumber, content: String) {
-        let context = ContextManager.sharedInstance().newDerivedContext()
+        let context = ContextManager.sharedInstance().mainContext
         let service = CommentService(managedObjectContext: context)
 
         service.replyToCommentWithID(commentID, siteID: siteID, content: content, success: {
