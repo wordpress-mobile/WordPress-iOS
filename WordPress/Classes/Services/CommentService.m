@@ -467,6 +467,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
     [remote replyToCommentWithID:commentID
                          content:content
+                        sanitize:YES
                          success:successBlock
                          failure:failureBlock];
 }
