@@ -122,6 +122,7 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
     [self.window makeKeyAndVisible];
 
+    [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
@@ -451,10 +452,11 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier
                                         forRemoteNotification:(NSDictionary *)remoteNotification
+                                             withResponseInfo:(NSDictionary *)responseInfo
                                             completionHandler:(void (^)())completionHandler
 {
-    [[InteractiveNotificationsManager sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification];
-    
+    NSString *responseText = responseInfo[UIUserNotificationActionResponseTypedTextKey];
+    [[InteractiveNotificationsManager sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification responseText:responseText];
     completionHandler();
 }
 
