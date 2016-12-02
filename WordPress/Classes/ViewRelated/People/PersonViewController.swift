@@ -186,7 +186,7 @@ private extension PersonViewController {
     }
 
     func removeWasPressed() {
-        let titleFormat = NSLocalizedString("Remove %@", comment: "Remove Person Alert Title")
+        let titleFormat = NSLocalizedString("Remove @%@", comment: "Remove Person Alert Title")
         let titleText = String(format: titleFormat, person.username)
 
         let name = person.firstName?.nonEmptyString() ?? person.username
@@ -306,7 +306,7 @@ private extension PersonViewController {
     }
 
     func setupRemoveCell() {
-        let removeFormat = NSLocalizedString("Remove %@", comment: "Remove User. Verb")
+        let removeFormat = NSLocalizedString("Remove @%@", comment: "Remove User. Verb")
         let removeText = String(format: removeFormat, person.username)
         removeCell.textLabel?.text = removeText as String
         WPStyleGuide.configureTableViewDestructiveActionCell(removeCell)
