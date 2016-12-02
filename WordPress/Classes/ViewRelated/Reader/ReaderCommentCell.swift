@@ -41,13 +41,13 @@ class ReaderCommentCell : UITableViewCell
 
     override var indentationLevel: Int {
         didSet {
-            leadingContentConstraint.constant = CGFloat(indentationLevel) * indentationWidth
+            updateLeadingContentConstraint()
         }
     }
 
     override var indentationWidth: CGFloat {
         didSet {
-            leadingContentConstraint.constant = CGFloat(indentationLevel) * indentationWidth
+            updateLeadingContentConstraint()
         }
     }
 
@@ -186,6 +186,10 @@ class ReaderCommentCell : UITableViewCell
         likeButton.selected = comment.isLiked
     }
 
+
+    func updateLeadingContentConstraint() {
+        leadingContentConstraint.constant = CGFloat(indentationLevel) * indentationWidth
+    }
 
 
     // MARK: - Actions
