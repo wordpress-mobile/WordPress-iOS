@@ -14,21 +14,21 @@ class PostPostViewController: UIViewController {
 
     private(set) var post: Post?
     var revealPost = false
-    @IBOutlet var titleLabel:UILabel!
-    @IBOutlet var postStatusLabel:UILabel!
-    @IBOutlet var siteIconView:UIImageView!
-    @IBOutlet var siteNameLabel:UILabel!
-    @IBOutlet var siteUrlLabel:UILabel!
-    @IBOutlet var shareButton:UIButton!
-    @IBOutlet var editButton:UIButton!
-    @IBOutlet var viewButton:UIButton!
-    @IBOutlet var navBar:UINavigationBar!
-    @IBOutlet var postInfoView:UIView!
-    @IBOutlet var actionsStackView:UIStackView!
-    @IBOutlet var shadeView:UIView!
-    @IBOutlet var shareButtonWidth:NSLayoutConstraint!
-    @IBOutlet var editButtonWidth:NSLayoutConstraint!
-    @IBOutlet var viewButtonWidth:NSLayoutConstraint!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var postStatusLabel: UILabel!
+    @IBOutlet var siteIconView: UIImageView!
+    @IBOutlet var siteNameLabel: UILabel!
+    @IBOutlet var siteUrlLabel: UILabel!
+    @IBOutlet var shareButton: UIButton!
+    @IBOutlet var editButton: UIButton!
+    @IBOutlet var viewButton: UIButton!
+    @IBOutlet var navBar: UINavigationBar!
+    @IBOutlet var postInfoView: UIView!
+    @IBOutlet var actionsStackView: UIStackView!
+    @IBOutlet var shadeView: UIView!
+    @IBOutlet var shareButtonWidth: NSLayoutConstraint!
+    @IBOutlet var editButtonWidth: NSLayoutConstraint!
+    @IBOutlet var viewButtonWidth: NSLayoutConstraint!
     var onClose: (() -> ())?
     var reshowEditor: (() -> ())?
     var preview: (() -> ())?
@@ -49,10 +49,10 @@ class PostPostViewController: UIViewController {
         super.viewWillAppear(animated)
 
         navBar.translucent = true
-        navBar.barTintColor = UIColor.clearColor() //WPStyleGuide.wordPressBlue()
+        navBar.barTintColor = UIColor.clearColor()
         view.backgroundColor = WPStyleGuide.wordPressBlue()
         navBar.tintColor = UIColor.whiteColor()
-        let clearImage = UIImage(color: UIColor.clearColor(), havingSize: CGSizeMake(320, 4))
+        let clearImage = UIImage(color: UIColor.clearColor(), havingSize: CGSizeMake(1, 1))
         navBar.shadowImage = clearImage
         navBar.setBackgroundImage(clearImage, forBarMetrics: .Default)
 
@@ -80,16 +80,17 @@ class PostPostViewController: UIViewController {
         shadeView.hidden = false
         shadeView.backgroundColor = UIColor.blackColor()
         shadeView.alpha = 0.5
-        postInfoView.alpha = 0
+        postInfoView.alpha = WPAlphaZero
 
-        shareButtonWidth.constant = shareButton.frame.size.width * -0.75
-        editButtonWidth.constant = shareButton.frame.size.width * -0.75
-        viewButtonWidth.constant = shareButton.frame.size.width * -0.75
+        let animationScaleBegin: CGFloat = -0.75
+        shareButtonWidth.constant = shareButton.frame.size.width * animationScaleBegin
+        editButtonWidth.constant = shareButton.frame.size.width * animationScaleBegin
+        viewButtonWidth.constant = shareButton.frame.size.width * animationScaleBegin
         view.layoutIfNeeded()
 
         revealPost = false
 
-        guard let transitionCoordinator = self.transitionCoordinator() else {
+        guard let transitionCoordinator = transitionCoordinator() else {
             return
         }
 
@@ -130,7 +131,7 @@ class PostPostViewController: UIViewController {
 
         titleLabel.text = post.titleForDisplay()
         if post.isScheduled() {
-            let format = NSLocalizedString("Scheduled for %@ on", comment: "Precedes the name of the blog a post was just scheduled on. Variable is the date post was schedulde for.")
+            let format = NSLocalizedString("Scheduled for %@ on", comment: "Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for.")
             postStatusLabel.text = String(format: format, post.dateStringForDisplay())
             shareButton.hidden = true
         } else {
@@ -158,20 +159,20 @@ class PostPostViewController: UIViewController {
         }
 
         let sharingController = PostSharingController()
-        sharingController.sharePost(post, fromView: self.shareButton, inViewController: self)
+        sharingController.sharePost(post, fromView: shareButton, inViewController: self)
     }
 
     @IBAction func editTapped() {
-        self.reshowEditor?()
+        reshowEditor?()
         revealPost = true
     }
 
     @IBAction func viewTapped() {
-        self.preview?()
+        preview?()
         revealPost = true
     }
 
     @IBAction func doneTapped() {
-        self.onClose?()
+        onClose?()
     }
 }

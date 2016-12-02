@@ -15,7 +15,7 @@ class EditPostViewController: UIViewController {
     /// appear with the media picker open
     var openWithMediaPicker: Bool = false
 
-    private(set) var post:Post?
+    private(set) var post: Post?
     private var hasShownEditor = false
     private(set) lazy var blog:Blog = {
         let context = ContextManager.sharedInstance().mainContext
@@ -74,17 +74,15 @@ class EditPostViewController: UIViewController {
     ///   - blog: the blog to create a post for, if post is nil
     /// - Note: it's preferable to use one of the convenience initializers
     private init(post: Post?, blog: Blog?) {
-        if let post = post {
-            self.post = post
-        }
+        self.post = post
         super.init(nibName: nil, bundle: nil)
         if let blog = blog {
             self.blog = blog
         }
-        self.modalPresentationStyle = .FullScreen
-        self.modalTransitionStyle = .CoverVertical
-        self.restorationIdentifier = RestorationKey.viewController.rawValue
-        self.restorationClass = EditPostViewController.self
+        modalPresentationStyle = .FullScreen
+        modalTransitionStyle = .CoverVertical
+        restorationIdentifier = RestorationKey.viewController.rawValue
+        restorationClass = EditPostViewController.self
 
         addChildViewController(postPost)
         view.addSubview(postPost.view)
@@ -99,14 +97,14 @@ class EditPostViewController: UIViewController {
         super.viewWillAppear(animated)
 
         // show postpost, which will be transparent
-        self.view.opaque = false
-        self.view.backgroundColor = UIColor.clearColor()
+        view.opaque = false
+        view.backgroundColor = UIColor.clearColor()
     }
 
     override func viewDidAppear(animated: Bool) {
         if (!hasShownEditor) {
-            self.showEditor()
-            self.hasShownEditor = true
+            showEditor()
+            hasShownEditor = true
         }
     }
 
@@ -143,7 +141,6 @@ class EditPostViewController: UIViewController {
             let context = ContextManager.sharedInstance().mainContext
             let postService = PostService(managedObjectContext: context)
             postToEdit = postService.createDraftPostForBlog(blog)
-            WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
         }
 
         let postViewController = AztecPostViewController(post: postToEdit)
@@ -164,7 +161,6 @@ class EditPostViewController: UIViewController {
             let postService = PostService(managedObjectContext: context)
             targetPost = postService.createDraftPostForBlog(blog)
             post = targetPost
-            WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
         }
         let postViewController = WPPostViewController(post: targetPost, mode: kWPPostViewControllerModeEdit)
         postViewController.isOpenedDirectlyForPhotoPost = openWithMediaPicker
@@ -192,7 +188,6 @@ class EditPostViewController: UIViewController {
             let context = ContextManager.sharedInstance().mainContext
             let postService = PostService(managedObjectContext: context)
             targetPost = postService.createDraftPostForBlog(blog)
-            WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
         }
         editPostViewController = WPLegacyEditPostViewController(post: targetPost)
 
@@ -207,7 +202,7 @@ class EditPostViewController: UIViewController {
     }
 
     func closeEditor(changesSaved: Bool = true, from presentingViewController: UIViewController? = nil) {
-        self.onClose?(changesSaved: changesSaved)
+        onClose?(changesSaved: changesSaved)
 
         var dismissPostPostImmediately = true
         if shouldShowPostPost(hasChanges: changesSaved), let post = post {
@@ -259,7 +254,7 @@ class EditPostViewController: UIViewController {
 
     func closePostPost(animated animated: Bool) {
         // will dismiss self
-        self.dismissViewControllerAnimated(animated) {}
+        dismissViewControllerAnimated(animated) {}
     }
 }
 
@@ -284,14 +279,12 @@ extension EditPostViewController: UIViewControllerRestoration
                 post = context.objectWithID(postID) as? Post
             }
         }
-        var vc: EditPostViewController
-        if let post = post {
-            vc = EditPostViewController(post: post)
-        } else {
-            vc = EditPostViewController()
-        }
 
-        return vc
+        if let post = post {
+            return EditPostViewController(post: post)
+        } else {
+            return EditPostViewController()
+        }
     }
 
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
