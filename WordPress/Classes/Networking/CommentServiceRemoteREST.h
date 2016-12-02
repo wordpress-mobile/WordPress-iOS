@@ -39,10 +39,20 @@
                   failure:(void (^)(NSError *error))failure;
 
 /**
- Adds a reply to a comment with commentID
+ Adds a reply to a comment with commentID.
  */
 - (void)replyToCommentWithID:(NSNumber *)commentID
                      content:(NSString *)content
+                     success:(void (^)(RemoteComment *comment))success
+                     failure:(void (^)(NSError *error))failure;
+
+/**
+ Adds a reply to a comment with commentID. Allows for sanitizing the comment
+ content for display vs edit.
+ */
+- (void)replyToCommentWithID:(NSNumber *)commentID
+                     content:(NSString *)content
+                    sanitize:(BOOL)sanitize
                      success:(void (^)(RemoteComment *comment))success
                      failure:(void (^)(NSError *error))failure;
 

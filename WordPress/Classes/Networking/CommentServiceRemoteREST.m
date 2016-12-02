@@ -232,7 +232,7 @@
            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                if (success) {
                    NSDictionary *commentDict = (NSDictionary *)responseObject;
-                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict sanitizeContent:NO];
+                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict sanitizeContent:YES];
                    success(comment);
                }
            } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
@@ -244,6 +244,15 @@
 
 - (void)replyToCommentWithID:(NSNumber *)commentID
                      content:(NSString *)content
+                     success:(void (^)(RemoteComment *comment))success
+                     failure:(void (^)(NSError *error))failure
+{
+    [self replyToCommentWithID:commentID content:content sanitize:NO success:success failure:failure];
+}
+
+- (void)replyToCommentWithID:(NSNumber *)commentID
+                     content:(NSString *)content
+                    sanitize:(BOOL)sanitize
                      success:(void (^)(RemoteComment *comment))success
                      failure:(void (^)(NSError *error))failure
 {
@@ -260,7 +269,7 @@
                            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                                if (success) {
                                    NSDictionary *commentDict = (NSDictionary *)responseObject;
-                                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict sanitizeContent:NO];
+                                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict sanitizeContent:sanitize];
                                    success(comment);
                                }
                            } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
