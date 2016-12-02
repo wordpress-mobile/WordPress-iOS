@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="doV-5W-Rtg">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Notifications View Controller-->
@@ -9,9 +13,9 @@
             <objects>
                 <tableViewController storyboardIdentifier="NotificationsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="doV-5W-Rtg" customClass="NotificationsViewController" customModule="WordPress" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="XCV-Uv-qac">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <connections>
                             <outlet property="dataSource" destination="doV-5W-Rtg" id="rEG-tS-Iui"/>
@@ -32,7 +36,7 @@
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZnY-3K-upT" userLabel="Ratings View" customClass="ABXPromptView">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="100" id="R1T-Iv-5Q8"/>
                             </constraints>
@@ -54,7 +58,7 @@
                                     </connections>
                                 </segmentedControl>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstItem="W2i-rX-Pc4" firstAttribute="top" secondItem="pEF-oN-cih" secondAttribute="top" constant="8" id="5Uj-Sc-fd3"/>
                                 <constraint firstAttribute="trailing" secondItem="W2i-rX-Pc4" secondAttribute="trailing" constant="8" id="Hd9-33-6h0"/>
@@ -77,7 +81,7 @@
                             </variation>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="pEF-oN-cih" firstAttribute="leading" secondItem="Uvo-9e-l6I" secondAttribute="leading" identifier="FiltersLeading" id="0TE-M7-WfE"/>
                         <constraint firstAttribute="trailing" secondItem="pEF-oN-cih" secondAttribute="trailing" identifier="FiltersTrailing" id="222-MX-igM"/>
@@ -108,15 +112,15 @@
                         <viewControllerLayoutGuide type="bottom" id="6LW-NS-qSh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="lvM-1n-Dgf">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="t2r-NP-ili">
-                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <subviews>
                                     <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dcn-Il-AtN" customClass="IntrinsicTableView" customModule="WordPress">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="580"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <gestureRecognizers/>
                                         <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <connections>
@@ -127,19 +131,23 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6LW-NS-qSh" firstAttribute="top" secondItem="t2r-NP-ili" secondAttribute="bottom" id="Em4-Ll-jHx"/>
-                            <constraint firstItem="t2r-NP-ili" firstAttribute="leading" secondItem="lvM-1n-Dgf" secondAttribute="leading" id="V4D-fq-INq"/>
-                            <constraint firstAttribute="trailing" secondItem="t2r-NP-ili" secondAttribute="trailing" id="bEY-FT-8cX"/>
-                            <constraint firstItem="t2r-NP-ili" firstAttribute="centerY" secondItem="lvM-1n-Dgf" secondAttribute="centerY" priority="750" id="qQ1-lE-W83"/>
-                            <constraint firstItem="t2r-NP-ili" firstAttribute="top" secondItem="8gl-SX-x5I" secondAttribute="bottom" id="wB2-hr-QKf"/>
+                            <constraint firstItem="6LW-NS-qSh" firstAttribute="top" secondItem="t2r-NP-ili" secondAttribute="bottom" id="Em4-Ll-jHx" userLabel="Bottom"/>
+                            <constraint firstItem="t2r-NP-ili" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8gl-SX-x5I" secondAttribute="bottom" id="KIB-vx-IuC"/>
+                            <constraint firstItem="t2r-NP-ili" firstAttribute="leading" secondItem="lvM-1n-Dgf" secondAttribute="leading" id="V4D-fq-INq" userLabel="Leading"/>
+                            <constraint firstItem="6LW-NS-qSh" firstAttribute="top" relation="greaterThanOrEqual" secondItem="t2r-NP-ili" secondAttribute="bottom" id="VTh-xG-bNj"/>
+                            <constraint firstAttribute="trailing" secondItem="t2r-NP-ili" secondAttribute="trailing" id="bEY-FT-8cX" userLabel="Trailing"/>
+                            <constraint firstItem="t2r-NP-ili" firstAttribute="centerY" secondItem="lvM-1n-Dgf" secondAttribute="centerY" priority="750" id="qQ1-lE-W83" userLabel="Center"/>
+                            <constraint firstItem="t2r-NP-ili" firstAttribute="top" secondItem="8gl-SX-x5I" secondAttribute="bottom" id="wB2-hr-QKf" userLabel="Top"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="gVZ-cy-2mc"/>
                     <connections>
+                        <outlet property="badgeBottomLayoutConstraint" destination="VTh-xG-bNj" id="qPP-Tu-YQe"/>
+                        <outlet property="badgeCenterLayoutConstraint" destination="qQ1-lE-W83" id="tTo-21-bZd"/>
+                        <outlet property="badgeTopLayoutConstraint" destination="KIB-vx-IuC" id="Zhb-m6-f8q"/>
                         <outlet property="bottomLayoutConstraint" destination="Em4-Ll-jHx" id="hyF-0f-xzw"/>
-                        <outlet property="centerLayoutConstraint" destination="qQ1-lE-W83" id="1rf-8U-syD"/>
                         <outlet property="stackView" destination="t2r-NP-ili" id="JMP-dt-hBu"/>
                         <outlet property="tableView" destination="Dcn-Il-AtN" id="Mjf-q7-Lkn"/>
                         <outlet property="topLayoutConstraint" destination="wB2-hr-QKf" id="6lI-hD-BmZ"/>
