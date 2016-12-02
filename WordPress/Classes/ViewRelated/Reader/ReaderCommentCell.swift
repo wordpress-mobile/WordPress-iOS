@@ -140,7 +140,7 @@ class ReaderCommentCell : UITableViewCell
 
         if comment.authorIsPostAuthor() {
             authorButton.setTitleColor(WPStyleGuide.jazzyOrange(), forState: .Normal)
-        } else if let _ = comment.authorURL() {
+        } else if comment.hasAuthorUrl() {
             authorButton.setTitleColor(WPStyleGuide.wordPressBlue(), forState: .Normal)
         } else {
             authorButton.enabled = false
