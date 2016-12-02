@@ -255,8 +255,8 @@ private extension PersonViewController {
         let retryTitle          = NSLocalizedString("Retry", comment: "Retry updating User's Role")
         let cancelTitle         = NSLocalizedString("Cancel", comment: "Cancel updating User's Role")
         let title               = NSLocalizedString("Sorry!", comment: "Update User Failed Title")
-        let localizedError      = NSLocalizedString("There was an error updating @", comment: "Updating Role failed error message")
-        let messageText         = localizedError + person.username
+        let localizedError      = NSLocalizedString("There was an error updating @%@", comment: "Updating Role failed error message")
+        let messageText         = String(format: localizedError, person.username)
 
         let alertController = UIAlertController(title: title, message: messageText, preferredStyle: .Alert)
 
