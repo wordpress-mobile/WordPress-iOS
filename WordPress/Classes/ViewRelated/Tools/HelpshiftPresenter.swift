@@ -60,7 +60,7 @@ import UIKit
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: UserDefaultsHelpshiftWasUsed)
 
         PushNotificationsManager.sharedInstance.registerForRemoteNotifications()
-        InteractiveNotificationsManager.sharedInstance.registerForUserNotifications()
+        InteractiveNotificationsManager.sharedInstance.requestAuthorization()
 
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
