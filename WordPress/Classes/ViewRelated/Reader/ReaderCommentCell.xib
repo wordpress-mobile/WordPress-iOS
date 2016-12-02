@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="147"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="byi-Wo-fAK" id="9mZ-R9-DZW">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="146"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="146.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="tuz-Kk-vW9">
@@ -26,6 +26,7 @@
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XPU-fY-7js" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="10" width="32" height="32"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="32" id="28l-JO-bUu"/>
                                             <constraint firstAttribute="width" constant="32" id="zc8-qN-Uzl"/>
@@ -42,8 +43,9 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YXw-gg-IAV">
                                 <rect key="frame" x="40" y="0.0" width="305" height="125"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wUR-85-LXr">
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wUR-85-LXr">
                                         <rect key="frame" x="0.0" y="0.0" width="305" height="25"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <state key="normal" title="Author">
                                             <color key="titleColor" red="0.0" green="0.66666666669999997" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -55,8 +57,9 @@
                                             <action selector="handleAuthorTapped:" destination="byi-Wo-fAK" eventType="touchUpInside" id="kUQ-DX-ncJ"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srn-Fn-Of7">
+                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srn-Fn-Of7">
                                         <rect key="frame" x="0.0" y="25" width="305" height="14.5"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.6588235294117647" green="0.74509803921568629" blue="0.80784313725490198" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -71,8 +74,9 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fSc-Wq-XZ6">
                                         <rect key="frame" x="0.0" y="75" width="305" height="50"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BlX-um-sZ8">
+                                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BlX-um-sZ8">
                                                 <rect key="frame" x="0.0" y="0.0" width="38" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="Reply">
                                                     <color key="titleColor" red="0.52941176470588236" green="0.65098039215686276" blue="0.73725490196078436" alpha="1" colorSpace="calibratedRGB"/>
@@ -87,8 +91,9 @@
                                                     <action selector="handleReplyTapped:" destination="byi-Wo-fAK" eventType="touchUpInside" id="hCt-lB-l0N"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yhR-P3-CEb">
+                                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yhR-P3-CEb">
                                                 <rect key="frame" x="46" y="0.0" width="30" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="Like">
                                                     <color key="titleColor" red="0.52941176470588236" green="0.65098039215686276" blue="0.73725490196078436" alpha="1" colorSpace="calibratedRGB"/>
