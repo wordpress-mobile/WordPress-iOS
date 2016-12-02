@@ -71,6 +71,12 @@ class ReaderCommentCell : UITableViewCell
         WPStyleGuide.applyReaderCardBylineLabelStyle(timeLabel)
 
         authorButton.titleLabel?.lineBreakMode = .ByTruncatingTail
+
+        // Because a stackview is managing layout we tweak text insets to fine tune things.
+        // Insets:
+        // Top 2: Just a bit of vertical padding so the text isn't too close to the label above.
+        // Left -4: So the left edge of the text matches the left edge of the other views.
+        // Bottom -16: Removes some of the padding normally added to the bottom of a textview.
         textView.textContainerInset = UIEdgeInsets(top: 2, left: -4, bottom: -16, right: 0)
     }
 
