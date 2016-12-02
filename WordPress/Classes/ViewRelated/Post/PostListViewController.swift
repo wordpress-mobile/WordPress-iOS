@@ -383,8 +383,6 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
                     self?.updateFilterWithPostStatus(postStatus)
                 }
             }
-
-            editor.navigationController?.popViewControllerAnimated(true)
         }
         editor.modalPresentationStyle = .FullScreen
         presentViewController(editor, animated: false, completion: nil)
