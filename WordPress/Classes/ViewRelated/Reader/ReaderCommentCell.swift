@@ -11,6 +11,16 @@ import Gridicons
 
 class ReaderCommentCell : UITableViewCell
 {
+    struct Constants {
+        // Because a stackview is managing layout we tweak text insets to fine tune things.
+        // Insets:
+        // Top 2: Just a bit of vertical padding so the text isn't too close to the label above.
+        // Left -4: So the left edge of the text matches the left edge of the other views.
+        // Bottom -16: Removes some of the padding normally added to the bottom of a textview.
+        static let textViewInsets = UIEdgeInsets(top: 2, left: -4, bottom: -16, right: 0)
+        static let buttonSize = CGSize(width: 20, height: 20)
+    }
+
     var enableLoggedInFeatures = false
 
     @IBOutlet var avatarImageView: UIImageView!
@@ -72,17 +82,12 @@ class ReaderCommentCell : UITableViewCell
 
         authorButton.titleLabel?.lineBreakMode = .ByTruncatingTail
 
-        // Because a stackview is managing layout we tweak text insets to fine tune things.
-        // Insets:
-        // Top 2: Just a bit of vertical padding so the text isn't too close to the label above.
-        // Left -4: So the left edge of the text matches the left edge of the other views.
-        // Bottom -16: Removes some of the padding normally added to the bottom of a textview.
-        textView.textContainerInset = UIEdgeInsets(top: 2, left: -4, bottom: -16, right: 0)
+        textView.textContainerInset = Constants.textViewInsets
     }
 
 
     func setupReplyButton() {
-        let icon = Gridicon.iconOfType(.Reply, withSize: CGSize(width: 20, height: 20))
+        let icon = Gridicon.iconOfType(.Reply, withSize: Constants.buttonSize)
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.grey())
         let highlightedIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
 
@@ -95,7 +100,7 @@ class ReaderCommentCell : UITableViewCell
 
 
     func setupLikeButton() {
-        let size = CGSize(width: 20, height: 20)
+        let size = Constants.buttonSize
         let tintedIcon = Gridicon.iconOfType(.StarOutline, withSize: size).imageWithTintColor(WPStyleGuide.grey())
         let highlightedIcon = Gridicon.iconOfType(.Star, withSize: size).imageWithTintColor(WPStyleGuide.lightBlue())
         let selectedIcon = Gridicon.iconOfType(.Star, withSize: size).imageWithTintColor(WPStyleGuide.jazzyOrange())
