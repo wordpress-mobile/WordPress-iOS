@@ -318,14 +318,14 @@ final public class PushNotificationsManager : NSObject
             return false
         }
 
-        guard let service = NotificationSyncService() else {
+        guard let mediator = NotificationSyncMediator() else {
             completionHandler?(.Failed)
             return true
         }
 
         DDLogSwift.logInfo("Running Notifications Background Fetch...")
 
-        service.sync { error, newData in
+        mediator.sync { error, newData in
             DDLogSwift.logInfo("Finished Notifications Background Fetch!")
 
             let result = newData ? UIBackgroundFetchResult.NewData : .NoData
