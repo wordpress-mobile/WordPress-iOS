@@ -87,8 +87,13 @@ class PostPostViewController: UIViewController {
         viewButtonWidth.constant = shareButton.frame.size.width * -0.75
         view.layoutIfNeeded()
 
-        let animationCoordinator = self.transitionCoordinator()
-        animationCoordinator?.animateAlongsideTransition({ (context) in
+        revealPost = false
+
+        guard let transitionCoordinator = self.transitionCoordinator() else {
+            return
+        }
+
+        transitionCoordinator.animateAlongsideTransition({ (context) in
             let animationDuration = context.transitionDuration()
 
             UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {
@@ -115,8 +120,6 @@ class PostPostViewController: UIViewController {
                 self.actionsStackView.layoutIfNeeded()
                 }, completion: nil)
         }) { (context) in }
-
-        revealPost = false
     }
 
     func setup(post post: Post) {
