@@ -66,6 +66,7 @@ class WPRichContentView: UITextView
                 let rng = NSRange(location: 0, length: 1)
                 layoutManager.invalidateLayoutForCharacterRange(rng, actualCharacterRange: nil)
                 layoutManager.ensureLayoutForCharacterRange(rng)
+                attachmentManager.layoutAttachmentViews()
             }
         }
     }
@@ -85,6 +86,7 @@ class WPRichContentView: UITextView
                 let rng = NSRange(location: textStorage.length - 2, length: 1)
                 layoutManager.invalidateLayoutForCharacterRange(rng, actualCharacterRange: nil)
                 layoutManager.ensureLayoutForCharacterRange(rng)
+                attachmentManager.layoutAttachmentViews()
             }
         }
     }
