@@ -224,13 +224,17 @@ class WPSplitViewController: UISplitViewController {
         }
     }
 
+    class PlaceholderViewController: UINavigationController {}
+
     /** Sets the primary view controller of the split view as specified, and
      *  automatically sets the detail view controller if the primary
      *  conforms to `WPSplitViewControllerDetailProvider` and can vend a
      *  detail view controller.
      */
     func setInitialPrimaryViewController(viewController: UIViewController) {
-        viewControllers = [viewController]
+        let navigationController = PlaceholderViewController()
+        navigationController.restorationIdentifier = self.dynamicType.navigationControllerRestorationIdentifier
+        viewControllers = [viewController, navigationController]
     }
 
     // We defer initializing the detail view controller until the view is ready to
@@ -239,7 +243,7 @@ class WPSplitViewController: UISplitViewController {
     private var initializedDetailViewController = false
 
     func updateInitialViewControllers() {
-        guard !initializedDetailViewController && viewControllers.count == 1 else {
+        guard !initializedDetailViewController && viewControllers.last is PlaceholderViewController else {
             return
         }
 
