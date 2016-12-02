@@ -582,6 +582,8 @@ EditImageDetailsViewControllerDelegate
 
 - (void)showUnsavedChangesAlert
 {
+    [self.editorView endEditing];
+
     NSString *title = NSLocalizedString(@"Unsaved changes.",
                                         @"Title of the alert that lets the users know there are unsaved changes in a post they're opening.");
     NSString *message = NSLocalizedString(@"This post has local changes that were not saved. You can now save them or discard them.",
@@ -734,14 +736,14 @@ EditImageDetailsViewControllerDelegate
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)showFailedMediaRemovalAlert
+- (void)showFailedMediaRemovalAlertAndDismissEditorOnSave:(BOOL)shouldDismiss
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to save post with failed media items")
                                                                              message:NSLocalizedString(@"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     [alertController addDefaultActionWithTitle:NSLocalizedString(@"Yes", "Yes") handler:^(UIAlertAction *action) {
         [self removeAllFailedMedia];
-        [self savePostAndDismissVC];
+        [self savePostAndDismiss:shouldDismiss];
     }];
     [alertController addCancelActionWithTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".") handler:nil];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -766,6 +768,11 @@ EditImageDetailsViewControllerDelegate
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
                                                                              message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *quickSaveAction = [self quickSaveAlertAction];
+    if (quickSaveAction) {
+        [alertController addAction:quickSaveAction];
+    }
+    
     [alertController addAction:[self previewAlertAction]];
 
     if ([self isEditing]) {
@@ -1167,7 +1174,7 @@ EditImageDetailsViewControllerDelegate
         UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
                                                                        style:[WPStyleGuide barButtonStyleForDone]
                                                                       target:self
-                                                                      action:@selector(saveAction)];
+                                                                      action:@selector(saveAction:)];
 
         // Seems to be an issue witht the appearance proxy not being respected, so resetting these here
         [saveButton setTitleTextAttributes:EnabledButtonBarStyle forState:UIControlStateNormal];
@@ -1176,28 +1183,6 @@ EditImageDetailsViewControllerDelegate
     }
 
     return _saveBarButtonItem;
-}
-
-- (NSString*)saveBarButtonItemTitle
-{
-    NSString *buttonTitle = nil;
-    
-    if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
-        if ([self.post isScheduled]) {
-            buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
-            
-        } else if ([self.post.status isEqualToString:PostStatusPublish]){
-            buttonTitle = NSLocalizedString(@"Post", @"Publish button label.");
-            
-        } else {
-            buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
-        }
-    } else {
-        buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
-    }
-    NSAssert([buttonTitle isKindOfClass:[NSString class]], @"Expected to have a title at this point.");
-    
-    return buttonTitle;
 }
 
 - (UIBarButtonItem *)secondaryLeftUIBarButtonItem
@@ -1210,7 +1195,7 @@ EditImageDetailsViewControllerDelegate
         WPBlogSelectorButton *blogButton = (WPBlogSelectorButton*)self.blogPickerButton;
         NSString *blogName = self.post.blog.settings.name;
         if (blogName.length == 0) {
-            blogName = self.post.blog.url;   
+            blogName = self.post.blog.url;
         }
         
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
@@ -1292,6 +1277,37 @@ EditImageDetailsViewControllerDelegate
                                   handler:^(UIAlertAction * _Nonnull action) {
                                       [self showSettings];
                                   }];
+}
+
+- (UIAlertAction *)quickSaveAlertAction
+{
+    if ([self.post.status isEqualToString:PostStatusDraft]) {
+        if ([self.post.blog isPublishingPostsAllowed]) {
+            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Publish Now", "Title of button allowing the user to immediately publish the post they are editing.")
+                                            style:UIAlertActionStyleDestructive
+                                          handler:^(UIAlertAction * _Nonnull action) {
+                                              [self.post publishImmediately];
+                                              [self saveAction:action];
+                                          }];
+        } else {
+            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Submit for Review", "Title of button allowing a contributor to a site to submit the post they are editing for review.")
+                                            style:UIAlertActionStyleDestructive
+                                          handler:^(UIAlertAction * _Nonnull action) {
+                                              [self.post publishImmediately];
+                                              [self saveAction:action];
+                                          }];
+        }
+    } else if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
+        return [UIAlertAction actionWithTitle:NSLocalizedString(@"Save as Draft", "Title of button allowing users to change the status of the post they are currently editing to Draft.")
+                                        style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * _Nonnull action) {
+                                          self.post.status = PostStatusDraft;
+                                          [self saveAction:action];
+                                          [self refreshNavigationBarButtons:NO];
+                                      }];
+    }
+
+    return nil;
 }
 
 # pragma mark - Model State Methods
@@ -1384,7 +1400,7 @@ EditImageDetailsViewControllerDelegate
     [self dismissEditViewAnimated:YES changesSaved:changesSaved];
 }
 
-- (void)saveAction
+- (void)saveAction:(id)sender
 {
     if (self.currentAlertController) {
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -1395,44 +1411,65 @@ EditImageDetailsViewControllerDelegate
 		[self showMediaUploadingAlert];
 		return;
 	}
-    
-	[self savePostAndDismissVC];
+
+    if (sender == [self saveBarButtonItem]) {
+        [self savePost];
+    } else {
+        [self quickSavePost];
+    }
 }
 
-/**
- *	@brief		Saves the post being edited and closes this VC.
- */
-- (void)savePostAndDismissVC
+- (void)savePost
+{
+    PostEditorSaveAction saveAction = [self currentSaveAction];
+    BOOL shouldDismiss = (saveAction == PostEditorSaveActionPost || saveAction == PostEditorSaveActionSchedule);
+    [self savePostAndDismiss:shouldDismiss];
+
+    [self trackSavePostAnalyticsWithStat:[self analyticsStatForSaveAction:saveAction]];
+}
+
+- (void)quickSavePost
+{
+    switch ([self currentSaveAction]) {
+        case PostEditorSaveActionSchedule:
+        case PostEditorSaveActionPost:
+            [self trackSavePostAnalyticsWithStat:WPAnalyticsStatEditorQuickPublishedPost];
+            [self savePostAndDismiss:YES];
+            break;
+        case PostEditorSaveActionSave:
+        case PostEditorSaveActionUpdate:
+            [self trackSavePostAnalyticsWithStat:WPAnalyticsStatEditorQuickSavedDraft];
+            [self savePostAndDismiss:NO];
+            break;
+    }
+}
+
+- (void)savePostAndDismiss:(BOOL)shouldDismiss
 {
     if ([self hasFailedMedia]) {
-        [self showFailedMediaRemovalAlert];
+        [self showFailedMediaRemovalAlertAndDismissEditorOnSave:shouldDismiss];
         return;
     }
 
+    DDLogMethod();
+
     // Make sure that we are saving the latest content on the editor.
     [self autosaveContent];
-    [self savePost];
-}
 
-/**
- *  @brief      Saves the post being edited and uploads it.
- *  @details    Saves the post being edited and uploads it. If the post is NOT already scheduled, 
- *              changing from 'draft' status to 'publish' will set the date to now.
- */
-- (void)savePost
-{
-    DDLogMethod();
-    [self logSavePostStats];
+    void (^stopEditingAndDismiss)() = ^{
+        if (shouldDismiss) {
+            [self stopEditing];
+            [self.view endEditing:YES];
+            [self didSaveNewPost];
+            [self dismissEditView:YES];
+        } else {
+            [self startEditing];
+        }
+    };
 
-	__block NSString *postTitle = self.post.postTitle;
+    __block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
     __block BOOL postIsScheduled = self.post.isScheduled;
-    void (^stopEditingAndDismiss)() = ^() {
-        [self stopEditing];
-        [self.view endEditing:YES];
-        [self didSaveNewPost];
-        [self dismissEditView:YES];
-    };
 
     NSString *hudText;
     if (postIsScheduled) {
@@ -1442,16 +1479,17 @@ EditImageDetailsViewControllerDelegate
     } else {
         hudText = NSLocalizedString(@"Saving...", @"Text displayed in HUD while a post is being saved as a draft.");
     }
-    [SVProgressHUD showWithStatus:hudText];
+    [SVProgressHUD showWithStatus:hudText maskType:SVProgressHUDMaskTypeClear];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService uploadPost:self.post
                     success:^(AbstractPost *post) {
-                        self.post = post;                        
+                        self.post = post;
+
                         DDLogInfo(@"post uploaded: %@", postTitle);
                         NSString *hudText;
-                        
+
                         if (postIsScheduled) {
                             hudText = NSLocalizedString(@"Scheduled!", @"Text displayed in HUD after a post was successfully scheduled to be published.");
                         } else if ([postStatus isEqualToString:@"publish"]){
@@ -1459,7 +1497,7 @@ EditImageDetailsViewControllerDelegate
                         } else {
                             hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
                         }
-                        [SVProgressHUD dismiss];
+
                         [SVProgressHUD showSuccessWithStatus:hudText];
                         [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
 
@@ -1474,7 +1512,7 @@ EditImageDetailsViewControllerDelegate
                         } else {
                             hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
                         }
-                        [SVProgressHUD dismiss];
+
                         [SVProgressHUD showErrorWithStatus:hudText];
                         [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeError];
 
@@ -1492,10 +1530,13 @@ EditImageDetailsViewControllerDelegate
     }
 }
 
-- (void)logSavePostStats
+- (void)trackSavePostAnalyticsWithStat:(WPAnalyticsStat)stat
 {
-    NSString *buttonTitle = [self saveBarButtonItemTitle];
-    
+    if (stat == WPAnalyticsStatEditorSavedDraft || stat == WPAnalyticsStatEditorQuickSavedDraft) {
+        [WPAnalytics track:stat];
+        return;
+    }
+
     NSInteger originalWordCount = [self.post.original.content wordCount];
     NSInteger wordCount = [self.post.content wordCount];
     
@@ -1510,20 +1551,14 @@ EditImageDetailsViewControllerDelegate
         properties[WPAppAnalyticsKeyBlogID] = dotComID;
     }
     
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"Post", nil)]) {
+    if (stat == WPAnalyticsStatEditorPublishedPost) {
         properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = @([self.post hasVideo]);
-        
-        [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
-        [WPAnalytics track:WPAnalyticsStatEditorScheduledPost withProperties:properties];
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Save", nil)]) {
-        [WPAnalytics track:WPAnalyticsStatEditorSavedDraft];
-    } else {
-        [WPAnalytics track:WPAnalyticsStatEditorUpdatedPost withProperties:properties];
     }
+
+    [WPAnalytics track:stat withProperties:properties];
 }
 
 /**
@@ -1873,7 +1908,8 @@ EditImageDetailsViewControllerDelegate
     
     DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
     
-    [self savePostAndDismissVC];
+    [self savePostAndDismiss:YES];
+    [self trackSavePostAnalyticsWithStat:WPAnalyticsStatEditorSavedDraft];
 }
 
 #pragma mark - WPEditorViewControllerDelegate delegate
