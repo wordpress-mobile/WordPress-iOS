@@ -94,7 +94,7 @@ class ReaderCommentCell : UITableViewCell
         replyButton.setImage(tintedIcon, forState: .Normal)
         replyButton.setImage(highlightedIcon, forState: .Highlighted)
 
-        let title = NSLocalizedString("Reply", comment: "Title of the reply button.")
+        let title = NSLocalizedString("Reply", comment: "Verb. Title of the Reader comments screen reply button. Tapping the button sends a reply to a comment or post.")
         replyButton.setTitle(title, forState: .Normal)
     }
 
