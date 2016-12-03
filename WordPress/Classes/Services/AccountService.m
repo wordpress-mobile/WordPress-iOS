@@ -124,7 +124,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [WPAnalytics refreshMetadata];
-    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
@@ -186,21 +185,31 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     account.authToken = authToken;
     [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 
-    if (![self defaultWordPressComAccount]) {
-        [self setDefaultWordPressComAccount:account];
-    }
+    [self setDefaultWordPressComAccount:account];
 
     return account;
 }
 
+- (NSArray *)retrieveAllAccounts
+{
+    NSManagedObjectContext *context = self.managedObjectContext;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    [request setReturnsObjectsAsFaults:NO];
+    NSError *error;
+    NSArray* accounts = [context executeFetchRequest:request error:&error];
+    return accounts;
+}
+
 - (NSUInteger)numberOfAccounts
 {
+    NSManagedObjectContext *context = self.managedObjectContext;
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Account" inManagedObjectContext:self.managedObjectContext]];
+    [request setEntity:[NSEntityDescription entityForName:@"Account"
+                                   inManagedObjectContext:context]];
     [request setIncludesSubentities:NO];
 
     NSError *error;
-    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
+    NSUInteger count = [context countForFetchRequest:request error:&error];
     if (count == NSNotFound) {
         count = 0;
     }
@@ -220,7 +229,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (WPAccount *)findAccountWithUserID:(NSNumber *)userID
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"userID = %@", userID]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"userID == %@", userID]];
     [request setIncludesPendingChanges:YES];
 
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];

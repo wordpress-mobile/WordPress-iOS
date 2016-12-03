@@ -469,11 +469,11 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
 {
+    UIViewController *presenter = self.window.rootViewController;
     if ([self isWelcomeScreenVisible] || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
         return;
     }
-    
-    UIViewController *presenter = self.window.rootViewController;
+
     // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
     // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
     if (presenter.presentedViewController && ![presenter.presentedViewController isKindOfClass:[UIAlertController class]]) {

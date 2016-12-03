@@ -5,6 +5,10 @@ import Gridicons
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {
     static let restorationIdentifier = "WPMeRestorationID"
+
+    private static let preferredFiltersPopoverContentSize = CGSize(width: 320.0, height: 220.0)
+
+    var accountsButton : NavBarTitleDropdownButton!
     var handler: ImmuTableViewHandler!
 
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
@@ -38,6 +42,11 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.accountsButton = NavBarTitleDropdownButton.init(frame: CGRectMake(0, 0, 75, 44))
+        self.accountsButton.addTarget(self, action: #selector(MeViewController.didTapMeButton(_:)), forControlEvents: .TouchUpInside)
+        self.accountsButton.setAttributedTitleForTitle(NSLocalizedString("Me", comment: "Me title seccion for account selection"))
+        self.navigationItem.titleView = self.accountsButton
+
         // Preventing MultiTouch Scenarios
         view.exclusiveTouch = true
 
@@ -68,6 +77,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
+    @IBAction func didTapMeButton(sender: AnyObject) {
+        displayAccounts()
+    }
+
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -75,7 +88,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         reloadViewModel()
     }
 
-    @objc private func accountDidChange() {
+    @objc private func accountDidChange(notification: NSNotification) {
         reloadViewModel()
 
         // Reload the detail pane if the split view isn't compact
@@ -122,7 +135,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return headerView
     }
 
-    private func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
+    func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
         let accessoryType: UITableViewCellAccessoryType = (splitViewControllerIsHorizontallyCompact) ? .DisclosureIndicator : .None
 
         let myProfile = NavigationItemRow(
@@ -164,6 +177,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             title: NSLocalizedString("Disconnect from WordPress.com", comment: "Label for disconnecting from WordPress.com account"),
             action: confirmLogout())
 
+        let addAccount = ButtonRow(
+            title:  NSLocalizedString("Add WordPress.com account", comment: "Add account for WordPress.com"),
+            action: addWPAccount())
+
         let wordPressComAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
 
         if loggedIn {
@@ -181,6 +198,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                     ImmuTableSection(
                         headerText: wordPressComAccount,
                         rows: [
+                            addAccount,
                             logOut
                         ])
                 ])
@@ -286,6 +304,15 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
+    private func addWPAccount() -> ImmuTableAction {
+        return { [unowned self] row in
+            let signInWPComViewController = SigninWPComViewController.controller(LoginFields(), immediateSignin: false)
+            signInWPComViewController.restrictSigninToWPCom = true
+            let navController = NUXNavigationController(rootViewController: signInWPComViewController)
+            self.presentViewController(navController, animated: true, completion: nil)
+        }
+    }
+
     private func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
@@ -363,10 +390,81 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         service.updateUserDetailsForAccount(account, success: { _ in }, failure: { _ in })
     }
 
-    private func logOut() {
+    private func selectedAccount(account: AccountSelectionItem) {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
-        service.removeDefaultWordPressComAccount()
+        guard let selectedAccount = service.findAccountWithUserID(account.userId) else { return }
+        service.setDefaultWordPressComAccount(selectedAccount)
+    }
+
+    // MARK: - Public for testing purposes
+
+    func retrieveAccounts() -> [AccountSelectionItem] {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        let accounts = service.retrieveAllAccounts()
+        let accountsParsed = accounts as! [WPAccount]
+        var accountSelectionItems: [AccountSelectionItem] = []
+        for account in accountsParsed {
+
+            let accountItem = AccountSelectionItem.init(userId: account.userID,
+                                                        username: account.username,
+                                                        email: account.email)
+            accountSelectionItems.append(accountItem)
+        }
+
+        return accountSelectionItems
+    }
+
+    func logOut() {
+        let accountService = AccountServiceFacade()
+        accountService.removeAndReplaceWPAccountIfAvailable()
+    }
+
+    // MARK: - NavTitle
+
+    func displayAccounts() {
+
+        let retrievedAccounts = self.retrieveAccounts()
+        let titles = retrievedAccounts.map({ (account: AccountSelectionItem) -> String in
+            return account.username
+        })
+
+        guard let defaultAccount = self.defaultAccount() else { return }
+        let currentAccount = AccountSelectionItem.init(userId: (defaultAccount.userID)!,
+                                                       username: (defaultAccount.username)!,
+                                                       email: (defaultAccount.email)!)
+
+        let dict: [NSObject : AnyObject] = [SettingsSelectionDefaultValueKey: currentAccount,
+                                            SettingsSelectionTitleKey: NSLocalizedString("Me", comment: "Title of the list of logged users"),
+                                            SettingsSelectionTitlesKey: titles,
+                                            SettingsSelectionValuesKey: retrievedAccounts,
+                                            SettingsSelectionCurrentValueKey: currentAccount]
+
+        let controller = SettingsSelectionViewController(style: .Plain, andDictionary: dict as [NSObject : AnyObject])
+        controller.onItemSelected = { [weak self] (selectedValue: AnyObject!) -> () in
+            if let strongSelf = self
+            {
+                let parsedAccount = (selectedValue as! AccountSelectionItem)
+                strongSelf.selectedAccount(parsedAccount)
+                strongSelf.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+
+        controller.tableView.scrollEnabled = false
+        self.displayAccountPopover(controller)
+    }
+
+    func displayAccountPopover(controller: UIViewController) {
+        controller.preferredContentSize = self.dynamicType.preferredFiltersPopoverContentSize
+
+        guard let titleView = navigationItem.titleView else {
+            return
+        }
+
+        ForcePopoverPresenter.configurePresentationControllerForViewController(controller, presentingFromView: titleView)
+
+        presentViewController(controller, animated: true, completion: nil)
     }
 
     // MARK: - Private Properties

@@ -22,21 +22,6 @@ class AccountServiceTests: XCTestCase {
         accountService = nil
     }
 
-    func testCreateWordPressComAccountUUID() {
-        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
-        XCTAssertNotNil(account.uuid, "UUID should be set")
-    }
-
-    func testSetDefaultWordPressComAccountCheckUUID() {
-        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
-
-        accountService.setDefaultWordPressComAccount(account)
-
-        let uuid = NSUserDefaults.standardUserDefaults().stringForKey("AccountDefaultDotcomUUID")
-        XCTAssertNotNil(uuid, "Default UUID should be set")
-        XCTAssertEqual(uuid!, account.uuid, "UUID should be set as default")
-    }
-
     func testGetDefaultWordPressComAccountNoneSet() {
         XCTAssertNil(accountService.defaultWordPressComAccount(), "No default account should be set")
     }
@@ -95,14 +80,14 @@ class AccountServiceTests: XCTestCase {
         XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
     }
 
-    func testCreateAccountDoesntReplaceDefaultAccount() {
+    func testCreateAccountReplaceDefaultAccount() {
         XCTAssertNil(accountService.defaultWordPressComAccount())
 
         let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
         XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
 
         accountService.createOrUpdateAccountWithUsername("another", authToken: "authtoken")
-        XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
+        XCTAssertNotEqual(accountService.defaultWordPressComAccount(), account)
     }
 
 }

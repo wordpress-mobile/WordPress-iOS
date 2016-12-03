@@ -81,6 +81,14 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (WPAccount *)createOrUpdateAccountWithUsername:(NSString *)username
                                        authToken:(NSString *)authToken;
 
+/**
+ Retrieves all the intances of Account
+ 
+ @return all WPAccount instances
+ */
+
+- (NSArray *)retrieveAllAccounts;
+
 - (NSUInteger)numberOfAccounts;
 
 /**
