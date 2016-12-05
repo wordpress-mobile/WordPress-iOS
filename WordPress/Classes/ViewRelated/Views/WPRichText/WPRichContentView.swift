@@ -58,7 +58,7 @@ class WPRichContentView: UITextView
 
         set {
             var bounds = topMarginAttachment.bounds
-            bounds.size.height = newValue
+            bounds.size.height = max(1, newValue)
             bounds.size.width = textContainer.size.width
             topMarginAttachment.bounds = bounds
 
@@ -66,10 +66,14 @@ class WPRichContentView: UITextView
                 let rng = NSRange(location: 0, length: 1)
                 layoutManager.invalidateLayoutForCharacterRange(rng, actualCharacterRange: nil)
                 layoutManager.ensureLayoutForCharacterRange(rng)
+                attachmentManager.layoutAttachmentViews()
             }
         }
     }
 
+    // NOTE: Avoid setting attachment bounds with a zero height. A zero height
+    // for an attachment at the end of a text run can glitch TextKit's layout
+    // causing glyphs to not be drawn.
     var bottomMargin: CGFloat {
         get {
             return bottomMarginAttachment.bounds.height
@@ -77,7 +81,7 @@ class WPRichContentView: UITextView
 
         set {
             var bounds = bottomMarginAttachment.bounds
-            bounds.size.height = newValue
+            bounds.size.height = max(1, newValue)
             bounds.size.width = textContainer.size.width
             bottomMarginAttachment.bounds = bounds
 
@@ -85,6 +89,7 @@ class WPRichContentView: UITextView
                 let rng = NSRange(location: textStorage.length - 2, length: 1)
                 layoutManager.invalidateLayoutForCharacterRange(rng, actualCharacterRange: nil)
                 layoutManager.ensureLayoutForCharacterRange(rng)
+                attachmentManager.layoutAttachmentViews()
             }
         }
     }
@@ -120,7 +125,12 @@ class WPRichContentView: UITextView
 
                     // Ensure the starting paragraph style is applied to the topMarginAttachment else the
                     // first paragraph might not have the correct line height.
-                    let paraStyle = attrTxt.attribute(NSParagraphStyleAttributeName, atIndex: 0, effectiveRange: nil) as? NSParagraphStyle ?? NSParagraphStyle.defaultParagraphStyle()
+                    var paraStyle = NSParagraphStyle.defaultParagraphStyle()
+                    if attrTxt.length > 0 {
+                        if let pstyle = attrTxt.attribute(NSParagraphStyleAttributeName, atIndex: 0, effectiveRange: nil) as? NSParagraphStyle {
+                            paraStyle = pstyle
+                        }
+                    }
                     mattrTxt.insertAttributedString(NSAttributedString(attachment: topMarginAttachment), atIndex: 0)
                     mattrTxt.addAttributes([NSParagraphStyleAttributeName: paraStyle], range: NSRange(location: 0, length: 1))
                     mattrTxt.appendAttributedString(NSAttributedString(attachment: bottomMarginAttachment))
