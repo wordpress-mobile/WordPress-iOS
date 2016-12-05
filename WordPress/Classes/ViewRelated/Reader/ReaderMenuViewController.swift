@@ -232,7 +232,7 @@ import WordPressShared
         showDetailViewController(viewControllerForTopic(topic), sender: self)
     }
 
-    private func viewControllerForTopic(topic: ReaderAbstractTopic) -> UIViewController {
+    private func viewControllerForTopic(topic: ReaderAbstractTopic) -> ReaderStreamViewController {
         return ReaderStreamViewController.controllerWithTopic(topic)
     }
 
@@ -242,7 +242,7 @@ import WordPressShared
         showDetailViewController(viewControllerForSearch(), sender: self)
     }
 
-    private func viewControllerForSearch() -> UIViewController {
+    private func viewControllerForSearch() -> ReaderSearchViewController {
         return ReaderSearchViewController.controller()
     }
 
