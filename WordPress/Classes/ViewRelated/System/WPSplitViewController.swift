@@ -362,9 +362,19 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         // (the iOS default behavior here is to just push the detail navigation controller
         // itself onto the primary navigation controller, which is just weird)
         if let primaryViewController = primaryViewController as? UINavigationController {
-            if let secondaryViewController = secondaryViewController as? UINavigationController
-                where detailNavigationStackHasBeenModified || collapseMode == .AlwaysKeepDetail {
+            if let secondaryViewController = secondaryViewController as? UINavigationController{
+
+                // When state restoration is occurring, it's possible for the primary
+                // navigation controller to have already had the had the detail
+                // view controllers pushed onto it. We'll check for this first by
+                // ensuring there's nothing other than a detail provider on the
+                // end of the navigation stack.
+                let forceKeepDetail = (collapseMode == .AlwaysKeepDetail &&
+                                       primaryViewController.viewControllers.last is WPSplitViewControllerDetailProvider)
+
+                if detailNavigationStackHasBeenModified || forceKeepDetail {
                     primaryViewController.viewControllers.appendContentsOf(secondaryViewController.viewControllers)
+                }
             }
 
             return true
