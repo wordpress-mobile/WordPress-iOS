@@ -24,11 +24,12 @@
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
 
 static NSString *const kExtraDebugDefaultsKey = @"extra_debug";
-int const kActivitySpinnerTag = 101;
+
 int const kHelpshiftWindowTypeFAQs = 1;
 int const kHelpshiftWindowTypeConversation = 2;
 
 @interface SupportViewController () <UIViewControllerRestoration>
+@property (nonatomic, strong) NSIndexPath *helpshiftLoadingIndexPath;
 @end
 
 @implementation SupportViewController
@@ -126,87 +127,41 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)showLoadingSpinner
+- (void)setHelpshiftLoadingIndexPath:(NSIndexPath *)helpshiftLoadingIndexPath
 {
-    UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    loading.tag = kActivitySpinnerTag;
-    loading.center = self.view.center;
-    loading.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [self.view addSubview:loading];
-    [loading startAnimating];
-}
+    if (_helpshiftLoadingIndexPath != helpshiftLoadingIndexPath) {
+        NSIndexPath *reloadIndexPath = helpshiftLoadingIndexPath ?: _helpshiftLoadingIndexPath;
 
-- (void)hideLoadingSpinner
-{
-    [[self.view viewWithTag:kActivitySpinnerTag] removeFromSuperview];
+        _helpshiftLoadingIndexPath = helpshiftLoadingIndexPath;
+
+        [self.tableView reloadRowsAtIndexPaths:@[reloadIndexPath]
+                              withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 - (void)prepareAndDisplayHelpshiftWindowOfType:(int)helpshiftType
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:YES forKey:UserDefaultsHelpshiftWasUsed];
-    
-    // Notifications
-    [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
-    [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
+    HelpshiftPresenter *presenter = [HelpshiftPresenter new];
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    NSString *isWPCom = (defaultAccount != nil) ? @"Yes" : @"No";
-    NSMutableDictionary *metaData = [NSMutableDictionary dictionaryWithDictionary:@{ @"isWPCom" : isWPCom }];
-
-    NSArray *allBlogs = [blogService blogsForAllAccounts];
-    for (int i = 0; i < allBlogs.count; i++) {
-        Blog *blog = allBlogs[i];
-
-        NSDictionary *blogData = @{[NSString stringWithFormat:@"blog-%i", i+1]: [blog logDescription]};
-
-        [metaData addEntriesFromDictionary:blogData];
-    }
-
-    if (defaultAccount) {
-        [self showLoadingSpinner];
-
-        [metaData addEntriesFromDictionary:@{@"WPCom Username": defaultAccount.username}];
-        NSArray *tags = [HelpshiftUtils planTagsForAccount:defaultAccount];
-        if (tags) {
-            [metaData setObject:tags forKey:HelpshiftSupportTagsKey];
-        }
-
-        [defaultAccount.wordPressComRestApi GET:@"v1.1/me"
-                         parameters:nil
-                            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-                                [self hideLoadingSpinner];
-
-                                NSString *displayName = ([responseObject valueForKey:@"display_name"]) ? [responseObject objectForKey:@"display_name"] : nil;
-                                NSString *emailAddress = ([responseObject valueForKey:@"email"]) ? [responseObject objectForKey:@"email"] : nil;
-                                NSString *userID = ([responseObject valueForKey:@"ID"]) ? [[responseObject objectForKey:@"ID"] stringValue] : nil;
-
-                                [HelpshiftSupport setUserIdentifier:userID];
-                                [self displayHelpshiftWindowOfType:helpshiftType withUsername:displayName andEmail:emailAddress andMetadata:metaData];
-                            } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-                                [self hideLoadingSpinner];
-                                [self displayHelpshiftWindowOfType:helpshiftType withUsername:defaultAccount.username andEmail:nil andMetadata:metaData];
-                            }];
-    } else {
-        [self displayHelpshiftWindowOfType:helpshiftType withUsername:nil andEmail:nil andMetadata:metaData];
-    }
-}
-
-- (void)displayHelpshiftWindowOfType:(int)helpshiftType
-                        withUsername:(NSString*)username
-                            andEmail:(NSString*)email
-                         andMetadata:(NSDictionary*)metaData
-{
-    [HelpshiftCore setName:username andEmail:email];
+    __weak __typeof(self) weakSelf = self;
+    void (^completion)() = ^{
+        weakSelf.helpshiftLoadingIndexPath = nil;
+    };
 
     if (helpshiftType == kHelpshiftWindowTypeFAQs) {
-        [HelpshiftSupport showFAQs:self withOptions:@{HelpshiftSupportCustomMetadataKey: metaData}];
+        self.helpshiftLoadingIndexPath = [NSIndexPath indexPathForRow:SettingsSectionFAQForumsRowHelpCenter
+                                                                                     inSection:SettingsSectionFAQForums];
+
+        [presenter presentHelpshiftFAQWindowFromViewController:self
+                                            refreshUserDetails:YES
+                                                    completion:completion];
     } else if (helpshiftType == kHelpshiftWindowTypeConversation) {
-        [HelpshiftSupport showConversation:self withOptions:@{HelpshiftSupportCustomMetadataKey: metaData, @"showSearchOnNewConversation": @"YES"}];
+        self.helpshiftLoadingIndexPath = [NSIndexPath indexPathForRow:SettingsSectionFAQForumsRowContact
+                                                            inSection:SettingsSectionFAQForums];
+
+        [presenter presentHelpshiftConversationWindowFromViewController:self
+                                                     refreshUserDetails:YES
+                                                             completion:completion];
     }
 }
 
@@ -269,6 +224,14 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     return cell;
 }
 
+- (void)addActivityIndicatorViewToTableViewCell:(UITableViewCell *)cell
+{
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [activityIndicator startAnimating];
+
+    cell.accessoryView = activityIndicator;
+}
+
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -277,12 +240,21 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     if (indexPath.section == SettingsSectionFAQForums) {
         if (indexPath.row == SettingsSectionFAQForumsRowHelpCenter) {
             cell.textLabel.text = NSLocalizedString(@"WordPress Help Center", @"");
+
+            if (indexPath == self.helpshiftLoadingIndexPath) {
+                [self addActivityIndicatorViewToTableViewCell:cell];
+            } else {
+                cell.accessoryView = nil;
+            }
+
             [WPStyleGuide configureTableViewActionCell:cell];
         } else if (indexPath.row == SettingsSectionFAQForumsRowContact) {
             if ([HelpshiftUtils isHelpshiftEnabled]) {
                 cell.textLabel.text = NSLocalizedString(@"Contact Us", nil);
 
-                if ([HelpshiftUtils unreadNotificationCount] > 0) {
+                if (indexPath == self.helpshiftLoadingIndexPath) {
+                    [self addActivityIndicatorViewToTableViewCell:cell];
+                } else if ([HelpshiftUtils unreadNotificationCount] > 0) {
                     UILabel *helpshiftUnreadCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
                     helpshiftUnreadCountLabel.layer.masksToBounds = YES;
                     helpshiftUnreadCountLabel.layer.cornerRadius = 15;
@@ -376,6 +348,23 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     }
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.helpshiftLoadingIndexPath && indexPath.section == SettingsSectionFAQForums) {
+        return NO;
+    }
+
+    return YES;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.helpshiftLoadingIndexPath && indexPath.section == SettingsSectionFAQForums) {
+        return nil;
+    }
+
+    return indexPath;
+}
 
 #pragma mark - SupportViewController methods
 
