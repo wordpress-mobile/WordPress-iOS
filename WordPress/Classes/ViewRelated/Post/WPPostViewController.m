@@ -1491,7 +1491,7 @@ EditImageDetailsViewControllerDelegate
                             hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
                         }
 
-                        [SVProgressHUD showSuccessWithStatus:hudText];
+                        [SVProgressHUD dismiss];
                         [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
 
                         stopEditingAndDismiss(YES);
