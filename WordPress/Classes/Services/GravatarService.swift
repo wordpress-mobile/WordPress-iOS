@@ -3,8 +3,7 @@ import Foundation
 
 /// This Service exposes all of the valid operations we can execute, to interact with the Gravatar Service.
 ///
-public class GravatarService
-{
+public class GravatarService {
     /// Designated Initializer
     ///
     /// - Parameter context: The Core Data context that should be used by the service.

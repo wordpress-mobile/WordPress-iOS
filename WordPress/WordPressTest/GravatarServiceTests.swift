@@ -5,8 +5,7 @@ import WordPress
 
 /// GravatarService Unit Tests
 ///
-class GravatarServiceTests : XCTestCase
-{
+class GravatarServiceTests : XCTestCase {
     private var contextManager : TestContextManager!
 
     override func setUp() {
