@@ -582,6 +582,8 @@ EditImageDetailsViewControllerDelegate
 
 - (void)showUnsavedChangesAlert
 {
+    [self.editorView endEditing];
+
     NSString *title = NSLocalizedString(@"Unsaved changes.",
                                         @"Title of the alert that lets the users know there are unsaved changes in a post they're opening.");
     NSString *message = NSLocalizedString(@"This post has local changes that were not saved. You can now save them or discard them.",
@@ -1495,7 +1497,7 @@ EditImageDetailsViewControllerDelegate
                         } else {
                             hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
                         }
-                        [SVProgressHUD dismiss];
+
                         [SVProgressHUD showSuccessWithStatus:hudText];
                         [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
 
@@ -1510,7 +1512,7 @@ EditImageDetailsViewControllerDelegate
                         } else {
                             hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
                         }
-                        [SVProgressHUD dismiss];
+
                         [SVProgressHUD showErrorWithStatus:hudText];
                         [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeError];
 
