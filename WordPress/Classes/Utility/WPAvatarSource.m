@@ -58,12 +58,12 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
 
 - (UIImage *)cachedImageForGravatarEmail:(NSString *)email withSize:(CGSize)size
 {
-    return [self cachedImageForAvatarHash:[email md5] ofType:WPAvatarSourceTypeGravatar withSize:size];
+    return [self cachedImageForAvatarHash:[self hashForEmailAddressOrSiteURL:email] ofType:WPAvatarSourceTypeGravatar withSize:size];
 }
 
 - (UIImage *)cachedImageForBlavatarAddress:(NSString *)url withSize:(CGSize)size
 {
-    return [self cachedImageForAvatarHash:[url md5] ofType:WPAvatarSourceTypeBlavatar withSize:size];
+    return [self cachedImageForAvatarHash:[self hashForEmailAddressOrSiteURL:url] ofType:WPAvatarSourceTypeBlavatar withSize:size];
 }
 
 - (UIImage *)cachedImageForAvatarHash:(NSString *)hash ofType:(WPAvatarSourceType)type withSize:(CGSize)size
@@ -88,12 +88,12 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
 
 - (void)fetchImageForGravatarEmail:(NSString *)email withSize:(CGSize)size success:(void (^)(UIImage *image))success
 {
-    [self fetchImageForAvatarHash:[email md5] ofType:WPAvatarSourceTypeGravatar withSize:size success:success];
+    [self fetchImageForAvatarHash:[self hashForEmailAddressOrSiteURL:email] ofType:WPAvatarSourceTypeGravatar withSize:size success:success];
 }
 
 - (void)fetchImageForBlavatarAddress:(NSString *)url withSize:(CGSize)size success:(void (^)(UIImage *image))success
 {
-    [self fetchImageForAvatarHash:[url md5] ofType:WPAvatarSourceTypeBlavatar withSize:size success:success];
+    [self fetchImageForAvatarHash:[self hashForEmailAddressOrSiteURL:url] ofType:WPAvatarSourceTypeBlavatar withSize:size success:success];
 }
 
 - (void)fetchImageForAvatarHash:(NSString *)hash ofType:(WPAvatarSourceType)type withSize:(CGSize)size success:(void (^)(UIImage *image))success
@@ -236,6 +236,12 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
 
     url = [url stringByAppendingFormat:@"%@?s=%d&d=identicon", hash, (int)(size.width * [[UIScreen mainScreen] scale])];
     return [NSURL URLWithString:url];
+}
+
+- (NSString *)hashForEmailAddressOrSiteURL:(NSString *)stringToHash
+{
+    NSString *sanitizedString = [[stringToHash lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    return [sanitizedString md5];
 }
 
 @end

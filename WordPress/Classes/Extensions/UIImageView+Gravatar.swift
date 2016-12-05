@@ -91,7 +91,10 @@ extension UIImageView
     /// - Returns: Gravatar's URL
     ///
     private func gravatarUrlForEmail(email: String, size: NSInteger, rating: String) -> NSURL? {
-        let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, email.md5(), size, rating)
+        let sanitizedEmail = email
+            .lowercaseString
+            .stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, sanitizedEmail.md5(), size, rating)
         return NSURL(string: targetURL)
     }
 
