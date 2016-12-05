@@ -1494,7 +1494,7 @@ EditImageDetailsViewControllerDelegate
                         [SVProgressHUD dismiss];
                         [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
 
-                        stopEditingAndDismiss(YES);
+                        stopEditingAndDismiss();
                     } failure:^(NSError *error) {
                         DDLogError(@"post failed: %@", [error localizedDescription]);
                         NSString *hudText;
@@ -1509,7 +1509,7 @@ EditImageDetailsViewControllerDelegate
                         [SVProgressHUD showErrorWithStatus:hudText];
                         [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeError];
 
-                        stopEditingAndDismiss(NO);
+                        stopEditingAndDismiss();
                     }];
 }
 
