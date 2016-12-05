@@ -296,14 +296,18 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     // MARK: - GUI: No results view logic
 
     private func hideNoResultsView() {
+        tableView.tableHeaderView?.hidden = false
         postListFooterView.hidden = false
+
         noResultsView.removeFromSuperview()
     }
 
     private func showNoResultsView() {
         precondition(refreshNoResultsView != nil)
 
+        tableView.tableHeaderView?.hidden = true
         postListFooterView.hidden = true
+
         refreshNoResultsView(noResultsView)
 
         // Only add and animate no results view if it isn't already
