@@ -14,6 +14,8 @@ public class GravatarService {
         let mainAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount()
         accountToken    = mainAccount?.authToken
         accountEmail    = mainAccount?.email
+            .stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+            .lowercaseString
 
         guard accountEmail?.isEmpty == false && accountToken?.isEmpty == false else {
             return nil
