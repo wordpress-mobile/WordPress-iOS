@@ -347,7 +347,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         // (the iOS default behavior here is to just push the detail navigation controller
         // itself onto the primary navigation controller, which is just weird)
         if let primaryViewController = primaryViewController as? UINavigationController {
-            if let secondaryViewController = secondaryViewController as? UINavigationController{
+            if let secondaryViewController = secondaryViewController as? UINavigationController {
 
                 // When state restoration is occurring, it's possible for the primary
                 // navigation controller to have already had the had the detail
