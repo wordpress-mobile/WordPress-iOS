@@ -56,14 +56,14 @@ class PostPostViewController: UIViewController {
         navBar.shadowImage = clearImage
         navBar.setBackgroundImage(clearImage, forBarMetrics: .Default)
 
-        view.alpha = 0
-        shareButton.alpha = 0
+        view.alpha = WPAlphaZero
+        shareButton.alpha = WPAlphaZero
         shareButton.setTitle(NSLocalizedString("Share", comment: "Button label to share a post"), forState: .Normal)
         shareButton.setImage(Gridicon.iconOfType(.ShareIOS, withSize: CGSize(width: 18, height: 18)), forState: .Normal)
         shareButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
-        editButton.alpha = 0
+        editButton.alpha = WPAlphaZero
         editButton.setTitle(NSLocalizedString("Edit Post", comment: "Button label for editing a post"), forState: .Normal)
-        viewButton.alpha = 0
+        viewButton.alpha = WPAlphaZero
         viewButton.setTitle(NSLocalizedString("View Post", comment: "Button label for viewing a post"), forState: .Normal)
 
         if revealPost {
@@ -76,10 +76,10 @@ class PostPostViewController: UIViewController {
     }
 
     func showPostPost() {
-        view.alpha = 1
+        view.alpha = WPAlphaFull
         shadeView.hidden = false
         shadeView.backgroundColor = UIColor.blackColor()
-        shadeView.alpha = 0.5
+        shadeView.alpha = WPAlphaFull * 0.5
         postInfoView.alpha = WPAlphaZero
 
         let animationScaleBegin: CGFloat = -0.75
@@ -98,25 +98,25 @@ class PostPostViewController: UIViewController {
             let animationDuration = context.transitionDuration()
 
             UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseOut, animations: {
-                self.shadeView.alpha = 0
+                self.shadeView.alpha = WPAlphaZero
                 }, completion: nil)
 
             UIView.animateWithDuration(animationDuration * 0.66, delay: 0, options: .CurveEaseOut, animations: {
-                self.postInfoView.alpha = 1
+                self.postInfoView.alpha = WPAlphaFull
                 }, completion: nil)
 
             UIView.animateWithDuration(0.2, delay: animationDuration * 0.5, options: .CurveEaseOut, animations: {
-                self.shareButton.alpha = 1
+                self.shareButton.alpha = WPAlphaFull
                 self.shareButtonWidth.constant = 0
                 self.actionsStackView.layoutIfNeeded()
                 }, completion: nil)
             UIView.animateWithDuration(0.2, delay: animationDuration * 0.6, options: .CurveEaseOut, animations: {
-                self.editButton.alpha = 1
+                self.editButton.alpha = WPAlphaFull
                 self.editButtonWidth.constant = 0
                 self.actionsStackView.layoutIfNeeded()
                 }, completion: nil)
             UIView.animateWithDuration(0.2, delay: animationDuration * 0.7, options: .CurveEaseOut, animations: {
-                self.viewButton.alpha = 1
+                self.viewButton.alpha = WPAlphaFull
                 self.viewButtonWidth.constant = 0
                 self.actionsStackView.layoutIfNeeded()
                 }, completion: nil)

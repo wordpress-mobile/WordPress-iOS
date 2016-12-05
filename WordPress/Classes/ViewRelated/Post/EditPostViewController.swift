@@ -112,6 +112,16 @@ class EditPostViewController: UIViewController {
         return .LightContent
     }
 
+    private func postToEdit() -> Post {
+        if let post = post {
+            return post
+        } else {
+            let context = ContextManager.sharedInstance().mainContext
+            let postService = PostService(managedObjectContext: context)
+            return postService.createDraftPostForBlog(blog)
+        }
+    }
+
     // MARK: show the editor
 
     private func showEditor() {
@@ -134,38 +144,21 @@ class EditPostViewController: UIViewController {
     }
 
     private func editPostInNativeEditor() -> UIViewController {
-        let postToEdit: Post
-        if let post = self.post {
-            postToEdit = post
-        } else {
-            let context = ContextManager.sharedInstance().mainContext
-            let postService = PostService(managedObjectContext: context)
-            postToEdit = postService.createDraftPostForBlog(blog)
-        }
-
-        let postViewController = AztecPostViewController(post: postToEdit)
+        let postViewController = AztecPostViewController(post: postToEdit())
         postViewController.onClose = { [weak self] (changesSaved) in
             self?.closeEditor(changesSaved)
         }
+
         let navController = UINavigationController(rootViewController: postViewController)
         navController.modalPresentationStyle = .FullScreen
+        
         return navController
     }
 
     private func editPostInNewEditor() -> UIViewController {
-        let targetPost: Post
-        if let post = post {
-            targetPost = post
-        } else {
-            let context = ContextManager.sharedInstance().mainContext
-            let postService = PostService(managedObjectContext: context)
-            targetPost = postService.createDraftPostForBlog(blog)
-            post = targetPost
-        }
-        let postViewController = WPPostViewController(post: targetPost, mode: kWPPostViewControllerModeEdit)
+        let postViewController = WPPostViewController(post: postToEdit(), mode: kWPPostViewControllerModeEdit)
         postViewController.isOpenedDirectlyForPhotoPost = openWithMediaPicker
-
-        postViewController.onClose = { [weak self] (viewController, changesSaved) in
+        postViewController.onClose = { [weak self] (_, changesSaved) in
             self?.closeEditor(changesSaved)
         }
 
@@ -179,18 +172,7 @@ class EditPostViewController: UIViewController {
     }
 
     private func editPostInOldEditor() -> UIViewController {
-        let editPostViewController: WPLegacyEditPostViewController
-
-        let targetPost: Post
-        if let post = post {
-            targetPost = post
-        } else {
-            let context = ContextManager.sharedInstance().mainContext
-            let postService = PostService(managedObjectContext: context)
-            targetPost = postService.createDraftPostForBlog(blog)
-        }
-        editPostViewController = WPLegacyEditPostViewController(post: targetPost)
-
+        let editPostViewController = WPLegacyEditPostViewController(post: postToEdit())
         editPostViewController.onClose = { [weak self] in
             self?.closeEditor()
         }
