@@ -29,7 +29,7 @@ public class GravatarService
     ///     - completion: An optional closure to be executed on completion.
     ///
     public func uploadImage(image: UIImage, completion: ((error: NSError?) -> ())? = nil) {
-        let remote = GravatarServiceRemote(accountToken: accountToken, accountEmail: accountEmail)
+        let remote = gravatarServiceRemoteForAccountToken(accountToken, andAccountEmail: accountEmail)
         remote.uploadImage(image) { (error) in
             if let theError = error {
                 DDLogSwift.logError("GravatarService.uploadImage Error: \(theError)")
@@ -41,6 +41,9 @@ public class GravatarService
         }
     }
 
+    func gravatarServiceRemoteForAccountToken(accountToken: String, andAccountEmail accountEmail: String) -> GravatarServiceRemote {
+        return GravatarServiceRemote(accountToken: accountToken, accountEmail: accountEmail)
+    }
 
     // MARK: - Private Properties
     private let accountToken : String!
