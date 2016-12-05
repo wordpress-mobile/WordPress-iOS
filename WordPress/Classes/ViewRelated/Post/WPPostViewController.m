@@ -65,6 +65,7 @@ static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
 static void *ProgressObserverContext = &ProgressObserverContext;
+static void *DateChangeObserverContext = &DateChangeObserverContext;
 
 @interface WPEditorViewController ()
 @property (nonatomic, strong, readwrite) WPEditorFormatbarView *toolbarView;
@@ -129,6 +130,7 @@ EditImageDetailsViewControllerDelegate
 - (void)dealloc
 {
     [_mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
+    [self.post removeObserver:self forKeyPath:@"dateCreated"];
     [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
 }
 
@@ -804,6 +806,8 @@ EditImageDetailsViewControllerDelegate
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
 	vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
+
+    [self.post addObserver:self forKeyPath:@"dateCreated" options:NSKeyValueObservingOptionNew context:DateChangeObserverContext];
 }
 
 - (void)showPreview
@@ -1062,7 +1066,7 @@ EditImageDetailsViewControllerDelegate
         NSMutableArray* rightBarButtons = [[NSMutableArray alloc] initWithArray:@[self.moreBarButtonItem,
                                                                                   self.editBarButtonItem]];
 
-		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
+		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:NO];
 	}
 }
 
@@ -2167,6 +2171,8 @@ EditImageDetailsViewControllerDelegate
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self refreshNavigationBarButtons:NO];
         }];
+    } else if (context == DateChangeObserverContext) {
+        [self refreshNavigationBarButtons:NO];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
