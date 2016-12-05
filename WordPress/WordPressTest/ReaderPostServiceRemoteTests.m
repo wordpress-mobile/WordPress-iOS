@@ -126,28 +126,6 @@
     XCTAssertTrue([str isEqualToString:sanatizedStr], @"The post summary was not plain text.");
 }
 
-//- (void)testRemoveInlineStyleTags {
-//    ReaderPostServiceRemote *remoteService = nil;
-//    XCTAssertNoThrow(remoteService = [self service]);
-//
-//    NSString *str = @"<p>test</p><p>test</p>";
-//    NSString *styleStr = @"<p style=\"background-color:#fff;\">test</p><p style=\"background-color:#fff;\">test</p>";
-//    NSString *sanitizedStr = [remoteService removeInlineStyles:styleStr];
-//    XCTAssertTrue([str isEqualToString:sanitizedStr], @"The inline styles were not removed.");
-//    
-//}
-//
-//- (void)testRemoveForbiddenTags {
-//    ReaderPostServiceRemote *remoteService = nil;
-//    XCTAssertNoThrow(remoteService = [self service]);
-//
-//    NSString *str = @"<p>test</p><p>test</p>";
-//    NSString *styleStr = @"<script>alert();</script><style>body{color:#000;}</style><p>test</p><script>alert();</script><style>body{color:#000;}</style><p>test</p><script>alert();</script><style>body{color:#000;}</style>";
-//    NSString *sanitizedStr = [remoteService removeForbiddenTags:styleStr];
-//    XCTAssertTrue([str isEqualToString:sanitizedStr], @"The forbidden tags were not removed.");
-//
-//}
-
 - (void)testSiteIsPrivate {
     ReaderPostServiceRemote *remoteService = nil;
     XCTAssertNoThrow(remoteService = [self service]);
@@ -402,81 +380,5 @@
     endpoint = [remoteService endpointUrlForSearchPhrase:phrase];
     XCTAssertTrue([endpoint hasSuffix:@"q=coffee%20&%20cake"], @"The expected search term was not found");
 }
-
-//- (void)testResizeGalleryImageURLsForContentPublic
-//{
-//    ReaderPostServiceRemote *remoteService = nil;
-//    XCTAssertNoThrow(remoteService = [self service]);
-//
-//    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"gallery-reader-post-public" ofType:@"json"];
-//    NSData *data = [NSData dataWithContentsOfFile:path];
-//    NSDictionary *postDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//
-//    XCTAssertNotNil(postDict);
-//
-//    NSString *content = [postDict stringForKey:@"content"];
-//
-//    XCTAssertNotNil(content);
-//
-//    NSString *resultContent = [remoteService resizeGalleryImageURLsForContent:content isPrivateSite:NO];
-//
-//    CGSize imageSize = [UIApplication sharedApplication].keyWindow.frame.size;
-//    CGFloat scale = [[UIScreen mainScreen] scale];
-//    CGSize scaledSize = CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(scale, scale));
-//
-//    // Verify that the image source was updated with a Photon-friendly sized URL
-//    XCTAssertTrue([content rangeOfString:@"src=\"https://lanteanartest.files.wordpress.com/2016/07/image217.png?w=1024&#038;h=1365\""].length > 0);
-//    XCTAssertTrue([resultContent rangeOfString:@"src=\"https://lanteanartest.files.wordpress.com/2016/07/image217.png?w=1024&#038;h=1365\""].length == 0);
-//    NSString *expectedURL = [NSString stringWithFormat:@"src=\"https://i0.wp.com/lanteanartest.files.wordpress.com/2016/07/image217.png?quality=80&resize=%@,%@&ssl=1\"", @(scaledSize.width), @(scaledSize.height)];
-//    XCTAssertTrue([resultContent rangeOfString:expectedURL].length > 0);
-//}
-//
-//- (void)testResizeGalleryImageURLsForContentPrivate
-//{
-//    ReaderPostServiceRemote *remoteService = nil;
-//    XCTAssertNoThrow(remoteService = [self service]);
-//
-//    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"gallery-reader-post-private" ofType:@"json"];
-//    NSData *data = [NSData dataWithContentsOfFile:path];
-//    NSDictionary *postDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//
-//    XCTAssertNotNil(postDict);
-//
-//    NSString *content = [postDict stringForKey:@"content"];
-//
-//    XCTAssertNotNil(content);
-//
-//    NSString *resultContent = [remoteService resizeGalleryImageURLsForContent:content isPrivateSite:YES];
-//
-//    CGSize imageSize = [UIApplication sharedApplication].keyWindow.frame.size;
-//    CGFloat scale = [[UIScreen mainScreen] scale];
-//    CGSize scaledSize = CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(scale, scale));
-//
-//    XCTAssertTrue([content rangeOfString:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?w=181&#038;h=135&#038;crop=1\""].length > 0);
-//    XCTAssertTrue([resultContent rangeOfString:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?w=181&#038;h=135&#038;crop=1\""].length == 0);
-//    NSString *expectedURL = [NSString stringWithFormat:@"src=\"https://picklessaltyporkvonhausen.files.wordpress.com/2016/07/img_8961.jpg?h=%ld&w=%ld\"", (long)(scaledSize.height), (long)(scaledSize.width)];
-//    XCTAssertTrue([resultContent rangeOfString:expectedURL].length > 0);
-//}
-//
-//- (void)testResizeGalleryImageURLsForContentEmptyString
-//{
-//    ReaderPostServiceRemote *remoteService = nil;
-//    XCTAssertNoThrow(remoteService = [self service]);
-//
-//    NSString *resultContent = [remoteService resizeGalleryImageURLsForContent:@"" isPrivateSite:NO];
-//
-//    XCTAssertTrue([resultContent isEqualToString:@""]);
-//}
-//
-//- (void)testResizeGalleryImageURLsForContentNilString
-//{
-//    ReaderPostServiceRemote *remoteService = nil;
-//    XCTAssertNoThrow(remoteService = [self service]);
-//
-//    NSString *resultContent = [remoteService resizeGalleryImageURLsForContent:nil isPrivateSite:NO];
-//
-//    XCTAssertTrue([resultContent isEqualToString:@""]);
-//}
-//
 
 @end
