@@ -122,6 +122,7 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
     [self.window makeKeyAndVisible];
 
+    [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
@@ -262,6 +263,21 @@ int ddLogLevel = DDLogLevelInfo;
                     }
                 }
             }
+        } else if ([[url host] isEqualToString:@"faq"]) {
+            if ([HelpshiftUtils isHelpshiftEnabled]) {
+                NSString *faqID = [url lastPathComponent];
+
+                UIViewController *viewController = self.window.topmostPresentedViewController;
+
+                if (viewController) {
+                    HelpshiftPresenter *presenter = [HelpshiftPresenter new];
+                    [presenter presentHelpshiftWindowForFAQ:faqID
+                                         fromViewController:viewController
+                                                 completion:nil];
+                }
+
+                return YES;
+            }
         }
     }
 
@@ -391,6 +407,11 @@ int ddLogLevel = DDLogLevelInfo;
     [WPFontManager merriweatherRegularFontOfSize:16.0];
 
     [self customizeAppearance];
+
+    // Push notifications
+    // This is silent (the user is prompted) so we can do it on launch.
+    // We'll ask for user notification permission after signin.
+    [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -431,10 +452,11 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier
                                         forRemoteNotification:(NSDictionary *)remoteNotification
+                                             withResponseInfo:(NSDictionary *)responseInfo
                                             completionHandler:(void (^)())completionHandler
 {
-    [[InteractiveNotificationsManager sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification];
-    
+    NSString *responseText = responseInfo[UIUserNotificationActionResponseTypedTextKey];
+    [[InteractiveNotificationsManager sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification responseText:responseText];
     completionHandler();
 }
 
