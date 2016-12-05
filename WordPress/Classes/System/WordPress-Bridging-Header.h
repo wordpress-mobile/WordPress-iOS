@@ -60,7 +60,6 @@
 
 #import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
-#import "PhotonImageURLHelper.h"
 #import "PostContentProvider.h"
 #import "PostCardTableViewCell.h"
 #import "PostCategory.h"
@@ -116,6 +115,7 @@
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
 #import "WPAsyncBlockOperation.h"
+#import "WPAvatarSource.h"
 #import "WPBlogTableViewCell.h"
 #import "WPLegacyEditPostViewController.h"
 #import "WPError.h"

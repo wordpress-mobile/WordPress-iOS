@@ -50,9 +50,10 @@ class GravatarTest: XCTestCase {
 
     func testGravatarAppendsSizeQuery() {
         let url = NSURL(string: "http://0.gravatar.com/avatar/5b415e3c9c245e557af9f580eeb8760a")!
-        let expected = NSURL(string: "https://secure.gravatar.com/avatar/5b415e3c9c245e557af9f580eeb8760a?s=128&d=404")!
+        let expected = NSURL(string: "https://secure.gravatar.com/avatar/5b415e3c9c245e557af9f580eeb8760a?d=404&s=128")!
         let gravatar = Gravatar(url)
         XCTAssertNotNil(gravatar)
-        XCTAssertEqual(gravatar!.urlWithSize(128), expected)
+        let actual = WPImageURLHelper.gravatarURL(forURL: gravatar!.canonicalURL, size: 128)
+        XCTAssertEqual(actual, expected, "expected \(expected) but got \(actual)")
     }
 }

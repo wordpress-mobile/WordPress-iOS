@@ -427,7 +427,7 @@
     // Verify that the image source was updated with a Photon-friendly sized URL
     XCTAssertTrue([content rangeOfString:@"src=\"https://lanteanartest.files.wordpress.com/2016/07/image217.png?w=1024&#038;h=1365\""].length > 0);
     XCTAssertTrue([resultContent rangeOfString:@"src=\"https://lanteanartest.files.wordpress.com/2016/07/image217.png?w=1024&#038;h=1365\""].length == 0);
-    NSString *expectedURL = [NSString stringWithFormat:@"src=\"https://i0.wp.com/lanteanartest.files.wordpress.com/2016/07/image217.png?quality=80&resize=%@,%@&ssl=1\"", @(scaledSize.width), @(scaledSize.height)];
+    NSString *expectedURL = [NSString stringWithFormat:@"src=\"https://i0.wp.com/lanteanartest.files.wordpress.com/2016/07/image217.png?resize=%@,%@&ssl=1&quality=80\"", @(scaledSize.width), @(scaledSize.height)];
     XCTAssertTrue([resultContent rangeOfString:expectedURL].length > 0);
 }
 

@@ -92,9 +92,8 @@ public class ReaderCrossPostCell: UITableViewCell
         let placeholder = UIImage(named: blavatarPlaceholder)
 
         let size = blavatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        let url = contentProvider?.siteIconForDisplayOfSize(Int(size))
-        if url != nil {
-            blavatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
+        if let post = contentProvider, let url = WPImageURLHelper.siteIconURL(forContentProvider: post, size: Int(size)) {
+            blavatarImageView.setImageWithURL(url, placeholderImage: placeholder)
         } else {
             blavatarImageView.image = placeholder
         }

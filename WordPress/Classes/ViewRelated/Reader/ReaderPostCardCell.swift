@@ -260,7 +260,7 @@ import Gridicons
         avatarImageView.image = nil
 
         let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        if let url = provider.siteIconForDisplayOfSize(Int(size)) {
+        if let url = WPImageURLHelper.siteIconURL(forContentProvider: provider, size: Int(size)) {
             avatarImageView.setImageWithURL(url)
             avatarImageView.hidden = false
         } else {
@@ -312,8 +312,11 @@ import Gridicons
         featuredImageDesiredWidth = featuredImageView.frame.width
         let size = CGSize(width:featuredImageDesiredWidth, height:featuredMediaHeightConstraintConstant)
         if !(contentProvider!.isPrivate()) {
-            url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
-            featuredImageView.setImageWithURL(url, placeholderImage:nil)
+            if let photonUrl = WPImageURLHelper.photonURL(withSize: size, forImageURL: url) {
+                featuredImageView.setImageWithURL(photonUrl, placeholderImage:nil)
+            } else {
+                // TODO: handle error?
+            }
 
         } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
             // private wpcom image needs special handling.

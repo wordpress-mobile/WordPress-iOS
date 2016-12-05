@@ -1,5 +1,4 @@
 #import "PostFeaturedImageCell.h"
-#import "UIImageView+AFNetworkingExtra.h"
 
 CGFloat const PostFeaturedImageCellMargin = 15.0f;
 

@@ -1,13 +1,14 @@
 #import "PostCardTableViewCell.h"
+
 #import <AFNetworking/UIKit+AFNetworking.h>
-#import "PhotonImageURLHelper.h"
+#import <WordPressShared/WPStyleGuide.h>
+
+#import "FLAnimatedImage.h"
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
 #import "UIImageView+Gravatar.h"
-#import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 #import "WPStyleGuide+Posts.h"
-#import "Wordpress-Swift.h"
-#import "FLAnimatedImage.h"
 
 static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
@@ -280,7 +281,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         [self.postCardImageView setImageWithURLRequest:request placeholderImage:nil success:nil failure:nil];
     } else {
         // if not private create photon url
-        url = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:url];
+        url = [WPImageURLHelper photonDefaultURLWithSize:imageSize forImageURL:url];
         [self.postCardImageView setImageWithURL:url placeholderImage:nil];
     }
 }

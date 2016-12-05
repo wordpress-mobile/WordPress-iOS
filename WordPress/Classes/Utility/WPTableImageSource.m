@@ -1,7 +1,8 @@
 #import "WPTableImageSource.h"
+
 #import "AccountService.h"
 #import "ContextManager.h"
-#import "PhotonImageURLHelper.h"
+#import "WordPress-Swift.h"
 #import "WPAccount.h"
 #import "WPImageSource.h"
 #import "UIImage+Resize.h"
@@ -120,10 +121,10 @@ static const NSInteger WPTableImageSourceMinPhotonQuality = 1;
                                               withSuccess:successBlock
                                                   failure:failureBlock];
     } else {
-        url = [PhotonImageURLHelper photonURLWithSize:requestSize
-                                          forImageURL:url
-                                          forceResize:self.forceLargerSizeWhenFetching
-                                         imageQuality:self.photonQuality];
+        url = [WPImageURLHelper photonURLWithSize:requestSize
+                                      forImageURL:url
+                                      forceResize:self.forceLargerSizeWhenFetching
+                                     imageQuality:self.photonQuality];
         [[WPImageSource sharedSource] downloadImageForURL:url
                                               withSuccess:successBlock
                                                   failure:failureBlock];

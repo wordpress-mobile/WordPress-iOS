@@ -103,10 +103,9 @@ class SitePickerViewController : UITableViewController
         // Site's Blavatar
         cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
 
-        if let siteIconPath = site.icon,
-            siteIconUrl = NSURL(string: siteIconPath)
+        if let siteIconUrl = WPImageURLHelper.siteIconURL(forPath: site.icon, imageViewBounds: cell.imageView?.bounds)
         {
-            cell.imageView?.downloadBlavatar(siteIconUrl)
+            cell.imageView?.downloadImage(siteIconUrl)
         }
 
         // Style
