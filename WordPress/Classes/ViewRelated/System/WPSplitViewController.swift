@@ -102,7 +102,6 @@ class WPSplitViewController: UISplitViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        updateInitialViewControllers()
         updateDimmingViewFrame()
     }
 
@@ -224,38 +223,24 @@ class WPSplitViewController: UISplitViewController {
         }
     }
 
-    class PlaceholderViewController: UINavigationController {}
-
     /** Sets the primary view controller of the split view as specified, and
      *  automatically sets the detail view controller if the primary
      *  conforms to `WPSplitViewControllerDetailProvider` and can vend a
      *  detail view controller.
      */
     func setInitialPrimaryViewController(viewController: UIViewController) {
-        let navigationController = PlaceholderViewController()
-        navigationController.restorationIdentifier = self.dynamicType.navigationControllerRestorationIdentifier
-        viewControllers = [viewController, navigationController]
-    }
+        var initialViewControllers = [viewController]
 
-    // We defer initializing the detail view controller until the view is ready to
-    // appear, which should account for state restoration having already put
-    // a view controller in place there.
-    private var initializedDetailViewController = false
-
-    func updateInitialViewControllers() {
-        guard !initializedDetailViewController && viewControllers.last is PlaceholderViewController else {
-            return
-        }
-
-        initializedDetailViewController = true
-
-        if let navigationController = viewControllers.first as? UINavigationController,
+        if let navigationController = viewController as? UINavigationController,
             let rootViewController = navigationController.viewControllers.last,
             let detailViewController = initialDetailViewControllerForPrimaryViewController(rootViewController) {
 
             navigationController.delegate = self
 
-            viewControllers = [navigationController, detailViewController]
+            initialViewControllers.append(detailViewController)
+            viewControllers = initialViewControllers
+        } else {
+            viewControllers = [viewController, UIViewController()]
         }
     }
 
