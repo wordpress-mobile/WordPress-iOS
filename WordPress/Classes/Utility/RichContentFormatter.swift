@@ -206,7 +206,7 @@ import Foundation
     }
 
 
-    /// Parses the specified string for the value of the specified attibute.
+    /// Parses the specified string for the value of the specified attribute.
     ///
     /// - Parameters:
     ///     - attribute: The attribute whose value should be retrieved.
