@@ -72,7 +72,7 @@ class GravatarServiceTests : XCTestCase {
 
         XCTAssertEqual("email@wordpress.com", gravatarService!.gravatarServiceRemoteMock!.capturedAccountEmail)
     }
-    
+
     func testServiceInitializerSanitizesEmailAddressTrimsSpaces() {
         createTestAccount(username: "some", token: "1234", emailAddress: " email@wordpress.com ")
 
@@ -82,7 +82,7 @@ class GravatarServiceTests : XCTestCase {
 
         XCTAssertEqual("email@wordpress.com", gravatarService!.gravatarServiceRemoteMock!.capturedAccountEmail)
     }
-    
+
     private func createTestAccount(username username: String, token: String, emailAddress: String) {
         let mainContext = contextManager.mainContext
 
