@@ -73,10 +73,12 @@ public class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPick
         picker.backgroundColor = UIColor.whiteColor()
         contentView.addSubview(picker)
 
-        // ContentView: Pin to Left + Right edges
+        // ContentView: Pin to Left + Right + Top + Bottom edges
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
         contentView.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
+        contentView.topAnchor.constraintEqualToAnchor(topAnchor).active = true
+        contentView.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
 
         // Picker: Pin to Top + Bottom + CenterX edges
         picker.translatesAutoresizingMaskIntoConstraints = false
