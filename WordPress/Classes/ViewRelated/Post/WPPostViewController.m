@@ -1282,7 +1282,9 @@ EditImageDetailsViewControllerDelegate
 - (UIAlertAction *)quickSaveAlertAction
 {
     if ([self.post.status isEqualToString:PostStatusDraft]) {
-        if ([self.post.blog isPublishingPostsAllowed]) {
+        // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
+        // to showing Publish Now instead of Submit for Review.
+        if (!self.post.blog.capabilities || [self.post.blog isPublishingPostsAllowed]) {
             return [UIAlertAction actionWithTitle:NSLocalizedString(@"Publish Now", "Title of button allowing the user to immediately publish the post they are editing.")
                                             style:UIAlertActionStyleDestructive
                                           handler:^(UIAlertAction * _Nonnull action) {
