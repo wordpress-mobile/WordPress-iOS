@@ -79,7 +79,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
 
         [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
-        [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
+        [[InteractiveNotificationsManager sharedInstance] requestAuthorization];
     };
     if ([NSThread isMainThread]) {
         // This is meant to help with testing account observers.
@@ -313,8 +313,12 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSString *blogName  = defaultBlog.settings.name;
     
     if (defaultBlog == nil || defaultBlog.isDeleted) {
-        TodayExtensionService *service = [TodayExtensionService new];
-        [service removeTodayWidgetConfiguration];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            TodayExtensionService *service = [TodayExtensionService new];
+            [service removeTodayWidgetConfiguration];
+
+            [ShareExtensionService removeShareExtensionConfiguration];
+        });
     } else {
         // Required Attributes
         
@@ -328,14 +332,13 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
                                            blogName:blogName
                                        siteTimeZone:timeZone
                                      andOAuth2Token:oauth2Token];
+
+            [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
+            [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
+            [ShareExtensionService configureShareExtensionUsername:defaultAccount.username];
         });
     }
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
-        [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
-        [ShareExtensionService configureShareExtensionUsername:defaultAccount.username];
-    });
 }
 
 - (void)purgeAccount:(WPAccount *)account
