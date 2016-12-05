@@ -28,21 +28,17 @@ class EditPostViewController: UIViewController {
 
     var onClose: ((changesSaved: Bool) -> ())?
 
-    private var editorModalPresentationStyle: UIModalPresentationStyle?
-    private var editorModalTransitionStyle: UIModalTransitionStyle?
     override var modalPresentationStyle: UIModalPresentationStyle
         {
         didSet(newValue) {
             // make sure this view is transparent with the previous VC visible
             super.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-            editorModalPresentationStyle = newValue
         }
     }
     override var modalTransitionStyle: UIModalTransitionStyle
         {
         didSet(newValue) {
             super.modalTransitionStyle = .CoverVertical
-            editorModalTransitionStyle = newValue
         }
     }
 
@@ -151,7 +147,7 @@ class EditPostViewController: UIViewController {
 
         let navController = UINavigationController(rootViewController: postViewController)
         navController.modalPresentationStyle = .FullScreen
-        
+
         return navController
     }
 
