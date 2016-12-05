@@ -31,7 +31,7 @@ import Foundation
     /// Formats the specified content string for display. Forbidden HTML tags are
     /// removed, paragraphs are normalized, etc.
     ///
-    /// - Paramaters:
+    /// - Parameters:
     ///     - string: The content string to format.
     ///     - isPrivate: Whether the content is from a private blog.
     ///
@@ -55,7 +55,7 @@ import Foundation
 
     /// Removes forbidden HTML tags from the specified string.
     ///
-    /// - Paramaters:
+    /// - Parameters:
     ///     - string: The content string to format.
     ///
     /// - Returns: The formatted string.
@@ -87,7 +87,7 @@ import Foundation
 
     /// Converts DIV tags to P tags and removes duplicate or redundant tags.
     ///
-    /// - Paramaters:
+    /// - Parameters:
     ///     - string: The content string to format.
     ///
     /// - Returns: The formatted string.
@@ -128,7 +128,7 @@ import Foundation
 
     /// Removes inline style attributes from the specified content string.
     ///
-    /// - Paramaters:
+    /// - Parameters:
     ///     - string: The content string to format.
     ///
     /// - Returns: The formatted string.
@@ -150,7 +150,7 @@ import Foundation
 
     /// Mutates gallery image URLs to be correctly sized.
     ///
-    /// - Paramaters:
+    /// - Parameters:
     ///     - string: The content string to format.
     ///     - isPrivate: Whether the content is from a private blog.
     ///
@@ -208,8 +208,8 @@ import Foundation
 
     /// Parses the specified string for the value of the specified attibute.
     ///
-    /// - Paramaters:
-    ///     - attribute: The attribut whose value should be retrieved.
+    /// - Parameters:
+    ///     - attribute: The attribute whose value should be retrieved.
     ///     - element: The source string to parse.
     ///
     /// - Returns: The value for the attribute or an empty string..
