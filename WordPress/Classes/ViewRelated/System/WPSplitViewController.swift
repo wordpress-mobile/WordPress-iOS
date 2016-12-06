@@ -14,8 +14,8 @@ import WordPressShared
 
 class WPSplitViewController: UISplitViewController {
 
-    static let navigationControllerRestorationIdentifier = "WPSplitViewDetailNavigationControllerRestorationID"
-    static let detailNavigationStackModifiedRestorationKey = "WPSplitViewDetailNavigationStackModifiedRestorationKey"
+    private static let navigationControllerRestorationIdentifier = "WPSplitViewDetailNavigationControllerRestorationID"
+    private static let preferredDisplayModeModifiedRestorationKey = "WPSplitViewPreferredDisplayModeRestorationKey"
 
     /// Determines how the split view handles the detail pane when collapsing itself.
     /// If 'Automatic', then the detail pane will be pushed onto the primary navigation stack
@@ -68,6 +68,23 @@ class WPSplitViewController: UISplitViewController {
             maximumPrimaryColumnWidth = UIScreen.mainScreen().bounds.width
             preferredPrimaryColumnWidthFraction = 1.0
         }
+    }
+
+    // MARK: State restoration
+
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        coder.encodeObject(preferredDisplayMode.rawValue, forKey: self.dynamicType.preferredDisplayModeModifiedRestorationKey)
+
+        super.encodeRestorableStateWithCoder(coder)
+    }
+
+    override func decodeRestorableStateWithCoder(coder: NSCoder) {
+        if let displayModeRawValue = coder.decodeObjectForKey(self.dynamicType.preferredDisplayModeModifiedRestorationKey) as? Int,
+            displayMode = UISplitViewControllerDisplayMode(rawValue: displayModeRawValue) {
+            preferredDisplayMode = displayMode
+        }
+
+        super.decodeRestorableStateWithCoder(coder)
     }
 
     // MARK: View lifecycle
