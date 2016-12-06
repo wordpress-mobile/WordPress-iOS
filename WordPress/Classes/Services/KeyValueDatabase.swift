@@ -13,6 +13,8 @@ protocol KeyValueDatabase {
 
 // MARK: - Storage implementations
 
+extension UserDefaults: KeyValueDatabase {}
+
 /// `EphemeralKeyValueDatabase` stores values in a dictionary in memory, and is
 /// never persisted between app launches.
 class EphemeralKeyValueDatabase: KeyValueDatabase {
