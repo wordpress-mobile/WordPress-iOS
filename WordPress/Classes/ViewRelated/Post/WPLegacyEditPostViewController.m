@@ -647,8 +647,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)saveAction
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
-
     if ([self isMediaUploading] ) {
         [self showMediaInUploadingAlert];
         return;
