@@ -17,6 +17,7 @@ class EditPostViewController: UIViewController {
 
     private(set) var post: Post?
     private var hasShownEditor = false
+    private var editingExistingPost = false
     private(set) lazy var blog:Blog = {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
@@ -71,6 +72,11 @@ class EditPostViewController: UIViewController {
     /// - Note: it's preferable to use one of the convenience initializers
     private init(post: Post?, blog: Blog?) {
         self.post = post
+        if let post = post {
+            if !post.isDraft() {
+                editingExistingPost = true
+            }
+        }
         super.init(nibName: nil, bundle: nil)
         if let blog = blog {
             self.blog = blog
@@ -208,6 +214,9 @@ class EditPostViewController: UIViewController {
 
     func shouldShowPostPost(hasChanges hasChanges: Bool) -> Bool  {
         guard let post = post else {
+            return false
+        }
+        if editingExistingPost {
             return false
         }
         if postPost.revealPost {
