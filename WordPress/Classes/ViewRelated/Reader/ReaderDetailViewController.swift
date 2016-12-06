@@ -290,7 +290,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
                                                      multiplier: 1.0,
                                                      constant: 0.0)
         textView.addConstraint(textFooterTopConstraint)
-        textFooterTopConstraint.constant = textView.contentSize.height - textFooterStackView.frame.height
+        textFooterTopConstraint.constant = textFooterYOffset()
         textView.setContentOffset(CGPoint.zero, animated: false)
     }
 
@@ -380,6 +380,10 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
             selector: #selector(ReaderDetailViewController.handleBlockSiteNotification(_:)),
             name: ReaderPostMenu.BlockSiteNotification,
             object: nil)
+
+        // Make sure the text view is scrolled to the top the first time after
+        // the view is first configured.
+        textView.setContentOffset(CGPoint.zero, animated: false)
     }
 
 
