@@ -231,9 +231,11 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     ///
     func imageForAttachment(attachment: WPTextAttachment) -> WPRichTextImage {
         let img = WPRichTextImage(frame: CGRect.zero)
-        img.addTarget(self, action: #selector(self.dynamicType.handleImageTapped(_:)), forControlEvents: .TouchUpInside)
+        guard let url = NSURL(string: attachment.src) else {
+            return img
+        }
 
-        let url = NSURL(string: attachment.src)
+        img.addTarget(self, action: #selector(self.dynamicType.handleImageTapped(_:)), forControlEvents: .TouchUpInside)
         img.contentURL = url
         img.linkURL = linkURLForImageAttachment(attachment)
 
