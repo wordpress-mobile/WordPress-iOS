@@ -8,7 +8,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     var handler: ImmuTableViewHandler!
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
-        return self.init()
+        return WPTabBarController.sharedInstance().meViewController
     }
 
     // MARK: - Table View Controller

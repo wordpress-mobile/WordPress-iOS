@@ -17,9 +17,8 @@ import WordPressComAnalytics
 ///
 @objc open class ReaderStreamViewController : UIViewController, UIViewControllerRestoration
 {
-
+    static let restorationIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
     static let restorableTopicPathKey: String = "RestorableTopicPathKey"
-
 
     // MARK: - Properties
 
@@ -189,6 +188,7 @@ import WordPressComAnalytics
 
 
     open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
+        restorationIdentifier = type(of: self).restorationIdentifier
         restorationClass = type(of: self)
 
         return super.awakeAfter(using: aDecoder)
@@ -450,8 +450,10 @@ import WordPressComAnalytics
     func displayResultsStatus() {
         if !resultsStatusView.isDescendant(of: tableView) {
             tableView.addSubview(withFadeAnimation: resultsStatusView)
+            resultsStatusView.translatesAutoresizingMaskIntoConstraints = false
+            tableView.pinSubviewAtCenter(resultsStatusView)
         }
-        resultsStatusView.centerInSuperview()
+
         footerView.isHidden = true
     }
 

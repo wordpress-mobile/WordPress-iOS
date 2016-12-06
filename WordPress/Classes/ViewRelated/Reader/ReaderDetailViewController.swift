@@ -315,6 +315,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
         let range = NSRange(location: length - 1, length: 0)
         let frame = textView.frameForTextInRange(range)
+        if frame.minY == CGFloat.infinity {
+            // A value of infinity can occur when a device is rotated 180 degrees.
+            // It will sort it self out as the rotation aniation progresses,
+            // so just return the existing constant.
+            return textFooterTopConstraint.constant
+        }
         return frame.minY
     }
 
@@ -324,7 +330,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate func updateTextViewMargins() {
         textView.topMargin = textHeaderStackView.frame.height
         textView.bottomMargin = textFooterStackView.frame.height
-
         textFooterTopConstraint.constant = textFooterYOffset()
     }
 
