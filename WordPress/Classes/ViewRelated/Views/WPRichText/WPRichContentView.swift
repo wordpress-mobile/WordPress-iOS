@@ -58,7 +58,7 @@ class WPRichContentView: UITextView
 
         set {
             var bounds = topMarginAttachment.bounds
-            bounds.size.height = newValue
+            bounds.size.height = max(1, newValue)
             bounds.size.width = textContainer.size.width
             topMarginAttachment.bounds = bounds
 
@@ -66,10 +66,14 @@ class WPRichContentView: UITextView
                 let rng = NSRange(location: 0, length: 1)
                 layoutManager.invalidateLayout(forCharacterRange: rng, actualCharacterRange: nil)
                 layoutManager.ensureLayout(forCharacterRange: rng)
+                attachmentManager.layoutAttachmentViews()
             }
         }
     }
 
+    // NOTE: Avoid setting attachment bounds with a zero height. A zero height
+    // for an attachment at the end of a text run can glitch TextKit's layout
+    // causing glyphs to not be drawn.
     var bottomMargin: CGFloat {
         get {
             return bottomMarginAttachment.bounds.height
@@ -77,7 +81,7 @@ class WPRichContentView: UITextView
 
         set {
             var bounds = bottomMarginAttachment.bounds
-            bounds.size.height = newValue
+            bounds.size.height = max(1, newValue)
             bounds.size.width = textContainer.size.width
             bottomMarginAttachment.bounds = bounds
 
@@ -85,6 +89,7 @@ class WPRichContentView: UITextView
                 let rng = NSRange(location: textStorage.length - 2, length: 1)
                 layoutManager.invalidateLayout(forCharacterRange: rng, actualCharacterRange: nil)
                 layoutManager.ensureLayout(forCharacterRange: rng)
+                attachmentManager.layoutAttachmentViews()
             }
         }
     }
@@ -108,7 +113,7 @@ class WPRichContentView: UITextView
             let str = newValue
             let style = "<style>" +
                 "body { font-family: Merriweather; font-size:16.0; line-height:1.6875; color: #2e4453; } " +
-                "blockquote { font-size:18.0; font-style: italic; font-family: Merriweather-Italic; color:#4f748e; } " +
+                "blockquote { font-size:18.0; color:#4f748e; } " +
                 "em, i { font-size:18.0; font-style: italic; font-family: Merriweather-Italic; } " +
                 "a { color: #0087be; text-decoration: none; } " +
                 "a:active { color: #005082; } " +
@@ -120,7 +125,12 @@ class WPRichContentView: UITextView
 
                     // Ensure the starting paragraph style is applied to the topMarginAttachment else the
                     // first paragraph might not have the correct line height.
-                    let paraStyle = attrTxt.attribute(NSParagraphStyleAttributeName, at: 0, effectiveRange: nil) as? NSParagraphStyle ?? NSParagraphStyle.default
+                    var paraStyle = NSParagraphStyle.defaultParagraphStyle()
+                    if attrTxt.length > 0 {
+                        if let pstyle = attrTxt.attribute(NSParagraphStyleAttributeName, atIndex: 0, effectiveRange: nil) as? NSParagraphStyle {
+                            paraStyle = pstyle
+                        }
+                    }
                     mattrTxt.insert(NSAttributedString(attachment: topMarginAttachment), at: 0)
                     mattrTxt.addAttributes([NSParagraphStyleAttributeName: paraStyle], range: NSRange(location: 0, length: 1))
                     mattrTxt.append(NSAttributedString(attachment: bottomMarginAttachment))
@@ -221,9 +231,11 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     ///
     func imageForAttachment(_ attachment: WPTextAttachment) -> WPRichTextImage {
         let img = WPRichTextImage(frame: CGRect.zero)
-        img.addTarget(self, action: #selector(type(of: self).handleImageTapped(_:)), for: .touchUpInside)
+        guard let url = URL(string: attachment.src) else {
+            return img
+        }
 
-        let url = URL(string: attachment.src)
+        img.addTarget(self, action: #selector(type(of: self).handleImageTapped(_:)), for: .touchUpInside)
         img.contentURL = url
         img.linkURL = linkURLForImageAttachment(attachment)
 

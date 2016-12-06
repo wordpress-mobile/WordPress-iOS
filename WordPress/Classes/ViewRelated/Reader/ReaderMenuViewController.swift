@@ -8,13 +8,21 @@ import WordPressShared
 @objc class ReaderMenuViewController : UITableViewController, UIViewControllerRestoration
 {
 
-    static var restorationIdentifier = "ReaderMenuViewController"
+    static let restorationIdentifier = "ReaderMenuViewController"
+    static let selectedIndexPathRestorationIdentifier = "ReaderMenuSelectedIndexPathKey"
+
     let defaultCellIdentifier = "DefaultCellIdentifier"
     let actionCellIdentifier = "ActionCellIdentifier"
     let manageCellIdentifier = "ManageCellIdentifier"
-    let readerHasBeenPreviouslyViewedKey = "ReaderHasBeenPreviouslyViewedKey"
+
     var isSyncing = false
     var didSyncTopics = false
+
+    private var defaultIndexPath: NSIndexPath {
+        return viewModel.indexPathOfDefaultMenuItemWithOrder(.Discover)
+    }
+
+    private var restorableSelectedIndexPath: NSIndexPath?
 
     lazy var viewModel: ReaderMenuViewModel = {
         let vm = ReaderMenuViewModel()
@@ -22,39 +30,38 @@ import WordPressShared
         return vm
     }()
 
-    var readerHasBeenPreviouslyViewed: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: readerHasBeenPreviouslyViewedKey)
-        }
-
-        set {
-            let defaults = UserDefaults.standard
-            if newValue {
-                defaults.set(true, forKey: readerHasBeenPreviouslyViewedKey)
-            } else {
-                defaults.removeObject(forKey: readerHasBeenPreviouslyViewedKey)
-            }
-            defaults.synchronize()
-        }
-    }
-
-
     /// A convenience method for instantiating the controller.
     ///
     /// - Returns: An instance of the controller.
     ///
-    static let sharedInstance: ReaderMenuViewController = {
+    static func controller() -> ReaderMenuViewController {
         return ReaderMenuViewController(style: .grouped)
-    }()
-
+    }
 
     // MARK: - Restoration Methods
 
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
-        return sharedInstance
+        return WPTabBarController.sharedInstance().readerMenuViewController
     }
 
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        coder.encodeObject(restorableSelectedIndexPath, forKey: type(of: self).selectedIndexPathRestorationIdentifier)
+
+        super.encodeRestorableStateWithCoder(coder)
+    }
+
+    override func decodeRestorableStateWithCoder(coder: NSCoder) {
+        decodeRestorableSelectedIndexPathWithCoder(coder)
+
+        super.decodeRestorableStateWithCoder(coder)
+    }
+
+    private func decodeRestorableSelectedIndexPathWithCoder(coder: NSCoder) {
+        if let indexPath = coder.decodeObjectForKey(type(of: self).selectedIndexPathRestorationIdentifier) as? NSIndexPath {
+            restorableSelectedIndexPath = indexPath
+        }
+    }
 
     // MARK: - Lifecycle Methods
 
@@ -68,6 +75,12 @@ import WordPressShared
         super.init(style: style)
         ReaderMenuViewController.restorationIdentifier = type(of: self).restorationIdentifier
         restorationClass = type(of: self)
+
+        clearsSelectionOnViewWillAppear = false
+
+        if restorableSelectedIndexPath == nil {
+            restorableSelectedIndexPath = defaultIndexPath
+        }
 
         cleanupStaleContent(removeAllTopics: false)
         setupRefreshControl()
@@ -93,20 +106,24 @@ import WordPressShared
         syncTopics()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        // We shouldn't show a selection if our split view is collapsed
+        if (splitViewControllerIsHorizontallyCompact) {
+            animateDeselectionInteractively()
 
-        handleFirstLaunchIfNeeded()
-    }
-
-
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animate(alongsideTransition: nil) { (_) in
-            self.tableView.reloadData()
+            restorableSelectedIndexPath = defaultIndexPath
         }
+
+        reloadTableViewPreservingSelection()
     }
 
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        reloadTableViewPreservingSelection()
+    }
 
     // MARK: - Configuration
 
@@ -155,12 +172,6 @@ import WordPressShared
     /// When logged out return the nav stack to the menu
     ///
     func handleAccountChanged(_ notification: Foundation.Notification) {
-        // Return to the root vc.
-        _ = navigationController?.popToRootViewController(animated: false)
-
-        // Clear the flag so Discover will be present and ready to view.
-        readerHasBeenPreviouslyViewed = false
-
         // Clean up obsolete content.
         cleanupStaleContent(removeAllTopics: true)
 
@@ -171,29 +182,6 @@ import WordPressShared
         // Sync the menu fresh
         syncTopics()
     }
-
-
-    /// The first time the Reader is launched, we want to show the Discover topic,
-    /// not the menu.
-    ///
-    func handleFirstLaunchIfNeeded() {
-        if readerHasBeenPreviouslyViewed {
-            return
-        }
-
-        // Wait til the view is loaded, and only proceed if there are topics synced.
-        if !isViewLoaded || !didSyncTopics {
-            return
-        }
-
-        // Show the Discover topic if it exists.
-        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let topic = service?.topicForDiscover() {
-            showPostsForTopic(topic)
-            readerHasBeenPreviouslyViewed = true
-        }
-    }
-
 
     /// Sync the Reader's menu
     ///
@@ -207,7 +195,6 @@ import WordPressShared
         service?.fetchReaderMenu(success: { [weak self] in
                 self?.didSyncTopics = true
                 self?.cleanupAfterSync()
-                self?.handleFirstLaunchIfNeeded()
             }, failure: { [weak self] (error) in
                 self?.cleanupAfterSync()
                 DDLogSwift.logError("Error syncing menu: \(error)")
@@ -242,18 +229,22 @@ import WordPressShared
     ///     - topic: The topic to show.
     ///
     func showPostsForTopic(_ topic: ReaderAbstractTopic) {
-        let controller = ReaderStreamViewController.controllerWithTopic(topic)
-        navigationController?.pushViewController(controller, animated: true)
+        showDetailViewController(viewControllerForTopic(topic), sender: self)
     }
 
+    private func viewControllerForTopic(topic: ReaderAbstractTopic) -> ReaderStreamViewController {
+        return ReaderStreamViewController.controllerWithTopic(topic)
+    }
 
     /// Presents the reader's search view controller.
     ///
     func showReaderSearch() {
-        let controller = ReaderSearchViewController.controller()
-        navigationController?.pushViewController(controller, animated: true)
+        showDetailViewController(viewControllerForSearch(), sender: self)
     }
 
+    private func viewControllerForSearch() -> ReaderSearchViewController {
+        return ReaderSearchViewController.controller()
+    }
 
     /// Presents a new view controller for subscribing to a new tag.
     ///
@@ -372,7 +363,11 @@ import WordPressShared
             return
         }
 
-        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .middle, completion: nil)
+        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .middle, completion: {
+            if !self.splitViewControllerIsHorizontallyCompact {
+                self.tableView(self.tableView, didSelectRowAtIndexPath: indexPath)
+            }
+        })
     }
 
 
@@ -421,15 +416,23 @@ import WordPressShared
             return
         }
 
+        restorableSelectedIndexPath = indexPath
+
+        if let viewController = viewControllerForMenuItem(menuItem) {
+            showDetailViewController(viewController, sender: self)
+        }
+    }
+
+    private func viewControllerForMenuItem(menuItem: ReaderMenuItem) -> UIViewController? {
         if let topic = menuItem.topic {
-            showPostsForTopic(topic)
-            return
+            return viewControllerForTopic(topic)
         }
 
         if menuItem.type == .search {
-            showReaderSearch()
-            return
+            return viewControllerForSearch()
         }
+
+        return nil
     }
 
 
@@ -440,7 +443,7 @@ import WordPressShared
 
         WPStyleGuide.configureTableViewCell(cell)
         cell.accessoryView = nil
-        cell.accessoryType = .disclosureIndicator
+        cell.accessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .None
         cell.selectionStyle = .default
         cell.textLabel?.text = menuItem.title
         cell.imageView?.image = menuItem.icon
@@ -513,11 +516,41 @@ extension ReaderMenuViewController : ReaderMenuViewModelDelegate
 {
 
     func menuDidReloadContent() {
-        tableView.reloadData()
+        reloadTableViewPreservingSelection()
     }
 
     func menuSectionDidChangeContent(_ index: Int) {
-        tableView.reloadData()
+        reloadTableViewPreservingSelection()
     }
 
+    func reloadTableViewPreservingSelection() {
+        let selectedIndexPath = restorableSelectedIndexPath
+
+        tableView.reloadData()
+
+        // Show the current selection if our split view isn't collapsed
+        if !splitViewControllerIsHorizontallyCompact {
+            tableView.selectRowAtIndexPath(selectedIndexPath,
+                                           animated: false, scrollPosition: .None)
+        }
+    }
+
+}
+
+extension ReaderMenuViewController : WPSplitViewControllerDetailProvider {
+    func initialDetailViewControllerForSplitView(splitView: WPSplitViewController) -> UIViewController? {
+        if restorableSelectedIndexPath == defaultIndexPath {
+            let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            if let topic = service.topicForDiscover() {
+                return ReaderStreamViewController.controllerWithTopic(topic)
+            } else {
+                restorableSelectedIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+                if let item = viewModel.menuItemAtIndexPath(restorableSelectedIndexPath!) {
+                    return viewControllerForMenuItem(item)
+                }
+            }
+        }
+
+        return nil
+    }
 }

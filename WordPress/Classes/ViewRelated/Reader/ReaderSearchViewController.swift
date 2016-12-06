@@ -8,7 +8,7 @@ import Gridicons
 ///
 @objc open class ReaderSearchViewController : UIViewController, UIViewControllerRestoration
 {
-
+    static let restorationIdentifier = "ReaderSearchViewControllerRestorationIdentifier"
     static let restorableSearchTopicPathKey: String = "RestorableSearchTopicPathKey"
 
 
@@ -41,13 +41,13 @@ import Gridicons
 
     open static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
         guard let path = coder.decodeObject(forKey: restorableSearchTopicPathKey) as? String else {
-            return nil
+            return ReaderSearchViewController.controller()
         }
 
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context)
         guard let topic = service?.find(withPath: path) as? ReaderSearchTopic else {
-            return nil
+            return ReaderSearchViewController.controller()
         }
 
         topic.preserveForRestoration = false
@@ -79,6 +79,7 @@ import Gridicons
 
 
     open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
+        restorationIdentifier = type(of: self).restorationIdentifier
         restorationClass = type(of: self)
 
         return super.awakeAfter(using: aDecoder)
