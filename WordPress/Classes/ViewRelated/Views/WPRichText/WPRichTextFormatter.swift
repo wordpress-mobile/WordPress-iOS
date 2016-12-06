@@ -381,7 +381,8 @@ class AttachmentTagProcessor: HtmlTagProcessor
 
         let attrs = attributesFromTag(html)
 
-        let src = attrs["src"] ?? ""
+        var src = attrs["src"] ?? ""
+        src = src.stringByDecodingXMLCharacters()
         let textAttachment = WPTextAttachment(tagName: tagName, identifier: identifier, src: src)
         textAttachment.attributes = attrs
         textAttachment.html = html

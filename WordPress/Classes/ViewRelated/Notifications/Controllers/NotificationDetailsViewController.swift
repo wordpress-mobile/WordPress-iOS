@@ -19,17 +19,25 @@ class NotificationDetailsViewController: UIViewController
     ///
     @IBOutlet var tableView: UITableView!
 
-    /// Pins the StackView to the top of the view
+    /// Pins the StackView to the top of the view (Relationship: = 0)
     ///
     @IBOutlet var topLayoutConstraint: NSLayoutConstraint!
 
-    /// Pins the StackView at the center of the view
-    ///
-    @IBOutlet var centerLayoutConstraint: NSLayoutConstraint!
-
-    /// Pins the StackView to the bottom of the view
+    /// Pins the StackView to the bottom of the view (Relationship: = 0)
     ///
     @IBOutlet var bottomLayoutConstraint: NSLayoutConstraint!
+
+    /// Pins the StackView to the top of the view (Relationship: >= 0)
+    ///
+    @IBOutlet var badgeTopLayoutConstraint: NSLayoutConstraint!
+
+    /// Pins the StackView to the bottom of the view (Relationship: >= 0)
+    ///
+    @IBOutlet var badgeBottomLayoutConstraint: NSLayoutConstraint!
+
+    /// Pins the StackView at the center of the view
+    ///
+    @IBOutlet var badgeCenterLayoutConstraint: NSLayoutConstraint!
 
     /// RelpyTextView
     ///
@@ -371,15 +379,25 @@ private extension NotificationDetailsViewController
 private extension NotificationDetailsViewController
 {
     func adjustLayoutConstraintsIfNeeded() {
-        // Badge Notifications should be centered, and display no cell separators
-        let shouldCenterVertically = note.isBadge
+        // Badge Notifications:
+        //  -   Should be vertically centered
+        //  -   Don't need cell separators
+        //  -   Should have Vertical Scroll enabled only if the Table Content falls off the screen.
+        //
+        let requiresVerticalAlignment = note.isBadge
 
-        topLayoutConstraint.isActive = !shouldCenterVertically
-        bottomLayoutConstraint.isActive = !shouldCenterVertically
-        centerLayoutConstraint.isActive = shouldCenterVertically
+        topLayoutConstraint.isActive = !requiresVerticalAlignment
+        bottomLayoutConstraint.isActive = !requiresVerticalAlignment
 
-        // Lock Scrolling for Badge Notifications
-        tableView.isScrollEnabled = !shouldCenterVertically
+        badgeTopLayoutConstraint.isActive = requiresVerticalAlignment
+        badgeBottomLayoutConstraint.isActive = requiresVerticalAlignment
+        badgeCenterLayoutConstraint.isActive = requiresVerticalAlignment
+
+        if requiresVerticalAlignment {
+            tableView.scrollEnabled = tableView.intrinsicContentSize().height > view.bounds.height
+        } else {
+            tableView.scrollEnabled = true
+        }
     }
 
     func reuseIdentifierForGroup(_ blockGroup: NotificationBlockGroup) -> String {
