@@ -216,9 +216,20 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-        coordinator.animateAlongsideTransition(nil, completion: { (_) in
-            self.updateContentInsets()
-            self.updateTextViewMargins()
+
+        let y = textView.contentOffset.y
+        let position = textView.closestPositionToPoint(CGPoint(x:0.0, y: y))
+
+        coordinator.animateAlongsideTransition(
+            { (_) in
+                if let position = position, let textRange = self.textView.textRangeFromPosition(position, toPosition: position) {
+                    let rect = self.textView.firstRectForRange(textRange)
+                    self.textView.setContentOffset(CGPoint(x: 0.0, y: rect.origin.y), animated: false)
+                }
+            },
+            completion: { (_) in
+                self.updateContentInsets()
+                self.updateTextViewMargins()
         })
 
         // Make sure that the bars are visible after switching from landscape
