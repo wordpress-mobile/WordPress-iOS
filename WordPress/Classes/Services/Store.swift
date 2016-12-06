@@ -69,7 +69,7 @@ class StoreCoordinator<S: Store> {
         }
     }
 
-    init(store: S, database: KeyValueDatabase = UserDefaults() as! KeyValueDatabase) {
+    init(store: S, database: KeyValueDatabase = UserDefaults() as KeyValueDatabase) {
         self.store = store
         self.database = database
     }

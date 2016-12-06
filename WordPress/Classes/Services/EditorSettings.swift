@@ -16,7 +16,7 @@ class EditorSettings: NSObject {
     }
 
     convenience override init() {
-        self.init(database: UserDefaults() as! KeyValueDatabase)
+        self.init(database: UserDefaults() as KeyValueDatabase)
     }
 
     // MARK: Public accessors
