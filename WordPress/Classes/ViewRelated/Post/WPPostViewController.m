@@ -53,6 +53,7 @@ static NSString* const WPProgressMediaError = @"WPProgressMediaError";
 NSString* const WPPostViewControllerOptionOpenMediaPicker = @"WPPostViewControllerMediaPicker";
 NSString* const WPPostViewControllerOptionNotAnimated = @"WPPostViewControllerNotAnimated";
 
+
 // Secret URL config parameters
 NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
@@ -64,8 +65,8 @@ static CGFloat const RegularTitleButtonHeight = 30.0f;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
-static void *ProgressObserverContext = &ProgressObserverContext;
-static void *DateChangeObserverContext = &DateChangeObserverContext;
+static void * const ProgressObserverContext = (void*)&ProgressObserverContext;
+static void * const DateChangeObserverContext = (void*)&DateChangeObserverContext;
 
 @interface WPEditorViewController ()
 @property (nonatomic, strong, readwrite) WPEditorFormatbarView *toolbarView;
@@ -130,7 +131,6 @@ EditImageDetailsViewControllerDelegate
 - (void)dealloc
 {
     [_mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
-    [self.post removeObserver:self forKeyPath:@"dateCreated"];
     [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
 }
 
@@ -292,7 +292,7 @@ EditImageDetailsViewControllerDelegate
     self.negativeSeparator.width = -12;
     
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
-    
+
     self.delegate = self;
     [self configureMediaUpload];
     if (self.isOpenedDirectlyForPhotoPost) {
@@ -806,8 +806,6 @@ EditImageDetailsViewControllerDelegate
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post];
 	vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
-
-    [self.post addObserver:self forKeyPath:@"dateCreated" options:NSKeyValueObservingOptionNew context:DateChangeObserverContext];
 }
 
 - (void)showPreview
@@ -1008,6 +1006,15 @@ EditImageDetailsViewControllerDelegate
         return YES;
     }
     return NO;
+}
+
+- (void)setPost:(AbstractPost *)post
+{
+    if (_post != nil) {
+        [self removePostObserver];
+    }
+    _post = post;
+    [self setupPostObserver];
 }
 
 #pragma mark - UI Manipulation
@@ -1372,7 +1379,7 @@ EditImageDetailsViewControllerDelegate
                    changesSaved:(BOOL)changesSaved
 {
     [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
-    
+
     if (self.onClose) {
         self.onClose(self, changesSaved);
         self.onClose = nil;
@@ -1548,6 +1555,18 @@ EditImageDetailsViewControllerDelegate
     }
     
     [self.post save];
+}
+
+- (void)setupPostObserver
+{
+     [self.post addObserver:self forKeyPath:@"dateCreated" options:NSKeyValueObservingOptionNew context:DateChangeObserverContext];
+}
+
+- (void)removePostObserver
+{
+    @try {
+        [self.post removeObserver:self forKeyPath:@"dateCreated"];
+    } @catch (NSException *exception) {}
 }
 
 #pragma mark - Media State Methods
