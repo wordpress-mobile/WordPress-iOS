@@ -744,7 +744,7 @@ public protocol ThemePresenter: class
                 self.navigationController?.pushViewController(webViewController, animated: true)
             })
         } else {
-            self.navigationController?.pushViewController(webViewController, animated: true)
+            navigationController?.pushViewController(webViewController, animated: true)
         }
     }
 
