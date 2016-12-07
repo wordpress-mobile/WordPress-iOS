@@ -394,9 +394,9 @@ private extension NotificationDetailsViewController
         badgeCenterLayoutConstraint.isActive = requiresVerticalAlignment
 
         if requiresVerticalAlignment {
-            tableView.scrollEnabled = tableView.intrinsicContentSize().height > view.bounds.height
+            tableView.isScrollEnabled = tableView.intrinsicContentSize.height > view.bounds.height
         } else {
-            tableView.scrollEnabled = true
+            tableView.isScrollEnabled = true
         }
     }
 

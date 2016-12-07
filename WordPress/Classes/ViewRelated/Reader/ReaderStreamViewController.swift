@@ -17,7 +17,7 @@ import WordPressComAnalytics
 ///
 @objc open class ReaderStreamViewController : UIViewController, UIViewControllerRestoration
 {
-    static let restorationIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
+    static let restorationClassIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
     static let restorableTopicPathKey: String = "RestorableTopicPathKey"
 
     // MARK: - Properties
@@ -188,7 +188,7 @@ import WordPressComAnalytics
 
 
     open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        restorationIdentifier = type(of: self).restorationIdentifier
+        restorationIdentifier = type(of: self).restorationClassIdentifier
         restorationClass = type(of: self)
 
         return super.awakeAfter(using: aDecoder)

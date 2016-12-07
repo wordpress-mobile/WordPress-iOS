@@ -125,9 +125,9 @@ class WPRichContentView: UITextView
 
                     // Ensure the starting paragraph style is applied to the topMarginAttachment else the
                     // first paragraph might not have the correct line height.
-                    var paraStyle = NSParagraphStyle.defaultParagraphStyle()
+                    var paraStyle = NSParagraphStyle.default
                     if attrTxt.length > 0 {
-                        if let pstyle = attrTxt.attribute(NSParagraphStyleAttributeName, atIndex: 0, effectiveRange: nil) as? NSParagraphStyle {
+                        if let pstyle = attrTxt.attribute(NSParagraphStyleAttributeName, at: 0, effectiveRange: nil) as? NSParagraphStyle {
                             paraStyle = pstyle
                         }
                     }

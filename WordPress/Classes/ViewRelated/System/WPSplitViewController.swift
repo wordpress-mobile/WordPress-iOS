@@ -37,9 +37,9 @@ class WPSplitViewController: UISplitViewController {
 
         static func widthForInterfaceOrientation(_ orientation: UIInterfaceOrientation) -> CGFloat {
             // If the app is in multitasking (so isn't fullscreen), just use the narrow width
-            if let windowFrame = UIApplication.sharedApplication().keyWindow?.frame {
-                if windowFrame.width < UIScreen.mainScreen().bounds.width {
-                    return self.Portrait.rawValue
+            if let windowFrame = UIApplication.shared.keyWindow?.frame {
+                if windowFrame.width < UIScreen.main.bounds.width {
+                    return self.portrait.rawValue
                 }
             }
 
@@ -81,7 +81,7 @@ class WPSplitViewController: UISplitViewController {
         extendedLayoutIncludesOpaqueBars = true
     }
 
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
@@ -105,8 +105,8 @@ class WPSplitViewController: UISplitViewController {
         updateDimmingViewFrame()
     }
 
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
 
         coordinator.animate(alongsideTransition: { context in
             self.updateSplitViewForPrimaryColumnWidth()
@@ -116,7 +116,7 @@ class WPSplitViewController: UISplitViewController {
         // Calling `setOverrideTraitCollection` prompts `overrideTraitCollectionForChildViewController` to be called.
         if let _ = overriddenTraitCollectionForDetailViewController,
             let detailViewController = viewControllers.last {
-                setOverrideTraitCollection(detailViewController.traitCollection, forChildViewController: detailViewController)
+            setOverrideTraitCollection(detailViewController.traitCollection, forChildViewController: detailViewController)
         }
     }
 
