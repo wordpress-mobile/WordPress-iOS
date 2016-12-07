@@ -130,6 +130,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)dealloc
 {
+    [self removePostObserver];
     [_mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
     [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
 }
@@ -1397,6 +1398,7 @@ EditImageDetailsViewControllerDelegate
                    changesSaved:(BOOL)changesSaved
 {
     [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
+    [self removePostObserver];
 
     if (self.onClose) {
         self.onClose(self, changesSaved);
@@ -1596,13 +1598,15 @@ EditImageDetailsViewControllerDelegate
 
 - (void)setupPostObserver
 {
-     [self.post addObserver:self forKeyPath:@"dateCreated" options:NSKeyValueObservingOptionNew context:DateChangeObserverContext];
+    [self.post addObserver:self forKeyPath:@"dateCreated" options:NSKeyValueObservingOptionNew context:DateChangeObserverContext];
+    [self.post addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:DateChangeObserverContext];
 }
 
 - (void)removePostObserver
 {
     @try {
         [self.post removeObserver:self forKeyPath:@"dateCreated"];
+        [self.post removeObserver:self forKeyPath:@"status"];
     } @catch (NSException *exception) {}
 }
 
