@@ -51,18 +51,5 @@ extension UINavigationBar {
 
         titleTextAttributes = [NSForegroundColorAttributeName: color]
         tintColor = color
-
-        // We're using UIAppearance for UIBarButtonItems because this seems to be
-        // the only way to style the appearance of an incoming back button
-        // when pushing a new view controller onto a navigation stack.
-        //
-        // Obviously this affects all newly-created UIBarButtonItems, but the
-        // intention is that the color will be flipped back to default after
-        // a push / pop transition has taken place.
-        let attributes = [NSForegroundColorAttributeName: color]
-        UIBarButtonItem.appearance().tintColor = color
-        UIBarButtonItem.appearance().setTitleTextAttributes(attributes, forState: .Normal)
-        UIBarButtonItem.appearance().setTitleTextAttributes(attributes, forState: .Selected)
-        UIBarButtonItem.appearance().setTitleTextAttributes(attributes, forState: .Highlighted)
     }
 }
