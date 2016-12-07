@@ -53,6 +53,7 @@ static NSString* const WPProgressMediaError = @"WPProgressMediaError";
 NSString* const WPPostViewControllerOptionOpenMediaPicker = @"WPPostViewControllerMediaPicker";
 NSString* const WPPostViewControllerOptionNotAnimated = @"WPPostViewControllerNotAnimated";
 
+
 // Secret URL config parameters
 NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
@@ -64,7 +65,8 @@ static CGFloat const RegularTitleButtonHeight = 30.0f;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
-static void *ProgressObserverContext = &ProgressObserverContext;
+static void * const ProgressObserverContext = (void*)&ProgressObserverContext;
+static void * const DateChangeObserverContext = (void*)&DateChangeObserverContext;
 
 @interface WPEditorViewController ()
 @property (nonatomic, strong, readwrite) WPEditorFormatbarView *toolbarView;
@@ -290,7 +292,7 @@ EditImageDetailsViewControllerDelegate
     self.negativeSeparator.width = -12;
     
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
-    
+
     self.delegate = self;
     [self configureMediaUpload];
     if (self.isOpenedDirectlyForPhotoPost) {
@@ -1013,6 +1015,15 @@ EditImageDetailsViewControllerDelegate
     return NO;
 }
 
+- (void)setPost:(AbstractPost *)post
+{
+    if (_post != nil) {
+        [self removePostObserver];
+    }
+    _post = post;
+    [self setupPostObserver];
+}
+
 #pragma mark - UI Manipulation
 
 /**
@@ -1069,7 +1080,7 @@ EditImageDetailsViewControllerDelegate
         NSMutableArray* rightBarButtons = [[NSMutableArray alloc] initWithArray:@[self.moreBarButtonItem,
                                                                                   self.editBarButtonItem]];
 
-		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
+		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:NO];
 	}
 }
 
@@ -1282,7 +1293,9 @@ EditImageDetailsViewControllerDelegate
 - (UIAlertAction *)quickSaveAlertAction
 {
     if ([self.post.status isEqualToString:PostStatusDraft]) {
-        if ([self.post.blog isPublishingPostsAllowed]) {
+        // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
+        // to showing Publish Now instead of Submit for Review.
+        if (!self.post.blog.capabilities || [self.post.blog isPublishingPostsAllowed]) {
             return [UIAlertAction actionWithTitle:NSLocalizedString(@"Publish Now", "Title of button allowing the user to immediately publish the post they are editing.")
                                             style:UIAlertActionStyleDestructive
                                           handler:^(UIAlertAction * _Nonnull action) {
@@ -1384,7 +1397,7 @@ EditImageDetailsViewControllerDelegate
                    changesSaved:(BOOL)changesSaved
 {
     [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
-    
+
     if (self.onClose) {
         self.onClose(self, changesSaved);
         self.onClose = nil;
@@ -1579,6 +1592,18 @@ EditImageDetailsViewControllerDelegate
     }
     
     [self.post save];
+}
+
+- (void)setupPostObserver
+{
+     [self.post addObserver:self forKeyPath:@"dateCreated" options:NSKeyValueObservingOptionNew context:DateChangeObserverContext];
+}
+
+- (void)removePostObserver
+{
+    @try {
+        [self.post removeObserver:self forKeyPath:@"dateCreated"];
+    } @catch (NSException *exception) {}
 }
 
 #pragma mark - Media State Methods
@@ -2203,6 +2228,8 @@ EditImageDetailsViewControllerDelegate
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self refreshNavigationBarButtons:NO];
         }];
+    } else if (context == DateChangeObserverContext) {
+        [self refreshNavigationBarButtons:NO];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
