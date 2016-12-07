@@ -215,7 +215,6 @@ import WordPressComAnalytics
         setupTableViewHandler()
         setupSyncHelper()
         setupResultsStatusView()
-        setupNavigationItem()
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
@@ -370,11 +369,6 @@ import WordPressComAnalytics
 
     private func setupResultsStatusView() {
         resultsStatusView = WPNoResultsView()
-    }
-
-    private func setupNavigationItem() {
-        // Hide the back button title
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
     }
 
     private func setupFooterView() {
