@@ -162,8 +162,15 @@ class EditPostViewController: UIViewController {
     private func editPostInHybridVisualEditor() -> UIViewController {
         let postViewController = WPPostViewController(post: postToEdit(), mode: kWPPostViewControllerModeEdit)
         postViewController.isOpenedDirectlyForPhotoPost = openWithMediaPicker
-        postViewController.onClose = { [weak self] (_, changesSaved) in
-            self?.closeEditor(changesSaved)
+        postViewController.onClose = { [weak self] (editorVC, changesSaved) in
+            guard let strongSelf = self else {
+                editorVC.dismissViewControllerAnimated(true) {}
+                return
+            }
+            if changesSaved {
+                strongSelf.post = editorVC.post as? Post
+            }
+            strongSelf.closeEditor(changesSaved)
         }
 
         let navController = UINavigationController(rootViewController: postViewController)
@@ -177,8 +184,15 @@ class EditPostViewController: UIViewController {
 
     private func editPostInTextEditor() -> UIViewController {
         let editPostViewController = WPLegacyEditPostViewController(post: postToEdit())
-        editPostViewController.onClose = { [weak self] in
-            self?.closeEditor()
+        editPostViewController.onClose = { [weak self] (editorVC, changesSaved) in
+            guard let strongSelf = self else {
+                editorVC.dismissViewControllerAnimated(true) {}
+                return
+            }
+            if changesSaved {
+                strongSelf.post = editorVC.post as? Post
+            }
+            strongSelf.closeEditor(changesSaved)
         }
 
         let navController = UINavigationController(rootViewController: editPostViewController)
