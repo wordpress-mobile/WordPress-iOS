@@ -673,16 +673,16 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Returns: An NSIndexPath representing the item.
     ///
-    func indexPathOfDefaultMenuItemWithOrder(order: ReaderDefaultMenuItemOrder) -> NSIndexPath {
-        if let sectionIndex = indexOfSectionWithType(.Defaults) {
-            for (index, item) in defaultSectionItems.enumerate() {
+    func indexPathOfDefaultMenuItemWithOrder(order: ReaderDefaultMenuItemOrder) -> IndexPath {
+        if let sectionIndex = indexOfSectionWithType(.defaults) {
+            for (index, item) in defaultSectionItems.enumerated() {
                 if item.order == order.rawValue {
-                    return NSIndexPath(forRow: index, inSection: sectionIndex)
+                    return IndexPath(row: index, section: sectionIndex)
                 }
             }
         }
 
-        return NSIndexPath(forRow: order.rawValue, inSection: ReaderMenuSectionType.Defaults.rawValue)
+        return IndexPath(row: order.rawValue, section: ReaderMenuSectionType.defaults.rawValue)
     }
 
     /// Get the indexPath of the specified tag

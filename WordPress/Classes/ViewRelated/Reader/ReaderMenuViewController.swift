@@ -8,7 +8,7 @@ import WordPressShared
 @objc class ReaderMenuViewController : UITableViewController, UIViewControllerRestoration
 {
 
-    static let restorationIdentifier = "ReaderMenuViewController"
+    static var restorationIdentifier = "ReaderMenuViewController"
     static let selectedIndexPathRestorationIdentifier = "ReaderMenuSelectedIndexPathKey"
 
     let defaultCellIdentifier = "DefaultCellIdentifier"
@@ -18,11 +18,11 @@ import WordPressShared
     var isSyncing = false
     var didSyncTopics = false
 
-    private var defaultIndexPath: NSIndexPath {
-        return viewModel.indexPathOfDefaultMenuItemWithOrder(.Discover)
+    fileprivate var defaultIndexPath: IndexPath {
+        return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .discover) as IndexPath
     }
 
-    private var restorableSelectedIndexPath: NSIndexPath?
+    fileprivate var restorableSelectedIndexPath: IndexPath?
 
     lazy var viewModel: ReaderMenuViewModel = {
         let vm = ReaderMenuViewModel()
@@ -45,20 +45,20 @@ import WordPressShared
         return WPTabBarController.sharedInstance().readerMenuViewController
     }
 
-    override func encodeRestorableStateWithCoder(coder: NSCoder) {
-        coder.encodeObject(restorableSelectedIndexPath, forKey: type(of: self).selectedIndexPathRestorationIdentifier)
+    override func encodeRestorableState(with coder: NSCoder) {
+        coder.encode(restorableSelectedIndexPath, forKey: type(of: self).selectedIndexPathRestorationIdentifier)
 
-        super.encodeRestorableStateWithCoder(coder)
+        super.encodeRestorableState(with: coder)
     }
 
-    override func decodeRestorableStateWithCoder(coder: NSCoder) {
-        decodeRestorableSelectedIndexPathWithCoder(coder)
+    override func decodeRestorableState(with coder: NSCoder) {
+        decodeRestorableSelectedIndexPathWithCoder(coder: coder)
 
-        super.decodeRestorableStateWithCoder(coder)
+        super.decodeRestorableState(with: coder)
     }
 
-    private func decodeRestorableSelectedIndexPathWithCoder(coder: NSCoder) {
-        if let indexPath = coder.decodeObjectForKey(type(of: self).selectedIndexPathRestorationIdentifier) as? NSIndexPath {
+    fileprivate func decodeRestorableSelectedIndexPathWithCoder(coder: NSCoder) {
+        if let indexPath = coder.decodeObject(forKey: type(of: self).selectedIndexPathRestorationIdentifier) as? IndexPath {
             restorableSelectedIndexPath = indexPath
         }
     }
@@ -119,7 +119,7 @@ import WordPressShared
         reloadTableViewPreservingSelection()
     }
 
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         reloadTableViewPreservingSelection()
@@ -232,7 +232,7 @@ import WordPressShared
         showDetailViewController(viewControllerForTopic(topic), sender: self)
     }
 
-    private func viewControllerForTopic(topic: ReaderAbstractTopic) -> ReaderStreamViewController {
+    fileprivate func viewControllerForTopic(_ topic: ReaderAbstractTopic) -> ReaderStreamViewController {
         return ReaderStreamViewController.controllerWithTopic(topic)
     }
 
@@ -242,7 +242,7 @@ import WordPressShared
         showDetailViewController(viewControllerForSearch(), sender: self)
     }
 
-    private func viewControllerForSearch() -> ReaderSearchViewController {
+    fileprivate func viewControllerForSearch() -> ReaderSearchViewController {
         return ReaderSearchViewController.controller()
     }
 
@@ -365,7 +365,7 @@ import WordPressShared
 
         tableView.flashRowAtIndexPath(indexPath, scrollPosition: .middle, completion: {
             if !self.splitViewControllerIsHorizontallyCompact {
-                self.tableView(self.tableView, didSelectRowAtIndexPath: indexPath)
+                self.tableView(self.tableView, didSelectRowAt: indexPath)
             }
         })
     }
@@ -423,7 +423,7 @@ import WordPressShared
         }
     }
 
-    private func viewControllerForMenuItem(menuItem: ReaderMenuItem) -> UIViewController? {
+    fileprivate func viewControllerForMenuItem(_ menuItem: ReaderMenuItem) -> UIViewController? {
         if let topic = menuItem.topic {
             return viewControllerForTopic(topic)
         }
@@ -443,7 +443,7 @@ import WordPressShared
 
         WPStyleGuide.configureTableViewCell(cell)
         cell.accessoryView = nil
-        cell.accessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .None
+        cell.accessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
         cell.selectionStyle = .default
         cell.textLabel?.text = menuItem.title
         cell.imageView?.image = menuItem.icon
@@ -530,21 +530,21 @@ extension ReaderMenuViewController : ReaderMenuViewModelDelegate
 
         // Show the current selection if our split view isn't collapsed
         if !splitViewControllerIsHorizontallyCompact {
-            tableView.selectRowAtIndexPath(selectedIndexPath,
-                                           animated: false, scrollPosition: .None)
+            tableView.selectRow(at: selectedIndexPath,
+                                           animated: false, scrollPosition: .none)
         }
     }
 
 }
 
 extension ReaderMenuViewController : WPSplitViewControllerDetailProvider {
-    func initialDetailViewControllerForSplitView(splitView: WPSplitViewController) -> UIViewController? {
+    func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
         if restorableSelectedIndexPath == defaultIndexPath {
             let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            if let topic = service.topicForDiscover() {
+            if let topic = service?.topicForDiscover() {
                 return ReaderStreamViewController.controllerWithTopic(topic)
             } else {
-                restorableSelectedIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+                restorableSelectedIndexPath = IndexPath(row: 0, section: 0)
                 if let item = viewModel.menuItemAtIndexPath(restorableSelectedIndexPath!) {
                     return viewControllerForMenuItem(item)
                 }
