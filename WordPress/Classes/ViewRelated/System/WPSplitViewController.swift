@@ -282,6 +282,7 @@ class WPSplitViewController: UISplitViewController {
         navigationController.restorationIdentifier = self.dynamicType.navigationControllerRestorationIdentifier
         navigationController.delegate = self
         navigationController.extendedLayoutIncludesOpaqueBars = true
+        WPStyleGuide.configureColorsForView(navigationController.view, andTableView: nil)
 
         return navigationController
     }
@@ -360,6 +361,7 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
             navigationController.delegate = self
             navigationController.restorationIdentifier = self.dynamicType.navigationControllerRestorationIdentifier
             navigationController.viewControllers = viewControllers
+            WPStyleGuide.configureColorsForView(navigationController.view, andTableView: nil)
 
             return navigationController
         }
