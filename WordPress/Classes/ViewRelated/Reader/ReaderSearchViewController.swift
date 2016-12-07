@@ -8,7 +8,7 @@ import Gridicons
 ///
 @objc open class ReaderSearchViewController : UIViewController, UIViewControllerRestoration
 {
-    static let restorationIdentifier = "ReaderSearchViewControllerRestorationIdentifier"
+    static let restorationClassIdentifier = "ReaderSearchViewControllerRestorationIdentifier"
     static let restorableSearchTopicPathKey: String = "RestorableSearchTopicPathKey"
 
 
@@ -79,7 +79,7 @@ import Gridicons
 
 
     open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        restorationIdentifier = type(of: self).restorationIdentifier
+        restorationIdentifier = type(of: self).restorationClassIdentifier
         restorationClass = type(of: self)
 
         return super.awakeAfter(using: aDecoder)
