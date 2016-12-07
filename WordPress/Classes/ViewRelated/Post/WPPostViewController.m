@@ -130,6 +130,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)dealloc
 {
+    [self removePostObserver];
     [_mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
     [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
 }
