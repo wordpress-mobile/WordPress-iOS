@@ -133,12 +133,12 @@ class EditPostViewController: UIViewController {
         let editor: UIViewController
         if editorSettings.visualEditorEnabled {
             if editorSettings.nativeEditorEnabled {
-                editor = editPostInNativeEditor()
+                editor = editPostInNativeVisualEditor()
             } else {
-                editor = editPostInNewEditor()
+                editor = editPostInHybridVisualEditor()
             }
         } else {
-            editor = editPostInOldEditor()
+            editor = editPostInTextEditor()
         }
 
         postPost.presentViewController(editor, animated: !showImmediately) {
@@ -147,7 +147,7 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    private func editPostInNativeEditor() -> UIViewController {
+    private func editPostInNativeVisualEditor() -> UIViewController {
         let postViewController = AztecPostViewController(post: postToEdit())
         postViewController.onClose = { [weak self] (changesSaved) in
             self?.closeEditor(changesSaved)
@@ -159,7 +159,7 @@ class EditPostViewController: UIViewController {
         return navController
     }
 
-    private func editPostInNewEditor() -> UIViewController {
+    private func editPostInHybridVisualEditor() -> UIViewController {
         let postViewController = WPPostViewController(post: postToEdit(), mode: kWPPostViewControllerModeEdit)
         postViewController.isOpenedDirectlyForPhotoPost = openWithMediaPicker
         postViewController.onClose = { [weak self] (_, changesSaved) in
@@ -175,7 +175,7 @@ class EditPostViewController: UIViewController {
         return navController
     }
 
-    private func editPostInOldEditor() -> UIViewController {
+    private func editPostInTextEditor() -> UIViewController {
         let editPostViewController = WPLegacyEditPostViewController(post: postToEdit())
         editPostViewController.onClose = { [weak self] in
             self?.closeEditor()
