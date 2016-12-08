@@ -665,17 +665,15 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     if (self.indexPathForCommentRepliedTo) {
         Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:self.indexPathForCommentRepliedTo];
         [service replyToHierarchicalCommentWithID:comment.commentID
-                                           postID:self.post.postID
-                                           siteID:self.post.siteID
+                                             post:self.post
                                           content:content
                                           success:successBlock
                                           failure:failureBlock];
     } else {
-        [service replyToPostWithID:self.post.postID
-                            siteID:self.post.siteID
-                           content:content
-                           success:successBlock
-                           failure:failureBlock];
+        [service replyToPost:self.post
+                     content:content
+                     success:successBlock
+                     failure:failureBlock];
     }
     self.indexPathForCommentRepliedTo = nil;
 }
