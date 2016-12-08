@@ -34,11 +34,11 @@ public class WP3DTouchShortcutHandler: NSObject
                 return true
             case ShortcutIdentifier.NewPost.type:
                 WPAnalytics.track(.ShortcutNewPost)
-                tabBarController.showPostTabWithOptions([WPPostViewControllerOptionNotAnimated: true])
+                tabBarController.showPostTabAnimated(false, toMedia: false)
                 return true
             case ShortcutIdentifier.NewPhotoPost.type:
                 WPAnalytics.track(.ShortcutNewPhotoPost)
-                tabBarController.showPostTabWithOptions([WPPostViewControllerOptionOpenMediaPicker: true, WPPostViewControllerOptionNotAnimated: true])
+                tabBarController.showPostTabAnimated(false, toMedia: true)
                 return true
             case ShortcutIdentifier.Stats.type:
                 WPAnalytics.track(.ShortcutStats)
