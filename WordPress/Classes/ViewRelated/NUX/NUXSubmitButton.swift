@@ -75,29 +75,29 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 
         layer.cornerRadius = cornerRadius
         layer.borderWidth = 1
-        layer.borderColor = UIColor.whiteColor().CGColor
+        layer.borderColor = UIColor.white.cgColor
         clipsToBounds = true
 
-        titleLabel?.font = WPFontManager.systemSemiBoldFontOfSize(17.0)
+        titleLabel?.font = WPFontManager.systemSemiBoldFont(ofSize: 17.0)
 
         let capInsets = UIEdgeInsets(top: cornerRadius, left: cornerRadius, bottom: cornerRadius, right: cornerRadius)
-        var backgroundColor = UIColor.clearColor()
-        var titleColorNormal = UIColor.whiteColor()
+        var backgroundColor = UIColor.clear
+        var titleColorNormal = UIColor.white
         var titleColorHighlighted = WPStyleGuide.lightBlue()
         var titleColorDisabled = UIColor(white: 1.0, alpha: NUXSubmitButtonDisabledAlpha)
         if (isPrimary) {
-            backgroundColor = UIColor.whiteColor()
+            backgroundColor = UIColor.white
             titleColorNormal = WPStyleGuide.wordPressBlue()
             titleColorHighlighted = WPStyleGuide.darkBlue()
-            titleColorDisabled = titleColorNormal.colorWithAlphaComponent(NUXSubmitButtonDisabledAlpha)
+            titleColorDisabled = titleColorNormal.withAlphaComponent(NUXSubmitButtonDisabledAlpha)
         }
         let normalImage = UIImage(color: backgroundColor, havingSize: CGSize(width: 44, height: 44))
-        setBackgroundImage(normalImage.resizableImageWithCapInsets(capInsets), forState: .Normal)
-        setBackgroundImage(normalImage.resizableImageWithCapInsets(capInsets), forState: .Highlighted)
+        setBackgroundImage(normalImage?.resizableImage(withCapInsets: capInsets), for: .normal)
+        setBackgroundImage(normalImage?.resizableImage(withCapInsets: capInsets), for: .highlighted)
 
-        setTitleColor(titleColorNormal, forState: .Normal)
-        setTitleColor(titleColorHighlighted, forState: .Highlighted)
-        setTitleColor(titleColorDisabled, forState: .Disabled)
+        setTitleColor(titleColorNormal, for: .normal)
+        setTitleColor(titleColorHighlighted, for: .highlighted)
+        setTitleColor(titleColorDisabled, for: .disabled)
 
         addSubview(activityIndicator)
     }

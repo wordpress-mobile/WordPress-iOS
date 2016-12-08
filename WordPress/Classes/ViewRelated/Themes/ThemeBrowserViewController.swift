@@ -740,8 +740,8 @@ public protocol ThemePresenter: class
         }
         webViewController.navigationItem.rightBarButtonItems = buttons
 
-        if searchController != nil && searchController.active {
-            searchController.dismissViewControllerAnimated(true, completion: {
+        if searchController != nil && searchController.isActive {
+            searchController.dismiss(animated: true, completion: {
                 self.navigationController?.pushViewController(webViewController, animated: true)
             })
         } else {
