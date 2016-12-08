@@ -133,13 +133,19 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             return nil
         }
 
+        post.preserveForRestoration = false
+        ContextManager.sharedInstance().saveContext(context)
+
         return controllerWithPost(post)
     }
 
 
     open override func encodeRestorableState(with coder: NSCoder) {
         if let post = post {
-            coder.encode(post.objectID.uriRepresentation().absoluteString, forKey: type(of: self).restorablePostObjectURLhKey)
+            let context = ContextManager.sharedInstance().mainContext
+            post.preserveForRestoration = true
+            ContextManager.sharedInstance().saveContext(context)
+            coder.encodeObject(post.objectID.URIRepresentation().absoluteString, forKey: self.dynamicType.restorablePostObjectURLhKey)
         }
 
         super.encodeRestorableState(with: coder)
@@ -214,11 +220,22 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: nil, completion: { (_) in
-            self.updateContentInsets()
-            self.updateTextViewMargins()
+    public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+
+        let y = textView.contentOffset.y
+        let position = textView.closestPositionToPoint(CGPoint(x:0.0, y: y))
+
+        coordinator.animateAlongsideTransition(
+            { (_) in
+                if let position = position, let textRange = self.textView.textRangeFromPosition(position, toPosition: position) {
+                    let rect = self.textView.firstRectForRange(textRange)
+                    self.textView.setContentOffset(CGPoint(x: 0.0, y: rect.origin.y), animated: false)
+                }
+            },
+            completion: { (_) in
+                self.updateContentInsets()
+                self.updateTextViewMargins()
         })
 
         // Make sure that the bars are visible after switching from landscape
@@ -289,7 +306,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                                                      multiplier: 1.0,
                                                      constant: 0.0)
         textView.addConstraint(textFooterTopConstraint)
-        textFooterTopConstraint.constant = textView.contentSize.height - textFooterStackView.frame.height
+        textFooterTopConstraint.constant = textFooterYOffset()
         textView.setContentOffset(CGPoint.zero, animated: false)
     }
 
@@ -379,6 +396,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             selector: #selector(ReaderDetailViewController.handleBlockSiteNotification(_:)),
             name: NSNotification.Name(rawValue: ReaderPostMenu.BlockSiteNotification),
             object: nil)
+
+        // Make sure the text view is scrolled to the top the first time after
+        // the view is first configured.
+        textView.setContentOffset(CGPoint.zero, animated: false)
     }
 
 
