@@ -134,7 +134,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         post.preserveForRestoration = false
-        ContextManager.sharedInstance().saveContext(context)
+        ContextManager.sharedInstance().save(context)
 
         return controllerWithPost(post)
     }
@@ -144,8 +144,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         if let post = post {
             let context = ContextManager.sharedInstance().mainContext
             post.preserveForRestoration = true
-            ContextManager.sharedInstance().saveContext(context)
-            coder.encodeObject(post.objectID.URIRepresentation().absoluteString, forKey: self.dynamicType.restorablePostObjectURLhKey)
+            ContextManager.sharedInstance().save(context)
+            coder.encode(post.objectID.uriRepresentation().absoluteString, forKey: type(of: self).restorablePostObjectURLhKey)
         }
 
         super.encodeRestorableState(with: coder)
@@ -219,17 +219,16 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         view.layoutIfNeeded()
     }
 
-
-    public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
 
         let y = textView.contentOffset.y
-        let position = textView.closestPositionToPoint(CGPoint(x:0.0, y: y))
+        let position = textView.closestPosition(to: CGPoint(x: 0.0, y: y))
 
-        coordinator.animateAlongsideTransition(
-            { (_) in
-                if let position = position, let textRange = self.textView.textRangeFromPosition(position, toPosition: position) {
-                    let rect = self.textView.firstRectForRange(textRange)
+        coordinator.animate(
+            alongsideTransition: { (_) in
+                if let position = position, let textRange = self.textView.textRange(from: position, to: position) {
+                    let rect = self.textView.firstRect(for: textRange)
                     self.textView.setContentOffset(CGPoint(x: 0.0, y: rect.origin.y), animated: false)
                 }
             },
