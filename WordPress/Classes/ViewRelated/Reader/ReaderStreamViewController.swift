@@ -1061,7 +1061,6 @@ import WordPressComAnalytics
             return
         }
 
-        //
         if didAutoSync || (view.window == nil && !viewWillAppear) {
             return
         }
