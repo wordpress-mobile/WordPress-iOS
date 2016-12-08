@@ -72,9 +72,13 @@ extension UIImageView
 
         let request = NSURLRequest(URL: targetURL)
 
-
+        self.dynamicType.sharedImageDownloader().imageCache?.removeImageforRequest(request, withAdditionalIdentifier: nil)
         self.dynamicType.sharedImageDownloader().imageCache?.addImage(image, forRequest: request, withAdditionalIdentifier: nil)
-        NSURLCache.sharedURLCache().cacheImage(image, forRequest: request)
+
+        // Remove all cached responses - removing an individual response does not work since iOS 7.
+        // This feels hacky to do but what else can we do...
+        let sessionConfiguration = self.dynamicType.sharedImageDownloader().sessionManager.valueForKey("sessionConfiguration") as? NSURLSessionConfiguration
+        sessionConfiguration?.URLCache?.removeAllCachedResponses()
     }
 
 
