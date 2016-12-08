@@ -133,12 +133,18 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
             return nil
         }
 
+        post.preserveForRestoration = false
+        ContextManager.sharedInstance().saveContext(context)
+
         return controllerWithPost(post)
     }
 
 
     public override func encodeRestorableStateWithCoder(coder: NSCoder) {
         if let post = post {
+            let context = ContextManager.sharedInstance().mainContext
+            post.preserveForRestoration = true
+            ContextManager.sharedInstance().saveContext(context)
             coder.encodeObject(post.objectID.URIRepresentation().absoluteString, forKey: self.dynamicType.restorablePostObjectURLhKey)
         }
 
