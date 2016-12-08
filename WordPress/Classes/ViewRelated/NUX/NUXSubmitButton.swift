@@ -6,14 +6,21 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 /// A stylized button used by NUX controllers. The button presents white text
 /// surrounded by a white border.  It also can display a `UIActivityIndicatorView`.
 ///
+@IBDesignable
 @objc class NUXSubmitButton : UIButton
 {
+    @IBInspectable var isPrimary: Bool = false {
+        didSet {
+            configureButton()
+        }
+    }
+    let cornerRadius = CGFloat(5.0)
+
     var isAnimating: Bool {
         get {
             return activityIndicator.isAnimating
         }
     }
-
 
     let activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
@@ -38,15 +45,8 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 
     // MARK: - LifeCycle Methods
 
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureButton()
-    }
-
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    override func awakeFromNib() {
+        super.awakeFromNib()
         configureButton()
     }
 
@@ -73,21 +73,31 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
     func configureButton() {
         contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
 
-        let cornerRadius = CGFloat(5.0)
         layer.cornerRadius = cornerRadius
         layer.borderWidth = 1
-        layer.borderColor = UIColor.white.cgColor
+        layer.borderColor = UIColor.whiteColor().CGColor
+        clipsToBounds = true
 
-        titleLabel?.font = WPFontManager.systemRegularFont(ofSize: 14.0)
-        setTitleColor(UIColor.white, for: UIControlState())
-        setTitleColor(WPStyleGuide.lightBlue(), for: .highlighted)
-        setTitleColor(UIColor(white: 1.0, alpha: NUXSubmitButtonDisabledAlpha), for: .disabled)
+        titleLabel?.font = WPFontManager.systemSemiBoldFontOfSize(17.0)
 
         let capInsets = UIEdgeInsets(top: cornerRadius, left: cornerRadius, bottom: cornerRadius, right: cornerRadius)
-        let normalImage = UIImage(color: UIColor.clear, havingSize: CGSize(width: 44, height: 44))
+        var backgroundColor = UIColor.clearColor()
+        var titleColorNormal = UIColor.whiteColor()
+        var titleColorHighlighted = WPStyleGuide.lightBlue()
+        var titleColorDisabled = UIColor(white: 1.0, alpha: NUXSubmitButtonDisabledAlpha)
+        if (isPrimary) {
+            backgroundColor = UIColor.whiteColor()
+            titleColorNormal = WPStyleGuide.wordPressBlue()
+            titleColorHighlighted = WPStyleGuide.darkBlue()
+            titleColorDisabled = titleColorNormal.colorWithAlphaComponent(NUXSubmitButtonDisabledAlpha)
+        }
+        let normalImage = UIImage(color: backgroundColor, havingSize: CGSize(width: 44, height: 44))
+        setBackgroundImage(normalImage.resizableImageWithCapInsets(capInsets), forState: .Normal)
+        setBackgroundImage(normalImage.resizableImageWithCapInsets(capInsets), forState: .Highlighted)
 
-        setBackgroundImage(normalImage?.resizableImage(withCapInsets: capInsets), for: UIControlState())
-        setBackgroundImage(normalImage?.resizableImage(withCapInsets: capInsets), for: .highlighted)
+        setTitleColor(titleColorNormal, forState: .Normal)
+        setTitleColor(titleColorHighlighted, forState: .Highlighted)
+        setTitleColor(titleColorDisabled, forState: .Disabled)
 
         addSubview(activityIndicator)
     }

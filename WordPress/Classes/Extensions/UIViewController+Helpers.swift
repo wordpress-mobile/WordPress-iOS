@@ -28,6 +28,12 @@ extension UIViewController
     /// Determines if the current ViewController is being presented modally
     ///
     public func isModal() -> Bool {
-        return self.presentingViewController != nil
+        if self.presentingViewController != nil {
+            return true
+        } else if self.navigationController?.presentingViewController != nil &&
+            self.navigationController?.presentingViewController?.presentedViewController == self.navigationController {
+            return true
+        }
+        return false
     }
 }
