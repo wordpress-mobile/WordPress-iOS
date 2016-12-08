@@ -139,7 +139,7 @@ class PostPostViewController: UIViewController {
             shareButton.hidden = false
         }
         siteNameLabel.text = blogSettings.name
-        siteUrlLabel.text = post.blog.url
+        siteUrlLabel.text = post.blog.displayURL
         if let icon = post.blog.icon {
             siteIconView.setImageWithSiteIcon(icon, placeholderImage:nil)
         }
