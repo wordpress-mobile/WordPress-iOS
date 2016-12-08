@@ -113,7 +113,7 @@ class WPRichContentView: UITextView
             let str = newValue ?? ""
             let style = "<style>" +
                 "body { font-family: Merriweather; font-size:16.0; line-height:1.6875; color: #2e4453; } " +
-                "blockquote { font-size:18.0; font-style: italic; font-family: Merriweather-Italic; color:#4f748e; } " +
+                "blockquote { font-size:18.0; color:#4f748e; } " +
                 "em, i { font-size:18.0; font-style: italic; font-family: Merriweather-Italic; } " +
                 "a { color: #0087be; text-decoration: none; } " +
                 "a:active { color: #005082; } " +
@@ -231,9 +231,11 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     ///
     func imageForAttachment(attachment: WPTextAttachment) -> WPRichTextImage {
         let img = WPRichTextImage(frame: CGRect.zero)
-        img.addTarget(self, action: #selector(self.dynamicType.handleImageTapped(_:)), forControlEvents: .TouchUpInside)
+        guard let url = NSURL(string: attachment.src) else {
+            return img
+        }
 
-        let url = NSURL(string: attachment.src)
+        img.addTarget(self, action: #selector(self.dynamicType.handleImageTapped(_:)), forControlEvents: .TouchUpInside)
         img.contentURL = url
         img.linkURL = linkURLForImageAttachment(attachment)
 
