@@ -331,7 +331,7 @@ extension WPStyleGuide
         public static let titleFontSize:CGFloat = WPDeviceIdentification.isiPad() ? 28.0 : 18.0
         public static let titleLineSpacing:CGFloat = WPDeviceIdentification.isiPad() ? 4.0 : 2.0
         public static let contentFontSize:CGFloat = 16.0
-        public static let contentLineSpacing:CGFloat = WPDeviceIdentification.isiPad() ? 4.0 : 2.0
+        public static let contentLineSpacing:CGFloat = 6.5
         public static let buttonFontSize:CGFloat = 14.0
         public static let subtextFontSize:CGFloat = 12.0
         public static let loadMoreButtonFontSize:CGFloat = 15.0
