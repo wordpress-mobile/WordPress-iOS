@@ -58,6 +58,8 @@ import WordPressComAnalytics
     private var imageRequestAuthToken: String?
     private var didBumpStats = false
 
+    private var didAutoSync = false
+
     /// Used for fetching content.
     private lazy var displayContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -233,6 +235,7 @@ import WordPressComAnalytics
 
         // Trigger layouts, if needed, to correct for any inherited layout changes, such as margins.
         refreshTableHeaderIfNeeded()
+        autoSyncIfAppropriate(viewWillAppear: true)
     }
 
 
@@ -532,7 +535,7 @@ import WordPressComAnalytics
         configureStreamHeader()
         tableView.setContentOffset(CGPointZero, animated: false)
         tableViewHandler.refreshTableView()
-        syncIfAppropriate()
+        autoSyncIfAppropriate(viewWillAppear: false)
 
         bumpStats()
 
@@ -1043,12 +1046,23 @@ import WordPressComAnalytics
     /// are met.
     /// - The app must have a internet connection.
     /// - The current time must be greater than the last sync interval.
-    func syncIfAppropriate() {
+    /// - Autosync must not have already occurred.
+    ///
+    /// NOTE:  We want to avoid automatically syncing when the controller is created
+    /// via state restoration until the controller's view is in the window.
+    /// See: https://github.com/wordpress-mobile/WordPress-iOS/issues/6297
+    ///
+    func autoSyncIfAppropriate(viewWillAppear viewWillAppear: Bool) {
         guard UIApplication.sharedApplication().isRunningTestSuite() == false else {
             return
         }
 
         guard let topic = readerTopic else {
+            return
+        }
+
+        //
+        if didAutoSync || (view.window == nil && !viewWillAppear) {
             return
         }
 
@@ -1064,6 +1078,7 @@ import WordPressComAnalytics
         let lastSynced = topic.lastSynced ?? NSDate(timeIntervalSince1970: 0)
         let interval = Int( NSDate().timeIntervalSinceDate(lastSynced))
         if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
+            didAutoSync = true
             syncHelper.syncContentWithUserInteraction(false)
         }
     }
