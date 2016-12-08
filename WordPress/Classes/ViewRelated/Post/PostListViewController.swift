@@ -332,7 +332,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return
         }
 
-        editPost(post)
+        editPost(apost: post)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
@@ -391,9 +391,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
                 }
             }
         }
-        editor.modalPresentationStyle = .FullScreen
-        presentViewController(editor, animated: false, completion: nil)
-        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
+        editor.modalPresentationStyle = .fullScreen
+        present(editor, animated: false, completion: nil)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
     }
 
     private func editPost(apost: AbstractPost) {
@@ -408,9 +408,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
                 }
             }
         }
-        editor.modalPresentationStyle = .FullScreen
-        presentViewController(editor, animated: false, completion: nil)
-        WPAnalytics.track(.PostListEditAction, withProperties: propertiesForAnalytics())
+        editor.modalPresentationStyle = .fullScreen
+        present(editor, animated: false, completion: nil)
+        WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
     }
 
     override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
@@ -478,7 +478,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - InteractivePostViewDelegate
 
     func cell(_ cell: UITableViewCell, handleEdit post: AbstractPost) {
-        editPost(post)
+        editPost(apost: post)
     }
 
     func cell(_ cell: UITableViewCell, handleViewPost post: AbstractPost) {
