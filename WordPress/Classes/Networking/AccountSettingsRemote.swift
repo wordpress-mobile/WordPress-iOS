@@ -20,9 +20,9 @@ class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         if let remote = remotes.object(forKey: api) as? AccountSettingsRemote {
             return remote
         } else {
-            let remote = AccountSettingsRemote(wordPressComRestApi: api)
+            let remote = AccountSettingsRemote(wordPressComRestApi: api)!
             remotes.setObject(remote, forKey: api)
-            return remote!
+            return remote
         }
     }
 
