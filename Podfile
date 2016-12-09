@@ -63,7 +63,7 @@ abstract_target 'WordPress_Base' do
       pod 'OCMock', '3.1.2'
       pod 'Specta', '1.0.5'
       pod 'Expecta', '1.0.5'
-      pod 'Nimble', '~> 4.0.0'
+      pod 'Nimble', '~> 5.0.0'
     end
   end
 
