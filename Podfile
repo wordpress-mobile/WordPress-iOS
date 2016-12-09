@@ -35,7 +35,6 @@ abstract_target 'WordPress_Base' do
     pod 'Crashlytics'
     pod 'BuddyBuildSDK', '~> 1.0.11', :configurations => ['Release-Alpha']
     pod 'FLAnimatedImage', '~> 1.0'
-    pod 'Starscream', '~> 1.1.4' # Pinned to v1 for Swift 2.3 support
     # ----------------------------
     # Forked third party libraries
     # ----------------------------
@@ -71,6 +70,10 @@ abstract_target 'WordPress_Base' do
   target 'WordPressTodayWidget' do
   end
 
+end
+
+target 'PingHub' do
+    pod 'Starscream', '~> 1.1.4' # Pinned to v1 for Swift 2.3 support
 end
 
 post_install do |installer_representation|
