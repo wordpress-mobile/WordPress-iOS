@@ -532,6 +532,8 @@ import WordPressComAnalytics
         configureStreamHeader()
         tableView.setContentOffset(CGPointZero, animated: false)
         tableViewHandler.refreshTableView()
+        refreshTableViewHeaderLayout()
+
         syncIfAppropriate()
 
         bumpStats()
