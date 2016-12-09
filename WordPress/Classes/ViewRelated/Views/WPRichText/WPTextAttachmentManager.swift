@@ -60,12 +60,12 @@ import UIKit
         textStorage.enumerateAttribute(attributeAttachmentName,
             in: NSMakeRange(0, textStorage.length),
             options: [],
-            using: { (object: AnyObject?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
+            using: { (object: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
                 guard let attachment = object as? WPTextAttachment else {
                     return
                 }
                 self.layoutAttachmentViewForAttachment(attachment, atRange: range)
-        } as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void)
+        })
     }
 
 
@@ -109,7 +109,7 @@ import UIKit
         layoutManager.textStorage?.enumerateAttribute(attributeAttachmentName,
             in: NSMakeRange(0, textStorage.length),
             options: [],
-            using: { (object: AnyObject?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
+            using: { (object: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
                 guard let attachment = object as? WPTextAttachment else {
                     return
                 }
@@ -119,7 +119,7 @@ import UIKit
                     self.attachmentViews[attachment.identifier] = WPTextAttachmentView(view: view, identifier: attachment.identifier, exclusionPath: nil)
                     self.textView?.addSubview(view)
                 }
-        } as! (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void)
+        })
 
         layoutAttachmentViews()
     }
