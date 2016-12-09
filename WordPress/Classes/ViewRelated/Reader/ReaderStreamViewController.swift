@@ -485,7 +485,7 @@ import WordPressComAnalytics
         }
 
         header.enableLoggedInFeatures(isLoggedIn)
-        header.configureHeader(readerTopic!)
+        header.configureHeader(topic)
         header.delegate = self
 
         tableView.tableHeaderView = header as? UIView
@@ -495,11 +495,11 @@ import WordPressComAnalytics
     // Refresh the header of a site topic when returning in case the
     // topic's following status changed.
     func refreshTableHeaderIfNeeded() {
-        guard let siteTopic = readerTopic as? ReaderSiteTopic,
+        guard let topic = readerTopic as? ReaderSiteTopic,
             header = tableView.tableHeaderView as? ReaderStreamHeader else {
             return
         }
-        header.configureHeader(siteTopic)
+        header.configureHeader(topic)
     }
 
 
