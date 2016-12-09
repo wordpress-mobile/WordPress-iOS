@@ -21,7 +21,7 @@ extension NSAttributedString {
         let styledString = styles + htmlString
         let attributedString = try! NSMutableAttributedString(
             data: styledString.data(using: String.Encoding.utf8)!,
-            options: [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: String.Encoding.utf8 ],
+            options: [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: NSNumber(value: String.Encoding.utf8.rawValue) ],
             documentAttributes: nil)
 
         // We can't apply text alignment through CSS, as we need to add a paragraph
