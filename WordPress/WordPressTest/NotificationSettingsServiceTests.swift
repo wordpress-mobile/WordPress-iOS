@@ -32,12 +32,12 @@ class NotificationSettingsServiceTests: XCTestCase
         service             = NotificationSettingsService(managedObjectContext: contextManager.mainContext,
                                                            wordPressComRestApi: remoteApi)
 
-        stub({ request in
-            return request.URL?.absoluteString!.rangeOfString(self.settingsEndpoint) != nil
-                && request.HTTPMethod! == "GET"
+        stub(condition: { request in
+            return request.url?.absoluteString.range(of: self.settingsEndpoint) != nil
+                && request.httpMethod! == "GET"
             }) { _ in
-                let stubPath = OHPathForFile(self.settingsFilename, self.dynamicType)
-                return fixture(stubPath!, headers: ["Content-Type": self.contentTypeJson])
+                let stubPath = OHPathForFile(self.settingsFilename, type(of: self))
+                return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: self.contentTypeJson as AnyObject])
         }
     }
 
@@ -51,7 +51,7 @@ class NotificationSettingsServiceTests: XCTestCase
     // MARK: - Unit Tests!
     func testNotificationSettingsCorrectlyParsesThreeSiteEntities() {
 
-        let targetChannel   = NotificationSettings.Channel.Blog(blogId: 1)
+        let targetChannel   = NotificationSettings.Channel.blog(blogId: 1)
         let targetSettings  = loadNotificationSettings().filter { $0.channel == targetChannel }
         XCTAssert(targetSettings.count == 1, "Error while parsing Site Settings")
 
@@ -103,7 +103,7 @@ class NotificationSettingsServiceTests: XCTestCase
     }
 
     func testNotificationSettingsCorrectlyParsesThreeOtherEntities() {
-        let filteredSettings = loadNotificationSettings().filter { $0.channel == .Other }
+        let filteredSettings = loadNotificationSettings().filter { $0.channel == .other }
         XCTAssert(filteredSettings.count == 1, "Error while parsing Other Settings")
 
         let otherSettings = filteredSettings.first!
@@ -142,7 +142,7 @@ class NotificationSettingsServiceTests: XCTestCase
     }
 
     func testNotificationSettingsCorrectlyParsesDotcomSettings() {
-        let filteredSettings = loadNotificationSettings().filter { $0.channel == .WordPressCom }
+        let filteredSettings = loadNotificationSettings().filter { $0.channel == .wordPressCom }
         XCTAssert(filteredSettings.count == 1, "Error while parsing WordPress.com Settings")
 
         let wordPressComSettings = filteredSettings.first!
@@ -165,17 +165,17 @@ class NotificationSettingsServiceTests: XCTestCase
     // MARK: - Private Helpers
     private func loadNotificationSettings() -> [NotificationSettings] {
         var settings    : [NotificationSettings]?
-        let expectation = expectationWithDescription("Notification settings reading expecation")
+        let expect = expectation(description: "Notification settings reading expecation")
 
         service?.getAllSettings({ (theSettings: [NotificationSettings]) in
                 settings = theSettings
-                expectation.fulfill()
+                expect.fulfill()
             },
-            failure: { (error: NSError!) in
-                expectation.fulfill()
+            failure: { (error: NSError?) in
+                expect.fulfill()
             })
 
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
 
         XCTAssert(settings != nil, "Error while parsing settings")
 

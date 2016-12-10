@@ -9,7 +9,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        mediaServiceRemote = MediaServiceRemoteREST(wordPressComRestApi: mockRemoteApi, siteID: siteID)
+        mediaServiceRemote = MediaServiceRemoteREST(wordPressComRestApi: mockRemoteApi, siteID: NSNumber(value: siteID))
     }
 
     func mockRemoteMedia() -> RemoteMedia {
@@ -27,7 +27,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
         let id = 1
         let expectedPath = "v1.1/sites/\(siteID)/media/\(id)"
-        mediaServiceRemote.getMediaWithID(id, success: nil, failure: nil)
+        mediaServiceRemote.getMediaWithID(id as NSNumber!, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Wrong method, expected GET got \(mockRemoteApi.methodCalled())")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
     }
@@ -37,17 +37,17 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let id = 1
         let response = ["ID" : id]
         var remoteMedia: RemoteMedia? = nil
-        mediaServiceRemote.getMediaWithID(id, success: {
+        mediaServiceRemote.getMediaWithID(id as NSNumber!, success: {
             remoteMedia = $0
             }, failure: nil)
-        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
         XCTAssertNotNil(remoteMedia)
-        XCTAssertEqual(remoteMedia?.mediaID, id)
+        XCTAssertEqual(remoteMedia?.mediaID.intValue, id)
     }
 
     func testCreateMediaPath() {
 
-        var progress: NSProgress? = nil
+        var progress: Progress? = nil
         let expectedPath = "v1.1/sites/\(siteID)/media/new"
         let media = mockRemoteMedia()
         mediaServiceRemote.createMedia(media, progress: &progress, success: nil, failure: nil)
@@ -59,12 +59,12 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
         let response = ["media" : [["ID" : 1]]]
         let media = mockRemoteMedia()
-        var progress: NSProgress? = nil
+        var progress: Progress? = nil
         var remoteMedia: RemoteMedia? = nil
         mediaServiceRemote.createMedia(media, progress: &progress, success: {
             remoteMedia = $0
             }, failure: nil)
-        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
         XCTAssertEqual(media.mediaID, remoteMedia?.mediaID)
     }
 
@@ -72,12 +72,12 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
         let response = ["error" : ["some error"]]
         let media = mockRemoteMedia()
-        var progress: NSProgress? = nil
+        var progress: Progress? = nil
         var errorDescription = ""
         mediaServiceRemote.createMedia(media, progress: &progress, success:nil, failure: {
-            errorDescription = $0.localizedDescription
+            errorDescription = ($0?.localizedDescription)!
         })
-        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
         XCTAssertEqual(errorDescription, response["error"]![0])
     }
 
@@ -85,7 +85,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
         let media = mockRemoteMedia()
         let expectedPath = "v1.1/sites/\(siteID)/media/\(media.mediaID)"
-        mediaServiceRemote.updateMedia(media, success: nil, failure: nil)
+        mediaServiceRemote.update(media, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Wrong method, expected POST got \(mockRemoteApi.methodCalled())")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
     }
@@ -95,17 +95,17 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let response = ["ID" : 1]
         let media = mockRemoteMedia()
         var remoteMedia: RemoteMedia? = nil
-        mediaServiceRemote.updateMedia(media, success: {
+        mediaServiceRemote.update(media, success: {
             remoteMedia = $0
             }, failure: nil)
-        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
         XCTAssertEqual(media.mediaID, remoteMedia?.mediaID)
     }
 
     func testGetMediaLibraryPath() {
 
         let expectedPath = "v1.1/sites/\(siteID)/media"
-        mediaServiceRemote.getMediaLibraryWithSuccess(nil, failure: nil)
+        mediaServiceRemote.getMediaLibrary(success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Wrong method, expected GET got \(mockRemoteApi.methodCalled())")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
     }
@@ -114,12 +114,12 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
         let response = ["media" : []]
         var remoteMedias = [RemoteMedia]()
-        mediaServiceRemote.getMediaLibraryWithSuccess({
-            if let medias = $0 as? [RemoteMedia] {
+        mediaServiceRemote.getMediaLibrary(success: { (medias) in
+            if let medias = medias as? [RemoteMedia] {
                 remoteMedias = medias
             }
         }, failure: nil)
-        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
         XCTAssertTrue(remoteMedias.isEmpty)
     }
 
@@ -127,12 +127,12 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
         let response = ["media" : [["ID" : 2]]]
         var remoteMedias = [RemoteMedia]()
-        mediaServiceRemote.getMediaLibraryWithSuccess({
-            if let medias = $0 as? [RemoteMedia] {
+        mediaServiceRemote.getMediaLibrary(success: { (medias) in
+            if let medias = medias as? [RemoteMedia] {
                 remoteMedias = medias
             }
-            }, failure: nil)
-        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
+        }, failure: nil)
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
         XCTAssertEqual(remoteMedias.count, 1)
     }
 
@@ -140,19 +140,19 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
         let response = ["media" : [["ID" : 2], ["ID" : 3], ["ID" : 4]]]
         var remoteMedias = [RemoteMedia]()
-        mediaServiceRemote.getMediaLibraryWithSuccess({
-            if let medias = $0 as? [RemoteMedia] {
+        mediaServiceRemote.getMediaLibrary(success: { (medias) in
+            if let medias = medias as? [RemoteMedia] {
                 remoteMedias = medias
             }
-            }, failure: nil)
-        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
+        }, failure: nil)
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
         XCTAssertEqual(remoteMedias.count, 3)
     }
 
     func testGetMediaLibraryCountPath() {
 
         let expectedPath = "v1.1/sites/\(siteID)/media"
-        mediaServiceRemote.getMediaLibraryCountWithSuccess(nil, failure: nil)
+        mediaServiceRemote.getMediaLibraryCount(success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Wrong method, expected GET got \(mockRemoteApi.methodCalled())")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
     }
@@ -162,10 +162,10 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let expectedCount = 3
         let response = ["found" : expectedCount]
         var remoteCount = 0
-        mediaServiceRemote.getMediaLibraryCountWithSuccess({
-            remoteCount = $0
-            }, failure: nil)
-        mockRemoteApi.successBlockPassedIn?(response, NSHTTPURLResponse())
+        mediaServiceRemote.getMediaLibraryCount(success: { (count) in
+            remoteCount = count
+        }, failure: nil)
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
         XCTAssertEqual(remoteCount, expectedCount)
     }
 
@@ -184,7 +184,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let height = 321
         let width = 432
 
-        let jsonDictionary: [NSString : AnyObject] = ["ID" : id,
+        let jsonDictionary: [String : Any] = ["ID" : id,
                                                       "URL" : url,
                                                       "guid" : guid,
                                                       "date" : date,
@@ -197,18 +197,18 @@ class MediaServiceRemoteRESTTests: XCTestCase {
                                                       "height" : height,
                                                       "width" : width]
 
-        let remoteMedia = mediaServiceRemote.remoteMediaFromJSONDictionary(jsonDictionary)
-        XCTAssertEqual(remoteMedia.mediaID, id)
+        let remoteMedia = mediaServiceRemote.remoteMedia(fromJSONDictionary: jsonDictionary)
+        XCTAssertEqual(remoteMedia.mediaID.intValue, id)
         XCTAssertEqual(remoteMedia.url.absoluteString, url)
         XCTAssertEqual(remoteMedia.guid.absoluteString, guid)
         XCTAssertEqual(remoteMedia.date, NSDate.dateWithISO8601String(date))
-        XCTAssertEqual(remoteMedia.postID, postID)
+        XCTAssertEqual(remoteMedia.postID.intValue, postID)
         XCTAssertEqual(remoteMedia.file, file)
         XCTAssertEqual(remoteMedia.mimeType, mimeType)
         XCTAssertEqual(remoteMedia.title, title)
         XCTAssertEqual(remoteMedia.caption, caption)
         XCTAssertEqual(remoteMedia.descriptionText, description)
-        XCTAssertEqual(remoteMedia.height, height)
-        XCTAssertEqual(remoteMedia.width, width)
+        XCTAssertEqual(remoteMedia.height.intValue, height)
+        XCTAssertEqual(remoteMedia.width.intValue, width)
     }
 }

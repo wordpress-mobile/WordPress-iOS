@@ -8,7 +8,7 @@ class WP3DTouchShortcutCreatorTests: XCTestCase
     override func setUp() {
         super.setUp()
         testShortcutCreator = WP3DTouchShortcutCreator()
-        UIApplication.sharedApplication().shortcutItems = nil
+        UIApplication.shared.shortcutItems = nil
     }
 
     override func tearDown() {
@@ -17,13 +17,13 @@ class WP3DTouchShortcutCreatorTests: XCTestCase
     }
 
     private func is3DTouchAvailable() -> Bool {
-        let window = UIApplication.sharedApplication().keyWindow
+        let window = UIApplication.shared.keyWindow
 
-        return window?.traitCollection.forceTouchCapability == .Available
+        return window?.traitCollection.forceTouchCapability == .available
     }
 
     func testCreateShortcutLoggedOutDoesNotCreatesLoggedOutShortcutsWith3DTouchNotAvailable() {
         testShortcutCreator.createShortcutsIf3DTouchAvailable(false)
-        XCTAssertEqual(UIApplication.sharedApplication().shortcutItems!.count, is3DTouchAvailable() ? 1:0)
+        XCTAssertEqual(UIApplication.shared.shortcutItems!.count, is3DTouchAvailable() ? 1:0)
     }
 }

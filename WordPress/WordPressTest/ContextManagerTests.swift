@@ -26,32 +26,32 @@ class ContextManagerTests: XCTestCase {
         let model19Name = "WordPress 19"
 
         // Instantiate a Model 19 Stack
-        startupCoredataStack(model19Name)
+        startupCoredataStack(modelName: model19Name)
 
         let mocOriginal = contextManager.mainContext
         let psc = contextManager.persistentStoreCoordinator
 
         // Insert a Theme Entity
-        let objectOriginal = NSEntityDescription.insertNewObjectForEntityForName("Theme", inManagedObjectContext: mocOriginal)
-        try! mocOriginal.obtainPermanentIDsForObjects([objectOriginal])
-        try! mocOriginal.save()
+        let objectOriginal = NSEntityDescription.insertNewObject(forEntityName: "Theme", into: mocOriginal!)
+        try! mocOriginal?.obtainPermanentIDs(for: [objectOriginal])
+        try! mocOriginal?.save()
 
         let objectID = objectOriginal.objectID
-        XCTAssertFalse(objectID.temporaryID, "Should be a permanent object")
+        XCTAssertFalse(objectID.isTemporaryID, "Should be a permanent object")
 
         // Migrate to the latest
-        let persistentStore = psc.persistentStores.first!
-        try! psc.removePersistentStore(persistentStore)
+        let persistentStore = psc?.persistentStores.first!
+        try! psc?.remove(persistentStore!)
 
         let standardPSC = contextManager.standardPSC
 
         XCTAssertNotNil(standardPSC, "New store should exist")
-        XCTAssertTrue(standardPSC.persistentStores.count == 1, "Should be one persistent store.")
+        XCTAssertTrue(standardPSC?.persistentStores.count == 1, "Should be one persistent store.")
 
         // Verify if the Theme Entity is there
-        let mocSecond = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
+        let mocSecond = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
         mocSecond.persistentStoreCoordinator = standardPSC
-        let object = try! mocSecond.existingObjectWithID(objectID)
+        let object = try! mocSecond.existingObject(with: objectID)
 
         XCTAssertNotNil(object, "Object should exist in new PSC")
     }
@@ -61,50 +61,50 @@ class ContextManagerTests: XCTestCase {
         let model21Name = "WordPress 21"
 
         // Instantiate a Model 20 Stack
-        startupCoredataStack(model20Name)
+        startupCoredataStack(modelName: model20Name)
 
         let mainContext = contextManager.mainContext
         _ = contextManager.persistentStoreCoordinator
 
         // Insert a WordPress.com account with a Jetpack blog
-        let wrongAccount = newAccountInContext(mainContext)
-        let wrongBlog = newBlogInAccount(wrongAccount)
+        let wrongAccount = newAccountInContext(context: mainContext!)
+        let wrongBlog = newBlogInAccount(account: wrongAccount)
         wrongAccount.addJetpackBlogsObject(wrongBlog)
 
         // Insert a WordPress.com account with a Dotcom blog
-        let rightAccount = newAccountInContext(mainContext)
-        let rightBlog = newBlogInAccount(rightAccount)
+        let rightAccount = newAccountInContext(context: mainContext!)
+        let rightBlog = newBlogInAccount(account: rightAccount)
         rightAccount.addBlogsObject(rightBlog)
         rightAccount.username = "Right"
 
         // Insert an offsite WordPress account
-        let offsiteAccount = newAccountInContext(mainContext)
+        let offsiteAccount = newAccountInContext(context: mainContext!)
         offsiteAccount.setValue(false, forKey: "isWpcom")
 
-        try! mainContext.obtainPermanentIDsForObjects([wrongAccount, rightAccount, offsiteAccount])
-        try! mainContext.save()
+        try! mainContext?.obtainPermanentIDs(for: [wrongAccount, rightAccount, offsiteAccount])
+        try! mainContext?.save()
 
         // Set the DefaultDotCom
-        let oldRightAccountURL = rightAccount.objectID.URIRepresentation()
-        NSUserDefaults.standardUserDefaults().setURL(oldRightAccountURL, forKey: "AccountDefaultDotcom")
-        NSUserDefaults.standardUserDefaults().synchronize()
+        let oldRightAccountURL = rightAccount.objectID.uriRepresentation()
+        UserDefaults.standard.set(oldRightAccountURL, forKey: "AccountDefaultDotcom")
+        UserDefaults.standard.synchronize()
 
         // Initialize 20 > 21 Migration
-        let secondContext = performCoredataMigration(model21Name)
+        let secondContext = performCoredataMigration(newModelName: model21Name)
 
         // Verify that the three accounts made it through
-        let allAccountsRequest = NSFetchRequest(entityName: "Account")
-        let numberOfAccounts = try! secondContext.countForFetchRequest(allAccountsRequest)
+        let allAccountsRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
+        let numberOfAccounts = try! secondContext.count(for: allAccountsRequest)
         XCTAssertTrue(numberOfAccounts == 3, "Should have three accounts")
 
         // Verify if the Default Account is the right one
-        let newRightAccountURL = NSUserDefaults.standardUserDefaults().URLForKey("AccountDefaultDotcom")
+        let newRightAccountURL = UserDefaults.standard.url(forKey: "AccountDefaultDotcom")
         XCTAssert(newRightAccountURL != nil, "Default Account's URL is missing")
 
-        let objectID = secondContext.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(newRightAccountURL!)
+        let objectID = secondContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: newRightAccountURL!)
         XCTAssert(objectID != nil, "Invalid newRightAccount URL")
 
-        let reloadedRightAccount = try! secondContext.existingObjectWithID(objectID!) as? WPAccount
+        let reloadedRightAccount = try! secondContext.existingObject(with: objectID!) as? WPAccount
         XCTAssert(reloadedRightAccount != nil, "Couldn't load the right default account")
         XCTAssert(reloadedRightAccount!.username! == "Right", "Invalid default account")
     }
@@ -114,41 +114,41 @@ class ContextManagerTests: XCTestCase {
         let model23Name = "WordPress 23"
 
         // Instantiate a Model 21 Stack
-        startupCoredataStack(model21Name)
+        startupCoredataStack(modelName: model21Name)
 
         let mainContext = contextManager.mainContext
         _ = contextManager.persistentStoreCoordinator
 
         // Insert a WPAccount entity
-        let dotcomAccount = newAccountInContext(mainContext)
-        let offsiteAccount = newAccountInContext(mainContext)
+        let dotcomAccount = newAccountInContext(context: mainContext!)
+        let offsiteAccount = newAccountInContext(context: mainContext!)
         offsiteAccount.setValue(false, forKey: "isWpcom")
         offsiteAccount.username = "OffsiteUsername"
 
-        try! mainContext.obtainPermanentIDsForObjects([dotcomAccount, offsiteAccount])
-        try! mainContext.save()
+        try! mainContext?.obtainPermanentIDs(for: [dotcomAccount, offsiteAccount])
+        try! mainContext?.save()
 
         // Set the DefaultDotCom
-        let dotcomAccountURL = dotcomAccount.objectID.URIRepresentation()
-        NSUserDefaults.standardUserDefaults().setURL(dotcomAccountURL, forKey: "AccountDefaultDotcom")
-        NSUserDefaults.standardUserDefaults().synchronize()
+        let dotcomAccountURL = dotcomAccount.objectID.uriRepresentation()
+        UserDefaults.standard.set(dotcomAccountURL, forKey: "AccountDefaultDotcom")
+        UserDefaults.standard.synchronize()
 
         // Initialize 21 > 23 Migration
-        let secondContext = performCoredataMigration(model23Name)
+        let secondContext = performCoredataMigration(newModelName: model23Name)
 
         // Verify that the two accounts have been migrated
-        let fetchRequest = NSFetchRequest(entityName: "Account")
-        let numberOfAccounts = try! secondContext.countForFetchRequest(fetchRequest)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
+        let numberOfAccounts = try! secondContext.count(for: fetchRequest)
         XCTAssertTrue(numberOfAccounts == 2, "Should have two account")
 
         // Verify if the Default Account is the right one
-        let defaultAccountUUID = NSUserDefaults.standardUserDefaults().stringForKey("AccountDefaultDotcomUUID")
+        let defaultAccountUUID = UserDefaults.standard.string(forKey: "AccountDefaultDotcomUUID")
         XCTAssert(defaultAccountUUID != nil, "Missing UUID")
 
-        let request = NSFetchRequest(entityName: "Account")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
         request.predicate = NSPredicate(format: "uuid == %@", defaultAccountUUID!)
 
-        let results = try! secondContext.executeFetchRequest(request) as? [WPAccount]
+        let results = try! secondContext.fetch(request) as? [WPAccount]
         XCTAssert(results!.count == 1, "Default account not found")
 
         let defaultAccount = results!.first!
@@ -160,50 +160,50 @@ class ContextManagerTests: XCTestCase {
         let model23Name = "WordPress 23"
 
         // Instantiate a Model 21 Stack
-        startupCoredataStack(model21Name)
+        startupCoredataStack(modelName: model21Name)
 
         let mainContext = contextManager.mainContext
         _ = contextManager.persistentStoreCoordinator
 
         // Insert a WordPress.com account with a Jetpack blog
-        let wrongAccount = newAccountInContext(mainContext)
-        let wrongBlog = newBlogInAccount(wrongAccount)
+        let wrongAccount = newAccountInContext(context: mainContext!)
+        let wrongBlog = newBlogInAccount(account: wrongAccount)
         wrongAccount.addJetpackBlogsObject(wrongBlog)
 
         // Insert a WordPress.com account with a Dotcom blog
-        let rightAccount = newAccountInContext(mainContext)
-        let rightBlog = newBlogInAccount(rightAccount)
+        let rightAccount = newAccountInContext(context: mainContext!)
+        let rightBlog = newBlogInAccount(account: rightAccount)
         rightAccount.addBlogsObject(rightBlog)
         rightAccount.username = "Right"
 
         // Insert an offsite WordPress account
-        let offsiteAccount = newAccountInContext(mainContext)
+        let offsiteAccount = newAccountInContext(context: mainContext!)
         offsiteAccount.setValue(false, forKey: "isWpcom")
 
-        try! mainContext.obtainPermanentIDsForObjects([wrongAccount, rightAccount, offsiteAccount])
-        try! mainContext.save()
+        try! mainContext?.obtainPermanentIDs(for: [wrongAccount, rightAccount, offsiteAccount])
+        try! mainContext?.save()
 
         // Set the DefaultDotCom
-        let offsiteAccountURL = offsiteAccount.objectID.URIRepresentation()
-        NSUserDefaults.standardUserDefaults().setURL(offsiteAccountURL, forKey: "AccountDefaultDotcom")
-        NSUserDefaults.standardUserDefaults().synchronize()
+        let offsiteAccountURL = offsiteAccount.objectID.uriRepresentation()
+        UserDefaults.standard.set(offsiteAccountURL, forKey: "AccountDefaultDotcom")
+        UserDefaults.standard.synchronize()
 
         // Initialize 21 > 23 Migration
-        let secondContext = performCoredataMigration(model23Name)
+        let secondContext = performCoredataMigration(newModelName: model23Name)
 
         // Verify that the three accounts made it through
-        let allAccountsRequest = NSFetchRequest(entityName: "Account")
-        let numberOfAccounts = try! secondContext.countForFetchRequest(allAccountsRequest)
+        let allAccountsRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
+        let numberOfAccounts = try! secondContext.count(for: allAccountsRequest)
         XCTAssertTrue(numberOfAccounts == 3, "Should have three accounts")
 
         // Verify if the Default Account is the right one
-        let accountUUID = NSUserDefaults.standardUserDefaults().stringForKey("AccountDefaultDotcomUUID")
+        let accountUUID = UserDefaults.standard.string(forKey: "AccountDefaultDotcomUUID")
         XCTAssert(accountUUID != nil, "Default Account's UUID is missing")
 
-        let request = NSFetchRequest(entityName: "Account")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
         request.predicate = NSPredicate(format: "uuid == %@", accountUUID!)
 
-        let results = try! secondContext.executeFetchRequest(request) as? [WPAccount]
+        let results = try! secondContext.fetch(request) as? [WPAccount]
         XCTAssert(results != nil, "Default Account has been lost")
         XCTAssert(results?.count == 1, "UUID is not unique!")
 
@@ -216,31 +216,31 @@ class ContextManagerTests: XCTestCase {
         let model25Name = "WordPress 25"
 
         // Instantiate a Model 24 Stack
-        startupCoredataStack(model24Name)
+        startupCoredataStack(modelName: model24Name)
 
         let mainContext = contextManager.mainContext
         _ = contextManager.persistentStoreCoordinator
 
-        let account = newAccountInContext(mainContext)
-        let blog = newBlogInAccount(account)
+        let account = newAccountInContext(context: mainContext!)
+        let blog = newBlogInAccount(account: account)
 
         let authorAvatarURL = "http://lorempixum.com/"
 
-        let post = NSEntityDescription.insertNewObjectForEntityForName("Post", inManagedObjectContext: mainContext) as! Post
+        let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: mainContext!) as! Post
         post.blog = blog
         post.authorAvatarURL = authorAvatarURL
 
-        let readerPost = NSEntityDescription.insertNewObjectForEntityForName("ReaderPost", inManagedObjectContext: mainContext) as! ReaderPost
+        let readerPost = NSEntityDescription.insertNewObject(forEntityName: "ReaderPost", into: mainContext!) as! ReaderPost
         readerPost.authorAvatarURL = authorAvatarURL
 
-        try! mainContext.save()
+        try! mainContext?.save()
 
         // Initialize 24 > 25 Migration
-        let secondContext = performCoredataMigration(model25Name)
+        let secondContext = performCoredataMigration(newModelName: model25Name)
 
         // Test the existence of Post object after migration
-        let allPostsRequest = NSFetchRequest(entityName: "Post")
-        let postsResults = try! secondContext.executeFetchRequest(allPostsRequest)
+        let allPostsRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Post")
+        let postsResults = try! secondContext.fetch(allPostsRequest)
         XCTAssertEqual(1, postsResults.count, "We should get one Post")
 
         // Test authorAvatarURL integrity after migration
@@ -248,8 +248,8 @@ class ContextManagerTests: XCTestCase {
         XCTAssertEqual(existingPost.authorAvatarURL, authorAvatarURL)
 
         // Test the existence of ReaderPost object after migration
-        let allReaderPostsRequest = NSFetchRequest(entityName: "ReaderPost")
-        let readerPostsResults = try! secondContext.executeFetchRequest(allReaderPostsRequest)
+        let allReaderPostsRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderPost")
+        let readerPostsResults = try! secondContext.fetch(allReaderPostsRequest)
         XCTAssertEqual(1, readerPostsResults.count, "We should get one ReaderPost")
 
         // Test authorAvatarURL integrity after migration
@@ -257,9 +257,9 @@ class ContextManagerTests: XCTestCase {
         XCTAssertEqual(existingReaderPost.authorAvatarURL, authorAvatarURL)
 
         // Test for existence of authorAvatarURL in the model
-        let secondAccount = newAccountInContext(secondContext)
-        let secondBlog = newBlogInAccount(secondAccount)
-        let page = NSEntityDescription.insertNewObjectForEntityForName(String(Page), inManagedObjectContext: secondContext) as! Page
+        let secondAccount = newAccountInContext(context: secondContext)
+        let secondBlog = newBlogInAccount(account: secondAccount)
+        let page = NSEntityDescription.insertNewObject(forEntityName: String(describing: Page.self), into: secondContext) as! Page
         page.blog = secondBlog
         page.authorAvatarURL = authorAvatarURL
 
@@ -273,19 +273,19 @@ class ContextManagerTests: XCTestCase {
     // MARK: - Helper Methods
 
     private func startupCoredataStack(modelName: String) {
-        let modelURL = urlForModelName(modelName)
-        let model = NSManagedObjectModel(contentsOfURL: modelURL!)
+        let modelURL = urlForModelName(name: modelName as NSString!)
+        let model = NSManagedObjectModel(contentsOf: modelURL! as URL)
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model!)
 
-        let storeUrl = contextManager.storeURL
-        removeStoresBasedOnStoreURL(storeUrl)
+        let storeUrl = contextManager.storeURL as NSURL
+        removeStoresBasedOnStoreURL(storeURL: storeUrl)
         do {
-            _ = try persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeUrl, options: nil)
+            _ = try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeUrl as URL, options: nil)
         } catch let error as NSError {
             XCTAssertNil(error, "Store should exist")
         }
 
-        let mainContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
+        let mainContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
         mainContext.persistentStoreCoordinator = persistentStoreCoordinator
 
         contextManager.managedObjectModel = model
@@ -297,33 +297,33 @@ class ContextManagerTests: XCTestCase {
         let psc = contextManager.persistentStoreCoordinator
         _ = contextManager.mainContext
 
-        let persistentStore = psc.persistentStores.first!
-        try! psc.removePersistentStore(persistentStore)
+        let persistentStore = psc?.persistentStores.first!
+        try! psc?.remove(persistentStore!)
 
-        let newModelURL = urlForModelName(newModelName)
-        contextManager.managedObjectModel = NSManagedObjectModel(contentsOfURL: newModelURL!)
+        let newModelURL = urlForModelName(name: newModelName as NSString!)
+        contextManager.managedObjectModel = NSManagedObjectModel(contentsOf: newModelURL! as URL)
         let standardPSC = contextManager.standardPSC
 
         XCTAssertNotNil(standardPSC, "New store should exist")
-        XCTAssertTrue(standardPSC.persistentStores.count == 1, "Should be one persistent store.")
+        XCTAssertTrue(standardPSC?.persistentStores.count == 1, "Should be one persistent store.")
 
-        let secondContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
+        let secondContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
         secondContext.persistentStoreCoordinator = standardPSC
         return secondContext
     }
 
     private func urlForModelName(name: NSString!) -> NSURL? {
-        let bundle = NSBundle.mainBundle()
-        var url = bundle.URLForResource(name as String, withExtension: "mom")
+        let bundle = Bundle.main
+        var url = bundle.url(forResource: name as String, withExtension: "mom")
 
         if url == nil {
-            let momdPaths = bundle.URLsForResourcesWithExtension("momd", subdirectory: nil)!
+            let momdPaths = bundle.urls(forResourcesWithExtension: "momd", subdirectory: nil)!
             for momdPath in momdPaths {
-                url = bundle.URLForResource(name as String, withExtension: "mom", subdirectory: momdPath.lastPathComponent)
+                url = bundle.url(forResource: name as String, withExtension: "mom", subdirectory: momdPath.lastPathComponent)
             }
         }
 
-        return url
+        return url as NSURL?
     }
 
     private func removeStoresBasedOnStoreURL(storeURL: NSURL) {
@@ -331,19 +331,19 @@ class ContextManagerTests: XCTestCase {
             return
         }
 
-        let fileManager = NSFileManager.defaultManager()
-        let directoryUrl = storeURL.URLByDeletingLastPathComponent
-        let files = try! fileManager.contentsOfDirectoryAtURL(directoryUrl!, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants)
+        let fileManager = FileManager.default
+        let directoryUrl = storeURL.deletingLastPathComponent
+        let files = try! fileManager.contentsOfDirectory(at: directoryUrl!, includingPropertiesForKeys: nil, options: FileManager.DirectoryEnumerationOptions.skipsSubdirectoryDescendants)
         for file in files {
-            let range = file.lastPathComponent?.rangeOfString(storeURL.lastPathComponent!)
-            if range?.startIndex != range?.endIndex {
-                try! fileManager.removeItemAtURL(file)
+            let range = file.lastPathComponent.range(of: storeURL.lastPathComponent!)
+            if range?.lowerBound != range?.upperBound {
+                try! fileManager.removeItem(at: file)
             }
         }
     }
 
     private func newAccountInContext(context: NSManagedObjectContext) -> WPAccount {
-        let account = NSEntityDescription.insertNewObjectForEntityForName("Account", inManagedObjectContext: context) as! WPAccount
+        let account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: context) as! WPAccount
         account.username = "username"
         account.setValue(true, forKey: "isWpcom")
         account.authToken = "authtoken"
@@ -352,7 +352,7 @@ class ContextManagerTests: XCTestCase {
     }
 
     private func newBlogInAccount(account: WPAccount) -> Blog {
-        let blog = NSEntityDescription.insertNewObjectForEntityForName("Blog", inManagedObjectContext: account.managedObjectContext!) as! Blog
+        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: account.managedObjectContext!) as! Blog
         blog.xmlrpc = "http://test.blog/xmlrpc.php"
         blog.url = "http://test.blog/"
         blog.account = account

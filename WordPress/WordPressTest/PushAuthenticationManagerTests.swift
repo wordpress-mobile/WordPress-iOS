@@ -13,7 +13,7 @@ class PushAuthenticationManagerTests: XCTestCase {
         var tapBlockPassedIn:UIAlertControllerCompletionBlock?
         var showWithTitleCalled = false
 
-        override func showWithTitle(title: String!, message: String!, cancelButtonTitle: String!, otherButtonTitles: [AnyObject]!, tapBlock: UIAlertControllerCompletionBlock!) -> UIAlertController! {
+        override func show(withTitle title: String, message: String, cancelButtonTitle: String, otherButtonTitles: [AnyObject], tap tapBlock: UIAlertControllerCompletionBlock) -> UIAlertController! {
             showWithTitleCalled = true
             titlePassedIn = title
             messagePassedIn = message
@@ -31,7 +31,7 @@ class PushAuthenticationManagerTests: XCTestCase {
         var authorizedLoginCalled = false
         var numberOfTimesAuthorizedLoginCalled = 0
 
-        override func authorizeLogin(token: String, completion: ((Bool) -> ())) {
+        override func authorizeLogin(_ token: String, completion: @escaping ((Bool) -> ())) {
             authorizedLoginCalled = true
             numberOfTimesAuthorizedLoginCalled += 1
             tokenPassedIn = token
@@ -67,7 +67,7 @@ class PushAuthenticationManagerTests: XCTestCase {
     }
 
     func expiredPushNotificationDictionary() -> NSDictionary {
-       return ["expires": NSTimeInterval(3)]
+       return ["expires": TimeInterval(3)]
     }
 
     func validPushAuthenticationDictionary() -> NSMutableDictionary {
@@ -89,7 +89,7 @@ class PushAuthenticationManagerTests: XCTestCase {
 
     func testHandlePushAuthenticationNotificationWithBlankTokenDoesNotShowLoginVerificationAlert(){
         let pushNotificationDictionary = validPushAuthenticationDictionary()
-        pushNotificationDictionary.removeObjectForKey("push_auth_token")
+        pushNotificationDictionary.removeObject(forKey: "push_auth_token")
 
         pushAuthenticationManager!.handlePushAuthenticationNotification(pushNotificationDictionary)
 

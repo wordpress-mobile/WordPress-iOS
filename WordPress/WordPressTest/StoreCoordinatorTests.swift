@@ -81,13 +81,13 @@ class StoreCoordinatorTests: XCTestCase {
 
     // MARK: - Helpers
 
-    private func availabilityWith(plan plan: Plan, active: Plan, paymentsEnabled: Bool, pendingState: PendingState) -> PurchaseAvailability {
+    private func availabilityWith(plan: Plan, active: Plan, paymentsEnabled: Bool, pendingState: PendingState) -> PurchaseAvailability {
         let pendingPayment = pending(plan: plan, productID: testProduct, siteID: testSite, state: pendingState)
         let coordinator = storeCoordinator(paymentsEnabled: paymentsEnabled, pending: pendingPayment)
         return coordinator.purchaseAvailability(forPlan: plan, siteID: testSite, activePlan: active)
     }
 
-    private func storeCoordinator(paymentsEnabled paymentsEnabled: Bool, pending: PendingPayment?) -> StoreCoordinator<MockStore> {
+    private func storeCoordinator(paymentsEnabled: Bool, pending: PendingPayment?) -> StoreCoordinator<MockStore> {
         var store = MockStore.succeeding()
         store.canMakePayments = paymentsEnabled
 
@@ -101,13 +101,13 @@ class StoreCoordinatorTests: XCTestCase {
         return coordinator
     }
 
-    private func pending(plan plan: Plan, productID: String, siteID: Int, state: PendingState) -> PendingPayment? {
+    private func pending(plan: Plan, productID: String, siteID: Int, state: PendingState) -> PendingPayment? {
         switch state {
         case .none: return nil
         case .sameSitePlan: return (productID, siteID)
-        case .sameSite: return (otherPlan(plan).productIdentifier!, siteID)
+        case .sameSite: return (otherPlan(plan: plan).productIdentifier!, siteID)
         case .samePlan: return (productID, otherSite)
-        case .differentSitePlan: return (otherPlan(plan).productIdentifier!, otherSite)
+        case .differentSitePlan: return (otherPlan(plan: plan).productIdentifier!, otherSite)
         }
     }
 
