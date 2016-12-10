@@ -25,11 +25,11 @@ class PlanListViewControllerTest: XCTestCase {
     // MARK: - PlanListViewModel tests
 
     func testPlanImageWhenActivePlanSet() {
-        let model = PlanListViewModel.Ready((siteID: 123, activePlan: TestPlans.premium.plan, availablePlans: plansWithPrices))
+        let model = PlanListViewModel.ready((siteID: 123, activePlan: TestPlans.premium.plan, availablePlans: plansWithPrices))
         let tableViewModel = model.tableViewModelWithPresenter(nil, planService: nil)
-        let freeRow = tableViewModel.planRowAtIndex(0)
-        let premiumRow = tableViewModel.planRowAtIndex(1)
-        let businessRow = tableViewModel.planRowAtIndex(2)
+        let freeRow = tableViewModel.planRowAtIndex(index: 0)
+        let premiumRow = tableViewModel.planRowAtIndex(index: 1)
+        let businessRow = tableViewModel.planRowAtIndex(index: 2)
 
         expect(freeRow.iconUrl).to(equal(TestPlans.free.plan.iconUrl))
         expect(premiumRow.iconUrl).to(equal(TestPlans.premium.plan.activeIconUrl))
@@ -44,7 +44,8 @@ class PlanListViewControllerTest: XCTestCase {
 }
 
 extension ImmuTable {
-    private func planRowAtIndex(index: Int) -> PlanListRow {
-        return rowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as! PlanListRow
+
+    fileprivate func planRowAtIndex(index: Int) -> PlanListRow {
+        return rowAtIndexPath(IndexPath(row: index, section: 0)) as! PlanListRow
     }
 }

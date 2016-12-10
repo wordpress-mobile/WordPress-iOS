@@ -14,11 +14,11 @@ class MediaSettingsTests: XCTestCase {
         let dimension = 1200
         let size = CGSize(width: dimension, height: dimension)
         let database = EphemeralKeyValueDatabase()
-        database.setObject(NSStringFromCGSize(size), forKey: "SavedMaxImageSizeSetting")
+        database.set(NSStringFromCGSize(size), forKey: "SavedMaxImageSizeSetting")
 
         let settings = MediaSettings(database: database)
         expect(settings.maxImageSizeSetting).to(equal(dimension))
-        let storedValue = database.objectForKey("SavedMaxImageSizeSetting") as? Int
+        let storedValue = database.object(forKey: "SavedMaxImageSizeSetting") as? Int
         expect(storedValue).to(equal(dimension))
     }
 
