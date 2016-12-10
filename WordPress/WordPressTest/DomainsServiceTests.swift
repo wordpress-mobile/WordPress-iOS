@@ -32,32 +32,33 @@ class DomainsServiceTests : XCTestCase
     }
 
     private func stubDomainsResponseWithFile(filename: String) {
-        stub({ request in
-            return request.URL!.absoluteString!.containsString(self.domainsEndpoint) && request.HTTPMethod! == "GET"
+        stub(condition: { request in
+            return (request.url!.absoluteString as NSString).contains(self.domainsEndpoint) && request.httpMethod! == "GET"
         }) { _ in
-            let stubPath = OHPathForFile(filename, self.dynamicType)
-            return fixture(stubPath!, headers: ["Content-Type": self.contentTypeJson])
+            let stubPath = OHPathForFile(filename, type(of: self))
+            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: self.contentTypeJson as AnyObject])
         }
     }
 
     private func makeTestBlog() -> Blog {
         let accountService = AccountService(managedObjectContext: context)
         let blogService = BlogService(managedObjectContext: context)
-        let account = accountService.createOrUpdateAccountWithUsername("user", authToken: "token")
-        let blog = blogService.createBlogWithAccount(account)
-        blog.xmlrpc = "http://dotcom1.wordpress.com/xmlrpc.php"
-        blog.url = "http://dotcom1.wordpress.com/"
-        blog.dotComID = testSiteID
+        let account = accountService?.createOrUpdateAccount(withUsername: "user", authToken: "token")
+        let blog = blogService?.createBlog(with: account!)
+        blog?.xmlrpc = "http://dotcom1.wordpress.com/xmlrpc.php"
+        blog?.url = "http://dotcom1.wordpress.com/"
+        blog?.dotComID = testSiteID as NSNumber?
 
-        return blog
+        return blog!
     }
 
+
     private func findAllDomains() -> [ManagedDomain] {
-        let fetch = NSFetchRequest(entityName: ManagedDomain.entityName)
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName)
         fetch.sortDescriptors = [ NSSortDescriptor(key: ManagedDomain.Attributes.domainName, ascending: true) ]
         fetch.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, testBlog)
 
-        if let domains = (try? context.executeFetchRequest(fetch)) as? [ManagedDomain] {
+        if let domains = (try? context.fetch(fetch)) as? [ManagedDomain] {
             return domains
         } else {
             XCTFail()
@@ -66,20 +67,20 @@ class DomainsServiceTests : XCTestCase
     }
 
     private func fetchDomains() {
-        let expectation = expectationWithDescription("Domains fetch complete expectation")
+        let expect = expectation(description: "Domains fetch complete expectation")
         let service = DomainsService(managedObjectContext: context, remote: remote)
         service.refreshDomainsForSite(Int(testBlog.dotComID!), completion: { success in
-            expectation.fulfill()
+            expect.fulfill()
         })
 
-        waitForExpectationsWithTimeout(0.2, handler: nil)
+        waitForExpectations(timeout: 0.2, handler: nil)
     }
 
     func testDomainServiceHandlesTwoNewDomains() {
         let domains = findAllDomains()
         XCTAssert(domains.count == 0, "Expecting no domains initially")
 
-        stubDomainsResponseWithFile("domain-service-valid-domains.json")
+        stubDomainsResponseWithFile(filename: "domain-service-valid-domains.json")
         fetchDomains()
 
         let updatedDomains = findAllDomains()
@@ -87,7 +88,7 @@ class DomainsServiceTests : XCTestCase
     }
 
     func testDomainServiceParsesPrimaryDomain() {
-        stubDomainsResponseWithFile("domain-service-valid-domains.json")
+        stubDomainsResponseWithFile(filename: "domain-service-valid-domains.json")
         fetchDomains()
 
         let updatedDomains = findAllDomains()
@@ -97,52 +98,52 @@ class DomainsServiceTests : XCTestCase
     }
 
     func testDomainServiceParsesAllDomainTypes() {
-        stubDomainsResponseWithFile("domain-service-all-domain-types.json")
+        stubDomainsResponseWithFile(filename: "domain-service-all-domain-types.json")
         fetchDomains()
 
         let updatedDomains = findAllDomains()
 
         // Domains are sorted by domain name, so we know what order to
         // expect the different types from the stub data
-        XCTAssert(updatedDomains[0].domainType == .Registered, "Expecting domain #1 to be of type Registered")
-        XCTAssert(updatedDomains[1].domainType == .WPCom, "Expecting domain #2 to be of type WPCom")
-        XCTAssert(updatedDomains[2].domainType == .SiteRedirect, "Expecting domain #3 to be of type SiteRedirect")
-        XCTAssert(updatedDomains[3].domainType == .Mapped, "Expecting domain #4 to be of type Mapped")
+        XCTAssert(updatedDomains[0].domainType == .registered, "Expecting domain #1 to be of type Registered")
+        XCTAssert(updatedDomains[1].domainType == .wpCom, "Expecting domain #2 to be of type WPCom")
+        XCTAssert(updatedDomains[2].domainType == .siteRedirect, "Expecting domain #3 to be of type SiteRedirect")
+        XCTAssert(updatedDomains[3].domainType == .mapped, "Expecting domain #4 to be of type Mapped")
 
         XCTAssert(updatedDomains[0].isPrimary == true, "Expecting domain #1 to be the primary domain")
         XCTAssert(updatedDomains[1].isPrimary == false, "Expecting domain #2 to not be the primary domain")
     }
 
     func testDomainServiceUpdatesExistingDomains() {
-        let existingDomain = NSEntityDescription.insertNewObjectForEntityForName(ManagedDomain.entityName, inManagedObjectContext: context) as! ManagedDomain
+        let existingDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName, into: context) as! ManagedDomain
         existingDomain.domainName = "example.com"
         existingDomain.isPrimary = false
-        existingDomain.domainType = .WPCom
+        existingDomain.domainType = .wpCom
         existingDomain.blog = testBlog
         try! context.save()
 
         let domains = findAllDomains()
         XCTAssert(domains.count == 1, "Expecting 1 domain initially")
 
-        stubDomainsResponseWithFile("domain-service-valid-domains.json")
+        stubDomainsResponseWithFile(filename: "domain-service-valid-domains.json")
         fetchDomains()
 
         let updatedDomains = findAllDomains()
 
         XCTAssert(updatedDomains.count == 2, "Expecting 2 domains to be parsed")
-        XCTAssert(updatedDomains[0].domainType == .Registered, "Expecting domain #1 to be of type Registered")
+        XCTAssert(updatedDomains[0].domainType == .registered, "Expecting domain #1 to be of type Registered")
         XCTAssert(updatedDomains[0].domainName == "example.com", "Expecting domain #1 to be 'example.com")
         XCTAssert(updatedDomains[0].isPrimary == true, "Expecting domain #1 to be the primary domain")
     }
 
     func testDomainServiceRemovesOldDomains() {
-        stubDomainsResponseWithFile("domain-service-all-domain-types.json")
+        stubDomainsResponseWithFile(filename: "domain-service-all-domain-types.json")
         fetchDomains()
 
         let domains = findAllDomains()
         XCTAssert(domains.count == 4, "Expecting 4 domains initially")
 
-        stubDomainsResponseWithFile("domain-service-valid-domains.json")
+        stubDomainsResponseWithFile(filename: "domain-service-valid-domains.json")
         fetchDomains()
 
         let updatedDomains = findAllDomains()

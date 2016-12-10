@@ -31,14 +31,14 @@ class CoreDataHelperTests: XCTestCase
     /// Verifies that allObjects returns all of the entities of the specialized kind.
     ///
     func testAllObjectsReturnsAllOfTheAvailableEntitiesSortedByValue() {
-        insertDummyEntities(100)
+        insertDummyEntities(count: 100)
 
 
         let descriptor = NSSortDescriptor(key: "value", ascending: true)
         let all = helper.allObjects(sortedBy: [descriptor])
         XCTAssert(all.count == 100)
 
-        for (index, object) in all.enumerate() {
+        for (index, object) in all.enumerated() {
             XCTAssert(object.value == index)
         }
     }
@@ -47,7 +47,7 @@ class CoreDataHelperTests: XCTestCase
     /// predicate.
     ///
     func testAllObjectsMatchingPredicateEffectivelyFiltersEntities() {
-        insertDummyEntities(100)
+        insertDummyEntities(count: 100)
 
         let minValue = 50
         let maxValue = 59
@@ -57,7 +57,7 @@ class CoreDataHelperTests: XCTestCase
         let filtered = helper.allObjects(matchingPredicate: predicate, sortedBy: [descriptor])
         XCTAssert(filtered.count == 10)
 
-        for (index, object) in filtered.enumerate() {
+        for (index, object) in filtered.enumerated() {
             XCTAssert(object.value == minValue + index)
         }
     }
@@ -66,7 +66,7 @@ class CoreDataHelperTests: XCTestCase
     ///
     func testCountObjectsReturnsTheRightEntityCount() {
         let expected = 80
-        insertDummyEntities(expected)
+        insertDummyEntities(count: expected)
 
         let count = helper.countObjects()
         XCTAssert(count == expected)
@@ -77,7 +77,7 @@ class CoreDataHelperTests: XCTestCase
     func testCountObjectsReturnsTheRightEntityCountMatchingTheSpecifiedPredicate() {
         let inserted = 42
         let expected = 3
-        insertDummyEntities(inserted)
+        insertDummyEntities(count: inserted)
 
         let predicate = NSPredicate(format: "value BETWEEN %@", [5, 7])
         let retrieved = helper.countObjects(matchingPredicate: predicate)
@@ -89,7 +89,7 @@ class CoreDataHelperTests: XCTestCase
     func testDeleteObjectEffectivelyNukesTheObjectFromContext() {
         let count = 30
 
-        insertDummyEntities(count)
+        insertDummyEntities(count: count)
         XCTAssert(helper.countObjects() == count)
 
         let all = helper.allObjects()
@@ -103,7 +103,7 @@ class CoreDataHelperTests: XCTestCase
     func testDeleteAllObjectsEffectivelyNukesAllOfTheEntities() {
         let count = 50
 
-        insertDummyEntities(count)
+        insertDummyEntities(count: count)
 
         XCTAssert(helper.countObjects() == count)
         helper.deleteAllObjects()
@@ -117,7 +117,7 @@ class CoreDataHelperTests: XCTestCase
     func testFirstObjectMatchingPredicateReturnsTheExpectedObject() {
         let count = 50
         let targetKey = "5"
-        insertDummyEntities(count)
+        insertDummyEntities(count: count)
 
         let predicate = NSPredicate(format: "key == %@", targetKey)
         let retrieved = helper.firstObject(matchingPredicate: predicate)
@@ -131,7 +131,7 @@ class CoreDataHelperTests: XCTestCase
     func testFirstObjectMatchingPredicateReturnsNilIfNothingWasFound() {
         let count = 5
         let targetKey = "50"
-        insertDummyEntities(count)
+        insertDummyEntities(count: count)
 
         let predicate = NSPredicate(format: "key == %@", targetKey)
         let retrieved = helper.firstObject(matchingPredicate: predicate)
@@ -216,11 +216,11 @@ class DummyStack
         // Attributes
         let keyAttribute = NSAttributeDescription()
         keyAttribute.name = "key"
-        keyAttribute.attributeType = .StringAttributeType
+        keyAttribute.attributeType = .stringAttributeType
 
         let valueAttribute  = NSAttributeDescription()
         valueAttribute.name = "value"
-        valueAttribute.attributeType = .Integer64AttributeType
+        valueAttribute.attributeType = .integer64AttributeType
 
         // Entity
         let entity = NSEntityDescription()
@@ -236,14 +236,14 @@ class DummyStack
     }()
 
     lazy var context: NSManagedObjectContext = {
-        let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.persistentStoreCoordinator = self.coordinator
         return context
     }()
 
     lazy var coordinator: NSPersistentStoreCoordinator = {
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.model)
-        _ = try? coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil)
+        _ = try? coordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
 
         return coordinator
     }()
