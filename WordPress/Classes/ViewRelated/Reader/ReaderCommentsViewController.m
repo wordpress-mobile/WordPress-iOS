@@ -54,7 +54,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
 @property (nonatomic) BOOL isLoggedIn;
-@property (nonatomic, strong) NSMutableDictionary *estimatedHeightCache;
 
 @end
 
@@ -130,7 +129,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.estimatedHeightCache = [NSMutableDictionary dictionary];
 
     [self checkIfLoggedIn];
 
@@ -773,10 +771,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSNumber *height = [self.estimatedHeightCache objectForKey:indexPath];
-    if (height) {
-        return [height floatValue];
-    }
     return EstimatedCommentRowHeight;
 }
 
@@ -804,11 +798,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Cache the cell's layout height as the currently known height, for estimation.
-    // See estimatedHeightForRowAtIndexPath
-    [self.estimatedHeightCache setObject:@(cell.frame.size.height) forKey:indexPath];
-
-
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self.tableViewHandler numberOfSectionsInTableView:tableView]) &&
         (indexPath.row + 4 >= [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section])) {
