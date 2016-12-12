@@ -924,6 +924,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self presentViewController:controller animated:YES completion:nil];
 }
 
+- (void)richContentViewDidResizeAttachment:(WPRichContentView *)richContentView
+{
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
 - (void)presentWebViewControllerWithURL:(NSURL *)URL
 {
     NSURL *linkURL = URL;
