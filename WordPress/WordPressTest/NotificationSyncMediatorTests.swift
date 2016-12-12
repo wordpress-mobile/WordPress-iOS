@@ -59,7 +59,7 @@ class NotificationSyncMediatorTests: XCTestCase
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
-        let helper = CoreDataHelper<Notification>(context: self.manager.mainContext)
+        let helper = CoreDataHelper<WordPress.Notification>(context: self.manager.mainContext)
         XCTAssert(helper.countObjects() == 0)
 
         // CoreData Expectations
@@ -88,7 +88,7 @@ class NotificationSyncMediatorTests: XCTestCase
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
-        let helper = CoreDataHelper<Notification>(context: manager.mainContext)
+        let helper = CoreDataHelper<WordPress.Notification>(context: manager.mainContext)
         XCTAssert(helper.countObjects() == 0)
 
         // Shutdown Expectation Warnings. Please
@@ -110,10 +110,10 @@ class NotificationSyncMediatorTests: XCTestCase
         // Verify there's no duplication
         let expect = expectation(description: "Async!")
 
-        dispatch_group_notify(group, DispatchQueue.main) {
+        group.notify(queue: DispatchQueue.main, execute: {
             XCTAssert(helper.countObjects() == 1)
             expect.fulfill()
-        }
+        })
 
         waitForExpectations(timeout: timeout, handler: nil)
     }
@@ -128,7 +128,7 @@ class NotificationSyncMediatorTests: XCTestCase
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
-        let helper = CoreDataHelper<Notification>(context: self.manager.mainContext)
+        let helper = CoreDataHelper<WordPress.Notification>(context: self.manager.mainContext)
         XCTAssert(helper.countObjects() == 0)
 
         // CoreData Expectations
@@ -158,7 +158,7 @@ class NotificationSyncMediatorTests: XCTestCase
 
         // Inject Dummy Note
         let path = "notifications-like.json"
-        let note = manager.loadEntityNamed(Notification.entityName, withContentsOfFile: path) as! Notification
+        let note = manager.loadEntityNamed(Notification.entityName, withContentsOfFile: path) as! WordPress.Notification
 
         XCTAssertNotNil(note)
         XCTAssertFalse(note.read)
