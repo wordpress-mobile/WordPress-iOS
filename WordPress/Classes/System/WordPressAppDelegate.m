@@ -122,6 +122,7 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
     [self.window makeKeyAndVisible];
 
+    [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
@@ -214,9 +215,7 @@ int ddLogLevel = DDLogLevelInfo;
                 NSNumber *postId = [params numberForKey:@"postId"];
 
                 WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
-                [tabBarController.readerMenuViewController.navigationController popToRootViewControllerAnimated:NO];
-                [tabBarController showReaderTab];
-                [tabBarController.readerMenuViewController openPost:postId onBlog:blogId];
+                [tabBarController showReaderTabForPost:postId onBlog:blogId];
 
                 returnValue = YES;
             }
@@ -451,10 +450,11 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier
                                         forRemoteNotification:(NSDictionary *)remoteNotification
+                                             withResponseInfo:(NSDictionary *)responseInfo
                                             completionHandler:(void (^)())completionHandler
 {
-    [[InteractiveNotificationsManager sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification];
-    
+    NSString *responseText = responseInfo[UIUserNotificationActionResponseTypedTextKey];
+    [[InteractiveNotificationsManager sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification responseText:responseText];
     completionHandler();
 }
 
