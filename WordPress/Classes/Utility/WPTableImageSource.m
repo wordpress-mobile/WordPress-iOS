@@ -18,6 +18,17 @@ static const NSInteger WPTableImageSourceMinPhotonQuality = 1;
 
 #pragma mark - Lifecycle Methods
 
+static NSCache *sharedCache;
++ (NSCache *)sharedImageCache
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedCache = [[NSCache alloc] init];
+    });
+
+    return sharedCache;
+}
+
 - (id)init
 {
     return [self initWithMaxSize:CGSizeZero];
@@ -28,7 +39,7 @@ static const NSInteger WPTableImageSourceMinPhotonQuality = 1;
     self = [super init];
     if (self) {
         _processingQueue = dispatch_queue_create("org.wordpress.table-image-processing", DISPATCH_QUEUE_CONCURRENT);
-        _imageCache = [[NSCache alloc] init];
+        _imageCache = [WPTableImageSource sharedImageCache];
         _maxSize = CGSizeMake(ceil(size.width), ceil(size.height));
         _forceLargerSizeWhenFetching = YES;
         _photonQuality = WPTableImageSourceMaxPhotonQuality;
