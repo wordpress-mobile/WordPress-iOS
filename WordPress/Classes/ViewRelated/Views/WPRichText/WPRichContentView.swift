@@ -230,18 +230,27 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     /// - Returns: A WPRichTextImage instance configured for the attachment.
     ///
     func imageForAttachment(attachment: WPTextAttachment) -> WPRichTextImage {
-        let img = WPRichTextImage(frame: CGRect.zero)
         guard let url = NSURL(string: attachment.src) else {
-            return img
+            return WPRichTextImage(frame: CGRect.zero)
         }
 
+        let width: CGFloat = attachment.width > 0 ? attachment.width : textContainer.size.width
+        let height: CGFloat = attachment.height > 0 ? attachment.height : Constants.defaultAttachmentHeight
+        attachment.maxSize = CGSize(width: width, height: height)
+
+        let img = WPRichTextImage(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
         img.addTarget(self, action: #selector(self.dynamicType.handleImageTapped(_:)), forControlEvents: .TouchUpInside)
         img.contentURL = url
         img.linkURL = linkURLForImageAttachment(attachment)
 
-        let index = mediaArray.count
-        let indexPath = NSIndexPath(forRow: index, inSection: 1)
-        imageSource.fetchImageForURL(url, withSize: maxDisplaySize, indexPath: indexPath, isPrivate: isPrivate)
+        if let cachedImage = imageSource.imageForURL(url, withSize: maxDisplaySize) {
+            img.imageView.image = cachedImage
+            attachment.maxSize = cachedImage.size
+        } else {
+            let index = mediaArray.count
+            let indexPath = NSIndexPath(forRow: index, inSection: 1)
+            imageSource.fetchImageForURL(url, withSize: maxDisplaySize, indexPath: indexPath, isPrivate: isPrivate)
+        }
 
         let media = RichMedia(image: img, attachment: attachment)
         mediaArray.append(media)
