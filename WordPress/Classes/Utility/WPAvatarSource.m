@@ -7,6 +7,10 @@ static CGSize BlavatarMaxSize = {60, 60};
 static CGSize GravatarMaxSize = {92, 92};
 static NSString *const GravatarBaseUrl = @"http://gravatar.com";
 
+@interface WPAvatarSource () <WPAvatarSourceTesting>
+
+@end
+
 @implementation WPAvatarSource {
     NSCache *_gravatarCache;
     NSCache *_blavatarCache;
@@ -196,13 +200,6 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
     [cache setObject:image forKey:cacheKey];
 }
 
-// For unit testing
-- (void)purgeCaches
-{
-    [_gravatarCache removeAllObjects];
-    [_blavatarCache removeAllObjects];
-}
-
 #pragma mark - Size helpers
 
 - (CGSize)maxSizeForType:(WPAvatarSourceType)type
@@ -236,6 +233,14 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
 
     url = [url stringByAppendingFormat:@"%@?s=%d&d=identicon", hash, (int)(size.width * [[UIScreen mainScreen] scale])];
     return [NSURL URLWithString:url];
+}
+
+#pragma mark - WPAvatarSourceTesting
+
+- (void)purgeCaches
+{
+    [_gravatarCache removeAllObjects];
+    [_blavatarCache removeAllObjects];
 }
 
 @end
