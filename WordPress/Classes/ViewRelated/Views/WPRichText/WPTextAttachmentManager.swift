@@ -12,6 +12,7 @@ import UIKit
     public weak var delegate: WPTextAttachmentManagerDelegate?
     private(set) public weak var textView: UITextView?
     let layoutManager: NSLayoutManager
+    let infiniteFrame = CGRect(x: CGFloat.infinity, y: CGFloat.infinity, width: 0.0, height: 0.0)
 
 
     /// Designaged initializer.
@@ -88,7 +89,12 @@ import UIKit
         layoutManager.invalidateLayoutForCharacterRange(range, actualCharacterRange: nil)
         layoutManager.ensureLayoutForTextContainer(textView.textContainer)
 
-        attachmentView.view.frame = textView.frameForTextInRange(range)
+        let frame = textView.frameForTextInRange(range)
+        if frame == infiniteFrame {
+            return
+        }
+
+        attachmentView.view.frame = frame
     }
 
 
