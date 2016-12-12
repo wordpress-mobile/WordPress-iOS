@@ -13,12 +13,12 @@ class PushAuthenticationManagerTests: XCTestCase {
         var tapBlockPassedIn:UIAlertControllerCompletionBlock?
         var showWithTitleCalled = false
 
-        override func show(withTitle title: String, message: String, cancelButtonTitle: String, otherButtonTitles: [AnyObject], tap tapBlock: UIAlertControllerCompletionBlock) -> UIAlertController! {
+        override func show(withTitle title: String?, message: String?, cancelButtonTitle: String?, otherButtonTitles: [Any]?, tap tapBlock: UIAlertControllerCompletionBlock?) -> UIAlertController {
             showWithTitleCalled = true
             titlePassedIn = title
             messagePassedIn = message
             cancelButtonTitlePassedIn = cancelButtonTitle
-            otherButtonTitlesPassedIn = otherButtonTitles
+            otherButtonTitlesPassedIn = otherButtonTitles as [AnyObject]?
             tapBlockPassedIn = tapBlock
             return UIAlertController()
         }

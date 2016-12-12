@@ -11,12 +11,12 @@ import Foundation
     *
     *  @returns    A dictionary representing the contents of the json file.
     */
-    public func loadFileWithName(name : String, type : String) -> JSONDictionary? {
+    public func loadFile(name : String, type : String) -> JSONDictionary? {
 
         let path = Bundle(for: type(of: self)).path(forResource: name, ofType: type)
 
         if let unwrappedPath = path {
-            return loadFileWithPath(path: unwrappedPath)
+            return loadFile(path: unwrappedPath)
         } else {
             return nil
         }
@@ -29,7 +29,7 @@ import Foundation
      *
      *  @returns    A dictionary representing the contents of the json file.
      */
-    public func loadFileWithPath(path : String) -> JSONDictionary? {
+    public func loadFile(path : String) -> JSONDictionary? {
 
         if let contents = NSData(contentsOfFile: path) {
             return parseData(data: contents)
