@@ -79,7 +79,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
 
         [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
-        [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
+        [[InteractiveNotificationsManager sharedInstance] requestAuthorization];
     };
     if ([NSThread isMainThread]) {
         // This is meant to help with testing account observers.
