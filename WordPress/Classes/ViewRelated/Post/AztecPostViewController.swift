@@ -8,6 +8,7 @@ class AztecPostViewController: UIViewController {
     func cancelEditingAction(sender: AnyObject) {
         cancelEditing()
     }
+    var onClose: ((changesSaved: Bool) -> ())?
 
     static let margin = CGFloat(20)
 
@@ -597,7 +598,6 @@ extension AztecPostViewController: UIImagePickerControllerDelegate
 
 // MARK: - Cancel/Dismiss/Persistence Logic
 extension AztecPostViewController {
-
     // TODO: Rip this out and put it into the PostService
     private func createRevisionOfPost() {
         guard let context = post.managedObjectContext else {
@@ -682,7 +682,9 @@ extension AztecPostViewController {
     private func discardChangesAndUpdateGUI() {
         discardChanges()
 
-        if presentingViewController != nil {
+        onClose?(changesSaved: false)
+
+        if isModal() {
             presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         } else {
             navigationController?.popViewControllerAnimated(true)

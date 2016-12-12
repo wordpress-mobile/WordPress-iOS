@@ -7,10 +7,23 @@ import WordPressShared
     case Full
 }
 
+@objc enum WPSplitViewControllerCollapseMode: Int {
+    case Automatic
+    case AlwaysKeepDetail
+}
+
 class WPSplitViewController: UISplitViewController {
 
     static let navigationControllerRestorationIdentifier = "WPSplitViewDetailNavigationControllerRestorationID"
     static let detailNavigationStackModifiedRestorationKey = "WPSplitViewDetailNavigationStackModifiedRestorationKey"
+
+    /// Determines how the split view handles the detail pane when collapsing itself.
+    /// If 'Automatic', then the detail pane will be pushed onto the primary navigation stack
+    /// if the user has manually changed the selection in the primary pane. Otherwise,
+    /// if the detail pane is still showing its default content, it will be discarded.
+    /// If 'AlwaysKeepDetail', the detail pane will always be pushed onto the
+    /// primary navigation stack.
+    var collapseMode: WPSplitViewControllerCollapseMode = .Automatic
 
     var wpPrimaryColumnWidth: WPSplitViewControllerPrimaryColumnWidth = .Default {
         didSet {
@@ -23,6 +36,13 @@ class WPSplitViewController: UISplitViewController {
         case Landscape = 320
 
         static func widthForInterfaceOrientation(orientation: UIInterfaceOrientation) -> CGFloat {
+            // If the app is in multitasking (so isn't fullscreen), just use the narrow width
+            if let windowFrame = UIApplication.sharedApplication().keyWindow?.frame {
+                if windowFrame.width < UIScreen.mainScreen().bounds.width {
+                    return self.Portrait.rawValue
+                }
+            }
+
             if UIInterfaceOrientationIsPortrait(orientation) || WPDeviceIdentification.isiPhoneSixPlus() {
                 return self.Portrait.rawValue
             } else {
@@ -61,24 +81,6 @@ class WPSplitViewController: UISplitViewController {
         extendedLayoutIncludesOpaqueBars = true
     }
 
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
-        updateDimmingViewFrame()
-    }
-
-    override func encodeRestorableStateWithCoder(coder: NSCoder) {
-        super.encodeRestorableStateWithCoder(coder)
-
-        coder.encodeBool(detailNavigationStackHasBeenModified, forKey: self.dynamicType.detailNavigationStackModifiedRestorationKey)
-    }
-
-    override func decodeRestorableStateWithCoder(coder: NSCoder) {
-        super.decodeRestorableStateWithCoder(coder)
-
-        detailNavigationStackHasBeenModified = coder.decodeBoolForKey(self.dynamicType.detailNavigationStackModifiedRestorationKey)
-    }
-
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
@@ -95,6 +97,12 @@ class WPSplitViewController: UISplitViewController {
 
         let overrideCollection = UITraitCollection(horizontalSizeClass: self.traitCollection.horizontalSizeClass)
         return UITraitCollection(traitsFromCollections: [collection, overrideCollection])
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        updateDimmingViewFrame()
     }
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -338,11 +346,20 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         // Otherwise, concatenate the primary and detail navigation controllers' content
         // (the iOS default behavior here is to just push the detail navigation controller
         // itself onto the primary navigation controller, which is just weird)
-        if let primaryViewController = primaryViewController as? UINavigationController,
-            let secondaryViewController = secondaryViewController as? UINavigationController {
+        if let primaryViewController = primaryViewController as? UINavigationController {
+            if let secondaryViewController = secondaryViewController as? UINavigationController {
 
-            if detailNavigationStackHasBeenModified {
-                primaryViewController.viewControllers.appendContentsOf(secondaryViewController.viewControllers)
+                // When state restoration is occurring, it's possible for the primary
+                // navigation controller to have already had the had the detail
+                // view controllers pushed onto it. We'll check for this first by
+                // ensuring there's nothing other than a detail provider on the
+                // end of the navigation stack.
+                let forceKeepDetail = (collapseMode == .AlwaysKeepDetail &&
+                                       primaryViewController.viewControllers.last is WPSplitViewControllerDetailProvider)
+
+                if detailNavigationStackHasBeenModified || forceKeepDetail {
+                    primaryViewController.viewControllers.appendContentsOf(secondaryViewController.viewControllers)
+                }
             }
 
             return true

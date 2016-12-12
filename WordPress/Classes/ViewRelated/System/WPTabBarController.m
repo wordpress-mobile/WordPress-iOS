@@ -23,6 +23,7 @@
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 
 static NSString * const WPBlogListSplitViewRestorationID = @"WPBlogListSplitViewRestorationID";
+static NSString * const WPReaderSplitViewRestorationID = @"WPReaderSplitViewRestorationID";
 static NSString * const WPMeSplitViewRestorationID = @"WPMeSplitViewRestorationID";
 
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
@@ -54,8 +55,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
-@property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
+@property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong) MeViewController *meViewController;
 @property (nonatomic, strong) UIViewController *newPostViewController;
 
@@ -65,6 +66,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
 
 @property (nonatomic, strong) WPSplitViewController *blogListSplitViewController;
+@property (nonatomic, strong) WPSplitViewController *readerSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *meSplitViewController;
 
 @property (nonatomic, strong) UIView *notificationBadgeIconView;
@@ -108,7 +110,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
 
         [self setViewControllers:@[self.blogListSplitViewController,
-                                   self.readerNavigationController,
+                                   self.readerSplitViewController,
                                    self.newPostViewController,
                                    self.meSplitViewController,
                                    self.notificationsNavigationController]];
@@ -215,23 +217,28 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (UINavigationController *)readerNavigationController
 {
-    if (_readerNavigationController) {
-        return _readerNavigationController;
+    if (!_readerNavigationController) {
+        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
+
+        _readerNavigationController.navigationBar.translucent = NO;
+        UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
+        _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
+        _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
+        _readerNavigationController.tabBarItem.accessibilityIdentifier = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
+        _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
     }
 
-    self.readerMenuViewController = [ReaderMenuViewController sharedInstance];
-
-    _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerMenuViewController];
-
-    _readerNavigationController.navigationBar.translucent = NO;
-    UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
-    _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
-    _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
-    _readerNavigationController.tabBarItem.accessibilityIdentifier = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
-    _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
-
     return _readerNavigationController;
+}
+
+- (ReaderMenuViewController *)readerMenuViewController
+{
+    if (!_readerMenuViewController) {
+        _readerMenuViewController = [ReaderMenuViewController controller];
+    }
+
+    return _readerMenuViewController;
 }
 
 - (UIViewController *)newPostViewController
@@ -254,18 +261,15 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (UINavigationController *)meNavigationController
 {
-    if (_meNavigationController) {
-        return _meNavigationController;
+    if (!_meNavigationController) {
+        _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
+        UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
+        _meNavigationController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _meNavigationController.tabBarItem.selectedImage = meTabBarImage;
+        _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
+        _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
+        _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
     }
-
-    _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
-    UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
-    _meNavigationController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    _meNavigationController.tabBarItem.selectedImage = meTabBarImage;
-    _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
-    _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
-    _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
-
 
     return _meNavigationController;
 }
@@ -325,6 +329,22 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return _blogListSplitViewController;
 }
 
+- (UISplitViewController *)readerSplitViewController
+{
+    if (!_readerSplitViewController) {
+        _readerSplitViewController = [WPSplitViewController new];
+        _readerSplitViewController.restorationIdentifier = WPReaderSplitViewRestorationID;
+        _readerSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
+        _readerSplitViewController.collapseMode = WPSplitViewControllerCollapseModeAlwaysKeepDetail;
+
+        [_readerSplitViewController setInitialPrimaryViewController:self.readerNavigationController];
+
+        _readerSplitViewController.tabBarItem = self.readerNavigationController.tabBarItem;
+    }
+
+    return _readerSplitViewController;
+}
+
 - (UISplitViewController *)meSplitViewController
 {
     if (!_meSplitViewController) {
@@ -344,10 +364,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     _blogListNavigationController = nil;
     _blogListSplitViewController = nil;
+    _readerNavigationController = nil;
+    _readerMenuViewController = nil;
+    _readerSplitViewController = nil;
     _meSplitViewController = nil;
 
     [self setViewControllers:@[self.blogListSplitViewController,
-                               self.readerNavigationController,
+                               self.readerSplitViewController,
                                self.newPostViewController,
                                self.meSplitViewController,
                                self.notificationsNavigationController]];
@@ -372,7 +395,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)showPostTab
 {
-    [self showPostTabWithOptions:nil];
+    [self showPostTabAnimated:true toMedia:false];
 }
 
 - (void)showMeTab
@@ -385,75 +408,28 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self showTabForIndex:WPTabNotifications];
 }
 
-- (void)showPostTabWithOptions:(NSDictionary *)options
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia
 {
-    BOOL animated = YES;
     if (self.presentedViewController) {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
 
-    UINavigationController *navController;
-    EditorSettings *editorSettings = [EditorSettings new];
-    if ([editorSettings visualEditorEnabled]) {
-        if ([editorSettings nativeEditorEnabled]) {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-            PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
+    EditPostViewController* editor = [EditPostViewController new];
+    editor.modalPresentationStyle = UIModalPresentationFullScreen;
+    editor.showImmediately = !animated;
+    editor.openWithMediaPicker = openToMedia;
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:editor.blog];
+    [self presentViewController:editor animated:NO completion:nil];
+    return;
+}
 
-            Blog *blog = [blogService lastUsedOrFirstBlog];
-            Post *post = [postService createDraftPostForBlog:blog];
-            AztecPostViewController *postViewController = [[AztecPostViewController alloc] initWithPost:post];
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: postViewController];
-            navController.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self presentViewController:navController animated: YES completion: nil];
-            return;
-        }
-        WPPostViewController *editPostViewController;
-        if (!options) {
-            editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
-            [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:[editPostViewController post].blog];
-        } else {
-            if (options[WPPostViewControllerOptionOpenMediaPicker]) {
-                editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlogAndPhotoPost];
-            } else {
-                editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
-                                                                      andContent:[options stringForKey:WPNewPostURLParamContentKey]
-                                                                         andTags:[options stringForKey:WPNewPostURLParamTagsKey]
-                                                                        andImage:[options stringForKey:WPNewPostURLParamImageKey]];
-            }
-            
-            if (options[WPPostViewControllerOptionNotAnimated]) {
-                animated = NO;
-            }
-        }
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
-        navController.restorationClass = [WPPostViewController class];
-    } else {
-        WPLegacyEditPostViewController *editPostLegacyViewController;
-        if (!options) {
-            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-            Blog *blog = [blogService lastUsedOrFirstBlog];
-            [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:blog];
-        } else {
-            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
-                                                                                      andContent:[options stringForKey:WPNewPostURLParamContentKey]
-                                                                                         andTags:[options stringForKey:WPNewPostURLParamTagsKey]
-                                                                                        andImage:[options stringForKey:WPNewPostURLParamImageKey]];
-        }
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostLegacyViewController];
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [WPLegacyEditPostViewController class];
+- (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
+{
+    ReaderMenuViewController *readerMenuViewController = (ReaderMenuViewController *)[self.readerNavigationController.viewControllers firstObject];
+    if ([ReaderMenuViewController isKindOfClass:[ReaderMenuViewController class]]) {
+        [self showReaderTab];
+        [readerMenuViewController openPost:postId onBlog:blogId];
     }
-
-    navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    navController.navigationBar.translucent = NO;    
-    [self presentViewController:navController animated:animated completion:^{
-        WPImpactFeedbackGenerator *generator = [[WPImpactFeedbackGenerator alloc] initWithStyle:WPImpactFeedbackStyleMedium];
-        [generator impactOccurred];
-    }];
 }
 
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
