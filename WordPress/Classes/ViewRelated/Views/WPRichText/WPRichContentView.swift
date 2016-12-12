@@ -5,6 +5,8 @@ import UIKit
 @objc protocol WPRichContentViewDelegate: UITextViewDelegate
 {
     func richContentView(richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
+
+    optional func richContentViewDidResizeAttachment(richContentView: WPRichContentView)
 }
 
 
@@ -353,6 +355,10 @@ extension WPRichContentView: WPTableImageSourceDelegate
 
         attachmentManager.layoutAttachmentViews()
         invalidateIntrinsicContentSize()
+
+        if let richDelegate = delegate as? WPRichContentViewDelegate {
+            richDelegate.richContentViewDidResizeAttachment?(self)
+        }
     }
 
 
