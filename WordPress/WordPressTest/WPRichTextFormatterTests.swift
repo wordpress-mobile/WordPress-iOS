@@ -92,15 +92,16 @@ class WPRichTextFormatterTests: XCTestCase {
 
     func testAttributesFromTag() {
 
-        let str = "<img src=\"http://example.com\" class=\"classname\"alt='alttext'>"
+        let str = "<img src=\"http://example.com\" class=\"classname1 classname2\"alt='alt😀text' TITLE=\"Example\">"
 
         let processor = AttachmentTagProcessor(tagName: "img", includesEndTag: false)
 
         let attributes = processor.attributesFromTag(str)
-        XCTAssert(attributes.count == 3)
-        XCTAssert(attributes["src"] != nil)
-        XCTAssert(attributes["alt"] != nil)
-        XCTAssert(attributes["class"] != nil)
+        XCTAssert(attributes.count == 4)
+        XCTAssert(attributes["src"] == "http://example.com")
+        XCTAssert(attributes["class"] == "classname1 classname2")
+        XCTAssert(attributes["alt"] == "alt😀text")
+        XCTAssert(attributes["title"] == "Example")
     }
 
 }
