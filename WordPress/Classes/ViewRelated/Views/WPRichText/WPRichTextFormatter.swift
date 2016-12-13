@@ -354,6 +354,7 @@ class ListTagProcessor: HtmlTagProcessor
 class AttachmentTagProcessor: HtmlTagProcessor
 {
     let textAttachmentIdentifier = "WPTEXTATTACHMENTIDENTIFIER"
+    static let attributeRegex = try! NSRegularExpression(pattern: "([a-zA-Z-]+)=(?:\"|')([^\"']+)(?:\"|')", options: .CaseInsensitive)
 
     /// Replaces extracted tags with markers.
     ///
@@ -413,40 +414,25 @@ class AttachmentTagProcessor: HtmlTagProcessor
     /// - Returns: A [String: String] dicitionary of attributes.
     ///
     func attributesFromTag(html: String) -> [String: String] {
-        var scanner = NSScanner(string: html)
-        let quoteCharacters = NSCharacterSet(charactersInString: "\"'")
+        let scanner = NSScanner(string: html)
         var attrs = [String: String]()
 
         // For most attachments we're only interested in the attributes in the opening tag.
         // We can skip a closing tag and any child elements.
         var tag: NSString? = ""
         scanner.scanUpToString(">", intoString: &tag)
-        scanner = NSScanner(string: tag as! String)
-        scanner.charactersToBeSkipped = quoteCharacters
-        let charSet = NSCharacterSet.whitespaceCharacterSet()
 
-        while !scanner.atEnd {
-            var tempString: NSString? = ""
-            scanner.scanUpToCharactersFromSet(charSet, intoString: &tempString)
+        let regex = self.dynamicType.attributeRegex
 
-            if let str = tempString where str.containsString("=") {
-                let attrScanner = NSScanner(string: str as String)
-                attrScanner.charactersToBeSkipped = quoteCharacters
+        let matches = regex.matchesInString(tag as! String, options: .ReportCompletion, range: NSRange(location: 0, length: tag!.length))
+        for match in matches {
+            let keyRange = match.rangeAtIndex(1)
+            let valueRange = match.rangeAtIndex(2)
 
-                var key: NSString? = ""
-                var value: NSString? = ""
+            let key = tag!.substringWithRange(keyRange)
+            let value = tag!.substringWithRange(valueRange)
 
-                attrScanner.scanUpToString("=", intoString: &key)
-                attrScanner.scanLocation += 1
-                attrScanner.scanUpToCharactersFromSet(quoteCharacters, intoString: &value)
-
-                attrs.updateValue(value as! String, forKey: key as! String)
-            }
-
-            if !scanner.atEnd {
-                scanner.scanLocation += 1
-            }
-
+            attrs.updateValue(value, forKey: key)
         }
 
         return attrs
