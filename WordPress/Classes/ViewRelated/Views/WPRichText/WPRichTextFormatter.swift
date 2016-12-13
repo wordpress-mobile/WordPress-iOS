@@ -354,7 +354,7 @@ class ListTagProcessor: HtmlTagProcessor
 class AttachmentTagProcessor: HtmlTagProcessor
 {
     let textAttachmentIdentifier = "WPTEXTATTACHMENTIDENTIFIER"
-    static let attributeRegex = try! NSRegularExpression(pattern: "([a-zA-Z-]+)=(?:\"|')([^\"']+)(?:\"|')", options: .CaseInsensitive)
+    static let attributeRegex = try! NSRegularExpression(pattern: "([a-z-]+)=(?:\"|')([^\"']+)(?:\"|')", options: .CaseInsensitive)
 
     /// Replaces extracted tags with markers.
     ///
