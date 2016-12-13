@@ -145,6 +145,11 @@ extern NSString * const PostStatusDeleted;
 - (BOOL)isScheduled;
 
 /**
+ Returns YES if the post is a draft
+ */
+- (BOOL)isDraft;
+
+/**
  Returns YES if the post has a future date_created_gmt.
  This is different from "isScheduled" in that  a post with a draft, pending, or
  trashed status can also have a date_created_gmt with a future value.
