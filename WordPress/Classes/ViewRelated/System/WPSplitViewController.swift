@@ -289,8 +289,6 @@ class WPSplitViewController: UISplitViewController {
 
     private var detailNavigationStackHasBeenModified = false
 
-    private static let fullscreenTransitionAnimationDuration: NSTimeInterval = 0.4
-
     /// Shows or hides the primary view controller pane.
     ///
     /// - Parameter hidden: If `true`, hide the primary view controller.
@@ -300,7 +298,7 @@ class WPSplitViewController: UISplitViewController {
         }
 
         if animated {
-            UIView.animateWithDuration(WPSplitViewController.fullscreenTransitionAnimationDuration) {
+            UIView.animateWithDuration(WPFullscreenNavigationTransition.transitionDuration) {
                 updateDisplayMode()
             }
         } else {
@@ -444,18 +442,18 @@ extension WPSplitViewController: UINavigationControllerDelegate {
             detailNavigationStackHasBeenModified = true
         }
 
-        // Handle popping from fullscreen view controllers
-
         let hasFullscreenViewControllersInStack = navigationController.viewControllers.filter({$0 is PrefersFullscreenDisplay}).count > 0
         let isCurrentlyFullscreen = preferredDisplayMode != .AllVisible
 
+        // Handle popping from fullscreen view controllers
+        //
         // If we're currently in fullscreen mode, and there are no view controllers
         // left in the navigation stack that prefer to be fullscreen, then
         // animate back to a standard split view.
-        if animated && isCurrentlyFullscreen && !hasFullscreenViewControllersInStack {
-            setPrimaryViewControllerHidden(false, animated: true)
+        if isCurrentlyFullscreen && !hasFullscreenViewControllersInStack {
+            setPrimaryViewControllerHidden(false, animated: animated)
 
-            if !isViewHorizontallyCompact() {
+            if animated && !isViewHorizontallyCompact() {
                 navigationController.navigationBar.fadeOutNavigationItems(true)
             }
         }
@@ -465,7 +463,38 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         if !isViewHorizontallyCompact() {
             // Restore navigation items after a push or pop if they were previously hidden
             navigationController.navigationBar.fadeInNavigationItemsIfNecessary()
+
+            let hasSingleFullscreenViewControllerInStack = navigationController.viewControllers.filter({$0 is PrefersFullscreenDisplay}).count == 1
+            let allowInteractiveBackGesture = !(hasSingleFullscreenViewControllerInStack && viewController is PrefersFullscreenDisplay)
+
+            // Disable the interactive back gesture if we only have a single fullscreen view controller
+            // left in the navigation stack (and that view controller is at the top of the stack)
+            // so that we don't trigger the fullscreen transition with a gesture
+            //
+            // Unfortunately by default when implementing custom navigation controller
+            // transitions, the interactive gesture is disabled. To work around this,
+            // we can set the delegate to nil (see: http://stackoverflow.com/a/38859457/570547)
+            navigationController.interactivePopGestureRecognizer?.delegate = nil
+            navigationController.interactivePopGestureRecognizer?.enabled = allowInteractiveBackGesture
         }
+    }
+
+    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        var stack = navigationController.viewControllers
+        if operation == .Push {
+            // During a push, the new VC has already been added to the stack
+            stack.removeLast()
+        }
+
+        let hasFullscreenViewControllersInStack = stack.filter({$0 is PrefersFullscreenDisplay}).count > 0
+        let transitionInvolvesFullscreenViewController = toVC is PrefersFullscreenDisplay || fromVC is PrefersFullscreenDisplay
+        let movingFromOrToFullscreen = !hasFullscreenViewControllersInStack && transitionInvolvesFullscreenViewController
+
+        if !isViewHorizontallyCompact() && movingFromOrToFullscreen {
+            return WPFullscreenNavigationTransition(operation: operation)
+        }
+
+        return nil
     }
 
     private func dimDetailViewControllerIfNecessary() {
