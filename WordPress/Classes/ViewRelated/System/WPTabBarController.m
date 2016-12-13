@@ -396,7 +396,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)showPostTab
 {
-    [self showPostTabWithOptions:nil];
+    [self showPostTabAnimated:true toMedia:false];
 }
 
 - (void)showMeTab
@@ -409,75 +409,19 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [self showTabForIndex:WPTabNotifications];
 }
 
-- (void)showPostTabWithOptions:(NSDictionary *)options
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia
 {
-    BOOL animated = YES;
     if (self.presentedViewController) {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
 
-    UINavigationController *navController;
-    EditorSettings *editorSettings = [EditorSettings new];
-    if ([editorSettings visualEditorEnabled]) {
-        if ([editorSettings nativeEditorEnabled]) {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-            PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-
-            Blog *blog = [blogService lastUsedOrFirstBlog];
-            Post *post = [postService createDraftPostForBlog:blog];
-            AztecPostViewController *postViewController = [[AztecPostViewController alloc] initWithPost:post];
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: postViewController];
-            navController.modalPresentationStyle = UIModalPresentationFullScreen;
-            [self presentViewController:navController animated: YES completion: nil];
-            return;
-        }
-        WPPostViewController *editPostViewController;
-        if (!options) {
-            editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
-            [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:[editPostViewController post].blog];
-        } else {
-            if (options[WPPostViewControllerOptionOpenMediaPicker]) {
-                editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlogAndPhotoPost];
-            } else {
-                editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
-                                                                      andContent:[options stringForKey:WPNewPostURLParamContentKey]
-                                                                         andTags:[options stringForKey:WPNewPostURLParamTagsKey]
-                                                                        andImage:[options stringForKey:WPNewPostURLParamImageKey]];
-            }
-            
-            if (options[WPPostViewControllerOptionNotAnimated]) {
-                animated = NO;
-            }
-        }
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
-        navController.restorationClass = [WPPostViewController class];
-    } else {
-        WPLegacyEditPostViewController *editPostLegacyViewController;
-        if (!options) {
-            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-            Blog *blog = [blogService lastUsedOrFirstBlog];
-            [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:blog];
-        } else {
-            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
-                                                                                      andContent:[options stringForKey:WPNewPostURLParamContentKey]
-                                                                                         andTags:[options stringForKey:WPNewPostURLParamTagsKey]
-                                                                                        andImage:[options stringForKey:WPNewPostURLParamImageKey]];
-        }
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostLegacyViewController];
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [WPLegacyEditPostViewController class];
-    }
-
-    navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    navController.navigationBar.translucent = NO;    
-    [self presentViewController:navController animated:animated completion:^{
-        WPImpactFeedbackGenerator *generator = [[WPImpactFeedbackGenerator alloc] initWithStyle:WPImpactFeedbackStyleMedium];
-        [generator impactOccurred];
-    }];
+    EditPostViewController* editor = [EditPostViewController new];
+    editor.modalPresentationStyle = UIModalPresentationFullScreen;
+    editor.showImmediately = !animated;
+    editor.openWithMediaPicker = openToMedia;
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:editor.blog];
+    [self presentViewController:editor animated:NO completion:nil];
+    return;
 }
 
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
