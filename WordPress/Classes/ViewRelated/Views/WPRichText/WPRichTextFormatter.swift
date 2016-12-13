@@ -429,7 +429,7 @@ class AttachmentTagProcessor: HtmlTagProcessor
             let keyRange = match.rangeAtIndex(1)
             let valueRange = match.rangeAtIndex(2)
 
-            let key = tag!.substringWithRange(keyRange)
+            let key = tag!.substringWithRange(keyRange).lowercaseString
             let value = tag!.substringWithRange(valueRange)
 
             attrs.updateValue(value, forKey: key)
