@@ -88,8 +88,8 @@ class ReaderCommentCell : UITableViewCell
 
     func setupReplyButton() {
         let icon = Gridicon.iconOfType(.Reply, withSize: Constants.buttonSize)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.grey())
-        let highlightedIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.grey())?.rotate180Degrees()
+        let highlightedIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())?.rotate180Degrees()
 
         replyButton.setImage(tintedIcon, forState: .Normal)
         replyButton.setImage(highlightedIcon, forState: .Highlighted)
