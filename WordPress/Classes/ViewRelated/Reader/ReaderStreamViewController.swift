@@ -1062,7 +1062,7 @@ import WordPressComAnalytics
     /// - The app must have a internet connection.
     /// - The current time must be greater than the last sync interval.
     ///
-    /// NOTE: Until we have more robust content wrangling, we want to delay a 
+    /// NOTE: Until we have more robust content wrangling, we want to delay a
     /// background sync until the controller is the active controller.
     /// This helps avoid an issue where content being used
     /// by the user gets cleaned up or deleted by the sync process.
