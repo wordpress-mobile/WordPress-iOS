@@ -58,8 +58,6 @@ import WordPressComAnalytics
     private var imageRequestAuthToken: String?
     private var didBumpStats = false
 
-    private var didAutoSync = false
-
     /// Used for fetching content.
     private lazy var displayContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -96,6 +94,20 @@ import WordPressComAnalytics
                 siteID = nil
                 tagSlug = nil
             }
+        }
+    }
+
+
+    var isActiveController: Bool {
+        get {
+            if navigationController?.topViewController == self {
+                return true
+            }
+            // If our parent controller is the navController's top vc.
+            if let controller = parentViewController where navigationController?.topViewController == controller {
+                return true
+            }
+            return false
         }
     }
 
@@ -230,12 +242,13 @@ import WordPressComAnalytics
     }
 
 
+
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
         // Trigger layouts, if needed, to correct for any inherited layout changes, such as margins.
         refreshTableHeaderIfNeeded()
-        autoSyncIfAppropriate(viewWillAppear: true)
+        syncIfAppropriate()
     }
 
 
@@ -535,7 +548,7 @@ import WordPressComAnalytics
         configureStreamHeader()
         tableView.setContentOffset(CGPointZero, animated: false)
         tableViewHandler.refreshTableView()
-        autoSyncIfAppropriate(viewWillAppear: false)
+        syncIfAppropriate()
 
         bumpStats()
 
@@ -1044,15 +1057,18 @@ import WordPressComAnalytics
 
     /// Kicks off a "background" sync without updating the UI if certain conditions
     /// are met.
+    /// - There must be a topic
+    /// - The controller must be the active controller.
     /// - The app must have a internet connection.
     /// - The current time must be greater than the last sync interval.
-    /// - Autosync must not have already occurred.
     ///
-    /// NOTE:  We want to avoid automatically syncing when the controller is created
-    /// via state restoration until the controller's view is in the window.
+    /// NOTE: Until we have more robust content wrangling, we want to delay a 
+    /// background sync until the controller is the active controller.
+    /// This helps avoid an issue where content being used
+    /// by the user gets cleaned up or deleted by the sync process.
     /// See: https://github.com/wordpress-mobile/WordPress-iOS/issues/6297
     ///
-    func autoSyncIfAppropriate(viewWillAppear viewWillAppear: Bool) {
+    func syncIfAppropriate() {
         guard UIApplication.sharedApplication().isRunningTestSuite() == false else {
             return
         }
@@ -1061,8 +1077,8 @@ import WordPressComAnalytics
             return
         }
 
-        //
-        if didAutoSync || (view.window == nil && !viewWillAppear) {
+        // Don't autosync when we're not the top/visible vc.
+        guard isActiveController else {
             return
         }
 
@@ -1078,7 +1094,6 @@ import WordPressComAnalytics
         let lastSynced = topic.lastSynced ?? NSDate(timeIntervalSince1970: 0)
         let interval = Int( NSDate().timeIntervalSinceDate(lastSynced))
         if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
-            didAutoSync = true
             syncHelper.syncContentWithUserInteraction(false)
         }
     }
