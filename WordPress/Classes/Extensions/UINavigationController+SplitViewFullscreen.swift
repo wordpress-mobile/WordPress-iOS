@@ -109,9 +109,17 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
         fromView.frame = fromFrame
         toView.frame = targetFrame
 
+        // RTL support
+        let attribute = fromView.semanticContentAttribute
+        let layoutDirection = UIView.userInterfaceLayoutDirectionForSemanticContentAttribute(attribute)
+        let isRTLLayout = (layoutDirection == .RightToLeft)
+
         // Take a snapshot to hide any layout issues in the 'from' view as it
         // transitions to the new size.
         let snapshot = fromView.snapshotViewAfterScreenUpdates(false)!
+        let snapshotContainer = UIView(frame: fromFrame)
+        snapshotContainer.backgroundColor = fromView.backgroundColor
+        snapshotContainer.addSubview(snapshot)
 
         // Add a shadow layer to the left edge of the topmost view, matching
         // the appearance of the standard UINavigationController transition.
@@ -120,9 +128,15 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
         let shadowDarkColor = UIColor(white: 0, alpha: 0.1).CGColor
 
         let shadowLayer = CAGradientLayer()
-        shadowLayer.colors = [shadowClearColor, shadowDarkColor]
         shadowLayer.locations = [0, 1]
-        shadowLayer.frame = CGRect(x: -shadowWidth, y: 0, width: shadowWidth, height: fromFrame.height)
+        shadowLayer.colors = [shadowClearColor, shadowDarkColor]
+
+        if isRTLLayout {
+            shadowLayer.colors = shadowLayer.colors!.reverse()
+        }
+
+        let shadowLayerX = (isRTLLayout) ? fromFrame.width : -shadowWidth
+        shadowLayer.frame = CGRect(x: shadowLayerX, y: 0, width: shadowWidth, height: fromFrame.height)
 
         let centerLeft = CGPoint(x: 0, y: 0.5)
         let centerRight = CGPoint(x: 1, y: 0.5)
@@ -132,27 +146,32 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
         // Dim out the bottommost view, matching the appearance of the standard
         // UINavigationController transition.
         let dimmingViewColor = UIColor(white: 0, alpha: 0.05)
-        let dimmingView = UIView(frame: CGRect(x: -fromFrame.width, y: 0, width: fromFrame.width, height: fromFrame.height))
+        let dimmingViewXOffset = (isRTLLayout) ? fromFrame.width : -fromFrame.width
+        let dimmingView = UIView(frame: CGRect(x: dimmingViewXOffset, y: 0, width: fromFrame.width, height: fromFrame.height))
         dimmingView.backgroundColor = dimmingViewColor
 
-        if pushing {
-            snapshot.frame = fromFrame
-            containerView.addSubview(snapshot)
+        containerView.addSubview(snapshotContainer)
 
+        if pushing {
             // Initially position the new VC offscreen
-            toView.transform = CGAffineTransformMakeTranslation(fromFrame.width, 0)
+            let initialXOffset = (isRTLLayout) ? -fromFrame.width : fromFrame.width
+            toView.transform = CGAffineTransformMakeTranslation(initialXOffset, 0)
             containerView.addSubview(toView)
 
             toView.layer.addSublayer(shadowLayer)
             toView.addSubview(dimmingView)
             dimmingView.alpha = WPAlphaZero
         } else {
-            fromView.addSubview(snapshot)
+            fromView.alpha = 0
 
             containerView.insertSubview(toView, atIndex: 0)
 
-            fromView.layer.addSublayer(shadowLayer)
-            fromView.addSubview(dimmingView)
+            if let splitViewPrimaryWidth = fromVC.splitViewController?.primaryColumnWidth where isRTLLayout {
+                    toView.transform = CGAffineTransformMakeTranslation(splitViewPrimaryWidth, 0)
+            }
+
+            snapshotContainer.layer.addSublayer(shadowLayer)
+            snapshotContainer.addSubview(dimmingView)
             dimmingView.alpha = WPAlphaFull
         }
 
@@ -160,11 +179,14 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
             toView.transform = CGAffineTransformIdentity
 
             if self.pushing {
-                // Transform off by 3/4 of the width for a bit of parallaxing
-                fromView.transform = CGAffineTransformMakeTranslation(-targetFrame.width * 0.75, 0)
+                if let splitViewPrimaryWidth = fromVC.splitViewController?.primaryColumnWidth {
+                    snapshotContainer.transform = CGAffineTransformMakeTranslation(splitViewPrimaryWidth, 0)
+                }
+                
                 dimmingView.alpha = WPAlphaFull
             } else {
-                fromView.transform = CGAffineTransformMakeTranslation(targetFrame.width, 0)
+                let targetXOffset = (isRTLLayout) ? -fromFrame.width : targetFrame.width
+                snapshotContainer.transform = CGAffineTransformMakeTranslation(targetXOffset, 0)
                 dimmingView.alpha = WPAlphaZero
             }
         }
@@ -174,7 +196,7 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
             fromView.removeFromSuperview()
 
             shadowLayer.removeFromSuperlayer()
-            snapshot.removeFromSuperview()
+            snapshotContainer.removeFromSuperview()
 
             fromView.transform = CGAffineTransformIdentity
             toView.transform = CGAffineTransformIdentity
@@ -186,7 +208,7 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
 
         UIView.animateWithDuration(transitionDuration(transitionContext),
                                    delay: 0,
-                                   options: .CurveEaseOut,
+                                   options: .CurveEaseInOut,
                                    animations: animations,
                                    completion: completion)
     }
