@@ -76,8 +76,8 @@ extension NSAttributedString {
                 return "font-family: -apple-system; font-size: \(size)px; " + boldStyle + italicStyle
             }
         case NSForegroundColorAttributeName:
-            if let color = attribute as? UIColor {
-                let colorHex = color.hexString()
+            if let color = attribute as? UIColor,
+                let colorHex = color.hexString() {
                 return "color: #\(colorHex);"
             }
         case NSUnderlineStyleAttributeName:
