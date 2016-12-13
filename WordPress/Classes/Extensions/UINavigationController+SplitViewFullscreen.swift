@@ -60,7 +60,7 @@ extension UINavigationBar {
 /// from or to a fullscreen split view layout.
 ///
 class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransitioning {
-    static let transitionDuration: NSTimeInterval = 0.4
+    static let transitionDuration: NSTimeInterval = 0.3
 
     let operation: UINavigationControllerOperation
 
