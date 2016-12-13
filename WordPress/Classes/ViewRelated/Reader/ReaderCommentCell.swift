@@ -96,6 +96,7 @@ class ReaderCommentCell : UITableViewCell
 
         let title = NSLocalizedString("Reply", comment: "Verb. Title of the Reader comments screen reply button. Tapping the button sends a reply to a comment or post.")
         replyButton.setTitle(title, forState: .Normal)
+        replyButton.setTitleColor(WPStyleGuide.grey(), forState: .Normal)
     }
 
 
@@ -108,6 +109,8 @@ class ReaderCommentCell : UITableViewCell
         likeButton.setImage(tintedIcon, forState: .Normal)
         likeButton.setImage(highlightedIcon, forState: .Highlighted)
         likeButton.setImage(selectedIcon, forState: .Selected)
+
+        likeButton.setTitleColor(WPStyleGuide.grey(), forState: .Normal)
     }
 
 
