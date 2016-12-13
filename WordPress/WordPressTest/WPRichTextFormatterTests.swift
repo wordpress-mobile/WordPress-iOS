@@ -89,4 +89,18 @@ class WPRichTextFormatterTests: XCTestCase {
         XCTAssert(pStyle.headIndent == formatter.blockquoteIndentation)
     }
 
+
+    func testAttributesFromTag() {
+
+        let str = "<img src=\"http://example.com\" class=\"classname\"alt='alttext'>"
+
+        let processor = AttachmentTagProcessor(tagName: "img", includesEndTag: false)
+
+        let attributes = processor.attributesFromTag(str)
+        XCTAssert(attributes.count == 3)
+        XCTAssert(attributes["src"] != nil)
+        XCTAssert(attributes["alt"] != nil)
+        XCTAssert(attributes["class"] != nil)
+    }
+
 }
