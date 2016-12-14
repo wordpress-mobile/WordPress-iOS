@@ -17,14 +17,14 @@ class WordPressComRestApiTests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
     }
 
-    private func isRestAPIRequest() -> OHHTTPStubsTestBlock {
+    fileprivate func isRestAPIRequest() -> OHHTTPStubsTestBlock {
         return { request in
             let pathWithLocale = WordPressComRestApi.pathByAppendingPreferredLanguageLocale(self.wordPressMediaRoute)
             return request.url?.absoluteString == self.wordPressComRestApi + pathWithLocale
         }
     }
 
-    private func isRestAPIMediaNewRequest() -> OHHTTPStubsTestBlock {
+    fileprivate func isRestAPIMediaNewRequest() -> OHHTTPStubsTestBlock {
         return { request in
             let pathWithLocale = WordPressComRestApi.pathByAppendingPreferredLanguageLocale(self.wordPressMediaNewEndpoint)
             return request.url?.absoluteString == self.wordPressComRestApi + pathWithLocale
@@ -181,7 +181,7 @@ class WordPressComRestApiTests: XCTestCase {
 
         let expect = self.expectation(description: "One callback should be invoked")
         let api = WordPressComRestApi(oAuthToken:"fakeToken")
-        let filePart = FilePart(parameterName: "file", url: NSURL(fileURLWithPath:"/a.txt") as URL, filename: "a.txt", mimeType: "image/jpeg")
+        let filePart = FilePart(parameterName: "file", url: URL(fileURLWithPath:"/a.txt") as URL, filename: "a.txt", mimeType: "image/jpeg")
         api.multipartPOST(wordPressMediaNewEndpoint, parameters:nil, fileParts:[filePart], success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
             expect.fulfill()
             XCTFail("This call should fail")
@@ -202,7 +202,7 @@ class WordPressComRestApiTests: XCTestCase {
         else {
             return
         }
-        let mediaURL = NSURL(fileURLWithPath:mediaPath)
+        let mediaURL = URL(fileURLWithPath:mediaPath)
         let expect = self.expectation(description: "One callback should be invoked")
         let api = WordPressComRestApi(oAuthToken:"fakeToken")
         let filePart = FilePart(parameterName: "media[]", url: mediaURL as URL, filename: "test-image.jpg", mimeType: "image/jpeg")

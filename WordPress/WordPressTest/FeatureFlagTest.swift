@@ -5,7 +5,7 @@ import XCTest
 class FeatureFlagTest: XCTestCase {
 
     func testBuild() {
-        Build.withCurrent(value: .debug) {
+        Build.withCurrent(.debug) {
             expect(build(.debug)).to(beTrue())
             expect(build(.debug, .alpha)).to(beTrue())
             expect(build(.alpha)).to(beFalse())
@@ -13,7 +13,7 @@ class FeatureFlagTest: XCTestCase {
             expect(build(.appStore)).to(beFalse())
         }
 
-        Build.withCurrent(value: .appStore) {
+        Build.withCurrent(.appStore) {
             expect(build(.debug)).to(beFalse())
             expect(build(.alpha)).to(beFalse())
             expect(build(.internal)).to(beFalse())
@@ -24,7 +24,7 @@ class FeatureFlagTest: XCTestCase {
 
     // Add tests for features that should be disabled in production here.
     func testEnsureDisabledFeaturesInProduction() {
-        Build.withCurrent(value: .appStore) {
+        Build.withCurrent(.appStore) {
 //            Example:
 //            expect(FeatureFlag.[FeatureEnum].enabled).to(beFalse())
         }
@@ -32,7 +32,7 @@ class FeatureFlagTest: XCTestCase {
 }
 
 extension Build {
-    static func withCurrent(value: Build, block: () -> Void) {
+    static func withCurrent(_ value: Build, block: () -> Void) {
         Build._overrideCurrent = value
         block()
         Build._overrideCurrent = nil

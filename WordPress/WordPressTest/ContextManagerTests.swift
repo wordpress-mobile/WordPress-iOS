@@ -26,7 +26,7 @@ class ContextManagerTests: XCTestCase {
         let model19Name = "WordPress 19"
 
         // Instantiate a Model 19 Stack
-        startupCoredataStack(modelName: model19Name)
+        startupCoredataStack(model19Name)
 
         let mocOriginal = contextManager.mainContext
         let psc = contextManager.persistentStoreCoordinator
@@ -61,7 +61,7 @@ class ContextManagerTests: XCTestCase {
         let model21Name = "WordPress 21"
 
         // Instantiate a Model 20 Stack
-        startupCoredataStack(modelName: model20Name)
+        startupCoredataStack(model20Name)
 
         let mainContext = contextManager.mainContext
         _ = contextManager.persistentStoreCoordinator
@@ -90,7 +90,7 @@ class ContextManagerTests: XCTestCase {
         UserDefaults.standard.synchronize()
 
         // Initialize 20 > 21 Migration
-        let secondContext = performCoredataMigration(newModelName: model21Name)
+        let secondContext = performCoredataMigration(model21Name)
 
         // Verify that the three accounts made it through
         let allAccountsRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
@@ -114,7 +114,7 @@ class ContextManagerTests: XCTestCase {
         let model23Name = "WordPress 23"
 
         // Instantiate a Model 21 Stack
-        startupCoredataStack(modelName: model21Name)
+        startupCoredataStack(model21Name)
 
         let mainContext = contextManager.mainContext
         _ = contextManager.persistentStoreCoordinator
@@ -134,7 +134,7 @@ class ContextManagerTests: XCTestCase {
         UserDefaults.standard.synchronize()
 
         // Initialize 21 > 23 Migration
-        let secondContext = performCoredataMigration(newModelName: model23Name)
+        let secondContext = performCoredataMigration(model23Name)
 
         // Verify that the two accounts have been migrated
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
@@ -160,7 +160,7 @@ class ContextManagerTests: XCTestCase {
         let model23Name = "WordPress 23"
 
         // Instantiate a Model 21 Stack
-        startupCoredataStack(modelName: model21Name)
+        startupCoredataStack(model21Name)
 
         let mainContext = contextManager.mainContext
         _ = contextManager.persistentStoreCoordinator
@@ -189,7 +189,7 @@ class ContextManagerTests: XCTestCase {
         UserDefaults.standard.synchronize()
 
         // Initialize 21 > 23 Migration
-        let secondContext = performCoredataMigration(newModelName: model23Name)
+        let secondContext = performCoredataMigration(model23Name)
 
         // Verify that the three accounts made it through
         let allAccountsRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
@@ -216,7 +216,7 @@ class ContextManagerTests: XCTestCase {
         let model25Name = "WordPress 25"
 
         // Instantiate a Model 24 Stack
-        startupCoredataStack(modelName: model24Name)
+        startupCoredataStack(model24Name)
 
         let mainContext = contextManager.mainContext
         _ = contextManager.persistentStoreCoordinator
@@ -236,7 +236,7 @@ class ContextManagerTests: XCTestCase {
         try! mainContext?.save()
 
         // Initialize 24 > 25 Migration
-        let secondContext = performCoredataMigration(newModelName: model25Name)
+        let secondContext = performCoredataMigration(model25Name)
 
         // Test the existence of Post object after migration
         let allPostsRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Post")
@@ -272,13 +272,13 @@ class ContextManagerTests: XCTestCase {
 
     // MARK: - Helper Methods
 
-    private func startupCoredataStack(modelName: String) {
-        let modelURL = urlForModelName(name: modelName as NSString!)
+    fileprivate func startupCoredataStack(_ modelName: String) {
+        let modelURL = urlForModelName(modelName as NSString!)
         let model = NSManagedObjectModel(contentsOf: modelURL! as URL)
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model!)
 
-        let storeUrl = contextManager.storeURL as NSURL
-        removeStoresBasedOnStoreURL(storeURL: storeUrl)
+        let storeUrl = contextManager.storeURL as URL
+        removeStoresBasedOnStoreURL(storeUrl)
         do {
             _ = try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeUrl as URL, options: nil)
         } catch let error as NSError {
@@ -293,14 +293,14 @@ class ContextManagerTests: XCTestCase {
         contextManager.persistentStoreCoordinator = persistentStoreCoordinator
     }
 
-    private func performCoredataMigration(newModelName: String) -> NSManagedObjectContext {
+    fileprivate func performCoredataMigration(_ newModelName: String) -> NSManagedObjectContext {
         let psc = contextManager.persistentStoreCoordinator
         _ = contextManager.mainContext
 
         let persistentStore = psc?.persistentStores.first!
         try! psc?.remove(persistentStore!)
 
-        let newModelURL = urlForModelName(name: newModelName as NSString!)
+        let newModelURL = urlForModelName(newModelName as NSString!)
         contextManager.managedObjectModel = NSManagedObjectModel(contentsOf: newModelURL! as URL)
         let standardPSC = contextManager.standardPSC
 
@@ -312,7 +312,7 @@ class ContextManagerTests: XCTestCase {
         return secondContext
     }
 
-    private func urlForModelName(name: NSString!) -> NSURL? {
+    fileprivate func urlForModelName(_ name: NSString!) -> URL? {
         let bundle = Bundle.main
         var url = bundle.url(forResource: name as String, withExtension: "mom")
 
@@ -323,19 +323,19 @@ class ContextManagerTests: XCTestCase {
             }
         }
 
-        return url as NSURL?
+        return url
     }
 
-    private func removeStoresBasedOnStoreURL(storeURL: NSURL) {
-        if storeURL.lastPathComponent == nil {
+    fileprivate func removeStoresBasedOnStoreURL(_ storeURL: URL) {
+        if storeURL.lastPathComponent.isEmpty {
             return
         }
 
         let fileManager = FileManager.default
         let directoryUrl = storeURL.deletingLastPathComponent
-        let files = try! fileManager.contentsOfDirectory(at: directoryUrl!, includingPropertiesForKeys: nil, options: FileManager.DirectoryEnumerationOptions.skipsSubdirectoryDescendants)
+        let files = try! fileManager.contentsOfDirectory(at: directoryUrl(), includingPropertiesForKeys: nil, options: FileManager.DirectoryEnumerationOptions.skipsSubdirectoryDescendants)
         for file in files {
-            let range = file.lastPathComponent.range(of: storeURL.lastPathComponent!)
+            let range = file.lastPathComponent.range(of: storeURL.lastPathComponent)
             if range?.lowerBound != range?.upperBound {
                 try! fileManager.removeItem(at: file)
             }

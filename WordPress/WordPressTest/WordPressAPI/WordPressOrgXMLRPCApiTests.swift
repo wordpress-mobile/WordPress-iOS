@@ -15,7 +15,7 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
     }
 
-    private func isXmlRpcAPIRequest() -> OHHTTPStubsTestBlock {
+    fileprivate func isXmlRpcAPIRequest() -> OHHTTPStubsTestBlock {
         return { request in
             return request.url?.absoluteString == self.xmlrpcEndpoint
         }
@@ -28,7 +28,7 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
         }
 
         let expect = self.expectation(description: "One callback should be invoked")
-        let api = WordPressOrgXMLRPCApi(endpoint:NSURL(string:xmlrpcEndpoint)! as URL)
+        let api = WordPressOrgXMLRPCApi(endpoint:URL(string:xmlrpcEndpoint)! as URL)
         api.callMethod("wp.getPost", parameters:nil, success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
             expect.fulfill()
             XCTAssert(responseObject is [String:AnyObject], "The response should be a dictionary")

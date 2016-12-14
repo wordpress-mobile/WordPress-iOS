@@ -31,7 +31,7 @@ class CoreDataHelperTests: XCTestCase
     /// Verifies that allObjects returns all of the entities of the specialized kind.
     ///
     func testAllObjectsReturnsAllOfTheAvailableEntitiesSortedByValue() {
-        insertDummyEntities(count: 100)
+        insertDummyEntities(100)
 
 
         let descriptor = NSSortDescriptor(key: "value", ascending: true)
@@ -47,7 +47,7 @@ class CoreDataHelperTests: XCTestCase
     /// predicate.
     ///
     func testAllObjectsMatchingPredicateEffectivelyFiltersEntities() {
-        insertDummyEntities(count: 100)
+        insertDummyEntities(100)
 
         let minValue = 50
         let maxValue = 59
@@ -66,7 +66,7 @@ class CoreDataHelperTests: XCTestCase
     ///
     func testCountObjectsReturnsTheRightEntityCount() {
         let expected = 80
-        insertDummyEntities(count: expected)
+        insertDummyEntities(expected)
 
         let count = helper.countObjects()
         XCTAssert(count == expected)
@@ -77,7 +77,7 @@ class CoreDataHelperTests: XCTestCase
     func testCountObjectsReturnsTheRightEntityCountMatchingTheSpecifiedPredicate() {
         let inserted = 42
         let expected = 3
-        insertDummyEntities(count: inserted)
+        insertDummyEntities(inserted)
 
         let predicate = NSPredicate(format: "value BETWEEN %@", [5, 7])
         let retrieved = helper.countObjects(matchingPredicate: predicate)
@@ -89,7 +89,7 @@ class CoreDataHelperTests: XCTestCase
     func testDeleteObjectEffectivelyNukesTheObjectFromContext() {
         let count = 30
 
-        insertDummyEntities(count: count)
+        insertDummyEntities(count)
         XCTAssert(helper.countObjects() == count)
 
         let all = helper.allObjects()
@@ -103,7 +103,7 @@ class CoreDataHelperTests: XCTestCase
     func testDeleteAllObjectsEffectivelyNukesAllOfTheEntities() {
         let count = 50
 
-        insertDummyEntities(count: count)
+        insertDummyEntities(count)
 
         XCTAssert(helper.countObjects() == count)
         helper.deleteAllObjects()
@@ -117,7 +117,7 @@ class CoreDataHelperTests: XCTestCase
     func testFirstObjectMatchingPredicateReturnsTheExpectedObject() {
         let count = 50
         let targetKey = "5"
-        insertDummyEntities(count: count)
+        insertDummyEntities(count)
 
         let predicate = NSPredicate(format: "key == %@", targetKey)
         let retrieved = helper.firstObject(matchingPredicate: predicate)
@@ -131,7 +131,7 @@ class CoreDataHelperTests: XCTestCase
     func testFirstObjectMatchingPredicateReturnsNilIfNothingWasFound() {
         let count = 5
         let targetKey = "50"
-        insertDummyEntities(count: count)
+        insertDummyEntities(count)
 
         let predicate = NSPredicate(format: "key == %@", targetKey)
         let retrieved = helper.firstObject(matchingPredicate: predicate)
@@ -185,7 +185,7 @@ class CoreDataHelperTests: XCTestCase
 //
 extension CoreDataHelperTests
 {
-    func insertDummyEntities(count: Int) {
+    func insertDummyEntities(_ count: Int) {
         for i in 0 ..< count {
             let entity = helper.insertNewObject()
             entity.key = "\(i)"

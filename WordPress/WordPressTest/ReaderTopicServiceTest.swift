@@ -56,7 +56,7 @@ class ReaderTopicSwiftTest : XCTestCase
         return try! context!.count(for: request)
     }
 
-    func seedPostsForTopic(topic: ReaderAbstractTopic) {
+    func seedPostsForTopic(_ topic: ReaderAbstractTopic) {
         let context = ContextManager.sharedInstance().mainContext
 
         let post1 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(),into: context!) as! ReaderPost
@@ -271,7 +271,7 @@ class ReaderTopicSwiftTest : XCTestCase
         topic.path = "/list/topic"
         topic.title = "topic"
         topic.type = ReaderListTopic.TopicType
-        seedPostsForTopic(topic: topic)
+        seedPostsForTopic(topic)
 
         XCTAssertTrue(topic.posts.count == 3, "Topic should have posts relationship with three posts.")
 

@@ -5,22 +5,22 @@ import XCTest
 
 class PostTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
-    private var context: NSManagedObjectContext!
+    fileprivate var contextManager: TestContextManager!
+    fileprivate var context: NSManagedObjectContext!
 
-    private func newTestBlog() -> Blog {
+    fileprivate func newTestBlog() -> Blog {
         return NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
     }
 
-    private func newTestPost() -> Post {
+    fileprivate func newTestPost() -> Post {
         return NSEntityDescription.insertNewObject(forEntityName: Post.entityName, into: context) as! Post
     }
 
-    private func newTestPostCategory() -> PostCategory {
+    fileprivate func newTestPostCategory() -> PostCategory {
         return NSEntityDescription.insertNewObject(forEntityName: "Category", into: context) as! PostCategory
     }
 
-    private func newTestPostCategory(name: String) -> PostCategory {
+    fileprivate func newTestPostCategory(_ name: String) -> PostCategory {
         let category = newTestPostCategory()
         category.categoryName = name
 
@@ -51,7 +51,7 @@ class PostTests: XCTestCase {
 
         let post = newTestPost()
 
-        post.categories = [newTestPostCategory(name: "1"), newTestPostCategory(name: "2"), newTestPostCategory(name: "3")]
+        post.categories = [newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3")]
 
         let categoriesText = post.categoriesText()
 
@@ -62,9 +62,9 @@ class PostTests: XCTestCase {
         let blog = newTestBlog()
         let post = newTestPost()
 
-        let category1 = newTestPostCategory(name: "One")
-        let category2 = newTestPostCategory(name: "Two")
-        let category3 = newTestPostCategory(name: "Three")
+        let category1 = newTestPostCategory("One")
+        let category2 = newTestPostCategory("Two")
+        let category3 = newTestPostCategory("Three")
 
         blog.categories = [category1, category2, category3]
 
@@ -112,7 +112,7 @@ class PostTests: XCTestCase {
 
     func testThatAddCategoriesWorks() {
         let post = newTestPost()
-        let testCategories = Set([newTestPostCategory(name: "1"), newTestPostCategory(name: "2"), newTestPostCategory(name: "3")])
+        let testCategories = Set([newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3")])
 
         post.addCategories(testCategories)
 
@@ -130,7 +130,7 @@ class PostTests: XCTestCase {
 
     func testThatAddCategoriesObjectWorks() {
         let post = newTestPost()
-        let testCategory = newTestPostCategory(name: "1")
+        let testCategory = newTestPostCategory("1")
 
         post.addCategoriesObject(testCategory)
 
@@ -145,7 +145,7 @@ class PostTests: XCTestCase {
 
     func testThatRemoveCategoriesWorks() {
         let post = newTestPost()
-        let testCategories = Set<PostCategory>(arrayLiteral: newTestPostCategory(name: "1"), newTestPostCategory(name: "2"), newTestPostCategory(name: "3"))
+        let testCategories = Set<PostCategory>(arrayLiteral: newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3"))
 
         post.categories = testCategories
         XCTAssertNotEqual(post.categories?.count, 0)
@@ -157,7 +157,7 @@ class PostTests: XCTestCase {
 
     func testThatRemoveCategoriesObjectWorks() {
         let post = newTestPost()
-        let testCategory = newTestPostCategory(name: "1")
+        let testCategory = newTestPostCategory("1")
 
         post.categories = Set<PostCategory>(arrayLiteral: testCategory)
         XCTAssertEqual(post.categories?.count, 1)
@@ -214,7 +214,7 @@ class PostTests: XCTestCase {
         let post = newTestPost()
 
         XCTAssertFalse(post.hasCategories())
-        post.categories = [newTestPostCategory(name: "1"), newTestPostCategory(name: "2"), newTestPostCategory(name: "3")]
+        post.categories = [newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3")]
         XCTAssertTrue(post.hasCategories())
         post.categories = nil
         XCTAssertFalse(post.hasCategories())
