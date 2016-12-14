@@ -39,6 +39,10 @@ class AppSettingsViewController: UITableViewController {
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.handler.viewModel = self.tableViewModel()
+    }
 
     // MARK: - Model mapping
 
@@ -56,7 +60,8 @@ class AppSettingsViewController: UITableViewController {
         )
 
         var mediaSizeString = NSLocalizedString("Unknown", comment: "Label for size of media when it's not possible to calculate it.")
-        if let mediaSize = try? NSFileManager.defaultManager().allocatedSizeOf(directoryURL: MediaService.urlForMediaDirectory()) {
+        let fileManager = NSFileManager()
+        if let mediaSize = try? fileManager.allocatedSizeOf(directoryURL: MediaService.urlForMediaDirectory()) {
             if mediaSize == 0 {
                 mediaSizeString = NSLocalizedString("Empty", comment: "Label for size of media when the cache is empty.")
             } else {
@@ -70,6 +75,8 @@ class AppSettingsViewController: UITableViewController {
                                                       action: { row in
                                                         MediaService.cleanMediaCacheFolder()
                                                         SVProgressHUD.showSuccessWithStatus(NSLocalizedString("Media Cache cleaned", comment: "Label for message that confirms cleaning of media cache."))
+                                                        self.handler.viewModel = self.tableViewModel()
+                                                        self.tableView.reloadData()
         })
 
         let editorSettings = EditorSettings()
