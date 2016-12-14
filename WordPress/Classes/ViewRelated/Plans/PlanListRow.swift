@@ -30,15 +30,15 @@ struct PlanListRow: ImmuTableRow {
     }
 
     struct Formatter {
-        static let titleAttributes = [
+        static let titleAttributes: [String: Any] = [
             NSFontAttributeName: WPStyleGuide.tableviewTextFont(),
             NSForegroundColorAttributeName: WPStyleGuide.tableViewActionColor()
         ]
-        static let priceAttributes = [
+        static let priceAttributes: [String: Any] = [
             NSFontAttributeName: WPFontManager.systemRegularFont(ofSize: 14.0),
             NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
         ]
-        static let pricePeriodAttributes = [
+        static let pricePeriodAttributes: [String: Any] = [
             NSFontAttributeName: WPFontManager.systemItalicFont(ofSize: 14.0),
             NSForegroundColorAttributeName: WPStyleGuide.grey()
         ]
@@ -49,7 +49,7 @@ struct PlanListRow: ImmuTableRow {
             let attributedTitle = NSMutableAttributedString(attributedString: planTitle)
 
             if active {
-                let currentPlanAttributes = [
+                let currentPlanAttributes: [String: Any] = [
                     NSFontAttributeName: WPFontManager.systemSemiBoldFont(ofSize: 11.0),
                     NSForegroundColorAttributeName: WPStyleGuide.validGreen()
                 ]
