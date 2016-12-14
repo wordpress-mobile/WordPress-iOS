@@ -604,8 +604,6 @@
 		E10B3654158F2D4500419A93 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3653158F2D4500419A93 /* UIKit.framework */; };
 		E10B3655158F2D7800419A93 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7371256D0F60046A4A3 /* CoreGraphics.framework */; };
 		E11000991CDB5F1E00E33887 /* KeychainTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11000981CDB5F1E00E33887 /* KeychainTools.swift */; };
-		E110D4501E015D3D0052E888 /* PingHub.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E12C26031E0155B00066E1F3 /* PingHub.framework */; };
-		E110D4511E015D3D0052E888 /* PingHub.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E12C26031E0155B00066E1F3 /* PingHub.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */ = {isa = PBXBuildFile; fileRef = E11330501A13BAA300D36D84 /* me-sites-with-jetpack.json */; };
 		E11450DF1C4E47E600A6BD0F /* NoticeAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11450DE1C4E47E600A6BD0F /* NoticeAnimator.swift */; };
 		E114D79A153D85A800984182 /* WPError.m in Sources */ = {isa = PBXBuildFile; fileRef = E114D799153D85A800984182 /* WPError.m */; };
@@ -657,6 +655,8 @@
 		E15644F31CE0E5A500D96E64 /* PlanDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15644F21CE0E5A500D96E64 /* PlanDetailViewModel.swift */; };
 		E157D5E01C690A6C00F04FB9 /* ImmuTableTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E157D5DF1C690A6C00F04FB9 /* ImmuTableTestUtils.swift */; };
 		E16273E11B2ACEB600088AF7 /* BlogToBlog32to33.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16273E01B2ACEB600088AF7 /* BlogToBlog32to33.swift */; };
+		E16396F61E01A59600E8EAB9 /* PingHub.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E12C26031E0155B00066E1F3 /* PingHub.framework */; };
+		E16396F71E01A59600E8EAB9 /* PingHub.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E12C26031E0155B00066E1F3 /* PingHub.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */; };
 		E166FA1D1BB0658600374B5B /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA1C1BB0658600374B5B /* Person.swift */; };
 		E166FA221BB1359E00374B5B /* PeopleRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA211BB1359E00374B5B /* PeopleRemote.swift */; };
@@ -1005,13 +1005,13 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E110D4521E015D3D0052E888 /* Embed Frameworks */ = {
+		E16396F81E01A59600E8EAB9 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E110D4511E015D3D0052E888 /* PingHub.framework in Embed Frameworks */,
+				E16396F71E01A59600E8EAB9 /* PingHub.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2386,7 +2386,7 @@
 				8355D67E11D13EAD00A61362 /* MobileCoreServices.framework in Frameworks */,
 				A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */,
 				374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */,
-				E110D4501E015D3D0052E888 /* PingHub.framework in Frameworks */,
+				E16396F61E01A59600E8EAB9 /* PingHub.framework in Frameworks */,
 				E10B3655158F2D7800419A93 /* CoreGraphics.framework in Frameworks */,
 				E10B3654158F2D4500419A93 /* UIKit.framework in Frameworks */,
 				E10B3652158F2D3F00419A93 /* QuartzCore.framework in Frameworks */,
@@ -5087,7 +5087,7 @@
 				93E5284E19A7741A003A1A9C /* Embed App Extensions */,
 				2F10F29417416E4D8CFE9A58 /* [CP] Embed Pods Frameworks */,
 				9867B4878E9B37ACD2FE0296 /* [CP] Copy Pods Resources */,
-				E110D4521E015D3D0052E888 /* Embed Frameworks */,
+				E16396F81E01A59600E8EAB9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
