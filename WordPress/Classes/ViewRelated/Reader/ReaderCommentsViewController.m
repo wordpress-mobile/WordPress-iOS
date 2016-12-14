@@ -54,7 +54,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
 @property (nonatomic) BOOL isLoggedIn;
-
+@property (nonatomic) BOOL needsUpdateAfterScrolling;
 @end
 
 
@@ -609,6 +609,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
 }
 
+- (void)updateTableViewForResizedAttachments
+{
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
 
 #pragma mark - Actions
 
@@ -832,6 +838,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self refreshReplyTextViewPlaceholder];
 
     [self.tableView deselectSelectedRowWithAnimation:YES];
+    if (self.needsUpdateAfterScrolling) {
+        self.needsUpdateAfterScrolling = NO;
+        [self updateTableViewForResizedAttachments];
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -931,8 +941,11 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)richContentViewDidResizeAttachment:(WPRichContentView *)richContentView
 {
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
+    if (self.tableViewHandler.isScrolling) {
+        self.needsUpdateAfterScrolling = YES;
+        return;
+    }
+    [self updateTableViewForResizedAttachments];
 }
 
 - (void)presentWebViewControllerWithURL:(NSURL *)URL
