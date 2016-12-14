@@ -1,9 +1,23 @@
 import Foundation
 
+/// An action received through the PingHub protocol.
+///
+/// This enum represents all the known possible actions that we can receive
+/// through a PingHub client.
+///
 public enum Action {
+
+    /// A note was Added or Updated
+    ///
     case push(noteID: Int, userID: Int, date: NSDate, type: String)
+
+    /// A note was Deleted
+    ///
     case delete(noteID: Int)
 
+    /// Creates an action from a received message, if it represents a known
+    /// action. Otherwise, it returns `nil`
+    ///
     public static func from(message message: [String: AnyObject]) -> Action? {
         guard let action = message["action"] as? String else {
             return nil

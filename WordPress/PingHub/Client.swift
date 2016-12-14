@@ -1,27 +1,62 @@
 import Foundation
 
+/// The delegate of a PinghubClient must adopt the PinghubClientDelegate
+/// protocol. The client will inform the delegate of any relevant events.
+///
 public protocol PinghubClientDelegate {
+    /// The client connected successfully.
+    ///
     func pingubConnected(client client: PinghubClient)
+
+    /// The client disconnected. This might be intentional or due to an error.
+    /// The optional error argument will contain the error if there is one.
+    ///
     func pinghubDisconnected(client client: PinghubClient, error: ErrorType?)
+
+    /// The client received an action.
+    ///
     func pinghubActionReceived(client client: PinghubClient, action: Action)
+
+    /// The client received some data that it didn't look like a known action.
+    ///
     func pinghubUnexpectedDataReceived(client client: PinghubClient, message: String)
 }
 
 
+/// Encapsulates a PingHub connection.
+///
 public class PinghubClient {
 
-    private let socket: Socket
+    /// The client's delegate.
+    ///
     public var delegate: PinghubClientDelegate? = nil
 
+    /// The web socket to use for communication with the PingHub server.
+    ///
+    private let socket: Socket
+
+    /// Initializes the client with an already configured token.
+    ///
     internal init(socket: Socket) {
         self.socket = socket
         setupSocketCallbacks()
     }
 
+    /// Initializes the client with an OAuth2 token.
+    ///
+    public convenience init(token: String) {
+        let socket = starscreamSocket(PinghubClient.endpoint, token: token)
+        self.init(socket: socket)
+    }
+
+    /// Connects the client to the server.
+    ///
     public func connect() {
         socket.connect()
     }
 
+    /// Disconnects the client from the server.
+    ///
     public func disconnect() {
         socket.disconnect()
     }
