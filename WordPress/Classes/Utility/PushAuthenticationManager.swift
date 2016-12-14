@@ -106,7 +106,7 @@ import WordPressComAnalytics
     /// - Parameter userInfo: Is the Notification's payload.
     ///
     fileprivate func isNotificationExpired(_ userInfo: NSDictionary?) -> Bool {
-        let rawExpiration = userInfo?["expires"] as? Int
+        let rawExpiration = userInfo?["expires"] as? TimeInterval
         if rawExpiration == nil {
             return false
         }
