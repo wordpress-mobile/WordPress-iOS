@@ -27,7 +27,7 @@ import Foundation
         static let galleryImgTags = try! NSRegularExpression(pattern: "<img[^>]*data-orig-file[^>]*/>", options: .CaseInsensitive)
 
         // Trailing BR Tags
-        static let trailingBRTags = try! NSRegularExpression(pattern: "(\\s*<br\\s*(/?)\\s*>\\s*)*$", options: .CaseInsensitive)
+        static let trailingBRTags = try! NSRegularExpression(pattern: "(\\s*<br\\s*(/?)\\s*>\\s*)+$", options: .CaseInsensitive)
     }
 
 
