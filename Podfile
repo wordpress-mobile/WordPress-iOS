@@ -72,10 +72,6 @@ abstract_target 'WordPress_Base' do
 
 end
 
-target 'PingHub' do
-    pod 'Starscream', '~> 1.1.4' # Pinned to v1 for Swift 2.3 support
-end
-
 post_install do |installer_representation|
 #   installer_representation.pods_project.targets.each do |target|
 #     # See https://github.com/CocoaPods/CocoaPods/issues/3838

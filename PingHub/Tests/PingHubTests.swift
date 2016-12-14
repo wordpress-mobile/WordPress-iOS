@@ -14,7 +14,7 @@ class PingHubTests: XCTestCase {
     }
 
     func testActionPush() {
-        let message = JSONLoader().loadFileWithName("notes-action-push", type: "json")!
+        let message = loadJSONMessage("notes-action-push")!
         let action = Action.from(message: message)
 
         guard case .Some(.push(let noteID, let userID, _, _)) = action else {
@@ -26,7 +26,7 @@ class PingHubTests: XCTestCase {
     }
 
     func testActionDelete() {
-        let message = JSONLoader().loadFileWithName("notes-action-delete", type: "json")!
+        let message = loadJSONMessage("notes-action-delete")!
         let action = Action.from(message: message)
 
         guard case .Some(.delete(let noteID)) = action else {
@@ -37,7 +37,7 @@ class PingHubTests: XCTestCase {
     }
 
     func testActionUnsupported() {
-        let message = JSONLoader().loadFileWithName("notes-action-unsupported", type: "json")!
+        let message = loadJSONMessage("notes-action-unsupported")!
         let action = Action.from(message: message)
         XCTAssertNil(action)
     }
@@ -101,6 +101,18 @@ class PingHubTests: XCTestCase {
 
         XCTAssertNil(delegate.receivedAction)
         XCTAssertNotNil(delegate.unexpectedMessage)
+    }
+}
+
+private extension PingHubTests {
+    func loadJSONMessage(name: String) -> [String: AnyObject]? {
+        guard let path = NSBundle(forClass: self.dynamicType).pathForResource(name, ofType: "json"),
+            let data = NSData(contentsOfFile: path),
+            let result = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String: AnyObject] else {
+                return nil
+        }
+
+        return result
     }
 }
 

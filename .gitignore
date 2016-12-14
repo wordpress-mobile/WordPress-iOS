@@ -9,7 +9,7 @@ Icon
 
 # Xcode
 .DS_Store
-*/build/*
+/build/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -65,3 +65,4 @@ WordPress/InfoPlist.h
 
 # Dependencies
 /vendor/
+/Carthage/Checkouts/

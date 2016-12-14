@@ -1,0 +1,3 @@
+defaults:
+  configuration: Release
+  platform: iOS

@@ -1,0 +1,10 @@
+framework module Starscream {
+  umbrella header "Starscream.h"
+
+  export *
+  module * { export * }
+}
+
+module Starscream.Swift {
+    header "Starscream-Swift.h"
+}

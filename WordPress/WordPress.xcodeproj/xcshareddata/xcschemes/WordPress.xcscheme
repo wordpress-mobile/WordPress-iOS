@@ -20,6 +20,34 @@
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E138B3931E0153A100D0513D"
+               BuildableName = "PingHub.framework"
+               BlueprintName = "PingHub"
+               ReferencedContainer = "container:../PingHub/PingHub.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E138B39C1E0153A200D0513D"
+               BuildableName = "PingHubTests.xctest"
+               BlueprintName = "PingHubTests"
+               ReferencedContainer = "container:../PingHub/PingHub.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -42,10 +70,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E13469A41DFAB55900991397"
+               BlueprintIdentifier = "E138B39C1E0153A200D0513D"
                BuildableName = "PingHubTests.xctest"
                BlueprintName = "PingHubTests"
-               ReferencedContainer = "container:WordPress.xcodeproj">
+               ReferencedContainer = "container:../PingHub/PingHub.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
