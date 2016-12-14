@@ -1,7 +1,7 @@
 import Foundation
 
 
-extension NSDate
+extension Date
 {
     /// Private Date Formatters
     ///
@@ -38,7 +38,7 @@ extension NSDate
 
         let flags: NSCalendar.Unit = [.day, .weekOfYear, .month, .year]
 
-        let components      = (calendar as NSCalendar).components(flags, from: self as Date)
+        let components      = (calendar as NSCalendar).components(flags, from: self)
 
         var normalized      = DateComponents()
         normalized.year     = components.year
@@ -46,12 +46,18 @@ extension NSDate
         normalized.weekday  = components.weekday
         normalized.day      = components.day
 
-        return calendar.date(from: normalized) ?? self as Date
+        return calendar.date(from: normalized) ?? self
     }
 
     /// Formats the current NSDate instance using the RFC1123 Standard
     ///
     public func toStringAsRFC1123() -> String {
-        return DateFormatters.rfc1123.string(from: self as Date)
+        return DateFormatters.rfc1123.string(from: self)
+    }
+}
+
+extension NSDate {
+    public static func dateWithISO8601String(_ string: String) -> NSDate? {
+        return Date.DateFormatters.iso8601.date(from: string) as NSDate?
     }
 }
