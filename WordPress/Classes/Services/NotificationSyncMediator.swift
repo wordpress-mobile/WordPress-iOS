@@ -197,7 +197,8 @@ class NotificationSyncMediator
         }
     }
 
-    // TODO: maybe move this somewhere else, as we're not really syncing here
+    /// Deletes the note with the given ID from Core Data.
+    ///
     func deleteNote(noteID: String) {
         let derivedContext = self.dynamicType.sharedDerivedContext(with: contextManager)
         let helper = CoreDataHelper<Notification>(context: derivedContext)
