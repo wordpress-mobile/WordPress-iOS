@@ -10,19 +10,19 @@ class NotificationSyncMediatorTests: XCTestCase
 {
     /// CoreData Context Manager
     ///
-    private var manager: TestContextManager!
+    fileprivate var manager: TestContextManager!
 
     /// WordPress REST API
     ///
-    private var dotcomAPI: WordPressComRestApi!
+    fileprivate var dotcomAPI: WordPressComRestApi!
 
     /// Sync Mediator
     ///
-    private var mediator: NotificationSyncMediator!
+    fileprivate var mediator: NotificationSyncMediator!
 
     /// Expectation's Timeout
     ///
-    private let timeout = TimeInterval(3)
+    fileprivate let timeout = TimeInterval(3)
 
 
     // MARK: - Overriden Methods

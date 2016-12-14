@@ -79,7 +79,7 @@ class MockTableView: CellRegistrator {
         }
 
     }
-    func registerClass(cellClass: AnyClass?, forCellReuseIdentifier identifier: String) {
+    func registerClass(_ cellClass: AnyClass?, forCellReuseIdentifier identifier: String) {
         registeredClasses.append((identifier, cellClass!))
     }
 }

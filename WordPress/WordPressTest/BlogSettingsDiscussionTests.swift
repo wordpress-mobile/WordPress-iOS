@@ -4,7 +4,7 @@ import Foundation
 
 class BlogSettingsDiscussionTests : XCTestCase
 {
-    private var manager : TestContextManager!
+    fileprivate var manager : TestContextManager!
 
     override func setUp() {
         manager = TestContextManager()
@@ -82,7 +82,7 @@ class BlogSettingsDiscussionTests : XCTestCase
     typealias Sorting = BlogSettings.CommentsSorting
 
     // MARK: - Private Helpers
-    private func newSettings() -> BlogSettings {
+    fileprivate func newSettings() -> BlogSettings {
         let context = manager!.mainContext
         let name = BlogSettings.classNameWithoutNamespaces()
         let entity = NSEntityDescription.insertNewObject(forEntityName: name, into: context!)

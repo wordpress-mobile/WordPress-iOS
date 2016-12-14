@@ -37,7 +37,7 @@ class PeopleServiceTests : XCTestCase
 
     // MARK: - Helpers
 
-    private func stubRemoteResponse(endpoint: String, filename: String) {
+    fileprivate func stubRemoteResponse(_ endpoint: String, filename: String) {
         stub(condition: { request in
             return request.url?.absoluteString.range(of: endpoint) != nil
         }) { _ in
@@ -52,7 +52,7 @@ class PeopleServiceTests : XCTestCase
     func testValidateInvitationWithInvalidUsernameFails() {
         let expect = expectation(description: "Send Invite")
 
-        stubRemoteResponse(endpoint: "invites/validate", filename: validationFailureMockFilename)
+        stubRemoteResponse("invites/validate", filename: validationFailureMockFilename)
         remote.validateInvitation(321, usernameOrEmail: "someInvalidUser", role: .Follower, success: {
             XCTAssert(false, "This callback shouldn't get called")
             expect.fulfill()
@@ -66,7 +66,7 @@ class PeopleServiceTests : XCTestCase
     func testValidateInvitationWithValidUsernameSucceeds() {
         let expect = expectation(description: "Send Invite")
 
-        stubRemoteResponse(endpoint: "invites/validate", filename: validationSuccessMockFilename)
+        stubRemoteResponse("invites/validate", filename: validationSuccessMockFilename)
         remote.validateInvitation(321, usernameOrEmail: "someValidUser", role: .Follower, success: {
             expect.fulfill()
         }, failure: { error in
@@ -80,7 +80,7 @@ class PeopleServiceTests : XCTestCase
     func testSendInvitationToInvalidUsernameFails() {
         let expect = expectation(description: "Validate Invite")
 
-        stubRemoteResponse(endpoint: "invites/new", filename: sendFailureMockFilename)
+        stubRemoteResponse("invites/new", filename: sendFailureMockFilename)
         remote.sendInvitation(321, usernameOrEmail: "someInvalidUser", role: .Follower, message: "", success: {
             XCTAssert(false, "This callback shouldn't get called")
             expect.fulfill()
@@ -94,7 +94,7 @@ class PeopleServiceTests : XCTestCase
     func testSendInvitationToValidUsernameSucceeds() {
         let expect = expectation(description: "Validate Invite")
 
-        stubRemoteResponse(endpoint: "invites/new", filename: sendSuccessMockFilename)
+        stubRemoteResponse("invites/new", filename: sendSuccessMockFilename)
         remote.sendInvitation(321, usernameOrEmail: "someValidUser", role: .Follower, message: "", success: {
             expect.fulfill()
         }, failure: { error in

@@ -31,7 +31,7 @@ class DomainsServiceTests : XCTestCase
         OHHTTPStubs.removeAllStubs()
     }
 
-    private func stubDomainsResponseWithFile(filename: String) {
+    fileprivate func stubDomainsResponseWithFile(_ filename: String) {
         stub(condition: { request in
             return (request.url!.absoluteString as NSString).contains(self.domainsEndpoint) && request.httpMethod! == "GET"
         }) { _ in
@@ -40,7 +40,7 @@ class DomainsServiceTests : XCTestCase
         }
     }
 
-    private func makeTestBlog() -> Blog {
+    fileprivate func makeTestBlog() -> Blog {
         let accountService = AccountService(managedObjectContext: context)
         let blogService = BlogService(managedObjectContext: context)
         let account = accountService?.createOrUpdateAccount(withUsername: "user", authToken: "token")
@@ -53,7 +53,7 @@ class DomainsServiceTests : XCTestCase
     }
 
 
-    private func findAllDomains() -> [ManagedDomain] {
+    fileprivate func findAllDomains() -> [ManagedDomain] {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName)
         fetch.sortDescriptors = [ NSSortDescriptor(key: ManagedDomain.Attributes.domainName, ascending: true) ]
         fetch.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, testBlog)
@@ -66,7 +66,7 @@ class DomainsServiceTests : XCTestCase
         }
     }
 
-    private func fetchDomains() {
+    fileprivate func fetchDomains() {
         let expect = expectation(description: "Domains fetch complete expectation")
         let service = DomainsService(managedObjectContext: context, remote: remote)
         service.refreshDomainsForSite(Int(testBlog.dotComID!), completion: { success in
@@ -80,7 +80,7 @@ class DomainsServiceTests : XCTestCase
         let domains = findAllDomains()
         XCTAssert(domains.count == 0, "Expecting no domains initially")
 
-        stubDomainsResponseWithFile(filename: "domain-service-valid-domains.json")
+        stubDomainsResponseWithFile("domain-service-valid-domains.json")
         fetchDomains()
 
         let updatedDomains = findAllDomains()
@@ -88,7 +88,7 @@ class DomainsServiceTests : XCTestCase
     }
 
     func testDomainServiceParsesPrimaryDomain() {
-        stubDomainsResponseWithFile(filename: "domain-service-valid-domains.json")
+        stubDomainsResponseWithFile("domain-service-valid-domains.json")
         fetchDomains()
 
         let updatedDomains = findAllDomains()
@@ -98,7 +98,7 @@ class DomainsServiceTests : XCTestCase
     }
 
     func testDomainServiceParsesAllDomainTypes() {
-        stubDomainsResponseWithFile(filename: "domain-service-all-domain-types.json")
+        stubDomainsResponseWithFile("domain-service-all-domain-types.json")
         fetchDomains()
 
         let updatedDomains = findAllDomains()
@@ -125,7 +125,7 @@ class DomainsServiceTests : XCTestCase
         let domains = findAllDomains()
         XCTAssert(domains.count == 1, "Expecting 1 domain initially")
 
-        stubDomainsResponseWithFile(filename: "domain-service-valid-domains.json")
+        stubDomainsResponseWithFile("domain-service-valid-domains.json")
         fetchDomains()
 
         let updatedDomains = findAllDomains()
@@ -137,13 +137,13 @@ class DomainsServiceTests : XCTestCase
     }
 
     func testDomainServiceRemovesOldDomains() {
-        stubDomainsResponseWithFile(filename: "domain-service-all-domain-types.json")
+        stubDomainsResponseWithFile("domain-service-all-domain-types.json")
         fetchDomains()
 
         let domains = findAllDomains()
         XCTAssert(domains.count == 4, "Expecting 4 domains initially")
 
-        stubDomainsResponseWithFile(filename: "domain-service-valid-domains.json")
+        stubDomainsResponseWithFile("domain-service-valid-domains.json")
         fetchDomains()
 
         let updatedDomains = findAllDomains()

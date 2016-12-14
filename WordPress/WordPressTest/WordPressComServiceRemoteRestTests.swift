@@ -25,7 +25,7 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
     }
 
-    private func isRestAPIUsersNewRequest() -> OHHTTPStubsTestBlock {
+    fileprivate func isRestAPIUsersNewRequest() -> OHHTTPStubsTestBlock {
         return { request in
             guard let url = request.url else {
                 return false
@@ -34,7 +34,7 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
         }
     }
 
-    private func isRestAPISitesNewRequest() -> OHHTTPStubsTestBlock {
+    fileprivate func isRestAPISitesNewRequest() -> OHHTTPStubsTestBlock {
         return { request in
             guard let url = request.url else {
                 return false

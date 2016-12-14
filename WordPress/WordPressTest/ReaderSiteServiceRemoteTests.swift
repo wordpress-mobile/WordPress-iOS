@@ -138,7 +138,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testFindSiteIDForURLPath() {
 
-        let url = NSURL(string: "http://www.wordpress.com")!
+        let url = URL(string: "http://www.wordpress.com")!
         let expectedPath = "v1.1/sites/\(url.host!)"
         readerSiteServiceRemote.findSiteID(for: url as URL!, success:nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Wrong method")
@@ -149,7 +149,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
         let response = [String : AnyObject]()
         var failure = false
-        let url = NSURL(string: "http://")
+        let url = URL(string: "http://")
         readerSiteServiceRemote.findSiteID(for: url as URL!, success:nil, failure: { _ in
             failure = true
         })
@@ -161,7 +161,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
         let response = ["ID" : 1]
         var siteID : UInt = 0
-        let url = NSURL(string: "http://www.wordpress.com")
+        let url = URL(string: "http://www.wordpress.com")
         readerSiteServiceRemote.findSiteID(for: url as URL!, success:{
             siteID = $0
         }, failure: nil)
@@ -201,7 +201,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testSubscribedToFeedByURLPath() {
 
-        let url = NSURL(string: "http://www.wordpress.com")!
+        let url = URL(string: "http://www.wordpress.com")!
         let expectedPath = "v1.1/read/following/mine"
         readerSiteServiceRemote.checkSubscribedToFeed(by: url as URL!, success:nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Wrong method")
@@ -210,9 +210,9 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testSubscribedToFeedByURL() {
 
-        let url = NSURL(string: "http://www.wordpress.com")!
+        let url = URL(string: "http://www.wordpress.com")!
         var subscribed = false
-        let response = url.absoluteString!
+        let response = url.absoluteString
         readerSiteServiceRemote.checkSubscribedToFeed(by: url as URL!, success:{
             subscribed = $0
             }, failure: nil)
@@ -222,7 +222,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testNotSubscribedToFeedByURL() {
 
-        let url = NSURL(string: "http://www.wordpress.com")!
+        let url = URL(string: "http://www.wordpress.com")!
         var subscribed = false
         let response = "http://www.gravatar.com"
         readerSiteServiceRemote.checkSubscribedToFeed(by: url as URL!, success:{

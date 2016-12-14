@@ -32,7 +32,7 @@ class WPFeedbackGeneratorMappingTests: XCTestCase {
 
 @available(iOS 10, *)
 class WPNotificationFeedbackGeneratorTests: XCTestCase {
-    private var mockGenerator: MockNotificationGenerator? = nil
+    fileprivate var mockGenerator: MockNotificationGenerator? = nil
 
     override func setUp() {
         super.setUp()
@@ -65,7 +65,7 @@ class WPNotificationFeedbackGeneratorTests: XCTestCase {
 @available(iOS 10, *)
 class WPImpactFeedbackGeneratorTests: XCTestCase {
     func testUIImpactFeedbackGeneratorIsCalledForLightImpact() {
-        let (lightGenerator, mockGenerator) = impactGeneratorAndMockWithStyle(style: .light)
+        let (lightGenerator, mockGenerator) = impactGeneratorAndMockWithStyle(.light)
 
         XCTAssertFalse(mockGenerator.impactOccurredCalled)
         lightGenerator.impactOccurred()
@@ -73,7 +73,7 @@ class WPImpactFeedbackGeneratorTests: XCTestCase {
     }
 
     func testUIImpactFeedbackGeneratorIsCalledForMediumImpact() {
-        let (mediumGenerator, mockGenerator) = impactGeneratorAndMockWithStyle(style: .medium)
+        let (mediumGenerator, mockGenerator) = impactGeneratorAndMockWithStyle(.medium)
 
         XCTAssertFalse(mockGenerator.impactOccurredCalled)
         mediumGenerator.impactOccurred()
@@ -81,7 +81,7 @@ class WPImpactFeedbackGeneratorTests: XCTestCase {
     }
 
     func testUIImpactFeedbackGeneratorIsCalledForHeavyImpact() {
-        let (heavyGenerator, mockGenerator) = impactGeneratorAndMockWithStyle(style: .heavy)
+        let (heavyGenerator, mockGenerator) = impactGeneratorAndMockWithStyle(.heavy)
 
         XCTAssertFalse(mockGenerator.impactOccurredCalled)
         heavyGenerator.impactOccurred()
@@ -111,7 +111,7 @@ private class MockImpactGenerator: WPImpactFeedbackGeneratorConformance {
     }
 }
 
-private func impactGeneratorAndMockWithStyle(style: WPImpactFeedbackStyle) -> (WPImpactFeedbackGenerator, MockImpactGenerator) {
+private func impactGeneratorAndMockWithStyle(_ style: WPImpactFeedbackStyle) -> (WPImpactFeedbackGenerator, MockImpactGenerator) {
     let mockGenerator = MockImpactGenerator()
     let generator = WPImpactFeedbackGenerator(style: style)
     generator.generator = mockGenerator

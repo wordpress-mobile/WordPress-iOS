@@ -10,9 +10,9 @@ class NotificationSyncServiceRemoteTests: XCTestCase
 {
     // MARK: - Properties
 
-    private var mockRemoteApi: WordPressComRestApi?
-    private var serviceRemote: NotificationSyncServiceRemote!
-    private let requestTimeout = TimeInterval(0.5)
+    fileprivate var mockRemoteApi: WordPressComRestApi?
+    fileprivate var serviceRemote: NotificationSyncServiceRemote!
+    fileprivate let requestTimeout = TimeInterval(0.5)
 
 
     // MARK: - Overriden Methods
