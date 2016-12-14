@@ -14,7 +14,7 @@ class PingHubManager: NSObject {
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.accountChanged), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationDidEnterBackground), name: UIApplicationDidEnterBackgroundNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationWillEnterForeground), name: UIApplicationWillEnterForegroundNotification, object: nil)
-        maybeReplaceClient()
+        replaceClient()
     }
 
     deinit {
@@ -23,7 +23,7 @@ class PingHubManager: NSObject {
 
     @objc
     func accountChanged() {
-        maybeReplaceClient()
+        replaceClient()
     }
 
     @objc
@@ -36,14 +36,14 @@ class PingHubManager: NSObject {
         client?.connect()
     }
 
-    private func maybeReplaceClient() {
+    private func replaceClient() {
+        client = nil
+
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         guard let account = service.defaultWordPressComAccount() else {
             return
         }
-
-        client = nil
 
         guard let token = account.authToken where !token.isEmpty else {
             assertionFailure("Can't create a PingHub client if the account has no auth token")
