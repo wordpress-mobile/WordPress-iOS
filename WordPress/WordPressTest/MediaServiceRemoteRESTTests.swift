@@ -201,7 +201,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         XCTAssertEqual(remoteMedia.mediaID.intValue, id)
         XCTAssertEqual(remoteMedia.url.absoluteString, url)
         XCTAssertEqual(remoteMedia.guid.absoluteString, guid)
-        XCTAssertEqual(remoteMedia.date, NSDate.dateWithISO8601String(date)! as Date)
+        XCTAssertEqual(remoteMedia.date, Date.dateWithISO8601String(date)!)
         XCTAssertEqual(remoteMedia.postID.intValue, postID)
         XCTAssertEqual(remoteMedia.file, file)
         XCTAssertEqual(remoteMedia.mimeType, mimeType)
