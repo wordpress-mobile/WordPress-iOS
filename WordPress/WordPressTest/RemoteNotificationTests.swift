@@ -63,9 +63,8 @@ private extension RemoteNotificationTests
     func loadDocument() -> [String: AnyObject]
     {
         let path = Bundle(for: type(of: self)).path(forResource: "remote-notification", ofType: "json")!
-        let data = NSData(contentsOfFile: path)!
-
         do {
+            let data = try Data(contentsOf: URL(fileURLWithPath: path))
             return try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as! [String: AnyObject]
         } catch {
             fatalError()

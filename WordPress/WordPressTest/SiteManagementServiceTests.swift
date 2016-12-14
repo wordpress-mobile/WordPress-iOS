@@ -70,7 +70,7 @@ class SiteManagementServiceTests : XCTestCase
         ContextManager.overrideSharedInstance(nil)
     }
 
-    func insertBlog(context: NSManagedObjectContext) -> Blog {
+    func insertBlog(_ context: NSManagedObjectContext) -> Blog {
         let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
         blog.xmlrpc = "http://mock.blog/xmlrpc.php"
         blog.url = "http://mock.blog/"
@@ -84,7 +84,7 @@ class SiteManagementServiceTests : XCTestCase
 
     func testDeleteSiteCallsServiceRemoteDeleteSite() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context: context!)
+        let blog = insertBlog(context!)
 
         mockRemoteService.reset()
         siteManagementService.deleteSiteForBlog(blog, success: nil, failure: nil)
@@ -93,7 +93,7 @@ class SiteManagementServiceTests : XCTestCase
 
     func testDeleteSiteCallsSuccessBlock() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context: context!)
+        let blog = insertBlog(context!)
 
         let expect = expectation(description: "Delete Site success expectation")
         mockRemoteService.reset()
@@ -110,7 +110,7 @@ class SiteManagementServiceTests : XCTestCase
         let blog =
 
 
-            insertBlog(context: context!)
+            insertBlog(context!)
         let blogObjectID = blog.objectID
 
         XCTAssertFalse(blogObjectID.isTemporaryID, "Should be a permanent object")
@@ -131,7 +131,7 @@ class SiteManagementServiceTests : XCTestCase
 
     func testDeleteSiteCallsFailureBlock() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context: context!)
+        let blog = insertBlog(context!)
 
         let testError = NSError(domain:"UnitTest", code:0, userInfo:nil)
         let expect = expectation(description: "Delete Site failure expectation")
@@ -148,7 +148,7 @@ class SiteManagementServiceTests : XCTestCase
 
     func testDeleteSiteDoesNotRemoveExistingBlogOnFailure() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context: context!)
+        let blog = insertBlog(context!)
         let blogObjectID = blog.objectID
 
         XCTAssertFalse(blogObjectID.isTemporaryID, "Should be a permanent object")
@@ -171,7 +171,7 @@ class SiteManagementServiceTests : XCTestCase
 
     func testExportContentCallsServiceRemoteExportContent() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context: context!)
+        let blog = insertBlog(context!)
 
         mockRemoteService.reset()
         siteManagementService.exportContentForBlog(blog, success: nil, failure: nil)
@@ -180,7 +180,7 @@ class SiteManagementServiceTests : XCTestCase
 
     func testExportContentCallsSuccessBlock() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context: context!)
+        let blog = insertBlog(context!)
 
         let expect = expectation(description: "ExportContent success expectation")
         mockRemoteService.reset()
@@ -194,7 +194,7 @@ class SiteManagementServiceTests : XCTestCase
 
     func testExportContentCallsFailureBlock() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context: context!)
+        let blog = insertBlog(context!)
 
         let testError = NSError(domain:"UnitTest", code:0, userInfo:nil)
         let expect = expectation(description: "ExportContent failure expectation")
@@ -211,7 +211,7 @@ class SiteManagementServiceTests : XCTestCase
 
     func testGetActivePurchasesCallsServiceRemoteGetActivePurchases() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context: context!)
+        let blog = insertBlog(context!)
 
         mockRemoteService.reset()
         siteManagementService.getActivePurchasesForBlog(blog, success: nil, failure: nil)
@@ -220,7 +220,7 @@ class SiteManagementServiceTests : XCTestCase
 
     func testGetActivePurchasesCallsSuccessBlock() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context: context!)
+        let blog = insertBlog(context!)
 
         let expect = expectation(description: "GetActivePurchases success expectation")
         mockRemoteService.reset()
@@ -234,7 +234,7 @@ class SiteManagementServiceTests : XCTestCase
 
     func testGetActivePurchasesCallsFailureBlock() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context: context!)
+        let blog = insertBlog(context!)
 
         let testError = NSError(domain:"UnitTest", code:0, userInfo:nil)
         let expect = expectation(description: "GetActivePurchases failure expectation")

@@ -1,7 +1,7 @@
 
 import Foundation
 
-@objc public class JSONLoader : NSObject {
+@objc open class JSONLoader : NSObject {
     public typealias JSONDictionary = Dictionary<String, AnyObject>
 
     /**
@@ -11,12 +11,12 @@ import Foundation
     *
     *  @returns    A dictionary representing the contents of the json file.
     */
-    public func loadFile(name : String, type : String) -> JSONDictionary? {
+    open func loadFile(_ name : String, type : String) -> JSONDictionary? {
 
         let path = Bundle(for: type(of: self)).path(forResource: name, ofType: type)
 
         if let unwrappedPath = path {
-            return loadFile(path: unwrappedPath)
+            return loadFile(unwrappedPath)
         } else {
             return nil
         }
@@ -29,16 +29,16 @@ import Foundation
      *
      *  @returns    A dictionary representing the contents of the json file.
      */
-    public func loadFile(path : String) -> JSONDictionary? {
+    open func loadFile(_ path : String) -> JSONDictionary? {
 
-        if let contents = NSData(contentsOfFile: path) {
-            return parseData(data: contents)
+        if let contents = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+            return parseData(contents)
         }
 
         return nil
     }
 
-    private func parseData(data : NSData) -> JSONDictionary? {
+    fileprivate func parseData(_ data : Data) -> JSONDictionary? {
         let options : JSONSerialization.ReadingOptions = [.mutableContainers , .mutableLeaves]
 
         do {

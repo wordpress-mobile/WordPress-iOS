@@ -163,7 +163,7 @@ class NotificationSettingsServiceTests: XCTestCase
 
 
     // MARK: - Private Helpers
-    private func loadNotificationSettings() -> [NotificationSettings] {
+    fileprivate func loadNotificationSettings() -> [NotificationSettings] {
         var settings    : [NotificationSettings]?
         let expect = expectation(description: "Notification settings reading expecation")
 
