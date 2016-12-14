@@ -84,7 +84,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
     func testUpdateMediaPath() {
 
         let media = mockRemoteMedia()
-        let expectedPath = "v1.1/sites/\(siteID)/media/\(media.mediaID)"
+        let expectedPath = "v1.1/sites/\(siteID)/media/\(media.mediaID!)"
         mediaServiceRemote.update(media, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Wrong method, expected POST got \(mockRemoteApi.methodCalled())")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
@@ -174,7 +174,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let id = 1
         let url = "http://www.wordpress.com"
         let guid = "http://www.gravatar.com"
-        let date = "04/19/1989T10:20:21"
+        let date = "2016-12-14T22:00:00Z"
         let postID = 2
         let file = "file"
         let mimeType = "img/jpeg"
