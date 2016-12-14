@@ -98,20 +98,6 @@ import WordPressComAnalytics
     }
 
 
-    var isActiveController: Bool {
-        get {
-            if navigationController?.topViewController == self {
-                return true
-            }
-            // If our parent controller is the navController's top vc.
-            if let controller = parentViewController where navigationController?.topViewController == controller {
-                return true
-            }
-            return false
-        }
-    }
-
-
     /// Convenience method for instantiating an instance of ReaderStreamViewController
     /// for a existing topic.
     ///
@@ -548,7 +534,21 @@ import WordPressComAnalytics
         configureStreamHeader()
         tableView.setContentOffset(CGPointZero, animated: false)
         tableViewHandler.refreshTableView()
-        syncIfAppropriate()
+
+        if let _ = view.window {
+            // The controller can be configured for a topic while its not the
+            // active view controller. For example, when state restoration restores
+            // the controller, but some other controller (like the detail vc) is
+            // top most.
+            //
+            // For now, we want to avoid syncing while the controller is not active
+            // or about to be active. This is a stop gap to prevent crashes that can
+            // occur when a post is deleted during the sync while it is still being
+            // used by another controller, or before this controller has a chance
+            // to render its cells at least once.
+            // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/6297
+            syncIfAppropriate()
+        }
 
         bumpStats()
 
@@ -1074,11 +1074,6 @@ import WordPressComAnalytics
         }
 
         guard let topic = readerTopic else {
-            return
-        }
-
-        // Don't autosync when we're not the top/visible vc.
-        guard isActiveController else {
             return
         }
 
