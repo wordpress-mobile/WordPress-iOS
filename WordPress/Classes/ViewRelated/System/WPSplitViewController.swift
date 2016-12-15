@@ -232,12 +232,31 @@ class WPSplitViewController: UISplitViewController {
         super.showDetailViewController(detailVC, sender: sender)
     }
 
+    /// The topmost view controller in the detail navigation stack (or the
+    /// primary stack if the split view is collapsed).
     var topDetailViewController: UIViewController? {
         if collapsed {
             return (viewControllers.first as? UINavigationController)?.topViewController
         } else {
             return (viewControllers.last as? UINavigationController)?.topViewController
         }
+    }
+
+    /// The bottommost view controller in the detail navigation stack (or the
+    /// first view controller after the last `WPSplitViewControllerDetailProvider`
+    /// in the primary stack if the split view is collapsed).
+    var rootDetailViewController: UIViewController? {
+        if collapsed {
+            if let navigationController = viewControllers.first as? UINavigationController,
+                let index = navigationController.viewControllers.lastIndexOf({ $0 is WPSplitViewControllerDetailProvider })
+            where navigationController.viewControllers.count > index+1  {
+                return navigationController.viewControllers[index+1]
+            }
+        } else {
+            return (viewControllers.last as? UINavigationController)?.viewControllers.first
+        }
+
+        return nil
     }
 
     /** Sets the primary view controller of the split view as specified, and
