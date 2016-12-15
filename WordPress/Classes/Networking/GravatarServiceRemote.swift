@@ -3,8 +3,7 @@ import Foundation
 
 /// This ServiceRemote encapsulates all of the interaction with the Gravatar endpoint.
 ///
-open class GravatarServiceRemote
-{
+open class GravatarServiceRemote {
     /// Designated Initializer
     ///
     /// - Parameters:

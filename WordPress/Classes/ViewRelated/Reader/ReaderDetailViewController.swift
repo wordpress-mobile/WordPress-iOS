@@ -271,16 +271,18 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     open func setupWithPostID(_ postID:NSNumber, siteID:NSNumber) {
         let title = NSLocalizedString("Loading Post...", comment:"Text displayed while loading a post.")
         WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: view)
+        textView.alpha = 0.0
 
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderPostService(managedObjectContext: context)
 
         service?.fetchPost(
-            postID.uintValue,
-            forSite: siteID.uintValue,
-            success: {[weak self] (post: ReaderPost?) in
+        postID.uintValue,
+        forSite: siteID.uintValue,
+        success: {[weak self] (post: ReaderPost?) in
+                WPNoResultsView.removeFromView(self?.view)
+                self?.textView.alpha = 1.0
                 self?.post = post
-                WPNoResultsView.remove(from: self?.view)
             }, failure: {[weak self] (error: Error?) in
                 DDLogSwift.logError("Error fetching post for detail: \(error?.localizedDescription)")
 
