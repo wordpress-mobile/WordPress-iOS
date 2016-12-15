@@ -3,8 +3,7 @@ import Foundation
 
 /// This Service exposes all of the valid operations we can execute, to interact with the Gravatar Service.
 ///
-open class GravatarService
-{
+open class GravatarService {
     /// Designated Initializer
     ///
     /// - Parameter context: The Core Data context that should be used by the service.
@@ -15,6 +14,8 @@ open class GravatarService
         let mainAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount()
         accountToken    = mainAccount?.authToken
         accountEmail    = mainAccount?.email
+            .stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+            .lowercaseString
 
         guard accountEmail?.isEmpty == false && accountToken?.isEmpty == false else {
             return nil
@@ -29,7 +30,7 @@ open class GravatarService
     ///     - completion: An optional closure to be executed on completion.
     ///
     open func uploadImage(_ image: UIImage, completion: ((_ error: NSError?) -> ())? = nil) {
-        let remote = GravatarServiceRemote(accountToken: accountToken, accountEmail: accountEmail)
+        let remote = gravatarServiceRemoteForAccountToken(accountToken, andAccountEmail: accountEmail)
         remote.uploadImage(image) { (error) in
             if let theError = error {
                 DDLogSwift.logError("GravatarService.uploadImage Error: \(theError)")
@@ -41,6 +42,9 @@ open class GravatarService
         }
     }
 
+    func gravatarServiceRemoteForAccountToken(accountToken: String, andAccountEmail accountEmail: String) -> GravatarServiceRemote {
+        return GravatarServiceRemote(accountToken: accountToken, accountEmail: accountEmail)
+    }
 
     // MARK: - Private Properties
     fileprivate let accountToken : String!
