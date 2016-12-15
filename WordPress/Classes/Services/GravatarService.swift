@@ -14,8 +14,8 @@ open class GravatarService {
         let mainAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount()
         accountToken    = mainAccount?.authToken
         accountEmail    = mainAccount?.email
-            .stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-            .lowercaseString
+            .trimmingCharacters(in: CharacterSet.whitespaces)
+            .lowercased()
 
         guard accountEmail?.isEmpty == false && accountToken?.isEmpty == false else {
             return nil
@@ -30,7 +30,7 @@ open class GravatarService {
     ///     - completion: An optional closure to be executed on completion.
     ///
     open func uploadImage(_ image: UIImage, completion: ((_ error: NSError?) -> ())? = nil) {
-        let remote = gravatarServiceRemoteForAccountToken(accountToken, andAccountEmail: accountEmail)
+        let remote = gravatarServiceRemoteForAccountToken(accountToken: accountToken, andAccountEmail: accountEmail)
         remote.uploadImage(image) { (error) in
             if let theError = error {
                 DDLogSwift.logError("GravatarService.uploadImage Error: \(theError)")

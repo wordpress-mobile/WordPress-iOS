@@ -354,7 +354,7 @@ class ListTagProcessor: HtmlTagProcessor
 class AttachmentTagProcessor: HtmlTagProcessor
 {
     let textAttachmentIdentifier = "WPTEXTATTACHMENTIDENTIFIER"
-    static let attributeRegex = try! NSRegularExpression(pattern: "([a-z-]+)=(?:\"|')([^\"']+)(?:\"|')", options: .CaseInsensitive)
+    static let attributeRegex = try! NSRegularExpression(pattern: "([a-z-]+)=(?:\"|')([^\"']+)(?:\"|')", options: .caseInsensitive)
 
     /// Replaces extracted tags with markers.
     ///
@@ -414,23 +414,23 @@ class AttachmentTagProcessor: HtmlTagProcessor
     /// - Returns: A [String: String] dicitionary of attributes.
     ///
     func attributesFromTag(_ html: String) -> [String: String] {
-        var scanner = Scanner(string: html)
+        let scanner = Scanner(string: html)
         var attrs = [String: String]()
 
         // For most attachments we're only interested in the attributes in the opening tag.
         // We can skip a closing tag and any child elements.
         var tag: NSString? = ""
-        scanner.scanUpToString(">", intoString: &tag)
+        scanner.scanUpTo(">", into: &tag)
 
-        let regex = self.dynamicType.attributeRegex
+        let regex = type(of: self).attributeRegex
 
-        let matches = regex.matchesInString(tag as! String, options: .ReportCompletion, range: NSRange(location: 0, length: tag!.length))
+        let matches = regex.matches(in: tag as! String, options: .reportCompletion, range: NSRange(location: 0, length: tag!.length))
         for match in matches {
-            let keyRange = match.rangeAtIndex(1)
-            let valueRange = match.rangeAtIndex(2)
+            let keyRange = match.rangeAt(1)
+            let valueRange = match.rangeAt(2)
 
-            let key = tag!.substringWithRange(keyRange).lowercaseString
-            let value = tag!.substringWithRange(valueRange)
+            let key = tag!.substring(with: keyRange).lowercased()
+            let value = tag!.substring(with: valueRange)
 
             attrs.updateValue(value, forKey: key)
         }

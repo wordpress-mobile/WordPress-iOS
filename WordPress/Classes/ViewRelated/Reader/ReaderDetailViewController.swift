@@ -280,7 +280,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         postID.uintValue,
         forSite: siteID.uintValue,
         success: {[weak self] (post: ReaderPost?) in
-                WPNoResultsView.removeFromView(self?.view)
+                WPNoResultsView.remove(from: self?.view)
                 self?.textView.alpha = 1.0
                 self?.post = post
             }, failure: {[weak self] (error: Error?) in

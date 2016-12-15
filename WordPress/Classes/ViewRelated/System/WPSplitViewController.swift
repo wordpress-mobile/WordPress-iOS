@@ -197,8 +197,8 @@ class WPSplitViewController: UISplitViewController {
             dimmingView.frame = view.frame
 
             let attribute = view.semanticContentAttribute
-            let layoutDirection = UIView.userInterfaceLayoutDirectionForSemanticContentAttribute(attribute)
-            if layoutDirection == .LeftToRight {
+            let layoutDirection = UIView.userInterfaceLayoutDirection(for: attribute)
+            if layoutDirection == .leftToRight {
                 dimmingView.frame.origin.x = primaryColumnWidth
             } else {
                 dimmingView.frame.size.width = dimmingView.frame.size.width - primaryColumnWidth
