@@ -51,8 +51,7 @@ abstract_target 'WordPress_Base' do
     pod 'WordPress-iOS-Editor', '1.8.1'
     pod 'WordPressCom-Analytics-iOS', :git => 'https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git', :branch => 'swift-3'
    
-   ## Disabled for Swift 3 migration
-   #pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => '7d02c77349245c6e4d3bcdf63a878f90eb4a4e39'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :branch => 'develop'
 
     pod 'wpxmlrpc', '~> 0.8'
 

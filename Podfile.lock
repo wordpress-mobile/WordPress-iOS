@@ -138,6 +138,8 @@ PODS:
   - SVProgressHUD (1.1.3)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-AppbotX (1.0.6)
+  - WordPress-Aztec-iOS (0.4.0):
+    - Gridicons (= 0.3)
   - WordPress-iOS-Editor (1.8.1):
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
@@ -184,6 +186,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, branch `develop`)
   - WordPress-iOS-Editor (= 1.8.1)
   - WordPress-iOS-Shared (from `https://github.com/wordpress-mobile/WordPress-Shared-iOS.git`, branch `swift-3`)
   - WordPressCom-Analytics-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git`, branch `swift-3`)
@@ -202,6 +205,9 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-Aztec-iOS:
+    :branch: develop
+    :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
   WordPress-iOS-Shared:
     :branch: swift-3
     :git: https://github.com/wordpress-mobile/WordPress-Shared-iOS.git
@@ -225,6 +231,9 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-Aztec-iOS:
+    :commit: 991d6d365331692b3acd997690ffe881a7ac723b
+    :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
   WordPress-iOS-Shared:
     :commit: 19e1b9fb4866739a841be48f71ca2ba8c76b42a6
     :git: https://github.com/wordpress-mobile/WordPress-Shared-iOS.git
@@ -269,6 +278,7 @@ SPEC CHECKSUMS:
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
+  WordPress-Aztec-iOS: c7ebac8bec8cae1035844fc6f6df78bff067f30e
   WordPress-iOS-Editor: 3118f5d6b142b6bf322f3393a7dd98a28bca68cb
   WordPress-iOS-Shared: 4bec543bac6543480b10d904bea122dcba43cc37
   WordPressCom-Analytics-iOS: ee6cc3a4feb63cebba167ce762c6e12c0b7b6671
@@ -277,6 +287,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 9ba8c29a1de4b07696356f541c01eeaa6dd14c47
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: d04b2f60d0c53a11f033919b634851811270aea9
+PODFILE CHECKSUM: 85b8438544faaa4222dd8a769f88ced1c5b8af3b
 
 COCOAPODS: 1.1.1
