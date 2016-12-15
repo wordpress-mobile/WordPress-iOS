@@ -153,7 +153,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
 
     fileprivate func fixDefaultAccountIfNeeded(_ context: NSManagedObjectContext) {
         let oldDefaultAccount = defaultWordPressAccount(context)
-        if (oldDefaultAccount?.value(forKey: "isWpcom") as AnyObject).boolValue == true {
+        if let isWpcom = oldDefaultAccount?.value(forKey: "isWpcom") as? NSNumber, isWpcom.boolValue == true {
             DDLogSwift.logWarn("<< Default Account Fix not required!")
             return
         }
