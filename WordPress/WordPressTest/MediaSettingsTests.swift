@@ -11,15 +11,13 @@ class MediaSettingsTests: XCTestCase {
     }
 
     func testMaxImageSizeMigratesCGSizeToInt() {
-        let dimension = 1200
+        let dimension = Int(1200)
         let size = CGSize(width: dimension, height: dimension)
         let database = EphemeralKeyValueDatabase()
         database.set(NSStringFromCGSize(size), forKey: "SavedMaxImageSizeSetting")
 
         let settings = MediaSettings(database: database)
         expect(settings.maxImageSizeSetting).to(equal(dimension))
-        let storedValue = database.object(forKey: "SavedMaxImageSizeSetting") as? Int
-        expect(storedValue).to(equal(dimension))
     }
 
     func testMaxImageSizeClampsValues() {
