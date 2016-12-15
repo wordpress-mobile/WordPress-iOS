@@ -656,7 +656,6 @@
 		E157D5E01C690A6C00F04FB9 /* ImmuTableTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E157D5DF1C690A6C00F04FB9 /* ImmuTableTestUtils.swift */; };
 		E16273E11B2ACEB600088AF7 /* BlogToBlog32to33.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16273E01B2ACEB600088AF7 /* BlogToBlog32to33.swift */; };
 		E16396F61E01A59600E8EAB9 /* PingHub.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E12C26031E0155B00066E1F3 /* PingHub.framework */; };
-		E16396F71E01A59600E8EAB9 /* PingHub.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E12C26031E0155B00066E1F3 /* PingHub.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */; };
 		E166FA1D1BB0658600374B5B /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA1C1BB0658600374B5B /* Person.swift */; };
 		E166FA221BB1359E00374B5B /* PeopleRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA211BB1359E00374B5B /* PeopleRemote.swift */; };
@@ -709,6 +708,7 @@
 		E1A7CA4B1CC9FD7800373E06 /* StoreCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A7CA4A1CC9FD7800373E06 /* StoreCoordinatorTests.swift */; };
 		E1A8CACB1C22FF7C0038689E /* MeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8CACA1C22FF7C0038689E /* MeViewController.swift */; };
 		E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E1AD23361E028C8200523B9D /* PingHub.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E1AD23351E028C8200523B9D /* PingHub.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E1B23B081BFB3B370006559B /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B23B071BFB3B370006559B /* MyProfileViewController.swift */; };
 		E1B289DB19F7AF7000DB0707 /* RemoteBlog.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B289DA19F7AF7000DB0707 /* RemoteBlog.m */; };
 		E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */; };
@@ -1007,11 +1007,11 @@
 		};
 		E16396F81E01A59600E8EAB9 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E16396F71E01A59600E8EAB9 /* PingHub.framework in Embed Frameworks */,
+				E1AD23361E028C8200523B9D /* PingHub.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2039,6 +2039,7 @@
 		E1A6DBE419DC7D230071AC1E /* PostService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PostService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		E1A7CA4A1CC9FD7800373E06 /* StoreCoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreCoordinatorTests.swift; sourceTree = "<group>"; };
 		E1A8CACA1C22FF7C0038689E /* MeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeViewController.swift; sourceTree = "<group>"; };
+		E1AD23351E028C8200523B9D /* PingHub.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PingHub.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1B23B071BFB3B370006559B /* MyProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		E1B289D919F7AF7000DB0707 /* RemoteBlog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteBlog.h; path = "Remote Objects/RemoteBlog.h"; sourceTree = "<group>"; };
 		E1B289DA19F7AF7000DB0707 /* RemoteBlog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteBlog.m; path = "Remote Objects/RemoteBlog.m"; sourceTree = "<group>"; };
@@ -2737,6 +2738,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E1AD23351E028C8200523B9D /* PingHub.framework */,
 				E12C26031E0155B00066E1F3 /* PingHub.framework */,
 				E185474D1DED8D8800D875D7 /* UserNotifications.framework */,
 				FF75933A1BE2423800814D3B /* Photos.framework */,
@@ -5088,6 +5090,7 @@
 				2F10F29417416E4D8CFE9A58 /* [CP] Embed Pods Frameworks */,
 				9867B4878E9B37ACD2FE0296 /* [CP] Copy Pods Resources */,
 				E16396F81E01A59600E8EAB9 /* Embed Frameworks */,
+				E1AD23391E02990900523B9D /* [Carthage] Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -5765,6 +5768,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ -z $BUDDYBUILD_ENABLED ]\nthen\n    echo \"Didn't detect Buddybuild - linting\"\n    rake lint\nelse\n    echo \"Detected Buddybuild – skipping lint step\"\nfi\n";
+		};
+		E1AD23391E02990900523B9D /* [Carthage] Copy Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/../Carthage/Build/iOS/Starscream.framework",
+			);
+			name = "[Carthage] Copy Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
 		E1CCFB31175D62320016BD8A /* Run Fabric/Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;

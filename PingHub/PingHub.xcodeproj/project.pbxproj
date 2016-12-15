@@ -17,7 +17,7 @@
 		E138B3C71E0153FF00D0513D /* notes-action-push.json in Resources */ = {isa = PBXBuildFile; fileRef = E138B3BE1E0153EB00D0513D /* notes-action-push.json */; };
 		E138B3C81E0153FF00D0513D /* notes-action-unsupported.json in Resources */ = {isa = PBXBuildFile; fileRef = E138B3BF1E0153EB00D0513D /* notes-action-unsupported.json */; };
 		E15A56C91E01669800F960F0 /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E15A56C81E01669800F960F0 /* Starscream.framework */; };
-		E15A56CA1E0166A500F960F0 /* Starscream.framework in Embed dependencies */ = {isa = PBXBuildFile; fileRef = E15A56C81E01669800F960F0 /* Starscream.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E1AD23371E02983400523B9D /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E15A56C81E01669800F960F0 /* Starscream.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,20 +29,6 @@
 			remoteInfo = PingHub;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		E110D4541E015DB10052E888 /* Embed dependencies */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				E15A56CA1E0166A500F960F0 /* Starscream.framework in Embed dependencies */,
-			);
-			name = "Embed dependencies";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		E138B3941E0153A100D0513D /* PingHub.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PingHub.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1AD23371E02983400523B9D /* Starscream.framework in Frameworks */,
 				E138B39E1E0153A200D0513D /* PingHub.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -160,7 +147,6 @@
 				E138B3901E0153A100D0513D /* Frameworks */,
 				E138B3911E0153A100D0513D /* Headers */,
 				E138B3921E0153A100D0513D /* Resources */,
-				E110D4541E015DB10052E888 /* Embed dependencies */,
 			);
 			buildRules = (
 			);
@@ -178,6 +164,7 @@
 				E138B3991E0153A200D0513D /* Sources */,
 				E138B39A1E0153A200D0513D /* Frameworks */,
 				E138B39B1E0153A200D0513D /* Resources */,
+				E1AD23381E02984E00523B9D /* [Carthage] Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -248,6 +235,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E1AD23381E02984E00523B9D /* [Carthage] Copy Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/../Carthage/Build/iOS/Starscream.framework",
+			);
+			name = "[Carthage] Copy Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E138B38F1E0153A100D0513D /* Sources */ = {
