@@ -55,6 +55,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAfterScrolling;
+
 @end
 
 
@@ -286,6 +287,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
+    self.tableViewHandler.insertRowAnimation = UITableViewRowAnimationNone;
+    self.tableViewHandler.moveRowAnimation = UITableViewRowAnimationNone;
+    self.tableViewHandler.deleteRowAnimation = UITableViewRowAnimationNone;
     self.tableViewHandler.delegate = self;
 }
 
@@ -609,7 +613,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
 }
 
-- (void)updateTableViewForResizedAttachments
+
+- (void)updateTableViewForAttachments
 {
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
@@ -838,9 +843,14 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self refreshReplyTextViewPlaceholder];
 
     [self.tableView deselectSelectedRowWithAnimation:YES];
+
     if (self.needsUpdateAfterScrolling) {
         self.needsUpdateAfterScrolling = NO;
-        [self updateTableViewForResizedAttachments];
+
+        for (ReaderCommentCell *cell in [self.tableView visibleCells]) {
+            [cell ensureTextViewLayout];
+        }
+        [self updateTableViewForAttachments];
     }
 }
 
@@ -939,13 +949,19 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self presentViewController:controller animated:YES completion:nil];
 }
 
-- (void)richContentViewDidResizeAttachment:(WPRichContentView *)richContentView
+- (BOOL)richContentViewShouldUpdateLayoutForAttachments:(WPRichContentView *)richContentView
 {
     if (self.tableViewHandler.isScrolling) {
         self.needsUpdateAfterScrolling = YES;
-        return;
+        return NO;
     }
-    [self updateTableViewForResizedAttachments];
+
+    return YES;
+}
+
+- (void)richContentViewDidUpdateLayoutForAttachments:(WPRichContentView *)richContentView
+{
+    [self updateTableViewForAttachments];
 }
 
 - (void)presentWebViewControllerWithURL:(NSURL *)URL
