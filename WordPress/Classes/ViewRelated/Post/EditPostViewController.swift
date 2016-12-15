@@ -140,7 +140,6 @@ class EditPostViewController: UIViewController {
     }
 
     fileprivate func editPostInNativeVisualEditor() -> UIViewController {
-        /* Aztec disabled for Swift 3 migration.
         let postViewController = AztecPostViewController(post: postToEdit())
         postViewController.onClose = { [weak self] (changesSaved) in
             self?.closeEditor(changesSaved)
@@ -150,8 +149,6 @@ class EditPostViewController: UIViewController {
         navController.modalPresentationStyle = .fullScreen
 
         return navController
-         */
-        return UIViewController()
     }
 
     fileprivate func editPostInHybridVisualEditor() -> UIViewController {
