@@ -273,14 +273,14 @@ class ContextManagerTests: XCTestCase {
     // MARK: - Helper Methods
 
     fileprivate func startupCoredataStack(_ modelName: String) {
-        let modelURL = urlForModelName(modelName as NSString!)
-        let model = NSManagedObjectModel(contentsOf: modelURL! as URL)
+        let modelURL = urlForModelName(modelName)!
+        let model = NSManagedObjectModel(contentsOf: modelURL)
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model!)
 
-        let storeUrl = contextManager.storeURL as URL
-        removeStoresBasedOnStoreURL(storeUrl)
+        let storeUrl = contextManager.storeURL
+        removeStoresBasedOnStoreURL(storeUrl!)
         do {
-            _ = try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeUrl as URL, options: nil)
+            _ = try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeUrl, options: nil)
         } catch let error as NSError {
             XCTAssertNil(error, "Store should exist")
         }
@@ -294,14 +294,14 @@ class ContextManagerTests: XCTestCase {
     }
 
     fileprivate func performCoredataMigration(_ newModelName: String) -> NSManagedObjectContext {
-        let psc = contextManager.persistentStoreCoordinator
+        let psc = contextManager.persistentStoreCoordinator!
         _ = contextManager.mainContext
 
-        let persistentStore = psc?.persistentStores.first!
-        try! psc?.remove(persistentStore!)
+        let persistentStore = psc.persistentStores.first!
+        try! psc.remove(persistentStore)
 
-        let newModelURL = urlForModelName(newModelName as NSString!)
-        contextManager.managedObjectModel = NSManagedObjectModel(contentsOf: newModelURL! as URL)
+        let newModelURL = urlForModelName(newModelName)!
+        contextManager.managedObjectModel = NSManagedObjectModel(contentsOf: newModelURL)
         let standardPSC = contextManager.standardPSC
 
         XCTAssertNotNil(standardPSC, "New store should exist")
@@ -312,14 +312,14 @@ class ContextManagerTests: XCTestCase {
         return secondContext
     }
 
-    fileprivate func urlForModelName(_ name: NSString!) -> URL? {
+    fileprivate func urlForModelName(_ name: String) -> URL? {
         let bundle = Bundle.main
-        var url = bundle.url(forResource: name as String, withExtension: "mom")
+        var url = bundle.url(forResource: name, withExtension: "mom")
 
         if url == nil {
             let momdPaths = bundle.urls(forResourcesWithExtension: "momd", subdirectory: nil)!
             for momdPath in momdPaths {
-                url = bundle.url(forResource: name as String, withExtension: "mom", subdirectory: momdPath.lastPathComponent)
+                url = bundle.url(forResource: name, withExtension: "mom", subdirectory: momdPath.lastPathComponent)
             }
         }
 
