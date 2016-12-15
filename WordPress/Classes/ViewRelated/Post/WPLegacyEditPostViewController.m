@@ -672,7 +672,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             [self dismissEditView:YES];
     };
 
-    __block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
     __block BOOL postIsScheduled = self.post.isScheduled;
 
