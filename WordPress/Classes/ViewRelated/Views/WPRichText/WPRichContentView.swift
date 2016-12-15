@@ -261,7 +261,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
         // during rotation.
         attachment.maxSize = CGSize(width: 1, height: 1)
 
-        let img = WPRichTextImage(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
+        let img = WPRichTextImage(frame: CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0))
         img.addTarget(self, action: #selector(self.dynamicType.handleImageTapped(_:)), forControlEvents: .TouchUpInside)
         img.contentURL = url
         img.linkURL = linkURLForImageAttachment(attachment)
