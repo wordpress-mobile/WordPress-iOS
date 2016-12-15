@@ -72,6 +72,12 @@ abstract_target 'WordPress_Base' do
 
 end
 
+abstract_target :PingHub_Shared do
+  pod 'Starscream', '~> 1.1.4'
+  target :PingHub
+  target :PingHubTests
+end
+
 post_install do |installer_representation|
 #   installer_representation.pods_project.targets.each do |target|
 #     # See https://github.com/CocoaPods/CocoaPods/issues/3838
