@@ -4,6 +4,12 @@
 
 #import "WPAvatarSource.h"
 
+@interface WPAvatarSource (TestAdditions)
+
+- (void)purgeCaches;
+
+@end
+
 @interface WPAvatarSourceTest : XCTestCase
 
 @end
