@@ -1,4 +1,4 @@
-/*import Foundation
+import Foundation
 import UIKit
 import Aztec
 import Gridicons
@@ -8,24 +8,24 @@ class AztecPostViewController: UIViewController {
     func cancelEditingAction(_ sender: AnyObject) {
         cancelEditing()
     }
-    var onClose: ((changesSaved: Bool) -> ())?
+    var onClose: ((_ changesSaved: Bool) -> ())?
 
     static let margin = CGFloat(20)
 
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
-        let defaultFont = WPFontManager.merriweatherRegularFontOfSize(16)
+        let defaultFont = WPFontManager.merriweatherRegularFont(ofSize: 16)!
         // TODO: Add a proper defaultMissingImage
         let defaultMissingImage = UIImage()
         let tv = Aztec.TextView(defaultFont: defaultFont, defaultMissingImage: defaultMissingImage)
 
-        tv.font = WPFontManager.merriweatherRegularFontOfSize(16)
+        tv.font = WPFontManager.merriweatherRegularFont(ofSize: 16)
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         tv.delegate = self
         let toolbar = self.createToolbar()
         toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
         toolbar.formatter = self
         tv.inputAccessoryView = toolbar
-        tv.textColor = UIColor.darkTextColor()
+        tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
 
         return tv
@@ -183,18 +183,18 @@ class AztecPostViewController: UIViewController {
             separatorView.heightAnchor.constraint(equalToConstant: separatorView.frame.height)
             ])
 
-        NSLayoutConstraint.activateConstraints([
-            richTextView.leftAnchor.constraintEqualToAnchor(view.leftAnchor, constant: type(of: self).margin),
-            richTextView.rightAnchor.constraintEqualToAnchor(view.rightAnchor, constant: -type(of: self).margin),
-            richTextView.topAnchor.constraintEqualToAnchor(separatorView.bottomAnchor, constant: type(of: self).margin),
-            richTextView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor, constant: -type(of: self).margin)
+        NSLayoutConstraint.activate([
+            richTextView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: type(of: self).margin),
+            richTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -type(of: self).margin),
+            richTextView.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: type(of: self).margin),
+            richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -type(of: self).margin)
             ])
 
-        NSLayoutConstraint.activateConstraints([
-            htmlTextView.leftAnchor.constraintEqualToAnchor(richTextView.leftAnchor),
-            htmlTextView.rightAnchor.constraintEqualToAnchor(richTextView.rightAnchor),
-            htmlTextView.topAnchor.constraintEqualToAnchor(richTextView.topAnchor),
-            htmlTextView.bottomAnchor.constraintEqualToAnchor(richTextView.bottomAnchor),
+        NSLayoutConstraint.activate([
+            htmlTextView.leftAnchor.constraint(equalTo: richTextView.leftAnchor),
+            htmlTextView.rightAnchor.constraint(equalTo: richTextView.rightAnchor),
+            htmlTextView.topAnchor.constraint(equalTo: richTextView.topAnchor),
+            htmlTextView.bottomAnchor.constraint(equalTo: richTextView.bottomAnchor),
             ])
     }
 
@@ -327,7 +327,7 @@ extension AztecPostViewController {
 
         view.endEditing(true)
         htmlTextView.isHidden = false
-        richTextView.hidden = true
+        richTextView.isHidden = true
     }
 
     fileprivate func switchToRichText() {
@@ -336,7 +336,7 @@ extension AztecPostViewController {
         richTextView.setHTML(htmlTextView.text)
 
         view.endEditing(true)
-        richTextView.hidden = false
+        richTextView.isHidden = false
         htmlTextView.isHidden = true
     }
 }
@@ -345,30 +345,27 @@ extension AztecPostViewController {
 extension AztecPostViewController : Aztec.FormatBarDelegate
 {
 
-    func handleActionForIdentifier(_ identifier: String) {
-        guard let identifier = Aztec.FormattingIdentifier(rawValue: identifier) else {
-            return
-        }
+    func handleActionForIdentifier(_ identifier: FormattingIdentifier) {
 
         switch identifier {
-        case .Bold:
-            toggleBold()
-        case .Italic:
-            toggleItalic()
-        case .Underline:
-            toggleUnderline()
-        case .Strikethrough:
-            toggleStrikethrough()
-        case .Blockquote:
-            toggleBlockquote()
-        case .Unorderedlist:
-            toggleUnorderedList()
-        case .Orderedlist:
-            toggleOrderedList()
-        case .Link:
-            toggleLink()
-        case .Media:
-            showImagePicker()
+            case .bold:
+                toggleBold()
+            case .italic:
+                toggleItalic()
+            case .underline:
+                toggleUnderline()
+            case .strikethrough:
+                toggleStrikethrough()
+            case .blockquote:
+                toggleBlockquote()
+            case .unorderedlist:
+                toggleUnorderedList()
+            case .orderedlist:
+                toggleOrderedList()
+            case .link:
+                toggleLink()
+            case .media:
+                showImagePicker()
         }
         updateFormatBar()
     }
@@ -418,7 +415,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
             linkURL = richTextView.linkURL(forRange: expandedRange)
         }
 
-        linkTitle = richTextView.attributedText.attributedSubstringFromRange(linkRange).string
+        linkTitle = richTextView.attributedText.attributedSubstring(from: linkRange).string
         showLinkDialog(forURL: linkURL, title: linkTitle, range: linkRange)
     }
 
@@ -488,7 +485,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
             })
 
         let cancelAction = UIAlertAction(title: cancelButtonTitle,
-                                         style:UIAlertActionStyle.Cancel,
+                                         style:UIAlertActionStyle.cancel,
                                          handler:{ [weak self]action in
                                             self?.richTextView.becomeFirstResponder()
             })
@@ -539,23 +536,23 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
         let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let items = [
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.AddImage), identifier: Aztec.FormattingIdentifier.Media.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage), identifier: Aztec.FormattingIdentifier.media),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Bold), identifier: Aztec.FormattingIdentifier.Bold.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold), identifier: Aztec.FormattingIdentifier.bold),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Italic), identifier: Aztec.FormattingIdentifier.Italic.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic), identifier: Aztec.FormattingIdentifier.italic),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Underline), identifier: Aztec.FormattingIdentifier.Underline.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline), identifier: Aztec.FormattingIdentifier.underline),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Strikethrough), identifier: Aztec.FormattingIdentifier.Strikethrough.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough), identifier: Aztec.FormattingIdentifier.strikethrough),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Quote), identifier: Aztec.FormattingIdentifier.Blockquote.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote), identifier: Aztec.FormattingIdentifier.blockquote),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.ListUnordered), identifier: Aztec.FormattingIdentifier.Unorderedlist.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: Aztec.FormattingIdentifier.unorderedlist),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.ListOrdered), identifier: Aztec.FormattingIdentifier.Orderedlist.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: Aztec.FormattingIdentifier.orderedlist),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Link), identifier: Aztec.FormattingIdentifier.Link.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link), identifier: Aztec.FormattingIdentifier.link),
             flex,
             ]
 
@@ -563,9 +560,9 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
 
         toolbar.barTintColor = UIColor(fromHex: 0xF9FBFC, alpha: 1)
         toolbar.tintColor = WPStyleGuide.greyLighten10()
-        toolbar.highlightedTintColor = UIColor.blueColor()
-        toolbar.selectedTintColor = UIColor.darkGrayColor()
-        toolbar.disabledTintColor = UIColor.lightGrayColor()
+        toolbar.highlightedTintColor = UIColor.blue
+        toolbar.selectedTintColor = UIColor.darkGray
+        toolbar.disabledTintColor = UIColor.lightGray
         toolbar.items = items
         return toolbar
     }
@@ -682,12 +679,12 @@ extension AztecPostViewController {
     fileprivate func discardChangesAndUpdateGUI() {
         discardChanges()
 
-        onClose?(changesSaved: false)
+        onClose?(false)
 
         if isModal() {
-            presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            presentingViewController?.dismiss(animated: true, completion: nil)
         } else {
-            navigationController?.popViewController(animated: true)
+            _ = navigationController?.popViewController(animated: true)
         }
     }
 }
@@ -695,8 +692,8 @@ extension AztecPostViewController {
 
 private extension AztecPostViewController {
     func insertImage(_ image: UIImage) {
-        let index = richTextView.positionForCursor()
-        richTextView.insertImage(image, index: index)
+        //let index = richTextView.positionForCursor()
+        //richTextView.insertImage(image, index: index)
+        assertionFailure("Error: Aztec.TextView.swift no longer supports insertImage(image: UIImage, index: Int")
     }
 }
-*/
