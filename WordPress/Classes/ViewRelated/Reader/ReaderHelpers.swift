@@ -166,13 +166,16 @@ import WordPressComAnalytics
             return
         }
 
-        // If the user is an admin on the post's site do not bump the page view unless
-        // the the post is private.
-        if !post.isPrivate() && isUserAdminOnSiteWithID(post.siteID) {
+        guard
+            let siteID = post.siteID,
+            let postID = post.postID,
+            let host = NSURL(string: post.blogURL)?.host else {
             return
         }
 
-        guard let host = NSURL(string: post.blogURL)?.host else {
+        // If the user is an admin on the post's site do not bump the page view unless
+        // the the post is private.
+        if !post.isPrivate() && isUserAdminOnSiteWithID(siteID) {
             return
         }
 
@@ -183,8 +186,8 @@ import WordPressComAnalytics
             "reader=1",
             "ref=\(pixelStatReferrer)",
             "host=\(host)",
-            "blog=\(post.siteID)",
-            "post=\(post.postID)",
+            "blog=\(siteID)",
+            "post=\(postID)",
             NSString(format:"t=%d", arc4random())
         ]
 
