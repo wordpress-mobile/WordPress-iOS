@@ -72,9 +72,13 @@ extension UIImageView
 
         let request = NSURLRequest(URL: targetURL)
 
-
+        self.dynamicType.sharedImageDownloader().imageCache?.removeImageforRequest(request, withAdditionalIdentifier: nil)
         self.dynamicType.sharedImageDownloader().imageCache?.addImage(image, forRequest: request, withAdditionalIdentifier: nil)
-        NSURLCache.sharedURLCache().cacheImage(image, forRequest: request)
+
+        // Remove all cached responses - removing an individual response does not work since iOS 7.
+        // This feels hacky to do but what else can we do...
+        let sessionConfiguration = self.dynamicType.sharedImageDownloader().sessionManager.valueForKey("sessionConfiguration") as? NSURLSessionConfiguration
+        sessionConfiguration?.URLCache?.removeAllCachedResponses()
     }
 
 
@@ -91,7 +95,10 @@ extension UIImageView
     /// - Returns: Gravatar's URL
     ///
     private func gravatarUrlForEmail(email: String, size: NSInteger, rating: String) -> NSURL? {
-        let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, email.md5(), size, rating)
+        let sanitizedEmail = email
+            .lowercaseString
+            .stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, sanitizedEmail.md5(), size, rating)
         return NSURL(string: targetURL)
     }
 
