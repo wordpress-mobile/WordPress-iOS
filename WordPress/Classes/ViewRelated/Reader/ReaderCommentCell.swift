@@ -206,6 +206,11 @@ class ReaderCommentCell : UITableViewCell
     }
 
 
+    func ensureTextViewLayout() {
+        textView.updateLayoutForAttachments()
+    }
+
+
     // MARK: - Actions
 
 
