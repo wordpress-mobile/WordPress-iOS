@@ -196,6 +196,23 @@ class NotificationSyncMediator
             completion?(error)
         }
     }
+
+    /// Deletes the note with the given ID from Core Data.
+    ///
+    func deleteNote(noteID: String) {
+        let derivedContext = self.dynamicType.sharedDerivedContext(with: contextManager)
+        let helper = CoreDataHelper<Notification>(context: derivedContext)
+
+        derivedContext.performBlock {
+            let predicate = NSPredicate(format: "(notificationId == %@)", noteID)
+
+            for orphan in helper.allObjects(matchingPredicate: predicate) {
+                helper.deleteObject(orphan)
+            }
+
+            self.contextManager.saveDerivedContext(derivedContext)
+        }
+    }
 }
 
 
