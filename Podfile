@@ -10,10 +10,10 @@ use_frameworks!
 platform :ios, '9.0'
 
 abstract_target 'WordPress_Base' do
-  pod 'WordPress-iOS-Shared', :git => 'https://github.com/wordpress-mobile/WordPress-Shared-iOS.git', :branch => 'swift-3'
+  pod 'WordPress-iOS-Shared', '0.7.0'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
-  pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :branch => 'swift-3'
-  pod 'WordPressCom-Stats-iOS', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS', :branch => 'swift-3'
+  pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
+  pod 'WordPressCom-Stats-iOS', '0.8.0'
 
   target 'WordPress' do
     # ---------------------
@@ -43,16 +43,14 @@ abstract_target 'WordPress_Base' do
     # --------------------
     # WordPress components
     # --------------------
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'swift-3'
-    pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :branch => 'swift-3'
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.2'
+    pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :tag => '0.4'
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '~> 0.10.2'
     pod 'WordPress-iOS-Editor', '1.8.1'
-    pod 'WordPressCom-Analytics-iOS', :git => 'https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git', :branch => 'swift-3'
-   
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :branch => 'develop'
-
+    pod 'WordPressCom-Analytics-iOS', '0.1.21'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :branch => 'swift-3/gridicons-bump'
     pod 'wpxmlrpc', '~> 0.8'
 
     target :WordPressTest do
