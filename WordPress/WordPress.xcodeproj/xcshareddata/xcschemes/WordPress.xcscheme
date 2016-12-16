@@ -20,6 +20,20 @@
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E138B39C1E0153A200D0513D"
+               BuildableName = "PingHubTests.xctest"
+               BlueprintName = "PingHubTests"
+               ReferencedContainer = "container:../PingHub/PingHub.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -36,6 +50,16 @@
                BuildableName = "WordPressTest.xctest"
                BlueprintName = "WordPressTest"
                ReferencedContainer = "container:WordPress.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E138B39C1E0153A200D0513D"
+               BuildableName = "PingHubTests.xctest"
+               BlueprintName = "PingHubTests"
+               ReferencedContainer = "container:../PingHub/PingHub.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-               BuildableName = "WordPress.app"
-               BlueprintName = "WordPress"
-               ReferencedContainer = "container:WordPress.xcodeproj">
+               BlueprintIdentifier = "E138B3931E0153A100D0513D"
+               BuildableName = "PingHub.framework"
+               BlueprintName = "PingHub"
+               ReferencedContainer = "container:PingHub.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,37 +32,27 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E16AB92914D978240047A2E5"
-               BuildableName = "WordPressTest.xctest"
-               BlueprintName = "WordPressTest"
-               ReferencedContainer = "container:WordPress.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "E138B39C1E0153A200D0513D"
                BuildableName = "PingHubTests.xctest"
                BlueprintName = "PingHubTests"
-               ReferencedContainer = "container:../PingHub/PingHub.xcodeproj">
+               ReferencedContainer = "container:PingHub.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-            BuildableName = "WordPress.app"
-            BlueprintName = "WordPress"
-            ReferencedContainer = "container:WordPress.xcodeproj">
+            BlueprintIdentifier = "E138B3931E0153A100D0513D"
+            BuildableName = "PingHub.framework"
+            BlueprintName = "PingHub"
+            ReferencedContainer = "container:PingHub.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release-Alpha"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -71,23 +61,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-            BuildableName = "WordPress.app"
-            BlueprintName = "WordPress"
-            ReferencedContainer = "container:WordPress.xcodeproj">
+            BlueprintIdentifier = "E138B3931E0153A100D0513D"
+            BuildableName = "PingHub.framework"
+            BlueprintName = "PingHub"
+            ReferencedContainer = "container:PingHub.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "NSZombieEnabled"
-            value = "YES"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -100,10 +82,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-            BuildableName = "WordPress.app"
-            BlueprintName = "WordPress"
-            ReferencedContainer = "container:WordPress.xcodeproj">
+            BlueprintIdentifier = "E138B3931E0153A100D0513D"
+            BuildableName = "PingHub.framework"
+            BlueprintName = "PingHub"
+            ReferencedContainer = "container:PingHub.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
@@ -111,7 +93,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release-Alpha"
+      buildConfiguration = "Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
