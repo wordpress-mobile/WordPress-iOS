@@ -794,7 +794,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
         return;
     }
-    [cell configureCell:comment];
+
+    [cell configureCellWithComment:comment];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath

@@ -4,9 +4,9 @@ import Gridicons
 
 @objc protocol ReaderCommentCellDelegate: WPRichContentViewDelegate
 {
-    func cell(cell: ReaderCommentCell, didTapAuthor comment: Comment)
-    func cell(cell: ReaderCommentCell, didTapLike comment: Comment)
-    func cell(cell: ReaderCommentCell, didTapReply comment: Comment)
+    func cell(_ cell: ReaderCommentCell, didTapAuthor comment: Comment)
+    func cell(_ cell: ReaderCommentCell, didTapLike comment: Comment)
+    func cell(_ cell: ReaderCommentCell, didTapReply comment: Comment)
 }
 
 class ReaderCommentCell : UITableViewCell
@@ -80,37 +80,37 @@ class ReaderCommentCell : UITableViewCell
         WPStyleGuide.applyReaderCardSiteButtonStyle(authorButton)
         WPStyleGuide.applyReaderCardBylineLabelStyle(timeLabel)
 
-        authorButton.titleLabel?.lineBreakMode = .ByTruncatingTail
+        authorButton.titleLabel?.lineBreakMode = .byTruncatingTail
 
         textView.textContainerInset = Constants.textViewInsets
     }
 
 
     func setupReplyButton() {
-        let icon = Gridicon.iconOfType(.Reply, withSize: Constants.buttonSize)
+        let icon = Gridicon.iconOfType(.reply, withSize: Constants.buttonSize)
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.grey())?.rotate180Degrees()
         let highlightedIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())?.rotate180Degrees()
 
-        replyButton.setImage(tintedIcon, forState: .Normal)
-        replyButton.setImage(highlightedIcon, forState: .Highlighted)
+        replyButton.setImage(tintedIcon, for: .normal)
+        replyButton.setImage(highlightedIcon, for: .highlighted)
 
         let title = NSLocalizedString("Reply", comment: "Verb. Title of the Reader comments screen reply button. Tapping the button sends a reply to a comment or post.")
-        replyButton.setTitle(title, forState: .Normal)
-        replyButton.setTitleColor(WPStyleGuide.grey(), forState: .Normal)
+        replyButton.setTitle(title, for: .normal)
+        replyButton.setTitleColor(WPStyleGuide.grey(), for: .normal)
     }
 
 
     func setupLikeButton() {
         let size = Constants.buttonSize
-        let tintedIcon = Gridicon.iconOfType(.StarOutline, withSize: size).imageWithTintColor(WPStyleGuide.grey())
-        let highlightedIcon = Gridicon.iconOfType(.Star, withSize: size).imageWithTintColor(WPStyleGuide.lightBlue())
-        let selectedIcon = Gridicon.iconOfType(.Star, withSize: size).imageWithTintColor(WPStyleGuide.jazzyOrange())
+        let tintedIcon = Gridicon.iconOfType(.starOutline, withSize: size).imageWithTintColor(WPStyleGuide.grey())
+        let highlightedIcon = Gridicon.iconOfType(.star, withSize: size).imageWithTintColor(WPStyleGuide.lightBlue())
+        let selectedIcon = Gridicon.iconOfType(.star, withSize: size).imageWithTintColor(WPStyleGuide.jazzyOrange())
 
-        likeButton.setImage(tintedIcon, forState: .Normal)
-        likeButton.setImage(highlightedIcon, forState: .Highlighted)
-        likeButton.setImage(selectedIcon, forState: .Selected)
+        likeButton.setImage(tintedIcon, for: .normal)
+        likeButton.setImage(highlightedIcon, for: .highlighted)
+        likeButton.setImage(selectedIcon, for: .selected)
 
-        likeButton.setTitleColor(WPStyleGuide.grey(), forState: .Normal)
+        likeButton.setTitleColor(WPStyleGuide.grey(), for: .normal)
     }
 
 
@@ -135,7 +135,7 @@ class ReaderCommentCell : UITableViewCell
 
         let placeholder = UIImage(named: "gravatar")
         if let url = comment.avatarURLForDisplay() {
-            avatarImageView.setImageWithURL(url, placeholderImage: placeholder)
+            avatarImageView.setImageWith(url, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
         }
@@ -147,17 +147,17 @@ class ReaderCommentCell : UITableViewCell
             return
         }
 
-        authorButton.enabled = true
-        authorButton.setTitle(comment.author, forState: .Normal)
-        authorButton.setTitleColor(WPStyleGuide.lightBlue(), forState: .Highlighted)
-        authorButton.setTitleColor(WPStyleGuide.greyDarken30(), forState: .Disabled)
+        authorButton.isEnabled = true
+        authorButton.setTitle(comment.author, for: .normal)
+        authorButton.setTitleColor(WPStyleGuide.lightBlue(), for: .highlighted)
+        authorButton.setTitleColor(WPStyleGuide.greyDarken30(), for: .disabled)
 
         if comment.authorIsPostAuthor() {
-            authorButton.setTitleColor(WPStyleGuide.jazzyOrange(), forState: .Normal)
+            authorButton.setTitleColor(WPStyleGuide.jazzyOrange(), for: .normal)
         } else if comment.hasAuthorUrl() {
-            authorButton.setTitleColor(WPStyleGuide.wordPressBlue(), forState: .Normal)
+            authorButton.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
         } else {
-            authorButton.enabled = false
+            authorButton.isEnabled = false
         }
     }
 
@@ -166,7 +166,8 @@ class ReaderCommentCell : UITableViewCell
         guard let comment = comment else {
             return
         }
-        timeLabel.text = comment.dateForDisplay().shortString()
+
+        timeLabel.text = (comment.dateForDisplay() as NSDate).shortString()
     }
 
 
@@ -185,19 +186,19 @@ class ReaderCommentCell : UITableViewCell
             return
         }
 
-        actionBar.hidden = !enableLoggedInFeatures
-        replyButton.hidden = !showReply
+        actionBar.isHidden = !enableLoggedInFeatures
+        replyButton.isHidden = !showReply
 
         var title = NSLocalizedString("Like", comment: "Verb. Button title. Tap to like a commnet")
-        let count = comment.numberOfLikes().integerValue
+        let count = comment.numberOfLikes().intValue
         if count == 1 {
             title = "\(count) \(title)"
         } else if count > 1 {
             title = NSLocalizedString("Likes", comment: "Noun. Button title.  Tap to like a comment.")
             title = "\(count) \(title)"
         }
-        likeButton.setTitle(title, forState: .Normal)
-        likeButton.selected = comment.isLiked
+        likeButton.setTitle(title, for: .normal)
+        likeButton.isSelected = comment.isLiked
     }
 
 
@@ -218,7 +219,7 @@ class ReaderCommentCell : UITableViewCell
         guard let comment = comment else {
             return
         }
-        delegate?.cell(self, didTapAuthor: comment)
+        delegate?.cell(self, didTapLike: comment)
     }
 
 
