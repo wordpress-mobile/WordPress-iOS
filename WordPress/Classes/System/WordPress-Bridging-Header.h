@@ -82,6 +82,7 @@
 #import "ReaderSiteService.h"
 #import "ReaderTopicService.h"
 #import "RemoteReaderPost.h"
+#import "RemoteReaderSite.h"
 #import "RemoteReaderTopic.h"
 #import "RotationAwareNavigationViewController.h"
 
