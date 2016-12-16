@@ -9,7 +9,7 @@ protocol Product {
 
     var price: NSDecimalNumber { get }
 
-    var priceLocale: NSLocale { get }
+    var priceLocale: Locale { get }
 
     var productIdentifier: String { get }
 }
@@ -20,10 +20,10 @@ class MockProduct: NSObject, Product {
     let localizedDescription: String
     let localizedTitle: String
     let price: NSDecimalNumber
-    var priceLocale: NSLocale
+    var priceLocale: Locale
     let productIdentifier: String
 
-    init(localizedDescription: String, localizedTitle: String, price: NSDecimalNumber, priceLocale: NSLocale, productIdentifier: String) {
+    init(localizedDescription: String, localizedTitle: String, price: NSDecimalNumber, priceLocale: Locale, productIdentifier: String) {
         self.localizedDescription = localizedDescription
         self.localizedTitle = localizedTitle
         self.price = price

@@ -3,7 +3,7 @@ import AFNetworking
 
 /// SiteManagementServiceRemote handles REST API calls for managing a WordPress.com site.
 ///
-public class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
+open class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
 {
     /// Deletes the specified WordPress.com site.
     ///
@@ -12,23 +12,23 @@ public class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
     ///    - success: Optional success block with no parameters
     ///    - failure: Optional failure block with NSError
     ///
-    public func deleteSite(siteID: NSNumber, success: (() -> Void)?, failure: (NSError -> Void)?) {
+    open func deleteSite(_ siteID: NSNumber, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
         let endpoint = "sites/\(siteID)/delete"
-        let path = self.pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.POST(path,
+        wordPressComRestApi.POST(path!,
             parameters: nil,
             success: { response, httpResponse in
                 guard let results = response as? [String: AnyObject] else {
-                    failure?(SiteError.DeleteInvalidResponse.toNSError())
+                    failure?(SiteError.deleteInvalidResponse.toNSError())
                     return
                 }
                 guard let status = results[ResultKey.Status] as? String else {
-                    failure?(SiteError.DeleteMissingStatus.toNSError())
+                    failure?(SiteError.deleteMissingStatus.toNSError())
                     return
                 }
                 guard status == ResultValue.Deleted else {
-                    failure?(SiteError.DeleteFailed.toNSError())
+                    failure?(SiteError.deleteFailed.toNSError())
                     return
                 }
 
@@ -49,23 +49,23 @@ public class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
     ///    - success: Optional success block with no parameters
     ///    - failure: Optional failure block with NSError
     ///
-    public func exportContent(siteID: NSNumber, success: (() -> Void)?, failure: (NSError -> Void)?) {
+    open func exportContent(_ siteID: NSNumber, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
         let endpoint = "sites/\(siteID)/exports/start"
-        let path = self.pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.POST(path,
+        wordPressComRestApi.POST(path!,
             parameters: nil,
             success: { response, httpResponse in
                 guard let results = response as? [String: AnyObject] else {
-                    failure?(SiteError.ExportInvalidResponse.toNSError())
+                    failure?(SiteError.exportInvalidResponse.toNSError())
                     return
                 }
                 guard let status = results[ResultKey.Status] as? String else {
-                    failure?(SiteError.ExportMissingStatus.toNSError())
+                    failure?(SiteError.exportMissingStatus.toNSError())
                     return
                 }
                 guard status == ResultValue.Running else {
-                    failure?(SiteError.ExportFailed.toNSError())
+                    failure?(SiteError.exportFailed.toNSError())
                     return
                 }
 
@@ -83,15 +83,15 @@ public class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
     ///     - success: Optional success block with array of purchases (if any)
     ///     - failure: Optional failure block with NSError
     ///
-    public func getActivePurchases(siteID: NSNumber, success: (([SitePurchase]) -> Void)?, failure: (NSError -> Void)?) {
+    open func getActivePurchases(_ siteID: NSNumber, success: (([SitePurchase]) -> Void)?, failure: ((NSError) -> Void)?) {
         let endpoint = "sites/\(siteID)/purchases"
-        let path = self.pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.GET(path,
+        wordPressComRestApi.GET(path!,
             parameters: nil,
             success: { response, httpResponse in
                 guard let results = response as? [SitePurchase] else {
-                    failure?(SiteError.PurchasesInvalidResponse.toNSError())
+                    failure?(SiteError.purchasesInvalidResponse.toNSError())
                     return
                 }
 
@@ -105,7 +105,7 @@ public class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
 
     /// Keys found in API results
     ///
-    private struct ResultKey
+    fileprivate struct ResultKey
     {
         static let Status = "status"
         static let Active = "active"
@@ -113,7 +113,7 @@ public class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
 
     /// Values found in API results
     ///
-    private struct ResultValue
+    fileprivate struct ResultValue
     {
         static let Deleted = "deleted"
         static let Running = "running"
@@ -121,29 +121,29 @@ public class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
 
     /// Errors generated by this class whilst parsing API results
     ///
-    enum SiteError: ErrorType, CustomStringConvertible
+    enum SiteError: Error, CustomStringConvertible
     {
-        case DeleteInvalidResponse
-        case DeleteMissingStatus
-        case DeleteFailed
-        case ExportInvalidResponse
-        case ExportMissingStatus
-        case ExportFailed
-        case PurchasesInvalidResponse
+        case deleteInvalidResponse
+        case deleteMissingStatus
+        case deleteFailed
+        case exportInvalidResponse
+        case exportMissingStatus
+        case exportFailed
+        case purchasesInvalidResponse
 
         var description: String {
             switch self {
-            case .DeleteInvalidResponse, .DeleteMissingStatus, .DeleteFailed:
+            case .deleteInvalidResponse, .deleteMissingStatus, .deleteFailed:
                 return NSLocalizedString("The site could not be deleted.", comment: "Message shown when site deletion API failed")
-            case .ExportInvalidResponse, .ExportMissingStatus, .ExportFailed:
+            case .exportInvalidResponse, .exportMissingStatus, .exportFailed:
                 return NSLocalizedString("The site could not be exported.", comment: "Message shown when site export API failed")
-            case .PurchasesInvalidResponse:
+            case .purchasesInvalidResponse:
                 return NSLocalizedString("Could not check site purchases.", comment: "Message shown when site purchases API failed")
             }
         }
 
         func toNSError() -> NSError {
-            return NSError(domain: _domain, code: _code, userInfo: [NSLocalizedDescriptionKey: String(self)])
+            return NSError(domain: _domain, code: _code, userInfo: [NSLocalizedDescriptionKey: String(describing: self)])
         }
     }
 }

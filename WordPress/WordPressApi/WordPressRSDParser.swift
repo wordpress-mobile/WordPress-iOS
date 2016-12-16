@@ -1,16 +1,16 @@
 import Foundation
 
 /// An WordPressRSDParser is able to parse an RSD file and search for the XMLRPC WordPress url.
-public class WordPressRSDParser: NSObject, NSXMLParserDelegate {
+open class WordPressRSDParser: NSObject, XMLParserDelegate {
 
-    private let parser: NSXMLParser
-    private var endpoint: String?
+    fileprivate let parser: XMLParser
+    fileprivate var endpoint: String?
 
     init?(xmlString:String) {
-        guard let data = xmlString.dataUsingEncoding(NSUTF8StringEncoding) else {
+        guard let data = xmlString.data(using: String.Encoding.utf8) else {
             return nil
         }
-        parser = NSXMLParser(data: data)
+        parser = XMLParser(data: data)
         super.init()
         parser.delegate = self
     }
@@ -27,13 +27,13 @@ public class WordPressRSDParser: NSObject, NSXMLParserDelegate {
     }
 
     //MARK: - NSXMLParserDelegate
-    public func parser(parser: NSXMLParser,
+    open func parser(_ parser: XMLParser,
                 didStartElement elementName: String,
                                 namespaceURI: String?,
                                 qualifiedName qName: String?,
                                               attributes attributeDict: [String : String]) {
         if elementName == "api" {
-            if let apiName = attributeDict["name"] where apiName == "WordPress" {
+            if let apiName = attributeDict["name"], apiName == "WordPress" {
                 if let endpoint = attributeDict["apiLink"] {
                     self.endpoint = endpoint
                 } else {
@@ -43,7 +43,7 @@ public class WordPressRSDParser: NSObject, NSXMLParserDelegate {
         }
     }
 
-    public func parser(parser: NSXMLParser, parseErrorOccurred parseError: NSError) {
+    open func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
         DDLogSwift.logInfo("Error parsing RSD: \(parseError)")
     }
 
