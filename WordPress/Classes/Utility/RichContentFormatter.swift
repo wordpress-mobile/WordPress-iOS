@@ -241,15 +241,15 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    class func removeTrailingBreakTags(string: String) -> String {
+    class func removeTrailingBreakTags(_ string: String) -> String {
         guard string.characters.count > 0 else {
             return string
         }
         var content = string.trim()
-        let matches = RegEx.trailingBRTags.matchesInString(content, options: .ReportCompletion, range: NSRange(location:0, length: content.characters.count))
+        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location:0, length: content.characters.count))
         if let match = matches.first {
-            let index = content.startIndex.advancedBy(match.range.location)
-            content = content.substringToIndex(index)
+            let index = content.characters.index(content.startIndex, offsetBy: match.range.location)
+            content = content.substring(to: index)
         }
 
         return content

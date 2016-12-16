@@ -3,10 +3,9 @@ import Foundation
 extension UIImage
 {
     func rotate180Degrees() -> UIImage? {
-        guard let cgImg = CGImage else {
+        guard let cgImg = cgImage else {
             return nil
         }
-
-        return UIImage(CGImage: cgImg, scale: scale, orientation: .Down)
+        return UIImage(cgImage: cgImg, scale: scale, orientation: .down)
     }
 }
