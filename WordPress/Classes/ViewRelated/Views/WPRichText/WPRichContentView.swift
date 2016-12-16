@@ -5,8 +5,8 @@ import UIKit
 @objc protocol WPRichContentViewDelegate: UITextViewDelegate
 {
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
-    optional func richContentViewShouldUpdateLayoutForAttachments(richContentView: WPRichContentView) -> Bool
-    optional func richContentViewDidUpdateLayoutForAttachments(richContentView: WPRichContentView)
+    @objc optional func richContentViewShouldUpdateLayoutForAttachments(richContentView: WPRichContentView) -> Bool
+    @objc optional func richContentViewDidUpdateLayoutForAttachments(richContentView: WPRichContentView)
 }
 
 
@@ -179,7 +179,7 @@ class WPRichContentView: UITextView
 
     func layoutAttachmentViews() {
         if let richDelegate = delegate as? WPRichContentViewDelegate {
-            if richDelegate.richContentViewShouldUpdateLayoutForAttachments?(self) == false {
+            if richDelegate.richContentViewShouldUpdateLayoutForAttachments?(richContentView: self) == false {
                 return
             }
         }
@@ -187,7 +187,7 @@ class WPRichContentView: UITextView
         updateLayoutForAttachments()
 
         if let richDelegate = delegate as? WPRichContentViewDelegate {
-            richDelegate.richContentViewDidUpdateLayoutForAttachments?(self)
+            richDelegate.richContentViewDidUpdateLayoutForAttachments?(richContentView: self)
         }
     }
 
@@ -251,7 +251,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     /// - Returns: A WPRichTextImage instance configured for the attachment.
     ///
     func imageForAttachment(_ attachment: WPTextAttachment) -> WPRichTextImage {
-        guard let url = NSURL(string: attachment.src) else {
+        guard let url = URL(string: attachment.src) else {
             return WPRichTextImage(frame: CGRect.zero)
         }
 
