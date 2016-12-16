@@ -16,6 +16,7 @@ enum FeatureFlag: Int {
                 return true
             }
             return false
+        }
     }
 }
 
