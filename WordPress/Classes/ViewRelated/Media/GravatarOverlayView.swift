@@ -17,8 +17,8 @@ class GravatarOverlayView : UIView
         setNeedsDisplay()
     }
 
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
 
         let context = UIGraphicsGetCurrentContext()!
 
@@ -27,23 +27,23 @@ class GravatarOverlayView : UIView
         let ellipseRect = bounds.insetBy(dx: delta, dy: delta)
 
         // Setup
-        CGContextSaveGState(context)
-        CGContextSetLineWidth(context, borderWidth)
-        CGContextSetAllowsAntialiasing(context, true)
-        CGContextSetShouldAntialias(context, true)
+        context.saveGState()
+        context.setLineWidth(borderWidth)
+        context.setAllowsAntialiasing(true)
+        context.setShouldAntialias(true)
 
         // Outer
         outerColor?.setFill()
-        CGContextAddRect(context, bounds)
-        CGContextAddEllipseInRect(context, ellipseRect)
-        CGContextEOFillPath(context)
+        context.addRect(bounds)
+        context.addEllipse(in: ellipseRect)
+        context.fillPath(using: .evenOdd)
 
         // Border
         borderColor?.setStroke()
-        CGContextAddEllipseInRect(context, ellipseRect)
-        CGContextStrokePath(context)
+        context.addEllipse(in: ellipseRect)
+        context.strokePath()
 
         // Wrap Up
-        CGContextRestoreGState(context)
+        context.restoreGState()
     }
 }

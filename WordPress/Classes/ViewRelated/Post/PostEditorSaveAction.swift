@@ -4,10 +4,10 @@ import WordPressComAnalytics
 /// Encapsulates the current save action of the editor, based on its
 /// post status, whether it's already been saved, is scheduled, etc.
 @objc enum PostEditorSaveAction: Int {
-    case Schedule
-    case Post
-    case Save
-    case Update
+    case schedule
+    case post
+    case save
+    case update
 }
 
 /// Some utility methods to help keep track of the current post action
@@ -15,41 +15,40 @@ extension WPPostViewController {
     /// What action should be taken when the user taps the editor's save button?
     var currentSaveAction: PostEditorSaveAction {
         if let status = post.status,
-            let originalStatus = post.original?.status
-            where status != originalStatus || !post.hasRemote() {
+            let originalStatus = post.original?.status, status != originalStatus || !post.hasRemote() {
             if (post.isScheduled()) {
-                return .Schedule
+                return .schedule
             } else if (status == PostStatusPublish) {
-                return .Post
+                return .post
             } else {
-                return .Save
+                return .save
             }
         } else {
-            return .Update
+            return .update
         }
     }
 
     /// The title for the Save button, based on the current save action
     var saveBarButtonItemTitle: String {
         switch currentSaveAction {
-        case .Schedule:
+        case .schedule:
             return NSLocalizedString("Schedule", comment: "Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.")
-        case .Post:
+        case .post:
             return NSLocalizedString("Post", comment: "Publish button label.")
-        case .Save:
+        case .save:
             return NSLocalizedString("Save", comment: "Save button label (saving content, ex: Post, Page, Comment).")
-        case .Update:
+        case .update:
             return NSLocalizedString("Update", comment: "Update button label (saving content, ex: Post, Page, Comment).")
         }
     }
 
     /// The analytics stat to post when the user saves, based on the current post action
-    func analyticsStatForSaveAction(action: PostEditorSaveAction) -> WPAnalyticsStat {
+    func analyticsStatForSaveAction(_ action: PostEditorSaveAction) -> WPAnalyticsStat {
         switch action {
-        case .Post:     return .EditorPublishedPost
-        case .Schedule: return .EditorScheduledPost
-        case .Save:     return .EditorSavedDraft
-        case .Update:   return .EditorUpdatedPost
+        case .post:     return .editorPublishedPost
+        case .schedule: return .editorScheduledPost
+        case .save:     return .editorSavedDraft
+        case .update:   return .editorUpdatedPost
         }
     }
 }

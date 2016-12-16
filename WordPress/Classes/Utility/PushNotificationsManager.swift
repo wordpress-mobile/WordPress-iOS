@@ -21,10 +21,10 @@ final public class PushNotificationsManager : NSObject
     ///
     var deviceToken: String? {
         get {
-            return NSUserDefaults.standardUserDefaults().stringForKey(deviceTokenKey) ?? String()
+            return UserDefaults.standard.string(forKey: deviceTokenKey) ?? String()
         }
         set {
-            standardUserDefaults.setObject(newValue, forKey: deviceTokenKey)
+            standardUserDefaults.set(newValue, forKey: deviceTokenKey)
             standardUserDefaults.synchronize()
         }
     }
@@ -34,10 +34,10 @@ final public class PushNotificationsManager : NSObject
     ///
     var deviceId: String? {
         get {
-            return standardUserDefaults.stringForKey(deviceIdKey) ?? String()
+            return standardUserDefaults.string(forKey: deviceIdKey) ?? String()
         }
         set {
-            standardUserDefaults.setObject(newValue, forKey: deviceIdKey)
+            standardUserDefaults.set(newValue, forKey: deviceIdKey)
             standardUserDefaults.synchronize()
         }
     }
@@ -46,7 +46,7 @@ final public class PushNotificationsManager : NSObject
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
     ///
     var sharedApplication: UIApplication {
-        return UIApplication.sharedApplication()
+        return UIApplication.shared
     }
 
 
@@ -64,8 +64,8 @@ final public class PushNotificationsManager : NSObject
 
     /// Returns the Standard User Defaults.
     ///
-    private var standardUserDefaults: NSUserDefaults {
-        return NSUserDefaults.standardUserDefaults()
+    fileprivate var standardUserDefaults: UserDefaults {
+        return UserDefaults.standard
     }
 
 
@@ -77,7 +77,7 @@ final public class PushNotificationsManager : NSObject
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
     func registerForRemoteNotifications() {
-        if sharedApplication.isRunningSimulator() || build(.Alpha) {
+        if sharedApplication.isRunningSimulator() || build(.alpha) {
             return
         }
 
@@ -88,7 +88,7 @@ final public class PushNotificationsManager : NSObject
 
     /// Indicates whether Push Notifications are enabled in Settings.app, or not.
     func notificationsEnabledInDeviceSettings() -> Bool {
-        return (sharedApplication.currentUserNotificationSettings()?.types ?? .None) != .None
+        return (sharedApplication.currentUserNotificationSettings?.types ?? UIUserNotificationType()) != UIUserNotificationType()
     }
 
 
@@ -97,7 +97,7 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Note: Both Helpshift and Mixpanel will also be initialized. The token will be persisted across App Sessions.
     ///
-    func registerDeviceToken(tokenData: NSData) {
+    func registerDeviceToken(_ tokenData: Data) {
         // We want to register Helpshift regardless so that way if a user isn't logged in
         // they can still get push notifications that we replied to their support ticket.
         HelpshiftCore.registerDeviceToken(tokenData)
@@ -136,7 +136,7 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Parameter error: Details the reason of failure
     ///
-    func registrationDidFail(error: NSError) {
+    func registrationDidFail(_ error: NSError) {
         DDLogSwift.logError("Failed to register for push notifications: \(error)")
         unregisterDeviceToken()
     }
@@ -174,17 +174,17 @@ final public class PushNotificationsManager : NSObject
     ///     - userInfo: The Notification's Payload
     ///     - completionHandler: A callback, to be executed on completion
     ///
-    func handleNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) {
+    func handleNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) {
         DDLogSwift.logVerbose("Received push notification:\nPayload: \(userInfo)\n")
         DDLogSwift.logVerbose("Current Application state: \(applicationState.rawValue)")
 
         // Badge: Update
-        if let badgeCountNumber = userInfo.numberForKeyPath(notificationBadgePath)?.integerValue {
+        if let badgeCountNumber = userInfo.number(forKeyPath: notificationBadgePath)?.intValue {
             sharedApplication.applicationIconBadgeNumber = badgeCountNumber
         }
 
         // Badge: Reset
-        if let type = userInfo.stringForKey(notificationTypeKey) where type == notificationBadgeResetValue {
+        if let type = userInfo.string(forKey: notificationTypeKey), type == notificationBadgeResetValue {
             return
         }
 
@@ -198,7 +198,7 @@ final public class PushNotificationsManager : NSObject
                          handleBackgroundNotification ]
 
         for handler in handlers {
-            if handler(userInfo, completionHandler: completionHandler) {
+            if handler(userInfo, completionHandler) {
                 break
             }
         }
@@ -221,18 +221,18 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    func handleHelpshiftNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
-        guard let origin = userInfo.stringForKey(notificationOriginKey) where origin == helpshiftOriginValue else {
+    func handleHelpshiftNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+        guard let origin = userInfo.string(forKey: notificationOriginKey), origin == helpshiftOriginValue else {
             return false
         }
 
         let rootViewController = sharedApplication.keyWindow?.rootViewController
-        let payload = userInfo as [NSObject : AnyObject]
+        let payload = userInfo as! [AnyHashable: Any]
 
-        HelpshiftCore.handleRemoteNotification(payload, withController: rootViewController)
-        WPAnalytics.track(.SupportReceivedResponseFromSupport)
+        HelpshiftCore.handleRemoteNotification(payload, with: rootViewController)
+        WPAnalytics.track(.supportReceivedResponseFromSupport)
 
-        completionHandler?(.NewData)
+        completionHandler?(.newData)
 
         return true
     }
@@ -249,7 +249,7 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    func handleAuthenticationNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+    func handleAuthenticationNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         // WordPress.com Push Authentication Notification
         // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
         // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
@@ -260,11 +260,11 @@ final public class PushNotificationsManager : NSObject
             return false
         }
 
-        if applicationState != .Background {
+        if applicationState != .background {
             authenticationManager.handlePushAuthenticationNotification(userInfo)
         }
 
-        completionHandler?(.NewData)
+        completionHandler?(.newData)
 
         return true
     }
@@ -281,17 +281,17 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    func handleInactiveNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
-        guard applicationState == .Inactive else {
+    func handleInactiveNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+        guard applicationState == .inactive else {
             return false
         }
 
-        guard let notificationId = userInfo.numberForKey(notificationIdentifierKey)?.stringValue else {
+        guard let notificationId = userInfo.number(forKey: notificationIdentifierKey)?.stringValue else {
             return false
         }
 
-        WPTabBarController.sharedInstance().showNotificationsTabForNoteWithID(notificationId)
-        completionHandler?(.NewData)
+        WPTabBarController.sharedInstance().showNotificationsTabForNote(withID: notificationId)
+        completionHandler?(.newData)
 
         return true
     }
@@ -308,18 +308,18 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    func handleBackgroundNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
-        guard userInfo.numberForKey(notificationIdentifierKey)?.stringValue != nil else {
+    func handleBackgroundNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+        guard userInfo.number(forKey: notificationIdentifierKey)?.stringValue != nil else {
             return false
         }
 
         // TODO: JLP Nov.3.2016. Nuke applicationState == .Active once PingHub is in place!
-        guard applicationState == .Background || applicationState == .Active else {
+        guard applicationState == .background || applicationState == .active else {
             return false
         }
 
         guard let mediator = NotificationSyncMediator() else {
-            completionHandler?(.Failed)
+            completionHandler?(.failed)
             return true
         }
 
@@ -328,7 +328,7 @@ final public class PushNotificationsManager : NSObject
         mediator.sync { error, newData in
             DDLogSwift.logInfo("Finished Notifications Background Fetch!")
 
-            let result = newData ? UIBackgroundFetchResult.NewData : .NoData
+            let result = newData ? UIBackgroundFetchResult.newData : .noData
             completionHandler?(result)
         }
 
@@ -345,14 +345,14 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Parameter userInfo: The Notification's Payload
     ///
-    private func trackNotificationWithUserInfo(userInfo: NSDictionary) {
+    fileprivate func trackNotificationWithUserInfo(_ userInfo: NSDictionary) {
         var properties = [String : String]()
 
-        if let noteId = userInfo.numberForKey(notificationIdentifierKey) {
+        if let noteId = userInfo.number(forKey: notificationIdentifierKey) {
             properties[trackingIdentifierKey] = noteId.stringValue
         }
 
-        if let type = userInfo.stringForKey(notificationTypeKey) {
+        if let type = userInfo.string(forKey: notificationTypeKey) {
             properties[trackingTypeKey] = type
         }
 
@@ -360,7 +360,7 @@ final public class PushNotificationsManager : NSObject
             properties[trackingTokenKey] = theToken
         }
 
-        let event : WPAnalyticsStat = (applicationState == .Background) ? .PushNotificationReceived : .PushNotificationAlertPressed
+        let event : WPAnalyticsStat = (applicationState == .background) ? .pushNotificationReceived : .pushNotificationAlertPressed
         WPAnalytics.track(event, withProperties: properties)
     }
 
@@ -368,10 +368,10 @@ final public class PushNotificationsManager : NSObject
 
     /// Parses the NSData sent by Apple's Push Service, and extracts the Device Token
     ///
-    private func parseTokenFromAppleData(tokenData: NSData) -> String {
-        var newToken = tokenData.description.stringByReplacingOccurrencesOfString("<", withString: "")
-        newToken = newToken.stringByReplacingOccurrencesOfString(">", withString: "")
-        newToken = newToken.stringByReplacingOccurrencesOfString(" ", withString: "")
+    fileprivate func parseTokenFromAppleData(_ tokenData: Data) -> String {
+        var newToken = tokenData.description.replacingOccurrences(of: "<", with: "")
+        newToken = newToken.replacingOccurrences(of: ">", with: "")
+        newToken = newToken.replacingOccurrences(of: " ", with: "")
 
         return newToken
     }
@@ -380,21 +380,21 @@ final public class PushNotificationsManager : NSObject
 
 
     // MARK: - Private Constants: Device Keys
-    private let deviceTokenKey              = "apnsDeviceToken"
-    private let deviceIdKey                 = "notification_device_id"
+    fileprivate let deviceTokenKey              = "apnsDeviceToken"
+    fileprivate let deviceIdKey                 = "notification_device_id"
 
     // MARK: - Private Constants: Notification Keys
-    private let notificationBadgePath       = "aps.badge"
-    private let notificationIdentifierKey   = "note_id"
-    private let notificationTypeKey         = "type"
-    private let notificationOriginKey       = "origin"
-    private let notificationBadgeResetValue = "badge-reset"
+    fileprivate let notificationBadgePath       = "aps.badge"
+    fileprivate let notificationIdentifierKey   = "note_id"
+    fileprivate let notificationTypeKey         = "type"
+    fileprivate let notificationOriginKey       = "origin"
+    fileprivate let notificationBadgeResetValue = "badge-reset"
 
     // MARK: - Private Constants: Helpshift
-    private let helpshiftOriginValue        = "helpshift"
+    fileprivate let helpshiftOriginValue        = "helpshift"
 
     // MARK: - Private Constants: Tracking
-    private let trackingIdentifierKey       = "push_notification_note_id"
-    private let trackingTypeKey             = "push_notification_type"
-    private let trackingTokenKey            = "push_notification_token"
+    fileprivate let trackingIdentifierKey       = "push_notification_note_id"
+    fileprivate let trackingTypeKey             = "push_notification_type"
+    fileprivate let trackingTokenKey            = "push_notification_token"
 }

@@ -2,10 +2,10 @@ import Foundation
 import UIKit
 import WordPressShared.WPFontManager
 
-public class NavigationTitleView : UIView
+open class NavigationTitleView : UIView
 {
-    public let titleLabel       = UILabel(frame: defaultTitleFrame)
-    public let subtitleLabel    = UILabel(frame: defaultSubtitleFrame)
+    open let titleLabel       = UILabel(frame: defaultTitleFrame)
+    open let subtitleLabel    = UILabel(frame: defaultSubtitleFrame)
 
 
     // MARK: - UIView's Methods
@@ -31,21 +31,21 @@ public class NavigationTitleView : UIView
 
 
     // MARK: - Helpers
-    private func setupSubviews() {
-        titleLabel.font                 = WPFontManager.systemSemiBoldFontOfSize(NavigationTitleView.defaultTitleFontSize)
-        titleLabel.textColor            = UIColor.whiteColor()
-        titleLabel.textAlignment        = .Center
-        titleLabel.backgroundColor      = UIColor.clearColor()
-        titleLabel.autoresizingMask     = UIViewAutoresizing.FlexibleWidth
+    fileprivate func setupSubviews() {
+        titleLabel.font                 = WPFontManager.systemSemiBoldFont(ofSize: NavigationTitleView.defaultTitleFontSize)
+        titleLabel.textColor            = UIColor.white
+        titleLabel.textAlignment        = .center
+        titleLabel.backgroundColor      = UIColor.clear
+        titleLabel.autoresizingMask     = UIViewAutoresizing.flexibleWidth
 
-        subtitleLabel.font              = WPFontManager.systemRegularFontOfSize(NavigationTitleView.defaultSubtitleFontSize)
-        subtitleLabel.textColor         = UIColor.whiteColor()
-        subtitleLabel.textAlignment     = .Center
-        subtitleLabel.backgroundColor   = UIColor.clearColor()
-        subtitleLabel.autoresizingMask  = UIViewAutoresizing.FlexibleWidth
+        subtitleLabel.font              = WPFontManager.systemRegularFont(ofSize: NavigationTitleView.defaultSubtitleFontSize)
+        subtitleLabel.textColor         = UIColor.white
+        subtitleLabel.textAlignment     = .center
+        subtitleLabel.backgroundColor   = UIColor.clear
+        subtitleLabel.autoresizingMask  = UIViewAutoresizing.flexibleWidth
 
-        backgroundColor                 = UIColor.clearColor()
-        autoresizingMask                = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleBottomMargin, UIViewAutoresizing.FlexibleTopMargin]
+        backgroundColor                 = UIColor.clear
+        autoresizingMask                = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleBottomMargin, UIViewAutoresizing.flexibleTopMargin]
         clipsToBounds                   = true
 
         addSubview(titleLabel)
@@ -53,11 +53,11 @@ public class NavigationTitleView : UIView
     }
 
     // MARK: - Static Constants
-    private static let defaultViewFrame         = CGRect(x: 0.0, y: 0.0, width: 200.0, height: 35.0)
+    fileprivate static let defaultViewFrame         = CGRect(x: 0.0, y: 0.0, width: 200.0, height: 35.0)
 
-    private static let defaultTitleFontSize     = CGFloat(15)
-    private static let defaultTitleFrame        = CGRect(x: 0.0, y: 0.0,  width: 200.0, height: 19.0)
+    fileprivate static let defaultTitleFontSize     = CGFloat(15)
+    fileprivate static let defaultTitleFrame        = CGRect(x: 0.0, y: 0.0,  width: 200.0, height: 19.0)
 
-    private static let defaultSubtitleFontSize  = CGFloat(10)
-    private static let defaultSubtitleFrame     = CGRect(x: 0.0, y: 19.0, width: 200.0, height: 16.0)
+    fileprivate static let defaultSubtitleFontSize  = CGFloat(10)
+    fileprivate static let defaultSubtitleFrame     = CGRect(x: 0.0, y: 19.0, width: 200.0, height: 16.0)
 }

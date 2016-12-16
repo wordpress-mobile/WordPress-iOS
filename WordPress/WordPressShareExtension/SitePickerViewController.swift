@@ -20,20 +20,20 @@ class SitePickerViewController : UITableViewController
 
 
     // MARK: - UITableView Methods
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sites.count
     }
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return rowHeight
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         let site = sites[indexPath.row]
 
         configureCell(cell, site: site)
@@ -41,40 +41,40 @@ class SitePickerViewController : UITableViewController
         return cell
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let site = sites[indexPath.row]
-        onChange?(siteId: site.ID, description: site.name?.characters.count > 0 ? site.name : site.URL.host)
-        navigationController?.popViewControllerAnimated(true)
+        onChange?(site.ID, (site.name?.characters.count)! > 0 ? site.name : site.URL.host)
+        _ = navigationController?.popViewController(animated: true)
     }
 
 
     // MARK: - Setup Helpers
-    private func setupView() {
+    fileprivate func setupView() {
         title = NSLocalizedString("Site Picker", comment: "Title for the Site Picker")
-        preferredContentSize = UIScreen.mainScreen().bounds.size
+        preferredContentSize = UIScreen.main.bounds.size
     }
 
-    private func setupTableView() {
+    fileprivate func setupTableView() {
         // Blur!
-        let blurEffect = UIBlurEffect(style: .Light)
-        tableView.backgroundColor = UIColor.clearColor()
+        let blurEffect = UIBlurEffect(style: .light)
+        tableView.backgroundColor = UIColor.clear
         tableView.backgroundView = UIVisualEffectView(effect: blurEffect)
-        tableView.separatorEffect = UIVibrancyEffect(forBlurEffect: blurEffect)
+        tableView.separatorEffect = UIVibrancyEffect(blurEffect: blurEffect)
 
         // Fix: Hide the cellSeparators, when the table is empty
         tableView.tableFooterView = UIView()
 
         // Cells
-        tableView.registerClass(WPTableViewCellSubtitle.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.register(WPTableViewCellSubtitle.self, forCellReuseIdentifier: reuseIdentifier)
     }
 
-    private func setupNoResultsView() {
+    fileprivate func setupNoResultsView() {
         tableView.addSubview(noResultsView)
     }
 
 
     // MARK: - Private Helpers
-    private func loadSites() {
+    fileprivate func loadSites() {
         guard let oauth2Token = ShareExtensionService.retrieveShareExtensionToken() else {
             showEmptySitesIfNeeded()
             return
@@ -87,7 +87,7 @@ class SitePickerViewController : UITableViewController
         showLoadingView()
 
         service.fetchSites { [weak self] sites, error in
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self?.sites = sites ?? [Site]()
                 self?.tableView.reloadData()
                 self?.showEmptySitesIfNeeded()
@@ -95,7 +95,7 @@ class SitePickerViewController : UITableViewController
         }
     }
 
-    private func configureCell(cell: UITableViewCell, site: Site) {
+    fileprivate func configureCell(_ cell: UITableViewCell, site: Site) {
         // Site's Details
         cell.textLabel?.text = site.name
         cell.detailTextLabel?.text = site.URL.host
@@ -104,7 +104,7 @@ class SitePickerViewController : UITableViewController
         cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
 
         if let siteIconPath = site.icon,
-            siteIconUrl = NSURL(string: siteIconPath)
+            let siteIconUrl = URL(string: siteIconPath)
         {
             cell.imageView?.downloadBlavatar(siteIconUrl)
         }
@@ -115,29 +115,29 @@ class SitePickerViewController : UITableViewController
 
 
     // MARK: - No Results Helpers
-    private func showLoadingView() {
+    fileprivate func showLoadingView() {
         noResultsView.titleText = NSLocalizedString("Loading Sites...", comment: "Legend displayed when loading Sites")
-        noResultsView.hidden = false
+        noResultsView.isHidden = false
     }
 
-    private func showEmptySitesIfNeeded() {
+    fileprivate func showEmptySitesIfNeeded() {
         let hasSites = (sites.isEmpty == false)
         noResultsView.titleText = NSLocalizedString("No Sites", comment: "Legend displayed when the user has no sites")
-        noResultsView.hidden = hasSites
+        noResultsView.isHidden = hasSites
     }
 
 
     // MARK: Typealiases
-    typealias PickerHandler = (siteId: Int, description: String?) -> Void
+    typealias PickerHandler = (_ siteId: Int, _ description: String?) -> Void
 
     // MARK: - Public Properties
     var onChange                : PickerHandler?
 
     // MARK: - Private Properties
-    private var sites           = [Site]()
-    private var noResultsView   = WPNoResultsView()
+    fileprivate var sites           = [Site]()
+    fileprivate var noResultsView   = WPNoResultsView()
 
     // MARK: - Private Constants
-    private let reuseIdentifier = "reuseIdentifier"
-    private let rowHeight       = CGFloat(74)
+    fileprivate let reuseIdentifier = "reuseIdentifier"
+    fileprivate let rowHeight       = CGFloat(74)
 }

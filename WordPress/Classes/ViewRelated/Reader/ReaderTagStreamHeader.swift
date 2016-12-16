@@ -1,18 +1,18 @@
 import Foundation
 import WordPressShared
 
-@objc public class ReaderTagStreamHeader: UIView, ReaderStreamHeader
+@objc open class ReaderTagStreamHeader: UIView, ReaderStreamHeader
 {
-    @IBOutlet private weak var borderedView: UIView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var followButton: PostMetaButton!
+    @IBOutlet fileprivate weak var borderedView: UIView!
+    @IBOutlet fileprivate weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var followButton: PostMetaButton!
 
-    public var delegate: ReaderStreamHeaderDelegate?
+    open var delegate: ReaderStreamHeaderDelegate?
 
 
     // MARK: - Lifecycle Methods
 
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
 
         applyStyles()
@@ -20,7 +20,7 @@ import WordPressShared
 
     func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
-        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
+        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
     }
@@ -28,20 +28,20 @@ import WordPressShared
 
     // MARK: - Configuration
 
-    public func configureHeader(topic: ReaderAbstractTopic) {
+    open func configureHeader(_ topic: ReaderAbstractTopic) {
         titleLabel.text = topic.title
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
-        followButton.selected = topic.following
+        followButton.isSelected = topic.following
     }
 
-    public func enableLoggedInFeatures(enable: Bool) {
-        followButton.hidden = !enable
+    open func enableLoggedInFeatures(_ enable: Bool) {
+        followButton.isHidden = !enable
     }
 
 
     // MARK: - Actions
 
-    @IBAction func didTapFollowButton(sender: UIButton) {
+    @IBAction func didTapFollowButton(_ sender: UIButton) {
         delegate?.handleFollowActionForHeader(self)
     }
 }
