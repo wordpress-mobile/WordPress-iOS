@@ -3,7 +3,6 @@
 @objc
 enum FeatureFlag: Int {
     case NativeEditor
-    case PingHub
     case ExampleFeature
 
     /// Returns a boolean indicating if the feature is enabled
@@ -17,9 +16,6 @@ enum FeatureFlag: Int {
                 return true
             }
             return false
-        case .PingHub:
-            return build(.Alpha, .Debug)
-        }
     }
 }
 
