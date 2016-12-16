@@ -257,7 +257,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
         }
 
         // Until we have a loaded image use a 1/1 height.  We want a nonzero value
-        // to to avoid an edge case issue where 0 frames are not correctly updated
+        // to avoid an edge case issue where 0 frames are not correctly updated
         // during rotation.
         attachment.maxSize = CGSize(width: 1, height: 1)
 
