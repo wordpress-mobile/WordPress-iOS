@@ -16,9 +16,9 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     ///
     /// - Parameter loginFields: A LoginFields instance containing any prefilled credentials.
     ///
-    class func controller(loginFields: LoginFields) -> SigninLinkRequestViewController {
-        let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateViewControllerWithIdentifier("SigninLinkRequestViewController") as! SigninLinkRequestViewController
+    class func controller(_ loginFields: LoginFields) -> SigninLinkRequestViewController {
+        let storyboard = UIStoryboard(name: "Signin", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SigninLinkRequestViewController") as! SigninLinkRequestViewController
         controller.loginFields = loginFields
         return controller
     }
@@ -39,7 +39,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     }
 
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
                "Only present parts of the magic link signin flow from the application's root vc.")
@@ -53,22 +53,22 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     ///
     func localizeControls() {
         let format = NSLocalizedString("Get a link sent to %@ to log in instantly.", comment: "Short instructional text. The %@ is a placeholder for the user's email address.")
-        label.text = NSString(format: format, loginFields.username) as String
+        label.text = NSString(format: format as NSString, loginFields.username) as String
 
-        let sendLinkButtonTitle = NSLocalizedString("Send Link", comment: "Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user.").localizedUppercaseString
-        sendLinkButton.setTitle(sendLinkButtonTitle, forState: .Normal)
-        sendLinkButton.setTitle(sendLinkButtonTitle, forState: .Highlighted)
+        let sendLinkButtonTitle = NSLocalizedString("Send Link", comment: "Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user.").localizedUppercase
+        sendLinkButton.setTitle(sendLinkButtonTitle, for: UIControlState())
+        sendLinkButton.setTitle(sendLinkButtonTitle, for: .highlighted)
 
         let usePasswordTitle = NSLocalizedString("Enter your password instead", comment: "Title of a button. ")
-        usePasswordButton.setTitle(usePasswordTitle, forState: .Normal)
-        usePasswordButton.setTitle(usePasswordTitle, forState: .Highlighted)
+        usePasswordButton.setTitle(usePasswordTitle, for: UIControlState())
+        usePasswordButton.setTitle(usePasswordTitle, for: .highlighted)
     }
 
 
-    func configureLoading(animating: Bool) {
+    func configureLoading(_ animating: Bool) {
         sendLinkButton.showActivityIndicator(animating)
 
-        sendLinkButton.enabled = !animating
+        sendLinkButton.isEnabled = !animating
     }
 
 
@@ -83,21 +83,21 @@ class SigninLinkRequestViewController : NUXAbstractViewController
             // This is a bit of paranioa as in practice it should never happen.
             // However, let's make sure we give the user some useful feedback just in case.
             DDLogSwift.logError("Attempted to request authentication link, but the email address did not appear valid.")
-            WPError.showAlertWithTitle(NSLocalizedString("Can Not Request Link", comment: "Title of an alert letting the user know"),
+            WPError.showAlert(withTitle: NSLocalizedString("Can Not Request Link", comment: "Title of an alert letting the user know"),
                                        message: NSLocalizedString("A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address.", comment: "An error message."))
             return
         }
 
         configureLoading(true)
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.requestAuthenticationLink(email,
+        service?.requestAuthenticationLink(email,
             success: { [weak self] in
                 self?.didRequestAuthenticationLink()
                 self?.configureLoading(false)
 
-            }, failure: { [weak self] (error: NSError!) in
-                WPAppAnalytics.track(.LoginMagicLinkFailed)
-                self?.displayError(error)
+            }, failure: { [weak self] (error: Error) in
+                WPAppAnalytics.track(.loginMagicLinkFailed)
+                self?.displayError(error as NSError)
                 self?.configureLoading(false)
             })
     }
@@ -106,7 +106,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     /// Displays the next step in the magic links sign in flow.
     ///
     func didRequestAuthenticationLink() {
-        WPAppAnalytics.track(.LoginMagicLinkRequested)
+        WPAppAnalytics.track(.loginMagicLinkRequested)
         SigninHelpers.saveEmailAddressForTokenAuth(loginFields.username)
         let controller = SigninLinkMailViewController.controller(loginFields)
         controller.dismissBlock = dismissBlock
@@ -118,13 +118,13 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     // MARK: - Actions
 
 
-    @IBAction func handleSendLinkTapped(sender: UIButton) {
+    @IBAction func handleSendLinkTapped(_ sender: UIButton) {
         requestAuthenticationLink()
     }
 
 
-    @IBAction func handleUsePasswordTapped(sender: UIButton) {
-        WPAppAnalytics.track(.LoginMagicLinkExited)
+    @IBAction func handleUsePasswordTapped(_ sender: UIButton) {
+        WPAppAnalytics.track(.loginMagicLinkExited)
         let controller = SigninWPComViewController.controller(loginFields)
         controller.dismissBlock = dismissBlock
         controller.restrictSigninToWPCom = restrictSigninToWPCom

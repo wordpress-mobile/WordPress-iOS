@@ -27,18 +27,18 @@ class WordPressComLanguageDatabase : NSObject
     ///
     override init() {
         // Parse the json file
-        let path = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
-        let raw = NSData(contentsOfFile: path!)!
-        let parsed = try! NSJSONSerialization.JSONObjectWithData(raw, options: [.MutableContainers, .MutableLeaves]) as? NSDictionary
+        let path = Bundle.main.path(forResource: filename, ofType: "json")
+        let raw = try! Data(contentsOf: URL(fileURLWithPath: path!))
+        let parsed = try! JSONSerialization.jsonObject(with: raw, options: [.mutableContainers, .mutableLeaves]) as? NSDictionary
 
         // Parse All + Popular: All doesn't contain Popular. Otherwise the json would have dupe data. Right?
-        let parsedAll = Language.fromArray(parsed!.arrayForKey(Keys.all) as! [NSDictionary])
-        let parsedPopular = Language.fromArray(parsed!.arrayForKey(Keys.popular) as! [NSDictionary])
+        let parsedAll = Language.fromArray(parsed!.array(forKey: Keys.all) as! [NSDictionary])
+        let parsedPopular = Language.fromArray(parsed!.array(forKey: Keys.popular) as! [NSDictionary])
         let merged = parsedAll + parsedPopular
 
         // Done!
         popular = parsedPopular
-        all = merged.sort { $0.name < $1.name }
+        all = merged.sorted { $0.name < $1.name }
         grouped = [popular] + [all]
     }
 
@@ -49,7 +49,7 @@ class WordPressComLanguageDatabase : NSObject
     ///
     /// - Returns: A string containing the language name, or an empty string, in case it wasn't found.
     ///
-    func nameForLanguageWithId(languageId: Int) -> String {
+    func nameForLanguageWithId(_ languageId: Int) -> String {
         for language in all {
             if language.id == languageId {
                 return language.name
@@ -66,7 +66,7 @@ class WordPressComLanguageDatabase : NSObject
     ///
     @objc(deviceLanguageId)
     func deviceLanguageIdNumber() -> NSNumber {
-        return deviceLanguage.id
+        return NSNumber(value: deviceLanguage.id)
     }
 
     /// Returns the slug string for the current device language.
@@ -94,7 +94,7 @@ class WordPressComLanguageDatabase : NSObject
 
     /// Searches for a WordPress.com language that matches a language tag.
     ///
-    private func languageWithSlug(slug: String) -> Language? {
+    fileprivate func languageWithSlug(_ slug: String) -> Language? {
         let search = languageCodeReplacements[slug] ?? slug
 
         // Use lazy evaluation so we stop filtering as soon as we got the first match
@@ -103,8 +103,8 @@ class WordPressComLanguageDatabase : NSObject
 
     /// Overrides the device language. For testing purposes only.
     ///
-    func _overrideDeviceLanguageCode(code: String) {
-        deviceLanguageCode = code.lowercaseString
+    func _overrideDeviceLanguageCode(_ code: String) {
+        deviceLanguageCode = code.lowercased()
     }
 
     // MARK: - Public Nested Classes
@@ -128,7 +128,7 @@ class WordPressComLanguageDatabase : NSObject
         /// Localized description for the current language
         ///
         var description : String {
-            return NSLocale.currentLocale().displayNameForKey(NSLocaleIdentifier, value: slug) ?? name
+            return (Locale.current as NSLocale).displayName(forKey: NSLocale.Key.identifier, value: slug) ?? name
         }
 
 
@@ -136,9 +136,9 @@ class WordPressComLanguageDatabase : NSObject
         /// Designated initializer. Will fail if any of the required properties is missing
         ///
         init?(dict : NSDictionary) {
-            guard let unwrappedId = dict.numberForKey(Keys.identifier)?.integerValue,
-                        unwrappedSlug = dict.stringForKey(Keys.slug),
-                        unwrappedName = dict.stringForKey(Keys.name) else
+            guard let unwrappedId = dict.number(forKey: Keys.identifier)?.intValue,
+                        let unwrappedSlug = dict.string(forKey: Keys.slug),
+                        let unwrappedName = dict.string(forKey: Keys.name) else
             {
                 id = Int.min
                 name = String()
@@ -154,7 +154,7 @@ class WordPressComLanguageDatabase : NSObject
 
         /// Given an array of raw languages, will return a parsed array.
         ///
-        static func fromArray(array : [NSDictionary]) -> [Language] {
+        static func fromArray(_ array : [NSDictionary]) -> [Language] {
             return array.flatMap {
                 return Language(dict: $0)
             }
@@ -165,17 +165,17 @@ class WordPressComLanguageDatabase : NSObject
 
     /// The device's current preferred language, or English if there's no preferred language.
     ///
-    private lazy var deviceLanguageCode: String = {
-        return NSLocale.preferredLanguages().first?.lowercaseString ?? "en"
+    fileprivate lazy var deviceLanguageCode: String = {
+        return NSLocale.preferredLanguages.first?.lowercased() ?? "en"
     }()
 
 
     // MARK: - Private Constants
-    private let filename = "Languages"
+    fileprivate let filename = "Languages"
 
     // (@koke 2016-04-29) I'm not sure how correct this mapping is, but it matches
     // what we do for the app translations, so they will at least be consistent
-    private let languageCodeReplacements: [String: String] = [
+    fileprivate let languageCodeReplacements: [String: String] = [
         "zh-hans": "zh-cn",
         "zh-hant": "zh-tw"
     ]
@@ -185,7 +185,7 @@ class WordPressComLanguageDatabase : NSObject
 
     /// Keys used to parse the raw languages.
     ///
-    private struct Keys
+    fileprivate struct Keys
     {
         static let popular      = "popular"
         static let all          = "all"
@@ -198,17 +198,17 @@ class WordPressComLanguageDatabase : NSObject
 /// Provides a sequence of language tags from the specified string, from more to less specific
 /// For instance, "zh-Hans-HK" will yield `["zh-Hans-HK", "zh-Hans", "zh"]`
 ///
-private struct LanguageTagVariants: SequenceType {
+private struct LanguageTagVariants: Sequence {
     let string: String
 
-    func generate() -> AnyGenerator<String> {
-        var components = string.componentsSeparatedByString("-")
-        return AnyGenerator {
+    func makeIterator() -> AnyIterator<String> {
+        var components = string.components(separatedBy: "-")
+        return AnyIterator {
             guard !components.isEmpty else {
                 return nil
             }
 
-            let current = components.joinWithSeparator("-")
+            let current = components.joined(separator: "-")
             components.removeLast()
 
             return current
