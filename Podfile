@@ -73,19 +73,5 @@ abstract_target 'WordPress_Base' do
 end
 
 post_install do |installer_representation|
-#   installer_representation.pods_project.targets.each do |target|
-#     # See https://github.com/CocoaPods/CocoaPods/issues/3838
-#     if target.name.end_with?('WordPressCom-Stats-iOS')
-#       target.build_configurations.each do |config|
-#         config.build_settings['FRAMEWORK_SEARCH_PATHS'] ||= ['$(inherited)', '$PODS_FRAMEWORK_BUILD_PATH', '$PODS_FRAMEWORK_BUILD_PATH/..']
-#       end
-#     end
-#   end
-#
-#   # Directly set the Targeted Device Family
-#   # See https://github.com/CocoaPods/CocoaPods/issues/2292
-#   installer_representation.pods_project.build_configurations.each do |config|
-#       config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
-#   end
 
 end
