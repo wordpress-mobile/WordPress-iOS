@@ -19,6 +19,7 @@ import Foundation
         static let divTagsEnd = try! NSRegularExpression(pattern: "</div>", options: .CaseInsensitive)
         static let pTagsStart = try! NSRegularExpression(pattern: "<p[^>]*>\\s*<p[^>]*>", options: .CaseInsensitive)
         static let pTagsEnd = try! NSRegularExpression(pattern: "</p>\\s*</p>", options: .CaseInsensitive)
+        static let newLines = try! NSRegularExpression(pattern: "\\n", options: .CaseInsensitive)
 
         // Inline Styles
         static let styleAttr = try! NSRegularExpression(pattern: "\\s*style=\"[^\"]*\"", options: .CaseInsensitive)
@@ -121,6 +122,11 @@ import Foundation
                                                                    options: .ReportCompletion,
                                                                    range: NSRange(location: 0, length: content.characters.count),
                                                                    withTemplate: closePTag)
+
+        content = RegEx.newLines.stringByReplacingMatchesInString(content,
+                                                                  options: .ReportCompletion,
+                                                                  range: NSRange(location: 0, length: content.characters.count),
+                                                                  withTemplate: "")
 
         return content
     }
