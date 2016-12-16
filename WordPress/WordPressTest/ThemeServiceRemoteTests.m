@@ -52,8 +52,8 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
         NSCAssert(successBlock != nil, @"Expected a success block");
         
         JSONLoader *loader = [[JSONLoader alloc] init];
-        NSDictionary *jsonDictionary = [loader loadFileWithName:ThemeServiceRemoteTestGetSingleThemeJson
-                                                           type:@"json"];
+        NSDictionary *jsonDictionary = [loader loadFile:ThemeServiceRemoteTestGetSingleThemeJson
+                                                   type:@"json"];
         NSCAssert([jsonDictionary isKindOfClass:[NSDictionary class]],
                   @"Expected a json dictionary here.  Make sure the json file for this test is well formatted.");
         
@@ -102,8 +102,8 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
         NSCAssert(successBlock != nil, @"Expected a success block");
         
         JSONLoader *loader = [[JSONLoader alloc] init];
-        NSDictionary *jsonDictionary = [loader loadFileWithName:ThemeServiceRemoteTestGetPurchasedThemesJson
-                                                           type:@"json"];
+        NSDictionary *jsonDictionary = [loader loadFile:ThemeServiceRemoteTestGetPurchasedThemesJson
+                                                   type:@"json"];
         NSCAssert([jsonDictionary isKindOfClass:[NSDictionary class]],
                   @"Expected a json dictionary here.  Make sure the json file for this test is well formatted.");
         
@@ -152,8 +152,8 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
         NSCAssert(successBlock != nil, @"Expected a success block");
         
         JSONLoader *loader = [[JSONLoader alloc] init];
-        NSDictionary *jsonDictionary = [loader loadFileWithName:ThemeServiceRemoteTestGetSingleThemeJson
-                                                           type:@"json"];
+        NSDictionary *jsonDictionary = [loader loadFile:ThemeServiceRemoteTestGetSingleThemeJson
+                                                   type:@"json"];
         NSCAssert([jsonDictionary isKindOfClass:[NSDictionary class]],
                   @"Expected a json dictionary here.  Make sure the json file for this test is well formatted.");
         
@@ -203,8 +203,8 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
         NSCAssert(successBlock != nil, @"Expected a success block");
 
         JSONLoader *loader = [[JSONLoader alloc] init];
-        NSDictionary *jsonDictionary = [loader loadFileWithName:ThemeServiceRemoteTestGetMultipleThemesJson
-                                                           type:@"json"];
+        NSDictionary *jsonDictionary = [loader loadFile:ThemeServiceRemoteTestGetMultipleThemesJson
+                                                   type:@"json"];
         NSCAssert([jsonDictionary isKindOfClass:[NSDictionary class]],
                   @"Expected a json dictionary here.  Make sure the json file for this test is well formatted.");
         
@@ -242,8 +242,8 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
         NSCAssert(successBlock != nil, @"Expected a success block");
         
         JSONLoader *loader = [[JSONLoader alloc] init];
-        NSDictionary *jsonDictionary = [loader loadFileWithName:ThemeServiceRemoteTestGetMultipleThemesJson
-                                                           type:@"json"];
+        NSDictionary *jsonDictionary = [loader loadFile:ThemeServiceRemoteTestGetMultipleThemesJson
+                                                   type:@"json"];
         NSCAssert([jsonDictionary isKindOfClass:[NSDictionary class]],
                   @"Expected a json dictionary here.  Make sure the json file for this test is well formatted.");
         

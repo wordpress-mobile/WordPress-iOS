@@ -6,19 +6,19 @@ import Foundation
 /// Notifications: a WordPress blog, Third Party Sites or WordPress.com.
 /// Each channel may support different streams, such as: Email + Push Notifications + Timeline.
 ///
-public class NotificationSettings
+open class NotificationSettings
 {
     /// Represents the Channel to which the current settings are associated.
     ///
-    public let channel  : Channel
+    open let channel  : Channel
 
     /// Contains an array of the available Notification Streams.
     ///
-    public let streams  : [Stream]
+    open let streams  : [Stream]
 
     /// Maps to the associated blog, if any.
     ///
-    public let blog     : Blog?
+    open let blog     : Blog?
 
 
 
@@ -38,27 +38,27 @@ public class NotificationSettings
 
     /// Returns the localized description for any given preference key
     ///
-    public func localizedDescription(preferenceKey: String) -> String {
+    open func localizedDescription(_ preferenceKey: String) -> String {
         return Keys.localizedDescriptionMap[preferenceKey] ?? String()
     }
 
     /// Returns the details for a given preference key
     ///
-    public func localizedDetails(preferenceKey: String) -> String? {
+    open func localizedDetails(_ preferenceKey: String) -> String? {
         return Keys.localizedDetailsMap[preferenceKey]
     }
 
 
     /// Returns an array of the sorted Preference Keys
     ///
-    public func sortedPreferenceKeys(stream: Stream?) -> [String] {
+    open func sortedPreferenceKeys(_ stream: Stream?) -> [String] {
         switch channel {
-        case .Blog(_):
+        case .blog(_):
             // Email Streams require a special treatment
             return stream?.kind == .Email ? blogEmailPreferenceKeys : blogPreferenceKeys
-        case .Other:
+        case .other:
             return otherPreferenceKeys
-        case .WordPressCom:
+        case .wordPressCom:
             return wpcomPreferenceKeys
         }
     }
@@ -66,20 +66,20 @@ public class NotificationSettings
     /// Represents a communication channel that may post notifications to the user.
     ///
     public enum Channel : Equatable {
-        case Blog(blogId: Int)
-        case Other
-        case WordPressCom
+        case blog(blogId: Int)
+        case other
+        case wordPressCom
 
 
         /// Returns the localized description of the current enum value
         ///
         func description() -> String {
             switch self {
-            case .Blog:
+            case .blog:
                 return NSLocalizedString("WordPress Blog", comment: "Settings for a Wordpress Blog")
-            case .Other:
+            case .other:
                 return NSLocalizedString("Comments on Other Sites", comment: "Notification Settings Channel")
-            case .WordPressCom:
+            case .wordPressCom:
                 return NSLocalizedString("Email from WordPress.com", comment: "Notification Settings Channel")
             }
         }
@@ -88,9 +88,9 @@ public class NotificationSettings
 
     /// Contains the Notification Settings collection for a specific communications stream.
     ///
-    public class Stream {
-        public var kind         : Kind
-        public var preferences  : [String : Bool]?
+    open class Stream {
+        open var kind         : Kind
+        open var preferences  : [String : Bool]?
 
 
         /// Designated Initializer
@@ -131,13 +131,13 @@ public class NotificationSettings
     }
 
     // MARK: - Private Properties
-    private let blogPreferenceKeys      = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.achievement, Keys.mention]
-    private let blogEmailPreferenceKeys = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.mention]
-    private let otherPreferenceKeys     = [Keys.commentLiked, Keys.commentReplied]
-    private let wpcomPreferenceKeys     = [Keys.marketing, Keys.research, Keys.community]
+    fileprivate let blogPreferenceKeys      = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.achievement, Keys.mention]
+    fileprivate let blogEmailPreferenceKeys = [Keys.commentAdded, Keys.commentLiked, Keys.postLiked, Keys.follower, Keys.mention]
+    fileprivate let otherPreferenceKeys     = [Keys.commentLiked, Keys.commentReplied]
+    fileprivate let wpcomPreferenceKeys     = [Keys.marketing, Keys.research, Keys.community]
 
     // MARK: - Setting Keys
-    private struct Keys
+    fileprivate struct Keys
     {
         static let commentAdded     = "new_comment"
         static let commentLiked     = "comment_like"
@@ -190,11 +190,11 @@ public class NotificationSettings
 public func ==(first: NotificationSettings.Channel, second: NotificationSettings.Channel) -> Bool
 {
     switch (first, second) {
-    case (let .Blog(firstBlogId), let .Blog(secondBlogId)) where firstBlogId == secondBlogId:
+    case (let .blog(firstBlogId), let .blog(secondBlogId)) where firstBlogId == secondBlogId:
         return true
-    case (.Other, .Other):
+    case (.other, .other):
         return true
-    case (.WordPressCom, .WordPressCom):
+    case (.wordPressCom, .wordPressCom):
         return true
     default:
         return false

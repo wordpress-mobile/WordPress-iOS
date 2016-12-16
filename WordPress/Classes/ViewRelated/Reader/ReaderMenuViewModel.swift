@@ -1,24 +1,48 @@
 import Foundation
 import Gridicons
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 
 /// Enum of the sections shown in the reader.
 ///
 enum ReaderMenuSectionType: Int {
-    case Defaults
-    case Teams
-    case Lists
-    case Tags
+    case defaults
+    case teams
+    case lists
+    case tags
 }
 
 
 /// Enum of the types of row items shown in the reader.
 ///
 enum ReaderMenuItemType: Int {
-    case Topic
-    case Search
-    case Recommended
-    case AddItem
+    case topic
+    case search
+    case recommended
+    case addItem
 }
 
 
@@ -74,19 +98,19 @@ protocol ReaderMenuViewModelDelegate: class
     /// - Parameters:
     ///     - index: The index of the section.
     ///
-    func menuSectionDidChangeContent(index: Int)
+    func menuSectionDidChangeContent(_ index: Int)
 }
 
 
 /// Defines the preferred order of items in the default section.
 ///
 enum ReaderDefaultMenuItemOrder: Int {
-    case Followed
-    case Discover
-    case Search
-    case Recommendations
-    case Likes
-    case Other
+    case followed
+    case discover
+    case search
+    case recommendations
+    case likes
+    case other
 }
 
 
@@ -94,10 +118,10 @@ enum ReaderDefaultMenuItemOrder: Int {
 ///
 @objc class ReaderMenuViewModel: NSObject
 {
-    var defaultsFetchedResultsController: NSFetchedResultsController!
-    var teamsFetchedResultsController: NSFetchedResultsController!
-    var listsFetchedResultsController: NSFetchedResultsController!
-    var tagsFetchedResultsController: NSFetchedResultsController!
+    var defaultsFetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
+    var teamsFetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
+    var listsFetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
+    var tagsFetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
 
     var sections = [ReaderMenuSection]()
     var defaultSectionItems = [ReaderMenuItem]()
@@ -108,7 +132,7 @@ enum ReaderDefaultMenuItemOrder: Int {
 
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
 
@@ -121,7 +145,7 @@ enum ReaderDefaultMenuItemOrder: Int {
 
 
     func listenForWordPressAccountChanged() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderMenuViewModel.handleWordPressComAccountChanged(_:)), name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ReaderMenuViewModel.handleWordPressComAccountChanged(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
 
@@ -168,7 +192,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the default fetched results controller.
     ///
     func setupDefaultResultsController() {
-        let fetchRequest = NSFetchRequest(entityName: "ReaderDefaultTopic")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderDefaultTopic")
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))
         fetchRequest.sortDescriptors = [sortDescriptor]
 
@@ -190,7 +214,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the defaults section and its corresponding NSFetchedResultsController.
     ///
     func setupDefaultsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("Streams", comment:"Section title of the default reader items."), type: .Defaults)
+        let section = ReaderMenuSection(title: NSLocalizedString("Streams", comment:"Section title of the default reader items."), type: .defaults)
         sections.append(section)
 
         buildDefaultSectionItems()
@@ -211,18 +235,18 @@ enum ReaderDefaultMenuItemOrder: Int {
                     continue
                 }
 
-                var item = ReaderMenuItem(title: abstractTopic.title, type: .Topic, icon: nil, topic: abstractTopic)
+                var item = ReaderMenuItem(title: abstractTopic.title, type: .topic, icon: nil, topic: abstractTopic)
                 if ReaderHelpers.topicIsFollowing(abstractTopic) {
-                    item.order = ReaderDefaultMenuItemOrder.Followed.rawValue
-                    item.icon = Gridicon.iconOfType(.CheckmarkCircle)
+                    item.order = ReaderDefaultMenuItemOrder.followed.rawValue
+                    item.icon = Gridicon.iconOfType(.checkmarkCircle)
                 } else if ReaderHelpers.topicIsDiscover(abstractTopic) {
-                    item.order = ReaderDefaultMenuItemOrder.Discover.rawValue
-                    item.icon = Gridicon.iconOfType(.MySites)
+                    item.order = ReaderDefaultMenuItemOrder.discover.rawValue
+                    item.icon = Gridicon.iconOfType(.mySites)
                 } else if ReaderHelpers.topicIsLiked(abstractTopic) {
-                    item.order = ReaderDefaultMenuItemOrder.Likes.rawValue
-                    item.icon = Gridicon.iconOfType(.Star)
+                    item.order = ReaderDefaultMenuItemOrder.likes.rawValue
+                    item.icon = Gridicon.iconOfType(.star)
                 } else {
-                    item.order = ReaderDefaultMenuItemOrder.Other.rawValue
+                    item.order = ReaderDefaultMenuItemOrder.other.rawValue
                 }
                 defaultSectionItems.append(item)
             }
@@ -230,12 +254,12 @@ enum ReaderDefaultMenuItemOrder: Int {
 
         // Create a menu item for search
         var searchItem = searchMenuItem()
-        searchItem.order = ReaderDefaultMenuItemOrder.Search.rawValue
-        searchItem.icon = Gridicon.iconOfType(.Search)
+        searchItem.order = ReaderDefaultMenuItemOrder.search.rawValue
+        searchItem.icon = Gridicon.iconOfType(.search)
         defaultSectionItems.append(searchItem)
 
         // Sort the items into the desired order.
-        defaultSectionItems.sortInPlace { (menuItem1, menuItem2) -> Bool in
+        defaultSectionItems.sort { (menuItem1, menuItem2) -> Bool in
             if menuItem1.order < menuItem2.order {
                 return true
             }
@@ -257,7 +281,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     func searchMenuItem() -> ReaderMenuItem {
         let title = NSLocalizedString("Search", comment: "Title of the reader's Search menu item.")
-        return ReaderMenuItem(title: title, type: .Search)
+        return ReaderMenuItem(title: title, type: .search)
     }
 
 
@@ -277,7 +301,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Returns: The requested menu item or nil.
     ///
-    func menuItemForDefaultAtIndex(index: Int) -> ReaderMenuItem? {
+    func menuItemForDefaultAtIndex(_ index: Int) -> ReaderMenuItem? {
         return defaultSectionItems[index]
     }
 
@@ -288,7 +312,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the teams section.
     ///
     func setupTeamsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("Teams", comment:"Section title of the teams reader section."), type: .Teams)
+        let section = ReaderMenuSection(title: NSLocalizedString("Teams", comment:"Section title of the teams reader section."), type: .teams)
         sections.append(section)
     }
 
@@ -296,7 +320,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the teams fetched results controller.
     ///
     func setupTeamsResultsController() {
-        let fetchRequest = NSFetchRequest(entityName: "ReaderTeamTopic")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderTeamTopic")
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))
         fetchRequest.sortDescriptors = [sortDescriptor]
 
@@ -331,12 +355,12 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Returns: The requested menu item or nil.
     ///
-    func menuItemForTeamsAtIndex(index: Int) -> ReaderMenuItem? {
-        guard let topic = teamsFetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? ReaderTeamTopic else {
+    func menuItemForTeamsAtIndex(_ index: Int) -> ReaderMenuItem? {
+        guard let topic = teamsFetchedResultsController.object(at: IndexPath(row: index, section: 0)) as? ReaderTeamTopic else {
             return nil
         }
 
-        return ReaderMenuItem(title: topic.title, type: .Topic, icon: topic.icon, topic: topic)
+        return ReaderMenuItem(title: topic.title, type: .topic, icon: topic.icon, topic: topic)
     }
 
 
@@ -346,7 +370,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the list fetched results controller
     ///
     func setupListResultsController() {
-        let fetchRequest = NSFetchRequest(entityName: "ReaderListTopic")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderListTopic")
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))
         fetchRequest.sortDescriptors = [sortDescriptor]
 
@@ -376,7 +400,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the lists section and its corresponding NSFetchedResultsController.
     ///
     func setupListsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("Lists", comment:"Section title of the lists reader section."), type: .Lists)
+        let section = ReaderMenuSection(title: NSLocalizedString("Lists", comment:"Section title of the lists reader section."), type: .lists)
         sections.append(section)
     }
 
@@ -397,11 +421,11 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Returns: The requested menu item or nil.
     ///
-    func menuItemForListAtIndex(index: Int) -> ReaderMenuItem? {
-        guard let topic = listsFetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as? ReaderAbstractTopic else {
+    func menuItemForListAtIndex(_ index: Int) -> ReaderMenuItem? {
+        guard let topic = listsFetchedResultsController.object(at: IndexPath(row: index, section: 0)) as? ReaderAbstractTopic else {
             return nil
         }
-        return ReaderMenuItem(title: topic.title, type: .Topic, icon: nil, topic: topic)
+        return ReaderMenuItem(title: topic.title, type: .topic, icon: nil, topic: topic)
     }
 
 
@@ -411,7 +435,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the tags fetched results controller
     ///
     func setupTagsResultsController() {
-        let fetchRequest = NSFetchRequest(entityName: "ReaderTagTopic")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderTagTopic")
         fetchRequest.predicate = predicateForRequests()
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare))
         fetchRequest.sortDescriptors = [sortDescriptor]
@@ -447,7 +471,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the tags section and its corresponding NSFetchedResultsController.
     ///
     func setupTagsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("Tags", comment:"Section title of the tags reader section."), type: .Tags)
+        let section = ReaderMenuSection(title: NSLocalizedString("Tags", comment:"Section title of the tags reader section."), type: .tags)
         sections.append(section)
     }
 
@@ -473,22 +497,22 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Returns: The requested menu item or nil.
     ///
-    func menuItemForTagAtIndex(index: Int) -> ReaderMenuItem? {
+    func menuItemForTagAtIndex(_ index: Int) -> ReaderMenuItem? {
         var fetchedIndex = index
         if ReaderHelpers.isLoggedIn() {
             if fetchedIndex == 0 {
                 let title = NSLocalizedString("Add a Tag", comment: "Title. Lets the user know that they can use this feature to subscribe to new tags.")
-                return ReaderMenuItem(title: title, type: .AddItem)
+                return ReaderMenuItem(title: title, type: .addItem)
             } else {
                 // Adjust the index by one to account for AddItem
                 fetchedIndex -= 1
             }
         }
 
-        guard let topic = tagsFetchedResultsController.objectAtIndexPath(NSIndexPath(forRow: fetchedIndex, inSection: 0)) as? ReaderAbstractTopic else {
+        guard let topic = tagsFetchedResultsController.object(at: IndexPath(row: fetchedIndex, section: 0)) as? ReaderAbstractTopic else {
             return nil
         }
-        return ReaderMenuItem(title: topic.title, type: .Topic, icon: nil, topic: topic)
+        return ReaderMenuItem(title: topic.title, type: .topic, icon: nil, topic: topic)
     }
 
 
@@ -514,7 +538,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Handles a notification that the signed in wpcom account was changed.
     /// All the content in the view model is updated as a result.
     ///
-    func handleWordPressComAccountChanged(notification: NSNotification) {
+    func handleWordPressComAccountChanged(_ notification: Foundation.Notification) {
         // Update predicates to correctly fetch following or not following.
         updateAndPerformListsFetchRequest()
         updateAndPerformTagsFetchRequest()
@@ -543,8 +567,8 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Return: The index of the section or nil if it was not found.
     ///
-    func indexOfSectionWithType(type: ReaderMenuSectionType) -> Int? {
-        for (index, section) in sections.enumerate() {
+    func indexOfSectionWithType(_ type: ReaderMenuSectionType) -> Int? {
+        for (index, section) in sections.enumerated() {
             if section.type == type {
                 return index
             }
@@ -560,20 +584,20 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Returns: The number of rows in the section.
     ///
-    func numberOfItemsInSection(index: Int) -> Int {
+    func numberOfItemsInSection(_ index: Int) -> Int {
         let section = sections[index]
 
         switch section.type {
-        case .Defaults:
+        case .defaults:
             return itemCountForDefaultSection()
 
-        case .Teams:
+        case .teams:
             return itemCountForTeamsSection()
 
-        case .Lists:
+        case .lists:
             return itemCountForListSection()
 
-        case .Tags:
+        case .tags:
             return itemCountForTagSection()
         }
     }
@@ -586,7 +610,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Returns: The title of the section.
     ///
-    func titleForSection(index: Int) -> String {
+    func titleForSection(_ index: Int) -> String {
         return sections[index].title
     }
 
@@ -598,7 +622,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Returns: The type of the section.
     ///
-    func typeOfSection(index: Int) -> ReaderMenuSectionType {
+    func typeOfSection(_ index: Int) -> ReaderMenuSectionType {
         return sections[index].type
     }
 
@@ -610,7 +634,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Returns: The section info.
     ///
-    func sectionInfoAtIndex(index: Int) -> ReaderMenuSection {
+    func sectionInfoAtIndex(_ index: Int) -> ReaderMenuSection {
         return sections[index]
     }
 
@@ -622,20 +646,20 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Returns: The menu item for the specified index path.
     ///
-    func menuItemAtIndexPath(indexPath: NSIndexPath) -> ReaderMenuItem? {
+    func menuItemAtIndexPath(_ indexPath: IndexPath) -> ReaderMenuItem? {
         let section = sections[indexPath.section]
 
         switch section.type {
-        case .Defaults:
+        case .defaults:
             return menuItemForDefaultAtIndex(indexPath.row)
 
-        case .Teams:
+        case .teams:
             return menuItemForTeamsAtIndex(indexPath.row)
 
-        case .Lists:
+        case .lists:
             return menuItemForListAtIndex(indexPath.row)
 
-        case .Tags:
+        case .tags:
             return menuItemForTagAtIndex(indexPath.row)
         }
     }
@@ -649,16 +673,16 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Returns: An NSIndexPath representing the item.
     ///
-    func indexPathOfDefaultMenuItemWithOrder(order: ReaderDefaultMenuItemOrder) -> NSIndexPath {
-        if let sectionIndex = indexOfSectionWithType(.Defaults) {
-            for (index, item) in defaultSectionItems.enumerate() {
+    func indexPathOfDefaultMenuItemWithOrder(order: ReaderDefaultMenuItemOrder) -> IndexPath {
+        if let sectionIndex = indexOfSectionWithType(.defaults) {
+            for (index, item) in defaultSectionItems.enumerated() {
                 if item.order == order.rawValue {
-                    return NSIndexPath(forRow: index, inSection: sectionIndex)
+                    return IndexPath(row: index, section: sectionIndex)
                 }
             }
         }
 
-        return NSIndexPath(forRow: order.rawValue, inSection: ReaderMenuSectionType.Defaults.rawValue)
+        return IndexPath(row: order.rawValue, section: ReaderMenuSectionType.defaults.rawValue)
     }
 
     /// Get the indexPath of the specified tag
@@ -668,13 +692,13 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     /// - Returns: An NSIndexPath optional.
     ///
-    func indexPathOfTag(tag: ReaderTagTopic) -> NSIndexPath? {
-        if let indexPath = tagsFetchedResultsController.indexPathForObject(tag) {
+    func indexPathOfTag(_ tag: ReaderTagTopic) -> IndexPath? {
+        if let indexPath = tagsFetchedResultsController.indexPath(forObject: tag) {
             var row = indexPath.row
             if ReaderHelpers.isLoggedIn() {
                 row += 1
             }
-            return NSIndexPath(forRow: row, inSection: indexOfSectionWithType(.Tags)!)
+            return IndexPath(row: row, section: indexOfSectionWithType(.tags)!)
         }
         return nil
     }
@@ -684,27 +708,27 @@ enum ReaderDefaultMenuItemOrder: Int {
 extension ReaderMenuViewModel: NSFetchedResultsControllerDelegate
 {
 
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         var section: Int?
         if controller == defaultsFetchedResultsController {
             // Rebuild the defaults section since its source content changed.
             buildDefaultSectionItems()
-            if let index = indexOfSectionWithType(.Defaults) {
+            if let index = indexOfSectionWithType(.defaults) {
                 section = index
             }
 
         } else if controller == teamsFetchedResultsController {
-            if let index = indexOfSectionWithType(.Teams) {
+            if let index = indexOfSectionWithType(.teams) {
                 section = index
             }
 
         } else if controller == listsFetchedResultsController {
-            if let index = indexOfSectionWithType(.Lists) {
+            if let index = indexOfSectionWithType(.lists) {
                 section = index
             }
 
         } else if controller == tagsFetchedResultsController {
-            if let index = indexOfSectionWithType(.Tags) {
+            if let index = indexOfSectionWithType(.tags) {
                 section = index
             }
         }
