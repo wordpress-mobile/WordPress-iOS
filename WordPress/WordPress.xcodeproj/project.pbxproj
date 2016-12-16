@@ -127,6 +127,9 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		261FF32C1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261FF32B1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift */; };
 		26A1B5A01DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */; };
+		26CB48311DDE66CB004DFEC5 /* BlogServiceRemoteXMLRPCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CB48301DDE66CB004DFEC5 /* BlogServiceRemoteXMLRPCTest.swift */; };
+		26CB48331DDEA13C004DFEC5 /* WordPressOrgXMLRPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CB48321DDEA13C004DFEC5 /* WordPressOrgXMLRPC.swift */; };
+		26D9FA2E1DEF29DE009CFAAE /* MockWordPressOrgXMLRPCApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26161A541DDEB0F5004552D3 /* MockWordPressOrgXMLRPCApi.swift */; };
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 296526FD105810E100597FA3 /* NSString+Helpers.m */; };
@@ -1156,9 +1159,12 @@
 		1D3623240D0F684500981E51 /* WordPressAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* WordPressAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WordPressAppDelegate.m; sourceTree = "<group>"; usesTabs = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		26161A541DDEB0F5004552D3 /* MockWordPressOrgXMLRPCApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockWordPressOrgXMLRPCApi.swift; sourceTree = "<group>"; };
 		26165C3E18786662761456D6 /* Pods-WordPress_Base-WordPress.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress_Base-WordPress.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress_Base-WordPress/Pods-WordPress_Base-WordPress.release-internal.xcconfig"; sourceTree = "<group>"; };
 		261FF32B1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaServiceRemoteRESTTests.swift; sourceTree = "<group>"; };
 		26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSiteServiceRemoteTests.swift; sourceTree = "<group>"; };
+		26CB48301DDE66CB004DFEC5 /* BlogServiceRemoteXMLRPCTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogServiceRemoteXMLRPCTest.swift; sourceTree = "<group>"; };
+		26CB48321DDEA13C004DFEC5 /* WordPressOrgXMLRPC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressOrgXMLRPC.swift; sourceTree = "<group>"; };
 		28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPress_Prefix.pch; sourceTree = "<group>"; };
 		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
 		2906F80F110CDA8900169D56 /* EditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCommentViewController.h; sourceTree = "<group>"; };
@@ -2926,6 +2932,7 @@
 				598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */,
 				FF34EEA81CF473F600F8B38D /* WordPressComServiceRemoteRestTests.swift */,
 				26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */,
+				26CB48301DDE66CB004DFEC5 /* BlogServiceRemoteXMLRPCTest.swift */,
 				261FF32B1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift */,
 			);
 			name = "Remote Services";
@@ -3533,6 +3540,7 @@
 			children = (
 				59E2AAE91B20E3FB0051DC06 /* Remote Services */,
 				FFB7CFFD1CEC8A9A00143C09 /* MockWordPressComRestApi.swift */,
+				26161A541DDEB0F5004552D3 /* MockWordPressOrgXMLRPCApi.swift */,
 				E61084C31B9DC09C008050C5 /* ReaderPostServiceRemoteTests.m */,
 				E66969C91B9E0C4F00EC9C00 /* ReaderTopicServiceRemoteTests.m */,
 				E6374DC81C445ABF00F24720 /* SharingServiceRemoteTests.m */,
@@ -4503,6 +4511,7 @@
 				E1D086E1194214C600F0CC19 /* NSDate+WordPressJSON.m */,
 				FF9839B01CD8B40700E85258 /* WordPressComOAuthClient.swift */,
 				FFB8DCA31CE320F200D4D1B7 /* WordPressComRestApi.swift */,
+				26CB48321DDEA13C004DFEC5 /* WordPressOrgXMLRPC.swift */,
 				FF3EAE9A1D0036E300CC4939 /* WordPressOrgXMLRPCApi.swift */,
 				FF3F1E721D085AA7009AB440 /* HTTPAuthenticationAlertController.swift */,
 			);
@@ -5949,6 +5958,7 @@
 				FF54D4641D6F3FA900A0DC4D /* EditorSettings.swift in Sources */,
 				5D9282F91B54697D00066CED /* RemoteReaderSiteInfo.m in Sources */,
 				E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */,
+				26CB48331DDEA13C004DFEC5 /* WordPressOrgXMLRPC.swift in Sources */,
 				5DF6571B1AE6ACAC00AAA8D7 /* DisplayableImageHelper.m in Sources */,
 				E166FA1D1BB0658600374B5B /* Person.swift in Sources */,
 				E60646801CB3133000A3073F /* SigninEditingState.swift in Sources */,
@@ -6020,6 +6030,7 @@
 				B5C7D7B81BC6B5A3008E668A /* UIAlertController+Helpers.swift in Sources */,
 				B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
+				26D9FA2E1DEF29DE009CFAAE /* MockWordPressOrgXMLRPCApi.swift in Sources */,
 				B5176CC31CDCE1C30083CF2D /* ManagedPerson+CoreDataProperties.swift in Sources */,
 				08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */,
 				E18EE95119349EC300B0A40C /* ReaderTopicServiceRemote.m in Sources */,
@@ -6495,6 +6506,7 @@
 				E1926C091C779868009F3C2C /* PlanListViewControllerTest.swift in Sources */,
 				59ECF87B1CB7061D00E68F25 /* PostSharingControllerTests.swift in Sources */,
 				E157D5E01C690A6C00F04FB9 /* ImmuTableTestUtils.swift in Sources */,
+				26CB48311DDE66CB004DFEC5 /* BlogServiceRemoteXMLRPCTest.swift in Sources */,
 				E1C9AA561C10427100732665 /* MathTest.swift in Sources */,
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
 				59E2AAEC1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m in Sources */,

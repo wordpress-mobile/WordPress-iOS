@@ -10,9 +10,12 @@
 #import "AccountService.h"
 #import "ReaderPost.h"
 #import "RemoteMedia.h"
+#import "RemotePostType.h"
 #import "RemoteReaderSite.h"
+#import "BlogServiceRemote.h"
 #import "MediaServiceRemote.h"
 #import "MediaServiceRemoteREST.h"
+#import "BlogServiceRemoteXMLRPC.h"
 #import "ReaderSiteServiceRemote.h"
 #import "UIAlertControllerProxy.h"
 #import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
