@@ -1,12 +1,12 @@
 import Foundation
 
-@objc public class ReaderTagTopic : ReaderAbstractTopic
+@objc open class ReaderTagTopic : ReaderAbstractTopic
 {
-    @NSManaged public var isRecommended: Bool
-    @NSManaged public var slug: String
-    @NSManaged public var tagID: NSNumber
+    @NSManaged open var isRecommended: Bool
+    @NSManaged open var slug: String
+    @NSManaged open var tagID: NSNumber
 
-    override public class var TopicType: String {
+    override open class var TopicType: String {
         return "tag"
     }
 }

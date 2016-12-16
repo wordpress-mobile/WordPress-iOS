@@ -1,30 +1,30 @@
 import Foundation
 import WordPressShared.WPTableViewCell
 
-public class CommentsTableViewCell : WPTableViewCell
+open class CommentsTableViewCell : WPTableViewCell
 {
     // MARK: - Public Properties
-    public var author : String? {
+    open var author : String? {
         didSet {
             refreshDetailsLabel()
         }
     }
-    public var postTitle : String? {
+    open var postTitle : String? {
         didSet {
             refreshDetailsLabel()
         }
     }
-    public var content : String? {
+    open var content : String? {
         didSet {
             refreshDetailsLabel()
         }
     }
-    public var timestamp : String? {
+    open var timestamp : String? {
         didSet {
             refreshTimestampLabel()
         }
     }
-    public var approved : Bool = false {
+    open var approved : Bool = false {
         didSet {
             refreshTimestampLabel()
             refreshDetailsLabel()
@@ -36,7 +36,7 @@ public class CommentsTableViewCell : WPTableViewCell
 
 
     // MARK: - Public Methods
-    public func downloadGravatarWithURL(url: NSURL?) {
+    open func downloadGravatarWithURL(_ url: URL?) {
         if url == gravatarURL {
             return
         }
@@ -47,7 +47,7 @@ public class CommentsTableViewCell : WPTableViewCell
         gravatarURL = url
     }
 
-    public func downloadGravatarWithGravatarEmail(email: String?) {
+    open func downloadGravatarWithGravatarEmail(_ email: String?) {
         guard let unwrappedEmail = email else {
             gravatarImageView.image = placeholderImage
             return
@@ -58,7 +58,7 @@ public class CommentsTableViewCell : WPTableViewCell
 
 
     // MARK: - Overwritten Methods
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
 
         assert(layoutView != nil)
@@ -68,13 +68,13 @@ public class CommentsTableViewCell : WPTableViewCell
         assert(timestampLabel != nil)
     }
 
-    public override func setSelected(selected: Bool, animated: Bool) {
+    open override func setSelected(_ selected: Bool, animated: Bool) {
         // Note: this is required, since the cell unhighlight mechanism will reset the new background color
         super.setSelected(selected, animated: animated)
         refreshBackground()
     }
 
-    public override func setHighlighted(highlighted: Bool, animated: Bool) {
+    open override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         // Note: this is required, since the cell unhighlight mechanism will reset the new background color
         super.setHighlighted(highlighted, animated: animated)
         refreshBackground()
@@ -83,23 +83,23 @@ public class CommentsTableViewCell : WPTableViewCell
 
 
     // MARK: - Private Helpers
-    private func refreshDetailsLabel() {
+    fileprivate func refreshDetailsLabel() {
         detailsLabel.attributedText = attributedDetailsText(approved)
         layoutIfNeeded()
     }
 
-    private func refreshTimestampLabel() {
+    fileprivate func refreshTimestampLabel() {
         let style               = Style.timestampStyle(isApproved: approved)
         let unwrappedTimestamp  = timestamp ?? String()
         timestampLabel?.attributedText = NSAttributedString(string: unwrappedTimestamp, attributes: style)
     }
 
-    private func refreshBackground() {
+    fileprivate func refreshBackground() {
         let color = Style.backgroundColor(isApproved: approved)
         backgroundColor = color
     }
 
-    private func refreshImages() {
+    fileprivate func refreshImages() {
         timestampImageView.image = Style.timestampImage(isApproved: approved)
         if !approved {
             timestampImageView.tintColor = WPStyleGuide.alertYellowDark()
@@ -109,7 +109,7 @@ public class CommentsTableViewCell : WPTableViewCell
 
 
     // MARK: - Details Helpers
-    private func attributedDetailsText(isApproved: Bool) -> NSAttributedString {
+    fileprivate func attributedDetailsText(_ isApproved: Bool) -> NSAttributedString {
         // Unwrap
         let unwrappedAuthor     = author ?? String()
         let unwrappedTitle      = postTitle ?? NSLocalizedString("(No Title)", comment: "Empty Post Title")
@@ -138,12 +138,12 @@ public class CommentsTableViewCell : WPTableViewCell
         let attributedDetails = NSMutableAttributedString(string: details, attributes: regularRedStyle)
 
         for (key, attributedString) in replacementMap {
-            let range = (attributedDetails.string as NSString).rangeOfString(key)
+            let range = (attributedDetails.string as NSString).range(of: key)
             if range.location == NSNotFound {
                 continue
             }
 
-            attributedDetails.replaceCharactersInRange(range, withAttributedString: attributedString)
+            attributedDetails.replaceCharacters(in: range, with: attributedString)
         }
 
         return attributedDetails
@@ -155,17 +155,17 @@ public class CommentsTableViewCell : WPTableViewCell
     typealias Style = WPStyleGuide.Comments
 
     // MARK: - Private Properties
-    private var gravatarURL : NSURL?
+    fileprivate var gravatarURL : URL?
 
     // MARK: - Private Calculated Properties
-    private var placeholderImage : UIImage {
+    fileprivate var placeholderImage : UIImage {
         return Style.gravatarPlaceholderImage(isApproved: approved)
     }
 
     // MARK: - IBOutlets
-    @IBOutlet private var layoutView            : UIView!
-    @IBOutlet private var gravatarImageView     : CircularImageView!
-    @IBOutlet private var detailsLabel          : UILabel!
-    @IBOutlet private var timestampImageView    : UIImageView!
-    @IBOutlet private var timestampLabel        : UILabel!
+    @IBOutlet fileprivate var layoutView            : UIView!
+    @IBOutlet fileprivate var gravatarImageView     : CircularImageView!
+    @IBOutlet fileprivate var detailsLabel          : UILabel!
+    @IBOutlet fileprivate var timestampImageView    : UIImageView!
+    @IBOutlet fileprivate var timestampLabel        : UILabel!
 }

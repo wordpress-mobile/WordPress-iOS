@@ -3,15 +3,15 @@ import Gridicons
 import WordPressShared
 
 class PlanComparisonViewController: PagedViewController {
-    lazy private var cancelXButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.Cross), style: .Plain, target: self, action: #selector(PlanComparisonViewController.closeTapped))
+    lazy fileprivate var cancelXButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(PlanComparisonViewController.closeTapped))
         button.accessibilityLabel = NSLocalizedString("Close", comment: "Dismiss the current view")
 
         return button
     }()
 
     @IBAction func closeTapped() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
     override func viewDidLoad() {
@@ -28,7 +28,7 @@ class PlanComparisonViewController: PagedViewController {
 
     // Keep a more specific reference to the view controllers rather than force
     // downcast viewControllers.
-    private let detailViewControllers: [PlanDetailViewController]
+    fileprivate let detailViewControllers: [PlanDetailViewController]
 
     init(sitePricedPlans: SitePricedPlans, initialPlan: Plan, service: PlanService<StoreKitStore>) {
         self.siteID = sitePricedPlans.siteID
@@ -44,7 +44,7 @@ class PlanComparisonViewController: PagedViewController {
         })
         self.detailViewControllers = viewControllers
 
-        let initialIndex = pricedPlans.indexOf { plan, _ in
+        let initialIndex = pricedPlans.index { plan, _ in
             return plan == initialPlan
         }
 
@@ -55,21 +55,21 @@ class PlanComparisonViewController: PagedViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func fetchFeatures() {
+    fileprivate func fetchFeatures() {
         service.updateAllPlanFeatures(
             success: { [weak self, service] features in
                 self?.detailViewControllers.forEach { controller in
                     let plan = controller.viewModel.plan
                     do {
                         let groups = try service.featureGroupsForPlan(plan, features: features)
-                        controller.viewModel = controller.viewModel.withFeatures(.Ready(groups))
+                        controller.viewModel = controller.viewModel.withFeatures(.ready(groups))
                     } catch {
-                        controller.viewModel = controller.viewModel.withFeatures(.Error(String(error)))
+                        controller.viewModel = controller.viewModel.withFeatures(.error(String(describing: error)))
                     }
                 }
             }, failure: { [weak self] error in
                 self?.detailViewControllers.forEach { controller in
-                    controller.viewModel = controller.viewModel.withFeatures(.Error(String(error)))
+                    controller.viewModel = controller.viewModel.withFeatures(.error(String(describing: error)))
                 }
             })
     }

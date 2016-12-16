@@ -2,16 +2,16 @@ import UIKit
 
 @objc
 public enum WPNotificationFeedbackType : Int {
-    case Success
-    case Warning
-    case Error
+    case success
+    case warning
+    case error
 
     @available(iOS 10, *)
     var systemFeedbackType: UINotificationFeedbackType {
         switch self {
-        case .Success: return .Success
-        case .Warning: return .Warning
-        case .Error: return .Error
+        case .success: return .success
+        case .warning: return .warning
+        case .error: return .error
         }
     }
 }
@@ -20,7 +20,7 @@ public enum WPNotificationFeedbackType : Int {
 // for testing, whilst also supporting iOS 9.
 protocol WPNotificationFeedbackGeneratorConformance {
     @available(iOS 10, *)
-    func notificationOccurred(notificationType: UINotificationFeedbackType)
+    func notificationOccurred(_ notificationType: UINotificationFeedbackType)
 }
 
 @available(iOS 10, *)
@@ -35,7 +35,7 @@ extension UINotificationFeedbackGenerator: WPNotificationFeedbackGeneratorConfor
 class WPNotificationFeedbackGenerator: NSObject {
     static var generator: WPNotificationFeedbackGeneratorConformance?
 
-    class func notificationOccurred(notificationType: WPNotificationFeedbackType) {
+    class func notificationOccurred(_ notificationType: WPNotificationFeedbackType) {
         guard #available(iOS 10, *) else { return }
 
         if generator == nil {
@@ -48,16 +48,16 @@ class WPNotificationFeedbackGenerator: NSObject {
 
 @objc
 public enum WPImpactFeedbackStyle : Int {
-    case Light
-    case Medium
-    case Heavy
+    case light
+    case medium
+    case heavy
 
     @available(iOS 10, *)
     var systemFeedbackStyle: UIImpactFeedbackStyle {
         switch self {
-        case .Light: return .Light
-        case .Medium: return .Medium
-        case .Heavy: return .Heavy
+        case .light: return .light
+        case .medium: return .medium
+        case .heavy: return .heavy
         }
     }
 }

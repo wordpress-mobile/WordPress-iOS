@@ -4,14 +4,14 @@ import Foundation
 /// Used by both NotificationsViewController and NotificationDetailsViewController.
 ///
 enum NotificationDeletionKind {
-    case Spamming
-    case Deletion
+    case spamming
+    case deletion
 
     var legendText: String {
         switch self {
-        case .Deletion:
+        case .deletion:
             return NSLocalizedString("Comment has been deleted", comment: "Displayed when a Comment is deleted")
-        case .Spamming:
+        case .spamming:
             return NSLocalizedString("Comment has been marked as Spam", comment: "Displayed when a Comment is spammed")
         }
     }
@@ -21,5 +21,5 @@ enum NotificationDeletionKind {
 struct NotificationDeletionRequest
 {
     let kind    : NotificationDeletionKind
-    let action  : (completion: (Bool -> Void)) -> Void
+    let action  : (_ completion: @escaping ((Bool) -> Void)) -> Void
 }
