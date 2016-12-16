@@ -38,16 +38,6 @@
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E165C6BE1E02E2B800C0217A"
-               BuildableName = "PingHubTests.xctest"
-               BlueprintName = "PingHubTests"
-               ReferencedContainer = "container:WordPress.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

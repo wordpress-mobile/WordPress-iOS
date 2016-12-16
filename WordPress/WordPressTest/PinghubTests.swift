@@ -1,5 +1,5 @@
 import XCTest
-@testable import PingHub
+@testable import WordPress
 
 class PingHubTests: XCTestCase {
 
@@ -15,7 +15,7 @@ class PingHubTests: XCTestCase {
 
     func testActionPush() {
         let message = loadJSONMessage("notes-action-push")!
-        let action = Action.from(message: message)
+        let action = PinghubClient.Action.from(message: message)
 
         guard case .Some(.push(let noteID, let userID, _, _)) = action else {
             XCTFail("Action is of the wrong type")
@@ -27,7 +27,7 @@ class PingHubTests: XCTestCase {
 
     func testActionDelete() {
         let message = loadJSONMessage("notes-action-delete")!
-        let action = Action.from(message: message)
+        let action = PinghubClient.Action.from(message: message)
 
         guard case .Some(.delete(let noteID)) = action else {
             XCTFail("Action is of the wrong type")
@@ -38,7 +38,7 @@ class PingHubTests: XCTestCase {
 
     func testActionUnsupported() {
         let message = loadJSONMessage("notes-action-unsupported")!
-        let action = Action.from(message: message)
+        let action = PinghubClient.Action.from(message: message)
         XCTAssertNil(action)
     }
 
@@ -133,7 +133,7 @@ class MockSocket: Socket {
 
 class MockPingHubDelegate: PinghubClientDelegate {
     var connected = false
-    var receivedAction: Action? = nil
+    var receivedAction: PinghubClient.Action? = nil
     var unexpectedMessage: String? = nil
 
     func pingubConnected(client client: PinghubClient) {
@@ -144,7 +144,7 @@ class MockPingHubDelegate: PinghubClientDelegate {
         connected = false
     }
 
-    func pinghubActionReceived(client client: PinghubClient, action: Action) {
+    func pinghubActionReceived(client client: PinghubClient, action: PinghubClient.Action) {
         receivedAction = action
     }
 

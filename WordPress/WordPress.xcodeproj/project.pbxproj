@@ -191,7 +191,6 @@
 		59F9C1571B9DCE4E00885CC1 /* get-single-theme-v1.1.json in Resources */ = {isa = PBXBuildFile; fileRef = 59F9C1561B9DCE4E00885CC1 /* get-single-theme-v1.1.json */; };
 		59F9C1591B9DD3D600885CC1 /* get-purchased-themes-v1.1.json in Resources */ = {isa = PBXBuildFile; fileRef = 59F9C1581B9DD3D600885CC1 /* get-purchased-themes-v1.1.json */; };
 		59FBD5621B5684F300734466 /* ThemeServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59FBD5611B5684F300734466 /* ThemeServiceTests.m */; };
-		5A0AE5EE125CCE4CDFEF49C3 /* Pods_PingHub_Shared_PingHubTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4112A89551CBA651D2114C6 /* Pods_PingHub_Shared_PingHubTests.framework */; };
 		5D000DDE1AC076C000A7BAF9 /* PostCardActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D000DDD1AC076C000A7BAF9 /* PostCardActionBar.m */; };
 		5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D000DE01AC0879600A7BAF9 /* PostCardActionBarItem.m */; };
 		5D0A20D41AF11A7300E5C6BC /* PhotonImageURLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D0A20D31AF11A7300E5C6BC /* PhotonImageURLHelper.m */; };
@@ -606,6 +605,7 @@
 		E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */ = {isa = PBXBuildFile; fileRef = E11330501A13BAA300D36D84 /* me-sites-with-jetpack.json */; };
 		E11450DF1C4E47E600A6BD0F /* NoticeAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11450DE1C4E47E600A6BD0F /* NoticeAnimator.swift */; };
 		E114D79A153D85A800984182 /* WPError.m in Sources */ = {isa = PBXBuildFile; fileRef = E114D799153D85A800984182 /* WPError.m */; };
+		E11DA4931E03E03F00CF07A8 /* Pinghub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11DA4921E03E03F00CF07A8 /* Pinghub.swift */; };
 		E1209FA41BB4978B00D69778 /* PeopleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1209FA31BB4978B00D69778 /* PeopleService.swift */; };
 		E120D90E1B09D8C300FB9A6E /* JetpackState.m in Sources */ = {isa = PBXBuildFile; fileRef = E120D90D1B09D8C300FB9A6E /* JetpackState.m */; };
 		E1249B4319408C910035E895 /* RemoteComment.m in Sources */ = {isa = PBXBuildFile; fileRef = E1249B4219408C910035E895 /* RemoteComment.m */; };
@@ -642,6 +642,10 @@
 		E14B40FD1C58B806005046F6 /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14B40FC1C58B806005046F6 /* AccountSettingsViewController.swift */; };
 		E14B40FF1C58B93F005046F6 /* SettingsCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14B40FE1C58B93F005046F6 /* SettingsCommon.swift */; };
 		E14B74111C7B16FD00C26E21 /* WPNoResultsView+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14B74101C7B16FD00C26E21 /* WPNoResultsView+Model.swift */; };
+		E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */ = {isa = PBXBuildFile; fileRef = E150275E1E03E51500B847E3 /* notes-action-delete.json */; };
+		E15027621E03E51500B847E3 /* notes-action-push.json in Resources */ = {isa = PBXBuildFile; fileRef = E150275F1E03E51500B847E3 /* notes-action-push.json */; };
+		E15027631E03E51500B847E3 /* notes-action-unsupported.json in Resources */ = {isa = PBXBuildFile; fileRef = E15027601E03E51500B847E3 /* notes-action-unsupported.json */; };
+		E15027651E03E54100B847E3 /* PinghubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15027641E03E54100B847E3 /* PinghubTests.swift */; };
 		E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */ = {isa = PBXBuildFile; fileRef = E1556CF1193F6FE900FC52EA /* CommentService.m */; };
 		E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E15618FC16DB8677006532C4 /* UIKitTestHelper.m */; };
 		E15618FF16DBA983006532C4 /* xmlrpc-response-newpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */; };
@@ -654,17 +658,6 @@
 		E15644F31CE0E5A500D96E64 /* PlanDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15644F21CE0E5A500D96E64 /* PlanDetailViewModel.swift */; };
 		E157D5E01C690A6C00F04FB9 /* ImmuTableTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E157D5DF1C690A6C00F04FB9 /* ImmuTableTestUtils.swift */; };
 		E16273E11B2ACEB600088AF7 /* BlogToBlog32to33.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16273E01B2ACEB600088AF7 /* BlogToBlog32to33.swift */; };
-		E165C6C01E02E2B800C0217A /* PingHub.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E165C6B71E02E2B800C0217A /* PingHub.framework */; };
-		E165C6CC1E02E2B900C0217A /* PingHub.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E165C6B71E02E2B800C0217A /* PingHub.framework */; };
-		E165C6CD1E02E2B900C0217A /* PingHub.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = E165C6B71E02E2B800C0217A /* PingHub.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E165C6DE1E02E2F400C0217A /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = E165C6D91E02E2F400C0217A /* Action.swift */; };
-		E165C6DF1E02E2F400C0217A /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = E165C6DA1E02E2F400C0217A /* Client.swift */; };
-		E165C6E11E02E2F400C0217A /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E165C6DC1E02E2F400C0217A /* Socket.swift */; };
-		E165C6E21E02E2F400C0217A /* Starscream.swift in Sources */ = {isa = PBXBuildFile; fileRef = E165C6DD1E02E2F400C0217A /* Starscream.swift */; };
-		E165C6F71E02E30B00C0217A /* PingHubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E165C6F11E02E30B00C0217A /* PingHubTests.swift */; };
-		E165C6F81E02E30B00C0217A /* notes-action-delete.json in Resources */ = {isa = PBXBuildFile; fileRef = E165C6F31E02E30B00C0217A /* notes-action-delete.json */; };
-		E165C6F91E02E30B00C0217A /* notes-action-push.json in Resources */ = {isa = PBXBuildFile; fileRef = E165C6F41E02E30B00C0217A /* notes-action-push.json */; };
-		E165C6FA1E02E30B00C0217A /* notes-action-unsupported.json in Resources */ = {isa = PBXBuildFile; fileRef = E165C6F51E02E30B00C0217A /* notes-action-unsupported.json */; };
 		E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */; };
 		E166FA1D1BB0658600374B5B /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA1C1BB0658600374B5B /* Person.swift */; };
 		E166FA221BB1359E00374B5B /* PeopleRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA211BB1359E00374B5B /* PeopleRemote.swift */; };
@@ -873,7 +866,6 @@
 		E6ED09091D46AD29003283C4 /* ReaderFollowedSitesStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6ED09081D46AD29003283C4 /* ReaderFollowedSitesStreamHeader.swift */; };
 		E6ED090B1D46AFAF003283C4 /* ReaderFollowedSitesStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6ED090A1D46AFAF003283C4 /* ReaderFollowedSitesStreamHeader.xib */; };
 		E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F058011C1A122B008000F9 /* ReaderPostMenu.swift */; };
-		EF1119DF6C19BEFF1173AECC /* Pods_PingHub_Shared_PingHub.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8315F017F976670FD39FF896 /* Pods_PingHub_Shared_PingHub.framework */; };
 		F128C31C1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */; };
 		F1564E5B18946087009F8F97 /* NSStringHelpersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTests.m */; };
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
@@ -974,20 +966,6 @@
 			remoteGlobalIDString = 93E5283919A7741A003A1A9C;
 			remoteInfo = WordPressTodayWidget;
 		};
-		E165C6C11E02E2B800C0217A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E165C6B61E02E2B800C0217A;
-			remoteInfo = PingHub;
-		};
-		E165C6CA1E02E2B900C0217A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E165C6B61E02E2B800C0217A;
-			remoteInfo = PingHub;
-		};
 		E16AB93E14D978520047A2E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -1018,7 +996,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E165C6CD1E02E2B900C0217A /* PingHub.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1928,6 +1905,7 @@
 		E114D798153D85A800984182 /* WPError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPError.h; sourceTree = "<group>"; };
 		E114D799153D85A800984182 /* WPError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPError.m; sourceTree = "<group>"; };
 		E115F2D116776A2900CCF00D /* WordPress 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 8.xcdatamodel"; sourceTree = "<group>"; };
+		E11DA4921E03E03F00CF07A8 /* Pinghub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pinghub.swift; sourceTree = "<group>"; };
 		E1209FA31BB4978B00D69778 /* PeopleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleService.swift; sourceTree = "<group>"; };
 		E120D90C1B09D8C300FB9A6E /* JetpackState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackState.h; sourceTree = "<group>"; };
 		E120D90D1B09D8C300FB9A6E /* JetpackState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackState.m; sourceTree = "<group>"; };
@@ -1987,6 +1965,10 @@
 		E14B40FE1C58B93F005046F6 /* SettingsCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCommon.swift; sourceTree = "<group>"; };
 		E14B74101C7B16FD00C26E21 /* WPNoResultsView+Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPNoResultsView+Model.swift"; sourceTree = "<group>"; };
 		E14D65C717E09663007E3EA4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		E150275E1E03E51500B847E3 /* notes-action-delete.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notes-action-delete.json"; sourceTree = "<group>"; };
+		E150275F1E03E51500B847E3 /* notes-action-push.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notes-action-push.json"; sourceTree = "<group>"; };
+		E15027601E03E51500B847E3 /* notes-action-unsupported.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notes-action-unsupported.json"; sourceTree = "<group>"; };
+		E15027641E03E54100B847E3 /* PinghubTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinghubTests.swift; sourceTree = "<group>"; };
 		E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogJetpackTest.m; sourceTree = "<group>"; };
 		E150520D16CAC75A00D3DDDC /* CoreDataTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTestHelper.h; sourceTree = "<group>"; };
 		E150520E16CAC75A00D3DDDC /* CoreDataTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTestHelper.m; sourceTree = "<group>"; };
@@ -2007,18 +1989,6 @@
 		E16228CB1B0C7A1B0048DA91 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E16273E01B2ACEB600088AF7 /* BlogToBlog32to33.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogToBlog32to33.swift; sourceTree = "<group>"; };
 		E16273E21B2AD89A00088AF7 /* MIGRATIONS.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = MIGRATIONS.md; path = ../MIGRATIONS.md; sourceTree = "<group>"; };
-		E165C6B71E02E2B800C0217A /* PingHub.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PingHub.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E165C6BF1E02E2B800C0217A /* PingHubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PingHubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E165C6D91E02E2F400C0217A /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
-		E165C6DA1E02E2F400C0217A /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
-		E165C6DB1E02E2F400C0217A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E165C6DC1E02E2F400C0217A /* Socket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
-		E165C6DD1E02E2F400C0217A /* Starscream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Starscream.swift; sourceTree = "<group>"; };
-		E165C6F01E02E30B00C0217A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E165C6F11E02E30B00C0217A /* PingHubTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PingHubTests.swift; sourceTree = "<group>"; };
-		E165C6F31E02E30B00C0217A /* notes-action-delete.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notes-action-delete.json"; sourceTree = "<group>"; };
-		E165C6F41E02E30B00C0217A /* notes-action-push.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notes-action-push.json"; sourceTree = "<group>"; };
-		E165C6F51E02E30B00C0217A /* notes-action-unsupported.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notes-action-unsupported.json"; sourceTree = "<group>"; };
 		E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleCellViewModel.swift; sourceTree = "<group>"; };
 		E166FA1C1BB0658600374B5B /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		E166FA211BB1359E00374B5B /* PeopleRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleRemote.swift; sourceTree = "<group>"; };
@@ -2435,7 +2405,6 @@
 				8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */,
 				834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */,
 				835E2403126E66E50085940B /* AssetsLibrary.framework in Frameworks */,
-				E165C6CC1E02E2B900C0217A /* PingHub.framework in Frameworks */,
 				83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */,
 				FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */,
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
@@ -2465,23 +2434,6 @@
 			files = (
 				93E5283C19A7741A003A1A9C /* NotificationCenter.framework in Frameworks */,
 				77DA08154ADDBE86E424D9C0 /* Pods_WordPress_Base_WordPressTodayWidget.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E165C6B31E02E2B800C0217A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				EF1119DF6C19BEFF1173AECC /* Pods_PingHub_Shared_PingHub.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E165C6BC1E02E2B800C0217A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E165C6C01E02E2B800C0217A /* PingHub.framework in Frameworks */,
-				5A0AE5EE125CCE4CDFEF49C3 /* Pods_PingHub_Shared_PingHubTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2714,13 +2666,11 @@
 				8511CFB61C607A7000B7CEED /* WordPressScreenshotGeneration.xctest */,
 				932225A71C7CE50300443B02 /* WordPressShareExtension.appex */,
 				FF27168F1CAAC87A0006E2D4 /* WordPressUITests.xctest */,
-				E165C6B71E02E2B800C0217A /* PingHub.framework */,
-				E165C6BF1E02E2B800C0217A /* PingHubTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				E1B34C091CCDFFCE00889709 /* Credentials */,
@@ -2737,7 +2687,6 @@
 				FF2716901CAAC87B0006E2D4 /* WordPressUITests */,
 				FFF96F8319EBE7FB00DFC821 /* UITests */,
 				8511CFB71C607A7000B7CEED /* WordPressScreenshotGeneration */,
-				E165C6B81E02E2B800C0217A /* PingHub */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				A28F6FD119B61ACA00AADE55 /* SwiftPlayground.playground */,
@@ -3336,6 +3285,7 @@
 				E1DF5DFA19E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.m */,
 				E1DF5DFB19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.h */,
 				E1DF5DFC19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.m */,
+				E11DA4921E03E03F00CF07A8 /* Pinghub.swift */,
 				E124CE6A1C85813300F7BA99 /* PlansRemote.swift */,
 				E1A2A3F31CB504D400EAF51E /* PlansFeaturesRemote.swift */,
 				08F37EC61C7554EF0095BE8B /* PostServiceRemoteOptions.h */,
@@ -3599,6 +3549,7 @@
 				FFB7CFFD1CEC8A9A00143C09 /* MockWordPressComRestApi.swift */,
 				E61084C31B9DC09C008050C5 /* ReaderPostServiceRemoteTests.m */,
 				E66969C91B9E0C4F00EC9C00 /* ReaderTopicServiceRemoteTests.m */,
+				E15027641E03E54100B847E3 /* PinghubTests.swift */,
 				E6374DC81C445ABF00F24720 /* SharingServiceRemoteTests.m */,
 			);
 			name = Networking;
@@ -4095,6 +4046,9 @@
 		B58CE5DD1DC1284C004AA81D /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				E150275E1E03E51500B847E3 /* notes-action-delete.json */,
+				E150275F1E03E51500B847E3 /* notes-action-push.json */,
+				E15027601E03E51500B847E3 /* notes-action-unsupported.json */,
 				B58CE5DE1DC128CD004AA81D /* remote-notification.json */,
 				B5AEEC741ACACFDA008BF2A4 /* notifications-badge.json */,
 				B5AEEC751ACACFDA008BF2A4 /* notifications-like.json */,
@@ -4751,47 +4705,6 @@
 			path = Migrations;
 			sourceTree = "<group>";
 		};
-		E165C6B81E02E2B800C0217A /* PingHub */ = {
-			isa = PBXGroup;
-			children = (
-				E165C6D81E02E2F400C0217A /* Source */,
-				E165C6EF1E02E30B00C0217A /* Tests */,
-			);
-			path = PingHub;
-			sourceTree = "<group>";
-		};
-		E165C6D81E02E2F400C0217A /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				E165C6D91E02E2F400C0217A /* Action.swift */,
-				E165C6DA1E02E2F400C0217A /* Client.swift */,
-				E165C6DB1E02E2F400C0217A /* Info.plist */,
-				E165C6DC1E02E2F400C0217A /* Socket.swift */,
-				E165C6DD1E02E2F400C0217A /* Starscream.swift */,
-			);
-			path = Source;
-			sourceTree = "<group>";
-		};
-		E165C6EF1E02E30B00C0217A /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				E165C6F01E02E30B00C0217A /* Info.plist */,
-				E165C6F11E02E30B00C0217A /* PingHubTests.swift */,
-				E165C6F21E02E30B00C0217A /* Test Data */,
-			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		E165C6F21E02E30B00C0217A /* Test Data */ = {
-			isa = PBXGroup;
-			children = (
-				E165C6F31E02E30B00C0217A /* notes-action-delete.json */,
-				E165C6F41E02E30B00C0217A /* notes-action-push.json */,
-				E165C6F51E02E30B00C0217A /* notes-action-unsupported.json */,
-			);
-			path = "Test Data";
-			sourceTree = "<group>";
-		};
 		E16AB92F14D978240047A2E5 /* WordPressTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -5172,16 +5085,6 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		E165C6B41E02E2B800C0217A /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
 		1D6058900D05DD3D006BFB54 /* WordPress */ = {
 			isa = PBXNativeTarget;
@@ -5208,7 +5111,6 @@
 				93E5284519A7741A003A1A9C /* PBXTargetDependency */,
 				93E5284819A7741A003A1A9C /* PBXTargetDependency */,
 				932225B01C7CE50300443B02 /* PBXTargetDependency */,
-				E165C6CB1E02E2B900C0217A /* PBXTargetDependency */,
 			);
 			name = WordPress;
 			productName = WordPress;
@@ -5274,47 +5176,6 @@
 			productName = WordPressTodayWidget;
 			productReference = 93E5283A19A7741A003A1A9C /* WordPressTodayWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
-		};
-		E165C6B61E02E2B800C0217A /* PingHub */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E165C6D61E02E2B900C0217A /* Build configuration list for PBXNativeTarget "PingHub" */;
-			buildPhases = (
-				67DFD38EA2973A678E3FE7D0 /* [CP] Check Pods Manifest.lock */,
-				E165C6B21E02E2B800C0217A /* Sources */,
-				E165C6B31E02E2B800C0217A /* Frameworks */,
-				E165C6B41E02E2B800C0217A /* Headers */,
-				E165C6B51E02E2B800C0217A /* Resources */,
-				4EA6FC11E06A94986C0723EB /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = PingHub;
-			productName = PingHub;
-			productReference = E165C6B71E02E2B800C0217A /* PingHub.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		E165C6BE1E02E2B800C0217A /* PingHubTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E165C6D71E02E2B900C0217A /* Build configuration list for PBXNativeTarget "PingHubTests" */;
-			buildPhases = (
-				34B6064379FEDCD18E9748DF /* [CP] Check Pods Manifest.lock */,
-				E165C6BB1E02E2B800C0217A /* Sources */,
-				E165C6BC1E02E2B800C0217A /* Frameworks */,
-				E165C6BD1E02E2B800C0217A /* Resources */,
-				D874F659070D8DAE5DCCF8EC /* [CP] Embed Pods Frameworks */,
-				695A0953B0C048F748388AEF /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				E165C6C21E02E2B800C0217A /* PBXTargetDependency */,
-			);
-			name = PingHubTests;
-			productName = PingHubTests;
-			productReference = E165C6BF1E02E2B800C0217A /* PingHubTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		E16AB92914D978240047A2E5 /* WordPressTest */ = {
 			isa = PBXNativeTarget;
@@ -5415,14 +5276,6 @@
 							};
 						};
 					};
-					E165C6B61E02E2B800C0217A = {
-						CreatedOnToolsVersion = 8.2;
-						ProvisioningStyle = Manual;
-					};
-					E165C6BE1E02E2B800C0217A = {
-						CreatedOnToolsVersion = 8.2;
-						ProvisioningStyle = Manual;
-					};
 					E16AB92914D978240047A2E5 = {
 						LastSwiftMigration = 0800;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
@@ -5475,7 +5328,7 @@
 				"en-CA",
 				Base,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -5488,8 +5341,6 @@
 				8511CFB51C607A7000B7CEED /* WordPressScreenshotGeneration */,
 				A2795807198819DE0031C6A3 /* OCLint */,
 				FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */,
-				E165C6B61E02E2B800C0217A /* PingHub */,
-				E165C6BE1E02E2B800C0217A /* PingHubTests */,
 			);
 		};
 /* End PBXProject section */
@@ -5598,32 +5449,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E165C6B51E02E2B800C0217A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E165C6BD1E02E2B800C0217A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E165C6F81E02E30B00C0217A /* notes-action-delete.json in Resources */,
-				E165C6F91E02E30B00C0217A /* notes-action-push.json in Resources */,
-				E165C6FA1E02E30B00C0217A /* notes-action-unsupported.json in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E16AB92714D978240047A2E5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				E1EBC3751C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib in Resources */,
+				E15027631E03E51500B847E3 /* notes-action-unsupported.json in Resources */,
 				E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */,
 				FF9839AB1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json in Resources */,
 				B5EA71301DC293F30083032A /* notifications-mark-as-read.json in Resources */,
 				B5EA71361DC294730083032A /* notifications-load-hash.json in Resources */,
+				E15027621E03E51500B847E3 /* notes-action-push.json in Resources */,
 				B5BC25A21CFCBA5400F7D8B9 /* people-validate-invitation-success.json in Resources */,
 				B5A6BB8C1BF4DF38002F6A96 /* rest-site-settings.json in Resources */,
 				E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */,
@@ -5655,6 +5491,7 @@
 				FFB8DC9C1CE320C700D4D1B7 /* WordPressComRestApiFailInvalidInput.json in Resources */,
 				B5BC25A41CFCBA6A00F7D8B9 /* people-send-invitation-failure.json in Resources */,
 				B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */,
+				E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */,
 				FF9839AF1CD3FBCA00E85258 /* WordPressOAuthClientNeed2FAFail.json in Resources */,
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,
 				1702BBE61CF3579900766A33 /* domain-service-valid-domains.json in Resources */,
@@ -5754,21 +5591,6 @@
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress_Base-WordPress/Pods-WordPress_Base-WordPress-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		34B6064379FEDCD18E9748DF /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
 		360A4DA1C76BF72FCC725734 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5797,51 +5619,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress_Base-WordPressShareExtension/Pods-WordPress_Base-WordPressShareExtension-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4EA6FC11E06A94986C0723EB /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-PingHub_Shared-PingHub/Pods-PingHub_Shared-PingHub-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		67DFD38EA2973A678E3FE7D0 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		695A0953B0C048F748388AEF /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-PingHub_Shared-PingHubTests/Pods-PingHub_Shared-PingHubTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7575FCC4B042EF86E4B1A17C /* [CP] Copy Pods Resources */ = {
@@ -5973,21 +5750,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D874F659070D8DAE5DCCF8EC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-PingHub_Shared-PingHubTests/Pods-PingHub_Shared-PingHubTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E1756E61169493AD00D9EC00 /* Generate API credentials */ = {
@@ -6653,6 +6415,7 @@
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
 				591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */,
 				85D790AA1AE5C6790033AE83 /* MixpanelProxy.m in Sources */,
+				E11DA4931E03E03F00CF07A8 /* Pinghub.swift in Sources */,
 				E1B912831BB01047003C25B9 /* PeopleRoleBadgeLabel.swift in Sources */,
 				E120D90E1B09D8C300FB9A6E /* JetpackState.m in Sources */,
 				B5416D011C17693B00006DD8 /* UIApplication+Helpers.m in Sources */,
@@ -6733,25 +6496,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E165C6B21E02E2B800C0217A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E165C6E21E02E2F400C0217A /* Starscream.swift in Sources */,
-				E165C6DF1E02E2F400C0217A /* Client.swift in Sources */,
-				E165C6DE1E02E2F400C0217A /* Action.swift in Sources */,
-				E165C6E11E02E2F400C0217A /* Socket.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E165C6BB1E02E2B800C0217A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E165C6F71E02E30B00C0217A /* PingHubTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E16AB92514D978240047A2E5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6801,6 +6545,7 @@
 				E63C897C1CB9A0D700649C8F /* UITextFieldTextHelperTests.swift in Sources */,
 				E63C897A1CB9A0BB00649C8F /* StringHelperTests.swift in Sources */,
 				5DA988061AEEA594002AFB12 /* DisplayableImageHelperTest.m in Sources */,
+				E15027651E03E54100B847E3 /* PinghubTests.swift in Sources */,
 				B566EC751B83867800278395 /* NSMutableAttributedStringTests.swift in Sources */,
 				E6B9B8AF1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift in Sources */,
 				B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */,
@@ -6887,16 +6632,6 @@
 			isa = PBXTargetDependency;
 			target = 93E5283919A7741A003A1A9C /* WordPressTodayWidget */;
 			targetProxy = 93E5284719A7741A003A1A9C /* PBXContainerItemProxy */;
-		};
-		E165C6C21E02E2B800C0217A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E165C6B61E02E2B800C0217A /* PingHub */;
-			targetProxy = E165C6C11E02E2B800C0217A /* PBXContainerItemProxy */;
-		};
-		E165C6CB1E02E2B900C0217A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E165C6B61E02E2B800C0217A /* PingHub */;
-			targetProxy = E165C6CA1E02E2B900C0217A /* PBXContainerItemProxy */;
 		};
 		E16AB93F14D978520047A2E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7073,7 +6808,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
@@ -7134,7 +6869,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
@@ -7423,7 +7158,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_CONFIG = "$HOME/.wpcom_alpha_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
 				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
@@ -7893,7 +7628,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_CONFIG = "$HOME/.wpcom_internal_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
@@ -8248,308 +7983,6 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
-		};
-		E165C6CE1E02E2B900C0217A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FF00ADB967B05E6AF76A1EDB /* Pods-PingHub_Shared-PingHub.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = PingHub/Source/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.pinghub;
-				PRODUCT_MODULE_NAME = PingHub;
-				PRODUCT_NAME = PingHub;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		E165C6CF1E02E2B900C0217A /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3D738A54CD0327A21A60EA9D /* Pods-PingHub_Shared-PingHub.release.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = PingHub/Source/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.pinghub;
-				PRODUCT_MODULE_NAME = PingHub;
-				PRODUCT_NAME = PingHub;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		E165C6D01E02E2B900C0217A /* Release-Internal */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E03E48D7485409600E8F225 /* Pods-PingHub_Shared-PingHub.release-internal.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = PingHub/Source/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.pinghub;
-				PRODUCT_MODULE_NAME = PingHub;
-				PRODUCT_NAME = PingHub;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Release-Internal";
-		};
-		E165C6D11E02E2B900C0217A /* Release-Alpha */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = ABC45871204C3C78F2179043 /* Pods-PingHub_Shared-PingHub.release-alpha.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = PingHub/Source/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.pinghub;
-				PRODUCT_MODULE_NAME = PingHub;
-				PRODUCT_NAME = PingHub;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = "Release-Alpha";
-		};
-		E165C6D21E02E2B900C0217A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 80785CF2951FCA580F00ADBC /* Pods-PingHub_Shared-PingHubTests.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = PingHub/Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.PingHubTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
-			};
-			name = Debug;
-		};
-		E165C6D31E02E2B900C0217A /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4DB387FBC5368B8A6BD130A9 /* Pods-PingHub_Shared-PingHubTests.release.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = PingHub/Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.PingHubTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
-			};
-			name = Release;
-		};
-		E165C6D41E02E2B900C0217A /* Release-Internal */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B1C1BCA1F818CEC72088FE16 /* Pods-PingHub_Shared-PingHubTests.release-internal.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = PingHub/Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.PingHubTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
-			};
-			name = "Release-Internal";
-		};
-		E165C6D51E02E2B900C0217A /* Release-Alpha */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 28533F5497CEDAD21F10123B /* Pods-PingHub_Shared-PingHubTests.release-alpha.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = PingHub/Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.PingHubTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
-			};
-			name = "Release-Alpha";
 		};
 		E16AB93914D978240047A2E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -8970,28 +8403,6 @@
 				C01FCF5008A954540054247B /* Release */,
 				93DEAA9D182D567A004E34D1 /* Release-Internal */,
 				8546B4431BEAD39700193C07 /* Release-Alpha */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E165C6D61E02E2B900C0217A /* Build configuration list for PBXNativeTarget "PingHub" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E165C6CE1E02E2B900C0217A /* Debug */,
-				E165C6CF1E02E2B900C0217A /* Release */,
-				E165C6D01E02E2B900C0217A /* Release-Internal */,
-				E165C6D11E02E2B900C0217A /* Release-Alpha */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E165C6D71E02E2B900C0217A /* Build configuration list for PBXNativeTarget "PingHubTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E165C6D21E02E2B900C0217A /* Debug */,
-				E165C6D31E02E2B900C0217A /* Release */,
-				E165C6D41E02E2B900C0217A /* Release-Internal */,
-				E165C6D51E02E2B900C0217A /* Release-Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
