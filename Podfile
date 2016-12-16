@@ -1,8 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 project 'WordPress/WordPress.xcodeproj'
-install! 'cocoapods',
-         :deterministic_uuids => false
 
 inhibit_all_warnings!
 use_frameworks!
