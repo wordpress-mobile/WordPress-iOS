@@ -137,3 +137,12 @@ typedef NS_ENUM(NSUInteger, WPAvatarSourceType) {
 - (WPAvatarSourceType)parseURL:(NSURL *)url forAvatarHash:(NSString **)avatarHash;
 
 @end
+
+/**
+ Exposed interface for private unit testing methods.
+ */
+@protocol WPAvatarSourceTesting <NSObject>
+
+- (void)purgeCaches;
+
+@end
