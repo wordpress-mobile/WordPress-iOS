@@ -24,7 +24,7 @@ class RichContentFormatterTests: XCTestCase
 
     func testNormalizeParagraphs() {
         let str = "<p>test</p><p>test</p>"
-        let styleStr = "<div><p>test</p></div><p><div>test</div></p>"
+        let styleStr = "<div><p>test</p></div>\n<p><div>test</div></p>\n"
         let sanitizedStr = RichContentFormatter.normalizeParagraphs(styleStr)
         XCTAssertTrue(str == sanitizedStr, "The inline styles were not removed.")
     }
