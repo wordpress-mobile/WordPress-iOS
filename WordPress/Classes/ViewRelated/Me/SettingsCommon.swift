@@ -4,16 +4,16 @@ protocol SettingsController: ImmuTableController {}
 
 // MARK: - Actions
 extension SettingsController {
-    func insideNavigationController(generator: ImmuTableRowControllerGenerator) -> ImmuTableRowControllerGenerator {
+    func insideNavigationController(_ generator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableRowControllerGenerator {
         return { row in
             let controller = generator(row)
             let navigation = UINavigationController(rootViewController: controller)
-            navigation.modalPresentationStyle = .FormSheet
+            navigation.modalPresentationStyle = .formSheet
             return navigation
         }
     }
 
-    func editText(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController
+    func editText(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController
     {
         return { row in
             let editableRow = row as! EditableTextRow
@@ -21,7 +21,7 @@ extension SettingsController {
         }
     }
 
-    func editMultilineText(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRow -> SettingsMultiTextViewController
+    func editMultilineText(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsMultiTextViewController
     {
         return { row in
             let editableRow = row as! EditableTextRow
@@ -29,19 +29,19 @@ extension SettingsController {
         }
     }
 
-    func editEmailAddress(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController
+    func editEmailAddress(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController
     {
         return { row in
             let editableRow = row as! EditableTextRow
             let settingsViewController =  self.controllerForEditableText(editableRow, changeType: changeType, hint: hint, service: service)
-            settingsViewController.mode = .Email
+            settingsViewController.mode = .email
 
             return settingsViewController
         }
     }
 
-    func controllerForEditableText(row: EditableTextRow,
-                                   changeType: AccountSettingsChangeWithString,
+    func controllerForEditableText(_ row: EditableTextRow,
+                                   changeType: @escaping AccountSettingsChangeWithString,
                                    hint: String? = nil,
                                    service: AccountSettingsService) -> SettingsTextViewController
     {
@@ -62,8 +62,8 @@ extension SettingsController {
         return controller
     }
 
-    func controllerForEditableMultilineText(row: EditableTextRow,
-                                   changeType: AccountSettingsChangeWithString,
+    func controllerForEditableMultilineText(_ row: EditableTextRow,
+                                   changeType: @escaping AccountSettingsChangeWithString,
                                    hint: String? = nil,
                                    service: AccountSettingsService) -> SettingsMultiTextViewController
     {

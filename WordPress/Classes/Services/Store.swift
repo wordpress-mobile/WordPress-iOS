@@ -1,17 +1,17 @@
 import Foundation
 import StoreKit
 
-enum ProductRequestError: ErrorType {
+enum ProductRequestError: Error {
     /// One of the requested product identifiers wasn't included in the response.
-    case MissingProduct
+    case missingProduct
 
     /// A product price couldn't be formatted into a String using the returned locale.
-    case InvalidProductPrice
+    case invalidProductPrice
 }
 
 class StoreKitTransactionObserver: NSObject, SKPaymentTransactionObserver {
     static let instance = StoreKitTransactionObserver()
-    func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
             StoreKitCoordinator.instance.processTransaction(transaction)
         }
@@ -30,8 +30,8 @@ struct StoreKitCoordinator {
 
 typealias PendingPayment = (productID: String, siteID: Int)
 
-enum StoreCoordinatorError: ErrorType {
-    case PaymentAlreadyInProgress
+enum StoreCoordinatorError: Error {
+    case paymentAlreadyInProgress
 }
 
 /// StoreCoordinator coordinates purchasing of products, processing of transactions, and
@@ -47,30 +47,29 @@ enum StoreCoordinatorError: ErrorType {
 ///   The notification's `userInfo` will also contain the productID of the attempted
 ///   purchased product, as well as a localized error message under `NSUnderlyingErrorKey`.
 class StoreCoordinator<S: Store> {
-    private let store: S
-    private let database: KeyValueDatabase
+    fileprivate let store: S
+    fileprivate let database: KeyValueDatabase
 
-    private var pendingPayment: PendingPayment? {
+    fileprivate var pendingPayment: PendingPayment? {
         set {
             if let pending = newValue {
-                database.setObject(pending.productID, forKey: DatabaseKeys.pendingPaymentProductID)
-                database.setObject(pending.siteID, forKey:DatabaseKeys.pendingPaymentSiteID)
+                database.set(pending.productID, forKey: DatabaseKeys.pendingPaymentProductID)
+                database.set(pending.siteID, forKey: DatabaseKeys.pendingPaymentSiteID)
             } else {
-                database.removeObjectForKey(DatabaseKeys.pendingPaymentProductID)
-                database.removeObjectForKey(DatabaseKeys.pendingPaymentSiteID)
+                database.removeObject(forKey: DatabaseKeys.pendingPaymentProductID)
+                database.removeObject(forKey: DatabaseKeys.pendingPaymentSiteID)
             }
         }
 
         get {
-            guard let productID = database.objectForKey(DatabaseKeys.pendingPaymentProductID) as? String,
-                let siteID = database.objectForKey(DatabaseKeys.pendingPaymentSiteID) as? Int
-                where siteID != 0 else { return nil }
+            guard let productID = database.object(forKey: DatabaseKeys.pendingPaymentProductID) as? String,
+                let siteID = database.object(forKey: DatabaseKeys.pendingPaymentSiteID) as? Int, siteID != 0 else { return nil }
 
             return (productID, siteID)
         }
     }
 
-    init(store: S, database: KeyValueDatabase = NSUserDefaults()) {
+    init(store: S, database: KeyValueDatabase = UserDefaults() as KeyValueDatabase) {
         self.store = store
         self.database = database
     }
@@ -80,32 +79,32 @@ class StoreCoordinator<S: Store> {
     /// - throws: A `StoreCoordinatorError.PaymentAlreadyInProgress` error if the purchase
     ///           fails immediately due to an already in progress purchase.
     ///
-    func purchaseProduct(product: S.ProductType, forSite siteID: Int) throws {
+    func purchaseProduct(_ product: S.ProductType, forSite siteID: Int) throws {
         // We _should_ never have a pending payment at this point, so we'll fail in that case.
         guard pendingPayment == nil else {
-            throw StoreCoordinatorError.PaymentAlreadyInProgress
+            throw StoreCoordinatorError.paymentAlreadyInProgress
         }
 
         pendingPayment = (product.productIdentifier, siteID)
         store.requestPayment(product)
     }
 
-    private func processTransaction(transaction: SKPaymentTransaction) {
+    fileprivate func processTransaction(_ transaction: SKPaymentTransaction) {
         DDLogSwift.logInfo("[Store] Processing transaction \(transaction)")
         switch transaction.transactionState {
-        case .Purchasing: break
-        case .Restored: break
-        case .Failed:
+        case .purchasing: break
+        case .restored: break
+        case .failed:
             DDLogSwift.logInfo("[Store] Finishing failed transaction \(transaction)")
             finishTransaction(transaction)
-        case .Deferred:
+        case .deferred:
             DDLogSwift.logInfo("[Store] Transaction is deferred \(transaction)")
-        case .Purchased:
+        case .purchased:
             verifyTransaction(transaction)
         }
     }
 
-    private func verifyTransaction(transaction: SKPaymentTransaction) {
+    fileprivate func verifyTransaction(_ transaction: SKPaymentTransaction) {
         guard let pendingPayment = pendingPayment else {
             DDLogSwift.logInfo("[Store] Transaction with no pending payment information \(transaction)")
 
@@ -119,8 +118,8 @@ class StoreCoordinator<S: Store> {
         assert(transaction.payment.productIdentifier == pendingPayment.productID)
 
         guard let service = PlanService(siteID: pendingPayment.siteID, store: StoreKitStore()),
-            let receiptURL = NSBundle.mainBundle().appStoreReceiptURL,
-            let receipt = NSData(contentsOfURL: receiptURL)
+            let receiptURL = Bundle.main.appStoreReceiptURL,
+            let receipt = try? Data(contentsOf: receiptURL)
             else {
                 assertionFailure()
                 return
@@ -133,10 +132,10 @@ class StoreCoordinator<S: Store> {
         })
     }
 
-    private func finishTransaction(transaction: SKPaymentTransaction) {
+    fileprivate func finishTransaction(_ transaction: SKPaymentTransaction) {
         DDLogSwift.logInfo("[Store] Finishing transaction \(transaction)")
 
-        SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+        SKPaymentQueue.default().finishTransaction(transaction)
 
         guard let productID = pendingPayment?.productID else { return }
 
@@ -144,11 +143,11 @@ class StoreCoordinator<S: Store> {
             pendingPayment = nil
         }
 
-        var userInfo: [String: AnyObject] = [StoreKitCoordinator.NotificationProductIdentifierKey: productID]
+        var userInfo: [String: AnyObject] = [StoreKitCoordinator.NotificationProductIdentifierKey: productID as AnyObject]
 
-        if let error = transaction.error {
-            if error.code != SKErrorCode.PaymentCancelled.rawValue {
-                userInfo[NSUnderlyingErrorKey] = error
+        if let error = transaction.error as? NSError {
+            if error.code != SKError.paymentCancelled.rawValue {
+                userInfo[NSUnderlyingErrorKey] = error as AnyObject?
             }
 
             postTransactionFailedNotification(userInfo)
@@ -157,14 +156,14 @@ class StoreCoordinator<S: Store> {
         }
     }
 
-    private func postTransactionFailedNotification(userInfo: [NSObject: AnyObject]? = nil) {
-        NSNotificationCenter.defaultCenter().postNotificationName(StoreKitCoordinator.TransactionDidFailNotification,
+    fileprivate func postTransactionFailedNotification(_ userInfo: [AnyHashable: Any]? = nil) {
+        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: StoreKitCoordinator.TransactionDidFailNotification),
                                                                   object: nil,
                                                                   userInfo: userInfo)
     }
 
-    private func postTransactionFinishedNotification(userInfo: [NSObject: AnyObject]? = nil) {
-        NSNotificationCenter.defaultCenter().postNotificationName(StoreKitCoordinator.TransactionDidFinishNotification,
+    fileprivate func postTransactionFinishedNotification(_ userInfo: [AnyHashable: Any]? = nil) {
+        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: StoreKitCoordinator.TransactionDidFinishNotification),
                                                                   object: nil,
                                                                   userInfo: userInfo)
     }
@@ -198,8 +197,8 @@ private struct DatabaseKeys {
 
 protocol Store {
     associatedtype ProductType: Product
-    func getProductsWithIdentifiers(identifiers: Set<String>, success: [ProductType] -> Void, failure: ErrorType -> Void)
-    func requestPayment(product: ProductType)
+    func getProductsWithIdentifiers(_ identifiers: Set<String>, success: @escaping ([ProductType]) -> Void, failure: @escaping (Error) -> Void)
+    func requestPayment(_ product: ProductType)
     var canMakePayments: Bool { get }
 }
 
@@ -219,7 +218,7 @@ extension Store {
     /// On success, it calls the `success` function with an array of prices. If
     /// one of the plans didn't have a product identifier, it's treated as a
     /// "free" plan and the returned price will be an empty string.
-    func getPricesForPlans(plans: [Plan], success: [PricedPlan] -> Void, failure: ErrorType -> Void) {
+    func getPricesForPlans(_ plans: [Plan], success: @escaping ([PricedPlan]) -> Void, failure: @escaping (Error) -> Void) {
         let identifiers = Set(plans.flatMap({ $0.productIdentifier }))
         getProductsWithIdentifiers(
             identifiers,
@@ -240,8 +239,9 @@ extension Store {
 }
 
 class StoreKitStore: Store {
+
     typealias ProductType = SKProduct
-    func getProductsWithIdentifiers(identifiers: Set<String>, success: [ProductType] -> Void, failure: ErrorType -> Void) {
+    internal func getProductsWithIdentifiers(_ identifiers: Set<String>, success: @escaping ([ProductType]) -> Void, failure: @escaping (Error) -> Void) {
         let request = SKProductsRequest(productIdentifiers: identifiers)
         let delegate = ProductRequestDelegate(onSuccess: success, onError: failure)
         delegate.retainUntilFinished(request)
@@ -256,9 +256,9 @@ class StoreKitStore: Store {
     // If we call this directly, the coordinator won't know what to do with this
     // since there will be no pending payment. Re-design the store architecture so
     // that's not possible.
-    func requestPayment(product: ProductType) {
+    func requestPayment(_ product: ProductType) {
         let payment = SKPayment(product: product)
-        SKPaymentQueue.defaultQueue().addPayment(payment)
+        SKPaymentQueue.default().add(payment)
     }
 
     var canMakePayments: Bool {
@@ -298,25 +298,25 @@ struct MockStore: Store {
         MockProduct(
             localizedDescription: "1 year of WordPress.com Premium",
             localizedTitle: "WordPress.com Premium 1 year",
-            price: NSDecimalNumber(float: 99.88),
-            priceLocale: NSLocale(localeIdentifier: "en-US"),
+            price: NSDecimalNumber(value: 99.88 as Float),
+            priceLocale: Locale(identifier: "en-US"),
             productIdentifier: "com.wordpress.test.premium.subscription.1year"
         ),
         MockProduct(
             localizedDescription: "1 year of WordPress.com Business",
             localizedTitle: "WordPress.com Business 1 year",
-            price: NSDecimalNumber(float: 299.88),
-            priceLocale: NSLocale(localeIdentifier: "en-US"),
+            price: NSDecimalNumber(value: 299.88 as Float),
+            priceLocale: Locale(identifier: "en-US"),
             productIdentifier: "com.wordpress.test.business.subscription.1year"
         )
     ]
 
-    func getProductsWithIdentifiers(identifiers: Set<String>, success: [ProductType] -> Void, failure: ErrorType -> Void) {
+    internal func getProductsWithIdentifiers(_ identifiers: Set<String>, success: @escaping ([MockProduct]) -> Void, failure: @escaping (Error) -> Void) {
         let products = identifiers.map({ identifier in
             return self.products.filter({ $0.productIdentifier == identifier }).first
         })
         if !products.filter({ $0 == nil }).isEmpty {
-            failure(ProductRequestError.MissingProduct)
+            failure(ProductRequestError.missingProduct)
         } else {
             let products = products.flatMap({ $0 })
 
@@ -324,14 +324,13 @@ struct MockStore: Store {
                 if (self.succeeds) {
                     success(products)
                 } else {
-                    failure(ProductRequestError.MissingProduct)
+                    failure(ProductRequestError.missingProduct)
                 }
             }
             if delay > 0 {
-                dispatch_after(
-                    dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))),
-                    dispatch_get_main_queue(),
-                    completion
+                DispatchQueue.main.asyncAfter(
+                    deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC),
+                    execute: completion
                 )
             } else {
                 completion()
@@ -339,7 +338,7 @@ struct MockStore: Store {
         }
     }
 
-    func requestPayment(product: ProductType) {
+    func requestPayment(_ product: ProductType) {
         // TODO
     }
 
@@ -347,53 +346,53 @@ struct MockStore: Store {
 }
 
 private class ProductRequestDelegate: NSObject, SKProductsRequestDelegate {
-    typealias Success = [SKProduct] -> Void
-    typealias Failure = ErrorType -> Void
+    typealias Success = ([SKProduct]) -> Void
+    typealias Failure = (Error) -> Void
 
     let onSuccess: Success
     let onError: Failure
     var retainedObjects = [NSObject]()
 
-    init(onSuccess: Success, onError: Failure) {
+    init(onSuccess: @escaping Success, onError: @escaping Failure) {
         self.onSuccess = onSuccess
         self.onError = onError
         super.init()
     }
 
-    func retainUntilFinished(object: NSObject) {
+    func retainUntilFinished(_ object: NSObject) {
         retainedObjects.append(object)
     }
 
-    @objc func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
+    @objc func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         if !response.invalidProductIdentifiers.isEmpty {
             DDLogSwift.logWarn("Invalid product identifiers: \(response.invalidProductIdentifiers)")
         }
         onSuccess(response.products)
     }
 
-    @objc func request(request: SKRequest, didFailWithError error: NSError) {
+    @objc func request(_ request: SKRequest, didFailWithError error: Error) {
         onError(error)
     }
 
-    @objc func requestDidFinish(request: SKRequest) {
+    @objc func requestDidFinish(_ request: SKRequest) {
         retainedObjects.removeAll()
     }
 }
 
-private func priceForProduct(identifier: String, products: [Product]) throws -> String {
+private func priceForProduct(_ identifier: String, products: [Product]) throws -> String {
     guard let product = products.filter({ $0.productIdentifier == identifier }).first else {
-        throw ProductRequestError.MissingProduct
+        throw ProductRequestError.missingProduct
     }
-    let formatter = NSNumberFormatter()
-    formatter.numberStyle = .CurrencyStyle
-    formatter.locale = product.priceLocale
-    guard let price = formatter.stringFromNumber(product.price) else {
-        throw ProductRequestError.InvalidProductPrice
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .currency
+    formatter.locale = product.priceLocale as Locale!
+    guard let price = formatter.string(from: product.price) else {
+        throw ProductRequestError.invalidProductPrice
     }
     return price
 }
 
-private func priceForPlan(plan: Plan, products: [Product]) throws -> String {
+private func priceForPlan(_ plan: Plan, products: [Product]) throws -> String {
     guard let identifier = plan.productIdentifier else {
         return ""
     }

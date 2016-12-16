@@ -8,20 +8,20 @@ extension NSExtensionContext {
 
     /// Attempts to load the Website URL, and returns, asynchronously, the result.
     ///
-    func loadWebsiteUrl(completion: (NSURL? -> Void)) {
-        loadItemOfType(NSURL.self, identifier: Identifier.PublicURL, completion: completion)
+    func loadWebsiteUrl(_ completion: @escaping ((URL?) -> Void)) {
+        loadItemOfType(URL.self, identifier: Identifier.PublicURL, completion: completion)
     }
 
     /// Attempts to load the Image Attachment, and returns, asynchronously, the result.
     ///
-    func loadMediaImage(completion: (UIImage? -> Void)) {
+    func loadMediaImage(_ completion: @escaping ((UIImage?) -> Void)) {
         loadItemOfType(AnyObject.self, identifier: Identifier.PublicImage) { payload in
             var loadedImage: UIImage?
 
             switch payload {
-            case let url as NSURL:
+            case let url as URL:
                 loadedImage = UIImage(contentsOfURL: url)
-            case let data as NSData:
+            case let data as Data:
                 loadedImage = UIImage(data: data)
             case let image as UIImage:
                 loadedImage = image
@@ -45,21 +45,21 @@ extension NSExtensionContext {
 
     /// Extension Item Identifiers
     ///
-    private enum Identifier : String {
+    fileprivate enum Identifier : String {
         case PublicURL      = "public.url"
         case PublicImage    = "public.image"
     }
 
     /// Loads the First Item with the specified identifier, and returns its value asynchronously on the main thread.
     ///
-    private func loadItemOfType<T>(type: T.Type, identifier: Identifier, completion: (T? -> Void)) {
+    fileprivate func loadItemOfType<T>(_ type: T.Type, identifier: Identifier, completion: @escaping ((T?) -> Void)) {
         guard let itemProvider = firstItemProviderConformingToTypeIdentifier(identifier) else {
             completion(nil)
             return
         }
 
-        itemProvider.loadItemForTypeIdentifier(identifier.rawValue, options: nil) { (item, error) in
-            dispatch_async(dispatch_get_main_queue()) {
+        itemProvider.loadItem(forTypeIdentifier: identifier.rawValue, options: nil) { (item, error) in
+            DispatchQueue.main.async {
                 let targetItem = item as? T
                 completion(targetItem)
             }
@@ -68,7 +68,7 @@ extension NSExtensionContext {
 
     /// Returns the first NSItemProvider available, that matches with a given identifier.
     ///
-    private func firstItemProviderConformingToTypeIdentifier(identifier: Identifier) -> NSItemProvider? {
+    fileprivate func firstItemProviderConformingToTypeIdentifier(_ identifier: Identifier) -> NSItemProvider? {
         guard let item = inputItems.first as? NSExtensionItem,
             let itemProviders = item.attachments as? [NSItemProvider] else {
             return nil

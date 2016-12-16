@@ -6,7 +6,7 @@ import UIKit
 /// -   A PromptViewController instance, which deals with the NavigationItem buttons
 /// -   (And verything) inside a UINavigationController instance.
 ///
-public func PromptViewController<T: UIViewController where T: Confirmable>(viewController: T) -> UINavigationController {
+public func PromptViewController<T: UIViewController>(_ viewController: T) -> UINavigationController where T: Confirmable {
     let viewController = PromptContainerViewController(viewController: viewController)
     return UINavigationController(rootViewController: viewController)
 }
@@ -28,7 +28,7 @@ private class PromptContainerViewController : UIViewController
         childViewController = viewController
 
         super.init(nibName: nil, bundle: nil)
-        precondition(viewController.conformsToProtocol(Confirmable))
+        precondition(viewController.conforms(to: Confirmable.self))
 
         setupNavigationButtons()
         attachChildViewController(viewController)
@@ -44,83 +44,83 @@ private class PromptContainerViewController : UIViewController
 
     // MARK: - Private Helpers
 
-    private func attachChildViewController(viewController: UIViewController) {
+    fileprivate func attachChildViewController(_ viewController: UIViewController) {
         // Attach!
-        viewController.willMoveToParentViewController(self)
+        viewController.willMove(toParentViewController: self)
         view.addSubview(viewController.view)
         addChildViewController(viewController)
-        viewController.didMoveToParentViewController(self)
+        viewController.didMove(toParentViewController: self)
     }
 
-    private func setupChildViewConstraints(childrenView : UIView) {
+    fileprivate func setupChildViewConstraints(_ childrenView : UIView) {
         // We grow, you grow. We shrink, you shrink. Capicci?
         childrenView.translatesAutoresizingMaskIntoConstraints = false
-        childrenView.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
-        childrenView.heightAnchor.constraintEqualToAnchor(view.heightAnchor).active = true
-        childrenView.leftAnchor.constraintEqualToAnchor(view.leftAnchor).active = true
-        childrenView.topAnchor.constraintEqualToAnchor(view.topAnchor).active = true
+        childrenView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        childrenView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+        childrenView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        childrenView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
     }
 
 
     // MARK: - KVO Rocks!
 
-    private func startListeningToProperties(viewController: UIViewController) {
-        for key in Properties.all where viewController.respondsToSelector(NSSelectorFromString(key.rawValue)) {
-            viewController.addObserver(self, forKeyPath: key.rawValue, options: [.Initial, .New], context: nil)
+    fileprivate func startListeningToProperties(_ viewController: UIViewController) {
+        for key in Properties.all where viewController.responds(to: NSSelectorFromString(key.rawValue)) {
+            viewController.addObserver(self, forKeyPath: key.rawValue, options: [.initial, .new], context: nil)
         }
     }
 
-    private func stopListeningToProperties(viewController: UIViewController) {
-        for key in Properties.all where viewController.respondsToSelector(NSSelectorFromString(key.rawValue)) {
+    fileprivate func stopListeningToProperties(_ viewController: UIViewController) {
+        for key in Properties.all where viewController.responds(to: NSSelectorFromString(key.rawValue)) {
             viewController.removeObserver(self, forKeyPath: key.rawValue)
         }
     }
 
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard let unwrappedKeyPath = keyPath, let property = Properties(rawValue: unwrappedKeyPath) else {
             return
         }
 
         switch property {
         case .title:
-            title = change?[NSKeyValueChangeNewKey] as? String ?? String()
+            title = change?[NSKeyValueChangeKey.newKey] as? String ?? String()
         case .doneButtonEnabled:
-            navigationItem.rightBarButtonItem?.enabled = change?[NSKeyValueChangeNewKey] as? Bool ?? true
+            navigationItem.rightBarButtonItem?.isEnabled = change?[NSKeyValueChangeKey.newKey] as? Bool ?? true
         }
     }
 
 
     // MARK: - Navigation Buttons
 
-    private func setupNavigationButtons() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel,
+    fileprivate func setupNavigationButtons() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                            target: self,
                                                            action: #selector(cancelButtonWasPressed))
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done,
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
                                                             target: self,
                                                             action: #selector(doneButtonWasPressed))
     }
 
     @objc
-    @IBAction func cancelButtonWasPressed(sender: AnyObject) {
+    @IBAction func cancelButtonWasPressed(_ sender: AnyObject) {
         (childViewController as? Confirmable)?.cancel()
     }
 
     @objc
-    @IBAction func doneButtonWasPressed(sender: AnyObject) {
+    @IBAction func doneButtonWasPressed(_ sender: AnyObject) {
         (childViewController as? Confirmable)?.confirm()
     }
 
 
 
     // MARK: - Private Constants
-    private enum Properties : String {
+    fileprivate enum Properties : String {
         case title              = "title"
         case doneButtonEnabled  = "doneButtonEnabled"
         static let all          = [title, doneButtonEnabled]
     }
 
     // MARK: - Private Properties
-    private let childViewController : UIViewController
+    fileprivate let childViewController : UIViewController
 }

@@ -28,7 +28,7 @@ extension AccountSettings {
         email = managed.email
         emailPendingAddress = managed.emailPendingAddress
         emailPendingChange = managed.emailPendingChange
-        primarySiteID = managed.primarySiteID.integerValue
+        primarySiteID = managed.primarySiteID.intValue
         webAddress = managed.webAddress
         language = managed.language
     }

@@ -6,7 +6,7 @@ import CoreData
 class ManagedAccountSettings: NSManagedObject {
     static let entityName = "AccountSettings"
 
-    func updateWith(accountSettings: AccountSettings) {
+    func updateWith(_ accountSettings: AccountSettings) {
         firstName = accountSettings.firstName
         lastName = accountSettings.lastName
         displayName = accountSettings.displayName
@@ -16,7 +16,7 @@ class ManagedAccountSettings: NSManagedObject {
         email = accountSettings.email
         emailPendingAddress = accountSettings.emailPendingAddress
         emailPendingChange = accountSettings.emailPendingChange
-        primarySiteID = accountSettings.primarySiteID
+        primarySiteID = NSNumber(value: accountSettings.primarySiteID)
         webAddress = accountSettings.webAddress
         language = accountSettings.language
     }
@@ -28,93 +28,93 @@ class ManagedAccountSettings: NSManagedObject {
     ///
     /// - Returns: the change object needed to revert this change
     ///
-    func applyChange(change: AccountSettingsChange) -> AccountSettingsChange {
+    func applyChange(_ change: AccountSettingsChange) -> AccountSettingsChange {
         let reverse = reverseChange(change)
 
         switch change {
-        case .FirstName(let value):
+        case .firstName(let value):
             self.firstName = value
-        case .LastName(let value):
+        case .lastName(let value):
             self.lastName = value
-        case .DisplayName(let value):
+        case .displayName(let value):
             self.displayName = value
-        case .AboutMe(let value):
+        case .aboutMe(let value):
             self.aboutMe = value
-        case .Email(let value):
+        case .email(let value):
             self.emailPendingAddress = value
             self.emailPendingChange = true
-        case .EmailRevertPendingChange:
+        case .emailRevertPendingChange:
             self.emailPendingAddress = nil
             self.emailPendingChange = false
-        case .PrimarySite(let value):
-            self.primarySiteID = value
-        case .WebAddress(let value):
+        case .primarySite(let value):
+            self.primarySiteID = NSNumber(value: value)
+        case .webAddress(let value):
             self.webAddress = value
-        case .Language(let value):
+        case .language(let value):
             self.language = value
         }
 
         return reverse
     }
 
-    private func reverseChange(change: AccountSettingsChange) -> AccountSettingsChange {
+    fileprivate func reverseChange(_ change: AccountSettingsChange) -> AccountSettingsChange {
         switch change {
-        case .FirstName(_):
-            return .FirstName(self.firstName)
-        case .LastName(_):
-            return .LastName(self.lastName)
-        case .DisplayName(_):
-            return .DisplayName(self.displayName)
-        case .AboutMe(_):
-            return .AboutMe(self.aboutMe)
-        case .Email(_):
-            return .EmailRevertPendingChange
-        case .EmailRevertPendingChange(_):
-            return .Email(self.emailPendingAddress ?? String())
-        case .PrimarySite(_):
-            return .PrimarySite(self.primarySiteID.integerValue)
-        case .WebAddress(_):
-            return .WebAddress(self.webAddress)
-        case .Language(_):
-            return .Language(self.language)
+        case .firstName(_):
+            return .firstName(self.firstName)
+        case .lastName(_):
+            return .lastName(self.lastName)
+        case .displayName(_):
+            return .displayName(self.displayName)
+        case .aboutMe(_):
+            return .aboutMe(self.aboutMe)
+        case .email(_):
+            return .emailRevertPendingChange
+        case .emailRevertPendingChange(_):
+            return .email(self.emailPendingAddress ?? String())
+        case .primarySite(_):
+            return .primarySite(self.primarySiteID.intValue)
+        case .webAddress(_):
+            return .webAddress(self.webAddress)
+        case .language(_):
+            return .language(self.language)
         }
     }
 }
 
 enum AccountSettingsChange {
-    case FirstName(String)
-    case LastName(String)
-    case DisplayName(String)
-    case AboutMe(String)
-    case Email(String)
-    case EmailRevertPendingChange
-    case PrimarySite(Int)
-    case WebAddress(String)
-    case Language(String)
+    case firstName(String)
+    case lastName(String)
+    case displayName(String)
+    case aboutMe(String)
+    case email(String)
+    case emailRevertPendingChange
+    case primarySite(Int)
+    case webAddress(String)
+    case language(String)
 
     var stringValue: String {
         switch self {
-        case .FirstName(let value):
+        case .firstName(let value):
             return value
-        case .LastName(let value):
+        case .lastName(let value):
             return value
-        case .DisplayName(let value):
+        case .displayName(let value):
             return value
-        case .AboutMe(let value):
+        case .aboutMe(let value):
             return value
-        case .Email(let value):
+        case .email(let value):
             return value
-        case .EmailRevertPendingChange:
+        case .emailRevertPendingChange:
             return String(false)
-        case .PrimarySite(let value):
+        case .primarySite(let value):
             return String(value)
-        case .WebAddress(let value):
+        case .webAddress(let value):
             return value
-        case .Language(let value):
+        case .language(let value):
             return value
         }
     }
 }
 
-typealias AccountSettingsChangeWithString = String -> AccountSettingsChange
-typealias AccountSettingsChangeWithInt = Int -> AccountSettingsChange
+typealias AccountSettingsChangeWithString = (String) -> AccountSettingsChange
+typealias AccountSettingsChangeWithInt = (Int) -> AccountSettingsChange

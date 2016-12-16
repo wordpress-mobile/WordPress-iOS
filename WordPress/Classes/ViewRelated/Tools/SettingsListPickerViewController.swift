@@ -13,7 +13,7 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
 
     /// Callback to be executed whenever the selectedValue changes
     ///
-    var onChange : (T -> Void)?
+    var onChange : ((T) -> Void)?
 
 
 
@@ -26,7 +26,7 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
         self.subtitles = subtitles
         self.values = values
 
-        super.init(style: .Grouped)
+        super.init(style: .grouped)
 
         assert(titles.count == values.count)
         assert(titles.count == subtitles?.count || subtitles == nil)
@@ -56,8 +56,8 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
         setupTableView()
     }
 
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
 
         // Note: This fixes an extra padding glitch upon rotation
         view.setNeedsLayout()
@@ -66,25 +66,25 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
 
 
     // MARK: - Setup Helpers
-    private func setupTableView() {
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+    fileprivate func setupTableView() {
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
 
 
     // MARK: - UITableViewDataSource Methods
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return titles?.count ?? 0
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titles?[section].count ?? 0
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
         if cell == nil {
-            cell = WPTableViewCell(style: .Subtitle, reuseIdentifier: reuseIdentifier)
+            cell = WPTableViewCell(style: .subtitle, reuseIdentifier: reuseIdentifier)
             WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
         }
 
@@ -95,31 +95,31 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
 
         cell?.textLabel?.text = title
         cell?.detailTextLabel?.text = subtitle
-        cell?.accessoryType = selected ? .Checkmark : .None
+        cell?.accessoryType = selected ? .checkmark : .none
 
         return cell!
     }
 
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return headers?[section]
     }
 
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return footers?[section]
     }
 
-    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
 
 
     // MARK: - UITableViewDelegate Methods
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let newValue = values?[indexPath.section][indexPath.row] else {
             return
         }
@@ -136,7 +136,7 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
 
     // MARK: - Constants
 
-    private let reuseIdentifier = "WPTableViewCell"
+    fileprivate let reuseIdentifier = "WPTableViewCell"
 
 
 
@@ -145,21 +145,21 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
 
     /// Header Strings to be applied over the diferent sections
     ///
-    private let headers : [String]?
+    fileprivate let headers : [String]?
 
     /// Footer Strings to be applied over the diferent sections
     ///
-    private let footers : [String]?
+    fileprivate let footers : [String]?
 
     /// Titles to be rendered
     ///
-    private let titles : [[String]]?
+    fileprivate let titles : [[String]]?
 
     /// Row Subtitles. Should contain the exact same number as titles
     ///
-    private let subtitles : [[String]]?
+    fileprivate let subtitles : [[String]]?
 
     /// Row Values. Should contain the exact same number as titles
     ///
-    private let values : [[T]]?
+    fileprivate let values : [[T]]?
 }

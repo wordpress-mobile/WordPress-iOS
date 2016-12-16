@@ -9,7 +9,7 @@ struct PlanService<S: Store> {
     let store: S
     let remote: PlansRemote
 
-    private let featuresRemote: PlanFeaturesRemote
+    fileprivate let featuresRemote: PlanFeaturesRemote
 
     init(store: S, remote: PlansRemote, featuresRemote: PlanFeaturesRemote) {
         self.store = store
@@ -17,7 +17,7 @@ struct PlanService<S: Store> {
         self.featuresRemote = featuresRemote
     }
 
-    func plansWithPricesForBlog(siteID: Int, success: SitePricedPlans -> Void, failure: ErrorType -> Void) {
+    func plansWithPricesForBlog(_ siteID: Int, success: @escaping (SitePricedPlans) -> Void, failure: @escaping (Error) -> Void) {
         remote.getPlansForSite(siteID,
             success: {
                 activePlan, availablePlans in
@@ -30,7 +30,7 @@ struct PlanService<S: Store> {
             }, failure: failure)
     }
 
-    func verifyPurchase(siteID: Int, productID: String, receipt: NSData, completion: Bool -> Void) {
+    func verifyPurchase(_ siteID: Int, productID: String, receipt: Data, completion: (Bool) -> Void) {
         // Let's pretend this succeeds for now
         completion(true)
     }
@@ -40,9 +40,9 @@ extension PlanService {
     init?(siteID: Int, store: S) {
         self.store = store
         let manager = ContextManager.sharedInstance()
-        let context = manager.mainContext
+        let context = manager?.mainContext
         let service = BlogService(managedObjectContext: context)
-        guard let blog = service.blogByBlogId(siteID) else {
+        guard let blog = service?.blog(byBlogId: NSNumber(value: siteID)) else {
             let error = "Tried to obtain a PlanService for a non-existing site (ID: \(siteID))"
             assertionFailure(error)
             DDLogSwift.logError(error)
@@ -65,20 +65,20 @@ extension PlanService {
 }
 
 struct PlanStorage {
-    static func activatePlan(planID: PlanID, forSite siteID: Int) {
+    static func activatePlan(_ planID: PlanID, forSite siteID: Int) {
         let manager = ContextManager.sharedInstance()
-        let context = manager.newDerivedContext()
+        let context = manager?.newDerivedContext()
         let service = BlogService(managedObjectContext: context)
-        context.performBlockAndWait {
-            guard let blog = service.blogByBlogId(siteID) else {
+        context?.performAndWait {
+            guard let blog = service?.blog(byBlogId: NSNumber(value: siteID)) else {
                 let error = "Tried to activate a plan for a non-existing site (ID: \(siteID))"
                 assertionFailure(error)
                 DDLogSwift.logError(error)
                 return
             }
-            if blog.planID != planID {
-                blog.planID = planID
-                manager.saveContextAndWait(context)
+            if blog.planID?.intValue != planID {
+                blog.planID = NSNumber(value: planID)
+                manager?.saveContextAndWait(context)
             }
         }
     }
@@ -93,24 +93,24 @@ extension PlanService {
         let remote = PlansRemote(wordPressComRestApi: api)
         let featuresRemote = PlanFeaturesRemote(wordPressComRestApi: api)
 
-        self.init(store: store, remote: remote, featuresRemote: featuresRemote)
+        self.init(store: store, remote: remote!, featuresRemote: featuresRemote!)
     }
 }
 
-enum PlanServiceError: ErrorType {
-    case MissingFeaturesForPlan
-    case MissingFeatureForSlug
+enum PlanServiceError: Error {
+    case missingFeaturesForPlan
+    case missingFeatureForSlug
 }
 
 extension PlanService {
-    func featureGroupsForPlan(plan: Plan, features: PlanFeatures) throws -> [PlanFeatureGroup] {
+    func featureGroupsForPlan(_ plan: Plan, features: PlanFeatures) throws -> [PlanFeatureGroup] {
         guard let planFeatures = features[plan.id] else {
-            throw PlanServiceError.MissingFeaturesForPlan
+            throw PlanServiceError.missingFeaturesForPlan
         }
         return try plan.featureGroups.map({ group in
             let features: [PlanFeature] = try group.slugs.map({ slug in
                 guard let feature = planFeatures.filter({ $0.slug == slug }).first else {
-                    throw PlanServiceError.MissingFeatureForSlug
+                    throw PlanServiceError.missingFeatureForSlug
                 }
                 return feature
             })
@@ -118,7 +118,7 @@ extension PlanService {
         })
     }
 
-    func updateAllPlanFeatures(success success: PlanFeatures -> Void, failure: ErrorType -> Void) {
+    func updateAllPlanFeatures(success: @escaping (PlanFeatures) -> Void, failure: @escaping (Error) -> Void) {
         featuresRemote.getPlanFeatures({
             success($0)
         }, failure: failure)

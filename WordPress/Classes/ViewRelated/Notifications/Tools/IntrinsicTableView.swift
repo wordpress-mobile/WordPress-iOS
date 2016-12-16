@@ -17,8 +17,8 @@ class IntrinsicTableView: UITableView
         }
     }
 
-    override func intrinsicContentSize() -> CGSize {
+    override var intrinsicContentSize : CGSize {
         layoutIfNeeded()
-        return CGSizeMake(UIViewNoIntrinsicMetric, contentSize.height)
+        return CGSize(width: UIViewNoIntrinsicMetric, height: contentSize.height)
     }
 }
