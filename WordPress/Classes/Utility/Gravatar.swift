@@ -1,33 +1,31 @@
 import Foundation
 
 struct Gravatar {
-    private struct Defaults {
+    fileprivate struct Defaults {
         static let scheme = "https"
         static let host = "secure.gravatar.com"
         // unknownHash = md5("unknown@gravatar.com")
         static let unknownHash = "ad516503a11cd5ca435acc9bb6523536"
     }
 
-    let canonicalURL: NSURL
+    let canonicalURL: URL
 
-    func urlWithSize(size: Int) -> NSURL {
-        let components = NSURLComponents(URL: canonicalURL, resolvingAgainstBaseURL: false)!
+    func urlWithSize(_ size: Int) -> URL {
+        var components = URLComponents(url: canonicalURL, resolvingAgainstBaseURL: false)!
         components.query = "s=\(size)&d=404"
-        return components.URL!
+        return components.url!
     }
 
-    static func isGravatarURL(url: NSURL) -> Bool {
-        guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else {
+    static func isGravatarURL(_ url: URL) -> Bool {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
             return false
         }
 
-        guard let host = components.host
-            where host.hasSuffix(".gravatar.com") else {
+        guard let host = components.host, host.hasSuffix(".gravatar.com") else {
                 return false
         }
 
-        guard let path = url.path
-            where path.hasPrefix("/avatar/") else {
+        guard url.path.hasPrefix("/avatar/") else {
                 return false
         }
 
@@ -42,12 +40,12 @@ func ==(lhs: Gravatar, rhs: Gravatar) -> Bool {
 }
 
 extension Gravatar {
-    init?(_ url: NSURL) {
+    init?(_ url: URL) {
         guard Gravatar.isGravatarURL(url) else {
             return nil
         }
 
-        guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else {
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
             return nil
         }
 
@@ -56,12 +54,11 @@ extension Gravatar {
         components.query = nil
 
         // Treat unknown@gravatar.com as a nil url
-        guard let hash = url.lastPathComponent
-            where hash != Defaults.unknownHash else {
+        guard url.lastPathComponent != Defaults.unknownHash else {
                 return nil
         }
 
-        guard let sanitizedURL = components.URL else {
+        guard let sanitizedURL = components.url else {
             return nil
         }
 
@@ -70,7 +67,7 @@ extension Gravatar {
 }
 
 extension UIImageView {
-    func downloadGravatar(gravatar: Gravatar?, placeholder: UIImage, animate: Bool, failure: ((NSError!) -> ())? = nil) {
+    func downloadGravatar(_ gravatar: Gravatar?, placeholder: UIImage, animate: Bool, failure: ((Error?) -> ())? = nil) {
         guard let gravatar = gravatar else {
             self.image = placeholder
             return
@@ -86,8 +83,7 @@ extension UIImageView {
                 if animate {
                     self.fadeInAnimation()
                 }
-            }, failure: {
-                error in
+            }, failure: { error in
                 failure?(error)
         })
     }

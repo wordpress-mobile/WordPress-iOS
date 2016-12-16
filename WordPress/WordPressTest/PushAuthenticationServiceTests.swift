@@ -16,7 +16,7 @@ class PushAuthenticationServiceTests : XCTestCase {
         var successBlockPassedIn:(() -> ())?
         var failureBlockPassedIn:(() -> ())?
 
-        override func authorizeLogin(token: String, success: (() -> ())?, failure: (() -> ())?) {
+        override func authorizeLogin(_ token: String, success: (() -> ())?, failure: (() -> ())?) {
             authorizeLoginCalled = true
             successBlockPassedIn = success
             failureBlockPassedIn = failure

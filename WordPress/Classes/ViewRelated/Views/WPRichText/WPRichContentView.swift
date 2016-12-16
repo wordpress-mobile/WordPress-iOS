@@ -4,8 +4,7 @@ import UIKit
 
 @objc protocol WPRichContentViewDelegate: UITextViewDelegate
 {
-    func richContentView(richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
-
+    func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
     optional func richContentViewShouldUpdateLayoutForAttachments(richContentView: WPRichContentView) -> Bool
     optional func richContentViewDidUpdateLayoutForAttachments(richContentView: WPRichContentView)
 }
@@ -36,16 +35,16 @@ class WPRichContentView: UITextView
     ///
     lazy var imageSource: WPTableImageSource = {
         let source = WPTableImageSource(maxSize: self.maxDisplaySize)
-        source.delegate = self
-        source.forceLargerSizeWhenFetching = false
-        source.photonQuality = Constants.photonQuality
-        return source
+        source?.delegate = self
+        source?.forceLargerSizeWhenFetching = false
+        source?.photonQuality = Constants.photonQuality
+        return source!
     }()
 
     /// The maximum size for images.
     ///
     lazy var maxDisplaySize: CGSize = {
-        let bounds = UIScreen.mainScreen().bounds
+        let bounds = UIScreen.main.bounds
         let side = max(bounds.size.width, bounds.size.height)
         return CGSize(width: side, height: side)
     }()
@@ -67,8 +66,8 @@ class WPRichContentView: UITextView
 
             if textStorage.length > 0 {
                 let rng = NSRange(location: 0, length: 1)
-                layoutManager.invalidateLayoutForCharacterRange(rng, actualCharacterRange: nil)
-                layoutManager.ensureLayoutForCharacterRange(rng)
+                layoutManager.invalidateLayout(forCharacterRange: rng, actualCharacterRange: nil)
+                layoutManager.ensureLayout(forCharacterRange: rng)
                 attachmentManager.layoutAttachmentViews()
             }
         }
@@ -90,8 +89,8 @@ class WPRichContentView: UITextView
 
             if textStorage.length > 1 {
                 let rng = NSRange(location: textStorage.length - 2, length: 1)
-                layoutManager.invalidateLayoutForCharacterRange(rng, actualCharacterRange: nil)
-                layoutManager.ensureLayoutForCharacterRange(rng)
+                layoutManager.invalidateLayout(forCharacterRange: rng, actualCharacterRange: nil)
+                layoutManager.ensureLayout(forCharacterRange: rng)
                 attachmentManager.layoutAttachmentViews()
             }
         }
@@ -113,7 +112,7 @@ class WPRichContentView: UITextView
             return text ?? ""
         }
         set {
-            let str = newValue ?? ""
+            let str = newValue
             let style = "<style>" +
                 "body { font-family: Merriweather; font-size:16.0; line-height:1.6875; color: #2e4453; } " +
                 "blockquote { color:#4f748e; } " +
@@ -128,15 +127,15 @@ class WPRichContentView: UITextView
 
                     // Ensure the starting paragraph style is applied to the topMarginAttachment else the
                     // first paragraph might not have the correct line height.
-                    var paraStyle = NSParagraphStyle.defaultParagraphStyle()
+                    var paraStyle = NSParagraphStyle.default
                     if attrTxt.length > 0 {
-                        if let pstyle = attrTxt.attribute(NSParagraphStyleAttributeName, atIndex: 0, effectiveRange: nil) as? NSParagraphStyle {
+                        if let pstyle = attrTxt.attribute(NSParagraphStyleAttributeName, at: 0, effectiveRange: nil) as? NSParagraphStyle {
                             paraStyle = pstyle
                         }
                     }
-                    mattrTxt.insertAttributedString(NSAttributedString(attachment: topMarginAttachment), atIndex: 0)
+                    mattrTxt.insert(NSAttributedString(attachment: topMarginAttachment), at: 0)
                     mattrTxt.addAttributes([NSParagraphStyleAttributeName: paraStyle], range: NSRange(location: 0, length: 1))
-                    mattrTxt.appendAttributedString(NSAttributedString(attachment: bottomMarginAttachment))
+                    mattrTxt.append(NSAttributedString(attachment: bottomMarginAttachment))
 
                     attributedText = mattrTxt
                 }
@@ -203,7 +202,7 @@ class WPRichContentView: UITextView
 
 extension WPRichContentView: WPTextAttachmentManagerDelegate
 {
-    func attachmentManager(attachmentManager: WPTextAttachmentManager, viewForAttachment attachment: WPTextAttachment) -> UIView? {
+    func attachmentManager(_ attachmentManager: WPTextAttachmentManager, viewForAttachment attachment: WPTextAttachment) -> UIView? {
         if attachment.tagName == "img" {
             return imageForAttachment(attachment)
 
@@ -220,7 +219,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     ///
     /// - Returns: A WPRichTextEmbed instance configured for the attachment.
     ///
-    func embedForAttachment(attachment: WPTextAttachment) -> WPRichTextEmbed {
+    func embedForAttachment(_ attachment: WPTextAttachment) -> WPRichTextEmbed {
         let width: CGFloat = attachment.width > 0 ? attachment.width : textContainer.size.width
         let height: CGFloat = attachment.height > 0 ? attachment.height : Constants.defaultAttachmentHeight
         let embed = WPRichTextEmbed(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
@@ -228,9 +227,9 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
         attachment.maxSize = CGSize(width: width, height: height)
 
         if attachment.tagName == "iframe" {
-            embed.loadContentURL(NSURL(string: attachment.src.stringByDecodingXMLCharacters())!)
+            embed.loadContentURL(URL(string: attachment.src.stringByDecodingXMLCharacters())!)
         } else {
-            embed.loadHTMLString(attachment.html!)
+            embed.loadHTMLString(attachment.html! as NSString)
         }
 
         embed.success = { [weak self] embedView in
@@ -251,7 +250,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     ///
     /// - Returns: A WPRichTextImage instance configured for the attachment.
     ///
-    func imageForAttachment(attachment: WPTextAttachment) -> WPRichTextImage {
+    func imageForAttachment(_ attachment: WPTextAttachment) -> WPRichTextImage {
         guard let url = NSURL(string: attachment.src) else {
             return WPRichTextImage(frame: CGRect.zero)
         }
@@ -262,17 +261,17 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
         attachment.maxSize = CGSize(width: 1, height: 1)
 
         let img = WPRichTextImage(frame: CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0))
-        img.addTarget(self, action: #selector(self.dynamicType.handleImageTapped(_:)), forControlEvents: .TouchUpInside)
+        img.addTarget(self, action: #selector(type(of: self).handleImageTapped(_:)), for: .touchUpInside)
         img.contentURL = url
         img.linkURL = linkURLForImageAttachment(attachment)
 
-        if let cachedImage = imageSource.imageForURL(url, withSize: maxDisplaySize) {
+        if let cachedImage = imageSource.image(for: url, with: maxDisplaySize) {
             img.imageView.image = cachedImage
             attachment.maxSize = cachedImage.size
         } else {
             let index = mediaArray.count
-            let indexPath = NSIndexPath(forRow: index, inSection: 1)
-            imageSource.fetchImageForURL(url, withSize: maxDisplaySize, indexPath: indexPath, isPrivate: isPrivate)
+            let indexPath = IndexPath(row: index, section: 1)
+            imageSource.fetchImage(for: url, with: maxDisplaySize, indexPath: indexPath, isPrivate: isPrivate)
         }
 
         let media = RichMedia(image: img, attachment: attachment)
@@ -289,13 +288,13 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     ///
     /// - Returns: An NSURL optional.
     ///
-    func linkURLForImageAttachment(attachment: WPTextAttachment) -> NSURL? {
-        var link: NSURL?
+    func linkURLForImageAttachment(_ attachment: WPTextAttachment) -> URL? {
+        var link: URL?
         let attrText = attributedText
-        attrText.enumerateAttachments { (textAttachment, range) in
+        attrText?.enumerateAttachments { (textAttachment, range) in
             if textAttachment == attachment {
                 var effectiveRange = NSRange()
-                if let value = attrText.attribute(NSLinkAttributeName, atIndex: range.location, longestEffectiveRange: &effectiveRange, inRange: NSRange(location: 0, length: attrText.length)) as? NSURL {
+                if let value = attrText?.attribute(NSLinkAttributeName, at: range.location, longestEffectiveRange: &effectiveRange, in: NSRange(location: 0, length: (attrText?.length)!)) as? URL {
                     link = value
                 }
             }
@@ -311,10 +310,10 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     ///
     /// - Returns: An NSRange optional.
     ///
-    func rangeOfAttachment(attachment: WPTextAttachment) -> NSRange? {
+    func rangeOfAttachment(_ attachment: WPTextAttachment) -> NSRange? {
         var attachmentRange: NSRange?
         let attrText = attributedText
-        attrText.enumerateAttachments { (textAttachment, range) in
+        attrText?.enumerateAttachments { (textAttachment, range) in
             if attachment == textAttachment {
                 attachmentRange = range
             }
@@ -330,7 +329,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     ///
     /// - Returns: An NSRange optional.
     ///
-    func attachmentRangeForRichTextImage(richTextImage: WPRichTextImage) -> NSRange? {
+    func attachmentRangeForRichTextImage(_ richTextImage: WPRichTextImage) -> NSRange? {
         for item in mediaArray {
             if item.image == richTextImage {
                 return rangeOfAttachment(item.attachment)
@@ -345,7 +344,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     /// - Parameters:
     ///     - sender: The WPRichTextImage that was tapped.
     ///
-    func handleImageTapped(sender: WPRichTextImage) {
+    func handleImageTapped(_ sender: WPRichTextImage) {
         guard let delegate = delegate else {
             return
         }
@@ -353,7 +352,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
         if let url = sender.linkURL,
             let range = attachmentRangeForRichTextImage(sender) {
 
-            delegate.textView?(self, shouldInteractWithURL: url, inRange: range)
+            _ = delegate.textView?(self, shouldInteractWith: url as URL, in: range)
             return
         }
 
@@ -368,7 +367,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
 extension WPRichContentView: WPTableImageSourceDelegate
 {
 
-    func tableImageSource(tableImageSource: WPTableImageSource!, imageReady image: UIImage!, forIndexPath indexPath: NSIndexPath!) {
+    func tableImageSource(_ tableImageSource: WPTableImageSource!, imageReady image: UIImage!, for indexPath: IndexPath!) {
         let richMedia = mediaArray[indexPath.row]
 
         richMedia.image.imageView.image = image
@@ -377,8 +376,7 @@ extension WPRichContentView: WPTableImageSourceDelegate
         layoutAttachmentViews()
     }
 
-
-    func tableImageSource(tableImageSource: WPTableImageSource!, imageFailedforIndexPath indexPath: NSIndexPath!, error: NSError!) {
+    func tableImageSource(_ tableImageSource: WPTableImageSource!, imageFailedforIndexPath indexPath: IndexPath!, error: Error!) {
         let richMedia = mediaArray[indexPath.row]
         DDLogSwift.logError("Error loading image: \(richMedia.attachment.src)")
         DDLogSwift.logError("\(error)")

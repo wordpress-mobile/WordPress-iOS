@@ -13,19 +13,19 @@ struct ReaderPostMenuButtonTitles
 }
 
 
-public class ReaderPostMenu
+open class ReaderPostMenu
 {
-    public static let BlockSiteNotification = "ReaderPostMenuBlockSiteNotification"
+    open static let BlockSiteNotification = "ReaderPostMenuBlockSiteNotification"
 
-    public class func showMenuForPost(post:ReaderPost, fromView anchorView:UIView, inViewController viewController:UIViewController) {
+    open class func showMenuForPost(_ post:ReaderPost, fromView anchorView:UIView, inViewController viewController:UIViewController) {
         // Create the action sheet
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
 
         // Block button
         if shouldShowBlockSiteMenuItemForPost(post) {
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
-                style: .Destructive,
+                style: .destructive,
                 handler: { (action:UIAlertAction) in
                     self.blockSiteForPost(post)
             })
@@ -34,21 +34,21 @@ public class ReaderPostMenu
         // Following
         let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
         alertController.addActionWithTitle(buttonTitle,
-            style: .Default,
+            style: .default,
             handler: { (action:UIAlertAction) in
                 self.toggleFollowingForPost(post)
         })
 
         // Visit site
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.visit,
-            style: .Default,
+            style: .default,
             handler: { (action:UIAlertAction) in
                 self.visitSiteForPost(post, presentingViewController: viewController)
         })
 
         // Share
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
-            style: .Default,
+            style: .default,
             handler: { (action:UIAlertAction) in
                 let sharingController = PostSharingController()
 
@@ -56,21 +56,21 @@ public class ReaderPostMenu
         })
 
         if UIDevice.isPad() {
-            alertController.modalPresentationStyle = .Popover
-            viewController.presentViewController(alertController, animated: true, completion: nil)
+            alertController.modalPresentationStyle = .popover
+            viewController.present(alertController, animated: true, completion: nil)
             if let presentationController = alertController.popoverPresentationController {
-                presentationController.permittedArrowDirections = .Any
+                presentationController.permittedArrowDirections = .any
                 presentationController.sourceView = anchorView
                 presentationController.sourceRect = anchorView.bounds
             }
 
         } else {
-            viewController.presentViewController(alertController, animated: true, completion: nil)
+            viewController.present(alertController, animated: true, completion: nil)
         }
     }
 
 
-    private class func shouldShowBlockSiteMenuItemForPost(post:ReaderPost) -> Bool {
+    fileprivate class func shouldShowBlockSiteMenuItemForPost(_ post:ReaderPost) -> Bool {
         if let topic = post.topic {
             if (ReaderHelpers.isLoggedIn()) {
                 return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsFreshlyPressed(topic)
@@ -80,14 +80,14 @@ public class ReaderPostMenu
     }
 
 
-    private class func blockSiteForPost(post:ReaderPost) {
+    fileprivate class func blockSiteForPost(_ post:ReaderPost) {
         // TODO: Dispatch notification to block the site for the specified post.
         // The list and the detail will need to handle this separately
-        NSNotificationCenter.defaultCenter().postNotificationName(BlockSiteNotification, object: nil, userInfo: ["post":post])
+        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: BlockSiteNotification), object: nil, userInfo: ["post":post])
     }
 
 
-    private class func toggleFollowingForPost(post:ReaderPost) {
+    fileprivate class func toggleFollowingForPost(_ post:ReaderPost) {
         var successMessage:String!
         var errorMessage:String!
         var errorTitle:String!
@@ -100,38 +100,38 @@ public class ReaderPostMenu
             errorTitle = NSLocalizedString("Problem Following Site", comment: "Title of a prompt")
             errorMessage = NSLocalizedString("There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem following a site and instructions on how to notify us of the problem.")
 
-            WPNotificationFeedbackGenerator.notificationOccurred(.Success)
+            WPNotificationFeedbackGenerator.notificationOccurred(.success)
         }
 
         SVProgressHUD.show()
         let postService = ReaderPostService(managedObjectContext: post.managedObjectContext)
-        postService.toggleFollowingForPost(post, success: { () in
-            SVProgressHUD.showSuccessWithStatus(successMessage)
-            }, failure: { (error:NSError!) in
+        postService?.toggleFollowing(for: post, success: { () in
+            SVProgressHUD.showSuccess(withStatus: successMessage)
+            }, failure: { (error: Error?) in
                 SVProgressHUD.dismiss()
 
-                WPNotificationFeedbackGenerator.notificationOccurred(.Error)
+                WPNotificationFeedbackGenerator.notificationOccurred(.error)
 
                 let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
                 let alertController = UIAlertController(title: errorTitle,
                     message: errorMessage,
-                    preferredStyle: .Alert)
+                    preferredStyle: .alert)
                 alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
                 alertController.presentFromRootViewController()
         })
     }
 
 
-    private class func visitSiteForPost(post:ReaderPost, presentingViewController viewController:UIViewController) {
+    fileprivate class func visitSiteForPost(_ post:ReaderPost, presentingViewController viewController:UIViewController) {
         guard
             let permalink = post.permaLink,
-            let siteURL = NSURL(string: permalink) else {
+            let siteURL = URL(string: permalink) else {
                 return
         }
 
-        let controller = WPWebViewController(URL: siteURL)
-        controller.addsWPComReferrer = true
-        let navController = UINavigationController(rootViewController: controller)
-        viewController.presentViewController(navController, animated: true, completion: nil)
+        let controller = WPWebViewController(url: siteURL)
+        controller?.addsWPComReferrer = true
+        let navController = UINavigationController(rootViewController: controller!)
+        viewController.present(navController, animated: true, completion: nil)
     }
 }

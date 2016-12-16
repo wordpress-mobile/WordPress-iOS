@@ -23,16 +23,16 @@ class AccountServiceTests: XCTestCase {
     }
 
     func testCreateWordPressComAccountUUID() {
-        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
+        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
         XCTAssertNotNil(account.uuid, "UUID should be set")
     }
 
     func testSetDefaultWordPressComAccountCheckUUID() {
-        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
+        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
 
         accountService.setDefaultWordPressComAccount(account)
 
-        let uuid = NSUserDefaults.standardUserDefaults().stringForKey("AccountDefaultDotcomUUID")
+        let uuid = UserDefaults.standard.string(forKey: "AccountDefaultDotcomUUID")
         XCTAssertNotNil(uuid, "Default UUID should be set")
         XCTAssertEqual(uuid!, account.uuid, "UUID should be set as default")
     }
@@ -42,7 +42,7 @@ class AccountServiceTests: XCTestCase {
     }
 
     func testGetDefaultWordPressComAccount() {
-        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
+        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
 
         accountService.setDefaultWordPressComAccount(account)
 
@@ -56,14 +56,14 @@ class AccountServiceTests: XCTestCase {
     }
 
     func testNumberOfAccountsOneAccount() {
-        _ = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
+        _ = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
 
         XCTAssertTrue(1 == accountService.numberOfAccounts(), "There should be one account")
     }
 
     func testNumberOfAccountsTwoAccounts() {
-        _ = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
-        _ = accountService.createOrUpdateAccountWithUsername("username2", authToken: "authtoken2")
+        _ = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
+        _ = accountService.createOrUpdateAccount(withUsername: "username2", authToken: "authtoken2")
 
         XCTAssertTrue(2 == accountService.numberOfAccounts(), "There should be two accounts")
     }
@@ -77,7 +77,7 @@ class AccountServiceTests: XCTestCase {
     func testRemoveDefaultWordPressComAccountAccountSet() {
         accountService.removeDefaultWordPressComAccount()
 
-        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
+        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
 
         accountService.setDefaultWordPressComAccount(account)
 
@@ -85,23 +85,23 @@ class AccountServiceTests: XCTestCase {
         accountService.removeDefaultWordPressComAccount()
 
         XCTAssertNil(accountService.defaultWordPressComAccount(), "No default account should be set")
-        XCTAssertTrue(account.fault, "Account should be deleted")
+        XCTAssertTrue(account.isFault, "Account should be deleted")
     }
 
     func testCreateAccountSetsDefaultAccount() {
         XCTAssertNil(accountService.defaultWordPressComAccount())
 
-        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
+        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
         XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
     }
 
     func testCreateAccountDoesntReplaceDefaultAccount() {
         XCTAssertNil(accountService.defaultWordPressComAccount())
 
-        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
+        let account = accountService.createOrUpdateAccount(withUsername: "username", authToken: "authtoken")
         XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
 
-        accountService.createOrUpdateAccountWithUsername("another", authToken: "authtoken")
+        _ = accountService.createOrUpdateAccount(withUsername: "another", authToken: "authtoken")
         XCTAssertEqual(accountService.defaultWordPressComAccount(), account)
     }
 

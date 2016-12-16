@@ -5,41 +5,41 @@ class MockWordPressComRestApi : WordPressComRestApi {
     var postMethodCalled = false
     var URLStringPassedIn:String?
     var parametersPassedIn:AnyObject?
-    var successBlockPassedIn:((AnyObject, NSHTTPURLResponse?) -> Void)?
-    var failureBlockPassedIn:((NSError, NSHTTPURLResponse?) -> Void)?
+    var successBlockPassedIn:((AnyObject, HTTPURLResponse?) -> Void)?
+    var failureBlockPassedIn:((NSError, HTTPURLResponse?) -> Void)?
 
-    override func GET(URLString: String?, parameters: [String:AnyObject]?, success: ((AnyObject, NSHTTPURLResponse?) -> Void), failure: ((NSError, NSHTTPURLResponse?) -> Void)) -> NSProgress? {
+    override func GET(_ URLString: String?, parameters: [String:AnyObject]?, success: @escaping ((AnyObject, HTTPURLResponse?) -> Void), failure: @escaping ((NSError, HTTPURLResponse?) -> Void)) -> Progress? {
         getMethodCalled = true
         URLStringPassedIn = URLString
-        parametersPassedIn = parameters
+        parametersPassedIn = parameters as AnyObject?
         successBlockPassedIn = success
         failureBlockPassedIn = failure
 
-        return NSProgress()
+        return Progress()
     }
 
-    override func POST(URLString: String?, parameters: [String:AnyObject]?, success: ((AnyObject, NSHTTPURLResponse?) -> Void), failure: ((NSError, NSHTTPURLResponse?) -> Void)) -> NSProgress? {
+    override func POST(_ URLString: String?, parameters: [String:AnyObject]?, success: @escaping ((AnyObject, HTTPURLResponse?) -> Void), failure: @escaping ((NSError, HTTPURLResponse?) -> Void)) -> Progress? {
         postMethodCalled = true
         URLStringPassedIn = URLString
-        parametersPassedIn = parameters
+        parametersPassedIn = parameters as AnyObject?
         successBlockPassedIn = success
         failureBlockPassedIn = failure
 
-        return NSProgress()
+        return Progress()
     }
 
-    override func multipartPOST(URLString: String,
+    override func multipartPOST(_ URLString: String,
                                 parameters: [String : AnyObject]?,
                                 fileParts: [FilePart],
-                                success: SuccessResponseBlock,
-                                failure: FailureReponseBlock) -> NSProgress? {
+                                success: @escaping SuccessResponseBlock,
+                                failure: @escaping FailureReponseBlock) -> Progress? {
 
         postMethodCalled = true
         URLStringPassedIn = URLString
-        parametersPassedIn = parameters
+        parametersPassedIn = parameters as AnyObject?
         successBlockPassedIn = success
         failureBlockPassedIn = failure
-        return NSProgress()
+        return Progress()
     }
 
     func methodCalled() -> String {
