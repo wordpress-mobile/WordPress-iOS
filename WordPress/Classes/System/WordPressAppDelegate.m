@@ -194,9 +194,7 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)setupPingHub
 {
-    if ([Feature enabled:FeatureFlagPingHub]) {
-        self.pinghubManager = [PingHubManager new];
-    }
+    self.pinghubManager = [PingHubManager new];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
