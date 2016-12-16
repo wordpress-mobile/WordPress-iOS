@@ -71,7 +71,3 @@ abstract_target 'WordPress_Base' do
   end
 
 end
-
-post_install do |installer_representation|
-
-end
