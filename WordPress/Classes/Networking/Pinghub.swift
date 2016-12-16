@@ -1,4 +1,9 @@
 import Foundation
+import Starscream
+
+
+// MARK: Client
+
 
 /// The delegate of a PinghubClient must adopt the PinghubClientDelegate
 /// protocol. The client will inform the delegate of any relevant events.
@@ -15,7 +20,7 @@ public protocol PinghubClientDelegate {
 
     /// The client received an action.
     ///
-    func pinghubActionReceived(client client: PinghubClient, action: Action)
+    func pinghubActionReceived(client client: PinghubClient, action: PinghubClient.Action)
 
     /// The client received some data that it didn't look like a known action.
     ///
@@ -98,4 +103,89 @@ public class PinghubClient {
     }
 
     internal static let endpoint = NSURL(string: "wss://public-api.wordpress.com/pinghub/wpcom/me/newest-note-data")!
+}
+
+
+
+
+// MARK: - Action
+
+
+extension PinghubClient {
+    /// An action received through the PingHub protocol.
+    ///
+    /// This enum represents all the known possible actions that we can receive
+    /// through a PingHub client.
+    ///
+    public enum Action {
+
+        /// A note was Added or Updated
+        ///
+        case push(noteID: Int, userID: Int, date: NSDate, type: String)
+
+        /// A note was Deleted
+        ///
+        case delete(noteID: Int)
+
+        /// Creates an action from a received message, if it represents a known
+        /// action. Otherwise, it returns `nil`
+        ///
+        public static func from(message message: [String: AnyObject]) -> Action? {
+            guard let action = message["action"] as? String else {
+                return nil
+            }
+            switch action {
+            case "push":
+                guard let noteID = message["note_id"] as? Int,
+                    let userID = message["user_id"] as? Int,
+                    let timestamp = message["newest_note_time"] as? Int,
+                    let type = message["newest_note_type"] as? String else {
+                        return nil
+                }
+                let date = NSDate(timeIntervalSince1970: Double(timestamp))
+                return .push(noteID: noteID, userID: userID, date: date, type: type)
+            case "delete":
+                guard let noteID = message["note_id"] as? Int else {
+                    return nil
+                }
+                return .delete(noteID: noteID)
+            default:
+                return nil
+            }
+        }
+    }
+}
+
+
+
+
+// MARK: - Socket
+
+
+internal protocol Socket: class {
+    func connect()
+    func disconnect()
+    var onConnect: (() -> Void)? { get set }
+    var onDisconnect: ((NSError?) -> Void)? { get set }
+    var onText: ((String) -> Void)? { get set }
+    var onData: ((NSData) -> Void)? { get set }
+}
+
+
+
+
+// MARK: - Starscream
+
+
+private func starscreamSocket(url: NSURL, token: String) -> Socket {
+    let socket = WebSocket(url: PinghubClient.endpoint)
+    socket.origin = nil
+    socket.headers = ["Authorization" : "Bearer \(token)"]
+    return socket
+}
+
+extension WebSocket: Socket {
+    func disconnect() {
+        disconnect(forceTimeout: nil)
+    }
 }
