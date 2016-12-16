@@ -7,15 +7,15 @@ import WordPressComAnalytics
 ///
 protocol SigninWPComSyncHandler: class
 {
-    func configureViewLoading(loading: Bool)
-    func configureStatusLabel(message: String)
+    func configureViewLoading(_ loading: Bool)
+    func configureStatusLabel(_ message: String)
     func dismiss()
-    func displayError(error: NSError)
+    func displayError(_ error: NSError)
     func updateSafariCredentialsIfNeeded()
 
-    func syncWPCom(username: String, authToken: String, requiredMultifactor: Bool)
-    func handleSyncSuccess(requiredMultifactor: Bool)
-    func handleSyncFailure(error: NSError)
+    func syncWPCom(_ username: String, authToken: String, requiredMultifactor: Bool)
+    func handleSyncSuccess(_ requiredMultifactor: Bool)
+    func handleSyncFailure(_ error: NSError?)
 }
 
 
@@ -29,25 +29,25 @@ extension SigninWPComSyncHandler
     ///     - authToken: The authentication token.
     ///     - requiredMultifactor: Whether a multifactor code was required while authenticating.
     ///
-    func syncWPCom(username: String, authToken: String, requiredMultifactor: Bool) {
+    func syncWPCom(_ username: String, authToken: String, requiredMultifactor: Bool) {
         updateSafariCredentialsIfNeeded()
 
         configureStatusLabel(NSLocalizedString("Getting account information", comment:"Alerts the user that wpcom account information is being retrieved."))
 
         let accountFacade = AccountServiceFacade()
-        let account = accountFacade.createOrUpdateWordPressComAccountWithUsername(username, authToken: authToken)
+        let account = accountFacade.createOrUpdateWordPressComAccount(withUsername: username, authToken: authToken)
         accountFacade.setDefaultWordPressComAccount(account)
 
-        BlogSyncFacade().syncBlogsForAccount(account, success: { [weak self] in
-                accountFacade.updateUserDetailsForAccount(account, success: { [weak self] in
+        BlogSyncFacade().syncBlogs(for: account, success: { [weak self] in
+                accountFacade.updateUserDetails(for: account, success: { [weak self] in
                 self?.handleSyncSuccess(requiredMultifactor)
 
-                }, failure: { [weak self] (error: NSError!) in
-                    self?.handleSyncFailure(error)
+                }, failure: { [weak self] (error: Error?) in
+                    self?.handleSyncFailure(error as? NSError)
                 })
 
-            }, failure: { [weak self] (error: NSError!) in
-                self?.handleSyncFailure(error)
+            }, failure: { [weak self] (error: Error?) in
+                self?.handleSyncFailure(error as? NSError)
             })
     }
 
@@ -57,27 +57,27 @@ extension SigninWPComSyncHandler
     ///
     /// - Parameters:
     ///
-    func handleSyncSuccess(requiredMultifactor: Bool) {
+    func handleSyncSuccess(_ requiredMultifactor: Bool) {
         configureStatusLabel("")
         configureViewLoading(false)
 
-        NSNotificationCenter.defaultCenter().postNotificationName(SigninHelpers.WPSigninDidFinishNotification, object: nil)
+        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
 
         dismiss()
 
         let properties = [
-            "multifactor": String(Int(requiredMultifactor)),
+            "multifactor": requiredMultifactor ? "1" : "0",
             "dotcom_user": "1"
         ]
 
-        WPAppAnalytics.track(WPAnalyticsStat.SignedIn, withProperties: properties)
+        WPAppAnalytics.track(WPAnalyticsStat.signedIn, withProperties: properties)
     }
 
 
     /// Handles an error while syncing account and blog information for the
     /// authenticated user.
     ///
-    func handleSyncFailure(error: NSError) {
+    func handleSyncFailure(_ error: NSError?) {
         configureStatusLabel("")
         configureViewLoading(false)
 

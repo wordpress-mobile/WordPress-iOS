@@ -8,45 +8,45 @@ import WordPressShared
 ///     1           0   [Text]  [Text]
 ///     1           1   [Picker]
 ///
-public class SettingsPickerViewController : UITableViewController
+open class SettingsPickerViewController : UITableViewController
 {
     /// Indicates whether a Switch row should be rendered on top, allowing the user to Enable / Disable the picker
-    public var switchVisible = true
+    open var switchVisible = true
 
     /// Specifies the Switch value, to be displayed on the first row (granted that `switchVisible` is set to true)
-    public var switchOn = false
+    open var switchOn = false
 
     /// Text to be displayed by the first row's Switch
-    public var switchText : String!
+    open var switchText : String!
 
     /// Text to be displayed in the "Currently Selected value" row
-    public var selectionText : String!
+    open var selectionText : String!
 
     /// Indicates the format to be used in the "Currently Selected Value" row
-    public var selectionFormat : String?
+    open var selectionFormat : String?
 
     /// Hint Text, to be displayed on top of the Picker
-    public var pickerHint : String?
+    open var pickerHint : String?
 
     /// String format, to be applied over the Picker Rows
-    public var pickerFormat : String?
+    open var pickerFormat : String?
 
     /// Currently selected value.
-    public var pickerSelectedValue : Int!
+    open var pickerSelectedValue : Int!
 
     /// Picker's minimum value.
-    public var pickerMinimumValue : Int!
+    open var pickerMinimumValue : Int!
 
     /// Picker's maximum value.
-    public var pickerMaximumValue : Int!
+    open var pickerMaximumValue : Int!
 
     /// Closure to be executed whenever the Switch / Picker is updated
-    public var onChange : ((enabled : Bool, newValue: Int) -> ())?
+    open var onChange : ((_ enabled : Bool, _ newValue: Int) -> ())?
 
 
 
     // MARK: - View Lifecycle
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         assert(selectionText     != nil)
         assert(pickerSelectedValue != nil)
         assert(pickerMinimumValue  != nil)
@@ -59,8 +59,8 @@ public class SettingsPickerViewController : UITableViewController
 
 
     // MARK: - Setup Helpers
-    private func setupTableView() {
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+    fileprivate func setupTableView() {
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
         tableView.estimatedRowHeight = estimatedRowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
     }
@@ -68,15 +68,15 @@ public class SettingsPickerViewController : UITableViewController
 
 
     // MARK: - UITableViewDataSoutce Methods
-    public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    open override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
 
-    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].count
     }
 
-    public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = rowAtIndexPath(indexPath)
         let cell = cellForRow(row, tableView: tableView)
 
@@ -92,40 +92,40 @@ public class SettingsPickerViewController : UITableViewController
         return cell
     }
 
-    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    open override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section != sectionWithFooter || pickerHint == nil {
             return nil
         }
         return pickerHint!
     }
 
-    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    open override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
 
     // MARK: - Cell Setup Helpers
-    private func rowAtIndexPath(indexPath: NSIndexPath) -> Row {
+    fileprivate func rowAtIndexPath(_ indexPath: IndexPath) -> Row {
         return sections[indexPath.section][indexPath.row]
     }
 
-    private func cellForRow(row: Row, tableView: UITableView) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCellWithIdentifier(row.rawValue) {
+    fileprivate func cellForRow(_ row: Row, tableView: UITableView) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: row.rawValue) {
             return cell
         }
 
         switch row {
         case .Value1:
-            return WPTableViewCell(style: .Value1, reuseIdentifier: row.rawValue)
+            return WPTableViewCell(style: .value1, reuseIdentifier: row.rawValue)
         case .Switch:
-            return SwitchTableViewCell(style: .Default, reuseIdentifier: row.rawValue)
+            return SwitchTableViewCell(style: .default, reuseIdentifier: row.rawValue)
         case .Picker:
-            return PickerTableViewCell(style: .Default, reuseIdentifier: row.rawValue)
+            return PickerTableViewCell(style: .default, reuseIdentifier: row.rawValue)
         }
     }
 
-    private func configureSwitchCell(cell: SwitchTableViewCell) {
-        cell.selectionStyle         = .None
+    fileprivate func configureSwitchCell(_ cell: SwitchTableViewCell) {
+        cell.selectionStyle         = .none
         cell.name                   = switchText
         cell.on                     = switchOn
         cell.onChange               = { [weak self] in
@@ -133,18 +133,18 @@ public class SettingsPickerViewController : UITableViewController
         }
     }
 
-    private func configureTextCell(cell: WPTableViewCell) {
+    fileprivate func configureTextCell(_ cell: WPTableViewCell) {
         let format                  = selectionFormat ?? "%d"
 
-        cell.selectionStyle         = .None
+        cell.selectionStyle         = .none
         cell.textLabel?.text        = selectionText
         cell.detailTextLabel?.text  = String(format: format, pickerSelectedValue)
 
         WPStyleGuide.configureTableViewCell(cell)
     }
 
-    private func configurePickerCell(cell: PickerTableViewCell) {
-        cell.selectionStyle         = .None
+    fileprivate func configurePickerCell(_ cell: PickerTableViewCell) {
+        cell.selectionStyle         = .none
         cell.minimumValue           = pickerMinimumValue!
         cell.maximumValue           = max(pickerSelectedValue, pickerMaximumValue)
         cell.selectedValue          = pickerSelectedValue
@@ -157,45 +157,45 @@ public class SettingsPickerViewController : UITableViewController
 
 
     // MARK: - Button Handlers Properties
-    private func switchDidChange(newValue: Bool) {
+    fileprivate func switchDidChange(_ newValue: Bool) {
         switchOn = newValue
 
         // Show / Hide the Picker Section
-        let pickerSectionIndexSet = NSIndexSet(index: pickerSection)
+        let pickerSectionIndexSet = IndexSet(integer: pickerSection)
 
         if newValue {
-            tableView.insertSections(pickerSectionIndexSet, withRowAnimation: .Fade)
+            tableView.insertSections(pickerSectionIndexSet, with: .fade)
         } else {
-            tableView.deleteSections(pickerSectionIndexSet, withRowAnimation: .Fade)
+            tableView.deleteSections(pickerSectionIndexSet, with: .fade)
         }
 
         // Hit the Callback
-        onChange?(enabled: switchOn, newValue: pickerSelectedValue)
+        onChange?(switchOn, pickerSelectedValue)
     }
 
-    private func pickerDidChange(newValue: Int) {
+    fileprivate func pickerDidChange(_ newValue: Int) {
         pickerSelectedValue = newValue
 
         // Refresh the 'Current Value' row
-        if let cell = tableView.cellForRowAtIndexPath(selectedValueIndexPath) as? WPTableViewCell {
+        if let cell = tableView.cellForRow(at: selectedValueIndexPath) as? WPTableViewCell {
             configureTextCell(cell)
         }
 
         // Hit the Callback
-        onChange?(enabled: switchOn, newValue: pickerSelectedValue)
+        onChange?(switchOn, pickerSelectedValue)
     }
 
 
 
     // MARK: - Nested Enums
-    private enum Row : String {
+    fileprivate enum Row : String {
         case Value1 = "Value1"
         case Switch = "SwitchCell"
         case Picker = "Picker"
     }
 
     // MARK: - Computed Properties
-    private var sections : [[Row]] {
+    fileprivate var sections : [[Row]] {
         var sections = [[Row]]()
 
         if switchVisible {
@@ -209,15 +209,15 @@ public class SettingsPickerViewController : UITableViewController
         return sections
     }
 
-    private var pickerSection : Int {
+    fileprivate var pickerSection : Int {
         return switchVisible ? 1 : 0
     }
 
-    private var selectedValueIndexPath : NSIndexPath {
-        return NSIndexPath(forRow: 0, inSection: pickerSection)
+    fileprivate var selectedValueIndexPath : IndexPath {
+        return IndexPath(row: 0, section: pickerSection)
     }
 
     // MARK: - Private Constants
-    private let estimatedRowHeight  = CGFloat(300)
-    private let sectionWithFooter   = 0
+    fileprivate let estimatedRowHeight  = CGFloat(300)
+    fileprivate let sectionWithFooter   = 0
 }

@@ -10,9 +10,9 @@ class NotificationSyncServiceRemoteTests: XCTestCase
 {
     // MARK: - Properties
 
-    private var mockRemoteApi: WordPressComRestApi?
-    private var serviceRemote: NotificationSyncServiceRemote!
-    private let requestTimeout = NSTimeInterval(0.5)
+    fileprivate var mockRemoteApi: WordPressComRestApi?
+    fileprivate var serviceRemote: NotificationSyncServiceRemote!
+    fileprivate let requestTimeout = TimeInterval(0.5)
 
 
     // MARK: - Overriden Methods
@@ -32,10 +32,10 @@ class NotificationSyncServiceRemoteTests: XCTestCase
     ///
     func testLoadNotesEffectivelyRetrievesAllOfTheNotificationFields() {
         let endpoint = "notifications/"
-        let stubPath = OHPathForFile("notifications-load-all.json", self.dynamicType)!
+        let stubPath = OHPathForFile("notifications-load-all.json", type(of: self))!
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
-        let expectation = expectationWithDescription("Load All")
+        let expect = expectation(description: "Load All")
         serviceRemote.loadNotes { error, notes in
 
             guard let notes = notes, let note = notes.first else {
@@ -58,10 +58,10 @@ class NotificationSyncServiceRemoteTests: XCTestCase
             XCTAssertNotNil(note.body)
             XCTAssertNotNil(note.meta)
 
-            expectation.fulfill()
+            expect.fulfill()
         }
 
-        self.waitForExpectationsWithTimeout(requestTimeout, handler: nil)
+        self.waitForExpectations(timeout: requestTimeout, handler: nil)
     }
 
 
@@ -69,10 +69,10 @@ class NotificationSyncServiceRemoteTests: XCTestCase
     ///
     func testLoadHashesRetrievesOnlyTheNotificationHashes() {
         let endpoint = "notifications/"
-        let stubPath = OHPathForFile("notifications-load-hash.json", self.dynamicType)!
+        let stubPath = OHPathForFile("notifications-load-hash.json", type(of: self))!
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
-        let expectation = expectationWithDescription("Load Hashes")
+        let expect = expectation(description: "Load Hashes")
         serviceRemote.loadHashes { error, notes in
 
             guard let notes = notes else {
@@ -98,10 +98,10 @@ class NotificationSyncServiceRemoteTests: XCTestCase
                 XCTAssertNil(note.meta)
             }
 
-            expectation.fulfill()
+            expect.fulfill()
         }
 
-        self.waitForExpectationsWithTimeout(requestTimeout, handler: nil)
+        self.waitForExpectations(timeout: requestTimeout, handler: nil)
     }
 
 
@@ -109,17 +109,17 @@ class NotificationSyncServiceRemoteTests: XCTestCase
     ///
     func testUpdateReadStatus() {
         let endpoint = "notifications/read"
-        let stubPath = OHPathForFile("notifications-mark-as-read.json", self.dynamicType)!
+        let stubPath = OHPathForFile("notifications-mark-as-read.json", type(of: self))!
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
-        let expectation = expectationWithDescription("Mark as Read")
+        let expect = expectation(description: "Mark as Read")
         serviceRemote.updateReadStatus("1234", read: true) { error in
 
             XCTAssertNil(error)
-            expectation.fulfill()
+            expect.fulfill()
         }
 
-        self.waitForExpectationsWithTimeout(requestTimeout, handler: nil)
+        self.waitForExpectations(timeout: requestTimeout, handler: nil)
     }
 
 
@@ -127,15 +127,15 @@ class NotificationSyncServiceRemoteTests: XCTestCase
     ///
     func testUpdateLastSeen() {
         let endpoint = "notifications/seen"
-        let stubPath = OHPathForFile("notifications-last-seen.json", self.dynamicType)!
+        let stubPath = OHPathForFile("notifications-last-seen.json", type(of: self))!
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
-        let expectation = expectationWithDescription("Update Last Seen")
+        let expect = expectation(description: "Update Last Seen")
         serviceRemote.updateLastSeen("1234") { error in
             XCTAssertNil(error)
-            expectation.fulfill()
+            expect.fulfill()
         }
 
-        self.waitForExpectationsWithTimeout(requestTimeout, handler: nil)
+        self.waitForExpectations(timeout: requestTimeout, handler: nil)
     }
 }

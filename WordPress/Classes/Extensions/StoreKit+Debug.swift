@@ -1,7 +1,7 @@
 import StoreKit
 
 extension SKProduct {
-    public override var description: String {
+    open override var description: String {
         return "<SKProduct: \(productIdentifier), title: \(localizedTitle)>"
     }
 }
@@ -9,22 +9,22 @@ extension SKProduct {
 extension SKPaymentTransactionState: CustomStringConvertible {
     public var description: String {
         switch self {
-        case Purchasing:
+        case .purchasing:
             return "Purchasing"
-        case Purchased:
+        case .purchased:
             return "Purchased"
-        case Failed:
+        case .failed:
             return "Failed"
-        case Restored:
+        case .restored:
             return "Restored"
-        case Deferred:
+        case .deferred:
             return "Deferred"
         }
     }
 }
 
 extension SKPaymentTransaction {
-    public override var description: String {
+    open override var description: String {
         let idString = transactionIdentifier.map({ " #\($0)" }) ?? ""
         let dateString = transactionDate.map({ " \($0)"}) ?? ""
         let errorString = error.map({ ". Error: \($0)" }) ?? ""

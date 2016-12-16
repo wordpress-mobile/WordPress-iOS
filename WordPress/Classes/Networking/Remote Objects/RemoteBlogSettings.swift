@@ -3,7 +3,7 @@ import Foundation
 
 /// This class encapsulates all of the *remote* settings available for a Blog entity
 ///
-public class RemoteBlogSettings : NSObject
+open class RemoteBlogSettings : NSObject
 {
     // MARK: - General
 
@@ -175,6 +175,6 @@ public class RemoteBlogSettings : NSObject
 
     // MARK: - Private
 
-    private static let AscendingStringValue     = "asc"
-    private static let DescendingStringValue    = "desc"
+    fileprivate static let AscendingStringValue     = "asc"
+    fileprivate static let DescendingStringValue    = "desc"
 }
