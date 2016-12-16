@@ -7,13 +7,13 @@ import WordPressShared.WPStyleGuide
 //
 @objc public protocol ReplyTextViewDelegate: UITextViewDelegate
 {
-    optional func textView(textView: UITextView, didTypeWord word: String)
+    @objc optional func textView(_ textView: UITextView, didTypeWord word: String)
 }
 
 
 // MARK: - ReplyTextView
 //
-@objc public class ReplyTextView: UIView, UITextViewDelegate
+@objc open class ReplyTextView: UIView, UITextViewDelegate
 {
     // MARK: - Initializers
     public convenience init(width: CGFloat) {
@@ -33,11 +33,11 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Public Properties
-    public weak var delegate: ReplyTextViewDelegate?
+    open weak var delegate: ReplyTextViewDelegate?
 
-    public var onReply: ((String) -> ())?
+    open var onReply: ((String) -> ())?
 
-    public var text: String! {
+    open var text: String! {
         set {
             textView.text = newValue ?? String()
             refreshInterface()
@@ -46,7 +46,7 @@ import WordPressShared.WPStyleGuide
             return textView.text
         }
     }
-    public var placeholder: String! {
+    open var placeholder: String! {
         set {
             placeholderLabel.text = newValue ?? String()
         }
@@ -55,16 +55,16 @@ import WordPressShared.WPStyleGuide
         }
     }
 
-    public var replyText: String! {
+    open var replyText: String! {
         set {
-            replyButton.setTitle(newValue, forState: .Normal)
+            replyButton.setTitle(newValue, for: UIControlState())
         }
         get {
-            return replyButton.titleForState(.Normal)
+            return replyButton.title(for: UIControlState())
         }
     }
 
-    public var autocorrectionType: UITextAutocorrectionType {
+    open var autocorrectionType: UITextAutocorrectionType {
         set {
             textView.autocorrectionType = newValue
         }
@@ -73,7 +73,7 @@ import WordPressShared.WPStyleGuide
         }
     }
 
-    public var keyboardType: UIKeyboardType {
+    open var keyboardType: UIKeyboardType {
         set {
             textView.keyboardType = newValue
         }
@@ -82,52 +82,52 @@ import WordPressShared.WPStyleGuide
         }
     }
 
-    public override func isFirstResponder() -> Bool {
-        return textView.isFirstResponder()
+    open override var isFirstResponder : Bool {
+        return textView.isFirstResponder
     }
 
 
     // MARK: - Public Methods
-    public func replaceTextAtCaret(text: NSString?, withText replacement: String?) {
+    open func replaceTextAtCaret(_ text: NSString?, withText replacement: String?) {
         guard let replacementText = replacement,
               let textToReplace = text,
               let selectedRange = textView.selectedTextRange,
-              let newPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length),
-              let newRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start) else
+              let newPosition = textView.position(from: selectedRange.start, offset: -textToReplace.length),
+              let newRange = textView.textRange(from: newPosition, to: selectedRange.start) else
         {
             return
         }
 
-        textView.replaceRange(newRange, withText: replacementText)
+        textView.replace(newRange, withText: replacementText)
     }
 
 
     // MARK: - UITextViewDelegate Methods
-    public func textViewShouldBeginEditing(textView: UITextView) -> Bool {
+    open func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         return delegate?.textViewShouldBeginEditing?(textView) ?? true
     }
 
-    public func textViewDidBeginEditing(textView: UITextView) {
+    open func textViewDidBeginEditing(_ textView: UITextView) {
         delegate?.textViewDidBeginEditing?(textView)
     }
 
-    public func textViewShouldEndEditing(textView: UITextView) -> Bool {
+    open func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         return delegate?.textViewShouldEndEditing?(textView) ?? true
     }
 
-    public func textViewDidEndEditing(textView: UITextView) {
+    open func textViewDidEndEditing(_ textView: UITextView) {
         delegate?.textViewDidEndEditing?(textView)
     }
 
-    public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        let shouldChange = delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
-        let respondsToDidType = delegate?.respondsToSelector(#selector(ReplyTextViewDelegate.textView(_:didTypeWord:))) ?? false
+    open func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let shouldChange = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text) ?? true
+        let respondsToDidType = delegate?.responds(to: #selector(ReplyTextViewDelegate.textView(_:didTypeWord:))) ?? false
 
         if shouldChange && respondsToDidType {
-            let textViewText: NSString = textView.text
+            let textViewText: NSString = textView.text as NSString
             let prerange = NSMakeRange(0, range.location)
-            let pretext: NSString = textViewText.substringWithRange(prerange) + text
-            let words = pretext.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            let pretext = textViewText.substring(with: prerange) + text
+            let words = pretext.components(separatedBy: CharacterSet.whitespacesAndNewlines)
             let lastWord: NSString = words.last! as NSString
 
             delegate?.textView?(textView, didTypeWord: lastWord as String)
@@ -136,18 +136,18 @@ import WordPressShared.WPStyleGuide
         return shouldChange
     }
 
-    public func textViewDidChange(textView: UITextView) {
+    open func textViewDidChange(_ textView: UITextView) {
         refreshInterface()
         delegate?.textViewDidChange?(textView)
     }
 
-    public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
-        return delegate?.textView?(textView, shouldInteractWithURL: URL, inRange: characterRange) ?? true
+    open func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        return delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange) ?? true
     }
 
 
     // MARK: - IBActions
-    @IBAction private func btnReplyPressed() {
+    @IBAction fileprivate func btnReplyPressed() {
         guard let handler = onReply else {
             return
         }
@@ -160,27 +160,27 @@ import WordPressShared.WPStyleGuide
         text = String()
 
         // Hit the handler
-        handler(newText)
+        handler(newText!)
     }
 
 
     // MARK: - Gestures Recognizers
-    public func backgroundWasTapped() {
-        becomeFirstResponder()
+    open func backgroundWasTapped() {
+        _ = becomeFirstResponder()
     }
 
 
     // MARK: - View Methods
-    public override func becomeFirstResponder() -> Bool {
+    open override func becomeFirstResponder() -> Bool {
         return textView.becomeFirstResponder()
     }
 
-    public override func resignFirstResponder() -> Bool {
+    open override func resignFirstResponder() -> Bool {
         endEditing(true)
         return textView.resignFirstResponder()
     }
 
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         // Force invalidate constraints
         invalidateIntrinsicContentSize()
         super.layoutSubviews()
@@ -188,13 +188,13 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Autolayout Helpers
-    public override func intrinsicContentSize() -> CGSize {
+    open override var intrinsicContentSize : CGSize {
         // Make sure contentSize returns... the real content size
         textView.layoutIfNeeded()
 
         // Calculate the entire control's size
-        let topPadding      = textView.constraintForAttribute(.Top)    ?? textViewDefaultPadding
-        let bottomPadding   = textView.constraintForAttribute(.Bottom) ?? textViewDefaultPadding
+        let topPadding      = textView.constraintForAttribute(.top)    ?? textViewDefaultPadding
+        let bottomPadding   = textView.constraintForAttribute(.bottom) ?? textViewDefaultPadding
 
         let contentHeight   = textView.contentSize.height
         let fullWidth       = frame.width
@@ -208,11 +208,11 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Setup Helpers
-    private func setupView() {
+    fileprivate func setupView() {
         self.frame.size.height          = textViewMinHeight
 
         // Load the nib + add its container view
-        bundle = NSBundle.mainBundle().loadNibNamed("ReplyTextView", owner: self, options: nil)
+        bundle = Bundle.main.loadNibNamed("ReplyTextView", owner: self, options: nil) as NSArray?
         addSubview(containerView)
 
         // Setup Layout
@@ -223,8 +223,8 @@ import WordPressShared.WPStyleGuide
         // Setup the TextView
         textView.delegate               = self
         textView.scrollsToTop           = false
-        textView.contentInset           = UIEdgeInsetsZero
-        textView.textContainerInset     = UIEdgeInsetsZero
+        textView.contentInset           = UIEdgeInsets.zero
+        textView.textContainerInset     = UIEdgeInsets.zero
         textView.font                   = WPStyleGuide.Reply.textFont
         textView.textColor              = WPStyleGuide.Reply.textColor
         textView.textContainer.lineFragmentPadding  = 0
@@ -232,17 +232,17 @@ import WordPressShared.WPStyleGuide
         textView.accessibilityIdentifier = "ReplyText"
 
         // Enable QuickType
-        textView.autocorrectionType     = .Yes
+        textView.autocorrectionType     = .yes
 
         // Placeholder
         placeholderLabel.font           = WPStyleGuide.Reply.textFont
         placeholderLabel.textColor      = WPStyleGuide.Reply.placeholderColor
 
         // Reply
-        replyButton.enabled             = false
+        replyButton.isEnabled             = false
         replyButton.titleLabel?.font    = WPStyleGuide.Reply.buttonFont
-        replyButton.setTitleColor(WPStyleGuide.Reply.disabledColor, forState: .Disabled)
-        replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor,  forState: .Normal)
+        replyButton.setTitleColor(WPStyleGuide.Reply.disabledColor, for: .disabled)
+        replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor,  for: UIControlState())
 
         // Background
         layoutView.backgroundColor      = WPStyleGuide.Reply.backgroundColor
@@ -262,15 +262,15 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Refresh Helpers
-    private func refreshInterface() {
+    fileprivate func refreshInterface() {
         refreshPlaceholder()
         refreshReplyButton()
         refreshSizeIfNeeded()
         refreshScrollPosition()
     }
 
-    private func refreshSizeIfNeeded() {
-        let newSize         = intrinsicContentSize()
+    fileprivate func refreshSizeIfNeeded() {
+        let newSize         = intrinsicContentSize
         let oldSize         = frame.size
 
         if newSize.height == oldSize.height {
@@ -280,37 +280,37 @@ import WordPressShared.WPStyleGuide
         invalidateIntrinsicContentSize()
     }
 
-    private func refreshPlaceholder() {
-        placeholderLabel.hidden         = !textView.text.isEmpty
+    fileprivate func refreshPlaceholder() {
+        placeholderLabel.isHidden         = !textView.text.isEmpty
     }
 
-    private func refreshReplyButton() {
-        let whitespaceCharSet           = NSCharacterSet.whitespaceAndNewlineCharacterSet()
-        replyButton.enabled             = textView.text.stringByTrimmingCharactersInSet(whitespaceCharSet).isEmpty == false
+    fileprivate func refreshReplyButton() {
+        let whitespaceCharSet           = CharacterSet.whitespacesAndNewlines
+        replyButton.isEnabled             = textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
     }
 
-    private func refreshScrollPosition() {
+    fileprivate func refreshScrollPosition() {
         let selectedRangeStart      = textView.selectedTextRange?.start ?? UITextPosition()
-        var caretRect               = textView.caretRectForPosition(selectedRangeStart)
-        caretRect                   = CGRectIntegral(caretRect)
+        var caretRect               = textView.caretRect(for: selectedRangeStart)
+        caretRect                   = caretRect.integral
         textView.scrollRectToVisible(caretRect, animated: false)
     }
 
 
     // MARK: - Constants
-    private let textViewDefaultPadding  = CGFloat(12)
-    private let textViewMaxHeight       = CGFloat(82)   // Fits 3 lines onscreen
-    private let textViewMinHeight       = CGFloat(44)
+    fileprivate let textViewDefaultPadding  = CGFloat(12)
+    fileprivate let textViewMaxHeight       = CGFloat(82)   // Fits 3 lines onscreen
+    fileprivate let textViewMinHeight       = CGFloat(44)
 
     // MARK: - Private Properties
-    private var bundle:                         NSArray?
+    fileprivate var bundle:                         NSArray?
 
     // MARK: - IBOutlets
-    @IBOutlet private var textView:             UITextView!
-    @IBOutlet private var placeholderLabel:     UILabel!
-    @IBOutlet private var replyButton:          UIButton!
-    @IBOutlet private var bezierView:           ReplyBezierView!
-    @IBOutlet private var separatorsView:       SeparatorsView!
-    @IBOutlet private var layoutView:           UIView!
-    @IBOutlet private var containerView:        UIView!
+    @IBOutlet fileprivate var textView:             UITextView!
+    @IBOutlet fileprivate var placeholderLabel:     UILabel!
+    @IBOutlet fileprivate var replyButton:          UIButton!
+    @IBOutlet fileprivate var bezierView:           ReplyBezierView!
+    @IBOutlet fileprivate var separatorsView:       SeparatorsView!
+    @IBOutlet fileprivate var layoutView:           UIView!
+    @IBOutlet fileprivate var containerView:        UIView!
 }

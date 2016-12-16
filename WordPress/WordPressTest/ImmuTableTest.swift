@@ -32,53 +32,54 @@ class TestTableViewCell: UITableViewCell {}
 class ImmuTableTestViewCellWithNib: UITableViewCell {}
 
 struct BasicImmuTableRow: ImmuTableRow {
-    static let cell = ImmuTableCell.Class(UITableViewCell)
+    static let cell = ImmuTableCell.class(UITableViewCell.self)
     let title: String
     var action: ImmuTableAction? = nil
-    func configureCell(cell: UITableViewCell) {
+    func configureCell(_ cell: UITableViewCell) {
     }
 }
 
 struct ImageImmuTableRow: ImmuTableRow {
-    static let cell = ImmuTableCell.Class(UITableViewCell)
+    static let cell = ImmuTableCell.class(UITableViewCell.self)
     let title: String
     let image: UIImage
     var action: ImmuTableAction? = nil
-    func configureCell(cell: UITableViewCell) {
+    func configureCell(_ cell: UITableViewCell) {
     }
 }
 
 struct TestImmuTableRow: ImmuTableRow {
-    static let cell = ImmuTableCell.Class(TestTableViewCell)
+    static let cell = ImmuTableCell.class(TestTableViewCell.self)
     let title: String
     var action: ImmuTableAction? = nil
-    func configureCell(cell: UITableViewCell) {
+    func configureCell(_ cell: UITableViewCell) {
     }
 }
 
 struct TestWithNibImmuTableRow: ImmuTableRow {
     typealias CellType = ImmuTableTestViewCellWithNib
     static let cell: ImmuTableCell = {
-        let nib = UINib(nibName: "ImmuTableTestViewCellWithNib", bundle: NSBundle(forClass: ImmuTableTestViewCellWithNib.self))
-        return ImmuTableCell.Nib(nib, CellType.self)
+        let nib = UINib(nibName: "ImmuTableTestViewCellWithNib", bundle: Bundle(for: ImmuTableTestViewCellWithNib.self))
+        return ImmuTableCell.nib(nib, CellType.self)
     }()
     var action: ImmuTableAction? = nil
-    func configureCell(cell: UITableViewCell) {
+    func configureCell(_ cell: UITableViewCell) {
     }
 }
 
 class MockTableView: CellRegistrator {
     var registeredClasses = [(String, AnyClass)]()
     var registeredNibs = [(String, UINib)]()
-    func register(cell: ImmuTableCell, cellReuseIdentifier identifier: String) {
+    func register(_ cell: ImmuTableCell, cellReuseIdentifier identifier: String) {
         switch cell {
-        case .Class(let cellClass):
+        case .class(let cellClass):
             registeredClasses.append((identifier, cellClass))
-        case .Nib(let nib, _):
+        case .nib(let nib, _):
             registeredNibs.append((identifier, nib))
         }
+
     }
-    func registerClass(cellClass: AnyClass?, forCellReuseIdentifier identifier: String) {
+    func registerClass(_ cellClass: AnyClass?, forCellReuseIdentifier identifier: String) {
         registeredClasses.append((identifier, cellClass!))
     }
 }

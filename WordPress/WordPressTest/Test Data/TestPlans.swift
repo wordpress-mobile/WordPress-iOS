@@ -13,8 +13,8 @@ enum TestPlans {
                 title: NSLocalizedString("Free", comment: "Free plan name. As in https://store.wordpress.com/plans/"),
                 fullTitle: NSLocalizedString("WordPress.com Free", comment: "Free plan name. As in https://store.wordpress.com/plans/"),
                 tagline: NSLocalizedString("Anyone creating a simple blog or site.", comment: "Description of the Free plan"),
-                iconUrl: NSURL(string: "http://s0.wordpress.com/i/store/plan-free.png")!,
-                activeIconUrl: NSURL(string: "http://s0.wordpress.com/i/store/plan-free-active.png")!,
+                iconUrl: URL(string: "http://s0.wordpress.com/i/store/plan-free.png")!,
+                activeIconUrl: URL(string: "http://s0.wordpress.com/i/store/plan-free-active.png")!,
                 productIdentifier: nil,
                 featureGroups: []
             )
@@ -24,8 +24,8 @@ enum TestPlans {
                 title: NSLocalizedString("Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/"),
                 fullTitle: NSLocalizedString("WordPress.com Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/"),
                 tagline: NSLocalizedString("Serious bloggers and creatives.", comment: "Description of the Premium plan"),
-                iconUrl: NSURL(string: "http://s0.wordpress.com/i/store/plan-premium.png")!,
-                activeIconUrl: NSURL(string: "http://s0.wordpress.com/i/store/plan-premium-active.png")!,
+                iconUrl: URL(string: "http://s0.wordpress.com/i/store/plan-premium.png")!,
+                activeIconUrl: URL(string: "http://s0.wordpress.com/i/store/plan-premium-active.png")!,
                 productIdentifier: "com.wordpress.test.premium.subscription.1year",
                 featureGroups: []
             )
@@ -35,8 +35,8 @@ enum TestPlans {
                 title: NSLocalizedString("Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/"),
                 fullTitle: NSLocalizedString("WordPress.com Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/"),
                 tagline: NSLocalizedString("Business websites and ecommerce.", comment: "Description of the Business plan"),
-                iconUrl: NSURL(string: "http://s0.wordpress.com/i/store/plan-business.png")!,
-                activeIconUrl: NSURL(string: "http://s0.wordpress.com/i/store/plan-business-active.png")!,
+                iconUrl: URL(string: "http://s0.wordpress.com/i/store/plan-business.png")!,
+                activeIconUrl: URL(string: "http://s0.wordpress.com/i/store/plan-business-active.png")!,
                 productIdentifier: "com.wordpress.test.business.subscription.1year",
                 featureGroups: []
             )
@@ -47,11 +47,11 @@ enum TestPlans {
         return MockProduct(localizedDescription: plan.tagline,
                            localizedTitle: plan.title,
                            price: 299.99,
-                           priceLocale: NSLocale(localeIdentifier: "en-US"),
+                           priceLocale: Locale(identifier: "en-US"),
                            productIdentifier: plan.productIdentifier ?? "")
     }
 
-    private static let allTestPlans = [ TestPlans.free, TestPlans.premium, TestPlans.business ]
+    fileprivate static let allTestPlans = [ TestPlans.free, TestPlans.premium, TestPlans.business ]
 
     static let allPlans = allTestPlans.map({ $0.plan })
     static let allProducts = allTestPlans.map({ $0.product })

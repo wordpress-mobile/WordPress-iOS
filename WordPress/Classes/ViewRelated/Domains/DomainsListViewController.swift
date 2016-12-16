@@ -15,13 +15,13 @@ class DomainListDomainCell: WPTableViewCell {
 }
 
 struct DomainListStaticRow: ImmuTableRow {
-    static let cell = ImmuTableCell.Class(WPTableViewCellDefault)
+    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
     static var customHeight: Float?
 
     let title: String
     let action: ImmuTableAction?
 
-    func configureCell(cell: UITableViewCell) {
+    func configureCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewCell(cell)
 
         cell.textLabel?.text = title
@@ -29,7 +29,7 @@ struct DomainListStaticRow: ImmuTableRow {
 }
 
 struct DomainListRow: ImmuTableRow {
-    static let cell = ImmuTableCell.Class(DomainListDomainCell)
+    static let cell = ImmuTableCell.class(DomainListDomainCell.self)
     static var customHeight: Float? = 77
 
     let domain: String
@@ -37,20 +37,20 @@ struct DomainListRow: ImmuTableRow {
     let isPrimary: Bool
     let action: ImmuTableAction?
 
-    func configureCell(cell: UITableViewCell) {
+    func configureCell(_ cell: UITableViewCell) {
         guard let cell = cell as? DomainListDomainCell else { return }
 
         cell.domainLabel?.text = domain
         cell.registeredMappedLabel?.text = domainType.description
-        cell.primaryIndicatorLabel?.hidden = !isPrimary
+        cell.primaryIndicatorLabel?.isHidden = !isPrimary
     }
 }
 
 class DomainsListViewController: UITableViewController, ImmuTablePresenter {
-    private var viewModel: ImmuTable!
+    fileprivate var viewModel: ImmuTable!
 
-    private var fetchRequest: NSFetchRequest {
-        let request = NSFetchRequest(entityName: ManagedDomain.entityName)
+    fileprivate var fetchRequest: NSFetchRequest<NSFetchRequestResult> {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName)
         request.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, blog)
         request.sortDescriptors = [NSSortDescriptor(key: ManagedDomain.Attributes.isPrimary, ascending: false),
                                    NSSortDescriptor(key: ManagedDomain.Attributes.domainName, ascending: true)]
@@ -73,10 +73,10 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
         }
     }
     var service: DomainsService!
-    var fetchedResultsController: NSFetchedResultsController!
+    var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
 
-    class func controllerWithBlog(blog: Blog) -> DomainsListViewController {
-        let storyboard = UIStoryboard(name: "Domains", bundle: NSBundle(forClass: self))
+    class func controllerWithBlog(_ blog: Blog) -> DomainsListViewController {
+        let storyboard = UIStoryboard(name: "Domains", bundle: Bundle(for: self))
         let controller = storyboard.instantiateInitialViewController() as! DomainsListViewController
 
         controller.blog = blog
@@ -93,14 +93,14 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
 
         title = NSLocalizedString("Domains", comment: "Title for the Domains list")
 
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
         if let dotComID = blog.dotComID {
             service.refreshDomainsForSite(Int(dotComID)) { _ in }
         }
     }
 
-    private func updateViewModel() {
+    fileprivate func updateViewModel() {
         let searchRow = DomainListStaticRow(title: "Find a new domain", action: nil)
         let connectRow = DomainListStaticRow(title: "Or connect your own domain", action: nil)
 
@@ -117,47 +117,47 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
                 rows: domainRows, footerText: nil) ]
         )
 
-        if isViewLoaded() {
+        if isViewLoaded {
             tableView.reloadData()
         }
     }
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sections.count
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.sections[section].rows.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = viewModel.rowAtIndexPath(indexPath)
-        let cell = tableView.dequeueReusableCellWithIdentifier(row.reusableIdentifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
 
         row.configureCell(cell)
 
         return cell
     }
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let row = viewModel.rowAtIndexPath(indexPath)
-        if let customHeight = row.dynamicType.customHeight {
+        if let customHeight = type(of: row).customHeight {
             return CGFloat(customHeight)
         }
         return tableView.rowHeight
     }
 
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel.sections[section].headerText
     }
 
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionHeader(view)
     }
 }
 
 extension DomainsListViewController: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         updateViewModel()
 
         tableView.reloadData()

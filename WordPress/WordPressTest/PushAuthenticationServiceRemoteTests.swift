@@ -35,7 +35,7 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
         pushAuthenticationServiceRemote!.authorizeLogin(token, success: { () -> () in
            successBlockCalled = true
         }, failure: nil)
-        mockRemoteApi?.successBlockPassedIn?([], NSHTTPURLResponse())
+        mockRemoteApi?.successBlockPassedIn?(NSString(), HTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi!.postMethodCalled, "Method was not called")
         XCTAssertTrue(successBlockCalled, "Success block not called")
@@ -46,7 +46,7 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
         pushAuthenticationServiceRemote!.authorizeLogin(token, success: nil, failure: { () -> () in
             failureBlockCalled = true
         })
-        mockRemoteApi?.failureBlockPassedIn?(NSError(domain:"UnitTest", code:0, userInfo:nil), NSHTTPURLResponse())
+        mockRemoteApi?.failureBlockPassedIn?(NSError(domain:"UnitTest", code:0, userInfo:nil), HTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi!.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")

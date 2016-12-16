@@ -2,11 +2,11 @@ import UIKit
 
 
 @objc protocol WPContentSyncHelperDelegate: NSObjectProtocol {
-    func syncHelper(syncHelper:WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?)
-    func syncHelper(syncHelper:WPContentSyncHelper, syncMoreWithSuccess success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?)
-    optional func syncContentEnded()
-    optional func syncContentFailed()
-    optional func hasNoMoreContent()
+    func syncHelper(_ syncHelper:WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?)
+    func syncHelper(_ syncHelper:WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?)
+    @objc optional func syncContentEnded()
+    @objc optional func syncContentFailed()
+    @objc optional func hasNoMoreContent()
 }
 
 
@@ -29,17 +29,17 @@ class WPContentSyncHelper: NSObject {
 
     // MARK: - Syncing
 
-    func syncContent() -> Bool {
+    @discardableResult func syncContent() -> Bool {
         return syncContentWithUserInteraction(false)
     }
 
 
-    func syncContentWithUserInteraction() -> Bool {
+    @discardableResult func syncContentWithUserInteraction() -> Bool {
         return syncContentWithUserInteraction(true)
     }
 
 
-    func syncContentWithUserInteraction(userInteraction:Bool) -> Bool {
+    @discardableResult func syncContentWithUserInteraction(_ userInteraction:Bool) -> Bool {
         if isSyncing {
             return false
         }
@@ -63,7 +63,7 @@ class WPContentSyncHelper: NSObject {
     }
 
 
-    func syncMoreContent() -> Bool {
+    @discardableResult func syncMoreContent() -> Bool {
         if isSyncing {
             return false
         }
@@ -91,7 +91,7 @@ class WPContentSyncHelper: NSObject {
 
     // MARK: - Private Methods
 
-    private func syncContentEnded(error error: Bool = false) {
+    fileprivate func syncContentEnded(error: Bool = false) {
         isSyncing = false
         isLoadingMore = false
 

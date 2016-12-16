@@ -106,20 +106,20 @@ final class PersonViewController : UITableViewController {
         super.viewDidLoad()
 
         title = person.fullName.nonEmptyString() ?? NSLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        WPAnalytics.track(.OpenedPerson)
+        WPAnalytics.track(.openedPerson)
     }
 
     // MARK: - UITableView Methods
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
 
-        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+        guard let cell = tableView.cellForRow(at: indexPath) else {
             return
         }
 
@@ -133,7 +133,7 @@ final class PersonViewController : UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // Forgive Me:
         // ===========
         // Why do we check the indexPath's values, instead of grabbing the cellForRowAtIndexPath, and check if
@@ -145,21 +145,21 @@ final class PersonViewController : UITableViewController {
         //
         //
         if isFullnamePrivate == true && fullnameSection == indexPath.section && fullnameRows.contains(indexPath.row) {
-            return CGFloat.min
+            return CGFloat.leastNormalMagnitude
         }
-        return super.tableView(tableView, heightForRowAtIndexPath: indexPath)
+        return super.tableView(tableView, heightForRowAt: indexPath)
     }
 
 
 
     // MARK: - Storyboard Methods
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        guard let roleViewController = segue.destinationViewController as? RoleViewController else {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let roleViewController = segue.destination as? RoleViewController else {
             return
         }
 
-        roleViewController.mode = .Dynamic(blog: blog)
+        roleViewController.mode = .dynamic(blog: blog)
         roleViewController.selectedRole = person.role
         roleViewController.onChange = { [weak self] newRole in
             self?.updateUserRole(newRole)
@@ -169,10 +169,10 @@ final class PersonViewController : UITableViewController {
 
 
     // MARK: - Constants
-    private let roleSegueIdentifier = "editRole"
-    private let gravatarPlaceholderImage = UIImage(named: "gravatar.png")
-    private let fullnameSection = 1
-    private let fullnameRows = [1, 2]
+    fileprivate let roleSegueIdentifier = "editRole"
+    fileprivate let gravatarPlaceholderImage = UIImage(named: "gravatar.png")
+    fileprivate let fullnameSection = 1
+    fileprivate let fullnameRows = [1, 2]
 }
 
 
@@ -182,7 +182,7 @@ final class PersonViewController : UITableViewController {
 private extension PersonViewController {
 
     func roleWasPressed() {
-        performSegueWithIdentifier(roleSegueIdentifier, sender: nil)
+        performSegue(withIdentifier: roleSegueIdentifier, sender: nil)
     }
 
     func removeWasPressed() {
@@ -203,7 +203,7 @@ private extension PersonViewController {
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Action")
         let removeTitle = NSLocalizedString("Remove", comment: "Remove Action")
 
-        let alert = UIAlertController(title: titleText, message: message, preferredStyle: .Alert)
+        let alert = UIAlertController(title: titleText, message: message, preferredStyle: .alert)
 
         alert.addCancelActionWithTitle(cancelTitle)
 
@@ -223,12 +223,12 @@ private extension PersonViewController {
 
         let service = PeopleService(blog: blog, context: context)
         service?.deleteUser(user)
-        navigationController?.popViewControllerAnimated(true)
+        _ = navigationController?.popViewController(animated: true)
 
-        WPAnalytics.track(.PersonRemoved)
+        WPAnalytics.track(.personRemoved)
     }
 
-    func updateUserRole(newRole: Role) {
+    func updateUserRole(_ newRole: Role) {
         guard let user = user else {
             DDLogSwift.logError("Error: Only Users have Roles!")
             assertionFailure()
@@ -248,17 +248,17 @@ private extension PersonViewController {
         // Optimistically refresh the UI
         self.person = updated
 
-        WPAnalytics.track(.PersonUpdated)
+        WPAnalytics.track(.personUpdated)
     }
 
-    func retryUpdatingRole(newRole: Role) {
+    func retryUpdatingRole(_ newRole: Role) {
         let retryTitle          = NSLocalizedString("Retry", comment: "Retry updating User's Role")
         let cancelTitle         = NSLocalizedString("Cancel", comment: "Cancel updating User's Role")
         let title               = NSLocalizedString("Sorry!", comment: "Update User Failed Title")
         let localizedError      = NSLocalizedString("There was an error updating @%@", comment: "Updating Role failed error message")
         let messageText         = String(format: localizedError, person.username)
 
-        let alertController = UIAlertController(title: title, message: messageText, preferredStyle: .Alert)
+        let alertController = UIAlertController(title: title, message: messageText, preferredStyle: .alert)
 
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
         alertController.addDefaultActionWithTitle(retryTitle) { action in
@@ -320,7 +320,7 @@ private extension PersonViewController {
 private extension PersonViewController {
 
     func refreshInterfaceIfNeeded() {
-        guard isViewLoaded() else {
+        guard isViewLoaded else {
             return
         }
 
@@ -348,29 +348,29 @@ private extension PersonViewController {
 
     func refreshFirstNameCell() {
         firstNameCell.detailTextLabel?.text = person.firstName
-        firstNameCell.hidden = isFullnamePrivate
+        firstNameCell.isHidden = isFullnamePrivate
     }
 
     func refreshLastNameCell() {
         lastNameCell.detailTextLabel?.text = person.lastName
-        lastNameCell.hidden = isFullnamePrivate
+        lastNameCell.isHidden = isFullnamePrivate
     }
 
     func refreshDisplayNameCell() {
         displayNameCell.detailTextLabel?.text = person.displayName
     }
 
-    private func refreshRoleCell() {
+    func refreshRoleCell() {
         let enabled = isPromoteEnabled
         roleCell.detailTextLabel?.text = person.role.localizedName
-        roleCell.accessoryType = enabled ? .DisclosureIndicator : .None
-        roleCell.selectionStyle = enabled ? .Gray : .None
-        roleCell.userInteractionEnabled = enabled
+        roleCell.accessoryType = enabled ? .disclosureIndicator : .none
+        roleCell.selectionStyle = enabled ? .gray : .none
+        roleCell.isUserInteractionEnabled = enabled
         roleCell.detailTextLabel?.text = person.role.localizedName
     }
 
     func refreshRemoveCell() {
-        removeCell.hidden = !isRemoveEnabled
+        removeCell.isHidden = !isRemoveEnabled
     }
 }
 
@@ -381,7 +381,7 @@ private extension PersonViewController {
 private extension PersonViewController {
 
     var isMyself : Bool {
-        return blog.account!.userID == person.ID || blog.account!.userID == person.linkedUserID
+        return blog.account!.userID.intValue == person.ID || blog.account!.userID.intValue == person.linkedUserID
     }
 
     var isFullnamePrivate: Bool {
