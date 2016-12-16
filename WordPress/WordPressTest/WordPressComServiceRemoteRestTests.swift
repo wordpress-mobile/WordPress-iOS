@@ -25,43 +25,44 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
     }
 
-    private func isRestAPIUsersNewRequest() -> OHHTTPStubsTestBlock {
+    fileprivate func isRestAPIUsersNewRequest() -> OHHTTPStubsTestBlock {
         return { request in
-            guard let url = request.URL else {
+            guard let url = request.url else {
                 return false
             }
-            return url.absoluteString!.containsString(self.wordPressUsersNewEndpoint)
+            return url.absoluteString.contains(self.wordPressUsersNewEndpoint)
         }
     }
 
-    private func isRestAPISitesNewRequest() -> OHHTTPStubsTestBlock {
+    fileprivate func isRestAPISitesNewRequest() -> OHHTTPStubsTestBlock {
         return { request in
-            guard let url = request.URL else {
+            guard let url = request.url else {
                 return false
             }
-            return url.absoluteString!.containsString(self.wordPressSitesNewEndpoint)
+            return url.absoluteString.contains(self.wordPressSitesNewEndpoint)
         }
     }
 
     func testThrottledFailureCall() {
-        stub(isRestAPIUsersNewRequest()) { request in
-            let stubPath = OHPathForFile("WordPressComRestApiFailThrottled.json", self.dynamicType)
-            return fixture(stubPath!, status:500, headers: ["Content-Type":"application/html"])
+        stub(condition: isRestAPIUsersNewRequest()) { request in
+            let stubPath = OHPathForFile("WordPressComRestApiFailThrottled.json", type(of: self))
+            return fixture(filePath: stubPath!, status:500, headers: ["Content-Type" as NSObject:"application/html" as AnyObject])
         }
 
-        let expectation = self.expectationWithDescription("One callback should be invoked")
-        service.createWPComAccountWithEmail("fakeEmail",
+        let expect = self.expectation(description: "One callback should be invoked")
+        service.createWPComAccount(withEmail: "fakeEmail",
                                             andUsername:"fakeUsername",
                                             andPassword:"fakePassword",
                                             success: { (responseObject) in
-                                                expectation.fulfill()
+                                                expect.fulfill()
                                                 XCTFail("This call should fail")
             }, failure: { (error) in
-                expectation.fulfill()
+                expect.fulfill()
+                let error = error as! NSError
                 XCTAssert(error.domain == String(reflecting:WordPressComRestApiError.self), "The error should a WordPressComRestApiError")
-                XCTAssert(error.code == Int(WordPressComRestApiError.TooManyRequests.rawValue), "The error code should be invalid token")
+                XCTAssert(error.code == Int(WordPressComRestApiError.tooManyRequests.rawValue), "The error code should be invalid token")
         })
-        self.waitForExpectationsWithTimeout(2, handler: nil)
+        self.waitForExpectations(timeout: 2, handler: nil)
     }
 
 }

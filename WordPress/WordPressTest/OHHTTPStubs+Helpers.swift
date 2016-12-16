@@ -8,10 +8,10 @@ import OHHTTPStubs
 public extension OHHTTPStubs
 {
     static func stubRequest(forEndpoint endpoint: String, withFileAtPath path: String) {
-        stub({ request in
-            return request.URL?.absoluteString?.rangeOfString(endpoint) != nil
+        stub(condition: { request in
+            return request.url?.absoluteString.range(of: endpoint) != nil
         }) { _ in
-            return fixture(path, headers: ["Content-Type": "application/json"])
+            return fixture(filePath: path, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
     }
 }
