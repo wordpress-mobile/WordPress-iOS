@@ -1,5 +1,4 @@
 import Foundation
-import PingHub
 
 class PingHubManager: NSObject {
     private var client: PinghubClient? = nil {
@@ -69,7 +68,7 @@ extension PingHubManager: PinghubClientDelegate {
         DDLogSwift.logDebug("PingHub disconnected")
     }
 
-    func pinghubActionReceived(client client: PinghubClient, action: Action) {
+    func pinghubActionReceived(client client: PinghubClient, action: PinghubClient.Action) {
         guard let mediator = NotificationSyncMediator() else {
             return
         }
