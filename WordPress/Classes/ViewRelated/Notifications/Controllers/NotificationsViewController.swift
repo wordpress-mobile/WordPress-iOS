@@ -34,39 +34,42 @@ class NotificationsViewController : UITableViewController
 
     /// TableView Handler: Our commander in chief!
     ///
-    private var tableViewHandler: WPTableViewHandler!
+    fileprivate var tableViewHandler: WPTableViewHandler!
 
     /// NoResults View
     ///
-    private var noResultsView: WPNoResultsView!
+    fileprivate var noResultsView: WPNoResultsView!
 
     /// All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
     ///
-    private var lastReloadDate = NSDate()
+    fileprivate var lastReloadDate = Date()
 
     /// Indicates whether the view is required to reload results on viewWillAppear, or not
     ///
-    private var needsReloadResults = false
+    fileprivate var needsReloadResults = false
 
     /// Notifications that must be deleted display an "Undo" button, which simply cancels the deletion task.
     ///
-    private var notificationDeletionRequests: [NSManagedObjectID: NotificationDeletionRequest] = [:]
+    fileprivate var notificationDeletionRequests: [NSManagedObjectID: NotificationDeletionRequest] = [:]
 
     /// Notifications being deleted are proactively filtered from the list.
     ///
-    private var notificationIdsBeingDeleted = Set<NSManagedObjectID>()
+    fileprivate var notificationIdsBeingDeleted = Set<NSManagedObjectID>()
 
 
 
     // MARK: - View Lifecycle
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        restorationClass = self.dynamicType
+
+        // Note: This class doesn't actually conform to restoration?
+        // Swift 3 migration: Brent Nov. 28/16
+        //restorationClass = NotificationsViewController.self
 
         startListeningToAccountNotifications()
     }
@@ -88,17 +91,17 @@ class NotificationsViewController : UITableViewController
         tableView.reloadData()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
         tableView.deselectSelectedRowWithAnimation(true)
 
         // While we're onscreen, please, update rows with animations
-        tableViewHandler.updateRowAnimation = .Fade
+        tableViewHandler.updateRowAnimation = .fade
 
         // Tracking
-        WPAnalytics.track(WPAnalyticsStat.OpenedNotificationsList)
+        WPAnalytics.track(WPAnalyticsStat.openedNotificationsList)
 
         // Notifications
         startListeningToNotifications()
@@ -110,22 +113,22 @@ class NotificationsViewController : UITableViewController
         showNoResultsViewIfNeeded()
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showRatingViewIfApplicable()
         syncNewNotifications()
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         stopListeningToNotifications()
 
         // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
-        tableViewHandler.updateRowAnimation = .None
+        tableViewHandler.updateRowAnimation = .none
     }
 
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         // Note: We're assuming `tableViewHandler` might be nil. Weird case in which the view
         // hasn't loaded, yet, but the method is still executed.
         tableViewHandler?.clearCachedRowHeights()
@@ -134,15 +137,15 @@ class NotificationsViewController : UITableViewController
 
     // MARK: - UITableView Methods
 
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return nil
     }
 
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return NoteTableHeaderView.headerHeight
     }
 
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let sectionInfo = tableViewHandler.resultsController.sections?[section] else {
             return nil
         }
@@ -154,35 +157,35 @@ class NotificationsViewController : UITableViewController
         return headerView
     }
 
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         // Make sure no SectionFooter is rendered
-        return CGFloat.min
+        return CGFloat.leastNormalMagnitude
     }
 
-    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         // Make sure no SectionFooter is rendered
         return nil
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = NoteTableViewCell.reuseIdentifier()
-        guard let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as? NoteTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? NoteTableViewCell else {
             fatalError()
         }
 
-        configureCell(cell, atIndexPath: indexPath)
+        configureCell(cell, at: indexPath)
 
         return cell
     }
 
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return Settings.estimatedRowHeight
     }
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // Load the Subject + Snippet
-        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
-            return CGFloat.min
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
+            return CGFloat.leastNormalMagnitude
         }
 
         // Old School Height Calculation
@@ -192,9 +195,9 @@ class NotificationsViewController : UITableViewController
         return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject:subject, snippet:snippet)
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Failsafe: Make sure that the Notification (still) exists
-        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
             tableView.deselectSelectedRowWithAnimation(true)
             return
         }
@@ -207,12 +210,12 @@ class NotificationsViewController : UITableViewController
         showDetailsForNotification(note)
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let note = sender as? Notification else {
             return
         }
 
-        guard let detailsViewController = segue.destinationViewController as? NotificationDetailsViewController else {
+        guard let detailsViewController = segue.destination as? NotificationDetailsViewController else {
             return
         }
 
@@ -228,17 +231,17 @@ class NotificationsViewController : UITableViewController
 //
 extension NotificationsViewController
 {
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
-    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        return .Delete
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .delete
     }
 
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        guard let note = tableViewHandler?.resultsController.objectOfType(Notification.self, atIndexPath: indexPath),
-            let block = note.blockGroupOfKind(.Comment)?.blockOfKind(.Comment) else
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
+            let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else
         {
             // Not every single row will have actions: Slight hack so that the UX isn't terrible:
             //  -   First: Return an Empty UITableViewRowAction
@@ -256,8 +259,8 @@ extension NotificationsViewController
         if block.isActionEnabled(.Trash) {
             let title = NSLocalizedString("Trash", comment: "Trashes a comment")
 
-            let trash = UITableViewRowAction(style: .Destructive, title: title, handler: { [weak self] _ in
-                let request = NotificationDeletionRequest(kind: .Deletion, action: { [weak self] onCompletion in
+            let trash = UITableViewRowAction(style: .destructive, title: title, handler: { [weak self] (action, indexPath) in
+                let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
                     self?.actionsService.deleteCommentWithBlock(block) { success in
                         onCompletion(success)
                     }
@@ -281,7 +284,7 @@ extension NotificationsViewController
         if block.isActionOn(.Approve) {
             let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
 
-            let trash = UITableViewRowAction(style: .Normal, title: title, handler: { [weak self] _ in
+            let trash = UITableViewRowAction(style: .normal, title: title, handler: { [weak self] _ in
                 self?.actionsService.unapproveCommentWithBlock(block)
                 self?.tableView.setEditing(false, animated: true)
             })
@@ -293,7 +296,7 @@ extension NotificationsViewController
         } else {
             let title = NSLocalizedString("Approve", comment: "Approves a Comment")
 
-            let trash = UITableViewRowAction(style: .Normal, title: title, handler: { [weak self] _ in
+            let trash = UITableViewRowAction(style: .normal, title: title, handler: { [weak self] _ in
                 self?.actionsService.approveCommentWithBlock(block)
                 self?.tableView.setEditing(false, animated: true)
             })
@@ -305,9 +308,9 @@ extension NotificationsViewController
         return actions
     }
 
-    private func noopRowActions() -> [UITableViewRowAction] {
-        let noop = UITableViewRowAction(style: .Normal, title: title, handler: { _ in })
-        noop.backgroundColor = UIColor.clearColor()
+    fileprivate func noopRowActions() -> [UITableViewRowAction] {
+        let noop = UITableViewRowAction(style: .normal, title: title, handler: { _ in })
+        noop.backgroundColor = UIColor.clear
         return [noop]
     }
 }
@@ -320,7 +323,7 @@ private extension NotificationsViewController
 {
     func setupNavigationBar() {
         // Don't show 'Notifications' in the next-view back button
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
         navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
     }
 
@@ -333,20 +336,20 @@ private extension NotificationsViewController
 
     func setupTableView() {
         // Register the cells
-        let nib = UINib(nibName: NoteTableViewCell.classNameWithoutNamespaces(), bundle: NSBundle.mainBundle())
-        tableView.registerNib(nib, forCellReuseIdentifier: NoteTableViewCell.reuseIdentifier())
+        let nib = UINib(nibName: NoteTableViewCell.classNameWithoutNamespaces(), bundle: Bundle.main)
+        tableView.register(nib, forCellReuseIdentifier: NoteTableViewCell.reuseIdentifier())
 
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
-        WPStyleGuide.configureColorsForView(view, andTableView:tableView)
+        WPStyleGuide.configureColors(for: view, andTableView:tableView)
     }
 
     func setupTableHeaderView() {
         precondition(tableHeaderView != nil)
 
         // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
-        let requiredSize        = tableHeaderView.systemLayoutSizeFittingSize(view.bounds.size)
+        let requiredSize        = tableHeaderView.systemLayoutSizeFitting(view.bounds.size)
         var headerFrame         = tableHeaderView.frame
         headerFrame.size.height = requiredSize.height
 
@@ -373,7 +376,7 @@ private extension NotificationsViewController
     func setupRatingsView() {
         precondition(ratingsView != nil)
 
-        let ratingsFont = WPFontManager.systemRegularFontOfSize(Ratings.fontSize)
+        let ratingsFont = WPFontManager.systemRegularFont(ofSize: Ratings.fontSize)
 
         ratingsView.label.font = ratingsFont
         ratingsView.leftButton.titleLabel?.font = ratingsFont
@@ -384,7 +387,7 @@ private extension NotificationsViewController
 
     func setupRefreshControl() {
         let control = UIRefreshControl()
-        control.addTarget(self, action: #selector(refresh), forControlEvents: .ValueChanged)
+        control.addTarget(self, action: #selector(refresh), for: .valueChanged)
         refreshControl = control
     }
 
@@ -397,7 +400,7 @@ private extension NotificationsViewController
         precondition(filtersSegmentedControl != nil)
 
         for filter in Filter.allFilters {
-            filtersSegmentedControl.setTitle(filter.title, forSegmentAtIndex: filter.rawValue)
+            filtersSegmentedControl.setTitle(filter.title, forSegmentAt: filter.rawValue)
         }
 
         WPStyleGuide.Notifications.configureSegmentedControl(filtersSegmentedControl)
@@ -411,25 +414,25 @@ private extension NotificationsViewController
 private extension NotificationsViewController
 {
     func startListeningToNotifications() {
-        let nc = NSNotificationCenter.defaultCenter()
-        nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name:UIApplicationDidBecomeActiveNotification, object: nil)
-        nc.addObserver(self, selector: #selector(notificationsWereUpdated), name:NotificationSyncMediatorDidUpdateNotifications, object: nil)
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name:NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        nc.addObserver(self, selector: #selector(notificationsWereUpdated), name:NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
     }
 
     func startListeningToAccountNotifications() {
-        let nc = NSNotificationCenter.defaultCenter()
-        nc.addObserver(self, selector: #selector(defaultAccountDidChange), name:WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(defaultAccountDidChange), name:NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
     func stopListeningToNotifications() {
-        let nc = NSNotificationCenter.defaultCenter()
-        nc.removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
-        nc.removeObserver(self, name:NotificationSyncMediatorDidUpdateNotifications, object: nil)
+        let nc = NotificationCenter.default
+        nc.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        nc.removeObserver(self, name:NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
     }
 
-    @objc func applicationDidBecomeActive(note: NSNotification) {
+    @objc func applicationDidBecomeActive(_ note: Foundation.Notification) {
         // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
-        guard isViewLoaded() == true && view.window != nil else {
+        guard isViewLoaded == true && view.window != nil else {
             return
         }
 
@@ -438,7 +441,7 @@ private extension NotificationsViewController
         reloadResultsControllerIfNeeded()
     }
 
-    @objc func defaultAccountDidChange(note: NSNotification) {
+    @objc func defaultAccountDidChange(_ note: Foundation.Notification) {
         needsReloadResults = true
         resetNotifications()
         resetLastSeenTime()
@@ -446,9 +449,9 @@ private extension NotificationsViewController
         syncNewNotifications()
     }
 
-    @objc func notificationsWereUpdated(note: NSNotification) {
+    @objc func notificationsWereUpdated(_ note: Foundation.Notification) {
         // If we're onscreen, don't leave the badge updated behind
-        guard UIApplication.sharedApplication().applicationState == .Active else {
+        guard UIApplication.shared.applicationState == .active else {
             return
         }
 
@@ -469,7 +472,7 @@ extension NotificationsViewController
     ///
     /// - Parameter notificationID: The ID of the Notification that should be rendered onscreen.
     ///
-    func showDetailsForNotificationWithID(noteId: String) {
+    func showDetailsForNotificationWithID(_ noteId: String) {
         if let note = loadNotificationWithID(noteId) {
             showDetailsForNotification(note)
             return
@@ -484,16 +487,16 @@ extension NotificationsViewController
     ///
     /// - Parameter note: The Notification that should be rendered.
     ///
-    func showDetailsForNotification(note: Notification) {
+    func showDetailsForNotification(_ note: Notification) {
         DDLogSwift.logInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
         // Track
         let properties = [Stats.noteTypeKey : note.type ?? Stats.noteTypeUnknown]
-        WPAnalytics.track(.OpenedNotificationDetails, withProperties: properties)
+        WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
 
         // Failsafe: Don't push nested!
         if navigationController?.visibleViewController != self {
-            navigationController?.popViewControllerAnimated(false)
+            _ = navigationController?.popViewController(animated: false)
         }
 
         // Mark as Read
@@ -503,13 +506,13 @@ extension NotificationsViewController
         }
 
         // Display Details
-        if let postID = note.metaPostID, let siteID = note.metaSiteID where note.kind == .Matcher {
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             navigationController?.pushViewController(readerViewController, animated: true)
             return
         }
 
-        performSegueWithIdentifier(NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+        performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
     }
 
     /// Will display an Undelete button on top of a given notification.
@@ -520,13 +523,13 @@ extension NotificationsViewController
     ///     -   noteObjectID: The Core Data ObjectID associated to a given notification.
     ///     -   request: A DeletionRequest Struct
     ///
-    func showUndeleteForNoteWithID(noteObjectID: NSManagedObjectID, request: NotificationDeletionRequest) {
+    func showUndeleteForNoteWithID(_ noteObjectID: NSManagedObjectID, request: NotificationDeletionRequest) {
         // Mark this note as Pending Deletion and Reload
         notificationDeletionRequests[noteObjectID] = request
         reloadRowForNotificationWithID(noteObjectID)
 
         // Dispatch the Action block
-        performSelector(#selector(deleteNoteWithID), withObject: noteObjectID, afterDelay: Syncing.undoTimeout)
+        perform(#selector(deleteNoteWithID), with: noteObjectID, afterDelay: Syncing.undoTimeout)
     }
 }
 
@@ -535,7 +538,7 @@ extension NotificationsViewController
 //
 private extension NotificationsViewController
 {
-    @objc func deleteNoteWithID(noteObjectID: NSManagedObjectID) {
+    @objc func deleteNoteWithID(_ noteObjectID: NSManagedObjectID) {
         // Was the Deletion Cancelled?
         guard let request = deletionRequestForNoteWithID(noteObjectID) else {
             return
@@ -547,7 +550,7 @@ private extension NotificationsViewController
 
         // Hit the Deletion Action
         request.action { success in
-            self.notificationDeletionRequests.removeValueForKey(noteObjectID)
+            self.notificationDeletionRequests.removeValue(forKey: noteObjectID)
             self.notificationIdsBeingDeleted.remove(noteObjectID)
 
             // Error: let's unhide the row
@@ -557,14 +560,14 @@ private extension NotificationsViewController
         }
     }
 
-    func cancelDeletionRequestForNoteWithID(noteObjectID: NSManagedObjectID) {
-        notificationDeletionRequests.removeValueForKey(noteObjectID)
+    func cancelDeletionRequestForNoteWithID(_ noteObjectID: NSManagedObjectID) {
+        notificationDeletionRequests.removeValue(forKey: noteObjectID)
         reloadRowForNotificationWithID(noteObjectID)
 
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(deleteNoteWithID), object: noteObjectID)
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(deleteNoteWithID), object: noteObjectID)
     }
 
-    func deletionRequestForNoteWithID(noteObjectID: NSManagedObjectID) -> NotificationDeletionRequest? {
+    func deletionRequestForNoteWithID(_ noteObjectID: NSManagedObjectID) -> NotificationDeletionRequest? {
         return notificationDeletionRequests[noteObjectID]
     }
 }
@@ -580,7 +583,7 @@ private extension NotificationsViewController
         // Simply calling reloadData doesn't make the FRC recalculate the sections.
         // For that reason, let's force a reload, only when 1 day has elapsed, and sections would have changed.
         //
-        let daysElapsed = NSCalendar.currentCalendar().daysElapsedSinceDate(lastReloadDate)
+        let daysElapsed = Calendar.current.daysElapsedSinceDate(lastReloadDate)
         guard daysElapsed != 0 || needsReloadResults else {
             return
         }
@@ -602,16 +605,16 @@ private extension NotificationsViewController
         showNoResultsViewIfNeeded()
 
         // Don't overwork!
-        lastReloadDate = NSDate()
+        lastReloadDate = Date()
         needsReloadResults = false
     }
 
-    func reloadRowForNotificationWithID(noteObjectID: NSManagedObjectID) {
+    func reloadRowForNotificationWithID(_ noteObjectID: NSManagedObjectID) {
         do {
-            let note = try mainContext.existingObjectWithID(noteObjectID)
+            let note = try mainContext.existingObject(with: noteObjectID)
 
-            if let indexPath = tableViewHandler.resultsController.indexPathForObject(note) {
-                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            if let indexPath = tableViewHandler.resultsController.indexPath(forObject: note) {
+                tableView.reloadRows(at: [indexPath], with: .fade)
             }
         } catch {
             DDLogSwift.logError("Error refreshing Notification Row \(error)")
@@ -631,14 +634,14 @@ extension NotificationsViewController
             return
         }
 
-        let start = NSDate()
+        let start = Date()
 
         mediator.sync { _ in
 
             let delta = max(Syncing.minimumPullToRefreshDelay + start.timeIntervalSinceNow, 0)
-            let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(delta * Double(NSEC_PER_SEC)))
+            let delay = DispatchTime.now() + Double(Int64(delta * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 
-            dispatch_after(delay, dispatch_get_main_queue()) { _ in
+            DispatchQueue.main.asyncAfter(deadline: delay) { _ in
                 self.refreshControl?.endRefreshing()
             }
         }
@@ -651,7 +654,7 @@ extension NotificationsViewController
 //
 extension NotificationsViewController
 {
-    func segmentedControlDidChange(sender: UISegmentedControl) {
+    func segmentedControlDidChange(_ sender: UISegmentedControl) {
         reloadResultsController()
 
         // It's a long way, to the top (if you wanna rock'n roll!)
@@ -659,8 +662,8 @@ extension NotificationsViewController
             return
         }
 
-        let path = NSIndexPath(forRow: 0, inSection: 0)
-        tableView.scrollToRowAtIndexPath(path, atScrollPosition: .Bottom, animated: true)
+        let path = IndexPath(row: 0, section: 0)
+        tableView.scrollToRow(at: path, at: .bottom, animated: true)
     }
 }
 
@@ -674,8 +677,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         return ContextManager.sharedInstance().mainContext
     }
 
-    func fetchRequest() -> NSFetchRequest {
-        let request = NSFetchRequest(entityName: entityName())
+    func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName())
         request.sortDescriptors = [NSSortDescriptor(key: Filter.sortKey, ascending: false)]
         request.predicate = predicateForSelectedFilters()
 
@@ -691,11 +694,11 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         return NSPredicate(format: format, Array(notificationIdsBeingDeleted))
     }
 
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
         // For that reason, we draw our own separators.
         //
-        guard let note = tableViewHandler.resultsController.objectOfType(Notification.self, atIndexPath: indexPath) else {
+        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
             return
         }
 
@@ -729,12 +732,12 @@ extension NotificationsViewController: WPTableViewHandlerDelegate
         return Notification.classNameWithoutNamespaces()
     }
 
-    func tableViewDidChangeContent(tableView: UITableView) {
+    func tableViewDidChangeContent(_ tableView: UITableView) {
         // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
         // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
         //
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? NoteTableViewCell else {
+            guard let cell = tableView.cellForRow(at: indexPath) as? NoteTableViewCell else {
                 continue
             }
 
@@ -758,9 +761,9 @@ private extension NotificationsViewController
             return
         }
 
-        UIView.animateWithDuration(WPAnimationDurationDefault) {
+        UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
             self.tableHeaderView.alpha = WPAlphaFull
-        }
+        })
     }
 
     func hideFiltersSegmentedControlIfApplicable() {
@@ -794,7 +797,7 @@ private extension NotificationsViewController
 
         // Attach the view
         if noResultsView.superview == nil {
-            tableView.addSubviewWithFadeAnimation(noResultsView)
+            tableView.addSubview(withFadeAnimation: noResultsView)
         }
 
         // Refresh its properties: The user may have signed into WordPress.com
@@ -813,14 +816,14 @@ private extension NotificationsViewController
         }
 
         let messageMap: [Filter: String] = [
-            .None       : NSLocalizedString("No notifications yet", comment: "Displayed in the Notifications Tab, when there are no notifications"),
-            .Unread     : NSLocalizedString("No unread notifications", comment: "Displayed in the Notifications Tab, when the Unread Filter shows no notifications"),
-            .Comment    : NSLocalizedString("No comments notifications", comment: "Displayed in the Notifications Tab, when the Comments Filter shows no notifications"),
-            .Follow     : NSLocalizedString("No new followers notifications", comment: "Displayed in the Notifications Tab, when the Follow Filter shows no notifications"),
-            .Like       : NSLocalizedString("No like notifications", comment: "Displayed in the Notifications Tab, when the Likes Filter shows no notifications")
+            .none       : NSLocalizedString("No notifications yet", comment: "Displayed in the Notifications Tab, when there are no notifications"),
+            .unread     : NSLocalizedString("No unread notifications", comment: "Displayed in the Notifications Tab, when the Unread Filter shows no notifications"),
+            .comment    : NSLocalizedString("No comments notifications", comment: "Displayed in the Notifications Tab, when the Comments Filter shows no notifications"),
+            .follow     : NSLocalizedString("No new followers notifications", comment: "Displayed in the Notifications Tab, when the Follow Filter shows no notifications"),
+            .like       : NSLocalizedString("No like notifications", comment: "Displayed in the Notifications Tab, when the Likes Filter shows no notifications")
         ]
 
-        let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .None
+        let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
         return messageMap[filter] ?? String()
     }
 
@@ -851,17 +854,17 @@ private extension NotificationsViewController
 //
 extension NotificationsViewController: WPNoResultsViewDelegate
 {
-    func didTapNoResultsView(noResultsView: WPNoResultsView) {
-        guard let targetURL = NSURL(string: WPJetpackInformationURL) else {
+    func didTap(_ noResultsView: WPNoResultsView) {
+        guard let targetURL = URL(string: WPJetpackInformationURL) else {
             fatalError()
         }
 
-        let webViewController = WPWebViewController(URL: targetURL)
-        let navController = UINavigationController(rootViewController: webViewController)
-        presentViewController(navController, animated: true, completion: nil)
+        let webViewController = WPWebViewController(url: targetURL)
+        let navController = UINavigationController(rootViewController: webViewController!)
+        present(navController, animated: true, completion: nil)
 
         let properties = [Stats.sourceKey: Stats.sourceValue]
-        WPAnalytics.track(.SelectedLearnMoreInConnectToJetpackScreen, withProperties: properties)
+        WPAnalytics.track(.selectedLearnMoreInConnectToJetpackScreen, withProperties: properties)
     }
 }
 
@@ -871,7 +874,7 @@ extension NotificationsViewController: WPNoResultsViewDelegate
 private extension NotificationsViewController
 {
     func showRatingViewIfApplicable() {
-        guard AppRatingUtility.shouldPromptForAppReviewForSection(Ratings.section) else {
+        guard AppRatingUtility.shouldPromptForAppReview(forSection: Ratings.section) else {
             return
         }
 
@@ -881,23 +884,23 @@ private extension NotificationsViewController
 
         ratingsView.alpha = WPAlphaZero
 
-        UIView.animateWithDuration(WPAnimationDurationDefault, delay: Ratings.animationDelay, options: .CurveEaseIn, animations: {
+        UIView.animate(withDuration: WPAnimationDurationDefault, delay: Ratings.animationDelay, options: .curveEaseIn, animations: {
             self.ratingsView.alpha = WPAlphaFull
             self.ratingsHeightConstraint.constant = Ratings.heightFull
 
             self.setupTableHeaderView()
         }, completion: nil)
 
-        WPAnalytics.track(.AppReviewsSawPrompt)
+        WPAnalytics.track(.appReviewsSawPrompt)
     }
 
     func hideRatingView() {
-        UIView.animateWithDuration(WPAnimationDurationDefault) {
+        UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
             self.ratingsView.alpha = WPAlphaZero
             self.ratingsHeightConstraint.constant = Ratings.heightZero
 
             self.setupTableHeaderView()
-        }
+        })
     }
 }
 
@@ -911,9 +914,9 @@ private extension NotificationsViewController
         mediator?.sync()
     }
 
-    func syncNotificationWithID(noteId: String, timeout: NSTimeInterval, success: (note: Notification) -> Void) {
+    func syncNotificationWithID(_ noteId: String, timeout: TimeInterval, success: @escaping (_ note: Notification) -> Void) {
         let mediator = NotificationSyncMediator()
-        let startDate = NSDate()
+        let startDate = Date()
 
         DDLogSwift.logInfo("Sync'ing Notification [\(noteId)]")
 
@@ -929,7 +932,7 @@ private extension NotificationsViewController
             }
 
             DDLogSwift.logInfo("Notification Sync'ed in \(startDate.timeIntervalSinceNow) seconds")
-            success(note: note)
+            success(note)
         }
     }
 
@@ -938,7 +941,7 @@ private extension NotificationsViewController
             return
         }
 
-        guard let timestamp = note.timestamp where timestamp != lastSeenTime else {
+        guard let timestamp = note.timestamp, timestamp != lastSeenTime else {
             return
         }
 
@@ -952,7 +955,7 @@ private extension NotificationsViewController
         }
     }
 
-    func loadNotificationWithID(noteId: String) -> Notification? {
+    func loadNotificationWithID(_ noteId: String) -> Notification? {
         let helper = CoreDataHelper<Notification>(context: mainContext)
         let predicate = NSPredicate(format: "(notificationId == %@)", noteId)
 
@@ -974,7 +977,7 @@ private extension NotificationsViewController
     }
 
     func resetApplicationBadge() {
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
 }
 
@@ -985,44 +988,44 @@ private extension NotificationsViewController
 extension NotificationsViewController: ABXPromptViewDelegate
 {
     func appbotPromptForReview() {
-        WPAnalytics.track(.AppReviewsRatedApp)
+        WPAnalytics.track(.appReviewsRatedApp)
         AppRatingUtility.ratedCurrentVersion()
         hideRatingView()
 
-        if let targetURL = NSURL(string: Ratings.reviewURL) {
-            UIApplication.sharedApplication().openURL(targetURL)
+        if let targetURL = URL(string: Ratings.reviewURL!) {
+            UIApplication.shared.openURL(targetURL)
         }
     }
 
     func appbotPromptForFeedback() {
-        WPAnalytics.track(.AppReviewsOpenedFeedbackScreen)
-        ABXFeedbackViewController.showFromController(self, placeholder: nil, delegate: nil)
+        WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
+        ABXFeedbackViewController.show(from: self, placeholder: nil, delegate: nil)
         AppRatingUtility.gaveFeedbackForCurrentVersion()
         hideRatingView()
     }
 
     func appbotPromptClose() {
-        WPAnalytics.track(.AppReviewsDeclinedToRateApp)
+        WPAnalytics.track(.appReviewsDeclinedToRateApp)
         AppRatingUtility.declinedToRateCurrentVersion()
         hideRatingView()
     }
 
     func appbotPromptLiked() {
-        WPAnalytics.track(.AppReviewsLikedApp)
+        WPAnalytics.track(.appReviewsLikedApp)
         AppRatingUtility.likedCurrentVersion()
     }
 
     func appbotPromptDidntLike() {
-        WPAnalytics.track(.AppReviewsDidntLikeApp)
+        WPAnalytics.track(.appReviewsDidntLikeApp)
         AppRatingUtility.dislikedCurrentVersion()
     }
 
     func abxFeedbackDidSendFeedback () {
-        WPAnalytics.track(.AppReviewsSentFeedback)
+        WPAnalytics.track(.appReviewsSentFeedback)
     }
 
     func abxFeedbackDidntSendFeedback() {
-        WPAnalytics.track(.AppReviewsCanceledFeedbackScreen)
+        WPAnalytics.track(.appReviewsCanceledFeedbackScreen)
     }
 }
 
@@ -1042,13 +1045,13 @@ private extension NotificationsViewController
         return NotificationActionsService(managedObjectContext: mainContext)
     }
 
-    var userDefaults: NSUserDefaults{
-        return NSUserDefaults.standardUserDefaults()
+    var userDefaults: UserDefaults{
+        return UserDefaults.standard
     }
 
     var lastSeenTime: String? {
         get {
-            return userDefaults.stringForKey(Settings.lastSeenTime)
+            return userDefaults.string(forKey: Settings.lastSeenTime)
         }
         set {
             userDefaults.setValue(newValue, forKey: Settings.lastSeenTime)
@@ -1057,34 +1060,34 @@ private extension NotificationsViewController
     }
 
     enum Filter: Int {
-        case None = 0
-        case Unread = 1
-        case Comment = 2
-        case Follow = 3
-        case Like = 4
+        case none = 0
+        case unread = 1
+        case comment = 2
+        case follow = 3
+        case like = 4
 
         var condition: String? {
             switch self {
-            case .None:     return nil
-            case .Unread:   return "read = NO"
-            case .Comment:  return "type = '\(NoteKind.Comment.toTypeValue)'"
-            case .Follow:   return "type = '\(NoteKind.Follow.toTypeValue)'"
-            case .Like:     return "type = '\(NoteKind.Like.toTypeValue)' OR type = '\(NoteKind.CommentLike.toTypeValue)'"
+            case .none:     return nil
+            case .unread:   return "read = NO"
+            case .comment:  return "type = '\(NoteKind.Comment.toTypeValue)'"
+            case .follow:   return "type = '\(NoteKind.Follow.toTypeValue)'"
+            case .like:     return "type = '\(NoteKind.Like.toTypeValue)' OR type = '\(NoteKind.CommentLike.toTypeValue)'"
             }
         }
 
         var title: String {
             switch self {
-            case .None:     return NSLocalizedString("All", comment: "Displays all of the Notifications, unfiltered")
-            case .Unread:   return NSLocalizedString("Unread", comment: "Filters Unread Notifications")
-            case .Comment:  return NSLocalizedString("Comments", comment: "Filters Comments Notifications")
-            case .Follow:   return NSLocalizedString("Follows", comment: "Filters Follows Notifications")
-            case .Like:     return NSLocalizedString("Likes", comment: "Filters Likes Notifications")
+            case .none:     return NSLocalizedString("All", comment: "Displays all of the Notifications, unfiltered")
+            case .unread:   return NSLocalizedString("Unread", comment: "Filters Unread Notifications")
+            case .comment:  return NSLocalizedString("Comments", comment: "Filters Comments Notifications")
+            case .follow:   return NSLocalizedString("Follows", comment: "Filters Follows Notifications")
+            case .like:     return NSLocalizedString("Likes", comment: "Filters Likes Notifications")
             }
         }
 
         static let sortKey = "timestamp"
-        static let allFilters = [Filter.None, .Unread, .Comment, .Follow, .Like]
+        static let allFilters = [Filter.none, .unread, .comment, .follow, .like]
     }
 
     enum Settings {
@@ -1101,17 +1104,17 @@ private extension NotificationsViewController
     }
 
     enum Syncing {
-        static let minimumPullToRefreshDelay = NSTimeInterval(1.5)
-        static let pushMaxWait = NSTimeInterval(1.5)
-        static let syncTimeout = NSTimeInterval(10)
-        static let undoTimeout = NSTimeInterval(4)
+        static let minimumPullToRefreshDelay = TimeInterval(1.5)
+        static let pushMaxWait = TimeInterval(1.5)
+        static let syncTimeout = TimeInterval(10)
+        static let undoTimeout = TimeInterval(4)
     }
 
     enum Ratings {
         static let section = "notifications"
         static let heightFull = CGFloat(100)
         static let heightZero = CGFloat(0)
-        static let animationDelay = NSTimeInterval(0.5)
+        static let animationDelay = TimeInterval(0.5)
         static let fontSize = CGFloat(15.0)
         static let reviewURL = AppRatingUtility.appReviewUrl()
     }
