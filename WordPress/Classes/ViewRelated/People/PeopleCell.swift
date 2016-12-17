@@ -9,11 +9,11 @@ class PeopleCell: WPTableViewCell {
     @IBOutlet var superAdminRoleBadge: PeopleRoleBadgeLabel!
 
     override func awakeFromNib() {
-        displayNameLabel.font = WPFontManager.systemBoldFontOfSize(14)
+        displayNameLabel.font = WPFontManager.systemBoldFont(ofSize: 14)
     }
 
-    func bindViewModel(viewModel: PeopleCellViewModel) {
-        setAvatarURL(viewModel.avatarURL)
+    func bindViewModel(_ viewModel: PeopleCellViewModel) {
+        setAvatarURL(viewModel.avatarURL as URL?)
         displayNameLabel.text = viewModel.displayName
         usernameLabel.text = viewModel.usernameText
         roleBadge.borderColor = viewModel.roleBorderColor
@@ -21,12 +21,12 @@ class PeopleCell: WPTableViewCell {
         roleBadge.textColor = viewModel.roleTextColor
         roleBadge.text = viewModel.roleText
         superAdminRoleBadge.text = viewModel.superAdminText
-        superAdminRoleBadge.hidden = viewModel.superAdminHidden
+        superAdminRoleBadge.isHidden = viewModel.superAdminHidden
         superAdminRoleBadge.borderColor = viewModel.superAdminBorderColor
         superAdminRoleBadge.backgroundColor = viewModel.superAdminBackgroundColor
     }
 
-    func setAvatarURL(avatarURL: NSURL?) {
+    func setAvatarURL(_ avatarURL: URL?) {
         let gravatar = avatarURL.flatMap { Gravatar($0) }
         let placeholder = UIImage(named: "gravatar")!
         avatarImageView.downloadGravatar(gravatar, placeholder: placeholder, animate: false)
@@ -38,7 +38,7 @@ class PeopleCell: WPTableViewCell {
 
     Otherwise we get this: https://cldup.com/NT3pbaeIc1.png
     */
-    override func setHighlighted(highlighted: Bool, animated: Bool) {
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         let roleBackgroundColor = roleBadge.backgroundColor
         let superAdminBackgroundColor = superAdminRoleBadge.backgroundColor
 
@@ -50,7 +50,7 @@ class PeopleCell: WPTableViewCell {
         }
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         let roleBackgroundColor = roleBadge.backgroundColor
         let superAdminBackgroundColor = superAdminRoleBadge.backgroundColor
 

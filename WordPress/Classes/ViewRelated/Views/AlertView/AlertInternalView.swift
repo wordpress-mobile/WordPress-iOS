@@ -4,15 +4,15 @@ import WordPressShared
 
 /// Helper class, used internally by AlertView. Not designed for general usage.
 ///
-public class AlertInternalView : UIView
+open class AlertInternalView : UIView
 {
     // MARK: - Public Properties
-    public var onClick : (() -> ())?
+    open var onClick : (() -> ())?
 
 
 
     // MARK: - View Methods
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
          super.awakeFromNib()
 
         assert(backgroundView   != nil)
@@ -36,7 +36,7 @@ public class AlertInternalView : UIView
     ///
     /// - Parameter sender: The button that was pressed.
     ///
-    @IBAction private func buttonWasPressed(sender: AnyObject!) {
+    @IBAction fileprivate func buttonWasPressed(_ sender: AnyObject!) {
         onClick?()
         onClick = nil
     }
@@ -44,10 +44,10 @@ public class AlertInternalView : UIView
 
 
     // MARK: - Private Aliases
-    private typealias Styles = WPStyleGuide.AlertView
+    fileprivate typealias Styles = WPStyleGuide.AlertView
 
     // MARK: - Private Constants
-    private let cornerRadius = CGFloat(7)
+    fileprivate let cornerRadius = CGFloat(7)
 
     // MARK: - Outlets
     @IBOutlet var backgroundView    : UIView!

@@ -7,7 +7,7 @@ import WordPressComAnalytics
 /// encapsulated in the class NotificationSettings.Stream, and to provide the user a simple interface
 /// to update those settings, as needed.
 ///
-public class NotificationSettingDetailsViewController : UITableViewController
+open class NotificationSettingDetailsViewController : UITableViewController
 {
     // MARK: - Initializers
     public convenience init(settings: NotificationSettings) {
@@ -15,7 +15,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
 
     public convenience init(settings: NotificationSettings, stream: NotificationSettings.Stream) {
-        self.init(style: .Grouped)
+        self.init(style: .grouped)
         self.settings = settings
         self.stream = stream
     }
@@ -23,7 +23,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
 
 
     // MARK: - View Lifecycle
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         setupTitle()
         setupNotifications()
@@ -31,12 +31,12 @@ public class NotificationSettingDetailsViewController : UITableViewController
         reloadTable()
     }
 
-    public override func viewWillAppear(animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        WPAnalytics.track(.OpenedNotificationSettingDetails)
+        WPAnalytics.track(.openedNotificationSettingDetails)
     }
 
-    public override func viewWillDisappear(animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         saveSettingsIfNeeded()
     }
@@ -44,29 +44,29 @@ public class NotificationSettingDetailsViewController : UITableViewController
 
 
     // MARK: - Setup Helpers
-    private func setupTitle() {
+    fileprivate func setupTitle() {
         title = stream?.kind.description()
     }
 
-    private func setupNotifications() {
+    fileprivate func setupNotifications() {
         // Reload whenever the app becomes active again since Push Settings may have changed in the meantime!
-        let notificationCenter = NSNotificationCenter.defaultCenter()
+        let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self,
             selector:   #selector(NotificationSettingDetailsViewController.reloadTable),
-            name:       UIApplicationDidBecomeActiveNotification,
+            name:       NSNotification.Name.UIApplicationDidBecomeActive,
             object:     nil)
     }
 
-    private func setupTableView() {
+    fileprivate func setupTableView() {
         // Register the cells
-        tableView.registerClass(SwitchTableViewCell.self, forCellReuseIdentifier: Row.Kind.Setting.rawValue)
-        tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: Row.Kind.Text.rawValue)
+        tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: Row.Kind.Setting.rawValue)
+        tableView.register(WPTableViewCell.self, forCellReuseIdentifier: Row.Kind.Text.rawValue)
 
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
 
         // Style!
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
     @IBAction func reloadTable() {
@@ -77,10 +77,10 @@ public class NotificationSettingDetailsViewController : UITableViewController
 
 
     // MARK: - Private Helpers
-    private func sectionsForSettings(settings: NotificationSettings, stream: NotificationSettings.Stream) -> [Section] {
+    fileprivate func sectionsForSettings(_ settings: NotificationSettings, stream: NotificationSettings.Stream) -> [Section] {
         // WordPress.com Channel requires a brief description per row.
         // For that reason, we'll render each row in its own section, with it's very own footer
-        let singleSectionMode = settings.channel != .WordPressCom
+        let singleSectionMode = settings.channel != .wordPressCom
 
         // Parse the Rows
         var rows = [Row]()
@@ -111,7 +111,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
         return sections
     }
 
-    private func sectionsForDisabledDeviceStream() -> [Section] {
+    fileprivate func sectionsForDisabledDeviceStream() -> [Section] {
         let description     = NSLocalizedString("Go to iOS Settings", comment: "Opens WPiOS Settings.app Section")
         let row             = Row(kind: .Text, description: description, key: nil, value: nil)
 
@@ -126,18 +126,18 @@ public class NotificationSettingDetailsViewController : UITableViewController
 
 
     // MARK: - UITableView Delegate Methods
-    public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    open override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
 
-    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].rows.count
     }
 
-    public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = sections[indexPath.section]
         let row     = section.rows[indexPath.row]
-        let cell    = tableView.dequeueReusableCellWithIdentifier(row.kind.rawValue)
+        let cell    = tableView.dequeueReusableCell(withIdentifier: row.kind.rawValue)
 
         switch row.kind {
         case .Text:
@@ -149,26 +149,26 @@ public class NotificationSettingDetailsViewController : UITableViewController
         return cell!
     }
 
-    public override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    open override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard section == firstSectionIndex else {
             return nil
         }
         return siteName
     }
 
-    public override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    open override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
-    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    open override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return sections[section].footerText
     }
 
-    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    open override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
-    public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
 
         if isDeviceStreamDisabled() {
@@ -179,12 +179,12 @@ public class NotificationSettingDetailsViewController : UITableViewController
 
 
     // MARK: - UITableView Helpers
-    private func configureTextCell(cell: WPTableViewCell, row: Row) {
+    fileprivate func configureTextCell(_ cell: WPTableViewCell, row: Row) {
         cell.textLabel?.text    = row.description
         WPStyleGuide.configureTableViewCell(cell)
     }
 
-    private func configureSwitchCell(cell: SwitchTableViewCell, row: Row) {
+    fileprivate func configureSwitchCell(_ cell: SwitchTableViewCell, row: Row) {
         let settingKey          = row.key ?? String()
 
         cell.name               = row.description
@@ -197,46 +197,46 @@ public class NotificationSettingDetailsViewController : UITableViewController
 
 
     // MARK: - Disabled Push Notifications Handling
-    private func isDeviceStreamDisabled() -> Bool {
+    fileprivate func isDeviceStreamDisabled() -> Bool {
         return stream?.kind == .Device && !PushNotificationsManager.sharedInstance.notificationsEnabledInDeviceSettings()
     }
 
-    private func openApplicationSettings() {
-        let targetURL = NSURL(string: UIApplicationOpenSettingsURLString)
-        UIApplication.sharedApplication().openURL(targetURL!)
+    fileprivate func openApplicationSettings() {
+        let targetURL = URL(string: UIApplicationOpenSettingsURLString)
+        UIApplication.shared.openURL(targetURL!)
     }
 
 
 
     // MARK: - Service Helpers
-    private func saveSettingsIfNeeded() {
+    fileprivate func saveSettingsIfNeeded() {
         if newValues.count == 0 || settings == nil {
             return
         }
 
         let context = ContextManager.sharedInstance().mainContext
-        let service = NotificationSettingsService(managedObjectContext: context)
+        let service = NotificationSettingsService(managedObjectContext: context!)
 
         service.updateSettings(settings!,
             stream              : stream!,
             newValues           : newValues,
             success             : {
-                WPAnalytics.track(.NotificationsSettingsUpdated, withProperties: ["success" : true])
+                WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success" : true])
             },
-            failure             : { (error: NSError!) in
-                WPAnalytics.track(.NotificationsSettingsUpdated, withProperties: ["success" : false])
+            failure             : { (error: Error?) in
+                WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success" : false])
                 self.handleUpdateError()
             })
     }
 
-    private func handleUpdateError() {
+    fileprivate func handleUpdateError() {
         let title       = NSLocalizedString("Oops!", comment: "")
         let message     = NSLocalizedString("There has been an unexpected error while updating your Notification Settings",
                                             comment: "Displayed after a failed Notification Settings call")
         let cancelText  = NSLocalizedString("Cancel", comment: "Cancel. Action.")
         let retryText   = NSLocalizedString("Retry", comment: "Retry. Action")
 
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         alertController.addCancelActionWithTitle(cancelText, handler: nil)
 
@@ -250,7 +250,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
 
 
     // MARK: - Private Nested Class'ess
-    private class Section {
+    fileprivate class Section {
         var rows                : [Row]
         var footerText          : String?
 
@@ -260,7 +260,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
         }
     }
 
-    private class Row {
+    fileprivate class Row {
         let description         : String
         let kind                : Kind
         let key                 : String?
@@ -281,11 +281,11 @@ public class NotificationSettingDetailsViewController : UITableViewController
 
 
     // MARK: - Computed Properties
-    private var siteName : String {
+    fileprivate var siteName : String {
         switch settings!.channel {
-        case .WordPressCom:
+        case .wordPressCom:
             return NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
-        case .Other:
+        case .other:
             return NSLocalizedString("Other Sites", comment: "Other Sites Notification Settings Title")
         default:
             return settings?.blog?.settings?.name ?? NSLocalizedString("Unnamed Site", comment: "Displayed when a site has no name")
@@ -293,13 +293,13 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
 
     // MARK: - Private Constants
-    private let firstSectionIndex = 0
+    fileprivate let firstSectionIndex = 0
 
     // MARK: - Private Properties
-    private var settings : NotificationSettings?
-    private var stream : NotificationSettings.Stream?
+    fileprivate var settings : NotificationSettings?
+    fileprivate var stream : NotificationSettings.Stream?
 
     // MARK: - Helpers
-    private var sections = [Section]()
-    private var newValues = [String: Bool]()
+    fileprivate var sections = [Section]()
+    fileprivate var newValues = [String: Bool]()
 }

@@ -1,6 +1,6 @@
 import Foundation
 
-public class RemoteReaderCrossPostMeta : NSObject
+open class RemoteReaderCrossPostMeta : NSObject
 {
     var postID:NSNumber = 0
     var siteID:NSNumber = 0

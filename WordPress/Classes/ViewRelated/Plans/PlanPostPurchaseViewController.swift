@@ -4,20 +4,20 @@ import WordPressShared
 
 class PlanPostPurchaseViewController: UIViewController {
 
-    private let pageControlHeight: CGFloat = 59
-    private let contentTopInset: CGFloat = 25
-    private var headingParallaxMaxTranslation: CGFloat = 200
-    private var descriptionParallaxMaxTranslation: CGFloat = 100
+    fileprivate let pageControlHeight: CGFloat = 59
+    fileprivate let contentTopInset: CGFloat = 25
+    fileprivate var headingParallaxMaxTranslation: CGFloat = 200
+    fileprivate var descriptionParallaxMaxTranslation: CGFloat = 100
 
-    private weak var pageControl: UIPageControl!
-    private weak var scrollView: UIScrollView!
+    fileprivate weak var pageControl: UIPageControl!
+    fileprivate weak var scrollView: UIScrollView!
 
     var pageTypes: [PlanPostPurchasePageType]!
     var pages = [PlanPostPurchasePageViewController]()
     var plan: Plan
 
-    lazy private var cancelXButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: Gridicon.iconOfType(.Cross), style: .Plain, target: self, action: #selector(PlanPostPurchaseViewController.closeTapped))
+    lazy fileprivate var cancelXButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(PlanPostPurchaseViewController.closeTapped))
         button.accessibilityLabel = NSLocalizedString("Close", comment: "Dismiss the current view")
 
         return button
@@ -45,42 +45,42 @@ class PlanPostPurchaseViewController: UIViewController {
         addScrollView()
     }
 
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .Portrait
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return .portrait
     }
 
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
 
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
 
         // If the view is changing size (e.g. on rotation, or multitasking), scroll to the correct page boundary based on the new size
-        coordinator.animateAlongsideTransition({ context in
+        coordinator.animate(alongsideTransition: { context in
             self.scrollView.setContentOffset(CGPoint(x: CGFloat(self.currentScrollViewPage()) * size.width, y: 0), animated: true)
             }, completion: nil)
     }
 
-    private func addPageControl() {
+    fileprivate func addPageControl() {
         let pageControl = UIPageControl()
         view.addSubview(pageControl)
 
-        pageControl.tintColor = UIColor.whiteColor()
+        pageControl.tintColor = UIColor.white
 
         pageControl.translatesAutoresizingMaskIntoConstraints = false
-        pageControl.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor).active = true
-        pageControl.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor).active = true
-        pageControl.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor).active = true
-        pageControl.heightAnchor.constraintEqualToConstant(pageControlHeight).active = true
+        pageControl.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        pageControl.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        pageControl.heightAnchor.constraint(equalToConstant: pageControlHeight).isActive = true
 
-        pageControl.addTarget(self, action: #selector(PlanPostPurchaseViewController.pageControlChanged), forControlEvents: .ValueChanged)
+        pageControl.addTarget(self, action: #selector(PlanPostPurchaseViewController.pageControlChanged), for: .valueChanged)
         self.pageControl = pageControl
     }
 
-    private func addScrollView() {
+    fileprivate func addScrollView() {
         let scrollView = UIScrollView()
-        scrollView.pagingEnabled = true
+        scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.delegate = self
         scrollView.backgroundColor = WPStyleGuide.wordPressBlue()
@@ -88,13 +88,13 @@ class PlanPostPurchaseViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
 
-        scrollView.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor).active = true
-        scrollView.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor).active = true
-        scrollView.topAnchor.constraintEqualToAnchor(view.topAnchor).active = true
-        scrollView.bottomAnchor.constraintEqualToAnchor(pageControl.topAnchor).active = true
+        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: pageControl.topAnchor).isActive = true
 
         let container = UIStackView()
-        container.axis = .Horizontal
+        container.axis = .horizontal
         scrollView.addSubview(container)
         container.translatesAutoresizingMaskIntoConstraints = false
         scrollView.pinSubviewToAllEdges(container)
@@ -105,22 +105,22 @@ class PlanPostPurchaseViewController: UIViewController {
 
         pageControl.numberOfPages = pages.count
 
-        container.widthAnchor.constraintEqualToAnchor(view.widthAnchor, multiplier: CGFloat(pages.count))
+        container.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: CGFloat(pages.count))
 
         self.scrollView = scrollView
     }
 
-    private func addNewPageViewControllerForPageType(pageType: PlanPostPurchasePageType, toContainer container: UIStackView) {
+    fileprivate func addNewPageViewControllerForPageType(_ pageType: PlanPostPurchasePageType, toContainer container: UIStackView) {
         let page = PlanPostPurchasePageViewController.controller()
         addChildViewController(page)
 
         page.view.translatesAutoresizingMaskIntoConstraints = false
         container.addArrangedSubview(page.view)
 
-        page.view.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
-        page.view.bottomAnchor.constraintEqualToAnchor(pageControl.topAnchor).active = true
+        page.view.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        page.view.bottomAnchor.constraint(equalTo: pageControl.topAnchor).isActive = true
 
-        page.didMoveToParentViewController(self)
+        page.didMove(toParentViewController: self)
 
         page.plan = plan
         page.pageType = pageType
@@ -133,14 +133,14 @@ class PlanPostPurchaseViewController: UIViewController {
     @IBAction func pageControlChanged() {
         let currentIndex = currentScrollViewPage()
 
-        guard !scrollView.dragging else {
+        guard !scrollView.isDragging else {
             // If the user is currently dragging, reset the change and ignore it
             pageControl.currentPage = currentIndex
             return
         }
 
         // Stop the user interacting whilst we animate a scroll
-        scrollView.userInteractionEnabled = false
+        scrollView.isUserInteractionEnabled = false
 
         var targetPage = currentIndex
         if pageControl.currentPage > currentIndex {
@@ -153,12 +153,12 @@ class PlanPostPurchaseViewController: UIViewController {
     }
 
     func closeTapped() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }
 
 extension PlanPostPurchaseViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageWidth = scrollView.bounds.width
 
         guard pageWidth > 0 else { return }
@@ -167,29 +167,29 @@ extension PlanPostPurchaseViewController: UIScrollViewDelegate {
         let currentPageFraction = (centerX / pageWidth)
         let currentPageIndex = Int(floor(currentPageFraction))
 
-        for (index, page) in pages.enumerate() {
+        for (index, page) in pages.enumerated() {
             let pageCenter = CGFloat(index) + 0.5
             let offset = currentPageFraction - pageCenter
 
-            page.headingLabel.transform = CGAffineTransformMakeTranslation(offset * -headingParallaxMaxTranslation, 0)
-            page.descriptionLabel.transform = CGAffineTransformMakeTranslation(offset * -descriptionParallaxMaxTranslation, 0)
+            page.headingLabel.transform = CGAffineTransform(translationX: offset * -headingParallaxMaxTranslation, y: 0)
+            page.descriptionLabel.transform = CGAffineTransform(translationX: offset * -descriptionParallaxMaxTranslation, y: 0)
         }
 
-        if scrollView.dragging {
+        if scrollView.isDragging {
             pageControl.currentPage = currentPageIndex
         }
     }
 
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-        scrollView.userInteractionEnabled = true
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        scrollView.isUserInteractionEnabled = true
     }
 
-    override func accessibilityScroll(direction: UIAccessibilityScrollDirection) -> Bool {
+    override func accessibilityScroll(_ direction: UIAccessibilityScrollDirection) -> Bool {
         var targetPage = currentScrollViewPage()
 
         switch direction {
-        case .Right: targetPage -= 1
-        case .Left: targetPage += 1
+        case .right: targetPage -= 1
+        case .left: targetPage += 1
         default: break
         }
 
@@ -201,7 +201,7 @@ extension PlanPostPurchaseViewController: UIScrollViewDelegate {
         return success
     }
 
-    private func currentScrollViewPage() -> Int {
+    fileprivate func currentScrollViewPage() -> Int {
         // Calculate which plan's VC is at the center of the view
         let pageWidth = scrollView.bounds.width
         let centerX = scrollView.contentOffset.x + (pageWidth / 2)
@@ -212,13 +212,13 @@ extension PlanPostPurchaseViewController: UIScrollViewDelegate {
     }
 
     /// - Returns: True if there was valid page to scroll to, false if we've reached the beginning / end
-    private func scrollToPage(page: Int, animated: Bool) -> Bool {
+    @discardableResult fileprivate func scrollToPage(_ page: Int, animated: Bool) -> Bool {
         guard pages.indices.contains(page) else { return false }
 
         let pageWidth = view.bounds.width
         scrollView.setContentOffset(CGPoint(x: CGFloat(page) * pageWidth, y: 0), animated: animated)
 
-        for (index, pageVC) in pages.enumerate() {
+        for (index, pageVC) in pages.enumerated() {
             pageVC.view.accessibilityElementsHidden = (index != page)
         }
 
@@ -253,19 +253,19 @@ class PlanPostPurchasePageViewController: UIViewController {
     }
 
     class func controller() -> PlanPostPurchasePageViewController {
-        let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanPostPurchasePageViewController
+        let storyboard = UIStoryboard(name: "Plans", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: NSStringFromClass(self)) as! PlanPostPurchasePageViewController
 
         return controller
     }
 
-    func setDescriptionText(text: String) {
+    func setDescriptionText(_ text: String) {
         let lineHeight: CGFloat = 21
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.maximumLineHeight = lineHeight
         paragraphStyle.minimumLineHeight = lineHeight
-        paragraphStyle.alignment = .Center
+        paragraphStyle.alignment = .center
 
         let attributedText = NSMutableAttributedString(string: text, attributes: [NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName: descriptionLabel.font])
         descriptionLabel.attributedText = attributedText
@@ -277,32 +277,32 @@ class PlanPostPurchasePageViewController: UIViewController {
         switch pageType {
         case .PurchaseComplete:
             if let plan = plan {
-                imageView.setImageWithURL(plan.activeIconUrl)
+                imageView.setImageWith(plan.activeIconUrl as URL)
             }
             headingLabel.text = NSLocalizedString("It’s all yours! Way to go!", comment: "Heading displayed after successful purchase of a plan")
             setDescriptionText(NSLocalizedString("Your site is doing somersaults in excitement! Now explore your site’s new features and choose where you’d like to begin.", comment: "Subtitle displayed after successful purchase of a plan"))
-            imageView.widthAnchor.constraintEqualToConstant(purchaseCompleteImageViewSize).active = true
-            imageView.heightAnchor.constraintEqualToConstant(purchaseCompleteImageViewSize).active = true
-            actionButton.hidden = true
+            imageView.widthAnchor.constraint(equalToConstant: purchaseCompleteImageViewSize).isActive = true
+            imageView.heightAnchor.constraint(equalToConstant: purchaseCompleteImageViewSize).isActive = true
+            actionButton.isHidden = true
         case .Customize:
             imageView.image = UIImage(named: "plans-post-purchase-customize")
             headingLabel.text = NSLocalizedString("Customize Fonts & Colors", comment: "Heading for customization feature, displayed after plan purchase")
             setDescriptionText(NSLocalizedString("You now have access to custom fonts, custom colors, and custom CSS editing capabilities.", comment: "Descriptive text for customization feature, displayed after plan purchase"))
-            actionButton.setTitle(NSLocalizedString("Customize My Site", comment: "Title of button displayed after plan purchase, prompting user to start customizing their site"), forState: .Normal)
+            actionButton.setTitle(NSLocalizedString("Customize My Site", comment: "Title of button displayed after plan purchase, prompting user to start customizing their site"), for: UIControlState())
         case .VideoPress:
             imageView.image = UIImage(named: "plans-post-purchase-video")
             headingLabel.text = NSLocalizedString("Bring posts to life with video", comment: "Heading for video upload feature, displayed after plan purchase")
             setDescriptionText(NSLocalizedString("You can upload and host videos on your site with VideoPress and your expanded media storage.", comment: "Descriptive text for video upload feature, displayed after plan purchase"))
-            actionButton.setTitle(NSLocalizedString("Start New Post", comment: "Title of button displayed after plan purchase, prompting user to start a new post"), forState: .Normal)
+            actionButton.setTitle(NSLocalizedString("Start New Post", comment: "Title of button displayed after plan purchase, prompting user to start a new post"), for: UIControlState())
         case .Themes:
             imageView.image = UIImage(named: "plans-post-purchase-themes")
             headingLabel.text = NSLocalizedString("Find a perfect, Premium theme", comment: "Title promoting premium themes, displayed after business plan purchase")
             setDescriptionText(NSLocalizedString("You now have unlimited access to Premium themes. Preview any theme on your site to get started.", comment: "Descriptive text promoting premium themes, displayed after business plan purchase"))
-            actionButton.setTitle(NSLocalizedString("Browse Themes", comment: "Title of button displayed after business plan purchase"), forState: .Normal)
+            actionButton.setTitle(NSLocalizedString("Browse Themes", comment: "Title of button displayed after business plan purchase"), for: UIControlState())
         }
     }
 
-    @IBAction private func actionButtonTapped() {
+    @IBAction fileprivate func actionButtonTapped() {
         guard let pageType = pageType else { return }
 
         // TODO (@frosty, 2016-02-19) These navigation implementations are currently using the primary blog as
@@ -311,18 +311,18 @@ class PlanPostPurchasePageViewController: UIViewController {
         switch pageType {
         case .Customize:
             let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            WPTabBarController.sharedInstance().switchMySitesTabToCustomizeViewForBlog(service.primaryBlog())
+            WPTabBarController.sharedInstance().switchMySitesTabToCustomizeView(for: service?.primaryBlog())
 
-            WPTabBarController.sharedInstance().dismissViewControllerAnimated(true, completion: nil)
+            WPTabBarController.sharedInstance().dismiss(animated: true, completion: nil)
         case .VideoPress:
-            WPTabBarController.sharedInstance().dismissViewControllerAnimated(true) {
+            WPTabBarController.sharedInstance().dismiss(animated: true) {
                 WPTabBarController.sharedInstance().showPostTab()
             }
         case .Themes:
             let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            WPTabBarController.sharedInstance().switchMySitesTabToThemesViewForBlog(service.primaryBlog())
+            WPTabBarController.sharedInstance().switchMySitesTabToThemesView(for: service?.primaryBlog())
 
-            WPTabBarController.sharedInstance().dismissViewControllerAnimated(true, completion: nil)
+            WPTabBarController.sharedInstance().dismiss(animated: true, completion: nil)
         default: break
         }
     }
@@ -337,7 +337,7 @@ enum PlanPostPurchasePageType: String {
     // This is the order we'd like pages to appear in the post purchase flow
     static let orderedPageTypes: [PlanPostPurchasePageType] = [ .Customize, .VideoPress, .Themes ]
 
-    static func pageTypesForPlan(plan: Plan) -> [PlanPostPurchasePageType] {
+    static func pageTypesForPlan(_ plan: Plan) -> [PlanPostPurchasePageType] {
         // Get all of the page types for the plan's features
         let slugs = plan.featureGroups
             .flatMap({ $0.slugs })

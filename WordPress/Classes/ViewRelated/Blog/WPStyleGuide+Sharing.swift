@@ -19,7 +19,7 @@ extension WPStyleGuide
 
         imageView.image = UIImage(named: "sharing-notice")
         imageView.tintColor = jazzyOrange()
-        imageView.contentMode = .Right
+        imageView.contentMode = .right
         return imageView
     }
 
@@ -31,16 +31,16 @@ extension WPStyleGuide
     ///
     /// - Returns: A template UIImage that can be tinted by a UIImageView's tintColor property.
     ///
-    public class func iconForService(service: NSString) -> UIImage {
-        let name = service.lowercaseString.stringByReplacingOccurrencesOfString("_", withString: "-")
+    public class func iconForService(_ service: NSString) -> UIImage {
+        let name = service.lowercased.replacingOccurrences(of: "_", with: "-")
         var iconName: String
 
         // Handle special cases
         switch name {
         case "print" :
-            return Gridicon.iconOfType(.Print)
+            return Gridicon.iconOfType(.print)
         case "email" :
-            return Gridicon.iconOfType(.Mail)
+            return Gridicon.iconOfType(.mail)
         case "google-plus-1" :
             iconName = "social-google-plus"
         case "press-this" :
@@ -53,7 +53,7 @@ extension WPStyleGuide
         if image == nil {
             image = UIImage(named: "social-default")
         }
-        return image!.imageWithRenderingMode(.AlwaysTemplate)
+        return image!.withRenderingMode(.alwaysTemplate)
     }
 
 
@@ -64,7 +64,7 @@ extension WPStyleGuide
     ///
     /// - Returns: The tint color for the service, or the default color.
     ///
-    public class func tintColorForConnectedService(service: String) -> UIColor {
+    public class func tintColorForConnectedService(_ service: String) -> UIColor {
         guard let name = SharingServiceNames(rawValue: service) else {
             return WPStyleGuide.wordPressBlue()
         }

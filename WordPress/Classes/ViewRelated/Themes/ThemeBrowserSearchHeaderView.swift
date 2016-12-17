@@ -6,11 +6,11 @@ class ThemeBrowserSearchHeaderView: UICollectionReusableView {
 
     static let reuseIdentifier = "ThemeBrowserSearchHeaderView"
 
-    private var searchWrapperView: UIView!
+    fileprivate var searchWrapperView: UIView!
 
     var searchBar: UISearchBar? = nil {
         didSet {
-            if let searchBar = searchBar where searchBar != oldValue {
+            if let searchBar = searchBar, searchBar != oldValue {
                 searchWrapperView.addSubview(searchBar)
             }
         }
@@ -26,7 +26,7 @@ class ThemeBrowserSearchHeaderView: UICollectionReusableView {
         commonInit()
     }
 
-    private func commonInit() {
+    fileprivate func commonInit() {
         searchWrapperView = SearchWrapperView()
         searchWrapperView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(searchWrapperView)

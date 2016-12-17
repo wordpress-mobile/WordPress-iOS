@@ -8,64 +8,64 @@ import WordPressComAnalytics
 /// A Stream represents a possible way in which notifications are communicated.
 /// For instance: Push Notifications / WordPress.com Timeline / Email
 ///
-public class NotificationSettingStreamsViewController : UITableViewController
+open class NotificationSettingStreamsViewController : UITableViewController
 {
     // MARK: - Initializers
     public convenience init(settings: NotificationSettings) {
-        self.init(style: .Grouped)
+        self.init(style: .grouped)
         setupWithSettings(settings)
     }
 
 
 
     // MARK: - View Lifecycle
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         setupNotifications()
         setupTableView()
     }
 
-    public override func viewWillAppear(animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
         tableView.deselectSelectedRowWithAnimation(true)
-        WPAnalytics.track(.OpenedNotificationSettingStreams)
+        WPAnalytics.track(.openedNotificationSettingStreams)
     }
 
 
 
     // MARK: - Setup Helpers
-    private func setupNotifications() {
+    fileprivate func setupNotifications() {
         // Reload whenever the app becomes active again since Push Settings may have changed in the meantime!
-        let notificationCenter = NSNotificationCenter.defaultCenter()
+        let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self,
             selector:   #selector(NotificationSettingStreamsViewController.reloadTable),
-            name:       UIApplicationDidBecomeActiveNotification,
+            name:       NSNotification.Name.UIApplicationDidBecomeActive,
             object:     nil)
     }
 
-    private func setupTableView() {
+    fileprivate func setupTableView() {
         // Empty Back Button
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
 
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
 
         // Style!
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
 
 
     // MARK: - Public Helpers
-    public func setupWithSettings(streamSettings: NotificationSettings) {
+    open func setupWithSettings(_ streamSettings: NotificationSettings) {
         // Title
         switch streamSettings.channel {
-        case let .Blog(blogId):
+        case let .blog(blogId):
             _ = blogId
             title = streamSettings.blog?.settings?.name ?? streamSettings.channel.description()
-        case .Other:
+        case .other:
             title = NSLocalizedString("Other Sites", comment: "Other Notifications Streams Title")
         default:
             // Note: WordPress.com is not expected here!
@@ -74,30 +74,30 @@ public class NotificationSettingStreamsViewController : UITableViewController
 
         // Structures
         settings       = streamSettings
-        sortedStreams  = streamSettings.streams.sort {  $0.kind.description() > $1.kind.description() }
+        sortedStreams  = streamSettings.streams.sorted {  $0.kind.description() > $1.kind.description() }
 
         tableView.reloadData()
     }
 
-    public func reloadTable() {
+    open func reloadTable() {
         tableView.reloadData()
     }
 
 
 
     // MARK: - UITableView Delegate Methods
-    public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    open override func numberOfSections(in tableView: UITableView) -> Int {
         return sortedStreams?.count ?? emptySectionCount
     }
 
-    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return rowsCount
     }
 
-    public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as? WPTableViewCell
+    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as? WPTableViewCell
         if cell == nil {
-            cell = WPTableViewCell(style: .Value1, reuseIdentifier: reuseIdentifier)
+            cell = WPTableViewCell(style: .value1, reuseIdentifier: reuseIdentifier)
         }
 
         configureCell(cell!, indexPath: indexPath)
@@ -105,18 +105,18 @@ public class NotificationSettingStreamsViewController : UITableViewController
         return cell!
     }
 
-    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    open override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return footerForStream(streamAtSection(section))
     }
 
-    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    open override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
 
 
     // MARK: - UITableView Delegate Methods
-    public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // iOS <8: Display the 'Enable Push Notifications Alert', when needed
         // iOS +8: Go ahead and push the details
         //
@@ -135,24 +135,24 @@ public class NotificationSettingStreamsViewController : UITableViewController
 
 
     // MARK: - Helpers
-    private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
+    fileprivate func configureCell(_ cell: UITableViewCell, indexPath: IndexPath) {
         let stream                  = streamAtSection(indexPath.section)
         let disabled                = isDisabledDeviceStream(stream)
 
         cell.imageView?.image       = imageForStreamKind(stream.kind)
         cell.imageView?.tintColor   = WPStyleGuide.greyLighten10()
-        cell.textLabel?.text        = stream.kind.description() ?? String()
+        cell.textLabel?.text        = stream.kind.description()
         cell.detailTextLabel?.text  = disabled ? NSLocalizedString("Off", comment: "Disabled") : String()
-        cell.accessoryType          = .DisclosureIndicator
+        cell.accessoryType          = .disclosureIndicator
 
         WPStyleGuide.configureTableViewCell(cell)
     }
 
-    private func streamAtSection(section: Int) -> NotificationSettings.Stream {
+    fileprivate func streamAtSection(_ section: Int) -> NotificationSettings.Stream {
         return sortedStreams![section]
     }
 
-    private func imageForStreamKind(streamKind: NotificationSettings.Stream.Kind) -> UIImage? {
+    fileprivate func imageForStreamKind(_ streamKind: NotificationSettings.Stream.Kind) -> UIImage? {
         let imageName : String
         switch streamKind {
         case .Email:
@@ -163,16 +163,16 @@ public class NotificationSettingStreamsViewController : UITableViewController
             imageName = "notifications-phone"
         }
 
-        return UIImage(named: imageName)?.imageWithRenderingMode(.AlwaysTemplate)
+        return UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
     }
 
 
     // MARK: - Disabled Push Notifications Helpers
-    private func isDisabledDeviceStream(stream: NotificationSettings.Stream) -> Bool {
+    fileprivate func isDisabledDeviceStream(_ stream: NotificationSettings.Stream) -> Bool {
         return stream.kind == .Device && !PushNotificationsManager.sharedInstance.notificationsEnabledInDeviceSettings()
     }
 
-    private func displayPushNotificationsAlert() {
+    fileprivate func displayPushNotificationsAlert() {
         let title   = NSLocalizedString("Push Notifications have been turned off in iOS Settings",
                                         comment: "Displayed when Push Notifications are disabled (iOS 7)")
         let message = NSLocalizedString("To enable notifications:\n\n" +
@@ -190,7 +190,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
 
 
     // MARK: - Footers
-    private func footerForStream(stream: NotificationSettings.Stream) -> String {
+    fileprivate func footerForStream(_ stream: NotificationSettings.Stream) -> String {
         switch stream.kind {
         case .Device:
             return NSLocalizedString("Settings for push notifications that appear on your mobile device.",
@@ -208,11 +208,11 @@ public class NotificationSettingStreamsViewController : UITableViewController
 
 
     // MARK: - Private Constants
-    private let reuseIdentifier     = WPTableViewCell.classNameWithoutNamespaces()
-    private let emptySectionCount   = 0
-    private let rowsCount           = 1
+    fileprivate let reuseIdentifier     = WPTableViewCell.classNameWithoutNamespaces()
+    fileprivate let emptySectionCount   = 0
+    fileprivate let rowsCount           = 1
 
     // MARK: - Private Properties
-    private var settings        : NotificationSettings?
-    private var sortedStreams   : [NotificationSettings.Stream]?
+    fileprivate var settings        : NotificationSettings?
+    fileprivate var sortedStreams   : [NotificationSettings.Stream]?
 }

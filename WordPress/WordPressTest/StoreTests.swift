@@ -18,8 +18,8 @@ class StoreTests: XCTestCase {
 
     func testGetPricesLocalization() {
         let store = MockStore.succeeding(after: 0)
-        store.products[0].priceLocale = NSLocale(localeIdentifier: "es-ES")
-        store.products[1].priceLocale = NSLocale(localeIdentifier: "es-ES")
+        store.products[0].priceLocale = Locale(identifier: "es-ES")
+        store.products[1].priceLocale = Locale(identifier: "es-ES")
         store.getPricesForPlans(
             TestPlans.allPlans,
             success: { pricedPlans in

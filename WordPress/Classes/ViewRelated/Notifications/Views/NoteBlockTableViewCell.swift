@@ -31,7 +31,7 @@ class NoteBlockTableViewCell: WPTableViewCell
     }
 
     func isLayoutCell() -> Bool {
-        return self.dynamicType.layoutIdentifier() == reuseIdentifier
+        return type(of: self).layoutIdentifier() == reuseIdentifier
     }
 
     class func reuseIdentifier() -> String {
@@ -50,6 +50,6 @@ class NoteBlockTableViewCell: WPTableViewCell
     }
 
     // MARK: - Private Constants
-    private let fullSeparatorInsets = UIEdgeInsetsZero
-    private let indentedSeparatorInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
+    fileprivate let fullSeparatorInsets = UIEdgeInsets.zero
+    fileprivate let indentedSeparatorInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
 }
