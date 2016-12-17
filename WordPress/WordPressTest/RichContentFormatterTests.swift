@@ -82,4 +82,12 @@ class RichContentFormatterTests: XCTestCase
     func testResizeGalleryImageURLsForContentEmptyString() {
         XCTAssertTrue("" == RichContentFormatter.resizeGalleryImageURL("", isPrivateSite: false))
     }
+
+
+    func testRemoveTrailingBRTags() {
+        let str = "<p>test</p><br><p>test</p>"
+        let styleStr = "<p>test</p><br><p>test</p><br><br> "
+        let sanitizedStr = RichContentFormatter.removeTrailingBreakTags(styleStr)
+        XCTAssertTrue(str == sanitizedStr, "The inline styles were not removed.")
+    }
 }

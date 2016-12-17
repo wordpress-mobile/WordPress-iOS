@@ -197,7 +197,7 @@ NSString * const CommentStatusDraft = @"draft";
 
 - (NSNumber *)numberOfLikes
 {
-    return self.likeCount;
+    return self.likeCount ?: @(0);
 }
 
 @end
