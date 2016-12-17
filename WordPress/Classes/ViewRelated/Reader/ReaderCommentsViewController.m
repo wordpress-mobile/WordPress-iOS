@@ -54,7 +54,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
 @property (nonatomic) BOOL isLoggedIn;
-@property (nonatomic) BOOL needsUpdateAfterScrolling;
+@property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
+@property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
 
 @end
 
@@ -732,6 +733,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)syncContentEnded
 {
     [self.activityFooter stopAnimating];
+    if ([self.tableViewHandler isScrolling]) {
+        self.needsRefreshTableViewAfterScrolling = YES;
+        return;
+    }
     [self refreshTableViewAndNoResultsView];
 }
 
@@ -862,8 +867,17 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     [self.tableView deselectSelectedRowWithAnimation:YES];
 
-    if (self.needsUpdateAfterScrolling) {
-        self.needsUpdateAfterScrolling = NO;
+    if (self.needsRefreshTableViewAfterScrolling) {
+        self.needsRefreshTableViewAfterScrolling = NO;
+        [self refreshTableViewAndNoResultsView];
+
+        // If we reloaded the tableView we also updated cell heights
+        // so there is no need to update for attachments.
+        self.needsUpdateAttachmentsAfterScrolling = NO;
+    }
+
+    if (self.needsUpdateAttachmentsAfterScrolling) {
+        self.needsUpdateAttachmentsAfterScrolling = NO;
 
         for (ReaderCommentCell *cell in [self.tableView visibleCells]) {
             [cell ensureTextViewLayout];
@@ -979,7 +993,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (BOOL)richContentViewShouldUpdateLayoutForAttachments:(WPRichContentView *)richContentView
 {
     if (self.tableViewHandler.isScrolling) {
-        self.needsUpdateAfterScrolling = YES;
+        self.needsUpdateAttachmentsAfterScrolling = YES;
         return NO;
     }
 
