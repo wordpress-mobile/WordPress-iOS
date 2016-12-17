@@ -25,6 +25,9 @@ import Foundation
 
         // Gallery Images
         static let galleryImgTags = try! NSRegularExpression(pattern: "<img[^>]*data-orig-file[^>]*/>", options: .caseInsensitive)
+
+        // Trailing BR Tags
+        static let trailingBRTags = try! NSRegularExpression(pattern: "(\\s*<br\\s*(/?)\\s*>\\s*)+$", options: .caseInsensitive)
     }
 
 
@@ -228,5 +231,27 @@ import Foundation
         }
 
         return value
+    }
+
+
+    /// Removes any trailing BR tags from the end of the specified string.
+    ///
+    /// - Parameters:
+    ///     - string: The content string to format.
+    ///
+    /// - Returns: The formatted string.
+    ///
+    class func removeTrailingBreakTags(_ string: String) -> String {
+        guard string.characters.count > 0 else {
+            return string
+        }
+        var content = string.trim()
+        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location:0, length: content.characters.count))
+        if let match = matches.first {
+            let index = content.characters.index(content.startIndex, offsetBy: match.range.location)
+            content = content.substring(to: index)
+        }
+
+        return content
     }
 }
