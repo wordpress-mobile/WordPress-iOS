@@ -78,6 +78,15 @@ static CGFloat const DefaultCellHeight = 44.0;
 - (void)refreshTableView
 {
     [self clearCachedRowHeights];
+    // If we're not listening for content changes, perform a fetch to ensure content
+    // is current.
+    if (![self listensForContentChanges]) {
+        NSError *error;
+        [self.resultsController performFetch:&error];
+        if (error) {
+            DDLogError(@"TableViewHandler: Error performing fetch while refreshing table view. %@", error);
+        }
+    }
     [self.tableView reloadData];
 }
 
