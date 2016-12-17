@@ -31,17 +31,6 @@ PODS:
     - CocoaLumberjack/Default
   - Crashlytics (3.8.3):
     - Fabric (~> 1.6.3)
-  - DTCoreText (1.6.16):
-    - DTFoundation/Core (~> 1.7.5)
-    - DTFoundation/DTAnimatedGIF (~> 1.7.5)
-    - DTFoundation/DTHTMLParser (~> 1.7.5)
-    - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.11)
-  - DTFoundation/DTAnimatedGIF (1.7.11)
-  - DTFoundation/DTHTMLParser (1.7.11):
-    - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.11):
-    - DTFoundation/Core
   - Expecta (1.0.5)
   - Fabric (1.6.11)
   - FLAnimatedImage (1.0.12)
@@ -165,7 +154,6 @@ DEPENDENCIES:
   - BuddyBuildSDK (~> 1.0.11)
   - CocoaLumberjack (~> 2.2.0)
   - Crashlytics
-  - DTCoreText (= 1.6.16)
   - Expecta (= 1.0.5)
   - FLAnimatedImage (~> 1.0)
   - FormatterKit (~> 1.8.1)
@@ -237,8 +225,6 @@ SPEC CHECKSUMS:
   BuddyBuildSDK: f4682598772ae66c9ef5554d2d78d0a19fb413a0
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
-  DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
-  DTFoundation: 0ef29c70a9814e15518694862bd739347abe2a50
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
@@ -269,6 +255,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 9ba8c29a1de4b07696356f541c01eeaa6dd14c47
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 51327f2b2a1e3e3680299a1c98a9a91eab31edf4
+PODFILE CHECKSUM: 2560fe99f1fc47ba1aed20a56eaddbd799effaa6
 
 COCOAPODS: 1.1.1
