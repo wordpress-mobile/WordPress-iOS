@@ -291,6 +291,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tableViewHandler.moveRowAnimation = UITableViewRowAnimationNone;
     self.tableViewHandler.deleteRowAnimation = UITableViewRowAnimationNone;
     self.tableViewHandler.delegate = self;
+    [self.tableViewHandler setListensForContentChanges:NO];
 }
 
 - (void)configureNoResultsView
@@ -517,9 +518,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self refreshReplyTextView];
     [self refreshSuggestionsTableView];
     [self refreshInfiniteScroll];
-    [self refreshNoResultsView];
+    [self refreshTableViewAndNoResultsView];
 
-    [self.tableView reloadData];
     [self.syncHelper syncContent];
 }
 
@@ -621,6 +621,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 }
 
 
+- (void)refreshTableViewAndNoResultsView
+{
+    [self.tableViewHandler refreshTableView];
+    [self refreshNoResultsView];
+}
+
 #pragma mark - Actions
 
 - (void)tapRecognized:(id)sender
@@ -654,6 +660,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         }
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
+
+        [weakSelf refreshTableViewAndNoResultsView];
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
@@ -672,6 +680,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
             [weakSelf sendReplyWithNewContent:content];
         }];
         [alertController presentFromRootViewController];
+
+        [weakSelf refreshTableViewAndNoResultsView];
     };
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
@@ -722,7 +732,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)syncContentEnded
 {
     [self.activityFooter stopAnimating];
-    [self refreshNoResultsView];
+    [self refreshTableViewAndNoResultsView];
 }
 
 
@@ -838,11 +848,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
 }
 
-- (void)tableViewDidChangeContent:(UITableView *)tableView
-{
-    [self refreshNoResultsView];
-}
-
 
 #pragma mark - UIScrollView Delegate Methods
 
@@ -927,7 +932,16 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
     }
 
-    [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:nil failure:nil];
+    __typeof(self) __weak weakSelf = self;
+    [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:^{
+
+        [weakSelf.tableView reloadData];
+    } failure:^(NSError *error) {
+
+        [weakSelf.tableView reloadData];
+    }];
+
+    [self.tableView reloadData];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
