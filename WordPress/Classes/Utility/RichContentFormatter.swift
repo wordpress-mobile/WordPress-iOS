@@ -10,22 +10,25 @@ import Foundation
     struct RegEx
     {
         // Forbidden tags
-        static let styleTags = try! NSRegularExpression(pattern: "<style[^>]*?>[\\s\\S]*?</style>", options: .CaseInsensitive)
-        static let scriptTags = try! NSRegularExpression(pattern: "<script[^>]*?>[\\s\\S]*?</script>", options: .CaseInsensitive)
-        static let tableTags = try! NSRegularExpression(pattern: "<table[^>]*?>[\\s\\S]*?</table>", options: .CaseInsensitive)
+        static let styleTags = try! NSRegularExpression(pattern: "<style[^>]*?>[\\s\\S]*?</style>", options: .caseInsensitive)
+        static let scriptTags = try! NSRegularExpression(pattern: "<script[^>]*?>[\\s\\S]*?</script>", options: .caseInsensitive)
+        static let tableTags = try! NSRegularExpression(pattern: "<table[^>]*?>[\\s\\S]*?</table>", options: .caseInsensitive)
 
         // Normalizaing Paragraphs
-        static let divTagsStart = try! NSRegularExpression(pattern: "<div[^>]*>", options: .CaseInsensitive)
-        static let divTagsEnd = try! NSRegularExpression(pattern: "</div>", options: .CaseInsensitive)
-        static let pTagsStart = try! NSRegularExpression(pattern: "<p[^>]*>\\s*<p[^>]*>", options: .CaseInsensitive)
-        static let pTagsEnd = try! NSRegularExpression(pattern: "</p>\\s*</p>", options: .CaseInsensitive)
-        static let newLines = try! NSRegularExpression(pattern: "\\n", options: .CaseInsensitive)
+        static let divTagsStart = try! NSRegularExpression(pattern: "<div[^>]*>", options: .caseInsensitive)
+        static let divTagsEnd = try! NSRegularExpression(pattern: "</div>", options: .caseInsensitive)
+        static let pTagsStart = try! NSRegularExpression(pattern: "<p[^>]*>\\s*<p[^>]*>", options: .caseInsensitive)
+        static let pTagsEnd = try! NSRegularExpression(pattern: "</p>\\s*</p>", options: .caseInsensitive)
+        static let newLines = try! NSRegularExpression(pattern: "\\n", options: .caseInsensitive)
 
         // Inline Styles
-        static let styleAttr = try! NSRegularExpression(pattern: "\\s*style=\"[^\"]*\"", options: .CaseInsensitive)
+        static let styleAttr = try! NSRegularExpression(pattern: "\\s*style=\"[^\"]*\"", options: .caseInsensitive)
 
         // Gallery Images
-        static let galleryImgTags = try! NSRegularExpression(pattern: "<img[^>]*data-orig-file[^>]*/>", options: .CaseInsensitive)
+        static let galleryImgTags = try! NSRegularExpression(pattern: "<img[^>]*data-orig-file[^>]*/>", options: .caseInsensitive)
+
+        // Trailing BR Tags
+        static let trailingBRTags = try! NSRegularExpression(pattern: "(\\s*<br\\s*(/?)\\s*>\\s*)+$", options: .caseInsensitive)
     }
 
 
@@ -38,7 +41,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    class func formatContentString(string: String, isPrivateStie isPrivate: Bool) -> String {
+    class func formatContentString(_ string: String, isPrivateStie isPrivate: Bool) -> String {
         guard string.characters.count > 0 else {
             return string
         }
@@ -47,7 +50,7 @@ import Foundation
         content = removeForbiddenTags(content)
         content = normalizeParagraphs(content)
         content = removeInlineStyles(content)
-        content = (content as NSString).stringByReplacingHTMLEmoticonsWithEmoji() as String
+        content = (content as NSString).replacingHTMLEmoticonsWithEmoji() as String
         content = resizeGalleryImageURL(content, isPrivateSite: isPrivate)
 
         return content
@@ -61,24 +64,24 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    class func removeForbiddenTags(string: String) -> String {
+    class func removeForbiddenTags(_ string: String) -> String {
         guard string.characters.count > 0 else {
             return string
         }
         var content = string
 
-        content = RegEx.styleTags.stringByReplacingMatchesInString(content,
-                                                                   options: .ReportCompletion,
+        content = RegEx.styleTags.stringByReplacingMatches(in: content,
+                                                                   options: .reportCompletion,
                                                                    range: NSRange(location: 0, length: content.characters.count),
                                                                    withTemplate: "")
 
-        content = RegEx.scriptTags.stringByReplacingMatchesInString(content,
-                                                                    options: .ReportCompletion,
+        content = RegEx.scriptTags.stringByReplacingMatches(in: content,
+                                                                    options: .reportCompletion,
                                                                     range: NSRange(location: 0, length: content.characters.count),
                                                                     withTemplate: "")
 
-        content = RegEx.tableTags.stringByReplacingMatchesInString(content,
-                                                                   options: .ReportCompletion,
+        content = RegEx.tableTags.stringByReplacingMatches(in: content,
+                                                                   options: .reportCompletion,
                                                                    range: NSRange(location: 0, length: content.characters.count),
                                                                    withTemplate: "")
 
@@ -93,7 +96,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    class func normalizeParagraphs(string: String) -> String {
+    class func normalizeParagraphs(_ string: String) -> String {
         guard string.characters.count > 0 else {
             return string
         }
@@ -102,31 +105,31 @@ import Foundation
         let closePTag = "</p>"
 
          // Convert div tags to p tags
-        content = RegEx.divTagsStart.stringByReplacingMatchesInString(content,
-                                                                   options: .ReportCompletion,
+        content = RegEx.divTagsStart.stringByReplacingMatches(in: content,
+                                                                   options: .reportCompletion,
                                                                    range: NSRange(location: 0, length: content.characters.count),
                                                                    withTemplate: openPTag)
 
-        content = RegEx.divTagsEnd.stringByReplacingMatchesInString(content,
-                                                                    options: .ReportCompletion,
+        content = RegEx.divTagsEnd.stringByReplacingMatches(in: content,
+                                                                    options: .reportCompletion,
                                                                     range: NSRange(location: 0, length: content.characters.count),
                                                                     withTemplate: closePTag)
 
         // Remove duplicate/redundant p tags.
-        content = RegEx.pTagsStart.stringByReplacingMatchesInString(content,
-                                                                   options: .ReportCompletion,
+        content = RegEx.pTagsStart.stringByReplacingMatches(in: content,
+                                                                   options: .reportCompletion,
                                                                    range: NSRange(location: 0, length: content.characters.count),
                                                                    withTemplate: openPTag)
 
-        content = RegEx.pTagsEnd.stringByReplacingMatchesInString(content,
-                                                                   options: .ReportCompletion,
+        content = RegEx.pTagsEnd.stringByReplacingMatches(in: content,
+                                                                   options: .reportCompletion,
                                                                    range: NSRange(location: 0, length: content.characters.count),
                                                                    withTemplate: closePTag)
 
-        content = RegEx.newLines.stringByReplacingMatchesInString(content,
-                                                                  options: .ReportCompletion,
-                                                                  range: NSRange(location: 0, length: content.characters.count),
-                                                                  withTemplate: "")
+        content = RegEx.newLines.stringByReplacingMatches(in: content,
+                                                          options: .reportCompletion,
+                                                          range: NSRange(location: 0, length: content.characters.count),
+                                                          withTemplate: "")
 
         return content
     }
@@ -139,14 +142,14 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    class func removeInlineStyles(string: String) -> String {
+    class func removeInlineStyles(_ string: String) -> String {
         guard string.characters.count > 0 else {
             return string
         }
         var content = string
 
-        content = RegEx.styleAttr.stringByReplacingMatchesInString(content,
-                                                                   options: .ReportCompletion,
+        content = RegEx.styleAttr.stringByReplacingMatches(in: content,
+                                                                   options: .reportCompletion,
                                                                    range: NSRange(location: 0, length: content.characters.count),
                                                                    withTemplate: "")
 
@@ -162,50 +165,50 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    class func resizeGalleryImageURL(string: String, isPrivateSite isPrivate: Bool) -> String {
+    class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool) -> String {
         guard string.characters.count > 0 else {
             return string
         }
 
-        guard let window = UIApplication.sharedApplication().keyWindow else {
+        guard let window = UIApplication.shared.keyWindow else {
             return string
         }
 
         let imageSize = window.frame.size
-        let scale = UIScreen.mainScreen().scale
-        let scaledSize = CGSizeApplyAffineTransform(imageSize, CGAffineTransformMakeScale(scale, scale))
+        let scale = UIScreen.main.scale
+        let scaledSize = imageSize.applying(CGAffineTransform(scaleX: scale, y: scale))
 
         let mContent = NSMutableString(string: string)
 
-        let matches = RegEx.galleryImgTags.matchesInString(mContent as String, options: [], range: NSRange(location: 0, length: mContent.length))
+        let matches = RegEx.galleryImgTags.matches(in: mContent as String, options: [], range: NSRange(location: 0, length: mContent.length))
 
-        for match in matches.reverse() {
-            let imgElementStr = mContent.substringWithRange(match.range)
+        for match in matches.reversed() {
+            let imgElementStr = mContent.substring(with: match.range)
             let srcImgURLStr = parseValueForAttribute("src", inElement: imgElementStr)
             let originalImgURLStr = parseValueForAttribute("data-orig-file", inElement: imgElementStr)
 
-            guard let originalURL = NSURL(string: originalImgURLStr) else {
+            guard let originalURL = URL(string: originalImgURLStr) else {
                 continue
             }
 
-            var modifiedURL: NSURL
+            var modifiedURL: URL
             if isPrivate {
                 modifiedURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: originalURL)
             } else {
-                modifiedURL = PhotonImageURLHelper.photonURLWithSize(imageSize, forImageURL: originalURL)
+                modifiedURL = PhotonImageURLHelper.photonURL(with: imageSize, forImageURL: originalURL)
             }
 
-            guard let modifiedURLStr = modifiedURL.absoluteString else {
+            guard modifiedURL.absoluteString.isEmpty() == false else {
                 continue
             }
 
             let mImageStr = NSMutableString(string: imgElementStr)
-            mImageStr.replaceOccurrencesOfString(srcImgURLStr,
-                                                 withString: modifiedURLStr,
-                                                 options: .LiteralSearch,
-                                                 range: NSRange(location: 0, length: imgElementStr.characters.count))
+            mImageStr.replaceOccurrences(of: srcImgURLStr,
+                                         with: modifiedURL.absoluteString,
+                                         options: .literal,
+                                         range: NSRange(location: 0, length: imgElementStr.characters.count))
 
-            mContent.replaceCharactersInRange(match.range, withString: mImageStr as String)
+            mContent.replaceCharacters(in: match.range, with: mImageStr as String)
         }
 
         return mContent as String
@@ -220,19 +223,41 @@ import Foundation
     ///
     /// - Returns: The value for the attribute or an empty string..
     ///
-    class func parseValueForAttribute(attribute: String, inElement element: String) -> String {
+    class func parseValueForAttribute(_ attribute: String, inElement element: String) -> String {
         let elementStr = element as NSString
         var value = ""
         let attrStr = "\(attribute)=\""
-        let attrRange = elementStr.rangeOfString(attrStr)
+        let attrRange = elementStr.range(of: attrStr)
 
         if attrRange.location != NSNotFound {
             let location = attrRange.location + attrRange.length
             let length = elementStr.length - location
-            let ending = elementStr.rangeOfString("\"", options: .CaseInsensitiveSearch, range: NSRange(location: location, length: length))
-            value = elementStr.substringWithRange(NSRange(location: location, length: ending.location - location))
+            let ending = elementStr.range(of: "\"", options: .caseInsensitive, range: NSRange(location: location, length: length))
+            value = elementStr.substring(with: NSRange(location: location, length: ending.location - location))
         }
 
         return value
+    }
+
+
+    /// Removes any trailing BR tags from the end of the specified string.
+    ///
+    /// - Parameters:
+    ///     - string: The content string to format.
+    ///
+    /// - Returns: The formatted string.
+    ///
+    class func removeTrailingBreakTags(_ string: String) -> String {
+        guard string.characters.count > 0 else {
+            return string
+        }
+        var content = string.trim()
+        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location:0, length: content.characters.count))
+        if let match = matches.first {
+            let index = content.characters.index(content.startIndex, offsetBy: match.range.location)
+            content = content.substring(to: index)
+        }
+
+        return content
     }
 }

@@ -17,9 +17,9 @@ class GravatarServiceTests : XCTestCase {
             super.init(accountToken: accountToken, accountEmail: accountEmail)
         }
 
-        override func uploadImage(image: UIImage, completion: ((error: NSError?) -> ())?) {
+        override func uploadImage(_ image: UIImage, completion: ((_ error: NSError?) -> ())?) {
             if let completion = completion {
-                completion(error: nil)
+                completion(nil)
             }
         }
     }
@@ -49,9 +49,9 @@ class GravatarServiceTests : XCTestCase {
         let mainContext = contextManager.mainContext
 
         let accountService = AccountService(managedObjectContext: mainContext)
-        accountService.removeDefaultWordPressComAccount()
+        accountService?.removeDefaultWordPressComAccount()
 
-        let gravatarService = GravatarService(context: mainContext)
+        let gravatarService = GravatarService(context: mainContext!)
         XCTAssertNil(gravatarService)
     }
 
@@ -59,7 +59,7 @@ class GravatarServiceTests : XCTestCase {
         createTestAccount(username: "some", token: "1234", emailAddress: "email@wordpress.com")
 
         let mainContext = contextManager.mainContext
-        let gravatarService = GravatarService(context: mainContext)
+        let gravatarService = GravatarService(context: mainContext!)
         XCTAssertNotNil(gravatarService)
     }
 
@@ -67,7 +67,7 @@ class GravatarServiceTests : XCTestCase {
         createTestAccount(username: "some", token: "1234", emailAddress: "emAil@wordpress.com")
 
         let mainContext = contextManager.mainContext
-        let gravatarService = GravatarServiceTester(context: mainContext)
+        let gravatarService = GravatarServiceTester(context: mainContext!)
         gravatarService?.uploadImage(UIImage())
 
         XCTAssertEqual("email@wordpress.com", gravatarService!.gravatarServiceRemoteMock!.capturedAccountEmail)
@@ -77,22 +77,21 @@ class GravatarServiceTests : XCTestCase {
         createTestAccount(username: "some", token: "1234", emailAddress: " email@wordpress.com ")
 
         let mainContext = contextManager.mainContext
-        let gravatarService = GravatarServiceTester(context: mainContext)
+        let gravatarService = GravatarServiceTester(context: mainContext!)
         gravatarService?.uploadImage(UIImage())
 
         XCTAssertEqual("email@wordpress.com", gravatarService!.gravatarServiceRemoteMock!.capturedAccountEmail)
     }
 
-    private func createTestAccount(username username: String, token: String, emailAddress: String) {
+    private func createTestAccount(username: String, token: String, emailAddress: String) {
         let mainContext = contextManager.mainContext
 
         let accountService = AccountService(managedObjectContext: mainContext)
-        let defaultAccount = accountService.createOrUpdateAccountWithUsername(username, authToken: token)
-        defaultAccount.email = emailAddress
+        let defaultAccount = accountService?.createOrUpdateAccount(withUsername: username, authToken: token)
+        defaultAccount?.email = emailAddress
         contextManager.saveContextAndWait(mainContext)
 
-        accountService.setDefaultWordPressComAccount(defaultAccount)
-        XCTAssertNotNil(accountService.defaultWordPressComAccount())
-
+        accountService?.setDefaultWordPressComAccount(defaultAccount!)
+        XCTAssertNotNil(accountService?.defaultWordPressComAccount())
     }
 }

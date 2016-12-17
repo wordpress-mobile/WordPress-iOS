@@ -5,7 +5,7 @@ extension NSFetchedResultsController
 {
     /// Returns whether an indexPath represents the last row in it's section, or not
     ///
-    func isLastIndexPathInSection(indexPath: NSIndexPath) -> Bool {
+    func isLastIndexPathInSection(_ indexPath: IndexPath) -> Bool {
         guard let sections = sections else {
             return false
         }
@@ -17,10 +17,14 @@ extension NSFetchedResultsController
         return indexPath.row == sections[indexPath.section].numberOfObjects - 1
     }
 
+/*
+     Nuked for Swift 3 migration, see: https://swift.org/migration-guide/
+     Ref: "Objective-C lightweight generic classes are now imported as generic types"
+     - Brent Nov 28/16
 
     /// Returns an object of the specified type. Nil if the indexPath is out of bounds.
     ///
-    func objectOfType<T : NSManagedObject>(type: T.Type, atIndexPath indexPath: NSIndexPath) -> T? {
+    func objectOfType<T : NSManagedObject>(_ type: T.Type, atIndexPath indexPath: IndexPath) -> T? {
         guard let sections = sections else {
             return nil
         }
@@ -33,6 +37,7 @@ extension NSFetchedResultsController
             return nil
         }
 
-        return objectAtIndexPath(indexPath) as? T
+        return object(at: indexPath) as? T
     }
+*/
 }

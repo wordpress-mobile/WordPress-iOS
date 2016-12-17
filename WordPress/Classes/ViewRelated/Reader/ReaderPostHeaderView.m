@@ -111,7 +111,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_avatarImageView(avatarSize)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_avatarImageView(avatarSize)]-(>=0)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -131,7 +131,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[_subtitleLabel(labelHeight)][_titleLabel(labelHeight)]-(-2)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[_subtitleLabel(labelHeight)][_titleLabel(labelHeight)]"
                                                                  options:NSLayoutFormatAlignAllLeft
                                                                  metrics:metrics
                                                                    views:views]];

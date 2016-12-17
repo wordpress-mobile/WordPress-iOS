@@ -14,7 +14,7 @@ class ReaderSpacerView : UIView
         }
     }
 
-    override func intrinsicContentSize() -> CGSize {
+    override var intrinsicContentSize : CGSize {
         return CGSize(width: space, height: space)
     }
 

@@ -2,21 +2,21 @@ import Foundation
 import Gridicons
 import WordPressShared.WPStyleGuide
 
-@objc public class ReaderFollowedSitesStreamHeader: UIView, ReaderStreamHeader
+@objc open class ReaderFollowedSitesStreamHeader: UIView, ReaderStreamHeader
 {
-    @IBOutlet private weak var borderedView: UIView!
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var disclosureIcon: UIImageView!
-    @IBOutlet private weak var contentButton: UIButton!
+    @IBOutlet fileprivate weak var borderedView: UIView!
+    @IBOutlet fileprivate weak var imageView: UIImageView!
+    @IBOutlet fileprivate weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var disclosureIcon: UIImageView!
+    @IBOutlet fileprivate weak var contentButton: UIButton!
 
-    public weak var delegate: ReaderStreamHeaderDelegate?
+    open weak var delegate: ReaderStreamHeaderDelegate?
 
 
     // MARK: - Lifecycle Methods
 
 
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
 
         applyStyles()
@@ -25,30 +25,30 @@ import WordPressShared.WPStyleGuide
 
     func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
-        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
+        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
 
         titleLabel.font = WPStyleGuide.tableviewTextFont()
         titleLabel.textColor = WPStyleGuide.darkGrey()
         titleLabel.text = NSLocalizedString("Manage", comment: "Button title. Tapping lets the user manage the sites they follow.")
 
-        disclosureIcon.image = Gridicon.iconOfType(.ChevronRight, withSize: disclosureIcon.frame.size)
+        disclosureIcon.image = Gridicon.iconOfType(.chevronRight, withSize: disclosureIcon.frame.size)
         disclosureIcon.tintColor = WPStyleGuide.accessoryDefaultTintColor()
 
-        imageView.image = Gridicon.iconOfType(.Cog)
-        imageView.tintColor = UIColor.whiteColor()
+        imageView.image = Gridicon.iconOfType(.cog)
+        imageView.tintColor = UIColor.white
     }
 
 
     // MARK: - Configuration
 
 
-    public func configureHeader(topic: ReaderAbstractTopic) {
+    open func configureHeader(_ topic: ReaderAbstractTopic) {
         // no op
     }
 
 
-    public func enableLoggedInFeatures(enable: Bool) {
+    open func enableLoggedInFeatures(_ enable: Bool) {
         // no op
     }
 
@@ -56,19 +56,19 @@ import WordPressShared.WPStyleGuide
     // MARK: - Actions
 
 
-    @IBAction func didTouchDown(sender: UIButton) {
+    @IBAction func didTouchDown(_ sender: UIButton) {
         borderedView.backgroundColor = WPStyleGuide.cellDefaultHighlightColor()
     }
 
 
-    @IBAction func didTouchUpInside(sender: UIButton) {
-        borderedView.backgroundColor = UIColor.whiteColor()
+    @IBAction func didTouchUpInside(_ sender: UIButton) {
+        borderedView.backgroundColor = UIColor.white
 
         delegate?.handleFollowActionForHeader(self)
     }
 
 
-    @IBAction func didTouchUpOutside(sender: UIButton) {
-        borderedView.backgroundColor = UIColor.whiteColor()
+    @IBAction func didTouchUpOutside(_ sender: UIButton) {
+        borderedView.backgroundColor = UIColor.white
     }
 }
