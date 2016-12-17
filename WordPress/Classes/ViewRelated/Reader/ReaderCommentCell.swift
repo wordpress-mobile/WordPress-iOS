@@ -219,7 +219,7 @@ class ReaderCommentCell : UITableViewCell
         guard let comment = comment else {
             return
         }
-        delegate?.cell(self, didTapLike: comment)
+        delegate?.cell(self, didTapAuthor: comment)
     }
 
 
