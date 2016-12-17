@@ -52,6 +52,22 @@ static CGFloat const DefaultCellHeight = 44.0;
 }
 
 
+- (BOOL)listensForContentChanges
+{
+    return self.resultsController.delegate != nil;
+}
+
+
+- (void)setListensForContentChanges:(BOOL)listens
+{
+    if (listens) {
+        self.resultsController.delegate = self;
+    } else {
+        self.resultsController.delegate = nil;
+    }
+}
+
+
 #pragma mark - Public Methods
 
 - (void)clearCachedRowHeights
