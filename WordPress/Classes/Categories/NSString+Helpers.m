@@ -362,4 +362,10 @@ static NSString *const Ellipsis =  @"\u2026";
     return wordCount;
 }
 
+- (NSString *)stringByNormalizingWhitespace
+{
+    return [self stringByReplacingOccurrencesOfString:@"\\s" withString:@" " options:NSRegularExpressionSearch range:NSMakeRange(0, self.length)];
+}
+
+
 @end

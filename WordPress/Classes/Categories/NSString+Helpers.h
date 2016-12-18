@@ -34,4 +34,7 @@
  */
 - (NSUInteger)wordCount;
 
+
+- (NSString *)stringByNormalizingWhitespace;
+
 @end
