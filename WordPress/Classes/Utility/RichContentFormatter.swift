@@ -19,6 +19,8 @@ import Foundation
         static let divTagsEnd = try! NSRegularExpression(pattern: "</div>", options: .caseInsensitive)
         static let pTagsStart = try! NSRegularExpression(pattern: "<p[^>]*>\\s*<p[^>]*>", options: .caseInsensitive)
         static let pTagsEnd = try! NSRegularExpression(pattern: "</p>\\s*</p>", options: .caseInsensitive)
+        static let newLines = try! NSRegularExpression(pattern: "\\n", options: .caseInsensitive)
+        static let preTags = try! NSRegularExpression(pattern: "<pre[^>]*>[\\s\\S]*?</pre>", options: .caseInsensitive)
 
         // Inline Styles
         static let styleAttr = try! NSRegularExpression(pattern: "\\s*style=\"[^\"]*\"", options: .caseInsensitive)
@@ -125,8 +127,53 @@ import Foundation
                                                                    range: NSRange(location: 0, length: content.characters.count),
                                                                    withTemplate: closePTag)
 
+        content = filterNewLines(content)
+
         return content
     }
+
+
+    class func filterNewLines(_ string: String) -> String {
+        var content = string
+
+        var ranges = [NSRange]()
+        // We don't want to remove new lines from preformatted tag blocks,
+        // so get the ranges of such blocks.
+        let matches = RegEx.preTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.characters.count))
+        if matches.count == 0 {
+
+            // No blocks found, so we'll parse the whole string.
+            ranges.append(NSRange(location: 0, length: content.characters.count))
+
+        } else {
+
+            // One or more preformatted blocks found, we don't want to remove new lines
+            // from them so get the inverse of the preformatted ranges.
+            var location = 0
+            var length = 0
+            for match in matches {
+                length = match.range.location - location
+
+                let range = NSRange(location: location, length: length)
+                ranges.append(range)
+                location = match.range.location + match.range.length
+            }
+
+            length = content.characters.count - location
+            ranges.append(NSRange(location: location, length: length))
+        }
+
+        // Now remove the new lines from the computed ranges, and return the edited string.
+        for range in ranges.reversed() {
+            content = RegEx.newLines.stringByReplacingMatches(in: content,
+                                                              options: .reportCompletion,
+                                                              range: range,
+                                                              withTemplate: "")
+        }
+
+        return content
+    }
+
 
 
     /// Removes inline style attributes from the specified content string.
