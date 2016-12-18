@@ -224,4 +224,12 @@
     XCTAssertFalse([@"notavalid.email" isValidEmail]);
 }
 
+- (void)testNormalizeWhitespace
+{
+    NSString *sourceString = @"This     is a \n\n\n test    string.   ";
+    NSString *expectedString = @"This is a test string. ";
+
+    XCTAssertTrue([expectedString isEqualToString:[sourceString stringByNormalizingWhitespace]]);
+}
+
 @end
