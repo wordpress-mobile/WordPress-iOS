@@ -364,7 +364,7 @@ static NSString *const Ellipsis =  @"\u2026";
 
 - (NSString *)stringByNormalizingWhitespace
 {
-    return [self stringByReplacingOccurrencesOfString:@"\\s" withString:@" " options:NSRegularExpressionSearch range:NSMakeRange(0, self.length)];
+    return [self stringByReplacingOccurrencesOfString:@"\\s{2,}" withString:@" " options:NSRegularExpressionSearch range:NSMakeRange(0, self.length)];
 }
 
 
