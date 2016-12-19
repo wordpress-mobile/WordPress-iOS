@@ -74,6 +74,7 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
+@property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
 
 @end
 
@@ -127,6 +128,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self setupAppbotX];
     [self setupStoreKit];
     [self setupBuddyBuild];
+    [self setupPingHub];
 
     return YES;
 }
@@ -188,6 +190,11 @@ int ddLogLevel = DDLogLevelInfo;
     
     [BuddyBuildSDK setup];
 #endif
+}
+
+- (void)setupPingHub
+{
+    self.pinghubManager = [PingHubManager new];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
