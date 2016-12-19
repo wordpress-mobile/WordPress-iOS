@@ -135,7 +135,7 @@ PODS:
   - PDKTZipArchive (0.4.1)
   - Reachability (3.2)
   - Specta (1.0.5)
-  - Starscream (1.1.4)
+  - Starscream (2.0.2)
   - SVProgressHUD (1.1.3)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-AppbotX (1.0.6)
@@ -184,7 +184,7 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift
   - Reachability (= 3.2)
   - Specta (= 1.0.5)
-  - Starscream (~> 1.1.4)
+  - Starscream (~> 2.0)
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
@@ -259,7 +259,7 @@ SPEC CHECKSUMS:
   PDKTZipArchive: 22bbab52b49f46a3adf1acf134311fd252c43feb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
-  Starscream: f919aeaf81afca6d5d4d3e5f6dd136ec92af2aa1
+  Starscream: 6c135a34e0a6e60cedaa0b30db67a4c05cf7cd38
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
@@ -272,6 +272,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 9ba8c29a1de4b07696356f541c01eeaa6dd14c47
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 5888cfed48d744f1bae731f55a40965d0f957eca
+PODFILE CHECKSUM: 44347e89cbd5a8f096d208179e8ad7a841628678
 
 COCOAPODS: 1.1.1

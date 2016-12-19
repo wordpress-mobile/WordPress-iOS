@@ -11,20 +11,20 @@ import Starscream
 public protocol PinghubClientDelegate {
     /// The client connected successfully.
     ///
-    func pingubConnected(client client: PinghubClient)
+    func pingubConnected(client: PinghubClient)
 
     /// The client disconnected. This might be intentional or due to an error.
     /// The optional error argument will contain the error if there is one.
     ///
-    func pinghubDisconnected(client client: PinghubClient, error: ErrorType?)
+    func pinghubDisconnected(client: PinghubClient, error: Error?)
 
     /// The client received an action.
     ///
-    func pinghubActionReceived(client client: PinghubClient, action: PinghubClient.Action)
+    func pinghubActionReceived(client: PinghubClient, action: PinghubClient.Action)
 
     /// The client received some data that it didn't look like a known action.
     ///
-    func pinghubUnexpectedDataReceived(client client: PinghubClient, message: String)
+    func pinghubUnexpectedDataReceived(client: PinghubClient, message: String)
 }
 
 
@@ -50,7 +50,7 @@ public class PinghubClient {
     /// Initializes the client with an OAuth2 token.
     ///
     public convenience init(token: String) {
-        let socket = starscreamSocket(PinghubClient.endpoint, token: token)
+        let socket = starscreamSocket(url: PinghubClient.endpoint, token: token)
         self.init(socket: socket)
     }
 
@@ -90,8 +90,8 @@ public class PinghubClient {
             guard let client = self else {
                 return
             }
-            guard let data = text.dataUsingEncoding(NSUTF8StringEncoding),
-                let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
+            guard let data = text.data(using: .utf8),
+                let json = try? JSONSerialization.jsonObject(with: data, options: []),
                 let message = json as? [String: AnyObject],
                 let action = Action.from(message: message) else {
                     let error = "PingHub received unexpected message: \(text)"
@@ -102,7 +102,7 @@ public class PinghubClient {
         }
     }
 
-    internal static let endpoint = NSURL(string: "wss://public-api.wordpress.com/pinghub/wpcom/me/newest-note-data")!
+    internal static let endpoint = URL(string: "wss://public-api.wordpress.com/pinghub/wpcom/me/newest-note-data")!
 }
 
 
@@ -130,7 +130,7 @@ extension PinghubClient {
         /// Creates an action from a received message, if it represents a known
         /// action. Otherwise, it returns `nil`
         ///
-        public static func from(message message: [String: AnyObject]) -> Action? {
+        public static func from(message: [String: AnyObject]) -> Action? {
             guard let action = message["action"] as? String else {
                 return nil
             }
@@ -168,7 +168,7 @@ internal protocol Socket: class {
     var onConnect: (() -> Void)? { get set }
     var onDisconnect: ((NSError?) -> Void)? { get set }
     var onText: ((String) -> Void)? { get set }
-    var onData: ((NSData) -> Void)? { get set }
+    var onData: ((Data) -> Void)? { get set }
 }
 
 
@@ -177,7 +177,7 @@ internal protocol Socket: class {
 // MARK: - Starscream
 
 
-private func starscreamSocket(url: NSURL, token: String) -> Socket {
+private func starscreamSocket(url: URL, token: String) -> Socket {
     let socket = WebSocket(url: PinghubClient.endpoint)
     socket.origin = nil
     socket.headers = ["Authorization" : "Bearer \(token)"]
