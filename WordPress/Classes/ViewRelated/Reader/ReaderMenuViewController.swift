@@ -154,12 +154,16 @@ import WordPressShared
 
     // MARK: - Instance Methods
 
-    /// Clean up topics that do not belong in the menu and posts that have no topic
+    /// Clean up topics that do not belong in the menu, posts that have no topic
+    /// and mark all posts as not in use.
     /// This is merely a convenient place to perform this task.
     ///
     func cleanupStaleContent(removeAllTopics removeAll: Bool) {
         let context = ContextManager.sharedInstance().mainContext
-        ReaderPostService(managedObjectContext: context).deletePostsWithNoTopic()
+
+        let postService = ReaderPostService(managedObjectContext: context)
+        postService?.deletePostsWithNoTopic()
+        postService?.markAllPostsNotInUse()
 
         if removeAll {
             ReaderTopicService(managedObjectContext: context).deleteAllTopics()
