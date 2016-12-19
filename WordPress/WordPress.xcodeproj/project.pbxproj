@@ -643,6 +643,7 @@
 		E14B40FD1C58B806005046F6 /* AccountSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14B40FC1C58B806005046F6 /* AccountSettingsViewController.swift */; };
 		E14B40FF1C58B93F005046F6 /* SettingsCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14B40FE1C58B93F005046F6 /* SettingsCommon.swift */; };
 		E14B74111C7B16FD00C26E21 /* WPNoResultsView+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14B74101C7B16FD00C26E21 /* WPNoResultsView+Model.swift */; };
+		E14DFAFB1E07E7C400494688 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14DFAFA1E07E7C400494688 /* Data.swift */; };
 		E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */ = {isa = PBXBuildFile; fileRef = E150275E1E03E51500B847E3 /* notes-action-delete.json */; };
 		E15027621E03E51500B847E3 /* notes-action-push.json in Resources */ = {isa = PBXBuildFile; fileRef = E150275F1E03E51500B847E3 /* notes-action-push.json */; };
 		E15027631E03E51500B847E3 /* notes-action-unsupported.json in Resources */ = {isa = PBXBuildFile; fileRef = E15027601E03E51500B847E3 /* notes-action-unsupported.json */; };
@@ -1960,6 +1961,7 @@
 		E14B40FE1C58B93F005046F6 /* SettingsCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCommon.swift; sourceTree = "<group>"; };
 		E14B74101C7B16FD00C26E21 /* WPNoResultsView+Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPNoResultsView+Model.swift"; sourceTree = "<group>"; };
 		E14D65C717E09663007E3EA4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		E14DFAFA1E07E7C400494688 /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		E150275E1E03E51500B847E3 /* notes-action-delete.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notes-action-delete.json"; sourceTree = "<group>"; };
 		E150275F1E03E51500B847E3 /* notes-action-push.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notes-action-push.json"; sourceTree = "<group>"; };
 		E15027601E03E51500B847E3 /* notes-action-unsupported.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notes-action-unsupported.json"; sourceTree = "<group>"; };
@@ -3988,6 +3990,7 @@
 				B5B84CDA1D9985190058A8FF /* CGAffineTransform+Helpers.swift */,
 				FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */,
 				177CBE4F1DA3A3AC009F951E /* CollectionType+Helpers.swift */,
+				E14DFAFA1E07E7C400494688 /* Data.swift */,
 				B58CE5E01DC139A0004AA81D /* Dictionary+Helpers.swift */,
 				B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */,
 				B5E167F319C08D18009535AA /* NSCalendar+Helpers.swift */,
@@ -6150,6 +6153,7 @@
 				E6B896DC1CB7FB1F00E3FD8F /* SigninLinkAuthViewController.swift in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				B54106901B6FE38400C880D0 /* WPWebViewController+Auth.swift in Sources */,
+				E14DFAFB1E07E7C400494688 /* Data.swift in Sources */,
 				E14B40FD1C58B806005046F6 /* AccountSettingsViewController.swift in Sources */,
 				08CC677F1C49B65A00153AD7 /* Menu.m in Sources */,
 				BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */,
