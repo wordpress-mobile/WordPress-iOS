@@ -11,7 +11,7 @@ abstract_target 'WordPress_Base' do
   pod 'WordPress-iOS-Shared', '0.7.0'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
-  pod 'WordPressCom-Stats-iOS', '0.8.0'
+  pod 'WordPressCom-Stats-iOS', '0.8.1'
 
   target 'WordPress' do
     # ---------------------
@@ -33,6 +33,7 @@ abstract_target 'WordPress_Base' do
     pod 'Crashlytics'
     pod 'BuddyBuildSDK', '~> 1.0.11', :configurations => ['Release-Alpha']
     pod 'FLAnimatedImage', '~> 1.0'
+    pod 'Starscream', '~> 1.1.4' # Pinned to v1 for Swift 2
     # ----------------------------
     # Forked third party libraries
     # ----------------------------
