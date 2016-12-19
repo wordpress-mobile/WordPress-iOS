@@ -86,7 +86,7 @@ class PingHubTests: XCTestCase {
         socket.onText?(text)
 
         XCTAssertNil(delegate.receivedAction)
-        XCTAssertNotNil(delegate.unexpectedMessage)
+        XCTAssertNotNil(delegate.unexpected)
     }
 
     func testClientHandlesUnknownData() {
@@ -100,7 +100,7 @@ class PingHubTests: XCTestCase {
         socket.onData?(data)
 
         XCTAssertNil(delegate.receivedAction)
-        XCTAssertNotNil(delegate.unexpectedMessage)
+        XCTAssertNotNil(delegate.unexpected)
     }
 }
 
@@ -128,21 +128,21 @@ class MockSocket: Socket {
 class MockPingHubDelegate: PinghubClientDelegate {
     var connected = false
     var receivedAction: PinghubClient.Action? = nil
-    var unexpectedMessage: String? = nil
+    var unexpected: PinghubClient.Unexpected? = nil
 
-    func pingubConnected(client: PinghubClient) {
+    func pingubDidConnect(_ client: PinghubClient) {
         connected = true
     }
 
-    func pinghubDisconnected(client: PinghubClient, error: Error?) {
+    func pinghubDidDisconnect(_ client: PinghubClient, error: Error?) {
         connected = false
     }
 
-    func pinghubActionReceived(client: PinghubClient, action: PinghubClient.Action) {
+    func pinghub(_ client: PinghubClient, actionReceived action: PinghubClient.Action) {
         receivedAction = action
     }
 
-    func pinghubUnexpectedDataReceived(client: PinghubClient, message: String) {
-        unexpectedMessage = message
+    func pinghub(_ client: PinghubClient, unexpected message: PinghubClient.Unexpected) {
+        unexpected = message
     }
 }
