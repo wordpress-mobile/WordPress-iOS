@@ -14,10 +14,10 @@ class PingHubTests: XCTestCase {
     }
 
     func testActionPush() {
-        let message = loadJSONMessage("notes-action-push")!
+        let message = loadJSONMessage(name: "notes-action-push")!
         let action = PinghubClient.Action.from(message: message)
 
-        guard case .Some(.push(let noteID, let userID, _, _)) = action else {
+        guard case .some(.push(let noteID, let userID, _, _)) = action else {
             XCTFail("Action is of the wrong type")
             return
         }
@@ -26,10 +26,10 @@ class PingHubTests: XCTestCase {
     }
 
     func testActionDelete() {
-        let message = loadJSONMessage("notes-action-delete")!
+        let message = loadJSONMessage(name: "notes-action-delete")!
         let action = PinghubClient.Action.from(message: message)
 
-        guard case .Some(.delete(let noteID)) = action else {
+        guard case .some(.delete(let noteID)) = action else {
             XCTFail("Action is of the wrong type")
             return
         }
@@ -37,7 +37,7 @@ class PingHubTests: XCTestCase {
     }
 
     func testActionUnsupported() {
-        let message = loadJSONMessage("notes-action-unsupported")!
+        let message = loadJSONMessage(name: "notes-action-unsupported")!
         let action = PinghubClient.Action.from(message: message)
         XCTAssertNil(action)
     }
@@ -58,7 +58,7 @@ class PingHubTests: XCTestCase {
     }
 
     func testClientParseAction() {
-        let path = NSBundle(forClass: PingHubTests.self).pathForResource("notes-action-push", ofType: "json")!
+        let path = Bundle(for: PingHubTests.self).path(forResource: "notes-action-push", ofType: "json")!
         let text = try! String(contentsOfFile: path)
         let socket = MockSocket()
         let delegate = MockPingHubDelegate()
@@ -67,7 +67,7 @@ class PingHubTests: XCTestCase {
 
         socket.onText?(text)
 
-        guard case .Some(.push(let noteID, let userID, _, _)) = delegate.receivedAction else {
+        guard case .some(.push(let noteID, let userID, _, _)) = delegate.receivedAction else {
             XCTFail("Didn't receive the right action")
             return
         }
@@ -76,7 +76,7 @@ class PingHubTests: XCTestCase {
     }
 
     func testClientHandlesUnknownMessage() {
-        let path = NSBundle(forClass: PingHubTests.self).pathForResource("notes-action-unsupported", ofType: "json")!
+        let path = Bundle(for: PingHubTests.self).path(forResource: "notes-action-unsupported", ofType: "json")!
         let text = try! String(contentsOfFile: path)
         let socket = MockSocket()
         let delegate = MockPingHubDelegate()
@@ -91,7 +91,7 @@ class PingHubTests: XCTestCase {
 
     func testClientHandlesUnknownData() {
         var number = 1
-        let data = NSData(bytes: &number, length: sizeof(number.dynamicType))
+        let data = Data(bytes: &number, count: MemoryLayout<Int>.size)
         let socket = MockSocket()
         let delegate = MockPingHubDelegate()
         let client = PinghubClient(socket: socket)
@@ -106,13 +106,7 @@ class PingHubTests: XCTestCase {
 
 private extension PingHubTests {
     func loadJSONMessage(name: String) -> [String: AnyObject]? {
-        guard let path = NSBundle(forClass: self.dynamicType).pathForResource(name, ofType: "json"),
-            let data = NSData(contentsOfFile: path),
-            let result = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String: AnyObject] else {
-                return nil
-        }
-
-        return result
+        return JSONLoader().loadFile(name, type: "json")
     }
 }
 
@@ -128,7 +122,7 @@ class MockSocket: Socket {
     var onConnect: (() -> Void)?
     var onDisconnect: ((NSError?) -> Void)?
     var onText: ((String) -> Void)?
-    var onData: ((NSData) -> Void)?
+    var onData: ((Data) -> Void)?
 }
 
 class MockPingHubDelegate: PinghubClientDelegate {
@@ -136,19 +130,19 @@ class MockPingHubDelegate: PinghubClientDelegate {
     var receivedAction: PinghubClient.Action? = nil
     var unexpectedMessage: String? = nil
 
-    func pingubConnected(client client: PinghubClient) {
+    func pingubConnected(client: PinghubClient) {
         connected = true
     }
 
-    func pinghubDisconnected(client client: PinghubClient, error: ErrorType?) {
+    func pinghubDisconnected(client: PinghubClient, error: Error?) {
         connected = false
     }
 
-    func pinghubActionReceived(client client: PinghubClient, action: PinghubClient.Action) {
+    func pinghubActionReceived(client: PinghubClient, action: PinghubClient.Action) {
         receivedAction = action
     }
 
-    func pinghubUnexpectedDataReceived(client client: PinghubClient, message: String) {
+    func pinghubUnexpectedDataReceived(client: PinghubClient, message: String) {
         unexpectedMessage = message
     }
 }
