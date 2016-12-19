@@ -177,7 +177,9 @@ class ReaderCommentCell : UITableViewCell
         }
 
         textView.isPrivate = comment.isPrivateContent()
-        textView.content = comment.contentForDisplay()
+        // Use `content` vs `contentForDisplay`. Hierarchcial comments are already
+        // correctly formatted during the sync process.
+        textView.content = comment.content
     }
 
 
