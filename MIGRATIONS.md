@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress55
+- @aerych 2016-12-19
+- `ReaderPost` added `inUse` boolean. Indexed. Default `NO`. Not optional.
+
 ## WordPress54
 - @aerych 2016-12-08
 - `ReaderPost` added `preserveForRestoration` boolean. Indexed. Default `NO`. Not optional.
