@@ -5,8 +5,8 @@ import UIKit
 @objc protocol WPRichContentViewDelegate: UITextViewDelegate
 {
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
-    @objc optional func richContentViewShouldUpdateLayoutForAttachments(richContentView: WPRichContentView) -> Bool
-    @objc optional func richContentViewDidUpdateLayoutForAttachments(richContentView: WPRichContentView)
+    @objc optional func richContentViewShouldUpdateLayoutForAttachments(_ richContentView: WPRichContentView) -> Bool
+    @objc optional func richContentViewDidUpdateLayoutForAttachments(_ richContentView: WPRichContentView)
 }
 
 
@@ -179,7 +179,7 @@ class WPRichContentView: UITextView
 
     func layoutAttachmentViews() {
         if let richDelegate = delegate as? WPRichContentViewDelegate {
-            if richDelegate.richContentViewShouldUpdateLayoutForAttachments?(richContentView: self) == false {
+            if richDelegate.richContentViewShouldUpdateLayoutForAttachments?(self) == false {
                 return
             }
         }
@@ -187,7 +187,7 @@ class WPRichContentView: UITextView
         updateLayoutForAttachments()
 
         if let richDelegate = delegate as? WPRichContentViewDelegate {
-            richDelegate.richContentViewDidUpdateLayoutForAttachments?(richContentView: self)
+            richDelegate.richContentViewDidUpdateLayoutForAttachments?(self)
         }
     }
 
