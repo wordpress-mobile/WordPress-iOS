@@ -10,9 +10,9 @@ class PingHubManager: NSObject {
     override init() {
         super.init()
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(PingHubManager.accountChanged), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationDidEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationWillEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(PingHubManager.accountChanged), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationDidEnterBackground), name: .UIApplicationDidEnterBackground, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
         replaceClient()
     }
 
