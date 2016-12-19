@@ -135,6 +135,7 @@ PODS:
   - PDKTZipArchive (0.4.1)
   - Reachability (3.2)
   - Specta (1.0.5)
+  - Starscream (1.1.4)
   - SVProgressHUD (1.1.3)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-AppbotX (1.0.6)
@@ -147,7 +148,7 @@ PODS:
   - WordPress-iOS-Shared (0.7.0):
     - CocoaLumberjack (~> 2.2.0)
   - WordPressCom-Analytics-iOS (0.1.21)
-  - WordPressCom-Stats-iOS (0.8.0):
+  - WordPressCom-Stats-iOS (0.8.1):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
@@ -183,6 +184,7 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift
   - Reachability (= 3.2)
   - Specta (= 1.0.5)
+  - Starscream (~> 1.1.4)
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
@@ -190,7 +192,7 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.8.1)
   - WordPress-iOS-Shared (= 0.7.0)
   - WordPressCom-Analytics-iOS (= 0.1.21)
-  - WordPressCom-Stats-iOS (= 0.8.0)
+  - WordPressCom-Stats-iOS (= 0.8.1)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (~> 0.10.2)
   - wpxmlrpc (~> 0.8)
@@ -257,6 +259,7 @@ SPEC CHECKSUMS:
   PDKTZipArchive: 22bbab52b49f46a3adf1acf134311fd252c43feb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
+  Starscream: f919aeaf81afca6d5d4d3e5f6dd136ec92af2aa1
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
@@ -264,11 +267,11 @@ SPEC CHECKSUMS:
   WordPress-iOS-Editor: 3118f5d6b142b6bf322f3393a7dd98a28bca68cb
   WordPress-iOS-Shared: 4bec543bac6543480b10d904bea122dcba43cc37
   WordPressCom-Analytics-iOS: ee6cc3a4feb63cebba167ce762c6e12c0b7b6671
-  WordPressCom-Stats-iOS: 7c961a7780a695f54db5431537c16615682cdf32
+  WordPressCom-Stats-iOS: 07b1796831c31c0c8c8a0f2e314bb2e6636af5df
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 9ba8c29a1de4b07696356f541c01eeaa6dd14c47
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 51327f2b2a1e3e3680299a1c98a9a91eab31edf4
+PODFILE CHECKSUM: 5888cfed48d744f1bae731f55a40965d0f957eca
 
 COCOAPODS: 1.1.1
