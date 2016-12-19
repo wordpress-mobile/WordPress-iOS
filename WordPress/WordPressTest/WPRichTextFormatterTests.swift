@@ -31,6 +31,21 @@ class WPRichTextFormatterTests: XCTestCase {
         XCTAssert(str.contains("<blockquote><p>\(WPRichTextFormatter.blockquoteIdentifier)Hi</p><p>\(WPRichTextFormatter.blockquoteIdentifier)Hi</p></blockquote>"))
     }
 
+    func testPreTagProcessor() {
+        let processor = PreTagProcessor()
+
+        var html = "<pre>\n\nHi\n\n</pre>"
+        var scanner = Scanner(string: html)
+        var (result, _) = processor.process(scanner)
+        XCTAssert(result == html)
+
+        html = "<pre>\nexample\nexample\n</pre>"
+        scanner = Scanner(string: html)
+        (result, _) = processor.process(scanner)
+
+        let expectedResult = html + "<br>"
+        XCTAssert(result == expectedResult)
+    }
 
     func testImageTagProcessor() {
         let processor = AttachmentTagProcessor(tagName: "img", includesEndTag: false)
