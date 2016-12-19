@@ -8,23 +8,23 @@ import Starscream
 /// The delegate of a PinghubClient must adopt the PinghubClientDelegate
 /// protocol. The client will inform the delegate of any relevant events.
 ///
-public protocol PinghubClientDelegate {
+public protocol PinghubClientDelegate: class {
     /// The client connected successfully.
     ///
-    func pingubConnected(client: PinghubClient)
+    func pingubDidConnect(_ client: PinghubClient)
 
     /// The client disconnected. This might be intentional or due to an error.
     /// The optional error argument will contain the error if there is one.
     ///
-    func pinghubDisconnected(client: PinghubClient, error: Error?)
+    func pinghubDidDisconnect(_ client: PinghubClient, error: Error?)
 
     /// The client received an action.
     ///
-    func pinghubActionReceived(client: PinghubClient, action: PinghubClient.Action)
+    func pinghub(_ client: PinghubClient, actionReceived action: PinghubClient.Action)
 
     /// The client received some data that it didn't look like a known action.
     ///
-    func pinghubUnexpectedDataReceived(client: PinghubClient, message: String)
+    func pinghub(_ client: PinghubClient, unexpected message: PinghubClient.Unexpected)
 }
 
 
@@ -34,7 +34,7 @@ public class PinghubClient {
 
     /// The client's delegate.
     ///
-    public var delegate: PinghubClientDelegate? = nil
+    public weak var delegate: PinghubClientDelegate?
 
     /// The web socket to use for communication with the PingHub server.
     ///
@@ -71,20 +71,19 @@ public class PinghubClient {
             guard let client = self else {
                 return
             }
-            client.delegate?.pingubConnected(client: client)
+            client.delegate?.pingubDidConnect(client)
         }
         socket.onDisconnect = { [weak self] error in
             guard let client = self else {
                 return
             }
-            client.delegate?.pinghubDisconnected(client: client, error: error)
+            client.delegate?.pinghubDidDisconnect(client, error: error)
         }
         socket.onData = { [weak self] data in
             guard let client = self else {
                 return
             }
-            let error = "PingHub received unexpected data: \(data)"
-            client.delegate?.pinghubUnexpectedDataReceived(client: client, message: error)
+            client.delegate?.pinghub(client, unexpected: .data(data))
         }
         socket.onText = { [weak self] text in
             guard let client = self else {
@@ -94,11 +93,29 @@ public class PinghubClient {
                 let json = try? JSONSerialization.jsonObject(with: data, options: []),
                 let message = json as? [String: AnyObject],
                 let action = Action.from(message: message) else {
-                    let error = "PingHub received unexpected message: \(text)"
-                    client.delegate?.pinghubUnexpectedDataReceived(client: client, message: error)
+                    client.delegate?.pinghub(client, unexpected: .action(text))
                     return
             }
-            client.delegate?.pinghubActionReceived(client: client, action: action)
+            client.delegate?.pinghub(client, actionReceived: action)
+        }
+    }
+
+    public enum Unexpected {
+        /// The client received some data that was not a valid message
+        ///
+        case data(Data)
+
+        /// The client received a valid message that represented an unknown action
+        ///
+        case action(String)
+
+        var description: String {
+            switch self {
+            case .data(let data):
+                return "PingHub received unexpected data: \(data)"
+            case .action(let text):
+                return "PingHub received unexpected message: \(text)"
+            }
         }
     }
 

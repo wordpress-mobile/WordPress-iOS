@@ -60,15 +60,15 @@ class PingHubManager: NSObject {
 }
 
 extension PingHubManager: PinghubClientDelegate {
-    func pingubConnected(client: PinghubClient) {
+    func pingubDidConnect(_ client: PinghubClient) {
         DDLogSwift.logDebug("PingHub connected")
     }
 
-    func pinghubDisconnected(client: PinghubClient, error: Error?) {
+    func pinghubDidDisconnect(_ client: PinghubClient, error: Error?) {
         DDLogSwift.logDebug("PingHub disconnected")
     }
 
-    func pinghubActionReceived(client: PinghubClient, action: PinghubClient.Action) {
+    func pinghub(_ client: PinghubClient, actionReceived action: PinghubClient.Action) {
         guard let mediator = NotificationSyncMediator() else {
             return
         }
@@ -82,7 +82,7 @@ extension PingHubManager: PinghubClientDelegate {
         }
     }
 
-    func pinghubUnexpectedDataReceived(client: PinghubClient, message: String) {
-        DDLogSwift.logError(message)
+    func pinghub(_ client: PinghubClient, unexpected message: PinghubClient.Unexpected) {
+        DDLogSwift.logError(message.description)
     }
 }
