@@ -369,11 +369,7 @@ final public class PushNotificationsManager : NSObject
     /// Parses the NSData sent by Apple's Push Service, and extracts the Device Token
     ///
     fileprivate func parseTokenFromAppleData(_ tokenData: Data) -> String {
-        var newToken = tokenData.description.replacingOccurrences(of: "<", with: "")
-        newToken = newToken.replacingOccurrences(of: ">", with: "")
-        newToken = newToken.replacingOccurrences(of: " ", with: "")
-
-        return newToken
+        return tokenData.hexString
     }
 
 
