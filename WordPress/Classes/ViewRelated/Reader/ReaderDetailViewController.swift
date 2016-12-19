@@ -72,8 +72,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     open var post: ReaderPost? {
         didSet {
             oldValue?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
+            oldValue?.inUse = false
 
-            post?.addObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath, options: .new, context: nil)
+            if let newPost = post {
+                newPost.inUse = true
+                ContextManager.sharedInstance().save(newPost.managedObjectContext)
+                newPost.addObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath, options: .new, context: nil)
+            }
+
             if isViewLoaded {
                 configureView()
             }
@@ -156,7 +162,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     deinit {
-        post?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
+        if let post = post {
+            post.inUse = false
+            ContextManager.sharedInstance().save(post.managedObjectContext)
+            post.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
+        }
         NotificationCenter.default.removeObserver(self)
     }
 
