@@ -2,9 +2,11 @@ import Foundation
 import UIKit
 
 
-protocol WPRichContentViewDelegate: UITextViewDelegate
+@objc protocol WPRichContentViewDelegate: UITextViewDelegate
 {
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
+    @objc optional func richContentViewShouldUpdateLayoutForAttachments(_ richContentView: WPRichContentView) -> Bool
+    @objc optional func richContentViewDidUpdateLayoutForAttachments(_ richContentView: WPRichContentView)
 }
 
 
@@ -174,6 +176,27 @@ class WPRichContentView: UITextView
         textContainerInset = Constants.textContainerInset
     }
 
+
+    func layoutAttachmentViews() {
+        if let richDelegate = delegate as? WPRichContentViewDelegate {
+            if richDelegate.richContentViewShouldUpdateLayoutForAttachments?(self) == false {
+                return
+            }
+        }
+
+        updateLayoutForAttachments()
+
+        if let richDelegate = delegate as? WPRichContentViewDelegate {
+            richDelegate.richContentViewDidUpdateLayoutForAttachments?(self)
+        }
+    }
+
+
+    func updateLayoutForAttachments() {
+        attachmentManager.layoutAttachmentViews()
+        invalidateIntrinsicContentSize()
+    }
+
 }
 
 
@@ -213,9 +236,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
             if embedView.documentSize.height > attachment.maxSize.height {
                 attachment.maxSize.height = embedView.documentSize.height
             }
-
-            self?.attachmentManager.layoutAttachmentViews()
-            self?.invalidateIntrinsicContentSize()
+            self?.layoutAttachmentViews()
         }
 
         return embed
@@ -230,18 +251,28 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
     /// - Returns: A WPRichTextImage instance configured for the attachment.
     ///
     func imageForAttachment(_ attachment: WPTextAttachment) -> WPRichTextImage {
-        let img = WPRichTextImage(frame: CGRect.zero)
         guard let url = URL(string: attachment.src) else {
-            return img
+            return WPRichTextImage(frame: CGRect.zero)
         }
 
+        // Until we have a loaded image use a 1/1 height.  We want a nonzero value
+        // to avoid an edge case issue where 0 frames are not correctly updated
+        // during rotation.
+        attachment.maxSize = CGSize(width: 1, height: 1)
+
+        let img = WPRichTextImage(frame: CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0))
         img.addTarget(self, action: #selector(type(of: self).handleImageTapped(_:)), for: .touchUpInside)
         img.contentURL = url
         img.linkURL = linkURLForImageAttachment(attachment)
 
-        let index = mediaArray.count
-        let indexPath = IndexPath(row: index, section: 1)
-        imageSource.fetchImage(for: url, with: maxDisplaySize, indexPath: indexPath, isPrivate: isPrivate)
+        if let cachedImage = imageSource.image(for: url, with: maxDisplaySize) {
+            img.imageView.image = cachedImage
+            attachment.maxSize = cachedImage.size
+        } else {
+            let index = mediaArray.count
+            let indexPath = IndexPath(row: index, section: 1)
+            imageSource.fetchImage(for: url, with: maxDisplaySize, indexPath: indexPath, isPrivate: isPrivate)
+        }
 
         let media = RichMedia(image: img, attachment: attachment)
         mediaArray.append(media)
@@ -342,8 +373,7 @@ extension WPRichContentView: WPTableImageSourceDelegate
         richMedia.image.imageView.image = image
         richMedia.attachment.maxSize = image.size
 
-        attachmentManager.layoutAttachmentViews()
-        invalidateIntrinsicContentSize()
+        layoutAttachmentViews()
     }
 
     func tableImageSource(_ tableImageSource: WPTableImageSource!, imageFailedforIndexPath indexPath: IndexPath!, error: Error!) {
