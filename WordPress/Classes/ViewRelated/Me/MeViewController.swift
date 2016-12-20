@@ -4,7 +4,7 @@ import WordPressComAnalytics
 import Gridicons
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {
-    static var restorationIdentifier = "WPMeRestorationID"
+    static let restorationIdentifier = "WPMeRestorationID"
     var handler: ImmuTableViewHandler!
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
@@ -16,7 +16,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override init(style: UITableViewStyle) {
         super.init(style: style)
         navigationItem.title = NSLocalizedString("Me", comment: "Me page title")
-        MeViewController.restorationIdentifier = type(of: self).restorationIdentifier
+        // Need to use `super` to work around a Swift compiler bug
+        // https://bugs.swift.org/browse/SR-3465
+        super.restorationIdentifier = MeViewController.restorationIdentifier
         restorationClass = type(of: self)
         clearsSelectionOnViewWillAppear = false
     }
