@@ -35,7 +35,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         noResultsView.removeFromSuperview()
     }
 
-    static var restorationIdentifier = "PlanList"
+    static let restorationIdentifier = "PlanList"
     /// Reference to the blog object if initialized with a blog. Used for state restoration only.
     fileprivate var restorationBlogURL: URL? = nil
 
@@ -56,7 +56,9 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         self.service = service
         super.init(style: .grouped)
         title = NSLocalizedString("Plans", comment: "Title for the plan selector")
-        PlanListViewController.restorationIdentifier = PlanListViewController.restorationIdentifier
+        // Need to use `super` to work around a Swift compiler bug
+        // https://bugs.swift.org/browse/SR-3465
+        super.restorationIdentifier = PlanListViewController.restorationIdentifier
         restorationClass = PlanListViewController.self
         noResultsView.delegate = self
     }
