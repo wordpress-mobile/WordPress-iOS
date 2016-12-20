@@ -260,7 +260,7 @@ end
 
 def swiftlint_needs_install
   return true unless File.exist?(swiftlint_bin)
-  installed_version = `#{swiftlint_bin} version`.chomp
+  installed_version = `"#{swiftlint_bin}" version`.chomp
   return (installed_version != SWIFTLINT_VERSION)
 end
 
