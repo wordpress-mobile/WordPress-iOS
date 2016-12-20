@@ -8,7 +8,7 @@ import WordPressShared
 @objc class ReaderMenuViewController : UITableViewController, UIViewControllerRestoration
 {
 
-    static var restorationIdentifier = "ReaderMenuViewController"
+    static let restorationIdentifier = "ReaderMenuViewController"
     static let selectedIndexPathRestorationIdentifier = "ReaderMenuSelectedIndexPathKey"
 
     let defaultCellIdentifier = "DefaultCellIdentifier"
@@ -73,8 +73,10 @@ import WordPressShared
 
     override init(style: UITableViewStyle) {
         super.init(style: style)
-        ReaderMenuViewController.restorationIdentifier = type(of: self).restorationIdentifier
-        restorationClass = type(of: self)
+        // Need to use `super` to work around a Swift compiler bug
+        // https://bugs.swift.org/browse/SR-3465
+        super.restorationIdentifier = ReaderMenuViewController.restorationIdentifier
+        restorationClass = ReaderMenuViewController.self
 
         clearsSelectionOnViewWillAppear = false
 

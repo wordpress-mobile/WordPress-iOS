@@ -11,7 +11,7 @@ abstract_target 'WordPress_Base' do
   pod 'WordPress-iOS-Shared', '0.7.0'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
-  pod 'WordPressCom-Stats-iOS', '0.8.0'
+  pod 'WordPressCom-Stats-iOS', '0.8.1'
 
   target 'WordPress' do
     # ---------------------
@@ -20,7 +20,6 @@ abstract_target 'WordPress_Base' do
     pod '1PasswordExtension', '1.8.1'
     pod 'AFNetworking',	'3.1.0'
     pod 'CocoaLumberjack', '~> 2.2.0'
-    pod 'DTCoreText',   '1.6.16'
     pod 'FormatterKit', '~> 1.8.1'
     pod 'Helpshift', '~> 5.7.1'
     pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']

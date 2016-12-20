@@ -44,7 +44,8 @@ struct PlanListRow: ImmuTableRow {
         ]
 
         static func attributedTitle(_ title: String, price: String, active: Bool) -> NSAttributedString {
-            let planTitle = NSAttributedString(string: title, attributes: titleAttributes)
+            let paddedTitle = title + " "
+            let planTitle = NSAttributedString(string: paddedTitle, attributes: titleAttributes)
 
             let attributedTitle = NSMutableAttributedString(attributedString: planTitle)
 
@@ -55,10 +56,8 @@ struct PlanListRow: ImmuTableRow {
                 ]
                 let currentPlan = NSLocalizedString("Current Plan", comment: "").uppercased(with: Locale.current)
                 let attributedCurrentPlan = NSAttributedString(string: currentPlan, attributes: currentPlanAttributes)
-                attributedTitle.appendString(" ")
                 attributedTitle.append(attributedCurrentPlan)
             } else if !price.isEmpty {
-                attributedTitle.appendString(" ")
 
                 let pricePeriod = String(format: NSLocalizedString("%@ <em>per year</em>", comment: "Plan yearly price"), price)
 
