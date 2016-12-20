@@ -402,6 +402,7 @@ public class ReaderDetailViewController: UIViewController, UIViewControllerResto
 
         // Make sure the text view is scrolled to the top the first time after
         // the view is first configured.
+        view.layoutIfNeeded()
         textView.setContentOffset(CGPoint.zero, animated: false)
     }
 
