@@ -197,6 +197,26 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
+- (void)clearInUseFlags
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
+    request.predicate = [NSPredicate predicateWithFormat:@"inUse = true"];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, marking topic not in use.: %@", NSStringFromSelector(_cmd), error);
+        return;
+    }
+
+    for (ReaderAbstractTopic *topic in results) {
+        topic.inUse = NO;
+    }
+
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
 - (void)deleteAllTopics
 {
     [self setCurrentTopic:nil];

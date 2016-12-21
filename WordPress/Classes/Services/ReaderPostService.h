@@ -110,6 +110,11 @@ extern NSString * const ReaderPostServiceErrorDomain;
 - (void)deletePostsWithNoTopic;
 
 /**
+ Globally sets the `inUse` flag to fall for all posts.
+ */
+- (void)clearInUseFlags;
+
+/**
  Delete posts from the specified site/feed from the specified topic
  
  @param siteID The id of the site or feed.
