@@ -176,7 +176,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (void)deleteNonMenuTopics
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
-    request.predicate = [NSPredicate predicateWithFormat:@"showInMenu = false AND preserveForRestoration = false"];
+    request.predicate = [NSPredicate predicateWithFormat:@"showInMenu = false AND inUse = false"];
 
     NSError *error;
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
