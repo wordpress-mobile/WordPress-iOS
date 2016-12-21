@@ -17,6 +17,7 @@ class WPRichTextFormatter
     lazy var tags:[HtmlTagProcessor] = {
         return [
             BlockquoteTagProcessor(),
+            PreTagProcessor(),
             ListTagProcessor(tagName: "ol", includesEndTag: true),
             ListTagProcessor(tagName: "ul", includesEndTag: true),
             AttachmentTagProcessor(tagName: "img", includesEndTag: false),
@@ -321,6 +322,30 @@ class BlockquoteTagProcessor: HtmlTagProcessor
             str += marker
         }
         parsedString = str
+
+        return (parsedString, nil)
+    }
+}
+
+
+/// Encapsulates the logic for processing pre tags.
+///
+class PreTagProcessor: HtmlTagProcessor
+{
+
+    init() {
+        super.init(tagName: "pre", includesEndTag: true)
+    }
+
+
+    /// Adds a new line after the end of the pre tag.
+    ///
+    override func process(_ scanner: Scanner) -> (String, WPTextAttachment?) {
+        var (matched, parsedString) = extractTag(scanner)
+
+        if matched && !parsedString.contains("\n\n</pre>") {
+            parsedString += "<br>"
+        }
 
         return (parsedString, nil)
     }
