@@ -91,14 +91,22 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
                  success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      if ([responseObject respondsToSelector:@selector(numericValue)]) {
                          post.postID = [responseObject numericValue];
-                         // TODO: fetch individual post
+
                          if (!post.date) {
                              // Set the temporary date until we get it from the server so it sorts properly on the list
                              post.date = [NSDate date];
                          }
-                         if (success) {
-                             success(post);
-                         }
+
+                         [self getPostWithID:post.postID success:^(RemotePost *fetchedPost) {
+                             if (success) {
+                                 success(fetchedPost);
+                             }
+                         } failure:^(NSError *error) {
+                             // update failed, and that sucks, but creating the post succeeded… so, let's just act like everything is ok!
+                             if (success) {
+                                 success(post);
+                             }
+                         }];
                      } else if (failure) {
                          NSDictionary *userInfo = @{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Invalid value returned for new post: %@", responseObject]};
                          NSError *error = [NSError errorWithDomain:WordPressAppErrorDomain code:0 userInfo:userInfo];
