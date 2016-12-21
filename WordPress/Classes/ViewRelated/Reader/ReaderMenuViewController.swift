@@ -87,6 +87,7 @@ import WordPressShared
         unflagInUseContent()
         setupRefreshControl()
         setupAccountChangeNotificationObserver()
+        setupApplicationDidLaunchNotificationObserver()
     }
 
 
