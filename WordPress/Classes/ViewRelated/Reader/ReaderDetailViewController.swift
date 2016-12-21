@@ -133,7 +133,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             return nil
         }
 
-        post.preserveForRestoration = false
+        post.inUse = false
         ContextManager.sharedInstance().save(context)
 
         return controllerWithPost(post)
@@ -143,7 +143,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     open override func encodeRestorableState(with coder: NSCoder) {
         if let post = post {
             let context = ContextManager.sharedInstance().mainContext
-            post.preserveForRestoration = true
+            post.inUse = true
             ContextManager.sharedInstance().save(context)
             coder.encode(post.objectID.uriRepresentation().absoluteString, forKey: type(of: self).restorablePostObjectURLhKey)
         }
