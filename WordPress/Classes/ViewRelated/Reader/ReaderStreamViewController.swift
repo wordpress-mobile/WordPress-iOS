@@ -85,6 +85,13 @@ import WordPressComAnalytics
     /// The topic can be nil while a site or tag topic is being fetched, hence, optional.
     open var readerTopic: ReaderAbstractTopic? {
         didSet {
+            oldValue?.inUse = false
+
+            if let newTopic = readerTopic {
+                newTopic.inUse = true
+                ContextManager.sharedInstance().save(newTopic.managedObjectContext)
+            }
+
             if readerTopic != nil && readerTopic != oldValue {
                 if didSetupView {
                     configureControllerForTopic()
@@ -164,9 +171,6 @@ import WordPressComAnalytics
             return nil
         }
 
-        topic.inUse = false
-        ContextManager.sharedInstance().saveContextAndWait(context)
-
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
@@ -176,8 +180,6 @@ import WordPressComAnalytics
 
     open override func encodeRestorableState(with coder: NSCoder) {
         if let topic = readerTopic {
-            topic.inUse = true
-            ContextManager.sharedInstance().saveContextAndWait(topic.managedObjectContext)
             coder.encode(topic.path, forKey: type(of: self).restorableTopicPathKey)
         }
         super.encodeRestorableState(with: coder)
@@ -185,6 +187,13 @@ import WordPressComAnalytics
 
 
     // MARK: - LifeCycle Methods
+
+    deinit {
+        if let topic = readerTopic {
+            topic.inUse = false
+            ContextManager.sharedInstance().save(topic.managedObjectContext)
+        }
+    }
 
 
     open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
