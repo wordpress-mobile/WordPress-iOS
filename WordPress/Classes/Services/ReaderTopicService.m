@@ -894,6 +894,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                         // and let it be cleaned up like any other non-menu topic.
                         DDLogInfo(@"Removing topic from menu: %@", topic.title);
                         topic.showInMenu = NO;
+                        // Followed topics are always in the menu, so if we're
+                        // removing the topic, if it was once followed its not now.
+                        topic.following = NO;
                     } else {
                         DDLogInfo(@"Deleting topic: %@", topic.title);
                         [self.managedObjectContext deleteObject:topic];
