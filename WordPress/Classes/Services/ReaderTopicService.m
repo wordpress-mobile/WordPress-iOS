@@ -166,6 +166,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     for (ReaderAbstractTopic *topic in results) {
+        DDLogInfo(@"Deleting topic: %@", topic.title);
         [self.managedObjectContext deleteObject:topic];
     }
     [self.managedObjectContext performBlockAndWait:^{
@@ -190,6 +191,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         if ([topic isKindOfClass:[ReaderSiteTopic class]] && topic.following) {
             continue;
         }
+        DDLogInfo(@"Deleting topic: %@", topic.title);
         [self.managedObjectContext deleteObject:topic];
     }
     [self.managedObjectContext performBlockAndWait:^{
@@ -222,6 +224,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [self setCurrentTopic:nil];
     NSArray *currentTopics = [self allTopics];
     for (ReaderAbstractTopic *topic in currentTopics) {
+        DDLogInfo(@"Deleting topic: %@", topic.title);
         [self.managedObjectContext deleteObject:topic];
     }
     [self.managedObjectContext performBlockAndWait:^{
@@ -883,15 +886,16 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         if ([currentTopics count] > 0) {
             for (ReaderAbstractTopic *topic in currentTopics) {
                 if (![topic isKindOfClass:[ReaderSiteTopic class]] && ![topicsToKeep containsObject:topic]) {
-                    DDLogInfo(@"Deleting Reader Topic: %@", topic);
                     if ([topic isEqual:self.currentTopic]) {
                         self.currentTopic = nil;
                     }
                     if (topic.inUse) {
                         // If the topic is in use just set showInMenu to false
                         // and let it be cleaned up like any other non-menu topic.
-                        topic.showInMenu = false;
+                        DDLogInfo(@"Removing topic from menu: %@", topic.title);
+                        topic.showInMenu = NO;
                     } else {
+                        DDLogInfo(@"Deleting topic: %@", topic.title);
                         [self.managedObjectContext deleteObject:topic];
                     }
                 }
