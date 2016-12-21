@@ -576,10 +576,6 @@ import WordPressComAnalytics
             title = NSLocalizedString("Reader", comment: "The default title of the Reader")
             return
         }
-        if topic.type == ReaderSiteTopic.TopicType {
-            title = NSLocalizedString("Site Details", comment: "The title of the reader when previewing posts from a site.")
-            return
-        }
 
         title = topic.title
     }
