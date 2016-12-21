@@ -84,7 +84,7 @@ import WordPressShared
             restorableSelectedIndexPath = defaultIndexPath
         }
 
-        cleanupStaleContent(removeAllTopics: false)
+        unflagInUseContent()
         setupRefreshControl()
         setupAccountChangeNotificationObserver()
     }
@@ -140,6 +140,10 @@ import WordPressShared
     }
 
 
+    func setupApplicationDidLaunchNotificationObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).handleApplicationDidLaunch), name: NSNotification.Name.UIApplicationDidFinishLaunching, object: nil)
+    }
+
     func setupAccountChangeNotificationObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).handleAccountChanged), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
     }
@@ -154,7 +158,17 @@ import WordPressShared
     }
 
 
-    // MARK: - Instance Methods
+    // MARK: - Cleanup Methods
+
+
+    /// Clears the inUse flag from any topics or posts so marked.
+    ///
+    func unflagInUseContent() {
+        let context = ContextManager.sharedInstance().mainContext
+        ReaderPostService(managedObjectContext: context).clearInUseFlags()
+        ReaderTopicService(managedObjectContext: context).clearInUseFlags()
+    }
+
 
     /// Clean up topics that do not belong in the menu and posts that have no topic
     /// This is merely a convenient place to perform this task.
@@ -171,10 +185,21 @@ import WordPressShared
     }
 
 
+    // MARK: - Instance Methods
+
+
+    /// Handle the UIApplicationDidFinishLaunching notification.
+    //
+    func handleApplicationDidLaunch(_ notification: Foundation.Notification) {
+        cleanupStaleContent(removeAllTopics: false)
+    }
+
+
     /// When logged out return the nav stack to the menu
     ///
     func handleAccountChanged(_ notification: Foundation.Notification) {
         // Clean up obsolete content.
+        unflagInUseContent()
         cleanupStaleContent(removeAllTopics: true)
 
         // Clean up stale search history
