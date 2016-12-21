@@ -887,7 +887,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                     if ([topic isEqual:self.currentTopic]) {
                         self.currentTopic = nil;
                     }
-                    [self.managedObjectContext deleteObject:topic];
+                    if (topic.inUse) {
+                        // If the topic is in use just set showInMenu to false
+                        // and let it be cleaned up like any other non-menu topic.
+                        topic.showInMenu = false;
+                    } else {
+                        [self.managedObjectContext deleteObject:topic];
+                    }
                 }
             }
         }
