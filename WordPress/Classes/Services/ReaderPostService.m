@@ -371,7 +371,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 }
 
-
 - (void)deletePostsWithNoTopic
 {
     NSError *error;
@@ -392,6 +391,26 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
+- (void)clearInUseFlags
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"inUse = true"];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, marking posts not in use.: %@", NSStringFromSelector(_cmd), error);
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        post.inUse = NO;
+    }
+
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
 }
 
 - (void)setFollowing:(BOOL)following forPostsFromSiteWithID:(NSNumber *)siteID andURL:(NSString *)siteURL
