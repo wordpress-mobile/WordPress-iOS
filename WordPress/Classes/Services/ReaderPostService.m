@@ -875,7 +875,14 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     for (ReaderPost *post in currentPosts) {
-        if (![posts containsObject:post]) {
+        if ([posts containsObject:post]) {
+            continue;
+        }
+        // The post was missing from the batch and needs to be cleaned up.
+        if (post.inUse) {
+            // If the missing post is currenty being used just remove its topic.
+            post.topic = nil;
+        } else {
             DDLogInfo(@"Deleting ReaderPost: %@", post);
             [self.managedObjectContext deleteObject:post];
         }
@@ -919,8 +926,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSRange range = NSMakeRange(maxPosts, [posts count] - maxPosts);
     NSArray *postsToDelete = [posts subarrayWithRange:range];
     for (ReaderPost *post in postsToDelete) {
-        DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
-        [self.managedObjectContext deleteObject:post];
+        if (post.inUse) {
+            post.topic = nil;
+        } else {
+            DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
+            [self.managedObjectContext deleteObject:post];
+        }
     }
 
     // If the last remaining post is a gap marker, remove it.
@@ -952,8 +963,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     for (ReaderPost *post in results) {
-        DDLogInfo(@"Deleting post: %@", post);
-        [self.managedObjectContext deleteObject:post];
+        if (post.inUse) {
+            // If the missing post is currenty being used just remove its topic.
+            post.topic = nil;
+        } else {
+            DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
+            [self.managedObjectContext deleteObject:post];
+        }
     }
 }
 
