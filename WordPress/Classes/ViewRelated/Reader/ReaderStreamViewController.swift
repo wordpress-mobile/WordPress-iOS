@@ -164,7 +164,7 @@ import WordPressComAnalytics
             return nil
         }
 
-        topic.preserveForRestoration = false
+        topic.inUse = false
         ContextManager.sharedInstance().saveContextAndWait(context)
 
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
@@ -176,7 +176,7 @@ import WordPressComAnalytics
 
     open override func encodeRestorableState(with coder: NSCoder) {
         if let topic = readerTopic {
-            topic.preserveForRestoration = true
+            topic.inUse = true
             ContextManager.sharedInstance().saveContextAndWait(topic.managedObjectContext)
             coder.encode(topic.path, forKey: type(of: self).restorableTopicPathKey)
         }
