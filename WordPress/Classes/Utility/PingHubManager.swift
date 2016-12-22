@@ -106,6 +106,7 @@ class PingHubManager: NSObject {
     }
 
     deinit {
+        delayedRetry?.cancel()
         reachability.stopNotifier()
         NotificationCenter.default.removeObserver(self)
     }
@@ -199,7 +200,9 @@ fileprivate extension PingHubManager {
     }
 
     func connectDelayed() {
-        delayedRetry = DispatchDelayedAction(delay: .seconds(delay.current), action: connect)
+        delayedRetry = DispatchDelayedAction(delay: .seconds(delay.current)) { [weak self] in
+            self?.connect()
+        }
         delay.increment()
     }
 
