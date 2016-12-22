@@ -77,7 +77,14 @@ public class PinghubClient {
             guard let client = self else {
                 return
             }
-            client.delegate?.pinghubDidDisconnect(client, error: error)
+            let filteredError: NSError? = error.flatMap({ error in
+                // Filter out normal disconnects that we initiated
+                if error.domain == WebSocket.ErrorDomain && error.code == Int(WebSocket.CloseCode.normal.rawValue) {
+                    return nil
+                }
+                return error
+            })
+            client.delegate?.pinghubDidDisconnect(client, error: filteredError)
         }
         socket.onData = { [weak self] data in
             guard let client = self else {
