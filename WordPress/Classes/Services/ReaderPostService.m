@@ -23,6 +23,7 @@ NSUInteger const ReaderPostServiceNumberToSync = 40;
 NSUInteger const ReaderPostServiceNumberToSyncForSearch = 10;
 NSUInteger const ReaderPostServiceMaxSearchPosts = 200;
 NSUInteger const ReaderPostServiceMaxPosts = 300;
+NSUInteger const ReaderRelatedPostsCount = 2;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 static NSString * const ReaderPostGlobalIDKey = @"globalID";
@@ -178,7 +179,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     NSUInteger postID = [post.postID integerValue];
     NSUInteger siteID = [post.siteID integerValue];
-    NSUInteger count = 2;
+    NSUInteger count = ReaderRelatedPostsCount;
     [remoteService fetchRelatedPostFor:postID
                               fromSite:siteID
                             localCount:count
