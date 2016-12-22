@@ -1,6 +1,7 @@
 import Foundation
 import Reachability
 
+// This is added as a top level function to avoid cluttering PingHubManager.init
 private func defaultAccountToken() -> String? {
     let context = ContextManager.sharedInstance().mainContext
     let service = AccountService(managedObjectContext: context)
@@ -14,7 +15,44 @@ private func defaultAccountToken() -> String? {
     return token
 }
 
+/// PingHubManager will attempt to keep a PinghubClient connected as long as it
+/// is alive while certain conditions are met.
+///
+/// # When it connects
+///
+/// The manager will try to connect as long as it has an oAuth2 token and the
+/// app is in the foreground.
+///
+/// When a connection fails for some reason, it will try to reconnect whenever
+/// there is an internet connection, as detected by Reachability. If the app
+/// thinks it's online but connections are still failing, the manager adds an
+/// increasing delay to the reconnection to avoid too many attempts.
+///
+/// # Debugging
+///
+/// There are a couple helpers to aid with debugging the manager.
+///
+/// First, if you want to see a detailed log of every state changed and the
+/// resulting action in the console, add `-debugPinghub` to the arguments passed
+/// on launch in Xcode's scheme editor.
+///
+/// Second, if you want to simulate some network error conditions to test the
+/// retry algorithm, you can set a breakpoint in any Swift code, and enter into
+/// the LLDB prompt:
+///
+///     expr PinghubClient.Debug.simulateUnreachableHost(true)
+///
+/// This will simulate a "Unreachable Host" error every time the PingHub client
+/// tries to connect. If you want to disable it, do the same thing but passing
+/// `false`.
+///
 class PingHubManager: NSObject {
+    enum Configuration {
+        /// Sequence of increasing delays to apply to the retry mechanism (in seconds)
+        ///
+        static let delaySequence = [1, 2, 5, 15, 30]
+    }
+
     fileprivate typealias StatePattern = Pattern<State>
     fileprivate struct State {
         // Connected or connecting
@@ -59,6 +97,8 @@ class PingHubManager: NSObject {
             stateChanged(old: oldValue, new: state)
         }
     }
+    fileprivate var delay = IncrementalDelay(Configuration.delaySequence)
+    fileprivate var delayedRetry: Cancelable?
 
 
     override init() {
@@ -106,9 +146,10 @@ class PingHubManager: NSObject {
             disconnect()
         case (disconnected, disconnected & reconnectable):
             debugLog("reconnect")
+            delay.reset()
             connect()
         case (connected, disconnected & reconnectable):
-            debugLog("reconnect delayed")
+            debugLog("reconnect delayed (\(delay.current)s)")
             connectDelayed()
         case (connectionNotAllowed, disconnected & connectionAllowed):
             debugLog("connect")
@@ -119,7 +160,7 @@ class PingHubManager: NSObject {
         }
     }
 
-    func client(token: String) -> PinghubClient {
+    fileprivate func client(token: String) -> PinghubClient {
         let client = PinghubClient(token: token)
         client.delegate = self
         return client
@@ -170,16 +211,17 @@ fileprivate extension PingHubManager {
 // MARK: - Actions
 fileprivate extension PingHubManager {
     func connect() {
-        client?.connect()
         state = state.with(connected: true)
+        client?.connect()
     }
 
     func connectDelayed() {
-        // TODO: Use an actual delay / figure out how to handle failing connections
-        connect()
+        delayedRetry = DispatchDelayedAction(delay: .seconds(delay.current), action: connect)
+        delay.increment()
     }
 
     func disconnect() {
+        delayedRetry?.cancel()
         client?.disconnect()
         state = state.with(connected: false)
     }
@@ -188,6 +230,7 @@ fileprivate extension PingHubManager {
 extension PingHubManager: PinghubClientDelegate {
     func pingubDidConnect(_ client: PinghubClient) {
         DDLogSwift.logInfo("PingHub connected")
+        delay.reset()
         state = state.with(connected: true)
     }
 
@@ -220,29 +263,35 @@ extension PingHubManager: PinghubClientDelegate {
 }
 
 extension PingHubManager {
-    // Functions to aid debugging
+    // Functions to aid debugging.
+    // It might not be my prettiest code, but it is meant to be ephemeral like a rainbow.
+
     fileprivate enum Debug {
         static func diff(_ lhs: State, _ rhs: State) -> String {
+            func b(_ b: Bool) -> String {
+                return b ? "Y" : "N"
+            }
+
             var diff = [String]()
             if lhs.connected != rhs.connected {
-                diff.append("connected: \(lhs.connected) -> \(rhs.connected)")
+                diff.append("conn: \(b(lhs.connected)) -> \(b(rhs.connected))")
             } else {
-                diff.append("connected: \(rhs.connected)")
+                diff.append("conn: \(b(rhs.connected))")
             }
             if lhs.reachable != rhs.reachable {
-                diff.append("reachable: \(lhs.reachable) -> \(rhs.reachable)")
+                diff.append("reach: \(b(lhs.reachable)) -> \(b(rhs.reachable))")
             } else {
-                diff.append("reachable: \(rhs.reachable)")
+                diff.append("reach: \(b(rhs.reachable))")
             }
             if lhs.foreground != rhs.foreground {
-                diff.append("foreground: \(lhs.foreground) -> \(rhs.foreground)")
+                diff.append("fg: \(b(lhs.foreground)) -> \(b(rhs.foreground))")
             } else {
-                diff.append("foreground: \(rhs.foreground)")
+                diff.append("fg: \(b(rhs.foreground))")
             }
             if lhs.authToken != rhs.authToken {
-                diff.append("loggedIn: \(lhs.authToken != nil) -> \(rhs.authToken != nil)")
+                diff.append("log: \(b(lhs.authToken != nil)) -> \(b(rhs.authToken != nil)))")
             } else {
-                diff.append("loggedIn: \(rhs.authToken != nil)")
+                diff.append("log: \(b(rhs.authToken != nil))")
             }
             return "(" + diff.joined(separator: ", ") + ")"
         }
