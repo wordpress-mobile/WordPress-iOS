@@ -50,6 +50,24 @@
           success:(void (^)(RemoteReaderPost *post))success
           failure:(void (^)(NSError *error))failure;
 
+
+/**
+ Fetche related posts for the specified post on the specified site.
+
+ @param postID the ID of the post to fetch
+ @param siteID the ID of the site the post belongs to
+ @param localCount the number of related posts to fetch from the specified site
+ @param globalCount the number of related posts to fetch from other sites
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchRelatedPostFor:(NSUInteger)postID
+                   fromSite:(NSUInteger)siteID
+                 localCount:(NSUInteger)localCount
+                globalCount:(NSUInteger)globalCount
+                    success:(void (^)(NSArray<RemoteReaderPost *> *posts))success
+                    failure:(void (^)(NSError *error))failure;
+
 /**
  Mark a post as liked by the user.
 

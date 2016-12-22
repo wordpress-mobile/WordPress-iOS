@@ -170,6 +170,37 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }];
 }
 
+- (void)fetchRelatedPostsForPost:(ReaderPost *)post
+                         success:(void (^)())success
+                         failure:(void (^)(NSError *error))failure
+{
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+
+    NSUInteger postID = [post.postID integerValue];
+    NSUInteger siteID = [post.siteID integerValue];
+    NSUInteger count = 2;
+    [remoteService fetchRelatedPostFor:postID
+                              fromSite:siteID
+                            localCount:count
+                           globalCount:count
+                               success:^(NSArray<RemoteReaderPost *> *remotePosts) {
+
+                                   NSMutableArray *posts = [NSMutableArray array];
+                                   for (RemoteReaderPost *remotePost in remotePosts) {
+                                       ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil];
+                                       [posts addObject:post];
+                                   }
+                                   if (success) {
+                                       success();
+                                   }
+
+                               } failure:^(NSError *error) {
+                                   if (failure){
+                                       failure(error);
+                                   }
+                               }];
+}
+
 - (void)refreshPostsForFollowedTopic
 {
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
