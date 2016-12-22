@@ -56,26 +56,10 @@ class PingHubManager: NSObject {
     fileprivate typealias StatePattern = Pattern<State>
     fileprivate struct State {
         // Connected or connecting
-        let connected: Bool
-        let reachable: Bool
-        let foreground: Bool
-        let authToken: String?
-
-        func with(connected: Bool) -> State {
-            return State(connected: connected, reachable: reachable, foreground: foreground, authToken: authToken)
-        }
-
-        func with(reachable: Bool) -> State {
-            return State(connected: connected, reachable: reachable, foreground: foreground, authToken: authToken)
-        }
-
-        func with(foreground: Bool) -> State {
-            return State(connected: connected, reachable: reachable, foreground: foreground, authToken: authToken)
-        }
-
-        func with(authToken: String?) -> State {
-            return State(connected: connected, reachable: reachable, foreground: foreground, authToken: authToken)
-        }
+        var connected: Bool
+        var reachable: Bool
+        var foreground: Bool
+        var authToken: String?
 
         enum Pattern {
             static let connected: StatePattern = { $0.connected }
@@ -176,21 +160,20 @@ fileprivate extension PingHubManager {
     func accountChanged() {
         let authToken = defaultAccountToken()
         client = authToken.map({ client(token: $0 ) })
-        state = state
-            .with(authToken: authToken)
-            .with(connected: false)
+        // we set a new state as we are changing two properties and only want to trigger didSet once
+        state = State(connected: false, reachable: state.reachable, foreground: state.foreground, authToken: authToken)
     }
 
     // MARK: foreground
     @objc
     func applicationDidEnterBackground() {
-        state = state.with(foreground: false)
+        state.foreground = false
         client?.disconnect()
     }
 
     @objc
     func applicationWillEnterForeground() {
-        state = state.with(foreground: true)
+        state.foreground = true
         client?.connect()
     }
 
@@ -200,7 +183,7 @@ fileprivate extension PingHubManager {
             guard let manager = self, let reachability = reachability else {
                 return
             }
-            manager.state = manager.state.with(reachable: reachability.isReachable())
+            manager.state.reachable = reachability.isReachable()
         }
         reachability.reachableBlock = reachabilityChanged
         reachability.unreachableBlock = reachabilityChanged
@@ -211,7 +194,7 @@ fileprivate extension PingHubManager {
 // MARK: - Actions
 fileprivate extension PingHubManager {
     func connect() {
-        state = state.with(connected: true)
+        state.connected = true
         client?.connect()
     }
 
@@ -223,7 +206,7 @@ fileprivate extension PingHubManager {
     func disconnect() {
         delayedRetry?.cancel()
         client?.disconnect()
-        state = state.with(connected: false)
+        state.connected = false
     }
 }
 
@@ -231,7 +214,7 @@ extension PingHubManager: PinghubClientDelegate {
     func pingubDidConnect(_ client: PinghubClient) {
         DDLogSwift.logInfo("PingHub connected")
         delay.reset()
-        state = state.with(connected: true)
+        state.connected = true
     }
 
     func pinghubDidDisconnect(_ client: PinghubClient, error: Error?) {
@@ -240,7 +223,7 @@ extension PingHubManager: PinghubClientDelegate {
         } else {
             DDLogSwift.logInfo("PingHub disconnected")
         }
-        state = state.with(connected: false)
+        state.connected = false
     }
 
     func pinghub(_ client: PinghubClient, actionReceived action: PinghubClient.Action) {
