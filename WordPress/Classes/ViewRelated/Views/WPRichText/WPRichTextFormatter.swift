@@ -11,12 +11,14 @@ class WPRichTextFormatter
     typealias ParsedSource = (parsedString:String, attachments:[WPTextAttachment])
     static let blockquoteIdentifier = "WPBLOCKQUOTEIDENTIFIER"
     let blockquoteIndentation = CGFloat(20.0)
+    let defaultParagraphSpacing = CGFloat(14.0)
 
     /// An array of HTMLTagProcessors
     ///
     lazy var tags:[HtmlTagProcessor] = {
         return [
             BlockquoteTagProcessor(),
+            HRTagProcessor(),
             PreTagProcessor(),
             ListTagProcessor(tagName: "ol", includesEndTag: true),
             ListTagProcessor(tagName: "ul", includesEndTag: true),
@@ -82,7 +84,48 @@ class WPRichTextFormatter
             attrString.replaceCharacters(in: range, with: attachmentString)
         }
 
+        // Replace horizontal rule markers with horizontal rule attachments
+        attrString = replaceHorizontalRuleMarkers(attrString)
+
         return NSAttributedString(attributedString: attrString)
+    }
+
+
+    func replaceHorizontalRuleMarkers(_ attrString: NSMutableAttributedString) -> NSMutableAttributedString {
+
+        let str = attrString.string
+        let regex = try! NSRegularExpression(pattern: HRTagProcessor.horizontalRuleIdentifier, options: .caseInsensitive)
+        let matches = regex.matches(in: str, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, str.characters.count))
+
+        for match: NSTextCheckingResult in matches.reversed() {
+            let range = match.range
+
+            // Let the horizontal rule match the text color.
+            let color = attrString.attribute(NSForegroundColorAttributeName, at: range.location, effectiveRange: nil) as? UIColor ?? UIColor.gray
+
+            // We want a 1px max line height, and paragraphSpacing matching the fontsize.
+            let mParagraphStyle = NSMutableParagraphStyle()
+            mParagraphStyle.setParagraphStyle(NSParagraphStyle.default)
+            mParagraphStyle.paragraphSpacing = defaultParagraphSpacing
+            mParagraphStyle.maximumLineHeight = 1.0
+            if  let pStyle = attrString.attribute(NSParagraphStyleAttributeName, at: range.location, effectiveRange: nil) as? NSParagraphStyle,
+                let font = attrString.attribute(NSFontAttributeName, at: range.location, effectiveRange: nil) as? UIFont {
+
+                 mParagraphStyle.paragraphSpacing = round(pStyle.minimumLineHeight - font.xHeight) / 2.0
+            }
+            let attributes: [String: Any] = [
+                NSParagraphStyleAttributeName: mParagraphStyle,
+                NSBackgroundColorAttributeName: color
+            ]
+
+            let attachment = WPHorizontalRuleAttachment()
+            let attachmentString = NSMutableAttributedString(attributedString: NSAttributedString(attachment: attachment))
+            attachmentString.addAttributes(attributes, range: NSRange(location: 0, length: attachmentString.length))
+
+            attrString.replaceCharacters(in: range, with: attachmentString)
+        }
+
+        return attrString
     }
 
 
@@ -461,6 +504,31 @@ class AttachmentTagProcessor: HtmlTagProcessor
         }
 
         return attrs
+    }
+
+}
+
+
+class HRTagProcessor: HtmlTagProcessor
+{
+    static let horizontalRuleIdentifier = "WPHORIZONTALRULEIDENTIFIER"
+
+
+    init() {
+        super.init(tagName: "hr", includesEndTag: false)
+    }
+
+
+    /// Replaces extracted tags with markers.
+    ///
+    override func process(_ scanner: Scanner) -> (String, WPTextAttachment?) {
+        let (matched, parsedString) = extractTag(scanner)
+
+        if !matched {
+            return (parsedString, nil)
+        }
+
+        return (HRTagProcessor.horizontalRuleIdentifier, nil)
     }
 
 }
