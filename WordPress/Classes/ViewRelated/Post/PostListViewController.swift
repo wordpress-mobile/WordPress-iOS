@@ -4,7 +4,7 @@ import WordPressComStatsiOS
 import WordPressShared
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -17,7 +17,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l > r
@@ -27,7 +27,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
+class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
     static fileprivate let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     static fileprivate let postCardImageCellIdentifier = "PostCardImageCellIdentifier"
@@ -46,7 +46,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     @IBOutlet fileprivate weak var authorFilterSegmentedControl: UISegmentedControl!
 
-    @IBOutlet var authorsFilterView : UIView!
+    @IBOutlet var authorsFilterView: UIView!
     @IBOutlet var searchWrapperView: UIView!
     @IBOutlet var headerStackView: UIStackView!
 

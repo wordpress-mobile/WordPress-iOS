@@ -87,7 +87,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         stub(isXmlRpcAPIRequest()) { request in
             let stubPath = OHPathForFile("xmlrpc-response-system-listmethods.xml", self.dynamicType)
-            return fixture(stubPath!, headers: ["Content-Type":"application/xml"])
+            return fixture(stubPath!, headers: ["Content-Type": "application/xml"])
         }
 
         let validSchemes = ["http://mywordpresssite.com/xmlrpc.php",
@@ -112,7 +112,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
     func testGuessXMLRPCURLForSiteForAdditionOfXMLRPC() {
         stub(isXmlRpcAPIRequest()) { request in
             let stubPath = OHPathForFile("xmlrpc-response-system-listmethods.xml", self.dynamicType)
-            return fixture(stubPath!, headers: ["Content-Type":"application/xml"])
+            return fixture(stubPath!, headers: ["Content-Type": "application/xml"])
         }
 
         let urls = ["http://mywordpresssite.com",
@@ -148,12 +148,12 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         // Fail first request with 301
         stub(isAbsoluteURLString(originalURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)
-            return fixture(stubPath!, status:301, headers: ["Content-Type":"application/html", "Location":redirectedURL])
+            return fixture(stubPath!, status:301, headers: ["Content-Type": "application/html", "Location": redirectedURL])
         }
 
         stub(isAbsoluteURLString(redirectedURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-system-listmethods.xml", self.dynamicType)
-            return fixture(stubPath!, headers: ["Content-Type":"application/xml"])
+            return fixture(stubPath!, headers: ["Content-Type": "application/xml"])
         }
 
         let validator = WordPressOrgXMLRPCValidator()
@@ -175,12 +175,12 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         // Fail url with appended xmlrpc.php request with 403
         stub(isAbsoluteURLString(appendedURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)
-            return fixture(stubPath!, status:403, headers: ["Content-Type":"application/html"])
+            return fixture(stubPath!, status:403, headers: ["Content-Type": "application/html"])
         }
 
         stub(isAbsoluteURLString(originalURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-system-listmethods.xml", self.dynamicType)
-            return fixture(stubPath!, headers: ["Content-Type":"application/xml"])
+            return fixture(stubPath!, headers: ["Content-Type": "application/xml"])
         }
 
         let validator = WordPressOrgXMLRPCValidator()
@@ -205,13 +205,13 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         // Fail url with appended xmlrpc.php request with 403
         stub(isAbsoluteURLString(appendedURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)!
-            return fixture(stubPath, status:403, headers: ["Content-Type":"application/html"])
+            return fixture(stubPath, status:403, headers: ["Content-Type": "application/html"])
         }
 
         // Return html page for original url
         stub(isAbsoluteURLString(htmlURL)) { request in
             let stubPath = OHPathForFile("html_page_with_link_to_rsd.html", self.dynamicType)!
-            return fixture(stubPath, status:200, headers: ["Content-Type":"application/html"])
+            return fixture(stubPath, status:200, headers: ["Content-Type": "application/html"])
         }
 
         // Return rsd xml
@@ -222,7 +222,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         stub(isAbsoluteURLString(xmlRPCURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-system-listmethods.xml", self.dynamicType)!
-            return fixture(stubPath, headers: ["Content-Type":"application/xml"])
+            return fixture(stubPath, headers: ["Content-Type": "application/xml"])
         }
 
         let validator = WordPressOrgXMLRPCValidator()
@@ -247,13 +247,13 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         // Fail url with appended xmlrpc.php request with 403
         stub(isAbsoluteURLString(appendedURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)!
-            return fixture(stubPath, status:403, headers: ["Content-Type":"application/html"])
+            return fixture(stubPath, status:403, headers: ["Content-Type": "application/html"])
         }
 
         // Return html page for original url
         stub(isAbsoluteURLString(htmlURL)) { request in
             let stubPath = OHPathForFile("html_page_with_link_to_rsd_non_standard.html", self.dynamicType)!
-            return fixture(stubPath, status:200, headers: ["Content-Type":"application/html"])
+            return fixture(stubPath, status:200, headers: ["Content-Type": "application/html"])
         }
 
         // Return rsd xml
@@ -264,7 +264,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         stub(isAbsoluteURLString(xmlRPCURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-system-listmethods.xml", self.dynamicType)!
-            return fixture(stubPath, headers: ["Content-Type":"application/xml"])
+            return fixture(stubPath, headers: ["Content-Type": "application/xml"])
         }
 
         let validator = WordPressOrgXMLRPCValidator()
@@ -283,7 +283,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         let originalURL = "http://originalURL/xmlrpc.php"
         stub(isAbsoluteURLString(originalURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-fault.xml", self.dynamicType)!
-            return fixture(stubPath, status:200, headers: ["Content-Type":"application/xml"])
+            return fixture(stubPath, status:200, headers: ["Content-Type": "application/xml"])
         }
 
         let validator = WordPressOrgXMLRPCValidator()
@@ -305,12 +305,12 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         // Fail first request with 301
         stub(isAbsoluteURLString(originalURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)
-            return fixture(stubPath!, status:301, headers: ["Content-Type":"application/html", "Location":redirectedURL])
+            return fixture(stubPath!, status:301, headers: ["Content-Type": "application/html", "Location": redirectedURL])
         }
 
         stub(isAbsoluteURLString(redirectedURL)) { request in
             let stubPath = OHPathForFile("plugin_redirect.html", self.dynamicType)
-            return fixture(stubPath!, headers: ["Content-Type":"application/html"])
+            return fixture(stubPath!, headers: ["Content-Type": "application/html"])
         }
 
         let validator = WordPressOrgXMLRPCValidator()

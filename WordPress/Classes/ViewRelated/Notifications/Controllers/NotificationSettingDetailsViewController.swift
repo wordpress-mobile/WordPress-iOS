@@ -7,7 +7,7 @@ import WordPressComAnalytics
 /// encapsulated in the class NotificationSettings.Stream, and to provide the user a simple interface
 /// to update those settings, as needed.
 ///
-open class NotificationSettingDetailsViewController : UITableViewController
+open class NotificationSettingDetailsViewController: UITableViewController
 {
     // MARK: - Initializers
     public convenience init(settings: NotificationSettings) {
@@ -221,10 +221,10 @@ open class NotificationSettingDetailsViewController : UITableViewController
             stream              : stream!,
             newValues           : newValues,
             success             : {
-                WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success" : true])
+                WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success": true])
             },
             failure             : { (error: Error?) in
-                WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success" : false])
+                WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success": false])
                 self.handleUpdateError()
             })
     }
@@ -251,8 +251,8 @@ open class NotificationSettingDetailsViewController : UITableViewController
 
     // MARK: - Private Nested Class'ess
     fileprivate class Section {
-        var rows                : [Row]
-        var footerText          : String?
+        var rows: [Row]
+        var footerText: String?
 
         init(rows: [Row], footerText: String? = nil) {
             self.rows           = rows
@@ -261,10 +261,10 @@ open class NotificationSettingDetailsViewController : UITableViewController
     }
 
     fileprivate class Row {
-        let description         : String
-        let kind                : Kind
-        let key                 : String?
-        let value               : Bool?
+        let description: String
+        let kind: Kind
+        let key: String?
+        let value: Bool?
 
         init(kind: Kind, description: String, key: String? = nil, value: Bool? = nil) {
             self.description    = description
@@ -273,7 +273,7 @@ open class NotificationSettingDetailsViewController : UITableViewController
             self.value          = value
         }
 
-        enum Kind : String {
+        enum Kind: String {
             case Setting        = "SwitchCell"
             case Text           = "TextCell"
         }
@@ -281,7 +281,7 @@ open class NotificationSettingDetailsViewController : UITableViewController
 
 
     // MARK: - Computed Properties
-    fileprivate var siteName : String {
+    fileprivate var siteName: String {
         switch settings!.channel {
         case .wordPressCom:
             return NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
@@ -296,8 +296,8 @@ open class NotificationSettingDetailsViewController : UITableViewController
     fileprivate let firstSectionIndex = 0
 
     // MARK: - Private Properties
-    fileprivate var settings : NotificationSettings?
-    fileprivate var stream : NotificationSettings.Stream?
+    fileprivate var settings: NotificationSettings?
+    fileprivate var stream: NotificationSettings.Stream?
 
     // MARK: - Helpers
     fileprivate var sections = [Section]()

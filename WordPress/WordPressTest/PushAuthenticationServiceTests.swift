@@ -2,7 +2,7 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-class PushAuthenticationServiceTests : XCTestCase {
+class PushAuthenticationServiceTests: XCTestCase {
 
     var testContextManager: TestContextManager?
     var pushAuthenticationService: PushAuthenticationService?
@@ -10,7 +10,7 @@ class PushAuthenticationServiceTests : XCTestCase {
     var mockRemoteApi: MockWordPressComRestApi?
     let token = "token"
 
-    class MockPushAuthenticationServiceRemote : PushAuthenticationServiceRemote {
+    class MockPushAuthenticationServiceRemote: PushAuthenticationServiceRemote {
 
         var authorizeLoginCalled = false
         var successBlockPassedIn:(() -> ())?
@@ -34,21 +34,21 @@ class PushAuthenticationServiceTests : XCTestCase {
 
     func testAuthorizeLoginDoesntCallServiceRemoteIfItsNull() {
         pushAuthenticationService?.authenticationServiceRemote = nil
-        pushAuthenticationService?.authorizeLogin(token, completion: { (completed:Bool) -> () in
+        pushAuthenticationService?.authorizeLogin(token, completion: { (completed: Bool) -> () in
         })
         XCTAssertFalse(mockPushAuthenticationServiceRemote!.authorizeLoginCalled, "Authorize login should not have been called")
         ContextManager.overrideSharedInstance(nil)
     }
 
     func testAuthorizeLoginCallsServiceRemoteAuthorizeLoginWhenItsNotNull() {
-        pushAuthenticationService?.authorizeLogin(token, completion: { (completed:Bool) -> () in
+        pushAuthenticationService?.authorizeLogin(token, completion: { (completed: Bool) -> () in
         })
         XCTAssertTrue(mockPushAuthenticationServiceRemote!.authorizeLoginCalled, "Authorize login should have been called")
     }
 
     func testAuthorizeLoginCallsCompletionCallbackWithTrueIfSuccessful() {
         var methodCalled = false
-        pushAuthenticationService?.authorizeLogin(token, completion: { (completed:Bool) -> () in
+        pushAuthenticationService?.authorizeLogin(token, completion: { (completed: Bool) -> () in
             methodCalled = true
             XCTAssertTrue(completed, "Success callback should have been called with a value of true")
         })
@@ -59,7 +59,7 @@ class PushAuthenticationServiceTests : XCTestCase {
 
     func testAuthorizeLoginCallsCompletionCallbackWithFalseIfSuccessful() {
         var methodCalled = false
-        pushAuthenticationService?.authorizeLogin(token, completion: { (completed:Bool) -> () in
+        pushAuthenticationService?.authorizeLogin(token, completion: { (completed: Bool) -> () in
             methodCalled = true
             XCTAssertFalse(completed, "Failure callback should have been called with a value of false")
         })

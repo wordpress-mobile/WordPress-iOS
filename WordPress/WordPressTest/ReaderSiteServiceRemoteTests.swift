@@ -21,7 +21,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testFetchFollowedSites() {
 
-        let response = ["subscriptions" : [["ID" : 1], ["ID" : 2]]]
+        let response = ["subscriptions": [["ID": 1], ["ID": 2]]]
         var sites = [RemoteReaderSite]()
         readerSiteServiceRemote.fetchFollowedSites(success: {
             if let remoteSites = $0 as? [RemoteReaderSite] {
@@ -43,7 +43,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
     func testFollowSiteWithID() {
 
         var success = false
-        let response = [String : AnyObject]()
+        let response = [String: AnyObject]()
         readerSiteServiceRemote.followSite(withID: 1, success:{
             success = true
             }, failure: nil)
@@ -62,7 +62,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
     func testUnfollowSiteWithID() {
 
         var success = false
-        let response = [String : AnyObject]()
+        let response = [String: AnyObject]()
         readerSiteServiceRemote.unfollowSite(withID: 1, success:{
             success = true
             }, failure: nil)
@@ -81,7 +81,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testFollowSiteAtURL() {
 
-        let response = ["subscribed" : true]
+        let response = ["subscribed": true]
         var success = false
         let url = "http://www.wordpress.com"
         readerSiteServiceRemote.followSite(atURL: url, success:{
@@ -93,7 +93,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testFollowSiteAtURLFailure() {
 
-        let response = ["subscribed" : false]
+        let response = ["subscribed": false]
         var failure = false
         let url = "http://www.wordpress.com"
         readerSiteServiceRemote.followSite(atURL: url, success:nil, failure: { _ in
@@ -114,7 +114,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testUnfollowSiteAtURL() {
 
-        let response = ["subscribed" : false]
+        let response = ["subscribed": false]
         var success = false
         let url = "http://www.wordpress.com"
         readerSiteServiceRemote.unfollowSite(atURL: url, success:{
@@ -126,7 +126,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testUnfollowSiteAtURLFailure() {
 
-        let response = ["subscribed" : true]
+        let response = ["subscribed": true]
         var failure = false
         let url = "http://www.wordpress.com"
         readerSiteServiceRemote.unfollowSite(atURL: url, success:nil, failure: { _ in
@@ -147,7 +147,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testFindSiteIDForURLWithNoHost() {
 
-        let response = [String : AnyObject]()
+        let response = [String: AnyObject]()
         var failure = false
         let url = URL(string: "http://")
         readerSiteServiceRemote.findSiteID(for: url as URL!, success:nil, failure: { _ in
@@ -159,8 +159,8 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testFindSiteIDForURL() {
 
-        let response = ["ID" : 1]
-        var siteID : UInt = 0
+        let response = ["ID": 1]
+        var siteID: UInt = 0
         let url = URL(string: "http://www.wordpress.com")
         readerSiteServiceRemote.findSiteID(for: url as URL!, success:{
             siteID = $0
@@ -180,7 +180,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
     func testIsSubscribedToSiteByID() {
 
         var subscribed = false
-        let response = ["is_following" : true]
+        let response = ["is_following": true]
         readerSiteServiceRemote.checkSubscribedToSite(byID: 1, success:{
             subscribed = $0
             }, failure: nil)
@@ -191,7 +191,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
     func testIsNotSubscribedToSiteByID() {
 
         var subscribed = false
-        let response = ["is_following" : false]
+        let response = ["is_following": false]
         readerSiteServiceRemote.checkSubscribedToSite(byID: 1, success:{
             subscribed = $0
             }, failure: nil)
@@ -250,7 +250,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testFlagSiteWithID() {
 
-        let response = ["success" : true]
+        let response = ["success": true]
         var success = false
         readerSiteServiceRemote.flagSite(withID: 1, asBlocked:false, success:{
             success = true
@@ -261,7 +261,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testFlagSiteWithIDFailure () {
 
-        let response = ["success" : false]
+        let response = ["success": false]
         var failure = false
         readerSiteServiceRemote.flagSite(withID: 1, asBlocked:false, success:nil, failure: { _ in
             failure = true

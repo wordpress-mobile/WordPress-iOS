@@ -34,11 +34,11 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         let endpoint = "sites/\(siteID)/users"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
         let parameters: [String: AnyObject] = [
-            "number"    : count as AnyObject,
-            "offset"    : offset as AnyObject,
-            "order_by"  : "display_name" as AnyObject,
-            "order"     : "ASC" as AnyObject,
-            "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID" as AnyObject,
+            "number": count as AnyObject,
+            "offset": offset as AnyObject,
+            "order_by": "display_name" as AnyObject,
+            "order": "ASC" as AnyObject,
+            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID" as AnyObject,
         ]
 
         wordPressComRestApi.GET(path!, parameters: parameters, success: { (responseObject, httpResponse) in
@@ -79,9 +79,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
         let pageNumber = (offset / count + 1)
         let parameters: [String: AnyObject] = [
-            "number"    : count as AnyObject,
-            "page"      : pageNumber as AnyObject,
-            "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL" as AnyObject
+            "number": count as AnyObject,
+            "page": pageNumber as AnyObject,
+            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL" as AnyObject
         ]
 
         wordPressComRestApi.GET(path!, parameters: parameters, success: { (responseObject, httpResponse) in
@@ -122,8 +122,8 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
         let pageNumber = (offset / count + 1)
         let parameters: [String: AnyObject] = [
-            "number"    : count as AnyObject,
-            "page"      : pageNumber as AnyObject
+            "number": count as AnyObject,
+            "page": pageNumber as AnyObject
         ]
 
         wordPressComRestApi.GET(path!, parameters: parameters, success: { responseObject, httpResponse in
@@ -162,7 +162,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     {
         let endpoint = "sites/\(siteID)/users/\(userID)"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
-        let parameters = ["roles" : [newRole.description]]
+        let parameters = ["roles": [newRole.description]]
 
         wordPressComRestApi.POST(path!,
                 parameters: parameters as [String : AnyObject]?,
@@ -264,8 +264,8 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
         let parameters = [
-            "invitees"  : usernameOrEmail,
-            "role"      : role.remoteValue
+            "invitees": usernameOrEmail,
+            "role": role.remoteValue
         ]
 
         wordPressComRestApi.POST(path!, parameters: parameters as [String : AnyObject]?, success: { (responseObject, httpResponse) in
@@ -308,9 +308,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
         let parameters = [
-            "invitees"  : usernameOrEmail,
-            "role"      : role.remoteValue,
-            "message"   : message
+            "invitees": usernameOrEmail,
+            "role": role.remoteValue,
+            "message": message
         ]
 
         wordPressComRestApi.POST(path!, parameters: parameters as [String : AnyObject]?, success: { (responseObject, httpResponse) in
@@ -345,7 +345,7 @@ private extension PeopleRemote {
     ///
     /// - Returns: An array of *Person* instances.
     ///
-    func peopleFromResponse<T : Person>(_ rawPeople: [[String: AnyObject]],
+    func peopleFromResponse<T: Person>(_ rawPeople: [[String: AnyObject]],
                                         siteID: Int,
                                         type: T.Type) throws -> [T]
     {
@@ -365,7 +365,7 @@ private extension PeopleRemote {
     ///
     /// - Returns: A single *Person* instance.
     ///
-    func personFromResponse<T : Person>(_ user: [String: AnyObject],
+    func personFromResponse<T: Person>(_ user: [String: AnyObject],
                                         siteID: Int,
                                         type: T.Type) throws -> T
     {
@@ -391,7 +391,7 @@ private extension PeopleRemote {
         let isSuperAdmin = user["is_super_admin"] as? Bool ?? false
         let roles = user["roles"] as? [String]
 
-        let role : Role
+        let role: Role
 
         role = roles?.map({ role -> Role in
             return Role(string: role)

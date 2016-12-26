@@ -3,12 +3,12 @@ import WordPressShared
 
 /// The purpose of this class is to simply display a regular TableViewCell, with a Switch on the right hand side.
 ///
-open class SwitchTableViewCell : WPTableViewCell
+open class SwitchTableViewCell: WPTableViewCell
 {
     // MARK: - Public Properties
     open var onChange : ((_ newValue: Bool) -> ())?
 
-    open var name : String {
+    open var name: String {
         get {
             return textLabel?.text ?? String()
         }
@@ -17,7 +17,7 @@ open class SwitchTableViewCell : WPTableViewCell
         }
     }
 
-    open var on : Bool {
+    open var on: Bool {
         get {
             return flipSwitch.isOn
         }
@@ -81,5 +81,5 @@ open class SwitchTableViewCell : WPTableViewCell
     fileprivate let tapGestureRecognizer = UITapGestureRecognizer()
 
     // MARK: - Private Outlets
-    fileprivate var flipSwitch : UISwitch!
+    fileprivate var flipSwitch: UISwitch!
 }

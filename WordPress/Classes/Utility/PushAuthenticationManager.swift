@@ -8,7 +8,7 @@ import WordPressComAnalytics
 /// authorizing access by means of a mobile device that's already authenticated.
 /// By doing so, WordPress.com backend will send a Push Notification, which is meant to be handled by this specific class.
 ///
-@objc open class PushAuthenticationManager : NSObject
+@objc open class PushAuthenticationManager: NSObject
 {
     // MARK: - Public Methods
     //

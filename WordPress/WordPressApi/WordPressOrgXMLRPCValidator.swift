@@ -118,7 +118,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         return url
     }
 
-    fileprivate func validateXMLRPCURL(_ url:URL,
+    fileprivate func validateXMLRPCURL(_ url: URL,
                                    success: @escaping (_ xmlrpcURL: URL) -> (),
                                    failure: @escaping (_ error: NSError) -> ()) {
         let api = WordPressOrgXMLRPCApi(endpoint: url)

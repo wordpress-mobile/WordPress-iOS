@@ -60,7 +60,7 @@ extension NSURL: ExportableAsset {
             return
         }
         let image = UIImage(cgImage: scaledImage)
-        var exportMetadata : [String:AnyObject]? = nil
+        var exportMetadata: [String: AnyObject]? = nil
         if let metadata = imageProperties as NSDictionary as? [String:AnyObject] {
             exportMetadata = metadata
             if stripGeoLocation {
@@ -308,7 +308,7 @@ extension NSURL: ExportableAsset {
 
     // MARK: - Error Handling
 
-    enum ErrorCode : Int {
+    enum ErrorCode: Int {
         case UnsupportedAssetType = 1
         case FailedToExport = 2
         case FailedToExportMetadata = 3

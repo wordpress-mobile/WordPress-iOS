@@ -5,7 +5,7 @@ import WordPressShared
 
 /// Create a new WordPress.com account and blog.
 ///
-@objc class SignupViewController : NUXAbstractViewController, SigninKeyboardResponder
+@objc class SignupViewController: NUXAbstractViewController, SigninKeyboardResponder
 {
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!

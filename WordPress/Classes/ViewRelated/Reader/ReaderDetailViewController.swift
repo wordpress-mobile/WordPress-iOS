@@ -81,7 +81,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    fileprivate var isLoaded : Bool {
+    fileprivate var isLoaded: Bool {
         return post != nil
     }
 
@@ -97,7 +97,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     ///
     /// - Return: A ReaderListViewController instance.
     ///
-    open class func controllerWithPost(_ post:ReaderPost) -> ReaderDetailViewController {
+    open class func controllerWithPost(_ post: ReaderPost) -> ReaderDetailViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderDetailViewController") as! ReaderDetailViewController
         controller.post = post
@@ -106,7 +106,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    open class func controllerWithPostID(_ postID:NSNumber, siteID:NSNumber) -> ReaderDetailViewController {
+    open class func controllerWithPostID(_ postID: NSNumber, siteID: NSNumber) -> ReaderDetailViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderDetailViewController") as! ReaderDetailViewController
         controller.setupWithPostID(postID, siteID:siteID)
@@ -268,7 +268,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // MARK: - Setup
 
-    open func setupWithPostID(_ postID:NSNumber, siteID:NSNumber) {
+    open func setupWithPostID(_ postID: NSNumber, siteID: NSNumber) {
         let title = NSLocalizedString("Loading Post...", comment:"Text displayed while loading a post.")
         WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: view)
         textView.alpha = 0.0
@@ -450,7 +450,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             blavatarImageView.addGestureRecognizer(tgr)
         }
 
-        if let siteURL:NSString = post!.siteURLForDisplay() as NSString? {
+        if let siteURL: NSString = post!.siteURLForDisplay() as NSString? {
             blogURLLabel.text = siteURL.components(separatedBy: "//").last
         }
     }
@@ -485,7 +485,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         // Define a success block to make the image visible and update its aspect ratio constraint
-        let successBlock : ((URLRequest, HTTPURLResponse?, UIImage) -> Void) = { [weak self] (request:URLRequest, response:HTTPURLResponse?, image:UIImage) in
+        let successBlock: ((URLRequest, HTTPURLResponse?, UIImage) -> Void) = { [weak self] (request: URLRequest, response: HTTPURLResponse?, image: UIImage) in
             guard self != nil else {
                 return
             }
@@ -534,7 +534,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    fileprivate func requestForURL(_ url:URL) -> URLRequest {
+    fileprivate func requestForURL(_ url: URL) -> URLRequest {
         var requestURL = url
 
         let absoluteString = requestURL.absoluteString
@@ -641,7 +641,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    fileprivate func resetActionButton(_ button:UIButton) {
+    fileprivate func resetActionButton(_ button: UIButton) {
         button.setTitle(nil, for: UIControlState())
         button.setTitle(nil, for: .highlighted)
         button.setTitle(nil, for: .disabled)
@@ -654,7 +654,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    fileprivate func configureActionButton(_ button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected:Bool) {
+    fileprivate func configureActionButton(_ button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected: Bool) {
         button.setTitle(title, for: UIControlState())
         button.setTitle(title, for: .highlighted)
         button.setTitle(title, for: .disabled)
@@ -666,7 +666,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    fileprivate func configureLikeActionButton(_ animated:Bool = false) {
+    fileprivate func configureLikeActionButton(_ animated: Bool = false) {
         likeButton.isEnabled = ReaderHelpers.isLoggedIn()
 
         let title = post!.likeCountForDisplay()
@@ -764,7 +764,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // MARK: - Instance Methods
 
-    func presentWebViewControllerWithURL(_ url:URL) {
+    func presentWebViewControllerWithURL(_ url: URL) {
         var url = url
         if url.host == nil {
             if let postURLString = post?.permaLink {
@@ -788,7 +788,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    func setBarsHidden(_ hidden:Bool) {
+    func setBarsHidden(_ hidden: Bool) {
         if (navigationController?.isNavigationBarHidden == hidden) {
             return
         }
@@ -980,7 +980,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    func handleBlockSiteNotification(_ notification:Foundation.Notification) {
+    func handleBlockSiteNotification(_ notification: Foundation.Notification) {
         if let userInfo = notification.userInfo, let aPost = userInfo["post"] as? NSObject {
             if aPost == post! {
                 _ = navigationController?.popViewController(animated: true)

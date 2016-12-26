@@ -5,7 +5,7 @@ import XCTest
 
 // MARK: - NSAttributedString Unit Tests
 //
-open class NSAttributedStringTests : XCTestCase
+open class NSAttributedStringTests: XCTestCase
 {
     /// Verifies that `trimNewLines` effectively nukes leading newline characters.
     ///

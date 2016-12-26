@@ -10,7 +10,7 @@ class EditPostViewController: UIViewController {
     fileprivate(set) var post: Post?
     fileprivate var hasShownEditor = false
     fileprivate var editingExistingPost = false
-    fileprivate(set) lazy var blog:Blog = {
+    fileprivate(set) lazy var blog: Blog = {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
         return blogService!.lastUsedOrFirstBlog()!
@@ -102,7 +102,7 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    override var preferredStatusBarStyle : UIStatusBarStyle {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 

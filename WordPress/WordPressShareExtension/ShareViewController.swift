@@ -62,8 +62,8 @@ class ShareViewController: SLComposeServiceViewController {
     fileprivate let defaultMaxDimension = 3000
     fileprivate let postStatuses = [
         // TODO: This should eventually be moved into WordPressComKit
-        "draft"     : NSLocalizedString("Draft", comment: "Draft post status"),
-        "publish"   : NSLocalizedString("Publish", comment: "Publish post status")
+        "draft": NSLocalizedString("Draft", comment: "Draft post status"),
+        "publish": NSLocalizedString("Publish", comment: "Publish post status")
     ]
 
 

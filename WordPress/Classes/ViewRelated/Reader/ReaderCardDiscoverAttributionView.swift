@@ -6,7 +6,7 @@ import WordPressShared
     func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView)
 }
 
-private enum ReaderCardDiscoverAttribution : Int {
+private enum ReaderCardDiscoverAttribution: Int {
 
     case none // Default, no action
     case visitSite // Action for verbose attribution to visit a site
@@ -115,7 +115,7 @@ private enum ReaderCardDiscoverAttribution : Int {
     }
 
 
-    fileprivate func configureSiteAttribution(_ contentProvider: ReaderPostContentProvider, verboseAttribution verbose:Bool) {
+    fileprivate func configureSiteAttribution(_ contentProvider: ReaderPostContentProvider, verboseAttribution verbose: Bool) {
         let url = contentProvider.sourceAvatarURLForDisplay()
         let placeholder = UIImage(named: blavatarImageName)
         imageView.setImageWith(url!, placeholderImage: placeholder)

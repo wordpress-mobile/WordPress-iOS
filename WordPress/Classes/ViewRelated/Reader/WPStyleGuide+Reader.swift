@@ -28,8 +28,8 @@ extension WPStyleGuide
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.defaultLineSpacing
         return [
-            NSParagraphStyleAttributeName : paragraphStyle,
-            NSFontAttributeName : font!,
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSFontAttributeName: font!,
         ]
     }
 
@@ -130,7 +130,7 @@ extension WPStyleGuide
     }
 
     public class func readerCardReadingTimeAttributes() -> [String: AnyObject] {
-        let fontSize:CGFloat = Cards.subtextFontSize
+        let fontSize: CGFloat = Cards.subtextFontSize
         let font = WPFontManager.systemRegularFont(ofSize: fontSize)
 
         return [
@@ -175,7 +175,7 @@ extension WPStyleGuide
 
     // MARK: - Apply Card Styles
 
-    public class func applyReaderCardSiteButtonStyle(_ button:UIButton) {
+    public class func applyReaderCardSiteButtonStyle(_ button: UIButton) {
         let fontSize = Cards.buttonFontSize
         button.titleLabel!.font = WPFontManager.systemRegularFont(ofSize: fontSize)
         button.setTitleColor(mediumBlue(), for: UIControlState())
@@ -183,35 +183,35 @@ extension WPStyleGuide
         button.setTitleColor(darkGrey(), for: .disabled)
     }
 
-    public class func applyReaderCardBlogNameStyle(_ label:UILabel) {
+    public class func applyReaderCardBlogNameStyle(_ label: UILabel) {
         let fontSize = Cards.buttonFontSize
         label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
         label.textColor = readerCardBlogNameLabelTextColor()
         label.highlightedTextColor = lightBlue()
     }
 
-    public class func applyReaderCardBylineLabelStyle(_ label:UILabel) {
-        let fontSize:CGFloat = Cards.subtextFontSize
+    public class func applyReaderCardBylineLabelStyle(_ label: UILabel) {
+        let fontSize: CGFloat = Cards.subtextFontSize
         label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
         label.textColor = greyLighten10()
     }
 
-    public class func applyReaderCardTitleLabelStyle(_ label:UILabel) {
+    public class func applyReaderCardTitleLabelStyle(_ label: UILabel) {
         label.textColor = darkGrey()
     }
 
-    public class func applyReaderCardSummaryLabelStyle(_ label:UILabel) {
+    public class func applyReaderCardSummaryLabelStyle(_ label: UILabel) {
         label.textColor = darkGrey()
     }
 
-    public class func applyReaderCardTagButtonStyle(_ button:UIButton) {
+    public class func applyReaderCardTagButtonStyle(_ button: UIButton) {
         let fontSize = Cards.subtextFontSize
         button.setTitleColor(mediumBlue(), for: UIControlState())
         button.setTitleColor(lightBlue(), for: .highlighted)
         button.titleLabel?.font = WPFontManager.systemRegularFont(ofSize: fontSize)
     }
 
-    public class func applyReaderCardActionButtonStyle(_ button:UIButton) {
+    public class func applyReaderCardActionButtonStyle(_ button: UIButton) {
         let fontSize = Cards.buttonFontSize
         button.setTitleColor(greyLighten10(), for: UIControlState())
         button.setTitleColor(lightBlue(), for: .highlighted)
@@ -223,26 +223,26 @@ extension WPStyleGuide
 
     // MARK: - Apply Stream Header Styles
 
-    public class func applyReaderStreamHeaderTitleStyle(_ label:UILabel) {
-        let fontSize:CGFloat = 14.0
+    public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel) {
+        let fontSize: CGFloat = 14.0
         label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
         label.textColor = darkGrey()
     }
 
-    public class func applyReaderStreamHeaderDetailStyle(_ label:UILabel) {
-        let fontSize:CGFloat = Cards.subtextFontSize
+    public class func applyReaderStreamHeaderDetailStyle(_ label: UILabel) {
+        let fontSize: CGFloat = Cards.subtextFontSize
         label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
         label.textColor = greyDarken10()
     }
 
-    public class func applyReaderSiteStreamDescriptionStyle(_ label:UILabel) {
+    public class func applyReaderSiteStreamDescriptionStyle(_ label: UILabel) {
         let fontSize = Cards.contentFontSize
         label.font = WPFontManager.merriweatherRegularFont(ofSize: fontSize)
         label.textColor = darkGrey()
     }
 
-    public class func applyReaderSiteStreamCountStyle(_ label:UILabel) {
-        let fontSize:CGFloat = 12.0
+    public class func applyReaderSiteStreamCountStyle(_ label: UILabel) {
+        let fontSize: CGFloat = 12.0
         label.font = WPFontManager.systemRegularFont(ofSize: fontSize)
         label.textColor = grey()
     }
@@ -309,7 +309,7 @@ extension WPStyleGuide
 
     // MARK: - Gap Marker Styles
 
-    public class func applyGapMarkerButtonStyle(_ button:UIButton) {
+    public class func applyGapMarkerButtonStyle(_ button: UIButton) {
         button.backgroundColor = gapMarkerButtonBackgroundColor()
         button.titleLabel?.font = WPFontManager.systemSemiBoldFont(ofSize: Cards.loadMoreButtonFontSize)
         button.setTitleColor(UIColor.white, for: UIControlState())
@@ -328,25 +328,25 @@ extension WPStyleGuide
 
     public struct Cards
     {
-        public static let defaultLineSpacing:CGFloat = WPDeviceIdentification.isiPad() ? 6.0 : 3.0
-        public static let titleFontSize:CGFloat = WPDeviceIdentification.isiPad() ? 28.0 : 18.0
-        public static let titleLineSpacing:CGFloat = WPDeviceIdentification.isiPad() ? 4.0 : 2.0
-        public static let contentFontSize:CGFloat = 16.0
-        public static let contentLineSpacing:CGFloat = 6.5
-        public static let buttonFontSize:CGFloat = 14.0
-        public static let subtextFontSize:CGFloat = 12.0
-        public static let loadMoreButtonFontSize:CGFloat = 15.0
-        public static let crossPostTitleFontSize:CGFloat = 16.0
-        public static let crossPostSubtitleFontSize:CGFloat = 13.0
-        public static let crossPostLineSpacing:CGFloat = 2.0
+        public static let defaultLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 6.0 : 3.0
+        public static let titleFontSize: CGFloat = WPDeviceIdentification.isiPad() ? 28.0 : 18.0
+        public static let titleLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 4.0 : 2.0
+        public static let contentFontSize: CGFloat = 16.0
+        public static let contentLineSpacing: CGFloat = 6.5
+        public static let buttonFontSize: CGFloat = 14.0
+        public static let subtextFontSize: CGFloat = 12.0
+        public static let loadMoreButtonFontSize: CGFloat = 15.0
+        public static let crossPostTitleFontSize: CGFloat = 16.0
+        public static let crossPostSubtitleFontSize: CGFloat = 13.0
+        public static let crossPostLineSpacing: CGFloat = 2.0
     }
 
     public struct Detail
     {
-        public static let titleFontSize:CGFloat = WPDeviceIdentification.isiPad() ? 36.0 : 28.0
-        public static let titleLineHeight:CGFloat = WPDeviceIdentification.isiPad() ? 45.0 : 35.0
-        public static let contentFontSize:CGFloat = 16.0
-        public static let contentLineHeight:CGFloat = 27.0
+        public static let titleFontSize: CGFloat = WPDeviceIdentification.isiPad() ? 36.0 : 28.0
+        public static let titleLineHeight: CGFloat = WPDeviceIdentification.isiPad() ? 45.0 : 35.0
+        public static let contentFontSize: CGFloat = 16.0
+        public static let contentLineHeight: CGFloat = 27.0
     }
 
 }

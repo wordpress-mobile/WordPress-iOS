@@ -7,8 +7,8 @@ open class CachedAnimatedImageView: FLAnimatedImageView {
 
     func setAnimatedImage(_ urlRequest: URLRequest,
                           placeholderImage: UIImage?,
-                          success:((FLAnimatedImage) -> ())? ,
-                          failure:((NSError?) -> ())? )
+                          success: ((FLAnimatedImage) -> ())? ,
+                          failure: ((NSError?) -> ())? )
     {
         if let ongoingTask = currentTask {
             ongoingTask.cancel()
@@ -43,8 +43,8 @@ class AnimatedImageCache {
 
     func animatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
-                       success:((FLAnimatedImage) -> ())? ,
-                       failure:((NSError?) -> ())? ) -> URLSessionTask?
+                       success: ((FLAnimatedImage) -> ())? ,
+                       failure: ((NSError?) -> ())? ) -> URLSessionTask?
     {
         if  let key = urlRequest.url,
             let animatedImage = cache.object(forKey: key as AnyObject) as? FLAnimatedImage {

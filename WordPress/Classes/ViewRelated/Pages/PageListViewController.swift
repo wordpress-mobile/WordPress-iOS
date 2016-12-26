@@ -2,7 +2,7 @@ import Foundation
 import WordPressShared
 import WordPressComAnalytics
 
-class PageListViewController : AbstractPostListViewController, UIViewControllerRestoration {
+class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
 
     fileprivate static let pageSectionHeaderHeight = CGFloat(24.0)
     fileprivate static let pageCellEstimatedRowHeight = CGFloat(47.0)
@@ -13,7 +13,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     fileprivate static let restorePageCellNibName = "RestorePageTableViewCell"
     fileprivate static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
 
-    fileprivate lazy var sectionFooterSeparatorView : UIView = {
+    fileprivate lazy var sectionFooterSeparatorView: UIView = {
         let footer = UIView()
         footer.backgroundColor = WPStyleGuide.greyLighten20()
         return footer
@@ -303,7 +303,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     }
 
     fileprivate func cellIdentifierForPage(_ page: Page) -> String {
-        var identifier : String
+        var identifier: String
 
         if recentlyTrashedPostObjectIDs.contains(page.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
             identifier = type(of: self).restorePageCellIdentifier
@@ -317,7 +317,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - Post Actions
 
     override func createPost() {
-        let navController : UINavigationController
+        let navController: UINavigationController
 
         let editorSettings = EditorSettings()
         if editorSettings.visualEditorEnabled {
@@ -534,7 +534,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     fileprivate func pageForObjectID(_ objectID: NSManagedObjectID) -> Page? {
 
-        var pageManagedOjbect : NSManagedObject
+        var pageManagedOjbect: NSManagedObject
 
         do {
             pageManagedOjbect = try managedObjectContext().existingObject(with: objectID)

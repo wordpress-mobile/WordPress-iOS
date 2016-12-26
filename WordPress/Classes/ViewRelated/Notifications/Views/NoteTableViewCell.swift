@@ -316,7 +316,7 @@ class NoteTableViewCell: WPTableViewCell
     }
 
     // MARK: - Private Properties
-    fileprivate var gravatarURL : URL?
+    fileprivate var gravatarURL: URL?
     fileprivate var separatorsView = SeparatorsView()
 
     // MARK: - IBOutlets

@@ -7,7 +7,7 @@ import SVProgressHUD
 
 /// Allows the user to Invite Followers / Users
 ///
-class InvitePersonViewController : UITableViewController {
+class InvitePersonViewController: UITableViewController {
 
     // MARK: - Public Properties
 
@@ -304,12 +304,12 @@ private extension InvitePersonViewController {
             return
         }
 
-        let messageMap : [PeopleRemote.ResponseError: String] = [
-            .invalidInputError       : NSLocalizedString("The specified user cannot be found. Please, verify if it's correctly spelt.",
+        let messageMap: [PeopleRemote.ResponseError: String] = [
+            .invalidInputError: NSLocalizedString("The specified user cannot be found. Please, verify if it's correctly spelt.",
                                                             comment: "People: Invitation Error"),
-            .userAlreadyHasRoleError : NSLocalizedString("The user already has the specified role. Please, try assigning a different role.",
+            .userAlreadyHasRoleError: NSLocalizedString("The user already has the specified role. Please, try assigning a different role.",
                                                             comment: "People: Invitation Error"),
-            .unknownError            : NSLocalizedString("Unknown error has occurred",
+            .unknownError: NSLocalizedString("Unknown error has occurred",
                                                             comment: "People: Invitation Error")
         ]
 
@@ -322,7 +322,7 @@ private extension InvitePersonViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    var sendActionEnabled : Bool {
+    var sendActionEnabled: Bool {
         get {
             return navigationItem.rightBarButtonItem?.isEnabled ?? false
         }
