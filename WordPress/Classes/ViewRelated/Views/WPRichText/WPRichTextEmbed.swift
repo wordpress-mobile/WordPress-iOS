@@ -1,15 +1,15 @@
 import Foundation
 
-class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
+class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 {
     typealias successBlock = ((WPRichTextEmbed)->Void)
 
 
     // MARK: Properties
 
-    var fixedHeight : CGFloat = 0.0
+    var fixedHeight: CGFloat = 0.0
     var attachmentSize = CGSize.zero
-    var documentSize : CGSize {
+    var documentSize: CGSize {
         get {
             var contentSize = webView.scrollView.contentSize
             if let heightStr = webView.stringByEvaluatingJavaScript(from: "document.documentElement.scrollHeight") {
@@ -20,10 +20,10 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
             return contentSize
         }
     }
-    var success : successBlock?
-    var linkURL : URL?
-    var contentURL : URL?
-    var webView : UIWebView
+    var success: successBlock?
+    var linkURL: URL?
+    var contentURL: URL?
+    var webView: UIWebView
 
     override var frame: CGRect {
         didSet {

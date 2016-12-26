@@ -4,7 +4,7 @@ import MobileCoreServices
 
 extension UIImage {
     // MARK: - Error Handling
-    enum ErrorCode : Int {
+    enum ErrorCode: Int {
         case failedToWrite = 1
     }
 

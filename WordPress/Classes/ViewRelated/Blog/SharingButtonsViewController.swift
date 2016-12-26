@@ -5,7 +5,7 @@ import WordPressShared
 /// Manages which sharing button are displayed, their order, and other settings
 /// related to sharing.
 ///
-@objc class SharingButtonsViewController : UITableViewController
+@objc class SharingButtonsViewController: UITableViewController
 {
     let buttonSectionIndex = 0
     let moreSectionIndex = 1

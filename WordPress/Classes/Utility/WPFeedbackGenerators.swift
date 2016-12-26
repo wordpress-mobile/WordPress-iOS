@@ -1,7 +1,7 @@
 import UIKit
 
 @objc
-public enum WPNotificationFeedbackType : Int {
+public enum WPNotificationFeedbackType: Int {
     case success
     case warning
     case error
@@ -47,7 +47,7 @@ class WPNotificationFeedbackGenerator: NSObject {
 }
 
 @objc
-public enum WPImpactFeedbackStyle : Int {
+public enum WPImpactFeedbackStyle: Int {
     case light
     case medium
     case heavy

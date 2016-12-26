@@ -382,7 +382,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     // MARK: - Private Enums
 
-    fileprivate enum Filter : String {
+    fileprivate enum Filter: String {
         case Users      = "users"
         case Followers  = "followers"
         case Viewers    = "viewers"

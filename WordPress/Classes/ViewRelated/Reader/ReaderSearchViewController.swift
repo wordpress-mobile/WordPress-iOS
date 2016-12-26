@@ -6,7 +6,7 @@ import Gridicons
 /// list of posts.  The user supplied search phrase is converted into a ReaderSearchTopic
 /// the results of which are displayed in the embedded ReaderStreamViewController.
 ///
-@objc open class ReaderSearchViewController : UIViewController, UIViewControllerRestoration
+@objc open class ReaderSearchViewController: UIViewController, UIViewControllerRestoration
 {
     static let restorationClassIdentifier = "ReaderSearchViewControllerRestorationIdentifier"
     static let restorableSearchTopicPathKey: String = "RestorableSearchTopicPathKey"
@@ -246,7 +246,7 @@ import Gridicons
 
         let views = [
             "searchBar": searchBar,
-            "autoView" : autoView
+            "autoView": autoView
         ]
 
         // Match the width of the search bar.

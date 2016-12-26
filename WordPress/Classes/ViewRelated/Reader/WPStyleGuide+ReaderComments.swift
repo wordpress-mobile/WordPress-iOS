@@ -20,8 +20,8 @@ extension WPStyleGuide
 
     public class func defaultSearchBarTextAttributes(_ color: UIColor) -> [String:AnyObject] {
         return [
-            NSForegroundColorAttributeName      : color,
-            NSFontAttributeName                 : WPFontManager.systemRegularFont(ofSize: 14)
+            NSForegroundColorAttributeName: color,
+            NSFontAttributeName: WPFontManager.systemRegularFont(ofSize: 14)
         ]
     }
 }

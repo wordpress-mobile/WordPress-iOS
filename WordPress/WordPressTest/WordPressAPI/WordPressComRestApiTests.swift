@@ -34,7 +34,7 @@ class WordPressComRestApiTests: XCTestCase {
     func testSuccessfullCall() {
         stub(condition: isRestAPIRequest()) { request in
             let stubPath = OHPathForFile("WordPressComRestApiMedia.json", type(of: self))
-            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject:"application/json" as AnyObject])
+            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
 
         let expect = self.expectation(description: "One callback should be invoked")
@@ -53,7 +53,7 @@ class WordPressComRestApiTests: XCTestCase {
     func testInvalidTokenFailedCall() {
         stub(condition: isRestAPIRequest()) { request in
             let stubPath = OHPathForFile("WordPressComRestApiFailRequestInvalidToken.json", type(of: self))
-            return fixture(filePath: stubPath!, status:400, headers: ["Content-Type" as NSObject:"application/json" as AnyObject])
+            return fixture(filePath: stubPath!, status:400, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
 
         let expect = self.expectation(description: "One callback should be invoked")
@@ -72,7 +72,7 @@ class WordPressComRestApiTests: XCTestCase {
     func testInvalidJSONReceivedFailedCall() {
         stub(condition: isRestAPIRequest()) { request in
             let stubPath = OHPathForFile("WordPressComRestApiFailInvalidJSON.json", type(of: self))
-            return fixture(filePath: stubPath!, status:200, headers: ["Content-Type" as NSObject:"application/json" as AnyObject])
+            return fixture(filePath: stubPath!, status:200, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
         let expect = self.expectation(description: "One callback should be invoked")
         let api = WordPressComRestApi(oAuthToken:"fakeToken")
@@ -90,7 +90,7 @@ class WordPressComRestApiTests: XCTestCase {
     func testInvalidJSONSentFailedCall() {
         stub(condition: isRestAPIMediaNewRequest()) { request in
             let stubPath = OHPathForFile("WordPressComRestApiFailInvalidInput.json", type(of: self))
-            return fixture(filePath: stubPath!, status:400, headers: ["Content-Type" as NSObject:"application/json" as AnyObject])
+            return fixture(filePath: stubPath!, status:400, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
         let expect = self.expectation(description: "One callback should be invoked")
         let api = WordPressComRestApi(oAuthToken:"fakeToken")
@@ -108,7 +108,7 @@ class WordPressComRestApiTests: XCTestCase {
     func testUnauthorizedFailedCall() {
         stub(condition: isRestAPIMediaNewRequest()) { request in
             let stubPath = OHPathForFile("WordPressComRestApiFailUnauthorized.json", type(of: self))
-            return fixture(filePath: stubPath!, status:403, headers: ["Content-Type" as NSObject:"application/json" as AnyObject])
+            return fixture(filePath: stubPath!, status:403, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
         let expect = self.expectation(description: "One callback should be invoked")
         let api = WordPressComRestApi(oAuthToken:"fakeToken")
@@ -126,7 +126,7 @@ class WordPressComRestApiTests: XCTestCase {
     func testMultipleErrorsFailedCall() {
         stub(condition: isRestAPIMediaNewRequest()) { request in
             let stubPath = OHPathForFile("WordPressComRestApiMultipleErrors.json", type(of: self))
-            return fixture(filePath: stubPath!, status:403, headers: ["Content-Type" as NSObject:"application/json" as AnyObject])
+            return fixture(filePath: stubPath!, status:403, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
         let expect = self.expectation(description: "One callback should be invoked")
         let api = WordPressComRestApi(oAuthToken:"fakeToken")
@@ -176,7 +176,7 @@ class WordPressComRestApiTests: XCTestCase {
     func testStreamMethodCallWithInvalidFile() {
         stub(condition: isRestAPIMediaNewRequest()) { request in
             let stubPath = OHPathForFile("WordPressComRestApiMedia.json", type(of: self))
-            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject:"application/json" as AnyObject])
+            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
 
         let expect = self.expectation(description: "One callback should be invoked")
@@ -195,7 +195,7 @@ class WordPressComRestApiTests: XCTestCase {
     func testStreamMethodParallelCalls() {
         stub(condition: isRestAPIMediaNewRequest()) { request in
             let stubPath = OHPathForFile("WordPressComRestApiMedia.json", type(of: self))
-            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject:"application/json" as AnyObject])
+            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
         guard
             let mediaPath = OHPathForFile("test-image.jpg", type(of: self))

@@ -13,7 +13,7 @@ protocol ReaderSearchSuggestionsDelegate
 /// Displays a list of previously saved reader searches, sorted by most recent,
 /// and filtered by the value of `phrase`.
 ///
-class ReaderSearchSuggestionsViewController : UIViewController
+class ReaderSearchSuggestionsViewController: UIViewController
 {
     @IBOutlet var stackView: UIStackView!
     @IBOutlet var tableView: UITableView!
@@ -32,7 +32,7 @@ class ReaderSearchSuggestionsViewController : UIViewController
     var delegate: ReaderSearchSuggestionsDelegate?
     let cellIdentifier = "CellIdentifier"
     let rowAndButtonHeight = CGFloat(44.0)
-    var maxTableViewRows:Int {
+    var maxTableViewRows: Int {
         let height = UIApplication.shared.keyWindow?.frame.size.height ?? 0
         if height == 320 {
             // iPhone 4s, 5, 5s, in landscape orientation

@@ -1,30 +1,30 @@
 import Foundation
 import WordPressShared.WPTableViewCell
 
-open class CommentsTableViewCell : WPTableViewCell
+open class CommentsTableViewCell: WPTableViewCell
 {
     // MARK: - Public Properties
-    open var author : String? {
+    open var author: String? {
         didSet {
             refreshDetailsLabel()
         }
     }
-    open var postTitle : String? {
+    open var postTitle: String? {
         didSet {
             refreshDetailsLabel()
         }
     }
-    open var content : String? {
+    open var content: String? {
         didSet {
             refreshDetailsLabel()
         }
     }
-    open var timestamp : String? {
+    open var timestamp: String? {
         didSet {
             refreshTimestampLabel()
         }
     }
-    open var approved : Bool = false {
+    open var approved: Bool = false {
         didSet {
             refreshTimestampLabel()
             refreshDetailsLabel()
@@ -129,9 +129,9 @@ open class CommentsTableViewCell : WPTableViewCell
 
         // Arrange the Replacement Map
         let replacementMap  = [
-            "%1$@" : NSAttributedString(string: unwrappedAuthor,    attributes: detailsBoldStyle),
-            "%2$@" : NSAttributedString(string: unwrappedTitle,     attributes: detailsItalicsStyle),
-            "%3$@" : NSAttributedString(string: unwrappedContent,   attributes: detailsRegularStyle)
+            "%1$@": NSAttributedString(string: unwrappedAuthor,    attributes: detailsBoldStyle),
+            "%2$@": NSAttributedString(string: unwrappedTitle,     attributes: detailsItalicsStyle),
+            "%3$@": NSAttributedString(string: unwrappedContent,   attributes: detailsRegularStyle)
         ]
 
         // Replace Author + Title + Content
@@ -155,17 +155,17 @@ open class CommentsTableViewCell : WPTableViewCell
     typealias Style = WPStyleGuide.Comments
 
     // MARK: - Private Properties
-    fileprivate var gravatarURL : URL?
+    fileprivate var gravatarURL: URL?
 
     // MARK: - Private Calculated Properties
-    fileprivate var placeholderImage : UIImage {
+    fileprivate var placeholderImage: UIImage {
         return Style.gravatarPlaceholderImage(isApproved: approved)
     }
 
     // MARK: - IBOutlets
-    @IBOutlet fileprivate var layoutView            : UIView!
-    @IBOutlet fileprivate var gravatarImageView     : CircularImageView!
-    @IBOutlet fileprivate var detailsLabel          : UILabel!
-    @IBOutlet fileprivate var timestampImageView    : UIImageView!
-    @IBOutlet fileprivate var timestampLabel        : UILabel!
+    @IBOutlet fileprivate var layoutView: UIView!
+    @IBOutlet fileprivate var gravatarImageView: CircularImageView!
+    @IBOutlet fileprivate var detailsLabel: UILabel!
+    @IBOutlet fileprivate var timestampImageView: UIImageView!
+    @IBOutlet fileprivate var timestampLabel: UILabel!
 }
