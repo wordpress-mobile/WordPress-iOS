@@ -306,11 +306,11 @@ private extension InvitePersonViewController {
 
         let messageMap: [PeopleRemote.ResponseError: String] = [
             .invalidInputError: NSLocalizedString("The specified user cannot be found. Please, verify if it's correctly spelt.",
-                                                            comment: "People: Invitation Error"),
+                                                  comment: "People: Invitation Error"),
             .userAlreadyHasRoleError: NSLocalizedString("The user already has the specified role. Please, try assigning a different role.",
-                                                            comment: "People: Invitation Error"),
+                                                        comment: "People: Invitation Error"),
             .unknownError: NSLocalizedString("Unknown error has occurred",
-                                                            comment: "People: Invitation Error")
+                                             comment: "People: Invitation Error")
         ]
 
         let message = messageMap[error] ?? messageMap[.unknownError]!
