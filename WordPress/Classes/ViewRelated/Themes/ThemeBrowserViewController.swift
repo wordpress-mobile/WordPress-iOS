@@ -80,7 +80,7 @@ public protocol ThemePresenter: class
     }
 }
 
-@objc open class ThemeBrowserViewController : UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate
+@objc open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate
 {
     // MARK: - Properties: must be set by parent
 
@@ -88,7 +88,7 @@ public protocol ThemePresenter: class
      *  @brief      The blog this VC will work with.
      *  @details    Must be set by the creator of this VC.
      */
-    open var blog : Blog!
+    open var blog: Blog!
 
     // MARK: - Properties
 
@@ -290,7 +290,7 @@ public protocol ThemePresenter: class
         unregisterForKeyboardNotifications()
     }
 
-    open override var preferredStatusBarStyle : UIStatusBarStyle {
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
@@ -438,11 +438,11 @@ public protocol ThemePresenter: class
 
     // MARK: - WPContentSyncHelperDelegate
 
-    func syncHelper(_ syncHelper:WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         syncThemePage(1, success: success, failure: failure)
     }
 
-    func syncHelper(_ syncHelper:WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         let nextPage = syncingPage + 1
         syncThemePage(nextPage, success: success, failure: failure)
     }
@@ -521,7 +521,7 @@ public protocol ThemePresenter: class
 
     // MARK: - UICollectionViewDelegateFlowLayout
 
-    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  referenceSizeForHeaderInSection section:NSInteger) -> CGSize {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  referenceSizeForHeaderInSection section: NSInteger) -> CGSize {
         switch sections[section] {
         case .themes:
             return .zero

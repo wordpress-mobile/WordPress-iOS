@@ -5,8 +5,8 @@ import XCTest
 
 /// GravatarService Unit Tests
 ///
-class GravatarServiceTests : XCTestCase {
-    class GravatarServiceRemoteMock : GravatarServiceRemote {
+class GravatarServiceTests: XCTestCase {
+    class GravatarServiceRemoteMock: GravatarServiceRemote {
         let capturedAccountToken: String
         let capturedAccountEmail: String
 
@@ -24,8 +24,8 @@ class GravatarServiceTests : XCTestCase {
         }
     }
 
-    class GravatarServiceTester : GravatarService {
-        var gravatarServiceRemoteMock : GravatarServiceRemoteMock?
+    class GravatarServiceTester: GravatarService {
+        var gravatarServiceRemoteMock: GravatarServiceRemoteMock?
 
         override func gravatarServiceRemoteForAccountToken(accountToken: String, andAccountEmail accountEmail: String) -> GravatarServiceRemote {
             gravatarServiceRemoteMock = GravatarServiceRemoteMock(accountToken: accountToken, accountEmail: accountEmail)
@@ -33,7 +33,7 @@ class GravatarServiceTests : XCTestCase {
         }
     }
 
-    private var contextManager : TestContextManager!
+    private var contextManager: TestContextManager!
 
     override func setUp() {
         super.setUp()

@@ -322,7 +322,7 @@ extension PHAsset: ExportableAsset {
 
     // MARK: - Error Handling
 
-    enum ErrorCode : Int {
+    enum ErrorCode: Int {
         case unsupportedAssetType = 1
         case failedToExport = 2
         case failedToExportMetadata = 3
@@ -335,14 +335,14 @@ extension PHAsset: ExportableAsset {
         return error
     }
 
-    func requestMetadataWithCompletionBlock(_ completionBlock: @escaping (_ metadata:[String:AnyObject]) ->(), failureBlock: @escaping (_ error:NSError) -> ()) {
+    func requestMetadataWithCompletionBlock(_ completionBlock: @escaping (_ metadata: [String:AnyObject]) ->(), failureBlock: @escaping (_ error: NSError) -> ()) {
         let editOptions = PHContentEditingInputRequestOptions()
         editOptions.isNetworkAccessAllowed = true
         self.requestContentEditingInput(with: editOptions) { (contentEditingInput, info) -> Void in
             guard let contentEditingInput = contentEditingInput,
                 let fullSizeImageURL = contentEditingInput.fullSizeImageURL,
                 let image = CIImage(contentsOf: fullSizeImageURL) else {
-                    completionBlock([String:AnyObject]())
+                    completionBlock([String: AnyObject]())
                     if let error = info[PHImageErrorKey] as? NSError {
                         failureBlock(error)
                     } else {

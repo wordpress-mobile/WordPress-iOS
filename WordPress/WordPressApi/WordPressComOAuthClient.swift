@@ -102,7 +102,7 @@ public final class WordPressComOAuthClient: NSObject {
     ///     - success: block to be called if authentication was successful.
     ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
-    public func requestOneTimeCodeWithUsername(_ username: String, password:String,
+    public func requestOneTimeCodeWithUsername(_ username: String, password: String,
                                         success: @escaping () -> (), failure: @escaping (_ error: NSError) -> ())
     {
         let parameters = [
@@ -170,10 +170,10 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
         ///     - needs_2fa: Multifactor Authentication code is required
         ///
         let errorsMap = [
-            "invalid_client" : WordPressComOAuthError.invalidClient,
-            "unsupported_grant_type" : WordPressComOAuthError.unsupportedGrantType,
-            "invalid_request" : WordPressComOAuthError.invalidRequest,
-            "needs_2fa" : WordPressComOAuthError.needsMultifactorCode
+            "invalid_client": WordPressComOAuthError.invalidClient,
+            "unsupported_grant_type": WordPressComOAuthError.unsupportedGrantType,
+            "invalid_request": WordPressComOAuthError.invalidRequest,
+            "needs_2fa": WordPressComOAuthError.needsMultifactorCode
         ]
 
         let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComOAuthError.unknown.rawValue

@@ -25,7 +25,7 @@ class WordPressOAuthClientTests: XCTestCase {
     func testAuthenticateUsernameNo2FASuccessCase() {
         stub(condition: isOauthTokenRequest()) { request in
             let stubPath = OHPathForFile("WordPressOAuthClientSuccess.json", type(of: self))
-            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject:"application/json" as AnyObject])
+            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
 
         let expect = self.expectation(description: "One callback should be invoked")
@@ -44,7 +44,7 @@ class WordPressOAuthClientTests: XCTestCase {
     func testAuthenticateUsernameNo2FAFailureWrongPasswordCase() {
         stub(condition: isOauthTokenRequest()) { request in
             let stubPath = OHPathForFile("WordPressOAuthClientWrongPasswordFail.json", type(of: self))
-            return fixture(filePath: stubPath!, status:400, headers: ["Content-Type" as NSObject:"application/json" as AnyObject])
+            return fixture(filePath: stubPath!, status:400, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
 
         let expect = self.expectation(description: "One callback should be invoked")
@@ -63,7 +63,7 @@ class WordPressOAuthClientTests: XCTestCase {
     func testAuthenticateUsername2FAWrong2FACase() {
         stub(condition: isOauthTokenRequest()) { request in
             let stubPath = OHPathForFile("WordPressOAuthClientNeed2FAFail.json", type(of: self))
-            return fixture(filePath: stubPath!, status:400, headers: ["Content-Type" as NSObject:"application/json" as AnyObject])
+            return fixture(filePath: stubPath!, status:400, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
 
         let expect = self.expectation(description: "Call should complete")
@@ -93,7 +93,7 @@ class WordPressOAuthClientTests: XCTestCase {
     func testrequestOneTimeCodeWithUsername() {
         stub(condition: isOauthTokenRequest()) { request in
             let stubPath = OHPathForFile("WordPressOAuthClientNeed2FAFail.json", type(of: self))
-            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject:"application/json" as AnyObject])
+            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: "application/json" as AnyObject])
         }
 
         let expect = self.expectation(description: "One callback should be invoked")

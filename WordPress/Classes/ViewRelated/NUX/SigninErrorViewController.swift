@@ -7,7 +7,7 @@ import wpxmlrpc
 /// It provides for a title, message, and for specialized button actions.
 /// It is assumed the controller will always be presented modally.
 ///
-class SigninErrorViewController : UIViewController
+class SigninErrorViewController: UIViewController
 {
     typealias SigninErrorCallback = (() -> Void)
 

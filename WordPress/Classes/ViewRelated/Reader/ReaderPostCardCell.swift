@@ -3,7 +3,7 @@ import WordPressShared
 import Gridicons
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -251,7 +251,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         likeActionButton.titleLabel?.backgroundColor = UIColor.white
     }
 
-    open func configureCell(_ contentProvider:ReaderPostContentProvider) {
+    open func configureCell(_ contentProvider: ReaderPostContentProvider) {
         self.contentProvider = contentProvider
 
         configureHeader()
@@ -343,7 +343,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         currentLoadedCardImageURL = featuredImageURL.absoluteString
     }
 
-    fileprivate func requestForURL(_ url:URL) -> URLRequest {
+    fileprivate func requestForURL(_ url: URL) -> URLRequest {
 
         var requestURL = url
 
@@ -403,7 +403,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         configureLikeActionButton()
     }
 
-    fileprivate func resetActionButton(_ button:UIButton) {
+    fileprivate func resetActionButton(_ button: UIButton) {
         button.setTitle(nil, for: UIControlState())
         button.isSelected = false
         button.isHidden = true

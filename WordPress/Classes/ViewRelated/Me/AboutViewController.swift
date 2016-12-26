@@ -4,7 +4,7 @@ import WordPressComAnalytics
 import WordPress_AppbotX
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -17,7 +17,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l > r
@@ -27,7 +27,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-open class AboutViewController : UITableViewController
+open class AboutViewController: UITableViewController
 {
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -166,9 +166,9 @@ open class AboutViewController : UITableViewController
 
     // MARK: - Nested Row Class
     fileprivate class Row {
-        let title   : String
-        let details : String?
-        let handler : ((Void) -> Void)?
+        let title: String
+        let details: String?
+        let handler: ((Void) -> Void)?
 
         init(title: String, details: String?, handler: ((Void) -> Void)?) {
             self.title      = title
@@ -193,7 +193,7 @@ open class AboutViewController : UITableViewController
         return NSLocalizedString("© \(year) Automattic, Inc.", comment: "About View's Footer Text")
     }()
 
-    fileprivate var rows : [[Row]] {
+    fileprivate var rows: [[Row]] {
         let appsBlogHostname = URL(string: WPAutomatticAppsBlogURL)?.host ?? String()
 
         return [

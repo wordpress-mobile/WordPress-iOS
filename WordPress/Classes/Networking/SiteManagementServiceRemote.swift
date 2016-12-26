@@ -3,7 +3,7 @@ import AFNetworking
 
 /// SiteManagementServiceRemote handles REST API calls for managing a WordPress.com site.
 ///
-open class SiteManagementServiceRemote : ServiceRemoteWordPressComREST
+open class SiteManagementServiceRemote: ServiceRemoteWordPressComREST
 {
     /// Deletes the specified WordPress.com site.
     ///

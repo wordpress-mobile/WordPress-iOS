@@ -9,11 +9,11 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
 {
     /// Current selected value, if any
     ///
-    var selectedValue : T?
+    var selectedValue: T?
 
     /// Callback to be executed whenever the selectedValue changes
     ///
-    var onChange : ((T) -> Void)?
+    var onChange: ((T) -> Void)?
 
 
 
@@ -145,21 +145,21 @@ class SettingsListPickerViewController<T:Equatable> : UITableViewController
 
     /// Header Strings to be applied over the diferent sections
     ///
-    fileprivate let headers : [String]?
+    fileprivate let headers: [String]?
 
     /// Footer Strings to be applied over the diferent sections
     ///
-    fileprivate let footers : [String]?
+    fileprivate let footers: [String]?
 
     /// Titles to be rendered
     ///
-    fileprivate let titles : [[String]]?
+    fileprivate let titles: [[String]]?
 
     /// Row Subtitles. Should contain the exact same number as titles
     ///
-    fileprivate let subtitles : [[String]]?
+    fileprivate let subtitles: [[String]]?
 
     /// Row Values. Should contain the exact same number as titles
     ///
-    fileprivate let values : [[T]]?
+    fileprivate let values: [[T]]?
 }

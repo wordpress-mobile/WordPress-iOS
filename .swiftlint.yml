@@ -9,7 +9,7 @@ whitelist_rules:
   # - closing_brace
 
   # Colons should be next to the identifier when specifying a type.
-  # - colon
+  - colon
 
   # There should be no space before and one after any comma.
   # - comma

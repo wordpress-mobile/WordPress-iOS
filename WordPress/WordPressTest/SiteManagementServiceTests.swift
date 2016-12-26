@@ -2,20 +2,20 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-class SiteManagementServiceTests : XCTestCase
+class SiteManagementServiceTests: XCTestCase
 {
     var contextManager: TestContextManager!
     var mockRemoteService: MockSiteManagementServiceRemote!
     var siteManagementService: SiteManagementServiceTester!
 
-    class MockSiteManagementServiceRemote : SiteManagementServiceRemote
+    class MockSiteManagementServiceRemote: SiteManagementServiceRemote
     {
         var deleteSiteCalled = false
         var exportContentCalled = false
         var getActivePurchasesCalled = false
         var successBlockPassedIn:(() -> Void)?
-        var successResultBlockPassedIn:(([SitePurchase]) -> Void)?
-        var failureBlockPassedIn:((NSError) -> Void)?
+        var successResultBlockPassedIn: (([SitePurchase]) -> Void)?
+        var failureBlockPassedIn: ((NSError) -> Void)?
 
         override func deleteSite(_ siteID: NSNumber, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
             deleteSiteCalled = true
@@ -45,7 +45,7 @@ class SiteManagementServiceTests : XCTestCase
         }
     }
 
-    class SiteManagementServiceTester : SiteManagementService
+    class SiteManagementServiceTester: SiteManagementService
     {
         let mockRemoteApi = MockWordPressComRestApi()
         lazy var mockRemoteService: MockSiteManagementServiceRemote = {

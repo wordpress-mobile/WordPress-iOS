@@ -10,7 +10,7 @@ class Page: AbstractPost {
 
     /// The time interval formatter that all pages will use for their section identifiers.
     ///
-    fileprivate static let timeIntervalFormatter : TTTTimeIntervalFormatter = {
+    fileprivate static let timeIntervalFormatter: TTTTimeIntervalFormatter = {
         let timeIntervalFormatter = TTTTimeIntervalFormatter()
 
         timeIntervalFormatter.leastSignificantUnit = .day

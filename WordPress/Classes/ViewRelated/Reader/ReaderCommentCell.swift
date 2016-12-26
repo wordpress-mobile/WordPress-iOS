@@ -9,7 +9,7 @@ import Gridicons
     func cell(_ cell: ReaderCommentCell, didTapReply comment: Comment)
 }
 
-class ReaderCommentCell : UITableViewCell
+class ReaderCommentCell: UITableViewCell
 {
     struct Constants {
         // Because a stackview is managing layout we tweak text insets to fine tune things.

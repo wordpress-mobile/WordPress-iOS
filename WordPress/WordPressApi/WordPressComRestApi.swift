@@ -112,7 +112,7 @@ open class WordPressComRestApi: NSObject
     {
         let URLString = appendLocaleIfNeeded(URLString)
         let progress = Progress(totalUnitCount: 1)
-        let progressUpdater = {(taskProgress:Progress) in
+        let progressUpdater = {(taskProgress: Progress) in
             progress.totalUnitCount = taskProgress.totalUnitCount
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
@@ -157,7 +157,7 @@ open class WordPressComRestApi: NSObject
     {
         let URLString = appendLocaleIfNeeded(URLString)
         let progress = Progress(totalUnitCount: 1)
-        let progressUpdater = {(taskProgress:Progress) in
+        let progressUpdater = {(taskProgress: Progress) in
             progress.totalUnitCount = taskProgress.totalUnitCount
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
@@ -240,7 +240,7 @@ open class WordPressComRestApi: NSObject
             return nil
         }
         let progress = Progress(totalUnitCount: 1)
-        let progressUpdater = {(taskProgress:Progress) in
+        let progressUpdater = {(taskProgress: Progress) in
             progress.totalUnitCount = taskProgress.totalUnitCount+1
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
@@ -294,7 +294,7 @@ open class WordPressComRestApi: NSObject
 }
 
 /// FilePart represents the infomartion needed to encode a file on a multipart form request
-public final class FilePart : NSObject
+public final class FilePart: NSObject
 {
     let parameterName: String
     let url: URL
@@ -339,7 +339,7 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
         guard let responseDictionary = responseObject as? [String:AnyObject] else {
             return responseObject as AnyObject?
         }
-        var errorDictionary:AnyObject? = responseDictionary as AnyObject?
+        var errorDictionary: AnyObject? = responseDictionary as AnyObject?
         if let errorArray = responseDictionary["errors"] as? [AnyObject], errorArray.count > 0 {
             errorDictionary = errorArray.first
         }
@@ -351,11 +351,11 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
         }
 
         let errorsMap = [
-            "invalid_input" : WordPressComRestApiError.invalidInput,
-            "invalid_token" : WordPressComRestApiError.invalidToken,
-            "authorization_required" : WordPressComRestApiError.authorizationRequired,
-            "upload_error" : WordPressComRestApiError.uploadFailed,
-            "unauthorized" : WordPressComRestApiError.authorizationRequired
+            "invalid_input": WordPressComRestApiError.invalidInput,
+            "invalid_token": WordPressComRestApiError.invalidToken,
+            "authorization_required": WordPressComRestApiError.authorizationRequired,
+            "upload_error": WordPressComRestApiError.uploadFailed,
+            "unauthorized": WordPressComRestApiError.authorizationRequired
         ]
 
         let mappedError = errorsMap[errorCode] ?? WordPressComRestApiError.unknown

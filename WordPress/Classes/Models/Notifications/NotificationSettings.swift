@@ -10,15 +10,15 @@ open class NotificationSettings
 {
     /// Represents the Channel to which the current settings are associated.
     ///
-    open let channel  : Channel
+    open let channel: Channel
 
     /// Contains an array of the available Notification Streams.
     ///
-    open let streams  : [Stream]
+    open let streams: [Stream]
 
     /// Maps to the associated blog, if any.
     ///
-    open let blog     : Blog?
+    open let blog: Blog?
 
 
 
@@ -65,7 +65,7 @@ open class NotificationSettings
 
     /// Represents a communication channel that may post notifications to the user.
     ///
-    public enum Channel : Equatable {
+    public enum Channel: Equatable {
         case blog(blogId: Int)
         case other
         case wordPressCom
@@ -89,8 +89,8 @@ open class NotificationSettings
     /// Contains the Notification Settings collection for a specific communications stream.
     ///
     open class Stream {
-        open var kind         : Kind
-        open var preferences  : [String : Bool]?
+        open var kind: Kind
+        open var preferences: [String : Bool]?
 
 
         /// Designated Initializer
@@ -107,7 +107,7 @@ open class NotificationSettings
 
         /// Enumerates all of the possible Stream Kinds
         ///
-        public enum Kind : String {
+        public enum Kind: String {
             case Timeline       = "timeline"
             case Email          = "email"
             case Device         = "device"
@@ -151,34 +151,34 @@ open class NotificationSettings
         static let community        = "community"
 
         static let localizedDescriptionMap = [
-            commentAdded    : NSLocalizedString("Comments on my site",
+            commentAdded: NSLocalizedString("Comments on my site",
                                 comment: "Setting: indicates if New Comments will be notified"),
-            commentLiked    : NSLocalizedString("Likes on my comments",
+            commentLiked: NSLocalizedString("Likes on my comments",
                                 comment: "Setting: indicates if Comment Likes will be notified"),
-            postLiked       : NSLocalizedString("Likes on my posts",
+            postLiked: NSLocalizedString("Likes on my posts",
                                 comment: "Setting: indicates if Replies to your comments will be notified"),
-            follower        : NSLocalizedString("Site follows",
+            follower: NSLocalizedString("Site follows",
                                 comment: "Setting: indicates if New Follows will be notified"),
-            achievement     : NSLocalizedString("Site achievements",
+            achievement: NSLocalizedString("Site achievements",
                                 comment: "Setting: indicates if Achievements will be notified"),
-            mention         : NSLocalizedString("Username mentions",
+            mention: NSLocalizedString("Username mentions",
                                 comment: "Setting: indicates if Mentions will be notified"),
-            commentReplied  : NSLocalizedString("Replies to your comments",
+            commentReplied: NSLocalizedString("Replies to your comments",
                                 comment: "Setting: indicates if Replies to Comments will be notified"),
-            marketing       : NSLocalizedString("Suggestions",
+            marketing: NSLocalizedString("Suggestions",
                                 comment: "Setting: WordPress.com Suggestions"),
-            research        : NSLocalizedString("Research",
+            research: NSLocalizedString("Research",
                                 comment: "Setting: WordPress.com Surveys"),
-            community       : NSLocalizedString("Community",
+            community: NSLocalizedString("Community",
                                 comment: "Setting: WordPress.com Community")
         ]
 
         static let localizedDetailsMap = [
-            marketing       : NSLocalizedString("Tips for getting the most out of WordPress.com.",
+            marketing: NSLocalizedString("Tips for getting the most out of WordPress.com.",
                                 comment: "WordPress.com Marketing Footer Text"),
-            research        : NSLocalizedString("Opportunities to participate in WordPress.com research & surveys.",
+            research: NSLocalizedString("Opportunities to participate in WordPress.com research & surveys.",
                                 comment: "WordPress.com Research Footer Text"),
-            community       : NSLocalizedString("Information on WordPress.com courses and events (online & in-person).",
+            community: NSLocalizedString("Information on WordPress.com courses and events (online & in-person).",
                                 comment: "WordPress.com Community Footer Text")
         ]
     }

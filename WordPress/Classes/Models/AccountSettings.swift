@@ -33,7 +33,7 @@ extension AccountSettings {
         language = managed.language
     }
 
-    var emailForDisplay : String {
+    var emailForDisplay: String {
         let pendingEmail = emailPendingAddress?.nonEmptyString() ?? email
         return emailPendingChange ? pendingEmail : email
     }

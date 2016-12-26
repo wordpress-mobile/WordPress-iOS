@@ -3,7 +3,7 @@ import Foundation
 import CoreData
 import WordPress
 
-class ReaderTopicSwiftTest : XCTestCase
+class ReaderTopicSwiftTest: XCTestCase
 {
 
     var testContextManager: TestContextManager?
@@ -176,7 +176,7 @@ class ReaderTopicSwiftTest : XCTestCase
         var remoteTopics = remoteTopicsForTests()
         let foo = remoteTopics.first
 
-        let startingTopics:[RemoteReaderTopic] = [remoteTopics[1], remoteTopics[2]]
+        let startingTopics: [RemoteReaderTopic] = [remoteTopics[1], remoteTopics[2]]
 
         // Setup
         var expect = expectation(description: "topics saved expectation")

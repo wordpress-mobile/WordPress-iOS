@@ -32,8 +32,8 @@ extension URLCache
 
         // Fist: Prepare the Response Headers
         let headerFields = [
-            Constants.contentTypeKey : Constants.contentTypePNG,
-            Constants.expirationKey  : Date(timeIntervalSinceNow: Constants.expirationTime).toStringAsRFC1123()
+            Constants.contentTypeKey: Constants.contentTypePNG,
+            Constants.expirationKey: Date(timeIntervalSinceNow: Constants.expirationTime).toStringAsRFC1123()
         ]
 
         // Second: Construct a proper NSHTTPURLResponse

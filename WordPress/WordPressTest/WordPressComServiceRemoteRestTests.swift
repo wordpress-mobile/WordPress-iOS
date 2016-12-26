@@ -46,7 +46,7 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
     func testThrottledFailureCall() {
         stub(condition: isRestAPIUsersNewRequest()) { request in
             let stubPath = OHPathForFile("WordPressComRestApiFailThrottled.json", type(of: self))
-            return fixture(filePath: stubPath!, status:500, headers: ["Content-Type" as NSObject:"application/html" as AnyObject])
+            return fixture(filePath: stubPath!, status:500, headers: ["Content-Type" as NSObject: "application/html" as AnyObject])
         }
 
         let expect = self.expectation(description: "One callback should be invoked")

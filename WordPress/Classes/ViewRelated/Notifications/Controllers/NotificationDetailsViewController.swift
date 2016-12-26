@@ -1169,7 +1169,7 @@ private extension NotificationDetailsViewController
         static let richBlockTypes           = Set(arrayLiteral: NotificationBlock.Kind.text, NotificationBlock.Kind.comment)
         static let duration                 = TimeInterval(0.25)
         static let delay                    = TimeInterval(0)
-        static let options                  : UIViewAnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]
+        static let options: UIViewAnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]
     }
 
     enum Restoration {

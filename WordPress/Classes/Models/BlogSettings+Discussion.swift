@@ -8,7 +8,7 @@ extension BlogSettings
 {
     /// Enumerates all of the Comments AutoApproval settings
     ///
-    enum CommentsAutoapproval : Int {
+    enum CommentsAutoapproval: Int {
         case disabled       = 0
         case fromKnownUsers = 1
         case everything     = 2
@@ -16,7 +16,7 @@ extension BlogSettings
 
         /// Returns the localized description of the current enum value
         ///
-        var description : String {
+        var description: String {
             return CommentsAutoapproval.descriptionMap[rawValue]!
         }
 
@@ -24,21 +24,21 @@ extension BlogSettings
         /// Returns the sorted collection of all of the Localized Enum Titles.
         /// Order is guarranteed to match exactly with *allValues*.
         ///
-        static var allTitles : [String] {
+        static var allTitles: [String] {
             return allValues.flatMap { descriptionMap[$0] }
         }
 
         /// Returns the sorted collection of Localized Hints for all of the Enum Case's.
         /// Order is guarranteed to match exactly with *allValues*.
         ///
-        static var allHints : [String] {
+        static var allHints: [String] {
             return allValues.flatMap { hintsMap[$0] }
         }
 
 
         /// Returns the sorted collection of all of the possible Enum Values.
         ///
-        static var allValues : [Int] {
+        static var allValues: [Int] {
             return descriptionMap.keys.sorted()
         }
 
@@ -46,15 +46,15 @@ extension BlogSettings
         // MARK: - Private Properties
 
         fileprivate static let descriptionMap = [
-            disabled.rawValue       : NSLocalizedString("No comments", comment: ""),
-            fromKnownUsers.rawValue : NSLocalizedString("Known user's comments", comment: ""),
-            everything.rawValue     : NSLocalizedString("All comments", comment: "")
+            disabled.rawValue: NSLocalizedString("No comments", comment: ""),
+            fromKnownUsers.rawValue: NSLocalizedString("Known user's comments", comment: ""),
+            everything.rawValue: NSLocalizedString("All comments", comment: "")
         ]
 
         fileprivate static let hintsMap = [
-            disabled.rawValue       : NSLocalizedString("Require manual approval for everyone's comments.", comment: ""),
-            fromKnownUsers.rawValue : NSLocalizedString("Automatically approve if the user has a previously approved comment.", comment: ""),
-            everything.rawValue     : NSLocalizedString("Automatically approve everyone's comments.", comment: "")
+            disabled.rawValue: NSLocalizedString("Require manual approval for everyone's comments.", comment: ""),
+            fromKnownUsers.rawValue: NSLocalizedString("Automatically approve if the user has a previously approved comment.", comment: ""),
+            everything.rawValue: NSLocalizedString("Automatically approve everyone's comments.", comment: "")
         ]
     }
 
@@ -62,14 +62,14 @@ extension BlogSettings
 
     /// Enumerates all of the valid Comment Sort Order options
     ///
-    enum CommentsSorting : Int {
+    enum CommentsSorting: Int {
         case ascending  = 0
         case descending = 1
 
 
         /// Returns the localized description of the current enum value
         ///
-        var description : String {
+        var description: String {
             return CommentsSorting.descriptionMap[rawValue]!
         }
 
@@ -77,14 +77,14 @@ extension BlogSettings
         /// Returns the sorted collection of all of the Localized Enum Titles.
         /// Order is guarranteed to match exactly with *allValues*.
         ///
-        static var allTitles : [String] {
+        static var allTitles: [String] {
             return allValues.flatMap { descriptionMap[$0] }
         }
 
 
         /// Returns the sorted collection of all of the possible Enum Values.
         ///
-        static var allValues : [Int] {
+        static var allValues: [Int] {
             return descriptionMap.keys.sorted()
         }
 
@@ -92,8 +92,8 @@ extension BlogSettings
         // MARK: - Private Properties
 
         fileprivate static var descriptionMap = [
-            ascending.rawValue  : NSLocalizedString("Oldest first", comment: "Sort Order"),
-            descending.rawValue : NSLocalizedString("Newest first", comment: "Sort Order")
+            ascending.rawValue: NSLocalizedString("Oldest first", comment: "Sort Order"),
+            descending.rawValue: NSLocalizedString("Newest first", comment: "Sort Order")
         ]
     }
 
@@ -110,7 +110,7 @@ extension BlogSettings
         ///
         /// - Parameter rawValue: The Threading raw value (Core Data Integer)
         ///
-        init?(rawValue : Int) {
+        init?(rawValue: Int) {
             switch rawValue {
             case _ where rawValue == CommentsThreading.disabledValue:
                 self = .disabled
@@ -124,7 +124,7 @@ extension BlogSettings
 
         /// Returns the Raw Value (for Core Data / Transport Layer usage)
         ///
-        var rawValue : Int {
+        var rawValue: Int {
             switch self {
             case .disabled:
                 return CommentsThreading.disabledValue
@@ -136,14 +136,14 @@ extension BlogSettings
 
         /// Returns the localized description of the current enum value
         ///
-        var description : String {
+        var description: String {
             return CommentsThreading.descriptionMap[rawValue]!
         }
 
 
         /// Convenience helper that will return *true* whenever the case is *Disabled*
         ///
-        var isDisabled : Bool {
+        var isDisabled: Bool {
             return rawValue == CommentsThreading.disabledValue
         }
 
@@ -151,14 +151,14 @@ extension BlogSettings
         /// Returns the sorted collection of all of the Localized Enum Titles.
         /// Order is guarranteed to match exactly with *allValues*.
         ///
-        static var allTitles : [String] {
+        static var allTitles: [String] {
             return allValues.flatMap { descriptionMap[$0] }
         }
 
 
         /// Returns the sorted collection of all of the possible Enum Values.
         ///
-        static var allValues : [Int] {
+        static var allValues: [Int] {
             return descriptionMap.keys.sorted()
         }
 
@@ -169,9 +169,9 @@ extension BlogSettings
         fileprivate static let minimumValue  = 2
         fileprivate static let maximumValue  = 10
 
-        fileprivate static var descriptionMap : [Int : String] {
+        fileprivate static var descriptionMap: [Int : String] {
             let descriptionFormat = NSLocalizedString("%@ levels", comment: "Comments Threading Levels")
-            var optionsMap = [Int : String]()
+            var optionsMap = [Int: String]()
 
             optionsMap[disabledValue] = NSLocalizedString("Disabled", comment: "")
 
@@ -191,7 +191,7 @@ extension BlogSettings
 
     /// Wraps Core Data values into Swift's CommentsAutoapproval Enum
     ///
-    var commentsAutoapproval : CommentsAutoapproval {
+    var commentsAutoapproval: CommentsAutoapproval {
         get {
             if commentsRequireManualModeration {
                 return .disabled
@@ -210,7 +210,7 @@ extension BlogSettings
 
     /// Wraps Core Data values into Swift's CommentsSorting Enum
     ///
-    var commentsSorting : CommentsSorting {
+    var commentsSorting: CommentsSorting {
         get {
             guard let
                 sortOrder = commentsSortOrder as Int?,
@@ -227,7 +227,7 @@ extension BlogSettings
 
     /// Helper, to aid in setting SortOrder in ObjC code. True when Ascending, False otherwise.
     ///
-    var commentsSortOrderAscending : Bool {
+    var commentsSortOrderAscending: Bool {
         get {
             return commentsSortOrder?.intValue == CommentsSorting.ascending.rawValue
         }
@@ -239,7 +239,7 @@ extension BlogSettings
 
     /// Wraps Core Data values into Swift's CommentsThreading Enum
     ///
-    var commentsThreading : CommentsThreading {
+    var commentsThreading: CommentsThreading {
         get {
             if commentsThreadingEnabled && commentsThreadingDepth != nil {
                 return .enabled(depth: commentsThreadingDepth as! Int)
