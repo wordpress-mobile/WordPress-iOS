@@ -74,7 +74,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let media = mockRemoteMedia()
         var progress: Progress? = nil
         var errorDescription = ""
-        mediaServiceRemote.createMedia(media, progress: &progress, success:nil, failure: {
+        mediaServiceRemote.createMedia(media, progress: &progress, success: nil, failure: {
             errorDescription = ($0?.localizedDescription)!
         })
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())

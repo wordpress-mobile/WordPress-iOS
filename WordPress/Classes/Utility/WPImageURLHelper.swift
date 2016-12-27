@@ -28,12 +28,12 @@ open class WPImageURLHelper: NSObject
         let height = Int(size.height)
         let width = Int(size.width)
         if height != 0 {
-            let heightItem = URLQueryItem(name:"h", value:"\(height)")
+            let heightItem = URLQueryItem(name: "h", value: "\(height)")
             newQueryItems.append(heightItem)
         }
 
         if width != 0 {
-            let widthItem = URLQueryItem(name:"w", value:"\(width)")
+            let widthItem = URLQueryItem(name: "w", value: "\(width)")
             newQueryItems.append(widthItem)
         }
 

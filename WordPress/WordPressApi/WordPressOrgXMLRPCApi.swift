@@ -162,7 +162,7 @@ open class WordPressOrgXMLRPCApi: NSObject
     fileprivate func requestWithMethod(_ method: String, parameters: [AnyObject]?) throws -> URLRequest {
         let mutableRequest = NSMutableURLRequest(url: endpoint)
         mutableRequest.httpMethod = "POST"
-        mutableRequest.setValue("text/xml", forHTTPHeaderField:"Content-Type")
+        mutableRequest.setValue("text/xml", forHTTPHeaderField: "Content-Type")
         let encoder = WPXMLRPCEncoder(method: method, andParameters: parameters)
         mutableRequest.httpBody = try encoder?.dataEncoded()
 
@@ -172,13 +172,13 @@ open class WordPressOrgXMLRPCApi: NSObject
     fileprivate func streamingRequestWithMethod(_ method: String, parameters: [AnyObject]?, usingFileURLForCache fileURL: URL) throws -> URLRequest {
         let mutableRequest = NSMutableURLRequest(url: endpoint)
         mutableRequest.httpMethod = "POST"
-        mutableRequest.setValue("text/xml", forHTTPHeaderField:"Content-Type")
+        mutableRequest.setValue("text/xml", forHTTPHeaderField: "Content-Type")
         let encoder = WPXMLRPCEncoder(method: method, andParameters: parameters)
         try encoder?.encode(toFile: fileURL.path)
         var optionalFileSize: AnyObject?
         try (fileURL as NSURL).getResourceValue(&optionalFileSize, forKey: URLResourceKey.fileSizeKey)
         if let fileSize = optionalFileSize as? NSNumber {
-            mutableRequest.setValue(fileSize.stringValue, forHTTPHeaderField:"Content-Length")
+            mutableRequest.setValue(fileSize.stringValue, forHTTPHeaderField: "Content-Length")
         }
 
         return mutableRequest as URLRequest

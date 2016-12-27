@@ -78,7 +78,7 @@ class PushAuthenticationManagerTests: XCTestCase {
         pushAuthenticationManager!.handlePushAuthenticationNotification(expiredPushNotificationDictionary())
 
         XCTAssertTrue(mockAlertControllerProxy.showWithTitleCalled, "Should show the login expired alert if the notification has expired")
-        XCTAssertEqual(mockAlertControllerProxy.titlePassedIn, NSLocalizedString("Login Request Expired", comment:""), "")
+        XCTAssertEqual(mockAlertControllerProxy.titlePassedIn, NSLocalizedString("Login Request Expired", comment: ""), "")
     }
 
     func testHandlePushAuthenticationNotificationDoesNotShowTheLoginExpiredAlertIfNotificationHasNotExpired(){

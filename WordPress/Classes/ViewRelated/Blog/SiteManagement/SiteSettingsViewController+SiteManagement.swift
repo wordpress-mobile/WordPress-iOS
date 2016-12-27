@@ -240,6 +240,6 @@ public extension SiteSettingsViewController
         controller.navigationItem.titleView = nil
         controller.title = NSLocalizedString("Purchases", comment: "Title of screen showing site purchases")
 
-        navigationController?.pushViewController(controller, animated:true)
+        navigationController?.pushViewController(controller, animated: true)
     }
 }

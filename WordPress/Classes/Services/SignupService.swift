@@ -108,7 +108,7 @@ open class SignupService: LocalCoreDataService
         remote?.validateWPComBlog(withUrl: params.url,
                                         andBlogTitle: params.title,
                                         andLanguageId: languageId,
-                                        success:{ (responseDictionary) in
+                                        success: { (responseDictionary) in
                                             success()
                                         },
                                         failure: failure)
@@ -330,7 +330,7 @@ open class SignupService: LocalCoreDataService
     // MARK: Private Instance Methods
 
     func anonymousApi() -> WordPressComRestApi {
-        return WordPressComRestApi(userAgent:WPUserAgent.wordPress())
+        return WordPressComRestApi(userAgent: WPUserAgent.wordPress())
     }
 
     /// An internal struct for conveniently sharing params between the different

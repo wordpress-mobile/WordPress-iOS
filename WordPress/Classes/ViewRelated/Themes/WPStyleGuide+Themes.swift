@@ -36,7 +36,7 @@ extension WPStyleGuide
 
         public static func styleSearchTypeButton(_ button: UIButton, title: String) {
             button.setTitleColor(searchTypeTitleColor, for: UIControlState())
-            button.setTitle(title, for:UIControlState())
+            button.setTitle(title, for: UIControlState())
             button.titleLabel?.font = searchTypeTitleFont
             let imageWidth = button.imageView?.frame.size.width ?? 0
             button.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)

@@ -62,7 +62,7 @@ open class SharingService: LocalCoreDataService
         guard let remote = remoteForBlog(blog) else {
             return
         }
-        remote.getPublicizeConnections(blog.dotComID!, success: {(remoteConnections:[RemotePublicizeConnection]) in
+        remote.getPublicizeConnections(blog.dotComID!, success: {(remoteConnections: [RemotePublicizeConnection]) in
 
             // Process the results
             self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: success)
@@ -538,7 +538,7 @@ open class SharingService: LocalCoreDataService
         }
 
         remote.getSharingButtonsForSite(blog.dotComID!,
-            success: { (remoteButtons:[RemoteSharingButton]) in
+            success: { (remoteButtons: [RemoteSharingButton]) in
                 self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)
             },
             failure: failure)
@@ -561,7 +561,7 @@ open class SharingService: LocalCoreDataService
         }
         remote.updateSharingButtonsForSite(blog.dotComID!,
             sharingButtons: remoteShareButtonsFromShareButtons(sharingButtons),
-            success: { (remoteButtons:[RemoteSharingButton]) in
+            success: { (remoteButtons: [RemoteSharingButton]) in
                 self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)
             },
             failure: failure)

@@ -70,8 +70,8 @@ class Post: AbstractPost {
 
     func setPostFormatText(_ postFormatText: String) {
 
-        assert(blog.postFormats is [String:String])
-        guard let postFormats = blog.postFormats as? [String:String] else {
+        assert(blog.postFormats is [String: String])
+        guard let postFormats = blog.postFormats as? [String: String] else {
             DDLogSwift.logError("Expected blog.postFormats to be \(String(describing: [String: String].self)).")
             return
         }

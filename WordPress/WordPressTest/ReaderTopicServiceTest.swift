@@ -60,19 +60,19 @@ class ReaderTopicSwiftTest: XCTestCase
         let context = ContextManager.sharedInstance().mainContext
 
         let post1 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(),into: context!) as! ReaderPost
-        post1.postID = NSNumber(value:1)
+        post1.postID = NSNumber(value: 1)
         post1.postTitle = "post1"
         post1.content = "post1"
         post1.topic = topic
 
         let post2 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(),into: context!) as! ReaderPost
-        post2.postID = NSNumber(value:2)
+        post2.postID = NSNumber(value: 2)
         post2.postTitle = "post2"
         post2.content = "post2"
         post2.topic = topic
 
         let post3 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(),into: context!) as! ReaderPost
-        post3.postID = NSNumber(value:3)
+        post3.postID = NSNumber(value: 3)
         post3.postTitle = "post3"
         post3.content = "post3"
         post3.topic = topic

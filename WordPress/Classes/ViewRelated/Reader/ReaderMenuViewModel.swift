@@ -214,7 +214,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the defaults section and its corresponding NSFetchedResultsController.
     ///
     func setupDefaultsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("Streams", comment:"Section title of the default reader items."), type: .defaults)
+        let section = ReaderMenuSection(title: NSLocalizedString("Streams", comment: "Section title of the default reader items."), type: .defaults)
         sections.append(section)
 
         buildDefaultSectionItems()
@@ -312,7 +312,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the teams section.
     ///
     func setupTeamsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("Teams", comment:"Section title of the teams reader section."), type: .teams)
+        let section = ReaderMenuSection(title: NSLocalizedString("Teams", comment: "Section title of the teams reader section."), type: .teams)
         sections.append(section)
     }
 
@@ -400,7 +400,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the lists section and its corresponding NSFetchedResultsController.
     ///
     func setupListsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("Lists", comment:"Section title of the lists reader section."), type: .lists)
+        let section = ReaderMenuSection(title: NSLocalizedString("Lists", comment: "Section title of the lists reader section."), type: .lists)
         sections.append(section)
     }
 
@@ -471,7 +471,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the tags section and its corresponding NSFetchedResultsController.
     ///
     func setupTagsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("Tags", comment:"Section title of the tags reader section."), type: .tags)
+        let section = ReaderMenuSection(title: NSLocalizedString("Tags", comment: "Section title of the tags reader section."), type: .tags)
         sections.append(section)
     }
 

@@ -98,7 +98,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }()
 
     lazy var filterSettings: PostListFilterSettings = {
-        return PostListFilterSettings(blog:self.blog, postType:self.postTypeToSync())
+        return PostListFilterSettings(blog: self.blog, postType: self.postTypeToSync())
     }()
 
 
@@ -224,7 +224,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         navigationItem.backBarButtonItem = backButton
 
         let rightBarButtonItem = UIBarButtonItem(customView: rightBarButtonView)
-        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, for:navigationItem)
+        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, for: navigationItem)
 
         navigationItem.titleView = filterButton
         updateFilterTitle()
@@ -304,7 +304,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         })
     }
 
-    func propertiesForAnalytics() -> [String:AnyObject] {
+    func propertiesForAnalytics() -> [String: AnyObject] {
         var properties = [String: AnyObject]()
 
         properties["type"] = postTypeToSync()

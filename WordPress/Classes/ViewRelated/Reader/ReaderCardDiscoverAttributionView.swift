@@ -161,9 +161,9 @@ private enum ReaderCardDiscoverAttribution: Int {
     fileprivate func patternForSiteAttribution(_ verbose: Bool) -> String {
         var pattern: String
         if verbose {
-            pattern = NSLocalizedString("Visit %@ for more", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
+            pattern = NSLocalizedString("Visit %@ for more", comment: "A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
         } else {
-            pattern = NSLocalizedString("Visit %@", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
+            pattern = NSLocalizedString("Visit %@", comment: "A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
         }
         return pattern
     }
