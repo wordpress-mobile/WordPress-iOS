@@ -5,7 +5,7 @@ import WordPressShared
 
 /// SettingsListPicker will render a list of options, and will allow the user to select one from the list.
 ///
-class SettingsListPickerViewController<T:Equatable> : UITableViewController
+class SettingsListPickerViewController<T: Equatable> : UITableViewController
 {
     /// Current selected value, if any
     ///

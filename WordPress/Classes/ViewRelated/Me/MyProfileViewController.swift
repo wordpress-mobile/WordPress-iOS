@@ -93,7 +93,7 @@ private class MyProfileController: SettingsController {
             title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
             value: settings?.aboutMe ?? "",
             action: presenter.push(editMultilineText(AccountSettingsChange.aboutMe,
-                hint:NSLocalizedString("Tell us a bit about you.", comment: "My Profile 'About me' hint text"),
+                hint: NSLocalizedString("Tell us a bit about you.", comment: "My Profile 'About me' hint text"),
                 service: service)))
 
         return ImmuTable(sections: [

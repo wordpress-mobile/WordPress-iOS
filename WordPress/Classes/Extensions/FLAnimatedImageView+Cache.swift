@@ -51,7 +51,7 @@ class AnimatedImageCache {
             success?(animatedImage)
             return nil
         }
-        let task = session.dataTask(with: urlRequest, completionHandler:{ [weak self](data, response, error) in
+        let task = session.dataTask(with: urlRequest, completionHandler: { [weak self](data, response, error) in
             //check if view is still here
             guard let strongSelf = self else {
                 return

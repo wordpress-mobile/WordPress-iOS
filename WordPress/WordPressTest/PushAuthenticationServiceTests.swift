@@ -13,8 +13,8 @@ class PushAuthenticationServiceTests: XCTestCase {
     class MockPushAuthenticationServiceRemote: PushAuthenticationServiceRemote {
 
         var authorizeLoginCalled = false
-        var successBlockPassedIn:(() -> ())?
-        var failureBlockPassedIn:(() -> ())?
+        var successBlockPassedIn: (() -> ())?
+        var failureBlockPassedIn: (() -> ())?
 
         override func authorizeLogin(_ token: String, success: (() -> ())?, failure: (() -> ())?) {
             authorizeLoginCalled = true

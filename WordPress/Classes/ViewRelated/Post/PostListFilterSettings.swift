@@ -166,7 +166,7 @@ class PostListFilterSettings: NSObject {
 
     // MARK: - Analytics
 
-    func propertiesForAnalytics() -> [String:AnyObject] {
+    func propertiesForAnalytics() -> [String: AnyObject] {
         var properties = [String: AnyObject]()
 
         properties["type"] = postType

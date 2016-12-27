@@ -31,16 +31,16 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         let emptyURLs = ["", "   ", "\t   "]
         for emptyURL in emptyURLs {
             let expectationEmpty = self.expectationWithDescription("Call should fail with error when invoking with empty string")
-            validator.guessXMLRPCURLForSite(emptyURL, success:{ (xmlrpcURL) in
+            validator.guessXMLRPCURLForSite(emptyURL, success: { (xmlrpcURL) in
                     expectationEmpty.fulfill()
                     XCTFail("This call should fail")
-                }, failure:{ (error) in
+                }, failure: { (error) in
                     print(error)
                     expectationEmpty.fulfill()
                     errorToCheck = error
             })
-            self.waitForExpectationsWithTimeout(2, handler:nil)
-            XCTAssertTrue(errorToCheck?.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressOrgXMLRPCApiErrorDomain error")
+            self.waitForExpectationsWithTimeout(2, handler: nil)
+            XCTAssertTrue(errorToCheck?.domain == String(reflecting: WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressOrgXMLRPCApiErrorDomain error")
             XCTAssertTrue(errorToCheck?.code == WordPressOrgXMLRPCValidatorError.EmptyURL.rawValue, "Expected to get an WordPressOrfXMLRPCApiEmptyURL error")
         }
     }
@@ -51,15 +51,15 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         let malformedURLs = ["mywordpresssite.com\test", "mywordpres ssite.com/test", "http:\\mywordpresssite.com/test"]
         for malformedURL in malformedURLs {
             let expectationMalFormedURL = self.expectationWithDescription("Call should fail with error when invoking with malformed urls")
-            validator.guessXMLRPCURLForSite(malformedURL, success:{ (xmlrpcURL) in
+            validator.guessXMLRPCURLForSite(malformedURL, success: { (xmlrpcURL) in
                 expectationMalFormedURL.fulfill()
                 XCTFail("This call should fail")
-                }, failure:{ (error) in
+                }, failure: { (error) in
                 expectationMalFormedURL.fulfill()
                 errorToCheck = error
             })
-            self.waitForExpectationsWithTimeout(2, handler:nil)
-            XCTAssertTrue(errorToCheck?.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressOrgXMLRPCApiErrorDomain error")
+            self.waitForExpectationsWithTimeout(2, handler: nil)
+            XCTAssertTrue(errorToCheck?.domain == String(reflecting: WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressOrgXMLRPCApiErrorDomain error")
             XCTAssertTrue(errorToCheck?.code == WordPressOrgXMLRPCValidatorError.InvalidURL.rawValue, "Expected to get an WordPressOrgXMLRPCApiEmptyURL error")
         }
     }
@@ -70,15 +70,15 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         let incorrectSchemes = ["hppt://mywordpresssite.com/test", "ftp://mywordpresssite.com/test", "git://mywordpresssite.com/test"]
         for incorrectScheme in incorrectSchemes {
             let expectation = self.expectationWithDescription("Call should fail with error when invoking with urls with incorrect schemes")
-            validator.guessXMLRPCURLForSite(incorrectScheme , success:{ (xmlrpcURL) in
+            validator.guessXMLRPCURLForSite(incorrectScheme , success: { (xmlrpcURL) in
                 expectation.fulfill()
                 XCTFail("This call should fail")
-                }, failure:{ (error) in
+                }, failure: { (error) in
                     expectation.fulfill()
                     errorToCheck = error
             })
-            self.waitForExpectationsWithTimeout(2, handler:nil)
-            XCTAssertTrue(errorToCheck?.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressOrgXMLRPCApiErrorDomain error")
+            self.waitForExpectationsWithTimeout(2, handler: nil)
+            XCTAssertTrue(errorToCheck?.domain == String(reflecting: WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressOrgXMLRPCApiErrorDomain error")
             XCTAssertTrue(errorToCheck?.code == WordPressOrgXMLRPCValidatorError.InvalidScheme.rawValue, "Expected to get an WordPressOrgXMLRPCApiEmptyURL error")
         }
     }
@@ -97,15 +97,15 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         let validator = WordPressOrgXMLRPCValidator()
         for url in validSchemes {
             let expectation = self.expectationWithDescription("Callback should be successful")
-            validator.guessXMLRPCURLForSite(url , success:{ (xmlrpcURL) in
+            validator.guessXMLRPCURLForSite(url , success: { (xmlrpcURL) in
                 expectation.fulfill()
                 XCTAssertEqual(xmlrpcURL.host, "mywordpresssite.com", "Resolved host doens't match original url: \(url)")
                 XCTAssertEqual(xmlrpcURL.lastPathComponent, "xmlrpc.php", "Resolved last path component doens't match original url: \(url)")
-                }, failure:{ (error) in
+                }, failure: { (error) in
                     expectation.fulfill()
                     XCTFail("This call should succeed")
             })
-            self.waitForExpectationsWithTimeout(2, handler:nil)
+            self.waitForExpectationsWithTimeout(2, handler: nil)
         }
     }
 
@@ -126,18 +126,18 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         let validator = WordPressOrgXMLRPCValidator()
         for url in urls {
             let expectation = self.expectationWithDescription("Callback should be successful")
-            validator.guessXMLRPCURLForSite(url , success:{ (xmlrpcURL) in
+            validator.guessXMLRPCURLForSite(url , success: { (xmlrpcURL) in
                 expectation.fulfill()
                 XCTAssertEqual(xmlrpcURL.host, "mywordpresssite.com", "Resolved host doens't match original url: \(url)")
                 XCTAssertEqual(xmlrpcURL.lastPathComponent, "xmlrpc.php", "Resolved last path component doens't match original url: \(url)")
                     if xmlrpcURL.query != nil {
                         XCTAssertEqual(xmlrpcURL.query, "test=test", "Resolved query components doens't match original url: \(url)")
                     }
-                }, failure:{ (error) in
+                }, failure: { (error) in
                     expectation.fulfill()
                     XCTFail("This call should succeed")
             })
-            self.waitForExpectationsWithTimeout(2, handler:nil)
+            self.waitForExpectationsWithTimeout(2, handler: nil)
         }
     }
 
@@ -148,7 +148,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         // Fail first request with 301
         stub(isAbsoluteURLString(originalURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)
-            return fixture(stubPath!, status:301, headers: ["Content-Type": "application/html", "Location": redirectedURL])
+            return fixture(stubPath!, status: 301, headers: ["Content-Type": "application/html", "Location": redirectedURL])
         }
 
         stub(isAbsoluteURLString(redirectedURL)) { request in
@@ -158,10 +158,10 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         let validator = WordPressOrgXMLRPCValidator()
         let expectation = self.expectationWithDescription("Call should be successful")
-        validator.guessXMLRPCURLForSite(originalURL , success:{ (xmlrpcURL) in
+        validator.guessXMLRPCURLForSite(originalURL , success: { (xmlrpcURL) in
             expectation.fulfill()
             XCTAssertEqual(xmlrpcURL.absoluteString, redirectedURL, "Resolved host doens't match the redirected url: \(redirectedURL)")
-            }, failure:{ (error) in
+            }, failure: { (error) in
                 expectation.fulfill()
                 XCTFail("This call should succeed")
         })
@@ -175,7 +175,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         // Fail url with appended xmlrpc.php request with 403
         stub(isAbsoluteURLString(appendedURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)
-            return fixture(stubPath!, status:403, headers: ["Content-Type": "application/html"])
+            return fixture(stubPath!, status: 403, headers: ["Content-Type": "application/html"])
         }
 
         stub(isAbsoluteURLString(originalURL)) { request in
@@ -185,10 +185,10 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         let validator = WordPressOrgXMLRPCValidator()
         let expectation = self.expectationWithDescription("Call should be successful")
-        validator.guessXMLRPCURLForSite(originalURL , success:{ (xmlrpcURL) in
+        validator.guessXMLRPCURLForSite(originalURL , success: { (xmlrpcURL) in
             expectation.fulfill()
             XCTAssertEqual(xmlrpcURL.absoluteString, originalURL, "Resolved host doens't match the original url: \(originalURL)")
-            }, failure:{ (error) in
+            }, failure: { (error) in
                 expectation.fulfill()
                 XCTFail("This call should succeed")
         })
@@ -205,19 +205,19 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         // Fail url with appended xmlrpc.php request with 403
         stub(isAbsoluteURLString(appendedURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)!
-            return fixture(stubPath, status:403, headers: ["Content-Type": "application/html"])
+            return fixture(stubPath, status: 403, headers: ["Content-Type": "application/html"])
         }
 
         // Return html page for original url
         stub(isAbsoluteURLString(htmlURL)) { request in
             let stubPath = OHPathForFile("html_page_with_link_to_rsd.html", self.dynamicType)!
-            return fixture(stubPath, status:200, headers: ["Content-Type": "application/html"])
+            return fixture(stubPath, status: 200, headers: ["Content-Type": "application/html"])
         }
 
         // Return rsd xml
         stub(isAbsoluteURLString(rsdURL)) { request in
             let stubPath = OHPathForFile("rsd.xml", self.dynamicType)!
-            return fixture(stubPath, status:200, headers: nil)
+            return fixture(stubPath, status: 200, headers: nil)
         }
 
         stub(isAbsoluteURLString(xmlRPCURL)) { request in
@@ -227,10 +227,10 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         let validator = WordPressOrgXMLRPCValidator()
         let expectation = self.expectationWithDescription("Call should be successful")
-        validator.guessXMLRPCURLForSite(htmlURL , success:{ (xmlrpcURL) in
+        validator.guessXMLRPCURLForSite(htmlURL , success: { (xmlrpcURL) in
             expectation.fulfill()
             XCTAssertEqual(xmlrpcURL.absoluteString, xmlRPCURL, "Resolved host doens't match the xml rpc url: \(xmlRPCURL)")
-            }, failure:{ (error) in
+            }, failure: { (error) in
                 expectation.fulfill()
                 XCTFail("This call should succeed")
         })
@@ -247,19 +247,19 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         // Fail url with appended xmlrpc.php request with 403
         stub(isAbsoluteURLString(appendedURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)!
-            return fixture(stubPath, status:403, headers: ["Content-Type": "application/html"])
+            return fixture(stubPath, status: 403, headers: ["Content-Type": "application/html"])
         }
 
         // Return html page for original url
         stub(isAbsoluteURLString(htmlURL)) { request in
             let stubPath = OHPathForFile("html_page_with_link_to_rsd_non_standard.html", self.dynamicType)!
-            return fixture(stubPath, status:200, headers: ["Content-Type": "application/html"])
+            return fixture(stubPath, status: 200, headers: ["Content-Type": "application/html"])
         }
 
         // Return rsd xml
         stub(isAbsoluteURLString(rsdURL)) { request in
             let stubPath = OHPathForFile("rsd.xml", self.dynamicType)!
-            return fixture(stubPath, status:200, headers: nil)
+            return fixture(stubPath, status: 200, headers: nil)
         }
 
         stub(isAbsoluteURLString(xmlRPCURL)) { request in
@@ -269,10 +269,10 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         let validator = WordPressOrgXMLRPCValidator()
         let expectation = self.expectationWithDescription("Call should be successful")
-        validator.guessXMLRPCURLForSite(htmlURL , success:{ (xmlrpcURL) in
+        validator.guessXMLRPCURLForSite(htmlURL , success: { (xmlrpcURL) in
             expectation.fulfill()
             XCTAssertEqual(xmlrpcURL.absoluteString, xmlRPCURL, "Resolved host doens't match the xml rpc url: \(xmlRPCURL)")
-            }, failure:{ (error) in
+            }, failure: { (error) in
                 expectation.fulfill()
                 XCTFail("This call should succeed")
         })
@@ -283,16 +283,16 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         let originalURL = "http://originalURL/xmlrpc.php"
         stub(isAbsoluteURLString(originalURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-fault.xml", self.dynamicType)!
-            return fixture(stubPath, status:200, headers: ["Content-Type": "application/xml"])
+            return fixture(stubPath, status: 200, headers: ["Content-Type": "application/xml"])
         }
 
         let validator = WordPressOrgXMLRPCValidator()
         let expectation = self.expectationWithDescription("Call should fail gracefull")
         validator.guessXMLRPCURLForSite(originalURL,
-            success:{ (xmlrpcURL) in
+            success: { (xmlrpcURL) in
                 expectation.fulfill()
                 XCTFail("Call to faul responseshould not enter success block.")
-            }, failure:{ (error) in
+            }, failure: { (error) in
                 expectation.fulfill()
                 XCTAssertTrue(!error.domain.isEmpty, "Check if we are getting an error message")
         })
@@ -305,7 +305,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         // Fail first request with 301
         stub(isAbsoluteURLString(originalURL)) { request in
             let stubPath = OHPathForFile("xmlrpc-response-redirect.html", self.dynamicType)
-            return fixture(stubPath!, status:301, headers: ["Content-Type": "application/html", "Location": redirectedURL])
+            return fixture(stubPath!, status: 301, headers: ["Content-Type": "application/html", "Location": redirectedURL])
         }
 
         stub(isAbsoluteURLString(redirectedURL)) { request in
@@ -315,12 +315,12 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         let validator = WordPressOrgXMLRPCValidator()
         let expectation = self.expectationWithDescription("Call should be successful")
-        validator.guessXMLRPCURLForSite(originalURL , success:{ (xmlrpcURL) in
+        validator.guessXMLRPCURLForSite(originalURL , success: { (xmlrpcURL) in
             expectation.fulfill()
             XCTFail("Call that has a plugin redirect should fail")
-            }, failure:{ (error) in
+            }, failure: { (error) in
                 expectation.fulfill()
-                XCTAssertTrue(error.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressOrgXMLRPCValidatorError error")
+                XCTAssertTrue(error.domain == String(reflecting: WordPressOrgXMLRPCValidatorError.self), "Expected to get an WordPressOrgXMLRPCValidatorError error")
                 XCTAssertTrue(error.code == WordPressOrgXMLRPCValidatorError.MobilePluginRedirectedError.rawValue, "Expected to get an .MobilePluginRedirectedError error code")
         })
         self.waitForExpectationsWithTimeout(2, handler: nil)

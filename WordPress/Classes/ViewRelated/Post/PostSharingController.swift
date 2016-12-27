@@ -25,7 +25,7 @@ import SVProgressHUD
         let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
         let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: activities)
         if let str = title {
-            controller.setValue(str, forKey:"subject")
+            controller.setValue(str, forKey: "subject")
         }
         controller.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
             if completed {
