@@ -45,7 +45,7 @@ extension NSExtensionContext {
 
     /// Extension Item Identifiers
     ///
-    fileprivate enum Identifier : String {
+    fileprivate enum Identifier: String {
         case PublicURL      = "public.url"
         case PublicImage    = "public.image"
     }

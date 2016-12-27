@@ -1,12 +1,12 @@
 import Foundation
 
-open class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
+open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 
     // MARK: Properties
 
-    var contentURL : URL?
-    var linkURL : URL?
-    fileprivate(set) var imageView : UIImageView
+    var contentURL: URL?
+    var linkURL: URL?
+    fileprivate(set) var imageView: UIImageView
 
     override open var frame: CGRect {
         didSet {

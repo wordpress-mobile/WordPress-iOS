@@ -25,7 +25,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }()
 
     lazy var loadingView: WPNoResultsView = {
-        let title = NSLocalizedString("Fetching sites...", comment:"A short message to inform the user data for their followed sites is being fetched..")
+        let title = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
         return WPNoResultsView(title: title, message: nil, accessoryView: nil, buttonTitle: nil)
     }()
 

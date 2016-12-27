@@ -5,7 +5,7 @@ import CoreData
 //
 class ManagedPerson: NSManagedObject {
 
-    func updateWith<T : Person>(_ person: T) {
+    func updateWith<T: Person>(_ person: T) {
         avatarURL = person.avatarURL?.absoluteString
         displayName = person.displayName
         firstName = person.firstName

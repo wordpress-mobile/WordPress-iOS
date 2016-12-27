@@ -1,6 +1,6 @@
 import Foundation
 
-@objc open class ReaderTeamTopic : ReaderAbstractTopic
+@objc open class ReaderTeamTopic: ReaderAbstractTopic
 {
     @NSManaged open var slug: String
 

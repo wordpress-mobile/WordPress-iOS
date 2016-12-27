@@ -5,7 +5,7 @@ import WordPressShared.WPStyleGuide
 /// The purpose of this class is to render a simple AlertView, with a custom style, and the following
 /// sections: [ Title, Message, Button ]
 ///
-open class AlertView : NSObject
+open class AlertView: NSObject
 {
     // MARK: - Public Aliases
     public typealias Completion = (() -> ())
@@ -115,8 +115,8 @@ open class AlertView : NSObject
     fileprivate typealias Style = WPStyleGuide.AlertView
 
     // MARK: - Private Properties
-    fileprivate var onCompletion : Completion?
+    fileprivate var onCompletion: Completion?
 
     // MARK: - Private Outlets
-    @IBOutlet fileprivate var internalView : AlertInternalView!
+    @IBOutlet fileprivate var internalView: AlertInternalView!
 }

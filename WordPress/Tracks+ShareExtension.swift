@@ -7,12 +7,12 @@ extension Tracks
 {
     // MARK: - Public Methods
     public func trackExtensionLaunched(_ wpcomAvailable: Bool) {
-        let properties = ["is_configured_dotcom" : wpcomAvailable]
+        let properties = ["is_configured_dotcom": wpcomAvailable]
         trackExtensionEvent(.Launched, properties: properties as [String : AnyObject]?)
     }
 
     public func trackExtensionPosted(_ status: String) {
-        let properties = ["post_status" : status]
+        let properties = ["post_status": status]
         trackExtensionEvent(.Posted, properties: properties as [String : AnyObject]?)
     }
 
@@ -28,7 +28,7 @@ extension Tracks
 
 
     // MARK: - Private Enums
-    fileprivate enum ExtensionEvents : String {
+    fileprivate enum ExtensionEvents: String {
         case Launched   = "wpios_share_extension_launched"
         case Posted     = "wpios_share_extension_posted"
         case Canceled   = "wpios_share_extension_canceled"

@@ -7,7 +7,7 @@ import AFNetworking
 /// Since the user may rotate the device, we also provide a second helper (resizeMediaWithIncorrectSize),
 /// which will take care of resizing the original image, to fit the new orientation.
 ///
-class NotificationMediaDownloader : NSObject
+class NotificationMediaDownloader: NSObject
 {
     // MARK: - Public Methods
 

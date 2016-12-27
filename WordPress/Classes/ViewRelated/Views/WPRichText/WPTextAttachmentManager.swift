@@ -4,7 +4,7 @@ import UIKit
 
 /// Wrangles attachment layout and exclusion paths for the specified UITextView.
 ///
-@objc open class WPTextAttachmentManager : NSObject
+@objc open class WPTextAttachmentManager: NSObject
 {
     fileprivate let attributeAttachmentName = "NSAttachment" // HACK: DTCoreText hijacks NSAttachmentAttributeName.
     open var attachments = [WPTextAttachment]()
@@ -175,7 +175,7 @@ extension WPTextAttachmentManager: NSLayoutManagerDelegate
     ///
     /// - Returns: A UIView to represent the specified WPTextAttachment or nil.
     ///
-    func attachmentManager(_ attachmentManager:WPTextAttachmentManager, viewForAttachment attachment:WPTextAttachment) -> UIView?
+    func attachmentManager(_ attachmentManager: WPTextAttachmentManager, viewForAttachment attachment: WPTextAttachment) -> UIView?
 }
 
 
@@ -187,7 +187,7 @@ class WPTextAttachmentView {
     var identifier: String
     var exclusionPath: UIBezierPath?
 
-    init(view: UIView, identifier:String, exclusionPath: UIBezierPath?) {
+    init(view: UIView, identifier: String, exclusionPath: UIBezierPath?) {
         self.view = view
         self.identifier = identifier
         self.exclusionPath = exclusionPath

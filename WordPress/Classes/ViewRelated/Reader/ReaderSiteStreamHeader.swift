@@ -2,7 +2,7 @@ import Foundation
 import WordPressShared
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -15,7 +15,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l > r
@@ -98,7 +98,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
-    func formattedFollowerCountForTopic(_ topic:ReaderSiteTopic) -> String {
+    func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         let count = numberFormatter.string(from: topic.subscriberCount)
@@ -107,7 +107,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         return str
     }
 
-    func attributedSiteDescriptionForTopic(_ topic:ReaderSiteTopic) -> NSAttributedString {
+    func attributedSiteDescriptionForTopic(_ topic: ReaderSiteTopic) -> NSAttributedString {
         return NSAttributedString(string: topic.siteDescription, attributes: WPStyleGuide.readerStreamHeaderDescriptionAttributes())
     }
 

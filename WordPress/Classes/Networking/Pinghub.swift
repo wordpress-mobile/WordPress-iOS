@@ -197,7 +197,7 @@ internal protocol Socket: class {
 private func starscreamSocket(url: URL, token: String) -> Socket {
     let socket = WebSocket(url: PinghubClient.endpoint)
     socket.origin = nil
-    socket.headers = ["Authorization" : "Bearer \(token)"]
+    socket.headers = ["Authorization": "Bearer \(token)"]
     return socket
 }
 

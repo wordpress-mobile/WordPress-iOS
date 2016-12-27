@@ -20,11 +20,11 @@ public final class WordPressComOAuthClient: NSObject {
     public static let WordPressComOAuthRedirectUrl = "https://wordpress.com/"
 
     fileprivate let sessionManager: AFHTTPSessionManager = {
-        let baseURL = URL(string:WordPressComOAuthClient.WordPressComOAuthBaseUrl)
+        let baseURL = URL(string: WordPressComOAuthClient.WordPressComOAuthBaseUrl)
         let sessionConfiguration = URLSessionConfiguration.ephemeral
-        let sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
+        let sessionManager = AFHTTPSessionManager(baseURL: baseURL, sessionConfiguration: sessionConfiguration)
         sessionManager.responseSerializer = WordPressComOAuthResponseSerializer()
-        sessionManager.requestSerializer.setValue("application/json", forHTTPHeaderField:"Accept")
+        sessionManager.requestSerializer.setValue("application/json", forHTTPHeaderField: "Accept")
         return sessionManager
     }()
 
@@ -35,7 +35,7 @@ public final class WordPressComOAuthClient: NSObject {
     /// ApiCredentials singleton
     ///
     public class func client() -> WordPressComOAuthClient {
-        let client = WordPressComOAuthClient(clientID:ApiCredentials.client(), secret: ApiCredentials.secret())
+        let client = WordPressComOAuthClient(clientID: ApiCredentials.client(), secret: ApiCredentials.secret())
         return client
     }
 
@@ -62,10 +62,10 @@ public final class WordPressComOAuthClient: NSObject {
     public func authenticateWithUsername(_ username: String,
                                   password: String,
                                   multifactorCode: String?,
-                                  success:@escaping (_ authToken: String?) -> (),
-                                  failure:@escaping (_ error: NSError) -> () )
+                                  success: @escaping (_ authToken: String?) -> (),
+                                  failure: @escaping (_ error: NSError) -> () )
     {
-        var parameters: [String:AnyObject] = [
+        var parameters: [String: AnyObject] = [
             "username": username as AnyObject,
             "password": password as AnyObject,
             "grant_type": "password" as AnyObject,
@@ -80,7 +80,7 @@ public final class WordPressComOAuthClient: NSObject {
 
         sessionManager.post("token", parameters: parameters, progress: nil, success: { (task, responseObject) in
             DDLogSwift.logVerbose("Received OAuth2 response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
-            guard let responseDictionary = responseObject as? [String:AnyObject],
+            guard let responseDictionary = responseObject as? [String: AnyObject],
                 let authToken = responseDictionary["access_token"] as? String else {
                     success(nil)
                     return
@@ -102,7 +102,7 @@ public final class WordPressComOAuthClient: NSObject {
     ///     - success: block to be called if authentication was successful.
     ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
-    public func requestOneTimeCodeWithUsername(_ username: String, password:String,
+    public func requestOneTimeCodeWithUsername(_ username: String, password: String,
                                         success: @escaping () -> (), failure: @escaping (_ error: NSError) -> ())
     {
         let parameters = [
@@ -115,7 +115,7 @@ public final class WordPressComOAuthClient: NSObject {
             "wpcom_resend_otp": true
         ] as [String : Any]
 
-        sessionManager.post("token", parameters:parameters, progress:nil, success:{ (task, responseObject) in
+        sessionManager.post("token", parameters: parameters, progress: nil, success: { (task, responseObject) in
             success()
             }, failure: { (task, error) in
                 failure(error as NSError)
@@ -124,7 +124,7 @@ public final class WordPressComOAuthClient: NSObject {
     }
 
     fileprivate func cleanedUpResponseForLogging(_ response: AnyObject) -> AnyObject {
-        guard var responseDictionary = response as? [String:AnyObject],
+        guard var responseDictionary = response as? [String: AnyObject],
             let _ = responseDictionary["access_token"]
             else {
                 return response
@@ -155,7 +155,7 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
         let responseObject = super.responseObject(for: response, data: data, error: error)
 
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 400,
-            let responseDictionary = responseObject as? [String:AnyObject],
+            let responseDictionary = responseObject as? [String: AnyObject],
             let errorCode = responseDictionary["error"] as? String,
             let errorDescription = responseDictionary["error_description"] as? String
             else {
@@ -170,17 +170,17 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
         ///     - needs_2fa: Multifactor Authentication code is required
         ///
         let errorsMap = [
-            "invalid_client" : WordPressComOAuthError.invalidClient,
-            "unsupported_grant_type" : WordPressComOAuthError.unsupportedGrantType,
-            "invalid_request" : WordPressComOAuthError.invalidRequest,
-            "needs_2fa" : WordPressComOAuthError.needsMultifactorCode
+            "invalid_client": WordPressComOAuthError.invalidClient,
+            "unsupported_grant_type": WordPressComOAuthError.unsupportedGrantType,
+            "invalid_request": WordPressComOAuthError.invalidRequest,
+            "needs_2fa": WordPressComOAuthError.needsMultifactorCode
         ]
 
         let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComOAuthError.unknown.rawValue
 
-        error?.pointee = NSError(domain:WordPressComOAuthClient.WordPressComOAuthErrorDomain,
-                       code:mappedCode,
-                       userInfo:[NSLocalizedDescriptionKey: errorDescription])
+        error?.pointee = NSError(domain: WordPressComOAuthClient.WordPressComOAuthErrorDomain,
+                       code: mappedCode,
+                       userInfo: [NSLocalizedDescriptionKey: errorDescription])
         return responseObject as AnyObject?
     }
 }

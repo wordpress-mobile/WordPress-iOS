@@ -4,7 +4,7 @@ import WordPressShared
 /// Provides a form and functionality to sign-in and add an existing self-hosted
 /// site to the app.
 ///
-@objc class SigninSelfHostedViewController : NUXAbstractViewController, SigninKeyboardResponder, SigninWPComSyncHandler
+@objc class SigninSelfHostedViewController: NUXAbstractViewController, SigninKeyboardResponder, SigninWPComSyncHandler
 {
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
     @IBOutlet weak var passwordField: WPWalkthroughTextField!

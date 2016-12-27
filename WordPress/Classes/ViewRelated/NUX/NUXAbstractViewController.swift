@@ -7,7 +7,7 @@ import WordPressShared
 /// button and badge.
 /// It is assumed that NUX controllers will always be presented modally.
 ///
-class NUXAbstractViewController : UIViewController
+class NUXAbstractViewController: UIViewController
 {
     var helpBadge: WPNUXHelpBadgeLabel!
     var helpButton: UIButton!
@@ -45,12 +45,12 @@ class NUXAbstractViewController : UIViewController
     }
 
 
-    override var preferredStatusBarStyle : UIStatusBarStyle {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
 
-    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIDevice.isPad() ? .all : .portrait
     }
 

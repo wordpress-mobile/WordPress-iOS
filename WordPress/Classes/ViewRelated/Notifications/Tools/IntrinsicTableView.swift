@@ -11,13 +11,13 @@ import Foundation
 ///
 class IntrinsicTableView: UITableView
 {
-    override var contentSize:CGSize {
+    override var contentSize: CGSize {
         didSet {
             self.invalidateIntrinsicContentSize()
         }
     }
 
-    override var intrinsicContentSize : CGSize {
+    override var intrinsicContentSize: CGSize {
         layoutIfNeeded()
         return CGSize(width: UIViewNoIntrinsicMetric, height: contentSize.height)
     }

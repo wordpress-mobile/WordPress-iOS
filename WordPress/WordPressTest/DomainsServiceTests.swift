@@ -3,7 +3,7 @@ import XCTest
 import OHHTTPStubs
 @testable import WordPress
 
-class DomainsServiceTests : XCTestCase
+class DomainsServiceTests: XCTestCase
 {
     let testSiteID = 12345
 

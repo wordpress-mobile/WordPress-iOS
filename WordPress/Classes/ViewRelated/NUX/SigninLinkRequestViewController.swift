@@ -4,7 +4,7 @@ import UIKit
 /// authentication link be emailed to the user.  Allows the user to signin via
 /// email instead of their password.
 ///
-class SigninLinkRequestViewController : NUXAbstractViewController
+class SigninLinkRequestViewController: NUXAbstractViewController
 {
 
     @IBOutlet var label: UILabel!

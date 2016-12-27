@@ -24,6 +24,6 @@ class WP3DTouchShortcutCreatorTests: XCTestCase
 
     func testCreateShortcutLoggedOutDoesNotCreatesLoggedOutShortcutsWith3DTouchNotAvailable() {
         testShortcutCreator.createShortcutsIf3DTouchAvailable(false)
-        XCTAssertEqual(UIApplication.shared.shortcutItems!.count, is3DTouchAvailable() ? 1:0)
+        XCTAssertEqual(UIApplication.shared.shortcutItems!.count, is3DTouchAvailable() ? 1 : 0)
     }
 }
