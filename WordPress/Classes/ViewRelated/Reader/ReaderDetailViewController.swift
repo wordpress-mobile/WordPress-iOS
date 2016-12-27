@@ -109,7 +109,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     open class func controllerWithPostID(_ postID: NSNumber, siteID: NSNumber) -> ReaderDetailViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderDetailViewController") as! ReaderDetailViewController
-        controller.setupWithPostID(postID, siteID:siteID)
+        controller.setupWithPostID(postID, siteID: siteID)
 
         return controller
     }
@@ -124,7 +124,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         let context = ContextManager.sharedInstance().mainContext
-        guard let url = URL(string:path),
+        guard let url = URL(string: path),
             let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) else {
             return nil
         }
@@ -269,7 +269,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     // MARK: - Setup
 
     open func setupWithPostID(_ postID: NSNumber, siteID: NSNumber) {
-        let title = NSLocalizedString("Loading Post...", comment:"Text displayed while loading a post.")
+        let title = NSLocalizedString("Loading Post...", comment: "Text displayed while loading a post.")
         WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: view)
         textView.alpha = 0.0
 
@@ -286,7 +286,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             }, failure: {[weak self] (error: Error?) in
                 DDLogSwift.logError("Error fetching post for detail: \(error?.localizedDescription)")
 
-                let title = NSLocalizedString("Error Loading Post", comment:"Text displayed when load post fails.")
+                let title = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
                 WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: self?.view)
             }
         )
@@ -406,7 +406,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     fileprivate func configureNavTitle() {
-        let placeholder = NSLocalizedString("Post", comment:"Placeholder title for ReaderPostDetails.")
+        let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
         self.title = post?.postTitle ?? placeholder
     }
 
@@ -419,7 +419,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         button.addTarget(self, action: #selector(ReaderDetailViewController.didTapShareButton(_:)), for: .touchUpInside)
 
         let shareButton = UIBarButtonItem(customView: button)
-        shareButton.accessibilityLabel = NSLocalizedString("Share", comment:"Spoken accessibility label")
+        shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
         WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(shareButton, for: navigationItem)
     }
 
@@ -471,7 +471,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         var request: URLRequest
 
         if !(post!.isPrivate()) {
-            let size = CGSize(width:featuredImageView.frame.width, height:0)
+            let size = CGSize(width: featuredImageView.frame.width, height: 0)
             url = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
             request = URLRequest(url: url!)
 
@@ -674,7 +674,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let image = UIImage(named: imageName)
         let highlightImage = UIImage(named: "icon-reader-like-highlight")
         let selected = post!.isLiked
-        configureActionButton(likeButton, title: title, image: image, highlightedImage: highlightImage, selected:selected)
+        configureActionButton(likeButton, title: title, image: image, highlightedImage: highlightImage, selected: selected)
 
         if animated {
             playLikeButtonAnimation()
@@ -749,7 +749,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let title = post!.commentCount.stringValue
         let image = UIImage(named: "icon-reader-comment")
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")
-        configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected:false)
+        configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
     }
 
 

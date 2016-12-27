@@ -25,7 +25,7 @@ import Foundation
                                  success: { (response: AnyObject, httpResponse: HTTPURLResponse?) -> Void in
                                     success?()
                                  },
-                                 failure:{ (error: NSError, httpResponse: HTTPURLResponse?) -> Void in
+                                 failure: { (error: NSError, httpResponse: HTTPURLResponse?) -> Void in
                                     failure?()
                                  })
     }

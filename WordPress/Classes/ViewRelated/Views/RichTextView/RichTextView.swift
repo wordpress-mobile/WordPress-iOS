@@ -99,7 +99,7 @@ import Foundation
 
     open var linkTextAttributes: [AnyHashable: Any]! {
         set {
-            textView.linkTextAttributes = newValue as! [String:AnyObject]
+            textView.linkTextAttributes = newValue as! [String: AnyObject]
         }
         get {
             return textView.linkTextAttributes

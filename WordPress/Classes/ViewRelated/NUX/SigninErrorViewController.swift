@@ -211,7 +211,7 @@ class SigninErrorViewController: UIViewController
         configureView(message,
                            firstButtonText: nil,
                            firstButtonCallback: nil,
-                           secondButtonText: NSLocalizedString("Contact Us", comment:"The text on the button at the bottom of the error message when a user has repeated trouble logging in"),
+                           secondButtonText: NSLocalizedString("Contact Us", comment: "The text on the button at the bottom of the error message when a user has repeated trouble logging in"),
                            secondButtonCallback: callback,
                            accessibilityIdentifier: "GenericErrorMessage")
     }

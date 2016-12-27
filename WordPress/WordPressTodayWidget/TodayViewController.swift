@@ -137,7 +137,7 @@ extension TodayViewController: NCWidgetProviding {
 
         tracks.trackExtensionAccessed()
 
-        let statsService: WPStatsService = WPStatsService(siteId: siteID, siteTimeZone: timeZone, oauth2Token: oauthToken, andCacheExpirationInterval:0)
+        let statsService: WPStatsService = WPStatsService(siteId: siteID, siteTimeZone: timeZone, oauth2Token: oauthToken, andCacheExpirationInterval: 0)
         statsService.retrieveTodayStats(completionHandler: { wpStatsSummary, error in
             WPDDLogWrapper.logInfo("Downloaded data in the Today widget")
 

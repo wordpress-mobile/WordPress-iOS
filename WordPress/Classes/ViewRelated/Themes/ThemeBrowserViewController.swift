@@ -221,7 +221,7 @@ public protocol ThemePresenter: class
 
         title = NSLocalizedString("Themes", comment: "Title of Themes browser page")
 
-        WPStyleGuide.configureColors(for: view, collectionView:collectionView)
+        WPStyleGuide.configureColors(for: view, collectionView: collectionView)
 
         fetchThemes()
         sections = themesCount == 0 ? [.search, .themes] : [.search, .info, .themes]
@@ -412,9 +412,9 @@ public protocol ThemePresenter: class
 
         let title: String
         if searchController.isActive {
-            title = NSLocalizedString("No Themes Found", comment:"Text displayed when theme name search has no matches")
+            title = NSLocalizedString("No Themes Found", comment: "Text displayed when theme name search has no matches")
         } else {
-            title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
+            title = NSLocalizedString("Fetching Themes...", comment: "Text displayed while fetching themes")
         }
         noResultsView.titleText = title
         view.addSubview(noResultsView)
@@ -667,11 +667,11 @@ public protocol ThemePresenter: class
 
                 self?.collectionView?.reloadData()
 
-                let successTitle = NSLocalizedString("Theme Activated", comment:"Title of alert when theme activation succeeds")
-                let successFormat = NSLocalizedString("Thanks for choosing %@ by %@", comment:"Message of alert when theme activation succeeds")
-                let successMessage = String(format:successFormat, theme?.name ?? "", theme?.author ?? "")
-                let manageTitle = NSLocalizedString("Manage site", comment:"Return to blog screen action when theme activation succeeds")
-                let okTitle = NSLocalizedString("OK", comment:"Alert dismissal title")
+                let successTitle = NSLocalizedString("Theme Activated", comment: "Title of alert when theme activation succeeds")
+                let successFormat = NSLocalizedString("Thanks for choosing %@ by %@", comment: "Message of alert when theme activation succeeds")
+                let successMessage = String(format: successFormat, theme?.name ?? "", theme?.author ?? "")
+                let manageTitle = NSLocalizedString("Manage site", comment: "Return to blog screen action when theme activation succeeds")
+                let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
                 let alertController = UIAlertController(title: successTitle,
                     message: successMessage,
                     preferredStyle: .alert)
@@ -686,8 +686,8 @@ public protocol ThemePresenter: class
             failure: { (error) in
                 DDLogSwift.logError("Error activating theme \(theme.themeId): \(error?.localizedDescription)")
 
-                let errorTitle = NSLocalizedString("Activation Error", comment:"Title of alert when theme activation fails")
-                let okTitle = NSLocalizedString("OK", comment:"Alert dismissal title")
+                let errorTitle = NSLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")
+                let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
                 let alertController = UIAlertController(title: errorTitle,
                     message: error?.localizedDescription,
                     preferredStyle: .alert)

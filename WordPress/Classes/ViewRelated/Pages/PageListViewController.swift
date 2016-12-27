@@ -60,7 +60,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let objectString = blog?.objectID.uriRepresentation().absoluteString
 
-        coder.encode(objectString, forKey:type(of: self).pagesViewControllerRestorationKey)
+        coder.encode(objectString, forKey: type(of: self).pagesViewControllerRestorationKey)
 
         super.encodeRestorableState(with: coder)
     }
@@ -108,7 +108,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
     }
 
-    fileprivate func noResultsTitles() -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitles() -> [PostListFilter.Status: String] {
         if isSearching() {
             return noResultsTitlesWhenSearching()
         } else {
@@ -116,7 +116,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    fileprivate func noResultsTitlesWhenSearching() -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitlesWhenSearching() -> [PostListFilter.Status: String] {
 
         let draftMessage = String(format: NSLocalizedString("No drafts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
         let scheduledMessage = String(format: NSLocalizedString("No scheduled pages match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
@@ -126,7 +126,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
 
-    fileprivate func noResultsTitlesWhenFiltering() -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitlesWhenFiltering() -> [PostListFilter.Status: String] {
 
         let draftMessage = NSLocalizedString("You don't have any drafts.", comment: "Displayed when the user views drafts in the pages list and there are no pages")
         let scheduledMessage = NSLocalizedString("You don't have any scheduled pages.", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
@@ -136,7 +136,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
 
-    fileprivate func noResultsTitles(_ draft: String, scheduled: String, trashed: String, published: String) -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitles(_ draft: String, scheduled: String, trashed: String, published: String) -> [PostListFilter.Status: String] {
         return [.draft: draft,
                 .scheduled: scheduled,
                 .trashed: trashed,
@@ -327,7 +327,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 let context = ContextManager.sharedInstance().mainContext
                 let postService = PostService(managedObjectContext: context)
                 let page = postService?.createDraftPage(for: blog)
-                postViewController = AztecPostViewController(post:page!)
+                postViewController = AztecPostViewController(post: page!)
                 navController = UINavigationController(rootViewController: postViewController)
             } else {
                 postViewController = EditPageViewController(draftFor: blog)

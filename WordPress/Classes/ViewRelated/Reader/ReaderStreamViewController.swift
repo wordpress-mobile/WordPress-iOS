@@ -285,8 +285,8 @@ import WordPressComAnalytics
         assert(siteID != nil, "A siteID is required before fetching a site topic")
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service?.siteTopicForSite(withID: siteID!,
-            isFeed:isFeed,
-            success: { [weak self] (objectID:NSManagedObjectID?, isFollowing:Bool) in
+            isFeed: isFeed,
+            success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
 
                 let context = ContextManager.sharedInstance().mainContext
                 guard let objectID = objectID, let topic = (try? context?.existingObject(with: objectID)) as? ReaderAbstractTopic else {
@@ -312,7 +312,7 @@ import WordPressComAnalytics
         assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic")
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service?.tagTopicForTag(withSlug: tagSlug,
-            success: { [weak self] (objectID:NSManagedObjectID?) in
+            success: { [weak self] (objectID: NSManagedObjectID?) in
 
                 let context = ContextManager.sharedInstance().mainContext
                 guard let objectID = objectID, let topic = (try? context?.existingObject(with: objectID)) as? ReaderAbstractTopic else {
@@ -393,15 +393,15 @@ import WordPressComAnalytics
     // MARK: - Handling Loading and No Results
 
     func displayLoadingStream() {
-        resultsStatusView.titleText = NSLocalizedString("Loading stream...", comment:"A short message to inform the user the requested stream is being loaded.")
+        resultsStatusView.titleText = NSLocalizedString("Loading stream...", comment: "A short message to inform the user the requested stream is being loaded.")
         resultsStatusView.messageText = ""
         displayResultsStatus()
     }
 
 
     func displayLoadingStreamFailed() {
-        resultsStatusView.titleText = NSLocalizedString("Problem loading stream", comment:"Error message title informing the user that a stream could not be loaded.")
-        resultsStatusView.messageText = NSLocalizedString("Sorry. The stream could not be loaded.", comment:"A short error message leting the user know the requested stream could not be loaded.")
+        resultsStatusView.titleText = NSLocalizedString("Problem loading stream", comment: "Error message title informing the user that a stream could not be loaded.")
+        resultsStatusView.messageText = NSLocalizedString("Sorry. The stream could not be loaded.", comment: "A short error message leting the user know the requested stream could not be loaded.")
         displayResultsStatus()
     }
 
@@ -413,7 +413,7 @@ import WordPressComAnalytics
         }
 
         tableView.tableHeaderView?.isHidden = true
-        resultsStatusView.titleText = NSLocalizedString("Fetching posts...", comment:"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
+        resultsStatusView.titleText = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         resultsStatusView.messageText = ""
         resultsStatusView.buttonTitle = nil
         resultsStatusView.delegate = nil
@@ -915,8 +915,8 @@ import WordPressComAnalytics
                 self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
                 let message = error?.localizedDescription ?? ""
-                let errorTitle = NSLocalizedString("Error Blocking Site", comment:"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
-                let cancelTitle = NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
+                let errorTitle = NSLocalizedString("Error Blocking Site", comment: "Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
+                let cancelTitle = NSLocalizedString("OK", comment: "Text for an alert's dismissal button.")
                 let alertController = UIAlertController(title: errorTitle,
                     message: message,
                     preferredStyle: .alert)
@@ -945,8 +945,8 @@ import WordPressComAnalytics
                 self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
                 let message = error?.localizedDescription ?? ""
-                let errorTitle = NSLocalizedString("Error Unblocking Site", comment:"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
-                let cancelTitle = NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
+                let errorTitle = NSLocalizedString("Error Unblocking Site", comment: "Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
+                let cancelTitle = NSLocalizedString("OK", comment: "Text for an alert's dismissal button.")
                 let alertController = UIAlertController(title: errorTitle,
                     message: message,
                     preferredStyle: .alert)
@@ -1117,7 +1117,7 @@ import WordPressComAnalytics
     }
 
 
-    func syncItems(_ success:((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    func syncItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         guard let topic = readerTopic else {
             DDLogSwift.logError("Error: Reader tried to sync items when the topic was nil.")
             return
@@ -1164,7 +1164,7 @@ import WordPressComAnalytics
     }
 
 
-    func syncItemsForGap(_ success:((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    func syncItemsForGap(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         assert(syncIsFillingGap)
         guard let topic = readerTopic else {
             assertionFailure("Tried to fill a gap when the topic was nil.")
@@ -1223,7 +1223,7 @@ import WordPressComAnalytics
     }
 
 
-    func loadMoreItems(_ success:((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    func loadMoreItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         guard let topic = readerTopic else {
             assertionFailure("Tried to fill a gap when the topic was nil.")
             return
@@ -1403,7 +1403,7 @@ import WordPressComAnalytics
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
-        service?.toggleFollowing(forSite: topic, success:nil, failure: { (error: Error?) in
+        service?.toggleFollowing(forSite: topic, success: nil, failure: { (error: Error?) in
             WPNotificationFeedbackGenerator.notificationOccurred(.error)
             self.updateStreamHeaderIfNeeded()
         })
@@ -1520,7 +1520,7 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
 
     public func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
         let post = provider as! ReaderPost
-        showMenuForPost(post, fromView:sender)
+        showMenuForPost(post, fromView: sender)
     }
 
 

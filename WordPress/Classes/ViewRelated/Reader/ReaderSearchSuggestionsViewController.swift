@@ -78,7 +78,7 @@ class ReaderSearchSuggestionsViewController: UIViewController
         let buttonTitle = NSLocalizedString("Clear search history", comment: "Title of a button.")
         clearButton.setTitle(buttonTitle, for: UIControlState())
         let buttonBackgroundImage = UIImage(color: WPStyleGuide.lightGrey())
-        clearButton.setBackgroundImage(buttonBackgroundImage, for:UIControlState())
+        clearButton.setBackgroundImage(buttonBackgroundImage, for: UIControlState())
 
         borderImageView.image = UIImage(color: WPStyleGuide.greyLighten10(), havingSize: CGSize(width: stackView.frame.width, height: 1))
 

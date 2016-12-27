@@ -323,22 +323,22 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         featuredImageView.image = nil
         var url = featuredImageURL
         featuredImageDesiredWidth = featuredImageView.frame.width
-        let size = CGSize(width:featuredImageDesiredWidth, height:featuredMediaHeightConstraintConstant)
+        let size = CGSize(width: featuredImageDesiredWidth, height: featuredMediaHeightConstraintConstant)
         if !(contentProvider!.isPrivate()) {
             url = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
-            featuredImageView.setImageWith(url, placeholderImage:nil)
+            featuredImageView.setImageWith(url, placeholderImage: nil)
 
         } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
             // private wpcom image needs special handling.
             let scale = UIScreen.main.scale
-            let scaledSize = CGSize(width:size.width * scale, height: size.height * scale)
+            let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
             url = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
             let request = requestForURL(url)
             featuredImageView.setImageWith(request, placeholderImage: nil, success: nil, failure: nil)
 
         } else {
             // private but not a wpcom hosted image
-            featuredImageView.setImageWith(url, placeholderImage:nil)
+            featuredImageView.setImageWith(url, placeholderImage: nil)
         }
         currentLoadedCardImageURL = featuredImageURL.absoluteString
     }

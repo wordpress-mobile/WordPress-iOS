@@ -192,7 +192,7 @@ class NotificationsViewController: UITableViewController
         let subject = note.subjectBlock?.attributedSubjectText
         let snippet = note.snippetBlock?.attributedSnippetText
 
-        return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject:subject, snippet:snippet)
+        return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject: subject, snippet: snippet)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -342,7 +342,7 @@ private extension NotificationsViewController
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
-        WPStyleGuide.configureColors(for: view, andTableView:tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
     func setupTableHeaderView() {
@@ -415,19 +415,19 @@ private extension NotificationsViewController
 {
     func startListeningToNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name:NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        nc.addObserver(self, selector: #selector(notificationsWereUpdated), name:NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+        nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        nc.addObserver(self, selector: #selector(notificationsWereUpdated), name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
     }
 
     func startListeningToAccountNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(defaultAccountDidChange), name:NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+        nc.addObserver(self, selector: #selector(defaultAccountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        nc.removeObserver(self, name:NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+        nc.removeObserver(self, name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
     }
 
     @objc func applicationDidBecomeActive(_ note: Foundation.Notification) {

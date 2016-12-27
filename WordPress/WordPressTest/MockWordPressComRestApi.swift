@@ -8,7 +8,7 @@ class MockWordPressComRestApi: WordPressComRestApi {
     var successBlockPassedIn: ((AnyObject, HTTPURLResponse?) -> Void)?
     var failureBlockPassedIn: ((NSError, HTTPURLResponse?) -> Void)?
 
-    override func GET(_ URLString: String?, parameters: [String:AnyObject]?, success: @escaping ((AnyObject, HTTPURLResponse?) -> Void), failure: @escaping ((NSError, HTTPURLResponse?) -> Void)) -> Progress? {
+    override func GET(_ URLString: String?, parameters: [String: AnyObject]?, success: @escaping ((AnyObject, HTTPURLResponse?) -> Void), failure: @escaping ((NSError, HTTPURLResponse?) -> Void)) -> Progress? {
         getMethodCalled = true
         URLStringPassedIn = URLString
         parametersPassedIn = parameters as AnyObject?
@@ -18,7 +18,7 @@ class MockWordPressComRestApi: WordPressComRestApi {
         return Progress()
     }
 
-    override func POST(_ URLString: String?, parameters: [String:AnyObject]?, success: @escaping ((AnyObject, HTTPURLResponse?) -> Void), failure: @escaping ((NSError, HTTPURLResponse?) -> Void)) -> Progress? {
+    override func POST(_ URLString: String?, parameters: [String: AnyObject]?, success: @escaping ((AnyObject, HTTPURLResponse?) -> Void), failure: @escaping ((NSError, HTTPURLResponse?) -> Void)) -> Progress? {
         postMethodCalled = true
         URLStringPassedIn = URLString
         parametersPassedIn = parameters as AnyObject?

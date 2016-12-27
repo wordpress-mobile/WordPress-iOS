@@ -76,7 +76,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
             let error = self.errorFromResponse(response)
             completion(error)
 
-        }, failure:{ (error, _) in
+        }, failure: { (error, _) in
             completion(error)
         })
     }
@@ -100,7 +100,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
             let error = self.errorFromResponse(response)
             completion(error)
 
-        }, failure:{ (error, _) in
+        }, failure: { (error, _) in
             completion(error)
         })
     }
@@ -166,7 +166,7 @@ private extension NotificationSyncServiceRemote
                 completion(SyncError.failed, nil)
             }
 
-        }, failure:{ error, _ in
+        }, failure: { error, _ in
             completion(error, nil)
         })
     }

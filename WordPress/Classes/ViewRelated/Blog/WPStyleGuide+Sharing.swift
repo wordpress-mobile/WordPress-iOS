@@ -15,7 +15,7 @@ extension WPStyleGuide
 
         let imageSize = 20.0
         let horizontalPadding = 8.0
-        let imageView = UIImageView(frame:CGRect(x: 0, y: 0, width: imageSize + horizontalPadding, height: imageSize))
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageSize + horizontalPadding, height: imageSize))
 
         imageView.image = UIImage(named: "sharing-notice")
         imageView.tintColor = jazzyOrange()
@@ -71,17 +71,17 @@ extension WPStyleGuide
 
         switch name {
         case .Facebook:
-            return UIColor(fromRGBAColorWithRed: 59.0, green: 89.0, blue: 152.0, alpha:1)
+            return UIColor(fromRGBAColorWithRed: 59.0, green: 89.0, blue: 152.0, alpha: 1)
         case .Twitter:
-            return UIColor(fromRGBAColorWithRed: 85, green: 172, blue: 238, alpha:1)
+            return UIColor(fromRGBAColorWithRed: 85, green: 172, blue: 238, alpha: 1)
         case .Google:
-            return UIColor(fromRGBAColorWithRed: 220, green: 78, blue: 65, alpha:1)
+            return UIColor(fromRGBAColorWithRed: 220, green: 78, blue: 65, alpha: 1)
         case .LinkedIn:
-            return UIColor(fromRGBAColorWithRed: 0, green: 119, blue: 181, alpha:1)
+            return UIColor(fromRGBAColorWithRed: 0, green: 119, blue: 181, alpha: 1)
         case .Tumblr:
-            return UIColor(fromRGBAColorWithRed: 53, green: 70, blue: 92, alpha:1)
+            return UIColor(fromRGBAColorWithRed: 53, green: 70, blue: 92, alpha: 1)
         case .Path:
-            return UIColor(fromRGBAColorWithRed: 238, green: 52, blue: 35, alpha:1)
+            return UIColor(fromRGBAColorWithRed: 238, green: 52, blue: 35, alpha: 1)
         }
     }
 

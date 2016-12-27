@@ -188,7 +188,7 @@ import WordPressComAnalytics
             "host=\(host)",
             "blog=\(siteID)",
             "post=\(postID)",
-            NSString(format:"t=%d", arc4random())
+            NSString(format: "t=%d", arc4random())
         ]
 
         let userAgent = WPUserAgent.wordPress()
