@@ -51,6 +51,10 @@ class PingHubManager: NSObject {
         /// Sequence of increasing delays to apply to the retry mechanism (in seconds)
         ///
         static let delaySequence = [1, 2, 5, 15, 30]
+
+        /// Enables manager during tests
+        ///
+        static let enabledDuringTests = false
     }
 
     fileprivate typealias StatePattern = Pattern<State>
@@ -90,6 +94,10 @@ class PingHubManager: NSObject {
         let authToken = defaultAccountToken()
         state = State(connected: false, reachable: true, foreground: foreground, authToken: authToken)
         super.init()
+
+        guard enabled else {
+            return
+        }
 
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.accountChanged), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
@@ -149,6 +157,10 @@ class PingHubManager: NSObject {
         let client = PinghubClient(token: token)
         client.delegate = self
         return client
+    }
+
+    private var enabled: Bool {
+        return !UIApplication.shared.isRunningTestSuite() || Configuration.enabledDuringTests
     }
 }
 
