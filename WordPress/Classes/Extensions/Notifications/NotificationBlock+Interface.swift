@@ -169,10 +169,10 @@ extension NotificationBlock
     ///
     /// - Returns: A NSAttributedString instance, formatted with all of the specified parameters
     ///
-    fileprivate func textWithStyles(_ attributes  : [String: AnyObject],
-                                quoteStyles : [String: AnyObject]?,
-                             rangeStylesMap : [NotificationRange.Kind: [String: AnyObject]]?,
-                                 linksColor : UIColor?) -> NSAttributedString
+    fileprivate func textWithStyles(_ attributes: [String: AnyObject],
+                                quoteStyles: [String: AnyObject]?,
+                             rangeStylesMap: [NotificationRange.Kind: [String: AnyObject]]?,
+                                 linksColor: UIColor?) -> NSAttributedString
     {
         guard let text = text else {
             return NSAttributedString()
@@ -216,34 +216,34 @@ extension NotificationBlock
     //
     fileprivate struct Constants {
         static let subjectRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .User               : Styles.subjectBoldStyle as Dictionary<String, AnyObject>,
-            .Post               : Styles.subjectItalicsStyle as Dictionary<String, AnyObject>,
-            .Comment            : Styles.subjectItalicsStyle as Dictionary<String, AnyObject>,
-            .Blockquote         : Styles.subjectQuotedStyle as Dictionary<String, AnyObject>,
-            .Noticon            : Styles.subjectNoticonStyle
+            .User: Styles.subjectBoldStyle as Dictionary<String, AnyObject>,
+            .Post: Styles.subjectItalicsStyle as Dictionary<String, AnyObject>,
+            .Comment: Styles.subjectItalicsStyle as Dictionary<String, AnyObject>,
+            .Blockquote: Styles.subjectQuotedStyle as Dictionary<String, AnyObject>,
+            .Noticon: Styles.subjectNoticonStyle
         ]
 
         static let headerTitleRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .User               : Styles.headerTitleBoldStyle as Dictionary<String, AnyObject>,
-            .Post               : Styles.headerTitleContextStyle as Dictionary<String, AnyObject>,
-            .Comment            : Styles.headerTitleContextStyle as Dictionary<String, AnyObject>
+            .User: Styles.headerTitleBoldStyle as Dictionary<String, AnyObject>,
+            .Post: Styles.headerTitleContextStyle as Dictionary<String, AnyObject>,
+            .Comment: Styles.headerTitleContextStyle as Dictionary<String, AnyObject>
         ]
 
         static let footerStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .Noticon            : Styles.blockNoticonStyle as Dictionary<String, AnyObject>
+            .Noticon: Styles.blockNoticonStyle as Dictionary<String, AnyObject>
         ]
 
         static let richRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .Blockquote         : Styles.contentBlockQuotedStyle as Dictionary<String, AnyObject>,
-            .Noticon            : Styles.blockNoticonStyle as Dictionary<String, AnyObject>,
-            .Match              : Styles.contentBlockMatchStyle as Dictionary<String, AnyObject>
+            .Blockquote: Styles.contentBlockQuotedStyle as Dictionary<String, AnyObject>,
+            .Noticon: Styles.blockNoticonStyle as Dictionary<String, AnyObject>,
+            .Match: Styles.contentBlockMatchStyle as Dictionary<String, AnyObject>
         ]
 
         static let badgeRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .User               : Styles.badgeBoldStyle as Dictionary<String, AnyObject>,
-            .Post               : Styles.badgeItalicsStyle as Dictionary<String, AnyObject>,
-            .Comment            : Styles.badgeItalicsStyle as Dictionary<String, AnyObject>,
-            .Blockquote         : Styles.badgeQuotedStyle as Dictionary<String, AnyObject>
+            .User: Styles.badgeBoldStyle as Dictionary<String, AnyObject>,
+            .Post: Styles.badgeItalicsStyle as Dictionary<String, AnyObject>,
+            .Comment: Styles.badgeItalicsStyle as Dictionary<String, AnyObject>,
+            .Blockquote: Styles.badgeQuotedStyle as Dictionary<String, AnyObject>
         ]
     }
 

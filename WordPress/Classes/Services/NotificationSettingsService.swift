@@ -233,15 +233,15 @@ open class NotificationSettingsService: LocalCoreDataService
         case let .blog(blogId):
             return [
                 "blogs": [
-                    [   "blog_id" : blogId,
-                        streamKey : wrappedSettings
+                    [   "blog_id": blogId,
+                        streamKey: wrappedSettings
                     ]
                 ]
             ]
         case .other:
             return [
                 "other": [
-                    streamKey : wrappedSettings
+                    streamKey: wrappedSettings
                 ]
             ]
         case .wordPressCom:
@@ -251,19 +251,19 @@ open class NotificationSettingsService: LocalCoreDataService
 
 
     // MARK: - Private Properties
-    fileprivate var remoteApi : WordPressComRestApi?
+    fileprivate var remoteApi: WordPressComRestApi?
 
 
     // MARK: - Private Computed Properties
-    fileprivate var notificationsServiceRemote : NotificationSettingsServiceRemote? {
+    fileprivate var notificationsServiceRemote: NotificationSettingsServiceRemote? {
         return NotificationSettingsServiceRemote(wordPressComRestApi: remoteApi)
     }
 
-    fileprivate var blogService : BlogService {
+    fileprivate var blogService: BlogService {
         return BlogService(managedObjectContext: managedObjectContext)
     }
 
-    fileprivate var deviceId : String {
+    fileprivate var deviceId: String {
         return PushNotificationsManager.sharedInstance.deviceId ?? String()
     }
 }

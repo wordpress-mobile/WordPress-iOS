@@ -13,15 +13,15 @@ import Foundation
         let message: String
         switch (self) {
         case .emptyURL:
-            message = NSLocalizedString("Empty URL", comment:"Message to show to user when he tries to add a self-hosted site that is an empty URL.")
+            message = NSLocalizedString("Empty URL", comment: "Message to show to user when he tries to add a self-hosted site that is an empty URL.")
         case .invalidURL:
-            message = NSLocalizedString("Invalid URL, please check if you wrote a valid site address.", comment:"Message to show to user when he tries to add a self-hosted site that isn't a valid URL.")
+            message = NSLocalizedString("Invalid URL, please check if you wrote a valid site address.", comment: "Message to show to user when he tries to add a self-hosted site that isn't a valid URL.")
         case .invalidScheme:
-            message = NSLocalizedString("Invalid URL scheme inserted, only HTTP and HTTPS are supported.", comment:"Message to show to user when he tries to add a self-hosted site that isn't HTTP or HTTPS.")
+            message = NSLocalizedString("Invalid URL scheme inserted, only HTTP and HTTPS are supported.", comment: "Message to show to user when he tries to add a self-hosted site that isn't HTTP or HTTPS.")
         case .notWordPressError:
             message = NSLocalizedString("That doesn't look like a WordPress site.", comment: "Message to show to user when he tries to add a self-hosted site that isn't a WordPress site.")
         case .mobilePluginRedirectedError:
-            message = NSLocalizedString("You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog", comment:"")
+            message = NSLocalizedString("You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog", comment: "")
         case .invalid:
             message = NSLocalizedString("That doesn't look like a WordPress site.", comment: "Message to show to user when he tries to add a self-hosted site that isn't a WordPress site.")
         }
@@ -63,13 +63,13 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         validateXMLRPCURL(xmlrpcURL, success: success, failure: { (error) in
                 DDLogSwift.logError(error.localizedDescription)
                 if error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication ||
-                   error.domain == String(reflecting:WordPressOrgXMLRPCValidatorError.self) && error.code == WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.rawValue
+                   error.domain == String(reflecting: WordPressOrgXMLRPCValidatorError.self) && error.code == WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.rawValue
                 {
                     failure(error)
                     return
                 }
                 // Try the original given url as an XML-RPC endpoint
-                let  originalXMLRPCURL = try! self.urlForXMLRPCFromURLString(site, addXMLRPC:false)
+                let  originalXMLRPCURL = try! self.urlForXMLRPCFromURLString(site, addXMLRPC: false)
                 DDLogSwift.logError("Try the original given url as an XML-RPC endpoint: \(originalXMLRPCURL)")
                 self.validateXMLRPCURL(originalXMLRPCURL , success: success, failure: { (error) in
                         DDLogSwift.logError(error.localizedDescription)
@@ -90,7 +90,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         // Check if it's a valid URL
         // Not a valid URL. Could be a bad protocol (htpp://), syntax error (http//), ...
         // See https://github.com/koke/NSURL-Guess for extra help cleaning user typed URLs
-        guard let baseURL = URL(string:resultURLString) else {
+        guard let baseURL = URL(string: resultURLString) else {
             throw WordPressOrgXMLRPCValidatorError.invalidURL.convertToNSError()
         }
 
@@ -118,7 +118,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         return url
     }
 
-    fileprivate func validateXMLRPCURL(_ url:URL,
+    fileprivate func validateXMLRPCURL(_ url: URL,
                                    success: @escaping (_ xmlrpcURL: URL) -> (),
                                    failure: @escaping (_ error: NSError) -> ()) {
         let api = WordPressOrgXMLRPCApi(endpoint: url)
@@ -136,7 +136,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                 if httpResponse?.url != url {
                     // we where redirected, let's check the answer content
                     if let data = error.userInfo[WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyData] as? Data,
-                        let responseString = String(data:data, encoding: String.Encoding.utf8), responseString.range(of: "<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">") != nil
+                        let responseString = String(data: data, encoding: String.Encoding.utf8), responseString.range(of: "<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">") != nil
                             || responseString.range(of: "dm404Container") != nil {
                         failure(WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.convertToNSError())
                         return
@@ -150,7 +150,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                                            success: @escaping (_ xmlrpcURL: URL) -> (),
                                            failure: @escaping (_ error: NSError) -> ()) {
         DDLogSwift.logInfo("Fetch the original url and look for the RSD link by using RegExp")
-        let session = URLSession(configuration:URLSessionConfiguration.ephemeral)
+        let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
         let dataTask = session.dataTask(with: htmlURL, completionHandler: { (data, response, error) in
             if let error = error {
                 failure(error as NSError)
@@ -165,7 +165,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
             }
 
             // Try removing "?rsd" from the url, it should point to the XML-RPC endpoint
-            let xmlrpc = rsdURL.replacingOccurrences(of: "?rsd", with:"")
+            let xmlrpc = rsdURL.replacingOccurrences(of: "?rsd", with: "")
             if xmlrpc != rsdURL {
                 guard let newURL = URL(string: xmlrpc) else {
                     failure(WordPressOrgXMLRPCValidatorError.invalid.convertToNSError())
@@ -184,15 +184,15 @@ open class WordPressOrgXMLRPCValidator: NSObject {
     }
 
     fileprivate func extractRSDURLFromHTML(_ html: String) -> String? {
-        guard let rsdURLRegExp = try? NSRegularExpression(pattern:"<link\\s+rel=\"EditURI\"\\s+type=\"application/rsd\\+xml\"\\s+title=\"RSD\"\\s+href=\"([^\"]*)\"[^/]*/>",
+        guard let rsdURLRegExp = try? NSRegularExpression(pattern: "<link\\s+rel=\"EditURI\"\\s+type=\"application/rsd\\+xml\"\\s+title=\"RSD\"\\s+href=\"([^\"]*)\"[^/]*/>",
                                                           options: [.caseInsensitive])
             else {
                 return nil
         }
 
         let matches = rsdURLRegExp.matches(in: html,
-                                                   options:NSRegularExpression.MatchingOptions(),
-                                                   range:NSMakeRange(0, html.characters.count))
+                                                   options: NSRegularExpression.MatchingOptions(),
+                                                   range: NSMakeRange(0, html.characters.count))
         if matches.count <= 0 {
             return nil
         }
@@ -212,7 +212,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
             failure(WordPressOrgXMLRPCValidatorError.invalid.convertToNSError())
             return
         }
-        let session = URLSession(configuration:URLSessionConfiguration.ephemeral)
+        let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
         let dataTask = session.dataTask(with: rsdURL, completionHandler: { (data, response, error) in
             if let error = error {
                 failure(error as NSError)

@@ -1,6 +1,6 @@
 import Foundation
 
-@objc open class RemotePublicizeService : NSObject
+@objc open class RemotePublicizeService: NSObject
 {
     open var connectURL = ""
     open var detail = ""

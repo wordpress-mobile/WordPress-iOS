@@ -5,7 +5,7 @@ import WordPressShared
 /// The purpose of this class is to display a UIPickerView instance inside a UITableView,
 /// and wrap up all of the Picker Delegate / DataSource methods
 ///
-open class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPickerViewDataSource
+open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerViewDataSource
 {
     // MARK: - Public Properties
 
@@ -16,7 +16,7 @@ open class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPicker
 
     /// String Format, to be applied to the Row Titles
     ///
-    open var textFormat : String? {
+    open var textFormat: String? {
         didSet {
             picker.reloadAllComponents()
         }
@@ -25,7 +25,7 @@ open class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPicker
 
     /// Currently Selected Value
     ///
-    open var selectedValue : Int? {
+    open var selectedValue: Int? {
         didSet {
             refreshSelectedValue()
         }
@@ -34,7 +34,7 @@ open class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPicker
 
     /// Specifies the Minimum Possible Value
     ///
-    open var minimumValue : Int = 0 {
+    open var minimumValue: Int = 0 {
         didSet {
             picker.reloadAllComponents()
         }
@@ -42,7 +42,7 @@ open class PickerTableViewCell : WPTableViewCell, UIPickerViewDelegate, UIPicker
 
     /// Specifies the Maximum Possible Value
     ///
-    open var maximumValue : Int = 0 {
+    open var maximumValue: Int = 0 {
         didSet {
             picker.reloadAllComponents()
         }

@@ -4,21 +4,21 @@ import Foundation
 
 /// This helper class allows us to map WordPress.com LanguageID's into human readable language strings.
 ///
-class WordPressComLanguageDatabase : NSObject
+class WordPressComLanguageDatabase: NSObject
 {
     // MARK: - Public Properties
 
     /// Languages considered 'popular'
     ///
-    let popular : [Language]
+    let popular: [Language]
 
     /// Every supported language
     ///
-    let all : [Language]
+    let all: [Language]
 
     /// Returns both, Popular and All languages, grouped
     ///
-    let grouped : [[Language]]
+    let grouped: [[Language]]
 
 
     // MARK: - Public Methods
@@ -115,19 +115,19 @@ class WordPressComLanguageDatabase : NSObject
     {
         /// Language Unique Identifier
         ///
-        let id : Int
+        let id: Int
 
         /// Human readable Language name
         ///
-        let name : String
+        let name: String
 
         /// Language's Slug String
         ///
-        let slug : String
+        let slug: String
 
         /// Localized description for the current language
         ///
-        var description : String {
+        var description: String {
             return (Locale.current as NSLocale).displayName(forKey: NSLocale.Key.identifier, value: slug) ?? name
         }
 
@@ -135,7 +135,7 @@ class WordPressComLanguageDatabase : NSObject
 
         /// Designated initializer. Will fail if any of the required properties is missing
         ///
-        init?(dict : NSDictionary) {
+        init?(dict: NSDictionary) {
             guard let unwrappedId = dict.number(forKey: Keys.identifier)?.intValue,
                         let unwrappedSlug = dict.string(forKey: Keys.slug),
                         let unwrappedName = dict.string(forKey: Keys.name) else
@@ -154,7 +154,7 @@ class WordPressComLanguageDatabase : NSObject
 
         /// Given an array of raw languages, will return a parsed array.
         ///
-        static func fromArray(_ array : [NSDictionary]) -> [Language] {
+        static func fromArray(_ array: [NSDictionary]) -> [Language] {
             return array.flatMap {
                 return Language(dict: $0)
             }

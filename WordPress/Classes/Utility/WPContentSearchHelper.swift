@@ -7,7 +7,7 @@ import UIKit
 class WPContentSearchHelper: NSObject {
 
     /// The current searchText set on the helper.
-    var searchText:String? = nil
+    var searchText: String? = nil
 
     // MARK: - Methods for configuring the timing of search callbacks.
 
@@ -73,7 +73,7 @@ class WPContentSearchHelper: NSObject {
 private class WPContentSearchObserver: NSObject {
 
     var interval = TimeInterval(0.0)
-    var timer:Timer?
+    var timer: Timer?
     var completion = {}
 
     @objc func timerFired() {

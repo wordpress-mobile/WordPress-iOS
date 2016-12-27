@@ -293,7 +293,7 @@ import Foundation
             return string
         }
         var content = string.trim()
-        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location:0, length: content.characters.count))
+        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.characters.count))
         if let match = matches.first {
             let index = content.characters.index(content.startIndex, offsetBy: match.range.location)
             content = content.substring(to: index)

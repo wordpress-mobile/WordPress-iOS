@@ -4,7 +4,7 @@ import WordPressShared
 import wpxmlrpc
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -17,7 +17,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l > r
@@ -27,7 +27,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating, WPTableViewHandlerDelegate {
+class AbstractPostListViewController: UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating, WPTableViewHandlerDelegate {
 
     typealias WPNoResultsView = WordPressShared.WPNoResultsView
 
@@ -41,28 +41,28 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 
     fileprivate let abstractPostWindowlessCellIdenfitier = "AbstractPostWindowlessCellIdenfitier"
 
-    var blog : Blog!
+    var blog: Blog!
 
     /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
     /// to the subclass to define this property.
     ///
-    var refreshNoResultsView : ((WPNoResultsView) -> ())!
-    var tableViewController : UITableViewController!
+    var refreshNoResultsView: ((WPNoResultsView) -> ())!
+    var tableViewController: UITableViewController!
     var reloadTableViewBeforeAppearing = false
 
-    var tableView : UITableView {
+    var tableView: UITableView {
         get {
             return self.tableViewController.tableView
         }
     }
 
-    var refreshControl : UIRefreshControl? {
+    var refreshControl: UIRefreshControl? {
         get {
             return self.tableViewController.refreshControl
         }
     }
 
-    lazy var tableViewHandler : WPTableViewHandler = {
+    lazy var tableViewHandler: WPTableViewHandler = {
         let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
 
         tableViewHandler.cacheRowHeights = false
@@ -72,12 +72,12 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return tableViewHandler
     }()
 
-    lazy var estimatedHeightsCache : NSCache = { () -> NSCache<AnyObject, AnyObject> in
+    lazy var estimatedHeightsCache: NSCache = { () -> NSCache<AnyObject, AnyObject> in
         let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
         return estimatedHeightsCache
     }()
 
-    lazy var syncHelper : WPContentSyncHelper = {
+    lazy var syncHelper: WPContentSyncHelper = {
         let syncHelper = WPContentSyncHelper()
 
         syncHelper.delegate = self
@@ -85,30 +85,30 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return syncHelper
     }()
 
-    lazy var searchHelper : WPContentSearchHelper = {
+    lazy var searchHelper: WPContentSearchHelper = {
         let searchHelper = WPContentSearchHelper()
         return searchHelper
     }()
 
-    lazy var noResultsView : WPNoResultsView = {
+    lazy var noResultsView: WPNoResultsView = {
         let noResultsView = WPNoResultsView()
         noResultsView.delegate = self
 
         return noResultsView
     }()
 
-    lazy var filterSettings : PostListFilterSettings = {
-        return PostListFilterSettings(blog:self.blog, postType:self.postTypeToSync())
+    lazy var filterSettings: PostListFilterSettings = {
+        return PostListFilterSettings(blog: self.blog, postType: self.postTypeToSync())
     }()
 
 
-    var postListFooterView : PostListFooterView!
+    var postListFooterView: PostListFooterView!
 
-    @IBOutlet var filterButton : NavBarTitleDropdownButton!
-    @IBOutlet var rightBarButtonView : UIView!
-    @IBOutlet var addButton : UIButton!
+    @IBOutlet var filterButton: NavBarTitleDropdownButton!
+    @IBOutlet var rightBarButtonView: UIView!
+    @IBOutlet var addButton: UIButton!
 
-    var searchController : UISearchController!
+    var searchController: UISearchController!
     var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
 
     fileprivate var searchesSyncing = 0
@@ -212,7 +212,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return type(of: self).defaultHeightForFooterView
     }
 
-    override var preferredStatusBarStyle : UIStatusBarStyle {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
@@ -224,7 +224,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         navigationItem.backBarButtonItem = backButton
 
         let rightBarButtonItem = UIBarButtonItem(customView: rightBarButtonView)
-        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, for:navigationItem)
+        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, for: navigationItem)
 
         navigationItem.titleView = filterButton
         updateFilterTitle()
@@ -304,8 +304,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         })
     }
 
-    func propertiesForAnalytics() -> [String:AnyObject] {
-        var properties = [String:AnyObject]()
+    func propertiesForAnalytics() -> [String: AnyObject] {
+        var properties = [String: AnyObject]()
 
         properties["type"] = postTypeToSync()
         properties["filter"] = filterSettings.currentPostListFilter().title as AnyObject?
@@ -554,7 +554,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         refreshResults()
     }
 
-    func updateFilter(_ filter: PostListFilter, withSyncedPosts posts:[AbstractPost], syncOptions options: PostServiceSyncOptions) {
+    func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], syncOptions options: PostServiceSyncOptions) {
 
         guard let oldestPost = posts.last else {
             assertionFailure("This method should not be called with no posts.")
@@ -898,7 +898,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
                 return
             }
 
-            var apost : AbstractPost
+            var apost: AbstractPost
 
             // Make sure the post still exists.
             do {

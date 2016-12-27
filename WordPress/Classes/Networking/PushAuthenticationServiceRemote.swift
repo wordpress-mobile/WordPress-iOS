@@ -3,7 +3,7 @@ import Foundation
 /// The purpose of this class is to encapsulate all of the interaction with the REST endpoint,
 /// required to handle WordPress.com 2FA Code Veritication via Push Notifications
 ///
-@objc open class PushAuthenticationServiceRemote : ServiceRemoteWordPressComREST
+@objc open class PushAuthenticationServiceRemote: ServiceRemoteWordPressComREST
 {
     /// Verifies a WordPress.com Login.
     ///
@@ -17,15 +17,15 @@ import Foundation
         let requestUrl = self.path(forEndpoint: path, with: .version_1_1)
 
         let parameters  = [
-            "action"        : "authorize_login",
-            "push_token"    : token
+            "action": "authorize_login",
+            "push_token": token
         ]
 
         wordPressComRestApi.POST(requestUrl!, parameters: parameters as [String: AnyObject],
                                  success: { (response: AnyObject, httpResponse: HTTPURLResponse?) -> Void in
                                     success?()
                                  },
-                                 failure:{ (error: NSError, httpResponse: HTTPURLResponse?) -> Void in
+                                 failure: { (error: NSError, httpResponse: HTTPURLResponse?) -> Void in
                                     failure?()
                                  })
     }

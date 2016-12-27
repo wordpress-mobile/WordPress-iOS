@@ -14,7 +14,7 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
         super.setUp()
 
         api = WordPressComRestApi()
-        service = WordPressComServiceRemote(wordPressComRestApi:api)
+        service = WordPressComServiceRemote(wordPressComRestApi: api)
     }
 
     override func tearDown() {
@@ -46,20 +46,20 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
     func testThrottledFailureCall() {
         stub(condition: isRestAPIUsersNewRequest()) { request in
             let stubPath = OHPathForFile("WordPressComRestApiFailThrottled.json", type(of: self))
-            return fixture(filePath: stubPath!, status:500, headers: ["Content-Type" as NSObject:"application/html" as AnyObject])
+            return fixture(filePath: stubPath!, status: 500, headers: ["Content-Type" as NSObject: "application/html" as AnyObject])
         }
 
         let expect = self.expectation(description: "One callback should be invoked")
         service.createWPComAccount(withEmail: "fakeEmail",
-                                            andUsername:"fakeUsername",
-                                            andPassword:"fakePassword",
+                                            andUsername: "fakeUsername",
+                                            andPassword: "fakePassword",
                                             success: { (responseObject) in
                                                 expect.fulfill()
                                                 XCTFail("This call should fail")
             }, failure: { (error) in
                 expect.fulfill()
                 let error = error as! NSError
-                XCTAssert(error.domain == String(reflecting:WordPressComRestApiError.self), "The error should a WordPressComRestApiError")
+                XCTAssert(error.domain == String(reflecting: WordPressComRestApiError.self), "The error should a WordPressComRestApiError")
                 XCTAssert(error.code == Int(WordPressComRestApiError.tooManyRequests.rawValue), "The error code should be invalid token")
         })
         self.waitForExpectations(timeout: 2, handler: nil)

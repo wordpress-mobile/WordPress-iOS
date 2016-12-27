@@ -6,16 +6,16 @@ import Foundation
     @objc optional func textView(_ textView: UITextView, viewForTextAttachment attachment: NSTextAttachment) -> UIView?
 }
 
-@objc public protocol RichTextViewDelegate : UITextViewDelegate
+@objc public protocol RichTextViewDelegate: UITextViewDelegate
 {
     @objc optional func textView(_ textView: UITextView, didPressLink link: URL)
 }
 
 
-@objc open class RichTextView : UIView, UITextViewDelegate
+@objc open class RichTextView: UIView, UITextViewDelegate
 {
-    open var dataSource:  RichTextViewDataSource?
-    open var delegate:    RichTextViewDelegate?
+    open var dataSource: RichTextViewDataSource?
+    open var delegate: RichTextViewDelegate?
 
 
     // MARK: - Initializers
@@ -99,7 +99,7 @@ import Foundation
 
     open var linkTextAttributes: [AnyHashable: Any]! {
         set {
-            textView.linkTextAttributes = newValue as! [String:AnyObject]
+            textView.linkTextAttributes = newValue as! [String: AnyObject]
         }
         get {
             return textView.linkTextAttributes
@@ -195,7 +195,7 @@ import Foundation
     }
 
     // MARK: - Overriden Methods
-    open override var intrinsicContentSize : CGSize {
+    open override var intrinsicContentSize: CGSize {
         guard let maxWidth = preferredMaxLayoutWidth else {
             return super.intrinsicContentSize
         }
@@ -273,7 +273,7 @@ import Foundation
 
 
     // MARK: - Private Properites
-    fileprivate var textView:           UITextView!
+    fileprivate var textView: UITextView!
     fileprivate var gesturesRecognizer: UITapGestureRecognizer!
-    fileprivate var attachmentViews:    [UIView] = []
+    fileprivate var attachmentViews: [UIView] = []
 }

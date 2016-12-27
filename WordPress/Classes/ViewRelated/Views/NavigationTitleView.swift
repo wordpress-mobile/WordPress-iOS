@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import WordPressShared.WPFontManager
 
-open class NavigationTitleView : UIView
+open class NavigationTitleView: UIView
 {
     open let titleLabel       = UILabel(frame: defaultTitleFrame)
     open let subtitleLabel    = UILabel(frame: defaultSubtitleFrame)

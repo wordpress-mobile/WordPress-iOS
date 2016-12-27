@@ -47,6 +47,6 @@ open class GravatarService {
     }
 
     // MARK: - Private Properties
-    fileprivate let accountToken : String!
-    fileprivate let accountEmail : String!
+    fileprivate let accountToken: String!
+    fileprivate let accountEmail: String!
 }

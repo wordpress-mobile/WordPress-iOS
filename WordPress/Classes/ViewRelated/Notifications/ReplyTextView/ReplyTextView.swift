@@ -82,7 +82,7 @@ import WordPressShared.WPStyleGuide
         }
     }
 
-    open override var isFirstResponder : Bool {
+    open override var isFirstResponder: Bool {
         return textView.isFirstResponder
     }
 
@@ -188,7 +188,7 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Autolayout Helpers
-    open override var intrinsicContentSize : CGSize {
+    open override var intrinsicContentSize: CGSize {
         // Make sure contentSize returns... the real content size
         textView.layoutIfNeeded()
 
@@ -303,14 +303,14 @@ import WordPressShared.WPStyleGuide
     fileprivate let textViewMinHeight       = CGFloat(44)
 
     // MARK: - Private Properties
-    fileprivate var bundle:                         NSArray?
+    fileprivate var bundle: NSArray?
 
     // MARK: - IBOutlets
-    @IBOutlet fileprivate var textView:             UITextView!
-    @IBOutlet fileprivate var placeholderLabel:     UILabel!
-    @IBOutlet fileprivate var replyButton:          UIButton!
-    @IBOutlet fileprivate var bezierView:           ReplyBezierView!
-    @IBOutlet fileprivate var separatorsView:       SeparatorsView!
-    @IBOutlet fileprivate var layoutView:           UIView!
-    @IBOutlet fileprivate var containerView:        UIView!
+    @IBOutlet fileprivate var textView: UITextView!
+    @IBOutlet fileprivate var placeholderLabel: UILabel!
+    @IBOutlet fileprivate var replyButton: UIButton!
+    @IBOutlet fileprivate var bezierView: ReplyBezierView!
+    @IBOutlet fileprivate var separatorsView: SeparatorsView!
+    @IBOutlet fileprivate var layoutView: UIView!
+    @IBOutlet fileprivate var containerView: UIView!
 }

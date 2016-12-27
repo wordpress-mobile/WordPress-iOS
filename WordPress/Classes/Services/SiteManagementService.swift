@@ -14,7 +14,7 @@ public extension Blog
 
 /// SiteManagementService handles operations for managing a WordPress.com site.
 ///
-open class SiteManagementService : LocalCoreDataService
+open class SiteManagementService: LocalCoreDataService
 {
     /// Deletes the specified WordPress.com site.
     ///
