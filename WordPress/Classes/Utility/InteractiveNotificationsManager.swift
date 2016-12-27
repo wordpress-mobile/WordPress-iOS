@@ -4,7 +4,7 @@ import UserNotifications
 /// In this class, we'll encapsulate all of the code related to UNNotificationCategory and
 /// UNNotificationAction instantiation, along with the required handlers.
 ///
-final public class InteractiveNotificationsManager : NSObject
+final public class InteractiveNotificationsManager: NSObject
 {
     // MARK: - Public Properties
 
@@ -16,7 +16,7 @@ final public class InteractiveNotificationsManager : NSObject
 
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
     ///
-    var sharedApplication : UIApplication {
+    var sharedApplication: UIApplication {
         return UIApplication.shared
     }
 
@@ -212,13 +212,13 @@ final public class InteractiveNotificationsManager : NSObject
     /// Describes information about Custom Actions that WPiOS can perform, as a response to
     /// a Push Notification event.
     ///
-    fileprivate enum NoteCategoryDefinition : String {
+    fileprivate enum NoteCategoryDefinition: String {
         case CommentApprove         = "approve-comment"
         case CommentLike            = "like-comment"
         case CommentReply           = "replyto-comment"
         case CommentReplyWithLike   = "replyto-like-comment"
 
-        var actions : [NoteActionDefinition] {
+        var actions: [NoteActionDefinition] {
             switch self {
             case .CommentApprove:
                 return [.CommentApprove]
@@ -232,7 +232,7 @@ final public class InteractiveNotificationsManager : NSObject
         }
 
 
-        var identifier : String {
+        var identifier: String {
             return rawValue
         }
 
@@ -260,12 +260,12 @@ final public class InteractiveNotificationsManager : NSObject
 
     /// Describes the custom actions that WPiOS can perform in response to a Push notification.
     ///
-    fileprivate enum NoteActionDefinition : String {
+    fileprivate enum NoteActionDefinition: String {
         case CommentApprove = "COMMENT_MODERATE_APPROVE"
         case CommentLike    = "COMMENT_LIKE"
         case CommentReply   = "COMMENT_REPLY"
 
-        var description : String {
+        var description: String {
             switch self {
             case .CommentApprove:
                 return NSLocalizedString("Approve", comment: "Approve comment (verb)")
@@ -276,19 +276,19 @@ final public class InteractiveNotificationsManager : NSObject
             }
         }
 
-        var destructive : Bool {
+        var destructive: Bool {
             return false
         }
 
-        var identifier : String {
+        var identifier: String {
             return rawValue
         }
 
-        var requiresAuthentication : Bool {
+        var requiresAuthentication: Bool {
             return false
         }
 
-        var requiresForeground : Bool {
+        var requiresForeground: Bool {
             return false
         }
 

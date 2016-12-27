@@ -9,7 +9,7 @@ extension UIImageView
     /// TODO: Convert into a pure Swift String Enum. It's done this way to maintain ObjC Compatibility
     ///
     @objc
-    public enum GravatarRatings : Int {
+    public enum GravatarRatings: Int {
         case g
         case pg
         case r
@@ -32,7 +32,7 @@ extension UIImageView
     ///     - email: the user's email
     ///     - rating: expected image rating
     ///
-    func downloadGravatarWithEmail(_ email : String, rating : GravatarRatings) {
+    func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings) {
         downloadGravatarWithEmail(email, rating: rating, placeholderImage : GravatarDefaults.placeholderImage)
     }
 
@@ -43,7 +43,7 @@ extension UIImageView
     ///     - rating: expected image rating
     ///     - placeholderImage: Image to be used as Placeholder
     ///
-    func downloadGravatarWithEmail(_ email : String, rating : GravatarRatings = GravatarDefaults.rating, placeholderImage : UIImage) {
+    func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings = GravatarDefaults.rating, placeholderImage: UIImage) {
         let targetSize = gravatarDefaultSize()
         let targetURL = gravatarUrlForEmail(email, size: targetSize, rating: rating.stringValue())
         let targetRequest = URLRequest(url: targetURL!)

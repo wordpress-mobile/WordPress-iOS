@@ -5,7 +5,7 @@ import CoreData
 @testable import WordPress
 
 class ContextManagerTests: XCTestCase {
-    var contextManager:TestContextManager!
+    var contextManager: TestContextManager!
 
     override func setUp() {
         super.setUp()

@@ -15,17 +15,17 @@ open class RemoteNotificationSettings
 {
     /// Represents the Channel to which the current settings are associated.
     ///
-    open let channel : Channel
+    open let channel: Channel
 
     /// Contains an array of the available Notification Streams.
     ///
-    open let streams : [Stream]
+    open let streams: [Stream]
 
 
 
     /// Represents a communication channel that may post notifications to the user.
     ///
-    public enum Channel : Equatable {
+    public enum Channel: Equatable {
         case blog(blogId: Int)
         case other
         case wordPressCom
@@ -35,13 +35,13 @@ open class RemoteNotificationSettings
     /// Contains the Notification Settings for a specific communications stream.
     ///
     open class Stream {
-        open var kind         : Kind
-        open var preferences  : [String : Bool]?
+        open var kind: Kind
+        open var preferences: [String : Bool]?
 
 
         /// Enumerates all of the possible Stream Kinds
         ///
-        public enum Kind : String {
+        public enum Kind: String {
             case Timeline       = "timeline"
             case Email          = "email"
             case Device         = "device"
@@ -69,7 +69,7 @@ open class RemoteNotificationSettings
         /// - Returns: A native Swift dictionary, containing only the Boolean entries
         ///
         fileprivate func filterNonBooleanEntries(_ dictionary: NSDictionary?) -> [String : Bool] {
-            var filtered = [String : Bool]()
+            var filtered = [String: Bool]()
             if dictionary == nil {
                 return filtered
             }

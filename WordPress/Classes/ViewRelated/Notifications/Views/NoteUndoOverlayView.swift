@@ -57,5 +57,5 @@ class NoteUndoOverlayView: UIView
 
     // MARK: - Private Outlets
     @IBOutlet fileprivate weak var legendLabel: UILabel!
-    @IBOutlet fileprivate weak var undoButton:  UIButton!
+    @IBOutlet fileprivate weak var undoButton: UIButton!
 }

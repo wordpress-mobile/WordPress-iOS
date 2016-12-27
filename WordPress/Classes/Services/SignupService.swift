@@ -22,7 +22,7 @@ typealias SignupFailureBlock = (_ error: Error?) -> Void
 /// SignupService is responsible for creating a new WPCom user and blog.
 /// The entry point is `createBlogAndSigninToWPCom` and the service takes care of the rest.
 ///
-open class SignupService : LocalCoreDataService
+open class SignupService: LocalCoreDataService
 {
     fileprivate let LanguageIDKey = "lang_id"
     fileprivate let BlogDetailsKey = "blog_details"
@@ -45,7 +45,7 @@ open class SignupService : LocalCoreDataService
     ///     - success: A success calback
     ///     - failure: A failure callback
     ///
-    func createBlogAndSigninToWPCom(blogURL url:String,
+    func createBlogAndSigninToWPCom(blogURL url: String,
                                             blogTitle: String,
                                             emailAddress: String,
                                             username: String,
@@ -108,7 +108,7 @@ open class SignupService : LocalCoreDataService
         remote?.validateWPComBlog(withUrl: params.url,
                                         andBlogTitle: params.title,
                                         andLanguageId: languageId,
-                                        success:{ (responseDictionary) in
+                                        success: { (responseDictionary) in
                                             success()
                                         },
                                         failure: failure)
@@ -330,7 +330,7 @@ open class SignupService : LocalCoreDataService
     // MARK: Private Instance Methods
 
     func anonymousApi() -> WordPressComRestApi {
-        return WordPressComRestApi(userAgent:WPUserAgent.wordPress())
+        return WordPressComRestApi(userAgent: WPUserAgent.wordPress())
     }
 
     /// An internal struct for conveniently sharing params between the different
@@ -356,7 +356,7 @@ open class SignupService : LocalCoreDataService
 
     /// A conveniece enum for creating meaningful NSError objects.
     ///
-    enum SignupError : Error {
+    enum SignupError: Error {
         case invalidResponse
         case missingRESTAPI
         case missingDefaultWPComAccount

@@ -12,7 +12,7 @@ import WordPressShared
 /// Plus, we provide a simple mechanism to render the details for a specific Notification,
 /// given its remote identifier.
 ///
-class NotificationsViewController : UITableViewController
+class NotificationsViewController: UITableViewController
 {
     // MARK: - Properties
 
@@ -192,7 +192,7 @@ class NotificationsViewController : UITableViewController
         let subject = note.subjectBlock?.attributedSubjectText
         let snippet = note.snippetBlock?.attributedSnippetText
 
-        return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject:subject, snippet:snippet)
+        return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject: subject, snippet: snippet)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -342,7 +342,7 @@ private extension NotificationsViewController
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
-        WPStyleGuide.configureColors(for: view, andTableView:tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
     func setupTableHeaderView() {
@@ -415,19 +415,19 @@ private extension NotificationsViewController
 {
     func startListeningToNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name:NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        nc.addObserver(self, selector: #selector(notificationsWereUpdated), name:NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+        nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        nc.addObserver(self, selector: #selector(notificationsWereUpdated), name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
     }
 
     func startListeningToAccountNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(defaultAccountDidChange), name:NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+        nc.addObserver(self, selector: #selector(defaultAccountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        nc.removeObserver(self, name:NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+        nc.removeObserver(self, name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
     }
 
     @objc func applicationDidBecomeActive(_ note: Foundation.Notification) {
@@ -491,7 +491,7 @@ extension NotificationsViewController
         DDLogSwift.logInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
         // Track
-        let properties = [Stats.noteTypeKey : note.type ?? Stats.noteTypeUnknown]
+        let properties = [Stats.noteTypeKey: note.type ?? Stats.noteTypeUnknown]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
 
         // Failsafe: Don't push nested!
@@ -816,11 +816,11 @@ private extension NotificationsViewController
         }
 
         let messageMap: [Filter: String] = [
-            .none       : NSLocalizedString("No notifications yet", comment: "Displayed in the Notifications Tab, when there are no notifications"),
-            .unread     : NSLocalizedString("No unread notifications", comment: "Displayed in the Notifications Tab, when the Unread Filter shows no notifications"),
-            .comment    : NSLocalizedString("No comments notifications", comment: "Displayed in the Notifications Tab, when the Comments Filter shows no notifications"),
-            .follow     : NSLocalizedString("No new followers notifications", comment: "Displayed in the Notifications Tab, when the Follow Filter shows no notifications"),
-            .like       : NSLocalizedString("No like notifications", comment: "Displayed in the Notifications Tab, when the Likes Filter shows no notifications")
+            .none: NSLocalizedString("No notifications yet", comment: "Displayed in the Notifications Tab, when there are no notifications"),
+            .unread: NSLocalizedString("No unread notifications", comment: "Displayed in the Notifications Tab, when the Unread Filter shows no notifications"),
+            .comment: NSLocalizedString("No comments notifications", comment: "Displayed in the Notifications Tab, when the Comments Filter shows no notifications"),
+            .follow: NSLocalizedString("No new followers notifications", comment: "Displayed in the Notifications Tab, when the Follow Filter shows no notifications"),
+            .like: NSLocalizedString("No like notifications", comment: "Displayed in the Notifications Tab, when the Likes Filter shows no notifications")
         ]
 
         let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none

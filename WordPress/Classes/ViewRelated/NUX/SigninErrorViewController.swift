@@ -7,7 +7,7 @@ import wpxmlrpc
 /// It provides for a title, message, and for specialized button actions.
 /// It is assumed the controller will always be presented modally.
 ///
-class SigninErrorViewController : UIViewController
+class SigninErrorViewController: UIViewController
 {
     typealias SigninErrorCallback = (() -> Void)
 
@@ -211,7 +211,7 @@ class SigninErrorViewController : UIViewController
         configureView(message,
                            firstButtonText: nil,
                            firstButtonCallback: nil,
-                           secondButtonText: NSLocalizedString("Contact Us", comment:"The text on the button at the bottom of the error message when a user has repeated trouble logging in"),
+                           secondButtonText: NSLocalizedString("Contact Us", comment: "The text on the button at the bottom of the error message when a user has repeated trouble logging in"),
                            secondButtonCallback: callback,
                            accessibilityIdentifier: "GenericErrorMessage")
     }

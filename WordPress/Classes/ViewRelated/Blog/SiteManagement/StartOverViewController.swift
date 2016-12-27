@@ -9,7 +9,7 @@ open class StartOverViewController: UITableViewController
 
     /// The blog whose content we want to remove
     ///
-    var blog : Blog!
+    var blog: Blog!
 
     // MARK: - Properties: table content
 

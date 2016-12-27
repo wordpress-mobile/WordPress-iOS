@@ -3,7 +3,7 @@ import WordPressShared
 
 /// TableViewHeaderDetailView displays a title and detail using autolayout.
 ///
-open class TableViewHeaderDetailView : UITableViewHeaderFooterView
+open class TableViewHeaderDetailView: UITableViewHeaderFooterView
 {
     /// Title is displayed in standard section header style
     ///
@@ -130,7 +130,7 @@ open class TableViewHeaderDetailView : UITableViewHeaderFooterView
         layoutWidth = frame.size.width
     }
 
-    override open var intrinsicContentSize : CGSize {
+    override open var intrinsicContentSize: CGSize {
         guard layoutWidth > 0 else {
             return CGSize.zero
         }

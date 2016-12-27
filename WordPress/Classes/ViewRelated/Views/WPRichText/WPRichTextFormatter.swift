@@ -8,13 +8,13 @@ import UIKit
 class WPRichTextFormatter
 {
 
-    typealias ParsedSource = (parsedString:String, attachments:[WPTextAttachment])
+    typealias ParsedSource = (parsedString: String, attachments: [WPTextAttachment])
     static let blockquoteIdentifier = "WPBLOCKQUOTEIDENTIFIER"
     let blockquoteIndentation = CGFloat(20.0)
 
     /// An array of HTMLTagProcessors
     ///
-    lazy var tags:[HtmlTagProcessor] = {
+    lazy var tags: [HtmlTagProcessor] = {
         return [
             BlockquoteTagProcessor(),
             PreTagProcessor(),
@@ -30,7 +30,7 @@ class WPRichTextFormatter
 
     /// An array of tag names that the formatter can process.
     ///
-    lazy var tagNames:[String] = {
+    lazy var tagNames: [String] = {
         return self.tags.map { tag -> String in
             return tag.tagName
         }
@@ -45,7 +45,7 @@ class WPRichTextFormatter
     ///
     /// - Returns: An NSAttributedString optional.
     ///
-    func attributedStringFromHTMLString(_ string:String, defaultDocumentAttributes:[String : AnyObject]?) throws -> NSAttributedString? {
+    func attributedStringFromHTMLString(_ string: String, defaultDocumentAttributes: [String : AnyObject]?) throws -> NSAttributedString? {
         // Process the html in the string. Replace attachment tags with placeholders, etc.
         let parsed = processAndExtractTags(string)
         let parsedString = parsed.parsedString

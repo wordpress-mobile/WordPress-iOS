@@ -5,7 +5,7 @@ import WordPressShared
 
 /// The menu for the reader.
 ///
-@objc class ReaderMenuViewController : UITableViewController, UIViewControllerRestoration
+@objc class ReaderMenuViewController: UITableViewController, UIViewControllerRestoration
 {
 
     static let restorationIdentifier = "ReaderMenuViewController"

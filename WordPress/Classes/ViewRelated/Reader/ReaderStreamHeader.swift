@@ -2,7 +2,7 @@ import Foundation
 
 public protocol ReaderStreamHeaderDelegate: NSObjectProtocol
 {
-    func handleFollowActionForHeader(_ header:ReaderStreamHeader)
+    func handleFollowActionForHeader(_ header: ReaderStreamHeader)
 }
 
 public protocol ReaderStreamHeader: NSObjectProtocol

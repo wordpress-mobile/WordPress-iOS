@@ -5,7 +5,7 @@ import WordPressShared
 /// Displays a list of available keyring connection accounts that can be used to
 /// forge a publicize connection.
 ///
-@objc open class SharingAccountViewController : UITableViewController
+@objc open class SharingAccountViewController: UITableViewController
 {
     var publicizeService: PublicizeService
     var keyringConnections: [KeyringConnection]
@@ -261,7 +261,7 @@ import WordPressShared
 
     /// An ImmuTableRow class.
     ///
-    struct KeyringRow : ImmuTableRow {
+    struct KeyringRow: ImmuTableRow {
         static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
         let title: String
@@ -280,7 +280,7 @@ import WordPressShared
 
 /// Delegate protocol.
 ///
-@objc protocol SharingAccountSelectionDelegate : NSObjectProtocol
+@objc protocol SharingAccountSelectionDelegate: NSObjectProtocol
 {
     func didDismissSharingAccountViewController(_ controller: SharingAccountViewController)
     func sharingAccountViewController(_ controller: SharingAccountViewController, selectedKeyringConnection keyringConnection: KeyringConnection, externalID: String?)

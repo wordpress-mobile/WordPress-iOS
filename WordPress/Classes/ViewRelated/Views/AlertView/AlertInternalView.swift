@@ -4,7 +4,7 @@ import WordPressShared
 
 /// Helper class, used internally by AlertView. Not designed for general usage.
 ///
-open class AlertInternalView : UIView
+open class AlertInternalView: UIView
 {
     // MARK: - Public Properties
     open var onClick : (() -> ())?
@@ -50,9 +50,9 @@ open class AlertInternalView : UIView
     fileprivate let cornerRadius = CGFloat(7)
 
     // MARK: - Outlets
-    @IBOutlet var backgroundView    : UIView!
-    @IBOutlet var alertView         : UIView!
-    @IBOutlet var titleLabel        : UILabel!
-    @IBOutlet var descriptionLabel  : UILabel!
-    @IBOutlet var dismissButton     : UIButton!
+    @IBOutlet var backgroundView: UIView!
+    @IBOutlet var alertView: UIView!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var descriptionLabel: UILabel!
+    @IBOutlet var dismissButton: UIButton!
 }
