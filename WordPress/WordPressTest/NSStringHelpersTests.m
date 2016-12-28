@@ -186,6 +186,16 @@
     XCTAssert([emojiString length] == 0, @"Should return an empty string for an invalid file name.");
 }
 
+- (void)testEmojiDoesNotEatUpImages
+{
+    NSString *emoji = @"\U0001F600";
+    NSString *imageTag = @"<img src=\"something.png\"><img src=\"http://s.w.org/images/core/emoji/72x72/1f600.png\" class=\"wp-smiley\" style=\"height: 1em; max-height: 1em;\">";
+    NSString *replacedString = [imageTag stringByReplacingHTMLEmoticonsWithEmoji];
+    NSString *expected = [@"<img src=\"something.png\">" stringByAppendingString:emoji];
+
+    XCTAssertEqualObjects(expected, replacedString, @"The image tag was not replaced with an emoji string");
+}
+
 - (void)testUniqueStringComponentsSeparatedByWhitespaceCorrectlyReturnsASetWithItsWords
 {
     NSString *testString = @"first\nsecond third\nfourth fifth";
