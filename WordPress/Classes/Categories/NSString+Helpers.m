@@ -202,9 +202,9 @@ static NSString *const Ellipsis =  @"\u2026";
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error;
-        smiliesRegex = [NSRegularExpression regularExpressionWithPattern:@"<img.*?src=['\"].*?wp-includes/images/smilies/(.+?)(?:.gif|.png)[^'\"]*['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
-        coreEmojiImgRegex = [NSRegularExpression regularExpressionWithPattern:@"<img.*?src=['\"].*?images/core/emoji/[^/]+/.+?.png['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
-        wpcomSvgSmilies = [NSRegularExpression regularExpressionWithPattern:@"<img.*?src=['\"].*?wp-content/mu-plugins/wpcom-smileys/(.+?).svg['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+        smiliesRegex = [NSRegularExpression regularExpressionWithPattern:@"<img[^>]*?src=['\"][^>]*?wp-includes/images/smilies/(.+?)(?:.gif|.png)[^'\"]*['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+        coreEmojiImgRegex = [NSRegularExpression regularExpressionWithPattern:@"<img[^>]*?src=['\"][^>]*?images/core/emoji/[^/]+/.+?.png['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+        wpcomSvgSmilies = [NSRegularExpression regularExpressionWithPattern:@"<img[^>]*?src=['\"][^>]*?wp-content/mu-plugins/wpcom-smileys/(.+?).svg['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
 
     });
 
