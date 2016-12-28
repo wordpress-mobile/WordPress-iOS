@@ -86,7 +86,7 @@ class PingHubManager: NSObject {
         }
     }
     fileprivate var delay = IncrementalDelay(Configuration.delaySequence)
-    fileprivate var delayedRetry: Cancelable?
+    fileprivate var delayedRetry: DispatchDelayedAction?
 
 
     override init() {

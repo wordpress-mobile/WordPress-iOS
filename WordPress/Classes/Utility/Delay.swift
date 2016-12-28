@@ -2,12 +2,6 @@ import Foundation
 
 typealias Action = () -> Void
 
-/// Something that can be canceled
-///
-protocol Cancelable {
-    func cancel()
-}
-
 /// A delayed action implemented using GCD
 ///
 /// This class will perform the given action after the given delay, unless it is
@@ -20,7 +14,7 @@ protocol Cancelable {
 ///     // Actually, cancel
 ///     action.cancel()
 ///
-struct DispatchDelayedAction: Cancelable {
+struct DispatchDelayedAction {
     // The whole dance with the cancellation type might seem pointless. After
     // all, why not use a Bool instead?
     //
