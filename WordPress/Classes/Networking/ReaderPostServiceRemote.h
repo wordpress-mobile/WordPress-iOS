@@ -52,7 +52,7 @@
 
 
 /**
- Fetche related posts for the specified post on the specified site.
+ Fetches related posts for the specified post on the specified site.
 
  @param postID the ID of the post to fetch
  @param siteID the ID of the site the post belongs to
