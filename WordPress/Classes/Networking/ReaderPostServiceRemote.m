@@ -162,6 +162,44 @@ static const NSUInteger ReaderPostTitleLength = 30;
               }];
 }
 
+- (void)fetchRelatedPostFor:(NSUInteger)postID
+                   fromSite:(NSUInteger)siteID
+                 localCount:(NSUInteger)localCount
+                globalCount:(NSUInteger)globalCount
+                    success:(void (^)(NSArray<RemoteReaderPost *> *posts))success
+                    failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"read/site/%d/post/%d/related/?size_local=%d&size_global=%d&meta=site", siteID, postID, localCount, globalCount];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
+
+    [self.wordPressComRestApi GET:requestUrl
+                       parameters:nil
+                          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                              if (!success) {
+                                  return;
+                              }
+                              dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                                  // Do all of this work on a background thread, then call success on the main thread.
+                                  // Do this to avoid any chance of blocking the UI while parsing.
+                                  NSArray *jsonPosts = [responseObject arrayForKey:PostRESTKeyPosts];
+                                  NSArray *posts = [jsonPosts wp_map:^id(NSDictionary *jsonPost) {
+                                      return [self formatPostDictionary:jsonPost];
+                                  }];
+
+                                  // Now call success on the main thread.
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      success(posts);
+                                  });
+                              });
+
+                          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                              if (failure) {
+                                  failure(error);
+                              }
+                          }];
+}
+
 - (void)likePost:(NSUInteger)postID
          forSite:(NSUInteger)siteID
          success:(void (^)())success

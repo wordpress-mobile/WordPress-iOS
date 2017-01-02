@@ -75,6 +75,16 @@ extern NSString * const ReaderPostServiceErrorDomain;
           success:(void (^)(ReaderPost *post))success
           failure:(void (^)(NSError *error))failure;
 
+/**
+ Fetches related posts for the specified post.
+
+ @param post The reader post for which to fetch related posts.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchRelatedPostsForPost:(ReaderPost *)post
+                         success:(void (^)())success
+                         failure:(void (^)(NSError *error))failure;
 
 /**
  Silently refresh posts for the followed sites topic.
