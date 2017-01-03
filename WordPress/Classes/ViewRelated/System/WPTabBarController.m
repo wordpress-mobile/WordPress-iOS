@@ -418,7 +418,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     editor.modalPresentationStyle = UIModalPresentationFullScreen;
     editor.showImmediately = !animated;
     editor.openWithMediaPicker = openToMedia;
-    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:editor.blog];
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar", @"editor": [editor editorType]} withBlog:editor.blog];
     [self presentViewController:editor animated:NO completion:nil];
     return;
 }
