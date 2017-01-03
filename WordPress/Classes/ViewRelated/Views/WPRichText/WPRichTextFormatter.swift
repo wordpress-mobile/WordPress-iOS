@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-
+import WordPressShared
 
 /// Responsible for taking an HTML formatted string and parsing/reformatting certain
 /// HTML tags that require special handling before the text is shown in a UITextView.
@@ -12,6 +12,7 @@ class WPRichTextFormatter
     static let blockquoteIdentifier = "WPBLOCKQUOTEIDENTIFIER"
     let blockquoteIndentation = CGFloat(20.0)
     let defaultParagraphSpacing = CGFloat(14.0)
+    var horizontalRuleColor: UIColor = WPStyleGuide.greyLighten30()
 
     /// An array of HTMLTagProcessors
     ///
@@ -100,9 +101,6 @@ class WPRichTextFormatter
         for match: NSTextCheckingResult in matches.reversed() {
             let range = match.range
 
-            // Let the horizontal rule match the text color.
-            let color = attrString.attribute(NSForegroundColorAttributeName, at: range.location, effectiveRange: nil) as? UIColor ?? UIColor.gray
-
             // We want a 1px max line height, and paragraphSpacing matching the fontsize.
             let mParagraphStyle = NSMutableParagraphStyle()
             mParagraphStyle.setParagraphStyle(NSParagraphStyle.default)
@@ -115,7 +113,7 @@ class WPRichTextFormatter
             }
             let attributes: [String: Any] = [
                 NSParagraphStyleAttributeName: mParagraphStyle,
-                NSBackgroundColorAttributeName: color
+                NSBackgroundColorAttributeName: horizontalRuleColor
             ]
 
             let attachment = WPHorizontalRuleAttachment()
