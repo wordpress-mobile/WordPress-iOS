@@ -149,6 +149,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 {
     // Add Logo
     UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
+    icon.contentMode = UIViewContentModeScaleAspectFit;
     icon.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     // Add Description
