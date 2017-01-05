@@ -4,8 +4,7 @@ import UIKit
 
 /// Displays an Image with a capped size, defined by the maximumSize property.
 ///
-class MediaView: UIView
-{
+class MediaView: UIView {
     // MARK: - Properties
 
     /// Defines the maximum size that this view might occupy.

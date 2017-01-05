@@ -3,8 +3,7 @@ import XCTest
 import OHHTTPStubs
 @testable import WordPress
 
-class PeopleServiceTests: XCTestCase
-{
+class PeopleServiceTests: XCTestCase {
     // MARK: - Constants
 
     let validationSuccessMockFilename   = "people-validate-invitation-success.json"

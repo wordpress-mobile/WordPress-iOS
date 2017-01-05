@@ -75,16 +75,14 @@ extension UIImage {
     }
 }
 
-extension UIImage: ExportableAsset
-{
+extension UIImage: ExportableAsset {
     func exportToURL(_ url: URL,
                      targetUTI: String,
                      maximumResolution: CGSize,
                      stripGeoLocation: Bool,
                      synchronous: Bool,
                      successHandler: @escaping SuccessHandler,
-                     errorHandler: @escaping ErrorHandler)
-    {
+                     errorHandler: @escaping ErrorHandler) {
         var finalImage = self
         if (maximumResolution.width <= self.size.width || maximumResolution.height <= self.size.height) {
             finalImage = self.resizedImage(with: .scaleAspectFit, bounds: maximumResolution, interpolationQuality: .high)
@@ -102,8 +100,7 @@ extension UIImage: ExportableAsset
                               targetSize: CGSize,
                               synchronous: Bool,
                               successHandler: @escaping SuccessHandler,
-                              errorHandler: @escaping ErrorHandler)
-    {
+                              errorHandler: @escaping ErrorHandler) {
         let thumbnail = self.resizedImage(with: .scaleAspectFit, bounds: targetSize, interpolationQuality: .high)
         do {
             try self.writeToURL(url, type: defaultThumbnailUTI as String, compressionQuality: 0.9, metadata: nil)
@@ -113,8 +110,7 @@ extension UIImage: ExportableAsset
         }
     }
 
-    func exportOriginalImage(_ toURL: URL, successHandler: @escaping SuccessHandler, errorHandler: @escaping ErrorHandler)
-    {
+    func exportOriginalImage(_ toURL: URL, successHandler: @escaping SuccessHandler, errorHandler: @escaping ErrorHandler) {
         do {
             try self.writeToURL(toURL, type: originalUTI()!, compressionQuality: 1.0, metadata: nil)
             successHandler(self.size)

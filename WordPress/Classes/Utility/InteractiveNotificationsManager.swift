@@ -4,8 +4,7 @@ import UserNotifications
 /// In this class, we'll encapsulate all of the code related to UNNotificationCategory and
 /// UNNotificationAction instantiation, along with the required handlers.
 ///
-final public class InteractiveNotificationsManager: NSObject
-{
+final public class InteractiveNotificationsManager: NSObject {
     // MARK: - Public Properties
 
 

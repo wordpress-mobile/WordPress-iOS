@@ -5,8 +5,7 @@ import WordPressShared
 /// Responsible for taking an HTML formatted string and parsing/reformatting certain
 /// HTML tags that require special handling before the text is shown in a UITextView.
 ///
-class WPRichTextFormatter
-{
+class WPRichTextFormatter {
 
     typealias ParsedSource = (parsedString: String, attachments: [WPTextAttachment])
     static let blockquoteIdentifier = "WPBLOCKQUOTEIDENTIFIER"
@@ -253,8 +252,7 @@ class WPRichTextFormatter
 /// A base class for processing HTML tags.  Logic for specific tags
 /// should be implemented in subclasses of this class.
 ///
-class HtmlTagProcessor
-{
+class HtmlTagProcessor {
     let tagName: String
     let includesEndTag: Bool
 
@@ -314,8 +312,7 @@ class HtmlTagProcessor
 
 /// Encapsulates the logic for processing blockquote tags.
 ///
-class BlockquoteTagProcessor: HtmlTagProcessor
-{
+class BlockquoteTagProcessor: HtmlTagProcessor {
 
     init() {
         super.init(tagName: "blockquote", includesEndTag: true)
@@ -371,8 +368,7 @@ class BlockquoteTagProcessor: HtmlTagProcessor
 
 /// Encapsulates the logic for processing pre tags.
 ///
-class PreTagProcessor: HtmlTagProcessor
-{
+class PreTagProcessor: HtmlTagProcessor {
 
     init() {
         super.init(tagName: "pre", includesEndTag: true)
@@ -397,8 +393,7 @@ class PreTagProcessor: HtmlTagProcessor
 /// correct the line spacing following a list. Appending
 /// a <br> does the trick.
 ///
-class ListTagProcessor: HtmlTagProcessor
-{
+class ListTagProcessor: HtmlTagProcessor {
     override func process(_ scanner: Scanner) -> (String, WPTextAttachment?) {
         var (matched, parsedString) = extractTag(scanner)
 
@@ -417,8 +412,7 @@ class ListTagProcessor: HtmlTagProcessor
 /// Handles processing tags representing external content, i.e. attachments.
 /// The HTML for the attachment is extracted and replaced with a string marker.
 ///
-class AttachmentTagProcessor: HtmlTagProcessor
-{
+class AttachmentTagProcessor: HtmlTagProcessor {
     let textAttachmentIdentifier = "WPTEXTATTACHMENTIDENTIFIER"
     static let attributeRegex = try! NSRegularExpression(pattern: "([a-z-]+)=(?:\"|')([^\"']+)(?:\"|')", options: .caseInsensitive)
 
@@ -507,8 +501,7 @@ class AttachmentTagProcessor: HtmlTagProcessor
 }
 
 
-class HRTagProcessor: HtmlTagProcessor
-{
+class HRTagProcessor: HtmlTagProcessor {
     static let horizontalRuleIdentifier = "WPHORIZONTALRULEIDENTIFIER"
 
 

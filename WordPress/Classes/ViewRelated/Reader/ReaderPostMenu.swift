@@ -2,8 +2,7 @@ import Foundation
 import SVProgressHUD
 
 
-struct ReaderPostMenuButtonTitles
-{
+struct ReaderPostMenuButtonTitles {
     static let cancel = NSLocalizedString("Cancel", comment: "The title of a cancel button.")
     static let blockSite = NSLocalizedString("Block This Site", comment: "The title of a button that triggers blocking a site from the user's reader.")
     static let share = NSLocalizedString("Share", comment: "Verb. Title of a button. Pressing lets the user share a post to others.")
@@ -13,8 +12,7 @@ struct ReaderPostMenuButtonTitles
 }
 
 
-open class ReaderPostMenu
-{
+open class ReaderPostMenu {
     open static let BlockSiteNotification = "ReaderPostMenuBlockSiteNotification"
 
     open class func showMenuForPost(_ post: ReaderPost, fromView anchorView: UIView, inViewController viewController: UIViewController) {

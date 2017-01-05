@@ -1,8 +1,7 @@
 import Foundation
 import wpxmlrpc
 
-open class WordPressOrgXMLRPCApi: NSObject
-{
+open class WordPressOrgXMLRPCApi: NSObject {
     public typealias SuccessResponseBlock = (AnyObject, HTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (_ error: NSError, _ httpResponse: HTTPURLResponse?) -> ()
 
@@ -85,8 +84,7 @@ open class WordPressOrgXMLRPCApi: NSObject
     @discardableResult open func callMethod(_ method: String,
                            parameters: [AnyObject]?,
                            success: @escaping SuccessResponseBlock,
-                           failure: @escaping FailureReponseBlock) -> Progress?
-    {
+                           failure: @escaping FailureReponseBlock) -> Progress? {
         //Encode request
         let request: URLRequest
         do {
@@ -126,8 +124,7 @@ open class WordPressOrgXMLRPCApi: NSObject
     @discardableResult open func streamCallMethod(_ method: String,
                                  parameters: [AnyObject]?,
                                  success: @escaping SuccessResponseBlock,
-                                 failure: @escaping FailureReponseBlock) -> Progress?
-    {
+                                 failure: @escaping FailureReponseBlock) -> Progress? {
         let fileURL = URLForTemporaryFile()
         //Encode request
         let request: URLRequest

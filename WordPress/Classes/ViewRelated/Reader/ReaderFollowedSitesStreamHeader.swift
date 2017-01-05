@@ -2,8 +2,7 @@ import Foundation
 import Gridicons
 import WordPressShared.WPStyleGuide
 
-@objc open class ReaderFollowedSitesStreamHeader: UIView, ReaderStreamHeader
-{
+@objc open class ReaderFollowedSitesStreamHeader: UIView, ReaderStreamHeader {
     @IBOutlet fileprivate weak var borderedView: UIView!
     @IBOutlet fileprivate weak var imageView: UIImageView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!

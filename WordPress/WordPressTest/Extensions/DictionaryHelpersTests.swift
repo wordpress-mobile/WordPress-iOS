@@ -4,8 +4,7 @@ import Foundation
 
 // MARK: - DictionaryHelpersTests
 //
-class DictionaryHelpersTests: XCTestCase
-{
+class DictionaryHelpersTests: XCTestCase {
     func testValueAsStringReturnsTheExpectedStringWhenTheValueIsEffectivelyAsString() {
         let dictionary = [
             "key": "value!"

@@ -8,8 +8,7 @@ import WordPressShared
 ///     1           0   [Text]  [Text]
 ///     1           1   [Picker]
 ///
-open class SettingsPickerViewController: UITableViewController
-{
+open class SettingsPickerViewController: UITableViewController {
     /// Indicates whether a Switch row should be rendered on top, allowing the user to Enable / Disable the picker
     open var switchVisible = true
 

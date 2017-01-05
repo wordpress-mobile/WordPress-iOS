@@ -2,8 +2,7 @@ import Foundation
 import UIKit
 
 
-@objc protocol WPRichContentViewDelegate: UITextViewDelegate
-{
+@objc protocol WPRichContentViewDelegate: UITextViewDelegate {
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
     @objc optional func richContentViewShouldUpdateLayoutForAttachments(_ richContentView: WPRichContentView) -> Bool
     @objc optional func richContentViewDidUpdateLayoutForAttachments(_ richContentView: WPRichContentView)
@@ -13,8 +12,7 @@ import UIKit
 /// A subclass of UITextView for displaying HTML formatted strings.  Embedded content
 /// in tags like img, iframe, and video, are loaded manually and presented as subviews.
 ///
-class WPRichContentView: UITextView
-{
+class WPRichContentView: UITextView {
     struct Constants {
         static let photonQuality = 65
         static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
@@ -200,8 +198,7 @@ class WPRichContentView: UITextView
 }
 
 
-extension WPRichContentView: WPTextAttachmentManagerDelegate
-{
+extension WPRichContentView: WPTextAttachmentManagerDelegate {
     func attachmentManager(_ attachmentManager: WPTextAttachmentManager, viewForAttachment attachment: WPTextAttachment) -> UIView? {
         if attachment.tagName == "img" {
             return imageForAttachment(attachment)
@@ -364,8 +361,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate
 }
 
 
-extension WPRichContentView: WPTableImageSourceDelegate
-{
+extension WPRichContentView: WPTableImageSourceDelegate {
 
     func tableImageSource(_ tableImageSource: WPTableImageSource!, imageReady image: UIImage!, for indexPath: IndexPath!) {
         let richMedia = mediaArray[indexPath.row]
@@ -386,8 +382,7 @@ extension WPRichContentView: WPTableImageSourceDelegate
 
 /// A simple struct used to keep references to a rich text image and its associated attachment.
 ///
-struct RichMedia
-{
+struct RichMedia {
     let image: WPRichTextImage
     let attachment: WPTextAttachment
 }
