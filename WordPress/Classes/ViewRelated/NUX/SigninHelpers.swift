@@ -172,7 +172,7 @@ import Mixpanel
     /// - Returns: The base URL or an empty string.
     ///
     class func baseSiteURL(string: String) -> String {
-        guard let siteURL = NSURL(string: NSURL.IDNDecodedURL(string)) else {
+        guard let siteURL = NSURL(string: NSURL.IDNEncodedURL(string)) else {
             return ""
         }
 
@@ -194,7 +194,7 @@ import Mixpanel
             .trimSuffix(regexp: "/wp-admin/?")
             .trimSuffix(regexp: "/?")
 
-        return path
+        return NSURL.IDNDecodedURL(path)
     }
 
 
