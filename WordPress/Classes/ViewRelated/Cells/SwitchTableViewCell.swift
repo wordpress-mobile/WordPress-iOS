@@ -3,12 +3,12 @@ import WordPressShared
 
 /// The purpose of this class is to simply display a regular TableViewCell, with a Switch on the right hand side.
 ///
-public class SwitchTableViewCell : WPTableViewCell
+open class SwitchTableViewCell: WPTableViewCell
 {
     // MARK: - Public Properties
-    public var onChange : ((newValue: Bool) -> ())?
+    open var onChange : ((_ newValue: Bool) -> ())?
 
-    public var name : String {
+    open var name: String {
         get {
             return textLabel?.text ?? String()
         }
@@ -17,12 +17,12 @@ public class SwitchTableViewCell : WPTableViewCell
         }
     }
 
-    public var on : Bool {
+    open var on: Bool {
         get {
-            return flipSwitch.on
+            return flipSwitch.isOn
         }
         set {
-            flipSwitch.on = newValue
+            flipSwitch.isOn = newValue
         }
     }
 
@@ -40,12 +40,12 @@ public class SwitchTableViewCell : WPTableViewCell
     }
 
     public convenience init() {
-        self.init(style: .Default, reuseIdentifier: nil)
+        self.init(style: .default, reuseIdentifier: nil)
     }
 
 
     // MARK: - UITapGestureRecognizer Helpers
-    @IBAction func rowWasPressed(recognizer: UITapGestureRecognizer) {
+    @IBAction func rowWasPressed(_ recognizer: UITapGestureRecognizer) {
         // Manually relay the event, since .ValueChanged doesn't get posted if we toggle the switch
         // programatically
         flipSwitch.setOn(!on, animated: true)
@@ -55,21 +55,21 @@ public class SwitchTableViewCell : WPTableViewCell
 
 
     // MARK: - UISwitch Helpers
-    @IBAction func switchDidChange(theSwitch: UISwitch) {
-        onChange?(newValue: theSwitch.on)
+    @IBAction func switchDidChange(_ theSwitch: UISwitch) {
+        onChange?(theSwitch.isOn)
     }
 
 
 
     // MARK: - Private Helpers
-    private func setupSubviews() {
-        selectionStyle = .None
+    fileprivate func setupSubviews() {
+        selectionStyle = .none
 
         contentView.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.addTarget(self, action: #selector(SwitchTableViewCell.rowWasPressed(_:)))
 
         flipSwitch = UISwitch()
-        flipSwitch.addTarget(self, action: #selector(SwitchTableViewCell.switchDidChange(_:)), forControlEvents: .ValueChanged)
+        flipSwitch.addTarget(self, action: #selector(SwitchTableViewCell.switchDidChange(_:)), for: .valueChanged)
         accessoryView = flipSwitch
 
         WPStyleGuide.configureTableViewCell(self)
@@ -78,8 +78,8 @@ public class SwitchTableViewCell : WPTableViewCell
 
 
     // MARK: - Private Properties
-    private let tapGestureRecognizer = UITapGestureRecognizer()
+    fileprivate let tapGestureRecognizer = UITapGestureRecognizer()
 
     // MARK: - Private Outlets
-    private var flipSwitch : UISwitch!
+    fileprivate var flipSwitch: UISwitch!
 }

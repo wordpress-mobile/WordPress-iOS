@@ -5,7 +5,7 @@ class WPStyleGuide_BlogTests: XCTestCase {
     var testCell: UITableViewCell!
 
     override func setUp() {
-        testCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: nil)
+        testCell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: nil)
         super.setUp()
     }
 
@@ -26,6 +26,6 @@ class WPStyleGuide_BlogTests: XCTestCase {
 
     func testConfigureTableViewBlogCellSetsBackgroundColor() {
         WPStyleGuide.configureTableViewBlogCell(testCell)
-        XCTAssertEqual(UIColor.whiteColor(), testCell.backgroundColor)
+        XCTAssertEqual(UIColor.white, testCell.backgroundColor)
     }
 }

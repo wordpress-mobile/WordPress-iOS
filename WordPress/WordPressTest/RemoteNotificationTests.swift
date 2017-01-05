@@ -35,7 +35,7 @@ class RemoteNotificationTests: XCTestCase
     ///
     func testRemoteNotificationInitializerReturnsNilWheneverNoteIdIsMissing() {
         var document = loadDocument()
-        document.removeValueForKey("id")
+        document.removeValue(forKey: "id")
 
         let remote = RemoteNotification(document: document)
         XCTAssertNil(remote)
@@ -46,7 +46,7 @@ class RemoteNotificationTests: XCTestCase
     ///
     func testRemoteNotificationInitializerReturnsNilWheneverNoteHashIsMissing() {
         var document = loadDocument()
-        document.removeValueForKey("note_hash")
+        document.removeValue(forKey: "note_hash")
 
         let remote = RemoteNotification(document: document)
         XCTAssertNil(remote)
@@ -62,11 +62,10 @@ private extension RemoteNotificationTests
     ///
     func loadDocument() -> [String: AnyObject]
     {
-        let path = NSBundle(forClass: self.dynamicType).pathForResource("remote-notification", ofType: "json")!
-        let data = NSData(contentsOfFile: path)!
-
+        let path = Bundle(for: type(of: self)).path(forResource: "remote-notification", ofType: "json")!
         do {
-            return try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! [String: AnyObject]
+            let data = try Data(contentsOf: URL(fileURLWithPath: path))
+            return try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as! [String: AnyObject]
         } catch {
             fatalError()
         }

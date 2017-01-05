@@ -8,7 +8,7 @@ class DictionaryHelpersTests: XCTestCase
 {
     func testValueAsStringReturnsTheExpectedStringWhenTheValueIsEffectivelyAsString() {
         let dictionary = [
-            "key" : "value!"
+            "key": "value!"
         ]
 
         let retrieved = dictionary.valueAsString(forKey: "key")
@@ -18,7 +18,7 @@ class DictionaryHelpersTests: XCTestCase
 
     func testValueAsStringReturnsTheExpectedStringWhenTheValueIsNumeric() {
         let dictionary = [
-            "key" : 1234
+            "key": 1234
         ]
 
         let retrieved = dictionary.valueAsString(forKey: "key")

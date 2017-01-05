@@ -10,19 +10,19 @@ class NotificationSyncMediatorTests: XCTestCase
 {
     /// CoreData Context Manager
     ///
-    private var manager: TestContextManager!
+    fileprivate var manager: TestContextManager!
 
     /// WordPress REST API
     ///
-    private var dotcomAPI: WordPressComRestApi!
+    fileprivate var dotcomAPI: WordPressComRestApi!
 
     /// Sync Mediator
     ///
-    private var mediator: NotificationSyncMediator!
+    fileprivate var mediator: NotificationSyncMediator!
 
     /// Expectation's Timeout
     ///
-    private let timeout = NSTimeInterval(3)
+    fileprivate let timeout = TimeInterval(3)
 
 
     // MARK: - Overriden Methods
@@ -55,26 +55,27 @@ class NotificationSyncMediatorTests: XCTestCase
     func testSyncEffectivelyInsertsASingleNotification() {
         // Stub Endpoint
         let endpoint = "notifications/"
-        let stubPath = OHPathForFile("notifications-load-all.json", self.dynamicType)!
+        let stubPath = OHPathForFile("notifications-load-all.json", type(of: self))!
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
-        let helper = CoreDataHelper<Notification>(context: self.manager.mainContext)
+        let helper = CoreDataHelper<WordPress.Notification>(context: self.manager.mainContext)
         XCTAssert(helper.countObjects() == 0)
 
         // CoreData Expectations
-        manager.testExpectation = expectationWithDescription("Context save expectation")
+        manager.testExpectation = expectation(description: "Context save expectation")
+
 
         // Mediator Expectations
-        let expectation = expectationWithDescription("Sync")
+        let expect = expectation(description: "Sync")
 
         // Sync!
         mediator.sync { _ in
             XCTAssert(helper.countObjects() == 1)
-            expectation.fulfill()
+            expect.fulfill()
         }
 
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
 
 
@@ -83,38 +84,38 @@ class NotificationSyncMediatorTests: XCTestCase
     func testMultipleSyncCallsWontInsertDuplicateNotes() {
         // Stub Endpoint
         let endpoint = "notifications/"
-        let stubPath = OHPathForFile("notifications-load-all.json", self.dynamicType)!
+        let stubPath = OHPathForFile("notifications-load-all.json", type(of: self))!
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
-        let helper = CoreDataHelper<Notification>(context: manager.mainContext)
+        let helper = CoreDataHelper<WordPress.Notification>(context: manager.mainContext)
         XCTAssert(helper.countObjects() == 0)
 
         // Shutdown Expectation Warnings. Please
         manager.requiresTestExpectation = false
 
         // Wait until all the workers complete
-        let group = dispatch_group_create()
+        let group = DispatchGroup()
 
         // CoreData Expectations
         for _ in 0..<100 {
-            dispatch_group_enter(group)
+            group.enter()
 
             let newMediator = NotificationSyncMediator(manager: manager, dotcomAPI: dotcomAPI)
             newMediator?.sync { _ in
-                dispatch_group_leave(group)
+                group.leave()
             }
         }
 
         // Verify there's no duplication
-        let expectation = expectationWithDescription("Async!")
+        let expect = expectation(description: "Async!")
 
-        dispatch_group_notify(group, dispatch_get_main_queue()) {
+        group.notify(queue: DispatchQueue.main, execute: {
             XCTAssert(helper.countObjects() == 1)
-            expectation.fulfill()
-        }
+            expect.fulfill()
+        })
 
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
 
 
@@ -123,27 +124,27 @@ class NotificationSyncMediatorTests: XCTestCase
     func testSyncNoteEffectivelyReturnsASingleNotification() {
         // Stub Endpoint
         let endpoint = "notifications/"
-        let stubPath = OHPathForFile("notifications-load-all.json", self.dynamicType)!
+        let stubPath = OHPathForFile("notifications-load-all.json", type(of: self))!
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
-        let helper = CoreDataHelper<Notification>(context: self.manager.mainContext)
+        let helper = CoreDataHelper<WordPress.Notification>(context: self.manager.mainContext)
         XCTAssert(helper.countObjects() == 0)
 
         // CoreData Expectations
-        manager.testExpectation = expectationWithDescription("Context save expectation")
+        manager.testExpectation = expectation(description: "Context save expectation")
 
         // Mediator Expectations
-        let expectation = expectationWithDescription("Sync")
+        let expect = expectation(description: "Sync")
 
         // Sync!
         mediator.syncNote(with: "2674124016") { error, note in
             XCTAssertNil(error)
             XCTAssertNotNil(note)
-            expectation.fulfill()
+            expect.fulfill()
         }
 
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
 
 
@@ -152,29 +153,29 @@ class NotificationSyncMediatorTests: XCTestCase
     func testMarkAsReadEffectivelyTogglesNotificationReadStatus() {
         // Stub Endpoint
         let endpoint = "notifications/read"
-        let stubPath = OHPathForFile("notifications-mark-as-read.json", self.dynamicType)!
+        let stubPath = OHPathForFile("notifications-mark-as-read.json", type(of: self))!
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Inject Dummy Note
         let path = "notifications-like.json"
-        let note = manager.loadEntityNamed(Notification.entityName, withContentsOfFile: path) as! Notification
+        let note = manager.loadEntityNamed(Notification.entityName, withContentsOfFile: path) as! WordPress.Notification
 
         XCTAssertNotNil(note)
         XCTAssertFalse(note.read)
 
         // CoreData Expectations
-        manager.testExpectation = expectationWithDescription("Context save expectation")
+        manager.testExpectation = expectation(description: "Context save expectation")
 
         // Mediator Expectations
-        let expectation = expectationWithDescription("Mark as Read")
+        let expect = expectation(description: "Mark as Read")
 
         // Mark as Read!
         mediator.markAsRead(note) { success in
             XCTAssertTrue(note.read)
-            expectation.fulfill()
+            expect.fulfill()
         }
 
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
 
 
@@ -183,18 +184,18 @@ class NotificationSyncMediatorTests: XCTestCase
     func testUpdateLastSeenHitsCallbackWithSuccessfulResult() {
         // Stub Endpoint
         let endpoint = "notifications/seen"
-        let stubPath = OHPathForFile("notifications-last-seen.json", self.dynamicType)!
+        let stubPath = OHPathForFile("notifications-last-seen.json", type(of: self))!
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Mediator Expectations
-        let expectation = expectationWithDescription("Update Last Seen")
+        let expect = expectation(description: "Update Last Seen")
 
         // Update Last Seen!
         mediator.updateLastSeen("1234") { error in
             XCTAssertNil(error)
-            expectation.fulfill()
+            expect.fulfill()
         }
 
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
 }

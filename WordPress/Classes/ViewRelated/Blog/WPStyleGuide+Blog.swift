@@ -3,13 +3,13 @@ import WordPressShared
 
 extension WPStyleGuide
 {
-    public class func configureTableViewBlogCell(cell: UITableViewCell) {
+    public class func configureTableViewBlogCell(_ cell: UITableViewCell) {
         configureTableViewCell(cell)
         cell.detailTextLabel?.font = self.subtitleFont()
         cell.detailTextLabel?.textColor = self.greyDarken10()
-        cell.backgroundColor = UIColor.whiteColor()
+        cell.backgroundColor = UIColor.white
 
-        cell.imageView?.layer.borderColor = UIColor.whiteColor().CGColor
+        cell.imageView?.layer.borderColor = UIColor.white.cgColor
         cell.imageView?.layer.borderWidth = 1
     }
 

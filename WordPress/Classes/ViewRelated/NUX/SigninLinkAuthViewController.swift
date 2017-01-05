@@ -9,7 +9,7 @@ import WordPressShared
 /// The expectation is this controller will be momentarily visible when the app
 /// is resumed/launched via the appropriate custom scheme, and quickly dismiss.
 ///
-@objc class SigninLinkAuthViewController : NUXAbstractViewController, SigninWPComSyncHandler
+@objc class SigninLinkAuthViewController: NUXAbstractViewController, SigninWPComSyncHandler
 {
     @IBOutlet weak var statusLabel: UILabel!
 
@@ -24,9 +24,9 @@ import WordPressShared
     ///     - email: The user's email address tied to their wpcom account.
     ///     - token: The user's auth token.
     ///
-    class func controller(email: String, token: String) -> SigninLinkAuthViewController {
-        let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateViewControllerWithIdentifier("SigninLinkAuthViewController") as! SigninLinkAuthViewController
+    class func controller(_ email: String, token: String) -> SigninLinkAuthViewController {
+        let storyboard = UIStoryboard(name: "Signin", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SigninLinkAuthViewController") as! SigninLinkAuthViewController
         controller.email = email
         controller.token = token
         return controller
@@ -43,7 +43,7 @@ import WordPressShared
     }
 
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         // Gotta have email and token to use this vc
@@ -58,7 +58,7 @@ import WordPressShared
 
         // Count this as success since we're authed. Even if there is a glitch
         // while syncing the user has valid credentials.
-        WPAppAnalytics.track(.LoginMagicLinkSucceeded)
+        WPAppAnalytics.track(.loginMagicLinkSucceeded)
     }
 
 
@@ -66,12 +66,12 @@ import WordPressShared
     ///
     /// - Parameter message: The text to display in the label.
     ///
-    func configureStatusLabel(message: String) {
+    func configureStatusLabel(_ message: String) {
         statusLabel.text = message
     }
 
 
-    func configureViewLoading(loading: Bool) {
+    func configureViewLoading(_ loading: Bool) {
         // Noop
     }
 

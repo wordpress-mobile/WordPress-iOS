@@ -2,18 +2,18 @@ import Foundation
 import WordPressShared
 import WordPressComAnalytics
 
-class PageListViewController : AbstractPostListViewController, UIViewControllerRestoration {
+class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
 
-    private static let pageSectionHeaderHeight = CGFloat(24.0)
-    private static let pageCellEstimatedRowHeight = CGFloat(47.0)
-    private static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
-    private static let pageCellIdentifier = "PageCellIdentifier"
-    private static let pageCellNibName = "PageListTableViewCell"
-    private static let restorePageCellIdentifier = "RestorePageCellIdentifier"
-    private static let restorePageCellNibName = "RestorePageTableViewCell"
-    private static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
+    fileprivate static let pageSectionHeaderHeight = CGFloat(24.0)
+    fileprivate static let pageCellEstimatedRowHeight = CGFloat(47.0)
+    fileprivate static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
+    fileprivate static let pageCellIdentifier = "PageCellIdentifier"
+    fileprivate static let pageCellNibName = "PageListTableViewCell"
+    fileprivate static let restorePageCellIdentifier = "RestorePageCellIdentifier"
+    fileprivate static let restorePageCellNibName = "RestorePageTableViewCell"
+    fileprivate static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
 
-    private lazy var sectionFooterSeparatorView : UIView = {
+    fileprivate lazy var sectionFooterSeparatorView: UIView = {
         let footer = UIView()
         footer.backgroundColor = WPStyleGuide.greyLighten20()
         return footer
@@ -21,15 +21,15 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - GUI
 
-    private let animatedBox = WPAnimatedBox()
+    fileprivate let animatedBox = WPAnimatedBox()
 
 
     // MARK: - Convenience constructors
 
-    class func controllerWithBlog(blog: Blog) -> PageListViewController {
+    class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
 
-        let storyBoard = UIStoryboard(name: "Pages", bundle: NSBundle.mainBundle())
-        let controller = storyBoard.instantiateViewControllerWithIdentifier("PageListViewController") as! PageListViewController
+        let storyBoard = UIStoryboard(name: "Pages", bundle: Bundle.main)
+        let controller = storyBoard.instantiateViewController(withIdentifier: "PageListViewController") as! PageListViewController
 
         controller.blog = blog
         controller.restorationClass = self
@@ -39,14 +39,14 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - UIViewControllerRestoration
 
-    class func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
 
         let context = ContextManager.sharedInstance().mainContext
 
-        guard let blogID = coder.decodeObjectForKey(pagesViewControllerRestorationKey) as? String,
-            let objectURL = NSURL(string: blogID),
-            let objectID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(objectURL),
-            let restoredBlog = try? context.existingObjectWithID(objectID) as! Blog else {
+        guard let blogID = coder.decodeObject(forKey: pagesViewControllerRestorationKey) as? String,
+            let objectURL = URL(string: blogID),
+            let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
+            let restoredBlog = try? context?.existingObject(with: objectID) as! Blog else {
 
                 return nil
         }
@@ -56,22 +56,22 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - UIStateRestoring
 
-    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+    override func encodeRestorableState(with coder: NSCoder) {
 
-        let objectString = blog?.objectID.URIRepresentation().absoluteString
+        let objectString = blog?.objectID.uriRepresentation().absoluteString
 
-        coder.encodeObject(objectString, forKey:self.dynamicType.pagesViewControllerRestorationKey)
+        coder.encode(objectString, forKey: type(of: self).pagesViewControllerRestorationKey)
 
-        super.encodeRestorableStateWithCoder(coder)
+        super.encodeRestorableState(with: coder)
     }
 
     // MARK: - UIViewController
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.refreshNoResultsView = { [weak self] noResultsView in
             self?.handleRefreshNoResultsView(noResultsView)
         }
-        super.tableViewController = (segue.destinationViewController as! UITableViewController)
+        super.tableViewController = (segue.destination as! UITableViewController)
     }
 
     override func viewDidLoad() {
@@ -85,19 +85,19 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PagesTable"
         tableView.isAccessibilityElement = true
-        tableView.estimatedRowHeight = self.dynamicType.pageCellEstimatedRowHeight
+        tableView.estimatedRowHeight = type(of: self).pageCellEstimatedRowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
 
-        let bundle = NSBundle.mainBundle()
+        let bundle = Bundle.main
 
         // Register the cells
-        let pageCellNib = UINib(nibName: self.dynamicType.pageCellNibName, bundle: bundle)
-        tableView.registerNib(pageCellNib, forCellReuseIdentifier: self.dynamicType.pageCellIdentifier)
+        let pageCellNib = UINib(nibName: type(of: self).pageCellNibName, bundle: bundle)
+        tableView.register(pageCellNib, forCellReuseIdentifier: type(of: self).pageCellIdentifier)
 
-        let restorePageCellNib = UINib(nibName: self.dynamicType.restorePageCellNibName, bundle: bundle)
-        tableView.registerNib(restorePageCellNib, forCellReuseIdentifier: self.dynamicType.restorePageCellIdentifier)
+        let restorePageCellNib = UINib(nibName: type(of: self).restorePageCellNibName, bundle: bundle)
+        tableView.register(restorePageCellNib, forCellReuseIdentifier: type(of: self).restorePageCellIdentifier)
 
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
     override func configureSearchController() {
@@ -108,7 +108,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
     }
 
-    private func noResultsTitles() -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitles() -> [PostListFilter.Status: String] {
         if isSearching() {
             return noResultsTitlesWhenSearching()
         } else {
@@ -116,7 +116,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         }
     }
 
-    private func noResultsTitlesWhenSearching() -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitlesWhenSearching() -> [PostListFilter.Status: String] {
 
         let draftMessage = String(format: NSLocalizedString("No drafts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
         let scheduledMessage = String(format: NSLocalizedString("No scheduled pages match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
@@ -126,7 +126,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
 
-    private func noResultsTitlesWhenFiltering() -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitlesWhenFiltering() -> [PostListFilter.Status: String] {
 
         let draftMessage = NSLocalizedString("You don't have any drafts.", comment: "Displayed when the user views drafts in the pages list and there are no pages")
         let scheduledMessage = NSLocalizedString("You don't have any scheduled pages.", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
@@ -136,11 +136,11 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
 
-    private func noResultsTitles(draft: String, scheduled: String, trashed: String, published: String) -> [PostListFilter.Status:String] {
-        return [.Draft: draft,
-                .Scheduled: scheduled,
-                .Trashed: trashed,
-                .Published: published]
+    fileprivate func noResultsTitles(_ draft: String, scheduled: String, trashed: String, published: String) -> [PostListFilter.Status: String] {
+        return [.draft: draft,
+                .scheduled: scheduled,
+                .trashed: trashed,
+                .published: published]
     }
 
     override func configureAuthorFilter() {
@@ -150,10 +150,10 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - Sync Methods
 
     override internal func postTypeToSync() -> PostServiceType {
-        return PostServiceTypePage
+        return PostServiceTypePage as PostServiceType
     }
 
-    override internal func lastSyncDate() -> NSDate? {
+    override internal func lastSyncDate() -> Date? {
         return blog?.lastPagesSync
     }
 
@@ -165,8 +165,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     ///
     /// - Returns: the requested page.
     ///
-    private func pageAtIndexPath(indexPath: NSIndexPath) -> Page {
-        guard let page = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Page else {
+    fileprivate func pageAtIndexPath(_ indexPath: IndexPath) -> Page {
+        guard let page = tableViewHandler.resultsController.object(at: indexPath) as? Page else {
             // Retrieveing anything other than a post object means we have an app with an invalid
             // state.  Ignoring this error would be counter productive as we have no idea how this
             // can affect the App.  This controlled interruption is intentional.
@@ -182,7 +182,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - TableView Handler Delegate Methods
 
     override func entityName() -> String {
-        return String(Page.self)
+        return String(describing: Page.self)
     }
 
 
@@ -208,7 +208,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             predicates.append(filterPredicate)
         }
 
-        if let searchText = searchText where searchText.characters.count > 0 {
+        if let searchText = searchText, searchText.characters.count > 0 {
             let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
             predicates.append(searchPredicate)
         }
@@ -223,21 +223,21 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         return NSStringFromSelector(#selector(Page.sectionIdentifier))
     }
 
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return self.dynamicType.pageSectionHeaderHeight
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return type(of: self).pageSectionHeaderHeight
     }
 
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == tableView.numberOfSections - 1 {
             return WPDeviceIdentification.isRetina() ? 0.5 : 1.0
         }
         return 0.0
     }
 
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
         let sectionInfo = tableViewHandler.resultsController.sections?[section]
-        let nibName = String(PageListSectionHeaderView)
-        let headerView = NSBundle.mainBundle().loadNibNamed(nibName, owner: nil, options: nil)![0] as! PageListSectionHeaderView
+        let nibName = String(describing: PageListSectionHeaderView.self)
+        let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)![0] as! PageListSectionHeaderView
 
         if let sectionInfo = sectionInfo {
             headerView.setTite(sectionInfo.name)
@@ -246,15 +246,15 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         return headerView
     }
 
-    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
         if section == tableView.numberOfSections - 1 {
             return sectionFooterSeparatorView
         }
-        return UIView(frame: CGRectZero)
+        return UIView(frame: CGRect.zero)
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
 
         let page = pageAtIndexPath(indexPath)
 
@@ -263,7 +263,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         }
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
         if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
             return windowlessCell
         }
@@ -271,27 +271,27 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let page = pageAtIndexPath(indexPath)
 
         let identifier = cellIdentifierForPage(page)
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
-        configureCell(cell, atIndexPath: indexPath)
+        configureCell(cell, at: indexPath)
 
         return cell
     }
 
-    override func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
 
         guard let cell = cell as? BasePageListCell else {
-            preconditionFailure("The cell should be of class \(String(BasePageListCell))")
+            preconditionFailure("The cell should be of class \(String(describing: BasePageListCell.self))")
         }
 
-        cell.accessoryType = .None
+        cell.accessoryType = .none
 
-        if cell.reuseIdentifier == self.dynamicType.pageCellIdentifier {
+        if cell.reuseIdentifier == type(of: self).pageCellIdentifier {
             cell.onAction = { [weak self] cell, button, page in
                 self?.handleMenuAction(fromCell: cell, fromButton: button, forPage: page)
             }
-        } else if cell.reuseIdentifier == self.dynamicType.restorePageCellIdentifier {
-            cell.selectionStyle = .None
+        } else if cell.reuseIdentifier == type(of: self).restorePageCellIdentifier {
+            cell.selectionStyle = .none
             cell.onAction = { [weak self] cell, _, page in
                 self?.handleRestoreAction(fromCell: cell, forPage: page)
             }
@@ -302,13 +302,13 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         cell.configureCell(page)
     }
 
-    private func cellIdentifierForPage(page: Page) -> String {
-        var identifier : String
+    fileprivate func cellIdentifierForPage(_ page: Page) -> String {
+        var identifier: String
 
-        if recentlyTrashedPostObjectIDs.contains(page.objectID) == true && filterSettings.currentPostListFilter().filterType != .Trashed {
-            identifier = self.dynamicType.restorePageCellIdentifier
+        if recentlyTrashedPostObjectIDs.contains(page.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
+            identifier = type(of: self).restorePageCellIdentifier
         } else {
-            identifier = self.dynamicType.pageCellIdentifier
+            identifier = type(of: self).pageCellIdentifier
         }
 
         return identifier
@@ -317,45 +317,48 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - Post Actions
 
     override func createPost() {
-        let navController : UINavigationController
+        let navController: UINavigationController
 
         let editorSettings = EditorSettings()
         if editorSettings.visualEditorEnabled {
             let postViewController: UIViewController
+
             if editorSettings.nativeEditorEnabled {
                 let context = ContextManager.sharedInstance().mainContext
                 let postService = PostService(managedObjectContext: context)
-                let page = postService.createDraftPageForBlog(blog)
-                postViewController = AztecPostViewController(post:page)
+                let page = postService?.createDraftPage(for: blog)
+                postViewController = AztecPostViewController(post: page!)
                 navController = UINavigationController(rootViewController: postViewController)
             } else {
-                postViewController = EditPageViewController(draftForBlog: blog)
+                postViewController = EditPageViewController(draftFor: blog)
 
                 navController = UINavigationController(rootViewController: postViewController)
                 navController.restorationIdentifier = WPEditorNavigationRestorationID
                 navController.restorationClass = EditPageViewController.self
             }
+
         } else {
             let editPostViewController = WPLegacyEditPageViewController(draftForLastUsedBlog: ())
 
-            navController = UINavigationController(rootViewController: editPostViewController)
+            navController = UINavigationController(rootViewController: editPostViewController!)
             navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
             navController.restorationClass = WPLegacyEditPageViewController.self
         }
 
-        navController.modalPresentationStyle = .FullScreen
+        navController.modalPresentationStyle = .fullScreen
 
-        presentViewController(navController, animated: true, completion: nil)
+        present(navController, animated: true, completion: nil)
 
-        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
     }
 
-    private func editPage(apost: AbstractPost) {
-        WPAnalytics.track(.PostListEditAction, withProperties: propertiesForAnalytics())
+    fileprivate func editPage(_ apost: AbstractPost) {
+        WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
 
         let editorSettings = EditorSettings()
         if editorSettings.visualEditorEnabled {
             let pageViewController: UIViewController
+
             if editorSettings.nativeEditorEnabled {
                 pageViewController = AztecPostViewController(post: apost)
             } else {
@@ -366,44 +369,44 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         } else {
             // In legacy mode, view means edit
             let editPageViewController = WPLegacyEditPageViewController(post: apost)
-            let navController = UINavigationController(rootViewController: editPageViewController)
+            let navController = UINavigationController(rootViewController: editPageViewController!)
 
-            navController.modalPresentationStyle = .FullScreen
+            navController.modalPresentationStyle = .fullScreen
             navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
             navController.restorationClass = WPLegacyEditPageViewController.self
 
-            presentViewController(navController, animated: true, completion: nil)
+            present(navController, animated: true, completion: nil)
         }
     }
 
-    private func draftPage(apost: AbstractPost) {
-        WPAnalytics.track(.PostListDraftAction, withProperties: propertiesForAnalytics())
+    fileprivate func draftPage(_ apost: AbstractPost) {
+        WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
         let previousStatus = apost.status
         apost.status = PostStatusDraft
 
         let contextManager = ContextManager.sharedInstance()
-        let postService = PostService(managedObjectContext: contextManager.mainContext)
+        let postService = PostService(managedObjectContext: contextManager?.mainContext)
 
-        postService.uploadPost(apost, success: nil) { [weak self] (error) in
+        postService?.uploadPost(apost, success: nil) { [weak self] (error) in
             apost.status = previousStatus
 
             if let strongSelf = self {
-                contextManager.saveContext(strongSelf.managedObjectContext())
+                contextManager?.save(strongSelf.managedObjectContext())
             }
 
             WPError.showXMLRPCErrorAlert(error)
         }
     }
 
-    override func promptThatPostRestoredToFilter(filter: PostListFilter) {
+    override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
         var message = NSLocalizedString("Page Restored to Drafts", comment: "Prompts the user that a restored page was moved to the drafts list.")
 
         switch filter.filterType {
-        case .Published:
+        case .published:
             message = NSLocalizedString("Page Restored to Published", comment: "Prompts the user that a restored page was moved to the published list.")
         break
-        case .Scheduled:
+        case .scheduled:
             message = NSLocalizedString("Page Restored to Scheduled", comment: "Prompts the user that a restored page was moved to the scheduled list.")
             break
         default:
@@ -412,14 +415,14 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
         let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
 
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alertController.addCancelActionWithTitle(alertCancel, handler: nil)
         alertController.presentFromRootViewController()
     }
 
     // MARK: - Cell Action Handling
 
-    private func handleMenuAction(fromCell cell: UITableViewCell, fromButton button: UIButton, forPage page: AbstractPost) {
+    fileprivate func handleMenuAction(fromCell cell: UITableViewCell, fromButton button: UIButton, forPage page: AbstractPost) {
         let objectID = page.objectID
 
         let viewButtonTitle = NSLocalizedString("View", comment: "Label for a button that opens the page when tapped.")
@@ -429,13 +432,13 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Label for a cancel button")
         let deleteButtonTitle = NSLocalizedString("Delete Permanently", comment: "Label for a button permanently deletes a page.")
 
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(cancelButtonTitle, handler: nil)
 
         let filter = filterSettings.currentPostListFilter().filterType
 
-        if filter == .Trashed {
-            alertController.addActionWithTitle(publishButtonTitle, style: .Default, handler: { [weak self] (action) in
+        if filter == .trashed {
+            alertController.addActionWithTitle(publishButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
                     return
@@ -444,7 +447,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
                 strongSelf.publishPost(page)
             })
 
-            alertController.addActionWithTitle(draftButtonTitle, style: .Default, handler: { [weak self] (action) in
+            alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
                         return
@@ -453,7 +456,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
                 strongSelf.draftPage(page)
             })
 
-            alertController.addActionWithTitle(deleteButtonTitle, style: .Default, handler: { [weak self] (action) in
+            alertController.addActionWithTitle(deleteButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
                         return
@@ -461,8 +464,8 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
                 strongSelf.deletePost(page)
             })
-        } else if filter == .Published {
-            alertController.addActionWithTitle(viewButtonTitle, style: .Default, handler: { [weak self] (action) in
+        } else if filter == .published {
+            alertController.addActionWithTitle(viewButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
                         return
@@ -471,7 +474,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
                 strongSelf.viewPost(page)
             })
 
-            alertController.addActionWithTitle(draftButtonTitle, style: .Default, handler: { [weak self] (action) in
+            alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
                         return
@@ -480,7 +483,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
                 strongSelf.draftPage(page)
             })
 
-            alertController.addActionWithTitle(trashButtonTitle, style: .Default, handler: { [weak self] (action) in
+            alertController.addActionWithTitle(trashButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
                         return
@@ -489,7 +492,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
                 strongSelf.deletePost(page)
             })
         } else {
-            alertController.addActionWithTitle(viewButtonTitle, style: .Default, handler: { [weak self] (action) in
+            alertController.addActionWithTitle(viewButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
                         return
@@ -498,7 +501,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
                 strongSelf.viewPost(page)
             })
 
-            alertController.addActionWithTitle(publishButtonTitle, style: .Default, handler: { [weak self] (action) in
+            alertController.addActionWithTitle(publishButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
                         return
@@ -507,7 +510,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
                 strongSelf.publishPost(page)
             })
 
-            alertController.addActionWithTitle(trashButtonTitle, style: .Default, handler: { [weak self] (action) in
+            alertController.addActionWithTitle(trashButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
                     let page = strongSelf.pageForObjectID(objectID) else {
                         return
@@ -517,30 +520,30 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
             })
         }
 
-        WPAnalytics.track(.PostListOpenedCellMenu, withProperties: propertiesForAnalytics())
+        WPAnalytics.track(.postListOpenedCellMenu, withProperties: propertiesForAnalytics())
 
-        alertController.modalPresentationStyle = .Popover
-        presentViewController(alertController, animated: true, completion: nil)
+        alertController.modalPresentationStyle = .popover
+        present(alertController, animated: true, completion: nil)
 
         if let presentationController = alertController.popoverPresentationController {
-            presentationController.permittedArrowDirections = .Any
+            presentationController.permittedArrowDirections = .any
             presentationController.sourceView = button
             presentationController.sourceRect = button.bounds
         }
     }
 
-    private func pageForObjectID(objectID: NSManagedObjectID) -> Page? {
+    fileprivate func pageForObjectID(_ objectID: NSManagedObjectID) -> Page? {
 
-        var pageManagedOjbect : NSManagedObject
+        var pageManagedOjbect: NSManagedObject
 
         do {
-            pageManagedOjbect = try managedObjectContext().existingObjectWithID(objectID)
+            pageManagedOjbect = try managedObjectContext().existingObject(with: objectID)
 
         } catch let error as NSError {
-            DDLogSwift.logError("\(NSStringFromClass(self.dynamicType)), \(#function), \(error)")
+            DDLogSwift.logError("\(NSStringFromClass(type(of: self))), \(#function), \(error)")
             return nil
         } catch _ {
-            DDLogSwift.logError("\(NSStringFromClass(self.dynamicType)), \(#function), Could not find Page with ID \(objectID)")
+            DDLogSwift.logError("\(NSStringFromClass(type(of: self))), \(#function), Could not find Page with ID \(objectID)")
             return nil
         }
 
@@ -548,13 +551,13 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         return page
     }
 
-    private func handleRestoreAction(fromCell cell: UITableViewCell, forPage page: AbstractPost) {
+    fileprivate func handleRestoreAction(fromCell cell: UITableViewCell, forPage page: AbstractPost) {
         restorePost(page)
     }
 
     // MARK: - Refreshing noResultsView
 
-    func handleRefreshNoResultsView(noResultsView: WPNoResultsView) {
+    func handleRefreshNoResultsView(_ noResultsView: WPNoResultsView) {
         noResultsView.titleText = noResultsTitle()
         noResultsView.messageText = noResultsMessage()
         noResultsView.accessoryView = noResultsAccessoryView()
@@ -563,16 +566,16 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - NoResultsView Customizer helpers
 
-    private func noResultsAccessoryView() -> UIView {
+    fileprivate func noResultsAccessoryView() -> UIView {
         if syncHelper.isSyncing {
-            animatedBox.animateAfterDelay(0.1)
+            animatedBox.animate(afterDelay: 0.1)
             return animatedBox
         }
 
         return UIImageView(image: UIImage(named: "illustration-posts"))
     }
 
-    private func noResultsButtonTitle() -> String {
+    fileprivate func noResultsButtonTitle() -> String {
         if syncHelper.isSyncing == true || isSearching() {
             return ""
         }
@@ -580,14 +583,14 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
-        case .Trashed:
+        case .trashed:
             return ""
         default:
             return NSLocalizedString("Start a Page", comment: "Button title, encourages users to create their first page on their blog.")
         }
     }
 
-    private func noResultsTitle() -> String {
+    fileprivate func noResultsTitle() -> String {
         if syncHelper.isSyncing == true {
             return NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
         }
@@ -598,7 +601,7 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         return title ?? ""
     }
 
-    private func noResultsMessage() -> String {
+    fileprivate func noResultsMessage() -> String {
         if syncHelper.isSyncing == true || isSearching() {
             return ""
         }
@@ -606,11 +609,11 @@ class PageListViewController : AbstractPostListViewController, UIViewControllerR
         let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
-        case .Draft:
+        case .draft:
             return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the pages list and there are no pages")
-        case .Scheduled:
+        case .scheduled:
             return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
-        case .Trashed:
+        case .trashed:
             return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed pages in the pages list and there are no pages")
         default:
             return NSLocalizedString("Would you like to publish your first page?", comment: "Displayed when the user views published pages in the pages list and there are no pages")
