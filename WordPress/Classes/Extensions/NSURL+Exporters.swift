@@ -5,38 +5,38 @@ import AVFoundation
 
 extension NSURL: ExportableAsset {
 
-    func exportToURL(url: NSURL,
-        targetUTI: String,
-        maximumResolution: CGSize,
-        stripGeoLocation: Bool,
-        synchronous: Bool,
-        successHandler: SuccessHandler,
-        errorHandler: ErrorHandler) {
+    func exportToURL(_ url: URL,
+                     targetUTI: String,
+                     maximumResolution: CGSize,
+                     stripGeoLocation: Bool,
+                     synchronous: Bool,
+                     successHandler: @escaping SuccessHandler,
+                     errorHandler: @escaping ErrorHandler) {
 
         switch assetMediaType {
-        case .Image:
-            exportImageToURL(url,
+        case .image:
+            exportImageToURL(url as NSURL,
                 targetUTI: targetUTI,
                 maximumResolution: maximumResolution,
                 stripGeoLocation: stripGeoLocation,
                 synchronous: synchronous,
                 successHandler: successHandler,
                 errorHandler: errorHandler)
-        case .Video:
-            exportVideoToURL(url,
+        case .video:
+            exportVideoToURL(url as NSURL,
                 targetUTI: targetUTI,
                 maximumResolution: maximumResolution,
                 stripGeoLocation: stripGeoLocation,
                 successHandler: successHandler,
                 errorHandler: errorHandler)
         default:
-            errorHandler(error: errorForCode(.UnsupportedAssetType,
+            errorHandler(errorForCode(errorCode: .UnsupportedAssetType,
                 failureReason: NSLocalizedString("This media type is not supported on WordPress.",
                                                  comment: "Error reason to display when exporting an unknown asset type.")))
         }
     }
 
-    func exportImageToURL(url: NSURL,
+    func exportImageToURL(_ url: NSURL,
         targetUTI: String,
         maximumResolution: CGSize,
         stripGeoLocation: Bool,
@@ -44,73 +44,72 @@ extension NSURL: ExportableAsset {
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler)
     {
-
-        let requestedSize = maximumResolution.clamp(min: CGSizeZero, max: pixelSize)
-        let metadataOptions: [NSString:NSObject] = [kCGImageSourceShouldCache: false]
+        let requestedSize = maximumResolution.clamp(min: CGSize.zero, max: pixelSize)
+        let metadataOptions: [NSString: NSObject] = [kCGImageSourceShouldCache: false as NSObject]
         let scaleOptions: [NSString: NSObject] = [
-            kCGImageSourceThumbnailMaxPixelSize: max(requestedSize.width, requestedSize.height),
-            kCGImageSourceCreateThumbnailFromImageAlways: true
+            kCGImageSourceThumbnailMaxPixelSize: (requestedSize.width > requestedSize.height ? requestedSize.width : requestedSize.height) as CFNumber,
+            kCGImageSourceCreateThumbnailFromImageAlways: true as CFBoolean
         ]
         guard let imageSource = CGImageSourceCreateWithURL(self, nil),
-              let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, metadataOptions),
-              let scaledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, scaleOptions)
+              let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, metadataOptions as CFDictionary?),
+              let scaledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, scaleOptions as CFDictionary?)
         else {
-            errorHandler(error: errorForCode(.FailedToExport,
+            errorHandler(errorForCode(errorCode: .FailedToExport,
                 failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image fails.")
                 ))
             return
         }
-        let image = UIImage(CGImage: scaledImage)
-        var exportMetadata : [String:AnyObject]? = nil
-        if let metadata = imageProperties as NSDictionary as? [String:AnyObject] {
+        let image = UIImage(cgImage: scaledImage)
+        var exportMetadata: [String: AnyObject]? = nil
+        if let metadata = imageProperties as NSDictionary as? [String: AnyObject] {
             exportMetadata = metadata
             if stripGeoLocation {
                 let attributesToRemove = [kCGImagePropertyGPSDictionary as String]
-                exportMetadata = removeAttributes(attributesToRemove, fromMetadata: metadata)
+                exportMetadata = removeAttributes(attributes: attributesToRemove, fromMetadata: metadata)
             }
         }
 
         do {
-            try image.writeToURL(url, type: targetUTI, compressionQuality: 0.9, metadata: exportMetadata)
-            successHandler(resultingSize: image.size)
+            try image.writeToURL(url as URL, type: targetUTI, compressionQuality: 0.9, metadata: exportMetadata)
+            successHandler(image.size)
         } catch let error as NSError {
-            errorHandler(error: error)
+            errorHandler(error)
         } catch {
-            errorHandler(error: errorForCode(.FailedToExport,
+            errorHandler(errorForCode(errorCode: .FailedToExport,
                                                   failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
             ))
         }
     }
 
-    func exportOriginalImage(toURL: NSURL, successHandler: SuccessHandler, errorHandler: ErrorHandler) {
-        let fileManager = NSFileManager.defaultManager()
+    func exportOriginalImage(_ toURL: URL, successHandler: @escaping SuccessHandler, errorHandler: @escaping ErrorHandler) {
+        let fileManager = FileManager.default
         do {
-            try fileManager.copyItemAtURL(self, toURL: toURL)
+            try fileManager.copyItem(at: self as URL, to: toURL)
         } catch let error as NSError {
-            errorHandler(error: error)
+            errorHandler(error)
         } catch {
-            errorHandler(error: errorForCode(.FailedToExport,
+            errorHandler(errorForCode(errorCode: .FailedToExport,
                                                   failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
             ))
         }
-        successHandler(resultingSize: pixelSize)
+        successHandler(pixelSize)
     }
 
-    func exportVideoToURL(url: NSURL,
+    func exportVideoToURL(_ url: NSURL,
         targetUTI: String,
         maximumResolution: CGSize,
         stripGeoLocation: Bool,
-        successHandler: SuccessHandler,
-        errorHandler: ErrorHandler) {
+        successHandler: @escaping SuccessHandler,
+        errorHandler: @escaping ErrorHandler) {
 
-        let asset = AVURLAsset(URL: self)
-        guard let track = asset.tracksWithMediaType(AVMediaTypeVideo).first else {
-            errorHandler(error: errorForCode(.FailedToExport,
+        let asset = AVURLAsset(url: self as URL)
+        guard let track = asset.tracks(withMediaType: AVMediaTypeVideo).first else {
+            errorHandler(errorForCode(errorCode: .FailedToExport,
                 failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of an media asset fails")
                 ))
             return
         }
-        let size = CGSizeApplyAffineTransform(track.naturalSize, track.preferredTransform)
+        let size = track.naturalSize.applying(track.preferredTransform)
         let pixelWidth = fabs(size.width)
         let pixelHeight = fabs(size.height)
 
@@ -118,30 +117,30 @@ extension NSURL: ExportableAsset {
             let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
         else {
 
-            errorHandler(error: errorForCode(.FailedToExport,
+            errorHandler(errorForCode(errorCode: .FailedToExport,
                 failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of an media asset fails")
                 ))
             return
         }
         exportSession.outputFileType = targetUTI
         exportSession.shouldOptimizeForNetworkUse = true
-        exportSession.outputURL = url
-        exportSession.exportAsynchronouslyWithCompletionHandler({ () -> Void in
-            guard exportSession.status == .Completed else {
+        exportSession.outputURL = url as URL
+        exportSession.exportAsynchronously(completionHandler: { () -> Void in
+            guard exportSession.status == .completed else {
                 if let error = exportSession.error {
-                    errorHandler(error: error)
+                    errorHandler(error as NSError)
                 }
                 return
             }
-            successHandler(resultingSize: CGSize(width: pixelWidth, height: pixelHeight))
+            successHandler(CGSize(width: pixelWidth, height: pixelHeight))
         })
     }
 
-    func exportThumbnailToURL(url: NSURL,
+    func exportThumbnailToURL(_ url: URL,
         targetSize: CGSize,
         synchronous: Bool,
-        successHandler: SuccessHandler,
-        errorHandler: ErrorHandler) {
+        successHandler: @escaping SuccessHandler,
+        errorHandler: @escaping ErrorHandler) {
         if isImage {
             exportToURL(url,
                         targetUTI: defaultThumbnailUTI,
@@ -151,35 +150,35 @@ extension NSURL: ExportableAsset {
                         successHandler: successHandler,
                         errorHandler: errorHandler)
         } else if isVideo {
-            let asset = AVURLAsset(URL: self, options: nil)
+            let asset = AVURLAsset(url: self as URL, options: nil)
             let imgGenerator = AVAssetImageGenerator(asset: asset)
             imgGenerator.maximumSize = targetSize
             imgGenerator.appliesPreferredTrackTransform = true
-            imgGenerator.generateCGImagesAsynchronouslyForTimes([NSValue(CMTime:CMTimeMake(0, 1))], completionHandler: { (time, cgImage, actualTime, result, error) in
+            imgGenerator.generateCGImagesAsynchronously(forTimes: [NSValue(time: CMTimeMake(0, 1))], completionHandler: { (time, cgImage, actualTime, result, error) in
                 guard let cgImage = cgImage else {
                     if let error = error {
-                        errorHandler(error:error)
+                        errorHandler(error as NSError)
                     } else {
-                        errorHandler(error: self.errorForCode(.FailedToExport,
+                        errorHandler(self.errorForCode(errorCode: .FailedToExport,
                             failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
                             ))
                     }
                     return
                 }
-                let uiImage = UIImage(CGImage: cgImage)
+                let uiImage = UIImage(cgImage: cgImage)
                 do {
                     try uiImage.writeJPEGToURL(url)
-                        successHandler(resultingSize: uiImage.size)
+                        successHandler(uiImage.size)
                 } catch let error as NSError {
-                    errorHandler(error: error)
+                    errorHandler(error)
                 } catch {
-                    errorHandler(error: self.errorForCode(.FailedToExport,
+                    errorHandler(self.errorForCode(errorCode: .FailedToExport,
                         failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
                         ))
                 }
             })
         } else {
-            errorHandler(error: errorForCode(.FailedToExport,
+            errorHandler(errorForCode(errorCode: .FailedToExport,
                 failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
                 ))
         }
@@ -198,11 +197,11 @@ extension NSURL: ExportableAsset {
     var assetMediaType: MediaType {
         get {
             if isImage {
-                return .Image
+                return .image
             } else if (isVideo) {
-                return .Video
+                return .video
             }
-            return .Document
+            return .document
         }
     }
 
@@ -211,32 +210,32 @@ extension NSURL: ExportableAsset {
     var pixelSize: CGSize {
         get {
             if isVideo {
-                let asset = AVAsset(URL: self)
-                if let track = asset.tracksWithMediaType(AVMediaTypeVideo).first {
-                    return CGSizeApplyAffineTransform(track.naturalSize, track.preferredTransform)
+                let asset = AVAsset(url: self as URL)
+                if let track = asset.tracks(withMediaType: AVMediaTypeVideo).first {
+                    return track.naturalSize.applying(track.preferredTransform)
                 }
             } else if isImage {
-                let options: [NSString:NSObject] = [kCGImageSourceShouldCache: false]
+                let options: [NSString: NSObject] = [kCGImageSourceShouldCache: false as CFBoolean]
                 if
                     let imageSource = CGImageSourceCreateWithURL(self, nil),
-                    let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, options) as NSDictionary?,
+                    let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, options as CFDictionary?) as NSDictionary?,
                     let pixelWidth = imageProperties[kCGImagePropertyPixelWidth as NSString] as? Int,
                     let pixelHeight = imageProperties[kCGImagePropertyPixelHeight as NSString] as? Int
                 {
                         return CGSize(width: pixelWidth, height: pixelHeight)
                 }
             }
-            return CGSizeZero
+            return CGSize.zero
         }
     }
 
     var typeIdentifier: String? {
-        guard fileURL else { return nil }
+        guard isFileURL else { return nil }
         do {
-            let data = try bookmarkDataWithOptions(NSURLBookmarkCreationOptions.MinimalBookmark, includingResourceValuesForKeys:[NSURLTypeIdentifierKey], relativeToURL: nil)
+            let data = try bookmarkData(options: NSURL.BookmarkCreationOptions.minimalBookmark, includingResourceValuesForKeys: [URLResourceKey.typeIdentifierKey], relativeTo: nil)
             guard
-                let resourceValues = NSURL.resourceValuesForKeys([NSURLTypeIdentifierKey], fromBookmarkData:data),
-                let typeIdentifier = resourceValues[NSURLTypeIdentifierKey] as? String else {
+                let resourceValues = NSURL.resourceValues(forKeys: [URLResourceKey.typeIdentifierKey], fromBookmarkData: data),
+                let typeIdentifier = resourceValues[URLResourceKey.typeIdentifierKey] as? String else {
                     return nil
             }
             return typeIdentifier
@@ -272,15 +271,15 @@ extension NSURL: ExportableAsset {
     }
 
 
-    func removeAttributes(attributes: [String], fromMetadata: [String:AnyObject]) -> [String:AnyObject]{
+    func removeAttributes(attributes: [String], fromMetadata: [String: AnyObject]) -> [String: AnyObject]{
         var resultingMetadata = fromMetadata
         for attribute in attributes {
-            resultingMetadata.removeValueForKey(attribute)
+            resultingMetadata.removeValue(forKey: attribute)
             if attribute == kCGImagePropertyOrientation as String{
-                if let tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String:AnyObject]{
+                if let tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String: AnyObject]{
                     var newTiffMetadata = tiffMetadata
-                    newTiffMetadata.removeValueForKey(kCGImagePropertyTIFFOrientation as String)
-                    resultingMetadata[kCGImagePropertyTIFFDictionary as String] = newTiffMetadata
+                    newTiffMetadata.removeValue(forKey: kCGImagePropertyTIFFOrientation as String)
+                    resultingMetadata[kCGImagePropertyTIFFDictionary as String] = newTiffMetadata as AnyObject?
                 }
             }
         }
@@ -295,13 +294,13 @@ extension NSURL: ExportableAsset {
     ///
     /// - Returns: A new metadata object where the values match the values on the UIImage
     ///
-    func matchMetadata(metadata: [String:AnyObject], image: UIImage) -> [String:AnyObject] {
+    func matchMetadata(metadata: [String: AnyObject], image: UIImage) -> [String: AnyObject] {
         var resultingMetadata = metadata
         let correctOrientation = image.metadataOrientation
-        resultingMetadata[kCGImagePropertyOrientation as String] = Int(correctOrientation.rawValue)
-        if var tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String:AnyObject]{
-            tiffMetadata[kCGImagePropertyTIFFOrientation as String] = Int(correctOrientation.rawValue)
-            resultingMetadata[kCGImagePropertyTIFFDictionary as String] = tiffMetadata
+        resultingMetadata[kCGImagePropertyOrientation as String] = Int(correctOrientation.rawValue) as AnyObject?
+        if var tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String: AnyObject]{
+            tiffMetadata[kCGImagePropertyTIFFOrientation as String] = Int(correctOrientation.rawValue) as AnyObject?
+            resultingMetadata[kCGImagePropertyTIFFDictionary as String] = tiffMetadata as AnyObject?
         }
 
         return resultingMetadata
@@ -309,7 +308,7 @@ extension NSURL: ExportableAsset {
 
     // MARK: - Error Handling
 
-    enum ErrorCode : Int {
+    enum ErrorCode: Int {
         case UnsupportedAssetType = 1
         case FailedToExport = 2
         case FailedToExportMetadata = 3

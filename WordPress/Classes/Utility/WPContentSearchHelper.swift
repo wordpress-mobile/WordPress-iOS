@@ -7,14 +7,14 @@ import UIKit
 class WPContentSearchHelper: NSObject {
 
     /// The current searchText set on the helper.
-    var searchText:String? = nil
+    var searchText: String? = nil
 
     // MARK: - Methods for configuring the timing of search callbacks.
 
-    private var observers = [WPContentSearchObserver]()
-    private let defaultDeferredSearchObservationInterval = NSTimeInterval(0.30)
+    fileprivate var observers = [WPContentSearchObserver]()
+    fileprivate let defaultDeferredSearchObservationInterval = TimeInterval(0.30)
 
-    func configureImmediateSearch(handler: ()->Void) {
+    func configureImmediateSearch(_ handler: @escaping ()->Void) {
         let observer = WPContentSearchObserver()
         observer.interval = 0.0
         observer.completion = handler
@@ -22,7 +22,7 @@ class WPContentSearchHelper: NSObject {
     }
 
     /// Add a search callback configured as a common deferred search.
-    func configureDeferredSearch(handler: ()->Void) {
+    func configureDeferredSearch(_ handler: @escaping ()->Void) {
         let observer = WPContentSearchObserver()
         observer.interval = defaultDeferredSearchObservationInterval
         observer.completion = handler
@@ -38,16 +38,16 @@ class WPContentSearchHelper: NSObject {
     // MARK: - Methods for updating the search.
 
     /// Update the current search text, ideally in real-time along with user input.
-    func searchUpdated(text: String?) {
+    func searchUpdated(_ text: String?) {
         stopAllObservers()
         searchText = text
         for observer in observers {
-            let timer = NSTimer.init(timeInterval: observer.interval,
+            let timer = Timer.init(timeInterval: observer.interval,
                                      target: observer,
                                      selector: #selector(WPContentSearchObserver.timerFired),
                                      userInfo: nil,
                                      repeats: false)
-            NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
+            RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
         }
     }
 
@@ -59,7 +59,7 @@ class WPContentSearchHelper: NSObject {
     // MARK: - Private Methods
 
     /// Stop the observers from firing.
-    private func stopAllObservers() {
+    fileprivate func stopAllObservers() {
         for observer in observers {
             observer.timer?.invalidate()
             observer.timer = nil
@@ -72,8 +72,8 @@ class WPContentSearchHelper: NSObject {
 /// Object encapsulating the callback and timing information.
 private class WPContentSearchObserver: NSObject {
 
-    var interval = NSTimeInterval(0.0)
-    var timer:NSTimer?
+    var interval = TimeInterval(0.0)
+    var timer: Timer?
     var completion = {}
 
     @objc func timerFired() {

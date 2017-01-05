@@ -10,9 +10,9 @@ extension Tracks
         trackExtensionEvent(.Accessed)
     }
 
-    public func trackExtensionStatsLaunched(siteID: Int) {
-        let properties = ["site_id" : siteID]
-        trackExtensionEvent(.StatsLaunched, properties: properties)
+    public func trackExtensionStatsLaunched(_ siteID: Int) {
+        let properties = ["site_id": siteID]
+        trackExtensionEvent(.StatsLaunched, properties: properties as [String : AnyObject]?)
     }
 
     public func trackExtensionConfigureLaunched() {
@@ -21,13 +21,13 @@ extension Tracks
 
 
     // MARK: - Private Helpers
-    private func trackExtensionEvent(event: ExtensionEvents, properties: [String: AnyObject]? = nil) {
+    fileprivate func trackExtensionEvent(_ event: ExtensionEvents, properties: [String: AnyObject]? = nil) {
         track(event.rawValue, properties: properties)
     }
 
 
     // MARK: - Private Enums
-    private enum ExtensionEvents : String {
+    fileprivate enum ExtensionEvents: String {
         case Accessed          = "wpios_today_extension_accessed"
         case StatsLaunched     = "wpios_today_extension_stats_launched"
         case ConfigureLaunched = "wpios_today_extension_configure_launched"

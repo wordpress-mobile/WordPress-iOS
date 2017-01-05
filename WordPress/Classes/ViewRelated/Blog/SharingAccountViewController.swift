@@ -5,7 +5,7 @@ import WordPressShared
 /// Displays a list of available keyring connection accounts that can be used to
 /// forge a publicize connection.
 ///
-@objc public class SharingAccountViewController : UITableViewController
+@objc open class SharingAccountViewController: UITableViewController
 {
     var publicizeService: PublicizeService
     var keyringConnections: [KeyringConnection]
@@ -22,7 +22,7 @@ import WordPressShared
         keyringConnections = connections
         existingPublicizeConnections = existingConnections
 
-        super.init(style: .Grouped)
+        super.init(style: .grouped)
 
         navigationItem.title = publicizeService.label
     }
@@ -34,7 +34,7 @@ import WordPressShared
     }
 
 
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
 
         configureNavbar()
@@ -47,16 +47,16 @@ import WordPressShared
 
     /// Configures the appearance of the nav bar.
     ///
-    private func configureNavbar() {
-        let image = Gridicon.iconOfType(.Cross)
-        let closeButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(SharingAccountViewController.handleCloseTapped(_:)))
-        closeButton.tintColor = UIColor.whiteColor()
+    fileprivate func configureNavbar() {
+        let image = Gridicon.iconOfType(.cross)
+        let closeButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(SharingAccountViewController.handleCloseTapped(_:)))
+        closeButton.tintColor = UIColor.white
         navigationItem.leftBarButtonItem = closeButton
 
         // The preceding WPWebViewController changes the default navbar appearance. Restore it.
         if let navBar = navigationController?.navigationBar {
             navBar.shadowImage = WPStyleGuide.navigationBarShadowImage()
-            navBar.setBackgroundImage(WPStyleGuide.navigationBarBackgroundImage(), forBarMetrics: .Default)
+            navBar.setBackgroundImage(WPStyleGuide.navigationBarBackgroundImage(), for: .default)
             navBar.barStyle = WPStyleGuide.navigationBarBarStyle()
         }
     }
@@ -64,8 +64,8 @@ import WordPressShared
 
     /// Configures the `UITableView`
     ///
-    private func configureTableView() {
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+    fileprivate func configureTableView() {
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows([TextRow.self], tableView: tableView)
 
         immutableHandler = ImmuTableViewHandler(takeOver: self)
@@ -80,16 +80,16 @@ import WordPressShared
     ///
     /// - Returns: An ImmuTable instance.
     ///
-    private func tableViewModel() -> ImmuTable {
+    fileprivate func tableViewModel() -> ImmuTable {
         var sections = [ImmuTableSection]()
         var connectedAccounts = [KeyringAccount]()
         var accounts = keyringAccountsFromKeyringConnections(keyringConnections)
 
         // Filter out connected accounts into a different Array
-        for (idx, acct) in accounts.enumerate() {
+        for (idx, acct) in accounts.enumerated() {
             if accountIsConnected(acct) {
                 connectedAccounts.append(acct)
-                accounts.removeAtIndex(idx)
+                accounts.remove(at: idx)
                 break
             }
         }
@@ -118,13 +118,13 @@ import WordPressShared
     ///
     /// - Returns: An ImmuTableSection or `nil` if there were no rows.
     ///
-    private func sectionForUnconnectedKeyringAccountRows(rows: [ImmuTableRow]) -> ImmuTableSection? {
+    fileprivate func sectionForUnconnectedKeyringAccountRows(_ rows: [ImmuTableRow]) -> ImmuTableSection? {
         if rows.count == 0 {
             return nil
         }
 
         var title =  NSLocalizedString("Connecting %@", comment: "Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name")
-        title = NSString(format: title, publicizeService.label) as String
+        title = NSString(format: title as NSString, publicizeService.label) as String
 
         let manyAccountFooter = NSLocalizedString("Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account.", comment: "")
         let oneAccountFooter = NSLocalizedString("Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account.", comment: "")
@@ -140,7 +140,7 @@ import WordPressShared
     ///
     /// - Returns: An ImmuTableSection or `nil` if there were no rows.
     ///
-    private func rowsForUnconnectedKeyringAccounts(accounts: [KeyringAccount]) -> [ImmuTableRow] {
+    fileprivate func rowsForUnconnectedKeyringAccounts(_ accounts: [KeyringAccount]) -> [ImmuTableRow] {
         var rows = [ImmuTableRow]()
         for acct in accounts {
             let row = KeyringRow(title: acct.name, value: "", action: actionForRow(acct))
@@ -158,7 +158,7 @@ import WordPressShared
     ///
     /// - Returns: An ImmuTableAction instance.
     ///
-    private func actionForRow(keyringAccount: KeyringAccount) -> ImmuTableAction {
+    fileprivate func actionForRow(_ keyringAccount: KeyringAccount) -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
 
@@ -175,7 +175,7 @@ import WordPressShared
     ///
     /// - Returns: An array of ImmuTableRows representing the keyring accounts.
     ///
-    private func rowsForConnectedKeyringAccounts(accounts: [KeyringAccount]) -> [ImmuTableRow] {
+    fileprivate func rowsForConnectedKeyringAccounts(_ accounts: [KeyringAccount]) -> [ImmuTableRow] {
         var rows = [ImmuTableRow]()
         for acct in accounts {
             let row = TextRow(title: acct.name, value: "")
@@ -192,7 +192,7 @@ import WordPressShared
     ///
     /// - Returns: An array of `KeyringAccount` objects.
     ///
-    private func keyringAccountsFromKeyringConnections(connections: [KeyringConnection]) -> [KeyringAccount] {
+    fileprivate func keyringAccountsFromKeyringConnections(_ connections: [KeyringConnection]) -> [KeyringAccount] {
         var accounts = [KeyringAccount]()
 
         for connection in connections {
@@ -215,7 +215,7 @@ import WordPressShared
     ///
     /// - Returns: true if the keyring account is being used by an existing publicize connection. False otherwise.
     ///
-    private func accountIsConnected(keyringAccount: KeyringAccount) -> Bool {
+    fileprivate func accountIsConnected(_ keyringAccount: KeyringAccount) -> Bool {
         guard let existingConnections = existingPublicizeConnections else {
             return false
         }
@@ -240,7 +240,7 @@ import WordPressShared
     ///
     /// - Parameter sender: The close button that was tapped.
     ///
-    func handleCloseTapped(sender: UIBarButtonItem) {
+    func handleCloseTapped(_ sender: UIBarButtonItem) {
         delegate?.didDismissSharingAccountViewController(self)
     }
 
@@ -261,14 +261,14 @@ import WordPressShared
 
     /// An ImmuTableRow class.
     ///
-    struct KeyringRow : ImmuTableRow {
-        static let cell = ImmuTableCell.Class(WPTableViewCellValue1)
+    struct KeyringRow: ImmuTableRow {
+        static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
         let title: String
         let value: String
         let action: ImmuTableAction?
 
-        func configureCell(cell: UITableViewCell) {
+        func configureCell(_ cell: UITableViewCell) {
             cell.textLabel?.text = title
             cell.detailTextLabel?.text = value
 
@@ -280,8 +280,8 @@ import WordPressShared
 
 /// Delegate protocol.
 ///
-@objc protocol SharingAccountSelectionDelegate : NSObjectProtocol
+@objc protocol SharingAccountSelectionDelegate: NSObjectProtocol
 {
-    func didDismissSharingAccountViewController(controller: SharingAccountViewController)
-    func sharingAccountViewController(controller: SharingAccountViewController, selectedKeyringConnection keyringConnection: KeyringConnection, externalID: String?)
+    func didDismissSharingAccountViewController(_ controller: SharingAccountViewController)
+    func sharingAccountViewController(_ controller: SharingAccountViewController, selectedKeyringConnection keyringConnection: KeyringConnection, externalID: String?)
 }

@@ -2,7 +2,7 @@ import XCTest
 
 class LoginTests: XCTestCase {
 
-    var app:XCUIApplication!
+    var app: XCUIApplication!
 
     override func setUp() {
         super.setUp()

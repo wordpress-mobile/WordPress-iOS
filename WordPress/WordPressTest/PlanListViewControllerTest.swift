@@ -25,7 +25,7 @@ class PlanListViewControllerTest: XCTestCase {
     // MARK: - PlanListViewModel tests
 
     func testPlanImageWhenActivePlanSet() {
-        let model = PlanListViewModel.Ready((siteID: 123, activePlan: TestPlans.premium.plan, availablePlans: plansWithPrices))
+        let model = PlanListViewModel.ready((siteID: 123, activePlan: TestPlans.premium.plan, availablePlans: plansWithPrices))
         let tableViewModel = model.tableViewModelWithPresenter(nil, planService: nil)
         let freeRow = tableViewModel.planRowAtIndex(0)
         let premiumRow = tableViewModel.planRowAtIndex(1)
@@ -44,7 +44,8 @@ class PlanListViewControllerTest: XCTestCase {
 }
 
 extension ImmuTable {
-    private func planRowAtIndex(index: Int) -> PlanListRow {
-        return rowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as! PlanListRow
+
+    fileprivate func planRowAtIndex(_ index: Int) -> PlanListRow {
+        return rowAtIndexPath(IndexPath(row: index, section: 0)) as! PlanListRow
     }
 }

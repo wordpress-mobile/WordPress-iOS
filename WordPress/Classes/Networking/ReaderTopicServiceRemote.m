@@ -134,7 +134,8 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
              withSuccess:(void (^)(NSNumber *topicID))success
                  failure:(void (^)(NSError *error))failure
 {
-    [self followTopicWithSlug:topicName withSuccess:success failure:failure];
+    NSString *slug = [self slugForTopicName:topicName];
+    [self followTopicWithSlug:slug withSuccess:success failure:failure];
 }
 
 - (void)followTopicWithSlug:(NSString *)slug

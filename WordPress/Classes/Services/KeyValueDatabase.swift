@@ -6,29 +6,29 @@ import Foundation
 /// For `NSArray` and `NSDictionary` objects, their contents must be property
 /// list objects.
 protocol KeyValueDatabase {
-    func objectForKey(key: String) -> AnyObject?
-    func setObject(object: AnyObject?, forKey key: String)
-    func removeObjectForKey(key: String)
+    func object(forKey defaultName: String) -> Any?
+    func set(_ value: Any?, forKey defaultName: String)
+    func removeObject(forKey defaultName: String)
 }
 
 // MARK: - Storage implementations
 
-extension NSUserDefaults: KeyValueDatabase {}
+extension UserDefaults: KeyValueDatabase {}
 
 /// `EphemeralKeyValueDatabase` stores values in a dictionary in memory, and is
 /// never persisted between app launches.
 class EphemeralKeyValueDatabase: KeyValueDatabase {
-    private var memory = [String: AnyObject]()
+    fileprivate var memory = [String: Any]()
 
-    func setObject(object: AnyObject?, forKey key: String) {
-        memory[key] = object
+    open func set(_ value: Any?, forKey defaultName: String) {
+        memory[defaultName] = value
     }
 
-    func objectForKey(key: String) -> AnyObject? {
-        return memory[key]
+    open func object(forKey defaultName: String) -> Any? {
+        return memory[defaultName]
     }
 
-    func removeObjectForKey(key: String) {
-        memory[key] = nil
+    open func removeObject(forKey defaultName: String) {
+        memory[defaultName] = nil
     }
 }

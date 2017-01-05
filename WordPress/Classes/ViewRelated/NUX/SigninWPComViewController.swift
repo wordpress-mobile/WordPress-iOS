@@ -4,7 +4,7 @@ import WordPressShared
 
 /// Provides a form and functionality for signing a user in to WordPress.com
 ///
-@objc class SigninWPComViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder
+@objc class SigninWPComViewController: NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder
 {
 
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
@@ -21,7 +21,7 @@ import WordPressShared
 
     var restrictSigninToWPCom = false {
         didSet {
-            if isViewLoaded() {
+            if isViewLoaded {
                 configureForWPComOnlyIfNeeded()
             }
         }
@@ -40,9 +40,9 @@ import WordPressShared
     ///     - loginFields: A LoginFields instance containing any prefilled credentials.
     ///     - immediateSignin: Whether the controller should attempt to signin immediately.
     ///
-    class func controller(loginFields: LoginFields, immediateSignin: Bool = false) -> SigninWPComViewController {
-        let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateViewControllerWithIdentifier("SigninWPComViewController") as! SigninWPComViewController
+    class func controller(_ loginFields: LoginFields, immediateSignin: Bool = false) -> SigninWPComViewController {
+        let storyboard = UIStoryboard(name: "Signin", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SigninWPComViewController") as! SigninWPComViewController
         controller.loginFields = loginFields
         controller.immediateSignin = immediateSignin
         return controller
@@ -62,7 +62,7 @@ import WordPressShared
     }
 
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // Update special case login fields.
@@ -74,7 +74,7 @@ import WordPressShared
     }
 
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
@@ -87,7 +87,7 @@ import WordPressShared
     }
 
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unregisterForKeyboardEvents()
     }
@@ -99,7 +99,7 @@ import WordPressShared
     ///
     ///
     func configureForWPComOnlyIfNeeded() {
-        selfHostedButton.hidden = restrictSigninToWPCom
+        selfHostedButton.isHidden = restrictSigninToWPCom
     }
 
 
@@ -109,17 +109,17 @@ import WordPressShared
         usernameField.placeholder = NSLocalizedString("Email or username", comment: "Username placeholder")
         passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
 
-        let submitButtonTitle = NSLocalizedString("Log In", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
-        submitButton.setTitle(submitButtonTitle, forState: .Normal)
-        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
+        let submitButtonTitle = NSLocalizedString("Log In", comment: "Title of a button. The text should be uppercase.").localizedUppercase
+        submitButton.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton.setTitle(submitButtonTitle, for: .highlighted)
 
         let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
-        forgotPasswordButton.setTitle(forgotPasswordTitle, forState: .Normal)
-        forgotPasswordButton.setTitle(forgotPasswordTitle, forState: .Highlighted)
+        forgotPasswordButton.setTitle(forgotPasswordTitle, for: UIControlState())
+        forgotPasswordButton.setTitle(forgotPasswordTitle, for: .highlighted)
 
         let selfHostedTitle = NSLocalizedString("Add a self-hosted WordPress site", comment: "Title of a button. ")
-        selfHostedButton.setTitle(selfHostedTitle, forState: .Normal)
-        selfHostedButton.setTitle(selfHostedTitle, forState: .Highlighted)
+        selfHostedButton.setTitle(selfHostedTitle, for: UIControlState())
+        selfHostedButton.setTitle(selfHostedTitle, for: .highlighted)
     }
 
 
@@ -145,17 +145,17 @@ import WordPressShared
     /// - Parameter message: The text to display in the label.
     ///
     ///
-    func configureStatusLabel(message: String) {
+    func configureStatusLabel(_ message: String) {
         statusLabel.text = message
     }
 
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating animating: Bool) {
+    func configureSubmitButton(animating: Bool) {
         submitButton.showActivityIndicator(animating)
 
-        submitButton.enabled = (
+        submitButton.isEnabled = (
             !animating &&
                 !loginFields.username.isEmpty &&
                 !loginFields.password.isEmpty
@@ -167,9 +167,9 @@ import WordPressShared
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(loading: Bool) {
-        usernameField.enabled = !loading
-        passwordField.enabled = !loading
+    func configureViewLoading(_ loading: Bool) {
+        usernameField.isEnabled = !loading
+        passwordField.isEnabled = !loading
 
         configureSubmitButton(animating: loading)
         navigationItem.hidesBackButton = loading
@@ -200,7 +200,7 @@ import WordPressShared
 
         // Is everything filled out?
         if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
-            WPError.showAlertWithTitle(NSLocalizedString("Error", comment: "Title of an error message"),
+            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Title of an error message"),
                                        message: NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."),
                                        withSupportButton: false)
 
@@ -215,7 +215,7 @@ import WordPressShared
 
         configureViewLoading(true)
 
-        loginFacade.signInWithLoginFields(loginFields)
+        loginFacade.signIn(with: loginFields)
     }
 
 
@@ -224,7 +224,7 @@ import WordPressShared
     /// - Parameters:
     ///     - username: The username that was entered.
     ///
-    func handleReservedUsername(username: String) {
+    func handleReservedUsername(_ username: String) {
         // If we're restricted to wpcom, just prmopt that the name is reserved.
         if restrictSigninToWPCom {
             SigninHelpers.promptForWPComReservedUsername(username, callback: {
@@ -238,11 +238,11 @@ import WordPressShared
         // When not restricted to wpcom, prompt then switch to the self-hsoted flow.
         let alert = UIAlertController(title: NSLocalizedString("Self-hosted Site?", comment: "Title of a notice to the user."),
                                       message: NSLocalizedString("It looks like you're signing in to a self-hosted site.  Enter your site's URL on the next screen.", comment: "A brief notice to the user. Explaining the next step when signing in."),
-                                      preferredStyle: .Alert)
+                                      preferredStyle: .alert)
         alert.addDefaultActionWithTitle(NSLocalizedString("OK", comment: "A button label. Tapping dismisses a prompt."), handler: { (action: UIAlertAction) in
             self.signinToSelfHostedSite()
         })
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 
 
@@ -263,7 +263,7 @@ import WordPressShared
     // MARK: - Actions
 
 
-    @IBAction func handleTextFieldDidChange(sender: UITextField) {
+    @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
         loginFields.username = usernameField.nonNilTrimmedText()
         loginFields.password = passwordField.nonNilTrimmedText()
 
@@ -271,17 +271,17 @@ import WordPressShared
     }
 
 
-    @IBAction func handleSubmitButtonTapped(sender: UIButton) {
+    @IBAction func handleSubmitButtonTapped(_ sender: UIButton) {
         validateForm()
     }
 
 
-    @IBAction func handleForgotPasswordButtonTapped(sender: UIButton) {
+    @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
         SigninHelpers.openForgotPasswordURL(loginFields)
     }
 
 
-    func handleOnePasswordButtonTapped(sender: UIButton) {
+    func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
         SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
@@ -292,7 +292,7 @@ import WordPressShared
     }
 
 
-    @IBAction func handleSelfHostedButtonTapped(sender: UIButton) {
+    @IBAction func handleSelfHostedButtonTapped(_ sender: UIButton) {
         signinToSelfHostedSite()
     }
 
@@ -300,12 +300,12 @@ import WordPressShared
     // MARK: - Keyboard Notifications
 
 
-    func handleKeyboardWillShow(notification: NSNotification) {
+    func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
     }
 
 
-    func handleKeyboardWillHide(notification: NSNotification) {
+    func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
     }
 }
@@ -313,20 +313,20 @@ import WordPressShared
 
 extension SigninWPComViewController: LoginFacadeDelegate {
 
-    func finishedLoginWithUsername(username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+    func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
     }
 
 
-    func displayLoginMessage(message: String!) {
+    func displayLoginMessage(_ message: String!) {
         configureStatusLabel(message)
     }
 
 
-    func displayRemoteError(error: NSError!) {
+    func displayRemoteError(_ error: Error!) {
         configureStatusLabel("")
         configureViewLoading(false)
-        displayError(error)
+        displayError(error as NSError)
     }
 
 
@@ -334,7 +334,7 @@ extension SigninWPComViewController: LoginFacadeDelegate {
         configureStatusLabel("")
         configureViewLoading(false)
 
-        WPAppAnalytics.track(.TwoFactorCodeRequested)
+        WPAppAnalytics.track(.twoFactorCodeRequested)
         // Credentials were good but a 2fa code is needed.
         loginFields.shouldDisplayMultifactor = true // technically not needed
         let controller = Signin2FAViewController.controller(loginFields)
@@ -345,10 +345,10 @@ extension SigninWPComViewController: LoginFacadeDelegate {
 
 
 extension SigninWPComViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == usernameField {
             passwordField.becomeFirstResponder()
-        } else if submitButton.enabled {
+        } else if submitButton.isEnabled {
             validateForm()
         }
         return true

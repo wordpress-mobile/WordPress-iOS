@@ -11,9 +11,9 @@ class NotificationSettingsServiceTests: XCTestCase
     typealias StreamKind    = NotificationSettings.Stream.Kind
 
     // MARK: - Properties
-    var contextManager      : TestContextManager!
-    var remoteApi           : WordPressComRestApi!
-    var service             : NotificationSettingsService!
+    var contextManager: TestContextManager!
+    var remoteApi: WordPressComRestApi!
+    var service: NotificationSettingsService!
 
     // MARK: - Constants
     let timeout             = 2.0
@@ -32,12 +32,12 @@ class NotificationSettingsServiceTests: XCTestCase
         service             = NotificationSettingsService(managedObjectContext: contextManager.mainContext,
                                                            wordPressComRestApi: remoteApi)
 
-        stub({ request in
-            return request.URL?.absoluteString!.rangeOfString(self.settingsEndpoint) != nil
-                && request.HTTPMethod! == "GET"
+        stub(condition: { request in
+            return request.url?.absoluteString.range(of: self.settingsEndpoint) != nil
+                && request.httpMethod! == "GET"
             }) { _ in
-                let stubPath = OHPathForFile(self.settingsFilename, self.dynamicType)
-                return fixture(stubPath!, headers: ["Content-Type": self.contentTypeJson])
+                let stubPath = OHPathForFile(self.settingsFilename, type(of: self))
+                return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: self.contentTypeJson as AnyObject])
         }
     }
 
@@ -51,7 +51,7 @@ class NotificationSettingsServiceTests: XCTestCase
     // MARK: - Unit Tests!
     func testNotificationSettingsCorrectlyParsesThreeSiteEntities() {
 
-        let targetChannel   = NotificationSettings.Channel.Blog(blogId: 1)
+        let targetChannel   = NotificationSettings.Channel.blog(blogId: 1)
         let targetSettings  = loadNotificationSettings().filter { $0.channel == targetChannel }
         XCTAssert(targetSettings.count == 1, "Error while parsing Site Settings")
 
@@ -63,30 +63,30 @@ class NotificationSettingsServiceTests: XCTestCase
         let parsedTimelineSettings  = targetSite.streams.filter { $0.kind == StreamKind.Timeline }.first
 
         let expectedTimelineSettings = [
-            "new_comment"   : false,
-            "comment_like"  : true,
-            "post_like"     : false,
-            "follow"        : true,
-            "achievement"   : false,
-            "mentions"      : true
+            "new_comment": false,
+            "comment_like": true,
+            "post_like": false,
+            "follow": true,
+            "achievement": false,
+            "mentions": true
         ]
 
         let expectedEmailSettings = [
-            "new_comment"   : true,
-            "comment_like"  : false,
-            "post_like"     : true,
-            "follow"        : false,
-            "achievement"   : true,
-            "mentions"      : false
+            "new_comment": true,
+            "comment_like": false,
+            "post_like": true,
+            "follow": false,
+            "achievement": true,
+            "mentions": false
         ]
 
         let expectedDeviceSettings = [
-            "new_comment"   : false,
-            "comment_like"  : true,
-            "post_like"     : false,
-            "follow"        : true,
-            "achievement"   : false,
-            "mentions"      : true
+            "new_comment": false,
+            "comment_like": true,
+            "post_like": false,
+            "follow": true,
+            "achievement": false,
+            "mentions": true
         ]
 
         for (key, value) in parsedDeviceSettings!.preferences! {
@@ -103,7 +103,7 @@ class NotificationSettingsServiceTests: XCTestCase
     }
 
     func testNotificationSettingsCorrectlyParsesThreeOtherEntities() {
-        let filteredSettings = loadNotificationSettings().filter { $0.channel == .Other }
+        let filteredSettings = loadNotificationSettings().filter { $0.channel == .other }
         XCTAssert(filteredSettings.count == 1, "Error while parsing Other Settings")
 
         let otherSettings = filteredSettings.first!
@@ -114,18 +114,18 @@ class NotificationSettingsServiceTests: XCTestCase
         let parsedTimelineSettings  = otherSettings.streams.filter { $0.kind == StreamKind.Timeline }.first
 
         let expectedDeviceSettings = [
-            "comment_like"  : true,
-            "comment_reply" : true
+            "comment_like": true,
+            "comment_reply": true
         ]
 
         let expectedEmailSettings = [
-            "comment_like"  : false,
-            "comment_reply" : false
+            "comment_like": false,
+            "comment_reply": false
         ]
 
         let expectedTimelineSettings = [
-            "comment_like"  : false,
-            "comment_reply" : true
+            "comment_like": false,
+            "comment_reply": true
         ]
 
         for (key, value) in parsedDeviceSettings!.preferences! {
@@ -142,17 +142,17 @@ class NotificationSettingsServiceTests: XCTestCase
     }
 
     func testNotificationSettingsCorrectlyParsesDotcomSettings() {
-        let filteredSettings = loadNotificationSettings().filter { $0.channel == .WordPressCom }
+        let filteredSettings = loadNotificationSettings().filter { $0.channel == .wordPressCom }
         XCTAssert(filteredSettings.count == 1, "Error while parsing WordPress.com Settings")
 
         let wordPressComSettings = filteredSettings.first!
         XCTAssert(wordPressComSettings.streams.count == 1, "Error while parsing WordPress.com Settings")
 
         let expectedSettings = [
-            "news"          : false,
+            "news": false,
             "recommendation": false,
-            "promotion"     : true,
-            "digest"        : true
+            "promotion": true,
+            "digest": true
         ]
 
         for (key, value) in wordPressComSettings.streams.first!.preferences! {
@@ -163,19 +163,19 @@ class NotificationSettingsServiceTests: XCTestCase
 
 
     // MARK: - Private Helpers
-    private func loadNotificationSettings() -> [NotificationSettings] {
-        var settings    : [NotificationSettings]?
-        let expectation = expectationWithDescription("Notification settings reading expecation")
+    fileprivate func loadNotificationSettings() -> [NotificationSettings] {
+        var settings: [NotificationSettings]?
+        let expect = expectation(description: "Notification settings reading expecation")
 
         service?.getAllSettings({ (theSettings: [NotificationSettings]) in
                 settings = theSettings
-                expectation.fulfill()
+                expect.fulfill()
             },
-            failure: { (error: NSError!) in
-                expectation.fulfill()
+            failure: { (error: NSError?) in
+                expect.fulfill()
             })
 
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
 
         XCTAssert(settings != nil, "Error while parsing settings")
 

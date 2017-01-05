@@ -3,7 +3,7 @@ import Foundation
 /// Provides functionality for fetching, saving, and deleting search phrases
 /// used to search for content in the reader.
 ///
-@objc class ReaderSearchSuggestionService : LocalCoreDataService
+@objc class ReaderSearchSuggestionService: LocalCoreDataService
 {
 
     /// Creates or updates an existing record for the specified search phrase.
@@ -11,15 +11,15 @@ import Foundation
     /// - Parameters:
     ///     - phrase: The search phrase in question.
     ///
-    func createOrUpdateSuggestionForPhrase(phrase: String) {
+    func createOrUpdateSuggestionForPhrase(_ phrase: String) {
         var suggestion = findSuggestionForPhrase(phrase)
         if suggestion == nil {
-            suggestion = NSEntityDescription.insertNewObjectForEntityForName(ReaderSearchSuggestion.classNameWithoutNamespaces(),
-                                                                             inManagedObjectContext: managedObjectContext) as? ReaderSearchSuggestion
+            suggestion = NSEntityDescription.insertNewObject(forEntityName: ReaderSearchSuggestion.classNameWithoutNamespaces(),
+                                                                             into: managedObjectContext) as? ReaderSearchSuggestion
             suggestion?.searchPhrase = phrase
         }
-        suggestion?.date = NSDate()
-        ContextManager.sharedInstance().saveContext(managedObjectContext)
+        suggestion?.date = Date()
+        ContextManager.sharedInstance().save(managedObjectContext)
     }
 
 
@@ -30,13 +30,13 @@ import Foundation
     ///
     /// - Returns: A matching search phrase or nil.
     ///
-    func findSuggestionForPhrase(phrase: String) -> ReaderSearchSuggestion? {
-        let fetchRequest = NSFetchRequest(entityName: "ReaderSearchSuggestion")
+    func findSuggestionForPhrase(_ phrase: String) -> ReaderSearchSuggestion? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSearchSuggestion")
         fetchRequest.predicate = NSPredicate(format: "searchPhrase MATCHES[cd] %@", phrase)
 
         var suggestions = [ReaderSearchSuggestion]()
         do {
-            suggestions = try managedObjectContext.executeFetchRequest(fetchRequest) as! [ReaderSearchSuggestion]
+            suggestions = try managedObjectContext.fetch(fetchRequest) as! [ReaderSearchSuggestion]
         } catch let error as NSError {
             DDLogSwift.logError("Error fetching search suggestion for phrase \(phrase) : \(error.localizedDescription)")
         }
@@ -52,8 +52,8 @@ import Foundation
     ///
     /// - Returns: An array of matching `ReaderSearchSuggestion`s.
     ///
-    func fetchSuggestionsLikePhrase(phrase: String) -> [ReaderSearchSuggestion] {
-        let fetchRequest = NSFetchRequest(entityName: "ReaderSearchSuggestion")
+    func fetchSuggestionsLikePhrase(_ phrase: String) -> [ReaderSearchSuggestion] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSearchSuggestion")
         fetchRequest.predicate = NSPredicate(format: "searchPhrase BEGINSWITH[cd] %@", phrase)
 
         let sort = NSSortDescriptor(key: "date", ascending: false)
@@ -61,7 +61,7 @@ import Foundation
 
         var suggestions = [ReaderSearchSuggestion]()
         do {
-            suggestions = try managedObjectContext.executeFetchRequest(fetchRequest) as! [ReaderSearchSuggestion]
+            suggestions = try managedObjectContext.fetch(fetchRequest) as! [ReaderSearchSuggestion]
         } catch let error as NSError {
             DDLogSwift.logError("Error fetching search suggestions for phrase \(phrase) : \(error.localizedDescription)")
         }
@@ -75,8 +75,8 @@ import Foundation
     /// - Parameters:
     ///     - suggestion: The `ReaderSearchSuggestion` to delete.
     ///
-    func deleteSuggestion(suggestion: ReaderSearchSuggestion) {
-        managedObjectContext.deleteObject(suggestion)
+    func deleteSuggestion(_ suggestion: ReaderSearchSuggestion) {
+        managedObjectContext.delete(suggestion)
         ContextManager.sharedInstance().saveContextAndWait(managedObjectContext)
     }
 
@@ -84,17 +84,17 @@ import Foundation
     /// Deletes all saved search suggestions.
     ///
     func deleteAllSuggestions() {
-        let fetchRequest = NSFetchRequest(entityName: "ReaderSearchSuggestion")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSearchSuggestion")
         var suggestions = [ReaderSearchSuggestion]()
         do {
-            suggestions = try managedObjectContext.executeFetchRequest(fetchRequest) as! [ReaderSearchSuggestion]
+            suggestions = try managedObjectContext.fetch(fetchRequest) as! [ReaderSearchSuggestion]
         } catch let error as NSError {
             DDLogSwift.logError("Error fetching search suggestion : \(error.localizedDescription)")
         }
         for suggestion in suggestions {
-            managedObjectContext.deleteObject(suggestion)
+            managedObjectContext.delete(suggestion)
         }
-        ContextManager.sharedInstance().saveContext(managedObjectContext)
+        ContextManager.sharedInstance().save(managedObjectContext)
     }
 
 }
