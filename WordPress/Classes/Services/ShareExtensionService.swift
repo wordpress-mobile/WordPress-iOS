@@ -1,8 +1,7 @@
 import Foundation
 
 @objc
-open class ShareExtensionService: NSObject
-{
+open class ShareExtensionService: NSObject {
     /// Sets the OAuth Token that should be used by the Share Extension to hit the Dotcom Backend.
     ///
     /// - Parameter oauth2Token: WordPress.com OAuth Token
@@ -96,8 +95,7 @@ open class ShareExtensionService: NSObject
     ///
     class func retrieveShareExtensionToken() -> String? {
         guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainTokenKey,
-            andServiceName: WPShareExtensionKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else
-        {
+            andServiceName: WPShareExtensionKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else {
             return nil
         }
 
@@ -108,8 +106,7 @@ open class ShareExtensionService: NSObject
     ///
     class func retrieveShareExtensionUsername() -> String? {
         guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainUsernameKey,
-            andServiceName: WPShareExtensionKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else
-        {
+            andServiceName: WPShareExtensionKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else {
             return nil
         }
 
@@ -124,8 +121,7 @@ open class ShareExtensionService: NSObject
         }
 
         guard let siteID = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteID) as? Int,
-            let siteName = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteName) as? String else
-        {
+            let siteName = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteName) as? String else {
             return nil
         }
 

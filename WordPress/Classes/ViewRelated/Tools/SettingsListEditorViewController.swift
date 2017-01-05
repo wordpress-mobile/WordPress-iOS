@@ -6,8 +6,7 @@ import WordPressShared
 /// The purpose of this class is to render an interface that allows the user to Insert / Edit / Delete
 /// a set of strings.
 ///
-open class SettingsListEditorViewController: UITableViewController
-{
+open class SettingsListEditorViewController: UITableViewController {
     // MARK: - Public Properties
     open var footerText: String?
     open var emptyText: String?

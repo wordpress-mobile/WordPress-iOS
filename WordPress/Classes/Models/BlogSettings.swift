@@ -3,8 +3,7 @@ import Foundation
 
 /// This class encapsulates all of the settings available for a Blog entity
 ///
-open class BlogSettings: NSManagedObject
-{
+open class BlogSettings: NSManagedObject {
     // MARK: - Relationships
 
     /// Maps to the related Blog.

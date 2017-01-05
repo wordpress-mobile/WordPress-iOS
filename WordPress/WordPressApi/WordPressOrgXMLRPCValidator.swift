@@ -63,8 +63,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         validateXMLRPCURL(xmlrpcURL, success: success, failure: { (error) in
                 DDLogSwift.logError(error.localizedDescription)
                 if error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication ||
-                   error.domain == String(reflecting: WordPressOrgXMLRPCValidatorError.self) && error.code == WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.rawValue
-                {
+                   error.domain == String(reflecting: WordPressOrgXMLRPCValidatorError.self) && error.code == WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.rawValue {
                     failure(error)
                     return
                 }

@@ -7,8 +7,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 /// surrounded by a white border.  It also can display a `UIActivityIndicatorView`.
 ///
 @IBDesignable
-@objc class NUXSubmitButton: UIButton
-{
+@objc class NUXSubmitButton: UIButton {
     @IBInspectable var isPrimary: Bool = false {
         didSet {
             configureButton()

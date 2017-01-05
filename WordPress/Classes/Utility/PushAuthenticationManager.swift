@@ -8,8 +8,7 @@ import WordPressComAnalytics
 /// authorizing access by means of a mobile device that's already authenticated.
 /// By doing so, WordPress.com backend will send a Push Notification, which is meant to be handled by this specific class.
 ///
-@objc open class PushAuthenticationManager: NSObject
-{
+@objc open class PushAuthenticationManager: NSObject {
     // MARK: - Public Methods
     //
     open var alertControllerProxy = UIAlertControllerProxy()
@@ -61,8 +60,7 @@ import WordPressComAnalytics
 
         // Verify: Ask for approval
         guard let token = userInfo?["push_auth_token"] as? String,
-            let message = userInfo?.value(forKeyPath: "aps.alert") as? String else
-        {
+            let message = userInfo?.value(forKeyPath: "aps.alert") as? String else {
             return
         }
 
@@ -145,8 +143,7 @@ import WordPressComAnalytics
         alertControllerProxy.show(withTitle: title,
                                            message: message,
                                            cancelButtonTitle: cancelButtonTitle,
-                                           otherButtonTitles: [acceptButtonTitle])
-        { (theAlertController, buttonIndex) in
+                                           otherButtonTitles: [acceptButtonTitle]) { (theAlertController, buttonIndex) in
             let approved = theAlertController?.actions[buttonIndex].style != .cancel
             completion(approved)
         }

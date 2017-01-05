@@ -3,8 +3,7 @@ import Foundation
 
 // MARK: UIView Animation Helpers
 //
-extension UIView
-{
+extension UIView {
     /// Applies a "Shrink to 80%" spring animation
     ///
     func depressSpringAnimation(_ completion: ((Bool) -> Void)? = nil) {

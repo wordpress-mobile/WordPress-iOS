@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension UIView
-{
+extension UIView {
     // MARK: - Public Methods
     public func pinSubview(_ subview: UIView, aboveSubview: UIView) {
         let constraint = NSLayoutConstraint(item: subview, attribute: .bottom, relatedBy: .equal, toItem: aboveSubview, attribute: .top, multiplier: 1, constant: 0)

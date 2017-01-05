@@ -207,8 +207,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     // MARK: - Configuration
 
-    func heightForFooterView() -> CGFloat
-    {
+    func heightForFooterView() -> CGFloat {
         return type(of: self).defaultHeightForFooterView
     }
 

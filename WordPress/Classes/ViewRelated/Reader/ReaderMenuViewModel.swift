@@ -56,8 +56,7 @@ struct ReaderMenuSection {
 
 /// Represents an row, or menu item in a reader menu section.
 ///
-struct ReaderMenuItem
-{
+struct ReaderMenuItem {
     let title: String
     let type: ReaderMenuItemType
     // A custom icon for the menu item.
@@ -85,8 +84,7 @@ struct ReaderMenuItem
 
 /// Protocol allowing a reader menu view model to notify content changes.
 ///
-protocol ReaderMenuViewModelDelegate: class
-{
+protocol ReaderMenuViewModelDelegate: class {
 
     /// Notifies the delegate that the menu did reload its content.
     ///
@@ -116,8 +114,7 @@ enum ReaderDefaultMenuItemOrder: Int {
 
 /// The view model used by the reader.
 ///
-@objc class ReaderMenuViewModel: NSObject
-{
+@objc class ReaderMenuViewModel: NSObject {
     var defaultsFetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
     var teamsFetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
     var listsFetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
@@ -705,8 +702,7 @@ enum ReaderDefaultMenuItemOrder: Int {
 }
 
 
-extension ReaderMenuViewModel: NSFetchedResultsControllerDelegate
-{
+extension ReaderMenuViewModel: NSFetchedResultsControllerDelegate {
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         var section: Int?

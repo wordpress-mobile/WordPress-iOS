@@ -10,8 +10,7 @@ import WordPressShared
 /// from UIApplication.sharedApplication.keyWindow.rootViewController to ensure
 /// that the final step in the magic link auth flow can be performed correctly.
 ///
-@objc class SigninEmailViewController: NUXAbstractViewController, SigninKeyboardResponder
-{
+@objc class SigninEmailViewController: NUXAbstractViewController, SigninKeyboardResponder {
 
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var submitButton: NUXSubmitButton!

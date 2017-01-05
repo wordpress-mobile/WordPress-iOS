@@ -6,8 +6,7 @@ import OHHTTPStubs
 
 // MARK: - NotificationSyncServiceRemoteTests
 //
-class NotificationSyncServiceRemoteTests: XCTestCase
-{
+class NotificationSyncServiceRemoteTests: XCTestCase {
     // MARK: - Properties
 
     fileprivate var mockRemoteApi: WordPressComRestApi?
