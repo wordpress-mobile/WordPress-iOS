@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared
 
-open class SeparatorsView: UIView
-{
+open class SeparatorsView: UIView {
     // MARK: - Public Properties
     open var leftVisible = false {
         didSet {

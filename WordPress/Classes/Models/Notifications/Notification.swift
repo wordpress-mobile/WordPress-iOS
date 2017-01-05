@@ -6,8 +6,7 @@ import CoreData
 // MARK: - Notification Entity
 //
 @objc(Notification)
-class Notification: NSManagedObject
-{
+class Notification: NSManagedObject {
     /// Notification Primary Key!
     ///
     @NSManaged var notificationId: String
@@ -157,8 +156,7 @@ class Notification: NSManagedObject
 
 // MARK: - Notification Computed Properties
 //
-extension Notification
-{
+extension Notification {
     /// Verifies if the current notification is actually a Badge one.
     /// Note: Sorry about the following snippet. I'm (and will always be) against Duck Typing.
     ///
@@ -349,8 +347,7 @@ extension Notification
 
 // MARK: - Core Data Helper
 //
-extension Notification: ManagedObject
-{
+extension Notification: ManagedObject {
     static var entityName: String {
         return classNameWithoutNamespaces()
     }
@@ -359,8 +356,7 @@ extension Notification: ManagedObject
 
 // MARK: - Update Helpers
 //
-extension Notification
-{
+extension Notification {
     /// Updates the local fields with the new values stored in a given Remote Notification
     ///
     func update(with remote: RemoteNotification) {
@@ -383,8 +379,7 @@ extension Notification
 
 // MARK: - Notification Types
 //
-extension Notification
-{
+extension Notification {
     /// Known kinds of Notifications
     ///
     enum Kind: String {

@@ -1,19 +1,16 @@
 import Foundation
 
 
-@objc public protocol RichTextViewDataSource
-{
+@objc public protocol RichTextViewDataSource {
     @objc optional func textView(_ textView: UITextView, viewForTextAttachment attachment: NSTextAttachment) -> UIView?
 }
 
-@objc public protocol RichTextViewDelegate: UITextViewDelegate
-{
+@objc public protocol RichTextViewDelegate: UITextViewDelegate {
     @objc optional func textView(_ textView: UITextView, didPressLink link: URL)
 }
 
 
-@objc open class RichTextView: UIView, UITextViewDelegate
-{
+@objc open class RichTextView: UIView, UITextViewDelegate {
     open var dataSource: RichTextViewDataSource?
     open var delegate: RichTextViewDelegate?
 

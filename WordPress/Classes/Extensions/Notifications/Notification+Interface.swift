@@ -3,8 +3,7 @@ import Foundation
 
 /// Encapsulates Notification Interface Helpers
 ///
-extension Notification
-{
+extension Notification {
     /// Returns a Section Identifier that can be sorted. Note that this string is not human readable, and
     /// you should use the *descriptionForSectionIdentifier* method as well!.
     ///

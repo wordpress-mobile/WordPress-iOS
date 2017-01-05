@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-@objc open class ReaderListStreamHeader: UIView, ReaderStreamHeader
-{
+@objc open class ReaderListStreamHeader: UIView, ReaderStreamHeader {
     @IBOutlet fileprivate weak var borderedView: UIView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
     @IBOutlet fileprivate weak var detailLabel: UILabel!

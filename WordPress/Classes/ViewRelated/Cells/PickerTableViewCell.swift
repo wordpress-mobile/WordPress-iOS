@@ -5,8 +5,7 @@ import WordPressShared
 /// The purpose of this class is to display a UIPickerView instance inside a UITableView,
 /// and wrap up all of the Picker Delegate / DataSource methods
 ///
-open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerViewDataSource
-{
+open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerViewDataSource {
     // MARK: - Public Properties
 
     /// Closure, to be executed on selection change

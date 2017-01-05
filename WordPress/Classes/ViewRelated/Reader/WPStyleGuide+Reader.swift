@@ -4,8 +4,7 @@ import Gridicons
 
 /// A WPStyleGuide extension with styles and methods specific to the Reader feature.
 ///
-extension WPStyleGuide
-{
+extension WPStyleGuide {
 
     // MARK: - System Defaults
 
@@ -326,8 +325,7 @@ extension WPStyleGuide
 
     // MARK: - Metrics
 
-    public struct Cards
-    {
+    public struct Cards {
         public static let defaultLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 6.0 : 3.0
         public static let titleFontSize: CGFloat = WPDeviceIdentification.isiPad() ? 28.0 : 18.0
         public static let titleLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 4.0 : 2.0
@@ -341,8 +339,7 @@ extension WPStyleGuide
         public static let crossPostLineSpacing: CGFloat = 2.0
     }
 
-    public struct Detail
-    {
+    public struct Detail {
         public static let titleFontSize: CGFloat = WPDeviceIdentification.isiPad() ? 36.0 : 28.0
         public static let titleLineHeight: CGFloat = WPDeviceIdentification.isiPad() ? 45.0 : 35.0
         public static let contentFontSize: CGFloat = 16.0

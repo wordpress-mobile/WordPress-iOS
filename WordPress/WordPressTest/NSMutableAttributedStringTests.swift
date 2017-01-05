@@ -2,8 +2,7 @@ import Foundation
 import XCTest
 
 
-open class NSMutableAttributedStringTests: XCTestCase
-{
+open class NSMutableAttributedStringTests: XCTestCase {
     open func testApplyStylesToMatchesWithPattern() {
         // Assemble an Attributed string with bold markup markers
         let message = "This is a string that **contains bold substrings**"

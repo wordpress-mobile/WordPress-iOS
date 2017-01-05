@@ -1,7 +1,6 @@
 import Foundation
 
-@objc open class ReaderSiteTopic: ReaderAbstractTopic
-{
+@objc open class ReaderSiteTopic: ReaderAbstractTopic {
     @NSManaged open var feedID: NSNumber
     @NSManaged open var feedURL: String
     @NSManaged open var isJetpack: Bool

@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension UIViewController
-{
+extension UIViewController {
     /// Determines if the current ViewController's View is visible and onscreen
     ///
     public func isViewOnScreen() -> Bool {

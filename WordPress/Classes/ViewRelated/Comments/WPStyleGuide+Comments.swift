@@ -3,10 +3,8 @@ import WordPressShared
 
 /// This class groups all of the styles used by all of the CommentsViewController.
 ///
-extension WPStyleGuide
-{
-    public struct Comments
-    {
+extension WPStyleGuide {
+    public struct Comments {
         // MARK: - Public Properties
         //
         public static func gravatarPlaceholderImage(isApproved approved: Bool) -> UIImage {

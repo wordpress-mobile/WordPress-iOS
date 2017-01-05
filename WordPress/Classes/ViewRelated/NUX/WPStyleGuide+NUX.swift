@@ -1,7 +1,6 @@
 import WordPressShared
 
-extension WPStyleGuide
-{
+extension WPStyleGuide {
 
     /// Common view style for signin view controllers.
     ///

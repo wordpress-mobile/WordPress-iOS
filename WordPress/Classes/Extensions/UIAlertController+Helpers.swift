@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension UIAlertController
-{
+extension UIAlertController {
     @discardableResult public func addCancelActionWithTitle(_ title: String?, handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
         return addActionWithTitle(title, style: .cancel, handler: handler)
     }

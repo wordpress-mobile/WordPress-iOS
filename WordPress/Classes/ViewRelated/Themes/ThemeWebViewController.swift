@@ -2,8 +2,7 @@ import Foundation
 
 /// ThemeWebViewController adds support for theme page navigation
 ///
-open class ThemeWebViewController: WPWebViewController
-{
+open class ThemeWebViewController: WPWebViewController {
     // MARK: - Properties: must be set by creator
 
     /// The Theme whose pages will be viewed
@@ -23,8 +22,7 @@ open class ThemeWebViewController: WPWebViewController
 
     /// All Customize links must have "hide_close" set
     ///
-    fileprivate struct Customize
-    {
+    fileprivate struct Customize {
         static let path = "/wp-admin/customize.php"
         static let hideClose = (name: "hide_close", value: "true")
     }

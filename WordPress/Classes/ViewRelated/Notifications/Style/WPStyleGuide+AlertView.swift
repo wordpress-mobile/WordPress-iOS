@@ -1,10 +1,8 @@
 import Foundation
 import WordPressShared
 
-extension WPStyleGuide
-{
-    public struct AlertView
-    {
+extension WPStyleGuide {
+    public struct AlertView {
         // MARK: - Title Styles
         public static let titleRegularFont          = WPFontManager.systemLightFont(ofSize: 16)
         public static let titleColor                = WPStyleGuide.grey()

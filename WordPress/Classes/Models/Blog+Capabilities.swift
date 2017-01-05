@@ -3,8 +3,7 @@ import Foundation
 
 /// This Extension encapsulates all of the Blog-Capabilities related helpers.
 ///
-extension Blog
-{
+extension Blog {
     /// Enumeration that contains all of the Blog's available capabilities.
     ///
     public enum Capability: String {
