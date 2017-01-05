@@ -6,8 +6,7 @@ import Foundation
 /// reasons KeyringConnection is treated like a model, even though it is not an NSManagedObject,
 /// but also treated like it is a Remote Object.
 ///
-open class KeyringConnection: NSObject
-{
+open class KeyringConnection: NSObject {
     open var additionalExternalUsers = [KeyringConnectionExternalUser]()
     open var dateIssued = Date()
     open var dateExpires: Date? = nil

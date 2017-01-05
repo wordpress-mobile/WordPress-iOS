@@ -3,8 +3,7 @@ import Foundation
 
 // MARK: - CGAffineTransform Helpers
 //
-extension CGAffineTransform
-{
+extension CGAffineTransform {
     /// Returns a CGAffineTransform cotaining both, a Rotation + Scale transform, with the specified
     /// parameters.
     ///

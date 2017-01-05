@@ -4,8 +4,7 @@ import WordPressShared
 
 /// Helper class, used internally by AlertView. Not designed for general usage.
 ///
-open class AlertInternalView: UIView
-{
+open class AlertInternalView: UIView {
     // MARK: - Public Properties
     open var onClick : (() -> ())?
 

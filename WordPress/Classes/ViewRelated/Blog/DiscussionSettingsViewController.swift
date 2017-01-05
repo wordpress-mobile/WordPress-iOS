@@ -5,8 +5,7 @@ import WordPressShared
 /// The purpose of this class is to render the Discussion Settings associated to a site, and
 /// allow the user to tune those settings, as required.
 ///
-open class DiscussionSettingsViewController: UITableViewController
-{
+open class DiscussionSettingsViewController: UITableViewController {
     // MARK: - Initializers / Deinitializers
     public convenience init(blog: Blog) {
         self.init(style: .grouped)
@@ -379,21 +378,21 @@ open class DiscussionSettingsViewController: UITableViewController
             Row(style:      .Switch,
                 title:      NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled"),
                 boolValue:  self.settings.commentsAllowed,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedCommentsAllowed($0)
                             }),
 
             Row(style:      .Switch,
                 title:      NSLocalizedString("Send Pingbacks", comment: "Settings: Sending Pingbacks"),
                 boolValue:  self.settings.pingbackOutboundEnabled,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedPingbacksOutbound($0)
                             }),
 
             Row(style:      .Switch,
                 title:      NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"),
                 boolValue:  self.settings.pingbackInboundEnabled,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedPingbacksInbound($0)
                             })
         ]
@@ -407,56 +406,56 @@ open class DiscussionSettingsViewController: UITableViewController
             Row(style:      .Switch,
                 title:      NSLocalizedString("Require name and email", comment: "Settings: Comments Approval settings"),
                 boolValue:  self.settings.commentsRequireNameAndEmail,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedRequireNameAndEmail($0)
                             }),
 
             Row(style:      .Switch,
                 title:      NSLocalizedString("Require users to log in", comment: "Settings: Comments Approval settings"),
                 boolValue:  self.settings.commentsRequireRegistration,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedRequireRegistration($0)
                             }),
 
             Row(style:      .Value1,
                 title:      NSLocalizedString("Close Commenting", comment: "Settings: Close comments after X period"),
                 details:    self.detailsForCloseCommenting,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedCloseCommenting($0)
                             }),
 
             Row(style:      .Value1,
                 title:      NSLocalizedString("Sort By", comment: "Settings: Comments Sort Order"),
                 details:    self.detailsForSortBy,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedSortBy($0)
                             }),
 
             Row(style:      .Value1,
                 title:      NSLocalizedString("Threading", comment: "Settings: Comments Threading preferences"),
                 details:    self.detailsForThreading,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedThreading($0)
                             }),
 
             Row(style:      .Value1,
                 title:      NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences"),
                 details:    self.detailsForPaging,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedPaging($0)
                             }),
 
             Row(style:      .Value1,
                 title:      NSLocalizedString("Automatically Approve", comment: "Settings: Comments Approval settings"),
                 details:    self.detailsForAutomaticallyApprove,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedAutomaticallyApprove($0)
                             }),
 
             Row(style:      .Value1,
                 title:      NSLocalizedString("Links in comments", comment: "Settings: Comments Approval settings"),
                 details:    self.detailsForLinksInComments,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedLinksInComments($0)
                             }),
         ]

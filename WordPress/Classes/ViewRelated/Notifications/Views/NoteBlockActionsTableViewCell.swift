@@ -5,8 +5,7 @@ import WordPressShared.WPStyleGuide
 
 // MARK: - NoteBlockActionsTableViewCell
 //
-class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
-{
+class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     typealias EventHandler = ((_ sender: AnyObject) -> Void)
 
     /// Actions StackView
@@ -271,8 +270,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
 
 // MARK: - Animation Helpers
 //
-private extension NoteBlockActionsTableViewCell
-{
+private extension NoteBlockActionsTableViewCell {
     func animateLikeButton(_ button: UIButton, completion: @escaping (() -> Void)) {
         guard let overlayImageView = overlayForButton(button, state: .selected) else {
             return
@@ -316,8 +314,7 @@ private extension NoteBlockActionsTableViewCell
 
 // MARK: - Private Constants
 //
-private extension NoteBlockActionsTableViewCell
-{
+private extension NoteBlockActionsTableViewCell {
     struct Approve {
         static let normalTitle      = NSLocalizedString("Approve",  comment: "Approve a comment")
         static let selectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")

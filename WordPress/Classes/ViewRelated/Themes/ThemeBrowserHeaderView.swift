@@ -1,8 +1,7 @@
 import UIKit
 import WordPressShared
 
-open class ThemeBrowserHeaderView: UICollectionReusableView
-{
+open class ThemeBrowserHeaderView: UICollectionReusableView {
     // MARK: - Constants
 
     open static let reuseIdentifier = "ThemeBrowserHeaderView"

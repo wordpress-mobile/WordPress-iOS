@@ -3,8 +3,7 @@ import Foundation
 
 /// This extension implements helper tracking methods, meant for Today Widget Usage.
 ///
-extension Tracks
-{
+extension Tracks {
     // MARK: - Public Methods
     public func trackExtensionAccessed() {
         trackExtensionEvent(.Accessed)

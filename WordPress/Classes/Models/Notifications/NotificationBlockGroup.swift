@@ -4,8 +4,7 @@ import Foundation
 
 // MARK: - NotificationBlockGroup: Adapter to match 1 View <> 1 BlockGroup
 //
-class NotificationBlockGroup
-{
+class NotificationBlockGroup {
     /// Grouped Blocks
     ///
     let blocks: [NotificationBlock]
@@ -26,8 +25,7 @@ class NotificationBlockGroup
 
 // MARK: - Helpers Methods
 //
-extension NotificationBlockGroup
-{
+extension NotificationBlockGroup {
     /// Returns the First Block of a specified kind
     ///
     func blockOfKind(_ kind: NotificationBlock.Kind) -> NotificationBlock? {
@@ -47,8 +45,7 @@ extension NotificationBlockGroup
 
 // MARK: - Parsers
 //
-extension NotificationBlockGroup
-{
+extension NotificationBlockGroup {
     /// Subject: Contains a User + Text Block
     ///
     class func groupFromSubject(_ subject: [[String: AnyObject]], parent: Notification) -> NotificationBlockGroup {
@@ -80,8 +77,7 @@ extension NotificationBlockGroup
 
 // MARK: - Private Parsing Helpers
 //
-private extension NotificationBlockGroup
-{
+private extension NotificationBlockGroup {
     /// Non-Comment Body Groups: 1-1 Mapping between Blocks <> BlockGroups
     ///
     ///     -   Notifications of the kind [Follow, Like, CommentLike] may contain a Footer block.
@@ -151,8 +147,7 @@ private extension NotificationBlockGroup
 
 // MARK: - NotificationBlockGroup Types
 //
-extension NotificationBlockGroup
-{
+extension NotificationBlockGroup {
     /// Known Kinds of Block Groups
     ///
     enum Kind {

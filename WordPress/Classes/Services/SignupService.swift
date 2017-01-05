@@ -22,8 +22,7 @@ typealias SignupFailureBlock = (_ error: Error?) -> Void
 /// SignupService is responsible for creating a new WPCom user and blog.
 /// The entry point is `createBlogAndSigninToWPCom` and the service takes care of the rest.
 ///
-open class SignupService: LocalCoreDataService
-{
+open class SignupService: LocalCoreDataService {
     fileprivate let LanguageIDKey = "lang_id"
     fileprivate let BlogDetailsKey = "blog_details"
     fileprivate let BlogNameLowerCaseNKey = "blogname"

@@ -5,8 +5,7 @@ import NSObject_SafeExpectations
 /// SharingServiceRemote is responsible for wrangling the REST API calls related to
 /// publiczice services, publicize connections, and keyring connections.
 ///
-open class SharingServiceRemote: ServiceRemoteWordPressComREST
-{
+open class SharingServiceRemote: ServiceRemoteWordPressComREST {
 
     // MARK: - Helper methods
 
@@ -521,8 +520,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST
 
 
 // Keys for PublicizeService dictionaries
-private struct ServiceDictionaryKeys
-{
+private struct ServiceDictionaryKeys {
     static let connectURL = "connect_URL"
     static let description = "description"
     static let ID = "ID"
@@ -537,8 +535,7 @@ private struct ServiceDictionaryKeys
 
 
 // Keys for both KeyringConnection and PublicizeConnection dictionaries
-private struct ConnectionDictionaryKeys
-{
+private struct ConnectionDictionaryKeys {
     // shared keys
     static let connections = "connections"
     static let expires = "expires"
@@ -571,8 +568,7 @@ private struct ConnectionDictionaryKeys
 
 
 // Names of parameters passed when creating or updating a publicize connection
-private struct PublicizeConnectionParams
-{
+private struct PublicizeConnectionParams {
     static let keyringConnectionID = "keyring_connection_ID"
     static let externalUserID = "external_user_ID"
     static let shared = "shared"
@@ -580,8 +576,7 @@ private struct PublicizeConnectionParams
 
 
 // Names of parameters used in SharingButton requests
-private struct SharingButtonsKeys
-{
+private struct SharingButtonsKeys {
     static let sharingButtons = "sharing_buttons"
     static let buttonID = "ID"
     static let name = "name"

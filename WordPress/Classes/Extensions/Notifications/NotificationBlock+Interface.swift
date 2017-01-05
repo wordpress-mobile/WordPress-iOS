@@ -8,8 +8,7 @@ import WordPressShared.WPStyleGuide
 /// For performance purposes, Attributed Strings get temporarily cached... and will get nuked whenever the
 /// related Notification object gets updated.
 ///
-extension NotificationBlock
-{
+extension NotificationBlock {
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the subject field
     ///
     var attributedSubjectText: NSAttributedString {
@@ -135,8 +134,7 @@ extension NotificationBlock
 
 // MARK: - Private Helpers
 //
-extension NotificationBlock
-{
+extension NotificationBlock {
     /// This method is meant to aid cache-implementation into all of the AttriutedString getters introduced
     /// in this extension.
     ///
@@ -172,8 +170,7 @@ extension NotificationBlock
     fileprivate func textWithStyles(_ attributes: [String: AnyObject],
                                 quoteStyles: [String: AnyObject]?,
                              rangeStylesMap: [NotificationRange.Kind: [String: AnyObject]]?,
-                                 linksColor: UIColor?) -> NSAttributedString
-    {
+                                 linksColor: UIColor?) -> NSAttributedString {
         guard let text = text else {
             return NSAttributedString()
         }

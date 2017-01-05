@@ -4,8 +4,7 @@ import UIKit
 
 /// Wrangles attachment layout and exclusion paths for the specified UITextView.
 ///
-@objc open class WPTextAttachmentManager: NSObject
-{
+@objc open class WPTextAttachmentManager: NSObject {
     fileprivate let attributeAttachmentName = "NSAttachment" // HACK: DTCoreText hijacks NSAttachmentAttributeName.
     open var attachments = [WPTextAttachment]()
     var attachmentViews = [String: WPTextAttachmentView]()
@@ -149,8 +148,7 @@ import UIKit
 /// WPTextAttachmentManager does in order to be notified of any changes to the size
 /// of the UITextView's textContainer.
 ///
-extension WPTextAttachmentManager: NSLayoutManagerDelegate
-{
+extension WPTextAttachmentManager: NSLayoutManagerDelegate {
     /// When the size of an NSTextContainer managed by the NSLayoutManager changes
     /// this method updates the size of any custom views for WPTextAttachments,
     /// then lays out the attachment views.
@@ -164,8 +162,7 @@ extension WPTextAttachmentManager: NSLayoutManagerDelegate
 /// A WPTextAttachmentManagerDelegate provides custom views for WPTextAttachments to
 /// its WPTextAttachmentManager.
 ///
-@objc public protocol WPTextAttachmentManagerDelegate: NSObjectProtocol
-{
+@objc public protocol WPTextAttachmentManagerDelegate: NSObjectProtocol {
     /// Delegates must implement this method and return either a UIView or nil for
     /// the specified WPTextAttachment.
     ///

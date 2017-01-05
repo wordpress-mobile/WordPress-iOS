@@ -1,7 +1,6 @@
 import Foundation
 
-@objc open class RemoteSharingButton: NSObject
-{
+@objc open class RemoteSharingButton: NSObject {
     var buttonID = ""
     var name = ""
     var shortname = ""

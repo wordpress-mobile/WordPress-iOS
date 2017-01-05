@@ -8,8 +8,7 @@ import WordPressComAnalytics
 /// A Stream represents a possible way in which notifications are communicated.
 /// For instance: Push Notifications / WordPress.com Timeline / Email
 ///
-open class NotificationSettingStreamsViewController: UITableViewController
-{
+open class NotificationSettingStreamsViewController: UITableViewController {
     // MARK: - Initializers
     public convenience init(settings: NotificationSettings) {
         self.init(style: .grouped)

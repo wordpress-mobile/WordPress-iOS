@@ -4,8 +4,7 @@ import Foundation
 
 // MARK: - NotificationMedia Entity
 //
-class NotificationMedia
-{
+class NotificationMedia {
     /// Kind of the current Media.
     ///
     let kind: Kind
@@ -27,8 +26,7 @@ class NotificationMedia
     ///
     init?(dictionary: [String: AnyObject]) {
         guard let type = dictionary[MediaKeys.RawType] as? String, let indices = dictionary[MediaKeys.Indices] as? [Int],
-            let start = indices.first, let end = indices.last else
-        {
+            let start = indices.first, let end = indices.last else {
             return nil
         }
 
@@ -48,8 +46,7 @@ class NotificationMedia
 
 // MARK: - NotificationRange Parsers
 //
-extension NotificationMedia
-{
+extension NotificationMedia {
     /// Parses NotificationMedia instances, given an array of raw media.
     ///
     class func mediaFromArray(_ media: [[String: AnyObject]]?) -> [NotificationMedia] {
@@ -64,8 +61,7 @@ extension NotificationMedia
 
 // MARK: - NotificationMedia Types
 //
-extension NotificationMedia
-{
+extension NotificationMedia {
     /// Known kinds of Media Entities
     ///
     enum Kind: String {

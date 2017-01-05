@@ -6,8 +6,7 @@ import OHHTTPStubs
 
 // MARK: - NotificationSettingsServiceTests
 //
-class NotificationSettingsServiceTests: XCTestCase
-{
+class NotificationSettingsServiceTests: XCTestCase {
     typealias StreamKind    = NotificationSettings.Stream.Kind
 
     // MARK: - Properties

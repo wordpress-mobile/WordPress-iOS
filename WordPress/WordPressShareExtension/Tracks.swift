@@ -1,8 +1,7 @@
 import Foundation
 
 
-open class Tracks
-{
+open class Tracks {
     // MARK: - Public Properties
     open var wpcomUsername: String?
 
@@ -77,8 +76,7 @@ open class Tracks
     /// Private Internal Helper:
     /// Encapsulates all of the Backend Tracks Interaction, and deals with NSURLSession's API.
     ///
-    fileprivate class Uploader: NSObject, URLSessionDelegate
-    {
+    fileprivate class Uploader: NSObject, URLSessionDelegate {
         // MARK: - Properties
         fileprivate var session: Foundation.URLSession!
 

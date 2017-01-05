@@ -63,7 +63,7 @@ struct PlanDetailViewModel {
     }
 
     var priceText: String? {
-        if price.isEmpty  {
+        if price.isEmpty {
             return nil
         } else {
             return String(format: NSLocalizedString("%@ per year", comment: "Plan yearly price"), price)

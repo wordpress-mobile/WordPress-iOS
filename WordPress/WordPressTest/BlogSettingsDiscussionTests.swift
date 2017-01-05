@@ -2,8 +2,7 @@ import Foundation
 @testable import WordPress
 
 
-class BlogSettingsDiscussionTests: XCTestCase
-{
+class BlogSettingsDiscussionTests: XCTestCase {
     fileprivate var manager: TestContextManager!
 
     override func setUp() {

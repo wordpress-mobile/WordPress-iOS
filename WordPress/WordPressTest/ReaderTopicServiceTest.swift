@@ -3,8 +3,7 @@ import Foundation
 import CoreData
 import WordPress
 
-class ReaderTopicSwiftTest: XCTestCase
-{
+class ReaderTopicSwiftTest: XCTestCase {
 
     var testContextManager: TestContextManager?
     let expectationTimeout = 5.0
@@ -45,7 +44,7 @@ class ReaderTopicSwiftTest: XCTestCase
 
         do {
             try context?.save()
-        } catch let error as NSError{
+        } catch let error as NSError {
             XCTAssertNil(error, "Error seeding topics")
         }
     }
