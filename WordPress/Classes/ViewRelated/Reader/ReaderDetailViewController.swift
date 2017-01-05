@@ -413,7 +413,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate func configureShareButton() {
         // Share button.
-        let image = UIImage(named: "icon-posts-share")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        let image = UIImage(named: "icon-posts-share")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
         button.setImage(image, for: UIControlState())
         button.addTarget(self, action: #selector(ReaderDetailViewController.didTapShareButton(_:)), for: .touchUpInside)

@@ -1,6 +1,6 @@
 import WordPressShared
 
-private let fadeAnimationDuration: NSTimeInterval = 0.1
+fileprivate let fadeAnimationDuration: TimeInterval = 0.1
 
 // UISplitViewController doesn't handle pushing or popping a view controller
 // at the same time as animating the preferred display mode very well.
@@ -12,10 +12,10 @@ private let fadeAnimationDuration: NSTimeInterval = 0.1
 // status, and then restore the items color afterwards – thus masking the
 // UIKit glitch.
 extension UINavigationController {
-    func pushFullscreenViewController(viewController: UIViewController, animated: Bool) {
-        if splitViewController?.preferredDisplayMode != .PrimaryHidden {
+    func pushFullscreenViewController(_ viewController: UIViewController, animated: Bool) {
+        if splitViewController?.preferredDisplayMode != .primaryHidden {
             if !splitViewControllerIsHorizontallyCompact {
-                navigationBar.fadeOutNavigationItems(animated)
+                navigationBar.fadeOutNavigationItems(animated: animated)
             }
 
             (splitViewController as? WPSplitViewController)?.setPrimaryViewControllerHidden(true, animated: animated)
@@ -28,17 +28,17 @@ extension UINavigationController {
 extension UINavigationBar {
     func fadeOutNavigationItems(animated: Bool = true) {
         if let barTintColor = barTintColor {
-            fadeNavigationItemsToColor(barTintColor, animated: animated)
+            fadeNavigationItems(toColor: barTintColor, animated: animated)
         }
     }
 
     func fadeInNavigationItemsIfNecessary(animated: Bool = true) {
-        if tintColor != UIColor.whiteColor() {
-            fadeNavigationItemsToColor(UIColor.whiteColor(), animated: animated)
+        if tintColor != UIColor.white {
+            fadeNavigationItems(toColor: UIColor.white, animated: animated)
         }
     }
 
-    private func fadeNavigationItemsToColor(color: UIColor, animated: Bool) {
+    private func fadeNavigationItems(toColor color: UIColor, animated: Bool) {
         if animated {
             // We're using CAAnimation because the various navigation item properties
             // didn't seem to animate using a standard UIView animation block.
@@ -46,7 +46,7 @@ extension UINavigationBar {
             fadeAnimation.duration = fadeAnimationDuration
             fadeAnimation.type = kCATransitionFade
 
-            layer.addAnimation(fadeAnimation, forKey: "fadeNavigationBar")
+            layer.add(fadeAnimation, forKey: "fadeNavigationBar")
         }
 
         titleTextAttributes = [NSForegroundColorAttributeName: color]
@@ -60,12 +60,12 @@ extension UINavigationBar {
 /// from or to a fullscreen split view layout.
 ///
 class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransitioning {
-    static let transitionDuration: NSTimeInterval = 0.3
+    static let transitionDuration: TimeInterval = 0.3
 
     let operation: UINavigationControllerOperation
 
     var pushing: Bool {
-        return operation == .Push
+        return operation == .push
     }
 
     init(operation: UINavigationControllerOperation) {
@@ -73,18 +73,18 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
         super.init()
     }
 
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return WPFullscreenNavigationTransition.transitionDuration
     }
 
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard operation != .None else {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        guard operation != .none else {
             transitionContext.completeTransition(false)
             return
         }
 
-        guard let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey),
-            let toView = transitionContext.viewForKey(UITransitionContextToViewKey) else {
+        guard let fromView = transitionContext.view(forKey: UITransitionContextViewKey.from),
+            let toView = transitionContext.view(forKey: UITransitionContextViewKey.to) else {
                 transitionContext.completeTransition(false)
                 return
         }
@@ -94,7 +94,7 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
             return
         }
 
-        let containerView = transitionContext.containerView()
+        let containerView = transitionContext.containerView
 
         // The default navigation bar transition sometimes has a small white
         // area visible briefly on the right end of the navigation bar as it's
@@ -113,7 +113,7 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
 
         // Take a snapshot to hide any layout issues in the 'from' view as it
         // transitions to the new size.
-        let snapshot = fromView.snapshotViewAfterScreenUpdates(false)!
+        let snapshot = fromView.snapshotView(afterScreenUpdates: false)!
         let snapshotContainer = UIView(frame: model.fromFrame)
         snapshotContainer.backgroundColor = fromView.backgroundColor
         snapshotContainer.addSubview(snapshot)
@@ -143,7 +143,7 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
         } else {
             fromView.alpha = WPAlphaZero
 
-            containerView.insertSubview(toView, atIndex: 0)
+            containerView.insertSubview(toView, at: 0)
 
             snapshotContainer.layer.addSublayer(shadowLayer)
             snapshotContainer.addSubview(dimmingView)
@@ -163,19 +163,19 @@ class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransi
             shadowLayer.removeFromSuperlayer()
             snapshotContainer.removeFromSuperview()
 
-            fromView.transform = CGAffineTransformIdentity
-            toView.transform = CGAffineTransformIdentity
+            fromView.transform = .identity
+            toView.transform = .identity
 
             fromView.frame = model.fromFrame
 
             transitionContext.completeTransition(finished)
         }
 
-        UIView.animateWithDuration(transitionDuration(transitionContext),
-                                   delay: 0,
-                                   options: .CurveEaseInOut,
-                                   animations: animations,
-                                   completion: completion)
+        UIView.animate(withDuration: transitionDuration(using: transitionContext),
+                       delay: 0,
+                       options: .curveEaseInOut,
+                       animations: animations,
+                       completion: completion)
     }
 }
 
@@ -186,7 +186,7 @@ private struct WPFullscreenNavigationTransitionViewModel {
     let toFrame: CGRect
 
     let toViewInitialTranform: CGAffineTransform
-    let toViewFinalTranform = CGAffineTransformIdentity
+    let toViewFinalTranform: CGAffineTransform = .identity
 
     let snapshotContainerFinalTransform: CGAffineTransform
 
@@ -206,8 +206,8 @@ private struct WPFullscreenNavigationTransitionViewModel {
     let dimmingViewFinalAlpha: CGFloat
 
     init?(transitionContext: UIViewControllerContextTransitioning, operation: UINavigationControllerOperation) {
-        guard let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey),
-            let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else {
+        guard let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from),
+            let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else {
                 return nil
         }
 
@@ -215,34 +215,34 @@ private struct WPFullscreenNavigationTransitionViewModel {
 
         // Frames
 
-        fromFrame = transitionContext.initialFrameForViewController(fromVC)
-        toFrame = transitionContext.finalFrameForViewController(toVC)
+        fromFrame = transitionContext.initialFrame(for: fromVC)
+        toFrame = transitionContext.finalFrame(for: toVC)
 
         // RTL support
 
-        let attribute = transitionContext.containerView().semanticContentAttribute
-        let layoutDirection = UIView.userInterfaceLayoutDirectionForSemanticContentAttribute(attribute)
-        let isRTLLayout = (layoutDirection == .RightToLeft)
+        let attribute = transitionContext.containerView.semanticContentAttribute
+        let layoutDirection = UIView.userInterfaceLayoutDirection(for: attribute)
+        let isRTLLayout = (layoutDirection == .rightToLeft)
 
         // Transforms
 
-        if operation == .Push {
+        if operation == .push {
             let initialToViewXOrigin = (isRTLLayout) ? -fromFrame.width : fromFrame.width
-            toViewInitialTranform = CGAffineTransformMakeTranslation(initialToViewXOrigin, 0)
+            toViewInitialTranform = CGAffineTransform(translationX: initialToViewXOrigin, y: 0)
         } else {
-            toViewInitialTranform = splitViewWidthTransformForViewController(fromVC, isRTLLayout: isRTLLayout)
+            toViewInitialTranform = splitViewWidthTransform(forViewController: fromVC, isRTLLayout: isRTLLayout)
         }
 
-        if operation == .Push {
-            snapshotContainerFinalTransform = splitViewWidthTransformForViewController(fromVC, isRTLLayout: isRTLLayout)
+        if operation == .push {
+            snapshotContainerFinalTransform = splitViewWidthTransform(forViewController: fromVC, isRTLLayout: isRTLLayout)
         } else {
             let targetXOffset = (isRTLLayout) ? -fromFrame.width : toFrame.width
-            snapshotContainerFinalTransform = CGAffineTransformMakeTranslation(targetXOffset, 0)
+            snapshotContainerFinalTransform = CGAffineTransform(translationX: targetXOffset, y: 0)
         }
 
         // Navigation bar mask
 
-        navigationBarMaskFrame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: fromFrame.origin.y)
+        navigationBarMaskFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: fromFrame.origin.y)
 
         // Shadow layer
 
@@ -250,24 +250,24 @@ private struct WPFullscreenNavigationTransitionViewModel {
         shadowFrame = CGRect(x: shadowXOffset, y: 0, width: shadowWidth, height: fromFrame.height)
 
         if isRTLLayout {
-            shadowColors = [shadowDarkColor.CGColor, shadowClearColor.CGColor]
+            shadowColors = [shadowDarkColor.cgColor, shadowClearColor.cgColor]
         } else {
-            shadowColors = [shadowClearColor.CGColor, shadowDarkColor.CGColor]
+            shadowColors = [shadowClearColor.cgColor, shadowDarkColor.cgColor]
         }
 
         // Dimming view
 
         let dimmingViewXOffset = (isRTLLayout) ? fromFrame.width : -fromFrame.width
         dimmingViewFrame = CGRect(x: dimmingViewXOffset, y: 0, width: fromFrame.width, height: fromFrame.height)
-        dimmingViewInitialAlpha = (operation == .Push) ? WPAlphaZero : WPAlphaFull
-        dimmingViewFinalAlpha =   (operation == .Push) ? WPAlphaFull : WPAlphaZero
+        dimmingViewInitialAlpha = (operation == .push) ? WPAlphaZero : WPAlphaFull
+        dimmingViewFinalAlpha =   (operation == .push) ? WPAlphaFull : WPAlphaZero
     }
 }
 
-private func splitViewWidthTransformForViewController(viewController: UIViewController, isRTLLayout: Bool) -> CGAffineTransform {
-    if let splitViewPrimaryWidth = viewController.splitViewController?.primaryColumnWidth where isRTLLayout {
-        return CGAffineTransformMakeTranslation(splitViewPrimaryWidth, 0)
+private func splitViewWidthTransform(forViewController viewController: UIViewController, isRTLLayout: Bool) -> CGAffineTransform {
+    if let splitViewPrimaryWidth = viewController.splitViewController?.primaryColumnWidth, isRTLLayout {
+        return CGAffineTransform(translationX: splitViewPrimaryWidth, y: 0)
     } else {
-        return CGAffineTransformIdentity
+        return .identity
     }
 }

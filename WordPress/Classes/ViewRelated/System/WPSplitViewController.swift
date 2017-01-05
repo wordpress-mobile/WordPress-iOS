@@ -484,7 +484,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         }
     }
 
-    func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         if !isViewHorizontallyCompact() {
             // Restore navigation items after a push or pop if they were previously hidden
             navigationController.navigationBar.fadeInNavigationItemsIfNecessary()
@@ -504,7 +504,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         }
     }
 
-    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         var stack = navigationController.viewControllers
         if operation == .push {
             // During a push, the new VC has already been added to the stack
