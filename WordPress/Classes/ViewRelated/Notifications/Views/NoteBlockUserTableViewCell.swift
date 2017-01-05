@@ -2,8 +2,7 @@ import Foundation
 import WordPressShared
 
 
-class NoteBlockUserTableViewCell: NoteBlockTableViewCell
-{
+class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     typealias EventHandler = (() -> Void)
 
     // MARK: - Public Properties

@@ -6,8 +6,7 @@ import Foundation
 /// Notifications: a WordPress blog, Third Party Sites or WordPress.com.
 /// Each channel may support different streams, such as: Email + Push Notifications + Timeline.
 ///
-open class NotificationSettings
-{
+open class NotificationSettings {
     /// Represents the Channel to which the current settings are associated.
     ///
     open let channel: Channel
@@ -137,8 +136,7 @@ open class NotificationSettings
     fileprivate let wpcomPreferenceKeys     = [Keys.marketing, Keys.research, Keys.community]
 
     // MARK: - Setting Keys
-    fileprivate struct Keys
-    {
+    fileprivate struct Keys {
         static let commentAdded     = "new_comment"
         static let commentLiked     = "comment_like"
         static let commentReplied   = "comment_reply"
@@ -187,8 +185,7 @@ open class NotificationSettings
 
 /// Swift requires this method to be implemented globally. Sorry about that!
 ///
-public func ==(first: NotificationSettings.Channel, second: NotificationSettings.Channel) -> Bool
-{
+public func ==(first: NotificationSettings.Channel, second: NotificationSettings.Channel) -> Bool {
     switch (first, second) {
     case (let .blog(firstBlogId), let .blog(secondBlogId)) where firstBlogId == secondBlogId:
         return true

@@ -3,8 +3,7 @@ import Foundation
 
 /// This service encapsulates the Restful API related to WordPress Notifications.
 ///
-open class NotificationSettingsService: LocalCoreDataService
-{
+open class NotificationSettingsService: LocalCoreDataService {
     // MARK: - Aliases
     public typealias Channel    = NotificationSettings.Channel
     public typealias Stream     = NotificationSettings.Stream

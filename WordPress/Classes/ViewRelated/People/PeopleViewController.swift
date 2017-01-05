@@ -175,15 +175,13 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let personViewController = segue.destination as? PersonViewController,
-            let selectedIndexPath = tableView.indexPathForSelectedRow
-        {
+            let selectedIndexPath = tableView.indexPathForSelectedRow {
             personViewController.context = context
             personViewController.blog = blog
             personViewController.person = personAtIndexPath(selectedIndexPath)
 
         } else if let navController = segue.destination as? UINavigationController,
-            let inviteViewController = navController.topViewController as? InvitePersonViewController
-        {
+            let inviteViewController = navController.topViewController as? InvitePersonViewController {
             inviteViewController.blog = blog
         }
     }
@@ -355,8 +353,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
             let objectURL = URL(string: blogID),
             let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
             let restoredBlog = try? context?.existingObject(with: objectID),
-            let blog = restoredBlog  as? Blog else
-        {
+            let blog = restoredBlog  as? Blog else {
             return nil
         }
 

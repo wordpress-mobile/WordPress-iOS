@@ -1,10 +1,8 @@
 import Foundation
 import WordPressShared
 
-extension WPStyleGuide
-{
-    public struct Notifications
-    {
+extension WPStyleGuide {
+    public struct Notifications {
         // MARK: - Styles Used by NotificationsViewController
         //
 

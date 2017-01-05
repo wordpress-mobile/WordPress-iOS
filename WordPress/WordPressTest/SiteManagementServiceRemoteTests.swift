@@ -2,8 +2,7 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-class SiteManagementServiceRemoteTests: XCTestCase
-{
+class SiteManagementServiceRemoteTests: XCTestCase {
     let mockRemoteApi = MockWordPressComRestApi()
     var siteManagementServiceRemote: SiteManagementServiceRemote?
 

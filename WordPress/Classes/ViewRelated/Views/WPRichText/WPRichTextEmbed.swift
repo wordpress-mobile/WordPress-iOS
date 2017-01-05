@@ -1,7 +1,6 @@
 import Foundation
 
-class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment
-{
+class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
     typealias successBlock = ((WPRichTextEmbed)->Void)
 
 

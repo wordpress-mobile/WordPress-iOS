@@ -11,8 +11,7 @@ import Foundation
 /// Each one of the possible channels may post notifications via different streams:
 /// Email, Push Notifications, and Timeline.
 ///
-open class RemoteNotificationSettings
-{
+open class RemoteNotificationSettings {
     /// Represents the Channel to which the current settings are associated.
     ///
     open let channel: Channel
@@ -76,8 +75,7 @@ open class RemoteNotificationSettings
 
             for (key, value) in dictionary! {
                 if let stringKey = key   as? String,
-                   let boolValue = value as? Bool
-                {
+                   let boolValue = value as? Bool {
                     let value = value as AnyObject
                     // NSNumbers might get converted to Bool anyways
                     if value === kCFBooleanFalse || value === kCFBooleanTrue {
@@ -190,8 +188,7 @@ open class RemoteNotificationSettings
 ///
 /// - Returns: A boolean indicating whether two channels are equal. Or not!
 ///
-public func ==(lhs: RemoteNotificationSettings.Channel, rhs: RemoteNotificationSettings.Channel) -> Bool
-{
+public func ==(lhs: RemoteNotificationSettings.Channel, rhs: RemoteNotificationSettings.Channel) -> Bool {
     switch (lhs, rhs) {
     case (let .blog(firstBlogId), let .blog(secondBlogId)) where firstBlogId == secondBlogId:
         return true

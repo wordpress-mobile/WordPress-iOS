@@ -144,8 +144,7 @@ class PostPostViewController: UIViewController {
         if let icon = post.blog.icon {
             siteIconView.setImageWithSiteIcon(icon, placeholderImage: nil)
         }
-        if siteIconView.image == .none
-        {
+        if siteIconView.image == .none {
             siteIconView.superview?.isHidden = true
         }
         let isPrivate = !post.blog.visible

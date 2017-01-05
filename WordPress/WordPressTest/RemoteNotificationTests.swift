@@ -4,8 +4,7 @@ import XCTest
 
 // MARK: - RemoteNotification Unit Tests
 //
-class RemoteNotificationTests: XCTestCase
-{
+class RemoteNotificationTests: XCTestCase {
     /// Tests that a Remote Notification gets correctly parsed, when initialized with a proper
     /// notification document.
     ///
@@ -56,12 +55,10 @@ class RemoteNotificationTests: XCTestCase
 
 // MARK: - Private Helpers
 //
-private extension RemoteNotificationTests
-{
+private extension RemoteNotificationTests {
     /// Retrieves a Remote Notification's Document
     ///
-    func loadDocument() -> [String: AnyObject]
-    {
+    func loadDocument() -> [String: AnyObject] {
         let path = Bundle(for: type(of: self)).path(forResource: "remote-notification", ofType: "json")!
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: path))

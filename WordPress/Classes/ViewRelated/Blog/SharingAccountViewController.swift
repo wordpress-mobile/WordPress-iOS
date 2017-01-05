@@ -5,8 +5,7 @@ import WordPressShared
 /// Displays a list of available keyring connection accounts that can be used to
 /// forge a publicize connection.
 ///
-@objc open class SharingAccountViewController: UITableViewController
-{
+@objc open class SharingAccountViewController: UITableViewController {
     var publicizeService: PublicizeService
     var keyringConnections: [KeyringConnection]
     var existingPublicizeConnections: [PublicizeConnection]?
@@ -280,8 +279,7 @@ import WordPressShared
 
 /// Delegate protocol.
 ///
-@objc protocol SharingAccountSelectionDelegate: NSObjectProtocol
-{
+@objc protocol SharingAccountSelectionDelegate: NSObjectProtocol {
     func didDismissSharingAccountViewController(_ controller: SharingAccountViewController)
     func sharingAccountViewController(_ controller: SharingAccountViewController, selectedKeyringConnection keyringConnection: KeyringConnection, externalID: String?)
 }

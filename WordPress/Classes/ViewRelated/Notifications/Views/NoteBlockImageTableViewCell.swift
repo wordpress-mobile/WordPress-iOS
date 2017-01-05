@@ -2,8 +2,7 @@ import Foundation
 import WordPressShared.WPStyleGuide
 
 
-class NoteBlockImageTableViewCell: NoteBlockTableViewCell
-{
+class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
     // MARK: - Public Properties
     fileprivate var imageURL: URL?
     override var isBadge: Bool {

@@ -342,8 +342,7 @@ extension AztecPostViewController {
 }
 
 // MARK: -
-extension AztecPostViewController : Aztec.FormatBarDelegate
-{
+extension AztecPostViewController : Aztec.FormatBarDelegate {
 
     func handleActionForIdentifier(_ identifier: FormattingIdentifier) {
 
@@ -578,8 +577,7 @@ extension AztecPostViewController: UINavigationControllerDelegate {
 }
 
 
-extension AztecPostViewController: UIImagePickerControllerDelegate
-{
+extension AztecPostViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         dismiss(animated: true, completion: nil)
 

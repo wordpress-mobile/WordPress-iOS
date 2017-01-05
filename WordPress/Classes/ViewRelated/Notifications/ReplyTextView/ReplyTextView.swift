@@ -5,16 +5,14 @@ import WordPressShared.WPStyleGuide
 
 // MARK: - ReplyTextViewDelegate
 //
-@objc public protocol ReplyTextViewDelegate: UITextViewDelegate
-{
+@objc public protocol ReplyTextViewDelegate: UITextViewDelegate {
     @objc optional func textView(_ textView: UITextView, didTypeWord word: String)
 }
 
 
 // MARK: - ReplyTextView
 //
-@objc open class ReplyTextView: UIView, UITextViewDelegate
-{
+@objc open class ReplyTextView: UIView, UITextViewDelegate {
     // MARK: - Initializers
     public convenience init(width: CGFloat) {
         let frame = CGRect(x: 0, y: 0, width: width, height: 0)
@@ -93,8 +91,7 @@ import WordPressShared.WPStyleGuide
               let textToReplace = text,
               let selectedRange = textView.selectedTextRange,
               let newPosition = textView.position(from: selectedRange.start, offset: -textToReplace.length),
-              let newRange = textView.textRange(from: newPosition, to: selectedRange.start) else
-        {
+              let newRange = textView.textRange(from: newPosition, to: selectedRange.start) else {
             return
         }
 

@@ -6,8 +6,7 @@ import SVProgressHUD
 /// for following new sites by URL, and unfollowing existing sites via a swipe
 /// gesture.  Followed sites can be tapped to browse their posts.
 ///
-class ReaderFollowedSitesViewController: UIViewController, UIViewControllerRestoration
-{
+class ReaderFollowedSitesViewController: UIViewController, UIViewControllerRestoration {
     @IBOutlet var searchBar: UISearchBar!
 
     fileprivate var refreshControl: UIRefreshControl!
@@ -235,7 +234,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }
 
         // if the string does not have either a dot or protocol its not a URL
-        if !str.contains(".") && !str.contains("://")  {
+        if !str.contains(".") && !str.contains("://") {
             return nil
         }
 
@@ -267,8 +266,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 }
 
 
-extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
-{
+extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate {
 
     func managedObjectContext() -> NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
@@ -365,8 +363,7 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate
 }
 
 
-extension ReaderFollowedSitesViewController : UISearchBarDelegate
-{
+extension ReaderFollowedSitesViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let site =  searchBar.text?.trim(), !site.isEmpty {
             followSite(site)

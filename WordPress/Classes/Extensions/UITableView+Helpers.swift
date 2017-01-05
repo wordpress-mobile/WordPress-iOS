@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension UITableView
-{
+extension UITableView {
     /// Reloads the currently selected row, if any.
     ///
     public func reloadSelectedRow() {

@@ -3,8 +3,7 @@ import XCTest
 
 
 
-class RichContentFormatterTests: XCTestCase
-{
+class RichContentFormatterTests: XCTestCase {
 
     func testRemoveInlineStyles() {
         let str = "<p>test</p><p>test</p>"

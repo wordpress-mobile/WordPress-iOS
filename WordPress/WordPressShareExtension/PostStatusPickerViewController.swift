@@ -2,8 +2,7 @@ import Foundation
 import UIKit
 import WordPressShared
 
-class PostStatusPickerViewController: UITableViewController
-{
+class PostStatusPickerViewController: UITableViewController {
     // MARK: - Initializers
     init(statuses: [String: String]) {
         assert(statuses.count > 0, "Let's show at least one status!")

@@ -3,8 +3,7 @@ import XCTest
 
 
 
-class LanguagesTests: XCTestCase
-{
+class LanguagesTests: XCTestCase {
     func testLanguagesEffectivelyLoadJsonFile() {
         let languages = WordPressComLanguageDatabase()
 

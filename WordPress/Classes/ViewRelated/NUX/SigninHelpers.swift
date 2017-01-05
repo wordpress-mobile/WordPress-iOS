@@ -5,8 +5,7 @@ import Mixpanel
 
 /// A collection of helper methods for NUX.
 ///
-@objc class SigninHelpers: NSObject
-{
+@objc class SigninHelpers: NSObject {
     fileprivate static let AuthenticationEmailKey = "AuthenticationEmailKey"
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
