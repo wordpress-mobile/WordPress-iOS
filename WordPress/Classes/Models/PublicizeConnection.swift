@@ -1,8 +1,7 @@
 import Foundation
 import CoreData
 
-open class PublicizeConnection: NSManagedObject
-{
+open class PublicizeConnection: NSManagedObject {
     // Relations
     @NSManaged open var blog: Blog
 

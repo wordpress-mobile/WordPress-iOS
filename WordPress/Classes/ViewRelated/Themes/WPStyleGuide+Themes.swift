@@ -3,10 +3,8 @@ import WordPressShared
 
 /// A WPStyleGuide extension with styles and methods specific to the Themes feature.
 ///
-extension WPStyleGuide
-{
-    public struct Themes
-    {
+extension WPStyleGuide {
+    public struct Themes {
         // MARK: - Current Theme Styles
 
         public static let currentThemeBackgroundColor = UIColor.white

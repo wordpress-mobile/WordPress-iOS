@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared
 
-extension WPStyleGuide
-{
+extension WPStyleGuide {
 
     public class func navbarButtonTintColor() -> UIColor {
         return UIColor(white: 1.0, alpha: 0.5)

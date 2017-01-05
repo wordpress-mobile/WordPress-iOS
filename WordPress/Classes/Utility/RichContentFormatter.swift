@@ -2,13 +2,11 @@ import Foundation
 
 /// Contains methods for formatting post or comment content for display.
 ///
-@objc class RichContentFormatter: NSObject
-{
+@objc class RichContentFormatter: NSObject {
 
     /// Encapsulates regex instances used in class methods.
     ///
-    struct RegEx
-    {
+    struct RegEx {
         // Forbidden tags
         static let styleTags = try! NSRegularExpression(pattern: "<style[^>]*?>[\\s\\S]*?</style>", options: .caseInsensitive)
         static let scriptTags = try! NSRegularExpression(pattern: "<script[^>]*?>[\\s\\S]*?</script>", options: .caseInsensitive)

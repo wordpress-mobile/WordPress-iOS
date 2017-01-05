@@ -7,8 +7,7 @@ import WordPressShared.WPNoResultsView
  *  @brief      Support for filtering themes by purchasability
  *  @details    Currently purchasing themes via native apps is unsupported
  */
-public enum ThemeType
-{
+public enum ThemeType {
     case all
     case free
     case premium
@@ -44,8 +43,7 @@ public enum ThemeType
  *  @brief      Publicly exposed theme interaction support
  *  @details    Held as weak reference by owned subviews
  */
-public protocol ThemePresenter: class
-{
+public protocol ThemePresenter: class {
     var filterType: ThemeType { get set }
 
     var screenshotWidth: Int { get }
@@ -80,8 +78,7 @@ public protocol ThemePresenter: class
     }
 }
 
-@objc open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate
-{
+@objc open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate {
     // MARK: - Properties: must be set by parent
 
     /**
@@ -145,8 +142,7 @@ public protocol ThemePresenter: class
      *  @brief      Collection view support
      */
 
-    fileprivate enum Section
-    {
+    fileprivate enum Section {
         case search
         case info
         case themes

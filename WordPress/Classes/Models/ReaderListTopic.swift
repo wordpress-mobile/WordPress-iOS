@@ -1,7 +1,6 @@
 import Foundation
 
-@objc open class ReaderListTopic: ReaderAbstractTopic
-{
+@objc open class ReaderListTopic: ReaderAbstractTopic {
     @NSManaged open var isOwner: Bool
     @NSManaged open var isPublic: Bool
     @NSManaged open var listDescription: String
