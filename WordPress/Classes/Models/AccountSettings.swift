@@ -28,12 +28,12 @@ extension AccountSettings {
         email = managed.email
         emailPendingAddress = managed.emailPendingAddress
         emailPendingChange = managed.emailPendingChange
-        primarySiteID = managed.primarySiteID.integerValue
+        primarySiteID = managed.primarySiteID.intValue
         webAddress = managed.webAddress
         language = managed.language
     }
 
-    var emailForDisplay : String {
+    var emailForDisplay: String {
         let pendingEmail = emailPendingAddress?.nonEmptyString() ?? email
         return emailPendingChange ? pendingEmail : email
     }

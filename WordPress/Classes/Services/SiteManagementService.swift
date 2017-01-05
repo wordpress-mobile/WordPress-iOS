@@ -14,7 +14,7 @@ public extension Blog
 
 /// SiteManagementService handles operations for managing a WordPress.com site.
 ///
-public class SiteManagementService : LocalCoreDataService
+open class SiteManagementService: LocalCoreDataService
 {
     /// Deletes the specified WordPress.com site.
     ///
@@ -23,17 +23,17 @@ public class SiteManagementService : LocalCoreDataService
     ///     - success: Optional success block with no parameters
     ///     - failure: Optional failure block with NSError
     ///
-    public func deleteSiteForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError -> Void)?) {
+    open func deleteSiteForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
         remote.deleteSite(blog.dotComID!,
             success: {
-                self.managedObjectContext.performBlock {
+                self.managedObjectContext.perform {
                     let blogService = BlogService(managedObjectContext: self.managedObjectContext)
-                    blogService.removeBlog(blog)
+                    blogService?.remove(blog)
 
-                    ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
+                    ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
                         success?()
                     })
                 }
@@ -52,7 +52,7 @@ public class SiteManagementService : LocalCoreDataService
     ///     - success: Optional success block with no parameters
     ///     - failure: Optional failure block with NSError
     ///
-    public func exportContentForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError -> Void)?) {
+    open func exportContentForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
@@ -72,7 +72,7 @@ public class SiteManagementService : LocalCoreDataService
     ///     - success: Optional success block with array of purchases (if any)
     ///     - failure: Optional failure block with NSError
     ///
-    public func getActivePurchasesForBlog(blog: Blog, success: (([SitePurchase]) -> Void)?, failure: (NSError -> Void)?) {
+    open func getActivePurchasesForBlog(_ blog: Blog, success: (([SitePurchase]) -> Void)?, failure: ((NSError) -> Void)?) {
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
@@ -93,7 +93,7 @@ public class SiteManagementService : LocalCoreDataService
     ///
     /// - Returns: Remote service for site management
     ///
-    func siteManagementServiceRemoteForBlog(blog: Blog) -> SiteManagementServiceRemote? {
+    func siteManagementServiceRemoteForBlog(_ blog: Blog) -> SiteManagementServiceRemote? {
         guard let api = blog.wordPressComRestApi() else {
             return nil
         }

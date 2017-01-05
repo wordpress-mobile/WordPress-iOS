@@ -4,10 +4,10 @@ import Foundation
 /// KeyringConnectionExternalUser represents an additional user account on the
 /// external service that could be used other than the default account.
 ///
-public class KeyringConnectionExternalUser : NSObject
+open class KeyringConnectionExternalUser: NSObject
 {
-    public var externalID = ""
-    public var externalName = ""
-    public var externalCategory = ""
-    public var externalProfilePicture = ""
+    open var externalID = ""
+    open var externalName = ""
+    open var externalCategory = ""
+    open var externalProfilePicture = ""
 }

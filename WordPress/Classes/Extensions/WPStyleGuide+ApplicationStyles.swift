@@ -8,7 +8,7 @@ extension WPStyleGuide
     }
 
     public class func navigationBarBarStyle() -> UIBarStyle {
-        return .Black
+        return .black
     }
 
     public class func navigationBarShadowImage() -> UIImage {

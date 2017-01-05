@@ -28,10 +28,10 @@ class NoteUndoOverlayView: UIView
     ///
     var buttonText: String? {
         get {
-            return undoButton.titleForState(.Normal)
+            return undoButton.title(for: UIControlState())
         }
         set {
-            undoButton.setTitle(newValue, forState: .Normal)
+            undoButton.setTitle(newValue, for: UIControlState())
         }
     }
 
@@ -47,15 +47,15 @@ class NoteUndoOverlayView: UIView
 
         // Button
         undoButton.titleLabel?.font = Style.noteUndoTextFont
-        undoButton.setTitle(NSLocalizedString("Undo", comment: "Revert an operation"), forState: .Normal)
-        undoButton.setTitleColor(Style.noteUndoTextColor, forState: .Normal)
+        undoButton.setTitle(NSLocalizedString("Undo", comment: "Revert an operation"), for: UIControlState())
+        undoButton.setTitleColor(Style.noteUndoTextColor, for: UIControlState())
     }
 
 
     // MARK: - Private Alias
-    private typealias Style = WPStyleGuide.Notifications
+    fileprivate typealias Style = WPStyleGuide.Notifications
 
     // MARK: - Private Outlets
-    @IBOutlet private weak var legendLabel: UILabel!
-    @IBOutlet private weak var undoButton:  UIButton!
+    @IBOutlet fileprivate weak var legendLabel: UILabel!
+    @IBOutlet fileprivate weak var undoButton: UIButton!
 }

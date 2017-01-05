@@ -4,17 +4,17 @@ import WordPressComAnalytics
 /// `PostListFilterSettings` manages settings for filtering posts (by author or status)
 /// - Note: previously found within `AbstractPostListViewController`
 class PostListFilterSettings: NSObject {
-    private static let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
-    private static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
-    private static let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
+    fileprivate static let currentPostAuthorFilterKey = "CurrentPostAuthorFilterKey"
+    fileprivate static let currentPageListStatusFilterKey = "CurrentPageListStatusFilterKey"
+    fileprivate static let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
 
     let blog: Blog
     let postType: PostServiceType
-    private var allPostListFilters: [PostListFilter]?
+    fileprivate var allPostListFilters: [PostListFilter]?
 
-    enum AuthorFilter : UInt {
-        case Mine = 0
-        case Everyone = 1
+    enum AuthorFilter: UInt {
+        case mine = 0
+        case everyone = 1
     }
     /// Initializes a new PostListFilterSettings instance
     /// - Parameter blog: the blog which owns the list of posts
@@ -33,16 +33,16 @@ class PostListFilterSettings: NSObject {
         return allPostListFilters!
     }
 
-    func filterThatDisplaysPostsWithStatus(postStatus: String) -> PostListFilter {
+    func filterThatDisplaysPostsWithStatus(_ postStatus: String) -> PostListFilter {
         let index = indexOfFilterThatDisplaysPostsWithStatus(postStatus)
         return availablePostListFilters()[index]
     }
 
-    func indexOfFilterThatDisplaysPostsWithStatus(postStatus: String) -> Int {
+    func indexOfFilterThatDisplaysPostsWithStatus(_ postStatus: String) -> Int {
         var index = 0
         var found = false
 
-        for (idx, filter) in availablePostListFilters().enumerate() {
+        for (idx, filter) in availablePostListFilters().enumerated() {
             if filter.statuses.contains(postStatus) {
                 found = true
                 index = idx
@@ -52,14 +52,14 @@ class PostListFilterSettings: NSObject {
 
         if !found {
             // The draft filter is the catch all by convention.
-            index = indexForFilterWithType(.Draft)
+            index = indexForFilterWithType(.draft)
         }
 
         return index
     }
 
-    func indexForFilterWithType(filterType: PostListFilter.Status) -> Int {
-        if let index = availablePostListFilters().indexOf({ (filter: PostListFilter) -> Bool in
+    func indexForFilterWithType(_ filterType: PostListFilter.Status) -> Int {
+        if let index = availablePostListFilters().index(where: { (filter: PostListFilter) -> Bool in
             return filter.filterType == filterType
         }) {
             return index
@@ -68,7 +68,7 @@ class PostListFilterSettings: NSObject {
         }
     }
 
-    func setFilterWithPostStatus(status: String) {
+    func setFilterWithPostStatus(_ status: String) {
         let index = indexOfFilterThatDisplaysPostsWithStatus(status)
         self.setCurrentFilterIndex(index)
 
@@ -83,10 +83,10 @@ class PostListFilterSettings: NSObject {
 
     func keyForCurrentListStatusFilter() -> String {
         switch postType {
-        case PostServiceTypePage:
-            return self.dynamicType.currentPageListStatusFilterKey
-        case PostServiceTypePost:
-            return self.dynamicType.currentPageListStatusFilterKey
+        case PostServiceTypePage as String:
+            return type(of: self).currentPageListStatusFilterKey
+        case PostServiceTypePost as String:
+            return type(of: self).currentPageListStatusFilterKey
         default:
             return ""
         }
@@ -95,10 +95,9 @@ class PostListFilterSettings: NSObject {
     /// currentPostListFilter: returns the index of the last active PostListFilter
     func currentFilterIndex() -> Int {
 
-        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = UserDefaults.standard
 
-        if let filter = userDefaults.objectForKey(keyForCurrentListStatusFilter()) as? Int
-            where filter < availablePostListFilters().count {
+        if let filter = userDefaults.object(forKey: keyForCurrentListStatusFilter()) as? Int, filter < availablePostListFilters().count {
 
             return filter
         } else {
@@ -107,21 +106,21 @@ class PostListFilterSettings: NSObject {
     }
 
     /// setCurrentFilterIndex: stores the index of the last active PostListFilter
-    func setCurrentFilterIndex(newIndex: Int) {
+    func setCurrentFilterIndex(_ newIndex: Int) {
         let index = self.currentFilterIndex()
 
         guard newIndex != index else {
             return
         }
 
-        NSUserDefaults.standardUserDefaults().setObject(newIndex, forKey: self.keyForCurrentListStatusFilter())
-        NSUserDefaults.resetStandardUserDefaults()
+        UserDefaults.standard.set(newIndex, forKey: self.keyForCurrentListStatusFilter())
+        UserDefaults.resetStandardUserDefaults()
     }
 
     // MARK: - Author-related methods
 
     func canFilterByAuthor() -> Bool {
-        if postType == PostServiceTypePost
+        if postType as String == PostServiceTypePost
         {
             return blog.isHostedAtWPcom && blog.isMultiAuthor && blog.account?.userID != nil
         }
@@ -129,49 +128,49 @@ class PostListFilterSettings: NSObject {
     }
 
     func authorIDFilter() -> NSNumber? {
-        return currentPostAuthorFilter() == .Mine ? blog.account?.userID : nil
+        return currentPostAuthorFilter() == .mine ? blog.account?.userID : nil
     }
 
     func shouldShowOnlyMyPosts() -> Bool {
         let filter = currentPostAuthorFilter()
-        return filter == .Mine
+        return filter == .mine
     }
 
     /// currentPostListFilter: returns the last active AuthorFilter
     func currentPostAuthorFilter() -> AuthorFilter {
         if !canFilterByAuthor() {
-            return .Everyone
+            return .everyone
         }
 
-        if let filter = NSUserDefaults.standardUserDefaults().objectForKey(self.dynamicType.currentPostAuthorFilterKey) {
-            if filter.unsignedIntegerValue == AuthorFilter.Everyone.rawValue {
-                return .Everyone
+        if let filter = UserDefaults.standard.object(forKey: type(of: self).currentPostAuthorFilterKey) {
+            if (filter as AnyObject).uintValue == AuthorFilter.everyone.rawValue {
+                return .everyone
             }
         }
 
-        return .Mine
+        return .mine
     }
 
     /// currentPostListFilter: stores the last active AuthorFilter
     /// - Note: _Also tracks a .PostListAuthorFilterChanged analytics event_
-    func setCurrentPostAuthorFilter(filter: AuthorFilter) {
+    func setCurrentPostAuthorFilter(_ filter: AuthorFilter) {
         guard filter != currentPostAuthorFilter() else {
             return
         }
 
-        WPAnalytics.track(.PostListAuthorFilterChanged, withProperties: propertiesForAnalytics())
+        WPAnalytics.track(.postListAuthorFilterChanged, withProperties: propertiesForAnalytics())
 
-        NSUserDefaults.standardUserDefaults().setObject(filter.rawValue, forKey: self.dynamicType.currentPostAuthorFilterKey)
-        NSUserDefaults.resetStandardUserDefaults()
+        UserDefaults.standard.set(filter.rawValue, forKey: type(of: self).currentPostAuthorFilterKey)
+        UserDefaults.resetStandardUserDefaults()
     }
 
     // MARK: - Analytics
 
-    func propertiesForAnalytics() -> [String:AnyObject] {
-        var properties = [String:AnyObject]()
+    func propertiesForAnalytics() -> [String: AnyObject] {
+        var properties = [String: AnyObject]()
 
         properties["type"] = postType
-        properties["filter"] = currentPostListFilter().title
+        properties["filter"] = currentPostListFilter().title as AnyObject?
 
         if let dotComID = blog.dotComID {
             properties[WPAppAnalyticsKeyBlogID] = dotComID

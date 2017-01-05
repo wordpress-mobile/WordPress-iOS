@@ -1,5 +1,29 @@
 import Foundation
 import CoreData
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 @objc(Post)
 class Post: AbstractPost {
@@ -9,7 +33,7 @@ class Post: AbstractPost {
 
     // MARK: - Properties
 
-    private var storedContentPreviewForDisplay = ""
+    fileprivate var storedContentPreviewForDisplay = ""
 
     // MARK: - NSManagedObject
 
@@ -21,7 +45,7 @@ class Post: AbstractPost {
     override func willSave() {
         super.willSave()
 
-        if deleted {
+        if isDeleted {
             return
         }
 
@@ -30,25 +54,25 @@ class Post: AbstractPost {
 
     // MARK: - Content Preview
 
-    private func buildContentPreview() {
-        if let excerpt = mt_excerpt where excerpt.characters.count > 0 {
+    fileprivate func buildContentPreview() {
+        if let excerpt = mt_excerpt, excerpt.characters.count > 0 {
             storedContentPreviewForDisplay = String.makePlainText(excerpt)
         } else if let content = content {
-            storedContentPreviewForDisplay = BasePost.summaryFromContent(content)
+            storedContentPreviewForDisplay = BasePost.summary(fromContent: content)
         }
     }
 
     // MARK: - Format
 
     func postFormatText() -> String? {
-        return blog.postFormatTextFromSlug(postFormat)
+        return blog.postFormatText(fromSlug: postFormat)
     }
 
-    func setPostFormatText(postFormatText: String) {
+    func setPostFormatText(_ postFormatText: String) {
 
-        assert(blog.postFormats is [String:String])
-        guard let postFormats = blog.postFormats as? [String:String] else {
-            DDLogSwift.logError("Expected blog.postFormats to be \(String([String:String])).")
+        assert(blog.postFormats is [String: String])
+        guard let postFormats = blog.postFormats as? [String: String] else {
+            DDLogSwift.logError("Expected blog.postFormats to be \(String(describing: [String: String].self)).")
             return
         }
 
@@ -74,11 +98,11 @@ class Post: AbstractPost {
             return ""
         }
 
-        let orderedStrings = allStrings.sort { (categoryName1, categoryName2) -> Bool in
-            return categoryName1.localizedCaseInsensitiveCompare(categoryName2) == .OrderedAscending
+        let orderedStrings = allStrings.sorted { (categoryName1, categoryName2) -> Bool in
+            return categoryName1.localizedCaseInsensitiveCompare(categoryName2) == .orderedAscending
         }
 
-        return orderedStrings.joinWithSeparator(", ")
+        return orderedStrings.joined(separator: ", ")
     }
 
 
@@ -87,7 +111,7 @@ class Post: AbstractPost {
     /// - Parameter categoryNames: a `NSArray` with the names of the categories for this post. If
     ///                     a given category name doesn't exist it's ignored.
     ///
-    func setCategoriesFromNames(categoryNames: [String]) {
+    func setCategoriesFromNames(_ categoryNames: [String]) {
 
         var newCategories = Set<PostCategory>()
 
@@ -95,7 +119,7 @@ class Post: AbstractPost {
 
             assert(blog.categories is Set<PostCategory>)
             guard let blogCategories = blog.categories as? Set<PostCategory> else {
-                DDLogSwift.logError("Expected blog.categories to be \(String(Set<PostCategory>)).")
+                DDLogSwift.logError("Expected blog.categories to be \(String(describing: Set<PostCategory>.self)).")
                 return
             }
 
@@ -112,13 +136,13 @@ class Post: AbstractPost {
     // MARK: - Comments
 
     func numberOfComments() -> Int {
-        return commentCount?.integerValue ?? 0
+        return commentCount?.intValue ?? 0
     }
 
     // MARK: - Likes
 
     func numberOfLikes() -> Int {
-        return likeCount?.integerValue ?? 0
+        return likeCount?.intValue ?? 0
     }
 
     // MARK: - AbstractPost
@@ -145,11 +169,11 @@ class Post: AbstractPost {
     }
 
     override func hasCategories() -> Bool {
-        return (categories?.count > 0) ?? false
+        return (categories?.count > 0)
     }
 
     override func hasTags() -> Bool {
-        return (tags?.trim().characters.count > 0) ?? false
+        return (tags?.trim().characters.count > 0)
     }
 
     // MARK: - BasePost
@@ -176,8 +200,7 @@ class Post: AbstractPost {
             }
 
             if let coord1 = geolocation?.coordinate,
-                let coord2 = originalPost.geolocation?.coordinate
-                where coord1.latitude != coord2.latitude || coord1.longitude != coord2.longitude {
+                let coord2 = originalPost.geolocation?.coordinate, coord1.latitude != coord2.latitude || coord1.longitude != coord2.longitude {
 
                 return true
             }
@@ -190,7 +213,7 @@ class Post: AbstractPost {
         var statusString: String?
 
         if status != PostStatusPublish && status != PostStatusDraft {
-            statusString = statusTitle
+            statusString = statusTitle as String?
         }
 
         if isRevision() {
@@ -207,7 +230,7 @@ class Post: AbstractPost {
     }
 
     override func titleForDisplay() -> String {
-        var title = postTitle?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()) ?? ""
+        var title = postTitle?.trimmingCharacters(in: CharacterSet.whitespaces) ?? ""
         title = title.stringByDecodingXMLCharacters()
 
         if title.characters.count == 0 && contentPreviewForDisplay().characters.count == 0 && !hasRemote() {
@@ -217,12 +240,12 @@ class Post: AbstractPost {
         return title
     }
 
-    override func featuredImageURLForDisplay() -> NSURL? {
+    override func featuredImageURLForDisplay() -> URL? {
 
         guard let path = pathForDisplayImage else {
             return nil
         }
 
-        return NSURL(string: path)
+        return URL(string: path)
     }
 }

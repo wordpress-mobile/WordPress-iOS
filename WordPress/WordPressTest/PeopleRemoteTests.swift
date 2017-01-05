@@ -3,7 +3,7 @@ import XCTest
 import OHHTTPStubs
 @testable import WordPress
 
-class PeopleServiceTests : XCTestCase
+class PeopleServiceTests: XCTestCase
 {
     // MARK: - Constants
 
@@ -12,12 +12,12 @@ class PeopleServiceTests : XCTestCase
     let sendSuccessMockFilename         = "people-send-invitation-success.json"
     let sendFailureMockFilename         = "people-send-invitation-failure.json"
     let contentTypeJson                 = "application/json"
-    let timeout                         = NSTimeInterval(1000)
+    let timeout                         = TimeInterval(1000)
 
     // MARK: - Properties
 
-    var restApi : WordPressComRestApi!
-    var remote : PeopleRemote!
+    var restApi: WordPressComRestApi!
+    var remote: PeopleRemote!
 
 
     // MARK: - Overriden Methods
@@ -37,12 +37,12 @@ class PeopleServiceTests : XCTestCase
 
     // MARK: - Helpers
 
-    private func stubRemoteResponse(endpoint: String, filename: String) {
-        stub({ request in
-            return request.URL?.absoluteString!.rangeOfString(endpoint) != nil
+    fileprivate func stubRemoteResponse(_ endpoint: String, filename: String) {
+        stub(condition: { request in
+            return request.url?.absoluteString.range(of: endpoint) != nil
         }) { _ in
-            let stubPath = OHPathForFile(filename, self.dynamicType)
-            return fixture(stubPath!, headers: ["Content-Type": self.contentTypeJson])
+            let stubPath = OHPathForFile(filename, type(of: self))
+            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: self.contentTypeJson as AnyObject])
         }
     }
 
@@ -50,58 +50,58 @@ class PeopleServiceTests : XCTestCase
     // MARK: - Tests
 
     func testValidateInvitationWithInvalidUsernameFails() {
-        let expectation = expectationWithDescription("Send Invite")
+        let expect = expectation(description: "Send Invite")
 
         stubRemoteResponse("invites/validate", filename: validationFailureMockFilename)
         remote.validateInvitation(321, usernameOrEmail: "someInvalidUser", role: .Follower, success: {
             XCTAssert(false, "This callback shouldn't get called")
-            expectation.fulfill()
+            expect.fulfill()
         }, failure: { error in
-            expectation.fulfill()
+            expect.fulfill()
         })
 
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
 
     func testValidateInvitationWithValidUsernameSucceeds() {
-        let expectation = expectationWithDescription("Send Invite")
+        let expect = expectation(description: "Send Invite")
 
         stubRemoteResponse("invites/validate", filename: validationSuccessMockFilename)
         remote.validateInvitation(321, usernameOrEmail: "someValidUser", role: .Follower, success: {
-            expectation.fulfill()
+            expect.fulfill()
         }, failure: { error in
             XCTAssert(false, "This callback shouldn't get called")
-            expectation.fulfill()
+            expect.fulfill()
         })
 
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
 
     func testSendInvitationToInvalidUsernameFails() {
-        let expectation = expectationWithDescription("Validate Invite")
+        let expect = expectation(description: "Validate Invite")
 
         stubRemoteResponse("invites/new", filename: sendFailureMockFilename)
         remote.sendInvitation(321, usernameOrEmail: "someInvalidUser", role: .Follower, message: "", success: {
             XCTAssert(false, "This callback shouldn't get called")
-            expectation.fulfill()
+            expect.fulfill()
         }, failure: { error in
-            expectation.fulfill()
+            expect.fulfill()
         })
 
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
 
     func testSendInvitationToValidUsernameSucceeds() {
-        let expectation = expectationWithDescription("Validate Invite")
+        let expect = expectation(description: "Validate Invite")
 
         stubRemoteResponse("invites/new", filename: sendSuccessMockFilename)
         remote.sendInvitation(321, usernameOrEmail: "someValidUser", role: .Follower, message: "", success: {
-            expectation.fulfill()
+            expect.fulfill()
         }, failure: { error in
             XCTAssert(false, "This callback shouldn't get called")
-            expectation.fulfill()
+            expect.fulfill()
         })
 
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
 }

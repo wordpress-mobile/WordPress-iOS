@@ -6,31 +6,31 @@ import WordPressShared
 /// The purpose of this class is to render an interface that allows the user to Insert / Edit / Delete
 /// a set of strings.
 ///
-public class SettingsListEditorViewController : UITableViewController
+open class SettingsListEditorViewController: UITableViewController
 {
     // MARK: - Public Properties
-    public var footerText   : String?
-    public var emptyText    : String?
-    public var insertTitle  : String?
-    public var editTitle    : String?
-    public var onChange     : ((Set<String>) -> Void)?
+    open var footerText: String?
+    open var emptyText: String?
+    open var insertTitle: String?
+    open var editTitle: String?
+    open var onChange: ((Set<String>) -> Void)?
 
 
     // MARK: - Initialiers
     public convenience init(collection: Set<String>?) {
-        self.init(style: .Grouped)
+        self.init(style: .grouped)
 
         emptyText = NSLocalizedString("No Items", comment: "List Editor Empty State Message")
 
-        if let unwrappedCollection = collection?.sort() as [String]? {
-            rows.addObjectsFromArray(unwrappedCollection)
+        if let unwrappedCollection = collection?.sorted() as [String]? {
+            rows.addObjects(from: unwrappedCollection)
         }
     }
 
 
 
     // MARK: - View Lifecycle
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
         setupTableView()
@@ -39,7 +39,7 @@ public class SettingsListEditorViewController : UITableViewController
 
 
     // MARK: - Helpers
-    private func notifyDidChange() {
+    fileprivate func notifyDidChange() {
         let orderedRows = Set<String>(rows.array as! [String])
         onChange?(orderedRows)
     }
@@ -47,24 +47,24 @@ public class SettingsListEditorViewController : UITableViewController
 
 
     // MARK: - Setup Helpers
-    private func setupNavBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add,
+    fileprivate func setupNavBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
             target: self,
             action: #selector(SettingsListEditorViewController.addItemPressed(_:)))
     }
 
-    private func setupTableView() {
-        tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+    fileprivate func setupTableView() {
+        tableView.register(WPTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
 
 
     // MARK: - Button Handlers
-    @IBAction func addItemPressed(sender: AnyObject?) {
+    @IBAction func addItemPressed(_ sender: AnyObject?) {
         let settingsViewController = SettingsTextViewController(text: nil, placeholder: nil, hint: nil)
         settingsViewController.title = insertTitle
-        settingsViewController.onValueChanged = { (updatedValue : String!) in
+        settingsViewController.onValueChanged = { (updatedValue: String!) in
             self.insertString(updatedValue)
             self.notifyDidChange()
             self.tableView.reloadData()
@@ -76,37 +76,37 @@ public class SettingsListEditorViewController : UITableViewController
 
 
     // MARK: - UITableViewDataSoutce Methods
-    public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    open override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Note:
         // We'll always render, at least, one row, with the Empty State text
         return max(rows.count, 1)
     }
 
-    public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)!
+    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)!
 
         WPStyleGuide.configureTableViewCell(cell)
 
-        cell.accessoryType = isEmpty() ? .None : .DisclosureIndicator
+        cell.accessoryType = isEmpty() ? .none : .disclosureIndicator
         cell.textLabel?.text = isEmpty() ? emptyText : stringAtIndexPath(indexPath)
         cell.textLabel?.textColor = isEmpty() ? WPStyleGuide.greyLighten20() : WPStyleGuide.darkGrey()
 
         return cell
     }
 
-    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    open override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return footerText
     }
 
-    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    open override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
-    public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
 
         // Empty State
@@ -119,7 +119,7 @@ public class SettingsListEditorViewController : UITableViewController
 
         let settingsViewController = SettingsTextViewController(text: oldText, placeholder: nil, hint: nil)
         settingsViewController.title = editTitle
-        settingsViewController.onValueChanged = { (newText : String!) in
+        settingsViewController.onValueChanged = { (newText: String!) in
             self.replaceString(oldText, newText: newText)
             self.notifyDidChange()
             self.tableView.reloadData()
@@ -128,69 +128,69 @@ public class SettingsListEditorViewController : UITableViewController
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
-    public override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    open override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return isEmpty() == false
     }
 
-    public override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        return .Delete
+    open override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .delete
     }
 
-    public override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    open override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         // Nuke it from the collection
         removeAtIndexPath(indexPath)
         notifyDidChange()
 
         // Empty State: We'll always render a single row, indicating that there are no items
         if isEmpty() {
-            tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.reloadRows(at: [indexPath], with: .fade)
         } else {
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
 
 
 
     // MARK: - Helpers
-    private func stringAtIndexPath(indexPath : NSIndexPath) -> String {
-        return rows.objectAtIndex(indexPath.row) as! String
+    fileprivate func stringAtIndexPath(_ indexPath: IndexPath) -> String {
+        return rows.object(at: indexPath.row) as! String
     }
 
-    private func removeAtIndexPath(indexPath : NSIndexPath) {
-        rows.removeObjectAtIndex(indexPath.row)
+    fileprivate func removeAtIndexPath(_ indexPath: IndexPath) {
+        rows.removeObject(at: indexPath.row)
     }
 
-    private func insertString(newText: String) {
+    fileprivate func insertString(_ newText: String) {
         if newText.isEmpty {
             return
         }
 
-        rows.addObject(newText)
+        rows.add(newText)
         sortStrings()
     }
 
-    private func replaceString(oldText: String, newText: String) {
+    fileprivate func replaceString(_ oldText: String, newText: String) {
         if oldText == newText {
             return
         }
 
         insertString(newText)
-        rows.removeObject(oldText)
+        rows.remove(oldText)
     }
 
-    private func sortStrings() {
-        self.rows.sortUsingComparator { ($0 as! String).compare($1 as! String) }
+    fileprivate func sortStrings() {
+        self.rows.sort (comparator: { ($0 as! String).compare($1 as! String) })
     }
 
-    private func isEmpty() -> Bool {
+    fileprivate func isEmpty() -> Bool {
         return rows.count == 0
     }
 
 
 
     // MARK: - Constants
-    private let reuseIdentifier = "WPTableViewCell"
+    fileprivate let reuseIdentifier = "WPTableViewCell"
 
     // MARK: - Properties
-    private var rows = NSMutableOrderedSet()
+    fileprivate var rows = NSMutableOrderedSet()
 }

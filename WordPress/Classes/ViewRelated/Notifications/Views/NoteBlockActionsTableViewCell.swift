@@ -7,35 +7,35 @@ import WordPressShared.WPStyleGuide
 //
 class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
 {
-    typealias EventHandler = ((sender: AnyObject) -> Void)
+    typealias EventHandler = ((_ sender: AnyObject) -> Void)
 
     /// Actions StackView
     ///
-    @IBOutlet private var actionsView: UIStackView!
+    @IBOutlet fileprivate var actionsView: UIStackView!
 
     /// Reply Action Button
     ///
-    @IBOutlet private var btnReply: UIButton!
+    @IBOutlet fileprivate var btnReply: UIButton!
 
     /// Like Action Button
     ///
-    @IBOutlet private var btnLike: UIButton!
+    @IBOutlet fileprivate var btnLike: UIButton!
 
     /// Approve Action Button
     ///
-    @IBOutlet private var btnApprove: UIButton!
+    @IBOutlet fileprivate var btnApprove: UIButton!
 
     /// Trash Action Button
     ///
-    @IBOutlet private var btnTrash: UIButton!
+    @IBOutlet fileprivate var btnTrash: UIButton!
 
     /// Spam Action Button
     ///
-    @IBOutlet private var btnSpam: UIButton!
+    @IBOutlet fileprivate var btnSpam: UIButton!
 
     /// Edit Action Button
     ///
-    @IBOutlet private var btnEdit: UIButton!
+    @IBOutlet fileprivate var btnEdit: UIButton!
 
     /// Handler to be executed on Reply event
     ///
@@ -73,7 +73,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     ///
     var isReplyEnabled: Bool = false {
         didSet {
-            btnReply.hidden = !isReplyEnabled
+            btnReply.isHidden = !isReplyEnabled
         }
     }
 
@@ -81,7 +81,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     ///
     var isLikeEnabled: Bool = false {
         didSet {
-            btnLike.hidden = !isLikeEnabled
+            btnLike.isHidden = !isLikeEnabled
         }
     }
 
@@ -89,7 +89,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     ///
     var isApproveEnabled: Bool = false {
         didSet {
-            btnApprove.hidden = !isApproveEnabled
+            btnApprove.isHidden = !isApproveEnabled
         }
     }
 
@@ -97,7 +97,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     ///
     var isTrashEnabled: Bool = false {
         didSet {
-            btnTrash.hidden = !isTrashEnabled
+            btnTrash.isHidden = !isTrashEnabled
         }
     }
 
@@ -105,7 +105,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     ///
     var isSpamEnabled: Bool = false {
         didSet {
-            btnSpam.hidden = !isSpamEnabled
+            btnSpam.isHidden = !isSpamEnabled
         }
     }
 
@@ -113,7 +113,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     ///
     var isEditEnabled: Bool = false {
         didSet {
-            btnEdit.hidden = !isEditEnabled
+            btnEdit.isHidden = !isEditEnabled
         }
     }
 
@@ -121,14 +121,14 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     ///
     var isLikeOn: Bool {
         set {
-            btnLike.selected = newValue
+            btnLike.isSelected = newValue
             btnLike.accessibilityLabel = likeAccesibilityLabel
             btnLike.accessibilityHint = likeAccessibilityHint
             // Force button trait to avoid automatic "Selected" trait
             btnLike.accessibilityTraits = UIAccessibilityTraitButton
         }
         get {
-            return btnLike.selected
+            return btnLike.isSelected
         }
     }
 
@@ -136,45 +136,45 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     ///
     var isApproveOn: Bool {
         set {
-            btnApprove.selected = newValue
+            btnApprove.isSelected = newValue
             btnApprove.accessibilityLabel = approveAccesibilityLabel
             btnApprove.accessibilityHint = approveAccesibilityHint
             // Force button trait to avoid automatic "Selected" trait
             btnApprove.accessibilityTraits = UIAccessibilityTraitButton
         }
         get {
-            return btnApprove.selected
+            return btnApprove.isSelected
         }
     }
 
     /// Returns the required button spacing
     ///
-    private var buttonSpacingForCurrentTraits : CGFloat {
-        let isHorizontallyCompact = traitCollection.horizontalSizeClass == .Compact
+    fileprivate var buttonSpacingForCurrentTraits: CGFloat {
+        let isHorizontallyCompact = traitCollection.horizontalSizeClass == .compact
         return isHorizontallyCompact ? Constants.buttonSpacingCompact : Constants.buttonSpacing
     }
 
     /// Returns the accessibility label for the Approve Button
     ///
-    private var approveAccesibilityLabel : String {
+    fileprivate var approveAccesibilityLabel: String {
         return isApproveOn ? Approve.selectedTitle : Approve.normalTitle
     }
 
     /// Returns the accessibility hint for the Approve Button
     ///
-    private var approveAccesibilityHint : String {
+    fileprivate var approveAccesibilityHint: String {
         return isApproveOn ? Approve.selectedHint : Approve.normalHint
     }
 
     /// Returns the accessibility label for the Like Button
     ///
-    private var likeAccesibilityLabel : String {
+    fileprivate var likeAccesibilityLabel: String {
         return isLikeOn ? Like.selectedTitle : Like.normalTitle
     }
 
     /// Returns the accessibility hint for the Like Button
     ///
-    private var likeAccessibilityHint : String {
+    fileprivate var likeAccessibilityHint: String {
         return isLikeOn ? Like.selectedHint : Like.normalHint
     }
 
@@ -186,45 +186,45 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        selectionStyle = .None
+        selectionStyle = .none
 
         let textNormalColor = WPStyleGuide.Notifications.blockActionDisabledColor
         let textSelectedColor = WPStyleGuide.Notifications.blockActionEnabledColor
 
-        btnReply.setTitle(Reply.normalTitle, forState: .Normal)
-        btnReply.setTitleColor(textNormalColor, forState: .Normal)
+        btnReply.setTitle(Reply.normalTitle, for: UIControlState())
+        btnReply.setTitleColor(textNormalColor, for: UIControlState())
         btnReply.accessibilityLabel = Reply.normalHint
 
-        btnLike.setTitle(Like.normalTitle, forState: .Normal)
-        btnLike.setTitle(Like.selectedTitle, forState: .Highlighted)
-        btnLike.setTitle(Like.selectedTitle, forState: .Selected)
-        btnLike.setTitleColor(textNormalColor, forState: .Normal)
-        btnLike.setTitleColor(textSelectedColor, forState: .Highlighted)
-        btnLike.setTitleColor(textSelectedColor, forState: .Selected)
+        btnLike.setTitle(Like.normalTitle, for: UIControlState())
+        btnLike.setTitle(Like.selectedTitle, for: .highlighted)
+        btnLike.setTitle(Like.selectedTitle, for: .selected)
+        btnLike.setTitleColor(textNormalColor, for: UIControlState())
+        btnLike.setTitleColor(textSelectedColor, for: .highlighted)
+        btnLike.setTitleColor(textSelectedColor, for: .selected)
         btnLike.accessibilityLabel = Like.normalTitle
 
-        btnApprove.setTitle(Approve.normalTitle, forState: .Normal)
-        btnApprove.setTitle(Approve.selectedTitle, forState: .Highlighted)
-        btnApprove.setTitle(Approve.selectedTitle, forState: .Selected)
-        btnApprove.setTitleColor(textNormalColor, forState: .Normal)
-        btnApprove.setTitleColor(textSelectedColor, forState: .Highlighted)
-        btnApprove.setTitleColor(textSelectedColor, forState: .Selected)
+        btnApprove.setTitle(Approve.normalTitle, for: UIControlState())
+        btnApprove.setTitle(Approve.selectedTitle, for: .highlighted)
+        btnApprove.setTitle(Approve.selectedTitle, for: .selected)
+        btnApprove.setTitleColor(textNormalColor, for: UIControlState())
+        btnApprove.setTitleColor(textSelectedColor, for: .highlighted)
+        btnApprove.setTitleColor(textSelectedColor, for: .selected)
         btnApprove.accessibilityLabel = Approve.normalTitle
 
-        btnEdit.setTitle(Edit.normalTitle, forState: .Normal)
-        btnEdit.setTitleColor(textNormalColor, forState: .Normal)
+        btnEdit.setTitle(Edit.normalTitle, for: UIControlState())
+        btnEdit.setTitleColor(textNormalColor, for: UIControlState())
         btnEdit.accessibilityLabel = Edit.normalHint
 
-        btnSpam.setTitle(Spam.normalTitle, forState: .Normal)
-        btnSpam.setTitleColor(textNormalColor, forState: .Normal)
+        btnSpam.setTitle(Spam.normalTitle, for: UIControlState())
+        btnSpam.setTitleColor(textNormalColor, for: UIControlState())
         btnSpam.accessibilityLabel = Spam.normalHint
 
-        btnTrash.setTitle(Trash.normalTitle, forState: .Normal)
-        btnTrash.setTitleColor(textNormalColor, forState: .Normal)
+        btnTrash.setTitle(Trash.normalTitle, for: UIControlState())
+        btnTrash.setTitleColor(textNormalColor, for: UIControlState())
         btnTrash.accessibilityLabel = Trash.normalHint
     }
 
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         actionsView.spacing = buttonSpacingForCurrentTraits
     }
@@ -232,38 +232,38 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
 
 
     // MARK: - IBActions
-    @IBAction func replyWasPressed(sender: AnyObject) {
-        onReplyClick?(sender: sender)
+    @IBAction func replyWasPressed(_ sender: AnyObject) {
+        onReplyClick?(sender)
     }
 
-    @IBAction func likeWasPressed(sender: AnyObject) {
+    @IBAction func likeWasPressed(_ sender: AnyObject) {
         let onClick = isLikeOn ? onUnlikeClick : onLikeClick
         isLikeOn = !isLikeOn
 
         animateLikeButton(btnLike) {
-            onClick?(sender: sender)
+            onClick?(sender)
         }
     }
 
-    @IBAction func approveWasPressed(sender: AnyObject) {
+    @IBAction func approveWasPressed(_ sender: AnyObject) {
         let onClick = isApproveOn ? onUnapproveClick : onApproveClick
         isApproveOn = !isApproveOn
 
         animateApproveButton(btnApprove) {
-            onClick?(sender: sender)
+            onClick?(sender)
         }
     }
 
-    @IBAction func trashWasPressed(sender: AnyObject) {
-        onTrashClick?(sender: sender)
+    @IBAction func trashWasPressed(_ sender: AnyObject) {
+        onTrashClick?(sender)
     }
 
-    @IBAction func spamWasPressed(sender: AnyObject) {
-        onSpamClick?(sender: sender)
+    @IBAction func spamWasPressed(_ sender: AnyObject) {
+        onSpamClick?(sender)
     }
 
-    @IBAction func editWasPressed(sender: AnyObject) {
-        onEditClick?(sender: sender)
+    @IBAction func editWasPressed(_ sender: AnyObject) {
+        onEditClick?(sender)
     }
 }
 
@@ -273,41 +273,41 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
 //
 private extension NoteBlockActionsTableViewCell
 {
-    func animateLikeButton(button: UIButton, completion: (() -> Void)) {
-        guard let overlayImageView = overlayForButton(button, state: .Selected) else {
+    func animateLikeButton(_ button: UIButton, completion: @escaping (() -> Void)) {
+        guard let overlayImageView = overlayForButton(button, state: .selected) else {
             return
         }
 
         contentView.addSubview(overlayImageView)
 
-        let animation = button.selected ? overlayImageView.fadeInWithRotationAnimation : overlayImageView.fadeOutWithRotationAnimation
+        let animation = button.isSelected ? overlayImageView.fadeInWithRotationAnimation : overlayImageView.fadeOutWithRotationAnimation
         animation { _ in
             overlayImageView.removeFromSuperview()
             completion()
         }
     }
 
-    func animateApproveButton(button: UIButton, completion: (() -> Void)) {
-        guard let overlayImageView = overlayForButton(button, state: .Selected) else {
+    func animateApproveButton(_ button: UIButton, completion: @escaping (() -> Void)) {
+        guard let overlayImageView = overlayForButton(button, state: .selected) else {
             return
         }
 
         contentView.addSubview(overlayImageView)
 
-        let animation = button.selected ? overlayImageView.implodeAnimation : overlayImageView.explodeAnimation
+        let animation = button.isSelected ? overlayImageView.implodeAnimation : overlayImageView.explodeAnimation
         animation { _ in
             overlayImageView.removeFromSuperview()
             completion()
         }
     }
 
-    func overlayForButton(button: UIButton, state: UIControlState) -> UIImageView? {
-        guard let buttonImageView = button.imageView, let targetImage = button.imageForState(state) else {
+    func overlayForButton(_ button: UIButton, state: UIControlState) -> UIImageView? {
+        guard let buttonImageView = button.imageView, let targetImage = button.image(for: state) else {
             return nil
         }
 
         let overlayImageView = UIImageView(image: targetImage)
-        overlayImageView.frame = contentView.convertRect(buttonImageView.bounds, fromView: buttonImageView)
+        overlayImageView.frame = contentView.convert(buttonImageView.bounds, from: buttonImageView)
 
         return overlayImageView
     }

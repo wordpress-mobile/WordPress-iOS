@@ -6,7 +6,7 @@ import WordPressShared
 /// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
-@objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder {
+@objc class Signin2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder {
 
     @IBOutlet weak var verificationCodeField: UITextField!
     @IBOutlet weak var sendCodeButton: UIButton!
@@ -15,7 +15,7 @@ import WordPressShared
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
 
-    lazy private var loginFacade: LoginFacade = {
+    lazy fileprivate var loginFacade: LoginFacade = {
         let facade = LoginFacade()
         facade.delegate = self
         return facade
@@ -26,9 +26,9 @@ import WordPressShared
     ///
     /// - Parameter loginFields: A LoginFields instance containing any prefilled credentials.
     ///
-    class func controller(loginFields: LoginFields) -> Signin2FAViewController {
-        let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateViewControllerWithIdentifier("Signin2FAViewController") as! Signin2FAViewController
+    class func controller(_ loginFields: LoginFields) -> Signin2FAViewController {
+        let storyboard = UIStoryboard(name: "Signin", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "Signin2FAViewController") as! Signin2FAViewController
         controller.loginFields = loginFields
         return controller
     }
@@ -44,14 +44,14 @@ import WordPressShared
     }
 
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         configureViewForEditingIfNeeded()
     }
 
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
@@ -60,7 +60,7 @@ import WordPressShared
     }
 
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unregisterForKeyboardEvents()
 
@@ -79,9 +79,9 @@ import WordPressShared
     func localizeControls() {
         verificationCodeField.placeholder = NSLocalizedString("Verification code", comment: "two factor code placeholder")
 
-        let submitButtonTitle = NSLocalizedString("Verify", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
-        submitButton.setTitle(submitButtonTitle, forState: .Normal)
-        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
+        let submitButtonTitle = NSLocalizedString("Verify", comment: "Title of a button. The text should be uppercase.").localizedUppercase
+        submitButton.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton.setTitle(submitButtonTitle, for: .highlighted)
     }
 
 
@@ -93,10 +93,10 @@ import WordPressShared
                                        comment: "Message displayed when a verification code is needed")
 
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .Center
+        paragraphStyle.alignment = .center
 
-        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFontOfSize(14),
-                                                                   NSForegroundColorAttributeName: UIColor.whiteColor(),
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14),
+                                                                   NSForegroundColorAttributeName: UIColor.white,
                                                                    NSParagraphStyleAttributeName: paragraphStyle ]]
 
         let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
@@ -104,13 +104,13 @@ import WordPressShared
         attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
 
         if let titleLabel = sendCodeButton.titleLabel {
-            titleLabel.lineBreakMode = .ByWordWrapping
-            titleLabel.textAlignment = .Center
+            titleLabel.lineBreakMode = .byWordWrapping
+            titleLabel.textAlignment = .center
             titleLabel.numberOfLines = 3
         }
 
-        sendCodeButton.setAttributedTitle(attributedCode, forState: .Normal)
-        sendCodeButton.setAttributedTitle(attributedCodeHighlighted, forState: .Highlighted)
+        sendCodeButton.setAttributedTitle(attributedCode, for: UIControlState())
+        sendCodeButton.setAttributedTitle(attributedCodeHighlighted, for: .highlighted)
     }
 
 
@@ -118,19 +118,19 @@ import WordPressShared
     ///
     /// - Parameter message: The text to display in the label.
     ///
-    func configureStatusLabel(message: String) {
+    func configureStatusLabel(_ message: String) {
         statusLabel.text = message
 
-        sendCodeButton.hidden = !message.isEmpty
+        sendCodeButton.isHidden = !message.isEmpty
     }
 
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating animating: Bool) {
+    func configureSubmitButton(animating: Bool) {
         submitButton.showActivityIndicator(animating)
 
-        submitButton.enabled = (
+        submitButton.isEnabled = (
             !animating &&
             !loginFields.multifactorCode.isEmpty
         )
@@ -141,7 +141,7 @@ import WordPressShared
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(loading: Bool) {
+    func configureViewLoading(_ loading: Bool) {
         verificationCodeField.enablesReturnKeyAutomatically = !loading
 
         configureSubmitButton(animating: loading)
@@ -172,7 +172,7 @@ import WordPressShared
 
         // Is everything filled out?
         if loginFields.multifactorCode.isEmpty {
-            WPError.showAlertWithTitle(NSLocalizedString("Error", comment: "Title of an error message"),
+            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Title of an error message"),
                                        message: NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."),
                                        withSupportButton: false)
 
@@ -181,7 +181,7 @@ import WordPressShared
 
         configureViewLoading(true)
 
-        loginFacade.signInWithLoginFields(loginFields)
+        loginFacade.signIn(with: loginFields)
     }
 
 
@@ -195,7 +195,7 @@ import WordPressShared
     // MARK: - Actions
 
 
-    @IBAction func handleTextFieldDidChange(sender: UITextField) {
+    @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
         loginFields.multifactorCode = verificationCodeField.nonNilTrimmedText()
 
         configureSubmitButton(animating: false)
@@ -207,28 +207,28 @@ import WordPressShared
     }
 
 
-    @IBAction func handleSubmitButtonTapped(sender: UIButton) {
+    @IBAction func handleSubmitButtonTapped(_ sender: UIButton) {
         validateForm()
     }
 
 
-    @IBAction func handleSendVerificationButtonTapped(sender: UIButton) {
+    @IBAction func handleSendVerificationButtonTapped(_ sender: UIButton) {
         let message = NSLocalizedString("SMS Sent", comment: "One Time Code has been sent via SMS")
-        SVProgressHUD.showSuccessWithStatus(message)
+        SVProgressHUD.showSuccess(withStatus: message)
 
-        loginFacade.requestOneTimeCodeWithLoginFields(loginFields)
+        loginFacade.requestOneTimeCode(with: loginFields)
     }
 
 
     // MARK: - Keyboard Notifications
 
 
-    func handleKeyboardWillShow(notification: NSNotification) {
+    func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
     }
 
 
-    func handleKeyboardWillHide(notification: NSNotification) {
+    func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
     }
 }
@@ -236,19 +236,19 @@ import WordPressShared
 
 extension Signin2FAViewController: LoginFacadeDelegate {
 
-    func finishedLoginWithUsername(username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+    func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
     }
 
 
-    func displayLoginMessage(message: String!) {
+    func displayLoginMessage(_ message: String!) {
         configureStatusLabel(message)
     }
 
 
-    func displayRemoteError(error: NSError!) {
+    func displayRemoteError(_ error: Error!) {
         configureStatusLabel("")
         configureViewLoading(false)
-        displayError(error)
+        displayError(error as NSError)
     }
 }

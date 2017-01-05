@@ -5,26 +5,26 @@ import XCTest
 class FeatureFlagTest: XCTestCase {
 
     func testBuild() {
-        Build.withCurrent(.Debug) {
-            expect(build(.Debug)).to(beTrue())
-            expect(build(.Debug, .Alpha)).to(beTrue())
-            expect(build(.Alpha)).to(beFalse())
-            expect(build(.Internal)).to(beFalse())
-            expect(build(.AppStore)).to(beFalse())
+        Build.withCurrent(.debug) {
+            expect(build(.debug)).to(beTrue())
+            expect(build(.debug, .alpha)).to(beTrue())
+            expect(build(.alpha)).to(beFalse())
+            expect(build(.internal)).to(beFalse())
+            expect(build(.appStore)).to(beFalse())
         }
 
-        Build.withCurrent(.AppStore) {
-            expect(build(.Debug)).to(beFalse())
-            expect(build(.Alpha)).to(beFalse())
-            expect(build(.Internal)).to(beFalse())
-            expect(build(.AppStore)).to(beTrue())
-            expect(build(.Internal,.AppStore)).to(beTrue())
+        Build.withCurrent(.appStore) {
+            expect(build(.debug)).to(beFalse())
+            expect(build(.alpha)).to(beFalse())
+            expect(build(.internal)).to(beFalse())
+            expect(build(.appStore)).to(beTrue())
+            expect(build(.internal,.appStore)).to(beTrue())
         }
     }
 
     // Add tests for features that should be disabled in production here.
     func testEnsureDisabledFeaturesInProduction() {
-        Build.withCurrent(.AppStore) {
+        Build.withCurrent(.appStore) {
 //            Example:
 //            expect(FeatureFlag.[FeatureEnum].enabled).to(beFalse())
         }
@@ -32,7 +32,7 @@ class FeatureFlagTest: XCTestCase {
 }
 
 extension Build {
-    static func withCurrent(value: Build, @noescape block: () -> Void) {
+    static func withCurrent(_ value: Build, block: () -> Void) {
         Build._overrideCurrent = value
         block()
         Build._overrideCurrent = nil

@@ -3,13 +3,13 @@ import WordPressShared
 
  /// StartOverViewController allows user to trigger help session to remove site content.
  ///
-public class StartOverViewController: UITableViewController
+open class StartOverViewController: UITableViewController
 {
     // MARK: - Properties: must be set by creator
 
     /// The blog whose content we want to remove
     ///
-    var blog : Blog!
+    var blog: Blog!
 
     // MARK: - Properties: table content
 
@@ -23,10 +23,10 @@ public class StartOverViewController: UITableViewController
     let contactCell: UITableViewCell = {
         let contactTitle = NSLocalizedString("Contact Support", comment: "Button to contact support on Start Over settings page")
 
-        let actionCell = WPTableViewCellDefault(style: .Value1, reuseIdentifier: nil)
+        let actionCell = WPTableViewCellDefault(style: .value1, reuseIdentifier: nil)
         actionCell.textLabel?.text = contactTitle
         WPStyleGuide.configureTableViewActionCell(actionCell)
-        actionCell.textLabel?.textAlignment = .Center
+        actionCell.textLabel?.textAlignment = .center
 
         return actionCell
     }()
@@ -38,70 +38,70 @@ public class StartOverViewController: UITableViewController
     /// - Parameter blog: The Blog currently at the site
     ///
     convenience init(blog: Blog) {
-        self.init(style: .Grouped)
+        self.init(style: .grouped)
         self.blog = blog
     }
 
     // MARK: - View Lifecycle
 
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         title = NSLocalizedString("Start Over", comment: "Title of Start Over settings page")
 
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
     // MARK: Table View Data Source
 
-    override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override open func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
 
-    override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return contactCell
     }
 
     // MARK: - Table View Delegate
 
-    override public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         contactSupport()
     }
 
-    override public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return headerView
     }
 
-    override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         headerView.layoutWidth = tableView.frame.width
-        let height = headerView.intrinsicContentSize().height
+        let height = headerView.intrinsicContentSize.height
 
         return height
     }
 
     // MARK: - Actions
 
-    private func contactSupport() {
+    fileprivate func contactSupport() {
         tableView.deselectSelectedRowWithAnimation(true)
 
-        WPAppAnalytics.track(.SiteSettingsStartOverContactSupportClicked, withBlog: blog)
+        WPAppAnalytics.track(.siteSettingsStartOverContactSupportClicked, with: blog)
         if HelpshiftUtils.isHelpshiftEnabled() {
             setupHelpshift(blog.account!)
 
             let metadata = helpshiftMetadata(blog)
             HelpshiftSupport.showConversation(self, withOptions: metadata)
         } else {
-            if let contact = NSURL(string: "https://support.wordpress.com/contact/") {
-                UIApplication.sharedApplication().openURL(contact)
+            if let contact = URL(string: "https://support.wordpress.com/contact/") {
+                UIApplication.shared.openURL(contact)
             }
         }
     }
 
-    private func setupHelpshift(account: WPAccount) {
+    fileprivate func setupHelpshift(_ account: WPAccount) {
         let user = account.userID.stringValue
         HelpshiftSupport.setUserIdentifier(user)
 
@@ -110,12 +110,12 @@ public class StartOverViewController: UITableViewController
         HelpshiftCore.setName(name, andEmail: email)
     }
 
-    private func helpshiftMetadata(blog: Blog) -> [NSObject: AnyObject] {
-        let tags = blog.account.map({ HelpshiftUtils.planTagsForAccount($0) }) ?? []
+    fileprivate func helpshiftMetadata(_ blog: Blog) -> [AnyHashable: Any] {
+        let tags = blog.account.map({ HelpshiftUtils.planTags(for: $0) }) ?? []
         let options: [String: AnyObject] = [
-            "Source": "Start Over",
-            "Blog": blog.logDescription(),
-            HelpshiftSupportTagsKey: tags
+            "Source": "Start Over" as AnyObject,
+            "Blog": blog.logDescription() as AnyObject,
+            HelpshiftSupportTagsKey: tags as AnyObject
             ]
 
         return [HelpshiftSupportCustomMetadataKey: options]

@@ -4,7 +4,7 @@ import Foundation
 // is desired and the stack view's uniform spacing won't do the trick.
 // Defining the spacing via intrinsicContentSize plays nice with the UIStackView's
 // behavior of applying a 0 height constraint to hidden views.
-class ReaderSpacerView : UIView
+class ReaderSpacerView: UIView
 {
 
     // Defined with var instead of let in order to set via User Defined Runtime Attributes in IB if needed.
@@ -14,7 +14,7 @@ class ReaderSpacerView : UIView
         }
     }
 
-    override func intrinsicContentSize() -> CGSize {
+    override var intrinsicContentSize: CGSize {
         return CGSize(width: space, height: space)
     }
 

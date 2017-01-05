@@ -1,20 +1,20 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-public class ReaderGapMarkerCell: UITableViewCell
+open class ReaderGapMarkerCell: UITableViewCell
 {
-    @IBOutlet private weak var tearBackgroundView: UIView!
-    @IBOutlet private weak var tearMaskView: UIView!
-    @IBOutlet private weak var activityViewBackgroundView: UIView!
-    @IBOutlet private weak var activityView: UIActivityIndicatorView!
-    @IBOutlet private weak var button:UIButton!
+    @IBOutlet fileprivate weak var tearBackgroundView: UIView!
+    @IBOutlet fileprivate weak var tearMaskView: UIView!
+    @IBOutlet fileprivate weak var activityViewBackgroundView: UIView!
+    @IBOutlet fileprivate weak var activityView: UIActivityIndicatorView!
+    @IBOutlet fileprivate weak var button: UIButton!
 
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
     }
 
-    private func applyStyles() {
+    fileprivate func applyStyles() {
         // Background styles
         contentView.backgroundColor = WPStyleGuide.greyLighten30()
         selectedBackgroundView = UIView(frame: contentView.frame)
@@ -32,15 +32,15 @@ public class ReaderGapMarkerCell: UITableViewCell
         // Button style
         WPStyleGuide.applyGapMarkerButtonStyle(button)
         let text = NSLocalizedString("Load more posts", comment: "A short label.  A call to action to load more posts.")
-        button.setTitle(text, forState: .Normal)
+        button.setTitle(text, for: UIControlState())
         button.layer.cornerRadius = 4.0
         button.layer.masksToBounds = true
 
         // Disable button interactions so the full cell handles the tap.
-        button.userInteractionEnabled = false
+        button.isUserInteractionEnabled = false
     }
 
-    public func animateActivityView(animate:Bool) {
+    open func animateActivityView(_ animate: Bool) {
         button.alpha = animate ? WPAlphaZero : WPAlphaFull
         if animate {
             activityView.startAnimating()
@@ -49,9 +49,9 @@ public class ReaderGapMarkerCell: UITableViewCell
         }
     }
 
-    public override func setHighlighted(highlighted: Bool, animated: Bool) {
+    open override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
-        button.highlighted = highlighted
+        button.isHighlighted = highlighted
         button.backgroundColor = highlighted ? WPStyleGuide.gapMarkerButtonBackgroundColorHighlighted() : WPStyleGuide.gapMarkerButtonBackgroundColor()
         if (highlighted) {
             // Redraw the backgrounds when highlighted

@@ -2,15 +2,15 @@ import Foundation
 import UIKit
 import WordPressShared
 
-class PostStatusPickerViewController : UITableViewController
+class PostStatusPickerViewController: UITableViewController
 {
     // MARK: - Initializers
-    init(statuses : [String: String]) {
+    init(statuses: [String: String]) {
         assert(statuses.count > 0, "Let's show at least one status!")
 
         // Note:  We'll store the sorted Post Statuses, into an array, as a (Key, Description) tuple.
-        self.sortedStatuses = statuses.sort { $0.1 < $1.1 }
-        super.init(style: .Plain)
+        self.sortedStatuses = statuses.sorted { $0.1 < $1.1 }
+        super.init(style: .plain)
     }
 
     required init?(coder: NSCoder) {
@@ -29,20 +29,20 @@ class PostStatusPickerViewController : UITableViewController
 
 
     // MARK: - UITableView Methods
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sortedStatuses.count
     }
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return rowHeight
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         let description = sortedStatuses[indexPath.row].1
 
         configureCell(cell, description: description)
@@ -50,35 +50,35 @@ class PostStatusPickerViewController : UITableViewController
         return cell
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let status = sortedStatuses[indexPath.row]
-        onChange?(postStatus: status.0, description: status.1)
-        navigationController?.popViewControllerAnimated(true)
+        onChange?(status.0, status.1)
+        _ = navigationController?.popViewController(animated: true)
     }
 
 
     // MARK: - Setup Helpers
-    private func setupView() {
+    fileprivate func setupView() {
         title = NSLocalizedString("Post Status", comment: "Title for the Post Status Picker")
     }
 
-    private func setupTableView() {
+    fileprivate func setupTableView() {
         // Blur!
-        let blurEffect = UIBlurEffect(style: .Light)
-        tableView.backgroundColor = UIColor.clearColor()
+        let blurEffect = UIBlurEffect(style: .light)
+        tableView.backgroundColor = UIColor.clear
         tableView.backgroundView = UIVisualEffectView(effect: blurEffect)
-        tableView.separatorEffect = UIVibrancyEffect(forBlurEffect: blurEffect)
+        tableView.separatorEffect = UIVibrancyEffect(blurEffect: blurEffect)
 
         // Fix: Hide the cellSeparators, when the table is empty
         tableView.tableFooterView = UIView()
 
         // Cells
-        tableView.registerClass(WPTableViewCellSubtitle.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.register(WPTableViewCellSubtitle.self, forCellReuseIdentifier: reuseIdentifier)
     }
 
 
     // MARK: - Private Helpers
-    private func configureCell(cell: UITableViewCell, description: String) {
+    fileprivate func configureCell(_ cell: UITableViewCell, description: String) {
         // Status' Details
         cell.textLabel?.text = description
 
@@ -88,16 +88,16 @@ class PostStatusPickerViewController : UITableViewController
 
 
     // MARK: Typealiases
-    typealias PickerHandler = (postStatus: String, description: String) -> Void
+    typealias PickerHandler = (_ postStatus: String, _ description: String) -> Void
 
     // MARK: - Public Properties
-    var onChange                : PickerHandler?
+    var onChange: PickerHandler?
 
     // MARK: - Private Properties
-    private var sortedStatuses  : [(String, String)]
-    private var noResultsView   : WPNoResultsView!
+    fileprivate var sortedStatuses: [(String, String)]
+    fileprivate var noResultsView: WPNoResultsView!
 
     // MARK: - Private Constants
-    private let reuseIdentifier = "reuseIdentifier"
-    private let rowHeight       = CGFloat(74)
+    fileprivate let reuseIdentifier = "reuseIdentifier"
+    fileprivate let rowHeight       = CGFloat(74)
 }
