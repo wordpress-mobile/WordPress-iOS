@@ -37,8 +37,6 @@
 #import "MediaLibraryPickerDataSource.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPAppAnalytics.h"
-#import "WordPress-Swift.h"
-#import "WordPressAppDelegate.h"
 
 @import Gridicons;
 
