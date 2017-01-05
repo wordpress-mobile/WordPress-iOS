@@ -62,6 +62,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 @property (nonatomic, assign) CGFloat                   keyboardOffset;
 @property (nonatomic, assign) BOOL                      authenticating;
 @property (nonatomic, assign) BOOL                      shouldDisplayMultifactor;
+@property (nonatomic, strong) NSMutableArray            *offScreenControlsWithZeroAlpha;
 
 @end
 
@@ -132,6 +133,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
     self.title = NSLocalizedString(@"Jetpack Connect", @"");
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.offScreenControlsWithZeroAlpha = [NSMutableArray new];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -576,8 +578,9 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToHideWithKeyboardOffset:newKeyboardOffset]) {
             control.alpha = JetpackTextFieldAlphaHidden;
+            [self.offScreenControlsWithZeroAlpha addObject:control];
         }
-        
+
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
             CGRect frame = control.frame;
             frame.origin.y -= newKeyboardOffset;
@@ -598,9 +601,10 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     _keyboardOffset = 0;
 
     [UIView animateWithDuration:animationDuration animations:^{
-        for (UIControl *control in [self controlsToHideWithKeyboardOffset:currentKeyboardOffset]) {
+        for (UIControl *control in self.offScreenControlsWithZeroAlpha) {
             control.alpha = JetpackTextFieldAlphaEnabled;
         }
+        [self.offScreenControlsWithZeroAlpha removeAllObjects];
         
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
             CGRect frame = control.frame;
