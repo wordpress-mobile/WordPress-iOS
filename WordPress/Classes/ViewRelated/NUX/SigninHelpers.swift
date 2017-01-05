@@ -172,7 +172,7 @@ import Mixpanel
     /// - Returns: The base URL or an empty string.
     ///
     class func baseSiteURL(string: String) -> String {
-        guard let siteURL = NSURL(string: NSURL.IDNEncodedURL(string)) else {
+        guard let siteURL = NSURL(string: NSURL.IDNEncodedURL(string)) where string.characters.count > 0 else {
             return ""
         }
 
