@@ -3,9 +3,13 @@
 #import "WPStyleGuide.h"
 #import "Menu+ViewDesign.h"
 
+@import Gridicons;
+
 @interface MenusSelectionItemView ()
 
+@property (nonatomic, strong, readonly) UIStackView *stackView;
 @property (nonatomic, strong, readonly) UILabel *label;
+@property (nonatomic, strong, readonly) UIImageView *iconImageView;
 @property (nonatomic, assign) BOOL drawsDesignLineSeparator;
 @property (nonatomic, assign) BOOL drawsHighlighted;
 
@@ -26,22 +30,9 @@
         self.backgroundColor = [UIColor clearColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
 
-        UILabel *label = [[UILabel alloc] init];
-        label.translatesAutoresizingMaskIntoConstraints = NO;
-        label.backgroundColor = [UIColor clearColor];
-        label.font = [[WPStyleGuide regularTextFont] fontWithSize:14];
-        label.textColor = [WPStyleGuide darkGrey];
-        [self addSubview:label];
-        _label = label;
-
-        UIEdgeInsets insets = [Menu viewDefaultDesignInsets];
-        insets.left = MenusDesignDefaultContentSpacing;
-        insets.right = MenusDesignDefaultContentSpacing;
-
-        [label.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:insets.left].active = YES;
-        [label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:insets.right].active = YES;
-        [label.topAnchor constraintEqualToAnchor:self.topAnchor constant:0].active = YES;
-        [label.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0].active = YES;
+        [self setupStackView];
+        [self setupLabel];
+        [self setupIconImageView];
 
         _drawsDesignLineSeparator = YES; // defaults to YES
 
@@ -54,12 +45,72 @@
     return self;
 }
 
+- (void)setupStackView
+{
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.alignment = UIStackViewAlignmentCenter;
+    stackView.axis = UILayoutConstraintAxisHorizontal;
+    stackView.distribution = UIStackViewDistributionFill;
+
+    UIEdgeInsets insets = UIEdgeInsetsZero;
+    insets.left = MenusDesignDefaultContentSpacing;
+    insets.right = MenusDesignDefaultContentSpacing;
+    stackView.layoutMargins = insets;
+    stackView.layoutMarginsRelativeArrangement = YES;
+    stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
+
+    [self addSubview:stackView];
+    [NSLayoutConstraint activateConstraints:@[
+                                              [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                              [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+                                              [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                              ]];
+    _stackView = stackView;
+}
+
+- (void)setupLabel
+{
+    UILabel *label = [[UILabel alloc] init];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [[WPStyleGuide regularTextFont] fontWithSize:14];
+    label.textColor = [WPStyleGuide darkGrey];
+    [self addSubview:label];
+    _label = label;
+
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [self.stackView addArrangedSubview:label];
+    _label = label;
+}
+
+- (void)setupIconImageView
+{
+    UIImageView *imageView = [[UIImageView alloc] init];
+    imageView.tintColor = [WPStyleGuide greyDarken10];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.image = [Gridicon iconOfType:GridiconTypeCheckmark];
+
+    NSLayoutConstraint *width = [imageView.widthAnchor constraintEqualToConstant:20.0];
+    width.priority = 999;
+    NSLayoutConstraint *height = [imageView.heightAnchor constraintEqualToConstant:width.constant];
+
+    [NSLayoutConstraint activateConstraints:@[width, height]];
+
+    NSAssert(_stackView != nil, @"stackView is nil");
+    [self.stackView addArrangedSubview:imageView];
+    imageView.hidden = YES;
+
+    _iconImageView = imageView;
+}
+
 - (void)setItem:(MenusSelectionItem *)item
 {
     if (_item != item) {
         _item = item;
     }
     self.label.text = item.displayName;
+    self.iconImageView.hidden = !item.selected;
 }
 
 - (void)setDrawsDesignLineSeparator:(BOOL)drawsDesignLineSeparator
@@ -116,24 +167,6 @@
         CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
         CGContextStrokePath(context);
     }
-
-    if (self.item.selected) {
-        // draw a checkmark
-        CGFloat checkStepLength = 10.0;
-        CGPoint checkOrigin = CGPointZero;
-        checkOrigin.x = rect.size.width - MenusDesignDefaultContentSpacing;
-        checkOrigin.x -= checkStepLength;
-        checkOrigin.y = rect.size.height / 2.0;
-        checkOrigin.y += checkStepLength / 2.0;
-
-        CGContextSetLineWidth(context, 1.0);
-        CGContextMoveToPoint(context, checkOrigin.x, checkOrigin.y);
-        CGContextAddLineToPoint(context, checkOrigin.x + checkStepLength, checkOrigin.y - checkStepLength);
-        CGContextMoveToPoint(context, checkOrigin.x - (checkStepLength / 2.0), checkOrigin.y - (checkStepLength / 2.0));
-        CGContextAddLineToPoint(context, checkOrigin.x, checkOrigin.y);
-        CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyDarken10] CGColor]);
-        CGContextStrokePath(context);
-    }
 }
 
 #pragma mark - delegate helpers
@@ -164,7 +197,7 @@
 
 - (void)itemSelectionChanged:(NSNotification *)notification
 {
-    [self setNeedsDisplay];
+    self.iconImageView.hidden = !self.item.selected;
 }
 
 @end
