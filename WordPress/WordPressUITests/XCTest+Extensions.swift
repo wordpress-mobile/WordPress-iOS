@@ -19,7 +19,7 @@ extension XCTestCase {
 
     public func logoutIfNeeded() {
         let app = XCUIApplication()
-        if !app.textFields["Username / Email"].exists && !app.textFields["Username"].exists{
+        if !app.textFields["Username / Email"].exists && !app.textFields["Username"].exists {
             app.tabBars["Main Navigation"].buttons["Me"].tap()
             app.tables.elementBoundByIndex(0).swipeUp()
             app.tables.cells.staticTexts["Disconnect from WordPress.com"].tap()

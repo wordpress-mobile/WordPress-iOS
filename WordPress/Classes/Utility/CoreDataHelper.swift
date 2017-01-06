@@ -4,16 +4,14 @@ import Foundation
 
 // MARK: - ManagedObject Base Class
 //
-protocol ManagedObject
-{
+protocol ManagedObject {
     static var entityName: String { get }
 }
 
 
 // MARK: - Core Data Helpers
 //
-struct CoreDataHelper<T> where T: NSManagedObject, T: ManagedObject
-{
+struct CoreDataHelper<T> where T: NSManagedObject, T: ManagedObject {
     /// CoreData ManagedObjectContext
     ///
     let context: NSManagedObjectContext
@@ -75,7 +73,7 @@ struct CoreDataHelper<T> where T: NSManagedObject, T: ManagedObject
         request.includesSubentities = false
 
         let objects = loadObjects(withFetchRequest: request)
-        for object in objects  {
+        for object in objects {
             context.delete(object)
         }
     }
@@ -122,8 +120,7 @@ struct CoreDataHelper<T> where T: NSManagedObject, T: ManagedObject
 
 // MARK: - Private Helpers
 //
-private extension CoreDataHelper
-{
+private extension CoreDataHelper {
     /// Loads the collection of entities that match with a given Fetch Request
     ///
     func loadObjects(withFetchRequest request: NSFetchRequest<NSFetchRequestResult>) -> [T] {

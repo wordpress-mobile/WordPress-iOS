@@ -9,8 +9,7 @@ import UIKit
 //
 public let UIKitAttachmentAttributeName = "NSAttachment"
 
-extension NSAttributedString
-{
+extension NSAttributedString {
     public func enumerateAttachments(_ block: @escaping (_ attachment: NSTextAttachment, _ range: NSRange) -> ()) {
         let range = NSMakeRange(0, length)
 

@@ -1,10 +1,8 @@
 import Foundation
 import WordPressShared
 
-extension WPStyleGuide
-{
-    public struct Reply
-    {
+extension WPStyleGuide {
+    public struct Reply {
         // Styles used by ReplyTextView
         //
         public static let buttonFont       = WPFontManager.systemBoldFont(ofSize: 13)

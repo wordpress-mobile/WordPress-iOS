@@ -3,8 +3,7 @@ import WordPressShared
 import Gridicons
 
 
-public protocol ReaderCardDelegate: NSObjectProtocol
-{
+public protocol ReaderCardDelegate: NSObjectProtocol {
     func readerCard(_ card: ReaderCard, headerActionForPost post: ReaderPost)
     func readerCard(_ card: ReaderCard, commentActionForPost post: ReaderPost)
     func readerCard(_ card: ReaderCard, followActionForPost post: ReaderPost)
@@ -18,8 +17,7 @@ public protocol ReaderCardDelegate: NSObjectProtocol
 
 
 @IBDesignable
-public class ReaderCard: UIView
-{
+public class ReaderCard: UIView {
     // MARK: - Properties
 
     // Wrapper views
@@ -572,8 +570,7 @@ public class ReaderCard: UIView
 }
 
 
-extension ReaderCard : ReaderCardDiscoverAttributionViewDelegate
-{
+extension ReaderCard : ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         guard let post = readerPost else {
             return

@@ -5,8 +5,7 @@ import UIKit
 
 /// This ViewController allows the user to resize and crop any given UIImage.
 ///
-class ImageCropViewController: UIViewController, UIScrollViewDelegate
-{
+class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Public Properties
     var onCompletion: ((UIImage) -> Void)?
 

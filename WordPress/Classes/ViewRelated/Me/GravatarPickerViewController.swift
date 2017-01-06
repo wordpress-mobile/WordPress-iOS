@@ -5,8 +5,7 @@ import WordPressComAnalytics
 
 // Encapsulates all of the interactions required to capture a new Gravatar image, and resize it.
 //
-class GravatarPickerViewController: UIViewController, WPMediaPickerViewControllerDelegate
-{
+class GravatarPickerViewController: UIViewController, WPMediaPickerViewControllerDelegate {
     // MARK: - Public Properties
 
     var onCompletion: ((UIImage?) -> Void)?

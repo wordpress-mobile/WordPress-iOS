@@ -4,8 +4,7 @@ import WordPressShared
 
 /// Implements site management services triggered from SiteSettingsViewController
 ///
-public extension SiteSettingsViewController
-{
+public extension SiteSettingsViewController {
     /// Presents confirmation alert for Export Content
     ///
     public func confirmExportContent() {

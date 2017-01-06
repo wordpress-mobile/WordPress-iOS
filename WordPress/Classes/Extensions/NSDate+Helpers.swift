@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension Date
-{
+extension Date {
     /// Private Date Formatters
     ///
     fileprivate struct DateFormatters {

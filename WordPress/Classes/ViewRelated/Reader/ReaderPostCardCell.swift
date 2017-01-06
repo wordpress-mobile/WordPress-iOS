@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared
 
-@objc open class ReaderPostCardCell: UITableViewCell
-{
+@objc open class ReaderPostCardCell: UITableViewCell {
     // Helper Views
     @IBOutlet fileprivate weak var borderedView: UIView!
     @IBOutlet fileprivate weak var card: ReaderCard!

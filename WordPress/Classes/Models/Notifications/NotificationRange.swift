@@ -4,8 +4,7 @@ import Foundation
 
 // MARK: - NotificationRange Entity
 //
-class NotificationRange
-{
+class NotificationRange {
     /// Kind of the current Range
     ///
     let kind: Kind
@@ -43,8 +42,7 @@ class NotificationRange
     ///
     init?(dictionary: [String: AnyObject]) {
         guard let type = dictionary[RangeKeys.RawType] as? String, let indices = dictionary[RangeKeys.Indices] as? [Int],
-            let start = indices.first, let end = indices.last else
-        {
+            let start = indices.first, let end = indices.last else {
             return nil
         }
 
@@ -86,8 +84,7 @@ class NotificationRange
 
 // MARK: - NotificationRange Parsers
 //
-extension NotificationRange
-{
+extension NotificationRange {
     /// Parses NotificationRange instances, given an array of raw ranges.
     ///
     class func rangesFromArray(_ ranges: [[String: AnyObject]]?) -> [NotificationRange] {
@@ -102,8 +99,7 @@ extension NotificationRange
 
 // MARK: - NotificationRange Types
 //
-extension NotificationRange
-{
+extension NotificationRange {
     /// Known kinds of Range
     ///
     enum Kind: String {

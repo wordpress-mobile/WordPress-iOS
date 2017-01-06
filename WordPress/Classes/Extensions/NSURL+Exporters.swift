@@ -42,8 +42,7 @@ extension NSURL: ExportableAsset {
         stripGeoLocation: Bool,
         synchronous: Bool,
         successHandler: SuccessHandler,
-        errorHandler: ErrorHandler)
-    {
+        errorHandler: ErrorHandler) {
         let requestedSize = maximumResolution.clamp(min: CGSize.zero, max: pixelSize)
         let metadataOptions: [NSString: NSObject] = [kCGImageSourceShouldCache: false as NSObject]
         let scaleOptions: [NSString: NSObject] = [
@@ -271,12 +270,12 @@ extension NSURL: ExportableAsset {
     }
 
 
-    func removeAttributes(attributes: [String], fromMetadata: [String: AnyObject]) -> [String: AnyObject]{
+    func removeAttributes(attributes: [String], fromMetadata: [String: AnyObject]) -> [String: AnyObject] {
         var resultingMetadata = fromMetadata
         for attribute in attributes {
             resultingMetadata.removeValue(forKey: attribute)
-            if attribute == kCGImagePropertyOrientation as String{
-                if let tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String: AnyObject]{
+            if attribute == kCGImagePropertyOrientation as String {
+                if let tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String: AnyObject] {
                     var newTiffMetadata = tiffMetadata
                     newTiffMetadata.removeValue(forKey: kCGImagePropertyTIFFOrientation as String)
                     resultingMetadata[kCGImagePropertyTIFFDictionary as String] = newTiffMetadata as AnyObject?
@@ -298,7 +297,7 @@ extension NSURL: ExportableAsset {
         var resultingMetadata = metadata
         let correctOrientation = image.metadataOrientation
         resultingMetadata[kCGImagePropertyOrientation as String] = Int(correctOrientation.rawValue) as AnyObject?
-        if var tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String: AnyObject]{
+        if var tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String: AnyObject] {
             tiffMetadata[kCGImagePropertyTIFFOrientation as String] = Int(correctOrientation.rawValue) as AnyObject?
             resultingMetadata[kCGImagePropertyTIFFDictionary as String] = tiffMetadata as AnyObject?
         }

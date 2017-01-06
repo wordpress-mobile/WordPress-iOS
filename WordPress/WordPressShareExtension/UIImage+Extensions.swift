@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension UIImage
-{
+extension UIImage {
     convenience init?(contentsOfURL url: URL) {
         guard let rawImage = try? Data(contentsOf: url) else {
             return nil

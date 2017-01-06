@@ -11,8 +11,7 @@ extension UIApplication: ApplicationShortcutsProvider {
     }
 }
 
-open class WP3DTouchShortcutCreator: NSObject
-{
+open class WP3DTouchShortcutCreator: NSObject {
     enum LoggedIn3DTouchShortcutIndex: Int {
         case notifications = 0,
         stats,

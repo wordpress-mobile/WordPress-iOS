@@ -4,8 +4,7 @@ import UIKit
 
 /// An NSTextAttachment for representing remote HTML content such as images, iframes and video.
 ///
-open class WPTextAttachment: NSTextAttachment
-{
+open class WPTextAttachment: NSTextAttachment {
     fileprivate(set) open var identifier: String
     fileprivate(set) open var tagName: String
     fileprivate(set) open var src: String

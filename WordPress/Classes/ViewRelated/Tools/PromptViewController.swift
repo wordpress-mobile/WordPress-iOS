@@ -15,8 +15,7 @@ public func PromptViewController<T: UIViewController>(_ viewController: T) -> UI
 /// ViewController container, that presents a Done / Cancel button, and forwards their events to
 /// the childrenViewController (which *must* implement the Confirmable protocol).
 ///
-private class PromptContainerViewController: UIViewController
-{
+private class PromptContainerViewController: UIViewController {
     /// MARK: - Initializers / Deinitializers
 
     deinit {
