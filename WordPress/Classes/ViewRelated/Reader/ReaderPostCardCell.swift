@@ -1,19 +1,5 @@
 import Foundation
 import WordPressShared
-import Gridicons
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol
 {
@@ -34,12 +20,37 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet fileprivate weak var borderedView: UIView!
     @IBOutlet fileprivate weak var card: ReaderCard!
 
-    open var hidesFollowButton = false
-    open var enableLoggedInFeatures = true
-    open var headerBlogButtonIsEnabled = false
-
     open weak var delegate: ReaderPostCellDelegate?
     open weak var contentProvider: ReaderPostContentProvider?
+
+    open var hidesFollowButton: Bool {
+        get {
+            return card.hidesFollowButton
+        }
+        set {
+            card.hidesFollowButton = newValue
+        }
+    }
+
+
+    open var enableLoggedInFeatures: Bool {
+        get {
+            return card.enableLoggedInFeatures
+        }
+        set {
+            card.enableLoggedInFeatures = newValue
+        }
+    }
+
+
+    open var headerBlogButtonIsEnabled: Bool {
+        get {
+            return card.headerButtonIsEnabled
+        }
+        set {
+            card.headerButtonIsEnabled = newValue
+        }
+    }
 
 
     open override func setSelected(_ selected: Bool, animated: Bool) {
@@ -80,7 +91,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
     open func configureCell(_ contentProvider: ReaderPostContentProvider) {
-        card.readerPost = contentProvider as! ReaderPost
+        card.readerPost = contentProvider as? ReaderPost
     }
 
 
