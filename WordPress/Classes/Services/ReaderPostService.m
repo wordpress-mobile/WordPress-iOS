@@ -23,6 +23,7 @@ NSUInteger const ReaderPostServiceNumberToSync = 40;
 NSUInteger const ReaderPostServiceNumberToSyncForSearch = 10;
 NSUInteger const ReaderPostServiceMaxSearchPosts = 200;
 NSUInteger const ReaderPostServiceMaxPosts = 300;
+NSUInteger const ReaderRelatedPostsCount = 2;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 static NSString * const ReaderPostGlobalIDKey = @"globalID";
@@ -168,6 +169,37 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             failure(error);
         }
     }];
+}
+
+- (void)fetchRelatedPostsForPost:(ReaderPost *)post
+                         success:(void (^)())success
+                         failure:(void (^)(NSError *error))failure
+{
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+
+    NSUInteger postID = [post.postID integerValue];
+    NSUInteger siteID = [post.siteID integerValue];
+    NSUInteger count = ReaderRelatedPostsCount;
+    [remoteService fetchRelatedPostFor:postID
+                              fromSite:siteID
+                            localCount:count
+                           globalCount:count
+                               success:^(NSArray<RemoteReaderPost *> *remotePosts) {
+
+                                   NSMutableArray *posts = [NSMutableArray array];
+                                   for (RemoteReaderPost *remotePost in remotePosts) {
+                                       ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil];
+                                       [posts addObject:post];
+                                   }
+                                   if (success) {
+                                       success();
+                                   }
+
+                               } failure:^(NSError *error) {
+                                   if (failure){
+                                       failure(error);
+                                   }
+                               }];
 }
 
 - (void)refreshPostsForFollowedTopic
