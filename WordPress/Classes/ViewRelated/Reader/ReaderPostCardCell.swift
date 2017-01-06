@@ -1,27 +1,31 @@
 import Foundation
 import WordPressShared
 
-@objc public protocol ReaderPostCellDelegate: NSObjectProtocol
-{
-    func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
-    func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
-    func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
-    func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String?
-}
-
 @objc open class ReaderPostCardCell: UITableViewCell
 {
     // Helper Views
     @IBOutlet fileprivate weak var borderedView: UIView!
     @IBOutlet fileprivate weak var card: ReaderCard!
 
-    open weak var delegate: ReaderPostCellDelegate?
-    open weak var contentProvider: ReaderPostContentProvider?
+    open var delegate: ReaderCardDelegate? {
+        get {
+            return card.delegate
+        }
+        set {
+            card.delegate = newValue
+        }
+    }
+
+
+    open var  post: ReaderPost? {
+        get {
+            return card.readerPost
+        }
+        set {
+            card.readerPost = newValue
+        }
+    }
+
 
     open var hidesFollowButton: Bool {
         get {
@@ -90,8 +94,8 @@ import WordPressShared
     }
 
 
-    open func configureCell(_ contentProvider: ReaderPostContentProvider) {
-        card.readerPost = contentProvider as? ReaderPost
+    open func configureCell(_ post: ReaderPost) {
+        card.readerPost = post
     }
 
 

@@ -3,7 +3,7 @@ import WordPressShared
 import Gridicons
 
 
-protocol ReaderCardDelegate: NSObjectProtocol
+public protocol ReaderCardDelegate: NSObjectProtocol
 {
     func readerCard(_ card: ReaderCard, headerActionForPost post: ReaderPost)
     func readerCard(_ card: ReaderCard, commentActionForPost post: ReaderPost)
@@ -17,7 +17,8 @@ protocol ReaderCardDelegate: NSObjectProtocol
 }
 
 
-@IBDesignable class ReaderCard: UIView
+@IBDesignable
+public class ReaderCard: UIView
 {
     // MARK: - Properties
 
@@ -111,7 +112,7 @@ protocol ReaderCardDelegate: NSObjectProtocol
     }
 
 
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
