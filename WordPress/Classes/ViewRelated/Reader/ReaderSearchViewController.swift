@@ -17,7 +17,7 @@ import Gridicons
     @IBOutlet fileprivate weak var label: UILabel!
 
     fileprivate var backgroundTapRecognizer: UITapGestureRecognizer!
-    fileprivate var streamController: ReaderStreamViewController!
+    fileprivate var streamController: ReaderStreamViewController?
     fileprivate let searchBarSearchIconSize = CGFloat(13.0)
     fileprivate var suggestionsController: ReaderSearchSuggestionsViewController?
     fileprivate var restoredSearchTopic: ReaderSearchTopic?
@@ -60,7 +60,6 @@ import Gridicons
 
 
     open override func encodeRestorableState(with coder: NSCoder) {
-        // Optionally check the streamController as it may not be set yet, even though we are using !
         if let topic = streamController?.readerTopic {
             topic.preserveForRestoration = true
             ContextManager.sharedInstance().saveContextAndWait(topic.managedObjectContext)
@@ -184,7 +183,7 @@ import Gridicons
         }
         label.isHidden = true
         searchBar.text = topic.title
-        streamController.readerTopic = topic
+        streamController?.readerTopic = topic
     }
 
 
@@ -200,7 +199,9 @@ import Gridicons
     /// embedded stream to the topic.
     ///
     func performSearch() {
-        assert(streamController != nil)
+        guard let streamController = streamController else {
+            return
+        }
 
         guard let phrase = searchBar.text?.trim(), !phrase.isEmpty else {
             return
