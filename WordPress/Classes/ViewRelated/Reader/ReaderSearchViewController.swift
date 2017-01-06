@@ -60,7 +60,8 @@ import Gridicons
 
 
     open override func encodeRestorableState(with coder: NSCoder) {
-        if let topic = streamController.readerTopic {
+        // Optionally check the streamController as it may not be set yet, even though we are using !
+        if let topic = streamController?.readerTopic {
             topic.preserveForRestoration = true
             ContextManager.sharedInstance().saveContextAndWait(topic.managedObjectContext)
             coder.encode(topic.path, forKey: type(of: self).restorableSearchTopicPathKey)
