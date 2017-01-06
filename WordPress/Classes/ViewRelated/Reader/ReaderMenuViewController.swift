@@ -18,7 +18,7 @@ import WordPressShared
     var didSyncTopics = false
 
     fileprivate var defaultIndexPath: IndexPath {
-        return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .discover) as IndexPath
+        return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .discover)
     }
 
     fileprivate var restorableSelectedIndexPath: IndexPath?
