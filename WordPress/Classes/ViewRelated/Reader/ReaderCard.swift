@@ -17,7 +17,7 @@ protocol ReaderCardDelegate: NSObjectProtocol
 }
 
 
-class ReaderCard: UIView
+@IBDesignable class ReaderCard: UIView
 {
     // MARK: - Properties
 
@@ -73,11 +73,15 @@ class ReaderCard: UIView
 
 
     // MARK: - Public Accessors
-
-    open weak var delegate: ReaderCardDelegate?
-    open weak var readerPost: ReaderPost?
     open var hidesFollowButton = false
     open var enableLoggedInFeatures = true
+    open weak var delegate: ReaderCardDelegate?
+
+    open weak var readerPost: ReaderPost? {
+        didSet {
+            configureCard()
+        }
+    }
 
 
     open var headerButtonIsEnabled: Bool {
@@ -100,8 +104,30 @@ class ReaderCard: UIView
     // MARK: - Lifecycle Methods
 
 
-    open override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupView()
+    }
+
+
+    func setupView() {
+        // Load the xib and set up the subviews.
+        Bundle.main.loadNibNamed("ReaderCard", owner: self, options: nil)
+
+        cardStackView.translatesAutoresizingMaskIntoConstraints = false
+        cardStackView.frame = bounds
+        addSubview(cardStackView)
+
+        cardStackView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        cardStackView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        cardStackView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        cardStackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
 
         // This view only exists to help IB with filling in the bottom space of
         // the cell that is later autosized according to the content's intrinsicContentSize.
@@ -124,6 +150,7 @@ class ReaderCard: UIView
         setupcommentButton()
         setuplikeButton()
     }
+
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -207,8 +234,6 @@ class ReaderCard: UIView
     /// Applies the default styles to subviews
     ///
     fileprivate func applyStyles() {
-        backgroundColor = WPStyleGuide.greyLighten30()
-
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         WPStyleGuide.applyReaderCardBlogNameStyle(headerAuthorLabel)
         WPStyleGuide.applyReaderCardBylineLabelStyle(headerDateLabel)
@@ -232,10 +257,8 @@ class ReaderCard: UIView
         likeButton.titleLabel?.backgroundColor = UIColor.white
     }
 
-// TODO:
-    open func configureCell(_ readerPost: ReaderPost) {
-        self.readerPost = readerPost
 
+    fileprivate func configureCard() {
         configureHeader()
         configureFollowButton()
         configureFeaturedImageIfNeeded()
