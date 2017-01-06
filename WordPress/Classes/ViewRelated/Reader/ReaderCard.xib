@@ -15,6 +15,7 @@
                 <outlet property="attributionView" destination="OcQ-jH-zCT" id="lpo-XT-uCe"/>
                 <outlet property="cardStackView" destination="4cc-4F-fNv" id="gCa-Vz-2NE"/>
                 <outlet property="commentButton" destination="olU-5Q-Mzs" id="5mg-T2-LJe"/>
+                <outlet property="contentView" destination="iN0-l3-epB" id="KC7-RS-lDz"/>
                 <outlet property="featuredImageView" destination="amO-75-IGd" id="Uts-Q4-Y6j"/>
                 <outlet property="featuredMediaHeightConstraint" destination="Dd4-t5-VXQ" id="zpU-kx-JbB"/>
                 <outlet property="followButton" destination="xFg-T2-JHO" id="kTy-cI-oBT"/>

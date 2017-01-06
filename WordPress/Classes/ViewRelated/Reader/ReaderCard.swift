@@ -22,6 +22,7 @@ protocol ReaderCardDelegate: NSObjectProtocol
     // MARK: - Properties
 
     // Wrapper views
+    @IBOutlet fileprivate weak var contentView: UIView!
     @IBOutlet fileprivate weak var cardStackView: UIStackView!
 
     // Header realated Views
@@ -120,14 +121,14 @@ protocol ReaderCardDelegate: NSObjectProtocol
         // Load the xib and set up the subviews.
         Bundle.main.loadNibNamed("ReaderCard", owner: self, options: nil)
 
-        cardStackView.translatesAutoresizingMaskIntoConstraints = false
-        cardStackView.frame = bounds
-        addSubview(cardStackView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.frame = bounds
+        addSubview(contentView)
 
-        cardStackView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        cardStackView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        cardStackView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        cardStackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        contentView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        contentView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        contentView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
 
         // This view only exists to help IB with filling in the bottom space of
         // the cell that is later autosized according to the content's intrinsicContentSize.
