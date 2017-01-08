@@ -6,14 +6,14 @@ class Page: AbstractPost {
 
     /// Number of seconds in twenty-four hours.
     ///
-    private static let twentyFourHours = NSTimeInterval(86400)
+    fileprivate static let twentyFourHours = TimeInterval(86400)
 
     /// The time interval formatter that all pages will use for their section identifiers.
     ///
-    private static let timeIntervalFormatter : TTTTimeIntervalFormatter = {
+    fileprivate static let timeIntervalFormatter: TTTTimeIntervalFormatter = {
         let timeIntervalFormatter = TTTTimeIntervalFormatter()
 
-        timeIntervalFormatter.leastSignificantUnit = .Day
+        timeIntervalFormatter.leastSignificantUnit = .day
         timeIntervalFormatter.usesIdiomaticDeicticExpressions = true
         timeIntervalFormatter.presentDeicticExpression = NSLocalizedString("today", comment: "Today")
 
@@ -24,12 +24,12 @@ class Page: AbstractPost {
     ///
     func sectionIdentifier() -> String {
 
-        let interval = date_created_gmt?.timeIntervalSinceNow ?? NSTimeInterval(0)
+        let interval = date_created_gmt?.timeIntervalSinceNow ?? TimeInterval(0)
 
-        if interval > 0 && interval < self.dynamicType.twentyFourHours {
+        if interval > 0 && interval < type(of: self).twentyFourHours {
             return NSLocalizedString("later today", comment: "Later today")
         } else {
-            return self.dynamicType.timeIntervalFormatter.stringForTimeInterval(interval)
+            return type(of: self).timeIntervalFormatter.string(forTimeInterval: interval)
         }
     }
 }

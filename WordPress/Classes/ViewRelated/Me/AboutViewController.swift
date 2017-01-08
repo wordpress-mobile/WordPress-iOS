@@ -2,10 +2,33 @@ import Foundation
 import WordPressShared
 import WordPressComAnalytics
 import WordPress_AppbotX
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-public class AboutViewController : UITableViewController
-{
-    public override func viewDidLoad() {
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
+
+open class AboutViewController: UITableViewController {
+    open override func viewDidLoad() {
         super.viewDidLoad()
 
         setupNavigationItem()
@@ -15,21 +38,21 @@ public class AboutViewController : UITableViewController
 
 
     // MARK: - Private Helpers
-    private func setupNavigationItem() {
+    fileprivate func setupNavigationItem() {
         title = NSLocalizedString("About", comment: "About this app (information page title)")
 
         // Don't show 'About' in the next-view back button
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
     }
 
-    private func setupTableView() {
+    fileprivate func setupTableView() {
         // Load and Tint the Logo
         let color                   = WPStyleGuide.wordPressBlue()
-        let tintedImage             = UIImage(named: "icon-wp")?.imageWithRenderingMode(.AlwaysTemplate)
+        let tintedImage             = UIImage(named: "icon-wp")?.withRenderingMode(.alwaysTemplate)
         let imageView               = UIImageView(image: tintedImage)
         imageView.tintColor = color
-        imageView.autoresizingMask  = [.FlexibleLeftMargin, .FlexibleRightMargin]
-        imageView.contentMode       = .Top
+        imageView.autoresizingMask  = [.flexibleLeftMargin, .flexibleRightMargin]
+        imageView.contentMode       = .top
 
         // Let's add a bottom padding!
         imageView.frame.size.height += iconBottomPadding
@@ -38,10 +61,10 @@ public class AboutViewController : UITableViewController
         tableView.tableHeaderView   = imageView
         tableView.contentInset      = WPTableViewContentInsets
 
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
-    private func setupDismissButtonIfNeeded() {
+    fileprivate func setupDismissButtonIfNeeded() {
         // Don't display a dismiss button, unless this is the only view in the stack!
         if navigationController?.viewControllers.count > 1 {
             return
@@ -55,25 +78,25 @@ public class AboutViewController : UITableViewController
 
 
     // MARK: - Button Helpers
-    @IBAction func dismissWasPressed(sender: AnyObject) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func dismissWasPressed(_ sender: AnyObject) {
+        dismiss(animated: true, completion: nil)
     }
 
 
 
     // MARK: - UITableView Methods
-    public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    open override func numberOfSections(in tableView: UITableView) -> Int {
         return rows.count
     }
 
-    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return rows[section].count
     }
 
-    public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
+    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
         if cell == nil {
-            cell = WPTableViewCell(style: .Value1, reuseIdentifier: reuseIdentifier)
+            cell = WPTableViewCell(style: .value1, reuseIdentifier: reuseIdentifier)
         }
 
         let row = rows[indexPath.section][indexPath.row]
@@ -84,27 +107,27 @@ public class AboutViewController : UITableViewController
             WPStyleGuide.configureTableViewActionCell(cell)
         } else {
             WPStyleGuide.configureTableViewCell(cell)
-            cell?.selectionStyle = .None
+            cell?.selectionStyle = .none
         }
 
         return cell!
     }
 
-    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    open override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section != (rows.count - 1) {
             return nil
         }
         return footerTitleText
     }
 
-    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    open override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
         if let footerView = view as? UITableViewHeaderFooterView {
-            footerView.textLabel?.textAlignment = .Center
+            footerView.textLabel?.textAlignment = .center
         }
     }
 
-    public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
 
         if let handler = rows[indexPath.section][indexPath.row].handler {
@@ -115,38 +138,38 @@ public class AboutViewController : UITableViewController
 
 
     // MARK: - Private Helpers
-    private func displayWebView(url: String) {
-        let webViewController = WPWebViewController(URL: NSURL(string: url)!)
+    fileprivate func displayWebView(_ url: String) {
+        let webViewController = WPWebViewController(url: URL(string: url)!)
         if presentingViewController != nil {
-            navigationController?.pushViewController(webViewController, animated: true)
+            navigationController?.pushViewController(webViewController!, animated: true)
         } else {
-            let navController = UINavigationController(rootViewController: webViewController)
-            presentViewController(navController, animated: true, completion: nil)
+            let navController = UINavigationController(rootViewController: webViewController!)
+            present(navController, animated: true, completion: nil)
         }
     }
 
-    private func displayRatingPrompt() {
+    fileprivate func displayRatingPrompt() {
         // Note:
         // Let's follow the same procedure executed as in NotificationsViewController, so that if the user
         // manually decides to rate the app, we don't render the prompt!
         //
-        WPAnalytics.track(.AppReviewsRatedApp)
+        WPAnalytics.track(.appReviewsRatedApp)
         AppRatingUtility.ratedCurrentVersion()
-        ABXAppStore.openAppStoreForApp(WPiTunesAppId)
+        ABXAppStore.open(forApp: WPiTunesAppId)
     }
 
-    private func displayTwitterAccount() {
-        let twitterURL = NSURL(string: WPTwitterWordPressMobileURL)!
-        UIApplication.sharedApplication().openURL(twitterURL)
+    fileprivate func displayTwitterAccount() {
+        let twitterURL = URL(string: WPTwitterWordPressMobileURL)!
+        UIApplication.shared.openURL(twitterURL)
     }
 
     // MARK: - Nested Row Class
-    private class Row {
-        let title   : String
-        let details : String?
-        let handler : (Void -> Void)?
+    fileprivate class Row {
+        let title: String
+        let details: String?
+        let handler: ((Void) -> Void)?
 
-        init(title: String, details: String?, handler: (Void -> Void)?) {
+        init(title: String, details: String?, handler: ((Void) -> Void)?) {
             self.title      = title
             self.details    = details
             self.handler    = handler
@@ -156,26 +179,26 @@ public class AboutViewController : UITableViewController
 
 
     // MARK: - Private Constants
-    private let reuseIdentifier = "reuseIdentifierValue1"
-    private let iconBottomPadding   = CGFloat(30)
-    private let footerBottomPadding = CGFloat(12)
+    fileprivate let reuseIdentifier = "reuseIdentifierValue1"
+    fileprivate let iconBottomPadding   = CGFloat(30)
+    fileprivate let footerBottomPadding = CGFloat(12)
 
 
 
     // MARK: - Private Properties
-    private lazy var footerTitleText: String = {
-        let calendar = NSCalendar.currentCalendar()
-        let year = calendar.components(.Year, fromDate: NSDate()).year
+    fileprivate lazy var footerTitleText: String = {
+        let calendar = Calendar.current
+        let year = (calendar as NSCalendar).components(.year, from: Date()).year
         return NSLocalizedString("© \(year) Automattic, Inc.", comment: "About View's Footer Text")
     }()
 
-    private var rows : [[Row]] {
-        let appsBlogHostname = NSURL(string: WPAutomatticAppsBlogURL)?.host ?? String()
+    fileprivate var rows: [[Row]] {
+        let appsBlogHostname = URL(string: WPAutomatticAppsBlogURL)?.host ?? String()
 
         return [
             [
                 Row(title:   NSLocalizedString("Version", comment: "Displays the version of the App"),
-                    details: NSBundle.mainBundle().shortVersionString(),
+                    details: Bundle.main.shortVersionString(),
                     handler: nil),
 
                 Row(title:   NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web"),

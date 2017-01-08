@@ -2,15 +2,15 @@ import Foundation
 import UIKit
 import WordPressComAnalytics
 
-func AccountSettingsViewController(account account: WPAccount) -> ImmuTableViewController? {
+func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewController? {
     guard let api = account.wordPressComRestApi else {
         return nil
     }
-    let service = AccountSettingsService(userID: account.userID.integerValue, api: api)
+    let service = AccountSettingsService(userID: account.userID.intValue, api: api)
     return AccountSettingsViewController(service: service)
 }
 
-func AccountSettingsViewController(service service: AccountSettingsService) -> ImmuTableViewController {
+func AccountSettingsViewController(service: AccountSettingsService) -> ImmuTableViewController {
     let controller = AccountSettingsController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
     return viewController
@@ -31,24 +31,24 @@ private class AccountSettingsController: SettingsController {
     let service: AccountSettingsService
     var settings: AccountSettings? {
         didSet {
-            NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.modelChangedNotification, object: nil)
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
         }
     }
     var noticeMessage: String? {
         didSet {
-            NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.modelChangedNotification, object: nil)
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
         }
     }
 
     init(service: AccountSettingsService) {
         self.service = service
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadStatus), name: AccountSettingsService.Notifications.refreshStatusChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadSettings), name: AccountSettingsService.Notifications.accountSettingsChanged, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadStatus), name: NSNotification.Name(rawValue: AccountSettingsService.Notifications.refreshStatusChanged), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(AccountSettingsController.loadSettings), name: NSNotification.Name(rawValue: AccountSettingsService.Notifications.accountSettingsChanged), object: nil)
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     func refreshModel() {
@@ -67,13 +67,13 @@ private class AccountSettingsController: SettingsController {
 
     // MARK: - ImmuTableViewController
 
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> ImmuTable {
+    func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter) -> ImmuTable {
         return mapViewModel(settings, service: service, presenter: presenter)
     }
 
     // MARK: - Model mapping
 
-    func mapViewModel(settings: AccountSettings?, service: AccountSettingsService, presenter: ImmuTablePresenter) -> ImmuTable {
+    func mapViewModel(_ settings: AccountSettings?, service: AccountSettingsService, presenter: ImmuTablePresenter) -> ImmuTable {
         let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
 
         let username = TextRow(
@@ -112,41 +112,41 @@ private class AccountSettingsController: SettingsController {
 
     // MARK: - Actions
 
-    func editEmailAddress(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
+    func editEmailAddress(_ settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
         return { row in
             let editableRow = row as! EditableTextRow
             let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
             let settingsViewController =  self.controllerForEditableText(editableRow,
-                                                                         changeType: AccountSettingsChange.Email,
+                                                                         changeType: AccountSettingsChange.email,
                                                                          hint: hint,
                                                                          service: service)
-            settingsViewController.mode = .Email
+            settingsViewController.mode = .email
             settingsViewController.notice = self.noticeForAccountSettings(settings)
             settingsViewController.displaysActionButton = settings?.emailPendingChange ?? false
             settingsViewController.actionText = NSLocalizedString("Revert Pending Change", comment: "Cancels a pending Email Change")
             settingsViewController.onActionPress = {
-                service.saveChange(.EmailRevertPendingChange)
+                service.saveChange(.emailRevertPendingChange)
             }
 
             return settingsViewController
         }
     }
 
-    func editWebAddress(service: AccountSettingsService) -> ImmuTableRow -> SettingsTextViewController {
+    func editWebAddress(_ service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
         let hint = NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address")
-        return editText(AccountSettingsChange.WebAddress, hint: hint, service: service)
+        return editText(AccountSettingsChange.webAddress, hint: hint, service: service)
     }
 
-    func editPrimarySite(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
+    func editPrimarySite(_ settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
         return {
             row in
 
-            let selectorViewController = BlogSelectorViewController(selectedBlogDotComID: settings?.primarySiteID,
-                successHandler: { (dotComID : NSNumber!) in
-                    let change = AccountSettingsChange.PrimarySite(dotComID as Int)
+            let selectorViewController = BlogSelectorViewController(selectedBlogDotComID: settings?.primarySiteID as NSNumber!,
+                                                                    successHandler: { (dotComID: NSNumber?) in
+                    let change = AccountSettingsChange.primarySite((dotComID?.intValue)!)
                     service.saveChange(change)
                 },
-                dismissHandler: nil)
+                dismissHandler: nil)!
 
             selectorViewController.title = NSLocalizedString("Primary Site", comment: "Primary Site Picker's Title")
             selectorViewController.displaysOnlyDefaultAccountSites = true
@@ -161,8 +161,8 @@ private class AccountSettingsController: SettingsController {
 
     // MARK: - Private Helpers
 
-    private func noticeForAccountSettings(settings: AccountSettings?) -> String? {
-        guard let pendingAddress = settings?.emailPendingAddress where settings?.emailPendingChange == true else {
+    fileprivate func noticeForAccountSettings(_ settings: AccountSettings?) -> String? {
+        guard let pendingAddress = settings?.emailPendingAddress, settings?.emailPendingChange == true else {
             return nil
         }
 

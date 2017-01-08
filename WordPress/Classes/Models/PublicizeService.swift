@@ -1,16 +1,15 @@
 import Foundation
 import CoreData
 
-public class PublicizeService : NSManagedObject
-{
-    @NSManaged public var connectURL: String
-    @NSManaged public var detail: String
-    @NSManaged public var icon: String
-    @NSManaged public var jetpackSupport: Bool
-    @NSManaged public var jetpackModuleRequired: String
-    @NSManaged public var label: String
-    @NSManaged public var multipleExternalUserIDSupport: Bool
-    @NSManaged public var order: NSNumber
-    @NSManaged public var serviceID: String
-    @NSManaged public var type: String
+open class PublicizeService: NSManagedObject {
+    @NSManaged open var connectURL: String
+    @NSManaged open var detail: String
+    @NSManaged open var icon: String
+    @NSManaged open var jetpackSupport: Bool
+    @NSManaged open var jetpackModuleRequired: String
+    @NSManaged open var label: String
+    @NSManaged open var multipleExternalUserIDSupport: Bool
+    @NSManaged open var order: NSNumber
+    @NSManaged open var serviceID: String
+    @NSManaged open var type: String
 }

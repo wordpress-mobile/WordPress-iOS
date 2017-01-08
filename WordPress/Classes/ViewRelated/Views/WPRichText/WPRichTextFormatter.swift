@@ -1,22 +1,25 @@
 import Foundation
 import UIKit
-
+import WordPressShared
 
 /// Responsible for taking an HTML formatted string and parsing/reformatting certain
 /// HTML tags that require special handling before the text is shown in a UITextView.
 ///
-class WPRichTextFormatter
-{
+class WPRichTextFormatter {
 
-    typealias ParsedSource = (parsedString:String, attachments:[WPTextAttachment])
+    typealias ParsedSource = (parsedString: String, attachments: [WPTextAttachment])
     static let blockquoteIdentifier = "WPBLOCKQUOTEIDENTIFIER"
     let blockquoteIndentation = CGFloat(20.0)
+    let defaultParagraphSpacing = CGFloat(14.0)
+    var horizontalRuleColor: UIColor = WPStyleGuide.greyLighten30()
 
     /// An array of HTMLTagProcessors
     ///
-    lazy var tags:[HtmlTagProcessor] = {
+    lazy var tags: [HtmlTagProcessor] = {
         return [
             BlockquoteTagProcessor(),
+            HRTagProcessor(),
+            PreTagProcessor(),
             ListTagProcessor(tagName: "ol", includesEndTag: true),
             ListTagProcessor(tagName: "ul", includesEndTag: true),
             AttachmentTagProcessor(tagName: "img", includesEndTag: false),
@@ -29,7 +32,7 @@ class WPRichTextFormatter
 
     /// An array of tag names that the formatter can process.
     ///
-    lazy var tagNames:[String] = {
+    lazy var tagNames: [String] = {
         return self.tags.map { tag -> String in
             return tag.tagName
         }
@@ -44,24 +47,24 @@ class WPRichTextFormatter
     ///
     /// - Returns: An NSAttributedString optional.
     ///
-    func attributedStringFromHTMLString(string:String, defaultDocumentAttributes:[String : AnyObject]?) throws -> NSAttributedString? {
+    func attributedStringFromHTMLString(_ string: String, defaultDocumentAttributes: [String : AnyObject]?) throws -> NSAttributedString? {
         // Process the html in the string. Replace attachment tags with placeholders, etc.
         let parsed = processAndExtractTags(string)
         let parsedString = parsed.parsedString
         let attachments = parsed.attachments
 
         // Now create an attributed string from the processed html
-        guard let data = parsedString.dataUsingEncoding(NSUTF8StringEncoding) else {
+        guard let data = parsedString.data(using: String.Encoding.utf8) else {
             return nil
         }
 
-        var options: [String: AnyObject] = [
+        var options: [String: Any] = [
             NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-            NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding,
+            NSCharacterEncodingDocumentAttribute: NSNumber(value: String.Encoding.utf8.rawValue),
             ]
 
         if let defaultDocumentAttributes = defaultDocumentAttributes {
-            options[NSDefaultAttributesDocumentAttribute] = defaultDocumentAttributes
+            options[NSDefaultAttributesDocumentAttribute] = defaultDocumentAttributes as AnyObject?
         }
 
         var attrString = try NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
@@ -72,16 +75,54 @@ class WPRichTextFormatter
         // Replace attachment identifiers with the actual attachments.
         for attachment in attachments {
             let str = attrString.string as NSString
-            let range = str.rangeOfString(attachment.identifier)
-            let attributes = attrString.attributesAtIndex(range.location, effectiveRange: nil)
+            let range = str.range(of: attachment.identifier)
+            let attributes = attrString.attributes(at: range.location, effectiveRange: nil)
 
             let attachmentString = NSMutableAttributedString(attributedString: NSAttributedString(attachment: attachment))
             attachmentString.addAttributes(attributes, range: NSRange(location: 0, length: attachmentString.length))
 
-            attrString.replaceCharactersInRange(range, withAttributedString: attachmentString)
+            attrString.replaceCharacters(in: range, with: attachmentString)
         }
 
+        // Replace horizontal rule markers with horizontal rule attachments
+        attrString = replaceHorizontalRuleMarkers(attrString)
+
         return NSAttributedString(attributedString: attrString)
+    }
+
+
+    func replaceHorizontalRuleMarkers(_ attrString: NSMutableAttributedString) -> NSMutableAttributedString {
+
+        let str = attrString.string
+        let regex = try! NSRegularExpression(pattern: HRTagProcessor.horizontalRuleIdentifier, options: .caseInsensitive)
+        let matches = regex.matches(in: str, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, str.characters.count))
+
+        for match: NSTextCheckingResult in matches.reversed() {
+            let range = match.range
+
+            // We want a 1px max line height, and paragraphSpacing matching the fontsize.
+            let mParagraphStyle = NSMutableParagraphStyle()
+            mParagraphStyle.setParagraphStyle(NSParagraphStyle.default)
+            mParagraphStyle.paragraphSpacing = defaultParagraphSpacing
+            mParagraphStyle.maximumLineHeight = 1.0
+            if  let pStyle = attrString.attribute(NSParagraphStyleAttributeName, at: range.location, effectiveRange: nil) as? NSParagraphStyle,
+                let font = attrString.attribute(NSFontAttributeName, at: range.location, effectiveRange: nil) as? UIFont {
+
+                 mParagraphStyle.paragraphSpacing = round(pStyle.minimumLineHeight - font.xHeight) / 2.0
+            }
+            let attributes: [String: Any] = [
+                NSParagraphStyleAttributeName: mParagraphStyle,
+                NSBackgroundColorAttributeName: horizontalRuleColor
+            ]
+
+            let attachment = WPHorizontalRuleAttachment()
+            let attachmentString = NSMutableAttributedString(attributedString: NSAttributedString(attachment: attachment))
+            attachmentString.addAttributes(attributes, range: NSRange(location: 0, length: attachmentString.length))
+
+            attrString.replaceCharacters(in: range, with: attachmentString)
+        }
+
+        return attrString
     }
 
 
@@ -95,20 +136,20 @@ class WPRichTextFormatter
     ///
     /// - Returns: The modified attribute string.
     ///
-    func fixBlockquoteIndentation(attrString: NSMutableAttributedString) -> NSMutableAttributedString {
+    func fixBlockquoteIndentation(_ attrString: NSMutableAttributedString) -> NSMutableAttributedString {
 
         let str = attrString.string
-        let regex = try! NSRegularExpression(pattern: self.dynamicType.blockquoteIdentifier, options: .CaseInsensitive)
-        let matches = regex.matchesInString(str, options: NSMatchingOptions.ReportCompletion, range: NSMakeRange(0, str.characters.count))
+        let regex = try! NSRegularExpression(pattern: type(of: self).blockquoteIdentifier, options: .caseInsensitive)
+        let matches = regex.matches(in: str, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, str.characters.count))
 
-        for match: NSTextCheckingResult in matches.reverse() {
+        for match: NSTextCheckingResult in matches.reversed() {
 
             // Indent the blockquote
             // Note that the marker is not guarenteed to have the exact same paragraph style as the quoted text it marks.
             // To compensate, we make our index match the first character of the quote text rather than the marker itself.
             let index = match.range.location + match.range.length + 1
             var effectiveRange = NSRange()
-            let pStyle = attrString.attribute(NSParagraphStyleAttributeName, atIndex: index, effectiveRange: &effectiveRange) as? NSParagraphStyle ?? NSParagraphStyle.defaultParagraphStyle()
+            let pStyle = attrString.attribute(NSParagraphStyleAttributeName, at: index, effectiveRange: &effectiveRange) as? NSParagraphStyle ?? NSParagraphStyle.default
 
             let mParaStyle = NSMutableParagraphStyle()
             mParaStyle.setParagraphStyle(pStyle)
@@ -118,7 +159,7 @@ class WPRichTextFormatter
             attrString.addAttribute(NSParagraphStyleAttributeName, value: mParaStyle, range: effectiveRange)
 
             // Delete the marker
-            attrString.deleteCharactersInRange(match.range)
+            attrString.deleteCharacters(in: match.range)
         }
 
         return attrString
@@ -133,7 +174,7 @@ class WPRichTextFormatter
     ///
     /// - Returns: An instance of ParsedSource containing the modified string and any attachments.
     ///
-    func processAndExtractTags(string: String) -> ParsedSource {
+    func processAndExtractTags(_ string: String) -> ParsedSource {
         var attachments = [WPTextAttachment]()
 
         guard string.characters.count > 0 else {
@@ -141,21 +182,21 @@ class WPRichTextFormatter
         }
 
         var processedString = ""
-        let scanner = NSScanner(string: string)
+        let scanner = Scanner(string: string)
         scanner.charactersToBeSkipped = nil
 
         // Scan for tags we need to flag or replace appending scanned substrings
         // to `parsedString`
-        while !scanner.atEnd {
+        while !scanner.isAtEnd {
 
             var tempString: NSString? = ""
 
             // Scan up to the first tag after the current scanLocation
-            scanner.scanUpToString("<", intoString: &tempString)
+            scanner.scanUpTo("<", into: &tempString)
             processedString += tempString! as String
 
             // The scanner will scan to the end of the string if a tag isn't found.
-            if scanner.atEnd {
+            if scanner.isAtEnd {
                 // We're done actually.
                 break
             }
@@ -164,9 +205,9 @@ class WPRichTextFormatter
             // omit the opening <.
             let tagStartLocation = scanner.scanLocation
             var tagName: NSString? = ""
-            let charSet = NSCharacterSet(charactersInString: " >")
+            let charSet = CharacterSet(charactersIn: " >")
             scanner.scanLocation += 1
-            scanner.scanUpToCharactersFromSet(charSet, intoString: &tagName)
+            scanner.scanUpToCharacters(from: charSet, into: &tagName)
             scanner.scanLocation = tagStartLocation
 
             // Process tags of interest.
@@ -199,7 +240,7 @@ class WPRichTextFormatter
     ///
     /// - Returns: An HtmlTagProcessor optional.
     ///
-    func processorForTagName(tagName: String) -> HtmlTagProcessor? {
+    func processorForTagName(_ tagName: String) -> HtmlTagProcessor? {
         return tags.filter({ (item) -> Bool in
             item.tagName == tagName
         }).first
@@ -211,8 +252,7 @@ class WPRichTextFormatter
 /// A base class for processing HTML tags.  Logic for specific tags
 /// should be implemented in subclasses of this class.
 ///
-class HtmlTagProcessor
-{
+class HtmlTagProcessor {
     let tagName: String
     let includesEndTag: Bool
 
@@ -231,16 +271,16 @@ class HtmlTagProcessor
     ///
     /// - Returns: A tuple: (Bool, String) where the Bool represents success and the string is the parsed HTML.
     ///
-    func extractTag(scanner: NSScanner) -> (Bool, String) {
+    func extractTag(_ scanner: Scanner) -> (Bool, String) {
         var parsedString = ""
         var tempString: NSString? = ""
         var success = false
         let endTag = includesEndTag ? "</\(tagName)>" : ">"
 
-        scanner.scanUpToString(endTag, intoString: &tempString)
+        scanner.scanUpTo(endTag, into: &tempString)
         parsedString += tempString! as String
 
-        if !scanner.atEnd {
+        if !scanner.isAtEnd {
             success = true
 
             // Add the closing tag since it wasn't included in the scanned string.
@@ -263,7 +303,7 @@ class HtmlTagProcessor
     /// - Returns: A (String, WPTextAttachment?) tuple where the string is either
     /// a placeholder for the WPTextAttachment instance, or the modified extracted HTML.
     ///
-    func process(scanner: NSScanner) -> (String, WPTextAttachment?) {
+    func process(_ scanner: Scanner) -> (String, WPTextAttachment?) {
         return ("", nil)
     }
 
@@ -272,8 +312,7 @@ class HtmlTagProcessor
 
 /// Encapsulates the logic for processing blockquote tags.
 ///
-class BlockquoteTagProcessor: HtmlTagProcessor
-{
+class BlockquoteTagProcessor: HtmlTagProcessor {
 
     init() {
         super.init(tagName: "blockquote", includesEndTag: true)
@@ -282,7 +321,7 @@ class BlockquoteTagProcessor: HtmlTagProcessor
 
     /// Inserts markers identifiying a blockquote paragraph.
     ///
-    override func process(scanner: NSScanner) -> (String, WPTextAttachment?) {
+    override func process(_ scanner: Scanner) -> (String, WPTextAttachment?) {
         var (matched, parsedString) = extractTag(scanner)
 
         // No matches? Just bail.
@@ -292,10 +331,10 @@ class BlockquoteTagProcessor: HtmlTagProcessor
 
         // If the blockquote contains no paragraphs just insert the marker after
         // the tag.
-        if !parsedString.containsString("<p>") {
+        if !parsedString.contains("<p>") {
             var str = parsedString as NSString
             let location = "<\(tagName)>".characters.count
-            str = str.stringByReplacingCharactersInRange(NSRange(location: location, length: 0), withString: WPRichTextFormatter.blockquoteIdentifier)
+            str = str.replacingCharacters(in: NSRange(location: location, length: 0), with: WPRichTextFormatter.blockquoteIdentifier) as NSString
             parsedString = str as String
             return (parsedString, nil)
         }
@@ -305,15 +344,15 @@ class BlockquoteTagProcessor: HtmlTagProcessor
         let marker = "<p>" + WPRichTextFormatter.blockquoteIdentifier
         var str = ""
         var tempStr: NSString? = ""
-        let paragraphScanner = NSScanner(string: parsedString)
+        let paragraphScanner = Scanner(string: parsedString)
         paragraphScanner.charactersToBeSkipped = nil
 
-        while !paragraphScanner.atEnd {
-            paragraphScanner.scanUpToString("<p>", intoString: &tempStr)
+        while !paragraphScanner.isAtEnd {
+            paragraphScanner.scanUpTo("<p>", into: &tempStr)
 
             str += tempStr as! String
             tempStr = ""
-            if paragraphScanner.atEnd {
+            if paragraphScanner.isAtEnd {
                 break
             }
 
@@ -327,13 +366,35 @@ class BlockquoteTagProcessor: HtmlTagProcessor
 }
 
 
+/// Encapsulates the logic for processing pre tags.
+///
+class PreTagProcessor: HtmlTagProcessor {
+
+    init() {
+        super.init(tagName: "pre", includesEndTag: true)
+    }
+
+
+    /// Adds a new line after the end of the pre tag.
+    ///
+    override func process(_ scanner: Scanner) -> (String, WPTextAttachment?) {
+        var (matched, parsedString) = extractTag(scanner)
+
+        if matched && !parsedString.contains("\n\n</pre>") {
+            parsedString += "<br>"
+        }
+
+        return (parsedString, nil)
+    }
+}
+
+
 /// Handles processing list tags. Basically we just want to
 /// correct the line spacing following a list. Appending
 /// a <br> does the trick.
 ///
-class ListTagProcessor: HtmlTagProcessor
-{
-    override func process(scanner: NSScanner) -> (String, WPTextAttachment?) {
+class ListTagProcessor: HtmlTagProcessor {
+    override func process(_ scanner: Scanner) -> (String, WPTextAttachment?) {
         var (matched, parsedString) = extractTag(scanner)
 
         // No matches? Just bail.
@@ -351,13 +412,13 @@ class ListTagProcessor: HtmlTagProcessor
 /// Handles processing tags representing external content, i.e. attachments.
 /// The HTML for the attachment is extracted and replaced with a string marker.
 ///
-class AttachmentTagProcessor: HtmlTagProcessor
-{
+class AttachmentTagProcessor: HtmlTagProcessor {
     let textAttachmentIdentifier = "WPTEXTATTACHMENTIDENTIFIER"
+    static let attributeRegex = try! NSRegularExpression(pattern: "([a-z-]+)=(?:\"|')([^\"']+)(?:\"|')", options: .caseInsensitive)
 
     /// Replaces extracted tags with markers.
     ///
-    override func process(scanner: NSScanner) -> (String, WPTextAttachment?) {
+    override func process(_ scanner: Scanner) -> (String, WPTextAttachment?) {
         let (matched, parsedString) = extractTag(scanner)
 
         if !matched {
@@ -377,7 +438,7 @@ class AttachmentTagProcessor: HtmlTagProcessor
     ///     - html: The html string.
     ///     - identifier: The string identifier for the attachment.
     ///
-    func attachmentForHtml(html: String, identifier: String) -> WPTextAttachment? {
+    func attachmentForHtml(_ html: String, identifier: String) -> WPTextAttachment? {
 
         let attrs = attributesFromTag(html)
 
@@ -388,8 +449,8 @@ class AttachmentTagProcessor: HtmlTagProcessor
         textAttachment.html = html
 
         if let widthStr = attrs["width"] {
-            if widthStr.containsString("%") {
-                textAttachment.width = CGFloat.max
+            if widthStr.contains("%") {
+                textAttachment.width = CGFloat.greatestFiniteMagnitude
             } else if let width = Float(widthStr) {
                 textAttachment.width = CGFloat(width)
             }
@@ -412,44 +473,53 @@ class AttachmentTagProcessor: HtmlTagProcessor
     ///
     /// - Returns: A [String: String] dicitionary of attributes.
     ///
-    func attributesFromTag(html: String) -> [String: String] {
-        var scanner = NSScanner(string: html)
-        let quoteCharacters = NSCharacterSet(charactersInString: "\"'")
+    func attributesFromTag(_ html: String) -> [String: String] {
+        let scanner = Scanner(string: html)
         var attrs = [String: String]()
 
         // For most attachments we're only interested in the attributes in the opening tag.
         // We can skip a closing tag and any child elements.
         var tag: NSString? = ""
-        scanner.scanUpToString(">", intoString: &tag)
-        scanner = NSScanner(string: tag as! String)
-        scanner.charactersToBeSkipped = quoteCharacters
-        let charSet = NSCharacterSet.whitespaceCharacterSet()
+        scanner.scanUpTo(">", into: &tag)
 
-        while !scanner.atEnd {
-            var tempString: NSString? = ""
-            scanner.scanUpToCharactersFromSet(charSet, intoString: &tempString)
+        let regex = type(of: self).attributeRegex
 
-            if let str = tempString where str.containsString("=") {
-                let attrScanner = NSScanner(string: str as String)
-                attrScanner.charactersToBeSkipped = quoteCharacters
+        let matches = regex.matches(in: tag as! String, options: .reportCompletion, range: NSRange(location: 0, length: tag!.length))
+        for match in matches {
+            let keyRange = match.rangeAt(1)
+            let valueRange = match.rangeAt(2)
 
-                var key: NSString? = ""
-                var value: NSString? = ""
+            let key = tag!.substring(with: keyRange).lowercased()
+            let value = tag!.substring(with: valueRange)
 
-                attrScanner.scanUpToString("=", intoString: &key)
-                attrScanner.scanLocation += 1
-                attrScanner.scanUpToCharactersFromSet(quoteCharacters, intoString: &value)
-
-                attrs.updateValue(value as! String, forKey: key as! String)
-            }
-
-            if !scanner.atEnd {
-                scanner.scanLocation += 1
-            }
-
+            attrs.updateValue(value, forKey: key)
         }
 
         return attrs
+    }
+
+}
+
+
+class HRTagProcessor: HtmlTagProcessor {
+    static let horizontalRuleIdentifier = "WPHORIZONTALRULEIDENTIFIER"
+
+
+    init() {
+        super.init(tagName: "hr", includesEndTag: false)
+    }
+
+
+    /// Replaces extracted tags with markers.
+    ///
+    override func process(_ scanner: Scanner) -> (String, WPTextAttachment?) {
+        let (matched, parsedString) = extractTag(scanner)
+
+        if !matched {
+            return (parsedString, nil)
+        }
+
+        return (HRTagProcessor.horizontalRuleIdentifier, nil)
     }
 
 }

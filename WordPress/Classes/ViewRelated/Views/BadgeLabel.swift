@@ -20,8 +20,8 @@ class BadgeLabel: UILabel {
         setupView()
     }
 
-    private func setupView() {
-        textAlignment = .Center
+    fileprivate func setupView() {
+        textAlignment = .center
         layer.masksToBounds = true
 
         cornerRadius = 2.0
@@ -29,13 +29,13 @@ class BadgeLabel: UILabel {
 
     // MARK: Padding
 
-    override func drawTextInRect(rect: CGRect) {
+    override func drawText(in rect: CGRect) {
         let insets = UIEdgeInsetsMake(0, horizontalPadding, 0, horizontalPadding)
-        super.drawTextInRect(UIEdgeInsetsInsetRect(rect, insets))
+        super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
     }
 
-    override func intrinsicContentSize() -> CGSize {
-        var paddedSize = super.intrinsicContentSize()
+    override var intrinsicContentSize: CGSize {
+        var paddedSize = super.intrinsicContentSize
         paddedSize.width += 2 * horizontalPadding
         return paddedSize
     }
@@ -44,10 +44,10 @@ class BadgeLabel: UILabel {
 
     @IBInspectable var borderColor: UIColor {
         get {
-            return UIColor(CGColor: layer.borderColor!)
+            return UIColor(cgColor: layer.borderColor!)
         }
         set {
-            layer.borderColor = newValue.CGColor
+            layer.borderColor = newValue.cgColor
         }
     }
 

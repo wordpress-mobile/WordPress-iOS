@@ -11,37 +11,36 @@ import Foundation
 /// Each one of the possible channels may post notifications via different streams:
 /// Email, Push Notifications, and Timeline.
 ///
-public class RemoteNotificationSettings
-{
+open class RemoteNotificationSettings {
     /// Represents the Channel to which the current settings are associated.
     ///
-    public let channel : Channel
+    open let channel: Channel
 
     /// Contains an array of the available Notification Streams.
     ///
-    public let streams : [Stream]
+    open let streams: [Stream]
 
 
 
     /// Represents a communication channel that may post notifications to the user.
     ///
-    public enum Channel : Equatable {
-        case Blog(blogId: Int)
-        case Other
-        case WordPressCom
+    public enum Channel: Equatable {
+        case blog(blogId: Int)
+        case other
+        case wordPressCom
     }
 
 
     /// Contains the Notification Settings for a specific communications stream.
     ///
-    public class Stream {
-        public var kind         : Kind
-        public var preferences  : [String : Bool]?
+    open class Stream {
+        open var kind: Kind
+        open var preferences: [String : Bool]?
 
 
         /// Enumerates all of the possible Stream Kinds
         ///
-        public enum Kind : String {
+        public enum Kind: String {
             case Timeline       = "timeline"
             case Email          = "email"
             case Device         = "device"
@@ -56,7 +55,7 @@ public class RemoteNotificationSettings
         ///     - kind: The Kind of stream we're currently dealing with
         ///     - preferences: Raw remote preferences, retrieved from the backend
         ///
-        private init(kind: Kind, preferences: NSDictionary?) {
+        fileprivate init(kind: Kind, preferences: NSDictionary?) {
             self.kind           = kind
             self.preferences    = filterNonBooleanEntries(preferences)
         }
@@ -68,16 +67,16 @@ public class RemoteNotificationSettings
         ///
         /// - Returns: A native Swift dictionary, containing only the Boolean entries
         ///
-        private func filterNonBooleanEntries(dictionary: NSDictionary?) -> [String : Bool] {
-            var filtered = [String : Bool]()
+        fileprivate func filterNonBooleanEntries(_ dictionary: NSDictionary?) -> [String : Bool] {
+            var filtered = [String: Bool]()
             if dictionary == nil {
                 return filtered
             }
 
             for (key, value) in dictionary! {
                 if let stringKey = key   as? String,
-                   let boolValue = value as? Bool
-                {
+                   let boolValue = value as? Bool {
+                    let value = value as AnyObject
                     // NSNumbers might get converted to Bool anyways
                     if value === kCFBooleanFalse || value === kCFBooleanTrue {
                         filtered[stringKey] = boolValue
@@ -95,7 +94,7 @@ public class RemoteNotificationSettings
         ///
         /// - Returns: A native Swift array containing Stream entities
         ///
-        private static func fromDictionary(dictionary: NSDictionary?) -> [Stream] {
+        fileprivate static func fromDictionary(_ dictionary: NSDictionary?) -> [Stream] {
             var parsed = [Stream]()
 
             for kind in Kind.allValues {
@@ -115,7 +114,7 @@ public class RemoteNotificationSettings
     ///     - channel: The communications channel that uses the current settings
     ///     - settings: Raw dictionary containing the remote settings response
     ///
-    private init(channel: Channel, settings: NSDictionary?) {
+    fileprivate init(channel: Channel, settings: NSDictionary?) {
         self.channel = channel
         self.streams = Stream.fromDictionary(settings)
     }
@@ -125,9 +124,9 @@ public class RemoteNotificationSettings
     ///
     /// - Parameter wpcomSettings: Dictionary containing the collection of WordPress.com Settings
     ///
-    private init(wpcomSettings: NSDictionary?) {
+    fileprivate init(wpcomSettings: NSDictionary?) {
         // WordPress.com is a special scenario: It contains just one (unspecified) stream: Email
-        self.channel = Channel.WordPressCom
+        self.channel = Channel.wordPressCom
         self.streams = [ Stream(kind: .Email, preferences: wpcomSettings) ]
     }
 
@@ -136,9 +135,9 @@ public class RemoteNotificationSettings
     ///
     /// - Parameter blogSettings: Dictionary containing the collection of settings for a single blog
     ///
-    private convenience init(blogSettings: NSDictionary?) {
+    fileprivate convenience init(blogSettings: NSDictionary?) {
         let blogId = blogSettings?["blog_id"] as? Int ?? Int.max
-        self.init(channel: Channel.Blog(blogId: blogId), settings: blogSettings)
+        self.init(channel: Channel.blog(blogId: blogId), settings: blogSettings)
     }
 
 
@@ -146,8 +145,8 @@ public class RemoteNotificationSettings
     ///
     /// - Parameter otherSettings: Dictionary containing the collection of "Other Settings"
     ///
-    private convenience init(otherSettings: NSDictionary?) {
-        self.init(channel: Channel.Other, settings: otherSettings)
+    fileprivate convenience init(otherSettings: NSDictionary?) {
+        self.init(channel: Channel.other, settings: otherSettings)
     }
 
 
@@ -159,7 +158,7 @@ public class RemoteNotificationSettings
     ///
     /// - Returns: An array of RemoteNotificationSettings objects
     ///
-    public static func fromDictionary(dictionary: NSDictionary?) -> [RemoteNotificationSettings] {
+    open static func fromDictionary(_ dictionary: NSDictionary?) -> [RemoteNotificationSettings] {
         var parsed = [RemoteNotificationSettings]()
 
         if let rawBlogs = dictionary?["blogs"] as? [NSDictionary] {
@@ -189,14 +188,13 @@ public class RemoteNotificationSettings
 ///
 /// - Returns: A boolean indicating whether two channels are equal. Or not!
 ///
-public func ==(lhs: RemoteNotificationSettings.Channel, rhs: RemoteNotificationSettings.Channel) -> Bool
-{
+public func ==(lhs: RemoteNotificationSettings.Channel, rhs: RemoteNotificationSettings.Channel) -> Bool {
     switch (lhs, rhs) {
-    case (let .Blog(firstBlogId), let .Blog(secondBlogId)) where firstBlogId == secondBlogId:
+    case (let .blog(firstBlogId), let .blog(secondBlogId)) where firstBlogId == secondBlogId:
         return true
-    case (.Other, .Other):
+    case (.other, .other):
         return true
-    case (.WordPressCom, .WordPressCom):
+    case (.wordPressCom, .wordPressCom):
         return true
     default:
         return false

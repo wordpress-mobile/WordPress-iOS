@@ -1,22 +1,45 @@
 import Foundation
 import WordPressShared
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-@objc public class ReaderSiteStreamHeader: UIView, ReaderStreamHeader
-{
-    @IBOutlet private weak var borderedView: UIView!
-    @IBOutlet private weak var avatarImageView: UIImageView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var detailLabel: UILabel!
-    @IBOutlet private weak var followButton: PostMetaButton!
-    @IBOutlet private weak var followCountLabel: UILabel!
-    @IBOutlet private weak var descriptionLabel: UILabel!
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
 
-    public var delegate: ReaderStreamHeaderDelegate?
-    private var defaultBlavatar = "blavatar-default"
+
+@objc open class ReaderSiteStreamHeader: UIView, ReaderStreamHeader {
+    @IBOutlet fileprivate weak var borderedView: UIView!
+    @IBOutlet fileprivate weak var avatarImageView: UIImageView!
+    @IBOutlet fileprivate weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var detailLabel: UILabel!
+    @IBOutlet fileprivate weak var followButton: PostMetaButton!
+    @IBOutlet fileprivate weak var followCountLabel: UILabel!
+    @IBOutlet fileprivate weak var descriptionLabel: UILabel!
+
+    open var delegate: ReaderStreamHeaderDelegate?
+    fileprivate var defaultBlavatar = "blavatar-default"
 
     // MARK: - Lifecycle Methods
 
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
 
         applyStyles()
@@ -24,7 +47,7 @@ import WordPressShared
 
     func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
-        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().CGColor
+        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
@@ -35,30 +58,30 @@ import WordPressShared
 
     // MARK: - Configuration
 
-    public func configureHeader(topic: ReaderAbstractTopic) {
-        assert(topic.isKindOfClass(ReaderSiteTopic), "Topic must be a site topic")
+    open func configureHeader(_ topic: ReaderAbstractTopic) {
+        assert(topic.isKind(of: ReaderSiteTopic.self), "Topic must be a site topic")
 
         let siteTopic = topic as! ReaderSiteTopic
 
         configureHeaderImage(siteTopic.siteBlavatar)
 
         titleLabel.text = siteTopic.title
-        detailLabel.text = NSURL(string: siteTopic.siteURL)?.host
+        detailLabel.text = URL(string: siteTopic.siteURL)?.host
 
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
-        followButton.selected = topic.following
+        followButton.isSelected = topic.following
 
         descriptionLabel.attributedText = attributedSiteDescriptionForTopic(siteTopic)
         followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
 
         if descriptionLabel.attributedText?.length > 0 {
-            descriptionLabel.hidden = false
+            descriptionLabel.isHidden = false
         } else {
-            descriptionLabel.hidden = true
+            descriptionLabel.isHidden = true
         }
     }
 
-    func configureHeaderImage(siteBlavatar: String?) {
+    func configureHeaderImage(_ siteBlavatar: String?) {
         let placeholder = UIImage(named: defaultBlavatar)
 
         var path = ""
@@ -66,35 +89,35 @@ import WordPressShared
             path = siteBlavatar!
         }
 
-        let url = NSURL(string: path)
+        let url = URL(string: path)
         if url != nil {
-            avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
+            avatarImageView.setImageWith(url!, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
         }
     }
 
-    func formattedFollowerCountForTopic(topic:ReaderSiteTopic) -> String {
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.numberStyle = .DecimalStyle
-        let count = numberFormatter.stringFromNumber(topic.subscriberCount)
+    func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let count = numberFormatter.string(from: topic.subscriberCount)
         let pattern = NSLocalizedString("%@ followers", comment: "The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers`")
         let str = String(format: pattern, count!)
         return str
     }
 
-    func attributedSiteDescriptionForTopic(topic:ReaderSiteTopic) -> NSAttributedString {
+    func attributedSiteDescriptionForTopic(_ topic: ReaderSiteTopic) -> NSAttributedString {
         return NSAttributedString(string: topic.siteDescription, attributes: WPStyleGuide.readerStreamHeaderDescriptionAttributes())
     }
 
-    public func enableLoggedInFeatures(enable: Bool) {
-        followButton.hidden = !enable
+    open func enableLoggedInFeatures(_ enable: Bool) {
+        followButton.isHidden = !enable
     }
 
 
     // MARK: - Actions
 
-    @IBAction func didTapFollowButton(sender: UIButton) {
+    @IBAction func didTapFollowButton(_ sender: UIButton) {
         delegate?.handleFollowActionForHeader(self)
     }
 }
