@@ -2,34 +2,32 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-class SiteManagementServiceTests : XCTestCase
-{
+class SiteManagementServiceTests: XCTestCase {
     var contextManager: TestContextManager!
     var mockRemoteService: MockSiteManagementServiceRemote!
     var siteManagementService: SiteManagementServiceTester!
 
-    class MockSiteManagementServiceRemote : SiteManagementServiceRemote
-    {
+    class MockSiteManagementServiceRemote: SiteManagementServiceRemote {
         var deleteSiteCalled = false
         var exportContentCalled = false
         var getActivePurchasesCalled = false
-        var successBlockPassedIn:(() -> Void)?
-        var successResultBlockPassedIn:(([SitePurchase]) -> Void)?
-        var failureBlockPassedIn:((NSError) -> Void)?
+        var successBlockPassedIn: (() -> Void)?
+        var successResultBlockPassedIn: (([SitePurchase]) -> Void)?
+        var failureBlockPassedIn: ((NSError) -> Void)?
 
-        override func deleteSite(siteID: NSNumber, success: (() -> Void)?, failure: (NSError -> Void)?) {
+        override func deleteSite(_ siteID: NSNumber, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
             deleteSiteCalled = true
             successBlockPassedIn = success
             failureBlockPassedIn = failure
         }
 
-        override func exportContent(siteID: NSNumber, success: (() -> Void)?, failure: (NSError -> Void)?) {
+        override func exportContent(_ siteID: NSNumber, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
             exportContentCalled = true
             successBlockPassedIn = success
             failureBlockPassedIn = failure
         }
 
-        override func getActivePurchases(siteID: NSNumber, success: (([SitePurchase]) -> Void)?, failure: (NSError -> Void)?) {
+        override func getActivePurchases(_ siteID: NSNumber, success: (([SitePurchase]) -> Void)?, failure: ((NSError) -> Void)?) {
             getActivePurchasesCalled = true
             failureBlockPassedIn = failure
             successResultBlockPassedIn = success
@@ -45,14 +43,13 @@ class SiteManagementServiceTests : XCTestCase
         }
     }
 
-    class SiteManagementServiceTester : SiteManagementService
-    {
+    class SiteManagementServiceTester: SiteManagementService {
         let mockRemoteApi = MockWordPressComRestApi()
         lazy var mockRemoteService: MockSiteManagementServiceRemote = {
             return MockSiteManagementServiceRemote(wordPressComRestApi: self.mockRemoteApi)
         }()
 
-        override func siteManagementServiceRemoteForBlog(blog: Blog) -> SiteManagementServiceRemote {
+        override func siteManagementServiceRemoteForBlog(_ blog: Blog) -> SiteManagementServiceRemote {
             return mockRemoteService
         }
     }
@@ -70,13 +67,13 @@ class SiteManagementServiceTests : XCTestCase
         ContextManager.overrideSharedInstance(nil)
     }
 
-    func insertBlog(context: NSManagedObjectContext) -> Blog {
-        let blog = NSEntityDescription.insertNewObjectForEntityForName("Blog", inManagedObjectContext: context) as! Blog
+    func insertBlog(_ context: NSManagedObjectContext) -> Blog {
+        let blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
         blog.xmlrpc = "http://mock.blog/xmlrpc.php"
         blog.url = "http://mock.blog/"
         blog.dotComID = 999999
 
-        try! context.obtainPermanentIDsForObjects([blog])
+        try! context.obtainPermanentIDs(for: [blog])
         try! context.save()
 
         return blog
@@ -84,7 +81,7 @@ class SiteManagementServiceTests : XCTestCase
 
     func testDeleteSiteCallsServiceRemoteDeleteSite() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context)
+        let blog = insertBlog(context!)
 
         mockRemoteService.reset()
         siteManagementService.deleteSiteForBlog(blog, success: nil, failure: nil)
@@ -93,83 +90,85 @@ class SiteManagementServiceTests : XCTestCase
 
     func testDeleteSiteCallsSuccessBlock() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context)
+        let blog = insertBlog(context!)
 
-        let expectation = expectationWithDescription("Delete Site success expectation")
+        let expect = expectation(description: "Delete Site success expectation")
         mockRemoteService.reset()
         siteManagementService.deleteSiteForBlog(blog,
             success: {
-                expectation.fulfill()
+                expect.fulfill()
             }, failure: nil)
         mockRemoteService.successBlockPassedIn?()
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testDeleteSiteRemovesExistingBlogOnSuccess() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context)
+        let blog =
+
+
+            insertBlog(context!)
         let blogObjectID = blog.objectID
 
-        XCTAssertFalse(blogObjectID.temporaryID, "Should be a permanent object")
+        XCTAssertFalse(blogObjectID.isTemporaryID, "Should be a permanent object")
 
-        let expectation = expectationWithDescription(
-            "Remove Blog success expectation")
+        let expect = expectation(
+            description: "Remove Blog success expectation")
         mockRemoteService.reset()
         siteManagementService.deleteSiteForBlog(blog,
             success: {
-                expectation.fulfill()
+                expect.fulfill()
             }, failure: nil)
         mockRemoteService.successBlockPassedIn?()
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
 
-        let shouldBeRemoved = try? context.existingObjectWithID(blogObjectID)
-        XCTAssertNil(shouldBeRemoved, "Blog was not removed")
+        let shouldBeRemoved = try? context?.existingObject(with: blogObjectID)
+        XCTAssertFalse(shouldBeRemoved != nil, "Blog was not removed")
     }
 
     func testDeleteSiteCallsFailureBlock() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context)
+        let blog = insertBlog(context!)
 
-        let testError = NSError(domain:"UnitTest", code:0, userInfo:nil)
-        let expectation = expectationWithDescription("Delete Site failure expectation")
+        let testError = NSError(domain: "UnitTest", code: 0, userInfo: nil)
+        let expect = expectation(description: "Delete Site failure expectation")
         mockRemoteService.reset()
         siteManagementService.deleteSiteForBlog(blog,
             success: nil,
             failure: { error in
                 XCTAssertEqual(error, testError, "Error not propagated")
-                expectation.fulfill()
+                expect.fulfill()
             })
         mockRemoteService.failureBlockPassedIn?(testError)
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testDeleteSiteDoesNotRemoveExistingBlogOnFailure() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context)
+        let blog = insertBlog(context!)
         let blogObjectID = blog.objectID
 
-        XCTAssertFalse(blogObjectID.temporaryID, "Should be a permanent object")
+        XCTAssertFalse(blogObjectID.isTemporaryID, "Should be a permanent object")
 
-        let testError = NSError(domain:"UnitTest", code:0, userInfo:nil)
-        let expectation = expectationWithDescription(
-            "Remove Blog success expectation")
+        let testError = NSError(domain: "UnitTest", code: 0, userInfo: nil)
+        let expect = expectation(description: "Remove Blog success expectation")
         mockRemoteService.reset()
         siteManagementService.deleteSiteForBlog(blog,
             success: nil,
             failure: { error in
                 XCTAssertEqual(error, testError, "Error not propagated")
-                expectation.fulfill()
+                expect.fulfill()
             })
         mockRemoteService.failureBlockPassedIn?(testError)
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
 
-        let shouldNotBeRemoved = try? context.existingObjectWithID(blogObjectID)
-        XCTAssertNotNil(shouldNotBeRemoved, "Blog was removed")
+        let shouldNotBeRemoved = try? context?.existingObject(with: blogObjectID)
+        XCTAssertFalse(shouldNotBeRemoved == nil, "Blog was removed")
     }
 
     func testExportContentCallsServiceRemoteExportContent() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context)
+        let blog = insertBlog(context!)
 
         mockRemoteService.reset()
         siteManagementService.exportContentForBlog(blog, success: nil, failure: nil)
@@ -178,38 +177,38 @@ class SiteManagementServiceTests : XCTestCase
 
     func testExportContentCallsSuccessBlock() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context)
+        let blog = insertBlog(context!)
 
-        let expectation = expectationWithDescription("ExportContent success expectation")
+        let expect = expectation(description: "ExportContent success expectation")
         mockRemoteService.reset()
         siteManagementService.exportContentForBlog(blog,
             success: {
-                expectation.fulfill()
+                expect.fulfill()
             }, failure: nil)
         mockRemoteService.successBlockPassedIn?()
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testExportContentCallsFailureBlock() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context)
+        let blog = insertBlog(context!)
 
-        let testError = NSError(domain:"UnitTest", code:0, userInfo:nil)
-        let expectation = expectationWithDescription("ExportContent failure expectation")
+        let testError = NSError(domain: "UnitTest", code: 0, userInfo: nil)
+        let expect = expectation(description: "ExportContent failure expectation")
         mockRemoteService.reset()
         siteManagementService.exportContentForBlog(blog,
             success: nil,
             failure: { error in
                 XCTAssertEqual(error, testError, "Error not propagated")
-                expectation.fulfill()
+                expect.fulfill()
         })
         mockRemoteService.failureBlockPassedIn?(testError)
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testGetActivePurchasesCallsServiceRemoteGetActivePurchases() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context)
+        let blog = insertBlog(context!)
 
         mockRemoteService.reset()
         siteManagementService.getActivePurchasesForBlog(blog, success: nil, failure: nil)
@@ -218,32 +217,32 @@ class SiteManagementServiceTests : XCTestCase
 
     func testGetActivePurchasesCallsSuccessBlock() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context)
+        let blog = insertBlog(context!)
 
-        let expectation = expectationWithDescription("GetActivePurchases success expectation")
+        let expect = expectation(description: "GetActivePurchases success expectation")
         mockRemoteService.reset()
         siteManagementService.getActivePurchasesForBlog(blog,
             success: { purchases in
-                expectation.fulfill()
+                expect.fulfill()
             }, failure: nil)
         mockRemoteService.successResultBlockPassedIn?([])
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testGetActivePurchasesCallsFailureBlock() {
         let context = contextManager.mainContext
-        let blog = insertBlog(context)
+        let blog = insertBlog(context!)
 
-        let testError = NSError(domain:"UnitTest", code:0, userInfo:nil)
-        let expectation = expectationWithDescription("GetActivePurchases failure expectation")
+        let testError = NSError(domain: "UnitTest", code: 0, userInfo: nil)
+        let expect = expectation(description: "GetActivePurchases failure expectation")
         mockRemoteService.reset()
         siteManagementService.getActivePurchasesForBlog(blog,
             success: nil,
             failure: { error in
                 XCTAssertEqual(error, testError, "Error not propagated")
-                expectation.fulfill()
+                expect.fulfill()
         })
         mockRemoteService.failureBlockPassedIn?(testError)
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 }

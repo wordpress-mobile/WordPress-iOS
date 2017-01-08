@@ -1,7 +1,7 @@
 import Foundation
 
 
-extension NSFileManager {
+extension FileManager {
 
     /// This method calculates the accumulated size of a directory on the volume in bytes.
     ///
@@ -12,30 +12,30 @@ extension NSFileManager {
     /// - note: There are a couple of oddities that are not taken into account (like symbolic links, meta data of
     /// directories, hard links, ...).
 
-    func allocatedSizeOf(directoryURL directoryURL : NSURL) throws -> Int64 {
+    func allocatedSizeOf(directoryURL: URL) throws -> Int64 {
 
         // We'll sum up content size here:
         var accumulatedSize = Int64(0)
 
         // prefetching some properties during traversal will speed up things a bit.
         let prefetchedProperties = [
-            NSURLIsRegularFileKey,
-            NSURLFileAllocatedSizeKey,
-            NSURLTotalFileAllocatedSizeKey,
+            URLResourceKey.isRegularFileKey,
+            URLResourceKey.fileAllocatedSizeKey,
+            URLResourceKey.totalFileAllocatedSizeKey,
             ]
 
         // The error handler simply signals errors to outside code.
-        var errorDidOccur: NSError?
-        let errorHandler: (NSURL, NSError) -> Bool = { _, error in
+        var errorDidOccur: Error?
+        let errorHandler: (URL, Error) -> Bool = { _, error in
             errorDidOccur = error
             return false
         }
 
 
         // We have to enumerate all directory contents, including subdirectories.
-        guard let enumerator = enumeratorAtURL(directoryURL,
+        guard let enumerator = enumerator(at: directoryURL,
                                          includingPropertiesForKeys: prefetchedProperties,
-                                         options: NSDirectoryEnumerationOptions(),
+                                         options: DirectoryEnumerationOptions(),
                                          errorHandler: errorHandler) else {
                                             throw NSError(domain:"", code:0, userInfo:nil)
         }
@@ -48,12 +48,12 @@ extension NSFileManager {
 
             let resourceValueForKey: (String) throws -> NSNumber? = { key in
                 var value: AnyObject?
-                try contentItemURL.getResourceValue(&value, forKey: key)
+                try contentItemURL.getResourceValue(&value, forKey: URLResourceKey(rawValue: key))
                 return value as? NSNumber
             }
 
             // Get the type of this item, making sure we only sum up sizes of regular files.
-            guard let isRegularFile = try resourceValueForKey(NSURLIsRegularFileKey) else {
+            guard let isRegularFile = try resourceValueForKey(URLResourceKey.isRegularFileKey.rawValue) else {
                 preconditionFailure()
             }
 
@@ -63,18 +63,18 @@ extension NSFileManager {
 
             // To get the file's size we first try the most comprehensive value in terms of what the file may use on disk.
             // This includes metadata, compression (on file system level) and block size.
-            var fileSize = try resourceValueForKey(NSURLTotalFileAllocatedSizeKey)
+            var fileSize = try resourceValueForKey(URLResourceKey.totalFileAllocatedSizeKey.rawValue)
 
             // In case the value is unavailable we use the fallback value (excluding meta data and compression)
             // This value should always be available.
-            fileSize = try fileSize ?? resourceValueForKey(NSURLFileAllocatedSizeKey)
+            fileSize = try fileSize ?? resourceValueForKey(URLResourceKey.fileAllocatedSizeKey.rawValue)
 
             guard let size = fileSize else {
                 preconditionFailure("huh? NSURLFileAllocatedSizeKey should always return a value")
             }
 
             // We're good, add up the value.
-            accumulatedSize += size.longLongValue
+            accumulatedSize += size.int64Value
         }
 
         // Bail out on errors from the errorHandler.

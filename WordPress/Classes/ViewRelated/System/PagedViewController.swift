@@ -21,7 +21,7 @@ class PagedViewController: UIViewController {
 
         self.viewControllers = viewControllers
         self.currentIndex = initialIndex
-        super.init(nibName: "PagedViewController", bundle: NSBundle(forClass: PagedViewController.self))
+        super.init(nibName: "PagedViewController", bundle: Bundle(for: PagedViewController.self))
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -35,16 +35,16 @@ class PagedViewController: UIViewController {
         updateForCurrentIndex()
     }
 
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
 
         // If the view is changing size (e.g. on rotation, or multitasking), scroll to the correct page boundary based on the new size
-        coordinator.animateAlongsideTransition({ context in
+        coordinator.animate(alongsideTransition: { context in
             self.scrollView.setContentOffset(CGPoint(x: CGFloat(self.currentIndex) * size.width, y: 0), animated: false)
             }, completion: nil)
     }
 
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate: Bool {
         return false
     }
 
@@ -54,14 +54,14 @@ class PagedViewController: UIViewController {
         scrollToPage(currentIndex, animated: false)
     }
 
-    private func applyWPStyles() {
+    fileprivate func applyWPStyles() {
         view.backgroundColor = WPStyleGuide.greyLighten30()
         divider.backgroundColor = WPStyleGuide.greyLighten30()
         pageControl.currentPageIndicatorTintColor = WPStyleGuide.grey()
-        pageControl.pageIndicatorTintColor = WPStyleGuide.grey().colorWithAlphaComponent(0.5)
+        pageControl.pageIndicatorTintColor = WPStyleGuide.grey().withAlphaComponent(0.5)
     }
 
-    private func addViewControllers() {
+    fileprivate func addViewControllers() {
         for controller in viewControllers {
             addChildViewController(controller)
 
@@ -69,25 +69,25 @@ class PagedViewController: UIViewController {
             pagedStackView.addArrangedSubview(controller.view)
 
             controller.view.shouldGroupAccessibilityChildren = true
-            controller.view.widthAnchor.constraintEqualToAnchor(view.widthAnchor, multiplier: 1.0).active = true
-            controller.view.topAnchor.constraintEqualToAnchor(view.topAnchor).active = true
-            controller.view.bottomAnchor.constraintEqualToAnchor(divider.topAnchor).active = true
+            controller.view.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1.0).isActive = true
+            controller.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+            controller.view.bottomAnchor.constraint(equalTo: divider.topAnchor).isActive = true
 
-            controller.didMoveToParentViewController(self)
+            controller.didMove(toParentViewController: self)
         }
 
         pageControl.numberOfPages = viewControllers.count
     }
 
     @IBAction func pageControlChanged() {
-        guard !scrollView.dragging else {
+        guard !scrollView.isDragging else {
             // If the user is currently dragging, reset the change and ignore it
             pageControl.currentPage = currentIndex
             return
         }
 
         // Stop the user interacting whilst we animate a scroll
-        scrollView.userInteractionEnabled = false
+        scrollView.isUserInteractionEnabled = false
 
         var targetPage = currentIndex
         if pageControl.currentPage > currentIndex {
@@ -99,39 +99,39 @@ class PagedViewController: UIViewController {
         scrollToPage(targetPage, animated: true)
     }
 
-    private func updateForCurrentIndex() {
+    fileprivate func updateForCurrentIndex() {
         title = currentViewController.title
 
         updatePageControl()
 
-        for (index, viewController) in viewControllers.enumerate() {
+        for (index, viewController) in viewControllers.enumerated() {
             viewController.view.accessibilityElementsHidden = index != currentIndex
         }
     }
 
-    private func updatePageControl() {
+    fileprivate func updatePageControl() {
         pageControl?.currentPage = currentIndex
     }
 
-    private var currentViewController: UIViewController {
+    fileprivate var currentViewController: UIViewController {
         return viewControllers[currentIndex]
     }
 }
 
 extension PagedViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // Ignore programmatic scrolling
-        if scrollView.dragging {
+        if scrollView.isDragging {
             currentIndex = currentScrollViewPage()
         }
     }
 
-    override func accessibilityScroll(direction: UIAccessibilityScrollDirection) -> Bool {
+    override func accessibilityScroll(_ direction: UIAccessibilityScrollDirection) -> Bool {
         var targetPage = currentIndex
 
         switch direction {
-        case .Right: targetPage -= 1
-        case .Left: targetPage += 1
+        case .right: targetPage -= 1
+        case .left: targetPage += 1
         default: break
         }
 
@@ -143,17 +143,17 @@ extension PagedViewController: UIScrollViewDelegate {
         return success
     }
 
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-        scrollView.userInteractionEnabled = true
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        scrollView.isUserInteractionEnabled = true
 
         accessibilityAnnounceCurrentPage()
     }
 
-    private func accessibilityAnnounceCurrentPage() {
+    fileprivate func accessibilityAnnounceCurrentPage() {
         UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, currentViewController.view)
     }
 
-    private func currentScrollViewPage() -> Int {
+    fileprivate func currentScrollViewPage() -> Int {
         // Calculate which plan's VC is at the center of the view
         let pageWidth = scrollView.bounds.width
         let centerX = scrollView.contentOffset.x + (pageWidth / 2)
@@ -164,7 +164,7 @@ extension PagedViewController: UIScrollViewDelegate {
     }
 
     /// - Returns: True if there was valid page to scroll to, false if we've reached the beginning / end
-    private func scrollToPage(page: Int, animated: Bool) -> Bool {
+    @discardableResult fileprivate func scrollToPage(_ page: Int, animated: Bool) -> Bool {
         guard viewControllers.indices.contains(page) else { return false }
 
         let pageWidth = view.bounds.width

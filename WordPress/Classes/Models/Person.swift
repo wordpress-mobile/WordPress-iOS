@@ -15,7 +15,7 @@ protocol Person {
     var role: Role { get }
     var siteID: Int { get }
     var linkedUserID: Int { get }
-    var avatarURL: NSURL? { get }
+    var avatarURL: URL? { get }
     var isSuperAdmin: Bool { get }
     var fullName: String { get }
 
@@ -33,7 +33,7 @@ protocol Person {
          role: Role,
          siteID: Int,
          linkedUserID: Int,
-         avatarURL: NSURL?,
+         avatarURL: URL?,
          isSuperAdmin: Bool)
     init(managedPerson: ManagedPerson)
 }
@@ -55,9 +55,9 @@ enum Role: String, Comparable, Equatable, CustomStringConvertible {
 // MARK: - Specifies all of the possible Person Types that might exist.
 //
 enum PersonKind: Int {
-    case User       = 0
-    case Follower   = 1
-    case Viewer     = 2
+    case user       = 0
+    case follower   = 1
+    case viewer     = 2
 }
 
 // MARK: - Defines a Blog's User
@@ -71,9 +71,9 @@ struct User: Person {
     let role: Role
     let siteID: Int
     let linkedUserID: Int
-    let avatarURL: NSURL?
+    let avatarURL: URL?
     let isSuperAdmin: Bool
-    static let kind = PersonKind.User
+    static let kind = PersonKind.user
 }
 
 // MARK: - Defines a Blog's Follower
@@ -87,9 +87,9 @@ struct Follower: Person {
     let role: Role
     let siteID: Int
     let linkedUserID: Int
-    let avatarURL: NSURL?
+    let avatarURL: URL?
     let isSuperAdmin: Bool
-    static let kind = PersonKind.Follower
+    static let kind = PersonKind.follower
 }
 
 // MARK: - Defines a Blog's Viewer
@@ -103,9 +103,9 @@ struct Viewer: Person {
     let role: Role
     let siteID: Int
     let linkedUserID: Int
-    let avatarURL: NSURL?
+    let avatarURL: URL?
     let isSuperAdmin: Bool
-    static let kind = PersonKind.Viewer
+    static let kind = PersonKind.viewer
 }
 
 // MARK: - Extensions
@@ -130,7 +130,7 @@ extension User {
         role = Role(string: managedPerson.role)
         siteID = Int(managedPerson.siteID)
         linkedUserID = Int(managedPerson.linkedUserID)
-        avatarURL = managedPerson.avatarURL.flatMap { NSURL(string: $0) }
+        avatarURL = managedPerson.avatarURL.flatMap { URL(string: $0) }
         isSuperAdmin = managedPerson.isSuperAdmin
     }
 }
@@ -145,7 +145,7 @@ extension Follower {
         role = Role.Follower
         siteID = Int(managedPerson.siteID)
         linkedUserID = Int(managedPerson.linkedUserID)
-        avatarURL = managedPerson.avatarURL.flatMap { NSURL(string: $0) }
+        avatarURL = managedPerson.avatarURL.flatMap { URL(string: $0) }
         isSuperAdmin = managedPerson.isSuperAdmin
     }
 }
@@ -160,7 +160,7 @@ extension Viewer {
         role = Role.Viewer
         siteID = Int(managedPerson.siteID)
         linkedUserID = Int(managedPerson.linkedUserID)
-        avatarURL = managedPerson.avatarURL.flatMap { NSURL(string: $0) }
+        avatarURL = managedPerson.avatarURL.flatMap { URL(string: $0) }
         isSuperAdmin = managedPerson.isSuperAdmin
     }
 }
@@ -176,11 +176,11 @@ extension Role {
     }
 
     var color: UIColor {
-        guard let color = self.dynamicType.colorsMap[self] else {
+        guard let color = type(of: self).colorsMap[self] else {
             fatalError()
         }
 
-        return color
+        return color!
     }
 
     var description: String {
@@ -188,7 +188,7 @@ extension Role {
     }
 
     var localizedName: String {
-        guard let localized = self.dynamicType.localizedMap[self] else {
+        guard let localized = type(of: self).localizedMap[self] else {
             fatalError()
         }
 
@@ -219,28 +219,28 @@ extension Role {
 
     // MARK: - Private Properties
     //
-    private static let colorsMap = [
-        SuperAdmin  : WPStyleGuide.People.superAdminColor,
-        Admin       : WPStyleGuide.People.adminColor,
-        Editor      : WPStyleGuide.People.editorColor,
-        Author      : WPStyleGuide.People.authorColor,
-        Contributor : WPStyleGuide.People.contributorColor,
-        Subscriber  : WPStyleGuide.People.contributorColor,
-        Follower    : WPStyleGuide.People.contributorColor,
-        Viewer      : WPStyleGuide.People.contributorColor,
-        Unsupported : WPStyleGuide.People.contributorColor
+    fileprivate static let colorsMap = [
+        SuperAdmin: WPStyleGuide.People.superAdminColor,
+        Admin: WPStyleGuide.People.adminColor,
+        Editor: WPStyleGuide.People.editorColor,
+        Author: WPStyleGuide.People.authorColor,
+        Contributor: WPStyleGuide.People.contributorColor,
+        Subscriber: WPStyleGuide.People.contributorColor,
+        Follower: WPStyleGuide.People.contributorColor,
+        Viewer: WPStyleGuide.People.contributorColor,
+        Unsupported: WPStyleGuide.People.contributorColor
     ]
 
-    private static let localizedMap = [
-        SuperAdmin  : NSLocalizedString("Super Admin", comment: "User role badge"),
-        Admin       : NSLocalizedString("Admin", comment: "User role badge"),
-        Editor      : NSLocalizedString("Editor", comment: "User role badge"),
-        Author      : NSLocalizedString("Author", comment: "User role badge"),
-        Contributor : NSLocalizedString("Contributor", comment: "User role badge"),
-        Subscriber  : NSLocalizedString("Subscriber", comment: "User role badge"),
-        Follower    : NSLocalizedString("Follower", comment: "User role badge"),
-        Viewer      : NSLocalizedString("Viewer", comment: "User role badge"),
-        Unsupported : NSLocalizedString("Unsupported", comment: "User role badge")
+    fileprivate static let localizedMap = [
+        SuperAdmin: NSLocalizedString("Super Admin", comment: "User role badge"),
+        Admin: NSLocalizedString("Admin", comment: "User role badge"),
+        Editor: NSLocalizedString("Editor", comment: "User role badge"),
+        Author: NSLocalizedString("Author", comment: "User role badge"),
+        Contributor: NSLocalizedString("Contributor", comment: "User role badge"),
+        Subscriber: NSLocalizedString("Subscriber", comment: "User role badge"),
+        Follower: NSLocalizedString("Follower", comment: "User role badge"),
+        Viewer: NSLocalizedString("Viewer", comment: "User role badge"),
+        Unsupported: NSLocalizedString("Unsupported", comment: "User role badge")
     ]
 }
 
@@ -248,7 +248,7 @@ extension Role {
 
 // MARK: - Operator Overloading
 
-func ==<T : Person>(lhs: T, rhs: T) -> Bool {
+func ==<T: Person>(lhs: T, rhs: T) -> Bool {
     return lhs.ID == rhs.ID
         && lhs.username == rhs.username
         && lhs.firstName == rhs.firstName
@@ -259,7 +259,7 @@ func ==<T : Person>(lhs: T, rhs: T) -> Bool {
         && lhs.linkedUserID == rhs.linkedUserID
         && lhs.avatarURL == rhs.avatarURL
         && lhs.isSuperAdmin == rhs.isSuperAdmin
-        && lhs.dynamicType == rhs.dynamicType
+        && type(of: lhs) == type(of: rhs)
 }
 
 func ==(lhs: Role, rhs: Role) -> Bool {

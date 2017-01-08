@@ -1,15 +1,15 @@
 import UIKit
 import WordPressShared
 
-typealias ImmuTableRowControllerGenerator = ImmuTableRow -> UIViewController
+typealias ImmuTableRowControllerGenerator = (ImmuTableRow) -> UIViewController
 
 protocol ImmuTablePresenter: class {
-    func push(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction
-    func present(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction
+    func push(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction
+    func present(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction
 }
 
 extension ImmuTablePresenter where Self: UIViewController {
-    func push(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction {
+    internal func push(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction {
         return {
             [unowned self] in
             let controller = controllerGenerator($0)
@@ -17,17 +17,17 @@ extension ImmuTablePresenter where Self: UIViewController {
         }
     }
 
-    func present(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction {
+    internal func present(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction {
         return {
             [unowned self] in
             let controller = controllerGenerator($0)
-            self.presentViewController(controller, animated: true, completion: nil)
+            self.present(controller, animated: true, completion: nil)
         }
     }
 }
 
 extension ImmuTablePresenter {
-    func prompt<T: UIViewController where T: Confirmable>(controllerGenerator: ImmuTableRow -> T) -> ImmuTableAction {
+    func prompt<T: UIViewController>(_ controllerGenerator: @escaping (ImmuTableRow) -> T) -> ImmuTableAction where T: Confirmable {
         return present({
             let controller = controllerGenerator($0)
             return PromptViewController(controller)
@@ -39,7 +39,7 @@ protocol ImmuTableController {
     var title: String { get }
     var immuTableRows: [ImmuTableRow.Type] { get }
     var noticeMessage: String? { get }
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> ImmuTable
+    func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter) -> ImmuTable
     func refreshModel()
 }
 
@@ -49,11 +49,11 @@ protocol ImmuTableController {
 /// a "controller" class that handles all the logic, and updates the view
 /// controller, like you would update a view.
 final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
-    private lazy var handler: ImmuTableViewHandler = {
+    fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    private var noticeAnimator: NoticeAnimator!
+    fileprivate var noticeAnimator: NoticeAnimator!
 
     let controller: ImmuTableController
 
@@ -61,7 +61,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     init(controller: ImmuTableController) {
         self.controller = controller
-        super.init(style: .Grouped)
+        super.init(style: .grouped)
 
         title = controller.title
         registerRows(controller.immuTableRows)
@@ -77,7 +77,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
         noticeAnimator = NoticeAnimator(target: view)
 
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
     override func viewDidLayoutSubviews() {
@@ -85,20 +85,20 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         noticeAnimator.layout()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadModel()
-        NSNotificationCenter.defaultCenter().addObserver(
+        NotificationCenter.default.addObserver(
             self,
             selector: #selector(ImmuTableViewController.loadModel),
-            name: ImmuTableViewController.modelChangedNotification,
+            name: NSNotification.Name(rawValue: ImmuTableViewController.modelChangedNotification),
             object: nil)
     }
 
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-                                                            name: ImmuTableViewController.modelChangedNotification,
+        NotificationCenter.default.removeObserver(self,
+                                                            name: NSNotification.Name(rawValue: ImmuTableViewController.modelChangedNotification),
                                                             object: nil)
     }
 
@@ -106,7 +106,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     /// Registers custom rows
     /// - seealso: ImmuTable.registerRows(_:tableView)
-    func registerRows(rows: [ImmuTableRow.Type]) {
+    func registerRows(_ rows: [ImmuTableRow.Type]) {
         ImmuTable.registerRows(rows, tableView: tableView)
     }
 

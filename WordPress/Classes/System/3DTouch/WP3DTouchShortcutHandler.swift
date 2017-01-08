@@ -1,8 +1,7 @@
 import UIKit
 import WordPressComAnalytics
 
-public class WP3DTouchShortcutHandler: NSObject
-{
+open class WP3DTouchShortcutHandler: NSObject {
     enum ShortcutIdentifier: String {
         case LogIn
         case NewPost
@@ -11,7 +10,7 @@ public class WP3DTouchShortcutHandler: NSObject
         case Notifications
 
         init?(fullType: String) {
-            guard let last = fullType.componentsSeparatedByString(".").last else {
+            guard let last = fullType.components(separatedBy: ".").last else {
                 return nil
             }
 
@@ -19,35 +18,35 @@ public class WP3DTouchShortcutHandler: NSObject
         }
 
         var type: String {
-            return NSBundle.mainBundle().bundleIdentifier! + ".\(self.rawValue)"
+            return Bundle.main.bundleIdentifier! + ".\(self.rawValue)"
         }
     }
 
     static let applicationShortcutUserInfoIconKey = "applicationShortcutUserInfoIconKey"
 
-    public func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
+    open func handleShortcutItem(_ shortcutItem: UIApplicationShortcutItem) -> Bool {
         let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
 
         switch shortcutItem.type {
             case ShortcutIdentifier.LogIn.type:
-                WPAnalytics.track(.ShortcutLogIn)
+                WPAnalytics.track(.shortcutLogIn)
                 return true
             case ShortcutIdentifier.NewPost.type:
-                WPAnalytics.track(.ShortcutNewPost)
-                tabBarController.showPostTabAnimated(false, toMedia: false)
+                WPAnalytics.track(.shortcutNewPost)
+                tabBarController.showPostTab(animated: false, toMedia: false)
                 return true
             case ShortcutIdentifier.NewPhotoPost.type:
-                WPAnalytics.track(.ShortcutNewPhotoPost)
-                tabBarController.showPostTabAnimated(false, toMedia: true)
+                WPAnalytics.track(.shortcutNewPhotoPost)
+                tabBarController.showPostTab(animated: false, toMedia: true)
                 return true
             case ShortcutIdentifier.Stats.type:
-                WPAnalytics.track(.ShortcutStats)
+                WPAnalytics.track(.shortcutStats)
                 clearCurrentViewController()
                 let blogService: BlogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-                tabBarController.switchMySitesTabToStatsViewForBlog(blogService.lastUsedOrFirstBlog())
+                tabBarController.switchMySitesTabToStatsView(for: blogService.lastUsedOrFirstBlog())
                 return true
             case ShortcutIdentifier.Notifications.type:
-                WPAnalytics.track(.ShortcutNotifications)
+                WPAnalytics.track(.shortcutNotifications)
                 clearCurrentViewController()
                 tabBarController.showNotificationsTab()
                 return true
@@ -56,7 +55,7 @@ public class WP3DTouchShortcutHandler: NSObject
         }
     }
 
-    private func clearCurrentViewController() {
-        WordPressAppDelegate.sharedInstance().window!.rootViewController?.dismissViewControllerAnimated(false, completion: nil)
+    fileprivate func clearCurrentViewController() {
+        WordPressAppDelegate.sharedInstance().window!.rootViewController?.dismiss(animated: false, completion: nil)
     }
 }

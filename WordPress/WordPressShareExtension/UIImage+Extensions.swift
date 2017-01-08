@@ -1,21 +1,20 @@
 import Foundation
 
 
-extension UIImage
-{
-    convenience init?(contentsOfURL url: NSURL) {
-        guard let rawImage = NSData(contentsOfURL: url) else {
+extension UIImage {
+    convenience init?(contentsOfURL url: URL) {
+        guard let rawImage = try? Data(contentsOf: url) else {
             return nil
         }
 
         self.init(data: rawImage)
     }
 
-    func resizeWithMaximumSize(maximumSize: CGSize) -> UIImage {
-        return resizedImageWithContentMode(.ScaleAspectFit, bounds: maximumSize, interpolationQuality: .High)
+    func resizeWithMaximumSize(_ maximumSize: CGSize) -> UIImage {
+        return resizedImage(with: .scaleAspectFit, bounds: maximumSize, interpolationQuality: .high)
     }
 
-    func JPEGEncoded(quality: CGFloat = 0.9) -> NSData? {
+    func JPEGEncoded(_ quality: CGFloat = 0.9) -> Data? {
         return UIImageJPEGRepresentation(self, quality)
     }
 }

@@ -15,29 +15,29 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
     }
 
-    private func isXmlRpcAPIRequest() -> OHHTTPStubsTestBlock {
+    fileprivate func isXmlRpcAPIRequest() -> OHHTTPStubsTestBlock {
         return { request in
-            return request.URL?.absoluteString == self.xmlrpcEndpoint
+            return request.url?.absoluteString == self.xmlrpcEndpoint
         }
     }
 
     func testSuccessfullCall() {
-        stub(isXmlRpcAPIRequest()) { request in
-            let stubPath = OHPathForFile("xmlrpc-response-getpost.xml", self.dynamicType)
-            return fixture(stubPath!, headers: ["Content-Type":"application/xml"])
+        stub(condition: isXmlRpcAPIRequest()) { request in
+            let stubPath = OHPathForFile("xmlrpc-response-getpost.xml", type(of: self))
+            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: "application/xml" as AnyObject])
         }
 
-        let expectation = self.expectationWithDescription("One callback should be invoked")
-        let api = WordPressOrgXMLRPCApi(endpoint:NSURL(string:xmlrpcEndpoint)!)
-        api.callMethod("wp.getPost", parameters:nil, success: { (responseObject: AnyObject, httpResponse: NSHTTPURLResponse?) in
-            expectation.fulfill()
-            XCTAssert(responseObject is [String:AnyObject], "The response should be a dictionary")
+        let expect = self.expectation(description: "One callback should be invoked")
+        let api = WordPressOrgXMLRPCApi(endpoint: URL(string: xmlrpcEndpoint)! as URL)
+        api.callMethod("wp.getPost", parameters: nil, success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
+            expect.fulfill()
+            XCTAssert(responseObject is [String: AnyObject], "The response should be a dictionary")
             }, failure: { (error, httpResponse) in
-                expectation.fulfill()
+                expect.fulfill()
                 XCTFail("This call should be successfull")
             }
         )
-        self.waitForExpectationsWithTimeout(2, handler: nil)
+        self.waitForExpectations(timeout: 2, handler: nil)
     }
 
 }

@@ -7,7 +7,7 @@ import SVProgressHUD
 
 /// Allows the user to Invite Followers / Users
 ///
-class InvitePersonViewController : UITableViewController {
+class InvitePersonViewController: UITableViewController {
 
     // MARK: - Public Properties
 
@@ -23,7 +23,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Invitation Username / Email
     ///
-    private var usernameOrEmail: String? {
+    fileprivate var usernameOrEmail: String? {
         didSet {
             refreshUsernameCell()
             validateInvitation()
@@ -32,7 +32,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Invitation Role
     ///
-    private var role: Role = .Follower {
+    fileprivate var role: Role = .Follower {
         didSet {
             refreshRoleCell()
             validateInvitation()
@@ -41,7 +41,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Invitation Message
     ///
-    private var message: String? {
+    fileprivate var message: String? {
         didSet {
             refreshMessageTextView()
 
@@ -52,26 +52,26 @@ class InvitePersonViewController : UITableViewController {
 
     /// Roles available for the current site
     ///
-    private var availableRoles: [Role] {
-        return (blog.siteVisibility == .Private) ? Role.inviteRolesForPrivateSite : Role.inviteRoles
+    fileprivate var availableRoles: [Role] {
+        return (blog.siteVisibility == .private) ? Role.inviteRolesForPrivateSite : Role.inviteRoles
     }
 
     /// Last Section Index
     ///
-    private var lastSectionIndex: Int {
+    fileprivate var lastSectionIndex: Int {
         return tableView.numberOfSections - 1
     }
 
     /// Last Section Footer Text
     ///
-    private let lastSectionFooterText = NSLocalizedString("Add a custom message (optional).", comment: "Invite Footer Text")
+    fileprivate let lastSectionFooterText = NSLocalizedString("Add a custom message (optional).", comment: "Invite Footer Text")
 
 
     // MARK: - Outlets
 
     /// Username Cell
     ///
-    @IBOutlet private var usernameCell: UITableViewCell! {
+    @IBOutlet fileprivate var usernameCell: UITableViewCell! {
         didSet {
             setupUsernameCell()
             refreshUsernameCell()
@@ -80,7 +80,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Role Cell
     ///
-    @IBOutlet private var roleCell: UITableViewCell! {
+    @IBOutlet fileprivate var roleCell: UITableViewCell! {
         didSet {
             setupRoleCell()
             refreshRoleCell()
@@ -89,7 +89,7 @@ class InvitePersonViewController : UITableViewController {
 
     /// Message Cell
     ///
-    @IBOutlet private var messageTextView: UITextView! {
+    @IBOutlet fileprivate var messageTextView: UITextView! {
         didSet {
             setupMessageTextView()
             refreshMessageTextView()
@@ -104,10 +104,10 @@ class InvitePersonViewController : UITableViewController {
         super.viewDidLoad()
         setupNavigationBar()
         setupDefaultRole()
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.deselectSelectedRowWithAnimation(true)
     }
@@ -115,22 +115,22 @@ class InvitePersonViewController : UITableViewController {
 
     // MARK: - UITableView Methods
 
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         guard section == lastSectionIndex else {
             return nil
         }
         return lastSectionFooterText
     }
 
-    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
 
     // MARK: - Storyboard Methods
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        guard let rawIdentifier = segue.identifier, identifier = SegueIdentifier(rawValue: rawIdentifier) else {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let rawIdentifier = segue.identifier, let identifier = SegueIdentifier(rawValue: rawIdentifier) else {
             return
         }
 
@@ -144,8 +144,8 @@ class InvitePersonViewController : UITableViewController {
         }
     }
 
-    private func setupUsernameSegue(segue: UIStoryboardSegue) {
-        guard let textViewController = segue.destinationViewController as? SettingsTextViewController else {
+    fileprivate func setupUsernameSegue(_ segue: UIStoryboardSegue) {
+        guard let textViewController = segue.destination as? SettingsTextViewController else {
             return
         }
 
@@ -163,24 +163,24 @@ class InvitePersonViewController : UITableViewController {
 
         // Note: Let's disable validation, since we need to allow Username OR Email
         textViewController.validatesInput = false
-        textViewController.autocorrectionType = .No
-        textViewController.mode = .Email
+        textViewController.autocorrectionType = .no
+        textViewController.mode = .email
     }
 
-    private func setupRoleSegue(segue: UIStoryboardSegue) {
-        guard let roleViewController = segue.destinationViewController as? RoleViewController else {
+    fileprivate func setupRoleSegue(_ segue: UIStoryboardSegue) {
+        guard let roleViewController = segue.destination as? RoleViewController else {
             return
         }
 
-        roleViewController.mode = .Static(roles: availableRoles)
+        roleViewController.mode = .static(roles: availableRoles)
         roleViewController.selectedRole = role
         roleViewController.onChange = { [unowned self] newRole in
             self.role = newRole
         }
     }
 
-    private func setupMessageSegue(segue: UIStoryboardSegue) {
-        guard let textViewController = segue.destinationViewController as? SettingsMultiTextViewController else {
+    fileprivate func setupMessageSegue(_ segue: UIStoryboardSegue) {
+        guard let textViewController = segue.destination as? SettingsMultiTextViewController else {
             return
         }
 
@@ -199,7 +199,7 @@ class InvitePersonViewController : UITableViewController {
 
     // MARK: - Private Enums
 
-    private enum SegueIdentifier: String {
+    fileprivate enum SegueIdentifier: String {
         case Username   = "username"
         case Role       = "role"
         case Message    = "message"
@@ -212,7 +212,7 @@ class InvitePersonViewController : UITableViewController {
 extension InvitePersonViewController {
 
     @IBAction func cancelWasPressed() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
     @IBAction func sendWasPressed() {
@@ -227,19 +227,19 @@ extension InvitePersonViewController {
         //
         // Thank you Apple . I love you too.
         //
-        dismissViewControllerAnimated(true) {
+        dismiss(animated: true) {
             self.sendInvitation(self.blog, recipient: recipient, role: self.role, message: self.message ?? "")
         }
     }
 
-    func sendInvitation(blog: Blog, recipient: String, role: Role, message: String) {
-        guard let service = PeopleService(blog: blog, context: context) else {
+    func sendInvitation(_ blog: Blog, recipient: String, role: Role, message: String) {
+        guard let service = PeopleService(blog: blog, context: context!) else {
             return
         }
 
         service.sendInvitation(recipient, role: role, message: message, success: {
             let success = NSLocalizedString("Invitation Sent!", comment: "The app successfully sent an invitation")
-            SVProgressHUD.showSuccessWithStatus(success)
+            SVProgressHUD.showSuccess(withStatus: success)
 
         }, failure: { error in
             self.handleSendError() {
@@ -248,12 +248,12 @@ extension InvitePersonViewController {
         })
     }
 
-    func handleSendError(onRetry: (Void -> Void)) {
+    func handleSendError(_ onRetry: @escaping ((Void) -> Void)) {
         let message = NSLocalizedString("There has been an unexpected error while sending your Invitation", comment: "Invite Failed Message")
         let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
         let retryText = NSLocalizedString("Try Again", comment: "Retries an Action")
 
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
         alertController.addCancelActionWithTitle(cancelText)
         alertController.addDefaultActionWithTitle(retryText) { action in
@@ -271,7 +271,7 @@ extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func validateInvitation() {
-        guard let usernameOrEmail = usernameOrEmail, service = PeopleService(blog: blog, context: context) else {
+        guard let usernameOrEmail = usernameOrEmail, let service = PeopleService(blog: blog, context: context!) else {
             sendActionEnabled = false
             return
         }
@@ -293,41 +293,41 @@ private extension InvitePersonViewController {
         })
     }
 
-    func shouldHandleValidationResponse(requestUsernameOrEmail: String) -> Bool {
+    func shouldHandleValidationResponse(_ requestUsernameOrEmail: String) -> Bool {
         // Handle only whenever the recipient didn't change
         let recipient = usernameOrEmail ?? String()
         return recipient == requestUsernameOrEmail
     }
 
-    func handleValidationError(error: ErrorType) {
-        guard let error = error as? PeopleRemote.Error else {
+    func handleValidationError(_ error: Error) {
+        guard let error = error as? PeopleRemote.ResponseError else {
             return
         }
 
-        let messageMap : [PeopleRemote.Error: String] = [
-            .InvalidInputError       : NSLocalizedString("The specified user cannot be found. Please, verify if it's correctly spelt.",
-                                                            comment: "People: Invitation Error"),
-            .UserAlreadyHasRoleError : NSLocalizedString("The user already has the specified role. Please, try assigning a different role.",
-                                                            comment: "People: Invitation Error"),
-            .UnknownError            : NSLocalizedString("Unknown error has occurred",
-                                                            comment: "People: Invitation Error")
+        let messageMap: [PeopleRemote.ResponseError: String] = [
+            .invalidInputError: NSLocalizedString("The specified user cannot be found. Please, verify if it's correctly spelt.",
+                                                  comment: "People: Invitation Error"),
+            .userAlreadyHasRoleError: NSLocalizedString("The user already has the specified role. Please, try assigning a different role.",
+                                                        comment: "People: Invitation Error"),
+            .unknownError: NSLocalizedString("Unknown error has occurred",
+                                             comment: "People: Invitation Error")
         ]
 
-        let message = messageMap[error] ?? messageMap[.UnknownError]!
+        let message = messageMap[error] ?? messageMap[.unknownError]!
         let title = NSLocalizedString("Sorry!", comment: "Invite Validation Alert")
         let accept = NSLocalizedString("Accept", comment: "Invite Accept Button")
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         alert.addDefaultActionWithTitle(accept)
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 
-    var sendActionEnabled : Bool {
+    var sendActionEnabled: Bool {
         get {
-            return navigationItem.rightBarButtonItem?.enabled ?? false
+            return navigationItem.rightBarButtonItem?.isEnabled ?? false
         }
         set {
-            navigationItem.rightBarButtonItem?.enabled = newValue
+            navigationItem.rightBarButtonItem?.isEnabled = newValue
         }
     }
 }
@@ -338,13 +338,13 @@ private extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func setupUsernameCell() {
-        usernameCell.accessoryType = .DisclosureIndicator
+        usernameCell.accessoryType = .disclosureIndicator
         WPStyleGuide.configureTableViewCell(usernameCell)
     }
 
     func setupRoleCell() {
         roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
-        roleCell.accessoryType = .DisclosureIndicator
+        roleCell.accessoryType = .disclosureIndicator
         WPStyleGuide.configureTableViewCell(roleCell)
     }
 
@@ -356,17 +356,17 @@ private extension InvitePersonViewController {
     func setupNavigationBar() {
         title = NSLocalizedString("Add a Person", comment: "Invite People Title")
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel,
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                            target: self,
                                                            action: #selector(cancelWasPressed))
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Invite", comment: "Send Person Invite"),
-                                                            style: .Plain,
+                                                            style: .plain,
                                                             target: self,
                                                             action: #selector(sendWasPressed))
 
         // By default, Send is disabled
-        navigationItem.rightBarButtonItem?.enabled = false
+        navigationItem.rightBarButtonItem?.isEnabled = false
     }
 
     func setupDefaultRole() {

@@ -1,26 +1,25 @@
 import Foundation
 
-@objc public class ReaderSiteTopic: ReaderAbstractTopic
-{
-    @NSManaged public var feedID: NSNumber
-    @NSManaged public var feedURL: String
-    @NSManaged public var isJetpack: Bool
-    @NSManaged public var isPrivate: Bool
-    @NSManaged public var isVisible: Bool
-    @NSManaged public var postCount: NSNumber
-    @NSManaged public var siteBlavatar: String
-    @NSManaged public var siteDescription: String
-    @NSManaged public var siteID: NSNumber
-    @NSManaged public var siteURL: String
-    @NSManaged public var subscriberCount: NSNumber
+@objc open class ReaderSiteTopic: ReaderAbstractTopic {
+    @NSManaged open var feedID: NSNumber
+    @NSManaged open var feedURL: String
+    @NSManaged open var isJetpack: Bool
+    @NSManaged open var isPrivate: Bool
+    @NSManaged open var isVisible: Bool
+    @NSManaged open var postCount: NSNumber
+    @NSManaged open var siteBlavatar: String
+    @NSManaged open var siteDescription: String
+    @NSManaged open var siteID: NSNumber
+    @NSManaged open var siteURL: String
+    @NSManaged open var subscriberCount: NSNumber
 
-    override public class var TopicType: String {
+    override open class var TopicType: String {
         return "site"
     }
 
-    public var isExternal: Bool {
+    open var isExternal: Bool {
         get {
-            return siteID.integerValue == 0
+            return siteID.intValue == 0
         }
     }
 }

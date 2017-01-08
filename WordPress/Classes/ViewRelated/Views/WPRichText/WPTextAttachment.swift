@@ -4,27 +4,26 @@ import UIKit
 
 /// An NSTextAttachment for representing remote HTML content such as images, iframes and video.
 ///
-public class WPTextAttachment: NSTextAttachment
-{
-    private(set) public var identifier: String
-    private(set) public var tagName: String
-    private(set) public var src: String
-    public var maxSize = CGSizeZero
+open class WPTextAttachment: NSTextAttachment {
+    fileprivate(set) open var identifier: String
+    fileprivate(set) open var tagName: String
+    fileprivate(set) open var src: String
+    open var maxSize = CGSize.zero
 
-    internal(set) public var attributes: [String : String]?
-    internal(set) public var html: String?
-    internal(set) public var width = CGFloat(0)
-    internal(set) public var height = CGFloat(0)
+    internal(set) open var attributes: [String : String]?
+    internal(set) open var html: String?
+    internal(set) open var width = CGFloat(0)
+    internal(set) open var height = CGFloat(0)
 
     // Keys used for NSCoding
-    private let identifierKey = "identifier"
-    private let tagNameKey = "tagName"
-    private let srcKey = "src"
-    private let maxSizeKey = "maxSize"
-    private let attributesKey = "attributes"
-    private let htmlKey = "html"
-    private let widthKey = "width"
-    private let heightKey = "height"
+    fileprivate let identifierKey = "identifier"
+    fileprivate let tagNameKey = "tagName"
+    fileprivate let srcKey = "src"
+    fileprivate let maxSizeKey = "maxSize"
+    fileprivate let attributesKey = "attributes"
+    fileprivate let htmlKey = "html"
+    fileprivate let widthKey = "width"
+    fileprivate let heightKey = "height"
 
 
     /// Designated initializer.
@@ -46,15 +45,15 @@ public class WPTextAttachment: NSTextAttachment
     /// For required NSCoding support.
     ///
     required public init?(coder aDecoder: NSCoder) {
-        self.identifier = aDecoder.decodeObjectForKey(identifierKey) as! String
-        self.tagName = aDecoder.decodeObjectForKey(tagNameKey) as! String
-        self.src = aDecoder.decodeObjectForKey(srcKey) as! String
-        self.maxSize = aDecoder.decodeCGSizeForKey(maxSizeKey)
+        self.identifier = aDecoder.decodeObject(forKey: identifierKey) as! String
+        self.tagName = aDecoder.decodeObject(forKey: tagNameKey) as! String
+        self.src = aDecoder.decodeObject(forKey: srcKey) as! String
+        self.maxSize = aDecoder.decodeCGSize(forKey: maxSizeKey)
 
-        self.attributes = aDecoder.decodeObjectForKey(attributesKey) as? [String : String]
-        self.html = aDecoder.decodeObjectForKey(htmlKey) as? String
-        self.width = CGFloat(aDecoder.decodeDoubleForKey(widthKey))
-        self.height = CGFloat(aDecoder.decodeDoubleForKey(heightKey))
+        self.attributes = aDecoder.decodeObject(forKey: attributesKey) as? [String : String]
+        self.html = aDecoder.decodeObject(forKey: htmlKey) as? String
+        self.width = CGFloat(aDecoder.decodeDouble(forKey: widthKey))
+        self.height = CGFloat(aDecoder.decodeDouble(forKey: heightKey))
 
         super.init(coder: aDecoder)
     }
@@ -62,32 +61,32 @@ public class WPTextAttachment: NSTextAttachment
 
     /// For NSCoding support.
     ///
-    public override func encodeWithCoder(aCoder: NSCoder) {
-        super.encodeWithCoder(aCoder)
+    open override func encode(with aCoder: NSCoder) {
+        super.encode(with: aCoder)
 
-        aCoder.encodeObject(identifier, forKey: identifierKey)
-        aCoder.encodeObject(tagName, forKey: tagNameKey)
-        aCoder.encodeObject(src, forKey: srcKey)
-        aCoder.encodeCGSize(maxSize, forKey: maxSizeKey)
+        aCoder.encode(identifier, forKey: identifierKey)
+        aCoder.encode(tagName, forKey: tagNameKey)
+        aCoder.encode(src, forKey: srcKey)
+        aCoder.encode(maxSize, forKey: maxSizeKey)
 
-        aCoder.encodeObject(attributes, forKey: attributesKey)
-        aCoder.encodeObject(html, forKey: htmlKey)
-        aCoder.encodeDouble(Double(width), forKey: widthKey)
-        aCoder.encodeDouble(Double(height), forKey: heightKey)
+        aCoder.encode(attributes, forKey: attributesKey)
+        aCoder.encode(html, forKey: htmlKey)
+        aCoder.encode(Double(width), forKey: widthKey)
+        aCoder.encode(Double(height), forKey: heightKey)
     }
 
 
     /// Adjusts the amount of space for the attachment glyph on a line fragment.
     /// Used for clearing text trailing an attachment when align equals .None
     ///
-    public override func attachmentBoundsForTextContainer(textContainer: NSTextContainer?, proposedLineFragment lineFrag: CGRect, glyphPosition position: CGPoint, characterIndex charIndex: Int) -> CGRect {
+    open override func attachmentBounds(for textContainer: NSTextContainer?, proposedLineFragment lineFrag: CGRect, glyphPosition position: CGPoint, characterIndex charIndex: Int) -> CGRect {
         if textContainer == nil {
-            return super.attachmentBoundsForTextContainer(textContainer, proposedLineFragment: lineFrag, glyphPosition: position, characterIndex: charIndex)
+            return super.attachmentBounds(for: textContainer, proposedLineFragment: lineFrag, glyphPosition: position, characterIndex: charIndex)
         }
 
         // If max size height or width is zero, make sure the view's size is zero.
         if maxSize.height == 0 || maxSize.width == 0 {
-            return CGRectZero
+            return CGRect.zero
         }
 
         let proposedWidth = lineFrag.size.width
@@ -101,7 +100,7 @@ public class WPTextAttachment: NSTextAttachment
         // reserve the full width of the line for the attachment so it can be centered.
         // 3. Other wise when the height is equal to or less than the proposed height
         // just use the max width & height and let the attachment be rendered inline.
-        if width > proposedWidth && width != CGFloat.max {
+        if width > proposedWidth && width != CGFloat.greatestFiniteMagnitude {
             let ratio = width / height
             width = floor(proposedWidth)
             height = floor(width / ratio)

@@ -1,18 +1,17 @@
 import Foundation
 
 
-extension UIDevice
-{
+extension UIDevice {
     public class func isPad() -> Bool {
-        return UIDevice.currentDevice().userInterfaceIdiom == .Pad
+        return UIDevice.current.userInterfaceIdiom == .pad
     }
 
     public class func isPhone() -> Bool {
-        return UIDevice.currentDevice().userInterfaceIdiom == .Phone
+        return UIDevice.current.userInterfaceIdiom == .phone
     }
 
     public class func isOS8() -> Bool {
-        let systemVersion = UIDevice.currentDevice().systemVersion as NSString
+        let systemVersion = UIDevice.current.systemVersion as NSString
         return systemVersion.doubleValue >= 8.0
     }
 }

@@ -2,18 +2,18 @@ import Foundation
 
 class PlanFeaturesRemote: ServiceRemoteWordPressComREST {
 
-    enum Error: ErrorType {
-        case DecodeError
+    enum ResponseError: Error {
+        case decodingFailure
     }
 
-    private var cacheDate: NSDate?
-    private let languageDatabase = WordPressComLanguageDatabase()
-    private var cacheFilename: String {
+    fileprivate var cacheDate: Date?
+    fileprivate let languageDatabase = WordPressComLanguageDatabase()
+    fileprivate var cacheFilename: String {
         let locale = languageDatabase.deviceLanguage.slug
         return "plan-features-\(locale).json"
     }
 
-    func getPlanFeatures(success: PlanFeatures -> Void, failure: ErrorType -> Void) {
+    func getPlanFeatures(_ success: @escaping (PlanFeatures) -> Void, failure: @escaping (Error) -> Void) {
         // First we'll try and return plan features from memory, then check our disk cache,
         // and finally hit the network if we don't have anything recent enough
         if let planFeatures = inMemoryPlanFeatures {
@@ -32,18 +32,18 @@ class PlanFeaturesRemote: ServiceRemoteWordPressComREST {
 
         fetchPlanFeatures({ [weak self] planFeatures in
             self?.inMemoryPlanFeatures = planFeatures
-            self?.cacheDate = NSDate()
+            self?.cacheDate = Date()
 
             success(planFeatures)
             }, failure: failure)
     }
 
-    private var _planFeatures: PlanFeatures?
-    private var inMemoryPlanFeatures: PlanFeatures? {
+    fileprivate var _planFeatures: PlanFeatures?
+    fileprivate var inMemoryPlanFeatures: PlanFeatures? {
         get {
             // If we have something in memory and it's less than a day old, return it.
             if let planFeatures = _planFeatures,
-                let cacheDate = cacheDate where
+                let cacheDate = cacheDate,
                 cacheDateIsValid(cacheDate) {
                 return planFeatures
             }
@@ -56,38 +56,37 @@ class PlanFeaturesRemote: ServiceRemoteWordPressComREST {
         }
     }
 
-    private func cachedPlanFeatures() -> PlanFeatures? {
+    fileprivate func cachedPlanFeatures() -> PlanFeatures? {
         guard let (planFeatures, _) = cachedPlanFeaturesWithDate() else { return nil}
 
         return planFeatures
     }
 
     /// - Returns: An optional tuple containing a collection of cached plan features and the date when they were fetched
-    private func cachedPlanFeaturesWithDate() -> (PlanFeatures, NSDate)? {
+    fileprivate func cachedPlanFeaturesWithDate() -> (PlanFeatures, Date)? {
         guard let cacheFileURL = cacheFileURL,
-            let path = cacheFileURL.path,
-            let attributes = try? NSFileManager.defaultManager().attributesOfItemAtPath(path),
-            let modificationDate = attributes[NSFileModificationDate] as? NSDate where cacheDateIsValid(modificationDate) else { return nil }
+            let attributes = try? FileManager.default.attributesOfItem(atPath: cacheFileURL.path),
+            let modificationDate = attributes[FileAttributeKey.modificationDate] as? Date, cacheDateIsValid(modificationDate) else { return nil }
 
-        guard let response = NSData(contentsOfURL: cacheFileURL),
-            let json = try? NSJSONSerialization.JSONObjectWithData(response, options: []),
-            let planFeatures = try? mapPlanFeaturesResponse(json) else { return nil }
+        guard let response = try? Data(contentsOf: cacheFileURL),
+            let json = try? JSONSerialization.jsonObject(with: response, options: []),
+            let planFeatures = try? mapPlanFeaturesResponse(json as AnyObject) else { return nil }
 
         return (planFeatures, modificationDate)
     }
 
-    private func cacheDateIsValid(date: NSDate) -> Bool {
-        return NSCalendar.currentCalendar().isDateInToday(date)
+    fileprivate func cacheDateIsValid(_ date: Date) -> Bool {
+        return Calendar.current.isDateInToday(date)
     }
 
-    private func fetchPlanFeatures(success: PlanFeatures -> Void, failure: ErrorType -> Void) {
+    fileprivate func fetchPlanFeatures(_ success: @escaping (PlanFeatures) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "plans/features"
-        let path = pathForEndpoint(endpoint, withVersion: .Version_1_2)
+        let path = self.path(forEndpoint: endpoint, with: .version_1_2)
         let locale = languageDatabase.deviceLanguage.slug
         let parameters = ["locale": locale]
 
-        wordPressComRestApi.GET(path,
-                parameters: parameters,
+        wordPressComRestApi.GET(path!,
+                parameters: parameters as [String : AnyObject]?,
                 success: {
                     [weak self] responseObject, _ in
                     do {
@@ -103,24 +102,24 @@ class PlanFeaturesRemote: ServiceRemoteWordPressComREST {
         })
     }
 
-    private var cacheFileURL: NSURL? {
-        guard let cacheDirectory = NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first else { return nil }
+    fileprivate var cacheFileURL: URL? {
+        guard let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else { return nil }
 
-        return cacheDirectory.URLByAppendingPathComponent(cacheFilename)
+        return cacheDirectory.appendingPathComponent(cacheFilename)
     }
 
-    private func cacheResponseObject(responseObject: AnyObject) {
-        let data = try? NSJSONSerialization.dataWithJSONObject(responseObject, options: NSJSONWritingOptions())
+    fileprivate func cacheResponseObject(_ responseObject: AnyObject) {
+        let data = try? JSONSerialization.data(withJSONObject: responseObject, options: JSONSerialization.WritingOptions())
         guard let responseData = data else { return }
         guard let cacheFileURL = cacheFileURL else { return }
 
-        responseData.writeToURL(cacheFileURL, atomically: true)
+        try? responseData.write(to: cacheFileURL, options: [.atomic])
     }
 }
 
-private func mapPlanFeaturesResponse(response: AnyObject) throws -> PlanFeatures {
+private func mapPlanFeaturesResponse(_ response: AnyObject) throws -> PlanFeatures {
     guard let json = response as? [[String: AnyObject]] else {
-        throw PlansRemote.Error.DecodeError
+        throw PlanFeaturesRemote.ResponseError.decodingFailure
     }
 
     var features = [PlanID: [PlanFeature]]()
@@ -130,11 +129,11 @@ private func mapPlanFeaturesResponse(response: AnyObject) throws -> PlanFeatures
             let title = featureDetails["title"] as? String,
             var description = featureDetails["description"] as? String,
             let iconURLString = featureDetails["icon"] as? String,
-            let iconURL = NSURL(string: iconURLString),
-            let planDetails = featureDetails["plans"] as? [String: AnyObject] else { throw PlansRemote.Error.DecodeError }
+            let iconURL = URL(string: iconURLString),
+            let planDetails = featureDetails["plans"] as? [String: AnyObject] else { throw PlansRemote.ResponseError.decodingFailure }
 
         for (planID, planInfo) in planDetails {
-            guard let planID = Int(planID) else { throw PlansRemote.Error.DecodeError }
+            guard let planID = Int(planID) else { throw PlansRemote.ResponseError.decodingFailure }
 
             if features[planID] == nil {
                 features[planID] = [PlanFeature]()
