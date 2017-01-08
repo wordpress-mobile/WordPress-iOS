@@ -2,11 +2,11 @@ import Foundation
 @testable import WordPress
 
 class MockImmuTablePresenter: ImmuTablePresenter {
-    func push(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction {
+    func push(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction {
         return { _ in }
     }
 
-    func present(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction {
+    func present(_ controllerGenerator: @escaping ImmuTableRowControllerGenerator) -> ImmuTableAction {
         return { _ in }
     }
 }

@@ -6,7 +6,7 @@ import SVProgressHUD
 
 class AppSettingsViewController: UITableViewController {
 
-    private var handler: ImmuTableViewHandler!
+    fileprivate var handler: ImmuTableViewHandler!
     // MARK: - Initialization
 
     override init(style: UITableViewStyle) {
@@ -19,7 +19,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     required convenience init() {
-        self.init(style: .Grouped)
+        self.init(style: .grouped)
     }
 
     override func viewDidLoad() {
@@ -36,10 +36,10 @@ class AppSettingsViewController: UITableViewController {
         handler = ImmuTableViewHandler(takeOver: self)
         handler.viewModel = tableViewModel()
 
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.handler.viewModel = self.tableViewModel()
     }
@@ -60,12 +60,12 @@ class AppSettingsViewController: UITableViewController {
         )
 
         var mediaSizeString = NSLocalizedString("Unknown", comment: "Label for size of media when it's not possible to calculate it.")
-        let fileManager = NSFileManager()
+        let fileManager = FileManager()
         if let mediaSize = try? fileManager.allocatedSizeOf(directoryURL: MediaService.urlForMediaDirectory()) {
             if mediaSize == 0 {
                 mediaSizeString = NSLocalizedString("Empty", comment: "Label for size of media when the cache is empty.")
             } else {
-                mediaSizeString = NSByteCountFormatter.stringFromByteCount(mediaSize, countStyle: NSByteCountFormatterCountStyle.File)
+                mediaSizeString = ByteCountFormatter.string(fromByteCount: mediaSize, countStyle: ByteCountFormatter.CountStyle.file)
             }
         }
         let mediaSizeRow = TextRow(title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
@@ -74,7 +74,7 @@ class AppSettingsViewController: UITableViewController {
         let mediaClearCacheRow = DestructiveButtonRow(title: NSLocalizedString("Clear Media Cache", comment: "Label for button that clears all media cache."),
                                                       action: { row in
                                                         MediaService.cleanMediaCacheFolder()
-                                                        SVProgressHUD.showSuccessWithStatus(NSLocalizedString("Media Cache cleaned", comment: "Label for message that confirms cleaning of media cache."))
+                                                        SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Media Cache cleaned", comment: "Label for message that confirms cleaning of media cache."))
                                                         self.handler.viewModel = self.tableViewModel()
                                                         self.tableView.reloadData()
         })
@@ -89,7 +89,7 @@ class AppSettingsViewController: UITableViewController {
         )
         editorRows.append(visualEditor)
 
-        if FeatureFlag.NativeEditor.enabled && editorSettings.visualEditorEnabled {
+        if FeatureFlag.nativeEditor.enabled && editorSettings.visualEditorEnabled {
             let nativeEditor = SwitchRow(
                 title: NSLocalizedString("Native Editor", comment: "Option to enable the native visual editor"),
                 value: editorSettings.nativeEditorEnabled,
@@ -136,32 +136,32 @@ class AppSettingsViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func mediaSizeChanged() -> Int -> Void {
+    func mediaSizeChanged() -> (Int) -> Void {
         return { value in
             MediaSettings().maxImageSizeSetting = value
             ShareExtensionService.configureShareExtensionMaximumMediaDimension(value)
         }
     }
 
-    func mediaRemoveLocationChanged() -> Bool -> Void {
+    func mediaRemoveLocationChanged() -> (Bool) -> Void {
         return { value in
             MediaSettings().removeLocationSetting = value
         }
     }
 
-    func visualEditorChanged() -> Bool -> Void {
+    func visualEditorChanged() -> (Bool) -> Void {
         return { enabled in
             if enabled {
-                WPAnalytics.track(.EditorToggledOn)
+                WPAnalytics.track(.editorToggledOn)
             } else {
-                WPAnalytics.track(.EditorToggledOff)
+                WPAnalytics.track(.editorToggledOff)
             }
             EditorSettings().visualEditorEnabled = enabled
             self.handler.viewModel = self.tableViewModel()
         }
     }
 
-    func nativeEditorChanged() -> Bool -> Void {
+    func nativeEditorChanged() -> (Bool) -> Void {
         return { enabled in
             EditorSettings().nativeEditorEnabled = enabled
         }
@@ -176,8 +176,8 @@ class AppSettingsViewController: UITableViewController {
 
     func openApplicationSettings() -> ImmuTableAction {
         return { row in
-            if let targetURL = NSURL(string: UIApplicationOpenSettingsURLString) {
-                UIApplication.sharedApplication().openURL(targetURL)
+            if let targetURL = URL(string: UIApplicationOpenSettingsURLString) {
+                UIApplication.shared.openURL(targetURL)
             } else {
                 assertionFailure("Couldn't unwrap Settings URL")
             }

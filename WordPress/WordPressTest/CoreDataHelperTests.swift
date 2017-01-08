@@ -7,8 +7,7 @@ import CoreData
 
 // MARK: - CoreData Helper Tests
 //
-class CoreDataHelperTests: XCTestCase
-{
+class CoreDataHelperTests: XCTestCase {
     var stack: DummyStack!
     var helper: CoreDataHelper<DummyEntity>!
 
@@ -38,7 +37,7 @@ class CoreDataHelperTests: XCTestCase
         let all = helper.allObjects(sortedBy: [descriptor])
         XCTAssert(all.count == 100)
 
-        for (index, object) in all.enumerate() {
+        for (index, object) in all.enumerated() {
             XCTAssert(object.value == index)
         }
     }
@@ -57,7 +56,7 @@ class CoreDataHelperTests: XCTestCase
         let filtered = helper.allObjects(matchingPredicate: predicate, sortedBy: [descriptor])
         XCTAssert(filtered.count == 10)
 
-        for (index, object) in filtered.enumerate() {
+        for (index, object) in filtered.enumerated() {
             XCTAssert(object.value == minValue + index)
         }
     }
@@ -183,9 +182,8 @@ class CoreDataHelperTests: XCTestCase
 
 // MARK: - Testing Helpers
 //
-extension CoreDataHelperTests
-{
-    func insertDummyEntities(count: Int) {
+extension CoreDataHelperTests {
+    func insertDummyEntities(_ count: Int) {
         for i in 0 ..< count {
             let entity = helper.insertNewObject()
             entity.key = "\(i)"
@@ -199,8 +197,7 @@ extension CoreDataHelperTests
 
 // MARK: - Dummy Sample Entity
 //
-class DummyEntity: NSManagedObject, ManagedObject
-{
+class DummyEntity: NSManagedObject, ManagedObject {
     @NSManaged var key: String
     @NSManaged var value: Int
 
@@ -210,17 +207,16 @@ class DummyEntity: NSManagedObject, ManagedObject
 
 // MARK: - InMemory Stack with Dynamic Model
 //
-class DummyStack
-{
+class DummyStack {
     lazy var model: NSManagedObjectModel = {
         // Attributes
         let keyAttribute = NSAttributeDescription()
         keyAttribute.name = "key"
-        keyAttribute.attributeType = .StringAttributeType
+        keyAttribute.attributeType = .stringAttributeType
 
         let valueAttribute  = NSAttributeDescription()
         valueAttribute.name = "value"
-        valueAttribute.attributeType = .Integer64AttributeType
+        valueAttribute.attributeType = .integer64AttributeType
 
         // Entity
         let entity = NSEntityDescription()
@@ -236,14 +232,14 @@ class DummyStack
     }()
 
     lazy var context: NSManagedObjectContext = {
-        let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         context.persistentStoreCoordinator = self.coordinator
         return context
     }()
 
     lazy var coordinator: NSPersistentStoreCoordinator = {
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.model)
-        _ = try? coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil)
+        _ = try? coordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
 
         return coordinator
     }()

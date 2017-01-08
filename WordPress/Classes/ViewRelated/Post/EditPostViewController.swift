@@ -7,31 +7,29 @@ class EditPostViewController: UIViewController {
     /// appear with the media picker open
     var openWithMediaPicker: Bool = false
 
-    private(set) var post: Post?
-    private var hasShownEditor = false
-    private var editingExistingPost = false
-    private(set) lazy var blog:Blog = {
+    fileprivate(set) var post: Post?
+    fileprivate var hasShownEditor = false
+    fileprivate var editingExistingPost = false
+    fileprivate(set) lazy var blog: Blog = {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
-        return blogService.lastUsedOrFirstBlog()!
+        return blogService!.lastUsedOrFirstBlog()!
     }()
-    private lazy var postPost: PostPostViewController = {
-        return UIStoryboard(name: "PostPost", bundle: nil).instantiateViewControllerWithIdentifier("PostPostViewController") as! PostPostViewController
+    fileprivate lazy var postPost: PostPostViewController = {
+        return UIStoryboard(name: "PostPost", bundle: nil).instantiateViewController(withIdentifier: "PostPostViewController") as! PostPostViewController
     }()
 
-    var onClose: ((changesSaved: Bool) -> ())?
+    var onClose: ((_ changesSaved: Bool) -> ())?
 
-    override var modalPresentationStyle: UIModalPresentationStyle
-        {
+    override var modalPresentationStyle: UIModalPresentationStyle {
         didSet(newValue) {
             // make sure this view is transparent with the previous VC visible
-            super.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+            super.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
         }
     }
-    override var modalTransitionStyle: UIModalTransitionStyle
-        {
+    override var modalTransitionStyle: UIModalTransitionStyle {
         didSet(newValue) {
-            super.modalTransitionStyle = .CoverVertical
+            super.modalTransitionStyle = .coverVertical
         }
     }
 
@@ -62,7 +60,7 @@ class EditPostViewController: UIViewController {
     ///   - post: the post to edit
     ///   - blog: the blog to create a post for, if post is nil
     /// - Note: it's preferable to use one of the convenience initializers
-    private init(post: Post?, blog: Blog?) {
+    fileprivate init(post: Post?, blog: Blog?) {
         self.post = post
         if let post = post {
             if !post.isDraft() {
@@ -73,54 +71,54 @@ class EditPostViewController: UIViewController {
         if let blog = blog {
             self.blog = blog
         }
-        modalPresentationStyle = .FullScreen
-        modalTransitionStyle = .CoverVertical
+        modalPresentationStyle = .fullScreen
+        modalTransitionStyle = .coverVertical
         restorationIdentifier = RestorationKey.viewController.rawValue
         restorationClass = EditPostViewController.self
 
         addChildViewController(postPost)
         view.addSubview(postPost.view)
-        postPost.didMoveToParentViewController(self)
+        postPost.didMove(toParentViewController: self)
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // show postpost, which will be transparent
-        view.opaque = false
-        view.backgroundColor = UIColor.clearColor()
+        view.isOpaque = false
+        view.backgroundColor = UIColor.clear
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         if (!hasShownEditor) {
             showEditor()
             hasShownEditor = true
         }
     }
 
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
-    private func postToEdit() -> Post {
+    fileprivate func postToEdit() -> Post {
         if let post = post {
             return post
         } else {
             let context = ContextManager.sharedInstance().mainContext
             let postService = PostService(managedObjectContext: context)
-            let newPost = postService.createDraftPostForBlog(blog)!
+            let newPost = postService?.createDraftPost(for: blog)!
             post = newPost
-            return newPost
+            return newPost!
         }
     }
 
     // MARK: show the editor
 
-    private func showEditor() {
+    fileprivate func showEditor() {
         let editorSettings = EditorSettings()
         let editor: UIViewController
         if editorSettings.visualEditorEnabled {
@@ -133,68 +131,68 @@ class EditPostViewController: UIViewController {
             editor = editPostInTextEditor()
         }
 
-        postPost.presentViewController(editor, animated: !showImmediately) {
-            let generator = WPImpactFeedbackGenerator(style: .Medium)
+        postPost.present(editor, animated: !showImmediately) {
+            let generator = WPImpactFeedbackGenerator(style: .medium)
             generator.impactOccurred()
         }
     }
 
-    private func editPostInNativeVisualEditor() -> UIViewController {
+    fileprivate func editPostInNativeVisualEditor() -> UIViewController {
         let postViewController = AztecPostViewController(post: postToEdit())
         postViewController.onClose = { [weak self] (changesSaved) in
             self?.closeEditor(changesSaved)
         }
 
         let navController = UINavigationController(rootViewController: postViewController)
-        navController.modalPresentationStyle = .FullScreen
+        navController.modalPresentationStyle = .fullScreen
 
         return navController
     }
 
-    private func editPostInHybridVisualEditor() -> UIViewController {
+    fileprivate func editPostInHybridVisualEditor() -> UIViewController {
         let postViewController = WPPostViewController(post: postToEdit(), mode: kWPPostViewControllerModeEdit)
-        postViewController.isOpenedDirectlyForPhotoPost = openWithMediaPicker
-        postViewController.onClose = { [weak self] (editorVC, changesSaved) in
+        postViewController?.isOpenedDirectlyForPhotoPost = openWithMediaPicker
+        postViewController?.onClose = { [weak self] (editorVC, changesSaved) in
             guard let strongSelf = self else {
-                editorVC.dismissViewControllerAnimated(true) {}
+                editorVC?.dismiss(animated: true) {}
                 return
             }
             if changesSaved {
-                strongSelf.post = editorVC.post as? Post
+                strongSelf.post = editorVC?.post as? Post
             }
             strongSelf.closeEditor(changesSaved)
         }
 
-        let navController = UINavigationController(rootViewController: postViewController)
+        let navController = UINavigationController(rootViewController: postViewController!)
         navController.restorationIdentifier = WPEditorNavigationRestorationID
         navController.restorationClass = WPPostViewController.self
-        navController.toolbarHidden = false // Fixes incorrect toolbar animation.
-        navController.modalPresentationStyle = .FullScreen
+        navController.isToolbarHidden = false // Fixes incorrect toolbar animation.
+        navController.modalPresentationStyle = .fullScreen
 
         return navController
     }
 
-    private func editPostInTextEditor() -> UIViewController {
+    fileprivate func editPostInTextEditor() -> UIViewController {
         let editPostViewController = WPLegacyEditPostViewController(post: postToEdit())
-        editPostViewController.onClose = { [weak self] (editorVC, changesSaved) in
+        editPostViewController?.onClose = { [weak self] (editorVC, changesSaved) in
             guard let strongSelf = self else {
-                editorVC.dismissViewControllerAnimated(true) {}
+                editorVC?.dismiss(animated: true) {}
                 return
             }
             if changesSaved {
-                strongSelf.post = editorVC.post as? Post
+                strongSelf.post = editorVC?.post as? Post
             }
             strongSelf.closeEditor(changesSaved)
         }
 
-        let navController = UINavigationController(rootViewController: editPostViewController)
-        navController.modalPresentationStyle = .FullScreen
+        let navController = UINavigationController(rootViewController: editPostViewController!)
+        navController.modalPresentationStyle = .fullScreen
 
         return navController
     }
 
-    func closeEditor(changesSaved: Bool = true, from presentingViewController: UIViewController? = nil) {
-        onClose?(changesSaved: changesSaved)
+    func closeEditor(_ changesSaved: Bool = true, from presentingViewController: UIViewController? = nil) {
+        onClose?(changesSaved)
 
         var dismissPostPostImmediately = true
         if shouldShowPostPost(hasChanges: changesSaved), let post = post {
@@ -211,14 +209,14 @@ class EditPostViewController: UIViewController {
             dismissPostPostImmediately = false
         }
 
-        dismissViewControllerAnimated(true) {
+        dismiss(animated: true) {
             if dismissPostPostImmediately {
                 self.closePostPost(animated: false)
             }
         }
     }
 
-    func shouldShowPostPost(hasChanges hasChanges: Bool) -> Bool  {
+    func shouldShowPostPost(hasChanges: Bool) -> Bool {
         guard let post = post else {
             return false
         }
@@ -239,39 +237,38 @@ class EditPostViewController: UIViewController {
             return
         }
         let controller = PostPreviewViewController(post: post)
-        controller.hidesBottomBarWhenPushed = true
-        controller.onClose = {
-            self.dismissViewControllerAnimated(true) {}
+        controller?.hidesBottomBarWhenPushed = true
+        controller?.onClose = {
+            self.dismiss(animated: true) {}
         }
-        let navWrapper = UINavigationController(rootViewController: controller)
-        postPost.presentViewController(navWrapper, animated: true) {}
+        let navWrapper = UINavigationController(rootViewController: controller!)
+        postPost.present(navWrapper, animated: true) {}
     }
 
-    func closePostPost(animated animated: Bool) {
+    func closePostPost(animated: Bool) {
         // will dismiss self
-        dismissViewControllerAnimated(animated) {}
+        dismiss(animated: animated) {}
     }
 }
 
 // MARK: - State Restoration
 //
-extension EditPostViewController: UIViewControllerRestoration
-{
+extension EditPostViewController: UIViewControllerRestoration {
     enum RestorationKey: String {
         case viewController = "EditPostViewControllerRestorationID"
         case post = "EditPostViewControllerPostRestorationID"
     }
 
-    class func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last as? String where identifier == RestorationKey.viewController.rawValue else {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+        guard let identifier = identifierComponents.last as? String, identifier == RestorationKey.viewController.rawValue else {
             return nil
         }
 
         var post: Post?
-        if let postURL = coder.decodeObjectForKey(RestorationKey.post.rawValue) as? NSURL {
+        if let postURL = coder.decodeObject(forKey: RestorationKey.post.rawValue) as? URL {
             let context = ContextManager.sharedInstance().mainContext
-            if let postID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(postURL) {
-                post = context.objectWithID(postID) as? Post
+            if let postID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURL) {
+                post = context?.object(with: postID) as? Post
             }
         }
 
@@ -282,10 +279,10 @@ extension EditPostViewController: UIViewControllerRestoration
         }
     }
 
-    override func encodeRestorableStateWithCoder(coder: NSCoder) {
-        super.encodeRestorableStateWithCoder(coder)
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
         if let post = post {
-            coder.encodeObject(post.objectID.URIRepresentation(), forKey: RestorationKey.post.rawValue)
+            coder.encode(post.objectID.uriRepresentation(), forKey: RestorationKey.post.rawValue)
         }
     }
 }

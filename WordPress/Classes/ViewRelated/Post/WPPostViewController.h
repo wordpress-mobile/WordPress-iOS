@@ -22,7 +22,7 @@ extern NSString* const WPPostViewControllerOptionNotAnimated;
 extern NSString* const kWPEditorConfigURLParamAvailable;
 extern NSString* const kWPEditorConfigURLParamEnabled;
 
-@interface WPPostViewController : WPEditorViewController <UINavigationControllerDelegate, WPEditorViewControllerDelegate>
+@interface WPPostViewController : WPEditorViewController <UINavigationControllerDelegate, WPEditorViewControllerDelegate, UIViewControllerRestoration>
 
 /*
  EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.

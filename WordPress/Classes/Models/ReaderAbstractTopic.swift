@@ -1,22 +1,21 @@
 import Foundation
 import CoreData
 
-@objc public class ReaderAbstractTopic : NSManagedObject
-{
+@objc open class ReaderAbstractTopic: NSManagedObject {
     // Relations
-    @NSManaged public var posts: [ReaderPost]
+    @NSManaged open var posts: [ReaderPost]
 
     // Properties
-    @NSManaged public var preserveForRestoration: Bool
-    @NSManaged public var algorithm: String?
-    @NSManaged public var following: Bool
-    @NSManaged public var lastSynced: NSDate?
-    @NSManaged public var path: String
-    @NSManaged public var showInMenu: Bool
-    @NSManaged public var title: String
-    @NSManaged public var type: String
+    @NSManaged open var preserveForRestoration: Bool
+    @NSManaged open var algorithm: String?
+    @NSManaged open var following: Bool
+    @NSManaged open var lastSynced: Date?
+    @NSManaged open var path: String
+    @NSManaged open var showInMenu: Bool
+    @NSManaged open var title: String
+    @NSManaged open var type: String
 
-    public class var TopicType: String {
+    open class var TopicType: String {
         assert(false, "Subclasses must override")
         return "abstract"
     }

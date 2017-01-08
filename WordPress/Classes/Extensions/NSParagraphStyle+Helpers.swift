@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension NSMutableParagraphStyle
-{
+extension NSMutableParagraphStyle {
     convenience init(minLineHeight: CGFloat, lineBreakMode: NSLineBreakMode, alignment: NSTextAlignment) {
         self.init()
         self.minimumLineHeight  = minLineHeight

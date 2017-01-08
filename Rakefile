@@ -1,4 +1,4 @@
-SWIFTLINT_VERSION="0.12.0"
+SWIFTLINT_VERSION="0.15.0"
 XCODE_WORKSPACE="WordPress.xcworkspace"
 XCODE_SCHEME="WordPress"
 XCODE_CONFIGURATION="Debug"
@@ -260,7 +260,7 @@ end
 
 def swiftlint_needs_install
   return true unless File.exist?(swiftlint_bin)
-  installed_version = `#{swiftlint_bin} version`.chomp
+  installed_version = `"#{swiftlint_bin}" version`.chomp
   return (installed_version != SWIFTLINT_VERSION)
 end
 

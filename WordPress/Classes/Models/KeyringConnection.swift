@@ -6,20 +6,19 @@ import Foundation
 /// reasons KeyringConnection is treated like a model, even though it is not an NSManagedObject,
 /// but also treated like it is a Remote Object.
 ///
-public class KeyringConnection : NSObject
-{
-    public var additionalExternalUsers = [KeyringConnectionExternalUser]()
-    public var dateIssued = NSDate()
-    public var dateExpires:NSDate? = nil
-    public var externalID = "" // Some services uses strings for their IDs
-    public var externalName = ""
-    public var externalDisplay = ""
-    public var externalProfilePicture = ""
-    public var label = ""
-    public var keyringID:NSNumber = 0
-    public var refreshURL = ""
-    public var service = ""
-    public var status = ""
-    public var type = ""
-    public var userID:NSNumber = 0
+open class KeyringConnection: NSObject {
+    open var additionalExternalUsers = [KeyringConnectionExternalUser]()
+    open var dateIssued = Date()
+    open var dateExpires: Date? = nil
+    open var externalID = "" // Some services uses strings for their IDs
+    open var externalName = ""
+    open var externalDisplay = ""
+    open var externalProfilePicture = ""
+    open var label = ""
+    open var keyringID: NSNumber = 0
+    open var refreshURL = ""
+    open var service = ""
+    open var status = ""
+    open var type = ""
+    open var userID: NSNumber = 0
 }

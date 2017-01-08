@@ -4,11 +4,11 @@ import MobileCoreServices
 
 extension UIImage {
     // MARK: - Error Handling
-    enum ErrorCode : Int {
-        case FailedToWrite = 1
+    enum ErrorCode: Int {
+        case failedToWrite = 1
     }
 
-    private func errorForCode(errorCode: ErrorCode, failureReason: String) -> NSError {
+    fileprivate func errorForCode(_ errorCode: ErrorCode, failureReason: String) -> NSError {
         let userInfo = [NSLocalizedFailureReasonErrorKey: failureReason]
         let error = NSError(domain: "UIImage+ImageIOExtensions", code: errorCode.rawValue, userInfo: userInfo)
 
@@ -24,24 +24,24 @@ extension UIImage {
      - compressionQuality: defines the compression quality of the export. This is only relevant for type formats that support a quality parameter. Ex: jpeg
      - metadata: the image metadata to save to file.
      */
-    func writeToURL(url: NSURL, type: String, compressionQuality: Float = 0.9,  metadata: [String:AnyObject]? = nil) throws {
-        let properties: [String:AnyObject] = [kCGImageDestinationLossyCompressionQuality as String: compressionQuality]
+    func writeToURL(_ url: URL, type: String, compressionQuality: Float = 0.9,  metadata: [String: AnyObject]? = nil) throws {
+        let properties: [String: AnyObject] = [kCGImageDestinationLossyCompressionQuality as String: compressionQuality as AnyObject]
         var finalMetadata = metadata
         if metadata == nil {
-            finalMetadata = [kCGImagePropertyOrientation as String: Int(metadataOrientation.rawValue)]
+            finalMetadata = [kCGImagePropertyOrientation as String: Int(metadataOrientation.rawValue) as AnyObject]
         }
 
-        guard let destination = CGImageDestinationCreateWithURL(url, type, 1, nil),
-              let imageRef = self.CGImage
+        guard let destination = CGImageDestinationCreateWithURL(url as CFURL, type as CFString, 1, nil),
+              let imageRef = self.cgImage
         else {
-                throw errorForCode(.FailedToWrite,
+                throw errorForCode(.failedToWrite,
                     failureReason: NSLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")
                 )
         }
-        CGImageDestinationSetProperties(destination, properties)
-        CGImageDestinationAddImage(destination, imageRef, finalMetadata)
+        CGImageDestinationSetProperties(destination, properties as CFDictionary?)
+        CGImageDestinationAddImage(destination, imageRef, finalMetadata as CFDictionary?)
         if (!CGImageDestinationFinalize(destination)) {
-            throw errorForCode(.FailedToWrite,
+            throw errorForCode(.failedToWrite,
                 failureReason: NSLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")
             )
         }
@@ -53,73 +53,69 @@ extension UIImage {
      - Parameters:
      - url: file url to where the asset should be exported, this must be writable location
      */
-    func writeJPEGToURL(url: NSURL) throws {
+    func writeJPEGToURL(_ url: URL) throws {
         let data = UIImageJPEGRepresentation(self, 0.9)
-        try data?.writeToURL(url, options: NSDataWritingOptions())
+        try data?.write(to: url, options: NSData.WritingOptions())
     }
 
     // Converts the imageOrientation from the image to the CGImagePropertyOrientation to use in the file metadata.
     var metadataOrientation: CGImagePropertyOrientation {
         get {
             switch imageOrientation {
-            case .Up: return CGImagePropertyOrientation.Up
-            case .Down: return CGImagePropertyOrientation.Down
-            case .Left: return CGImagePropertyOrientation.Left
-            case .Right: return CGImagePropertyOrientation.Right
-            case .UpMirrored: return CGImagePropertyOrientation.UpMirrored
-            case .DownMirrored: return CGImagePropertyOrientation.DownMirrored
-            case .LeftMirrored: return CGImagePropertyOrientation.LeftMirrored
-            case .RightMirrored: return CGImagePropertyOrientation.RightMirrored
+            case .up: return CGImagePropertyOrientation.up
+            case .down: return CGImagePropertyOrientation.down
+            case .left: return CGImagePropertyOrientation.left
+            case .right: return CGImagePropertyOrientation.right
+            case .upMirrored: return CGImagePropertyOrientation.upMirrored
+            case .downMirrored: return CGImagePropertyOrientation.downMirrored
+            case .leftMirrored: return CGImagePropertyOrientation.leftMirrored
+            case .rightMirrored: return CGImagePropertyOrientation.rightMirrored
             }
         }
     }
 }
 
-extension UIImage: ExportableAsset
-{
-    func exportToURL(url: NSURL,
+extension UIImage: ExportableAsset {
+    func exportToURL(_ url: URL,
                      targetUTI: String,
                      maximumResolution: CGSize,
                      stripGeoLocation: Bool,
                      synchronous: Bool,
-                     successHandler: SuccessHandler,
-                     errorHandler: ErrorHandler)
-    {
+                     successHandler: @escaping SuccessHandler,
+                     errorHandler: @escaping ErrorHandler) {
         var finalImage = self
         if (maximumResolution.width <= self.size.width || maximumResolution.height <= self.size.height) {
-            finalImage = self.resizedImageWithContentMode(.ScaleAspectFit, bounds:maximumResolution, interpolationQuality:.High)
+            finalImage = self.resizedImage(with: .scaleAspectFit, bounds: maximumResolution, interpolationQuality: .high)
         }
 
         do {
-            try finalImage.writeToURL(url, type:targetUTI, compressionQuality:0.9, metadata: nil)
-            successHandler(resultingSize: finalImage.size)
+            try finalImage.writeToURL(url, type: targetUTI, compressionQuality: 0.9, metadata: nil)
+            successHandler(finalImage.size)
         } catch let error as NSError {
-            errorHandler(error: error)
+            errorHandler(error)
         }
     }
 
-    func exportThumbnailToURL(url: NSURL,
+    func exportThumbnailToURL(_ url: URL,
                               targetSize: CGSize,
                               synchronous: Bool,
-                              successHandler: SuccessHandler,
-                              errorHandler: ErrorHandler)
-    {
-        let thumbnail = self.resizedImageWithContentMode(.ScaleAspectFit, bounds:targetSize, interpolationQuality:.High)
+                              successHandler: @escaping SuccessHandler,
+                              errorHandler: @escaping ErrorHandler) {
+        let thumbnail = self.resizedImage(with: .scaleAspectFit, bounds: targetSize, interpolationQuality: .high)
         do {
-            try self.writeToURL(url, type:defaultThumbnailUTI as String, compressionQuality:0.9, metadata:nil)
-            successHandler(resultingSize: thumbnail.size)
+            try self.writeToURL(url, type: defaultThumbnailUTI as String, compressionQuality: 0.9, metadata: nil)
+            successHandler((thumbnail?.size)!)
         } catch let error as NSError {
-            errorHandler(error:error)
+            errorHandler(error)
         }
     }
 
-    func exportOriginalImage(toURL: NSURL, successHandler: SuccessHandler, errorHandler: ErrorHandler)
-    {
+    func exportOriginalImage(_ toURL: URL, successHandler: @escaping SuccessHandler, errorHandler: @escaping ErrorHandler) {
         do {
-            try self.writeToURL(toURL, type:originalUTI()!, compressionQuality:1.0, metadata: nil)
-            successHandler(resultingSize: self.size)
+            try self.writeToURL(toURL, type: originalUTI()!, compressionQuality: 1.0, metadata: nil)
+            successHandler(self.size)
         } catch let error as NSError {
-            errorHandler(error: error)
+            errorHandler(error)
         }
     }
 
@@ -129,7 +125,7 @@ extension UIImage: ExportableAsset
 
     var assetMediaType: MediaType {
         get {
-            return .Image
+            return .image
         }
     }
 

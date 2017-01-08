@@ -47,14 +47,14 @@ private let knownDomains = Set([
 /// It tries to match the email domain with a list of popular hosting providers,
 /// and suggest a correction if it looks like a typo.
 ///
-public class EmailTypoChecker: NSObject {
+open class EmailTypoChecker: NSObject {
     /// Suggest a correction to a typo in the given email address.
     ///
     /// If it doesn't detect any typo, it returns the given email.
     ///
     @objc(guessCorrectionForEmail:)
-    public static func guessCorrection(email email: String) -> String {
-        let components = email.componentsSeparatedByString("@")
+    open static func guessCorrection(email: String) -> String {
+        let components = email.components(separatedBy: "@")
         guard components.count == 2 else {
             return email
         }
@@ -75,7 +75,7 @@ public class EmailTypoChecker: NSObject {
     }
 }
 
-private func suggest(word: String) -> String {
+private func suggest(_ word: String) -> String {
     if knownDomains.contains(word) {
         return word
     }
@@ -84,7 +84,7 @@ private func suggest(word: String) -> String {
     return candidates.first ?? word
 }
 
-private func edits(word: String) -> [String] {
+private func edits(_ word: String) -> [String] {
     // deletes
     let deleted = deletes(word)
     let transposed = transposes(word)
@@ -98,23 +98,23 @@ private func edits(word: String) -> [String] {
     return deleted + transposed + replaced + inserted
 }
 
-private func deletes(word: String) -> [String] {
+private func deletes(_ word: String) -> [String] {
     return word.characters.indices.map({ word.removing(at: $0) })
 }
 
-private func transposes(word: String) -> [String] {
+private func transposes(_ word: String) -> [String] {
     return word.characters.indices.flatMap({ index in
-        let (i, j) = (index, index.successor())
+        let (i, j) = (index, word.index(after: index))
         guard j < word.endIndex else {
             return nil
         }
         var copy = word
-        copy.replaceRange(i...j, with: String(word[j]) + String(word[i]))
+        copy.replaceSubrange(i...j, with: String(word[j]) + String(word[i]))
         return copy
     })
 }
 
-private func replaces(x: Character, ys: String.CharacterView) -> [String] {
+private func replaces(_ x: Character, ys: String.CharacterView) -> [String] {
     guard let head = ys.first else {
         return [String(x)]
     }
@@ -122,7 +122,7 @@ private func replaces(x: Character, ys: String.CharacterView) -> [String] {
     return [String(x) + String(tail)] + replaces(x, ys: tail).map({ String(head) + $0 })
 }
 
-private func between(x: Character, ys: String.CharacterView) -> [String] {
+private func between(_ x: Character, ys: String.CharacterView) -> [String] {
     guard let head = ys.first else {
         return [String(x)]
     }
@@ -133,5 +133,5 @@ private func between(x: Character, ys: String.CharacterView) -> [String] {
 private let alphabet = "abcdefghijklmnopqrstuvwxyz"
 
 private func lengthOfLongestKnownDomain() -> Int {
-    return knownDomains.map({ $0.characters.count }).maxElement() ?? 0
+    return knownDomains.map({ $0.characters.count }).max() ?? 0
 }

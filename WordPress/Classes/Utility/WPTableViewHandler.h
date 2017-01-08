@@ -98,6 +98,7 @@
 @property (nonatomic) UITableViewRowAnimation deleteRowAnimation;
 @property (nonatomic) UITableViewRowAnimation moveRowAnimation;
 @property (nonatomic) UITableViewRowAnimation sectionRowAnimation;
+@property (nonatomic) BOOL listensForContentChanges;
 
 - (nonnull instancetype)initWithTableView:(nonnull UITableView *)tableView;
 - (void)clearCachedRowHeights;

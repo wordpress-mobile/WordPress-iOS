@@ -8,16 +8,15 @@ import WordPressComAnalytics
 /// authorizing access by means of a mobile device that's already authenticated.
 /// By doing so, WordPress.com backend will send a Push Notification, which is meant to be handled by this specific class.
 ///
-@objc public class PushAuthenticationManager : NSObject
-{
+@objc open class PushAuthenticationManager: NSObject {
     // MARK: - Public Methods
     //
-    public var alertControllerProxy = UIAlertControllerProxy()
-    public let pushAuthenticationService: PushAuthenticationService
+    open var alertControllerProxy = UIAlertControllerProxy()
+    open let pushAuthenticationService: PushAuthenticationService
 
     override convenience init() {
         let context = ContextManager.sharedInstance().mainContext
-        let service = PushAuthenticationService(managedObjectContext: context)
+        let service = PushAuthenticationService(managedObjectContext: context!)
         self.init(pushAuthenticationService: service)
     }
 
@@ -35,7 +34,7 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the notification should be handled by this class
     ///
-    public func isPushAuthenticationNotification(userInfo: NSDictionary?) -> Bool {
+    open func isPushAuthenticationNotification(_ userInfo: NSDictionary?) -> Bool {
         if let unwrappedNoteType = userInfo?["type"] as? String {
             return unwrappedNoteType == pushAuthenticationNoteType
         }
@@ -51,27 +50,26 @@ import WordPressComAnalytics
     ///
     /// - Parameter userInfo: Is the Notification's payload.
     ///
-    public func handlePushAuthenticationNotification(userInfo: NSDictionary?) {
+    open func handlePushAuthenticationNotification(_ userInfo: NSDictionary?) {
         // Expired: Display a message!
         if isNotificationExpired(userInfo) {
             showLoginExpiredAlert()
-            WPAnalytics.track(.PushAuthenticationExpired)
+            WPAnalytics.track(.pushAuthenticationExpired)
             return
         }
 
         // Verify: Ask for approval
         guard let token = userInfo?["push_auth_token"] as? String,
-            let message = userInfo?.valueForKeyPath("aps.alert") as? String else
-        {
+            let message = userInfo?.value(forKeyPath: "aps.alert") as? String else {
             return
         }
 
         showLoginVerificationAlert(message) { approved in
             if approved {
                 self.authorizeLogin(token, retryCount: self.initialRetryCount)
-                WPAnalytics.track(.PushAuthenticationApproved)
+                WPAnalytics.track(.pushAuthenticationApproved)
             } else {
-                WPAnalytics.track(.PushAuthenticationIgnored)
+                WPAnalytics.track(.pushAuthenticationIgnored)
             }
         }
     }
@@ -87,9 +85,9 @@ import WordPressComAnalytics
     ///     - token: The login request token received in the Push Notification itself.
     ///     - retryCount: The number of retries that have taken place.
     ///
-    private func authorizeLogin(token: String, retryCount: Int) {
+    fileprivate func authorizeLogin(_ token: String, retryCount: Int) {
         if retryCount == maximumRetryCount {
-            WPAnalytics.track(.PushAuthenticationFailed)
+            WPAnalytics.track(.pushAuthenticationFailed)
             return
         }
 
@@ -105,30 +103,30 @@ import WordPressComAnalytics
     ///
     /// - Parameter userInfo: Is the Notification's payload.
     ///
-    private func isNotificationExpired(userInfo: NSDictionary?) -> Bool {
-        let rawExpiration = userInfo?["expires"] as? Int
+    fileprivate func isNotificationExpired(_ userInfo: NSDictionary?) -> Bool {
+        let rawExpiration = userInfo?["expires"] as? TimeInterval
         if rawExpiration == nil {
             return false
         }
 
-        let parsedExpiration = NSDate(timeIntervalSince1970: NSTimeInterval(rawExpiration!))
+        let parsedExpiration = Date(timeIntervalSince1970: TimeInterval(rawExpiration!))
         return parsedExpiration.timeIntervalSinceNow < minimumRemainingExpirationTime
     }
 
 
     /// Displays an AlertView indicating that a Login Request has expired.
     ///
-    private func showLoginExpiredAlert() {
+    fileprivate func showLoginExpiredAlert() {
         let title               = NSLocalizedString("Login Request Expired", comment: "Login Request Expired")
         let message             = NSLocalizedString("The login request has expired. Log in to WordPress.com to try again.",
                                                     comment: "WordPress.com Push Authentication Expired message")
         let acceptButtonTitle   = NSLocalizedString("OK", comment: "OK")
 
-        alertControllerProxy.showWithTitle(title,
+        alertControllerProxy.show(withTitle: title,
             message:            message,
             cancelButtonTitle:  acceptButtonTitle,
             otherButtonTitles:  nil,
-            tapBlock:           nil)
+            tap:           nil)
     }
 
     /// Displays an AlertView asking for WordPress.com Authentication Approval.
@@ -137,25 +135,24 @@ import WordPressComAnalytics
     ///     - message: The message to be displayed.
     ///     - completion: A closure that receives a parameter, indicating whether the login attempt was confirmed or not.
     ///
-    private func showLoginVerificationAlert(message: String, completion: ((approved: Bool) -> ())) {
+    fileprivate func showLoginVerificationAlert(_ message: String, completion: @escaping ((_ approved: Bool) -> ())) {
         let title               = NSLocalizedString("Verify Log In", comment: "Push Authentication Alert Title")
         let cancelButtonTitle   = NSLocalizedString("Ignore", comment: "Ignore action. Verb")
         let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
 
-        alertControllerProxy.showWithTitle(title,
+        alertControllerProxy.show(withTitle: title,
                                            message: message,
                                            cancelButtonTitle: cancelButtonTitle,
-                                           otherButtonTitles: [acceptButtonTitle])
-        { (theAlertController, buttonIndex) in
-            let approved = theAlertController.actions[buttonIndex].style != .Cancel
-            completion(approved: approved)
+                                           otherButtonTitles: [acceptButtonTitle]) { (theAlertController, buttonIndex) in
+            let approved = theAlertController?.actions[buttonIndex].style != .cancel
+            completion(approved)
         }
     }
 
 
     // MARK: - Private Internal Constants
-    private let initialRetryCount                   = 0
-    private let maximumRetryCount                   = 3
-    private let minimumRemainingExpirationTime      = NSTimeInterval(5)
-    private let pushAuthenticationNoteType          = "push_auth"
+    fileprivate let initialRetryCount                   = 0
+    fileprivate let maximumRetryCount                   = 3
+    fileprivate let minimumRemainingExpirationTime      = TimeInterval(5)
+    fileprivate let pushAuthenticationNoteType          = "push_auth"
 }
