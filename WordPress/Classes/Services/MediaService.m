@@ -814,7 +814,7 @@ static NSString * const MediaDirectory = @"Media";
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    [context performBlock:^{
+    [context performBlockAndWait:^{
 
         // Fetch Media URL's and return them as Dictionary Results:
         // This way we'll avoid any CoreData Faulting Exception due to deletions performed on another context
