@@ -10,8 +10,8 @@ extension FileManager {
     /// that would become available on the volume if the directory would be deleted.
     ///
     /// - note: There are a couple of oddities that are not taken into account (like symbolic links, meta data of
-    /// directories, hard links, ...).
-
+    /// directories, hard links, ...). Original code can be found here: https://gist.github.com/NikolaiRuhe/eeb135d20c84a7097516
+    ///
     func allocatedSizeOf(directoryURL: URL) throws -> Int64 {
 
         // We'll sum up content size here:
