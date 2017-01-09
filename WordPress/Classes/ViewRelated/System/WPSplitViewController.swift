@@ -102,6 +102,18 @@ class WPSplitViewController: UISplitViewController {
         return .lightContent
     }
 
+    var overrideTraitCollection: UITraitCollection? = nil
+
+    override var traitCollection: UITraitCollection {
+        get {
+            if let overrideTraitCollection = overrideTraitCollection {
+                return UITraitCollection.init(traitsFrom: [super.traitCollection, overrideTraitCollection])
+            }
+
+            return super.traitCollection
+        }
+    }
+
     override func overrideTraitCollection(forChildViewController childViewController: UIViewController) -> UITraitCollection? {
         guard let collection = super.overrideTraitCollection(forChildViewController: childViewController) else { return nil }
 
@@ -163,6 +175,14 @@ class WPSplitViewController: UISplitViewController {
         }
 
         return  UITraitCollection(traitsFrom: [detailViewController.traitCollection, UITraitCollection(horizontalSizeClass: .compact)])
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if isViewHorizontallyCompact() && preferredDisplayMode == .primaryHidden {
+            setPrimaryViewControllerHidden(false, animated: false)
+        }
     }
 
     // MARK: - Dimming support
