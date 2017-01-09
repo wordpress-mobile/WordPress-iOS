@@ -141,7 +141,6 @@ struct DestructiveButtonRow: ImmuTableRow {
         cell.textLabel?.text = title
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.lineBreakMode = .byWordWrapping
-        cell.selectionStyle = .none
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
     }
 }
