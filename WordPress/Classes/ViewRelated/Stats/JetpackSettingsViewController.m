@@ -96,7 +96,11 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
+
+    // Resetting the keyboard offset to zero here to prevent incorrect view.frame values from
+    // polluting the layout calcs
+    _keyboardOffset = 0;
+
     [self layoutControls];
 }
 
