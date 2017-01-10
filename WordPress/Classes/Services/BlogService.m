@@ -180,9 +180,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     }];
 }
 
-- (void)syncOptionsForBlog:(Blog *)blog
-                   success:(void (^)())success
-                   failure:(void (^)(NSError *error))failure
+- (void)syncBlog:(Blog *)blog
+         success:(void (^)())success
+         failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     if ([remote respondsToSelector:@selector(syncOptionsWithSuccess:failure:)]) {
@@ -194,6 +194,79 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                                                   completionHandler:success]
                                    failure:failure];
     }
+}
+
+- (void)syncBlogAndAllMetadata:(Blog *)blog completionHandler:(void (^)())completionHandler
+{
+    // Create a dispatch group. We'll use this to monitor completion of the various
+    // remote calls and to execute the completionHandler.
+    dispatch_group_t syncGroup = dispatch_group_create();
+
+    NSManagedObjectID *blogObjectID = blog.objectID;
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+
+    if ([remote respondsToSelector:@selector(syncOptionsWithSuccess:failure:)]) {
+        dispatch_group_enter(syncGroup);
+        [remote syncOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blogObjectID
+                                                          completionHandler:^{
+                                                              dispatch_group_leave(syncGroup);
+                                                          }]
+                               failure:^(NSError *error) {
+                                   DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
+                                   dispatch_group_leave(syncGroup);
+                               }];
+    }
+
+    if ([remote respondsToSelector:@selector(syncSiteDetailsWithSuccess:failure:)]) {
+        dispatch_group_enter(syncGroup);
+        [remote syncSiteDetailsWithSuccess:[self siteDetailsHandlerWithBlogObjectID:blogObjectID
+                                                                  completionHandler:^{
+                                                                      dispatch_group_leave(syncGroup);
+                                                                  }]
+                                   failure:^(NSError *error) {
+                                       DDLogError(@"Failed syncing site details for blog %@: %@", blog.url, error);
+                                       dispatch_group_leave(syncGroup);
+                                   }];
+    }
+
+    dispatch_group_enter(syncGroup);
+    [remote syncPostFormatsWithSuccess:[self postFormatsHandlerWithBlogObjectID:blogObjectID
+                                                              completionHandler:^{
+                                                                  dispatch_group_leave(syncGroup);
+                                                              }]
+                               failure:^(NSError *error) {
+                                   DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
+                                   dispatch_group_leave(syncGroup);
+                               }];
+
+    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    dispatch_group_enter(syncGroup);
+    [categoryService syncCategoriesForBlog:blog
+                                   success:^{
+                                       dispatch_group_leave(syncGroup);
+                                   }
+                                   failure:^(NSError *error) {
+                                       DDLogError(@"Failed syncing categories for blog %@: %@", blog.url, error);
+                                       dispatch_group_leave(syncGroup);
+                                   }];
+
+    dispatch_group_enter(syncGroup);
+    [remote checkMultiAuthorWithSuccess:^(BOOL isMultiAuthor) {
+        [self updateMultiAuthor:isMultiAuthor forBlog:blogObjectID];
+        dispatch_group_leave(syncGroup);
+
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
+        dispatch_group_leave(syncGroup);
+    }];
+
+    // When everything has left the syncGroup (all calls have ended with success
+    // or failure) perform the completionHandler
+    dispatch_group_notify(syncGroup, dispatch_get_main_queue(),^{
+        if (completionHandler) {
+            completionHandler();
+        }
+    });
 }
 
 - (void)syncSettingsForBlog:(Blog *)blog
@@ -327,79 +400,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     [remote syncPostFormatsWithSuccess:[self postFormatsHandlerWithBlogObjectID:blog.objectID
                                                           completionHandler:success]
                                failure:failure];
-}
-
-- (void)syncBlog:(Blog *)blog completionHandler:(void (^)())completionHandler
-{
-    // Create a dispatch group. We'll use this to monitor completion of the various
-    // remote calls and to execute the completionHandler.
-    dispatch_group_t syncGroup = dispatch_group_create();
-
-    NSManagedObjectID *blogObjectID = blog.objectID;
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-
-    if ([remote respondsToSelector:@selector(syncOptionsWithSuccess:failure:)]) {
-        dispatch_group_enter(syncGroup);
-        [remote syncOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blogObjectID
-                                                          completionHandler:^{
-                                                              dispatch_group_leave(syncGroup);
-                                                          }]
-                               failure:^(NSError *error) {
-                                   DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
-                                   dispatch_group_leave(syncGroup);
-                               }];
-    }
-
-    if ([remote respondsToSelector:@selector(syncSiteDetailsWithSuccess:failure:)]) {
-        dispatch_group_enter(syncGroup);
-        [remote syncSiteDetailsWithSuccess:[self siteDetailsHandlerWithBlogObjectID:blogObjectID
-                                                                  completionHandler:^{
-                                                                      dispatch_group_leave(syncGroup);
-                                                                  }]
-                                   failure:^(NSError *error) {
-                                       DDLogError(@"Failed syncing site details for blog %@: %@", blog.url, error);
-                                       dispatch_group_leave(syncGroup);
-                                   }];
-    }
-
-    dispatch_group_enter(syncGroup);
-    [remote syncPostFormatsWithSuccess:[self postFormatsHandlerWithBlogObjectID:blogObjectID
-                                                              completionHandler:^{
-                                                                  dispatch_group_leave(syncGroup);
-                                                              }]
-                               failure:^(NSError *error) {
-                                   DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
-                                   dispatch_group_leave(syncGroup);
-                               }];
-
-    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    dispatch_group_enter(syncGroup);
-    [categoryService syncCategoriesForBlog:blog
-                                   success:^{
-                                       dispatch_group_leave(syncGroup);
-                                   }
-                                   failure:^(NSError *error) {
-                                       DDLogError(@"Failed syncing categories for blog %@: %@", blog.url, error);
-                                       dispatch_group_leave(syncGroup);
-                                   }];
-
-    dispatch_group_enter(syncGroup);
-    [remote checkMultiAuthorWithSuccess:^(BOOL isMultiAuthor) {
-        [self updateMultiAuthor:isMultiAuthor forBlog:blogObjectID];
-        dispatch_group_leave(syncGroup);
-
-    } failure:^(NSError *error) {
-        DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
-        dispatch_group_leave(syncGroup);
-    }];
-
-    // When everything has left the syncGroup (all calls have ended with success
-    // or failure) perform the completionHandler
-    dispatch_group_notify(syncGroup, dispatch_get_main_queue(),^{
-        if (completionHandler) {
-            completionHandler();
-        }
-    });
 }
 
 - (BOOL)hasVisibleWPComAccounts

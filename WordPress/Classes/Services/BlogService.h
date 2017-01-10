@@ -50,18 +50,57 @@ extern NSString *const WordPressMinimumVersion;
  */
 - (nullable Blog *)primaryBlog;
 
+/**
+ *  Sync all available blogs for an acccount
+ *
+ *  @param account the account for the associated blogs.
+ *  @param success a block that is invoked when the sync is sucessfull.
+ *  @param failure a block that in invoked when the sync fails.
+ */
 - (void)syncBlogsForAccount:(WPAccount *)account
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
 
-- (void)syncOptionsForBlog:(Blog *)blog
-                   success:(void (^)())success
-                   failure:(void (^)(NSError *error))failure;
+/**
+ *  Sync the blog and it's top-level details such as the 'options' data and any jetpack configuration.
+ *
+ *  @param blog    the blog from where to read the information from
+ *  @param success a block that is invoked when the sync is sucessfull.
+ *  @param failure a block that in invoked when the sync fails.
+ */
+- (void)syncBlog:(Blog *)blog
+         success:(void (^)())success
+         failure:(void (^)(NSError *error))failure;
 
+/**
+ *  Sync the blog and all available metadata or configuration. Such as top-level details, postTypes, postFormats, categories, multi-author and jetpack configuration.
+ *
+ *  @note Used for instances where the entire blog should be refreshed or initially downloaded.
+ *
+ *  @param blog    the blog from where to read the information from
+ *  @param success a block that is invoked when the sync is sucessfull.
+ *  @param failure a block that in invoked when the sync fails.
+ */
+- (void)syncBlogAndAllMetadata:(Blog *)blog completionHandler:(void (^)())completionHandler;
+
+/**
+ *  Sync the available postTypes configured for the blog.
+ *
+ *  @param blog    the blog from where to read the information from
+ *  @param success a block that is invoked when the sync is sucessfull.
+ *  @param failure a block that in invoked when the sync fails.
+ */
 - (void)syncPostTypesForBlog:(Blog *)blog
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure;
 
+/**
+ *  Sync the available postFormats configured for the blog.
+ *
+ *  @param blog    the blog from where to read the information from
+ *  @param success a block that is invoked when the sync is sucessfull.
+ *  @param failure a block that in invoked when the sync fails.
+ */
 - (void)syncPostFormatsForBlog:(Blog *)blog
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure;
@@ -100,13 +139,6 @@ extern NSString *const WordPressMinimumVersion;
 - (void)updatePassword:(NSString *)password forBlog:(Blog *)blog;
 
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success;
-
-/**
- Syncs an blog "meta data" including post formats, blog options, and categories. 
- Also checks if the blog is multi-author.
- Used for instances where the entire blog should be refreshed or initially downloaded.
- */
-- (void)syncBlog:(Blog *)blog completionHandler:(void (^)())completionHandler;
 
 - (BOOL)hasVisibleWPComAccounts;
 
