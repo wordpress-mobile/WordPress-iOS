@@ -136,7 +136,7 @@ PODS:
     - WordPressCom-Analytics-iOS (~> 0.1.0)
   - WordPress-iOS-Shared (0.7.0):
     - CocoaLumberjack (~> 2.2.0)
-  - WordPressCom-Analytics-iOS (0.1.21)
+  - WordPressCom-Analytics-iOS (0.1.22)
   - WordPressCom-Stats-iOS (0.8.1):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
@@ -179,7 +179,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, branch `swift-3/gridicons-bump`)
   - WordPress-iOS-Editor (= 1.8.1)
   - WordPress-iOS-Shared (= 0.7.0)
-  - WordPressCom-Analytics-iOS (= 0.1.21)
+  - WordPressCom-Analytics-iOS (= 0.1.22)
   - WordPressCom-Stats-iOS (= 0.8.1)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (~> 0.10.2)
@@ -258,12 +258,12 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: f341ceec424ace839036e6556543dd20c1285d77
   WordPress-iOS-Editor: 3118f5d6b142b6bf322f3393a7dd98a28bca68cb
   WordPress-iOS-Shared: 4bec543bac6543480b10d904bea122dcba43cc37
-  WordPressCom-Analytics-iOS: ee6cc3a4feb63cebba167ce762c6e12c0b7b6671
+  WordPressCom-Analytics-iOS: 66b890823ffd54aee871fbba3ed0278d4ae1aa0a
   WordPressCom-Stats-iOS: 07b1796831c31c0c8c8a0f2e314bb2e6636af5df
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 9ba8c29a1de4b07696356f541c01eeaa6dd14c47
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: c54c243c6e37aa58bd872f810130a3556ef50a13
+PODFILE CHECKSUM: 7c82d248e2b7ea96dd64eeb001bd3589a9e241f5
 
 COCOAPODS: 1.1.1

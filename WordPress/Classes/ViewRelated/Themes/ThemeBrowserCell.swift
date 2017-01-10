@@ -3,8 +3,7 @@ import WordPressShared.WPStyleGuide
 
 /// Actions provided in cell button triggered action sheet
 ///
-public enum ThemeAction
-{
+public enum ThemeAction {
     case activate
     case customize
     case details
@@ -50,8 +49,7 @@ public enum ThemeAction
     }
 }
 
-open class ThemeBrowserCell : UICollectionViewCell
-{
+open class ThemeBrowserCell: UICollectionViewCell {
     // MARK: - Constants
 
     open static let reuseIdentifier = "ThemeBrowserCell"
@@ -62,9 +60,9 @@ open class ThemeBrowserCell : UICollectionViewCell
 
    // MARK: - Outlets
 
-    @IBOutlet weak var imageView : UIImageView!
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var infoBar: UIView!
-    @IBOutlet weak var nameLabel : UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var highlightView: UIView!
@@ -72,7 +70,7 @@ open class ThemeBrowserCell : UICollectionViewCell
 
     // MARK: - Properties
 
-    open var theme : Theme? {
+    open var theme: Theme? {
         didSet {
             refreshGUI()
         }

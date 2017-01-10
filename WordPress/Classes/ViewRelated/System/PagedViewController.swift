@@ -44,7 +44,7 @@ class PagedViewController: UIViewController {
             }, completion: nil)
     }
 
-    override var shouldAutorotate : Bool {
+    override var shouldAutorotate: Bool {
         return false
     }
 

@@ -342,8 +342,7 @@ extension AztecPostViewController {
 }
 
 // MARK: -
-extension AztecPostViewController : Aztec.FormatBarDelegate
-{
+extension AztecPostViewController : Aztec.FormatBarDelegate {
 
     func handleActionForIdentifier(_ identifier: FormattingIdentifier) {
 
@@ -425,28 +424,28 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
         let isInsertingNewLink = (url == nil)
         // TODO: grab link from pasteboard if available
 
-        let insertButtonTitle = isInsertingNewLink ? NSLocalizedString("Insert Link", comment:"Label action for inserting a link on the editor") : NSLocalizedString("Update Link", comment:"Label action for updating a link on the editor")
-        let removeButtonTitle = NSLocalizedString("Remove Link", comment:"Label action for removing a link from the editor")
-        let cancelButtonTitle = NSLocalizedString("Cancel", comment:"Cancel button")
+        let insertButtonTitle = isInsertingNewLink ? NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor") : NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
+        let removeButtonTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
+        let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel button")
 
-        let alertController = UIAlertController(title:insertButtonTitle,
-                                                message:nil,
-                                                preferredStyle:UIAlertControllerStyle.alert)
+        let alertController = UIAlertController(title: insertButtonTitle,
+                                                message: nil,
+                                                preferredStyle: UIAlertControllerStyle.alert)
 
         alertController.addTextField(configurationHandler: { [weak self]textField in
             textField.clearButtonMode = UITextFieldViewMode.always
-            textField.placeholder = NSLocalizedString("URL", comment:"URL text field placeholder")
+            textField.placeholder = NSLocalizedString("URL", comment: "URL text field placeholder")
 
             textField.text = url?.absoluteString
 
             textField.addTarget(self,
-                action:#selector(AztecPostViewController.alertTextFieldDidChange),
-                for:UIControlEvents.editingChanged)
+                action: #selector(AztecPostViewController.alertTextFieldDidChange),
+                for: UIControlEvents.editingChanged)
             })
 
         alertController.addTextField(configurationHandler: { textField in
             textField.clearButtonMode = UITextFieldViewMode.always
-            textField.placeholder = NSLocalizedString("Link Name", comment:"Link name field placeholder")
+            textField.placeholder = NSLocalizedString("Link Name", comment: "Link name field placeholder")
             textField.isSecureTextEntry = false
             textField.autocapitalizationType = UITextAutocapitalizationType.sentences
             textField.autocorrectionType = UITextAutocorrectionType.default
@@ -455,9 +454,9 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
             textField.text = title
         })
 
-        let insertAction = UIAlertAction(title:insertButtonTitle,
-                                         style:UIAlertActionStyle.default,
-                                         handler:{ [weak self]action in
+        let insertAction = UIAlertAction(title: insertButtonTitle,
+                                         style: UIAlertActionStyle.default,
+                                         handler: { [weak self] action in
 
                                             self?.richTextView.becomeFirstResponder()
                                             let linkURLString = alertController.textFields?.first?.text
@@ -469,24 +468,24 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
 
                                             guard
                                                 let urlString = linkURLString,
-                                                let url = URL(string:urlString),
+                                                let url = URL(string: urlString),
                                                 let title = linkTitle
                                                 else {
                                                     return
                                             }
-                                            self?.richTextView.setLink(url, title:title, inRange: range)
+                                            self?.richTextView.setLink(url, title: title, inRange: range)
             })
 
-        let removeAction = UIAlertAction(title:removeButtonTitle,
-                                         style:UIAlertActionStyle.destructive,
-                                         handler:{ [weak self] action in
+        let removeAction = UIAlertAction(title: removeButtonTitle,
+                                         style: UIAlertActionStyle.destructive,
+                                         handler: { [weak self] action in
                                             self?.richTextView.becomeFirstResponder()
                                             self?.richTextView.removeLink(inRange: range)
             })
 
         let cancelAction = UIAlertAction(title: cancelButtonTitle,
-                                         style:UIAlertActionStyle.cancel,
-                                         handler:{ [weak self]action in
+                                         style: UIAlertActionStyle.cancel,
+                                         handler: { [weak self]action in
                                             self?.richTextView.becomeFirstResponder()
             })
 
@@ -501,7 +500,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
             insertAction.isEnabled = !text.isEmpty
         }
 
-        self.present(alertController, animated:true, completion:nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 
     func alertTextFieldDidChange(_ textField: UITextField) {
@@ -578,8 +577,7 @@ extension AztecPostViewController: UINavigationControllerDelegate {
 }
 
 
-extension AztecPostViewController: UIImagePickerControllerDelegate
-{
+extension AztecPostViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         dismiss(animated: true, completion: nil)
 

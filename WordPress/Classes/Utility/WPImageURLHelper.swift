@@ -1,8 +1,7 @@
 import Foundation
 
 /// Helper class to create a WordPress URL for downloading images with size parameters.
-open class WPImageURLHelper: NSObject
-{
+open class WPImageURLHelper: NSObject {
     /**
      Adds to the provided url width and height parameters to allow the image to be resized on the server
 
@@ -13,7 +12,7 @@ open class WPImageURLHelper: NSObject
 
      - note: If there is any problem with the original URL parsing, the original URL is returned with no changes.
      */
-    open class func imageURLWithSize(_ size: CGSize, forImageURL url:URL) -> URL {
+    open class func imageURLWithSize(_ size: CGSize, forImageURL url: URL) -> URL {
         guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
             return url
         }
@@ -28,12 +27,12 @@ open class WPImageURLHelper: NSObject
         let height = Int(size.height)
         let width = Int(size.width)
         if height != 0 {
-            let heightItem = URLQueryItem(name:"h", value:"\(height)")
+            let heightItem = URLQueryItem(name: "h", value: "\(height)")
             newQueryItems.append(heightItem)
         }
 
         if width != 0 {
-            let widthItem = URLQueryItem(name:"w", value:"\(width)")
+            let widthItem = URLQueryItem(name: "w", value: "\(width)")
             newQueryItems.append(widthItem)
         }
 

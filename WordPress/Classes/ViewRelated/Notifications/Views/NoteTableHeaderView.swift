@@ -4,8 +4,7 @@ import WordPressShared
 /// This class renders a view with top and bottom separators, meant to be used as UITableView section
 /// header in NotificationsViewController.
 ///
-class NoteTableHeaderView: UIView
-{
+class NoteTableHeaderView: UIView {
     // MARK: - Public Properties
     var title: String? {
         set {

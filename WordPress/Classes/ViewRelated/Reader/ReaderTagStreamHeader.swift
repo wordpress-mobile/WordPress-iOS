@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared
 
-@objc open class ReaderTagStreamHeader: UIView, ReaderStreamHeader
-{
+@objc open class ReaderTagStreamHeader: UIView, ReaderStreamHeader {
     @IBOutlet fileprivate weak var borderedView: UIView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
     @IBOutlet fileprivate weak var followButton: PostMetaButton!

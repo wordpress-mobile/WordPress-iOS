@@ -49,7 +49,7 @@ class PurchaseButton: RoundedButton {
                     // See https://github.com/wordpress-mobile/WordPress-iOS/pull/5361
                     // for more info.
                     self.superview?.layoutIfNeeded()
-                    }, completion:  { finished in
+                    }, completion: { finished in
                         self.activityIndicatorView.startAnimating()
                         self.borderWidth = 0
                 })
@@ -64,7 +64,7 @@ class PurchaseButton: RoundedButton {
 
                     // See comment above
                     self.superview?.layoutIfNeeded()
-                    }, completion:  { finished in
+                    }, completion: { finished in
                         self.titleLabel?.alpha = 1
                 })
             }

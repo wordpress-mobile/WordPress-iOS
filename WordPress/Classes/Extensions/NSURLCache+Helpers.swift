@@ -3,8 +3,7 @@ import Foundation
 
 /// Encapsulates all of the NSURLCache Helpers
 ///
-extension URLCache
-{
+extension URLCache {
     /// Private Constants
     ///
     fileprivate struct Constants {
@@ -25,23 +24,21 @@ extension URLCache
     ///
     func cacheImage(_ image: UIImage, forRequest request: URLRequest) {
         guard let URL = request.url,
-            let responseData = UIImagePNGRepresentation(image) else
-        {
+            let responseData = UIImagePNGRepresentation(image) else {
             return
         }
 
         // Fist: Prepare the Response Headers
         let headerFields = [
-            Constants.contentTypeKey : Constants.contentTypePNG,
-            Constants.expirationKey  : Date(timeIntervalSinceNow: Constants.expirationTime).toStringAsRFC1123()
+            Constants.contentTypeKey: Constants.contentTypePNG,
+            Constants.expirationKey: Date(timeIntervalSinceNow: Constants.expirationTime).toStringAsRFC1123()
         ]
 
         // Second: Construct a proper NSHTTPURLResponse
         guard let response = HTTPURLResponse(url: URL,
                                                statusCode: Constants.statusCodeOK,
                                                httpVersion: Constants.httpVersion,
-                                               headerFields: headerFields) else
-        {
+                                               headerFields: headerFields) else {
             return
         }
 

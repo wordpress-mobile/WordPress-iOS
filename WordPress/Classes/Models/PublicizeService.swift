@@ -1,8 +1,7 @@
 import Foundation
 import CoreData
 
-open class PublicizeService : NSManagedObject
-{
+open class PublicizeService: NSManagedObject {
     @NSManaged open var connectURL: String
     @NSManaged open var detail: String
     @NSManaged open var icon: String

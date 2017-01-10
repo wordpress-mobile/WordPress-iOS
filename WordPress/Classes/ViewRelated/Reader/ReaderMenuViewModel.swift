@@ -2,7 +2,7 @@ import Foundation
 import Gridicons
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -15,7 +15,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l > r
@@ -56,8 +56,7 @@ struct ReaderMenuSection {
 
 /// Represents an row, or menu item in a reader menu section.
 ///
-struct ReaderMenuItem
-{
+struct ReaderMenuItem {
     let title: String
     let type: ReaderMenuItemType
     // A custom icon for the menu item.
@@ -85,8 +84,7 @@ struct ReaderMenuItem
 
 /// Protocol allowing a reader menu view model to notify content changes.
 ///
-protocol ReaderMenuViewModelDelegate: class
-{
+protocol ReaderMenuViewModelDelegate: class {
 
     /// Notifies the delegate that the menu did reload its content.
     ///
@@ -116,8 +114,7 @@ enum ReaderDefaultMenuItemOrder: Int {
 
 /// The view model used by the reader.
 ///
-@objc class ReaderMenuViewModel: NSObject
-{
+@objc class ReaderMenuViewModel: NSObject {
     var defaultsFetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
     var teamsFetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
     var listsFetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
@@ -214,7 +211,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the defaults section and its corresponding NSFetchedResultsController.
     ///
     func setupDefaultsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("Streams", comment:"Section title of the default reader items."), type: .defaults)
+        let section = ReaderMenuSection(title: NSLocalizedString("Streams", comment: "Section title of the default reader items."), type: .defaults)
         sections.append(section)
 
         buildDefaultSectionItems()
@@ -312,7 +309,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the teams section.
     ///
     func setupTeamsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("Teams", comment:"Section title of the teams reader section."), type: .teams)
+        let section = ReaderMenuSection(title: NSLocalizedString("Teams", comment: "Section title of the teams reader section."), type: .teams)
         sections.append(section)
     }
 
@@ -400,7 +397,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the lists section and its corresponding NSFetchedResultsController.
     ///
     func setupListsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("Lists", comment:"Section title of the lists reader section."), type: .lists)
+        let section = ReaderMenuSection(title: NSLocalizedString("Lists", comment: "Section title of the lists reader section."), type: .lists)
         sections.append(section)
     }
 
@@ -471,7 +468,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     /// Sets up the tags section and its corresponding NSFetchedResultsController.
     ///
     func setupTagsSection() {
-        let section = ReaderMenuSection(title: NSLocalizedString("Tags", comment:"Section title of the tags reader section."), type: .tags)
+        let section = ReaderMenuSection(title: NSLocalizedString("Tags", comment: "Section title of the tags reader section."), type: .tags)
         sections.append(section)
     }
 
@@ -705,8 +702,7 @@ enum ReaderDefaultMenuItemOrder: Int {
 }
 
 
-extension ReaderMenuViewModel: NSFetchedResultsControllerDelegate
-{
+extension ReaderMenuViewModel: NSFetchedResultsControllerDelegate {
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         var section: Int?

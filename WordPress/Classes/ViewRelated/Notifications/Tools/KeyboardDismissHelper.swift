@@ -13,8 +13,7 @@ import UIKit
 /// -   Initialize it with a reference to the scrollView + bottom constraint + dismissableControl
 /// -   Forward the scrollView willBegin/didScroll events
 ///
-@objc class KeyboardDismissHelper: NSObject
-{
+@objc class KeyboardDismissHelper: NSObject {
     /// Reference to the control to-be-dismissed
     ///
     var dismissableControl: UIView?
@@ -221,7 +220,7 @@ import UIKit
         return bottomInset
     }
 
-    fileprivate func durationFromKeyboardNote(_ note:  Foundation.Notification) -> TimeInterval {
+    fileprivate func durationFromKeyboardNote(_ note: Foundation.Notification) -> TimeInterval {
         guard let duration = note.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval else {
             return TimeInterval(0)
         }
@@ -229,10 +228,9 @@ import UIKit
         return duration
     }
 
-    fileprivate func curveFromKeyboardNote(_ note:  Foundation.Notification) -> UIViewAnimationCurve {
+    fileprivate func curveFromKeyboardNote(_ note: Foundation.Notification) -> UIViewAnimationCurve {
         guard let rawCurve = note.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int,
-            let curve = UIViewAnimationCurve(rawValue: rawCurve) else
-        {
+            let curve = UIViewAnimationCurve(rawValue: rawCurve) else {
             return .easeInOut
         }
 

@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared
 
-class NoteBlockTableViewCell: WPTableViewCell
-{
+class NoteBlockTableViewCell: WPTableViewCell {
     // MARK: - Public Properties
     var isBadge: Bool = false {
         didSet {

@@ -5,8 +5,7 @@ import WordPressShared
 /// The purpose of this class is to render the Discussion Settings associated to a site, and
 /// allow the user to tune those settings, as required.
 ///
-open class DiscussionSettingsViewController : UITableViewController
-{
+open class DiscussionSettingsViewController: UITableViewController {
     // MARK: - Initializers / Deinitializers
     public convenience init(blog: Blog) {
         self.init(style: .grouped)
@@ -240,7 +239,7 @@ open class DiscussionSettingsViewController : UITableViewController
         pickerViewController.pickerMinimumValue = commentsAutocloseMinimumValue
         pickerViewController.pickerMaximumValue = commentsAutocloseMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsCloseAutomaticallyAfterDays as? Int
-        pickerViewController.onChange           = { [weak self] (enabled : Bool, newValue: Int) in
+        pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
             self?.settings.commentsCloseAutomatically = enabled
             self?.settings.commentsCloseAutomaticallyAfterDays = newValue as NSNumber?
         }
@@ -293,7 +292,7 @@ open class DiscussionSettingsViewController : UITableViewController
         pickerViewController.pickerMinimumValue = commentsPagingMinimumValue
         pickerViewController.pickerMaximumValue = commentsPagingMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsPageSize as? Int
-        pickerViewController.onChange           = { [weak self] (enabled : Bool, newValue: Int) in
+        pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
             self?.settings.commentsPagingEnabled = enabled
             self?.settings.commentsPageSize = newValue as NSNumber?
         }
@@ -328,7 +327,7 @@ open class DiscussionSettingsViewController : UITableViewController
         pickerViewController.pickerMinimumValue = commentsLinksMinimumValue
         pickerViewController.pickerMaximumValue = commentsLinksMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsMaximumLinks as? Int
-        pickerViewController.onChange           = { [weak self] (enabled : Bool, newValue: Int) in
+        pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
             self?.settings.commentsMaximumLinks = newValue as NSNumber?
         }
 
@@ -368,32 +367,32 @@ open class DiscussionSettingsViewController : UITableViewController
 
 
     // MARK: - Computed Properties
-    fileprivate var sections : [Section] {
+    fileprivate var sections: [Section] {
         return [postsSection, commentsSection, otherSection]
     }
 
-    fileprivate var postsSection : Section {
+    fileprivate var postsSection: Section {
         let headerText = NSLocalizedString("Defaults for New Posts", comment: "Discussion Settings: Posts Section")
         let footerText = NSLocalizedString("You can override these settings for individual posts.", comment: "Discussion Settings: Footer Text")
         let rows = [
             Row(style:      .Switch,
                 title:      NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled"),
                 boolValue:  self.settings.commentsAllowed,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedCommentsAllowed($0)
                             }),
 
             Row(style:      .Switch,
                 title:      NSLocalizedString("Send Pingbacks", comment: "Settings: Sending Pingbacks"),
                 boolValue:  self.settings.pingbackOutboundEnabled,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedPingbacksOutbound($0)
                             }),
 
             Row(style:      .Switch,
                 title:      NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"),
                 boolValue:  self.settings.pingbackInboundEnabled,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedPingbacksInbound($0)
                             })
         ]
@@ -401,62 +400,62 @@ open class DiscussionSettingsViewController : UITableViewController
         return Section(headerText: headerText, footerText: footerText, rows: rows)
     }
 
-    fileprivate var commentsSection : Section {
+    fileprivate var commentsSection: Section {
         let headerText = NSLocalizedString("Comments", comment: "Settings: Comment Sections")
         let rows = [
             Row(style:      .Switch,
                 title:      NSLocalizedString("Require name and email", comment: "Settings: Comments Approval settings"),
                 boolValue:  self.settings.commentsRequireNameAndEmail,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedRequireNameAndEmail($0)
                             }),
 
             Row(style:      .Switch,
                 title:      NSLocalizedString("Require users to log in", comment: "Settings: Comments Approval settings"),
                 boolValue:  self.settings.commentsRequireRegistration,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedRequireRegistration($0)
                             }),
 
             Row(style:      .Value1,
                 title:      NSLocalizedString("Close Commenting", comment: "Settings: Close comments after X period"),
                 details:    self.detailsForCloseCommenting,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedCloseCommenting($0)
                             }),
 
             Row(style:      .Value1,
                 title:      NSLocalizedString("Sort By", comment: "Settings: Comments Sort Order"),
                 details:    self.detailsForSortBy,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedSortBy($0)
                             }),
 
             Row(style:      .Value1,
                 title:      NSLocalizedString("Threading", comment: "Settings: Comments Threading preferences"),
                 details:    self.detailsForThreading,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedThreading($0)
                             }),
 
             Row(style:      .Value1,
                 title:      NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences"),
                 details:    self.detailsForPaging,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedPaging($0)
                             }),
 
             Row(style:      .Value1,
                 title:      NSLocalizedString("Automatically Approve", comment: "Settings: Comments Approval settings"),
                 details:    self.detailsForAutomaticallyApprove,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedAutomaticallyApprove($0)
                             }),
 
             Row(style:      .Value1,
                 title:      NSLocalizedString("Links in comments", comment: "Settings: Comments Approval settings"),
                 details:    self.detailsForLinksInComments,
-                handler:    {   [weak self] in
+                handler: {  [weak self] in
                                 self?.pressedLinksInComments($0)
                             }),
         ]
@@ -464,7 +463,7 @@ open class DiscussionSettingsViewController : UITableViewController
         return Section(headerText: headerText, rows: rows)
     }
 
-    fileprivate var otherSection : Section {
+    fileprivate var otherSection: Section {
         let rows = [
             Row(style:      .Value1,
                 title:      NSLocalizedString("Hold for Moderation", comment: "Settings: Comments Moderation"),
@@ -481,7 +480,7 @@ open class DiscussionSettingsViewController : UITableViewController
 
 
     // MARK: - Row Detail Helpers
-    fileprivate var detailsForCloseCommenting : String {
+    fileprivate var detailsForCloseCommenting: String {
         if !settings.commentsCloseAutomatically {
             return NSLocalizedString("Off", comment: "Disabled")
         }
@@ -491,11 +490,11 @@ open class DiscussionSettingsViewController : UITableViewController
         return String(format: format, numberOfDays)
     }
 
-    fileprivate var detailsForSortBy : String {
+    fileprivate var detailsForSortBy: String {
         return settings.commentsSorting.description
     }
 
-    fileprivate var detailsForThreading : String {
+    fileprivate var detailsForThreading: String {
         if !settings.commentsThreadingEnabled {
             return NSLocalizedString("Off", comment: "Disabled")
         }
@@ -505,7 +504,7 @@ open class DiscussionSettingsViewController : UITableViewController
         return String(format: format, levels)
     }
 
-    fileprivate var detailsForPaging : String {
+    fileprivate var detailsForPaging: String {
         if !settings.commentsPagingEnabled {
             return NSLocalizedString("None", comment: "Disabled")
         }
@@ -515,7 +514,7 @@ open class DiscussionSettingsViewController : UITableViewController
         return String(format: format, pageSize)
     }
 
-    fileprivate var detailsForAutomaticallyApprove : String {
+    fileprivate var detailsForAutomaticallyApprove: String {
         switch settings.commentsAutoapproval {
         case .disabled:
             return NSLocalizedString("None", comment: "No comment will be autoapproved")
@@ -526,7 +525,7 @@ open class DiscussionSettingsViewController : UITableViewController
         }
     }
 
-    fileprivate var detailsForLinksInComments : String {
+    fileprivate var detailsForLinksInComments: String {
         guard let numberOfLinks = settings.commentsMaximumLinks else {
             return String()
         }
@@ -539,11 +538,11 @@ open class DiscussionSettingsViewController : UITableViewController
 
     // MARK: - Private Nested Classes
     fileprivate class Section {
-        let headerText      : String?
-        let footerText      : String?
-        let rows            : [Row]
+        let headerText: String?
+        let footerText: String?
+        let rows: [Row]
 
-        init(headerText: String? = nil, footerText: String? = nil, rows : [Row]) {
+        init(headerText: String? = nil, footerText: String? = nil, rows: [Row]) {
             self.headerText = headerText
             self.footerText = footerText
             self.rows       = rows
@@ -551,11 +550,11 @@ open class DiscussionSettingsViewController : UITableViewController
     }
 
     fileprivate class Row {
-        let style           : Style
-        let title           : String?
-        let details         : String?
-        let handler         : Handler?
-        var boolValue       : Bool?
+        let style: Style
+        let title: String?
+        let details: String?
+        let handler: Handler?
+        var boolValue: Bool?
 
         init(style: Style, title: String? = nil, details: String? = nil, boolValue: Bool? = nil, handler: Handler? = nil) {
             self.style      = style
@@ -567,7 +566,7 @@ open class DiscussionSettingsViewController : UITableViewController
 
         typealias Handler = ((AnyObject?) -> Void)
 
-        enum Style : String {
+        enum Style: String {
             case Value1     = "Value1"
             case Switch     = "SwitchCell"
         }
@@ -576,10 +575,10 @@ open class DiscussionSettingsViewController : UITableViewController
 
 
     // MARK: - Private Properties
-    fileprivate var blog : Blog!
+    fileprivate var blog: Blog!
 
     // MARK: - Computed Properties
-    fileprivate var settings : BlogSettings {
+    fileprivate var settings: BlogSettings {
         return blog.settings!
     }
 

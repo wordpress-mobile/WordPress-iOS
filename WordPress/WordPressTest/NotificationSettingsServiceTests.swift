@@ -6,14 +6,13 @@ import OHHTTPStubs
 
 // MARK: - NotificationSettingsServiceTests
 //
-class NotificationSettingsServiceTests: XCTestCase
-{
+class NotificationSettingsServiceTests: XCTestCase {
     typealias StreamKind    = NotificationSettings.Stream.Kind
 
     // MARK: - Properties
-    var contextManager      : TestContextManager!
-    var remoteApi           : WordPressComRestApi!
-    var service             : NotificationSettingsService!
+    var contextManager: TestContextManager!
+    var remoteApi: WordPressComRestApi!
+    var service: NotificationSettingsService!
 
     // MARK: - Constants
     let timeout             = 2.0
@@ -63,30 +62,30 @@ class NotificationSettingsServiceTests: XCTestCase
         let parsedTimelineSettings  = targetSite.streams.filter { $0.kind == StreamKind.Timeline }.first
 
         let expectedTimelineSettings = [
-            "new_comment"   : false,
-            "comment_like"  : true,
-            "post_like"     : false,
-            "follow"        : true,
-            "achievement"   : false,
-            "mentions"      : true
+            "new_comment": false,
+            "comment_like": true,
+            "post_like": false,
+            "follow": true,
+            "achievement": false,
+            "mentions": true
         ]
 
         let expectedEmailSettings = [
-            "new_comment"   : true,
-            "comment_like"  : false,
-            "post_like"     : true,
-            "follow"        : false,
-            "achievement"   : true,
-            "mentions"      : false
+            "new_comment": true,
+            "comment_like": false,
+            "post_like": true,
+            "follow": false,
+            "achievement": true,
+            "mentions": false
         ]
 
         let expectedDeviceSettings = [
-            "new_comment"   : false,
-            "comment_like"  : true,
-            "post_like"     : false,
-            "follow"        : true,
-            "achievement"   : false,
-            "mentions"      : true
+            "new_comment": false,
+            "comment_like": true,
+            "post_like": false,
+            "follow": true,
+            "achievement": false,
+            "mentions": true
         ]
 
         for (key, value) in parsedDeviceSettings!.preferences! {
@@ -114,18 +113,18 @@ class NotificationSettingsServiceTests: XCTestCase
         let parsedTimelineSettings  = otherSettings.streams.filter { $0.kind == StreamKind.Timeline }.first
 
         let expectedDeviceSettings = [
-            "comment_like"  : true,
-            "comment_reply" : true
+            "comment_like": true,
+            "comment_reply": true
         ]
 
         let expectedEmailSettings = [
-            "comment_like"  : false,
-            "comment_reply" : false
+            "comment_like": false,
+            "comment_reply": false
         ]
 
         let expectedTimelineSettings = [
-            "comment_like"  : false,
-            "comment_reply" : true
+            "comment_like": false,
+            "comment_reply": true
         ]
 
         for (key, value) in parsedDeviceSettings!.preferences! {
@@ -149,10 +148,10 @@ class NotificationSettingsServiceTests: XCTestCase
         XCTAssert(wordPressComSettings.streams.count == 1, "Error while parsing WordPress.com Settings")
 
         let expectedSettings = [
-            "news"          : false,
+            "news": false,
             "recommendation": false,
-            "promotion"     : true,
-            "digest"        : true
+            "promotion": true,
+            "digest": true
         ]
 
         for (key, value) in wordPressComSettings.streams.first!.preferences! {
@@ -164,7 +163,7 @@ class NotificationSettingsServiceTests: XCTestCase
 
     // MARK: - Private Helpers
     fileprivate func loadNotificationSettings() -> [NotificationSettings] {
-        var settings    : [NotificationSettings]?
+        var settings: [NotificationSettings]?
         let expect = expectation(description: "Notification settings reading expecation")
 
         service?.getAllSettings({ (theSettings: [NotificationSettings]) in

@@ -2,7 +2,7 @@ import UIKit
 
 @objc open class ReaderPostCardContentLabel: UILabel {
 
-    open override var intrinsicContentSize : CGSize {
+    open override var intrinsicContentSize: CGSize {
         // HACK
         // iPhone Pluses with 3.0 render scales seem to produce fractional sizes with labels
         // that are sized via UIStackViews.

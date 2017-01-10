@@ -136,7 +136,7 @@ extension PHAsset: ExportableAsset {
                 } catch let error as NSError {
                     errorHandler(error)
                 }
-            }, failureBlock:{(error) -> () in
+            }, failureBlock: { (error) -> () in
                 errorHandler(error)
             })
         }
@@ -159,8 +159,7 @@ extension PHAsset: ExportableAsset {
         manager.requestImage(for: self,
                                      targetSize: targetSize,
                                      contentMode: .aspectFit,
-                                     options: options)
-        { (image, info) in
+                                     options: options) { (image, info) in
             completion(image, info)
         }
     }
@@ -189,12 +188,12 @@ extension PHAsset: ExportableAsset {
         }
     }
 
-    func removeAttributes(_ attributes: [String], fromMetadata: [String:AnyObject]) -> [String:AnyObject]{
+    func removeAttributes(_ attributes: [String], fromMetadata: [String: AnyObject]) -> [String: AnyObject] {
         var resultingMetadata = fromMetadata
         for attribute in attributes {
             resultingMetadata.removeValue(forKey: attribute)
-            if attribute == kCGImagePropertyOrientation as String{
-                if let tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String:AnyObject]{
+            if attribute == kCGImagePropertyOrientation as String {
+                if let tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String: AnyObject] {
                     var newTiffMetadata = tiffMetadata
                     newTiffMetadata.removeValue(forKey: kCGImagePropertyTIFFOrientation as String)
                     resultingMetadata[kCGImagePropertyTIFFDictionary as String] = newTiffMetadata as AnyObject?
@@ -212,11 +211,11 @@ extension PHAsset: ExportableAsset {
     ///
     /// - Returns: A new metadata object where the values match the values on the UIImage
     ///
-    func matchMetadata(_ metadata: [String:AnyObject], image: UIImage) -> [String:AnyObject] {
+    func matchMetadata(_ metadata: [String: AnyObject], image: UIImage) -> [String: AnyObject] {
         var resultingMetadata = metadata
         let correctOrientation = image.metadataOrientation
         resultingMetadata[kCGImagePropertyOrientation as String] = Int(correctOrientation.rawValue) as AnyObject?
-        if var tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String:AnyObject]{
+        if var tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String: AnyObject] {
             tiffMetadata[kCGImagePropertyTIFFOrientation as String] = Int(correctOrientation.rawValue) as AnyObject?
             resultingMetadata[kCGImagePropertyTIFFDictionary as String] = tiffMetadata as AnyObject?
         }
@@ -322,7 +321,7 @@ extension PHAsset: ExportableAsset {
 
     // MARK: - Error Handling
 
-    enum ErrorCode : Int {
+    enum ErrorCode: Int {
         case unsupportedAssetType = 1
         case failedToExport = 2
         case failedToExportMetadata = 3
@@ -335,14 +334,14 @@ extension PHAsset: ExportableAsset {
         return error
     }
 
-    func requestMetadataWithCompletionBlock(_ completionBlock: @escaping (_ metadata:[String:AnyObject]) ->(), failureBlock: @escaping (_ error:NSError) -> ()) {
+    func requestMetadataWithCompletionBlock(_ completionBlock: @escaping (_ metadata: [String: AnyObject]) ->(), failureBlock: @escaping (_ error: NSError) -> ()) {
         let editOptions = PHContentEditingInputRequestOptions()
         editOptions.isNetworkAccessAllowed = true
         self.requestContentEditingInput(with: editOptions) { (contentEditingInput, info) -> Void in
             guard let contentEditingInput = contentEditingInput,
                 let fullSizeImageURL = contentEditingInput.fullSizeImageURL,
                 let image = CIImage(contentsOf: fullSizeImageURL) else {
-                    completionBlock([String:AnyObject]())
+                    completionBlock([String: AnyObject]())
                     if let error = info[PHImageErrorKey] as? NSError {
                         failureBlock(error)
                     } else {
@@ -361,7 +360,7 @@ extension PHAsset: ExportableAsset {
         var types: [PHAssetResourceType.RawValue] = []
         if (mediaType == PHAssetMediaType.image) {
             types = [PHAssetResourceType.photo.rawValue]
-        } else if (mediaType == PHAssetMediaType.video){
+        } else if (mediaType == PHAssetMediaType.video) {
             types = [PHAssetResourceType.video.rawValue]
         }
         for resource in resources {
@@ -377,7 +376,7 @@ extension PHAsset: ExportableAsset {
         var types: [PHAssetResourceType.RawValue] = []
         if (mediaType == PHAssetMediaType.image) {
             types = [PHAssetResourceType.photo.rawValue]
-        } else if (mediaType == PHAssetMediaType.video){
+        } else if (mediaType == PHAssetMediaType.video) {
             types = [PHAssetResourceType.video.rawValue]
         }
         for resource in resources {
@@ -393,7 +392,7 @@ extension String {
 
     static func StringFromCFType(_ cfValue: Unmanaged<CFString>?) -> String? {
         let value = Unmanaged.fromOpaque(cfValue!.toOpaque()).takeUnretainedValue() as CFString
-        if CFGetTypeID(value) == CFStringGetTypeID(){
+        if CFGetTypeID(value) == CFStringGetTypeID() {
             return value as String
         } else {
             return nil
