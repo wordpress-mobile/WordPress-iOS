@@ -32,7 +32,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 
 @implementation WPAnalyticsTrackerAutomatticTracks
 
-NSString *_loggedInID;
+NSString *_loggedInID, *_anonymousID;
 
 + (NSString *)eventNameForStat:(WPAnalyticsStat)stat
 {
@@ -72,7 +72,7 @@ NSString *_loggedInID;
 
 - (void)beginSession
 {
-    if (self.loggedInID) {
+    if (self.loggedInID.length > 0) {
         [self.tracksService switchToAuthenticatedUserWithUsername:self.loggedInID userID:nil skipAliasEventCreation:YES];
     } else {
         [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
@@ -105,10 +105,7 @@ NSString *_loggedInID;
         }
     }];
     
-    BOOL dotcom_user = NO;
-    if (accountPresent) {
-        dotcom_user = YES;
-    }
+    BOOL dotcom_user = (accountPresent && username.length > 0);
     
     NSMutableDictionary *userProperties = [NSMutableDictionary new];
     userProperties[@"platform"] = @"iOS";
@@ -119,10 +116,29 @@ NSString *_loggedInID;
 
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
-    
-    if (dotcom_user == YES && [username length] > 0) {
 
-        [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
+    // Tell the client what kind of user
+    if (dotcom_user == YES) {
+        if (self.loggedInID.length == 0) {
+            // No previous username logged
+            self.loggedInID = username;
+            self.anonymousID = nil;
+
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
+        } else if ([self.loggedInID isEqualToString:username]){
+            // Username did not change from last refreshMetadata - just make sure Tracks client has it
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:YES];
+        } else {
+            // Username changed for some reason - switch back to anonymous first
+            [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
+            self.loggedInID = username;
+            self.anonymousID = nil;
+        }
+    } else {
+        // User is not authenticated, switch to an anonymous mode
+        [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
+        self.loggedInID = nil;
     }
 }
 
@@ -144,6 +160,20 @@ NSString *_loggedInID;
     return _anonymousID;
 }
 
+- (void)setAnonymousID:(NSString *)anonymousID
+{
+    _anonymousID = anonymousID;
+
+    if (anonymousID == nil) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:TracksUserDefaultsAnonymousUserIDKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        return;
+    }
+
+    [[NSUserDefaults standardUserDefaults] setObject:anonymousID forKey:TracksUserDefaultsAnonymousUserIDKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (NSString *)loggedInID
 {
     if (_loggedInID == nil || _loggedInID.length == 0) {
@@ -158,7 +188,16 @@ NSString *_loggedInID;
 
 - (void)setLoggedInID:(NSString *)loggedInID
 {
+    _loggedInID = loggedInID;
 
+    if (loggedInID == nil) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:TracksUserDefaultsLoggedInUserIDKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        return;
+    }
+
+    [[NSUserDefaults standardUserDefaults] setObject:loggedInID forKey:TracksUserDefaultsLoggedInUserIDKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat
