@@ -4,8 +4,7 @@ import WordPressShared
 /// Defines methods that a delegate should implement for clearing suggestions
 /// and for responding to a selected suggestion.
 ///
-protocol ReaderSearchSuggestionsDelegate
-{
+protocol ReaderSearchSuggestionsDelegate {
     func searchSuggestionsController(_ controller: ReaderSearchSuggestionsViewController, selectedItem: String)
 }
 
@@ -13,8 +12,7 @@ protocol ReaderSearchSuggestionsDelegate
 /// Displays a list of previously saved reader searches, sorted by most recent,
 /// and filtered by the value of `phrase`.
 ///
-class ReaderSearchSuggestionsViewController : UIViewController
-{
+class ReaderSearchSuggestionsViewController: UIViewController {
     @IBOutlet var stackView: UIStackView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var clearButton: UIButton!
@@ -32,7 +30,7 @@ class ReaderSearchSuggestionsViewController : UIViewController
     var delegate: ReaderSearchSuggestionsDelegate?
     let cellIdentifier = "CellIdentifier"
     let rowAndButtonHeight = CGFloat(44.0)
-    var maxTableViewRows:Int {
+    var maxTableViewRows: Int {
         let height = UIApplication.shared.keyWindow?.frame.size.height ?? 0
         if height == 320 {
             // iPhone 4s, 5, 5s, in landscape orientation
@@ -78,7 +76,7 @@ class ReaderSearchSuggestionsViewController : UIViewController
         let buttonTitle = NSLocalizedString("Clear search history", comment: "Title of a button.")
         clearButton.setTitle(buttonTitle, for: UIControlState())
         let buttonBackgroundImage = UIImage(color: WPStyleGuide.lightGrey())
-        clearButton.setBackgroundImage(buttonBackgroundImage, for:UIControlState())
+        clearButton.setBackgroundImage(buttonBackgroundImage, for: UIControlState())
 
         borderImageView.image = UIImage(color: WPStyleGuide.greyLighten10(), havingSize: CGSize(width: stackView.frame.width, height: 1))
 
@@ -159,8 +157,7 @@ class ReaderSearchSuggestionsViewController : UIViewController
 }
 
 
-extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
-{
+extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate {
     func managedObjectContext() -> NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }

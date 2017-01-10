@@ -3,11 +3,10 @@ import Foundation
 
 /// This Extension encapsulates all of the Blog-Capabilities related helpers.
 ///
-extension Blog
-{
+extension Blog {
     /// Enumeration that contains all of the Blog's available capabilities.
     ///
-    public enum Capability : String {
+    public enum Capability: String {
         case DeleteOthersPosts  = "delete_others_posts"
         case DeletePosts        = "delete_posts"
         case EditOthersPages    = "edit_others_pages"

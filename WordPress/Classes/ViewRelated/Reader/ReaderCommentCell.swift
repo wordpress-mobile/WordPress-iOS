@@ -2,15 +2,13 @@ import UIKit
 import WordPressShared
 import Gridicons
 
-@objc protocol ReaderCommentCellDelegate: WPRichContentViewDelegate
-{
+@objc protocol ReaderCommentCellDelegate: WPRichContentViewDelegate {
     func cell(_ cell: ReaderCommentCell, didTapAuthor comment: Comment)
     func cell(_ cell: ReaderCommentCell, didTapLike comment: Comment)
     func cell(_ cell: ReaderCommentCell, didTapReply comment: Comment)
 }
 
-class ReaderCommentCell : UITableViewCell
-{
+class ReaderCommentCell: UITableViewCell {
     struct Constants {
         // Because a stackview is managing layout we tweak text insets to fine tune things.
         // Insets:
@@ -177,7 +175,9 @@ class ReaderCommentCell : UITableViewCell
         }
 
         textView.isPrivate = comment.isPrivateContent()
-        textView.content = comment.contentForDisplay()
+        // Use `content` vs `contentForDisplay`. Hierarchcial comments are already
+        // correctly formatted during the sync process.
+        textView.content = comment.content
     }
 
 

@@ -2,10 +2,9 @@ import Foundation
 import UIKit
 import WordPressShared
 
-class PostStatusPickerViewController : UITableViewController
-{
+class PostStatusPickerViewController: UITableViewController {
     // MARK: - Initializers
-    init(statuses : [String: String]) {
+    init(statuses: [String: String]) {
         assert(statuses.count > 0, "Let's show at least one status!")
 
         // Note:  We'll store the sorted Post Statuses, into an array, as a (Key, Description) tuple.
@@ -91,11 +90,11 @@ class PostStatusPickerViewController : UITableViewController
     typealias PickerHandler = (_ postStatus: String, _ description: String) -> Void
 
     // MARK: - Public Properties
-    var onChange                : PickerHandler?
+    var onChange: PickerHandler?
 
     // MARK: - Private Properties
-    fileprivate var sortedStatuses  : [(String, String)]
-    fileprivate var noResultsView   : WPNoResultsView!
+    fileprivate var sortedStatuses: [(String, String)]
+    fileprivate var noResultsView: WPNoResultsView!
 
     // MARK: - Private Constants
     fileprivate let reuseIdentifier = "reuseIdentifier"

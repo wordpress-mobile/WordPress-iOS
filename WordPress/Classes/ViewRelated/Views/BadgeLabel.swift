@@ -34,7 +34,7 @@ class BadgeLabel: UILabel {
         super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
     }
 
-    override var intrinsicContentSize : CGSize {
+    override var intrinsicContentSize: CGSize {
         var paddedSize = super.intrinsicContentSize
         paddedSize.width += 2 * horizontalPadding
         return paddedSize

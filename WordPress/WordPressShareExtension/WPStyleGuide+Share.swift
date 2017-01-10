@@ -1,12 +1,10 @@
 import Foundation
 import WordPressShared
 
-extension WPStyleGuide
-{
+extension WPStyleGuide {
     // MARK: - Styles Used by the WordPress Share Extension
     //
-    class Share
-    {
+    class Share {
         static let blavatarPlaceholderImage = UIImage(named: "blavatar-default")
 
         static func configureBlogTableViewCell(_ cell: UITableViewCell) {

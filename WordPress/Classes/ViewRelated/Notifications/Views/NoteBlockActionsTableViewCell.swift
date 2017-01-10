@@ -5,8 +5,7 @@ import WordPressShared.WPStyleGuide
 
 // MARK: - NoteBlockActionsTableViewCell
 //
-class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
-{
+class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     typealias EventHandler = ((_ sender: AnyObject) -> Void)
 
     /// Actions StackView
@@ -149,32 +148,32 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
 
     /// Returns the required button spacing
     ///
-    fileprivate var buttonSpacingForCurrentTraits : CGFloat {
+    fileprivate var buttonSpacingForCurrentTraits: CGFloat {
         let isHorizontallyCompact = traitCollection.horizontalSizeClass == .compact
         return isHorizontallyCompact ? Constants.buttonSpacingCompact : Constants.buttonSpacing
     }
 
     /// Returns the accessibility label for the Approve Button
     ///
-    fileprivate var approveAccesibilityLabel : String {
+    fileprivate var approveAccesibilityLabel: String {
         return isApproveOn ? Approve.selectedTitle : Approve.normalTitle
     }
 
     /// Returns the accessibility hint for the Approve Button
     ///
-    fileprivate var approveAccesibilityHint : String {
+    fileprivate var approveAccesibilityHint: String {
         return isApproveOn ? Approve.selectedHint : Approve.normalHint
     }
 
     /// Returns the accessibility label for the Like Button
     ///
-    fileprivate var likeAccesibilityLabel : String {
+    fileprivate var likeAccesibilityLabel: String {
         return isLikeOn ? Like.selectedTitle : Like.normalTitle
     }
 
     /// Returns the accessibility hint for the Like Button
     ///
-    fileprivate var likeAccessibilityHint : String {
+    fileprivate var likeAccessibilityHint: String {
         return isLikeOn ? Like.selectedHint : Like.normalHint
     }
 
@@ -271,8 +270,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell
 
 // MARK: - Animation Helpers
 //
-private extension NoteBlockActionsTableViewCell
-{
+private extension NoteBlockActionsTableViewCell {
     func animateLikeButton(_ button: UIButton, completion: @escaping (() -> Void)) {
         guard let overlayImageView = overlayForButton(button, state: .selected) else {
             return
@@ -316,8 +314,7 @@ private extension NoteBlockActionsTableViewCell
 
 // MARK: - Private Constants
 //
-private extension NoteBlockActionsTableViewCell
-{
+private extension NoteBlockActionsTableViewCell {
     struct Approve {
         static let normalTitle      = NSLocalizedString("Approve",  comment: "Approve a comment")
         static let selectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")

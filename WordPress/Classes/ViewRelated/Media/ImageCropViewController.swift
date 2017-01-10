@@ -5,8 +5,7 @@ import UIKit
 
 /// This ViewController allows the user to resize and crop any given UIImage.
 ///
-class ImageCropViewController : UIViewController, UIScrollViewDelegate
-{
+class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Public Properties
     var onCompletion: ((UIImage) -> Void)?
 
@@ -93,10 +92,10 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
     fileprivate let maximumScaleFactor  = CGFloat(3)
 
     // MARK: - Private Properties
-    fileprivate var rawImage                : UIImage!
+    fileprivate var rawImage: UIImage!
 
     // MARK: - IBOutlets
-    @IBOutlet fileprivate var scrollView    : UIScrollView!
-    @IBOutlet fileprivate var imageView     : UIImageView!
-    @IBOutlet fileprivate var overlayView   : GravatarOverlayView!
+    @IBOutlet fileprivate var scrollView: UIScrollView!
+    @IBOutlet fileprivate var imageView: UIImageView!
+    @IBOutlet fileprivate var overlayView: GravatarOverlayView!
 }

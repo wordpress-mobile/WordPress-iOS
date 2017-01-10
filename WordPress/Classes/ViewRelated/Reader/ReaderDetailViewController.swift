@@ -3,22 +3,19 @@ import WordPressShared
 import WordPressComAnalytics
 
 
-open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration
-{
+open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
 
     static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
 
     // Structs for Constants
 
-    fileprivate struct DetailConstants
-    {
+    fileprivate struct DetailConstants {
         static let LikeCountKeyPath = "likeCount"
         static let MarginOffset = CGFloat(8.0)
     }
 
 
-    fileprivate struct DetailAnalyticsConstants
-    {
+    fileprivate struct DetailAnalyticsConstants {
         static let TypeKey = "post_detail_type"
         static let TypeNormal = "normal"
         static let TypePreviewSite = "preview_site"
@@ -81,7 +78,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    fileprivate var isLoaded : Bool {
+    fileprivate var isLoaded: Bool {
         return post != nil
     }
 
@@ -97,7 +94,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     ///
     /// - Return: A ReaderListViewController instance.
     ///
-    open class func controllerWithPost(_ post:ReaderPost) -> ReaderDetailViewController {
+    open class func controllerWithPost(_ post: ReaderPost) -> ReaderDetailViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderDetailViewController") as! ReaderDetailViewController
         controller.post = post
@@ -106,10 +103,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    open class func controllerWithPostID(_ postID:NSNumber, siteID:NSNumber) -> ReaderDetailViewController {
+    open class func controllerWithPostID(_ postID: NSNumber, siteID: NSNumber) -> ReaderDetailViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderDetailViewController") as! ReaderDetailViewController
-        controller.setupWithPostID(postID, siteID:siteID)
+        controller.setupWithPostID(postID, siteID: siteID)
 
         return controller
     }
@@ -124,7 +121,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         let context = ContextManager.sharedInstance().mainContext
-        guard let url = URL(string:path),
+        guard let url = URL(string: path),
             let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) else {
             return nil
         }
@@ -268,8 +265,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // MARK: - Setup
 
-    open func setupWithPostID(_ postID:NSNumber, siteID:NSNumber) {
-        let title = NSLocalizedString("Loading Post...", comment:"Text displayed while loading a post.")
+    open func setupWithPostID(_ postID: NSNumber, siteID: NSNumber) {
+        let title = NSLocalizedString("Loading Post...", comment: "Text displayed while loading a post.")
         WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: view)
         textView.alpha = 0.0
 
@@ -286,7 +283,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             }, failure: {[weak self] (error: Error?) in
                 DDLogSwift.logError("Error fetching post for detail: \(error?.localizedDescription)")
 
-                let title = NSLocalizedString("Error Loading Post", comment:"Text displayed when load post fails.")
+                let title = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
                 WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: self?.view)
             }
         )
@@ -400,12 +397,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         // Make sure the text view is scrolled to the top the first time after
         // the view is first configured.
+        view.layoutIfNeeded()
         textView.setContentOffset(CGPoint.zero, animated: false)
     }
 
 
     fileprivate func configureNavTitle() {
-        let placeholder = NSLocalizedString("Post", comment:"Placeholder title for ReaderPostDetails.")
+        let placeholder = NSLocalizedString("Post", comment: "Placeholder title for ReaderPostDetails.")
         self.title = post?.postTitle ?? placeholder
     }
 
@@ -418,7 +416,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         button.addTarget(self, action: #selector(ReaderDetailViewController.didTapShareButton(_:)), for: .touchUpInside)
 
         let shareButton = UIBarButtonItem(customView: button)
-        shareButton.accessibilityLabel = NSLocalizedString("Share", comment:"Spoken accessibility label")
+        shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
         WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(shareButton, for: navigationItem)
     }
 
@@ -449,7 +447,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             blavatarImageView.addGestureRecognizer(tgr)
         }
 
-        if let siteURL:NSString = post!.siteURLForDisplay() as NSString? {
+        if let siteURL: NSString = post!.siteURLForDisplay() as NSString? {
             blogURLLabel.text = siteURL.components(separatedBy: "//").last
         }
     }
@@ -470,7 +468,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         var request: URLRequest
 
         if !(post!.isPrivate()) {
-            let size = CGSize(width:featuredImageView.frame.width, height:0)
+            let size = CGSize(width: featuredImageView.frame.width, height: 0)
             url = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
             request = URLRequest(url: url!)
 
@@ -484,7 +482,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         // Define a success block to make the image visible and update its aspect ratio constraint
-        let successBlock : ((URLRequest, HTTPURLResponse?, UIImage) -> Void) = { [weak self] (request:URLRequest, response:HTTPURLResponse?, image:UIImage) in
+        let successBlock: ((URLRequest, HTTPURLResponse?, UIImage) -> Void) = { [weak self] (request: URLRequest, response: HTTPURLResponse?, image: UIImage) in
             guard self != nil else {
                 return
             }
@@ -533,7 +531,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    fileprivate func requestForURL(_ url:URL) -> URLRequest {
+    fileprivate func requestForURL(_ url: URL) -> URLRequest {
         var requestURL = url
 
         let absoluteString = requestURL.absoluteString
@@ -640,7 +638,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    fileprivate func resetActionButton(_ button:UIButton) {
+    fileprivate func resetActionButton(_ button: UIButton) {
         button.setTitle(nil, for: UIControlState())
         button.setTitle(nil, for: .highlighted)
         button.setTitle(nil, for: .disabled)
@@ -653,7 +651,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    fileprivate func configureActionButton(_ button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected:Bool) {
+    fileprivate func configureActionButton(_ button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected: Bool) {
         button.setTitle(title, for: UIControlState())
         button.setTitle(title, for: .highlighted)
         button.setTitle(title, for: .disabled)
@@ -665,7 +663,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    fileprivate func configureLikeActionButton(_ animated:Bool = false) {
+    fileprivate func configureLikeActionButton(_ animated: Bool = false) {
         likeButton.isEnabled = ReaderHelpers.isLoggedIn()
 
         let title = post!.likeCountForDisplay()
@@ -673,7 +671,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let image = UIImage(named: imageName)
         let highlightImage = UIImage(named: "icon-reader-like-highlight")
         let selected = post!.isLiked
-        configureActionButton(likeButton, title: title, image: image, highlightedImage: highlightImage, selected:selected)
+        configureActionButton(likeButton, title: title, image: image, highlightedImage: highlightImage, selected: selected)
 
         if animated {
             playLikeButtonAnimation()
@@ -748,7 +746,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let title = post!.commentCount.stringValue
         let image = UIImage(named: "icon-reader-comment")
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")
-        configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected:false)
+        configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
     }
 
 
@@ -763,7 +761,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // MARK: - Instance Methods
 
-    func presentWebViewControllerWithURL(_ url:URL) {
+    func presentWebViewControllerWithURL(_ url: URL) {
         var url = url
         if url.host == nil {
             if let postURLString = post?.permaLink {
@@ -787,7 +785,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    func setBarsHidden(_ hidden:Bool) {
+    func setBarsHidden(_ hidden: Bool) {
         if (navigationController?.isNavigationBarHidden == hidden) {
             return
         }
@@ -979,7 +977,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    func handleBlockSiteNotification(_ notification:Foundation.Notification) {
+    func handleBlockSiteNotification(_ notification: Foundation.Notification) {
         if let userInfo = notification.userInfo, let aPost = userInfo["post"] as? NSObject {
             if aPost == post! {
                 _ = navigationController?.popViewController(animated: true)
@@ -990,8 +988,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 // MARK: - ReaderCardDiscoverAttributionView Delegate Methods
 
-extension ReaderDetailViewController : ReaderCardDiscoverAttributionViewDelegate
-{
+extension ReaderDetailViewController : ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         didTapDiscoverAttribution()
     }
@@ -1000,8 +997,7 @@ extension ReaderDetailViewController : ReaderCardDiscoverAttributionViewDelegate
 
 // MARK: - UITextView/WPRichContentView Delegate Methods
 
-extension ReaderDetailViewController: WPRichContentViewDelegate
-{
+extension ReaderDetailViewController: WPRichContentViewDelegate {
 
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
         presentWebViewControllerWithURL(URL)
@@ -1047,8 +1043,7 @@ extension ReaderDetailViewController: WPRichContentViewDelegate
 
 // MARK: - UIScrollView Delegate Methods
 
-extension ReaderDetailViewController : UIScrollViewDelegate
-{
+extension ReaderDetailViewController : UIScrollViewDelegate {
 
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if UIDevice.isPad() || footerView.isHidden || !isLoaded {

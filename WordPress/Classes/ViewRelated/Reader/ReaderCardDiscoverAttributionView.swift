@@ -1,19 +1,17 @@
 import Foundation
 import WordPressShared
 
-@objc public protocol ReaderCardDiscoverAttributionViewDelegate: NSObjectProtocol
-{
+@objc public protocol ReaderCardDiscoverAttributionViewDelegate: NSObjectProtocol {
     func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView)
 }
 
-private enum ReaderCardDiscoverAttribution : Int {
+private enum ReaderCardDiscoverAttribution: Int {
 
     case none // Default, no action
     case visitSite // Action for verbose attribution to visit a site
 }
 
-@objc open class ReaderCardDiscoverAttributionView: UIView
-{
+@objc open class ReaderCardDiscoverAttributionView: UIView {
     fileprivate let gravatarImageName = "gravatar"
     fileprivate let blavatarImageName = "post-blavatar-placeholder"
 
@@ -115,7 +113,7 @@ private enum ReaderCardDiscoverAttribution : Int {
     }
 
 
-    fileprivate func configureSiteAttribution(_ contentProvider: ReaderPostContentProvider, verboseAttribution verbose:Bool) {
+    fileprivate func configureSiteAttribution(_ contentProvider: ReaderPostContentProvider, verboseAttribution verbose: Bool) {
         let url = contentProvider.sourceAvatarURLForDisplay()
         let placeholder = UIImage(named: blavatarImageName)
         imageView.setImageWith(url!, placeholderImage: placeholder)
@@ -161,9 +159,9 @@ private enum ReaderCardDiscoverAttribution : Int {
     fileprivate func patternForSiteAttribution(_ verbose: Bool) -> String {
         var pattern: String
         if verbose {
-            pattern = NSLocalizedString("Visit %@ for more", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
+            pattern = NSLocalizedString("Visit %@ for more", comment: "A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
         } else {
-            pattern = NSLocalizedString("Visit %@", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
+            pattern = NSLocalizedString("Visit %@", comment: "A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
         }
         return pattern
     }

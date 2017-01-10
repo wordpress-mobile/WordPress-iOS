@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared
 
-open class SeparatorsView : UIView
-{
+open class SeparatorsView: UIView {
     // MARK: - Public Properties
     open var leftVisible = false {
         didSet {
@@ -59,7 +58,7 @@ open class SeparatorsView : UIView
             setNeedsDisplay()
         }
     }
-    open override var frame : CGRect {
+    open override var frame: CGRect {
         didSet {
             setNeedsDisplay()
         }

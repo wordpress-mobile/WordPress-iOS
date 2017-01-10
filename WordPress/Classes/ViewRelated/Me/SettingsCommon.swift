@@ -13,24 +13,21 @@ extension SettingsController {
         }
     }
 
-    func editText(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController
-    {
+    func editText(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
         return { row in
             let editableRow = row as! EditableTextRow
             return self.controllerForEditableText(editableRow, changeType: changeType, hint: hint, service: service)
         }
     }
 
-    func editMultilineText(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsMultiTextViewController
-    {
+    func editMultilineText(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsMultiTextViewController {
         return { row in
             let editableRow = row as! EditableTextRow
             return self.controllerForEditableMultilineText(editableRow, changeType: changeType, hint: hint, service: service)
         }
     }
 
-    func editEmailAddress(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController
-    {
+    func editEmailAddress(_ changeType: @escaping AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
         return { row in
             let editableRow = row as! EditableTextRow
             let settingsViewController =  self.controllerForEditableText(editableRow, changeType: changeType, hint: hint, service: service)
@@ -43,8 +40,7 @@ extension SettingsController {
     func controllerForEditableText(_ row: EditableTextRow,
                                    changeType: @escaping AccountSettingsChangeWithString,
                                    hint: String? = nil,
-                                   service: AccountSettingsService) -> SettingsTextViewController
-    {
+                                   service: AccountSettingsService) -> SettingsTextViewController {
         let title = row.title
         let value = row.value
 
@@ -65,8 +61,7 @@ extension SettingsController {
     func controllerForEditableMultilineText(_ row: EditableTextRow,
                                    changeType: @escaping AccountSettingsChangeWithString,
                                    hint: String? = nil,
-                                   service: AccountSettingsService) -> SettingsMultiTextViewController
-    {
+                                   service: AccountSettingsService) -> SettingsMultiTextViewController {
         let title = row.title
         let value = row.value
 

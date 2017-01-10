@@ -18,8 +18,7 @@ enum NotificationDeletionKind {
 }
 
 
-struct NotificationDeletionRequest
-{
-    let kind    : NotificationDeletionKind
+struct NotificationDeletionRequest {
+    let kind: NotificationDeletionKind
     let action  : (_ completion: @escaping ((Bool) -> Void)) -> Void
 }

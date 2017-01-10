@@ -12,7 +12,7 @@ class PostListFilterSettings: NSObject {
     let postType: PostServiceType
     fileprivate var allPostListFilters: [PostListFilter]?
 
-    enum AuthorFilter : UInt {
+    enum AuthorFilter: UInt {
         case mine = 0
         case everyone = 1
     }
@@ -120,8 +120,7 @@ class PostListFilterSettings: NSObject {
     // MARK: - Author-related methods
 
     func canFilterByAuthor() -> Bool {
-        if postType as String == PostServiceTypePost
-        {
+        if postType as String == PostServiceTypePost {
             return blog.isHostedAtWPcom && blog.isMultiAuthor && blog.account?.userID != nil
         }
         return false
@@ -166,8 +165,8 @@ class PostListFilterSettings: NSObject {
 
     // MARK: - Analytics
 
-    func propertiesForAnalytics() -> [String:AnyObject] {
-        var properties = [String:AnyObject]()
+    func propertiesForAnalytics() -> [String: AnyObject] {
+        var properties = [String: AnyObject]()
 
         properties["type"] = postType
         properties["filter"] = currentPostListFilter().title as AnyObject?

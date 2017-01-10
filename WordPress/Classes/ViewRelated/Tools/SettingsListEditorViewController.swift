@@ -6,14 +6,13 @@ import WordPressShared
 /// The purpose of this class is to render an interface that allows the user to Insert / Edit / Delete
 /// a set of strings.
 ///
-open class SettingsListEditorViewController : UITableViewController
-{
+open class SettingsListEditorViewController: UITableViewController {
     // MARK: - Public Properties
-    open var footerText   : String?
-    open var emptyText    : String?
-    open var insertTitle  : String?
-    open var editTitle    : String?
-    open var onChange     : ((Set<String>) -> Void)?
+    open var footerText: String?
+    open var emptyText: String?
+    open var insertTitle: String?
+    open var editTitle: String?
+    open var onChange: ((Set<String>) -> Void)?
 
 
     // MARK: - Initialiers
@@ -64,7 +63,7 @@ open class SettingsListEditorViewController : UITableViewController
     @IBAction func addItemPressed(_ sender: AnyObject?) {
         let settingsViewController = SettingsTextViewController(text: nil, placeholder: nil, hint: nil)
         settingsViewController.title = insertTitle
-        settingsViewController.onValueChanged = { (updatedValue : String!) in
+        settingsViewController.onValueChanged = { (updatedValue: String!) in
             self.insertString(updatedValue)
             self.notifyDidChange()
             self.tableView.reloadData()
@@ -119,7 +118,7 @@ open class SettingsListEditorViewController : UITableViewController
 
         let settingsViewController = SettingsTextViewController(text: oldText, placeholder: nil, hint: nil)
         settingsViewController.title = editTitle
-        settingsViewController.onValueChanged = { (newText : String!) in
+        settingsViewController.onValueChanged = { (newText: String!) in
             self.replaceString(oldText, newText: newText)
             self.notifyDidChange()
             self.tableView.reloadData()
@@ -152,11 +151,11 @@ open class SettingsListEditorViewController : UITableViewController
 
 
     // MARK: - Helpers
-    fileprivate func stringAtIndexPath(_ indexPath : IndexPath) -> String {
+    fileprivate func stringAtIndexPath(_ indexPath: IndexPath) -> String {
         return rows.object(at: indexPath.row) as! String
     }
 
-    fileprivate func removeAtIndexPath(_ indexPath : IndexPath) {
+    fileprivate func removeAtIndexPath(_ indexPath: IndexPath) {
         rows.removeObject(at: indexPath.row)
     }
 

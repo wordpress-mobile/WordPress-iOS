@@ -6,8 +6,7 @@ import OHHTTPStubs
 
 // MARK: - NotificationSyncMediatorTests
 //
-class NotificationSyncMediatorTests: XCTestCase
-{
+class NotificationSyncMediatorTests: XCTestCase {
     /// CoreData Context Manager
     ///
     fileprivate var manager: TestContextManager!
