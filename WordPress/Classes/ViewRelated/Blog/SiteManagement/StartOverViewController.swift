@@ -3,8 +3,7 @@ import WordPressShared
 
  /// StartOverViewController allows user to trigger help session to remove site content.
  ///
-open class StartOverViewController: UITableViewController
-{
+open class StartOverViewController: UITableViewController {
     // MARK: - Properties: must be set by creator
 
     /// The blog whose content we want to remove

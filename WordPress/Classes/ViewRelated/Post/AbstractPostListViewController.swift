@@ -207,8 +207,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     // MARK: - Configuration
 
-    func heightForFooterView() -> CGFloat
-    {
+    func heightForFooterView() -> CGFloat {
         return type(of: self).defaultHeightForFooterView
     }
 
@@ -555,14 +554,15 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], syncOptions options: PostServiceSyncOptions) {
-
-        guard let oldestPost = posts.last else {
+        guard posts.count > 0 else {
             assertionFailure("This method should not be called with no posts.")
             return
         }
-
-        // Reset the filter to only show the latest sync point.
-        filter.oldestPostDate = oldestPost.dateCreated()
+        // Reset the filter to only show the latest sync point, based on the oldest post date in the posts just synced.
+        // Note: Getting oldest date manually as the API may return results out of order if there are
+        // differing time offsets in the created dates.
+        let oldestPost = posts.min {$0.date_created_gmt < $1.date_created_gmt}
+        filter.oldestPostDate = oldestPost?.date_created_gmt
         filter.hasMore = posts.count >= options.number.intValue
 
         updateAndPerformFetchRequestRefreshingResults()

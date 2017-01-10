@@ -4,8 +4,7 @@ import WordPressComAnalytics
 /// SharingService is responsible for wrangling publicize services, publicize
 /// connections, and keyring connections.
 ///
-open class SharingService: LocalCoreDataService
-{
+open class SharingService: LocalCoreDataService {
     let SharingAPIErrorNotFound = "not_found"
 
     // MARK: - Publicize Related Methods
@@ -22,7 +21,7 @@ open class SharingService: LocalCoreDataService
         guard let remote = remoteForBlog(blog) else {
             return
         }
-        remote.getPublicizeServices( {(remoteServices: [RemotePublicizeService]) in
+        remote.getPublicizeServices({ remoteServices in
             // Process the results
             self.mergePublicizeServices(remoteServices, success: success)
         },
@@ -42,7 +41,7 @@ open class SharingService: LocalCoreDataService
         guard let remote = remoteForBlog(blog) else {
             return
         }
-        remote.getKeyringConnections( {(keyringConnections: [KeyringConnection]) in
+        remote.getKeyringConnections({ keyringConnections in
             // Just return the result
             success?(keyringConnections)
         },
@@ -62,7 +61,7 @@ open class SharingService: LocalCoreDataService
         guard let remote = remoteForBlog(blog) else {
             return
         }
-        remote.getPublicizeConnections(blog.dotComID!, success: {(remoteConnections: [RemotePublicizeConnection]) in
+        remote.getPublicizeConnections(blog.dotComID!, success: { remoteConnections in
 
             // Process the results
             self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: success)
@@ -85,8 +84,7 @@ open class SharingService: LocalCoreDataService
         keyring: KeyringConnection,
         externalUserID: String?,
         success: ((PublicizeConnection) -> Void)?,
-        failure: ((NSError?) -> Void)?)
-    {
+        failure: ((NSError?) -> Void)?) {
         let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {
             return
@@ -95,7 +93,7 @@ open class SharingService: LocalCoreDataService
         remote.createPublicizeConnection(dotComID,
             keyringConnectionID: keyring.keyringID,
             externalUserID: externalUserID,
-            success: {(remoteConnection: RemotePublicizeConnection) in
+            success: { remoteConnection in
                 let properties = [
                     "service": keyring.service
                 ]
@@ -150,7 +148,7 @@ open class SharingService: LocalCoreDataService
             remote.updatePublicizeConnectionWithID(pubConn.connectionID,
                 shared: shared,
                 forSite: siteID,
-                success: {(remoteConnection: RemotePublicizeConnection) in
+                success: { remoteConnection in
                     let properties = [
                         "service": pubConn.service,
                         "is_site_wide": NSNumber(value: shared).stringValue
@@ -204,7 +202,7 @@ open class SharingService: LocalCoreDataService
             remote.updatePublicizeConnectionWithID(pubConn.connectionID,
                 externalID: externalID,
                 forSite: siteID,
-                success: {(remoteConnection: RemotePublicizeConnection) in
+                success: { remoteConnection in
                     do {
                         _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
                         ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {

@@ -5,8 +5,7 @@ import WordPressShared
 
 /// An NSTextAttachment representing a horizontal rule.
 ///
-open class WPHorizontalRuleAttachment: NSTextAttachment
-{
+open class WPHorizontalRuleAttachment: NSTextAttachment {
     /// Designated initializer.
     ///
     /// - Parameters:

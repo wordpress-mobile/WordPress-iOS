@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension UIDevice
-{
+extension UIDevice {
     public class func isPad() -> Bool {
         return UIDevice.current.userInterfaceIdiom == .pad
     }

@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-open class ReaderCrossPostCell: UITableViewCell
-{
+open class ReaderCrossPostCell: UITableViewCell {
     @IBOutlet fileprivate weak var blavatarImageView: UIImageView!
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
     @IBOutlet fileprivate weak var label: UILabel!

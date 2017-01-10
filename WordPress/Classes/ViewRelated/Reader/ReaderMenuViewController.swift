@@ -5,8 +5,7 @@ import WordPressShared
 
 /// The menu for the reader.
 ///
-@objc class ReaderMenuViewController: UITableViewController, UIViewControllerRestoration
-{
+@objc class ReaderMenuViewController: UITableViewController, UIViewControllerRestoration {
 
     static let restorationIdentifier = "ReaderMenuViewController"
     static let selectedIndexPathRestorationIdentifier = "ReaderMenuSelectedIndexPathKey"
@@ -19,7 +18,7 @@ import WordPressShared
     var didSyncTopics = false
 
     fileprivate var defaultIndexPath: IndexPath {
-        return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .discover) as IndexPath
+        return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .discover)
     }
 
     fileprivate var restorableSelectedIndexPath: IndexPath?
@@ -514,8 +513,7 @@ import WordPressShared
 }
 
 
-extension ReaderMenuViewController : ReaderMenuViewModelDelegate
-{
+extension ReaderMenuViewController : ReaderMenuViewModelDelegate {
 
     func menuDidReloadContent() {
         reloadTableViewPreservingSelection()

@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared
 
-extension WPStyleGuide
-{
+extension WPStyleGuide {
     public class func navigationBarBackgroundImage() -> UIImage {
         return UIImage(color: WPStyleGuide.wordPressBlue())
     }

@@ -15,8 +15,7 @@ import WordPressComAnalytics
 ///   - Row heights are auto-calculated via UITableViewAutomaticDimension and estimated heights
 ///         are cached via willDisplayCell.
 ///
-@objc open class ReaderStreamViewController: UIViewController, UIViewControllerRestoration
-{
+@objc open class ReaderStreamViewController: UIViewController, UIViewControllerRestoration {
     static let restorationClassIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
     static let restorableTopicPathKey: String = "RestorableTopicPathKey"
 
@@ -1742,8 +1741,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 }
 
 
-extension ReaderStreamViewController : WPNoResultsViewDelegate
-{
+extension ReaderStreamViewController : WPNoResultsViewDelegate {
     public func didTap(_ noResultsView: WPNoResultsView!) {
         showManageSites()
     }

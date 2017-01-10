@@ -27,8 +27,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-open class AboutViewController: UITableViewController
-{
+open class AboutViewController: UITableViewController {
     open override func viewDidLoad() {
         super.viewDidLoad()
 

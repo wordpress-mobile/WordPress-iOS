@@ -4,8 +4,7 @@ import Foundation
 
 // MARK: - NotificationSyncServiceRemote
 //
-class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
-{
+class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
     // MARK: - Constants
     //
     fileprivate let defaultPageSize = 100
@@ -110,8 +109,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
 
 // MARK: -  Private Methods
 //
-private extension NotificationSyncServiceRemote
-{
+private extension NotificationSyncServiceRemote {
     /// Attempts to parse the `success` field of a given response. When it's missing, or it's false,
     /// this method will return SyncError.failed.
     ///

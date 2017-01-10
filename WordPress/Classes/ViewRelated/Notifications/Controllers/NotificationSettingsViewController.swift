@@ -8,8 +8,7 @@ import WordPressComAnalytics
 /// On Row Press, we'll push the list of available Streams, which will, in turn, push the Details View
 /// itself, which is in charge of rendering the actual available settings.
 ///
-open class NotificationSettingsViewController: UIViewController
-{
+open class NotificationSettingsViewController: UIViewController {
     // MARK: - View Lifecycle
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -195,7 +194,7 @@ open class NotificationSettingsViewController: UIViewController
             toggleDisplayMoreBlogs()
         } else if let settings = settingsForRowAtIndexPath(indexPath) {
             displayDetailsForSettings(settings)
-        } else  {
+        } else {
             tableView.deselectSelectedRowWithAnimation(true)
         }
     }

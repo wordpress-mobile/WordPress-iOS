@@ -74,20 +74,20 @@ class PushAuthenticationManagerTests: XCTestCase {
         return ["push_auth_token": "token", "aps": [ "alert": "an alert"]]
     }
 
-    func testHandlePushAuthenticationNotificationShowsTheLoginExpiredAlertIfNotificationHasExpired(){
+    func testHandlePushAuthenticationNotificationShowsTheLoginExpiredAlertIfNotificationHasExpired() {
         pushAuthenticationManager!.handlePushAuthenticationNotification(expiredPushNotificationDictionary())
 
         XCTAssertTrue(mockAlertControllerProxy.showWithTitleCalled, "Should show the login expired alert if the notification has expired")
         XCTAssertEqual(mockAlertControllerProxy.titlePassedIn, NSLocalizedString("Login Request Expired", comment: ""), "")
     }
 
-    func testHandlePushAuthenticationNotificationDoesNotShowTheLoginExpiredAlertIfNotificationHasNotExpired(){
+    func testHandlePushAuthenticationNotificationDoesNotShowTheLoginExpiredAlertIfNotificationHasNotExpired() {
         pushAuthenticationManager!.handlePushAuthenticationNotification([:])
 
         XCTAssertFalse(mockAlertControllerProxy.showWithTitleCalled, "Should not show the login expired alert if the notification hasn't expired")
     }
 
-    func testHandlePushAuthenticationNotificationWithBlankTokenDoesNotShowLoginVerificationAlert(){
+    func testHandlePushAuthenticationNotificationWithBlankTokenDoesNotShowLoginVerificationAlert() {
         let pushNotificationDictionary = validPushAuthenticationDictionary()
         pushNotificationDictionary.removeObject(forKey: "push_auth_token")
 
@@ -96,7 +96,7 @@ class PushAuthenticationManagerTests: XCTestCase {
         XCTAssertFalse(mockAlertControllerProxy.showWithTitleCalled, "Should not show the login verification")
     }
 
-    func testHandlePushAuthenticationNotificationWithBlankMessageDoesNotShowLoginVerificationAlert(){
+    func testHandlePushAuthenticationNotificationWithBlankMessageDoesNotShowLoginVerificationAlert() {
         pushAuthenticationManager!.handlePushAuthenticationNotification(["push_auth_token": "token"])
 
         XCTAssertFalse(mockAlertControllerProxy.showWithTitleCalled, "Should not show the login verification")

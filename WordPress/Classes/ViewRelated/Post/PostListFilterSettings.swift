@@ -120,8 +120,7 @@ class PostListFilterSettings: NSObject {
     // MARK: - Author-related methods
 
     func canFilterByAuthor() -> Bool {
-        if postType as String == PostServiceTypePost
-        {
+        if postType as String == PostServiceTypePost {
             return blog.isHostedAtWPcom && blog.isMultiAuthor && blog.account?.userID != nil
         }
         return false
