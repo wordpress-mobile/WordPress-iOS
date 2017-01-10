@@ -357,6 +357,8 @@ import WordPressShared
     @IBAction func handleCreateSiteButtonTapped(_ sender: UIButton) {
         let controller = SignupViewController.controller()
         navigationController?.pushViewController(controller, animated: true)
+
+        WPAppAnalytics.track(.createAccountInitiated)
     }
 
 

@@ -47,7 +47,7 @@ abstract_target 'WordPress_Base' do
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '~> 0.10.2'
     pod 'WordPress-iOS-Editor', '1.8.1'
-    pod 'WordPressCom-Analytics-iOS', '0.1.21'
+    pod 'WordPressCom-Analytics-iOS', '0.1.22'
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :branch => 'swift-3/gridicons-bump'
     pod 'wpxmlrpc', '~> 0.8'
 
