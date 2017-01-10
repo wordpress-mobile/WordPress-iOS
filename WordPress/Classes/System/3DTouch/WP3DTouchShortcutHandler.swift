@@ -1,8 +1,7 @@
 import UIKit
 import WordPressComAnalytics
 
-open class WP3DTouchShortcutHandler: NSObject
-{
+open class WP3DTouchShortcutHandler: NSObject {
     enum ShortcutIdentifier: String {
         case LogIn
         case NewPost

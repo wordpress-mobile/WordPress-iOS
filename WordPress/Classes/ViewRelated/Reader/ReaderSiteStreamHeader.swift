@@ -2,7 +2,7 @@ import Foundation
 import WordPressShared
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -15,7 +15,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l > r
@@ -25,8 +25,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-@objc open class ReaderSiteStreamHeader: UIView, ReaderStreamHeader
-{
+@objc open class ReaderSiteStreamHeader: UIView, ReaderStreamHeader {
     @IBOutlet fileprivate weak var borderedView: UIView!
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
@@ -98,7 +97,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
-    func formattedFollowerCountForTopic(_ topic:ReaderSiteTopic) -> String {
+    func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         let count = numberFormatter.string(from: topic.subscriberCount)
@@ -107,7 +106,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         return str
     }
 
-    func attributedSiteDescriptionForTopic(_ topic:ReaderSiteTopic) -> NSAttributedString {
+    func attributedSiteDescriptionForTopic(_ topic: ReaderSiteTopic) -> NSAttributedString {
         return NSAttributedString(string: topic.siteDescription, attributes: WPStyleGuide.readerStreamHeaderDescriptionAttributes())
     }
 

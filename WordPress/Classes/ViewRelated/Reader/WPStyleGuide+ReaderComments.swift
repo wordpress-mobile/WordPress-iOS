@@ -1,11 +1,10 @@
 import Foundation
 import WordPressShared
 
-extension WPStyleGuide
-{
+extension WPStyleGuide {
 
     public class func navbarButtonTintColor() -> UIColor {
-        return UIColor(white:1.0, alpha:0.5)
+        return UIColor(white: 1.0, alpha: 0.5)
     }
 
     // Styles used by Comments in the Reader
@@ -18,10 +17,10 @@ extension WPStyleGuide
         return WPFontManager.systemRegularFont(ofSize: 14)
     }
 
-    public class func defaultSearchBarTextAttributes(_ color: UIColor) -> [String:AnyObject] {
+    public class func defaultSearchBarTextAttributes(_ color: UIColor) -> [String: AnyObject] {
         return [
-            NSForegroundColorAttributeName      : color,
-            NSFontAttributeName                 : WPFontManager.systemRegularFont(ofSize: 14)
+            NSForegroundColorAttributeName: color,
+            NSFontAttributeName: WPFontManager.systemRegularFont(ofSize: 14)
         ]
     }
 }

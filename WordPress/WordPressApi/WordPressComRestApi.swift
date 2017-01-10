@@ -22,8 +22,7 @@ import AFNetworking
     case unknown
 }
 
-open class WordPressComRestApi: NSObject
-{
+open class WordPressComRestApi: NSObject {
     open static let ErrorKeyResponseData: String = AFNetworkingOperationFailingURLResponseDataErrorKey
     open static let ErrorKeyErrorCode: String = "WordPressComRestApiErrorCodeKey"
     open static let ErrorKeyErrorMessage: String = "WordPressComRestApiErrorMessageKey"
@@ -58,7 +57,7 @@ open class WordPressComRestApi: NSObject
     }
 
     fileprivate func createSessionManager() -> AFHTTPSessionManager {
-        let baseURL = URL(string:WordPressComRestApi.apiBaseURLString)
+        let baseURL = URL(string: WordPressComRestApi.apiBaseURLString)
         let sessionConfiguration = URLSessionConfiguration.default
         var additionalHeaders: [String : AnyObject] = [:]
         if let oAuthToken = self.oAuthToken {
@@ -68,7 +67,7 @@ open class WordPressComRestApi: NSObject
             additionalHeaders["User-Agent"] = userAgent as AnyObject?
         }
         sessionConfiguration.httpAdditionalHeaders = additionalHeaders
-        let sessionManager = AFHTTPSessionManager(baseURL:baseURL, sessionConfiguration:sessionConfiguration)
+        let sessionManager = AFHTTPSessionManager(baseURL: baseURL, sessionConfiguration: sessionConfiguration)
         sessionManager.responseSerializer = WordPressComRestAPIResponseSerializer()
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         return sessionManager
@@ -106,13 +105,12 @@ open class WordPressComRestApi: NSObject
      will be invoked with the error specificing the serialization issues.
      */
     @discardableResult open func GET(_ URLString: String,
-                     parameters: [String:AnyObject]?,
+                     parameters: [String: AnyObject]?,
                      success: @escaping SuccessResponseBlock,
-                     failure: @escaping FailureReponseBlock) -> Progress?
-    {
+                     failure: @escaping FailureReponseBlock) -> Progress? {
         let URLString = appendLocaleIfNeeded(URLString)
         let progress = Progress(totalUnitCount: 1)
-        let progressUpdater = {(taskProgress:Progress) in
+        let progressUpdater = {(taskProgress: Progress) in
             progress.totalUnitCount = taskProgress.totalUnitCount
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
@@ -151,13 +149,12 @@ open class WordPressComRestApi: NSObject
      will be invoked with the error specificing the serialization issues.
      */
     @discardableResult open func POST(_ URLString: String,
-                     parameters: [String:AnyObject]?,
+                     parameters: [String: AnyObject]?,
                      success: @escaping SuccessResponseBlock,
-                     failure: @escaping FailureReponseBlock) -> Progress?
-    {
+                     failure: @escaping FailureReponseBlock) -> Progress? {
         let URLString = appendLocaleIfNeeded(URLString)
         let progress = Progress(totalUnitCount: 1)
-        let progressUpdater = {(taskProgress:Progress) in
+        let progressUpdater = {(taskProgress: Progress) in
             progress.totalUnitCount = taskProgress.totalUnitCount
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
@@ -197,19 +194,18 @@ open class WordPressComRestApi: NSObject
      will be invoked with the error specificing the serialization issues.
      */
     @discardableResult open func multipartPOST(_ URLString: String,
-                              parameters: [String:AnyObject]?,
+                              parameters: [String: AnyObject]?,
                               fileParts: [FilePart],
                               success: @escaping SuccessResponseBlock,
-                              failure: @escaping FailureReponseBlock) -> Progress?
-    {
+                              failure: @escaping FailureReponseBlock) -> Progress? {
         let URLString = appendLocaleIfNeeded(URLString)
         guard
             let baseURL = URL(string: WordPressComRestApi.apiBaseURLString),
-            let requestURLString = URL(string:URLString, relativeTo:baseURL)?.absoluteString
+            let requestURLString = URL(string: URLString, relativeTo: baseURL)?.absoluteString
         else {
-            let error = NSError(domain:String(describing: WordPressComRestApiError.self),
-                                code:WordPressComRestApiError.requestSerializationFailed.rawValue,
-                                userInfo:[NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
+            let error = NSError(domain: String(describing: WordPressComRestApiError.self),
+                                code: WordPressComRestApiError.requestSerializationFailed.rawValue,
+                                userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
             failure(error, nil)
             return nil
         }
@@ -219,17 +215,17 @@ open class WordPressComRestApi: NSObject
             withMethod: "POST",
             urlString: requestURLString,
             parameters: parameters,
-            constructingBodyWith:{ (formData: AFMultipartFormData ) in
+            constructingBodyWith: { (formData: AFMultipartFormData ) in
                 do {
                     for filePart in fileParts {
                         let url = filePart.url
-                        try formData.appendPart(withFileURL: url, name:filePart.parameterName, fileName:filePart.filename, mimeType:filePart.mimeType)
+                        try formData.appendPart(withFileURL: url, name: filePart.parameterName, fileName: filePart.filename, mimeType: filePart.mimeType)
                     }
                 } catch let error as NSError {
                     filePartError = error
                 }
             },
-            error:&serializationError
+            error: &serializationError
         )
         if let error = filePartError {
             failure(error, nil)
@@ -240,7 +236,7 @@ open class WordPressComRestApi: NSObject
             return nil
         }
         let progress = Progress(totalUnitCount: 1)
-        let progressUpdater = {(taskProgress:Progress) in
+        let progressUpdater = {(taskProgress: Progress) in
             progress.totalUnitCount = taskProgress.totalUnitCount+1
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
@@ -294,8 +290,7 @@ open class WordPressComRestApi: NSObject
 }
 
 /// FilePart represents the infomartion needed to encode a file on a multipart form request
-public final class FilePart : NSObject
-{
+public final class FilePart: NSObject {
     let parameterName: String
     let url: URL
     let filename: String
@@ -310,8 +305,7 @@ public final class FilePart : NSObject
 }
 
 /// A custom serializer to handle JSON error responses when status codes are betwen 400 and 500
-final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
-{
+final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer {
     override init() {
         super.init()
         var extraStatusCodes = self.acceptableStatusCodes
@@ -336,14 +330,14 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
             userInfo = originalError.userInfo
         }
 
-        guard let responseDictionary = responseObject as? [String:AnyObject] else {
+        guard let responseDictionary = responseObject as? [String: AnyObject] else {
             return responseObject as AnyObject?
         }
-        var errorDictionary:AnyObject? = responseDictionary as AnyObject?
+        var errorDictionary: AnyObject? = responseDictionary as AnyObject?
         if let errorArray = responseDictionary["errors"] as? [AnyObject], errorArray.count > 0 {
             errorDictionary = errorArray.first
         }
-        guard let errorEntry = errorDictionary as? [String:AnyObject],
+        guard let errorEntry = errorDictionary as? [String: AnyObject],
             let errorCode = errorEntry["error"] as? String,
             let errorDescription = errorEntry["message"] as? String
             else {
@@ -351,11 +345,11 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
         }
 
         let errorsMap = [
-            "invalid_input" : WordPressComRestApiError.invalidInput,
-            "invalid_token" : WordPressComRestApiError.invalidToken,
-            "authorization_required" : WordPressComRestApiError.authorizationRequired,
-            "upload_error" : WordPressComRestApiError.uploadFailed,
-            "unauthorized" : WordPressComRestApiError.authorizationRequired
+            "invalid_input": WordPressComRestApiError.invalidInput,
+            "invalid_token": WordPressComRestApiError.invalidToken,
+            "authorization_required": WordPressComRestApiError.authorizationRequired,
+            "upload_error": WordPressComRestApiError.uploadFailed,
+            "unauthorized": WordPressComRestApiError.authorizationRequired
         ]
 
         let mappedError = errorsMap[errorCode] ?? WordPressComRestApiError.unknown
@@ -363,16 +357,15 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer
         userInfo[WordPressComRestApi.ErrorKeyErrorMessage] = errorDescription
         let nserror = mappedError as NSError
         userInfo[NSLocalizedDescriptionKey] =  errorDescription
-        error?.pointee = NSError(domain:nserror.domain,
-                               code:nserror.code,
-                               userInfo:userInfo
+        error?.pointee = NSError(domain: nserror.domain,
+                               code: nserror.code,
+                               userInfo: userInfo
             )
         return responseObject as AnyObject?
     }
 }
 
-extension WordPressComRestApi
-{
+extension WordPressComRestApi {
     /// Returns an Api object without an oAuthtoken defined and with the userAgent set for the WordPress App user agent
     class public func anonymousApi() -> WordPressComRestApi {
         return WordPressComRestApi(oAuthToken: nil, userAgent: WPUserAgent.wordPress())

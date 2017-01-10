@@ -7,9 +7,8 @@ open class CachedAnimatedImageView: FLAnimatedImageView {
 
     func setAnimatedImage(_ urlRequest: URLRequest,
                           placeholderImage: UIImage?,
-                          success:((FLAnimatedImage) -> ())? ,
-                          failure:((NSError?) -> ())? )
-    {
+                          success: ((FLAnimatedImage) -> ())? ,
+                          failure: ((NSError?) -> ())? ) {
         if let ongoingTask = currentTask {
             ongoingTask.cancel()
         }
@@ -43,15 +42,14 @@ class AnimatedImageCache {
 
     func animatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
-                       success:((FLAnimatedImage) -> ())? ,
-                       failure:((NSError?) -> ())? ) -> URLSessionTask?
-    {
+                       success: ((FLAnimatedImage) -> ())? ,
+                       failure: ((NSError?) -> ())? ) -> URLSessionTask? {
         if  let key = urlRequest.url,
             let animatedImage = cache.object(forKey: key as AnyObject) as? FLAnimatedImage {
             success?(animatedImage)
             return nil
         }
-        let task = session.dataTask(with: urlRequest, completionHandler:{ [weak self](data, response, error) in
+        let task = session.dataTask(with: urlRequest, completionHandler: { [weak self](data, response, error) in
             //check if view is still here
             guard let strongSelf = self else {
                 return

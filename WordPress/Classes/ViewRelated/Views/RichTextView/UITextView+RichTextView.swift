@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension UITextView
-{
+extension UITextView {
     func frameForTextInRange(_ range: NSRange) -> CGRect {
         let firstPosition   = position(from: beginningOfDocument, offset: range.location)
         let lastPosition    = position(from: beginningOfDocument, offset: range.location + range.length)

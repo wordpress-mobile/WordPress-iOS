@@ -36,22 +36,22 @@ open class HTTPAuthenticationAlertController {
     }
 
     static fileprivate func controllerForServerTrustChallenge(_ challenge: URLAuthenticationChallenge) -> UIAlertController {
-        let title = NSLocalizedString("Certificate error", comment:"Popup title for wrong SSL certificate.")
+        let title = NSLocalizedString("Certificate error", comment: "Popup title for wrong SSL certificate.")
         let message = String(format: NSLocalizedString("The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?", comment: ""), challenge.protectionSpace.host)
-        let controller =  UIAlertController(title:title, message:message, preferredStyle:UIAlertControllerStyle.alert)
+        let controller =  UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
 
-        let cancelAction = UIAlertAction(title:NSLocalizedString("Cancel", comment:"Cancel button label"),
-                                         style:UIAlertActionStyle.default,
-                                         handler:{ (action) in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button label"),
+                                         style: UIAlertActionStyle.default,
+                                         handler: { (action) in
                                             executeHandlerForChallenge(challenge, disposition: .cancelAuthenticationChallenge, credential: nil)
         })
         controller.addAction(cancelAction)
 
-        let trustAction = UIAlertAction(title:NSLocalizedString("Trust", comment:"Connect when the SSL certificate is invalid"),
-                                        style:UIAlertActionStyle.default,
-                                        handler:{ (action) in
+        let trustAction = UIAlertAction(title: NSLocalizedString("Trust", comment: "Connect when the SSL certificate is invalid"),
+                                        style: UIAlertActionStyle.default,
+                                        handler: { (action) in
                                             let credential = URLCredential(trust: challenge.protectionSpace.serverTrust!)
-                                            URLCredentialStorage.shared.setDefaultCredential(credential, for:challenge.protectionSpace)
+                                            URLCredentialStorage.shared.setDefaultCredential(credential, for: challenge.protectionSpace)
                                             executeHandlerForChallenge(challenge, disposition: .useCredential, credential: credential)
         })
         controller.addAction(trustAction)
@@ -74,22 +74,22 @@ open class HTTPAuthenticationAlertController {
             textField.isSecureTextEntry = true
         })
 
-        let cancelAction = UIAlertAction(title:NSLocalizedString("Cancel", comment: "Cancel button label"),
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button label"),
                                          style: .default,
-                                         handler:{ (action) in
+                                         handler: { (action) in
                                             executeHandlerForChallenge(challenge, disposition: .cancelAuthenticationChallenge, credential: nil)
         })
         controller.addAction(cancelAction)
 
-        let loginAction = UIAlertAction(title: NSLocalizedString("Log In", comment:"Log In button label."),
+        let loginAction = UIAlertAction(title: NSLocalizedString("Log In", comment: "Log In button label."),
                                         style: .default,
-                                        handler:{(action) in
+                                        handler: { (action) in
                                             guard let username = controller.textFields?.first?.text,
                                                 let password = controller.textFields?.last?.text else {
                                                     executeHandlerForChallenge(challenge, disposition: .cancelAuthenticationChallenge, credential: nil)
                                                     return
                                             }
-                                            let credential = URLCredential(user: username, password: password, persistence:URLCredential.Persistence.permanent)
+                                            let credential = URLCredential(user: username, password: password, persistence: URLCredential.Persistence.permanent)
                                             URLCredentialStorage.shared.setDefaultCredential(credential, for: challenge.protectionSpace)
                                             executeHandlerForChallenge(challenge, disposition: .useCredential, credential: credential)
         })

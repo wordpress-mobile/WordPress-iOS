@@ -10,7 +10,7 @@ class EditPostViewController: UIViewController {
     fileprivate(set) var post: Post?
     fileprivate var hasShownEditor = false
     fileprivate var editingExistingPost = false
-    fileprivate(set) lazy var blog:Blog = {
+    fileprivate(set) lazy var blog: Blog = {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
         return blogService!.lastUsedOrFirstBlog()!
@@ -21,15 +21,13 @@ class EditPostViewController: UIViewController {
 
     var onClose: ((_ changesSaved: Bool) -> ())?
 
-    override var modalPresentationStyle: UIModalPresentationStyle
-        {
+    override var modalPresentationStyle: UIModalPresentationStyle {
         didSet(newValue) {
             // make sure this view is transparent with the previous VC visible
             super.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
         }
     }
-    override var modalTransitionStyle: UIModalTransitionStyle
-        {
+    override var modalTransitionStyle: UIModalTransitionStyle {
         didSet(newValue) {
             super.modalTransitionStyle = .coverVertical
         }
@@ -102,7 +100,7 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    override var preferredStatusBarStyle : UIStatusBarStyle {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 
@@ -218,7 +216,7 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    func shouldShowPostPost(hasChanges: Bool) -> Bool  {
+    func shouldShowPostPost(hasChanges: Bool) -> Bool {
         guard let post = post else {
             return false
         }
@@ -255,8 +253,7 @@ class EditPostViewController: UIViewController {
 
 // MARK: - State Restoration
 //
-extension EditPostViewController: UIViewControllerRestoration
-{
+extension EditPostViewController: UIViewControllerRestoration {
     enum RestorationKey: String {
         case viewController = "EditPostViewControllerRestorationID"
         case post = "EditPostViewControllerPostRestorationID"

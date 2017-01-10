@@ -2,8 +2,7 @@ import Foundation
 import WordPressShared.WPStyleGuide
 
 
-class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
-{
+class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
     typealias EventHandler = ((_ sender: AnyObject) -> Void)
 
     // MARK: - Public Properties
@@ -123,7 +122,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
         attributedText = isApproved ? attributedCommentText : attributedCommentUnapprovedText
     }
 
-    fileprivate var attributedCommentUnapprovedText : NSAttributedString? {
+    fileprivate var attributedCommentUnapprovedText: NSAttributedString? {
         guard let commentText = attributedCommentText?.mutableCopy() as? NSMutableAttributedString else {
             return nil
         }
@@ -148,7 +147,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
     typealias Style = WPStyleGuide.Notifications
 
     // MARK: - Private Calculated Properties
-    fileprivate var placeholderImage : UIImage {
+    fileprivate var placeholderImage: UIImage {
         return Style.blockGravatarPlaceholderImage(isApproved: isApproved)
     }
 

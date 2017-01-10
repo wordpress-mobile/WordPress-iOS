@@ -379,7 +379,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    fileprivate lazy var headerView : MeHeaderView = {
+    fileprivate lazy var headerView: MeHeaderView = {
         let headerView = MeHeaderView()
         headerView.onGravatarPress = { [weak self] in
             self?.presentGravatarPicker()

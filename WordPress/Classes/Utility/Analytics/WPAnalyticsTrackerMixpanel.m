@@ -646,6 +646,11 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatOnePasswordFailed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"1Password - Extension Failure"];
             break;
+        case WPAnalyticsStatOpenedLogin:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_login_accessed"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_login_accessed"];
+            break;
         case WPAnalyticsStatOpenedPosts:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Posts"];
             break;
@@ -703,6 +708,26 @@ NSString *const SessionCount = @"session_count";
             break;
         case WPAnalyticsStatOpenedSupport:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - Accessed"];
+            break;
+        case WPAnalyticsStatCreateAccountInitiated:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Create Account - Initiated"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_create_account_initiated"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_create_account_initiated"];
+            break;
+        case WPAnalyticsStatCreateAccountEmailExists:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Create Account - Email Exists"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_create_account_email_exists"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_create_account_email_exists"];
+            break;
+        case WPAnalyticsStatCreateAccountUsernameExists:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Create Account - Username Exists"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_create_account_username_exists"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_create_account_username_exists"];
+            break;
+        case WPAnalyticsStatCreateAccountFailed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Create Account - Failed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_create_account_failed"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_create_account_failed"];
             break;
         case WPAnalyticsStatCreatedAccount:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Created Account"];

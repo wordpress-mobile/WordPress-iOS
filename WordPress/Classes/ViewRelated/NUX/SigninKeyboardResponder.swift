@@ -8,8 +8,7 @@ let DefaultSigninFormVerticalOffset: CGFloat = -64.0
 /// A protocol and extension encapsulating common keyboard releated logic for
 /// Signin controllers.
 ///
-protocol SigninKeyboardResponder: class
-{
+protocol SigninKeyboardResponder: class {
     var bottomContentConstraint: NSLayoutConstraint! {get}
     var verticalCenterConstraint: NSLayoutConstraint! {get}
 
@@ -22,8 +21,7 @@ protocol SigninKeyboardResponder: class
     func keyboardWillHide(_ notification: Foundation.Notification)
 }
 
-extension SigninKeyboardResponder where Self: NUXAbstractViewController
-{
+extension SigninKeyboardResponder where Self: NUXAbstractViewController {
 
     /// Registeres the receiver for keyboard events using the passed selectors.
     /// We pass the selectors this way so we can encapsulate functionality in a

@@ -220,27 +220,27 @@ extension Role {
     // MARK: - Private Properties
     //
     fileprivate static let colorsMap = [
-        SuperAdmin  : WPStyleGuide.People.superAdminColor,
-        Admin       : WPStyleGuide.People.adminColor,
-        Editor      : WPStyleGuide.People.editorColor,
-        Author      : WPStyleGuide.People.authorColor,
-        Contributor : WPStyleGuide.People.contributorColor,
-        Subscriber  : WPStyleGuide.People.contributorColor,
-        Follower    : WPStyleGuide.People.contributorColor,
-        Viewer      : WPStyleGuide.People.contributorColor,
-        Unsupported : WPStyleGuide.People.contributorColor
+        SuperAdmin: WPStyleGuide.People.superAdminColor,
+        Admin: WPStyleGuide.People.adminColor,
+        Editor: WPStyleGuide.People.editorColor,
+        Author: WPStyleGuide.People.authorColor,
+        Contributor: WPStyleGuide.People.contributorColor,
+        Subscriber: WPStyleGuide.People.contributorColor,
+        Follower: WPStyleGuide.People.contributorColor,
+        Viewer: WPStyleGuide.People.contributorColor,
+        Unsupported: WPStyleGuide.People.contributorColor
     ]
 
     fileprivate static let localizedMap = [
-        SuperAdmin  : NSLocalizedString("Super Admin", comment: "User role badge"),
-        Admin       : NSLocalizedString("Admin", comment: "User role badge"),
-        Editor      : NSLocalizedString("Editor", comment: "User role badge"),
-        Author      : NSLocalizedString("Author", comment: "User role badge"),
-        Contributor : NSLocalizedString("Contributor", comment: "User role badge"),
-        Subscriber  : NSLocalizedString("Subscriber", comment: "User role badge"),
-        Follower    : NSLocalizedString("Follower", comment: "User role badge"),
-        Viewer      : NSLocalizedString("Viewer", comment: "User role badge"),
-        Unsupported : NSLocalizedString("Unsupported", comment: "User role badge")
+        SuperAdmin: NSLocalizedString("Super Admin", comment: "User role badge"),
+        Admin: NSLocalizedString("Admin", comment: "User role badge"),
+        Editor: NSLocalizedString("Editor", comment: "User role badge"),
+        Author: NSLocalizedString("Author", comment: "User role badge"),
+        Contributor: NSLocalizedString("Contributor", comment: "User role badge"),
+        Subscriber: NSLocalizedString("Subscriber", comment: "User role badge"),
+        Follower: NSLocalizedString("Follower", comment: "User role badge"),
+        Viewer: NSLocalizedString("Viewer", comment: "User role badge"),
+        Unsupported: NSLocalizedString("Unsupported", comment: "User role badge")
     ]
 }
 
@@ -248,7 +248,7 @@ extension Role {
 
 // MARK: - Operator Overloading
 
-func ==<T : Person>(lhs: T, rhs: T) -> Bool {
+func ==<T: Person>(lhs: T, rhs: T) -> Bool {
     return lhs.ID == rhs.ID
         && lhs.username == rhs.username
         && lhs.firstName == rhs.firstName

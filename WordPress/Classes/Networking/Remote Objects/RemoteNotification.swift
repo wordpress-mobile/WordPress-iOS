@@ -4,8 +4,7 @@ import Foundation
 
 // MARK: - RemoteNotification
 //
-struct RemoteNotification
-{
+struct RemoteNotification {
     /// Notification's Primary Key
     ///
     let notificationId: String
@@ -63,8 +62,7 @@ struct RemoteNotification
     ///
     init?(document: [String: AnyObject]) {
         guard let noteId = document.valueAsString(forKey: "id"),
-            let noteHash = document.valueAsString(forKey: "note_hash") else
-        {
+            let noteHash = document.valueAsString(forKey: "note_hash") else {
             return nil
         }
 

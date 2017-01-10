@@ -178,8 +178,7 @@ struct PeopleService {
     func validateInvitation(_ usernameOrEmail: String,
                             role: Role,
                             success: @escaping ((Void) -> Void),
-                            failure: @escaping ((Error) -> Void))
-    {
+                            failure: @escaping ((Error) -> Void)) {
         remote.validateInvitation(siteID,
                                   usernameOrEmail: usernameOrEmail,
                                   role: role,
@@ -201,8 +200,7 @@ struct PeopleService {
                         role: Role,
                         message: String = "",
                         success: @escaping ((Void) -> Void),
-                        failure: @escaping ((Error) -> Void))
-    {
+                        failure: @escaping ((Error) -> Void)) {
         remote.sendInvitation(siteID,
                               usernameOrEmail: usernameOrEmail,
                               role: role,
@@ -218,7 +216,7 @@ struct PeopleService {
 private extension PeopleService {
     /// Updates the Core Data collection of users, to match with the array of People received.
     ///
-    func mergePeople<T : Person>(_ remotePeople: [T]) {
+    func mergePeople<T: Person>(_ remotePeople: [T]) {
         for remotePerson in remotePeople {
             if let existingPerson = managedPersonFromPerson(remotePerson) {
                 existingPerson.updateWith(remotePerson)
@@ -231,7 +229,7 @@ private extension PeopleService {
 
     /// Retrieves the collection of users, persisted in Core Data, associated with the current blog.
     ///
-    func loadPeople<T : Person>(_ siteID: Int, type: T.Type) -> [T] {
+    func loadPeople<T: Person>(_ siteID: Int, type: T.Type) -> [T] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
         request.predicate = NSPredicate(format: "siteID = %@ AND kind = %@",
                                         NSNumber(value: siteID as Int),
@@ -263,7 +261,7 @@ private extension PeopleService {
 
     /// Nukes the set of users, from Core Data, with the specified ID's.
     ///
-    func removeManagedPeopleWithIDs<T : Person>(_ ids: Set<Int>, type: T.Type) {
+    func removeManagedPeopleWithIDs<T: Person>(_ ids: Set<Int>, type: T.Type) {
         if ids.isEmpty {
             return
         }

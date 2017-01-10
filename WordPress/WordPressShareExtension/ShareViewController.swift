@@ -62,8 +62,8 @@ class ShareViewController: SLComposeServiceViewController {
     fileprivate let defaultMaxDimension = 3000
     fileprivate let postStatuses = [
         // TODO: This should eventually be moved into WordPressComKit
-        "draft"     : NSLocalizedString("Draft", comment: "Draft post status"),
-        "publish"   : NSLocalizedString("Publish", comment: "Publish post status")
+        "draft": NSLocalizedString("Draft", comment: "Draft post status"),
+        "publish": NSLocalizedString("Publish", comment: "Publish post status")
     ]
 
 
@@ -157,8 +157,7 @@ class ShareViewController: SLComposeServiceViewController {
 
 /// ShareViewController Extension: Encapsulates all of the Action Helpers.
 ///
-private extension ShareViewController
-{
+private extension ShareViewController {
     func dismissIfNeeded() {
         guard oauth2Token == nil else {
             return
@@ -204,8 +203,7 @@ private extension ShareViewController
 
 /// ShareViewController Extension: Encapsulates private helpers
 ///
-private extension ShareViewController
-{
+private extension ShareViewController {
     func setupBearerToken() {
         guard let bearerToken = oauth2Token else {
             return
@@ -249,8 +247,7 @@ private extension ShareViewController
 
 /// ShareViewController Extension: Backend Interaction
 ///
-private extension ShareViewController
-{
+private extension ShareViewController {
     func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, attachedImageData: Data?, requestEqueued: @escaping (Void) -> ()) {
         let configuration = URLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
         let service = PostService(configuration: configuration)

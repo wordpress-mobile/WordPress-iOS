@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-open class ReaderCrossPostCell: UITableViewCell
-{
+open class ReaderCrossPostCell: UITableViewCell {
     @IBOutlet fileprivate weak var blavatarImageView: UIImageView!
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
     @IBOutlet fileprivate weak var label: UILabel!
@@ -70,14 +69,14 @@ open class ReaderCrossPostCell: UITableViewCell
         UIView.animate(withDuration: 0.25,
             delay: 0,
             options: UIViewAnimationOptions(),
-            animations:updateBorder,
+            animations: updateBorder,
             completion: nil)
     }
 
 
     // MARK: - Configuration
 
-    open func configureCell(_ contentProvider:ReaderPostContentProvider) {
+    open func configureCell(_ contentProvider: ReaderPostContentProvider) {
         self.contentProvider = contentProvider
 
         configureLabel()
@@ -129,7 +128,7 @@ open class ReaderCrossPostCell: UITableViewCell
         let siteTemplate = "%@ cross-posted from %@ to %@"
         let template = contentProvider!.isCommentCrossPost() ? commentTemplate : siteTemplate
 
-        let authorName:NSString = contentProvider!.authorForDisplay() as NSString
+        let authorName: NSString = contentProvider!.authorForDisplay() as NSString
         let siteName = subDomainNameFromPath(contentProvider!.siteURLForDisplay())
         let originName = subDomainNameFromPath(contentProvider!.crossPostOriginSiteURLForDisplay())
 
@@ -143,7 +142,7 @@ open class ReaderCrossPostCell: UITableViewCell
         label.attributedText = attrText
     }
 
-    fileprivate func subDomainNameFromPath(_ path:String) -> String {
+    fileprivate func subDomainNameFromPath(_ path: String) -> String {
         if let url = URL(string: path), let host = url.host {
             let arr = host.components(separatedBy: ".")
             return "+\(arr.first!)"

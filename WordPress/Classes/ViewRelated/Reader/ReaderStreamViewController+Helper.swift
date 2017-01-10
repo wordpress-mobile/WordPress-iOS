@@ -1,13 +1,11 @@
 import Foundation
 
-extension ReaderStreamViewController
-{
+extension ReaderStreamViewController {
 
     // A simple struct defining a title and message for use with a WPNoResultsView
-    public struct NoResultsResponse
-    {
-        var title:String
-        var message:String
+    public struct NoResultsResponse {
+        var title: String
+        var message: String
     }
 
 
@@ -57,56 +55,56 @@ extension ReaderStreamViewController
         // if following
         if ReaderHelpers.topicIsFollowing(topic) {
             return NoResultsResponse(
-                title: NSLocalizedString("Welcome to the Reader", comment:"A message title"),
-                message: NSLocalizedString("Recent posts from blogs and sites you follow will appear here.", comment:"A message explaining the Following topic in the reader")
+                title: NSLocalizedString("Welcome to the Reader", comment: "A message title"),
+                message: NSLocalizedString("Recent posts from blogs and sites you follow will appear here.", comment: "A message explaining the Following topic in the reader")
             )
         }
 
         // if liked
         if ReaderHelpers.topicIsLiked(topic) {
             return NoResultsResponse(
-                title: NSLocalizedString("No likes yet", comment:"A message title"),
-                message: NSLocalizedString("Posts that you like will appear here.", comment:"A message explaining the Posts I Like feature in the reader")
+                title: NSLocalizedString("No likes yet", comment: "A message title"),
+                message: NSLocalizedString("Posts that you like will appear here.", comment: "A message explaining the Posts I Like feature in the reader")
             )
         }
 
         // if tag
         if ReaderHelpers.isTopicTag(topic) {
             return NoResultsResponse(
-                title: NSLocalizedString("No recent posts", comment:"A message title"),
-                message: NSLocalizedString("No posts have been made recently with this tag.", comment:"Message shown whent the reader finds no posts for the chosen tag")
+                title: NSLocalizedString("No recent posts", comment: "A message title"),
+                message: NSLocalizedString("No posts have been made recently with this tag.", comment: "Message shown whent the reader finds no posts for the chosen tag")
             )
         }
 
         // if site (blog)
         if ReaderHelpers.isTopicSite(topic) {
             return NoResultsResponse(
-                title: NSLocalizedString("No posts", comment:"A message title"),
-                message: NSLocalizedString("This site has not posted anything yet. Try back later.", comment:"Message shown when the reader finds no posts for the chosen site")
+                title: NSLocalizedString("No posts", comment: "A message title"),
+                message: NSLocalizedString("This site has not posted anything yet. Try back later.", comment: "Message shown when the reader finds no posts for the chosen site")
             )
         }
 
         // if list
         if ReaderHelpers.isTopicList(topic) {
             return NoResultsResponse(
-                title: NSLocalizedString("No recent posts", comment:"A message title"),
-                message: NSLocalizedString("The sites in this list have not posted anything recently.", comment:"Message shown when the reader finds no posts for the chosen list")
+                title: NSLocalizedString("No recent posts", comment: "A message title"),
+                message: NSLocalizedString("The sites in this list have not posted anything recently.", comment: "Message shown when the reader finds no posts for the chosen list")
             )
         }
 
         // if search topic
         if ReaderHelpers.isTopicSearchTopic(topic) {
-            let message = NSLocalizedString("No posts found matching %@ in your language.", comment:"Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase.")
+            let message = NSLocalizedString("No posts found matching %@ in your language.", comment: "Message shown when the reader finds no posts for the specified search phrase. The %@ is a placeholder for the search phrase.")
             return NoResultsResponse(
-                title: NSLocalizedString("No posts found", comment:"A message title"),
+                title: NSLocalizedString("No posts found", comment: "A message title"),
                 message: NSString(format: message as NSString, topic.title) as String
             )
         }
 
         // Default message
         return NoResultsResponse(
-            title: NSLocalizedString("No recent posts", comment:"A message title"),
-            message: NSLocalizedString("No posts have been made recently", comment:"A default message shown whe the reader can find no post to display")
+            title: NSLocalizedString("No recent posts", comment: "A message title"),
+            message: NSLocalizedString("No posts have been made recently", comment: "A default message shown whe the reader can find no post to display")
         )
     }
 

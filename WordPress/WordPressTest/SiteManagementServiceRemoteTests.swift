@@ -2,8 +2,7 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-class SiteManagementServiceRemoteTests : XCTestCase
-{
+class SiteManagementServiceRemoteTests: XCTestCase {
     let mockRemoteApi = MockWordPressComRestApi()
     var siteManagementServiceRemote: SiteManagementServiceRemote?
 
@@ -29,7 +28,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
             failure: { error in
                 failureBlockCalled = true
             })
-        mockRemoteApi.failureBlockPassedIn?(NSError(domain:"UnitTest", code:0, userInfo:nil), nil)
+        mockRemoteApi.failureBlockPassedIn?(NSError(domain: "UnitTest", code: 0, userInfo: nil), nil)
 
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
@@ -121,7 +120,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
             failure: { error in
                 failureBlockCalled = true
         })
-        mockRemoteApi.failureBlockPassedIn?(NSError(domain:"UnitTest", code:0, userInfo:nil), HTTPURLResponse())
+        mockRemoteApi.failureBlockPassedIn?(NSError(domain: "UnitTest", code: 0, userInfo: nil), HTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
@@ -213,7 +212,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
             failure: { error in
                 failureBlockCalled = true
         })
-        mockRemoteApi.failureBlockPassedIn?(NSError(domain:"UnitTest", code:0, userInfo:nil), HTTPURLResponse())
+        mockRemoteApi.failureBlockPassedIn?(NSError(domain: "UnitTest", code: 0, userInfo: nil), HTTPURLResponse())
 
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")

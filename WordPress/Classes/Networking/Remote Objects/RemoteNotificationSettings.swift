@@ -11,21 +11,20 @@ import Foundation
 /// Each one of the possible channels may post notifications via different streams:
 /// Email, Push Notifications, and Timeline.
 ///
-open class RemoteNotificationSettings
-{
+open class RemoteNotificationSettings {
     /// Represents the Channel to which the current settings are associated.
     ///
-    open let channel : Channel
+    open let channel: Channel
 
     /// Contains an array of the available Notification Streams.
     ///
-    open let streams : [Stream]
+    open let streams: [Stream]
 
 
 
     /// Represents a communication channel that may post notifications to the user.
     ///
-    public enum Channel : Equatable {
+    public enum Channel: Equatable {
         case blog(blogId: Int)
         case other
         case wordPressCom
@@ -35,13 +34,13 @@ open class RemoteNotificationSettings
     /// Contains the Notification Settings for a specific communications stream.
     ///
     open class Stream {
-        open var kind         : Kind
-        open var preferences  : [String : Bool]?
+        open var kind: Kind
+        open var preferences: [String : Bool]?
 
 
         /// Enumerates all of the possible Stream Kinds
         ///
-        public enum Kind : String {
+        public enum Kind: String {
             case Timeline       = "timeline"
             case Email          = "email"
             case Device         = "device"
@@ -69,15 +68,14 @@ open class RemoteNotificationSettings
         /// - Returns: A native Swift dictionary, containing only the Boolean entries
         ///
         fileprivate func filterNonBooleanEntries(_ dictionary: NSDictionary?) -> [String : Bool] {
-            var filtered = [String : Bool]()
+            var filtered = [String: Bool]()
             if dictionary == nil {
                 return filtered
             }
 
             for (key, value) in dictionary! {
                 if let stringKey = key   as? String,
-                   let boolValue = value as? Bool
-                {
+                   let boolValue = value as? Bool {
                     let value = value as AnyObject
                     // NSNumbers might get converted to Bool anyways
                     if value === kCFBooleanFalse || value === kCFBooleanTrue {
@@ -190,8 +188,7 @@ open class RemoteNotificationSettings
 ///
 /// - Returns: A boolean indicating whether two channels are equal. Or not!
 ///
-public func ==(lhs: RemoteNotificationSettings.Channel, rhs: RemoteNotificationSettings.Channel) -> Bool
-{
+public func ==(lhs: RemoteNotificationSettings.Channel, rhs: RemoteNotificationSettings.Channel) -> Bool {
     switch (lhs, rhs) {
     case (let .blog(firstBlogId), let .blog(secondBlogId)) where firstBlogId == secondBlogId:
         return true
