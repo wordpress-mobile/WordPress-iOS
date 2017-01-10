@@ -21,14 +21,18 @@
 @property (nonatomic, strong) TracksService *tracksService;
 @property (nonatomic, strong) NSDictionary *userProperties;
 @property (nonatomic, strong) NSString *anonymousID;
+@property (nonatomic, strong) NSString *loggedInID;
 
 @end
 
 NSString *const TracksEventPropertyButtonKey = @"button";
 NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
 NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
+NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 
 @implementation WPAnalyticsTrackerAutomatticTracks
+
+NSString *_loggedInID;
 
 + (NSString *)eventNameForStat:(WPAnalyticsStat)stat
 {
@@ -68,17 +72,13 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
 
 - (void)beginSession
 {
-#ifdef TRACKS_ENABLED
-    [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
-#endif
-    [self refreshMetadata];
-}
+    if (self.loggedInID) {
+        [self.tracksService switchToAuthenticatedUserWithUsername:self.loggedInID userID:nil skipAliasEventCreation:YES];
+    } else {
+        [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
+    }
 
-- (void)endSession
-{
-    self.anonymousID = nil;
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:TracksUserDefaultsAnonymousUserIDKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self refreshMetadata];
 }
 
 - (void)refreshMetadata
@@ -121,20 +121,10 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
     
     if (dotcom_user == YES && [username length] > 0) {
+
         [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
     }
 }
-
-- (void)beginTimerForStat:(WPAnalyticsStat)stat
-{
-    
-}
-
-- (void)endTimerForStat:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
-{
-    
-}
-
 
 #pragma mark - Private methods
 
@@ -152,6 +142,23 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
     }
     
     return _anonymousID;
+}
+
+- (NSString *)loggedInID
+{
+    if (_loggedInID == nil || _loggedInID.length == 0) {
+        NSString *loggedInID = [[NSUserDefaults standardUserDefaults] stringForKey:TracksUserDefaultsLoggedInUserIDKey];
+        if (loggedInID != nil) {
+            _loggedInID = loggedInID;
+        }
+    }
+
+    return _loggedInID;
+}
+
+- (void)setLoggedInID:(NSString *)loggedInID
+{
+
 }
 
 + (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat
