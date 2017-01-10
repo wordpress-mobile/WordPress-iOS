@@ -81,7 +81,6 @@
 
     NSAssert(_stackView != nil, @"stackView is nil");
     [self.stackView addArrangedSubview:label];
-    _label = label;
 }
 
 - (void)setupIconImageView
