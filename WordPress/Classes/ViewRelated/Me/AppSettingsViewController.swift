@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import WordPressShared
 import WordPressComAnalytics
+import SVProgressHUD
 
 class AppSettingsViewController: UITableViewController {
 
@@ -25,6 +26,8 @@ class AppSettingsViewController: UITableViewController {
         super.viewDidLoad()
 
         ImmuTable.registerRows([
+            DestructiveButtonRow.self,
+            TextRow.self,
             MediaSizeRow.self,
             SwitchRow.self,
             NavigationItemRow.self
@@ -36,6 +39,10 @@ class AppSettingsViewController: UITableViewController {
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.handler.viewModel = self.tableViewModel()
+    }
 
     // MARK: - Model mapping
 
@@ -51,6 +58,26 @@ class AppSettingsViewController: UITableViewController {
             value: Bool(MediaSettings().removeLocationSetting),
             onChange: mediaRemoveLocationChanged()
         )
+
+        var mediaSizeString = NSLocalizedString("Unknown", comment: "Label for size of media when it's not possible to calculate it.")
+        let fileManager = FileManager()
+        if let mediaSize = try? fileManager.allocatedSizeOf(directoryURL: MediaService.urlForMediaDirectory()) {
+            if mediaSize == 0 {
+                mediaSizeString = NSLocalizedString("Empty", comment: "Label for size of media when the cache is empty.")
+            } else {
+                mediaSizeString = ByteCountFormatter.string(fromByteCount: mediaSize, countStyle: ByteCountFormatter.CountStyle.file)
+            }
+        }
+        let mediaSizeRow = TextRow(title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
+                                   value: mediaSizeString)
+
+        let mediaClearCacheRow = DestructiveButtonRow(title: NSLocalizedString("Clear Media Cache", comment: "Label for button that clears all media cache."),
+                                                      action: { row in
+                                                        MediaService.cleanMediaCacheFolder()
+                                                        SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Media Cache cleaned", comment: "Label for message that confirms cleaning of media cache."))
+                                                        self.handler.viewModel = self.tableViewModel()
+                                                        self.tableView.reloadData()
+        })
 
         let editorSettings = EditorSettings()
         let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
@@ -87,7 +114,9 @@ class AppSettingsViewController: UITableViewController {
                 headerText: mediaHeader,
                 rows: [
                     uploadSize,
-                    mediaRemoveLocation
+                    mediaRemoveLocation,
+                    mediaSizeRow,
+                    mediaClearCacheRow
                 ],
                 footerText: nil),
             ImmuTableSection(
