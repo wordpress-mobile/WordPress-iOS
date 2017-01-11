@@ -28,8 +28,8 @@ class NoticeAnimator: Animator {
 
 
     // MARK: - Private properties
-    fileprivate var previousHeight : CGFloat = 0
-    fileprivate var message : String? {
+    fileprivate var previousHeight: CGFloat = 0
+    fileprivate var message: String? {
         get {
             return noticeLabel.label.text
         }
@@ -40,8 +40,8 @@ class NoticeAnimator: Animator {
 
 
     // MARK: - Private Immutable Properties
-    fileprivate let targetView : UIView
-    fileprivate let noticeLabel : PaddedLabel = {
+    fileprivate let targetView: UIView
+    fileprivate let noticeLabel: PaddedLabel = {
         let label = PaddedLabel()
         label.backgroundColor = WPStyleGuide.mediumBlue()
         label.clipsToBounds = true
@@ -54,7 +54,7 @@ class NoticeAnimator: Animator {
 
 
     // MARK: - Private Computed Properties
-    fileprivate var shouldDisplayMessage : Bool {
+    fileprivate var shouldDisplayMessage: Bool {
         return message != nil
     }
     fileprivate var targetTableView: UITableView? {
@@ -140,7 +140,7 @@ class NoticeAnimator: Animator {
 
 
     // MARK: - Helpers
-    fileprivate func heightForMessage(_ message : String?) -> CGFloat {
+    fileprivate func heightForMessage(_ message: String?) -> CGFloat {
         guard let message = message else {
             return CGSize.zero.height
         }

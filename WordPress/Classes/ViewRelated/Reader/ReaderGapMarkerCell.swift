@@ -1,13 +1,12 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-open class ReaderGapMarkerCell: UITableViewCell
-{
+open class ReaderGapMarkerCell: UITableViewCell {
     @IBOutlet fileprivate weak var tearBackgroundView: UIView!
     @IBOutlet fileprivate weak var tearMaskView: UIView!
     @IBOutlet fileprivate weak var activityViewBackgroundView: UIView!
     @IBOutlet fileprivate weak var activityView: UIActivityIndicatorView!
-    @IBOutlet fileprivate weak var button:UIButton!
+    @IBOutlet fileprivate weak var button: UIButton!
 
     open override func awakeFromNib() {
         super.awakeFromNib()
@@ -40,7 +39,7 @@ open class ReaderGapMarkerCell: UITableViewCell
         button.isUserInteractionEnabled = false
     }
 
-    open func animateActivityView(_ animate:Bool) {
+    open func animateActivityView(_ animate: Bool) {
         button.alpha = animate ? WPAlphaZero : WPAlphaFull
         if animate {
             activityView.startAnimating()

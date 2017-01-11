@@ -142,10 +142,9 @@ class PostPostViewController: UIViewController {
         siteNameLabel.text = blogSettings.name
         siteUrlLabel.text = post.blog.displayURL as String?
         if let icon = post.blog.icon {
-            siteIconView.setImageWithSiteIcon(icon, placeholderImage:nil)
+            siteIconView.setImageWithSiteIcon(icon, placeholderImage: nil)
         }
-        if siteIconView.image == .none
-        {
+        if siteIconView.image == .none {
             siteIconView.superview?.isHidden = true
         }
         let isPrivate = !post.blog.visible

@@ -35,7 +35,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
     func testGetMediaWithID() {
 
         let id = 1
-        let response = ["ID" : id]
+        let response = ["ID": id]
         var remoteMedia: RemoteMedia? = nil
         mediaServiceRemote.getMediaWithID(id as NSNumber!, success: {
             remoteMedia = $0
@@ -57,7 +57,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
     func testCreateMedia() {
 
-        let response = ["media" : [["ID" : 1]]]
+        let response = ["media": [["ID": 1]]]
         let media = mockRemoteMedia()
         var progress: Progress? = nil
         var remoteMedia: RemoteMedia? = nil
@@ -70,11 +70,11 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
     func testCreateMediaError() {
 
-        let response = ["error" : ["some error"]]
+        let response = ["error": ["some error"]]
         let media = mockRemoteMedia()
         var progress: Progress? = nil
         var errorDescription = ""
-        mediaServiceRemote.createMedia(media, progress: &progress, success:nil, failure: {
+        mediaServiceRemote.createMedia(media, progress: &progress, success: nil, failure: {
             errorDescription = ($0?.localizedDescription)!
         })
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
@@ -92,7 +92,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
     func testUpdateMedia() {
 
-        let response = ["ID" : 1]
+        let response = ["ID": 1]
         let media = mockRemoteMedia()
         var remoteMedia: RemoteMedia? = nil
         mediaServiceRemote.update(media, success: {
@@ -112,7 +112,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
     func testGetEmptyMediaLibrary() {
 
-        let response = ["media" : []]
+        let response = ["media": []]
         var remoteMedias = [RemoteMedia]()
         mediaServiceRemote.getMediaLibrary(success: { (medias) in
             if let medias = medias as? [RemoteMedia] {
@@ -125,7 +125,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
     func testGetSingleMediaLibraries() {
 
-        let response = ["media" : [["ID" : 2]]]
+        let response = ["media": [["ID": 2]]]
         var remoteMedias = [RemoteMedia]()
         mediaServiceRemote.getMediaLibrary(success: { (medias) in
             if let medias = medias as? [RemoteMedia] {
@@ -138,7 +138,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
     func testGetMultipleMediaLibraries() {
 
-        let response = ["media" : [["ID" : 2], ["ID" : 3], ["ID" : 4]]]
+        let response = ["media": [["ID": 2], ["ID": 3], ["ID": 4]]]
         var remoteMedias = [RemoteMedia]()
         mediaServiceRemote.getMediaLibrary(success: { (medias) in
             if let medias = medias as? [RemoteMedia] {
@@ -160,7 +160,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
     func testGetMediaLibraryCount() {
 
         let expectedCount = 3
-        let response = ["found" : expectedCount]
+        let response = ["found": expectedCount]
         var remoteCount = 0
         mediaServiceRemote.getMediaLibraryCount(success: { (count) in
             remoteCount = count
@@ -169,7 +169,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         XCTAssertEqual(remoteCount, expectedCount)
     }
 
-    func testRemoteMediaJSONParsing(){
+    func testRemoteMediaJSONParsing() {
 
         let id = 1
         let url = "http://www.wordpress.com"
@@ -184,18 +184,18 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let height = 321
         let width = 432
 
-        let jsonDictionary: [String : Any] = ["ID" : id,
-                                                      "URL" : url,
-                                                      "guid" : guid,
-                                                      "date" : date,
-                                                      "post_ID" : postID,
-                                                      "mime_type" : mimeType,
-                                                      "file" : file,
-                                                      "title" : title,
-                                                      "caption" : caption,
-                                                      "description" : description,
-                                                      "height" : height,
-                                                      "width" : width]
+        let jsonDictionary: [String : Any] = ["ID": id,
+                                                      "URL": url,
+                                                      "guid": guid,
+                                                      "date": date,
+                                                      "post_ID": postID,
+                                                      "mime_type": mimeType,
+                                                      "file": file,
+                                                      "title": title,
+                                                      "caption": caption,
+                                                      "description": description,
+                                                      "height": height,
+                                                      "width": width]
 
         let remoteMedia = mediaServiceRemote.remoteMedia(fromJSONDictionary: jsonDictionary)
         XCTAssertEqual(remoteMedia.mediaID.intValue, id)

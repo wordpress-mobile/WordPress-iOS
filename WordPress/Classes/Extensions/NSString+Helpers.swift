@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension NSString
-{
+extension NSString {
     /// Returns the string's hostname, if any
     ///
     public func hostname() -> String? {

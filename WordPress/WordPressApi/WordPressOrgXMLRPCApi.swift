@@ -1,18 +1,17 @@
 import Foundation
 import wpxmlrpc
 
-open class WordPressOrgXMLRPCApi: NSObject
-{
+open class WordPressOrgXMLRPCApi: NSObject {
     public typealias SuccessResponseBlock = (AnyObject, HTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (_ error: NSError, _ httpResponse: HTTPURLResponse?) -> ()
 
     fileprivate let endpoint: URL
     fileprivate let userAgent: String?
-    fileprivate var ongoingProgress = [URLSessionTask:Progress]()
+    fileprivate var ongoingProgress = [URLSessionTask: Progress]()
 
     fileprivate lazy var session: Foundation.URLSession = {
         let sessionConfiguration = URLSessionConfiguration.default
-        var additionalHeaders: [String : AnyObject] = ["Accept-Encoding":"gzip, deflate" as AnyObject]
+        var additionalHeaders: [String : AnyObject] = ["Accept-Encoding": "gzip, deflate" as AnyObject]
         if let userAgent = self.userAgent {
             additionalHeaders["User-Agent"] = userAgent as AnyObject?
         }
@@ -27,7 +26,7 @@ open class WordPressOrgXMLRPCApi: NSObject
                 return self.session
             }
             let sessionConfiguration = URLSessionConfiguration.default
-            var additionalHeaders: [String : AnyObject] = ["Accept-Encoding":"gzip, deflate" as AnyObject]
+            var additionalHeaders: [String : AnyObject] = ["Accept-Encoding": "gzip, deflate" as AnyObject]
             if let userAgent = self.userAgent {
                 additionalHeaders["User-Agent"] = userAgent as AnyObject?
             }
@@ -67,7 +66,7 @@ open class WordPressOrgXMLRPCApi: NSObject
                                  password: String,
                                  success: @escaping SuccessResponseBlock,
                                  failure: @escaping FailureReponseBlock) {
-        let parameters:[AnyObject] = [0 as AnyObject, username as AnyObject, password as AnyObject]
+        let parameters: [AnyObject] = [0 as AnyObject, username as AnyObject, password as AnyObject]
         callMethod("wp.getOptions", parameters: parameters, success: success, failure: failure)
     }
     /**
@@ -85,8 +84,7 @@ open class WordPressOrgXMLRPCApi: NSObject
     @discardableResult open func callMethod(_ method: String,
                            parameters: [AnyObject]?,
                            success: @escaping SuccessResponseBlock,
-                           failure: @escaping FailureReponseBlock) -> Progress?
-    {
+                           failure: @escaping FailureReponseBlock) -> Progress? {
         //Encode request
         let request: URLRequest
         do {
@@ -126,8 +124,7 @@ open class WordPressOrgXMLRPCApi: NSObject
     @discardableResult open func streamCallMethod(_ method: String,
                                  parameters: [AnyObject]?,
                                  success: @escaping SuccessResponseBlock,
-                                 failure: @escaping FailureReponseBlock) -> Progress?
-    {
+                                 failure: @escaping FailureReponseBlock) -> Progress? {
         let fileURL = URLForTemporaryFile()
         //Encode request
         let request: URLRequest
@@ -162,7 +159,7 @@ open class WordPressOrgXMLRPCApi: NSObject
     fileprivate func requestWithMethod(_ method: String, parameters: [AnyObject]?) throws -> URLRequest {
         let mutableRequest = NSMutableURLRequest(url: endpoint)
         mutableRequest.httpMethod = "POST"
-        mutableRequest.setValue("text/xml", forHTTPHeaderField:"Content-Type")
+        mutableRequest.setValue("text/xml", forHTTPHeaderField: "Content-Type")
         let encoder = WPXMLRPCEncoder(method: method, andParameters: parameters)
         mutableRequest.httpBody = try encoder?.dataEncoded()
 
@@ -172,13 +169,13 @@ open class WordPressOrgXMLRPCApi: NSObject
     fileprivate func streamingRequestWithMethod(_ method: String, parameters: [AnyObject]?, usingFileURLForCache fileURL: URL) throws -> URLRequest {
         let mutableRequest = NSMutableURLRequest(url: endpoint)
         mutableRequest.httpMethod = "POST"
-        mutableRequest.setValue("text/xml", forHTTPHeaderField:"Content-Type")
+        mutableRequest.setValue("text/xml", forHTTPHeaderField: "Content-Type")
         let encoder = WPXMLRPCEncoder(method: method, andParameters: parameters)
         try encoder?.encode(toFile: fileURL.path)
         var optionalFileSize: AnyObject?
         try (fileURL as NSURL).getResourceValue(&optionalFileSize, forKey: URLResourceKey.fileSizeKey)
         if let fileSize = optionalFileSize as? NSNumber {
-            mutableRequest.setValue(fileSize.stringValue, forHTTPHeaderField:"Content-Length")
+            mutableRequest.setValue(fileSize.stringValue, forHTTPHeaderField: "Content-Length")
         }
 
         return mutableRequest as URLRequest
@@ -210,7 +207,7 @@ open class WordPressOrgXMLRPCApi: NSObject
 
     //MARK: - Handling of data
 
-    fileprivate func handleResponseWithData(_ originalData: Data?, urlResponse:URLResponse?, error: NSError?) throws -> AnyObject {
+    fileprivate func handleResponseWithData(_ originalData: Data?, urlResponse: URLResponse?, error: NSError?) throws -> AnyObject {
         guard let data = originalData,
             let httpResponse = urlResponse as? HTTPURLResponse,
             let contentType = httpResponse.allHeaderFields["Content-Type"] as? String, error == nil else {
@@ -240,7 +237,7 @@ open class WordPressOrgXMLRPCApi: NSObject
 
     fileprivate func convertError(_ error: NSError, data: Data?) -> NSError {
         if let data = data {
-            var userInfo:[AnyHashable: Any] = error.userInfo
+            var userInfo: [AnyHashable: Any] = error.userInfo
             userInfo[type(of: self).WordPressOrgXMLRPCApiErrorKeyData] = data
             return NSError(domain: error.domain, code: error.code, userInfo: userInfo)
         }

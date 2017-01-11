@@ -42,10 +42,9 @@ extension NSURL: ExportableAsset {
         stripGeoLocation: Bool,
         synchronous: Bool,
         successHandler: SuccessHandler,
-        errorHandler: ErrorHandler)
-    {
+        errorHandler: ErrorHandler) {
         let requestedSize = maximumResolution.clamp(min: CGSize.zero, max: pixelSize)
-        let metadataOptions: [NSString:NSObject] = [kCGImageSourceShouldCache: false as NSObject]
+        let metadataOptions: [NSString: NSObject] = [kCGImageSourceShouldCache: false as NSObject]
         let scaleOptions: [NSString: NSObject] = [
             kCGImageSourceThumbnailMaxPixelSize: (requestedSize.width > requestedSize.height ? requestedSize.width : requestedSize.height) as CFNumber,
             kCGImageSourceCreateThumbnailFromImageAlways: true as CFBoolean
@@ -60,8 +59,8 @@ extension NSURL: ExportableAsset {
             return
         }
         let image = UIImage(cgImage: scaledImage)
-        var exportMetadata : [String:AnyObject]? = nil
-        if let metadata = imageProperties as NSDictionary as? [String:AnyObject] {
+        var exportMetadata: [String: AnyObject]? = nil
+        if let metadata = imageProperties as NSDictionary as? [String: AnyObject] {
             exportMetadata = metadata
             if stripGeoLocation {
                 let attributesToRemove = [kCGImagePropertyGPSDictionary as String]
@@ -215,7 +214,7 @@ extension NSURL: ExportableAsset {
                     return track.naturalSize.applying(track.preferredTransform)
                 }
             } else if isImage {
-                let options: [NSString:NSObject] = [kCGImageSourceShouldCache: false as CFBoolean]
+                let options: [NSString: NSObject] = [kCGImageSourceShouldCache: false as CFBoolean]
                 if
                     let imageSource = CGImageSourceCreateWithURL(self, nil),
                     let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, options as CFDictionary?) as NSDictionary?,
@@ -232,9 +231,9 @@ extension NSURL: ExportableAsset {
     var typeIdentifier: String? {
         guard isFileURL else { return nil }
         do {
-            let data = try bookmarkData(options: NSURL.BookmarkCreationOptions.minimalBookmark, includingResourceValuesForKeys:[URLResourceKey.typeIdentifierKey], relativeTo: nil)
+            let data = try bookmarkData(options: NSURL.BookmarkCreationOptions.minimalBookmark, includingResourceValuesForKeys: [URLResourceKey.typeIdentifierKey], relativeTo: nil)
             guard
-                let resourceValues = NSURL.resourceValues(forKeys: [URLResourceKey.typeIdentifierKey], fromBookmarkData:data),
+                let resourceValues = NSURL.resourceValues(forKeys: [URLResourceKey.typeIdentifierKey], fromBookmarkData: data),
                 let typeIdentifier = resourceValues[URLResourceKey.typeIdentifierKey] as? String else {
                     return nil
             }
@@ -271,12 +270,12 @@ extension NSURL: ExportableAsset {
     }
 
 
-    func removeAttributes(attributes: [String], fromMetadata: [String:AnyObject]) -> [String:AnyObject]{
+    func removeAttributes(attributes: [String], fromMetadata: [String: AnyObject]) -> [String: AnyObject] {
         var resultingMetadata = fromMetadata
         for attribute in attributes {
             resultingMetadata.removeValue(forKey: attribute)
-            if attribute == kCGImagePropertyOrientation as String{
-                if let tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String:AnyObject]{
+            if attribute == kCGImagePropertyOrientation as String {
+                if let tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String: AnyObject] {
                     var newTiffMetadata = tiffMetadata
                     newTiffMetadata.removeValue(forKey: kCGImagePropertyTIFFOrientation as String)
                     resultingMetadata[kCGImagePropertyTIFFDictionary as String] = newTiffMetadata as AnyObject?
@@ -294,11 +293,11 @@ extension NSURL: ExportableAsset {
     ///
     /// - Returns: A new metadata object where the values match the values on the UIImage
     ///
-    func matchMetadata(metadata: [String:AnyObject], image: UIImage) -> [String:AnyObject] {
+    func matchMetadata(metadata: [String: AnyObject], image: UIImage) -> [String: AnyObject] {
         var resultingMetadata = metadata
         let correctOrientation = image.metadataOrientation
         resultingMetadata[kCGImagePropertyOrientation as String] = Int(correctOrientation.rawValue) as AnyObject?
-        if var tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String:AnyObject]{
+        if var tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String: AnyObject] {
             tiffMetadata[kCGImagePropertyTIFFOrientation as String] = Int(correctOrientation.rawValue) as AnyObject?
             resultingMetadata[kCGImagePropertyTIFFDictionary as String] = tiffMetadata as AnyObject?
         }
@@ -308,7 +307,7 @@ extension NSURL: ExportableAsset {
 
     // MARK: - Error Handling
 
-    enum ErrorCode : Int {
+    enum ErrorCode: Int {
         case UnsupportedAssetType = 1
         case FailedToExport = 2
         case FailedToExportMetadata = 3

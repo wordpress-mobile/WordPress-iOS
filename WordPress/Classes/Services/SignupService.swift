@@ -22,8 +22,7 @@ typealias SignupFailureBlock = (_ error: Error?) -> Void
 /// SignupService is responsible for creating a new WPCom user and blog.
 /// The entry point is `createBlogAndSigninToWPCom` and the service takes care of the rest.
 ///
-open class SignupService : LocalCoreDataService
-{
+open class SignupService: LocalCoreDataService {
     fileprivate let LanguageIDKey = "lang_id"
     fileprivate let BlogDetailsKey = "blog_details"
     fileprivate let BlogNameLowerCaseNKey = "blogname"
@@ -45,7 +44,7 @@ open class SignupService : LocalCoreDataService
     ///     - success: A success calback
     ///     - failure: A failure callback
     ///
-    func createBlogAndSigninToWPCom(blogURL url:String,
+    func createBlogAndSigninToWPCom(blogURL url: String,
                                             blogTitle: String,
                                             emailAddress: String,
                                             username: String,
@@ -72,6 +71,13 @@ open class SignupService : LocalCoreDataService
             self.createWPComBlogForParams(params, account: account, status: status, success: createWPComBlogSuccessBlock, failure: failure)
         }
 
+        let createAccountFailureBlock: SignupFailureBlock = { error in
+            self.trackAccountCreationError(error)
+
+            WPAppAnalytics.track(.createAccountFailed)
+            failure(error)
+        }
+
         let createWPComUserSuccessBlock = {
             // When the user is successfully created, authenticate.
             self.signinWPComUserWithParams(params, status: status, success: signinWPComUserSuccessBlock, failure: failure)
@@ -79,11 +85,11 @@ open class SignupService : LocalCoreDataService
 
         let validateBlogSuccessBlock = {
             // When the blog is successfully validated, create the WPCom user.
-            self.createWPComUserWithParams(params, status: status, success: createWPComUserSuccessBlock, failure: failure)
+            self.createWPComUserWithParams(params, status: status, success: createWPComUserSuccessBlock, failure: createAccountFailureBlock)
         }
 
         // To start the process, validate the blog information.
-        validateWPComBlogWithParams(params, status: status, success: validateBlogSuccessBlock, failure: failure)
+        validateWPComBlogWithParams(params, status: status, success: validateBlogSuccessBlock, failure: createAccountFailureBlock)
     }
 
 
@@ -108,7 +114,7 @@ open class SignupService : LocalCoreDataService
         remote?.validateWPComBlog(withUrl: params.url,
                                         andBlogTitle: params.title,
                                         andLanguageId: languageId,
-                                        success:{ (responseDictionary) in
+                                        success: { (responseDictionary) in
                                             success()
                                         },
                                         failure: failure)
@@ -330,7 +336,21 @@ open class SignupService : LocalCoreDataService
     // MARK: Private Instance Methods
 
     func anonymousApi() -> WordPressComRestApi {
-        return WordPressComRestApi(userAgent:WPUserAgent.wordPress())
+        return WordPressComRestApi(userAgent: WPUserAgent.wordPress())
+    }
+
+    func trackAccountCreationError(_ error: Error?) {
+        if let error = error as? NSError,
+            let errorCode = error.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String {
+            switch errorCode {
+            case "username_exists":
+                WPAppAnalytics.track(.createAccountUsernameExists)
+            case "email_exists":
+                WPAppAnalytics.track(.createAccountEmailExists)
+            default: break
+            }
+
+        }
     }
 
     /// An internal struct for conveniently sharing params between the different
@@ -356,7 +376,7 @@ open class SignupService : LocalCoreDataService
 
     /// A conveniece enum for creating meaningful NSError objects.
     ///
-    enum SignupError : Error {
+    enum SignupError: Error {
         case invalidResponse
         case missingRESTAPI
         case missingDefaultWPComAccount

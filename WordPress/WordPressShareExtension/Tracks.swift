@@ -1,13 +1,12 @@
 import Foundation
 
 
-open class Tracks
-{
+open class Tracks {
     // MARK: - Public Properties
-    open var wpcomUsername        : String?
+    open var wpcomUsername: String?
 
     // MARK: - Private Properties
-    fileprivate let uploader            : Uploader
+    fileprivate let uploader: Uploader
 
     // MARK: - Constants
     fileprivate static let version      = "1.0"
@@ -42,15 +41,15 @@ open class Tracks
 
         // Main Payload
         var payload = [
-            "_en"                           : eventName as Any,
-            "_ts"                           : timestamp,
-            "_via_ua"                       : Tracks.userAgent as Any,
-            "_rt"                           : timestamp,
-            "device_info_app_name"          : appName as Any?       ?? "WordPress" as Any,
-            "device_info_app_version"       : appVersion as Any?    ?? "Unknown",
-            "device_info_app_version_code"  : appCode       ?? "Unknown",
-            "device_info_os"                : device.systemName,
-            "device_info_os_version"        : device.systemVersion
+            "_en": eventName as Any,
+            "_ts": timestamp,
+            "_via_ua": Tracks.userAgent as Any,
+            "_rt": timestamp,
+            "device_info_app_name": appName as Any?       ?? "WordPress" as Any,
+            "device_info_app_version": appVersion as Any?    ?? "Unknown",
+            "device_info_app_version_code": appCode       ?? "Unknown",
+            "device_info_os": device.systemName,
+            "device_info_os_version": device.systemVersion
         ] as [String: Any]
 
         // Username
@@ -77,17 +76,16 @@ open class Tracks
     /// Private Internal Helper:
     /// Encapsulates all of the Backend Tracks Interaction, and deals with NSURLSession's API.
     ///
-    fileprivate class Uploader: NSObject, URLSessionDelegate
-    {
+    fileprivate class Uploader: NSObject, URLSessionDelegate {
         // MARK: - Properties
-        fileprivate var session : Foundation.URLSession!
+        fileprivate var session: Foundation.URLSession!
 
         // MARK: - Constants
         fileprivate let tracksURL   = "https://public-api.wordpress.com/rest/v1.1/tracks/record"
         fileprivate let httpMethod  = "POST"
-        fileprivate let headers     = [ "Content-Type"  : "application/json",
-                                    "Accept"        : "application/json",
-                                    "User-Agent"    : "WPiOS App Extension"]
+        fileprivate let headers     = [ "Content-Type": "application/json",
+                                    "Accept": "application/json",
+                                    "User-Agent": "WPiOS App Extension"]
 
 
         // MARK: - Deinitializers
@@ -119,7 +117,7 @@ open class Tracks
             let targetURL = URL(string: tracksURL)!
 
             // Payload
-            let dataToSend = [ "events" : [event], "commonProps" : [] ]
+            let dataToSend = [ "events": [event], "commonProps": [] ]
             let requestBody = try? JSONSerialization.data(withJSONObject: dataToSend, options: .prettyPrinted)
 
             // Request

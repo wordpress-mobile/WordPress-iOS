@@ -3,8 +3,7 @@ import Foundation
 /// Provides functionality for fetching, saving, and deleting search phrases
 /// used to search for content in the reader.
 ///
-@objc class ReaderSearchSuggestionService : LocalCoreDataService
-{
+@objc class ReaderSearchSuggestionService: LocalCoreDataService {
 
     /// Creates or updates an existing record for the specified search phrase.
     ///

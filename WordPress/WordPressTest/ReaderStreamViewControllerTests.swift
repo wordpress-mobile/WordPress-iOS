@@ -17,7 +17,7 @@ class ReaderStreamViewControllerTests: XCTestCase {
     }
 
     func testControllerWithSiteID() {
-        let controller = ReaderStreamViewController.controllerWithSiteID(NSNumber(value: 1), isFeed:false)
+        let controller = ReaderStreamViewController.controllerWithSiteID(NSNumber(value: 1), isFeed: false)
         XCTAssertNotNil(controller, "Controller should not be nil")
     }
 

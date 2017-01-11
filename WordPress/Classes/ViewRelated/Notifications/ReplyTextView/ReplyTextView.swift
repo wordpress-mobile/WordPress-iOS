@@ -5,16 +5,14 @@ import WordPressShared.WPStyleGuide
 
 // MARK: - ReplyTextViewDelegate
 //
-@objc public protocol ReplyTextViewDelegate: UITextViewDelegate
-{
+@objc public protocol ReplyTextViewDelegate: UITextViewDelegate {
     @objc optional func textView(_ textView: UITextView, didTypeWord word: String)
 }
 
 
 // MARK: - ReplyTextView
 //
-@objc open class ReplyTextView: UIView, UITextViewDelegate
-{
+@objc open class ReplyTextView: UIView, UITextViewDelegate {
     // MARK: - Initializers
     public convenience init(width: CGFloat) {
         let frame = CGRect(x: 0, y: 0, width: width, height: 0)
@@ -82,7 +80,7 @@ import WordPressShared.WPStyleGuide
         }
     }
 
-    open override var isFirstResponder : Bool {
+    open override var isFirstResponder: Bool {
         return textView.isFirstResponder
     }
 
@@ -93,8 +91,7 @@ import WordPressShared.WPStyleGuide
               let textToReplace = text,
               let selectedRange = textView.selectedTextRange,
               let newPosition = textView.position(from: selectedRange.start, offset: -textToReplace.length),
-              let newRange = textView.textRange(from: newPosition, to: selectedRange.start) else
-        {
+              let newRange = textView.textRange(from: newPosition, to: selectedRange.start) else {
             return
         }
 
@@ -188,7 +185,7 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Autolayout Helpers
-    open override var intrinsicContentSize : CGSize {
+    open override var intrinsicContentSize: CGSize {
         // Make sure contentSize returns... the real content size
         textView.layoutIfNeeded()
 
@@ -303,14 +300,14 @@ import WordPressShared.WPStyleGuide
     fileprivate let textViewMinHeight       = CGFloat(44)
 
     // MARK: - Private Properties
-    fileprivate var bundle:                         NSArray?
+    fileprivate var bundle: NSArray?
 
     // MARK: - IBOutlets
-    @IBOutlet fileprivate var textView:             UITextView!
-    @IBOutlet fileprivate var placeholderLabel:     UILabel!
-    @IBOutlet fileprivate var replyButton:          UIButton!
-    @IBOutlet fileprivate var bezierView:           ReplyBezierView!
-    @IBOutlet fileprivate var separatorsView:       SeparatorsView!
-    @IBOutlet fileprivate var layoutView:           UIView!
-    @IBOutlet fileprivate var containerView:        UIView!
+    @IBOutlet fileprivate var textView: UITextView!
+    @IBOutlet fileprivate var placeholderLabel: UILabel!
+    @IBOutlet fileprivate var replyButton: UIButton!
+    @IBOutlet fileprivate var bezierView: ReplyBezierView!
+    @IBOutlet fileprivate var separatorsView: SeparatorsView!
+    @IBOutlet fileprivate var layoutView: UIView!
+    @IBOutlet fileprivate var containerView: UIView!
 }

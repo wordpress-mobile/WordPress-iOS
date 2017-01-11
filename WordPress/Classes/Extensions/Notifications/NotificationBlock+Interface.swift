@@ -8,8 +8,7 @@ import WordPressShared.WPStyleGuide
 /// For performance purposes, Attributed Strings get temporarily cached... and will get nuked whenever the
 /// related Notification object gets updated.
 ///
-extension NotificationBlock
-{
+extension NotificationBlock {
     /// Formats a NotificationBlock for usage in NoteTableViewCell, in the subject field
     ///
     var attributedSubjectText: NSAttributedString {
@@ -135,8 +134,7 @@ extension NotificationBlock
 
 // MARK: - Private Helpers
 //
-extension NotificationBlock
-{
+extension NotificationBlock {
     /// This method is meant to aid cache-implementation into all of the AttriutedString getters introduced
     /// in this extension.
     ///
@@ -169,11 +167,10 @@ extension NotificationBlock
     ///
     /// - Returns: A NSAttributedString instance, formatted with all of the specified parameters
     ///
-    fileprivate func textWithStyles(_ attributes  : [String: AnyObject],
-                                quoteStyles : [String: AnyObject]?,
-                             rangeStylesMap : [NotificationRange.Kind: [String: AnyObject]]?,
-                                 linksColor : UIColor?) -> NSAttributedString
-    {
+    fileprivate func textWithStyles(_ attributes: [String: AnyObject],
+                                quoteStyles: [String: AnyObject]?,
+                             rangeStylesMap: [NotificationRange.Kind: [String: AnyObject]]?,
+                                 linksColor: UIColor?) -> NSAttributedString {
         guard let text = text else {
             return NSAttributedString()
         }
@@ -216,34 +213,34 @@ extension NotificationBlock
     //
     fileprivate struct Constants {
         static let subjectRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .User               : Styles.subjectBoldStyle as Dictionary<String, AnyObject>,
-            .Post               : Styles.subjectItalicsStyle as Dictionary<String, AnyObject>,
-            .Comment            : Styles.subjectItalicsStyle as Dictionary<String, AnyObject>,
-            .Blockquote         : Styles.subjectQuotedStyle as Dictionary<String, AnyObject>,
-            .Noticon            : Styles.subjectNoticonStyle
+            .User: Styles.subjectBoldStyle as Dictionary<String, AnyObject>,
+            .Post: Styles.subjectItalicsStyle as Dictionary<String, AnyObject>,
+            .Comment: Styles.subjectItalicsStyle as Dictionary<String, AnyObject>,
+            .Blockquote: Styles.subjectQuotedStyle as Dictionary<String, AnyObject>,
+            .Noticon: Styles.subjectNoticonStyle
         ]
 
         static let headerTitleRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .User               : Styles.headerTitleBoldStyle as Dictionary<String, AnyObject>,
-            .Post               : Styles.headerTitleContextStyle as Dictionary<String, AnyObject>,
-            .Comment            : Styles.headerTitleContextStyle as Dictionary<String, AnyObject>
+            .User: Styles.headerTitleBoldStyle as Dictionary<String, AnyObject>,
+            .Post: Styles.headerTitleContextStyle as Dictionary<String, AnyObject>,
+            .Comment: Styles.headerTitleContextStyle as Dictionary<String, AnyObject>
         ]
 
         static let footerStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .Noticon            : Styles.blockNoticonStyle as Dictionary<String, AnyObject>
+            .Noticon: Styles.blockNoticonStyle as Dictionary<String, AnyObject>
         ]
 
         static let richRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .Blockquote         : Styles.contentBlockQuotedStyle as Dictionary<String, AnyObject>,
-            .Noticon            : Styles.blockNoticonStyle as Dictionary<String, AnyObject>,
-            .Match              : Styles.contentBlockMatchStyle as Dictionary<String, AnyObject>
+            .Blockquote: Styles.contentBlockQuotedStyle as Dictionary<String, AnyObject>,
+            .Noticon: Styles.blockNoticonStyle as Dictionary<String, AnyObject>,
+            .Match: Styles.contentBlockMatchStyle as Dictionary<String, AnyObject>
         ]
 
         static let badgeRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .User               : Styles.badgeBoldStyle as Dictionary<String, AnyObject>,
-            .Post               : Styles.badgeItalicsStyle as Dictionary<String, AnyObject>,
-            .Comment            : Styles.badgeItalicsStyle as Dictionary<String, AnyObject>,
-            .Blockquote         : Styles.badgeQuotedStyle as Dictionary<String, AnyObject>
+            .User: Styles.badgeBoldStyle as Dictionary<String, AnyObject>,
+            .Post: Styles.badgeItalicsStyle as Dictionary<String, AnyObject>,
+            .Comment: Styles.badgeItalicsStyle as Dictionary<String, AnyObject>,
+            .Blockquote: Styles.badgeQuotedStyle as Dictionary<String, AnyObject>
         ]
     }
 

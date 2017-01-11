@@ -8,8 +8,7 @@ import WordPressComAnalytics
 /// A Stream represents a possible way in which notifications are communicated.
 /// For instance: Push Notifications / WordPress.com Timeline / Email
 ///
-open class NotificationSettingStreamsViewController : UITableViewController
-{
+open class NotificationSettingStreamsViewController: UITableViewController {
     // MARK: - Initializers
     public convenience init(settings: NotificationSettings) {
         self.init(style: .grouped)
@@ -153,7 +152,7 @@ open class NotificationSettingStreamsViewController : UITableViewController
     }
 
     fileprivate func imageForStreamKind(_ streamKind: NotificationSettings.Stream.Kind) -> UIImage? {
-        let imageName : String
+        let imageName: String
         switch streamKind {
         case .Email:
             imageName = "notifications-email"
@@ -213,6 +212,6 @@ open class NotificationSettingStreamsViewController : UITableViewController
     fileprivate let rowsCount           = 1
 
     // MARK: - Private Properties
-    fileprivate var settings        : NotificationSettings?
-    fileprivate var sortedStreams   : [NotificationSettings.Stream]?
+    fileprivate var settings: NotificationSettings?
+    fileprivate var sortedStreams: [NotificationSettings.Stream]?
 }

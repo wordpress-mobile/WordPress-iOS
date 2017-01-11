@@ -3,8 +3,7 @@ import Foundation
 
 /// This service encapsulates all of the Actions that can be performed with a NotificationBlock
 ///
-open class NotificationActionsService: LocalCoreDataService
-{
+open class NotificationActionsService: LocalCoreDataService {
     /// Follows a Site referenced by a given NotificationBlock.
     ///
     /// - Parameter block: The Notification's Site Block

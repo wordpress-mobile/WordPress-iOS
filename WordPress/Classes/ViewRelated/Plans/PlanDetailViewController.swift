@@ -81,7 +81,7 @@ class PlanDetailViewController: UIViewController {
         return controller
     }
 
-    override var prefersStatusBarHidden : Bool {
+    override var prefersStatusBarHidden: Bool {
         return true
     }
 

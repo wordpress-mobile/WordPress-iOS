@@ -7,8 +7,7 @@ import WordPressShared
 /// Supports specific styles for Unapproved Comment Notifications, Unread Notifications, and a brand
 /// new "Undo Deletion" mechanism has been implemented. See "NoteUndoOverlayView" for reference.
 ///
-class NoteTableViewCell: WPTableViewCell
-{
+class NoteTableViewCell: WPTableViewCell {
     // MARK: - Public Properties
     var read: Bool = false {
         didSet {
@@ -316,7 +315,7 @@ class NoteTableViewCell: WPTableViewCell
     }
 
     // MARK: - Private Properties
-    fileprivate var gravatarURL : URL?
+    fileprivate var gravatarURL: URL?
     fileprivate var separatorsView = SeparatorsView()
 
     // MARK: - IBOutlets

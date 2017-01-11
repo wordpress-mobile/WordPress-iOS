@@ -2,13 +2,11 @@ import Foundation
 
 /// Contains methods for formatting post or comment content for display.
 ///
-@objc class RichContentFormatter: NSObject
-{
+@objc class RichContentFormatter: NSObject {
 
     /// Encapsulates regex instances used in class methods.
     ///
-    struct RegEx
-    {
+    struct RegEx {
         // Forbidden tags
         static let styleTags = try! NSRegularExpression(pattern: "<style[^>]*?>[\\s\\S]*?</style>", options: .caseInsensitive)
         static let scriptTags = try! NSRegularExpression(pattern: "<script[^>]*?>[\\s\\S]*?</script>", options: .caseInsensitive)
@@ -293,7 +291,7 @@ import Foundation
             return string
         }
         var content = string.trim()
-        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location:0, length: content.characters.count))
+        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.characters.count))
         if let match = matches.first {
             let index = content.characters.index(content.startIndex, offsetBy: match.range.location)
             content = content.substring(to: index)

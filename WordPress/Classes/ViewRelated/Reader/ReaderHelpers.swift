@@ -3,7 +3,7 @@ import WordPressComAnalytics
 
 /// A collection of helper methods used by the Reader.
 ///
-@objc open class ReaderHelpers : NSObject {
+@objc open class ReaderHelpers: NSObject {
 
 
     // MARK: - Topic Helpers
@@ -16,7 +16,7 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is a default topic
     ///
-    open class func isTopicDefault(_ topic:ReaderAbstractTopic) -> Bool {
+    open class func isTopicDefault(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.isKind(of: ReaderDefaultTopic.self)
     }
 
@@ -28,7 +28,7 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is a list topic
     ///
-    open class func isTopicList(_ topic:ReaderAbstractTopic) -> Bool {
+    open class func isTopicList(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.isKind(of: ReaderListTopic.self)
     }
 
@@ -40,7 +40,7 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is a site topic
     ///
-    open class func isTopicSite(_ topic:ReaderAbstractTopic) -> Bool {
+    open class func isTopicSite(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.isKind(of: ReaderSiteTopic.self)
     }
 
@@ -52,7 +52,7 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is a tag topic
     ///
-    open class func isTopicTag(_ topic:ReaderAbstractTopic) -> Bool {
+    open class func isTopicTag(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.isKind(of: ReaderTagTopic.self)
     }
 
@@ -119,8 +119,8 @@ import WordPressComAnalytics
 
     // MARK: Analytics Helpers
 
-    open class func trackLoadedTopic(_ topic: ReaderAbstractTopic, withProperties properties:[AnyHashable: Any]) {
-        var stat:WPAnalyticsStat?
+    open class func trackLoadedTopic(_ topic: ReaderAbstractTopic, withProperties properties: [AnyHashable: Any]) {
+        var stat: WPAnalyticsStat?
 
         if topicIsFreshlyPressed(topic) {
             stat = .readerFreshlyPressedLoaded
@@ -142,7 +142,7 @@ import WordPressComAnalytics
     }
 
 
-    open class func statsPropertiesForPost(_ post:ReaderPost, andValue value:AnyObject?, forKey key:String?) -> [AnyHashable: Any] {
+    open class func statsPropertiesForPost(_ post: ReaderPost, andValue value: AnyObject?, forKey key: String?) -> [AnyHashable: Any] {
         var properties = [AnyHashable: Any]()
         properties[WPAppAnalyticsKeyBlogID] = post.siteID
         properties[WPAppAnalyticsKeyPostID] = post.postID
@@ -181,14 +181,14 @@ import WordPressComAnalytics
 
         let pixelStatReferrer = "https://wordpress.com/"
         let pixel = "https://pixel.wp.com/g.gif"
-        let params:NSArray = [
+        let params: NSArray = [
             "v=wpcom",
             "reader=1",
             "ref=\(pixelStatReferrer)",
             "host=\(host)",
             "blog=\(siteID)",
             "post=\(postID)",
-            NSString(format:"t=%d", arc4random())
+            NSString(format: "t=%d", arc4random())
         ]
 
         let userAgent = WPUserAgent.wordPress()
@@ -204,7 +204,7 @@ import WordPressComAnalytics
         task.resume()
     }
 
-    open class func isUserAdminOnSiteWithID(_ siteID:NSNumber) -> Bool {
+    open class func isUserAdminOnSiteWithID(_ siteID: NSNumber) -> Bool {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
         if let blog = blogService?.blog(byBlogId: siteID) {

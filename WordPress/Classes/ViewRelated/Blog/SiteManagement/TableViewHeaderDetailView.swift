@@ -3,8 +3,7 @@ import WordPressShared
 
 /// TableViewHeaderDetailView displays a title and detail using autolayout.
 ///
-open class TableViewHeaderDetailView : UITableViewHeaderFooterView
-{
+open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
     /// Title is displayed in standard section header style
     ///
     open var title: String = "" {
@@ -107,7 +106,7 @@ open class TableViewHeaderDetailView : UITableViewHeaderFooterView
         stackSubviews()
     }
 
-    required public init?(coder aDecoder: NSCoder){
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         stackSubviews()
     }
@@ -130,7 +129,7 @@ open class TableViewHeaderDetailView : UITableViewHeaderFooterView
         layoutWidth = frame.size.width
     }
 
-    override open var intrinsicContentSize : CGSize {
+    override open var intrinsicContentSize: CGSize {
         guard layoutWidth > 0 else {
             return CGSize.zero
         }
@@ -152,10 +151,8 @@ open class TableViewHeaderDetailView : UITableViewHeaderFooterView
 
 /// WPStyleGuide extension with styles and methods specific to TableViewHeaderDetailView.
 ///
-extension WPStyleGuide
-{
-    public struct TableViewHeaderDetailView
-    {
+extension WPStyleGuide {
+    public struct TableViewHeaderDetailView {
         // MARK: - Text Styles
 
         public static let titleFont = WPStyleGuide.tableviewSectionHeaderFont()

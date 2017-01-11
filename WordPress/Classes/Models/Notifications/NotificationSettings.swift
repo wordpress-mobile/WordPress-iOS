@@ -6,19 +6,18 @@ import Foundation
 /// Notifications: a WordPress blog, Third Party Sites or WordPress.com.
 /// Each channel may support different streams, such as: Email + Push Notifications + Timeline.
 ///
-open class NotificationSettings
-{
+open class NotificationSettings {
     /// Represents the Channel to which the current settings are associated.
     ///
-    open let channel  : Channel
+    open let channel: Channel
 
     /// Contains an array of the available Notification Streams.
     ///
-    open let streams  : [Stream]
+    open let streams: [Stream]
 
     /// Maps to the associated blog, if any.
     ///
-    open let blog     : Blog?
+    open let blog: Blog?
 
 
 
@@ -65,7 +64,7 @@ open class NotificationSettings
 
     /// Represents a communication channel that may post notifications to the user.
     ///
-    public enum Channel : Equatable {
+    public enum Channel: Equatable {
         case blog(blogId: Int)
         case other
         case wordPressCom
@@ -89,8 +88,8 @@ open class NotificationSettings
     /// Contains the Notification Settings collection for a specific communications stream.
     ///
     open class Stream {
-        open var kind         : Kind
-        open var preferences  : [String : Bool]?
+        open var kind: Kind
+        open var preferences: [String : Bool]?
 
 
         /// Designated Initializer
@@ -107,7 +106,7 @@ open class NotificationSettings
 
         /// Enumerates all of the possible Stream Kinds
         ///
-        public enum Kind : String {
+        public enum Kind: String {
             case Timeline       = "timeline"
             case Email          = "email"
             case Device         = "device"
@@ -137,8 +136,7 @@ open class NotificationSettings
     fileprivate let wpcomPreferenceKeys     = [Keys.marketing, Keys.research, Keys.community]
 
     // MARK: - Setting Keys
-    fileprivate struct Keys
-    {
+    fileprivate struct Keys {
         static let commentAdded     = "new_comment"
         static let commentLiked     = "comment_like"
         static let commentReplied   = "comment_reply"
@@ -151,35 +149,35 @@ open class NotificationSettings
         static let community        = "community"
 
         static let localizedDescriptionMap = [
-            commentAdded    : NSLocalizedString("Comments on my site",
-                                comment: "Setting: indicates if New Comments will be notified"),
-            commentLiked    : NSLocalizedString("Likes on my comments",
-                                comment: "Setting: indicates if Comment Likes will be notified"),
-            postLiked       : NSLocalizedString("Likes on my posts",
-                                comment: "Setting: indicates if Replies to your comments will be notified"),
-            follower        : NSLocalizedString("Site follows",
-                                comment: "Setting: indicates if New Follows will be notified"),
-            achievement     : NSLocalizedString("Site achievements",
-                                comment: "Setting: indicates if Achievements will be notified"),
-            mention         : NSLocalizedString("Username mentions",
-                                comment: "Setting: indicates if Mentions will be notified"),
-            commentReplied  : NSLocalizedString("Replies to your comments",
-                                comment: "Setting: indicates if Replies to Comments will be notified"),
-            marketing       : NSLocalizedString("Suggestions",
-                                comment: "Setting: WordPress.com Suggestions"),
-            research        : NSLocalizedString("Research",
-                                comment: "Setting: WordPress.com Surveys"),
-            community       : NSLocalizedString("Community",
-                                comment: "Setting: WordPress.com Community")
+            commentAdded: NSLocalizedString("Comments on my site",
+                                            comment: "Setting: indicates if New Comments will be notified"),
+            commentLiked: NSLocalizedString("Likes on my comments",
+                                            comment: "Setting: indicates if Comment Likes will be notified"),
+            postLiked: NSLocalizedString("Likes on my posts",
+                                         comment: "Setting: indicates if Replies to your comments will be notified"),
+            follower: NSLocalizedString("Site follows",
+                                        comment: "Setting: indicates if New Follows will be notified"),
+            achievement: NSLocalizedString("Site achievements",
+                                           comment: "Setting: indicates if Achievements will be notified"),
+            mention: NSLocalizedString("Username mentions",
+                                       comment: "Setting: indicates if Mentions will be notified"),
+            commentReplied: NSLocalizedString("Replies to your comments",
+                                              comment: "Setting: indicates if Replies to Comments will be notified"),
+            marketing: NSLocalizedString("Suggestions",
+                                         comment: "Setting: WordPress.com Suggestions"),
+            research: NSLocalizedString("Research",
+                                        comment: "Setting: WordPress.com Surveys"),
+            community: NSLocalizedString("Community",
+                                         comment: "Setting: WordPress.com Community")
         ]
 
         static let localizedDetailsMap = [
-            marketing       : NSLocalizedString("Tips for getting the most out of WordPress.com.",
-                                comment: "WordPress.com Marketing Footer Text"),
-            research        : NSLocalizedString("Opportunities to participate in WordPress.com research & surveys.",
-                                comment: "WordPress.com Research Footer Text"),
-            community       : NSLocalizedString("Information on WordPress.com courses and events (online & in-person).",
-                                comment: "WordPress.com Community Footer Text")
+            marketing: NSLocalizedString("Tips for getting the most out of WordPress.com.",
+                                         comment: "WordPress.com Marketing Footer Text"),
+            research: NSLocalizedString("Opportunities to participate in WordPress.com research & surveys.",
+                                        comment: "WordPress.com Research Footer Text"),
+            community: NSLocalizedString("Information on WordPress.com courses and events (online & in-person).",
+                                         comment: "WordPress.com Community Footer Text")
         ]
     }
 }
@@ -187,8 +185,7 @@ open class NotificationSettings
 
 /// Swift requires this method to be implemented globally. Sorry about that!
 ///
-public func ==(first: NotificationSettings.Channel, second: NotificationSettings.Channel) -> Bool
-{
+public func ==(first: NotificationSettings.Channel, second: NotificationSettings.Channel) -> Bool {
     switch (first, second) {
     case (let .blog(firstBlogId), let .blog(secondBlogId)) where firstBlogId == secondBlogId:
         return true
