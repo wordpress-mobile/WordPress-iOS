@@ -67,6 +67,10 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 // and unset after state is restored.
 @property (nonatomic) BOOL preserveForRestoration;
 
+// When true indicates a post is inuse and should not be deleted from core data
+// to avoid exceptions due to the post becomeing a fault.
+@property (nonatomic) BOOL inUse;
+
 - (BOOL)isCrossPost;
 - (BOOL)isPrivate;
 - (NSString *)authorString;

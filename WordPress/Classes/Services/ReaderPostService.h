@@ -131,6 +131,11 @@ extern NSString * const ReaderPostServiceErrorDomain;
 - (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked;
 
 /**
+ Globally sets the `inUse` flag to fall for all posts.
+ */
+- (void)markAllPostsNotInUse;
+
+/**
  Follows or unfollows the specified site. Posts belonging to that site and URL
  have their following status updated in core data. 
 

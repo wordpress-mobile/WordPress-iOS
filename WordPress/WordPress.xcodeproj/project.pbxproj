@@ -2192,6 +2192,7 @@
 		E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderBlockedSiteCell.swift; sourceTree = "<group>"; };
 		E65D31821D21D03C004E6F46 /* MixpanelTweaks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MixpanelTweaks.h; sourceTree = "<group>"; };
 		E65D31831D21D03C004E6F46 /* MixpanelTweaks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MixpanelTweaks.m; sourceTree = "<group>"; };
+		E66365CF1E08780A001EA74C /* WordPress 55.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 55.xcdatamodel"; sourceTree = "<group>"; };
 		E663D18F1C65383E0017F109 /* SharingAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingAccountViewController.swift; sourceTree = "<group>"; };
 		E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTopicServiceTest.swift; sourceTree = "<group>"; };
 		E66969C91B9E0C4F00EC9C00 /* ReaderTopicServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopicServiceRemoteTests.m; sourceTree = "<group>"; };
@@ -8476,6 +8477,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				E66365CF1E08780A001EA74C /* WordPress 55.xcdatamodel */,
 				E626E0C31DF8BB2F0073C0DE /* WordPress 54.xcdatamodel */,
 				B5F94DBF1DB8035200DD505D /* WordPress 53.xcdatamodel */,
 				E1DB326D1D9AE60900C8FEBC /* WordPress 52.xcdatamodel */,
@@ -8531,7 +8533,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = E626E0C31DF8BB2F0073C0DE /* WordPress 54.xcdatamodel */;
+			currentVersion = E66365CF1E08780A001EA74C /* WordPress 55.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

@@ -535,21 +535,7 @@ import WordPressComAnalytics
         tableView.setContentOffset(CGPoint.zero, animated: false)
         tableViewHandler.refreshTableView()
         refreshTableViewHeaderLayout()
-
-        if let _ = view.window {
-            // The controller can be configured for a topic while its not the
-            // active view controller. For example, when state restoration restores
-            // the controller, but some other controller (like the detail vc) is
-            // top most.
-            //
-            // For now, we want to avoid syncing while the controller is not active
-            // or about to be active. This is a stop gap to prevent crashes that can
-            // occur when a post is deleted during the sync while it is still being
-            // used by another controller, or before this controller has a chance
-            // to render its cells at least once.
-            // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/6297
-            syncIfAppropriate()
-        }
+        syncIfAppropriate()
 
         bumpStats()
 
@@ -1055,7 +1041,6 @@ import WordPressComAnalytics
     /// Kicks off a "background" sync without updating the UI if certain conditions
     /// are met.
     /// - There must be a topic
-    /// - The controller must be the active controller.
     /// - The app must have a internet connection.
     /// - The current time must be greater than the last sync interval.
     ///
