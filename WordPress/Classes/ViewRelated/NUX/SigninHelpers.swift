@@ -31,6 +31,8 @@ import Mixpanel
         let controller = createControllerForSigninFlow(showsEditor: thenEditor)
         let navController = NUXNavigationController(rootViewController: controller)
         presenter.present(navController, animated: animated, completion: nil)
+
+        trackOpenedLogin()
     }
 
 
@@ -41,6 +43,8 @@ import Mixpanel
 
         let navController = NUXNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
+
+        trackOpenedLogin()
     }
 
 
@@ -49,6 +53,8 @@ import Mixpanel
         let controller = SigninSelfHostedViewController.controller(LoginFields())
         let navController = NUXNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
+
+        trackOpenedLogin()
     }
 
 
@@ -73,6 +79,12 @@ import Mixpanel
         let presenter = UIApplication.shared.keyWindow?.rootViewController
         let navController = NUXNavigationController(rootViewController: controller)
         presenter?.present(navController, animated: true, completion: nil)
+
+        trackOpenedLogin()
+    }
+
+    private class func trackOpenedLogin() {
+        WPAppAnalytics.track(.openedLogin)
     }
 
 

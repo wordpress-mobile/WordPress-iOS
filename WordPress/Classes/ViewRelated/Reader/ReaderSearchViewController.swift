@@ -17,7 +17,7 @@ import Gridicons
     @IBOutlet fileprivate weak var label: UILabel!
 
     fileprivate var backgroundTapRecognizer: UITapGestureRecognizer!
-    fileprivate var streamController: ReaderStreamViewController!
+    fileprivate var streamController: ReaderStreamViewController?
     fileprivate let searchBarSearchIconSize = CGFloat(13.0)
     fileprivate var suggestionsController: ReaderSearchSuggestionsViewController?
     fileprivate var restoredSearchTopic: ReaderSearchTopic?
@@ -49,9 +49,6 @@ import Gridicons
             return ReaderSearchViewController.controller()
         }
 
-        topic.preserveForRestoration = false
-        ContextManager.sharedInstance().saveContextAndWait(context)
-
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderSearchViewController") as! ReaderSearchViewController
         controller.restoredSearchTopic = topic
@@ -60,9 +57,7 @@ import Gridicons
 
 
     open override func encodeRestorableState(with coder: NSCoder) {
-        if let topic = streamController.readerTopic {
-            topic.preserveForRestoration = true
-            ContextManager.sharedInstance().saveContextAndWait(topic.managedObjectContext)
+        if let topic = streamController?.readerTopic {
             coder.encode(topic.path, forKey: type(of: self).restorableSearchTopicPathKey)
         }
         super.encodeRestorableState(with: coder)
@@ -183,7 +178,7 @@ import Gridicons
         }
         label.isHidden = true
         searchBar.text = topic.title
-        streamController.readerTopic = topic
+        streamController?.readerTopic = topic
     }
 
 
@@ -199,7 +194,9 @@ import Gridicons
     /// embedded stream to the topic.
     ///
     func performSearch() {
-        assert(streamController != nil)
+        guard let streamController = streamController else {
+            return
+        }
 
         guard let phrase = searchBar.text?.trim(), !phrase.isEmpty else {
             return
