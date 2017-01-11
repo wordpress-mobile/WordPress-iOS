@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
-{
+class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
     // MARK: - Public Properties
     var headerTitle: String? {
         set {

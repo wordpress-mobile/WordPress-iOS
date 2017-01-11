@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension UIImageView
-{
+extension UIImageView {
     public func downloadImage(_ url: URL?, placeholderImage: UIImage?) {
         downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: nil, processImage: nil)
     }

@@ -169,7 +169,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         XCTAssertEqual(remoteCount, expectedCount)
     }
 
-    func testRemoteMediaJSONParsing(){
+    func testRemoteMediaJSONParsing() {
 
         let id = 1
         let url = "http://www.wordpress.com"

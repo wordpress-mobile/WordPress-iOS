@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension UIImageView
-{
+extension UIImageView {
     /// Downloads an image and updates the UIImageView Instance
     ///
     /// - Parameter url: The URL of the target image
@@ -110,8 +109,7 @@ extension UIImageView
 
     /// Private helper structure
     ///
-    fileprivate struct Downloader
-    {
+    fileprivate struct Downloader {
         /// Default Blavatar Image Size
         ///
         static let defaultImageSize = CGFloat(40)

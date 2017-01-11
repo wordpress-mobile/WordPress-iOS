@@ -3,8 +3,7 @@ import WordPressShared
 
 /// The purpose of this class is to simply display a regular TableViewCell, with a Switch on the right hand side.
 ///
-open class SwitchTableViewCell: WPTableViewCell
-{
+open class SwitchTableViewCell: WPTableViewCell {
     // MARK: - Public Properties
     open var onChange : ((_ newValue: Bool) -> ())?
 

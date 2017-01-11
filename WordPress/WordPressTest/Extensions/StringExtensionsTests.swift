@@ -3,8 +3,7 @@ import XCTest
 @testable import WordPress
 
 
-class StringExtensionsTests: XCTestCase
-{
+class StringExtensionsTests: XCTestCase {
     // Note:
     // Specially extra aligned for my RWC friends. With love.
     //

@@ -2,14 +2,12 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-class SiteManagementServiceTests: XCTestCase
-{
+class SiteManagementServiceTests: XCTestCase {
     var contextManager: TestContextManager!
     var mockRemoteService: MockSiteManagementServiceRemote!
     var siteManagementService: SiteManagementServiceTester!
 
-    class MockSiteManagementServiceRemote: SiteManagementServiceRemote
-    {
+    class MockSiteManagementServiceRemote: SiteManagementServiceRemote {
         var deleteSiteCalled = false
         var exportContentCalled = false
         var getActivePurchasesCalled = false
@@ -45,8 +43,7 @@ class SiteManagementServiceTests: XCTestCase
         }
     }
 
-    class SiteManagementServiceTester: SiteManagementService
-    {
+    class SiteManagementServiceTester: SiteManagementService {
         let mockRemoteApi = MockWordPressComRestApi()
         lazy var mockRemoteService: MockSiteManagementServiceRemote = {
             return MockSiteManagementServiceRemote(wordPressComRestApi: self.mockRemoteApi)

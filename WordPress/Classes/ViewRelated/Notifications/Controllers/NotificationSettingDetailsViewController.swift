@@ -7,8 +7,7 @@ import WordPressComAnalytics
 /// encapsulated in the class NotificationSettings.Stream, and to provide the user a simple interface
 /// to update those settings, as needed.
 ///
-open class NotificationSettingDetailsViewController: UITableViewController
-{
+open class NotificationSettingDetailsViewController: UITableViewController {
     // MARK: - Initializers
     public convenience init(settings: NotificationSettings) {
         self.init(settings: settings, stream: settings.streams.first!)

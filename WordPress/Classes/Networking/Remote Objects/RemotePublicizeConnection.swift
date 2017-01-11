@@ -1,7 +1,6 @@
 import Foundation
 
-@objc open class RemotePublicizeConnection: NSObject
-{
+@objc open class RemotePublicizeConnection: NSObject {
     open var connectionID: NSNumber = 0
     open var dateIssued = Date()
     open var dateExpires: Date? = nil

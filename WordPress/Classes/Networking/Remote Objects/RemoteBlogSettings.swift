@@ -3,8 +3,7 @@ import Foundation
 
 /// This class encapsulates all of the *remote* settings available for a Blog entity
 ///
-open class RemoteBlogSettings: NSObject
-{
+open class RemoteBlogSettings: NSObject {
     // MARK: - General
 
     /// Represents the Blog Name.

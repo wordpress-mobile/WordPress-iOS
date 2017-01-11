@@ -15,8 +15,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-@objc public protocol ReaderPostCellDelegate: NSObjectProtocol
-{
+@objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
     func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
@@ -28,8 +27,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String?
 }
 
-@objc open class ReaderPostCardCell: UITableViewCell
-{
+@objc open class ReaderPostCardCell: UITableViewCell {
     // MARK: - Properties
 
     // Wrapper views
@@ -573,15 +571,13 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     // MARK: - Private Types
 
-    fileprivate enum CardAction: Int
-    {
+    fileprivate enum CardAction: Int {
         case comment = 1
         case like
     }
 }
 
-extension ReaderPostCardCell : ReaderCardDiscoverAttributionViewDelegate
-{
+extension ReaderPostCardCell : ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
     }

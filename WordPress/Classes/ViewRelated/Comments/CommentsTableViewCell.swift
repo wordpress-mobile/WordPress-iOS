@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared.WPTableViewCell
 
-open class CommentsTableViewCell: WPTableViewCell
-{
+open class CommentsTableViewCell: WPTableViewCell {
     // MARK: - Public Properties
     open var author: String? {
         didSet {
