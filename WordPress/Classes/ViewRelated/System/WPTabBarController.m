@@ -343,7 +343,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         // I've been unable to resolve it thus far, so for now we'll disable
         // landscape split view on Plus devices for the Reader.
         // James Frost 2017-01-09
-        if ([WPDeviceIdentification isiPhoneSixPlus]) {
+         if ([WPDeviceIdentification isUnzoomediPhonePlus]) {
             [_readerSplitViewController setOverrideTraitCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassCompact]];
         }
 
