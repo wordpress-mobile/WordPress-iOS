@@ -65,8 +65,8 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
 
-    [service syncSiteDetailsWithSuccess:^(RemoteBlog *remoteBlog) {}
-                            failure:^(NSError *error) {}];
+    [service syncBlogDetailsWithSuccess:^(RemoteBlog *remoteBlog) {}
+                                failure:^(NSError *error) {}];
 }
 
 #pragma mark - Synchronizing post types for a blog
@@ -132,7 +132,7 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Site Settings"];
     
-    [service syncSettingsWithSuccess:^(RemoteBlogSettings *settings) {
+    [service syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
         // General
         XCTAssertEqualObjects(settings.name, @"My Epic Blog", @"");
         XCTAssertEqualObjects(settings.tagline, @"Definitely, the best blog out there", @"");

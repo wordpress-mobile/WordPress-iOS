@@ -21,6 +21,7 @@
 #import "WordPress-Swift.h"
 #import "RemotePostType.h"
 #import "PostType.h"
+#import "RemoteBlogOptionsHelper.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -185,14 +186,16 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
          failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    if ([remote respondsToSelector:@selector(syncOptionsWithSuccess:failure:)]) {
-        [remote syncOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blog.objectID
+    if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {
+        BlogServiceRemoteXMLRPC *xmlrpcRemote = remote;
+        [xmlrpcRemote syncBlogOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blog.objectID
                                                           completionHandler:success]
-                               failure:failure];
-    } else if ([remote respondsToSelector:@selector(syncSiteDetailsWithSuccess:failure:)]) {
-        [remote syncSiteDetailsWithSuccess:[self siteDetailsHandlerWithBlogObjectID:blog.objectID
+                                         failure:failure];
+    } else if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
+        BlogServiceRemoteREST *restRemote = remote;
+        [restRemote syncBlogDetailsWithSuccess:[self blogDetailsHandlerWithBlogObjectID:blog.objectID
                                                                   completionHandler:success]
-                                   failure:failure];
+                                       failure:failure];
     }
 }
 
@@ -205,28 +208,30 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
 
-    if ([remote respondsToSelector:@selector(syncOptionsWithSuccess:failure:)]) {
+    if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {
         dispatch_group_enter(syncGroup);
-        [remote syncOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blogObjectID
-                                                          completionHandler:^{
-                                                              dispatch_group_leave(syncGroup);
-                                                          }]
-                               failure:^(NSError *error) {
-                                   DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
-                                   dispatch_group_leave(syncGroup);
-                               }];
+        BlogServiceRemoteXMLRPC *xmlrpcRemote = remote;
+        [xmlrpcRemote syncBlogOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blogObjectID
+                                                              completionHandler:^{
+                                                                  dispatch_group_leave(syncGroup);
+                                                              }]
+                                         failure:^(NSError *error) {
+                                             DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
+                                             dispatch_group_leave(syncGroup);
+                                         }];
     }
 
-    if ([remote respondsToSelector:@selector(syncSiteDetailsWithSuccess:failure:)]) {
+    if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
         dispatch_group_enter(syncGroup);
-        [remote syncSiteDetailsWithSuccess:[self siteDetailsHandlerWithBlogObjectID:blogObjectID
-                                                                  completionHandler:^{
-                                                                      dispatch_group_leave(syncGroup);
-                                                                  }]
-                                   failure:^(NSError *error) {
-                                       DDLogError(@"Failed syncing site details for blog %@: %@", blog.url, error);
-                                       dispatch_group_leave(syncGroup);
-                                   }];
+        BlogServiceRemoteREST *restRemote = remote;
+        [restRemote syncBlogDetailsWithSuccess:[self blogDetailsHandlerWithBlogObjectID:blogObjectID
+                                                                      completionHandler:^{
+                                                                          dispatch_group_leave(syncGroup);
+                                                                      }]
+                                       failure:^(NSError *error) {
+                                           DDLogError(@"Failed syncing site details for blog %@: %@", blog.url, error);
+                                           dispatch_group_leave(syncGroup);
+                                       }];
     }
 
     dispatch_group_enter(syncGroup);
@@ -282,18 +287,32 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             }
             return;
         }
-        id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
-        [remote syncSettingsWithSuccess:^(RemoteBlogSettings *settings) {
+        void(^updateOnSuccess)(RemoteBlogSettings *) = ^(RemoteBlogSettings *remoteSettings) {
             [self.managedObjectContext performBlock:^{
-                [self updateSettings:blogInContext.settings withRemoteSettings:settings];
+                [self updateSettings:blogInContext.settings withRemoteSettings:remoteSettings];
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                     if (success) {
                         success();
                     }
                 }];
             }];
+        };
+        id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
+        if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {
+
+            BlogServiceRemoteXMLRPC *xmlrpcRemote = remote;
+            [xmlrpcRemote syncBlogOptionsWithSuccess:^(NSDictionary *options) {
+                RemoteBlogSettings *remoteSettings = [RemoteBlogOptionsHelper remoteBlogSettingsFromXMLRPCDictionaryOptions:options];
+                updateOnSuccess(remoteSettings);
+            } failure:failure];
+
+        } else if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
+
+            BlogServiceRemoteREST *restRemote = remote;
+            [restRemote syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
+                updateOnSuccess(settings);
+            } failure:failure];
         }
-        failure:failure];
     }];
 }
 
@@ -305,17 +324,32 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     [self.managedObjectContext performBlock:^{
         Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
-        [remote updateBlogSettings:[self remoteSettingFromSettings:blogInContext.settings]
-                           success:^() {
-                               [self.managedObjectContext performBlock:^{
-                                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                       if (success) {
-                                           success();
-                                       }
-                                   }];
-                               }];
-                           }
-                           failure:failure];
+
+        void(^saveOnSuccess)() = ^() {
+            [self.managedObjectContext performBlock:^{
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                    if (success) {
+                        success();
+                    }
+                }];
+            }];
+        };
+
+        if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {
+
+            BlogServiceRemoteXMLRPC *xmlrpcRemote = remote;
+            RemoteBlogSettings *remoteSettings = [self remoteSettingFromSettings:blogInContext.settings];
+            [xmlrpcRemote updateBlogOptionsWith:[RemoteBlogOptionsHelper remoteOptionsForUpdatingBlogTitleAndTagline:remoteSettings]
+                                        success:saveOnSuccess
+                                        failure:failure];
+
+        } else if([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
+
+            BlogServiceRemoteREST *restRemote = remote;
+            [restRemote updateBlogSettings:[self remoteSettingFromSettings:blogInContext.settings]
+                               success:saveOnSuccess
+                               failure:failure];
+        }
     }];
 }
 
@@ -786,7 +820,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     }];
 }
 
-- (SiteDetailsHandler)siteDetailsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID
+- (BlogDetailsHandler)blogDetailsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID
                                        completionHandler:(void (^)(void))completion
 {
     return ^void(RemoteBlog *remoteBlog) {
@@ -821,6 +855,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                 return;
             }
             blog.options = [NSDictionary dictionaryWithDictionary:options];
+
+            RemoteBlogSettings *remoteSettings = [RemoteBlogOptionsHelper remoteBlogSettingsFromXMLRPCDictionaryOptions:options];
+            [self updateSettings:blog.settings withRemoteSettings:remoteSettings];
 
             // NOTE: `[blog version]` can return nil. If this happens `version` will be `0`
             CGFloat version = [[blog version] floatValue];
