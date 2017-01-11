@@ -43,7 +43,7 @@ class WPSplitViewController: UISplitViewController {
                 }
             }
 
-            if UIInterfaceOrientationIsPortrait(orientation) || WPDeviceIdentification.isiPhoneSixPlus() {
+            if UIInterfaceOrientationIsPortrait(orientation) || WPDeviceIdentification.isUnzoomediPhonePlus() {
                 return self.portrait.rawValue
             } else {
                 return self.landscape.rawValue
