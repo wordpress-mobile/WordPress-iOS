@@ -1,12 +1,11 @@
 import Foundation
 
 
-extension Date
-{
+extension Date {
     /// Private Date Formatters
     ///
     fileprivate struct DateFormatters {
-        static let iso8601 : DateFormatter = {
+        static let iso8601: DateFormatter = {
             let formatter           = DateFormatter()
             formatter.locale        = Locale(identifier: "en_US_POSIX")
             formatter.dateFormat    = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
@@ -14,7 +13,7 @@ extension Date
             return formatter
         }()
 
-        static let rfc1123 : DateFormatter = {
+        static let rfc1123: DateFormatter = {
             let formatter           = DateFormatter()
             formatter.locale        = Locale(identifier: "en_US_POSIX")
             formatter.dateFormat    = "EEE, dd MMM yyyy HH:mm:ss z"

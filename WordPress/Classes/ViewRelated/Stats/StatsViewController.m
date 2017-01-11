@@ -18,7 +18,7 @@
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
-@interface StatsViewController () <WPStatsViewControllerDelegate>
+@interface StatsViewController () <WPStatsViewControllerDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, assign) BOOL showingJetpackLogin;
 @property (nonatomic, strong) UINavigationController *statsNavVC;

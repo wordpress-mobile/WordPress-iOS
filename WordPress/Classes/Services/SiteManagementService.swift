@@ -1,8 +1,7 @@
 import CoreData
 import WordPressComAnalytics
 
-public extension Blog
-{
+public extension Blog {
     /// Only WordPress.com hosted sites we administer may be managed
     ///
     /// - Returns: Whether site management is permitted
@@ -14,8 +13,7 @@ public extension Blog
 
 /// SiteManagementService handles operations for managing a WordPress.com site.
 ///
-open class SiteManagementService : LocalCoreDataService
-{
+open class SiteManagementService: LocalCoreDataService {
     /// Deletes the specified WordPress.com site.
     ///
     /// - Parameters:

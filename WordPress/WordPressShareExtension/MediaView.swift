@@ -4,8 +4,7 @@ import UIKit
 
 /// Displays an Image with a capped size, defined by the maximumSize property.
 ///
-class MediaView : UIView
-{
+class MediaView: UIView {
     // MARK: - Properties
 
     /// Defines the maximum size that this view might occupy.
@@ -78,7 +77,7 @@ class MediaView : UIView
 
     /// Workaround to prevent having a zero contentSize before the image is effectively loaded
     ///
-    override var intrinsicContentSize : CGSize {
+    override var intrinsicContentSize: CGSize {
         return maximumSize
     }
 

@@ -5,8 +5,7 @@ import UIKit
 /// An extension for creating an NSAttributedString from an HTML formatted string.
 /// HTML elements that load remote content (e.g. images or iframes) are represented by WPTextAttachments
 ///
-public extension NSAttributedString
-{
+public extension NSAttributedString {
 
     /// Create an NSAttributedString from an HTML formatted string.
     ///
@@ -18,7 +17,7 @@ public extension NSAttributedString
     ///
     /// - Returns: NSAttributedString Optional
     ///
-    public class func attributedStringFromHTMLString(_ string:String, defaultDocumentAttributes:[String : AnyObject]?) throws -> NSAttributedString? {
+    public class func attributedStringFromHTMLString(_ string: String, defaultDocumentAttributes: [String : AnyObject]?) throws -> NSAttributedString? {
         return try WPRichTextFormatter().attributedStringFromHTMLString(string, defaultDocumentAttributes: defaultDocumentAttributes)
     }
 

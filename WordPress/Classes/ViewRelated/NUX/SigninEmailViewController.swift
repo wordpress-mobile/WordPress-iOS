@@ -10,8 +10,7 @@ import WordPressShared
 /// from UIApplication.sharedApplication.keyWindow.rootViewController to ensure
 /// that the final step in the magic link auth flow can be performed correctly.
 ///
-@objc class SigninEmailViewController: NUXAbstractViewController, SigninKeyboardResponder
-{
+@objc class SigninEmailViewController: NUXAbstractViewController, SigninKeyboardResponder {
 
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var submitButton: NUXSubmitButton!
@@ -358,6 +357,8 @@ import WordPressShared
     @IBAction func handleCreateSiteButtonTapped(_ sender: UIButton) {
         let controller = SignupViewController.controller()
         navigationController?.pushViewController(controller, animated: true)
+
+        WPAppAnalytics.track(.createAccountInitiated)
     }
 
 

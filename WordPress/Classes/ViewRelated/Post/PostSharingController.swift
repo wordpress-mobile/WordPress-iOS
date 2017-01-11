@@ -1,9 +1,9 @@
 import Foundation
 import SVProgressHUD
 
-@objc class PostSharingController : NSObject {
+@objc class PostSharingController: NSObject {
 
-    func shareController(_ title:String?, summary:String?, tags:String?, link:String?) -> UIActivityViewController {
+    func shareController(_ title: String?, summary: String?, tags: String?, link: String?) -> UIActivityViewController {
         var activityItems = [AnyObject]()
         let postDictionary = NSMutableDictionary()
 
@@ -25,7 +25,7 @@ import SVProgressHUD
         let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
         let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: activities)
         if let str = title {
-            controller.setValue(str, forKey:"subject")
+            controller.setValue(str, forKey: "subject")
         }
         controller.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
             if completed {
@@ -36,7 +36,7 @@ import SVProgressHUD
         return controller
     }
 
-    func sharePost(_ title: String, summary: String, tags: String?, link: String?, fromBarButtonItem anchorBarButtonItem:UIBarButtonItem, inViewController viewController:UIViewController) {
+    func sharePost(_ title: String, summary: String, tags: String?, link: String?, fromBarButtonItem anchorBarButtonItem: UIBarButtonItem, inViewController viewController: UIViewController) {
         let controller = shareController(
             title,
             summary: summary,
@@ -57,7 +57,7 @@ import SVProgressHUD
         }
     }
 
-    func sharePost(_ title: String, summary: String, tags: String?, link: String?, fromView anchorView:UIView, inViewController viewController:UIViewController) {
+    func sharePost(_ title: String, summary: String, tags: String?, link: String?, fromView anchorView: UIView, inViewController viewController: UIViewController) {
         let controller = shareController(
             title,
             summary: summary,
@@ -79,7 +79,7 @@ import SVProgressHUD
         }
     }
 
-    func sharePost(_ post: Post, fromBarButtonItem anchorBarButtonItem:UIBarButtonItem, inViewController viewController:UIViewController) {
+    func sharePost(_ post: Post, fromBarButtonItem anchorBarButtonItem: UIBarButtonItem, inViewController viewController: UIViewController) {
 
         sharePost(
             post.titleForDisplay(),
@@ -90,7 +90,7 @@ import SVProgressHUD
             inViewController: viewController)
     }
 
-    func sharePost(_ post: Post, fromView anchorView:UIView, inViewController viewController:UIViewController) {
+    func sharePost(_ post: Post, fromView anchorView: UIView, inViewController viewController: UIViewController) {
 
         sharePost(
             post.titleForDisplay(),
@@ -101,7 +101,7 @@ import SVProgressHUD
             inViewController: viewController)
     }
 
-    func shareReaderPost(_ post: ReaderPost, fromView anchorView:UIView, inViewController viewController:UIViewController) {
+    func shareReaderPost(_ post: ReaderPost, fromView anchorView: UIView, inViewController viewController: UIViewController) {
 
         sharePost(
             post.titleForDisplay(),

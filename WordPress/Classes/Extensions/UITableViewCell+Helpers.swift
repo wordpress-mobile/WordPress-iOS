@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared.WPTableViewCell
 
-extension UITableViewCell
-{
+extension UITableViewCell {
     public func layoutHeightWithWidth(_ width: CGFloat) -> CGFloat {
         // Layout: Setup the cell with the given width
         let cappedWidth = min(WPTableViewFixedWidth, width)

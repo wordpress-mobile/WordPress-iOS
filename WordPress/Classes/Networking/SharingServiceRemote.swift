@@ -5,8 +5,7 @@ import NSObject_SafeExpectations
 /// SharingServiceRemote is responsible for wrangling the REST API calls related to
 /// publiczice services, publicize connections, and keyring connections.
 ///
-open class SharingServiceRemote : ServiceRemoteWordPressComREST
-{
+open class SharingServiceRemote: ServiceRemoteWordPressComREST {
 
     // MARK: - Helper methods
 
@@ -44,7 +43,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
     open func getPublicizeServices(_ success: (([RemotePublicizeService]) -> Void)?, failure: ((NSError?) -> Void)?) {
         let endpoint = "meta/external-services"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
-        let params = ["type":"publicize"]
+        let params = ["type": "publicize"]
 
         wordPressComRestApi.GET(path!,
             parameters: params as [String : AnyObject]?,
@@ -222,7 +221,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
             let endpoint = "sites/\(siteID)/publicize-connections/new"
             let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-            var parameters : [String : AnyObject] = [PublicizeConnectionParams.keyringConnectionID: keyringConnectionID]
+            var parameters: [String : AnyObject] = [PublicizeConnectionParams.keyringConnectionID: keyringConnectionID]
             if let userID = externalUserID {
                 parameters[PublicizeConnectionParams.externalUserID] = userID as AnyObject?
             }
@@ -270,7 +269,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
             let externalUserID = (externalID == nil) ? "false" : externalID!
 
             let parameters = [
-                PublicizeConnectionParams.externalUserID : externalUserID
+                PublicizeConnectionParams.externalUserID: externalUserID
             ]
 
             wordPressComRestApi.POST(path!,
@@ -312,7 +311,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
             let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
             let path = self.path(forEndpoint: endpoint, with: .version_1_1)
             let parameters = [
-                PublicizeConnectionParams.shared : shared
+                PublicizeConnectionParams.shared: shared
             ]
 
             wordPressComRestApi.POST(path!,
@@ -366,7 +365,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
     ///
     /// - Returns: A `RemotePublicizeConnection` object.
     ///
-    fileprivate func remotePublicizeConnectionFromDictionary(_ dict:NSDictionary) -> RemotePublicizeConnection {
+    fileprivate func remotePublicizeConnectionFromDictionary(_ dict: NSDictionary) -> RemotePublicizeConnection {
         let conn = RemotePublicizeConnection()
 
         conn.connectionID = dict.number(forKey: ConnectionDictionaryKeys.ID) ?? conn.connectionID
@@ -442,11 +441,11 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
     ///     - success: An optional success block accepting an array of `RemoteSharingButton` objects.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    open func updateSharingButtonsForSite(_ siteID: NSNumber, sharingButtons:[RemoteSharingButton], success: (([RemoteSharingButton]) -> Void)?, failure: ((NSError?) -> Void)?) {
+    open func updateSharingButtonsForSite(_ siteID: NSNumber, sharingButtons: [RemoteSharingButton], success: (([RemoteSharingButton]) -> Void)?, failure: ((NSError?) -> Void)?) {
         let endpoint = "sites/\(siteID)/sharing-buttons"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
         let buttons = dictionariesFromRemoteSharingButtons(sharingButtons)
-        let parameters = [SharingButtonsKeys.sharingButtons : buttons]
+        let parameters = [SharingButtonsKeys.sharingButtons: buttons]
 
         wordPressComRestApi.POST(path!,
             parameters: parameters as [String : AnyObject]?,
@@ -521,8 +520,7 @@ open class SharingServiceRemote : ServiceRemoteWordPressComREST
 
 
 // Keys for PublicizeService dictionaries
-private struct ServiceDictionaryKeys
-{
+private struct ServiceDictionaryKeys {
     static let connectURL = "connect_URL"
     static let description = "description"
     static let ID = "ID"
@@ -537,8 +535,7 @@ private struct ServiceDictionaryKeys
 
 
 // Keys for both KeyringConnection and PublicizeConnection dictionaries
-private struct ConnectionDictionaryKeys
-{
+private struct ConnectionDictionaryKeys {
     // shared keys
     static let connections = "connections"
     static let expires = "expires"
@@ -571,8 +568,7 @@ private struct ConnectionDictionaryKeys
 
 
 // Names of parameters passed when creating or updating a publicize connection
-private struct PublicizeConnectionParams
-{
+private struct PublicizeConnectionParams {
     static let keyringConnectionID = "keyring_connection_ID"
     static let externalUserID = "external_user_ID"
     static let shared = "shared"
@@ -580,8 +576,7 @@ private struct PublicizeConnectionParams
 
 
 // Names of parameters used in SharingButton requests
-private struct SharingButtonsKeys
-{
+private struct SharingButtonsKeys {
     static let sharingButtons = "sharing_buttons"
     static let buttonID = "ID"
     static let name = "name"

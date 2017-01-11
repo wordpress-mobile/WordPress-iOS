@@ -95,8 +95,8 @@ open class GravatarServiceRemote {
 
 
     // MARK: - Private Properties
-    fileprivate let accountEmail    : String
-    fileprivate let accountToken    : String
+    fileprivate let accountEmail: String
+    fileprivate let accountToken: String
 
     // MARK: - Private Structs
     fileprivate struct UploadParameters {

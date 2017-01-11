@@ -21,8 +21,7 @@ let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDi
 
 // MARK: - NotificationSyncMediator
 //
-class NotificationSyncMediator
-{
+class NotificationSyncMediator {
     /// Returns the Main Managed Context
     ///
     fileprivate let contextManager: ContextManager
@@ -218,8 +217,7 @@ class NotificationSyncMediator
 
 // MARK: - Private Helpers
 //
-private extension NotificationSyncMediator
-{
+private extension NotificationSyncMediator {
     /// Given a collection of RemoteNotification Hashes, this method will determine the NotificationID's
     /// that are either missing in our database, or have been remotely updated.
     ///
@@ -340,8 +338,7 @@ private extension NotificationSyncMediator
 
 // MARK: - Thread Safety Helpers
 //
-extension NotificationSyncMediator
-{
+extension NotificationSyncMediator {
     /// Returns the current Shared Derived Context, if any. Otherwise, proceeds to create a new
     /// derived context, given a specified ContextManager.
     ///

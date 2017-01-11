@@ -15,8 +15,7 @@ public func PromptViewController<T: UIViewController>(_ viewController: T) -> UI
 /// ViewController container, that presents a Done / Cancel button, and forwards their events to
 /// the childrenViewController (which *must* implement the Confirmable protocol).
 ///
-private class PromptContainerViewController : UIViewController
-{
+private class PromptContainerViewController: UIViewController {
     /// MARK: - Initializers / Deinitializers
 
     deinit {
@@ -52,7 +51,7 @@ private class PromptContainerViewController : UIViewController
         viewController.didMove(toParentViewController: self)
     }
 
-    fileprivate func setupChildViewConstraints(_ childrenView : UIView) {
+    fileprivate func setupChildViewConstraints(_ childrenView: UIView) {
         // We grow, you grow. We shrink, you shrink. Capicci?
         childrenView.translatesAutoresizingMaskIntoConstraints = false
         childrenView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
@@ -115,12 +114,12 @@ private class PromptContainerViewController : UIViewController
 
 
     // MARK: - Private Constants
-    fileprivate enum Properties : String {
+    fileprivate enum Properties: String {
         case title              = "title"
         case doneButtonEnabled  = "doneButtonEnabled"
         static let all          = [title, doneButtonEnabled]
     }
 
     // MARK: - Private Properties
-    fileprivate let childViewController : UIViewController
+    fileprivate let childViewController: UIViewController
 }
