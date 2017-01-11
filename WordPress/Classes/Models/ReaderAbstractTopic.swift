@@ -6,7 +6,7 @@ import CoreData
     @NSManaged open var posts: [ReaderPost]
 
     // Properties
-    @NSManaged open var preserveForRestoration: Bool
+    @NSManaged open var inUse: Bool
     @NSManaged open var algorithm: String?
     @NSManaged open var following: Bool
     @NSManaged open var lastSynced: Date?

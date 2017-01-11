@@ -49,9 +49,6 @@ import Gridicons
             return ReaderSearchViewController.controller()
         }
 
-        topic.preserveForRestoration = false
-        ContextManager.sharedInstance().saveContextAndWait(context)
-
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderSearchViewController") as! ReaderSearchViewController
         controller.restoredSearchTopic = topic
@@ -61,8 +58,6 @@ import Gridicons
 
     open override func encodeRestorableState(with coder: NSCoder) {
         if let topic = streamController?.readerTopic {
-            topic.preserveForRestoration = true
-            ContextManager.sharedInstance().saveContextAndWait(topic.managedObjectContext)
             coder.encode(topic.path, forKey: type(of: self).restorableSearchTopicPathKey)
         }
         super.encodeRestorableState(with: coder)
