@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReaderCard" customModule="WordPress" customModuleProvider="target">
+            <connections>
+                <outlet property="actionStackView" destination="mMq-Nn-FgJ" id="fHV-t6-n5r"/>
+                <outlet property="attributionView" destination="OcQ-jH-zCT" id="lpo-XT-uCe"/>
+                <outlet property="cardStackView" destination="4cc-4F-fNv" id="gCa-Vz-2NE"/>
+                <outlet property="commentButton" destination="olU-5Q-Mzs" id="5mg-T2-LJe"/>
+                <outlet property="contentView" destination="iN0-l3-epB" id="KC7-RS-lDz"/>
+                <outlet property="featuredImageView" destination="amO-75-IGd" id="Uts-Q4-Y6j"/>
+                <outlet property="featuredMediaHeightConstraint" destination="Dd4-t5-VXQ" id="zpU-kx-JbB"/>
+                <outlet property="followButton" destination="xFg-T2-JHO" id="kTy-cI-oBT"/>
+                <outlet property="headerAuthorLabel" destination="5HU-S4-hvj" id="JiE-F6-42J"/>
+                <outlet property="headerButton" destination="Abo-sC-yjy" id="4Xq-mi-gQC"/>
+                <outlet property="headerDateLabel" destination="BZP-2y-eAn" id="LcP-KW-NAo"/>
+                <outlet property="headerImageView" destination="WOf-lF-uQI" id="ulF-a7-zuz"/>
+                <outlet property="interfaceVerticalSizingHelperView" destination="dFl-mo-8Yk" id="E7y-1o-dWS"/>
+                <outlet property="likeButton" destination="5bK-Ou-eqd" id="BgT-Ji-Ogo"/>
+                <outlet property="menuButton" destination="18O-fw-LLb" id="wXu-5p-1mU"/>
+                <outlet property="shareButton" destination="qrc-5u-eh0" id="pQo-Pg-iPZ"/>
+                <outlet property="summaryLabel" destination="5R6-FV-Qad" id="LU0-On-fjt"/>
+                <outlet property="titleLabel" destination="X9o-li-mZN" id="wS3-u5-BtB"/>
+                <outlet property="visitButton" destination="Ef3-IW-yN8" id="gPX-gQ-SZ4"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="398"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="4cc-4F-fNv">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="398"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="NeP-mL-4Zg">
+                            <rect key="frame" x="16" y="16" width="343" height="32"/>
+                            <subviews>
+                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="WOf-lF-uQI">
+                                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                    <gestureRecognizers/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="WOf-lF-uQI" secondAttribute="height" multiplier="1:1" id="evz-3E-cd5"/>
+                                    </constraints>
+                                </imageView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="0ZC-Ja-coe">
+                                    <rect key="frame" x="42" y="0.0" width="249" height="31.5"/>
+                                    <subviews>
+                                        <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalHuggingPriority="251" horizontalCompressionResistancePriority="740" text="Author, Blog name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5HU-S4-hvj">
+                                            <rect key="frame" x="0.0" y="0.0" width="249" height="17"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" red="0.0" green="0.66666666669999997" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BZP-2y-eAn">
+                                            <rect key="frame" x="0.0" y="17" width="249" height="14.5"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="top" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xFg-T2-JHO" customClass="PostMetaButton">
+                                    <rect key="frame" x="301" y="0.0" width="42" height="32"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="32" id="80J-JS-Eo5"/>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="o8a-ye-Y5E"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="2" maxX="0.0" maxY="0.0"/>
+                                    <state key="normal" title="Follow">
+                                        <color key="titleColor" red="0.0" green="0.66666666669999997" blue="0.86274509799999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    </state>
+                                    <state key="selected">
+                                        <color key="titleColor" red="0.2901960784" green="0.72156862749999995" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    </state>
+                                    <state key="highlighted">
+                                        <color key="titleColor" red="0.47058823529999999" green="0.86274509799999999" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="didTapFollowButton:" destination="-1" eventType="touchUpInside" id="I20-iu-b7c"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="jAp-CW-OI8"/>
+                            </constraints>
+                        </stackView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="amO-75-IGd">
+                            <rect key="frame" x="16" y="64" width="343" height="100"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="999" constant="100" id="Dd4-t5-VXQ"/>
+                            </constraints>
+                        </imageView>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Vv9-Vu-85b">
+                            <rect key="frame" x="16" y="180" width="343" height="113.5"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="bND-Zx-4JZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="343" height="49"/>
+                                    <subviews>
+                                        <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9o-li-mZN" customClass="ReaderPostCardContentLabel" customModule="WordPress" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="24"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5R6-FV-Qad" customClass="ReaderPostCardContentLabel" customModule="WordPress" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="32" width="343" height="17"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OcQ-jH-zCT" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
+                                    <rect key="frame" x="0.0" y="59" width="343" height="20.5"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jyU-nS-2Ec" customClass="CircularImageView" customModule="WordPress">
+                                            <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="20" id="QbR-S9-UbF"/>
+                                                <constraint firstAttribute="height" priority="999" constant="20" id="czF-8o-k76"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="1000" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8fU-YF-R75">
+                                            <rect key="frame" x="28" y="0.0" width="315" height="20.5"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstItem="8fU-YF-R75" firstAttribute="leading" secondItem="jyU-nS-2Ec" secondAttribute="trailing" constant="8" id="46m-jT-Bj1"/>
+                                        <constraint firstItem="jyU-nS-2Ec" firstAttribute="top" secondItem="OcQ-jH-zCT" secondAttribute="top" id="Bk5-No-emU"/>
+                                        <constraint firstItem="jyU-nS-2Ec" firstAttribute="leading" secondItem="OcQ-jH-zCT" secondAttribute="leading" id="JpK-Cs-aC2"/>
+                                        <constraint firstAttribute="trailing" secondItem="8fU-YF-R75" secondAttribute="trailing" id="XQq-J6-XTv"/>
+                                        <constraint firstAttribute="bottom" secondItem="8fU-YF-R75" secondAttribute="bottom" id="am1-OL-hFG"/>
+                                        <constraint firstItem="8fU-YF-R75" firstAttribute="top" secondItem="OcQ-jH-zCT" secondAttribute="top" id="wBp-F3-OEN"/>
+                                        <constraint firstItem="8fU-YF-R75" firstAttribute="height" relation="greaterThanOrEqual" secondItem="jyU-nS-2Ec" secondAttribute="height" id="zme-8r-HXa"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="imageView" destination="jyU-nS-2Ec" id="cg9-0f-3uK"/>
+                                        <outlet property="textLabel" destination="8fU-YF-R75" id="1AM-uS-qBH"/>
+                                    </connections>
+                                </view>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="mMq-Nn-FgJ">
+                                    <rect key="frame" x="0.0" y="89.5" width="343" height="24"/>
+                                    <subviews>
+                                        <button contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ef3-IW-yN8" customClass="PostMetaButton">
+                                            <rect key="frame" x="0.0" y="0.0" width="23" height="24"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <inset key="contentEdgeInsets" minX="-2" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Visit">
+                                                <color key="titleColor" red="0.6588235294" green="0.74509803919999995" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTapVisitButton:" destination="-1" eventType="touchUpInside" id="L9b-iq-hiH"/>
+                                            </connections>
+                                        </button>
+                                        <view alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="Tbc-fP-1iT" userLabel="View (Spacer)">
+                                            <rect key="frame" x="33" y="0.0" width="116" height="24"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qrc-5u-eh0" customClass="PostMetaButton">
+                                            <rect key="frame" x="159" y="0.0" width="39" height="24"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <inset key="contentEdgeInsets" minX="3" minY="0.0" maxX="3" maxY="0.0"/>
+                                            <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Share">
+                                                <color key="titleColor" red="0.6588235294" green="0.74509803919999995" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleShadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTapShareButton:" destination="-1" eventType="touchUpInside" id="29s-Ah-8du"/>
+                                            </connections>
+                                        </button>
+                                        <button contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="olU-5Q-Mzs" customClass="PostMetaButton">
+                                            <rect key="frame" x="208" y="0.0" width="38" height="24"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <inset key="contentEdgeInsets" minX="3" minY="0.0" maxX="3" maxY="0.0"/>
+                                            <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="0" image="icon-reader-comment">
+                                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTapCommentButton:" destination="-1" eventType="touchUpInside" id="09b-ip-RDr"/>
+                                            </connections>
+                                        </button>
+                                        <button contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5bK-Ou-eqd" customClass="PostMetaButton">
+                                            <rect key="frame" x="256" y="0.0" width="53" height="24"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <inset key="contentEdgeInsets" minX="3" minY="0.0" maxX="3" maxY="0.0"/>
+                                            <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Like" image="icon-reader-like">
+                                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTapLikeButton:" destination="-1" eventType="touchUpInside" id="tsg-HN-aSp"/>
+                                            </connections>
+                                        </button>
+                                        <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18O-fw-LLb">
+                                            <rect key="frame" x="319" y="0.0" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="24" id="j71-X1-4sQ"/>
+                                            </constraints>
+                                            <state key="normal" image="icon-menu-ellipsis">
+                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTapMenuButton:" destination="-1" eventType="touchUpInside" id="02z-i0-ZFD"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="24" id="LZq-37-BZA"/>
+                                    </constraints>
+                                </stackView>
+                            </subviews>
+                        </stackView>
+                        <view contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="dFl-mo-8Yk" userLabel="View (Spacer)">
+                            <rect key="frame" x="16" y="309.5" width="343" height="72.5"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                </stackView>
+                <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Abo-sC-yjy">
+                    <rect key="frame" x="16" y="16" width="291" height="32"/>
+                    <connections>
+                        <action selector="blogButtonTouchesDidEnd:" destination="-1" eventType="touchCancel" id="2d3-Sb-buy"/>
+                        <action selector="blogButtonTouchesDidEnd:" destination="-1" eventType="touchUpInside" id="BQ3-wt-0li"/>
+                        <action selector="blogButtonTouchesDidEnd:" destination="-1" eventType="touchDragExit" id="cBC-e0-7Nw"/>
+                        <action selector="blogButtonTouchesDidEnd:" destination="-1" eventType="touchUpOutside" id="lfs-dk-xPF"/>
+                        <action selector="blogButtonTouchesDidEnd:" destination="-1" eventType="touchDragOutside" id="roV-dk-bBH"/>
+                        <action selector="blogButtonTouchesDidHighlight:" destination="-1" eventType="touchDown" id="HWc-s9-RyZ"/>
+                        <action selector="didTapHeaderBlogButton:" destination="-1" eventType="touchUpInside" id="MNP-98-SEy"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Abo-sC-yjy" firstAttribute="top" secondItem="NeP-mL-4Zg" secondAttribute="top" id="4vq-Np-f2I"/>
+                <constraint firstItem="Abo-sC-yjy" firstAttribute="trailing" secondItem="0ZC-Ja-coe" secondAttribute="trailing" id="JCT-tR-JQy"/>
+                <constraint firstItem="Abo-sC-yjy" firstAttribute="leading" secondItem="NeP-mL-4Zg" secondAttribute="leading" id="Z9G-9v-NOV"/>
+                <constraint firstAttribute="bottom" secondItem="4cc-4F-fNv" secondAttribute="bottom" id="eiz-EM-V5T"/>
+                <constraint firstAttribute="trailing" secondItem="4cc-4F-fNv" secondAttribute="trailing" id="n0V-UM-aKH"/>
+                <constraint firstItem="4cc-4F-fNv" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pS8-QV-3zL"/>
+                <constraint firstItem="Abo-sC-yjy" firstAttribute="bottom" secondItem="NeP-mL-4Zg" secondAttribute="bottom" id="rc5-iK-noB"/>
+                <constraint firstItem="4cc-4F-fNv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vMS-ds-KCM"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="34.5" y="-80"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon-menu-ellipsis" width="24" height="24"/>
+        <image name="icon-reader-comment" width="24" height="24"/>
+        <image name="icon-reader-like" width="24" height="24"/>
+        <image name="post-blavatar-placeholder" width="32" height="32"/>
+    </resources>
+</document>

@@ -1465,12 +1465,9 @@ extension ReaderStreamViewController : WPContentSyncHelperDelegate {
 
 // MARK: - ReaderPostCellDelegate
 
-extension ReaderStreamViewController : ReaderPostCellDelegate {
+extension ReaderStreamViewController : ReaderCardDelegate {
 
-
-    public func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
-
+    public func readerCard(_ card: ReaderCard, headerActionForPost post: ReaderPost) {
         let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
         navigationController?.pushViewController(controller, animated: true)
 
@@ -1479,57 +1476,45 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
     }
 
 
-    public func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
-        var post = provider as! ReaderPost
-        post = postInMainContext(post)!
-        let controller = ReaderCommentsViewController(post: post)
-        navigationController?.pushViewController(controller!, animated: true)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
-        toggleLikeForPost(post)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
+    public func readerCard(_ card: ReaderCard, commentActionForPost post: ReaderPost) {
+        if let post = postInMainContext(post) {
+            let controller = ReaderCommentsViewController(post: post)
+            navigationController?.pushViewController(controller!, animated: true)
         }
+    }
+
+
+    public func readerCard(_ card: ReaderCard, followActionForPost post: ReaderPost) {
         toggleFollowingForPost(post)
     }
 
 
-    public func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
+    public func readerCard(_ card: ReaderCard, shareActionForPost post: ReaderPost, fromView sender: UIView) {
         sharePost(post.objectID, fromView: sender)
     }
 
 
-    public func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
+    public func readerCard(_ card: ReaderCard, visitActionForPost post: ReaderPost) {
         visitSiteForPost(post)
     }
 
 
-    public func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
-        let post = provider as! ReaderPost
+    public func readerCard(_ card: ReaderCard, likeActionForPost post: ReaderPost) {
+        toggleLikeForPost(post)
+    }
+
+
+    public func readerCard(_ card: ReaderCard, menuActionForPost post: ReaderPost, fromView sender: UIView) {
         showMenuForPost(post, fromView: sender)
     }
 
 
-    public func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
+    public func readerCard(_ card: ReaderCard, attributionActionForPost post: ReaderPost) {
         showAttributionForPost(post)
     }
 
 
-    public func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String? {
+    public func readerCardImageRequestAuthToken() -> String? {
         return imageRequestAuthToken
     }
 }
