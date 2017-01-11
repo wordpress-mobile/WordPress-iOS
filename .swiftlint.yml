@@ -73,7 +73,7 @@ whitelist_rules:
 
   # Opening braces should be preceded by a single space and on the same line as
   # the declaration.
-  # - opening_brace
+  - opening_brace
 
   # Operators should be surrounded by a single whitespace when defining them.
   # - operator_whitespace

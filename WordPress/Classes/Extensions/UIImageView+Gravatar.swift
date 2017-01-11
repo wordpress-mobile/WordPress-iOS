@@ -3,8 +3,7 @@ import Foundation
 
 /// UIImageView Helper Methods that allow us to download a gravar, given the User's Email
 ///
-extension UIImageView
-{
+extension UIImageView {
     /// Helper Enum that specifies all of the available Gravatar Image Ratings
     /// TODO: Convert into a pure Swift String Enum. It's done this way to maintain ObjC Compatibility
     ///

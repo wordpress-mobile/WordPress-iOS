@@ -14,6 +14,7 @@ static NSString * const RemoteOptionKeyOffset = @"offset";
 static NSString * const RemoteOptionKeyOrder = @"order";
 static NSString * const RemoteOptionKeyOrderBy = @"orderby";
 static NSString * const RemoteOptionKeyStatus = @"post_status";
+static NSString * const RemoteOptionKeySearch = @"s";
 
 static NSString * const RemoteOptionValueOrderAscending = @"ASC";
 static NSString * const RemoteOptionValueOrderDescending = @"DESC";
@@ -268,6 +269,11 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     }
     if (orderByStr.length) {
         [remoteParams setObject:orderByStr forKey:RemoteOptionKeyOrderBy];
+    }
+
+    NSString *search = [options search];
+    if (search.length) {
+        [remoteParams setObject:search forKey:RemoteOptionKeySearch];
     }
     
     return remoteParams.count ? [NSDictionary dictionaryWithDictionary:remoteParams] : nil;

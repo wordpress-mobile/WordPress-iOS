@@ -63,8 +63,7 @@ public final class WordPressComOAuthClient: NSObject {
                                   password: String,
                                   multifactorCode: String?,
                                   success: @escaping (_ authToken: String?) -> (),
-                                  failure: @escaping (_ error: NSError) -> () )
-    {
+                                  failure: @escaping (_ error: NSError) -> () ) {
         var parameters: [String: AnyObject] = [
             "username": username as AnyObject,
             "password": password as AnyObject,
@@ -103,8 +102,7 @@ public final class WordPressComOAuthClient: NSObject {
     ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
     public func requestOneTimeCodeWithUsername(_ username: String, password: String,
-                                        success: @escaping () -> (), failure: @escaping (_ error: NSError) -> ())
-    {
+                                        success: @escaping () -> (), failure: @escaping (_ error: NSError) -> ()) {
         let parameters = [
             "username": username,
             "password": password,

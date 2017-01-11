@@ -7,8 +7,7 @@ import CoreData
 
 // MARK: - CoreData Helper Tests
 //
-class CoreDataHelperTests: XCTestCase
-{
+class CoreDataHelperTests: XCTestCase {
     var stack: DummyStack!
     var helper: CoreDataHelper<DummyEntity>!
 
@@ -183,8 +182,7 @@ class CoreDataHelperTests: XCTestCase
 
 // MARK: - Testing Helpers
 //
-extension CoreDataHelperTests
-{
+extension CoreDataHelperTests {
     func insertDummyEntities(_ count: Int) {
         for i in 0 ..< count {
             let entity = helper.insertNewObject()
@@ -199,8 +197,7 @@ extension CoreDataHelperTests
 
 // MARK: - Dummy Sample Entity
 //
-class DummyEntity: NSManagedObject, ManagedObject
-{
+class DummyEntity: NSManagedObject, ManagedObject {
     @NSManaged var key: String
     @NSManaged var value: Int
 
@@ -210,8 +207,7 @@ class DummyEntity: NSManagedObject, ManagedObject
 
 // MARK: - InMemory Stack with Dynamic Model
 //
-class DummyStack
-{
+class DummyStack {
     lazy var model: NSManagedObjectModel = {
         // Attributes
         let keyAttribute = NSAttributeDescription()

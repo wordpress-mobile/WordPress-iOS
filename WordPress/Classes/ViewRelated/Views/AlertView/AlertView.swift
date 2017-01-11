@@ -5,8 +5,7 @@ import WordPressShared.WPStyleGuide
 /// The purpose of this class is to render a simple AlertView, with a custom style, and the following
 /// sections: [ Title, Message, Button ]
 ///
-open class AlertView: NSObject
-{
+open class AlertView: NSObject {
     // MARK: - Public Aliases
     public typealias Completion = (() -> ())
 

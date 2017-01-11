@@ -3,14 +3,12 @@ import Social
 
 /// Encapsulates String Helper Methods.
 ///
-extension String
-{
+extension String {
     /// Returns a String with <A>nchored links
     ///
     func stringWithAnchoredLinks() -> String {
         guard let output = (self as NSString).mutableCopy() as? NSMutableString,
-                let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else
-        {
+                let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
             return self
         }
 

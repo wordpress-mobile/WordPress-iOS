@@ -3,8 +3,7 @@ import Foundation
 
 /// This extension implements helper tracking methods, meant for Share Extension Usage.
 ///
-extension Tracks
-{
+extension Tracks {
     // MARK: - Public Methods
     public func trackExtensionLaunched(_ wpcomAvailable: Bool) {
         let properties = ["is_configured_dotcom": wpcomAvailable]

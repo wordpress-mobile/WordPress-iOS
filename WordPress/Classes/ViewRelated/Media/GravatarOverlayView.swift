@@ -4,8 +4,7 @@ import UIKit
 
 // Renders an "Outer Ellipse Overlay", to be used on top of the Gravatar Image
 //
-class GravatarOverlayView: UIView
-{
+class GravatarOverlayView: UIView {
     // MARK: - Public Properties
     var borderWidth = CGFloat(3)
     var borderColor: UIColor?

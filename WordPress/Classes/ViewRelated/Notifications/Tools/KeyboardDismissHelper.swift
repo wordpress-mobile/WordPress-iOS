@@ -13,8 +13,7 @@ import UIKit
 /// -   Initialize it with a reference to the scrollView + bottom constraint + dismissableControl
 /// -   Forward the scrollView willBegin/didScroll events
 ///
-@objc class KeyboardDismissHelper: NSObject
-{
+@objc class KeyboardDismissHelper: NSObject {
     /// Reference to the control to-be-dismissed
     ///
     var dismissableControl: UIView?
@@ -231,8 +230,7 @@ import UIKit
 
     fileprivate func curveFromKeyboardNote(_ note: Foundation.Notification) -> UIViewAnimationCurve {
         guard let rawCurve = note.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int,
-            let curve = UIViewAnimationCurve(rawValue: rawCurve) else
-        {
+            let curve = UIViewAnimationCurve(rawValue: rawCurve) else {
             return .easeInOut
         }
 

@@ -3,8 +3,7 @@ import Foundation
 
 /// Encapsulates NSURLSessionConfiguration Helpers
 ///
-extension URLSessionConfiguration
-{
+extension URLSessionConfiguration {
     /// Returns a new Background Session Configuration, with a random identifier.
     ///
     class func backgroundSessionConfigurationWithRandomizedIdentifier() -> URLSessionConfiguration {

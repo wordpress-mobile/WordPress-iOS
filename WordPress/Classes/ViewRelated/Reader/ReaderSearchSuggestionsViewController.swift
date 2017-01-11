@@ -4,8 +4,7 @@ import WordPressShared
 /// Defines methods that a delegate should implement for clearing suggestions
 /// and for responding to a selected suggestion.
 ///
-protocol ReaderSearchSuggestionsDelegate
-{
+protocol ReaderSearchSuggestionsDelegate {
     func searchSuggestionsController(_ controller: ReaderSearchSuggestionsViewController, selectedItem: String)
 }
 
@@ -13,8 +12,7 @@ protocol ReaderSearchSuggestionsDelegate
 /// Displays a list of previously saved reader searches, sorted by most recent,
 /// and filtered by the value of `phrase`.
 ///
-class ReaderSearchSuggestionsViewController: UIViewController
-{
+class ReaderSearchSuggestionsViewController: UIViewController {
     @IBOutlet var stackView: UIStackView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var clearButton: UIButton!
@@ -159,8 +157,7 @@ class ReaderSearchSuggestionsViewController: UIViewController
 }
 
 
-extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate
-{
+extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate {
     func managedObjectContext() -> NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }

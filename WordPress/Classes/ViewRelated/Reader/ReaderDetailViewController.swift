@@ -3,22 +3,19 @@ import WordPressShared
 import WordPressComAnalytics
 
 
-open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration
-{
+open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
 
     static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
 
     // Structs for Constants
 
-    fileprivate struct DetailConstants
-    {
+    fileprivate struct DetailConstants {
         static let LikeCountKeyPath = "likeCount"
         static let MarginOffset = CGFloat(8.0)
     }
 
 
-    fileprivate struct DetailAnalyticsConstants
-    {
+    fileprivate struct DetailAnalyticsConstants {
         static let TypeKey = "post_detail_type"
         static let TypeNormal = "normal"
         static let TypePreviewSite = "preview_site"
@@ -991,8 +988,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 // MARK: - ReaderCardDiscoverAttributionView Delegate Methods
 
-extension ReaderDetailViewController : ReaderCardDiscoverAttributionViewDelegate
-{
+extension ReaderDetailViewController : ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         didTapDiscoverAttribution()
     }
@@ -1001,8 +997,7 @@ extension ReaderDetailViewController : ReaderCardDiscoverAttributionViewDelegate
 
 // MARK: - UITextView/WPRichContentView Delegate Methods
 
-extension ReaderDetailViewController: WPRichContentViewDelegate
-{
+extension ReaderDetailViewController: WPRichContentViewDelegate {
 
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
         presentWebViewControllerWithURL(URL)
@@ -1048,8 +1043,7 @@ extension ReaderDetailViewController: WPRichContentViewDelegate
 
 // MARK: - UIScrollView Delegate Methods
 
-extension ReaderDetailViewController : UIScrollViewDelegate
-{
+extension ReaderDetailViewController : UIScrollViewDelegate {
 
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if UIDevice.isPad() || footerView.isHidden || !isLoaded {

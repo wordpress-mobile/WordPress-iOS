@@ -5,8 +5,7 @@ import WordPressShared
 /// Manages which sharing button are displayed, their order, and other settings
 /// related to sharing.
 ///
-@objc class SharingButtonsViewController: UITableViewController
-{
+@objc class SharingButtonsViewController: UITableViewController {
     let buttonSectionIndex = 0
     let moreSectionIndex = 1
 
@@ -904,8 +903,7 @@ import WordPressShared
 
     /// Represents a section in the sharinging management table view.
     ///
-    class SharingButtonsSection
-    {
+    class SharingButtonsSection {
         var rows: [SharingButtonsRow] = [SharingButtonsRow]()
         var headerText: String?
         var footerText: String?
@@ -916,8 +914,7 @@ import WordPressShared
 
     /// Represents a row in the sharing management table view.
     ///
-    class SharingButtonsRow
-    {
+    class SharingButtonsRow {
         var cellIdentifier = ""
         var action: SharingButtonsRowAction?
         var configureCell: SharingButtonsCellConfig?

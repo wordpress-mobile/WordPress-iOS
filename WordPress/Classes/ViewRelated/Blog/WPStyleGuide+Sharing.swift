@@ -5,8 +5,7 @@ import WordPressShared
 /// A WPStyleGuide extension with styles and methods specific to the
 /// Sharing feature.
 ///
-extension WPStyleGuide
-{
+extension WPStyleGuide {
     /// Create an UIImageView showing the notice gridicon.
     ///
     /// - Returns: A UIImageView

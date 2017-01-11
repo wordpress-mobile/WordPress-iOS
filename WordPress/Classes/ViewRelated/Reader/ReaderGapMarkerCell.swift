@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-open class ReaderGapMarkerCell: UITableViewCell
-{
+open class ReaderGapMarkerCell: UITableViewCell {
     @IBOutlet fileprivate weak var tearBackgroundView: UIView!
     @IBOutlet fileprivate weak var tearMaskView: UIView!
     @IBOutlet fileprivate weak var activityViewBackgroundView: UIView!

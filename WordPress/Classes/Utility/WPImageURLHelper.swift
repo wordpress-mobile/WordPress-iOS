@@ -1,8 +1,7 @@
 import Foundation
 
 /// Helper class to create a WordPress URL for downloading images with size parameters.
-open class WPImageURLHelper: NSObject
-{
+open class WPImageURLHelper: NSObject {
     /**
      Adds to the provided url width and height parameters to allow the image to be resized on the server
 
