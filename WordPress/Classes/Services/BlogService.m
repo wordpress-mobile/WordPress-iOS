@@ -189,12 +189,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {
         BlogServiceRemoteXMLRPC *xmlrpcRemote = remote;
         [xmlrpcRemote syncBlogOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blog.objectID
-                                                          completionHandler:success]
+                                                                    completionHandler:success]
                                          failure:failure];
     } else if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
         BlogServiceRemoteREST *restRemote = remote;
         [restRemote syncBlogDetailsWithSuccess:[self blogDetailsHandlerWithBlogObjectID:blog.objectID
-                                                                  completionHandler:success]
+                                                                      completionHandler:success]
                                        failure:failure];
     }
 }
@@ -212,9 +212,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         dispatch_group_enter(syncGroup);
         BlogServiceRemoteXMLRPC *xmlrpcRemote = remote;
         [xmlrpcRemote syncBlogOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blogObjectID
-                                                              completionHandler:^{
-                                                                  dispatch_group_leave(syncGroup);
-                                                              }]
+                                                                    completionHandler:^{
+                                                                        dispatch_group_leave(syncGroup);
+                                                                    }]
                                          failure:^(NSError *error) {
                                              DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
                                              dispatch_group_leave(syncGroup);
