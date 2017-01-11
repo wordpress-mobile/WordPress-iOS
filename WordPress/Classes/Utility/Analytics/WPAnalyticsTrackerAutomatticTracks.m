@@ -251,6 +251,18 @@ NSString *_loggedInID, *_anonymousID;
         case WPAnalyticsStatAppReviewsSentFeedback:
             eventName = @"app_reviews_feedback_sent";
             break;
+        case WPAnalyticsStatCreateAccountInitiated:
+            eventName = @"account_create_initiated";
+            break;
+        case WPAnalyticsStatCreateAccountEmailExists:
+            eventName = @"account_create_email_exists";
+            break;
+        case WPAnalyticsStatCreateAccountUsernameExists:
+            eventName = @"account_create_username_exists";
+            break;
+        case WPAnalyticsStatCreateAccountFailed:
+            eventName = @"account_create_failed";
+            break;
         case WPAnalyticsStatCreatedAccount:
             eventName = @"account_created";
             break;
@@ -477,6 +489,9 @@ NSString *_loggedInID, *_anonymousID;
         case WPAnalyticsStatOpenedComments:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"comments" };
+            break;
+        case WPAnalyticsStatOpenedLogin:
+            eventName = @"login_accessed";
             break;
         case WPAnalyticsStatOpenedMediaLibrary:
             eventName = @"site_menu_opened";
