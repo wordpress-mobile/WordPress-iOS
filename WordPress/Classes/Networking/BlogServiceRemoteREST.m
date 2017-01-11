@@ -85,28 +85,6 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
           }];
 }
 
-- (void)syncSiteDetailsWithSuccess:(SiteDetailsHandler)success
-                           failure:(void (^)(NSError *))failure
-{
-    NSString *path = [self pathForOptions];
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
-    
-    [self.wordPressComRestApi GET:requestUrl
-       parameters:nil
-          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-              NSDictionary *responseDict = (NSDictionary *)responseObject;
-              RemoteBlog *remoteBlog = [[RemoteBlog alloc] initWithJSONDictionary:responseDict];
-              if (success) {
-                  success(remoteBlog);
-              }
-          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
-}
-
 - (void)syncPostTypesWithSuccess:(PostTypesHandler)success
                          failure:(void (^)(NSError *error))failure
 {
@@ -158,7 +136,29 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
           }];
 }
 
-- (void)syncSettingsWithSuccess:(SettingsHandler)success
+- (void)syncBlogDetailsWithSuccess:(BlogDetailsHandler)success
+                           failure:(void (^)(NSError *))failure
+{
+    NSString *path = [self pathForOptions];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
+    [self.wordPressComRestApi GET:requestUrl
+                       parameters:nil
+                          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                              NSDictionary *responseDict = (NSDictionary *)responseObject;
+                              RemoteBlog *remoteBlog = [[RemoteBlog alloc] initWithJSONDictionary:responseDict];
+                              if (success) {
+                                  success(remoteBlog);
+                              }
+                          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                              if (failure) {
+                                  failure(error);
+                              }
+                          }];
+}
+
+- (void)syncBlogSettingsWithSuccess:(SettingsHandler)success
                         failure:(void (^)(NSError *error))failure
 {
     NSString *path = [self pathForSettings];
