@@ -232,6 +232,23 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                            DDLogError(@"Failed syncing site details for blog %@: %@", blog.url, error);
                                            dispatch_group_leave(syncGroup);
                                        }];
+
+        dispatch_group_enter(syncGroup);
+        [restRemote syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
+            [self.managedObjectContext performBlock:^{
+                NSError *error = nil;
+                Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
+                                                                                        error:&error];
+                if (blogInContext) {
+                    [self updateSettings:blogInContext.settings withRemoteSettings:settings];
+                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                }
+                dispatch_group_leave(syncGroup);
+            }];
+        } failure:^(NSError *error) {
+            DDLogError(@"Failed syncing settings for blog %@: %@", blog.url, error);
+            dispatch_group_leave(syncGroup);
+        }];
     }
 
     dispatch_group_enter(syncGroup);
