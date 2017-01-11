@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared
 
-extension WPStyleGuide
-{
+extension WPStyleGuide {
     public class func configureTableViewBlogCell(_ cell: UITableViewCell) {
         configureTableViewCell(cell)
         cell.detailTextLabel?.font = self.subtitleFont()

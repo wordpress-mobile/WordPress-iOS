@@ -30,10 +30,10 @@ import Foundation
         }
 
         self.authenticationServiceRemote!.authorizeLogin(token,
-            success:    {
+            success: {
                             completion(true)
                         },
-            failure:    {
+            failure: {
                             completion(false)
                         })
 

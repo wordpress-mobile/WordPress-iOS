@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared
 
-@objc public protocol ReaderCardDiscoverAttributionViewDelegate: NSObjectProtocol
-{
+@objc public protocol ReaderCardDiscoverAttributionViewDelegate: NSObjectProtocol {
     func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView)
 }
 
@@ -12,8 +11,7 @@ private enum ReaderCardDiscoverAttribution: Int {
     case visitSite // Action for verbose attribution to visit a site
 }
 
-@objc open class ReaderCardDiscoverAttributionView: UIView
-{
+@objc open class ReaderCardDiscoverAttributionView: UIView {
     fileprivate let gravatarImageName = "gravatar"
     fileprivate let blavatarImageName = "post-blavatar-placeholder"
 

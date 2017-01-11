@@ -5,8 +5,7 @@ import WordPressComAnalytics
 /// signin controllers.  Responsible for syncing account information and blog
 /// details of the user.
 ///
-protocol SigninWPComSyncHandler: class
-{
+protocol SigninWPComSyncHandler: class {
     func configureViewLoading(_ loading: Bool)
     func configureStatusLabel(_ message: String)
     func dismiss()
@@ -19,8 +18,7 @@ protocol SigninWPComSyncHandler: class
 }
 
 
-extension SigninWPComSyncHandler
-{
+extension SigninWPComSyncHandler {
 
     /// Syncs account and blog information for the authenticated wpcom user.
     ///

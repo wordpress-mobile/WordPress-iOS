@@ -2,8 +2,7 @@ import Foundation
 import WordPressShared.WPStyleGuide
 
 
-class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell
-{
+class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
     typealias EventHandler = ((_ sender: AnyObject) -> Void)
 
     // MARK: - Public Properties

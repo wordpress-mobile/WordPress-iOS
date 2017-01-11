@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension UIScreen
-{
+extension UIScreen {
     public func screenWidthAtCurrentOrientation() -> CGFloat {
         let screenBounds = UIScreen.main.bounds
         if UIDevice.isOS8() {

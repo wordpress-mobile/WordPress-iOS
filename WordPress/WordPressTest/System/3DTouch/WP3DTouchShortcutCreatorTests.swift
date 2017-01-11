@@ -1,8 +1,7 @@
 import XCTest
 import WordPress
 
-class WP3DTouchShortcutCreatorTests: XCTestCase
-{
+class WP3DTouchShortcutCreatorTests: XCTestCase {
     var testShortcutCreator: WP3DTouchShortcutCreator!
 
     override func setUp() {

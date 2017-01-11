@@ -32,7 +32,9 @@ abstract_target 'WordPress_Base' do
     pod 'Crashlytics'
     pod 'BuddyBuildSDK', '~> 1.0.11', :configurations => ['Release-Alpha']
     pod 'FLAnimatedImage', '~> 1.0'
-    pod 'Starscream', '~> 2.0'
+    # Temporary until this fix is merged and released
+    # https://github.com/daltoniam/Starscream/pull/294
+    pod 'Starscream', :git => 'https://github.com/wordpress-mobile/Starscream', :branch => 'wordpress-ios'
     # ----------------------------
     # Forked third party libraries
     # ----------------------------
@@ -47,8 +49,8 @@ abstract_target 'WordPress_Base' do
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '~> 0.10.2'
     pod 'WordPress-iOS-Editor', '1.8.1'
-    pod 'WordPressCom-Analytics-iOS', '0.1.21'
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :branch => 'swift-3/gridicons-bump'
+    pod 'WordPressCom-Analytics-iOS', '0.1.22'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git' 
     pod 'wpxmlrpc', '~> 0.8'
 
     target :WordPressTest do

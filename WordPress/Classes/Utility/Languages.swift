@@ -4,8 +4,7 @@ import Foundation
 
 /// This helper class allows us to map WordPress.com LanguageID's into human readable language strings.
 ///
-class WordPressComLanguageDatabase: NSObject
-{
+class WordPressComLanguageDatabase: NSObject {
     // MARK: - Public Properties
 
     /// Languages considered 'popular'
@@ -111,8 +110,7 @@ class WordPressComLanguageDatabase: NSObject
 
     /// Represents a Language supported by WordPress.com
     ///
-    class Language
-    {
+    class Language {
         /// Language Unique Identifier
         ///
         let id: Int
@@ -138,8 +136,7 @@ class WordPressComLanguageDatabase: NSObject
         init?(dict: NSDictionary) {
             guard let unwrappedId = dict.number(forKey: Keys.identifier)?.intValue,
                         let unwrappedSlug = dict.string(forKey: Keys.slug),
-                        let unwrappedName = dict.string(forKey: Keys.name) else
-            {
+                        let unwrappedName = dict.string(forKey: Keys.name) else {
                 id = Int.min
                 name = String()
                 slug = String()
@@ -185,8 +182,7 @@ class WordPressComLanguageDatabase: NSObject
 
     /// Keys used to parse the raw languages.
     ///
-    fileprivate struct Keys
-    {
+    fileprivate struct Keys {
         static let popular      = "popular"
         static let all          = "all"
         static let identifier   = "i"

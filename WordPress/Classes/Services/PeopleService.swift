@@ -178,8 +178,7 @@ struct PeopleService {
     func validateInvitation(_ usernameOrEmail: String,
                             role: Role,
                             success: @escaping ((Void) -> Void),
-                            failure: @escaping ((Error) -> Void))
-    {
+                            failure: @escaping ((Error) -> Void)) {
         remote.validateInvitation(siteID,
                                   usernameOrEmail: usernameOrEmail,
                                   role: role,
@@ -201,8 +200,7 @@ struct PeopleService {
                         role: Role,
                         message: String = "",
                         success: @escaping ((Void) -> Void),
-                        failure: @escaping ((Error) -> Void))
-    {
+                        failure: @escaping ((Error) -> Void)) {
         remote.sendInvitation(siteID,
                               usernameOrEmail: usernameOrEmail,
                               role: role,

@@ -1,11 +1,9 @@
 import Foundation
 
-extension ReaderStreamViewController
-{
+extension ReaderStreamViewController {
 
     // A simple struct defining a title and message for use with a WPNoResultsView
-    public struct NoResultsResponse
-    {
+    public struct NoResultsResponse {
         var title: String
         var message: String
     }

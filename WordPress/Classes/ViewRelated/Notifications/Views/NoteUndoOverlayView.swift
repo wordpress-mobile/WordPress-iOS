@@ -9,8 +9,7 @@ import WordPressShared
 /// we don't need to duplicate any of the mechanisms already available in NoteTableViewCell, such as
 /// custom cell separators and Height Calculation.
 ///
-class NoteUndoOverlayView: UIView
-{
+class NoteUndoOverlayView: UIView {
     // MARK: - Properties
 
     /// Legend Text
