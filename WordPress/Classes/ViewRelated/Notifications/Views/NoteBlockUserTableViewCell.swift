@@ -2,13 +2,12 @@ import Foundation
 import WordPressShared
 
 
-class NoteBlockUserTableViewCell: NoteBlockTableViewCell
-{
+class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     typealias EventHandler = (() -> Void)
 
     // MARK: - Public Properties
-    var onFollowClick    : EventHandler?
-    var onUnfollowClick  : EventHandler?
+    var onFollowClick: EventHandler?
+    var onUnfollowClick: EventHandler?
 
     var isFollowEnabled: Bool {
         set {

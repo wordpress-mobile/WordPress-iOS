@@ -2,7 +2,7 @@ import Foundation
 import WordPressShared
 
 
-struct NavigationItemRow : ImmuTableRow {
+struct NavigationItemRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 
     let title: String
@@ -55,7 +55,7 @@ struct BadgeNavigationItemRow: ImmuTableRow {
     }
 }
 
-struct EditableTextRow : ImmuTableRow {
+struct EditableTextRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
     let title: String
@@ -71,7 +71,7 @@ struct EditableTextRow : ImmuTableRow {
     }
 }
 
-struct TextRow : ImmuTableRow {
+struct TextRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
     let title: String
@@ -87,7 +87,7 @@ struct TextRow : ImmuTableRow {
     }
 }
 
-struct LinkRow : ImmuTableRow {
+struct LinkRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
     let title: String
@@ -100,7 +100,7 @@ struct LinkRow : ImmuTableRow {
     }
 }
 
-struct LinkWithValueRow : ImmuTableRow {
+struct LinkWithValueRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
     let title: String
@@ -141,7 +141,6 @@ struct DestructiveButtonRow: ImmuTableRow {
         cell.textLabel?.text = title
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.lineBreakMode = .byWordWrapping
-
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
     }
 }

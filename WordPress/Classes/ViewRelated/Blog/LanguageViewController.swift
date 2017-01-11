@@ -5,11 +5,10 @@ import WordPressShared
 /// This class will display the Blog's Language setting, and will allow the user to pick a new value.
 /// Upon selection, WordPress.com backend will get hit, and the new value will be persisted.
 ///
-open class LanguageViewController : UITableViewController
-{
+open class LanguageViewController: UITableViewController {
     /// Callback to be executed whenever the Blog's selected language changes.
     ///
-    var onChange : ((NSNumber) -> Void)?
+    var onChange: ((NSNumber) -> Void)?
 
 
 
@@ -121,6 +120,6 @@ open class LanguageViewController : UITableViewController
                                                 comment: "Footer Text displayed in Blog Language Settings View")
 
     // MARK: - Private Properties
-    fileprivate var blog : Blog!
+    fileprivate var blog: Blog!
     fileprivate let languageDatabase = WordPressComLanguageDatabase()
 }

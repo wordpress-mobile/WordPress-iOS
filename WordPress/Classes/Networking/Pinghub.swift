@@ -57,6 +57,15 @@ public class PinghubClient {
     /// Connects the client to the server.
     ///
     public func connect() {
+        #if DEBUG
+            guard !Debug._simulateUnreachableHost else {
+                DispatchQueue.main.async { [weak self] in
+                    guard let client = self else { return }
+                    client.delegate?.pinghubDidDisconnect(client, error: Debug.unreachableHostError)
+                }
+                return
+            }
+        #endif
         socket.connect()
     }
 
@@ -77,7 +86,14 @@ public class PinghubClient {
             guard let client = self else {
                 return
             }
-            client.delegate?.pinghubDidDisconnect(client, error: error)
+            let filteredError: NSError? = error.flatMap({ error in
+                // Filter out normal disconnects that we initiated
+                if error.domain == WebSocket.ErrorDomain && error.code == Int(WebSocket.CloseCode.normal.rawValue) {
+                    return nil
+                }
+                return error
+            })
+            client.delegate?.pinghubDidDisconnect(client, error: filteredError)
         }
         socket.onData = { [weak self] data in
             guard let client = self else {
@@ -121,6 +137,32 @@ public class PinghubClient {
 
     internal static let endpoint = URL(string: "wss://public-api.wordpress.com/pinghub/wpcom/me/newest-note-data")!
 }
+
+
+
+
+
+// MARK: - Debug
+
+
+#if DEBUG
+extension PinghubClient {
+    enum Debug {
+        fileprivate static var _simulateUnreachableHost = false
+        static func simulateUnreachableHost(_ simulate: Bool) {
+            _simulateUnreachableHost = simulate
+        }
+
+        fileprivate static let unreachableHostError = NSError(domain: kCFErrorDomainCFNetwork as String, code: Int(CFNetworkErrors.cfHostErrorUnknown.rawValue), userInfo: nil)
+    }
+}
+
+@objc class PinghubDebug: NSObject {
+    static func simulateUnreachableHost(_ simulate: Bool) {
+        PinghubClient.Debug._simulateUnreachableHost = simulate
+    }
+}
+#endif
 
 
 
@@ -197,7 +239,7 @@ internal protocol Socket: class {
 private func starscreamSocket(url: URL, token: String) -> Socket {
     let socket = WebSocket(url: PinghubClient.endpoint)
     socket.origin = nil
-    socket.headers = ["Authorization" : "Bearer \(token)"]
+    socket.headers = ["Authorization": "Bearer \(token)"]
     return socket
 }
 

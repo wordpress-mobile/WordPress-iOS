@@ -7,8 +7,7 @@ import WordPressComStatsiOS
 
 /// Renders a given Notification entity, onscreen
 ///
-class NotificationDetailsViewController: UIViewController
-{
+class NotificationDetailsViewController: UIViewController {
     // MARK: - Properties
 
     /// StackView: Top-Level Entity
@@ -145,13 +144,11 @@ class NotificationDetailsViewController: UIViewController
 
 // MARK: - State Restoration
 //
-extension NotificationDetailsViewController: UIViewControllerRestoration
-{
+extension NotificationDetailsViewController: UIViewControllerRestoration {
     class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
         let context = ContextManager.sharedInstance().mainContext
         guard let noteURI = coder.decodeObject(forKey: Restoration.noteIdKey) as? URL,
-            let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: noteURI) else
-        {
+            let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: noteURI) else {
             return nil
         }
 
@@ -180,8 +177,7 @@ extension NotificationDetailsViewController: UIViewControllerRestoration
 
 // MARK: - UITableView Methods
 //
-extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDataSource
-{
+extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return Settings.numberOfSections
     }
@@ -228,8 +224,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
 
 // MARK: - Setup Helpers
 //
-extension NotificationDetailsViewController
-{
+extension NotificationDetailsViewController {
     func setupNavigationBar() {
         // Don't show the notification title in the next-view's back button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(),
@@ -318,8 +313,7 @@ extension NotificationDetailsViewController
 
 // MARK: - Reply View Helpers
 //
-extension NotificationDetailsViewController
-{
+extension NotificationDetailsViewController {
     func attachReplyViewIfNeeded() {
         guard shouldAttachReplyView else {
             replyTextView.removeFromSuperview()
@@ -344,8 +338,7 @@ extension NotificationDetailsViewController
 
 // MARK: - Suggestions View Helpers
 //
-private extension NotificationDetailsViewController
-{
+private extension NotificationDetailsViewController {
     func attachSuggestionsViewIfNeeded() {
         guard shouldAttachSuggestionsView else {
             suggestionsTableView.removeFromSuperview()
@@ -376,8 +369,7 @@ private extension NotificationDetailsViewController
 
 // MARK: - Layout Helpers
 //
-private extension NotificationDetailsViewController
-{
+private extension NotificationDetailsViewController {
     func adjustLayoutConstraintsIfNeeded() {
         // Badge Notifications:
         //  -   Should be vertically centered
@@ -426,8 +418,7 @@ private extension NotificationDetailsViewController
 
 // MARK: - UITableViewCell Subclass Setup
 //
-private extension NotificationDetailsViewController
-{
+private extension NotificationDetailsViewController {
     func setupCell(_ cell: NoteBlockTableViewCell, blockGroup: NotificationBlockGroup) {
         // Temporarily force margins for WPTableViewCell hack.
         cell.forceCustomCellMargins = true
@@ -660,8 +651,7 @@ private extension NotificationDetailsViewController
 
 // MARK: - Notification Helpers
 //
-extension NotificationDetailsViewController
-{
+extension NotificationDetailsViewController {
     func notificationWasUpdated(_ notification: Foundation.Notification) {
         let updated   = notification.userInfo?[NSUpdatedObjectsKey]   as? Set<NSManagedObject> ?? Set()
         let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
@@ -683,8 +673,7 @@ extension NotificationDetailsViewController
 
 // MARK: - Resources
 //
-private extension NotificationDetailsViewController
-{
+private extension NotificationDetailsViewController {
     func displayURL(_ url: URL?) {
         guard let url = url else {
             tableView.deselectSelectedRowWithAnimation(true)
@@ -828,8 +817,7 @@ private extension NotificationDetailsViewController
 
 // MARK: - Helpers
 //
-private extension NotificationDetailsViewController
-{
+private extension NotificationDetailsViewController {
     func blockGroupForIndexPath(_ indexPath: IndexPath) -> NotificationBlockGroup {
         return note.headerAndBodyBlockGroups[indexPath.row]
     }
@@ -846,8 +834,7 @@ private extension NotificationDetailsViewController
     func newStatsViewController() -> StatsViewAllTableViewController {
         let statsBundle = Bundle(for: WPStatsViewController.self)
         guard let path = statsBundle.path(forResource: "WordPressCom-Stats-iOS", ofType: "bundle"),
-            let bundle = Bundle(path: path) else
-        {
+            let bundle = Bundle(path: path) else {
             fatalError("Error loading Stats Bundle")
         }
 
@@ -871,8 +858,7 @@ private extension NotificationDetailsViewController
 
 // MARK: - Media Download Helpers
 //
-private extension NotificationDetailsViewController
-{
+private extension NotificationDetailsViewController {
     func downloadAndResizeMedia(_ indexPath: IndexPath, blockGroup: NotificationBlockGroup) {
         //  Notes:
         //  -   We'll *only* download Media for Text and Comment Blocks
@@ -907,8 +893,7 @@ private extension NotificationDetailsViewController
 
 // MARK: - Action Handlers
 //
-private extension NotificationDetailsViewController
-{
+private extension NotificationDetailsViewController {
     func followSiteWithBlock(_ block: NotificationBlock) {
         WPNotificationFeedbackGenerator.notificationOccurred(.success)
 
@@ -1014,8 +999,7 @@ private extension NotificationDetailsViewController
 
 // MARK: - Replying Comments
 //
-private extension NotificationDetailsViewController
-{
+private extension NotificationDetailsViewController {
     func displayReplyEditorWithBlock(_ block: NotificationBlock) {
         guard let siteID = note.metaSiteID else {
             return
@@ -1060,8 +1044,7 @@ private extension NotificationDetailsViewController
 
 // MARK: - Editing Comments
 //
-private extension NotificationDetailsViewController
-{
+private extension NotificationDetailsViewController {
     func displayCommentEditorWithBlock(_ block: NotificationBlock) {
         let editViewController = EditCommentViewController.newEdit()
         editViewController?.content = block.text
@@ -1107,8 +1090,7 @@ private extension NotificationDetailsViewController
 
 // MARK: - UITextViewDelegate
 //
-extension NotificationDetailsViewController: ReplyTextViewDelegate
-{
+extension NotificationDetailsViewController: ReplyTextViewDelegate {
     func textView(_ textView: UITextView, didTypeWord word: String) {
         suggestionsTableView.showSuggestions(forWord: word)
     }
@@ -1118,8 +1100,7 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate
 
 // MARK: - UIScrollViewDelegate
 //
-extension NotificationDetailsViewController: UIScrollViewDelegate
-{
+extension NotificationDetailsViewController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         keyboardManager.scrollViewWillBeginDragging(scrollView)
     }
@@ -1137,8 +1118,7 @@ extension NotificationDetailsViewController: UIScrollViewDelegate
 
 // MARK: - SuggestionsTableViewDelegate
 //
-extension NotificationDetailsViewController: SuggestionsTableViewDelegate
-{
+extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
     func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
         replyTextView.replaceTextAtCaret(text as NSString?, withText: suggestion)
         suggestionsTableView.showSuggestions(forWord: String())
@@ -1149,8 +1129,7 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate
 
 // MARK: - Private Properties
 //
-private extension NotificationDetailsViewController
-{
+private extension NotificationDetailsViewController {
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
@@ -1169,7 +1148,7 @@ private extension NotificationDetailsViewController
         static let richBlockTypes           = Set(arrayLiteral: NotificationBlock.Kind.text, NotificationBlock.Kind.comment)
         static let duration                 = TimeInterval(0.25)
         static let delay                    = TimeInterval(0)
-        static let options                  : UIViewAnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]
+        static let options: UIViewAnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]
     }
 
     enum Restoration {

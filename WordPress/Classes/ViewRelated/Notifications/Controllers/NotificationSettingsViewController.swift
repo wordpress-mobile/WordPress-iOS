@@ -8,8 +8,7 @@ import WordPressComAnalytics
 /// On Row Press, we'll push the list of available Streams, which will, in turn, push the Details View
 /// itself, which is in charge of rendering the actual available settings.
 ///
-open class NotificationSettingsViewController : UIViewController
-{
+open class NotificationSettingsViewController: UIViewController {
     // MARK: - View Lifecycle
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -195,7 +194,7 @@ open class NotificationSettingsViewController : UIViewController
             toggleDisplayMoreBlogs()
         } else if let settings = settingsForRowAtIndexPath(indexPath) {
             displayDetailsForSettings(settings)
-        } else  {
+        } else {
             tableView.deselectSelectedRowWithAnimation(true)
         }
     }
@@ -257,11 +256,11 @@ open class NotificationSettingsViewController : UIViewController
 
 
     // MARK: - Load More Helpers
-    fileprivate var rowCountForBlogSection : Int {
+    fileprivate var rowCountForBlogSection: Int {
         return groupedSettings?[Section.blog.rawValue].count ?? 0
     }
 
-    fileprivate var requiresBlogsPagination : Bool {
+    fileprivate var requiresBlogsPagination: Bool {
         return rowCountForBlogSection > loadMoreRowIndex
     }
 
@@ -315,7 +314,7 @@ open class NotificationSettingsViewController : UIViewController
 
 
     // MARK: - Table Sections
-    fileprivate enum Section : Int {
+    fileprivate enum Section: Int {
         case blog           = 0
         case other          = 1
         case wordPressCom   = 2
@@ -353,8 +352,8 @@ open class NotificationSettingsViewController : UIViewController
 
 
     // MARK: - Private Outlets
-    @IBOutlet fileprivate var tableView             : UITableView!
-    @IBOutlet fileprivate var activityIndicatorView : UIActivityIndicatorView!
+    @IBOutlet fileprivate var tableView: UITableView!
+    @IBOutlet fileprivate var activityIndicatorView: UIActivityIndicatorView!
 
     // MARK: - Private Constants
     fileprivate let blogReuseIdentifier             = WPBlogTableViewCell.classNameWithoutNamespaces()
@@ -367,6 +366,6 @@ open class NotificationSettingsViewController : UIViewController
     fileprivate let loadMoreRowCount                = 4
 
     // MARK: - Private Properties
-    fileprivate var groupedSettings                 : [[NotificationSettings]]?
+    fileprivate var groupedSettings: [[NotificationSettings]]?
     fileprivate var displayMoreWasAccepted          = false
 }

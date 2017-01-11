@@ -4,7 +4,7 @@ import WordPressComStatsiOS
 import WordPressShared
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -17,7 +17,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l > r
@@ -27,7 +27,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
+class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
     static fileprivate let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
     static fileprivate let postCardImageCellIdentifier = "PostCardImageCellIdentifier"
@@ -46,7 +46,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     @IBOutlet fileprivate weak var authorFilterSegmentedControl: UISegmentedControl!
 
-    @IBOutlet var authorsFilterView : UIView!
+    @IBOutlet var authorsFilterView: UIView!
     @IBOutlet var searchWrapperView: UIView!
     @IBOutlet var headerStackView: UIStackView!
 
@@ -90,7 +90,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         let objectString = blog?.objectID.uriRepresentation().absoluteString
 
-        coder.encode(objectString, forKey:type(of: self).postsViewControllerRestorationKey)
+        coder.encode(objectString, forKey: type(of: self).postsViewControllerRestorationKey)
 
         super.encodeRestorableState(with: coder)
     }
@@ -149,7 +149,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
     }
 
-    fileprivate func noResultsTitles() -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitles() -> [PostListFilter.Status: String] {
         if isSearching() {
             return noResultsTitlesWhenSearching()
         } else {
@@ -157,7 +157,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         }
     }
 
-    fileprivate func noResultsTitlesWhenSearching() -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitlesWhenSearching() -> [PostListFilter.Status: String] {
         let draftMessage = String(format: NSLocalizedString("No drafts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
         let scheduledMessage = String(format: NSLocalizedString("No scheduled posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
         let trashedMessage = String(format: NSLocalizedString("No trashed posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
@@ -166,7 +166,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
 
-    fileprivate func noResultsTitlesWhenFiltering() -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitlesWhenFiltering() -> [PostListFilter.Status: String] {
         let draftMessage = NSLocalizedString("You don't have any drafts.", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         let scheduledMessage = NSLocalizedString("You don't have any scheduled posts.", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         let trashedMessage = NSLocalizedString("You don't have any posts in your trash folder.", comment: "Displayed when the user views trashed in the posts list and there are no posts")
@@ -175,7 +175,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
 
-    fileprivate func noResultsTitles(_ draft: String, scheduled: String, trashed: String, published: String) -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitles(_ draft: String, scheduled: String, trashed: String, published: String) -> [PostListFilter.Status: String] {
         return [.draft: draft,
                 .scheduled: scheduled,
                 .trashed: trashed,

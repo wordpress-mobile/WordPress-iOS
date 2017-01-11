@@ -6,7 +6,7 @@ import XCTest
 
 /// Notifications Tests
 ///
-class NotificationTests : XCTestCase {
+class NotificationTests: XCTestCase {
 
     var contextManager: TestContextManager!
 

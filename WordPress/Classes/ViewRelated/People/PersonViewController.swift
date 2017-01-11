@@ -5,13 +5,13 @@ import WordPressComAnalytics
 
 /// Displays a Blog's User Details
 ///
-final class PersonViewController : UITableViewController {
+final class PersonViewController: UITableViewController {
 
     // MARK: - Public Properties
 
     /// Blog to which the Person belongs
     ///
-    var blog : Blog!
+    var blog: Blog!
 
     /// Core Data Context that should be used
     ///
@@ -19,7 +19,7 @@ final class PersonViewController : UITableViewController {
 
     /// Person to be displayed
     ///
-    var person : Person! {
+    var person: Person! {
         didSet {
             refreshInterfaceIfNeeded()
         }
@@ -27,7 +27,7 @@ final class PersonViewController : UITableViewController {
 
     /// Gravatar Image
     ///
-    @IBOutlet var gravatarImageView : UIImageView! {
+    @IBOutlet var gravatarImageView: UIImageView! {
         didSet {
             refreshGravatarImage()
         }
@@ -35,7 +35,7 @@ final class PersonViewController : UITableViewController {
 
     /// Person's Full Name
     ///
-    @IBOutlet var fullNameLabel : UILabel! {
+    @IBOutlet var fullNameLabel: UILabel! {
         didSet {
             setupFullNameLabel()
             refreshFullNameLabel()
@@ -44,7 +44,7 @@ final class PersonViewController : UITableViewController {
 
     /// Person's User Name
     ///
-    @IBOutlet var usernameLabel : UILabel! {
+    @IBOutlet var usernameLabel: UILabel! {
         didSet {
             setupUsernameLabel()
             refreshUsernameLabel()
@@ -53,7 +53,7 @@ final class PersonViewController : UITableViewController {
 
     /// Person's Role
     ///
-    @IBOutlet var roleCell : UITableViewCell! {
+    @IBOutlet var roleCell: UITableViewCell! {
         didSet {
             setupRoleCell()
             refreshRoleCell()
@@ -62,7 +62,7 @@ final class PersonViewController : UITableViewController {
 
     /// Person's First Name
     ///
-    @IBOutlet var firstNameCell : UITableViewCell! {
+    @IBOutlet var firstNameCell: UITableViewCell! {
         didSet {
             setupFirstNameCell()
             refreshFirstNameCell()
@@ -71,7 +71,7 @@ final class PersonViewController : UITableViewController {
 
     /// Person's Last Name
     ///
-    @IBOutlet var lastNameCell : UITableViewCell! {
+    @IBOutlet var lastNameCell: UITableViewCell! {
         didSet {
             setupLastNameCell()
             refreshLastNameCell()
@@ -80,7 +80,7 @@ final class PersonViewController : UITableViewController {
 
     /// Person's Display Name
     ///
-    @IBOutlet var displayNameCell : UITableViewCell! {
+    @IBOutlet var displayNameCell: UITableViewCell! {
         didSet {
             setupDisplayNameCell()
             refreshDisplayNameCell()
@@ -89,7 +89,7 @@ final class PersonViewController : UITableViewController {
 
     /// Nuking the User
     ///
-    @IBOutlet var removeCell : UITableViewCell! {
+    @IBOutlet var removeCell: UITableViewCell! {
         didSet {
             setupRemoveCell()
             refreshRemoveCell()
@@ -380,7 +380,7 @@ private extension PersonViewController {
 //
 private extension PersonViewController {
 
-    var isMyself : Bool {
+    var isMyself: Bool {
         return blog.account!.userID.intValue == person.ID || blog.account!.userID.intValue == person.linkedUserID
     }
 

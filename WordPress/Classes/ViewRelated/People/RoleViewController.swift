@@ -4,7 +4,7 @@ import WordPressShared
 
 /// Displays a Person Role Picker
 ///
-class RoleViewController : UITableViewController {
+class RoleViewController: UITableViewController {
 
     /// RoleViewController operation modes
     ///
@@ -20,7 +20,7 @@ class RoleViewController : UITableViewController {
 
     /// Specifies the way RoleViewController behaves
     ///
-    var mode : Mode? {
+    var mode: Mode? {
         didSet {
             guard let mode = mode else {
                 return
@@ -37,7 +37,7 @@ class RoleViewController : UITableViewController {
 
     /// Optional Person Blog. When set, will be used to refresh the list of available roles.
     ///
-    fileprivate var blog : Blog?
+    fileprivate var blog: Blog?
 
     /// Available Roles for the current blog.
     ///
@@ -45,11 +45,11 @@ class RoleViewController : UITableViewController {
 
     /// Currently Selected Role
     ///
-    var selectedRole : Role!
+    var selectedRole: Role!
 
     /// Closure to be executed whenever the selected role changes.
     ///
-    var onChange : ((Role) -> Void)?
+    var onChange: ((Role) -> Void)?
 
     /// Activity Spinner, to be animated during Backend Interaction
     ///

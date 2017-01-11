@@ -103,7 +103,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
             return nil
         }
 
-        var defaultAccount:NSManagedObject
+        var defaultAccount: NSManagedObject
 
         do {
             defaultAccount = try context.existingObject(with: objectID!)
@@ -124,7 +124,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
         request.predicate = NSPredicate(format: "uuid == %@", objectUUID!)
 
-        var accounts:[NSManagedObject]
+        var accounts: [NSManagedObject]
 
         do {
             accounts = try context.fetch(request) as! [NSManagedObject]
@@ -164,7 +164,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         let request         = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
         request.predicate   = NSPredicate(format: "isWpcom == true")
 
-        var results:[NSManagedObject]
+        var results: [NSManagedObject]
 
         do {
             results = try context.fetch(request) as! [NSManagedObject]

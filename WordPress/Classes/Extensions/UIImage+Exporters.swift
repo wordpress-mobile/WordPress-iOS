@@ -4,7 +4,7 @@ import MobileCoreServices
 
 extension UIImage {
     // MARK: - Error Handling
-    enum ErrorCode : Int {
+    enum ErrorCode: Int {
         case failedToWrite = 1
     }
 
@@ -24,8 +24,8 @@ extension UIImage {
      - compressionQuality: defines the compression quality of the export. This is only relevant for type formats that support a quality parameter. Ex: jpeg
      - metadata: the image metadata to save to file.
      */
-    func writeToURL(_ url: URL, type: String, compressionQuality: Float = 0.9,  metadata: [String:AnyObject]? = nil) throws {
-        let properties: [String:AnyObject] = [kCGImageDestinationLossyCompressionQuality as String: compressionQuality as AnyObject]
+    func writeToURL(_ url: URL, type: String, compressionQuality: Float = 0.9,  metadata: [String: AnyObject]? = nil) throws {
+        let properties: [String: AnyObject] = [kCGImageDestinationLossyCompressionQuality as String: compressionQuality as AnyObject]
         var finalMetadata = metadata
         if metadata == nil {
             finalMetadata = [kCGImagePropertyOrientation as String: Int(metadataOrientation.rawValue) as AnyObject]
@@ -75,23 +75,21 @@ extension UIImage {
     }
 }
 
-extension UIImage: ExportableAsset
-{
+extension UIImage: ExportableAsset {
     func exportToURL(_ url: URL,
                      targetUTI: String,
                      maximumResolution: CGSize,
                      stripGeoLocation: Bool,
                      synchronous: Bool,
                      successHandler: @escaping SuccessHandler,
-                     errorHandler: @escaping ErrorHandler)
-    {
+                     errorHandler: @escaping ErrorHandler) {
         var finalImage = self
         if (maximumResolution.width <= self.size.width || maximumResolution.height <= self.size.height) {
-            finalImage = self.resizedImage(with: .scaleAspectFit, bounds:maximumResolution, interpolationQuality:.high)
+            finalImage = self.resizedImage(with: .scaleAspectFit, bounds: maximumResolution, interpolationQuality: .high)
         }
 
         do {
-            try finalImage.writeToURL(url, type:targetUTI, compressionQuality:0.9, metadata: nil)
+            try finalImage.writeToURL(url, type: targetUTI, compressionQuality: 0.9, metadata: nil)
             successHandler(finalImage.size)
         } catch let error as NSError {
             errorHandler(error)
@@ -102,21 +100,19 @@ extension UIImage: ExportableAsset
                               targetSize: CGSize,
                               synchronous: Bool,
                               successHandler: @escaping SuccessHandler,
-                              errorHandler: @escaping ErrorHandler)
-    {
-        let thumbnail = self.resizedImage(with: .scaleAspectFit, bounds:targetSize, interpolationQuality:.high)
+                              errorHandler: @escaping ErrorHandler) {
+        let thumbnail = self.resizedImage(with: .scaleAspectFit, bounds: targetSize, interpolationQuality: .high)
         do {
-            try self.writeToURL(url, type:defaultThumbnailUTI as String, compressionQuality:0.9, metadata:nil)
+            try self.writeToURL(url, type: defaultThumbnailUTI as String, compressionQuality: 0.9, metadata: nil)
             successHandler((thumbnail?.size)!)
         } catch let error as NSError {
             errorHandler(error)
         }
     }
 
-    func exportOriginalImage(_ toURL: URL, successHandler: @escaping SuccessHandler, errorHandler: @escaping ErrorHandler)
-    {
+    func exportOriginalImage(_ toURL: URL, successHandler: @escaping SuccessHandler, errorHandler: @escaping ErrorHandler) {
         do {
-            try self.writeToURL(toURL, type:originalUTI()!, compressionQuality:1.0, metadata: nil)
+            try self.writeToURL(toURL, type: originalUTI()!, compressionQuality: 1.0, metadata: nil)
             successHandler(self.size)
         } catch let error as NSError {
             errorHandler(error)

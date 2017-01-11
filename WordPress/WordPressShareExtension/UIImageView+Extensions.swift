@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension UIImageView
-{
+extension UIImageView {
     /// Downloads an image and updates the UIImageView Instance
     ///
     /// - Parameter url: The URL of the target image
@@ -72,13 +71,13 @@ extension UIImageView
 
     /// Returns the desired Blavatar Side-Size, in pixels
     ///
-    fileprivate var blavatarSize : Int {
+    fileprivate var blavatarSize: Int {
         return blavatarSizeInPoints * Int(mainScreenScale)
     }
 
     /// Returns the desired Blavatar Side-Size, in points
     ///
-    fileprivate var blavatarSizeInPoints : Int {
+    fileprivate var blavatarSizeInPoints: Int {
         var size = Downloader.defaultImageSize
 
         if !bounds.size.equalTo(CGSize.zero) {
@@ -90,14 +89,14 @@ extension UIImageView
 
     /// Returns the Main Screen Scale
     ///
-    fileprivate var mainScreenScale : CGFloat {
+    fileprivate var mainScreenScale: CGFloat {
         return UIScreen.main.scale
     }
 
 
     /// Stores the current DataTask, in charge of downloading the remote Image
     ///
-    fileprivate var downloadTask : URLSessionDataTask? {
+    fileprivate var downloadTask: URLSessionDataTask? {
         get {
             return objc_getAssociatedObject(self, Downloader.taskKey) as? URLSessionDataTask
         }
@@ -110,8 +109,7 @@ extension UIImageView
 
     /// Private helper structure
     ///
-    fileprivate struct Downloader
-    {
+    fileprivate struct Downloader {
         /// Default Blavatar Image Size
         ///
         static let defaultImageSize = CGFloat(40)

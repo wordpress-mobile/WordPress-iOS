@@ -8,8 +8,7 @@ import WordPressShared
 ///     1           0   [Text]  [Text]
 ///     1           1   [Picker]
 ///
-open class SettingsPickerViewController : UITableViewController
-{
+open class SettingsPickerViewController: UITableViewController {
     /// Indicates whether a Switch row should be rendered on top, allowing the user to Enable / Disable the picker
     open var switchVisible = true
 
@@ -17,31 +16,31 @@ open class SettingsPickerViewController : UITableViewController
     open var switchOn = false
 
     /// Text to be displayed by the first row's Switch
-    open var switchText : String!
+    open var switchText: String!
 
     /// Text to be displayed in the "Currently Selected value" row
-    open var selectionText : String!
+    open var selectionText: String!
 
     /// Indicates the format to be used in the "Currently Selected Value" row
-    open var selectionFormat : String?
+    open var selectionFormat: String?
 
     /// Hint Text, to be displayed on top of the Picker
-    open var pickerHint : String?
+    open var pickerHint: String?
 
     /// String format, to be applied over the Picker Rows
-    open var pickerFormat : String?
+    open var pickerFormat: String?
 
     /// Currently selected value.
-    open var pickerSelectedValue : Int!
+    open var pickerSelectedValue: Int!
 
     /// Picker's minimum value.
-    open var pickerMinimumValue : Int!
+    open var pickerMinimumValue: Int!
 
     /// Picker's maximum value.
-    open var pickerMaximumValue : Int!
+    open var pickerMaximumValue: Int!
 
     /// Closure to be executed whenever the Switch / Picker is updated
-    open var onChange : ((_ enabled : Bool, _ newValue: Int) -> ())?
+    open var onChange : ((_ enabled: Bool, _ newValue: Int) -> ())?
 
 
 
@@ -188,14 +187,14 @@ open class SettingsPickerViewController : UITableViewController
 
 
     // MARK: - Nested Enums
-    fileprivate enum Row : String {
+    fileprivate enum Row: String {
         case Value1 = "Value1"
         case Switch = "SwitchCell"
         case Picker = "Picker"
     }
 
     // MARK: - Computed Properties
-    fileprivate var sections : [[Row]] {
+    fileprivate var sections: [[Row]] {
         var sections = [[Row]]()
 
         if switchVisible {
@@ -209,11 +208,11 @@ open class SettingsPickerViewController : UITableViewController
         return sections
     }
 
-    fileprivate var pickerSection : Int {
+    fileprivate var pickerSection: Int {
         return switchVisible ? 1 : 0
     }
 
-    fileprivate var selectedValueIndexPath : IndexPath {
+    fileprivate var selectedValueIndexPath: IndexPath {
         return IndexPath(row: 0, section: pickerSection)
     }
 

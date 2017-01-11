@@ -6,7 +6,7 @@ import WordPressShared
 /// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
-@objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder {
+@objc class Signin2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder {
 
     @IBOutlet weak var verificationCodeField: UITextField!
     @IBOutlet weak var sendCodeButton: UIButton!

@@ -3,7 +3,7 @@ import WordPressShared
 import Gridicons
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
     return l < r
@@ -15,8 +15,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-@objc public protocol ReaderPostCellDelegate: NSObjectProtocol
-{
+@objc public protocol ReaderPostCellDelegate: NSObjectProtocol {
     func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
@@ -28,8 +27,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String?
 }
 
-@objc open class ReaderPostCardCell: UITableViewCell
-{
+@objc open class ReaderPostCardCell: UITableViewCell {
     // MARK: - Properties
 
     // Wrapper views
@@ -251,7 +249,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         likeActionButton.titleLabel?.backgroundColor = UIColor.white
     }
 
-    open func configureCell(_ contentProvider:ReaderPostContentProvider) {
+    open func configureCell(_ contentProvider: ReaderPostContentProvider) {
         self.contentProvider = contentProvider
 
         configureHeader()
@@ -323,27 +321,27 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         featuredImageView.image = nil
         var url = featuredImageURL
         featuredImageDesiredWidth = featuredImageView.frame.width
-        let size = CGSize(width:featuredImageDesiredWidth, height:featuredMediaHeightConstraintConstant)
+        let size = CGSize(width: featuredImageDesiredWidth, height: featuredMediaHeightConstraintConstant)
         if !(contentProvider!.isPrivate()) {
             url = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
-            featuredImageView.setImageWith(url, placeholderImage:nil)
+            featuredImageView.setImageWith(url, placeholderImage: nil)
 
         } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
             // private wpcom image needs special handling.
             let scale = UIScreen.main.scale
-            let scaledSize = CGSize(width:size.width * scale, height: size.height * scale)
+            let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
             url = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
             let request = requestForURL(url)
             featuredImageView.setImageWith(request, placeholderImage: nil, success: nil, failure: nil)
 
         } else {
             // private but not a wpcom hosted image
-            featuredImageView.setImageWith(url, placeholderImage:nil)
+            featuredImageView.setImageWith(url, placeholderImage: nil)
         }
         currentLoadedCardImageURL = featuredImageURL.absoluteString
     }
 
-    fileprivate func requestForURL(_ url:URL) -> URLRequest {
+    fileprivate func requestForURL(_ url: URL) -> URLRequest {
 
         var requestURL = url
 
@@ -403,7 +401,7 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         configureLikeActionButton()
     }
 
-    fileprivate func resetActionButton(_ button:UIButton) {
+    fileprivate func resetActionButton(_ button: UIButton) {
         button.setTitle(nil, for: UIControlState())
         button.isSelected = false
         button.isHidden = true
@@ -573,15 +571,13 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     // MARK: - Private Types
 
-    fileprivate enum CardAction: Int
-    {
+    fileprivate enum CardAction: Int {
         case comment = 1
         case like
     }
 }
 
-extension ReaderPostCardCell : ReaderCardDiscoverAttributionViewDelegate
-{
+extension ReaderPostCardCell : ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
     }

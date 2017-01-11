@@ -5,8 +5,7 @@ import WordPressShared
 
 /// Create a new WordPress.com account and blog.
 ///
-@objc class SignupViewController : NUXAbstractViewController, SigninKeyboardResponder
-{
+@objc class SignupViewController: NUXAbstractViewController, SigninKeyboardResponder {
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var emailField: WPWalkthroughTextField!
@@ -147,7 +146,7 @@ import WordPressShared
 
         attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
 
-        if let titleLabel = termsButton.titleLabel  {
+        if let titleLabel = termsButton.titleLabel {
             titleLabel.lineBreakMode = .byWordWrapping
             titleLabel.textAlignment = .center
             titleLabel.numberOfLines = 3

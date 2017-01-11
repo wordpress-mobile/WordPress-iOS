@@ -2,8 +2,7 @@ import Foundation
 import WordPressShared
 
 
-class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource, RichTextViewDelegate
-{
+class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource, RichTextViewDelegate {
     // MARK: - Public Properties
     var onUrlClick: ((URL) -> Void)?
     var onAttachmentClick: ((NSTextAttachment) -> Void)?
@@ -26,7 +25,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
     var linkColor: UIColor? {
         didSet {
             if let unwrappedLinkColor = linkColor {
-                textView.linkTextAttributes = [NSForegroundColorAttributeName as NSObject : unwrappedLinkColor]
+                textView.linkTextAttributes = [NSForegroundColorAttributeName as NSObject: unwrappedLinkColor]
             }
         }
     }

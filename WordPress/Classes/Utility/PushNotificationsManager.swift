@@ -7,8 +7,7 @@ import WordPressComAnalytics
 /// The purpose of this helper is to encapsulate all the tasks related to Push Notifications Registration + Handling,
 /// including iOS "Actionable" Notifications.
 ///
-final public class PushNotificationsManager : NSObject
-{
+final public class PushNotificationsManager: NSObject {
     // MARK: - Public Properties
 
 
@@ -346,7 +345,7 @@ final public class PushNotificationsManager : NSObject
     /// - Parameter userInfo: The Notification's Payload
     ///
     fileprivate func trackNotificationWithUserInfo(_ userInfo: NSDictionary) {
-        var properties = [String : String]()
+        var properties = [String: String]()
 
         if let noteId = userInfo.number(forKey: notificationIdentifierKey) {
             properties[trackingIdentifierKey] = noteId.stringValue
@@ -360,7 +359,7 @@ final public class PushNotificationsManager : NSObject
             properties[trackingTokenKey] = theToken
         }
 
-        let event : WPAnalyticsStat = (applicationState == .background) ? .pushNotificationReceived : .pushNotificationAlertPressed
+        let event: WPAnalyticsStat = (applicationState == .background) ? .pushNotificationReceived : .pushNotificationAlertPressed
         WPAnalytics.track(event, withProperties: properties)
     }
 

@@ -6,8 +6,7 @@ import Gridicons
 /// list of posts.  The user supplied search phrase is converted into a ReaderSearchTopic
 /// the results of which are displayed in the embedded ReaderStreamViewController.
 ///
-@objc open class ReaderSearchViewController : UIViewController, UIViewControllerRestoration
-{
+@objc open class ReaderSearchViewController: UIViewController, UIViewControllerRestoration {
     static let restorationClassIdentifier = "ReaderSearchViewControllerRestorationIdentifier"
     static let restorableSearchTopicPathKey: String = "RestorableSearchTopicPathKey"
 
@@ -18,7 +17,7 @@ import Gridicons
     @IBOutlet fileprivate weak var label: UILabel!
 
     fileprivate var backgroundTapRecognizer: UITapGestureRecognizer!
-    fileprivate var streamController: ReaderStreamViewController!
+    fileprivate var streamController: ReaderStreamViewController?
     fileprivate let searchBarSearchIconSize = CGFloat(13.0)
     fileprivate var suggestionsController: ReaderSearchSuggestionsViewController?
     fileprivate var restoredSearchTopic: ReaderSearchTopic?
@@ -58,7 +57,7 @@ import Gridicons
 
 
     open override func encodeRestorableState(with coder: NSCoder) {
-        if let topic = streamController.readerTopic {
+        if let topic = streamController?.readerTopic {
             coder.encode(topic.path, forKey: type(of: self).restorableSearchTopicPathKey)
         }
         super.encodeRestorableState(with: coder)
@@ -179,7 +178,7 @@ import Gridicons
         }
         label.isHidden = true
         searchBar.text = topic.title
-        streamController.readerTopic = topic
+        streamController?.readerTopic = topic
     }
 
 
@@ -195,7 +194,9 @@ import Gridicons
     /// embedded stream to the topic.
     ///
     func performSearch() {
-        assert(streamController != nil)
+        guard let streamController = streamController else {
+            return
+        }
 
         guard let phrase = searchBar.text?.trim(), !phrase.isEmpty else {
             return
@@ -241,7 +242,7 @@ import Gridicons
 
         let views = [
             "searchBar": searchBar,
-            "autoView" : autoView
+            "autoView": autoView
         ]
 
         // Match the width of the search bar.

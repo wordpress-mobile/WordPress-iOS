@@ -1,8 +1,7 @@
 import Foundation
 
 
-extension NSIndexPath
-{
+extension NSIndexPath {
     public func toString() -> String {
         // Padding: Make sure that, when sorted, there are no inconsistencies!
         let padding = 20

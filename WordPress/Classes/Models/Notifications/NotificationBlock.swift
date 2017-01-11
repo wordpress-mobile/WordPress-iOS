@@ -4,8 +4,7 @@ import Foundation
 
 // MARK: - NotificationBlock Implementation
 //
-class NotificationBlock: Equatable
-{
+class NotificationBlock: Equatable {
     /// Parsed Media Entities.
     ///
     let media: [NotificationMedia]
@@ -75,8 +74,7 @@ class NotificationBlock: Equatable
 
 // MARK: - NotificationBlock Computed Properties
 //
-extension NotificationBlock
-{
+extension NotificationBlock {
     /// Returns the current Block's Kind. SORRY: Duck Typing code below.
     ///
     var kind: Kind {
@@ -84,8 +82,7 @@ extension NotificationBlock
             return .user
         }
 
-        if let commentID = metaCommentID, let parentCommentID = parent?.metaCommentID, let _ = metaSiteID, commentID.isEqual(parentCommentID)
-        {
+        if let commentID = metaCommentID, let parentCommentID = parent?.metaCommentID, let _ = metaSiteID, commentID.isEqual(parentCommentID) {
             return .comment
         }
 
@@ -165,8 +162,7 @@ extension NotificationBlock
 
 // MARK: - NotificationBlock Methods
 //
-extension NotificationBlock
-{
+extension NotificationBlock {
     /// Allows us to set a local override for a remote value. This is used to fake the UI, while
     /// there's a BG call going on.
     ///
@@ -249,8 +245,7 @@ extension NotificationBlock
 
 // MARK: - NotificationBlock Parsers
 //
-extension NotificationBlock
-{
+extension NotificationBlock {
     /// Parses a collection of Block Definitions into NotificationBlock instances.
     ///
     class func blocksFromArray(_ blocks: [[String: AnyObject]], parent: Notification) -> [NotificationBlock] {
@@ -263,8 +258,7 @@ extension NotificationBlock
 
 // MARK: - NotificationBlock Types
 //
-extension NotificationBlock
-{
+extension NotificationBlock {
     /// Known kinds of Blocks
     ///
     enum Kind {

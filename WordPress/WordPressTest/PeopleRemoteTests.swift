@@ -3,8 +3,7 @@ import XCTest
 import OHHTTPStubs
 @testable import WordPress
 
-class PeopleServiceTests : XCTestCase
-{
+class PeopleServiceTests: XCTestCase {
     // MARK: - Constants
 
     let validationSuccessMockFilename   = "people-validate-invitation-success.json"
@@ -16,8 +15,8 @@ class PeopleServiceTests : XCTestCase
 
     // MARK: - Properties
 
-    var restApi : WordPressComRestApi!
-    var remote : PeopleRemote!
+    var restApi: WordPressComRestApi!
+    var remote: PeopleRemote!
 
 
     // MARK: - Overriden Methods

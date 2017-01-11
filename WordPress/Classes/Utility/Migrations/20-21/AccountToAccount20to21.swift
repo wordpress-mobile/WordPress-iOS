@@ -66,7 +66,7 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
             return nil
         }
 
-        var defaultAccount:NSManagedObject
+        var defaultAccount: NSManagedObject
 
         do {
             try defaultAccount = context.existingObject(with: objectID!)
