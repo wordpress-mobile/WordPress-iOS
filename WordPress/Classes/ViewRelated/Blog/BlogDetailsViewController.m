@@ -837,7 +837,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
-    if ([updatedObjects containsObject:self.blog]) {
+    if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
         self.navigationItem.title = self.blog.settings.name;
         [self reloadTableViewPreservingSelection];
     }
