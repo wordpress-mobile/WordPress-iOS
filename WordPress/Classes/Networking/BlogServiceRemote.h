@@ -27,7 +27,7 @@ typedef void (^SuccessHandler)();
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)syncPostTypesWithSuccess:(PostTypesHandler)success
-                           failure:(void (^)(NSError *error))failure;
+                         failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Synchronizes a blog's post formats.

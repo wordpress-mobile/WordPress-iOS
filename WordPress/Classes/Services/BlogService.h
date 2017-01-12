@@ -54,7 +54,7 @@ extern NSString *const WordPressMinimumVersion;
  *  Sync all available blogs for an acccount
  *
  *  @param account the account for the associated blogs.
- *  @param success a block that is invoked when the sync is sucessfull.
+ *  @param success a block that is invoked when the sync is successful.
  *  @param failure a block that in invoked when the sync fails.
  */
 - (void)syncBlogsForAccount:(WPAccount *)account
@@ -62,10 +62,10 @@ extern NSString *const WordPressMinimumVersion;
                     failure:(void (^)(NSError *error))failure;
 
 /**
- *  Sync the blog and it's top-level details such as the 'options' data and any jetpack configuration.
+ *  Sync the blog and its top-level details such as the 'options' data and any jetpack configuration.
  *
  *  @param blog    the blog from where to read the information from
- *  @param success a block that is invoked when the sync is sucessfull.
+ *  @param success a block that is invoked when the sync is successful.
  *  @param failure a block that in invoked when the sync fails.
  */
 - (void)syncBlog:(Blog *)blog
@@ -78,27 +78,28 @@ extern NSString *const WordPressMinimumVersion;
  *  @note Used for instances where the entire blog should be refreshed or initially downloaded.
  *
  *  @param blog    the blog from where to read the information from
- *  @param success a block that is invoked when the sync is sucessfull.
+ *  @param success a block that is invoked when the sync is successful.
  *  @param failure a block that in invoked when the sync fails.
  */
-- (void)syncBlogAndAllMetadata:(Blog *)blog completionHandler:(void (^)())completionHandler;
+- (void)syncBlogAndAllMetadata:(Blog *)blog
+             completionHandler:(void (^)())completionHandler;
 
 /**
  *  Sync the available postTypes configured for the blog.
  *
  *  @param blog    the blog from where to read the information from
- *  @param success a block that is invoked when the sync is sucessfull.
+ *  @param success a block that is invoked when the sync is successful.
  *  @param failure a block that in invoked when the sync fails.
  */
 - (void)syncPostTypesForBlog:(Blog *)blog
-                       success:(void (^)())success
-                       failure:(void (^)(NSError *error))failure;
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure;
 
 /**
  *  Sync the available postFormats configured for the blog.
  *
  *  @param blog    the blog from where to read the information from
- *  @param success a block that is invoked when the sync is sucessfull.
+ *  @param success a block that is invoked when the sync is successful.
  *  @param failure a block that in invoked when the sync fails.
  */
 - (void)syncPostFormatsForBlog:(Blog *)blog
@@ -109,23 +110,23 @@ extern NSString *const WordPressMinimumVersion;
  *  Sync blog settings from the server
  *
  *  @param blog    the blog from where to read the information from
- *  @param success a block that is invoked when the sync is sucessfull
+ *  @param success a block that is invoked when the sync is successful
  *  @param failure a block that in invoked when the sync fails.
  */
 - (void)syncSettingsForBlog:(Blog *)blog
-                   success:(void (^)())success
-                   failure:(void (^)(NSError *error))failure;
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure;
 
 /**
- *  Update blog settings to server
+ *  Update blog settings to the server
  *
  *  @param blog    the blog to update
- *  @param success a block that is invoked when the update is sucessfull
+ *  @param success a block that is invoked when the update is successful
  *  @param failure a block that in invoked when the update fails.
  */
 - (void)updateSettingsForBlog:(Blog *)blog
-                     success:(nullable void (^)())success
-                     failure:(nullable void (^)(NSError *error))failure;
+                      success:(nullable void (^)())success
+                      failure:(nullable void (^)(NSError *error))failure;
 
 
 /**
@@ -187,7 +188,7 @@ extern NSString *const WordPressMinimumVersion;
  @return the blog if one was found, otherwise it returns nil
  */
 - (nullable Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
-                   inAccount:(WPAccount *)account;
+                            inAccount:(WPAccount *)account;
 
 /**
  Searches for a `Blog` object for this account with the given username
@@ -197,7 +198,7 @@ extern NSString *const WordPressMinimumVersion;
  @return the blog if one was found, otherwise it returns nil
  */
 - (nullable Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
-                 andUsername:(NSString *)username;
+                          andUsername:(NSString *)username;
 
 /**
  Creates a blank `Blog` object for this account
