@@ -32,7 +32,8 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 
 @implementation WPAnalyticsTrackerAutomatticTracks
 
-NSString *_loggedInID, *_anonymousID;
+@synthesize loggedInID = _loggedInID;
+@synthesize anonymousID = _anonymousID;
 
 + (NSString *)eventNameForStat:(WPAnalyticsStat)stat
 {
