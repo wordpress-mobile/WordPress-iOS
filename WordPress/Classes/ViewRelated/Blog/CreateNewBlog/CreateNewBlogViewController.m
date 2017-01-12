@@ -527,13 +527,14 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
                 }];
             };
 
-            [blogService syncBlog:blog completionHandler:^{
-                [accountService updateUserDetailsForAccount:defaultAccount
-                                                    success:completion
-                                                    failure:^(NSError * _Nonnull error) {
-                                                        completion();
-                                                    }];
-            }];
+            [blogService syncBlogAndAllMetadata:blog
+                              completionHandler:^{
+                                  [accountService updateUserDetailsForAccount:defaultAccount
+                                                                      success:completion
+                                                                      failure:^(NSError * _Nonnull error) {
+                                                                          completion();
+                                                                      }];
+                              }];
         };
 
         WordPressComServiceFailureBlock createBlogFailure = ^(NSError *error) {
