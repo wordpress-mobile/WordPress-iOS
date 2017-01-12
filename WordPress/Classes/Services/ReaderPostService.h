@@ -78,6 +78,8 @@ extern NSString * const ReaderPostServiceErrorDomain;
 
 /**
  Silently refresh posts for the followed sites topic.
+ Note that calling this method creates a new service instance that performs
+ all its work on a derived managed object context, and background queue.
  */
 - (void)refreshPostsForFollowedTopic;
 
@@ -108,6 +110,11 @@ extern NSString * const ReaderPostServiceErrorDomain;
  Saves the NSManagedObjectContext.
  */
 - (void)deletePostsWithNoTopic;
+
+/**
+ Globally sets the `inUse` flag to fall for all posts.
+ */
+- (void)clearInUseFlags;
 
 /**
  Delete posts from the specified site/feed from the specified topic

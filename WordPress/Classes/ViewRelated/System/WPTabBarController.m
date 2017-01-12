@@ -334,8 +334,18 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (!_readerSplitViewController) {
         _readerSplitViewController = [WPSplitViewController new];
         _readerSplitViewController.restorationIdentifier = WPReaderSplitViewRestorationID;
+        _readerSplitViewController.presentsWithGesture = NO;
         _readerSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthNarrow;
         _readerSplitViewController.collapseMode = WPSplitViewControllerCollapseModeAlwaysKeepDetail;
+
+        // There's currently a bug on Plus sized phones where the detail navigation
+        // stack gets corrupted after restoring state: https://github.com/wordpress-mobile/WordPress-iOS/pull/6287#issuecomment-266877329
+        // I've been unable to resolve it thus far, so for now we'll disable
+        // landscape split view on Plus devices for the Reader.
+        // James Frost 2017-01-09
+         if ([WPDeviceIdentification isUnzoomediPhonePlus]) {
+            [_readerSplitViewController setOverrideTraitCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassCompact]];
+        }
 
         [_readerSplitViewController setInitialPrimaryViewController:self.readerNavigationController];
 
