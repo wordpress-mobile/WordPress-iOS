@@ -193,9 +193,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                          failure:failure];
     } else if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
         BlogServiceRemoteREST *restRemote = remote;
-        [restRemote syncBlogDetailsWithSuccess:[self blogDetailsHandlerWithBlogObjectID:blog.objectID
-                                                                      completionHandler:success]
-                                       failure:failure];
+        [restRemote syncBlogWithSuccess:[self blogDetailsHandlerWithBlogObjectID:blog.objectID
+                                                               completionHandler:success]
+                                failure:failure];
     }
 }
 
@@ -224,14 +224,14 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
         dispatch_group_enter(syncGroup);
         BlogServiceRemoteREST *restRemote = remote;
-        [restRemote syncBlogDetailsWithSuccess:[self blogDetailsHandlerWithBlogObjectID:blogObjectID
-                                                                      completionHandler:^{
-                                                                          dispatch_group_leave(syncGroup);
-                                                                      }]
-                                       failure:^(NSError *error) {
-                                           DDLogError(@"Failed syncing site details for blog %@: %@", blog.url, error);
-                                           dispatch_group_leave(syncGroup);
-                                       }];
+        [restRemote syncBlogWithSuccess:[self blogDetailsHandlerWithBlogObjectID:blogObjectID
+                                                               completionHandler:^{
+                                                                   dispatch_group_leave(syncGroup);
+                                                               }]
+                                failure:^(NSError *error) {
+                                    DDLogError(@"Failed syncing site details for blog %@: %@", blog.url, error);
+                                    dispatch_group_leave(syncGroup);
+                                }];
 
         dispatch_group_enter(syncGroup);
         [restRemote syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
