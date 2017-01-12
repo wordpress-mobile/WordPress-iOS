@@ -235,7 +235,6 @@ import WordPressComAnalytics
         }
     }
 
-
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -380,7 +379,6 @@ import WordPressComAnalytics
     fileprivate func setupResultsStatusView() {
         resultsStatusView = WPNoResultsView()
     }
-
 
     fileprivate func setupFooterView() {
         guard let footer = Bundle.main.loadNibNamed(footerViewNibName, owner: nil, options: nil)!.first as? PostListFooterView else {
@@ -1725,7 +1723,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
         }
 
-        navigationController?.pushViewController(controller, animated: true)
+        navigationController?.pushFullscreenViewController(controller, animated: true)
     }
 
 
