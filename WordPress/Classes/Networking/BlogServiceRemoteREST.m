@@ -136,10 +136,10 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
           }];
 }
 
-- (void)syncBlogDetailsWithSuccess:(BlogDetailsHandler)success
-                           failure:(void (^)(NSError *))failure
+- (void)syncBlogWithSuccess:(BlogDetailsHandler)success
+                    failure:(void (^)(NSError *))failure
 {
-    NSString *path = [self pathForOptions];
+    NSString *path = [self pathForSite];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
@@ -225,7 +225,7 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     return [NSString stringWithFormat:@"sites/%@/users", self.siteID];
 }
 
-- (NSString *)pathForOptions
+- (NSString *)pathForSite
 {
     return [NSString stringWithFormat:@"sites/%@", self.siteID];
 }
