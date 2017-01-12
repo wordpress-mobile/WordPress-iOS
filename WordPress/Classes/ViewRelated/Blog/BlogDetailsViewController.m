@@ -215,10 +215,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [self.blogService syncBlog:_blog completionHandler:^() {
-        [weakSelf configureTableViewData];
-        [weakSelf reloadTableViewPreservingSelection];
-    }];
+    [self.blogService syncBlogAndAllMetadata:_blog
+                           completionHandler:^{
+                               [weakSelf configureTableViewData];
+                               [weakSelf reloadTableViewPreservingSelection];
+                           }];
     if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
         AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -837,7 +838,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
-    if ([updatedObjects containsObject:self.blog]) {
+    if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
         self.navigationItem.title = self.blog.settings.name;
         [self reloadTableViewPreservingSelection];
     }
