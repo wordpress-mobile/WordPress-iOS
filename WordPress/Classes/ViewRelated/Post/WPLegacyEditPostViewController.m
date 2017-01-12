@@ -463,7 +463,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (blogChanged) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        [blogService syncBlog:blog completionHandler:nil];
+        [blogService syncBlogAndAllMetadata:blog completionHandler:nil];
     }
 }
 

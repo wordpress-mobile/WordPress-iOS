@@ -1,4 +1,6 @@
 #import "RemoteBlogOptionsHelper.h"
+#import "NSMutableDictionary+Helpers.h"
+#import "WordPress-Swift.h"
 
 @implementation RemoteBlogOptionsHelper
 
@@ -39,6 +41,25 @@
     }];
 
     return [NSDictionary dictionaryWithDictionary:valueOptions ];
+}
+
++ (NSDictionary *)remoteOptionsForUpdatingBlogTitleAndTagline:(RemoteBlogSettings *)blogSettings
+{
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    [options setValueIfNotNil:blogSettings.name forKey:@"blog_title"];
+    [options setValueIfNotNil:blogSettings.tagline forKey:@"blog_tagline"];
+    return options;
+}
+
++ (RemoteBlogSettings *)remoteBlogSettingsFromXMLRPCDictionaryOptions:(NSDictionary *)options
+{
+    RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
+    remoteSettings.name = [[options stringForKeyPath:@"blog_title.value"] stringByDecodingXMLCharacters];
+    remoteSettings.tagline = [[options stringForKeyPath:@"blog_tagline.value"] stringByDecodingXMLCharacters];
+    if (options[@"blog_public"]) {
+        remoteSettings.privacy = [options numberForKeyPath:@"blog_public.value"];
+    }
+    return remoteSettings;
 }
 
 @end
