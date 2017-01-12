@@ -65,8 +65,8 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
 
-    [service syncBlogDetailsWithSuccess:^(RemoteBlog *remoteBlog) {}
-                                failure:^(NSError *error) {}];
+    [service syncBlogWithSuccess:^(RemoteBlog *remoteBlog) {}
+                         failure:^(NSError *error) {}];
 }
 
 #pragma mark - Synchronizing post types for a blog
