@@ -164,7 +164,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogDetailsBlogKey];
 
     WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
-    UIViewController *detailViewController = splitViewController.topDetailViewController;
+
+    UIViewController *detailViewController = [splitViewController rootDetailViewController];
     if (detailViewController && [detailViewController conformsToProtocol:@protocol(UIViewControllerRestoration)]) {
         // If the current detail view controller supports state restoration, store the current selection
         [coder encodeObject:self.restorableSelectedIndexPath forKey:WPBlogDetailsSelectedIndexPathKey];

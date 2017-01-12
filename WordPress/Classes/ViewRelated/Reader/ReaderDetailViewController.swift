@@ -69,8 +69,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     open var post: ReaderPost? {
         didSet {
             oldValue?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
+            oldValue?.inUse = false
 
-            post?.addObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath, options: .new, context: nil)
+            if let newPost = post {
+                newPost.inUse = true
+                ContextManager.sharedInstance().save(newPost.managedObjectContext)
+                newPost.addObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath, options: .new, context: nil)
+            }
             if isViewLoaded {
                 configureView()
             }
@@ -130,18 +135,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             return nil
         }
 
-        post.preserveForRestoration = false
-        ContextManager.sharedInstance().save(context)
-
         return controllerWithPost(post)
     }
 
 
     open override func encodeRestorableState(with coder: NSCoder) {
         if let post = post {
-            let context = ContextManager.sharedInstance().mainContext
-            post.preserveForRestoration = true
-            ContextManager.sharedInstance().save(context)
             coder.encode(post.objectID.uriRepresentation().absoluteString, forKey: type(of: self).restorablePostObjectURLhKey)
         }
 
@@ -153,7 +152,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     deinit {
-        post?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
+        if let post = post {
+            post.inUse = false
+            ContextManager.sharedInstance().save(post.managedObjectContext)
+            post.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
+        }
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -410,7 +413,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate func configureShareButton() {
         // Share button.
-        let image = UIImage(named: "icon-posts-share")!
+        let image = UIImage(named: "icon-posts-share")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
         button.setImage(image, for: UIControlState())
         button.addTarget(self, action: #selector(ReaderDetailViewController.didTapShareButton(_:)), for: .touchUpInside)
@@ -1085,3 +1088,6 @@ extension ReaderDetailViewController : UIScrollViewDelegate {
     }
 
 }
+
+// Expand this view controller to full screen if possible
+extension ReaderDetailViewController: PrefersFullscreenDisplay {}
