@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="ipad9_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
+    <device id="ipad9_7" orientation="landscape">
+        <adaptation id="splitview2_3"/>
     </device>
     <dependencies>
+        <deployment version="4096" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,57 +19,60 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+        <view autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="694" height="768"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wZ5-Fs-qlA">
-                    <rect key="frame" x="234" y="100" width="300" height="309.5"/>
+                <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wZ5-Fs-qlA">
+                    <rect key="frame" x="197" y="100" width="300" height="298"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-jetpack-gray" translatesAutoresizingMaskIntoConstraints="NO" id="GNi-Lj-sLf">
                             <rect key="frame" x="0.0" y="0.0" width="300" height="90"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5EX-8b-0NL">
-                            <rect key="frame" x="0.0" y="100" width="300" height="101.5"/>
+                            <rect key="frame" x="0.0" y="100" width="300" height="90"/>
                             <string key="text">Looks like you have Jetpack set up on your site. Congrats!
 Sign in with your WordPress.com credentials below to enable Stats and Notifications.</string>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email or Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xxp-Ie-Xxe" customClass="WPWalkthroughTextField">
-                            <rect key="frame" x="0.0" y="211.5" width="300" height="44"/>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Email or Username" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="xxp-Ie-Xxe" customClass="WPWalkthroughTextField">
+                            <rect key="frame" x="0.0" y="200" width="300" height="44"/>
                             <nil key="textColor"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="NO"/>
                                 <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-username-field"/>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="NO"/>
                             </userDefinedRuntimeAttributes>
                         </textField>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3Mb-EC-IEi" customClass="WPWalkthroughTextField">
-                            <rect key="frame" x="0.0" y="265.5" width="300" height="44"/>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Password" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3Mb-EC-IEi" customClass="WPWalkthroughTextField">
+                            <rect key="frame" x="0.0" y="254" width="300" height="44"/>
                             <nil key="textColor"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="YES"/>
-                                <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="NO"/>
                                 <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-password-field"/>
                             </userDefinedRuntimeAttributes>
                         </textField>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="width" constant="300" id="Qdi-ft-avP"/>
+                        <constraint firstAttribute="width" constant="300" id="Gku-Cz-guL"/>
                     </constraints>
                 </stackView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="wZ5-Fs-qlA" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="D2t-PK-TwU"/>
-                <constraint firstItem="wZ5-Fs-qlA" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="eyG-u0-nr6"/>
+                <constraint firstItem="wZ5-Fs-qlA" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="64v-OC-7hp">
+                    <variation key="heightClass=regular" constant="100"/>
+                </constraint>
+                <constraint firstItem="wZ5-Fs-qlA" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="mg6-11-0oK"/>
             </constraints>
-            <point key="canvasLocation" x="-1287" y="-140"/>
+            <point key="canvasLocation" x="-1606.5" y="-689.5"/>
         </view>
     </objects>
     <resources>
