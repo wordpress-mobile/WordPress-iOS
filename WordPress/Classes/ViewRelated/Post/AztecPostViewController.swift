@@ -253,8 +253,7 @@ class AztecPostViewController: UIViewController {
             return
         }
 
-        let range = richTextView.selectedRange
-        let identifiers = richTextView.formatIdentifiersSpanningRange(range)
+        let identifiers = richTextView.formatIdentifiersForTypingAttributes()
         toolbar.selectItemsMatchingIdentifiers(identifiers)
     }
 
