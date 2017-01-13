@@ -27,6 +27,7 @@ class AztecPostViewController: UIViewController {
         tv.inputAccessoryView = toolbar
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.keyboardDismissMode = .interactive
 
         return tv
     }()
@@ -39,6 +40,7 @@ class AztecPostViewController: UIViewController {
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.isHidden = true
+        tv.keyboardDismissMode = .interactive
 
         return tv
     }()
