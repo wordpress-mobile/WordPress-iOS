@@ -350,6 +350,28 @@ class WPSplitViewController: UISplitViewController {
             updateDisplayMode()
         }
     }
+
+    /// Pops both the primary and detail navigation controllers (if present)
+    /// to their roots.
+    ///
+    func popToRootViewControllersAnimated(_ animated: Bool) {
+        let popOrScrollToTop = { (navigationController: UINavigationController) in
+            if navigationController.viewControllers.count > 1 {
+                navigationController.popToRootViewController(animated: animated)
+            } else {
+                navigationController.scrollContentToTopAnimated(animated)
+            }
+        }
+
+        if let primaryNavigationController = viewControllers.first as? UINavigationController {
+            popOrScrollToTop(primaryNavigationController)
+
+            if let detailNavigationController = viewControllers.last as? UINavigationController,
+                primaryNavigationController != detailNavigationController {
+                popOrScrollToTop(detailNavigationController)
+            }
+        }
+    }
 }
 
 // MARK: - UISplitViewControllerDelegate
