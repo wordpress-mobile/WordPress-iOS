@@ -10,8 +10,7 @@ import WordPressShared
 /// from UIApplication.sharedApplication.keyWindow.rootViewController to ensure
 /// that the final step in the magic link auth flow can be performed correctly.
 ///
-@objc class SigninEmailViewController: NUXAbstractViewController, SigninKeyboardResponder
-{
+@objc class SigninEmailViewController: NUXAbstractViewController, SigninKeyboardResponder {
 
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var submitButton: NUXSubmitButton!
@@ -26,7 +25,7 @@ import WordPressShared
     var didRequestSafariSharedCredentials = false
     var restrictSigninToWPCom = false {
         didSet {
-            if isViewLoaded() {
+            if isViewLoaded {
                 configureForWPComOnlyIfNeeded()
             }
         }
@@ -36,9 +35,9 @@ import WordPressShared
     ///
     /// - Parameter loginFields: Optional. A LoginFields instance containing any prefilled credentials.
     ///
-    class func controller(loginFields: LoginFields? = nil) -> SigninEmailViewController {
-        let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateViewControllerWithIdentifier("SigninEmailViewController") as! SigninEmailViewController
+    class func controller(_ loginFields: LoginFields? = nil) -> SigninEmailViewController {
+        let storyboard = UIStoryboard(name: "Signin", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SigninEmailViewController") as! SigninEmailViewController
         controller.loginFields = loginFields == nil ? LoginFields() : loginFields!
         return controller
     }
@@ -57,7 +56,7 @@ import WordPressShared
     }
 
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // The old create account vc hides the nav bar, so make sure its always visible.
@@ -72,7 +71,7 @@ import WordPressShared
     }
 
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
@@ -88,7 +87,7 @@ import WordPressShared
     }
 
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unregisterForKeyboardEvents()
     }
@@ -100,7 +99,7 @@ import WordPressShared
     ///
     ///
     func configureForWPComOnlyIfNeeded() {
-        selfHostedSigninButton.hidden = restrictSigninToWPCom
+        selfHostedSigninButton.isHidden = restrictSigninToWPCom
     }
 
 
@@ -109,21 +108,21 @@ import WordPressShared
     func localizeControls() {
         emailTextField.placeholder = NSLocalizedString("Email or username", comment: "Placeholder for a textfield. The user may enter their email address or their username.")
 
-        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be uppercase.").localizedUppercaseString
-        submitButton.setTitle(submitButtonTitle, forState: .Normal)
-        submitButton.setTitle(submitButtonTitle, forState: .Highlighted)
+        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be uppercase.").localizedUppercase
+        submitButton.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton.setTitle(submitButtonTitle, for: .highlighted)
 
         let safariButtonTitle = NSLocalizedString("Log in with Safari saved password", comment: "`Safari saved password` is the name of the iOS feature for saving a password for the Safari browser to use later.")
-        safariPasswordButton.setTitle(safariButtonTitle, forState: .Normal)
-        safariPasswordButton.setTitle(safariButtonTitle, forState: .Highlighted)
+        safariPasswordButton.setTitle(safariButtonTitle, for: UIControlState())
+        safariPasswordButton.setTitle(safariButtonTitle, for: .highlighted)
 
         let createSiteTitle = NSLocalizedString("Create a site", comment: "A button title")
-        createSiteButton.setTitle(createSiteTitle, forState: .Normal)
-        createSiteButton.setTitle(createSiteTitle, forState: .Highlighted)
+        createSiteButton.setTitle(createSiteTitle, for: UIControlState())
+        createSiteButton.setTitle(createSiteTitle, for: .highlighted)
 
         let selfHostedTitle = NSLocalizedString("Add a self-hosted WordPress site", comment: "A button title.")
-        selfHostedSigninButton.setTitle(selfHostedTitle, forState: .Normal)
-        selfHostedSigninButton.setTitle(selfHostedTitle, forState: .Highlighted)
+        selfHostedSigninButton.setTitle(selfHostedTitle, for: UIControlState())
+        selfHostedSigninButton.setTitle(selfHostedTitle, for: .highlighted)
     }
 
 
@@ -139,21 +138,21 @@ import WordPressShared
     /// Configures the button for requesting Safari stored credentials.
     /// The button should only be visible if Safari stored credentials are available.
     ///
-    func configureSafariPasswordButton(animated: Bool) {
-        if safariPasswordButton.hidden != didFindSafariSharedCredentials {
+    func configureSafariPasswordButton(_ animated: Bool) {
+        if safariPasswordButton.isHidden != didFindSafariSharedCredentials {
             return
         }
 
         if !animated {
-            safariPasswordButton.hidden = !didFindSafariSharedCredentials
+            safariPasswordButton.isHidden = !didFindSafariSharedCredentials
             return
         }
 
-        UIView.animateWithDuration(0.2,
+        UIView.animate(withDuration: 0.2,
                                    delay: 0.0,
-                                   options: .BeginFromCurrentState,
+                                   options: .beginFromCurrentState,
                                    animations: {
-                                        self.safariPasswordButton.hidden = !self.didFindSafariSharedCredentials
+                                        self.safariPasswordButton.isHidden = !self.didFindSafariSharedCredentials
                                     },
                                    completion: nil)
     }
@@ -170,7 +169,7 @@ import WordPressShared
     /// Configures whether appearance of the submit button.
     ///
     func configureSubmitButton() {
-        submitButton.enabled = !loginFields.username.isEmpty
+        submitButton.isEnabled = !loginFields.username.isEmpty
     }
 
 
@@ -178,9 +177,9 @@ import WordPressShared
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(loading: Bool) {
-        emailTextField.enabled = !loading
-        submitButton.enabled = !loading
+    func configureViewLoading(_ loading: Bool) {
+        emailTextField.isEnabled = !loading
+        submitButton.isEnabled = !loading
         submitButton.showActivityIndicator(loading)
     }
 
@@ -217,11 +216,11 @@ import WordPressShared
     ///     - username: The selected username or nil.
     ///     - password: The selected password or nil.
     ///
-    func handleFetchedWebCredentials(found: Bool, username: String?, password: String?) {
+    func handleFetchedWebCredentials(_ found: Bool, username: String?, password: String?) {
         didFindSafariSharedCredentials = found
         configureSafariPasswordButton(true)
 
-        guard let username = username, password = password else {
+        guard let username = username, let password = password else {
             return
         }
 
@@ -235,7 +234,7 @@ import WordPressShared
 
         signinWithUsernamePassword(false)
 
-        WPAppAnalytics.track(.LoginAutoFillCredentialsFilled)
+        WPAppAnalytics.track(.loginAutoFillCredentialsFilled)
     }
 
 
@@ -246,7 +245,7 @@ import WordPressShared
     ///     - immediateSignin: True if the newly loaded controller should immedately attempt
     ///                        to authenticate the user with the available credentails.  Default is `false`.
     ///
-    func signinWithUsernamePassword(immediateSignin: Bool = false) {
+    func signinWithUsernamePassword(_ immediateSignin: Bool = false) {
         let controller = SigninWPComViewController.controller(loginFields, immediateSignin: immediateSignin)
         controller.dismissBlock = dismissBlock
         controller.restrictSigninToWPCom = restrictSigninToWPCom
@@ -308,7 +307,7 @@ import WordPressShared
         configureViewLoading(true)
 
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.isEmailAvailable(emailOrUsername,
+        service?.isEmailAvailable(emailOrUsername,
             success: { [weak self] (available: Bool) in
                 self?.configureViewLoading(false)
                 if (available) {
@@ -319,10 +318,10 @@ import WordPressShared
                     self?.requestLink()
                 }
             },
-            failure: { [weak self] (error: NSError!) in
+            failure: { [weak self] (error: Error) in
                 DDLogSwift.logError(error.localizedDescription)
                 self?.configureViewLoading(false)
-                self?.displayError(error)
+                self?.displayError(error as NSError)
             })
     }
 
@@ -335,12 +334,12 @@ import WordPressShared
     }
 
 
-    @IBAction func handleSubmitButtonTapped(sender: UIButton) {
+    @IBAction func handleSubmitButtonTapped(_ sender: UIButton) {
         validateForm()
     }
 
 
-    func handleOnePasswordButtonTapped(sender: UIButton) {
+    func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
         SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
@@ -350,23 +349,25 @@ import WordPressShared
     }
 
 
-    @IBAction func handleSelfHostedButtonTapped(sender: UIButton) {
+    @IBAction func handleSelfHostedButtonTapped(_ sender: UIButton) {
         signinToSelfHostedSite()
     }
 
 
-    @IBAction func handleCreateSiteButtonTapped(sender: UIButton) {
+    @IBAction func handleCreateSiteButtonTapped(_ sender: UIButton) {
         let controller = SignupViewController.controller()
         navigationController?.pushViewController(controller, animated: true)
+
+        WPAppAnalytics.track(.createAccountInitiated)
     }
 
 
-    @IBAction func handleSafariPasswordButtonTapped(sender: UIButton) {
+    @IBAction func handleSafariPasswordButtonTapped(_ sender: UIButton) {
         fetchSharedWebCredentialsIfAvailable()
     }
 
 
-    @IBAction func handleTextFieldDidChange(sender: UITextField) {
+    @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
         loginFields.username = emailTextField.nonNilTrimmedText()
         configureSubmitButton()
     }
@@ -375,12 +376,12 @@ import WordPressShared
     // MARK: - Keyboard Notifications
 
 
-    func handleKeyboardWillShow(notification: NSNotification) {
+    func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
     }
 
 
-    func handleKeyboardWillHide(notification: NSNotification) {
+    func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
     }
 }

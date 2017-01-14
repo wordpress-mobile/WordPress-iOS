@@ -1,14 +1,14 @@
 import Foundation
 
-public class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
+open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 
     // MARK: Properties
 
-    var contentURL : NSURL?
-    var linkURL : NSURL?
-    private(set) var imageView : UIImageView
+    var contentURL: URL?
+    var linkURL: URL?
+    fileprivate(set) var imageView: UIImageView
 
-    override public var frame: CGRect {
+    override open var frame: CGRect {
         didSet {
             // If Voice Over is enabled, the OS will query for the accessibilityPath
             // to know what region of the screen to highlight. If the path is nil
@@ -22,9 +22,9 @@ public class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
     // MARK: Lifecycle
 
     override init(frame: CGRect) {
-        imageView = UIImageView(frame: CGRectMake(0, 0, frame.width, frame.height))
-        imageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        imageView.contentMode = .ScaleAspectFit
+        imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        imageView.contentMode = .scaleAspectFit
 
         super.init(frame: frame)
 
@@ -32,25 +32,25 @@ public class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
     }
 
     required public init?(coder aDecoder: NSCoder) {
-        imageView = aDecoder.decodeObjectForKey(UIImage.classNameWithoutNamespaces()) as! UIImageView
-        contentURL = aDecoder.decodeObjectForKey("contentURL") as! NSURL?
-        linkURL = aDecoder.decodeObjectForKey("linkURL") as! NSURL?
+        imageView = aDecoder.decodeObject(forKey: UIImage.classNameWithoutNamespaces()) as! UIImageView
+        contentURL = aDecoder.decodeObject(forKey: "contentURL") as! URL?
+        linkURL = aDecoder.decodeObject(forKey: "linkURL") as! URL?
 
         super.init(coder: aDecoder)
     }
 
-    override public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(imageView, forKey: UIImage.classNameWithoutNamespaces())
+    override open func encode(with aCoder: NSCoder) {
+        aCoder.encode(imageView, forKey: UIImage.classNameWithoutNamespaces())
 
         if let url = contentURL {
-            aCoder.encodeObject(url, forKey: "contentURL")
+            aCoder.encode(url, forKey: "contentURL")
         }
 
         if let url = linkURL {
-            aCoder.encodeObject(url, forKey: "linkURL")
+            aCoder.encode(url, forKey: "linkURL")
         }
 
-        super.encodeWithCoder(aCoder)
+        super.encode(with: aCoder)
     }
 
 
@@ -60,7 +60,7 @@ public class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
         if let size = imageView.image?.size {
             return size
         }
-        return CGSizeMake(1.0, 1.0)
+        return CGSize(width: 1.0, height: 1.0)
     }
 
     func contentRatio() -> CGFloat {

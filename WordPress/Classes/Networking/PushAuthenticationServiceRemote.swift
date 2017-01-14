@@ -3,8 +3,7 @@ import Foundation
 /// The purpose of this class is to encapsulate all of the interaction with the REST endpoint,
 /// required to handle WordPress.com 2FA Code Veritication via Push Notifications
 ///
-@objc public class PushAuthenticationServiceRemote : ServiceRemoteWordPressComREST
-{
+@objc open class PushAuthenticationServiceRemote: ServiceRemoteWordPressComREST {
     /// Verifies a WordPress.com Login.
     ///
     /// - Parameters:
@@ -12,22 +11,21 @@ import Foundation
     ///     - success: Closure to be executed on success. Can be nil.
     ///     - failure: Closure to be executed on failure. Can be nil.
     ///
-    public func authorizeLogin(token: String, success: (() -> ())?, failure: (() -> ())?) {
+    open func authorizeLogin(_ token: String, success: (() -> ())?, failure: (() -> ())?) {
         let path = "me/two-step/push-authentication"
-        let requestUrl = self.pathForEndpoint(path, withVersion: .Version_1_1)
+        let requestUrl = self.path(forEndpoint: path, with: .version_1_1)
 
         let parameters  = [
-            "action"        : "authorize_login",
-            "push_token"    : token
+            "action": "authorize_login",
+            "push_token": token
         ]
 
-        wordPressComRestApi.POST(requestUrl,
-            parameters: parameters,
-            success: { (response: AnyObject, httpResponse: NSHTTPURLResponse?) -> Void in
-                success?()
-            },
-            failure:{ (error: NSError, httpResponse: NSHTTPURLResponse?) -> Void in
-                failure?()
-            })
+        wordPressComRestApi.POST(requestUrl!, parameters: parameters as [String: AnyObject],
+                                 success: { (response: AnyObject, httpResponse: HTTPURLResponse?) -> Void in
+                                    success?()
+                                 },
+                                 failure: { (error: NSError, httpResponse: HTTPURLResponse?) -> Void in
+                                    failure?()
+                                 })
     }
 }

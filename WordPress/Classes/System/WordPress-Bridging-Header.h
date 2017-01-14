@@ -18,6 +18,7 @@
 #import "BlogSyncFacade.h"
 #import "BlogSelectorViewController.h"
 
+#import "Comment.h"
 #import "CommentService.h"
 #import "ConfigurablePostView.h"
 #import "Confirmable.h"
@@ -127,7 +128,6 @@
 #import "WPNUXMainButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPPostViewController.h"
-#import "WPRichTextView.h"
 #import "WPStyleGuide+Posts.h"
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPTableImageSource.h"

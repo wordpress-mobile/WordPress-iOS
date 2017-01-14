@@ -22,18 +22,18 @@ extern NSString* const WPPostViewControllerOptionNotAnimated;
 extern NSString* const kWPEditorConfigURLParamAvailable;
 extern NSString* const kWPEditorConfigURLParamEnabled;
 
-@interface WPPostViewController : WPEditorViewController <UINavigationControllerDelegate, WPEditorViewControllerDelegate>
+@interface WPPostViewController : WPEditorViewController <UINavigationControllerDelegate, WPEditorViewControllerDelegate, UIViewControllerRestoration>
 
 /*
  EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.
  */
-typedef void (^EditPostCompletionHandler)(WPPostViewController* viewController, BOOL saved);
-@property (nonatomic, copy, readwrite) EditPostCompletionHandler onClose;
+typedef void (^WPPostViewCompletionHandler)(WPPostViewController* viewController, BOOL saved);
+@property (nonatomic, copy, readwrite) WPPostViewCompletionHandler onClose;
 
 #pragma mark - Properties: Post
 
 /**
- *  @brief      Wether this VC owns the post or not.
+ *  @brief      Whether this VC owns the post or not.
  *  @details    This is set to YES when this VC is initialized with one of the draft post creation
  *              initializers.  It means this VC will delete the post objects if changes are
  *              discarded by the user.
@@ -44,6 +44,11 @@ typedef void (^EditPostCompletionHandler)(WPPostViewController* viewController, 
  *  @brief      The post that's being displayed by this VC.
  */
 @property (nonatomic, strong) AbstractPost *post;
+
+/**
+ *  @brief      Whether the editor should open directly to the media picker.
+ */
+@property (nonatomic) BOOL isOpenedDirectlyForPhotoPost;
 
 #pragma mark - Properties: Misc
 

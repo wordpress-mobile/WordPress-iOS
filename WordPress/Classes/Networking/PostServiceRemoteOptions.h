@@ -69,7 +69,6 @@ typedef NS_ENUM(NSUInteger, PostServiceResultsOrdering) {
 
 /**
  A search query used when requesting posts.
- @attention Not supported in XML-RPC.
  */
 - (NSString *)search;
 

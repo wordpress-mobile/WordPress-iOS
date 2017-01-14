@@ -12,12 +12,12 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 extern NSString *const WPLegacyEditorNavigationRestorationID;
 
 @interface WPLegacyEditPostViewController : WPLegacyEditorViewController
-<UINavigationControllerDelegate, WPLegacyEditorViewControllerDelegate>
+<UINavigationControllerDelegate, WPLegacyEditorViewControllerDelegate, UIViewControllerRestoration>
 
 /*
  EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.
  */
-typedef void (^WPLegacyEditPostCompletionHandler)(void);
+typedef void (^WPLegacyEditPostCompletionHandler)(WPLegacyEditPostViewController *viewController, BOOL changesSaved);
 @property (nonatomic, copy, readwrite) WPLegacyEditPostCompletionHandler onClose;
 @property (nonatomic, strong, readonly) AbstractPost *post;
 @property (nonatomic, assign, readonly) EditPostViewControllerMode editMode;

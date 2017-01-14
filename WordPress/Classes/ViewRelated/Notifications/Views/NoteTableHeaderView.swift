@@ -4,13 +4,12 @@ import WordPressShared
 /// This class renders a view with top and bottom separators, meant to be used as UITableView section
 /// header in NotificationsViewController.
 ///
-class NoteTableHeaderView: UIView
-{
+class NoteTableHeaderView: UIView {
     // MARK: - Public Properties
     var title: String? {
         set {
             // For layout reasons, we need to ensure that the titleLabel uses an exact Paragraph Height!
-            let unwrappedTitle = newValue?.uppercaseStringWithLocale(NSLocale.currentLocale()) ?? String()
+            let unwrappedTitle = newValue?.uppercased(with: Locale.current) ?? String()
             let attributes = Style.sectionHeaderRegularStyle
             titleLabel.attributedText = NSAttributedString(string: unwrappedTitle, attributes: attributes)
             setNeedsLayout()
@@ -22,8 +21,8 @@ class NoteTableHeaderView: UIView
 
     var separatorColor: UIColor? {
         set {
-            layoutView.bottomColor = newValue ?? UIColor.clearColor()
-            layoutView.topColor = newValue ?? UIColor.clearColor()
+            layoutView.bottomColor = newValue ?? UIColor.clear
+            layoutView.topColor = newValue ?? UIColor.clear
         }
         get {
             return layoutView.bottomColor
@@ -34,7 +33,7 @@ class NoteTableHeaderView: UIView
 
     // MARK: - Convenience Initializers
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
 
     required override init(frame: CGRect) {
@@ -50,8 +49,8 @@ class NoteTableHeaderView: UIView
 
 
     // MARK - Private Helpers
-    private func setupView() {
-        NSBundle.mainBundle().loadNibNamed("NoteTableHeaderView", owner: self, options: nil)
+    fileprivate func setupView() {
+        Bundle.main.loadNibNamed("NoteTableHeaderView", owner: self, options: nil)
         addSubview(contentView)
 
         // Make sure the Outlets are loaded
@@ -65,7 +64,7 @@ class NoteTableHeaderView: UIView
         pinSubviewToAllEdges(contentView)
 
         // Background + Separators
-        backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clear
 
         layoutView.backgroundColor = Style.sectionHeaderBackgroundColor
         layoutView.bottomVisible = true
@@ -83,8 +82,8 @@ class NoteTableHeaderView: UIView
     static let headerHeight  = CGFloat(26)
 
     // MARK: - Outlets
-    @IBOutlet private var contentView: UIView!
-    @IBOutlet private var layoutView: SeparatorsView!
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var titleLabel: UILabel!
+    @IBOutlet fileprivate var contentView: UIView!
+    @IBOutlet fileprivate var layoutView: SeparatorsView!
+    @IBOutlet fileprivate var imageView: UIImageView!
+    @IBOutlet fileprivate var titleLabel: UILabel!
 }

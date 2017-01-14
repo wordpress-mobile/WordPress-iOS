@@ -3,13 +3,12 @@ import Foundation
 
 /// Encapsulates NSURLSessionConfiguration Helpers
 ///
-extension NSURLSessionConfiguration
-{
+extension URLSessionConfiguration {
     /// Returns a new Background Session Configuration, with a random identifier.
     ///
-    class func backgroundSessionConfigurationWithRandomizedIdentifier() -> NSURLSessionConfiguration {
-        let identifier = WPAppGroupName + "." + NSUUID().UUIDString
-        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
+    class func backgroundSessionConfigurationWithRandomizedIdentifier() -> URLSessionConfiguration {
+        let identifier = WPAppGroupName + "." + UUID().uuidString
+        let configuration = URLSessionConfiguration.background(withIdentifier: identifier)
         configuration.sharedContainerIdentifier = WPAppGroupName
 
         return configuration
