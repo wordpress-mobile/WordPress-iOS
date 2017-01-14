@@ -1,32 +1,31 @@
 import Foundation
 import CoreData
 
-public class PublicizeConnection : NSManagedObject
-{
+open class PublicizeConnection: NSManagedObject {
     // Relations
-    @NSManaged public var blog: Blog
+    @NSManaged open var blog: Blog
 
     // Properties
-    @NSManaged public var connectionID: NSNumber
-    @NSManaged public var dateIssued: NSDate
-    @NSManaged public var dateExpires: NSDate?
-    @NSManaged public var externalID: String
-    @NSManaged public var externalName: String
-    @NSManaged public var externalDisplay: String
-    @NSManaged public var externalProfilePicture: String
-    @NSManaged public var externalProfileURL: String
-    @NSManaged public var externalFollowerCount: NSNumber
-    @NSManaged public var keyringConnectionID: NSNumber
-    @NSManaged public var keyringConnectionUserID: NSNumber
-    @NSManaged public var label: String
-    @NSManaged public var refreshURL: String
-    @NSManaged public var service: String
-    @NSManaged public var shared: Bool
-    @NSManaged public var status: String
-    @NSManaged public var siteID: NSNumber
-    @NSManaged public var userID: NSNumber
+    @NSManaged open var connectionID: NSNumber
+    @NSManaged open var dateIssued: Date
+    @NSManaged open var dateExpires: Date?
+    @NSManaged open var externalID: String
+    @NSManaged open var externalName: String
+    @NSManaged open var externalDisplay: String
+    @NSManaged open var externalProfilePicture: String
+    @NSManaged open var externalProfileURL: String
+    @NSManaged open var externalFollowerCount: NSNumber
+    @NSManaged open var keyringConnectionID: NSNumber
+    @NSManaged open var keyringConnectionUserID: NSNumber
+    @NSManaged open var label: String
+    @NSManaged open var refreshURL: String
+    @NSManaged open var service: String
+    @NSManaged open var shared: Bool
+    @NSManaged open var status: String
+    @NSManaged open var siteID: NSNumber
+    @NSManaged open var userID: NSNumber
 
-    public func isBroken() -> Bool {
+    open func isBroken() -> Bool {
         return status == "broken"
     }
 }

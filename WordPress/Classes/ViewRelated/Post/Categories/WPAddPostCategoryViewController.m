@@ -112,18 +112,20 @@ static const CGFloat HorizontalMargin = 15.0f;
                                         [self removeProgressIndicator];
                                         [self dismissWithCategory:category];
                                     } failure:^(NSError *error) {
-                                        [self removeProgressIndicator];
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            [self removeProgressIndicator];
 
-                                        if ([error code] == 403) {
-                                            [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"") withSupportButton:NO];
+                                            if ([error code] == 403) {
+                                                [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"") withSupportButton:NO];
 
-                                            // bad login/pass combination
-                                            SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
-                                            [self.navigationController pushViewController:editSiteViewController animated:YES];
+                                                // bad login/pass combination
+                                                SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
+                                                [self.navigationController pushViewController:editSiteViewController animated:YES];
 
-                                        } else {
-                                            [WPError showXMLRPCErrorAlert:error];
-                                        }
+                                            } else {
+                                                [WPError showXMLRPCErrorAlert:error];
+                                            }
+                                        });
                                     }];
 }
 

@@ -3,32 +3,31 @@ import Foundation
 
 /// Encapsulates Notification Interface Helpers
 ///
-extension Notification
-{
+extension Notification {
     /// Returns a Section Identifier that can be sorted. Note that this string is not human readable, and
     /// you should use the *descriptionForSectionIdentifier* method as well!.
     ///
     func sectionIdentifier() -> String {
         // Normalize Dates: Time must not be considered. Just the raw dates
-        let fromDate    = timestampAsDate.normalizedDate()
-        let toDate      = NSDate().normalizedDate()
+        let fromDate = timestampAsDate.normalizedDate()
+        let toDate = Date().normalizedDate()
 
         // Analyze the Delta-Components
-        let calendar    = NSCalendar.currentCalendar()
-        let flags       = [.Day, .WeekOfYear, .Month] as NSCalendarUnit
-        let components  = calendar.components(flags, fromDate: fromDate, toDate: toDate, options: .MatchFirst)
+        let calendar = Calendar.current
+        let components = [.day, .weekOfYear, .month] as Set<Calendar.Component>
+        let dateComponents = calendar.dateComponents(components, from: fromDate, to: toDate)
         let identifier: Sections
 
         // Months
-        if components.month >= 1 {
+        if let month = dateComponents.month, month >= 1 {
             identifier = .Months
         // Weeks
-        } else if components.weekOfYear >= 1 {
+        } else if let week = dateComponents.weekOfYear, week >= 1 {
             identifier = .Weeks
         // Days
-        } else if components.day > 1 {
+        } else if let day = dateComponents.day, day > 1 {
             identifier = .Days
-        } else if components.day == 1 {
+        } else if let day = dateComponents.day, day == 1 {
             identifier = .Yesterday
         } else {
             identifier = .Today
@@ -39,7 +38,7 @@ extension Notification
 
     /// Translates a Section Identifier into a Human-Readable String.
     ///
-    class func descriptionForSectionIdentifier(identifier: String) -> String {
+    class func descriptionForSectionIdentifier(_ identifier: String) -> String {
         guard let section = Sections(rawValue: identifier) else {
             return String()
         }
@@ -50,7 +49,7 @@ extension Notification
 
     // MARK: - Private Helpers
 
-    private enum Sections: String {
+    fileprivate enum Sections: String {
         case Months     = "0"
         case Weeks      = "2"
         case Days       = "4"

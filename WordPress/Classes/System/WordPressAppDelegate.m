@@ -74,6 +74,7 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
+@property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
 
 @end
 
@@ -128,6 +129,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self setupAppbotX];
     [self setupStoreKit];
     [self setupBuddyBuild];
+    [self setupPingHub];
 
     return YES;
 }
@@ -191,6 +193,11 @@ int ddLogLevel = DDLogLevelInfo;
 #endif
 }
 
+- (void)setupPingHub
+{
+    self.pinghubManager = [PingHubManager new];
+}
+
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
 {
     DDLogInfo(@"Application launched with URL: %@", url);
@@ -215,9 +222,7 @@ int ddLogLevel = DDLogLevelInfo;
                 NSNumber *postId = [params numberForKey:@"postId"];
 
                 WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
-                [tabBarController.readerMenuViewController.navigationController popToRootViewControllerAnimated:NO];
-                [tabBarController showReaderTab];
-                [tabBarController.readerMenuViewController openPost:postId onBlog:blogId];
+                [tabBarController showReaderTabForPost:postId onBlog:blogId];
 
                 returnValue = YES;
             }
@@ -415,7 +420,7 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [MediaService cleanUnusedMediaFileFromTmpDir];
+        [MediaService cleanUnusedMediaFilesFromMediaCacheFolder];
     });
     
     // Configure Extensions

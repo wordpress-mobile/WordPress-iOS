@@ -6,11 +6,11 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
 
     /// Defines the PeopleRemote possible errors.
     ///
-    enum Error: ErrorType {
-        case DecodeError
-        case InvalidInputError
-        case UserAlreadyHasRoleError
-        case UnknownError
+    enum ResponseError: Error {
+        case decodingFailure
+        case invalidInputError
+        case userAlreadyHasRoleError
+        case unknownError
     }
 
 
@@ -25,33 +25,31 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: An array of Users.
     ///
-    func getUsers(siteID: Int,
+    func getUsers(_ siteID: Int,
                   offset: Int = 0,
                   count: Int,
-                  success: ((users: [User], hasMore: Bool) -> Void),
-                  failure: (ErrorType -> Void))
-    {
+                  success: @escaping ((_ users: [User], _ hasMore: Bool) -> Void),
+                  failure: @escaping ((Error) -> Void)) {
         let endpoint = "sites/\(siteID)/users"
-        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
         let parameters: [String: AnyObject] = [
-            "number"    : count,
-            "offset"    : offset,
-            "order_by"  : "display_name",
-            "order"     : "ASC",
-            "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID",
+            "number": count as AnyObject,
+            "offset": offset as AnyObject,
+            "order_by": "display_name" as AnyObject,
+            "order": "ASC" as AnyObject,
+            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL, roles, is_super_admin, linked_user_ID" as AnyObject,
         ]
 
-        wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
+        wordPressComRestApi.GET(path!, parameters: parameters, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
-                users = response["users"] as? [[String: AnyObject]],
-                people = try? self.peopleFromResponse(users, siteID: siteID, type: User.self) else
-            {
-                failure(Error.DecodeError)
+                let users = response["users"] as? [[String: AnyObject]],
+                let people = try? self.peopleFromResponse(users, siteID: siteID, type: User.self) else {
+                failure(ResponseError.decodingFailure)
                 return
             }
 
             let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
-            success(users: people, hasMore: hasMore)
+            success(people, hasMore)
 
         }, failure: { (error, httpResponse) in
             failure(error)
@@ -69,32 +67,30 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: An array of Followers.
     ///
-    func getFollowers(siteID: Int,
+    func getFollowers(_ siteID: Int,
                       offset: Int = 0,
                       count: Int,
-                      success: ((followers: [Follower], hasMore: Bool) -> Void),
-                      failure: ErrorType -> ())
-    {
+                      success: @escaping ((_ followers: [Follower], _ hasMore: Bool) -> Void),
+                      failure: @escaping (Error) -> ()) {
         let endpoint = "sites/\(siteID)/follows"
-        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
         let pageNumber = (offset / count + 1)
         let parameters: [String: AnyObject] = [
-            "number"    : count,
-            "page"      : pageNumber,
-            "fields"    : "ID, nice_name, first_name, last_name, name, avatar_URL"
+            "number": count as AnyObject,
+            "page": pageNumber as AnyObject,
+            "fields": "ID, nice_name, first_name, last_name, name, avatar_URL" as AnyObject
         ]
 
-        wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
+        wordPressComRestApi.GET(path!, parameters: parameters, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
-                followers = response["users"] as? [[String: AnyObject]],
-                people = try? self.peopleFromResponse(followers, siteID: siteID, type: Follower.self) else
-            {
-                failure(Error.DecodeError)
+                let followers = response["users"] as? [[String: AnyObject]],
+                let people = try? self.peopleFromResponse(followers, siteID: siteID, type: Follower.self) else {
+                failure(ResponseError.decodingFailure)
                 return
             }
 
             let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
-            success(followers: people, hasMore: hasMore)
+            success(people, hasMore)
 
         }, failure: { (error, httpResponse) in
             failure(error)
@@ -112,31 +108,29 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: An array of Followers.
     ///
-    func getViewers(siteID: Int,
+    func getViewers(_ siteID: Int,
                     offset: Int = 0,
                     count: Int,
-                    success: ((followers: [Viewer], hasMore: Bool) -> Void),
-                    failure: ErrorType -> ())
-    {
+                    success: @escaping ((_ followers: [Viewer], _ hasMore: Bool) -> Void),
+                    failure: @escaping (Error) -> ()) {
         let endpoint = "sites/\(siteID)/viewers"
-        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
         let pageNumber = (offset / count + 1)
         let parameters: [String: AnyObject] = [
-            "number"    : count,
-            "page"      : pageNumber
+            "number": count as AnyObject,
+            "page": pageNumber as AnyObject
         ]
 
-        wordPressComRestApi.GET(path, parameters: parameters, success: { responseObject, httpResponse in
+        wordPressComRestApi.GET(path!, parameters: parameters, success: { responseObject, httpResponse in
             guard let response = responseObject as? [String: AnyObject],
-                viewers = response["viewers"] as? [[String: AnyObject]],
-                people = try? self.peopleFromResponse(viewers, siteID: siteID, type: Viewer.self) else
-            {
-                failure(Error.DecodeError)
+                let viewers = response["viewers"] as? [[String: AnyObject]],
+                let people = try? self.peopleFromResponse(viewers, siteID: siteID, type: Viewer.self) else {
+                failure(ResponseError.decodingFailure)
                 return
             }
 
             let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
-            success(followers: people, hasMore: hasMore)
+            success(people, hasMore)
 
         }, failure: { (error, httpResponse) in
             failure(error)
@@ -154,23 +148,21 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: A single User instance.
     ///
-    func updateUserRole(siteID: Int,
+    func updateUserRole(_ siteID: Int,
                         userID: Int,
                         newRole: Role,
-                        success: (Person -> ())? = nil,
-                        failure: (ErrorType -> ())? = nil)
-    {
+                        success: ((Person) -> ())? = nil,
+                        failure: ((Error) -> ())? = nil) {
         let endpoint = "sites/\(siteID)/users/\(userID)"
-        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
-        let parameters = ["roles" : [newRole.description]]
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let parameters = ["roles": [newRole.description]]
 
-        wordPressComRestApi.POST(path,
-                parameters: parameters,
+        wordPressComRestApi.POST(path!,
+                parameters: parameters as [String : AnyObject]?,
                 success: { (responseObject, httpResponse) in
                     guard let response = responseObject as? [String: AnyObject],
-                                person = try? self.personFromResponse(response, siteID: siteID, type: User.self) else
-                    {
-                        failure?(Error.DecodeError)
+                                let person = try? self.personFromResponse(response, siteID: siteID, type: User.self) else {
+                        failure?(ResponseError.decodingFailure)
                         return
                     }
 
@@ -192,21 +184,20 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    func deleteUser(siteID: Int,
+    func deleteUser(_ siteID: Int,
                     userID: Int,
                     reassignID: Int? = nil,
-                    success: (Void -> Void)? = nil,
-                    failure: (ErrorType -> Void)? = nil)
-    {
+                    success: ((Void) -> Void)? = nil,
+                    failure: ((Error) -> Void)? = nil) {
         let endpoint = "sites/\(siteID)/users/\(userID)/delete"
-        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
         var parameters = [String: AnyObject]()
 
         if let reassignID = reassignID {
-            parameters["reassign"] = reassignID
+            parameters["reassign"] = reassignID as AnyObject?
         }
 
-        wordPressComRestApi.POST(path, parameters: nil, success: { (responseObject, httpResponse) in
+        wordPressComRestApi.POST(path!, parameters: nil, success: { (responseObject, httpResponse) in
             success?()
         }, failure: { (error, httpResponse) in
             failure?(error)
@@ -223,18 +214,16 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: An array of Person.Role entities.
     ///
-    func getUserRoles(siteID: Int,
-                      success: ([Role] -> Void),
-                      failure: (ErrorType -> ())? = nil)
-    {
+    func getUserRoles(_ siteID: Int,
+                      success: @escaping (([Role]) -> Void),
+                      failure: ((Error) -> ())? = nil) {
         let endpoint = "sites/\(siteID)/roles"
-        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
-        wordPressComRestApi.GET(path, parameters: nil, success: { (responseObject, httpResponse) in
+        wordPressComRestApi.GET(path!, parameters: nil, success: { (responseObject, httpResponse) in
             guard let response = responseObject as? [String: AnyObject],
-                    roles = try? self.rolesFromResponse(response) else
-            {
-                failure?(Error.DecodeError)
+                    let roles = try? self.rolesFromResponse(response) else {
+                failure?(ResponseError.decodingFailure)
                 return
             }
 
@@ -254,23 +243,22 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure. The remote error will be passed on.
     ///
-    func validateInvitation(siteID: Int,
+    func validateInvitation(_ siteID: Int,
                             usernameOrEmail: String,
                             role: Role,
-                            success: (Void -> Void),
-                            failure: (ErrorType -> Void))
-    {
+                            success: @escaping ((Void) -> Void),
+                            failure: @escaping ((Error) -> Void)) {
         let endpoint = "sites/\(siteID)/invites/validate"
-        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
         let parameters = [
-            "invitees"  : usernameOrEmail,
-            "role"      : role.remoteValue
+            "invitees": usernameOrEmail,
+            "role": role.remoteValue
         ]
 
-        wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
+        wordPressComRestApi.POST(path!, parameters: parameters as [String : AnyObject]?, success: { (responseObject, httpResponse) in
             guard let responseDict = responseObject as? [String: AnyObject] else {
-                failure(Error.DecodeError)
+                failure(ResponseError.decodingFailure)
                 return
             }
 
@@ -297,25 +285,24 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure. The remote error will be passed on.
     ///
-    func sendInvitation(siteID: Int,
+    func sendInvitation(_ siteID: Int,
                         usernameOrEmail: String,
                         role: Role,
                         message: String,
-                        success: (Void -> Void),
-                        failure: (ErrorType -> Void))
-    {
+                        success: @escaping ((Void) -> Void),
+                        failure: @escaping ((Error) -> Void)) {
         let endpoint = "sites/\(siteID)/invites/new"
-        let path = pathForEndpoint(endpoint, withVersion: .Version_1_1)
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
         let parameters = [
-            "invitees"  : usernameOrEmail,
-            "role"      : role.remoteValue,
-            "message"   : message
+            "invitees": usernameOrEmail,
+            "role": role.remoteValue,
+            "message": message
         ]
 
-        wordPressComRestApi.POST(path, parameters: parameters, success: { (responseObject, httpResponse) in
+        wordPressComRestApi.POST(path!, parameters: parameters as [String : AnyObject]?, success: { (responseObject, httpResponse) in
             guard let responseDict = responseObject as? [String: AnyObject] else {
-                failure(Error.DecodeError)
+                failure(ResponseError.decodingFailure)
                 return
             }
 
@@ -345,10 +332,9 @@ private extension PeopleRemote {
     ///
     /// - Returns: An array of *Person* instances.
     ///
-    func peopleFromResponse<T : Person>(rawPeople: [[String: AnyObject]],
+    func peopleFromResponse<T: Person>(_ rawPeople: [[String: AnyObject]],
                                         siteID: Int,
-                                        type: T.Type) throws -> [T]
-    {
+                                        type: T.Type) throws -> [T] {
         let people = try rawPeople.flatMap { (user) -> T? in
             return try personFromResponse(user, siteID: siteID, type: type)
         }
@@ -365,37 +351,36 @@ private extension PeopleRemote {
     ///
     /// - Returns: A single *Person* instance.
     ///
-    func personFromResponse<T : Person>(user: [String: AnyObject],
+    func personFromResponse<T: Person>(_ user: [String: AnyObject],
                                         siteID: Int,
-                                        type: T.Type) throws -> T
-    {
+                                        type: T.Type) throws -> T {
         guard let ID = user["ID"] as? Int else {
-            throw Error.DecodeError
+            throw ResponseError.decodingFailure
         }
 
         guard let username = user["nice_name"] as? String else {
-            throw Error.DecodeError
+            throw ResponseError.decodingFailure
         }
 
         guard let displayName = user["name"] as? String else {
-            throw Error.DecodeError
+            throw ResponseError.decodingFailure
         }
 
         let firstName = user["first_name"] as? String
         let lastName = user["last_name"] as? String
         let avatarURL = (user["avatar_URL"] as? NSString)
-            .flatMap { NSURL(string: $0.stringByUrlEncoding())}
+            .flatMap { URL(string: $0.byUrlEncoding())}
             .flatMap { Gravatar($0)?.canonicalURL }
 
         let linkedUserID = user["linked_user_ID"] as? Int ?? ID
         let isSuperAdmin = user["is_super_admin"] as? Bool ?? false
         let roles = user["roles"] as? [String]
 
-        let role : Role
+        let role: Role
 
         role = roles?.map({ role -> Role in
             return Role(string: role)
-        }).sort().first ?? Role.Unsupported
+        }).sorted().first ?? Role.Unsupported
 
         return T(ID            : ID,
                  username      : username,
@@ -413,7 +398,7 @@ private extension PeopleRemote {
     ///
     /// - Parameters response: Raw backend dictionary
     ///
-    func peopleFoundFromResponse(response: [String: AnyObject]) -> Int {
+    func peopleFoundFromResponse(_ response: [String: AnyObject]) -> Int {
         return response["found"] as? Int ?? 0
     }
 
@@ -424,21 +409,21 @@ private extension PeopleRemote {
     ///
     /// - Returns: Collection of the remote roles.
     ///
-    func rolesFromResponse(roles: [String: AnyObject]) throws -> [Role] {
+    func rolesFromResponse(_ roles: [String: AnyObject]) throws -> [Role] {
         guard let rawRoles = roles["roles"] as? [[String: AnyObject]] else {
-            throw Error.DecodeError
+            throw ResponseError.decodingFailure
         }
 
         let parsed = try rawRoles.map { (rawRole) -> Role in
             guard let name = rawRole["name"] as? String else {
-                throw Error.DecodeError
+                throw ResponseError.decodingFailure
             }
 
             return Role(string: name)
         }
 
         let filtered = parsed.filter { $0 != .Unsupported }
-        return filtered.sort()
+        return filtered.sorted()
     }
 
     /// Parses a remote Invitation Error into a PeopleRemote.Error.
@@ -449,23 +434,22 @@ private extension PeopleRemote {
     ///
     /// - Returns: The remote error, if any.
     ///
-    func errorFromInviteResponse(response: [String: AnyObject], usernameOrEmail: String) -> ErrorType? {
+    func errorFromInviteResponse(_ response: [String: AnyObject], usernameOrEmail: String) -> Error? {
         guard let errors = response["errors"] as? [String: AnyObject],
             let theError = errors[usernameOrEmail] as? [String: String],
-            let code = theError["code"] else
-        {
+            let code = theError["code"] else {
             return nil
         }
 
         switch code {
         case "invalid_input":
-            return Error.InvalidInputError
+            return ResponseError.invalidInputError
         case "invalid_input_has_role":
-            return Error.UserAlreadyHasRoleError
+            return ResponseError.userAlreadyHasRoleError
         case "invalid_input_following":
-            return Error.UserAlreadyHasRoleError
+            return ResponseError.userAlreadyHasRoleError
         default:
-            return Error.UnknownError
+            return ResponseError.unknownError
         }
     }
 }
