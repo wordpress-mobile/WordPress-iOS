@@ -528,7 +528,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
-    if ([tabBarController.viewControllers indexOfObject:viewController] == WPTabNewPost) {
+    NSUInteger newIndex = [tabBarController.viewControllers indexOfObject:viewController];
+
+    if (newIndex == WPTabNewPost) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
@@ -539,63 +541,51 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             [self showPostTab];
         }
         return NO;
-    } else if ([tabBarController.viewControllers indexOfObject:viewController] == WPTabMySites) {
-        // If the user has one blog then we don't want to present them with the main "me"
-        // screen where they can see all their blogs. In the case of only one blog just show
-        // the main blog details screen
-
-        // Don't kick of this auto selecting behavior if the user taps the the active tab as it
-        // would break from standard iOS UX
-        if (tabBarController.selectedIndex != WPTabNewPost) {
-            // Bump the accessed stat when switching to the My Sites tab, but not if the tab is tapped when already selected.
-            [WPAppAnalytics track:WPAnalyticsStatMySitesTabAccessed];
-
-            UINavigationController *navController = (UINavigationController *)[self.blogListSplitViewController.viewControllers firstObject];
-            BlogListViewController *blogListViewController = (BlogListViewController *)[navController.viewControllers firstObject];
-
-            if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
-                if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
-                    [blogListViewController bypassBlogListViewController];
-                }
-            }
-        }
-    } else if ([tabBarController.viewControllers indexOfObject:viewController] == WPTabReader && tabBarController.selectedIndex != WPTabReader) {
-        // Bump the accessed stat when switching to the reader tab, but not if the tab is tapped when already selected.
-        [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
-    } else if ([tabBarController.viewControllers indexOfObject:viewController] == WPTabMe && tabBarController.selectedIndex != WPTabMe) {
-        // Bump the accessed stat when switching to the My Sites tab, but not if the tab is tapped when already selected.
-        [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
     }
 
-    // If the current view controller is selected already and it's at its root then scroll to the top
-    if (tabBarController.selectedViewController == viewController) {
+    // If we're selecting a new tab...
+    if (newIndex != tabBarController.selectedIndex) {
+        switch (newIndex) {
+            case WPTabMySites: {
+                [WPAppAnalytics track:WPAnalyticsStatMySitesTabAccessed];
+                [self bypassBlogListViewControllerIfNecessary];
+                break;
+            }
+            case WPTabReader: {
+                [WPAppAnalytics track:WPAnalyticsStatReaderAccessed];
+                break;
+            }
+            case WPTabMe: {
+                [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
+                break;
+            }
+            default: break;
+        }
+    } else {
+        // If the current view controller is selected already and it's at its root then scroll to the top
         if ([viewController isKindOfClass:[UINavigationController class]]) {
             UINavigationController *navController = (UINavigationController *)viewController;
-            [self scrollNavigationControllerContentToTop:navController];
-        } else if ([viewController isKindOfClass:[UISplitViewController class]]) {
-            UISplitViewController *splitViewController = (UISplitViewController *)viewController;
-            for (UIViewController *viewController in splitViewController.viewControllers) {
-                if ([viewController isKindOfClass:[UINavigationController class]]) {
-                    [self scrollNavigationControllerContentToTop:(UINavigationController *)viewController];
-                }
-            }
+            [navController scrollContentToTopAnimated:YES];
+        } else if ([viewController isKindOfClass:[WPSplitViewController class]]) {
+            WPSplitViewController *splitViewController = (WPSplitViewController *)viewController;
+            [splitViewController popToRootViewControllersAnimated:YES];
         }
-
     }
 
     return YES;
 }
 
-- (void)scrollNavigationControllerContentToTop:(UINavigationController *)navigationController
+- (void)bypassBlogListViewControllerIfNecessary
 {
-    if (navigationController.topViewController == navigationController.viewControllers.firstObject) {
-        UIViewController *topViewController = navigationController.topViewController;
-        if ([topViewController.view isKindOfClass:[UITableView class]]) {
-            UITableView *tableView = (UITableView *)topViewController.view;
-            CGPoint topOffset = CGPointMake(0.0f, -tableView.contentInset.top);
-            [tableView setContentOffset:topOffset animated:YES];
-        } else if ([[topViewController class] conformsToProtocol:@protocol(WPScrollableViewController)]) {
-            [((id<WPScrollableViewController>)topViewController) scrollViewToTop];
+    // If the user has one blog then we don't want to present them with the main "My Sites"
+    // screen where they can see all their blogs. In the case of only one blog just show
+    // the main blog details screen
+    UINavigationController *navController = (UINavigationController *)[self.blogListSplitViewController.viewControllers firstObject];
+    BlogListViewController *blogListViewController = (BlogListViewController *)[navController.viewControllers firstObject];
+
+    if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
+        if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
+            [blogListViewController bypassBlogListViewController];
         }
     }
 }
