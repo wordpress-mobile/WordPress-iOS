@@ -2,40 +2,64 @@ import Foundation
 import WordPressComAnalytics
 import WordPressComStatsiOS
 import WordPressShared
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-class PostListViewController : AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
 
-    static private let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
-    static private let postCardImageCellIdentifier = "PostCardImageCellIdentifier"
-    static private let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
-    static private let postCardTextCellNibName = "PostCardTextCell"
-    static private let postCardImageCellNibName = "PostCardImageCell"
-    static private let postCardRestoreCellNibName = "RestorePostTableViewCell"
-    static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
-    static private let statsStoryboardName = "SiteStats"
-    static private let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
 
-    static private let statsCacheInterval = NSTimeInterval(300) // 5 minutes
+class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
 
-    static private let postCardEstimatedRowHeight = CGFloat(300.0)
-    static private let postListHeightForFooterView = CGFloat(34.0)
+    static fileprivate let postCardTextCellIdentifier = "PostCardTextCellIdentifier"
+    static fileprivate let postCardImageCellIdentifier = "PostCardImageCellIdentifier"
+    static fileprivate let postCardRestoreCellIdentifier = "PostCardRestoreCellIdentifier"
+    static fileprivate let postCardTextCellNibName = "PostCardTextCell"
+    static fileprivate let postCardImageCellNibName = "PostCardImageCell"
+    static fileprivate let postCardRestoreCellNibName = "RestorePostTableViewCell"
+    static fileprivate let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
+    static fileprivate let statsStoryboardName = "SiteStats"
+    static fileprivate let currentPostListStatusFilterKey = "CurrentPostListStatusFilterKey"
 
-    @IBOutlet private weak var authorFilterSegmentedControl: UISegmentedControl!
+    static fileprivate let statsCacheInterval = TimeInterval(300) // 5 minutes
 
-    @IBOutlet var authorsFilterView : UIView!
+    static fileprivate let postCardEstimatedRowHeight = CGFloat(300.0)
+    static fileprivate let postListHeightForFooterView = CGFloat(34.0)
+
+    @IBOutlet fileprivate weak var authorFilterSegmentedControl: UISegmentedControl!
+
+    @IBOutlet var authorsFilterView: UIView!
     @IBOutlet var searchWrapperView: UIView!
     @IBOutlet var headerStackView: UIStackView!
 
     // MARK: - GUI
 
-    private let animatedBox = WPAnimatedBox()
+    fileprivate let animatedBox = WPAnimatedBox()
 
     // MARK: - Convenience constructors
 
-    class func controllerWithBlog(blog: Blog) -> PostListViewController {
+    class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
 
-        let storyBoard = UIStoryboard(name: "Posts", bundle: NSBundle.mainBundle())
-        let controller = storyBoard.instantiateViewControllerWithIdentifier("PostListViewController") as! PostListViewController
+        let storyBoard = UIStoryboard(name: "Posts", bundle: Bundle.main)
+        let controller = storyBoard.instantiateViewController(withIdentifier: "PostListViewController") as! PostListViewController
 
         controller.blog = blog
         controller.restorationClass = self
@@ -45,14 +69,14 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - UIViewControllerRestoration
 
-    class func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
 
         let context = ContextManager.sharedInstance().mainContext
 
-        guard let blogID = coder.decodeObjectForKey(postsViewControllerRestorationKey) as? String,
-            let objectURL = NSURL(string: blogID),
-            let objectID = context.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(objectURL),
-            let restoredBlog = (try? context.existingObjectWithID(objectID)) as? Blog else {
+        guard let blogID = coder.decodeObject(forKey: postsViewControllerRestorationKey) as? String,
+            let objectURL = URL(string: blogID),
+            let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
+            let restoredBlog = (try? context?.existingObject(with: objectID)) as? Blog else {
 
             return nil
         }
@@ -62,25 +86,25 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - UIStateRestoring
 
-    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+    override func encodeRestorableState(with coder: NSCoder) {
 
-        let objectString = blog?.objectID.URIRepresentation().absoluteString
+        let objectString = blog?.objectID.uriRepresentation().absoluteString
 
-        coder.encodeObject(objectString, forKey:self.dynamicType.postsViewControllerRestorationKey)
+        coder.encode(objectString, forKey: type(of: self).postsViewControllerRestorationKey)
 
-        super.encodeRestorableStateWithCoder(coder)
+        super.encodeRestorableState(with: coder)
     }
 
     // MARK: - UIViewController
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        precondition(segue.destinationViewController is UITableViewController)
+        precondition(segue.destination is UITableViewController)
 
         super.refreshNoResultsView = { [weak self] noResultsView in
             self?.handleRefreshNoResultsView(noResultsView)
         }
-        super.tableViewController = (segue.destinationViewController as! UITableViewController)
+        super.tableViewController = (segue.destination as! UITableViewController)
     }
 
     override func viewDidLoad() {
@@ -92,28 +116,28 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - Configuration
 
     override func heightForFooterView() -> CGFloat {
-        return self.dynamicType.postListHeightForFooterView
+        return type(of: self).postListHeightForFooterView
     }
 
     override func configureTableView() {
 
         tableView.accessibilityIdentifier = "PostsTable"
         tableView.isAccessibilityElement = true
-        tableView.separatorStyle = .None
-        tableView.estimatedRowHeight = self.dynamicType.postCardEstimatedRowHeight
+        tableView.separatorStyle = .none
+        tableView.estimatedRowHeight = type(of: self).postCardEstimatedRowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
 
-        let bundle = NSBundle.mainBundle()
+        let bundle = Bundle.main
 
         // Register the cells
-        let postCardTextCellNib = UINib(nibName: self.dynamicType.postCardTextCellNibName, bundle: bundle)
-        tableView.registerNib(postCardTextCellNib, forCellReuseIdentifier: self.dynamicType.postCardTextCellIdentifier)
+        let postCardTextCellNib = UINib(nibName: type(of: self).postCardTextCellNibName, bundle: bundle)
+        tableView.register(postCardTextCellNib, forCellReuseIdentifier: type(of: self).postCardTextCellIdentifier)
 
-        let postCardImageCellNib = UINib(nibName: self.dynamicType.postCardImageCellNibName, bundle: bundle)
-        tableView.registerNib(postCardImageCellNib, forCellReuseIdentifier: self.dynamicType.postCardImageCellIdentifier)
+        let postCardImageCellNib = UINib(nibName: type(of: self).postCardImageCellNibName, bundle: bundle)
+        tableView.register(postCardImageCellNib, forCellReuseIdentifier: type(of: self).postCardImageCellIdentifier)
 
-        let postCardRestoreCellNib = UINib(nibName: self.dynamicType.postCardRestoreCellNibName, bundle: bundle)
-        tableView.registerNib(postCardRestoreCellNib, forCellReuseIdentifier: self.dynamicType.postCardRestoreCellIdentifier)
+        let postCardRestoreCellNib = UINib(nibName: type(of: self).postCardRestoreCellNibName, bundle: bundle)
+        tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: type(of: self).postCardRestoreCellIdentifier)
     }
 
     override func configureSearchController() {
@@ -125,7 +149,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
     }
 
-    private func noResultsTitles() -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitles() -> [PostListFilter.Status: String] {
         if isSearching() {
             return noResultsTitlesWhenSearching()
         } else {
@@ -133,7 +157,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         }
     }
 
-    private func noResultsTitlesWhenSearching() -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitlesWhenSearching() -> [PostListFilter.Status: String] {
         let draftMessage = String(format: NSLocalizedString("No drafts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
         let scheduledMessage = String(format: NSLocalizedString("No scheduled posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
         let trashedMessage = String(format: NSLocalizedString("No trashed posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
@@ -142,7 +166,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
 
-    private func noResultsTitlesWhenFiltering() -> [PostListFilter.Status:String] {
+    fileprivate func noResultsTitlesWhenFiltering() -> [PostListFilter.Status: String] {
         let draftMessage = NSLocalizedString("You don't have any drafts.", comment: "Displayed when the user views drafts in the posts list and there are no posts")
         let scheduledMessage = NSLocalizedString("You don't have any scheduled posts.", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
         let trashedMessage = NSLocalizedString("You don't have any posts in your trash folder.", comment: "Displayed when the user views trashed in the posts list and there are no posts")
@@ -151,11 +175,11 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
 
-    private func noResultsTitles(draft: String, scheduled: String, trashed: String, published: String) -> [PostListFilter.Status:String] {
-        return [.Draft: draft,
-                .Scheduled: scheduled,
-                .Trashed: trashed,
-                .Published: published]
+    fileprivate func noResultsTitles(_ draft: String, scheduled: String, trashed: String, published: String) -> [PostListFilter.Status: String] {
+        return [.draft: draft,
+                .scheduled: scheduled,
+                .trashed: trashed,
+                .published: published]
     }
 
     override func configureAuthorFilter() {
@@ -164,8 +188,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         WPStyleGuide.applyPostAuthorFilterStyle(authorFilterSegmentedControl)
 
-        authorFilterSegmentedControl.setTitle(onlyMe, forSegmentAtIndex: 0)
-        authorFilterSegmentedControl.setTitle(everyone, forSegmentAtIndex: 1)
+        authorFilterSegmentedControl.setTitle(onlyMe, forSegmentAt: 0)
+        authorFilterSegmentedControl.setTitle(everyone, forSegmentAt: 1)
 
         authorsFilterView?.backgroundColor = WPStyleGuide.lightGrey()
 
@@ -178,7 +202,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             tableView.tableHeaderView = headerStackView
         }
 
-        if filterSettings.currentPostAuthorFilter() == .Mine {
+        if filterSettings.currentPostAuthorFilter() == .mine {
             authorFilterSegmentedControl.selectedSegmentIndex = 0
         } else {
             authorFilterSegmentedControl.selectedSegmentIndex = 1
@@ -187,13 +211,13 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // Mark - Layout Methods
 
-    override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         // Need to reload the table alongside a traitCollection change.
         // This is mainly because we target Reg W and Any H vs all other size classes.
         // If we transition between the two, the tableView may not update the cell heights accordingly.
         // Brent C. Aug 3/2016
-        coordinator.animateAlongsideTransition({ context in
-            if self.isViewLoaded() {
+        coordinator.animate(alongsideTransition: { context in
+            if self.isViewLoaded {
                 self.tableView.reloadData()
             }
             }, completion: nil)
@@ -202,19 +226,19 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - Sync Methods
 
     override func postTypeToSync() -> PostServiceType {
-        return PostServiceTypePost
+        return PostServiceTypePost as PostServiceType
     }
 
-    override func lastSyncDate() -> NSDate? {
+    override func lastSyncDate() -> Date? {
         return blog?.lastPostsSync
     }
 
     // MARK: - Actions
 
-    @IBAction func handleAuthorFilterChanged(sender: AnyObject) {
-        var authorFilter = PostListFilterSettings.AuthorFilter.Everyone
+    @IBAction func handleAuthorFilterChanged(_ sender: AnyObject) {
+        var authorFilter = PostListFilterSettings.AuthorFilter.everyone
         if authorFilterSegmentedControl.selectedSegmentIndex == 0 {
-            authorFilter = .Mine
+            authorFilter = .mine
         }
         filterSettings.setCurrentPostAuthorFilter(authorFilter)
         refreshAndReload()
@@ -229,8 +253,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     ///
     /// - Returns: the requested post.
     ///
-    private func postAtIndexPath(indexPath: NSIndexPath) -> Post {
-        guard let post = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Post else {
+    fileprivate func postAtIndexPath(_ indexPath: IndexPath) -> Post {
+        guard let post = tableViewHandler.resultsController.object(at: indexPath) as? Post else {
             // Retrieving anything other than a post object means we have an App with an invalid
             // state.  Ignoring this error would be counter productive as we have no idea how this
             // can affect the App.  This controlled interruption is intentional.
@@ -246,7 +270,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - TableViewHandler
 
     override func entityName() -> String {
-        return String(Post.self)
+        return String(describing: Post.self)
     }
 
     override func predicateForFetchRequest() -> NSPredicate {
@@ -282,7 +306,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             predicates.append(authorPredicate)
         }
 
-        if let searchText = searchText where searchText.characters.count > 0 {
+        if let searchText = searchText, searchText.characters.count > 0 {
             let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
             predicates.append(searchPredicate)
         }
@@ -293,8 +317,8 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - Table View Handling
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
 
         let post = postAtIndexPath(indexPath)
 
@@ -308,26 +332,26 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return
         }
 
-        previewEditPost(post)
+        editPost(apost: post)
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
         if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
             return windowlessCell
         }
 
         let post = postAtIndexPath(indexPath)
         let identifier = cellIdentifierForPost(post)
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
 
-        configureCell(cell, atIndexPath: indexPath)
+        configureCell(cell, at: indexPath)
 
         return cell
     }
 
-    override func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        cell.accessoryType = .None
-        cell.selectionStyle = .None
+    override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
+        cell.accessoryType = .none
+        cell.selectionStyle = .none
 
         let post = postAtIndexPath(indexPath)
 
@@ -339,18 +363,18 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         interactivePostView.setInteractionDelegate(self)
 
-        configurablePostView.configureWithPost(post)
+        configurablePostView.configure(with: post)
     }
 
-    private func cellIdentifierForPost(post: Post) -> String {
+    fileprivate func cellIdentifierForPost(_ post: Post) -> String {
         var identifier: String
 
-        if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .Trashed {
-            identifier = self.dynamicType.postCardRestoreCellIdentifier
+        if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
+            identifier = type(of: self).postCardRestoreCellIdentifier
         } else if post.pathForDisplayImage?.characters.count > 0 {
-            identifier = self.dynamicType.postCardImageCellIdentifier
+            identifier = type(of: self).postCardImageCellIdentifier
         } else {
-            identifier = self.dynamicType.postCardTextCellIdentifier
+            identifier = type(of: self).postCardTextCellIdentifier
         }
 
         return identifier
@@ -359,120 +383,44 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
     // MARK: - Post Actions
 
     override func createPost() {
-        let editorSettings = EditorSettings()
-        if editorSettings.visualEditorEnabled {
-            if editorSettings.nativeEditorEnabled {
-                createPostInNativeEditor()
-            } else {
-                createPostInNewEditor()
-            }
-        } else {
-            createPostInOldEditor()
-        }
-    }
-
-    private func createPostInNativeEditor() {
-        let context = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: context)
-        let post = postService.createDraftPostForBlog(blog)
-        let postViewController = AztecPostViewController(post: post)
-        let navController = UINavigationController(rootViewController: postViewController)
-        navController.modalPresentationStyle = .FullScreen
-        presentViewController(navController, animated: true, completion: nil)
-        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
-    }
-
-    private func createPostInNewEditor() {
-        let postViewController = WPPostViewController(draftForBlog: blog)
-
-        postViewController.onClose = { [weak self] (viewController, changesSaved) in
+        let editor = EditPostViewController(blog: blog)
+        editor.onClose = { [weak self] changesSaved in
             if changesSaved {
-                if let postStatus = viewController.post.status {
+                if let postStatus = editor.post?.status {
                     self?.updateFilterWithPostStatus(postStatus)
                 }
             }
-
-            viewController.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         }
-
-        let navController = UINavigationController(rootViewController: postViewController)
-        navController.restorationIdentifier = WPEditorNavigationRestorationID
-        navController.restorationClass = WPPostViewController.self
-        navController.toolbarHidden = false // Fixes incorrect toolbar animation.
-        navController.modalPresentationStyle = .FullScreen
-
-        presentViewController(navController, animated: true, completion: nil)
-
-        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
-    }
-
-    private func createPostInOldEditor() {
-        let editPostViewController = WPLegacyEditPostViewController(draftForLastUsedBlog: ())
-
-        let navController = UINavigationController(rootViewController: editPostViewController)
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
-        navController.restorationClass = WPLegacyEditPostViewController.self
-        navController.modalPresentationStyle = .FullScreen
-
-        presentViewController(navController, animated: true, completion: nil)
-
-        WPAppAnalytics.track(.EditorCreatedPost, withProperties: ["tap_source": "posts_view"], withBlog: blog)
-    }
-
-    private func previewEditPost(apost: AbstractPost) {
-        editPost(apost, withEditMode: kWPPostViewControllerModePreview)
+        editor.modalPresentationStyle = .fullScreen
+        present(editor, animated: false, completion: nil)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
     }
 
     private func editPost(apost: AbstractPost) {
-        editPost(apost, withEditMode: kWPPostViewControllerModeEdit)
-    }
-
-    private func editPost(apost: AbstractPost, withEditMode mode: WPPostViewControllerMode) {
-        WPAnalytics.track(.PostListEditAction, withProperties: propertiesForAnalytics())
-        let editorSettings = EditorSettings()
-        if editorSettings.visualEditorEnabled {
-            if editorSettings.nativeEditorEnabled {
-                let postViewController = AztecPostViewController(post: apost)
-                let navController = UINavigationController(rootViewController: postViewController)
-                navController.modalPresentationStyle = .FullScreen
-                presentViewController(navController, animated: true, completion: nil)
-                return
-            }
-            let postViewController = WPPostViewController(post: apost, mode: mode)
-
-            postViewController.onClose = {[weak self] viewController, changesSaved in
-
-                if changesSaved {
-                    if let postStatus = viewController.post.status {
-                        self?.updateFilterWithPostStatus(postStatus)
-                    }
-                }
-
-                viewController.navigationController?.popViewControllerAnimated(true)
-            }
-
-            postViewController.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(postViewController, animated: true)
-        } else {
-            // In legacy mode, view means edit
-            let editPostViewController = WPLegacyEditPostViewController(post: apost)
-            let navController = UINavigationController(rootViewController: editPostViewController)
-            navController.modalPresentationStyle = .FullScreen
-            navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
-            navController.restorationClass = WPLegacyEditPostViewController.self
-
-            presentViewController(navController, animated: true, completion: nil)
+        guard let post = apost as? Post else {
+            return
         }
+        let editor = EditPostViewController(post: post)
+        editor.onClose = { [weak self] changesSaved in
+            if changesSaved {
+                if let postStatus = editor.post?.status {
+                    self?.updateFilterWithPostStatus(postStatus)
+                }
+            }
+        }
+        editor.modalPresentationStyle = .fullScreen
+        present(editor, animated: false, completion: nil)
+        WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
     }
 
-    override func promptThatPostRestoredToFilter(filter: PostListFilter) {
+    override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
         var message = NSLocalizedString("Post Restored to Drafts", comment: "Prompts the user that a restored post was moved to the drafts list.")
 
         switch filter.filterType {
-        case .Published:
+        case .published:
             message = NSLocalizedString("Post Restored to Published", comment: "Prompts the user that a restored post was moved to the published list.")
             break
-        case .Scheduled:
+        case .scheduled:
             message = NSLocalizedString("Post Restored to Scheduled", comment: "Prompts the user that a restored post was moved to the scheduled list.")
             break
         default:
@@ -481,28 +429,28 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
 
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .Alert)
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alertController.addCancelActionWithTitle(alertCancel, handler: nil)
         alertController.presentFromRootViewController()
     }
 
-    private func viewStatsForPost(apost: AbstractPost) {
+    fileprivate func viewStatsForPost(_ apost: AbstractPost) {
         // Check the blog
         let blog = apost.blog
 
-        guard blog.supports(.Stats) else {
+        guard blog.supports(.stats) else {
             // Needs Jetpack.
             return
         }
 
-        WPAnalytics.track(.PostListStatsAction, withProperties: propertiesForAnalytics())
+        WPAnalytics.track(.postListStatsAction, withProperties: propertiesForAnalytics())
 
         // Push the Stats Post Details ViewController
         let identifier = NSStringFromClass(StatsPostDetailsTableViewController.self)
         let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let statsBundle = NSBundle(forClass: WPStatsViewController.self)
+        let statsBundle = Bundle(for: WPStatsViewController.self)
 
-        guard let path = statsBundle.pathForResource("WordPressCom-Stats-iOS", ofType: "bundle") else {
+        guard let path = statsBundle.path(forResource: "WordPressCom-Stats-iOS", ofType: "bundle") else {
             let message = "The stats bundle is missing"
 
             assertionFailure(message)
@@ -510,9 +458,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
             return
         }
 
-        let bundle = NSBundle(path: path)
-        let statsStoryboard = UIStoryboard(name: self.dynamicType.statsStoryboardName, bundle: bundle)
-        let viewControllerObject = statsStoryboard.instantiateViewControllerWithIdentifier(identifier)
+        let bundle = Bundle(path: path)
+        let statsStoryboard = UIStoryboard(name: type(of: self).statsStoryboardName, bundle: bundle)
+        let viewControllerObject = statsStoryboard.instantiateViewController(withIdentifier: identifier)
 
         assert(viewControllerObject is StatsPostDetailsTableViewController)
         guard let viewController = viewControllerObject as? StatsPostDetailsTableViewController else {
@@ -522,40 +470,40 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
         viewController.postID = apost.postID
         viewController.postTitle = apost.titleForDisplay()
-        viewController.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service.timeZoneForBlog(blog), oauth2Token: blog.authToken, andCacheExpirationInterval: self.dynamicType.statsCacheInterval)
+        viewController.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service?.timeZone(for: blog), oauth2Token: blog.authToken, andCacheExpirationInterval: type(of: self).statsCacheInterval)
 
         navigationController?.pushViewController(viewController, animated: true)
     }
 
     // MARK: - InteractivePostViewDelegate
 
-    func cell(cell: UITableViewCell, handleEditPost post: AbstractPost) {
-        editPost(post)
+    func cell(_ cell: UITableViewCell, handleEdit post: AbstractPost) {
+        editPost(apost: post)
     }
 
-    func cell(cell: UITableViewCell, handleViewPost post: AbstractPost) {
+    func cell(_ cell: UITableViewCell, handleViewPost post: AbstractPost) {
         viewPost(post)
     }
 
-    func cell(cell: UITableViewCell, handleStatsForPost post: AbstractPost) {
+    func cell(_ cell: UITableViewCell, handleStatsFor post: AbstractPost) {
         viewStatsForPost(post)
     }
 
-    func cell(cell: UITableViewCell, handlePublishPost post: AbstractPost) {
+    func cell(_ cell: UITableViewCell, handlePublishPost post: AbstractPost) {
         publishPost(post)
     }
 
-    func cell(cell: UITableViewCell, handleTrashPost post: AbstractPost) {
+    func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
         deletePost(post)
     }
 
-    func cell(cell: UITableViewCell, handleRestorePost post: AbstractPost) {
+    func cell(_ cell: UITableViewCell, handleRestore post: AbstractPost) {
         restorePost(post)
     }
 
     // MARK: - Refreshing noResultsView
 
-    private func handleRefreshNoResultsView(noResultsView: WPNoResultsView) {
+    fileprivate func handleRefreshNoResultsView(_ noResultsView: WPNoResultsView) {
         noResultsView.titleText = noResultsTitle()
         noResultsView.messageText = noResultsMessage()
         noResultsView.accessoryView = noResultsAccessoryView()
@@ -564,9 +512,9 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
 
     // MARK: - NoResultsView Customizer helpers
 
-    private func noResultsAccessoryView() -> UIView {
+    fileprivate func noResultsAccessoryView() -> UIView {
         if syncHelper.isSyncing {
-            animatedBox.animateAfterDelay(0.1)
+            animatedBox.animate(afterDelay: 0.1)
             return animatedBox
         }
 
@@ -581,7 +529,7 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
-        case .Trashed:
+        case .trashed:
             return ""
         default:
             return NSLocalizedString("Start a Post", comment: "Button title, encourages users to create their first post on their blog.")
@@ -608,11 +556,11 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
-        case .Draft:
+        case .draft:
             return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the posts list and there are no posts")
-        case .Scheduled:
+        case .scheduled:
             return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
-        case .Trashed:
+        case .trashed:
             return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed posts in the posts list and there are no posts")
         default:
             return NSLocalizedString("Would you like to publish your first post?", comment: "Displayed when the user views published posts in the posts list and there are no posts")

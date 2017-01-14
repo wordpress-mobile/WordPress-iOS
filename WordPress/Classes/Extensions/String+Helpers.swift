@@ -3,15 +3,15 @@ import WordPressShared
 
 extension String {
     func stringByDecodingXMLCharacters() -> String {
-        return NSString.decodeXMLCharactersIn(self)
+        return NSString.decodeXMLCharacters(in: self)
     }
 
     func stringByEncodingXMLCharacters() -> String {
-        return NSString.encodeXMLCharactersIn(self)
+        return NSString.encodeXMLCharacters(in: self)
     }
 
     func trim() -> String {
-        return stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        return trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
 
     /// Returns the NSRange instance matching the full string contents.
@@ -31,8 +31,8 @@ extension String {
     /// - Parameter suffix: The suffix to remove. If this is a regular expression it should not include an ending `$`.
     ///
     func trimSuffix(regexp suffix: String) -> String {
-        if let regex = try? NSRegularExpression(pattern: "\(suffix)$", options: .CaseInsensitive) {
-            return regex.stringByReplacingMatchesInString(self, options: .ReportCompletion, range: NSRange(location: 0, length: self.characters.count), withTemplate: "")
+        if let regex = try? NSRegularExpression(pattern: "\(suffix)$", options: .caseInsensitive) {
+            return regex.stringByReplacingMatches(in: self, options: .reportCompletion, range: NSRange(location: 0, length: self.characters.count), withTemplate: "")
         }
         return self
     }
@@ -41,7 +41,7 @@ extension String {
     /// This is a non-mutating version of `String.remove(at:)`.
     func removing(at index: Index) -> String {
         var copy = self
-        copy.removeAtIndex(index)
+        copy.remove(at: index)
         return copy
     }
 }

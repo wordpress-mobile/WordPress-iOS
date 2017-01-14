@@ -2,19 +2,18 @@ import Foundation
 
 /// ThemeWebViewController adds support for theme page navigation
 ///
-public class ThemeWebViewController: WPWebViewController
-{
+open class ThemeWebViewController: WPWebViewController {
     // MARK: - Properties: must be set by creator
 
     /// The Theme whose pages will be viewed
     ///
-    public var theme: Theme? {
+    open var theme: Theme? {
         didSet {
             if let blog = theme?.blog {
                 authToken = blog.authToken
                 username = blog.usernameForSite
                 password = blog.password
-                wpLoginURL = NSURL(string: blog.loginUrl())
+                wpLoginURL = URL(string: blog.loginUrl())
             }
         }
     }
@@ -23,8 +22,7 @@ public class ThemeWebViewController: WPWebViewController
 
     /// All Customize links must have "hide_close" set
     ///
-    private struct Customize
-    {
+    fileprivate struct Customize {
         static let path = "/wp-admin/customize.php"
         static let hideClose = (name: "hide_close", value: "true")
     }
@@ -42,29 +40,29 @@ public class ThemeWebViewController: WPWebViewController
 
         defer {
             self.theme = theme
-            self.url = NSURL(string: url)
+            self.url = URL(string: url)
         }
     }
 
     // MARK: - UIWebViewDelegate
 
-    override public func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    override open func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
 
-        if let url = request.URL, components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) {
+        if let url = request.url, var components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
 
             if components.path == Customize.path {
-                let hideCloseItem = NSURLQueryItem(name: Customize.hideClose.name, value: Customize.hideClose.value)
+                let hideCloseItem = URLQueryItem(name: Customize.hideClose.name, value: Customize.hideClose.value)
                 let queryItems = components.queryItems ?? []
                 if !queryItems.contains(hideCloseItem) {
                     components.queryItems = queryItems + [hideCloseItem]
-                    self.url = components.URL
+                    self.url = components.url
 
                     return false
                 }
             }
         }
 
-        return super.webView(webView, shouldStartLoadWithRequest: request, navigationType: navigationType)
+        return super.webView(webView, shouldStartLoadWith: request, navigationType: navigationType)
     }
 
 }

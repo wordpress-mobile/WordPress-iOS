@@ -91,7 +91,7 @@
     label.font = [WPFontManager systemRegularFontOfSize:17.0];
     label.textColor = [WPStyleGuide darkGrey];
     label.adjustsFontSizeToFitWidth = YES;
-    label.minimumScaleFactor = 0.50;
+    label.minimumScaleFactor = 0.70;
     label.allowsDefaultTighteningForTruncation = YES;
     _titleLabel = label;
 

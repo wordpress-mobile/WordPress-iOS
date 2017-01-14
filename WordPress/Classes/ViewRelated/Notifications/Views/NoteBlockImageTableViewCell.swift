@@ -2,10 +2,9 @@ import Foundation
 import WordPressShared.WPStyleGuide
 
 
-class NoteBlockImageTableViewCell: NoteBlockTableViewCell
-{
+class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
     // MARK: - Public Properties
-    private var imageURL: NSURL?
+    fileprivate var imageURL: URL?
     override var isBadge: Bool {
         didSet {
             backgroundColor = isBadge ? Styles.badgeBackgroundColor : Styles.blockBackgroundColor
@@ -18,7 +17,7 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell
     ///
     /// - Parameter url: Target image URL.
     ///
-    func downloadImage(url: NSURL?) {
+    func downloadImage(_ url: URL?) {
         guard imageURL != url else {
             return
         }
@@ -34,11 +33,11 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell
     // MARK: - View Methods
     override func awakeFromNib() {
         super.awakeFromNib()
-        selectionStyle = .None
+        selectionStyle = .none
     }
 
     // MARK: - Helpers
-    private typealias Styles = WPStyleGuide.Notifications
+    fileprivate typealias Styles = WPStyleGuide.Notifications
 
     // MARK: - IBOutlets
     @IBOutlet weak var blockImageView: UIImageView!

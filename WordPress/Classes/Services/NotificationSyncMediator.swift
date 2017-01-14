@@ -21,33 +21,32 @@ let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDi
 
 // MARK: - NotificationSyncMediator
 //
-class NotificationSyncMediator
-{
+class NotificationSyncMediator {
     /// Returns the Main Managed Context
     ///
-    private let contextManager: ContextManager
+    fileprivate let contextManager: ContextManager
 
     /// Sync Service Remote
     ///
-    private let remote: NotificationSyncServiceRemote
+    fileprivate let remote: NotificationSyncServiceRemote
 
     /// Maximum number of Notes to Sync
     ///
-    private let maximumNotes = 100
+    fileprivate let maximumNotes = 100
 
     /// Main CoreData Context
     ///
-    private var mainContext: NSManagedObjectContext {
+    fileprivate var mainContext: NSManagedObjectContext {
         return contextManager.mainContext
     }
 
     /// Thread Safety Helper!
     ///
-    private static let lock = NSLock()
+    fileprivate static let lock = NSLock()
 
     /// Shared PrivateContext among all of the Sync Service Instances
     ///
-    private static var privateContext: NSManagedObjectContext!
+    fileprivate static var privateContext: NSManagedObjectContext!
 
 
 
@@ -55,13 +54,13 @@ class NotificationSyncMediator
     ///
     convenience init?() {
         let manager = ContextManager.sharedInstance()
-        let service = AccountService(managedObjectContext: manager.mainContext)
+        let service = AccountService(managedObjectContext: manager?.mainContext)
 
-        guard let dotcomAPI = service.defaultWordPressComAccount()?.wordPressComRestApi else {
+        guard let dotcomAPI = service?.defaultWordPressComAccount()?.wordPressComRestApi else {
             return nil
         }
 
-        self.init(manager: manager, dotcomAPI: dotcomAPI)
+        self.init(manager: manager!, dotcomAPI: dotcomAPI)
     }
 
     /// Initializer: Useful for Unit Testing
@@ -89,8 +88,8 @@ class NotificationSyncMediator
     /// - Only those Notifications that were remotely changed (Updated / Inserted) will be retrieved
     /// - Local collection will be updated. Old notes will be purged!
     ///
-    func sync(completion: ((ErrorType?, Bool) -> Void)? = nil) {
-        assert(NSThread.isMainThread())
+    func sync(_ completion: ((Error?, Bool) -> Void)? = nil) {
+        assert(Thread.isMainThread)
 
         remote.loadHashes(withPageSize: maximumNotes) { error, remoteHashes in
             guard let remoteHashes = remoteHashes else {
@@ -131,8 +130,8 @@ class NotificationSyncMediator
     ///     - noteId: Notification ID of the note to be downloaded.
     ///     - completion: Closure to be executed on completion.
     ///
-    func syncNote(with noteId: String, completion: ((ErrorType?, Notification?) -> Void)) {
-        assert(NSThread.isMainThread())
+    func syncNote(with noteId: String, completion: @escaping ((Error?, Notification?) -> Void)) {
+        assert(Thread.isMainThread)
 
         remote.loadNotes(noteIds: [noteId]) { error, remoteNotes in
             guard let remoteNotes = remoteNotes else {
@@ -159,8 +158,8 @@ class NotificationSyncMediator
     ///     - notification: The notification that was just read.
     ///     - completion: Callback to be executed on completion.
     ///
-    func markAsRead(notification: Notification, completion: (ErrorType?-> Void)? = nil) {
-        assert(NSThread.isMainThread())
+    func markAsRead(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
+        assert(Thread.isMainThread)
 
         let original = notification.read
 
@@ -185,8 +184,8 @@ class NotificationSyncMediator
     ///     - timestamp: Timestamp of the last seen notification.
     ///     - completion: Callback to be executed on completion.
     ///
-    func updateLastSeen(timestamp: String, completion: (ErrorType? -> Void)? = nil) {
-        assert(NSThread.isMainThread())
+    func updateLastSeen(_ timestamp: String, completion: ((Error?) -> Void)? = nil) {
+        assert(Thread.isMainThread)
 
         remote.updateLastSeen(timestamp) { error in
             if let error = error {
@@ -196,13 +195,29 @@ class NotificationSyncMediator
             completion?(error)
         }
     }
+
+    /// Deletes the note with the given ID from Core Data.
+    ///
+    func deleteNote(noteID: String) {
+        let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
+        let helper = CoreDataHelper<Notification>(context: derivedContext)
+
+        derivedContext.perform {
+            let predicate = NSPredicate(format: "(notificationId == %@)", noteID)
+
+            for orphan in helper.allObjects(matchingPredicate: predicate) {
+                helper.deleteObject(orphan)
+            }
+
+            self.contextManager.saveDerivedContext(derivedContext)
+        }
+    }
 }
 
 
 // MARK: - Private Helpers
 //
-private extension NotificationSyncMediator
-{
+private extension NotificationSyncMediator {
     /// Given a collection of RemoteNotification Hashes, this method will determine the NotificationID's
     /// that are either missing in our database, or have been remotely updated.
     ///
@@ -210,11 +225,11 @@ private extension NotificationSyncMediator
     ///     - remoteHashes: Collection of Notification Hashes
     ///     - completion: Callback to be executed on completion
     ///
-    func determineUpdatedNotes(with remoteHashes: [RemoteNotification], completion: ([String] -> Void)) {
-        let derivedContext = self.dynamicType.sharedDerivedContext(with: contextManager)
+    func determineUpdatedNotes(with remoteHashes: [RemoteNotification], completion: @escaping (([String]) -> Void)) {
+        let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
-        derivedContext.performBlock {
+        derivedContext.perform {
             let remoteIds = remoteHashes.map { $0.notificationId }
             let predicate = NSPredicate(format: "(notificationId IN %@)", remoteIds)
             var localHashes = [String: String]()
@@ -232,7 +247,7 @@ private extension NotificationSyncMediator
 
             let outdatedIds = filtered.map { $0.notificationId }
 
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completion(outdatedIds)
             }
         }
@@ -246,11 +261,11 @@ private extension NotificationSyncMediator
     ///     - remoteNotes: Collection of Remote Notes
     ///     - completion: Callback to be executed on completion
     ///
-    func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (Void -> Void)? = nil) {
-        let derivedContext = self.dynamicType.sharedDerivedContext(with: contextManager)
+    func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: ((Void) -> Void)? = nil) {
+        let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
-        derivedContext.performBlock {
+        derivedContext.perform {
             for remoteNote in remoteNotes {
                 let predicate = NSPredicate(format: "(notificationId == %@)", remoteNote.notificationId)
                 let localNote = helper.firstObject(matchingPredicate: predicate) ?? helper.insertNewObject()
@@ -259,7 +274,7 @@ private extension NotificationSyncMediator
             }
 
             self.contextManager.saveDerivedContext(derivedContext) {
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completion?()
                 }
             }
@@ -272,11 +287,11 @@ private extension NotificationSyncMediator
     ///
     /// - Parameter remoteHashes: Collection of remoteNotifications.
     ///
-    func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: (Void -> Void)) {
-        let derivedContext = self.dynamicType.sharedDerivedContext(with: contextManager)
+    func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: @escaping ((Void) -> Void)) {
+        let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
         let helper = CoreDataHelper<Notification>(context: derivedContext)
 
-        derivedContext.performBlock {
+        derivedContext.perform {
             let remoteIds = remoteHashes.map { $0.notificationId }
             let predicate = NSPredicate(format: "NOT (notificationId IN %@)", remoteIds)
 
@@ -285,7 +300,7 @@ private extension NotificationSyncMediator
             }
 
             self.contextManager.saveDerivedContext(derivedContext) {
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completion()
                 }
             }
@@ -302,7 +317,7 @@ private extension NotificationSyncMediator
     ///     - status: New *read* value
     ///     - noteObjectID: CoreData ObjectID
     ///
-    func updateReadStatus(status: Bool, forNoteWithObjectID noteObjectID: NSManagedObjectID) {
+    func updateReadStatus(_ status: Bool, forNoteWithObjectID noteObjectID: NSManagedObjectID) {
         let helper = CoreDataHelper<Notification>(context: mainContext)
         let note = helper.loadObject(withObjectID: noteObjectID)
         note?.read = status
@@ -314,8 +329,8 @@ private extension NotificationSyncMediator
     /// may react upon new content.
     ///
     func notifyNotificationsWereUpdated() {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.postNotificationName(NotificationSyncMediatorDidUpdateNotifications, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.post(name: Foundation.Notification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
     }
 }
 
@@ -323,8 +338,7 @@ private extension NotificationSyncMediator
 
 // MARK: - Thread Safety Helpers
 //
-extension NotificationSyncMediator
-{
+extension NotificationSyncMediator {
     /// Returns the current Shared Derived Context, if any. Otherwise, proceeds to create a new
     /// derived context, given a specified ContextManager.
     ///

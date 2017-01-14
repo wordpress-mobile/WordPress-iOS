@@ -1,40 +1,39 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-public class ReaderCrossPostCell: UITableViewCell
-{
-    @IBOutlet private weak var blavatarImageView: UIImageView!
-    @IBOutlet private weak var avatarImageView: UIImageView!
-    @IBOutlet private weak var label: UILabel!
+open class ReaderCrossPostCell: UITableViewCell {
+    @IBOutlet fileprivate weak var blavatarImageView: UIImageView!
+    @IBOutlet fileprivate weak var avatarImageView: UIImageView!
+    @IBOutlet fileprivate weak var label: UILabel!
 
-    public weak var contentProvider: ReaderPostContentProvider?
+    open weak var contentProvider: ReaderPostContentProvider?
 
     let blavatarPlaceholder = "post-blavatar-placeholder"
     let xPostTitlePrefix = "X-post: "
 
     // MARK: - Accessors
 
-    private lazy var readerCrossPostTitleAttributes: [String: AnyObject] = {
+    fileprivate lazy var readerCrossPostTitleAttributes: [String: AnyObject] = {
         return WPStyleGuide.readerCrossPostTitleAttributes()
     }()
 
-    private lazy var readerCrossPostSubtitleAttributes: [String: AnyObject] = {
+    fileprivate lazy var readerCrossPostSubtitleAttributes: [String: AnyObject] = {
         return WPStyleGuide.readerCrossPostSubtitleAttributes()
     }()
 
-    private lazy var readerCrossPostBoldSubtitleAttributes: [String: AnyObject] = {
+    fileprivate lazy var readerCrossPostBoldSubtitleAttributes: [String: AnyObject] = {
         return WPStyleGuide.readerCrossPostBoldSubtitleAttributes()
     }()
 
-    public var enableLoggedInFeatures: Bool = true
+    open var enableLoggedInFeatures: Bool = true
 
-    public override func setSelected(selected: Bool, animated: Bool) {
+    open override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         setHighlighted(selected, animated: animated)
     }
 
-    public override func setHighlighted(highlighted: Bool, animated: Bool) {
-        let previouslyHighlighted = self.highlighted
+    open override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        let previouslyHighlighted = self.isHighlighted
         super.setHighlighted(highlighted, animated: animated)
 
         if previouslyHighlighted == highlighted {
@@ -46,7 +45,7 @@ public class ReaderCrossPostCell: UITableViewCell
 
     // MARK: - Lifecycle Methods
 
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
     }
@@ -54,12 +53,12 @@ public class ReaderCrossPostCell: UITableViewCell
 
     // MARK: - Appearance
 
-    private func applyStyles() {
+    fileprivate func applyStyles() {
         contentView.backgroundColor = WPStyleGuide.greyLighten30()
         label?.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
-    private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
+    fileprivate func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
         func updateBorder() {
             label.alpha = highlighted ? 0.50 : WPAlphaFull
         }
@@ -67,17 +66,17 @@ public class ReaderCrossPostCell: UITableViewCell
             updateBorder()
             return
         }
-        UIView.animateWithDuration(0.25,
+        UIView.animate(withDuration: 0.25,
             delay: 0,
-            options: .CurveEaseInOut,
-            animations:updateBorder,
+            options: UIViewAnimationOptions(),
+            animations: updateBorder,
             completion: nil)
     }
 
 
     // MARK: - Configuration
 
-    public func configureCell(contentProvider:ReaderPostContentProvider) {
+    open func configureCell(_ contentProvider: ReaderPostContentProvider) {
         self.contentProvider = contentProvider
 
         configureLabel()
@@ -85,22 +84,22 @@ public class ReaderCrossPostCell: UITableViewCell
         configureAvatarImageView()
     }
 
-    private func configureBlavatarImage() {
+    fileprivate func configureBlavatarImage() {
         // Always reset
         blavatarImageView.image = nil
 
         let placeholder = UIImage(named: blavatarPlaceholder)
 
-        let size = blavatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        let url = contentProvider?.siteIconForDisplayOfSize(Int(size))
+        let size = blavatarImageView.frame.size.width * UIScreen.main.scale
+        let url = contentProvider?.siteIconForDisplay(ofSize: Int(size))
         if url != nil {
-            blavatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
+            blavatarImageView.setImageWith(url!, placeholderImage: placeholder)
         } else {
             blavatarImageView.image = placeholder
         }
     }
 
-    private func configureAvatarImageView() {
+    fileprivate func configureAvatarImageView() {
         // Always reset
         avatarImageView.image = nil
 
@@ -108,18 +107,18 @@ public class ReaderCrossPostCell: UITableViewCell
 
         let url = contentProvider?.avatarURLForDisplay()
         if url != nil {
-            avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
+            avatarImageView.setImageWith(url!, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
         }
     }
 
-    private func configureLabel() {
+    fileprivate func configureLabel() {
 
         // Compose the title.
         var title = contentProvider!.titleForDisplay()
-        if title.containsString(xPostTitlePrefix) {
-            title = title?.componentsSeparatedByString(xPostTitlePrefix).last
+        if (title?.contains(xPostTitlePrefix))! {
+            title = title?.components(separatedBy: xPostTitlePrefix).last
         }
         let attrText = NSMutableAttributedString(string: "\(title)\n", attributes: readerCrossPostTitleAttributes)
 
@@ -129,23 +128,23 @@ public class ReaderCrossPostCell: UITableViewCell
         let siteTemplate = "%@ cross-posted from %@ to %@"
         let template = contentProvider!.isCommentCrossPost() ? commentTemplate : siteTemplate
 
-        let authorName:NSString = contentProvider!.authorForDisplay()
+        let authorName: NSString = contentProvider!.authorForDisplay() as NSString
         let siteName = subDomainNameFromPath(contentProvider!.siteURLForDisplay())
         let originName = subDomainNameFromPath(contentProvider!.crossPostOriginSiteURLForDisplay())
 
-        let subtitle = NSString(format: template, authorName, originName, siteName) as String
+        let subtitle = NSString(format: template as NSString, authorName, originName, siteName) as String
         let attrSubtitle = NSMutableAttributedString(string: subtitle, attributes: readerCrossPostSubtitleAttributes)
         attrSubtitle.setAttributes(readerCrossPostBoldSubtitleAttributes, range: NSRange(location: 0, length: authorName.length))
 
         // Add the subtitle to the attributed text
-        attrText.appendAttributedString(attrSubtitle)
+        attrText.append(attrSubtitle)
 
         label.attributedText = attrText
     }
 
-    private func subDomainNameFromPath(path:String) -> String {
-        if let url = NSURL(string: path), host = url.host {
-            let arr = host.componentsSeparatedByString(".")
+    fileprivate func subDomainNameFromPath(_ path: String) -> String {
+        if let url = URL(string: path), let host = url.host {
+            let arr = host.components(separatedBy: ".")
             return "+\(arr.first!)"
         }
         return ""

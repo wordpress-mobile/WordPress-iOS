@@ -5,44 +5,45 @@ import Gridicons
 import WordPressShared
 
 class AztecPostViewController: UIViewController {
-    func cancelEditingAction(sender: AnyObject) {
+    func cancelEditingAction(_ sender: AnyObject) {
         cancelEditing()
     }
+    var onClose: ((_ changesSaved: Bool) -> ())?
 
     static let margin = CGFloat(20)
 
-    private(set) lazy var richTextView: Aztec.TextView = {
-        let defaultFont = WPFontManager.merriweatherRegularFontOfSize(16)
+    fileprivate(set) lazy var richTextView: Aztec.TextView = {
+        let defaultFont = WPFontManager.merriweatherRegularFont(ofSize: 16)!
         // TODO: Add a proper defaultMissingImage
         let defaultMissingImage = UIImage()
         let tv = Aztec.TextView(defaultFont: defaultFont, defaultMissingImage: defaultMissingImage)
 
-        tv.font = WPFontManager.merriweatherRegularFontOfSize(16)
+        tv.font = WPFontManager.merriweatherRegularFont(ofSize: 16)
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         tv.delegate = self
         let toolbar = self.createToolbar()
         toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
         toolbar.formatter = self
         tv.inputAccessoryView = toolbar
-        tv.textColor = UIColor.darkTextColor()
+        tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
 
         return tv
     }()
 
-    private(set) lazy var htmlTextView: UITextView = {
+    fileprivate(set) lazy var htmlTextView: UITextView = {
         let tv = UITextView()
 
         tv.accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
-        tv.font = WPFontManager.merriweatherRegularFontOfSize(16)
-        tv.textColor = UIColor.darkTextColor()
+        tv.font = WPFontManager.merriweatherRegularFont(ofSize: 16)
+        tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.hidden = true
+        tv.isHidden = true
 
         return tv
     }()
 
-    private(set) lazy var titleTextField: UITextField = {
+    fileprivate(set) lazy var titleTextField: UITextField = {
         let placeholderText = NSLocalizedString("Enter title here", comment: "Label for the title of the post field. Should be the same as WP core.")
         let tf = UITextField()
 
@@ -50,19 +51,19 @@ class AztecPostViewController: UIViewController {
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
                                                       attributes: [NSForegroundColorAttributeName: WPStyleGuide.greyLighten30()])
         tf.delegate = self
-        tf.font = WPFontManager.merriweatherBoldFontOfSize(24.0)
+        tf.font = WPFontManager.merriweatherBoldFont(ofSize: 24.0)
         let toolbar = self.createToolbar()
         toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
         toolbar.enabled = false
         tf.inputAccessoryView = toolbar
-        tf.returnKeyType = .Next
-        tf.textColor = UIColor.darkTextColor()
+        tf.returnKeyType = .next
+        tf.textColor = UIColor.darkText
         tf.translatesAutoresizingMaskIntoConstraints = false
 
         return tf
     }()
 
-    private(set) lazy var separatorView: UIView = {
+    fileprivate(set) lazy var separatorView: UIView = {
         let v = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 1))
 
         v.backgroundColor = WPStyleGuide.greyLighten30()
@@ -73,19 +74,19 @@ class AztecPostViewController: UIViewController {
 
 
 
-    private(set) var mode = EditionMode.RichText {
+    fileprivate(set) var mode = EditionMode.richText {
         didSet {
             switch mode {
-            case .HTML:
+            case .html:
                 switchToHTML()
-            case .RichText:
+            case .richText:
                 switchToRichText()
             }
         }
     }
 
-    private(set) var blog: Blog
-    private(set) var post: AbstractPost
+    fileprivate(set) var blog: Blog
+    fileprivate(set) var post: AbstractPost
 
     // MARK: - Lifecycle Methods
 
@@ -100,7 +101,7 @@ class AztecPostViewController: UIViewController {
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
 
@@ -109,8 +110,8 @@ class AztecPostViewController: UIViewController {
 
         WPFontManager.loadMerriweatherFontFamily()
 
-        edgesForExtendedLayout = .None
-        navigationController?.navigationBar.translucent = false
+        edgesForExtendedLayout = UIRectEdge()
+        navigationController?.navigationBar.isTranslucent = false
 
         view.addSubview(titleTextField)
         view.addSubview(separatorView)
@@ -130,31 +131,31 @@ class AztecPostViewController: UIViewController {
         title = NSLocalizedString("Aztec Native Editor", comment: "")
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Cancel", comment: "Action button to close editor and cancel changes or insertion of post"),
-            style: .Done,
+            style: .done,
             target: self,
             action: #selector(AztecPostViewController.cancelEditingAction(_:)))
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
     }
 
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.dynamicType.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.dynamicType.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
 
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         // TODO: Update toolbars
         //    [self.editorToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
         //    [self.titleToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
@@ -168,39 +169,39 @@ class AztecPostViewController: UIViewController {
 
         super.updateViewConstraints()
 
-        NSLayoutConstraint.activateConstraints([
-            titleTextField.leftAnchor.constraintEqualToAnchor(view.leftAnchor, constant: self.dynamicType.margin),
-            titleTextField.rightAnchor.constraintEqualToAnchor(view.rightAnchor, constant: -self.dynamicType.margin),
-            titleTextField.topAnchor.constraintEqualToAnchor(view.topAnchor, constant: self.dynamicType.margin),
-            titleTextField.heightAnchor.constraintEqualToConstant(titleTextField.font!.lineHeight)
+        NSLayoutConstraint.activate([
+            titleTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: type(of: self).margin),
+            titleTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -type(of: self).margin),
+            titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: type(of: self).margin),
+            titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
             ])
 
-        NSLayoutConstraint.activateConstraints([
-            separatorView.leftAnchor.constraintEqualToAnchor(view.leftAnchor, constant: self.dynamicType.margin),
-            separatorView.rightAnchor.constraintEqualToAnchor(view.rightAnchor, constant: -self.dynamicType.margin),
-            separatorView.topAnchor.constraintEqualToAnchor(titleTextField.bottomAnchor, constant: self.dynamicType.margin),
-            separatorView.heightAnchor.constraintEqualToConstant(separatorView.frame.height)
+        NSLayoutConstraint.activate([
+            separatorView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: type(of: self).margin),
+            separatorView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -type(of: self).margin),
+            separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: type(of: self).margin),
+            separatorView.heightAnchor.constraint(equalToConstant: separatorView.frame.height)
             ])
 
-        NSLayoutConstraint.activateConstraints([
-            richTextView.leftAnchor.constraintEqualToAnchor(view.leftAnchor, constant: self.dynamicType.margin),
-            richTextView.rightAnchor.constraintEqualToAnchor(view.rightAnchor, constant: -self.dynamicType.margin),
-            richTextView.topAnchor.constraintEqualToAnchor(separatorView.bottomAnchor, constant: self.dynamicType.margin),
-            richTextView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor, constant: -self.dynamicType.margin)
+        NSLayoutConstraint.activate([
+            richTextView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: type(of: self).margin),
+            richTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -type(of: self).margin),
+            richTextView.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: type(of: self).margin),
+            richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -type(of: self).margin)
             ])
 
-        NSLayoutConstraint.activateConstraints([
-            htmlTextView.leftAnchor.constraintEqualToAnchor(richTextView.leftAnchor),
-            htmlTextView.rightAnchor.constraintEqualToAnchor(richTextView.rightAnchor),
-            htmlTextView.topAnchor.constraintEqualToAnchor(richTextView.topAnchor),
-            htmlTextView.bottomAnchor.constraintEqualToAnchor(richTextView.bottomAnchor),
+        NSLayoutConstraint.activate([
+            htmlTextView.leftAnchor.constraint(equalTo: richTextView.leftAnchor),
+            htmlTextView.rightAnchor.constraint(equalTo: richTextView.rightAnchor),
+            htmlTextView.topAnchor.constraint(equalTo: richTextView.topAnchor),
+            htmlTextView.bottomAnchor.constraint(equalTo: richTextView.bottomAnchor),
             ])
     }
 
     func configureNavigationBar() {
         let title = NSLocalizedString("HTML", comment: "HTML!")
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: title,
-                                                            style: .Plain,
+                                                            style: .plain,
                                                             target: self,
                                                             action: #selector(switchEditionMode))
     }
@@ -215,10 +216,10 @@ class AztecPostViewController: UIViewController {
 
     // MARK: - Keyboard Handling
 
-    func keyboardWillShow(notification: NSNotification) {
+    func keyboardWillShow(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
-            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             else {
                 return
         }
@@ -227,10 +228,10 @@ class AztecPostViewController: UIViewController {
     }
 
 
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
-            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             else {
                 return
         }
@@ -238,7 +239,7 @@ class AztecPostViewController: UIViewController {
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
-    private func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
+    fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         htmlTextView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
         htmlTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
 
@@ -261,7 +262,7 @@ class AztecPostViewController: UIViewController {
     // MARK: - Sample Content
 
     func getSampleHTML() -> String {
-        let htmlFilePath = NSBundle.mainBundle().pathForResource("content", ofType: "html")!
+        let htmlFilePath = Bundle.main.path(forResource: "content", ofType: "html")!
         let fileContents: String
 
         do {
@@ -277,11 +278,11 @@ class AztecPostViewController: UIViewController {
 
 // MARK: - UITextViewDelegate methods
 extension AztecPostViewController : UITextViewDelegate {
-    func textViewDidChangeSelection(textView: UITextView) {
+    func textViewDidChangeSelection(_ textView: UITextView) {
         updateFormatBar()
     }
 
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         guard let richTextView = textView as? Aztec.TextView else {
             return
         }
@@ -289,85 +290,81 @@ extension AztecPostViewController : UITextViewDelegate {
         // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
         post.content = richTextView.getHTML()
 
-        ContextManager.sharedInstance().saveContext(post.managedObjectContext)
+        ContextManager.sharedInstance().save(post.managedObjectContext)
     }
 }
 
 
 // MARK: - UITextFieldDelegate methods
 extension AztecPostViewController : UITextFieldDelegate {
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         post.postTitle = textField.text
 
-        ContextManager.sharedInstance().saveContext(post.managedObjectContext)
+        ContextManager.sharedInstance().save(post.managedObjectContext)
     }
 }
 
 // MARK: - HTML Mode Switch methods
 extension AztecPostViewController {
     enum EditionMode {
-        case RichText
-        case HTML
+        case richText
+        case html
 
         mutating func toggle() {
             switch self {
-            case .HTML:
-                self = .RichText
-            case .RichText:
-                self = .HTML
+            case .html:
+                self = .richText
+            case .richText:
+                self = .html
             }
         }
     }
 
-    private func switchToHTML() {
+    fileprivate func switchToHTML() {
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("Native", comment: "Rich Edition!")
 
         htmlTextView.text = richTextView.getHTML()
 
         view.endEditing(true)
-        htmlTextView.hidden = false
-        richTextView.hidden = true
+        htmlTextView.isHidden = false
+        richTextView.isHidden = true
     }
 
-    private func switchToRichText() {
+    fileprivate func switchToRichText() {
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("HTML", comment: "HTML!")
 
         richTextView.setHTML(htmlTextView.text)
 
         view.endEditing(true)
-        richTextView.hidden = false
-        htmlTextView.hidden = true
+        richTextView.isHidden = false
+        htmlTextView.isHidden = true
     }
 }
 
 // MARK: -
-extension AztecPostViewController : Aztec.FormatBarDelegate
-{
+extension AztecPostViewController : Aztec.FormatBarDelegate {
 
-    func handleActionForIdentifier(identifier: String) {
-        guard let identifier = Aztec.FormattingIdentifier(rawValue: identifier) else {
-            return
-        }
+    func handleActionForIdentifier(_ identifier: FormattingIdentifier) {
 
         switch identifier {
-        case .Bold:
-            toggleBold()
-        case .Italic:
-            toggleItalic()
-        case .Underline:
-            toggleUnderline()
-        case .Strikethrough:
-            toggleStrikethrough()
-        case .Blockquote:
-            toggleBlockquote()
-        case .Unorderedlist:
-            toggleUnorderedList()
-        case .Orderedlist:
-            toggleOrderedList()
-        case .Link:
-            toggleLink()
-        case .Media:
-            showImagePicker()
+            case .bold:
+                toggleBold()
+            case .italic:
+                toggleItalic()
+            case .underline:
+                toggleUnderline()
+            case .strikethrough:
+                toggleStrikethrough()
+            case .blockquote:
+                toggleBlockquote()
+            case .unorderedlist:
+                toggleUnorderedList()
+            case .orderedlist:
+                toggleOrderedList()
+            case .link:
+                toggleLink()
+            case .media:
+                showImagePicker()
         }
         updateFormatBar()
     }
@@ -409,7 +406,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
 
     func toggleLink() {
         var linkTitle = ""
-        var linkURL: NSURL? = nil
+        var linkURL: URL? = nil
         var linkRange = richTextView.selectedRange
         // Let's check if the current range already has a link assigned to it.
         if let expandedRange = richTextView.linkFullRange(forRange: richTextView.selectedRange) {
@@ -417,49 +414,49 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
             linkURL = richTextView.linkURL(forRange: expandedRange)
         }
 
-        linkTitle = richTextView.attributedText.attributedSubstringFromRange(linkRange).string
+        linkTitle = richTextView.attributedText.attributedSubstring(from: linkRange).string
         showLinkDialog(forURL: linkURL, title: linkTitle, range: linkRange)
     }
 
 
-    func showLinkDialog(forURL url: NSURL?, title: String?, range: NSRange) {
+    func showLinkDialog(forURL url: URL?, title: String?, range: NSRange) {
 
         let isInsertingNewLink = (url == nil)
         // TODO: grab link from pasteboard if available
 
-        let insertButtonTitle = isInsertingNewLink ? NSLocalizedString("Insert Link", comment:"Label action for inserting a link on the editor") : NSLocalizedString("Update Link", comment:"Label action for updating a link on the editor")
-        let removeButtonTitle = NSLocalizedString("Remove Link", comment:"Label action for removing a link from the editor")
-        let cancelButtonTitle = NSLocalizedString("Cancel", comment:"Cancel button")
+        let insertButtonTitle = isInsertingNewLink ? NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor") : NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
+        let removeButtonTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
+        let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel button")
 
-        let alertController = UIAlertController(title:insertButtonTitle,
-                                                message:nil,
-                                                preferredStyle:UIAlertControllerStyle.Alert)
+        let alertController = UIAlertController(title: insertButtonTitle,
+                                                message: nil,
+                                                preferredStyle: UIAlertControllerStyle.alert)
 
-        alertController.addTextFieldWithConfigurationHandler({ [weak self]textField in
-            textField.clearButtonMode = UITextFieldViewMode.Always
-            textField.placeholder = NSLocalizedString("URL", comment:"URL text field placeholder")
+        alertController.addTextField(configurationHandler: { [weak self]textField in
+            textField.clearButtonMode = UITextFieldViewMode.always
+            textField.placeholder = NSLocalizedString("URL", comment: "URL text field placeholder")
 
             textField.text = url?.absoluteString
 
             textField.addTarget(self,
-                action:#selector(AztecPostViewController.alertTextFieldDidChange),
-                forControlEvents:UIControlEvents.EditingChanged)
+                action: #selector(AztecPostViewController.alertTextFieldDidChange),
+                for: UIControlEvents.editingChanged)
             })
 
-        alertController.addTextFieldWithConfigurationHandler({ textField in
-            textField.clearButtonMode = UITextFieldViewMode.Always
-            textField.placeholder = NSLocalizedString("Link Name", comment:"Link name field placeholder")
-            textField.secureTextEntry = false
-            textField.autocapitalizationType = UITextAutocapitalizationType.Sentences
-            textField.autocorrectionType = UITextAutocorrectionType.Default
-            textField.spellCheckingType = UITextSpellCheckingType.Default
+        alertController.addTextField(configurationHandler: { textField in
+            textField.clearButtonMode = UITextFieldViewMode.always
+            textField.placeholder = NSLocalizedString("Link Name", comment: "Link name field placeholder")
+            textField.isSecureTextEntry = false
+            textField.autocapitalizationType = UITextAutocapitalizationType.sentences
+            textField.autocorrectionType = UITextAutocorrectionType.default
+            textField.spellCheckingType = UITextSpellCheckingType.default
 
             textField.text = title
         })
 
-        let insertAction = UIAlertAction(title:insertButtonTitle,
-                                         style:UIAlertActionStyle.Default,
-                                         handler:{ [weak self]action in
+        let insertAction = UIAlertAction(title: insertButtonTitle,
+                                         style: UIAlertActionStyle.default,
+                                         handler: { [weak self] action in
 
                                             self?.richTextView.becomeFirstResponder()
                                             let linkURLString = alertController.textFields?.first?.text
@@ -471,24 +468,24 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
 
                                             guard
                                                 let urlString = linkURLString,
-                                                let url = NSURL(string:urlString),
+                                                let url = URL(string: urlString),
                                                 let title = linkTitle
                                                 else {
                                                     return
                                             }
-                                            self?.richTextView.setLink(url, title:title, inRange: range)
+                                            self?.richTextView.setLink(url, title: title, inRange: range)
             })
 
-        let removeAction = UIAlertAction(title:removeButtonTitle,
-                                         style:UIAlertActionStyle.Destructive,
-                                         handler:{ [weak self] action in
+        let removeAction = UIAlertAction(title: removeButtonTitle,
+                                         style: UIAlertActionStyle.destructive,
+                                         handler: { [weak self] action in
                                             self?.richTextView.becomeFirstResponder()
                                             self?.richTextView.removeLink(inRange: range)
             })
 
         let cancelAction = UIAlertAction(title: cancelButtonTitle,
-                                         style:UIAlertActionStyle.Cancel,
-                                         handler:{ [weak self]action in
+                                         style: UIAlertActionStyle.cancel,
+                                         handler: { [weak self]action in
                                             self?.richTextView.becomeFirstResponder()
             })
 
@@ -500,13 +497,13 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
 
         // Disabled until url is entered into field
         if let text = alertController.textFields?.first?.text {
-            insertAction.enabled = !text.isEmpty
+            insertAction.isEnabled = !text.isEmpty
         }
 
-        self.presentViewController(alertController, animated:true, completion:nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 
-    func alertTextFieldDidChange(textField: UITextField) {
+    func alertTextFieldDidChange(_ textField: UITextField) {
         guard
             let alertController = presentedViewController as? UIAlertController,
             let urlFieldText = alertController.textFields?.first?.text,
@@ -515,46 +512,46 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
                 return
         }
 
-        insertAction.enabled = !urlFieldText.isEmpty
+        insertAction.isEnabled = !urlFieldText.isEmpty
     }
 
 
     func showImagePicker() {
         let picker = UIImagePickerController()
-        picker.sourceType = .PhotoLibrary
-        picker.mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(.PhotoLibrary) ?? []
+        picker.sourceType = .photoLibrary
+        picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) ?? []
         picker.delegate = self
         picker.allowsEditing = false
-        picker.navigationBar.translucent = false
-        picker.modalPresentationStyle = .CurrentContext
+        picker.navigationBar.isTranslucent = false
+        picker.modalPresentationStyle = .currentContext
 
-        presentViewController(picker, animated: true, completion: nil)
+        present(picker, animated: true, completion: nil)
     }
 
 
     // MARK: -
 
     func createToolbar() -> Aztec.FormatBar {
-        let flex = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+        let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let items = [
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.AddImage), identifier: Aztec.FormattingIdentifier.Media.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage), identifier: Aztec.FormattingIdentifier.media),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Bold), identifier: Aztec.FormattingIdentifier.Bold.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold), identifier: Aztec.FormattingIdentifier.bold),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Italic), identifier: Aztec.FormattingIdentifier.Italic.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic), identifier: Aztec.FormattingIdentifier.italic),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Underline), identifier: Aztec.FormattingIdentifier.Underline.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline), identifier: Aztec.FormattingIdentifier.underline),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Strikethrough), identifier: Aztec.FormattingIdentifier.Strikethrough.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough), identifier: Aztec.FormattingIdentifier.strikethrough),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Quote), identifier: Aztec.FormattingIdentifier.Blockquote.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote), identifier: Aztec.FormattingIdentifier.blockquote),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.ListUnordered), identifier: Aztec.FormattingIdentifier.Unorderedlist.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: Aztec.FormattingIdentifier.unorderedlist),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.ListOrdered), identifier: Aztec.FormattingIdentifier.Orderedlist.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: Aztec.FormattingIdentifier.orderedlist),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.Link), identifier: Aztec.FormattingIdentifier.Link.rawValue),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link), identifier: Aztec.FormattingIdentifier.link),
             flex,
             ]
 
@@ -562,15 +559,15 @@ extension AztecPostViewController : Aztec.FormatBarDelegate
 
         toolbar.barTintColor = UIColor(fromHex: 0xF9FBFC, alpha: 1)
         toolbar.tintColor = WPStyleGuide.greyLighten10()
-        toolbar.highlightedTintColor = UIColor.blueColor()
-        toolbar.selectedTintColor = UIColor.darkGrayColor()
-        toolbar.disabledTintColor = UIColor.lightGrayColor()
+        toolbar.highlightedTintColor = UIColor.blue
+        toolbar.selectedTintColor = UIColor.darkGray
+        toolbar.disabledTintColor = UIColor.lightGray
         toolbar.items = items
         return toolbar
     }
 
-    func templateImage(named named: String) -> UIImage {
-        return UIImage(named: named)!.imageWithRenderingMode(.AlwaysTemplate)
+    func templateImage(named: String) -> UIImage {
+        return UIImage(named: named)!.withRenderingMode(.alwaysTemplate)
     }
 }
 
@@ -580,10 +577,9 @@ extension AztecPostViewController: UINavigationControllerDelegate {
 }
 
 
-extension AztecPostViewController: UIImagePickerControllerDelegate
-{
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        dismissViewControllerAnimated(true, completion: nil)
+extension AztecPostViewController: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        dismiss(animated: true, completion: nil)
 
         guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             return
@@ -597,9 +593,8 @@ extension AztecPostViewController: UIImagePickerControllerDelegate
 
 // MARK: - Cancel/Dismiss/Persistence Logic
 extension AztecPostViewController {
-
     // TODO: Rip this out and put it into the PostService
-    private func createRevisionOfPost() {
+    fileprivate func createRevisionOfPost() {
         guard let context = post.managedObjectContext else {
             return
         }
@@ -610,13 +605,13 @@ extension AztecPostViewController {
         // Slower devices have the effect of the content appearing after
         // a short delay
 
-        context.performBlockAndWait {
+        context.performAndWait {
             self.post = self.post.createRevision()
-            ContextManager.sharedInstance().saveContext(context)
+            ContextManager.sharedInstance().save(context)
         }
     }
 
-    private func cancelEditing() {
+    fileprivate func cancelEditing() {
         stopEditing()
 
         if post.canSave() && post.hasUnsavedChanges() {
@@ -626,19 +621,19 @@ extension AztecPostViewController {
         }
     }
 
-    private func stopEditing() {
-        if titleTextField.isFirstResponder() {
+    fileprivate func stopEditing() {
+        if titleTextField.isFirstResponder {
             titleTextField.resignFirstResponder()
         }
 
         view.endEditing(true)
     }
 
-    private func showPostHasChangesAlert() {
+    fileprivate func showPostHasChangesAlert() {
         let alertController = UIAlertController(
             title: NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post."),
             message: nil,
-            preferredStyle: .ActionSheet)
+            preferredStyle: .actionSheet)
 
         // Button: Keep editing
         alertController.addCancelActionWithTitle(NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post."))
@@ -664,11 +659,11 @@ extension AztecPostViewController {
         }
 
         alertController.popoverPresentationController?.barButtonItem = self.navigationItem.leftBarButtonItem
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
 
-    private func discardChanges() {
-        guard let context = post.managedObjectContext, originalPost = post.original else {
+    fileprivate func discardChanges() {
+        guard let context = post.managedObjectContext, let originalPost = post.original else {
             return
         }
 
@@ -676,24 +671,27 @@ extension AztecPostViewController {
         post.deleteRevision()
         post.remove()
 
-        ContextManager.sharedInstance().saveContext(context)
+        ContextManager.sharedInstance().save(context)
     }
 
-    private func discardChangesAndUpdateGUI() {
+    fileprivate func discardChangesAndUpdateGUI() {
         discardChanges()
 
-        if presentingViewController != nil {
-            presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        onClose?(false)
+
+        if isModal() {
+            presentingViewController?.dismiss(animated: true, completion: nil)
         } else {
-            navigationController?.popViewControllerAnimated(true)
+            _ = navigationController?.popViewController(animated: true)
         }
     }
 }
 
 
 private extension AztecPostViewController {
-    func insertImage(image: UIImage) {
-        let index = richTextView.positionForCursor()
-        richTextView.insertImage(image, index: index)
+    func insertImage(_ image: UIImage) {
+        //let index = richTextView.positionForCursor()
+        //richTextView.insertImage(image, index: index)
+        assertionFailure("Error: Aztec.TextView.swift no longer supports insertImage(image: UIImage, index: Int")
     }
 }

@@ -1,13 +1,11 @@
 import Foundation
 
-public protocol ReaderStreamHeaderDelegate: NSObjectProtocol
-{
-    func handleFollowActionForHeader(header:ReaderStreamHeader)
+public protocol ReaderStreamHeaderDelegate: NSObjectProtocol {
+    func handleFollowActionForHeader(_ header: ReaderStreamHeader)
 }
 
-public protocol ReaderStreamHeader: NSObjectProtocol
-{
+public protocol ReaderStreamHeader: NSObjectProtocol {
     var delegate: ReaderStreamHeaderDelegate? {get set}
-    func enableLoggedInFeatures(enable: Bool)
-    func configureHeader(topic: ReaderAbstractTopic)
+    func enableLoggedInFeatures(_ enable: Bool)
+    func configureHeader(_ topic: ReaderAbstractTopic)
 }

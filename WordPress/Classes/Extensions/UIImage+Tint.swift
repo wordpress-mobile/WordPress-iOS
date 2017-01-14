@@ -1,9 +1,8 @@
 import Foundation
 
-extension UIImage
-{
-    func imageWithTintColor(color: UIColor) -> UIImage? {
-        guard let cgImg = CGImage else {
+extension UIImage {
+    func imageWithTintColor(_ color: UIColor) -> UIImage? {
+        guard let cgImg = cgImage else {
             return nil
         }
 
@@ -13,15 +12,15 @@ extension UIImage
             return nil
         }
 
-        let bounds = CGRect(origin: CGPointZero, size: size)
+        let bounds = CGRect(origin: CGPoint.zero, size: size)
 
-        let flipTransform = CGAffineTransformMake(1, 0, 0, -1, 0, size.height)
-        CGContextConcatCTM(context, flipTransform)
+        let flipTransform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: size.height)
+        context.concatenate(flipTransform)
 
-        CGContextClipToMask(context, bounds, cgImg)
+        context.clip(to: bounds, mask: cgImg)
 
         color.setFill()
-        CGContextFillRect(context, bounds)
+        context.fill(bounds)
 
         let tintedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()

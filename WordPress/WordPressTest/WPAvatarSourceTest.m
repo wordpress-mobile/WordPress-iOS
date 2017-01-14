@@ -4,6 +4,12 @@
 
 #import "WPAvatarSource.h"
 
+@interface WPAvatarSource (TestAdditions)
+
+- (void)purgeCaches;
+
+@end
+
 @interface WPAvatarSourceTest : XCTestCase
 
 @end
@@ -28,7 +34,7 @@
 
 - (void)tearDown
 {
-    [_source performSelector:@selector(purgeCaches)];
+    [(WPAvatarSource <WPAvatarSourceTesting> *)_source purgeCaches];
     _source = nil;
 
     [OHHTTPStubs removeAllStubs];

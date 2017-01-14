@@ -11,9 +11,9 @@ class FeatureItemCell: WPTableViewCell {
     override var separatorInset: UIEdgeInsets {
         didSet {
             for constraint in separatorEdgeConstraints {
-                if constraint.firstAttribute == .Leading {
+                if constraint.firstAttribute == .leading {
                     constraint.constant = separatorInset.left
-                } else if constraint.firstAttribute == .Trailing {
+                } else if constraint.firstAttribute == .trailing {
                     constraint.constant = separatorInset.right
                 }
             }
@@ -25,7 +25,7 @@ class FeatureItemCell: WPTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        layoutMargins = UIEdgeInsetsZero
+        layoutMargins = UIEdgeInsets.zero
 
         separator.backgroundColor = WPStyleGuide.greyLighten30()
     }
@@ -33,7 +33,7 @@ class FeatureItemCell: WPTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        separator.hidden = false
+        separator.isHidden = false
     }
 
     override func layoutSubviews() {
@@ -41,6 +41,6 @@ class FeatureItemCell: WPTableViewCell {
 
         // This is required to fix an issue where only the first line of text would
         // is displayed on the iPhone 6(s) Plus due to a fractional Y position.
-        featureDescriptionLabel.frame = CGRectIntegral(featureDescriptionLabel.frame)
+        featureDescriptionLabel.frame = featureDescriptionLabel.frame.integral
     }
 }

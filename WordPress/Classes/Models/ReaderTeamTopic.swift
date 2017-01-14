@@ -1,14 +1,13 @@
 import Foundation
 
-@objc public class ReaderTeamTopic : ReaderAbstractTopic
-{
-    @NSManaged public var slug: String
+@objc open class ReaderTeamTopic: ReaderAbstractTopic {
+    @NSManaged open var slug: String
 
-    override public class var TopicType: String {
+    override open class var TopicType: String {
         return "team"
     }
 
-    public var icon: UIImage? {
+    open var icon: UIImage? {
         guard bundledTeamIcons.contains(slug) else {
             return nil
         }
@@ -16,7 +15,7 @@ import Foundation
         return UIImage(named: slug)
     }
 
-    private let bundledTeamIcons: [String] = [
+    fileprivate let bundledTeamIcons: [String] = [
         "a8c"
     ]
 }

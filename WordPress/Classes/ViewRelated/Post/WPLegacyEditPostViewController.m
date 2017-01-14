@@ -28,6 +28,7 @@
 #import "PostSettingsViewController.h"
 #import "PostPreviewViewController.h"
 #import "AbstractPost.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
@@ -403,7 +404,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
 
         [self discardChanges];
-        [self dismissEditView];
+        [self dismissEditView:NO];
         return;
     }
     UIAlertController *alertController;
@@ -417,7 +418,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                   style:UIAlertActionStyleDestructive
                                 handler:^(UIAlertAction * action) {
                                     [self discardChanges];
-                                    [self dismissEditView];
+                                    [self dismissEditView:NO];
                                     [WPAppAnalytics track:WPAnalyticsStatEditorDiscardedChanges withBlog:self.post.blog];
                                 }];
     
@@ -434,7 +435,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                         }
                                         DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
                                         [self savePost:YES];
-                                        [self dismissEditView];
                                     }];
     }
     
@@ -463,7 +463,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (blogChanged) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        [blogService syncBlog:blog completionHandler:nil];
+        [blogService syncBlogAndAllMetadata:blog completionHandler:nil];
     }
 }
 
@@ -634,10 +634,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 }
 
-- (void)dismissEditView
+- (void)dismissEditView:(BOOL)changesSaved
 {
     if (self.onClose) {
-        self.onClose();
+        self.onClose(self, changesSaved);
         self.onClose = nil;
     } else{
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
@@ -647,8 +647,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)saveAction
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
-
     if ([self isMediaUploading] ) {
         [self showMediaInUploadingAlert];
         return;
@@ -660,7 +658,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 
     [self savePost:YES];
-    [self dismissEditView];
 }
 
 - (void)savePost:(BOOL)upload
@@ -668,7 +665,25 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     DDLogMethod();
     [self logSavePostStats];
 
-    [self.view endEditing:YES];
+    void (^stopEditingAndDismiss)() = ^{
+            [self stopEditing];
+            [self.view endEditing:YES];
+            [self didSaveNewPost];
+            [self dismissEditView:YES];
+    };
+
+    __block NSString *postStatus = self.post.status;
+    __block BOOL postIsScheduled = self.post.isScheduled;
+
+    NSString *hudText;
+    if (postIsScheduled) {
+        hudText = NSLocalizedString(@"Scheduling...", @"Text displayed in HUD while a post is being scheduled to be published.");
+    } else if ([postStatus isEqualToString:@"publish"]){
+        hudText = NSLocalizedString(@"Publishing...", @"Text displayed in HUD while a post is being published.");
+    } else {
+        hudText = NSLocalizedString(@"Saving...", @"Text displayed in HUD while a post is being saved as a draft.");
+    }
+    [SVProgressHUD showWithStatus:hudText maskType:SVProgressHUDMaskTypeClear];
 
     if (upload) {
         NSString *postTitle = self.post.original.postTitle;
@@ -677,14 +692,27 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [postService uploadPost:(Post *)self.post
                         success:^(AbstractPost *post){
                             self.post = post;
-                            
                             DDLogInfo(@"post uploaded: %@", postTitle);
+
+                            [SVProgressHUD dismiss];
+
+                            stopEditingAndDismiss();
                         } failure:^(NSError *error) {
                             DDLogError(@"post failed: %@", [error localizedDescription]);
+
+                            NSString *hudText;
+                            if (postIsScheduled) {
+                                hudText = NSLocalizedString(@"Error occurred\nduring scheduling", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
+                            } else if ([postStatus isEqualToString:@"publish"]){
+                                hudText = NSLocalizedString(@"Error occurred\nduring publishing", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
+                            } else {
+                                hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
+                            }
+
+                            [SVProgressHUD showErrorWithStatus:hudText];
+                            stopEditingAndDismiss();
                         }];
     }
-
-    [self didSaveNewPost];
 }
 
 - (void)didSaveNewPost
@@ -798,7 +826,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     [alertController addDefaultActionWithTitle:NSLocalizedString(@"Post anyway", @"") handler:^(UIAlertAction *action) {
         [self savePost:YES];
-        [self dismissEditView];
     }];
     [alertController addCancelActionWithTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".") handler:nil];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -1001,7 +1028,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSMutableString *content = [[NSMutableString alloc] initWithString:self.post.content];
     NSRange imgHTML = [content rangeOfString: media.html];
     NSRange imgHTMLPre = [content rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", media.html]];
-     NSRange imgHTMLPost = [content rangeOfString:[NSString stringWithFormat:@"%@%@", media.html, @"<br /><br />"]];
+    NSRange imgHTMLPost = [content rangeOfString:[NSString stringWithFormat:@"%@%@", media.html, @"<br /><br />"]];
 
     if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
         [content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];

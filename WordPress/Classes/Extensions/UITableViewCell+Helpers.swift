@@ -1,9 +1,8 @@
 import Foundation
 import WordPressShared.WPTableViewCell
 
-extension UITableViewCell
-{
-    public func layoutHeightWithWidth(width: CGFloat) -> CGFloat {
+extension UITableViewCell {
+    public func layoutHeightWithWidth(_ width: CGFloat) -> CGFloat {
         // Layout: Setup the cell with the given width
         let cappedWidth = min(WPTableViewFixedWidth, width)
         bounds          = CGRect(x: 0, y: 0, width: cappedWidth, height: bounds.height)
@@ -11,7 +10,7 @@ extension UITableViewCell
         layoutIfNeeded()
 
         // iPad: Limit the width
-        let layoutSize  = contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        let layoutSize  = contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
 
         // Workaround: Layout calculations fail under certain scenarios by 1px, cutting labels
         let PaddingY: CGFloat = 1

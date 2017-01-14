@@ -13,8 +13,7 @@ import UIKit
 /// -   Initialize it with a reference to the scrollView + bottom constraint + dismissableControl
 /// -   Forward the scrollView willBegin/didScroll events
 ///
-@objc class KeyboardDismissHelper: NSObject
-{
+@objc class KeyboardDismissHelper: NSObject {
     /// Reference to the control to-be-dismissed
     ///
     var dismissableControl: UIView?
@@ -51,23 +50,23 @@ import UIKit
 
     /// Reference to the container view
     ///
-    private var scrollView: UIScrollView
+    fileprivate var scrollView: UIScrollView
 
     /// Returns the scrollView's Parent View. If nil, will fall back to the scrollView itself
     ///
-    private var parentView: UIView
+    fileprivate var parentView: UIView
 
     /// State of the BottomLayout Constraint, at the beginning of a drag OP
     ///
-    private var initialBottomConstraint = CGFloat(0)
+    fileprivate var initialBottomConstraint = CGFloat(0)
 
     /// State of the dismissable control's frame, at the beginning of a drag OP
     ///
-    private var initialControlPositionY = CGFloat(0)
+    fileprivate var initialControlPositionY = CGFloat(0)
 
     /// Indicates whether the keyboard is visible or not
     ///
-    private var isKeyboardVisible = false {
+    fileprivate var isKeyboardVisible = false {
         didSet {
             // Reset any current Drag OP on change
             trackingDragOperation = false
@@ -76,13 +75,13 @@ import UIKit
 
     /// Indicates whether an Interactive Drag OP is being processed
     ///
-    private var trackingDragOperation = false
+    fileprivate var trackingDragOperation = false
 
 
     /// Deinitializer
     ///
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     /// Designated initializer
@@ -95,35 +94,35 @@ import UIKit
         self.dismissableControl = dismissableControl
         self.bottomLayoutConstraint = bottomLayoutConstraint
 
-        scrollView.keyboardDismissMode = .Interactive
+        scrollView.keyboardDismissMode = .interactive
     }
 
 
     /// Initializes the Keyboard Event Listeners
     ///
     func startListeningToKeyboardNotifications() {
-        let nc = NSNotificationCenter.defaultCenter()
-        nc.addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidShow), name: UIKeyboardDidShowNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidHide), name: UIKeyboardDidHideNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIKeyboardWillChangeFrameNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidChangeFrame), name: UIKeyboardDidChangeFrameNotification, object: nil)
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidHide), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidChangeFrame), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
 
     }
 
     /// Removes all of the Keyboard Event Listeners
     ///
     func stopListeningToKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
 
 
     /// ScrollView willBeginDragging Event
     ///
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        guard let dismissableControl = dismissableControl where isKeyboardVisible == true else {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        guard let dismissableControl = dismissableControl, isKeyboardVisible == true else {
             return
         }
 
@@ -134,12 +133,12 @@ import UIKit
 
     /// ScrollView didScroll Event
     ///
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard trackingDragOperation == true else {
             return
         }
 
-        let location = scrollView.panGestureRecognizer.locationInView(parentView)
+        let location = scrollView.panGestureRecognizer.location(in: parentView)
         let delta = location.y - initialControlPositionY
         let newConstant = min(max(initialBottomConstraint - delta, 0), initialBottomConstraint)
 
@@ -151,46 +150,46 @@ import UIKit
         parentView.layoutIfNeeded()
     }
 
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint) {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint) {
         trackingDragOperation = false
     }
 
 
     // MARK: - Notification Helpers
-    func keyboardWillShow(note: NSNotification) {
+    func keyboardWillShow(_ note: Foundation.Notification) {
         isKeyboardVisible = true
         refreshBottomInsetIfNeeded(note)
         onWillShow?()
     }
 
-    func keyboardDidShow(note: NSNotification) {
+    func keyboardDidShow(_ note: Foundation.Notification) {
         refreshBottomInsetIfNeeded(note)
         onDidShow?()
     }
 
-    func keyboardWillHide(note: NSNotification) {
+    func keyboardWillHide(_ note: Foundation.Notification) {
         isKeyboardVisible = false
         refreshBottomInsetIfNeeded(note, isHideEvent: true)
         onWillHide?()
     }
 
-    func keyboardDidHide(note: NSNotification) {
+    func keyboardDidHide(_ note: Foundation.Notification) {
         refreshBottomInsetIfNeeded(note, isHideEvent: true)
         onDidHide?()
     }
 
-    func keyboardWillChangeFrame(note: NSNotification) {
+    func keyboardWillChangeFrame(_ note: Foundation.Notification) {
         onWillChangeFrame?()
     }
 
-    func keyboardDidChangeFrame(note: NSNotification) {
+    func keyboardDidChangeFrame(_ note: Foundation.Notification) {
         onDidChangeFrame?()
     }
 
 
     // MARK: - Private Helpers
 
-    private func refreshBottomInsetIfNeeded(note: NSNotification, isHideEvent: Bool = false) {
+    fileprivate func refreshBottomInsetIfNeeded(_ note: Foundation.Notification, isHideEvent: Bool = false) {
         // Parse the Notification: We'll enforce a Zero Padding for Hide Events
         let duration = durationFromKeyboardNote(note)
         let curve = curveFromKeyboardNote(note)
@@ -212,28 +211,27 @@ import UIKit
         UIView.commitAnimations()
     }
 
-    private func bottomInsetFromKeyboardNote(note: NSNotification) -> CGFloat {
+    fileprivate func bottomInsetFromKeyboardNote(_ note: Foundation.Notification) -> CGFloat {
         let wrappedRect = note.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue
-        let keyboardRect = wrappedRect?.CGRectValue() ?? CGRectZero
-        let relativeRect = parentView.convertRect(keyboardRect, fromView: nil)
+        let keyboardRect = wrappedRect?.cgRectValue ?? CGRect.zero
+        let relativeRect = parentView.convert(keyboardRect, from: nil)
         let bottomInset = max(relativeRect.height - relativeRect.maxY + parentView.frame.height, 0)
 
         return bottomInset
     }
 
-    private func durationFromKeyboardNote(note:  NSNotification) -> NSTimeInterval {
-        guard let duration = note.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSTimeInterval else {
-            return NSTimeInterval(0)
+    fileprivate func durationFromKeyboardNote(_ note: Foundation.Notification) -> TimeInterval {
+        guard let duration = note.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval else {
+            return TimeInterval(0)
         }
 
         return duration
     }
 
-    private func curveFromKeyboardNote(note:  NSNotification) -> UIViewAnimationCurve {
+    fileprivate func curveFromKeyboardNote(_ note: Foundation.Notification) -> UIViewAnimationCurve {
         guard let rawCurve = note.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? Int,
-            let curve = UIViewAnimationCurve(rawValue: rawCurve) else
-        {
-            return .EaseInOut
+            let curve = UIViewAnimationCurve(rawValue: rawCurve) else {
+            return .easeInOut
         }
 
         return curve

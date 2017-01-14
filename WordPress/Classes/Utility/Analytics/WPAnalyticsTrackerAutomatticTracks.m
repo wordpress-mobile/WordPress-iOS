@@ -21,14 +21,19 @@
 @property (nonatomic, strong) TracksService *tracksService;
 @property (nonatomic, strong) NSDictionary *userProperties;
 @property (nonatomic, strong) NSString *anonymousID;
+@property (nonatomic, strong) NSString *loggedInID;
 
 @end
 
 NSString *const TracksEventPropertyButtonKey = @"button";
 NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
 NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
+NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 
 @implementation WPAnalyticsTrackerAutomatticTracks
+
+@synthesize loggedInID = _loggedInID;
+@synthesize anonymousID = _anonymousID;
 
 + (NSString *)eventNameForStat:(WPAnalyticsStat)stat
 {
@@ -68,17 +73,13 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
 
 - (void)beginSession
 {
-#ifdef TRACKS_ENABLED
-    [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
-#endif
-    [self refreshMetadata];
-}
+    if (self.loggedInID.length > 0) {
+        [self.tracksService switchToAuthenticatedUserWithUsername:self.loggedInID userID:nil skipAliasEventCreation:YES];
+    } else {
+        [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
+    }
 
-- (void)endSession
-{
-    self.anonymousID = nil;
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:TracksUserDefaultsAnonymousUserIDKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self refreshMetadata];
 }
 
 - (void)refreshMetadata
@@ -105,10 +106,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         }
     }];
     
-    BOOL dotcom_user = NO;
-    if (accountPresent) {
-        dotcom_user = YES;
-    }
+    BOOL dotcom_user = (accountPresent && username.length > 0);
     
     NSMutableDictionary *userProperties = [NSMutableDictionary new];
     userProperties[@"platform"] = @"iOS";
@@ -119,22 +117,31 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
 
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
-    
-    if (dotcom_user == YES && [username length] > 0) {
-        [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
+
+    // Tell the client what kind of user
+    if (dotcom_user == YES) {
+        if (self.loggedInID.length == 0) {
+            // No previous username logged
+            self.loggedInID = username;
+            self.anonymousID = nil;
+
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
+        } else if ([self.loggedInID isEqualToString:username]){
+            // Username did not change from last refreshMetadata - just make sure Tracks client has it
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:YES];
+        } else {
+            // Username changed for some reason - switch back to anonymous first
+            [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
+            [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
+            self.loggedInID = username;
+            self.anonymousID = nil;
+        }
+    } else {
+        // User is not authenticated, switch to an anonymous mode
+        [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
+        self.loggedInID = nil;
     }
 }
-
-- (void)beginTimerForStat:(WPAnalyticsStat)stat
-{
-    
-}
-
-- (void)endTimerForStat:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
-{
-    
-}
-
 
 #pragma mark - Private methods
 
@@ -152,6 +159,46 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
     }
     
     return _anonymousID;
+}
+
+- (void)setAnonymousID:(NSString *)anonymousID
+{
+    _anonymousID = anonymousID;
+
+    if (anonymousID == nil) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:TracksUserDefaultsAnonymousUserIDKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        return;
+    }
+
+    [[NSUserDefaults standardUserDefaults] setObject:anonymousID forKey:TracksUserDefaultsAnonymousUserIDKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)loggedInID
+{
+    if (_loggedInID == nil || _loggedInID.length == 0) {
+        NSString *loggedInID = [[NSUserDefaults standardUserDefaults] stringForKey:TracksUserDefaultsLoggedInUserIDKey];
+        if (loggedInID != nil) {
+            _loggedInID = loggedInID;
+        }
+    }
+
+    return _loggedInID;
+}
+
+- (void)setLoggedInID:(NSString *)loggedInID
+{
+    _loggedInID = loggedInID;
+
+    if (loggedInID == nil) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:TracksUserDefaultsLoggedInUserIDKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        return;
+    }
+
+    [[NSUserDefaults standardUserDefaults] setObject:loggedInID forKey:TracksUserDefaultsLoggedInUserIDKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat
@@ -204,6 +251,18 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatAppReviewsSentFeedback:
             eventName = @"app_reviews_feedback_sent";
+            break;
+        case WPAnalyticsStatCreateAccountInitiated:
+            eventName = @"account_create_initiated";
+            break;
+        case WPAnalyticsStatCreateAccountEmailExists:
+            eventName = @"account_create_email_exists";
+            break;
+        case WPAnalyticsStatCreateAccountUsernameExists:
+            eventName = @"account_create_username_exists";
+            break;
+        case WPAnalyticsStatCreateAccountFailed:
+            eventName = @"account_create_failed";
             break;
         case WPAnalyticsStatCreatedAccount:
             eventName = @"account_created";
@@ -431,6 +490,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatOpenedComments:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"comments" };
+            break;
+        case WPAnalyticsStatOpenedLogin:
+            eventName = @"login_accessed";
             break;
         case WPAnalyticsStatOpenedMediaLibrary:
             eventName = @"site_menu_opened";
