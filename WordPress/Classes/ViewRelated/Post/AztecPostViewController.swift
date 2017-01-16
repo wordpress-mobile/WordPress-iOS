@@ -91,6 +91,13 @@ class AztecPostViewController: UIViewController {
         })
     }
 
+    private var optionsAlertAction: UIAlertAction {
+        let title = NSLocalizedString("Options", comment: "Displays the Post's Options")
+        return UIAlertAction(title: title, style: .default, handler: { _ in
+            self.displayPostOptions()
+        })
+    }
+
 
     fileprivate(set) var mode = EditionMode.richText {
         didSet {
@@ -233,11 +240,18 @@ class AztecPostViewController: UIViewController {
             alertController.addAction(switchRichAlertAction)
         }
 
+        alertController.addAction(optionsAlertAction)
         alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen"))
         alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
         view.endEditing(true)
         present(alertController, animated: true, completion: nil)
+    }
+
+    func displayPostOptions() {
+        let settingsViewController = PostSettingsViewController(post: post)
+        settingsViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
 
