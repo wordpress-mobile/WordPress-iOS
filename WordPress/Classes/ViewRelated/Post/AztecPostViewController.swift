@@ -72,6 +72,24 @@ class AztecPostViewController: UIViewController {
         return v
     }()
 
+    private lazy var moreBarButtonItem: UIBarButtonItem = {
+        let image = Gridicon.iconOfType(.ellipsis)
+        return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(displayMoreSheet))
+    }()
+
+    private var switchHTMLAlertAction: UIAlertAction {
+        let title = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
+        return UIAlertAction(title: title, style: .default, handler: { _ in
+            self.mode = .html
+        })
+    }
+
+    private var switchRichAlertAction: UIAlertAction {
+        let title = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        return UIAlertAction(title: title, style: .default, handler: { _ in
+            self.mode = .richText
+        })
+    }
 
 
     fileprivate(set) var mode = EditionMode.richText {
@@ -199,18 +217,26 @@ class AztecPostViewController: UIViewController {
     }
 
     func configureNavigationBar() {
-        let title = NSLocalizedString("HTML", comment: "HTML!")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: title,
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(switchEditionMode))
+        navigationItem.rightBarButtonItem = moreBarButtonItem
     }
 
 
     // MARK: - Helpers
 
-    @IBAction func switchEditionMode() {
-        mode.toggle()
+    @IBAction func displayMoreSheet() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        switch mode {
+        case .richText:
+            alertController.addAction(switchHTMLAlertAction)
+        case .html:
+            alertController.addAction(switchRichAlertAction)
+        }
+
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen"))
+        alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
+
+        present(alertController, animated: true, completion: nil)
     }
 
 
@@ -296,7 +322,6 @@ extension AztecPostViewController {
     }
 
     fileprivate func switchToHTML() {
-        navigationItem.rightBarButtonItem?.title = NSLocalizedString("Native", comment: "Rich Edition!")
         view.endEditing(true)
 
         htmlTextView.text = richTextView.getHTML()
@@ -305,7 +330,6 @@ extension AztecPostViewController {
     }
 
     fileprivate func switchToRichText() {
-        navigationItem.rightBarButtonItem?.title = NSLocalizedString("HTML", comment: "HTML!")
         view.endEditing(true)
 
         richTextView.setHTML(htmlTextView.text)
