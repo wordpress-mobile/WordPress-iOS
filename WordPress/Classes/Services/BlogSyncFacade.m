@@ -56,7 +56,7 @@
     if ([blog.options numberForKeyPath:@"blog_title.readonly"]) {
         blog.isAdmin = ![[blog.options numberForKeyPath:@"blog_title.readonly"] boolValue];
     }
-    [[ContextManager sharedInstance] saveContext:context];
+    [[ContextManager sharedInstance] saveContextAndWait:context];
 
     if (blog.jetpack.isInstalled) {
         if (blog.jetpack.isConnected) {

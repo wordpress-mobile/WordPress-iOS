@@ -29,26 +29,6 @@ static NSString * const RemotePostTypePublicKey = @"public";
                  }];
 }
 
-- (void)syncOptionsWithSuccess:(OptionsHandler)success failure:(void (^)(NSError *))failure
-{
-    NSArray *parameters = [self defaultXMLRPCArguments];
-    [self.api callMethod:@"wp.getOptions"
-              parameters:parameters
-                 success:^(id responseObject, NSHTTPURLResponse *response) {
-                     NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
-
-                     if (success) {
-                         success(responseObject);
-                     }
-                 } failure:^(NSError *error, NSHTTPURLResponse *response) {
-                     DDLogError(@"Error syncing options: %@", error);
-
-                     if (failure) {
-                         failure(error);
-                     }
-                 }];
-}
-
 - (void)syncPostTypesWithSuccess:(PostTypesHandler)success failure:(void (^)(NSError *error))failure
 {
     NSArray *parameters = [self defaultXMLRPCArguments];
@@ -123,41 +103,29 @@ static NSString * const RemotePostTypePublicKey = @"public";
 
 }
 
-- (void)syncSettingsWithSuccess:(SettingsHandler)success
-                    failure:(void (^)(NSError *error))failure
+- (void)syncBlogOptionsWithSuccess:(OptionsHandler)success failure:(void (^)(NSError *))failure
 {
     NSArray *parameters = [self defaultXMLRPCArguments];
-    [self.api callMethod:@"wp.getOptions" parameters:parameters
+    [self.api callMethod:@"wp.getOptions"
+              parameters:parameters
                  success:^(id responseObject, NSHTTPURLResponse *response) {
-        if (![responseObject isKindOfClass:[NSDictionary class]]) {
-            if (failure) {
-                failure(nil);
-            }
-            return;
-        }
-        NSDictionary *XMLRPCDictionary = (NSDictionary *)responseObject;
-        RemoteBlogSettings *remoteSettings = [self remoteBlogSettingFromXMLRPCDictionary:XMLRPCDictionary];
-        if (success) {
-            success(remoteSettings);
-        }
-    } failure:^(NSError *error, NSHTTPURLResponse *response) {
-        DDLogError(@"Error syncing settings: %@", error);
-        if (failure) {
-            failure(error);
-        }
-    }];
+                     NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
+
+                     if (success) {
+                         success(responseObject);
+                     }
+                 } failure:^(NSError *error, NSHTTPURLResponse *response) {
+                     DDLogError(@"Error syncing blog options: %@", error);
+
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
 }
 
-- (void)updateBlogSettings:(RemoteBlogSettings *)remoteBlogSettings
-                   success:(SuccessHandler)success
-                   failure:(void (^)(NSError *error))failure
+- (void)updateBlogOptionsWith:(NSDictionary *)remoteBlogOptions success:(SuccessHandler)success failure:(void (^)(NSError *))failure
 {
-    NSMutableDictionary *rawParameters = [NSMutableDictionary dictionary];    
-    [rawParameters setValueIfNotNil:remoteBlogSettings.name forKey:@"blog_title"];
-    [rawParameters setValueIfNotNil:remoteBlogSettings.tagline forKey:@"blog_tagline"];
-    
-    NSArray *parameters = [self XMLRPCArgumentsWithExtra:rawParameters];
-    
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:remoteBlogOptions];
     [self.api callMethod:@"wp.setOptions" parameters:parameters success:^(id responseObject, NSHTTPURLResponse *response) {
         if (![responseObject isKindOfClass:[NSDictionary class]]) {
             if (failure) {
@@ -165,13 +133,11 @@ static NSString * const RemotePostTypePublicKey = @"public";
             }
             return;
         }
-        NSDictionary *XMLRPCDictionary = (NSDictionary *)responseObject;
-        RemoteBlogSettings *remoteSettings = [self remoteBlogSettingFromXMLRPCDictionary:XMLRPCDictionary];
         if (success) {
-            success(remoteSettings);
+            success(responseObject);
         }
     } failure:^(NSError *error, NSHTTPURLResponse *response) {
-        DDLogError(@"Error syncing settings: %@", error);
+        DDLogError(@"Error updating blog options: %@", error);
         if (failure) {
             failure(error);
         }
@@ -185,18 +151,6 @@ static NSString * const RemotePostTypePublicKey = @"public";
     postType.label = [json stringForKey:RemotePostTypeLabelKey];
     postType.apiQueryable = [json numberForKey:RemotePostTypePublicKey];
     return postType;
-}
-
-- (RemoteBlogSettings *)remoteBlogSettingFromXMLRPCDictionary:(NSDictionary *)json
-{
-    RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
-    
-    remoteSettings.name = [[json stringForKeyPath:@"blog_title.value"] stringByDecodingXMLCharacters];
-    remoteSettings.tagline = [[json stringForKeyPath:@"blog_tagline.value"] stringByDecodingXMLCharacters];
-    if (json[@"blog_public"]) {
-        remoteSettings.privacy = [json numberForKeyPath:@"blog_public.value"];
-    }
-    return remoteSettings;
 }
 
 @end
