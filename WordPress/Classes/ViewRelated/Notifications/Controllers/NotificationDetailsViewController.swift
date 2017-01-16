@@ -78,11 +78,11 @@ class NotificationDetailsViewController: UIViewController
 
     /// Previous NavBar Navigation Button
     ///
-    private var previousNavigationButton: UIBarButtonItem!
+    var previousNavigationButton: UIBarButtonItem!
 
     /// Next NavBar Navigation Button
     ///
-    private var nextNavigationButton: UIBarButtonItem!
+    var nextNavigationButton: UIBarButtonItem!
 
     /// Arrows Navigation Datasource
     ///
@@ -92,7 +92,7 @@ class NotificationDetailsViewController: UIViewController
     ///
     var note: Notification! {
         didSet {
-            guard oldValue != note && isViewLoaded() else {
+            guard oldValue != note && isViewLoaded else {
                 return
             }
 
@@ -110,7 +110,7 @@ class NotificationDetailsViewController: UIViewController
     /// Closure to be executed whenever the notification that's being currently displayed, changes.
     /// This happens due to Navigation Events (Next / Previous)
     ///
-    var onSelectedNoteChange: (Notification -> Void)?
+    var onSelectedNoteChange: ((Notification) -> Void)?
 
 
 
@@ -184,8 +184,8 @@ class NotificationDetailsViewController: UIViewController
 
     private func refreshNavigationBar() {
         title = note.title
-        previousNavigationButton.enabled = shouldEnablePreviousButton
-        nextNavigationButton.enabled = shouldEnableNextButton
+        previousNavigationButton.isEnabled = shouldEnablePreviousButton
+        nextNavigationButton.isEnabled = shouldEnableNextButton
     }
 }
 
@@ -277,17 +277,17 @@ extension NotificationDetailsViewController {
     func setupNavigationBar() {
         // Don't show the notification title in the next-view's back button
         let backButton = UIBarButtonItem(title: String(),
-                                         style: .Plain,
+                                         style: .plain,
                                          target: nil,
                                          action: nil)
 
-        let previousButton = UIBarButtonItem(image: Gridicon.iconOfType(.ChevronLeft),
-                                             style: .Plain,
+        let previousButton = UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft),
+                                             style: .plain,
                                              target: self,
                                              action: #selector(previousNotificationWasPressed))
 
-        let nextButton = UIBarButtonItem(image: Gridicon.iconOfType(.ChevronRight),
-                                         style: .Plain,
+        let nextButton = UIBarButtonItem(image: Gridicon.iconOfType(.chevronRight),
+                                         style: .plain,
                                          target: self,
                                          action: #selector(nextNotificationWasPressed))
 
@@ -1214,11 +1214,11 @@ extension NotificationDetailsViewController
         note = next
     }
 
-    private var shouldEnablePreviousButton: Bool {
+    var shouldEnablePreviousButton: Bool {
         return datasource?.notification(preceeding: note) != nil
     }
 
-    private var shouldEnableNextButton: Bool {
+    var shouldEnableNextButton: Bool {
         return datasource?.notification(succeeding: note) != nil
     }
 }

@@ -224,7 +224,7 @@ class NotificationsViewController: UITableViewController {
             self.showUndeleteForNoteWithID(note.objectID, request: request)
         }
         detailsViewController.onSelectedNoteChange = { note in
-            self.selectRowForNotification(note)
+            self.selectRowForNotification(note: note)
         }
     }
 }
@@ -955,7 +955,7 @@ private extension NotificationsViewController {
             return nil
         }
 
-        guard let noteIndex = notifications.indexOf(note) else {
+        guard let noteIndex = notifications.index(of: note) else {
             return nil
         }
 
@@ -986,10 +986,10 @@ private extension NotificationsViewController {
     }
 
     func selectRowForNotification(note: Notification) {
-        guard let targetIndexPath = tableViewHandler.resultsController.indexPathForObject(note) else {
+        guard let targetIndexPath = tableViewHandler.resultsController.indexPath(forObject: note) else {
             return
         }
-        tableView.selectRowAtIndexPath(targetIndexPath, animated: false, scrollPosition: .Middle)
+        tableView.selectRow(at: targetIndexPath, animated: false, scrollPosition: .middle)
     }
 }
 
