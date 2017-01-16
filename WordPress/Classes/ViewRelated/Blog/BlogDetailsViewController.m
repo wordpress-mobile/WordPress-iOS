@@ -164,7 +164,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogDetailsBlogKey];
 
     WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
-    UIViewController *detailViewController = splitViewController.topDetailViewController;
+
+    UIViewController *detailViewController = [splitViewController rootDetailViewController];
     if (detailViewController && [detailViewController conformsToProtocol:@protocol(UIViewControllerRestoration)]) {
         // If the current detail view controller supports state restoration, store the current selection
         [coder encodeObject:self.restorableSelectedIndexPath forKey:WPBlogDetailsSelectedIndexPathKey];
@@ -214,10 +215,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [self.blogService syncBlog:_blog completionHandler:^() {
-        [weakSelf configureTableViewData];
-        [weakSelf reloadTableViewPreservingSelection];
-    }];
+    [self.blogService syncBlogAndAllMetadata:_blog
+                           completionHandler:^{
+                               [weakSelf configureTableViewData];
+                               [weakSelf reloadTableViewPreservingSelection];
+                           }];
     if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
         AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -836,7 +838,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
-    if ([updatedObjects containsObject:self.blog]) {
+    if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
         self.navigationItem.title = self.blog.settings.name;
         [self reloadTableViewPreservingSelection];
     }
