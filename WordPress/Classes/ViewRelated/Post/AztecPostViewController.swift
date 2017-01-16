@@ -236,6 +236,7 @@ class AztecPostViewController: UIViewController {
         alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen"))
         alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
+        view.endEditing(true)
         present(alertController, animated: true, completion: nil)
     }
 
