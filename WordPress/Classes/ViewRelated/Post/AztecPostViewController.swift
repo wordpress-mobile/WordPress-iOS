@@ -293,33 +293,22 @@ extension AztecPostViewController {
     enum EditionMode {
         case richText
         case html
-
-        mutating func toggle() {
-            switch self {
-            case .html:
-                self = .richText
-            case .richText:
-                self = .html
-            }
-        }
     }
 
     fileprivate func switchToHTML() {
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("Native", comment: "Rich Edition!")
+        view.endEditing(true)
 
         htmlTextView.text = richTextView.getHTML()
-
-        view.endEditing(true)
         htmlTextView.isHidden = false
         richTextView.isHidden = true
     }
 
     fileprivate func switchToRichText() {
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("HTML", comment: "HTML!")
+        view.endEditing(true)
 
         richTextView.setHTML(htmlTextView.text)
-
-        view.endEditing(true)
         richTextView.isHidden = false
         htmlTextView.isHidden = true
     }
