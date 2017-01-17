@@ -1,16 +1,16 @@
 import UIKit
 import WordPressShared
 
-func MyProfileViewController(account account: WPAccount) -> ImmuTableViewController? {
+func MyProfileViewController(account: WPAccount) -> ImmuTableViewController? {
     guard let api = account.wordPressComRestApi else {
         return nil
     }
 
-    let service = AccountSettingsService(userID: account.userID.integerValue, api: api)
+    let service = AccountSettingsService(userID: account.userID.intValue, api: api)
     return MyProfileViewController(service: service)
 }
 
-func MyProfileViewController(service service: AccountSettingsService) -> ImmuTableViewController {
+func MyProfileViewController(service: AccountSettingsService) -> ImmuTableViewController {
     let controller = MyProfileController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
     return viewController
@@ -33,24 +33,24 @@ private class MyProfileController: SettingsController {
     let service: AccountSettingsService
     var settings: AccountSettings? {
         didSet {
-            NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.modelChangedNotification, object: nil)
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
         }
     }
     var noticeMessage: String? {
         didSet {
-            NSNotificationCenter.defaultCenter().postNotificationName(ImmuTableViewController.modelChangedNotification, object: nil)
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
         }
     }
 
     init(service: AccountSettingsService) {
         self.service = service
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadStatus), name: AccountSettingsService.Notifications.refreshStatusChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadSettings), name: AccountSettingsService.Notifications.accountSettingsChanged, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadStatus), name: NSNotification.Name(rawValue: AccountSettingsService.Notifications.refreshStatusChanged), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadSettings), name: NSNotification.Name(rawValue: AccountSettingsService.Notifications.accountSettingsChanged), object: nil)
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     func refreshModel() {
@@ -67,33 +67,33 @@ private class MyProfileController: SettingsController {
 
     // MARK: - ImmuTableViewController
 
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> ImmuTable {
+    func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter) -> ImmuTable {
         return mapViewModel(settings, presenter: presenter)
     }
 
     // MARK: - Model mapping
 
-    func mapViewModel(settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable {
+    func mapViewModel(_ settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable {
         let firstNameRow = EditableTextRow(
             title: NSLocalizedString("First Name", comment: "My Profile first name label"),
             value: settings?.firstName ?? "",
-            action: presenter.push(editText(AccountSettingsChange.FirstName, service: service)))
+            action: presenter.push(editText(AccountSettingsChange.firstName, service: service)))
 
         let lastNameRow = EditableTextRow(
             title: NSLocalizedString("Last Name", comment: "My Profile last name label"),
             value: settings?.lastName ?? "",
-            action: presenter.push(editText(AccountSettingsChange.LastName, service: service)))
+            action: presenter.push(editText(AccountSettingsChange.lastName, service: service)))
 
         let displayNameRow = EditableTextRow(
             title: NSLocalizedString("Display Name", comment: "My Profile display name label"),
             value: settings?.displayName ?? "",
-            action: presenter.push(editText(AccountSettingsChange.DisplayName, service: service)))
+            action: presenter.push(editText(AccountSettingsChange.displayName, service: service)))
 
         let aboutMeRow = EditableTextRow(
             title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
             value: settings?.aboutMe ?? "",
-            action: presenter.push(editMultilineText(AccountSettingsChange.AboutMe,
-                hint:NSLocalizedString("Tell us a bit about you.", comment: "My Profile 'About me' hint text"),
+            action: presenter.push(editMultilineText(AccountSettingsChange.aboutMe,
+                hint: NSLocalizedString("Tell us a bit about you.", comment: "My Profile 'About me' hint text"),
                 service: service)))
 
         return ImmuTable(sections: [

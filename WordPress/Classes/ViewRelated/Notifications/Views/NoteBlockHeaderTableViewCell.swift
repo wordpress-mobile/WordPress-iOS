@@ -1,8 +1,7 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
-class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
-{
+class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
     // MARK: - Public Properties
     var headerTitle: String? {
         set {
@@ -33,7 +32,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
 
 
     // MARK: - Public Methods
-    func downloadGravatarWithURL(url: NSURL?) {
+    func downloadGravatarWithURL(_ url: URL?) {
         if url == gravatarURL {
             return
         }
@@ -49,7 +48,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        accessoryType = .DisclosureIndicator
+        accessoryType = .disclosureIndicator
 
         backgroundColor = Style.blockBackgroundColor
         headerTitleLabel.font = Style.headerTitleBoldFont
@@ -62,18 +61,18 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell
     // MARK: - Overriden Methods
     override func refreshSeparators() {
         separatorsView.bottomVisible = true
-        separatorsView.bottomInsets = UIEdgeInsetsZero
+        separatorsView.bottomInsets = UIEdgeInsets.zero
     }
 
 
     // MARK: - Private Alias
-    private typealias Style = WPStyleGuide.Notifications
+    fileprivate typealias Style = WPStyleGuide.Notifications
 
     // MARK: - Private
-    private var gravatarURL: NSURL?
+    fileprivate var gravatarURL: URL?
 
     // MARK: - IBOutlets
-    @IBOutlet private weak var gravatarImageView: UIImageView!
-    @IBOutlet private weak var headerTitleLabel: UILabel!
-    @IBOutlet private weak var headerDetailsLabel: UILabel!
+    @IBOutlet fileprivate weak var gravatarImageView: UIImageView!
+    @IBOutlet fileprivate weak var headerTitleLabel: UILabel!
+    @IBOutlet fileprivate weak var headerDetailsLabel: UILabel!
 }

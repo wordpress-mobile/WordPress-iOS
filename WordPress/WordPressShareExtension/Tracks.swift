@@ -1,17 +1,16 @@
 import Foundation
 
 
-public class Tracks
-{
+open class Tracks {
     // MARK: - Public Properties
-    public var wpcomUsername        : String?
+    open var wpcomUsername: String?
 
     // MARK: - Private Properties
-    private let uploader            : Uploader
+    fileprivate let uploader: Uploader
 
     // MARK: - Constants
-    private static let version      = "1.0"
-    private static let userAgent    = "Nosara Extensions Client for iOS Mark " + version
+    fileprivate static let version      = "1.0"
+    fileprivate static let userAgent    = "Nosara Extensions Client for iOS Mark " + version
 
 
 
@@ -23,7 +22,7 @@ public class Tracks
 
 
     // MARK: - Public Methods
-    public func track(eventName: String, properties: [String: AnyObject]? = nil) {
+    open func track(_ eventName: String, properties: [String: Any]? = nil) {
         let payload  = payloadWithEventName(eventName, properties: properties)
         uploader.send(payload)
     }
@@ -31,27 +30,27 @@ public class Tracks
 
 
     // MARK: - Private Helpers
-    private func payloadWithEventName(eventName: String, properties: [String: AnyObject]?) -> [String: AnyObject] {
-        let timestamp   = NSNumber(longLong: Int64(NSDate().timeIntervalSince1970 * 1000))
-        let userID      = NSUUID().UUIDString
-        let device      = UIDevice.currentDevice()
-        let bundle      = NSBundle.mainBundle()
-        let appName     = bundle.objectForInfoDictionaryKey("CFBundleName") as? String
-        let appVersion  = bundle.objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
-        let appCode     = bundle.objectForInfoDictionaryKey("CFBundleVersion") as? String
+    fileprivate func payloadWithEventName(_ eventName: String, properties: [String: Any]?) -> [String: Any] {
+        let timestamp   = NSNumber(value: Int64(Date().timeIntervalSince1970 * 1000) as Int64)
+        let userID      = UUID().uuidString
+        let device      = UIDevice.current
+        let bundle      = Bundle.main
+        let appName     = bundle.object(forInfoDictionaryKey: "CFBundleName") as? String
+        let appVersion  = bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        let appCode     = bundle.object(forInfoDictionaryKey: "CFBundleVersion") as? String
 
         // Main Payload
         var payload = [
-            "_en"                           : eventName,
-            "_ts"                           : timestamp,
-            "_via_ua"                       : Tracks.userAgent,
-            "_rt"                           : timestamp,
-            "device_info_app_name"          : appName       ?? "WordPress",
-            "device_info_app_version"       : appVersion    ?? "Unknown",
-            "device_info_app_version_code"  : appCode       ?? "Unknown",
-            "device_info_os"                : device.systemName,
-            "device_info_os_version"        : device.systemVersion
-        ] as [String: AnyObject]
+            "_en": eventName as Any,
+            "_ts": timestamp,
+            "_via_ua": Tracks.userAgent as Any,
+            "_rt": timestamp,
+            "device_info_app_name": appName as Any?       ?? "WordPress" as Any,
+            "device_info_app_version": appVersion as Any?    ?? "Unknown",
+            "device_info_app_version_code": appCode       ?? "Unknown",
+            "device_info_os": device.systemName,
+            "device_info_os_version": device.systemVersion
+        ] as [String: Any]
 
         // Username
         if let username = wpcomUsername {
@@ -77,17 +76,16 @@ public class Tracks
     /// Private Internal Helper:
     /// Encapsulates all of the Backend Tracks Interaction, and deals with NSURLSession's API.
     ///
-    private class Uploader: NSObject, NSURLSessionDelegate
-    {
+    fileprivate class Uploader: NSObject, URLSessionDelegate {
         // MARK: - Properties
-        private var session : NSURLSession!
+        fileprivate var session: Foundation.URLSession!
 
         // MARK: - Constants
-        private let tracksURL   = "https://public-api.wordpress.com/rest/v1.1/tracks/record"
-        private let httpMethod  = "POST"
-        private let headers     = [ "Content-Type"  : "application/json",
-                                    "Accept"        : "application/json",
-                                    "User-Agent"    : "WPiOS App Extension"]
+        fileprivate let tracksURL   = "https://public-api.wordpress.com/rest/v1.1/tracks/record"
+        fileprivate let httpMethod  = "POST"
+        fileprivate let headers     = [ "Content-Type": "application/json",
+                                    "Accept": "application/json",
+                                    "User-Agent": "WPiOS App Extension"]
 
 
         // MARK: - Deinitializers
@@ -101,53 +99,53 @@ public class Tracks
             super.init()
 
             // Random Identifier (Each Time)
-            let identifier = appGroupName + "." + NSUUID().UUIDString
+            let identifier = appGroupName + "." + UUID().uuidString
 
             // Session Configuration
-            let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
+            let configuration = URLSessionConfiguration.background(withIdentifier: identifier)
             configuration.sharedContainerIdentifier = appGroupName
 
             // URL Session
-            session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: NSOperationQueue.mainQueue())
+            session = Foundation.URLSession(configuration: configuration, delegate: self, delegateQueue: OperationQueue.main)
         }
 
 
 
         // MARK: - Public Methods
-        func send(event: [String: AnyObject]) {
+        func send(_ event: [String: Any]) {
             // Build the targetURL
-            let targetURL = NSURL(string: tracksURL)!
+            let targetURL = URL(string: tracksURL)!
 
             // Payload
-            let dataToSend = [ "events" : [event], "commonProps" : [] ]
-            let requestBody = try? NSJSONSerialization.dataWithJSONObject(dataToSend, options: .PrettyPrinted)
+            let dataToSend = [ "events": [event], "commonProps": [] ]
+            let requestBody = try? JSONSerialization.data(withJSONObject: dataToSend, options: .prettyPrinted)
 
             // Request
-            let request = NSMutableURLRequest(URL: targetURL)
-            request.HTTPMethod = httpMethod
-            request.HTTPBody = requestBody
+            var request = URLRequest(url: targetURL)
+            request.httpMethod = httpMethod
+            request.httpBody = requestBody
 
             for (field, value) in headers {
                 request.setValue(value, forHTTPHeaderField: field)
             }
 
             // Task!
-            let task = session.downloadTaskWithRequest(request)
+            let task = session.downloadTask(with: request)
             task.resume()
         }
 
 
 
         // MARK: - NSURLSessionDelegate
-        @objc func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
+        @objc func URLSession(_ session: Foundation.URLSession, task: URLSessionTask, didCompleteWithError error: NSError?) {
             print("<> Tracker.didCompleteWithError: \(error)")
         }
 
-        @objc func URLSession(session: NSURLSession, didBecomeInvalidWithError error: NSError?) {
+        @objc func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
             print("<> Tracker.didBecomeInvalidWithError: \(error)")
         }
 
-        @objc func URLSessionDidFinishEventsForBackgroundURLSession(session: NSURLSession) {
+        @objc func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
             print("<> Tracker.URLSessionDidFinishEventsForBackgroundURLSession")
         }
     }

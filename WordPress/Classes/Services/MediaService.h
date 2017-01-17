@@ -9,6 +9,19 @@
 @interface MediaService : LocalCoreDataService
 
 /**
+ Create a media object using the url provided as the source of media.
+
+ @param url a file url pointing to a file with the media data
+ @param postObjectID the post object ID to associate the media
+ @param thumbnailCallback a block that will be invoked when the thumbail for the media object is ready
+ @param completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
+ */
+- (void)createMediaWithURL:(NSURL *)url
+           forPostObjectID:(NSManagedObjectID *)postObjectID
+         thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                completion:(void (^)(Media *media, NSError *error))completion;
+
+/**
  Create a Media object using the asset as the source and making it a child of the post with postObjectId.
  
  @param asset
@@ -135,12 +148,24 @@
 #pragma mark - Media cleanup
 
 /**
+ Returns the url for for the media cache directory
+
+ @return an url for the media cache directory.
+ */
++ (NSURL *)urlForMediaDirectory;
+
+/**
  *  @brief      Removes all unused media files from the media directories
  *  
  *  @discussion This method looks for any media files that stored inside the media folder that aren't
  * linked to any valid media object and remove them. These files can show up because of the app being killed
  * while a media object was being created or when a CoreData migration fails and the database is recreated.
  */
-+ (void)cleanUnusedMediaFileFromTmpDir;
++ (void)cleanUnusedMediaFilesFromMediaCacheFolder;
+
+/**
+ Cleans all files that have a remote copy from the media cache folder.
+ */
++ (void)cleanMediaCacheFolder;
 
 @end

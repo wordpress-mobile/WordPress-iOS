@@ -4,16 +4,15 @@ import Foundation
 
 // MARK: - NotificationSyncServiceRemote
 //
-class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
-{
+class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
     // MARK: - Constants
     //
-    private let defaultPageSize = 100
+    fileprivate let defaultPageSize = 100
 
 
     // MARK: - Errors
     //
-    enum SyncError: ErrorType {
+    enum SyncError: Error {
         case failed
     }
 
@@ -27,7 +26,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
     ///     - completion: callback to be executed on completion.
     ///
     ///
-    func loadNotes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: ((ErrorType?, [RemoteNotification]?) -> Void)) {
+    func loadNotes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: @escaping ((Error?, [RemoteNotification]?) -> Void)) {
         let fields = "id,note_hash,type,unread,body,subject,timestamp,meta"
 
         loadNotes(withNoteIds: noteIds, fields: fields, pageSize: pageSize) { error, notes in
@@ -45,7 +44,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
     ///
     /// - Notes: The RemoteNotification Entity will only have it's ID + Hash populated
     ///
-    func loadHashes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: ((ErrorType?, [RemoteNotification]?) -> Void)) {
+    func loadHashes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: @escaping ((Error?, [RemoteNotification]?) -> Void)) {
         let fields = "id,note_hash"
 
         loadNotes(withNoteIds: noteIds, fields: fields, pageSize: pageSize) { error, notes in
@@ -61,9 +60,9 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
     ///     - read: The new Read Status to set.
     ///     - completion: Closure to be executed on completion, indicating whether the OP was successful or not.
     ///
-    func updateReadStatus(notificationID: String, read: Bool, completion: (ErrorType? -> Void)) {
+    func updateReadStatus(_ notificationID: String, read: Bool, completion: @escaping ((Error?) -> Void)) {
         let path = "notifications/read"
-        let requestUrl = pathForEndpoint(path, withVersion: .Version_1_1)
+        let requestUrl = self.path(forEndpoint: path, with: .version_1_1)
 
         // Note: Isn't the API wonderful?
         let value = read ? 9999 : -9999
@@ -72,11 +71,11 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
             "counts": ["\(notificationID)": value]
         ]
 
-        wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (response, _)  in
+        wordPressComRestApi.POST(requestUrl!, parameters: parameters as [String : AnyObject]?, success: { (response, _)  in
             let error = self.errorFromResponse(response)
             completion(error)
 
-        }, failure:{ (error, _) in
+        }, failure: { (error, _) in
             completion(error)
         })
     }
@@ -88,19 +87,19 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
     ///     - lastSeen: Timestamp of the last seen notification.
     ///     - completion: Closure to be executed on completion, indicating whether the OP was successful or not.
     ///
-    func updateLastSeen(timestamp: String, completion: (ErrorType? -> Void)) {
+    func updateLastSeen(_ timestamp: String, completion: @escaping ((Error?) -> Void)) {
         let path = "notifications/seen"
-        let requestUrl = pathForEndpoint(path, withVersion: .Version_1_1)
+        let requestUrl = self.path(forEndpoint: path, with: .version_1_1)
 
         let parameters = [
             "time": timestamp
         ]
 
-        wordPressComRestApi.POST(requestUrl, parameters: parameters, success: { (response, _)  in
+        wordPressComRestApi.POST(requestUrl!, parameters: parameters as [String : AnyObject]?, success: { (response, _)  in
             let error = self.errorFromResponse(response)
             completion(error)
 
-        }, failure:{ (error, _) in
+        }, failure: { (error, _) in
             completion(error)
         })
     }
@@ -110,8 +109,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST
 
 // MARK: -  Private Methods
 //
-private extension NotificationSyncServiceRemote
-{
+private extension NotificationSyncServiceRemote {
     /// Attempts to parse the `success` field of a given response. When it's missing, or it's false,
     /// this method will return SyncError.failed.
     ///
@@ -119,7 +117,7 @@ private extension NotificationSyncServiceRemote
     ///
     /// - Returns: SyncError.failed whenever the success field is either missing, or set to false.
     ///
-    func errorFromResponse(response: AnyObject) -> ErrorType? {
+    func errorFromResponse(_ response: AnyObject) -> Error? {
         let document = response as? [String: AnyObject]
         let success = document?["success"] as? Bool
         guard success != true else {
@@ -139,23 +137,23 @@ private extension NotificationSyncServiceRemote
     ///     - pageSize: Number of notifications to load.
     ///     - completion: Callback to be executed on completion.
     ///
-    func loadNotes(withNoteIds noteIds: [String]? = nil, fields: String? = nil, pageSize: Int?, completion: ((ErrorType?, [RemoteNotification]?) -> Void)) {
+    func loadNotes(withNoteIds noteIds: [String]? = nil, fields: String? = nil, pageSize: Int?, completion: @escaping ((Error?, [RemoteNotification]?) -> Void)) {
         let path = "notifications/"
-        let requestUrl = pathForEndpoint(path, withVersion: .Version_1_1)
+        let requestUrl = self.path(forEndpoint: path, with: .version_1_1)
 
         var parameters: [String: AnyObject] = [
-            "number": pageSize ?? defaultPageSize
+            "number": pageSize as AnyObject? ?? defaultPageSize as AnyObject
         ]
 
         if let notificationIds = noteIds {
-            parameters["ids"] = (notificationIds as NSArray).componentsJoinedByString(",")
+            parameters["ids"] = (notificationIds as NSArray).componentsJoined(by: ",") as AnyObject?
         }
 
         if let fields = fields {
-            parameters["fields"] = fields
+            parameters["fields"] = fields as AnyObject?
         }
 
-        wordPressComRestApi.GET(requestUrl, parameters: parameters, success: { response, _  in
+        wordPressComRestApi.GET(requestUrl!, parameters: parameters, success: { response, _  in
             let document = response as? [String: AnyObject]
             let notes = document?["notes"] as? [[String: AnyObject]]
             let parsed = notes?.flatMap { RemoteNotification(document: $0) }
@@ -166,7 +164,7 @@ private extension NotificationSyncServiceRemote
                 completion(SyncError.failed, nil)
             }
 
-        }, failure:{ error, _ in
+        }, failure: { error, _ in
             completion(error, nil)
         })
     }

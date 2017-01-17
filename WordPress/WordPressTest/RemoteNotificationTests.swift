@@ -4,8 +4,7 @@ import XCTest
 
 // MARK: - RemoteNotification Unit Tests
 //
-class RemoteNotificationTests: XCTestCase
-{
+class RemoteNotificationTests: XCTestCase {
     /// Tests that a Remote Notification gets correctly parsed, when initialized with a proper
     /// notification document.
     ///
@@ -35,7 +34,7 @@ class RemoteNotificationTests: XCTestCase
     ///
     func testRemoteNotificationInitializerReturnsNilWheneverNoteIdIsMissing() {
         var document = loadDocument()
-        document.removeValueForKey("id")
+        document.removeValue(forKey: "id")
 
         let remote = RemoteNotification(document: document)
         XCTAssertNil(remote)
@@ -46,7 +45,7 @@ class RemoteNotificationTests: XCTestCase
     ///
     func testRemoteNotificationInitializerReturnsNilWheneverNoteHashIsMissing() {
         var document = loadDocument()
-        document.removeValueForKey("note_hash")
+        document.removeValue(forKey: "note_hash")
 
         let remote = RemoteNotification(document: document)
         XCTAssertNil(remote)
@@ -56,17 +55,14 @@ class RemoteNotificationTests: XCTestCase
 
 // MARK: - Private Helpers
 //
-private extension RemoteNotificationTests
-{
+private extension RemoteNotificationTests {
     /// Retrieves a Remote Notification's Document
     ///
-    func loadDocument() -> [String: AnyObject]
-    {
-        let path = NSBundle(forClass: self.dynamicType).pathForResource("remote-notification", ofType: "json")!
-        let data = NSData(contentsOfFile: path)!
-
+    func loadDocument() -> [String: AnyObject] {
+        let path = Bundle(for: type(of: self)).path(forResource: "remote-notification", ofType: "json")!
         do {
-            return try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! [String: AnyObject]
+            let data = try Data(contentsOf: URL(fileURLWithPath: path))
+            return try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as! [String: AnyObject]
         } catch {
             fatalError()
         }

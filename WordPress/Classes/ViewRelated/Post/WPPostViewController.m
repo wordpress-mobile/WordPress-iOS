@@ -37,7 +37,6 @@
 #import "MediaLibraryPickerDataSource.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPAppAnalytics.h"
-#import "WordPress-Swift.h"
 
 @import Gridicons;
 
@@ -53,6 +52,7 @@ static NSString* const WPProgressMediaError = @"WPProgressMediaError";
 NSString* const WPPostViewControllerOptionOpenMediaPicker = @"WPPostViewControllerMediaPicker";
 NSString* const WPPostViewControllerOptionNotAnimated = @"WPPostViewControllerNotAnimated";
 
+
 // Secret URL config parameters
 NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
@@ -64,7 +64,8 @@ static CGFloat const RegularTitleButtonHeight = 30.0f;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
-static void *ProgressObserverContext = &ProgressObserverContext;
+static void * const ProgressObserverContext = (void*)&ProgressObserverContext;
+static void * const DateChangeObserverContext = (void*)&DateChangeObserverContext;
 
 @interface WPEditorViewController ()
 @property (nonatomic, strong, readwrite) WPEditorFormatbarView *toolbarView;
@@ -92,7 +93,6 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
 @property (nonatomic, strong) NSString *selectedMediaID;
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaLibraryDataSource;
-@property (nonatomic) BOOL isOpenedDirectlyForPhotoPost;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -128,6 +128,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)dealloc
 {
+    [self removePostObserver];
     [_mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
     [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
 }
@@ -290,7 +291,7 @@ EditImageDetailsViewControllerDelegate
     self.negativeSeparator.width = -12;
     
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
-    
+
     self.delegate = self;
     [self configureMediaUpload];
     if (self.isOpenedDirectlyForPhotoPost) {
@@ -972,7 +973,7 @@ EditImageDetailsViewControllerDelegate
     if (blogChanged) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        [blogService syncBlog:blog completionHandler:nil];
+        [blogService syncBlogAndAllMetadata:blog completionHandler:nil];
     }
 }
 
@@ -1013,6 +1014,15 @@ EditImageDetailsViewControllerDelegate
     return NO;
 }
 
+- (void)setPost:(AbstractPost *)post
+{
+    if (_post != nil) {
+        [self removePostObserver];
+    }
+    _post = post;
+    [self setupPostObserver];
+}
+
 #pragma mark - UI Manipulation
 
 /**
@@ -1033,20 +1043,13 @@ EditImageDetailsViewControllerDelegate
 {
     UIBarButtonItem *secondaryleftHandButton = self.secondaryLeftUIBarButtonItem;
     NSArray* leftBarButtons;
-    
-    if ([self isEditing] && !self.post.hasRemote) {
-        // Editing a new post
-        leftBarButtons = @[self.negativeSeparator, self.cancelXButton, secondaryleftHandButton];
+
+    if ([self isModal]) {
         self.currentCancelButton = self.cancelXButton;
-    } else if ([self isEditing] && self.post.hasRemote) {
-        // Editing an existing post (draft or published)
-        leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
+    } else {
         self.currentCancelButton = self.cancelChevronButton;
-	} else {
-        // Previewing a post (no edit)
-        leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
-        self.currentCancelButton = self.cancelChevronButton;
-	}
+    }
+    leftBarButtons = @[self.negativeSeparator, self.currentCancelButton, secondaryleftHandButton];
     
     if (![leftBarButtons isEqualToArray:self.navigationItem.leftBarButtonItems]) {
         [self.navigationItem setLeftBarButtonItems:nil];
@@ -1069,7 +1072,7 @@ EditImageDetailsViewControllerDelegate
         NSMutableArray* rightBarButtons = [[NSMutableArray alloc] initWithArray:@[self.moreBarButtonItem,
                                                                                   self.editBarButtonItem]];
 
-		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
+		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:NO];
 	}
 }
 
@@ -1386,11 +1389,12 @@ EditImageDetailsViewControllerDelegate
                    changesSaved:(BOOL)changesSaved
 {
     [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
-    
+    [self removePostObserver];
+
     if (self.onClose) {
         self.onClose(self, changesSaved);
         self.onClose = nil;
-    } else if (self.presentingViewController) {
+    } else if ([self isModal]) {
         [self.presentingViewController dismissViewControllerAnimated:animated completion:nil];
     } else {
         [self.navigationController popViewControllerAnimated:animated];
@@ -1424,7 +1428,7 @@ EditImageDetailsViewControllerDelegate
 - (void)savePost
 {
     PostEditorSaveAction saveAction = [self currentSaveAction];
-    BOOL shouldDismiss = (saveAction == PostEditorSaveActionPost || saveAction == PostEditorSaveActionSchedule);
+    BOOL shouldDismiss = saveAction != PostEditorSaveActionSave;
     [self savePostAndDismiss:shouldDismiss];
 
     [self trackSavePostAnalyticsWithStat:[self analyticsStatForSaveAction:saveAction]];
@@ -1500,7 +1504,7 @@ EditImageDetailsViewControllerDelegate
                             hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
                         }
 
-                        [SVProgressHUD showSuccessWithStatus:hudText];
+                        [SVProgressHUD dismiss];
                         [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
 
                         stopEditingAndDismiss();
@@ -1526,7 +1530,7 @@ EditImageDetailsViewControllerDelegate
 {
     if ([self.post hasLocalChanges]) {
         // Only attempt to switch to the posts list if the editor was presented modally
-        if ([self presentingViewController]) {
+        if ([self isModal]) {
             [[WPTabBarController sharedInstance] switchTabToPostsListForPost:self.post];
         }
     }
@@ -1581,6 +1585,20 @@ EditImageDetailsViewControllerDelegate
     }
     
     [self.post save];
+}
+
+- (void)setupPostObserver
+{
+    [self.post addObserver:self forKeyPath:@"dateCreated" options:NSKeyValueObservingOptionNew context:DateChangeObserverContext];
+    [self.post addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:DateChangeObserverContext];
+}
+
+- (void)removePostObserver
+{
+    @try {
+        [self.post removeObserver:self forKeyPath:@"dateCreated"];
+        [self.post removeObserver:self forKeyPath:@"status"];
+    } @catch (NSException *exception) {}
 }
 
 #pragma mark - Media State Methods
@@ -2205,6 +2223,8 @@ EditImageDetailsViewControllerDelegate
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self refreshNavigationBarButtons:NO];
         }];
+    } else if (context == DateChangeObserverContext) {
+        [self refreshNavigationBarButtons:NO];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }

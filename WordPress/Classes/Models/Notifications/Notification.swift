@@ -6,8 +6,7 @@ import CoreData
 // MARK: - Notification Entity
 //
 @objc(Notification)
-class Notification: NSManagedObject
-{
+class Notification: NSManagedObject {
     /// Notification Primary Key!
     ///
     @NSManaged var notificationId: String
@@ -62,44 +61,44 @@ class Notification: NSManagedObject
 
     /// Timestamp As Date Transient Storage.
     ///
-    private var cachedTimestampAsDate: NSDate?
+    fileprivate var cachedTimestampAsDate: Date?
 
     /// Subject Blocks Transient Storage.
     ///
-    private var cachedSubjectBlockGroup: NotificationBlockGroup?
+    fileprivate var cachedSubjectBlockGroup: NotificationBlockGroup?
 
     /// Header Blocks Transient Storage.
     ///
-    private var cachedHeaderBlockGroup: NotificationBlockGroup?
+    fileprivate var cachedHeaderBlockGroup: NotificationBlockGroup?
 
     /// Body Blocks Transient Storage.
     ///
-    private var cachedBodyBlockGroups: [NotificationBlockGroup]?
+    fileprivate var cachedBodyBlockGroups: [NotificationBlockGroup]?
 
     /// Header + Body Blocks Transient Storage.
     ///
-    private var cachedHeaderAndBodyBlockGroups: [NotificationBlockGroup]?
+    fileprivate var cachedHeaderAndBodyBlockGroups: [NotificationBlockGroup]?
 
     /// Array that contains the Cached Property Names
     ///
-    private static let cachedAttributes = Set(arrayLiteral: "body", "header", "subject", "timestamp")
+    fileprivate static let cachedAttributes = Set(arrayLiteral: "body", "header", "subject", "timestamp")
 
 
 
     /// When needed, nukes cached attributes
     ///
-    override func willChangeValueForKey(key: String) {
-        super.willChangeValueForKey(key)
+    override func willChangeValue(forKey key: String) {
+        super.willChangeValue(forKey: key)
 
         // Note:
         // Cached Attributes are only consumed on the main thread, when initializing UI elements.
         // As an optimization, we'll only reset those attributes when we're running on the main thread.
         //
-        guard managedObjectContext?.concurrencyType == .MainQueueConcurrencyType else {
+        guard managedObjectContext?.concurrencyType == .mainQueueConcurrencyType else {
             return
         }
 
-        guard self.dynamicType.cachedAttributes.contains(key) else {
+        guard type(of: self).cachedAttributes.contains(key) else {
             return
         }
 
@@ -108,7 +107,7 @@ class Notification: NSManagedObject
 
     /// Nukes any cached values.
     ///
-    private func resetCachedAttributes() {
+    fileprivate func resetCachedAttributes() {
         cachedTimestampAsDate = nil
         cachedSubjectBlockGroup = nil
         cachedHeaderBlockGroup = nil
@@ -126,7 +125,7 @@ class Notification: NSManagedObject
 
     /// Returns the first BlockGroup of the specified type, if any.
     ///
-    func blockGroupOfKind(kind: NotificationBlockGroup.Kind) -> NotificationBlockGroup? {
+    func blockGroupOfKind(_ kind: NotificationBlockGroup.Kind) -> NotificationBlockGroup? {
         for blockGroup in bodyBlockGroups where blockGroup.kind == kind {
             return blockGroup
         }
@@ -136,7 +135,7 @@ class Notification: NSManagedObject
 
     /// Attempts to find the Notification Range associated with a given URL.
     ///
-    func notificationRangeWithUrl(url: NSURL) -> NotificationRange? {
+    func notificationRangeWithUrl(_ url: URL) -> NotificationRange? {
         var groups = bodyBlockGroups
         if let headerBlockGroup = headerBlockGroup {
             groups.append(headerBlockGroup)
@@ -157,8 +156,7 @@ class Notification: NSManagedObject
 
 // MARK: - Notification Computed Properties
 //
-extension Notification
-{
+extension Notification {
     /// Verifies if the current notification is actually a Badge one.
     /// Note: Sorry about the following snippet. I'm (and will always be) against Duck Typing.
     ///
@@ -182,7 +180,7 @@ extension Notification
     //// Check if this note is a comment and in 'Unapproved' status
     ///
     var isUnapprovedComment: Bool {
-        guard let block = blockGroupOfKind(.Comment)?.blockOfKind(.Comment) else {
+        guard let block = blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
             return false
         }
 
@@ -200,7 +198,7 @@ extension Notification
 
     /// Returns the Meta ID's collection, if any.
     ///
-    private var metaIds: [String: AnyObject]? {
+    fileprivate var metaIds: [String: AnyObject]? {
         return meta?[MetaKeys.Ids] as? [String: AnyObject]
     }
 
@@ -230,8 +228,8 @@ extension Notification
 
     /// Icon URL
     ///
-    var iconURL: NSURL? {
-        guard let rawIconURL = icon, let iconURL = NSURL(string: rawIconURL) else {
+    var iconURL: URL? {
+        guard let rawIconURL = icon, let iconURL = URL(string: rawIconURL) else {
             return nil
         }
 
@@ -240,8 +238,8 @@ extension Notification
 
     /// Associated Resource URL
     ///
-    var resourceURL: NSURL? {
-        guard let rawURL = url, let resourceURL = NSURL(string: rawURL) else {
+    var resourceURL: URL? {
+        guard let rawURL = url, let resourceURL = URL(string: rawURL) else {
             return nil
         }
 
@@ -250,16 +248,16 @@ extension Notification
 
     /// Parse the Timestamp as a Cocoa Date Instance.
     ///
-    var timestampAsDate: NSDate {
+    var timestampAsDate: Date {
         assert(timestamp != nil, "Notification Timestamp should not be nil [\(notificationId)]")
 
         if let timestampAsDate = cachedTimestampAsDate {
             return timestampAsDate
         }
 
-        guard let timestamp = timestamp, let timestampAsDate = NSDate.dateWithISO8601String(timestamp) else {
+        guard let timestamp = timestamp, let timestampAsDate = Date.dateWithISO8601String(timestamp) else {
             DDLogSwift.logError("Error: couldn't parse date [\(self.timestamp)] for notification with id [\(notificationId)]")
-            return NSDate()
+            return Date()
         }
 
         cachedTimestampAsDate = timestampAsDate
@@ -273,7 +271,7 @@ extension Notification
             return subjectBlockGroup
         }
 
-        guard let subject = subject as? [[String: AnyObject]] where subject.isEmpty == false else {
+        guard let subject = subject as? [[String: AnyObject]], subject.isEmpty == false else {
             return nil
         }
 
@@ -288,7 +286,7 @@ extension Notification
             return headerBlockGroup
         }
 
-        guard let header = header as? [[String: AnyObject]] where header.isEmpty == false else {
+        guard let header = header as? [[String: AnyObject]], header.isEmpty == false else {
             return nil
         }
 
@@ -303,7 +301,7 @@ extension Notification
             return bodyBlockGroups
         }
 
-        guard let body = body as? [[String: AnyObject]] where body.isEmpty == false else {
+        guard let body = body as? [[String: AnyObject]], body.isEmpty == false else {
             return []
         }
 
@@ -323,7 +321,7 @@ extension Notification
             mergedGroups.append(header)
         }
 
-        mergedGroups.appendContentsOf(bodyBlockGroups)
+        mergedGroups.append(contentsOf: bodyBlockGroups)
         cachedHeaderAndBodyBlockGroups = mergedGroups
 
         return mergedGroups
@@ -338,7 +336,7 @@ extension Notification
     /// Returns the Snippet Block, if any.
     ///
     var snippetBlock: NotificationBlock? {
-        guard let subjectBlocks = subjectBlockGroup?.blocks where subjectBlocks.count > 1 else {
+        guard let subjectBlocks = subjectBlockGroup?.blocks, subjectBlocks.count > 1 else {
             return nil
         }
 
@@ -349,8 +347,7 @@ extension Notification
 
 // MARK: - Core Data Helper
 //
-extension Notification: ManagedObject
-{
+extension Notification: ManagedObject {
     static var entityName: String {
         return classNameWithoutNamespaces()
     }
@@ -359,8 +356,7 @@ extension Notification: ManagedObject
 
 // MARK: - Update Helpers
 //
-extension Notification
-{
+extension Notification {
     /// Updates the local fields with the new values stored in a given Remote Notification
     ///
     func update(with remote: RemoteNotification) {
@@ -383,8 +379,7 @@ extension Notification
 
 // MARK: - Notification Types
 //
-extension Notification
-{
+extension Notification {
     /// Known kinds of Notifications
     ///
     enum Kind: String {
@@ -404,7 +399,7 @@ extension Notification
 
     /// Meta Parsing Keys
     ///
-    private enum MetaKeys {
+    fileprivate enum MetaKeys {
         static let Ids      = "ids"
         static let Links    = "links"
         static let Titles   = "titles"

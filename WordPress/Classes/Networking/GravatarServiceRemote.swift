@@ -3,7 +3,7 @@ import Foundation
 
 /// This ServiceRemote encapsulates all of the interaction with the Gravatar endpoint.
 ///
-public class GravatarServiceRemote {
+open class GravatarServiceRemote {
     /// Designated Initializer
     ///
     /// - Parameters:
@@ -22,8 +22,8 @@ public class GravatarServiceRemote {
     ///     - image: The new Gravatar Image, to be uploaded
     ///     - completion: An optional closure to be executed on completion.
     ///
-    public func uploadImage(image: UIImage, completion: ((error: NSError?) -> ())?) {
-        guard let targetURL = NSURL(string: UploadParameters.endpointURL) else {
+    open func uploadImage(_ image: UIImage, completion: ((_ error: NSError?) -> ())?) {
+        guard let targetURL = URL(string: UploadParameters.endpointURL) else {
             assertionFailure()
             return
         }
@@ -32,8 +32,8 @@ public class GravatarServiceRemote {
         let boundary = boundaryForRequest()
 
         // Request
-        let request = NSMutableURLRequest(URL: targetURL)
-        request.HTTPMethod = UploadParameters.HTTPMethod
+        let request = NSMutableURLRequest(url: targetURL)
+        request.httpMethod = UploadParameters.HTTPMethod
         request.setValue("Bearer \(accountToken)", forHTTPHeaderField: "Authorization")
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
 
@@ -42,10 +42,10 @@ public class GravatarServiceRemote {
         let requestBody = bodyWithGravatarData(gravatarData, account: accountEmail, boundary: boundary)
 
         // Task
-        let session = NSURLSession.sharedSession()
-        let task = session.uploadTaskWithRequest(request, fromData: requestBody) { (data, response, error) in
-            completion?(error: error)
-        }
+        let session = URLSession.shared
+        let task = session.uploadTask(with: request as URLRequest, from: requestBody, completionHandler: { (data, response, error) in
+            completion?(error as NSError?)
+        })
 
         task.resume()
     }
@@ -56,8 +56,8 @@ public class GravatarServiceRemote {
 
     /// Returns a new (randomized) Boundary String
     ///
-    private func boundaryForRequest() -> String {
-        return "Boundary-" + NSUUID().UUIDString
+    fileprivate func boundaryForRequest() -> String {
+        return "Boundary-" + UUID().uuidString
     }
 
 
@@ -70,7 +70,7 @@ public class GravatarServiceRemote {
     ///
     /// - Returns: A NSData instance, containing the Request's Payload.
     ///
-    private func bodyWithGravatarData(gravatarData: NSData, account: String, boundary: String) -> NSData {
+    fileprivate func bodyWithGravatarData(_ gravatarData: Data, account: String, boundary: String) -> Data {
         let body = NSMutableData()
 
         // Image Payload
@@ -78,7 +78,7 @@ public class GravatarServiceRemote {
         body.appendString("Content-Disposition: form-data; name=\(UploadParameters.imageKey); ")
         body.appendString("filename=\(UploadParameters.filename)\r\n")
         body.appendString("Content-Type: \(UploadParameters.contentType);\r\n\r\n")
-        body.appendData(gravatarData)
+        body.append(gravatarData)
         body.appendString("\r\n")
 
         // Account Payload
@@ -89,17 +89,17 @@ public class GravatarServiceRemote {
         // EOF!
         body.appendString("--\(boundary)--\r\n")
 
-        return body
+        return body as Data
     }
 
 
 
     // MARK: - Private Properties
-    private let accountEmail    : String
-    private let accountToken    : String
+    fileprivate let accountEmail: String
+    fileprivate let accountToken: String
 
     // MARK: - Private Structs
-    private struct UploadParameters {
+    fileprivate struct UploadParameters {
         static let endpointURL          = "https://api.gravatar.com/v1/upload-image"
         static let HTTPMethod           = "POST"
         static let contentType          = "application/octet-stream"

@@ -6,32 +6,32 @@ class PushAuthenticationManagerTests: XCTestCase {
 
     class MockUIAlertControllerProxy: UIAlertControllerProxy {
 
-        var titlePassedIn:String?
-        var messagePassedIn:String?
-        var cancelButtonTitlePassedIn:String?
-        var otherButtonTitlesPassedIn:[AnyObject]?
-        var tapBlockPassedIn:UIAlertControllerCompletionBlock?
+        var titlePassedIn: String?
+        var messagePassedIn: String?
+        var cancelButtonTitlePassedIn: String?
+        var otherButtonTitlesPassedIn: [AnyObject]?
+        var tapBlockPassedIn: UIAlertControllerCompletionBlock?
         var showWithTitleCalled = false
 
-        override func showWithTitle(title: String!, message: String!, cancelButtonTitle: String!, otherButtonTitles: [AnyObject]!, tapBlock: UIAlertControllerCompletionBlock!) -> UIAlertController! {
+        override func show(withTitle title: String?, message: String?, cancelButtonTitle: String?, otherButtonTitles: [Any]?, tap tapBlock: UIAlertControllerCompletionBlock?) -> UIAlertController {
             showWithTitleCalled = true
             titlePassedIn = title
             messagePassedIn = message
             cancelButtonTitlePassedIn = cancelButtonTitle
-            otherButtonTitlesPassedIn = otherButtonTitles
+            otherButtonTitlesPassedIn = otherButtonTitles as [AnyObject]?
             tapBlockPassedIn = tapBlock
             return UIAlertController()
         }
     }
 
-    class MockPushAuthenticationService : PushAuthenticationService {
+    class MockPushAuthenticationService: PushAuthenticationService {
 
-        var tokenPassedIn:String?
-        var completionBlockPassedIn:((Bool) -> ())?
+        var tokenPassedIn: String?
+        var completionBlockPassedIn: ((Bool) -> ())?
         var authorizedLoginCalled = false
         var numberOfTimesAuthorizedLoginCalled = 0
 
-        override func authorizeLogin(token: String, completion: ((Bool) -> ())) {
+        override func authorizeLogin(_ token: String, completion: @escaping ((Bool) -> ())) {
             authorizedLoginCalled = true
             numberOfTimesAuthorizedLoginCalled += 1
             tokenPassedIn = token
@@ -41,8 +41,8 @@ class PushAuthenticationManagerTests: XCTestCase {
 
     var mockPushAuthenticationService = MockPushAuthenticationService(managedObjectContext: TestContextManager().mainContext)
     var mockAlertControllerProxy = MockUIAlertControllerProxy()
-    var pushAuthenticationManager :PushAuthenticationManager?
-    var approvalAlertController : UIAlertController!
+    var pushAuthenticationManager: PushAuthenticationManager?
+    var approvalAlertController: UIAlertController!
 
     override func setUp() {
         super.setUp()
@@ -67,37 +67,37 @@ class PushAuthenticationManagerTests: XCTestCase {
     }
 
     func expiredPushNotificationDictionary() -> NSDictionary {
-       return ["expires": NSTimeInterval(3)]
+       return ["expires": TimeInterval(3)]
     }
 
     func validPushAuthenticationDictionary() -> NSMutableDictionary {
-        return ["push_auth_token" : "token", "aps" : [ "alert" : "an alert"]]
+        return ["push_auth_token": "token", "aps": [ "alert": "an alert"]]
     }
 
-    func testHandlePushAuthenticationNotificationShowsTheLoginExpiredAlertIfNotificationHasExpired(){
+    func testHandlePushAuthenticationNotificationShowsTheLoginExpiredAlertIfNotificationHasExpired() {
         pushAuthenticationManager!.handlePushAuthenticationNotification(expiredPushNotificationDictionary())
 
         XCTAssertTrue(mockAlertControllerProxy.showWithTitleCalled, "Should show the login expired alert if the notification has expired")
-        XCTAssertEqual(mockAlertControllerProxy.titlePassedIn!, NSLocalizedString("Login Request Expired", comment:""), "")
+        XCTAssertEqual(mockAlertControllerProxy.titlePassedIn, NSLocalizedString("Login Request Expired", comment: ""), "")
     }
 
-    func testHandlePushAuthenticationNotificationDoesNotShowTheLoginExpiredAlertIfNotificationHasNotExpired(){
+    func testHandlePushAuthenticationNotificationDoesNotShowTheLoginExpiredAlertIfNotificationHasNotExpired() {
         pushAuthenticationManager!.handlePushAuthenticationNotification([:])
 
         XCTAssertFalse(mockAlertControllerProxy.showWithTitleCalled, "Should not show the login expired alert if the notification hasn't expired")
     }
 
-    func testHandlePushAuthenticationNotificationWithBlankTokenDoesNotShowLoginVerificationAlert(){
+    func testHandlePushAuthenticationNotificationWithBlankTokenDoesNotShowLoginVerificationAlert() {
         let pushNotificationDictionary = validPushAuthenticationDictionary()
-        pushNotificationDictionary.removeObjectForKey("push_auth_token")
+        pushNotificationDictionary.removeObject(forKey: "push_auth_token")
 
         pushAuthenticationManager!.handlePushAuthenticationNotification(pushNotificationDictionary)
 
         XCTAssertFalse(mockAlertControllerProxy.showWithTitleCalled, "Should not show the login verification")
     }
 
-    func testHandlePushAuthenticationNotificationWithBlankMessageDoesNotShowLoginVerificationAlert(){
-        pushAuthenticationManager!.handlePushAuthenticationNotification(["push_auth_token" : "token"])
+    func testHandlePushAuthenticationNotificationWithBlankMessageDoesNotShowLoginVerificationAlert() {
+        pushAuthenticationManager!.handlePushAuthenticationNotification(["push_auth_token": "token"])
 
         XCTAssertFalse(mockAlertControllerProxy.showWithTitleCalled, "Should not show the login verification")
     }
@@ -106,7 +106,7 @@ class PushAuthenticationManagerTests: XCTestCase {
         pushAuthenticationManager!.handlePushAuthenticationNotification(validPushAuthenticationDictionary())
 
         XCTAssertTrue(mockAlertControllerProxy.showWithTitleCalled, "Should show the login verification")
-        XCTAssertEqual(mockAlertControllerProxy.titlePassedIn!, NSLocalizedString("Verify Log In", comment: ""), "")
+        XCTAssertEqual(mockAlertControllerProxy.titlePassedIn, NSLocalizedString("Verify Log In", comment: ""), "")
     }
 
     func testHandlePushAuthenticationNotificationShouldAttemptToAuthorizeTheLoginIfTheUserIndicatesTheyWantTo() {

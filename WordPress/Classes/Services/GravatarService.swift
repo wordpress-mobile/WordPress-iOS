@@ -3,7 +3,7 @@ import Foundation
 
 /// This Service exposes all of the valid operations we can execute, to interact with the Gravatar Service.
 ///
-public class GravatarService {
+open class GravatarService {
     /// Designated Initializer
     ///
     /// - Parameter context: The Core Data context that should be used by the service.
@@ -14,8 +14,8 @@ public class GravatarService {
         let mainAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount()
         accountToken    = mainAccount?.authToken
         accountEmail    = mainAccount?.email
-            .stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-            .lowercaseString
+            .trimmingCharacters(in: CharacterSet.whitespaces)
+            .lowercased()
 
         guard accountEmail?.isEmpty == false && accountToken?.isEmpty == false else {
             return nil
@@ -29,8 +29,8 @@ public class GravatarService {
     ///     - image: The new Gravatar Image, to be uploaded
     ///     - completion: An optional closure to be executed on completion.
     ///
-    public func uploadImage(image: UIImage, completion: ((error: NSError?) -> ())? = nil) {
-        let remote = gravatarServiceRemoteForAccountToken(accountToken, andAccountEmail: accountEmail)
+    open func uploadImage(_ image: UIImage, completion: ((_ error: NSError?) -> ())? = nil) {
+        let remote = gravatarServiceRemoteForAccountToken(accountToken: accountToken, andAccountEmail: accountEmail)
         remote.uploadImage(image) { (error) in
             if let theError = error {
                 DDLogSwift.logError("GravatarService.uploadImage Error: \(theError)")
@@ -38,7 +38,7 @@ public class GravatarService {
                 DDLogSwift.logInfo("GravatarService.uploadImage Success!")
             }
 
-            completion?(error: error)
+            completion?(error)
         }
     }
 
@@ -47,6 +47,6 @@ public class GravatarService {
     }
 
     // MARK: - Private Properties
-    private let accountToken : String!
-    private let accountEmail : String!
+    fileprivate let accountToken: String!
+    fileprivate let accountEmail: String!
 }

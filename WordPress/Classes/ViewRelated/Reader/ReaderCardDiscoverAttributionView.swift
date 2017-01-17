@@ -1,33 +1,31 @@
 import Foundation
 import WordPressShared
 
-@objc public protocol ReaderCardDiscoverAttributionViewDelegate: NSObjectProtocol
-{
-    func attributionActionSelectedForVisitingSite(view: ReaderCardDiscoverAttributionView)
+@objc public protocol ReaderCardDiscoverAttributionViewDelegate: NSObjectProtocol {
+    func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView)
 }
 
-private enum ReaderCardDiscoverAttribution : Int {
+private enum ReaderCardDiscoverAttribution: Int {
 
-    case None // Default, no action
-    case VisitSite // Action for verbose attribution to visit a site
+    case none // Default, no action
+    case visitSite // Action for verbose attribution to visit a site
 }
 
-@objc public class ReaderCardDiscoverAttributionView: UIView
-{
-    private let gravatarImageName = "gravatar"
-    private let blavatarImageName = "post-blavatar-placeholder"
+@objc open class ReaderCardDiscoverAttributionView: UIView {
+    fileprivate let gravatarImageName = "gravatar"
+    fileprivate let blavatarImageName = "post-blavatar-placeholder"
 
-    @IBOutlet private weak var imageView: CircularImageView!
-    @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet fileprivate weak var imageView: CircularImageView!
+    @IBOutlet fileprivate weak var textLabel: UILabel!
 
-    private lazy var originalAttributionParagraphAttributes: [NSObject: AnyObject] = {
+    fileprivate lazy var originalAttributionParagraphAttributes: [AnyHashable: Any] = {
         return WPStyleGuide.originalAttributionParagraphAttributes()
     }()
 
-    private var attributionAction: ReaderCardDiscoverAttribution = .None {
+    fileprivate var attributionAction: ReaderCardDiscoverAttribution = .none {
         didSet {
             // Enable/disable userInteraction on self if we allow an action.
-            self.userInteractionEnabled = attributionAction != .None
+            self.isUserInteractionEnabled = attributionAction != .none
         }
     }
 
@@ -36,7 +34,7 @@ private enum ReaderCardDiscoverAttribution : Int {
 
     // MARK: - Lifecycle Methods
 
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
 
         // Add a tap gesture for detecting a tap on the label and acting on the current attributionAction.
@@ -56,8 +54,8 @@ private enum ReaderCardDiscoverAttribution : Int {
 
         // Enable userInteraction on the label/imageView by default while userInteraction
         // is toggled on self in attributionAction: didSet for valid actions.
-        textLabel.userInteractionEnabled = true
-        imageView.userInteractionEnabled = true
+        textLabel.isUserInteractionEnabled = true
+        imageView.isUserInteractionEnabled = true
 
         applyOpaqueBackgroundColors()
     }
@@ -68,15 +66,15 @@ private enum ReaderCardDiscoverAttribution : Int {
     /**
      Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
      */
-    private func applyOpaqueBackgroundColors() {
-        imageView.backgroundColor = UIColor.whiteColor()
-        textLabel.backgroundColor = UIColor.whiteColor()
+    fileprivate func applyOpaqueBackgroundColors() {
+        imageView.backgroundColor = UIColor.white
+        textLabel.backgroundColor = UIColor.white
     }
 
-    public func configureView(contentProvider: ReaderPostContentProvider?) {
-        if contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.Post {
+    open func configureView(_ contentProvider: ReaderPostContentProvider?) {
+        if contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.post {
             configurePostAttribution(contentProvider!)
-        } else if contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.Site {
+        } else if contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.site {
             configureSiteAttribution(contentProvider!, verboseAttribution: false)
         } else {
             reset()
@@ -84,7 +82,7 @@ private enum ReaderCardDiscoverAttribution : Int {
     }
 
 
-    public func configureViewWithVerboseSiteAttribution(contentProvider: ReaderPostContentProvider?) {
+    open func configureViewWithVerboseSiteAttribution(_ contentProvider: ReaderPostContentProvider?) {
         if let contentProvider = contentProvider {
             configureSiteAttribution(contentProvider, verboseAttribution: true)
         } else {
@@ -93,17 +91,17 @@ private enum ReaderCardDiscoverAttribution : Int {
     }
 
 
-    private func reset() {
+    fileprivate func reset() {
         imageView.image = nil
         textLabel.attributedText = nil
-        attributionAction = .None
+        attributionAction = .none
     }
 
 
-    private func configurePostAttribution(contentProvider: ReaderPostContentProvider) {
+    fileprivate func configurePostAttribution(_ contentProvider: ReaderPostContentProvider) {
         let url = contentProvider.sourceAvatarURLForDisplay()
         let placeholder = UIImage(named: gravatarImageName)
-        imageView.setImageWithURL(url, placeholderImage: placeholder)
+        imageView.setImageWith(url!, placeholderImage: placeholder)
         imageView.shouldRoundCorners = true
 
         let str = stringForPostAttribution(contentProvider.sourceAuthorNameForDisplay(),
@@ -111,33 +109,33 @@ private enum ReaderCardDiscoverAttribution : Int {
         let attributes = originalAttributionParagraphAttributes as! [String: AnyObject]
         textLabel.textColor = WPStyleGuide.grey()
         textLabel.attributedText = NSAttributedString(string: str, attributes: attributes)
-        attributionAction = .None
+        attributionAction = .none
     }
 
 
-    private func configureSiteAttribution(contentProvider: ReaderPostContentProvider, verboseAttribution verbose:Bool) {
+    fileprivate func configureSiteAttribution(_ contentProvider: ReaderPostContentProvider, verboseAttribution verbose: Bool) {
         let url = contentProvider.sourceAvatarURLForDisplay()
         let placeholder = UIImage(named: blavatarImageName)
-        imageView.setImageWithURL(url, placeholderImage: placeholder)
+        imageView.setImageWith(url!, placeholderImage: placeholder)
         imageView.shouldRoundCorners = false
 
         let blogName = contentProvider.sourceBlogNameForDisplay()
         let pattern = patternForSiteAttribution(verbose)
-        let str = String(format: pattern, blogName)
+        let str = String(format: pattern, blogName!)
 
-        let range = (str as NSString).rangeOfString(blogName)
-        let font = WPFontManager.systemItalicFontOfSize(WPStyleGuide.originalAttributionFontSize())
+        let range = (str as NSString).range(of: blogName!)
+        let font = WPFontManager.systemItalicFont(ofSize: WPStyleGuide.originalAttributionFontSize())
         let attributes = originalAttributionParagraphAttributes as! [String: AnyObject]
         let attributedString = NSMutableAttributedString(string: str, attributes: attributes)
-        attributedString.addAttribute(NSFontAttributeName, value: font, range: range)
+        attributedString.addAttribute(NSFontAttributeName, value: font!, range: range)
         textLabel.textColor = WPStyleGuide.mediumBlue()
         textLabel.highlightedTextColor = WPStyleGuide.lightBlue()
         textLabel.attributedText = attributedString
-        attributionAction = .VisitSite
+        attributionAction = .visitSite
     }
 
 
-    private func stringForPostAttribution(authorName: String?, blogName: String?) -> String {
+    fileprivate func stringForPostAttribution(_ authorName: String?, blogName: String?) -> String {
         var str = ""
         if (authorName != nil) && (blogName != nil) {
             let pattern = NSLocalizedString("Originally posted by %@ on %@",
@@ -158,12 +156,12 @@ private enum ReaderCardDiscoverAttribution : Int {
     }
 
 
-    private func patternForSiteAttribution(verbose: Bool) -> String {
+    fileprivate func patternForSiteAttribution(_ verbose: Bool) -> String {
         var pattern: String
         if verbose {
-            pattern = NSLocalizedString("Visit %@ for more", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
+            pattern = NSLocalizedString("Visit %@ for more", comment: "A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
         } else {
-            pattern = NSLocalizedString("Visit %@", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
+            pattern = NSLocalizedString("Visit %@", comment: "A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
         }
         return pattern
     }
@@ -171,56 +169,56 @@ private enum ReaderCardDiscoverAttribution : Int {
 
     // MARK: - Touches
 
-    public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesBegan(touches, withEvent: event)
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
         // Add highlight if the touch begins inside of the textLabel's frame
-        guard let touch: UITouch = event?.allTouches()?.first else {
+        guard let touch: UITouch = event?.allTouches?.first else {
             return
         }
-        if CGRectContainsPoint(textLabel.bounds, touch.locationInView(textLabel)) {
-            textLabel.highlighted = true
+        if textLabel.bounds.contains(touch.location(in: textLabel)) {
+            textLabel.isHighlighted = true
         }
     }
 
 
-    public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesMoved(touches, withEvent: event)
+    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
         // Remove highlight if the touch moves outside of the textLabel's frame
-        guard textLabel.highlighted else {
+        guard textLabel.isHighlighted else {
             return
         }
-        guard let touch: UITouch = event?.allTouches()?.first else {
+        guard let touch: UITouch = event?.allTouches?.first else {
             return
         }
-        if !CGRectContainsPoint(textLabel.bounds, touch.locationInView(textLabel)) {
-            textLabel.highlighted = false
+        if !textLabel.bounds.contains(touch.location(in: textLabel)) {
+            textLabel.isHighlighted = false
         }
     }
 
 
-    public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesEnded(touches, withEvent: event)
-        guard textLabel.highlighted else {
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        guard textLabel.isHighlighted else {
             return
         }
-        textLabel.highlighted = false
+        textLabel.isHighlighted = false
     }
 
 
-    public override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-        super.touchesCancelled(touches!, withEvent: event)
-        guard textLabel.highlighted else {
+    open override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
+        super.touchesCancelled(touches!, with: event)
+        guard textLabel.isHighlighted else {
             return
         }
-        textLabel.highlighted = false
+        textLabel.isHighlighted = false
     }
 
 
     // MARK: - Actions
 
-    @objc public func textLabelTapGesture(gesture: UITapGestureRecognizer) {
+    @objc open func textLabelTapGesture(_ gesture: UITapGestureRecognizer) {
         switch attributionAction {
-        case .VisitSite:
+        case .visitSite:
             delegate?.attributionActionSelectedForVisitingSite(self)
         default: break
         }
