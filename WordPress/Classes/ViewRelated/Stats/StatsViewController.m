@@ -154,6 +154,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
     [self addChildViewController:controller];
     [self.view addSubview:controller.view];
+    controller.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view pinSubviewToAllEdges:controller.view];
 }
 
 
