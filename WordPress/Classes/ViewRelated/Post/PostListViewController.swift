@@ -319,7 +319,11 @@ class PostListViewController : AbstractPostListViewController, UIViewControllerR
         let post = postAtIndexPath(indexPath)
         let identifier = cellIdentifierForPost(post)
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
-
+        
+        cell.isAccessibilityElement = true
+        cell.accessibilityIdentifier = post.titleForDisplay()
+        NSLog( "SRS - " + post.titleForDisplay() )
+        
         configureCell(cell, atIndexPath: indexPath)
 
         return cell

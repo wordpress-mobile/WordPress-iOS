@@ -1105,6 +1105,7 @@ EditImageDetailsViewControllerDelegate
 
     UIImage *image = [Gridicon iconOfType:GridiconTypeEllipsis];
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(showMoreSheet)];
+    button.accessibilityLabel = NSLocalizedString(@"More", @"Action button to display more options");
     _moreBarButtonItem = button;
 
     return _moreBarButtonItem;
