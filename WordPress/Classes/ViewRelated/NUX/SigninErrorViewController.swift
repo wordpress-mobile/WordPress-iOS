@@ -7,8 +7,7 @@ import wpxmlrpc
 /// It provides for a title, message, and for specialized button actions.
 /// It is assumed the controller will always be presented modally.
 ///
-class SigninErrorViewController : UIViewController
-{
+class SigninErrorViewController: UIViewController {
     typealias SigninErrorCallback = (() -> Void)
 
     @IBOutlet weak var icon: UIImageView!
@@ -30,8 +29,8 @@ class SigninErrorViewController : UIViewController
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
     class func controller() -> SigninErrorViewController {
-        let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateViewControllerWithIdentifier("SigninErrorViewController") as! SigninErrorViewController
+        let storyboard = UIStoryboard(name: "Signin", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SigninErrorViewController") as! SigninErrorViewController
         return controller
     }
 
@@ -39,7 +38,7 @@ class SigninErrorViewController : UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.opaque = false
+        view.isOpaque = false
         view.backgroundColor = WPStyleGuide.colorForErrorView(false)
     }
 
@@ -57,22 +56,22 @@ class SigninErrorViewController : UIViewController
     ///     - secondButtonCallback: The callback block to execute when the second button is tapped.
     ///     - accessibilityIdentifier: Optional. Used to identify the view to accessibiity features.
     ///
-    func configureView(message: String, firstButtonText: String?, firstButtonCallback: SigninErrorCallback?, secondButtonText: String?, secondButtonCallback: SigninErrorCallback, accessibilityIdentifier: String?) {
+    func configureView(_ message: String, firstButtonText: String?, firstButtonCallback: SigninErrorCallback?, secondButtonText: String?, secondButtonCallback: @escaping SigninErrorCallback, accessibilityIdentifier: String?) {
         assert(!message.isEmpty)
 
         titleLabel.text = NSLocalizedString("Sorry, we can't log you in.", comment: "")
         descriptionLabel.text = message
-        primaryButton.setTitle(NSLocalizedString("OK", comment: ""), forState: .Normal)
-        secondaryButton.setTitle(NSLocalizedString("Need Help?", comment: ""), forState: .Normal)
+        primaryButton.setTitle(NSLocalizedString("OK", comment: ""), for: UIControlState())
+        secondaryButton.setTitle(NSLocalizedString("Need Help?", comment: ""), for: UIControlState())
 
         secondaryButtonCompletionBlock = secondButtonCallback
 
         if firstButtonText != nil {
-            primaryButton.setTitle(firstButtonText!, forState: .Normal)
+            primaryButton.setTitle(firstButtonText!, for: UIControlState())
         }
 
         if secondButtonText != nil {
-            secondaryButton.setTitle(secondButtonText!, forState: .Normal)
+            secondaryButton.setTitle(secondButtonText!, for: UIControlState())
         }
 
         if firstButtonCallback != nil {
@@ -94,10 +93,10 @@ class SigninErrorViewController : UIViewController
     ///
     /// - Parameter controller: The controller to use as the presenter.
     ///
-    func presentFromController(controller: UIViewController) {
+    func presentFromController(_ controller: UIViewController) {
         controller.providesPresentationContextTransitionStyle = true
         controller.definesPresentationContext = true
-        controller.presentViewController(self, animated: false, completion: {
+        controller.present(self, animated: false, completion: {
             if (UIAccessibilityIsVoiceOverRunning()) {
                 UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.titleLabel)
             }
@@ -108,14 +107,14 @@ class SigninErrorViewController : UIViewController
     /// Dismisses the modal controller.
     ///
     func dismiss() {
-        dismissViewControllerAnimated(false, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
 
 
     // MARK: - Actions
 
 
-    @IBAction func handlePrimaryButtonTapped(sender: UIButton) {
+    @IBAction func handlePrimaryButtonTapped(_ sender: UIButton) {
         guard let callback = primaryButtonCompletionBlock else {
             dismiss()
             return
@@ -124,12 +123,12 @@ class SigninErrorViewController : UIViewController
     }
 
 
-    @IBAction func handleSecondaryButtonTapped(sender: UIButton) {
+    @IBAction func handleSecondaryButtonTapped(_ sender: UIButton) {
         secondaryButtonCompletionBlock?()
     }
 
 
-    @IBAction func handleTapGesture(sender: UITapGestureRecognizer) {
+    @IBAction func handleTapGesture(_ sender: UITapGestureRecognizer) {
         dismiss()
     }
 
@@ -142,7 +141,7 @@ class SigninErrorViewController : UIViewController
     ///
     /// - Parameter error: An NSError instance
     ///
-    func displayError(error: NSError, loginFields: LoginFields, delegate: SigninErrorViewControllerDelegate) {
+    func displayError(_ error: NSError, loginFields: LoginFields, delegate: SigninErrorViewControllerDelegate) {
         self.loginFields = loginFields
         self.delegate = delegate
 
@@ -182,7 +181,7 @@ class SigninErrorViewController : UIViewController
     ///
     /// - Parameter message: The error message to show.
     ///
-    func displayGenericErrorMessage(message: String) {
+    func displayGenericErrorMessage(_ message: String) {
         let callback: SigninErrorCallback = { [unowned self] in
             self.dismiss()
             self.delegate?.displaySupportViewController()
@@ -202,7 +201,7 @@ class SigninErrorViewController : UIViewController
     ///
     /// - Parameter message: The error message to show.
     ///
-    func displayGenericErrorMessageWithHelpshiftButton(message: String) {
+    func displayGenericErrorMessageWithHelpshiftButton(_ message: String) {
         let callback: SigninErrorCallback = { [unowned self] in
             self.dismiss()
             self.delegate?.displayHelpshiftConversationView()
@@ -211,7 +210,7 @@ class SigninErrorViewController : UIViewController
         configureView(message,
                            firstButtonText: nil,
                            firstButtonCallback: nil,
-                           secondButtonText: NSLocalizedString("Contact Us", comment:"The text on the button at the bottom of the error message when a user has repeated trouble logging in"),
+                           secondButtonText: NSLocalizedString("Contact Us", comment: "The text on the button at the bottom of the error message when a user has repeated trouble logging in"),
                            secondButtonCallback: callback,
                            accessibilityIdentifier: "GenericErrorMessage")
     }
@@ -221,7 +220,7 @@ class SigninErrorViewController : UIViewController
     ///
     /// - Parameter message: The error message to show.
     ///
-    func displayErrorMessageForXMLRPC(message: String) {
+    func displayErrorMessageForXMLRPC(_ message: String) {
         let firstCallback: SigninErrorCallback = { [unowned self] in
             self.dismiss()
 
@@ -230,17 +229,18 @@ class SigninErrorViewController : UIViewController
             }
 
             var path: NSString
-            let regex = try! NSRegularExpression(pattern: "http\\S+writing.php", options: .CaseInsensitive)
-            let rng = regex.rangeOfFirstMatchInString(message, options: .ReportCompletion, range: NSRange(location: 0, length: message.characters.count))
+            let regex = try! NSRegularExpression(pattern: "http\\S+writing.php", options: .caseInsensitive)
+            let rng = regex.rangeOfFirstMatch(in: message, options: .reportCompletion, range: NSRange(location: 0, length: message.characters.count))
             if rng.location == NSNotFound {
-                path = SigninHelpers.baseSiteURL(loginFields.siteUrl)
-                path = path.stringByReplacingOccurrencesOfString("xmlrpc.php", withString: "")
-                path = path.stringByAppendingString("/wp-admin/options-writing.php")
+                path = SigninHelpers.baseSiteURL(loginFields.siteUrl) as NSString
+                path = path.replacingOccurrences(of: "xmlrpc.php", with: "") as NSString
+                path = path.appending("/wp-admin/options-writing.php") as NSString
             } else {
-                path = NSString(string: message).substringWithRange(rng)
+                let message = message as NSString
+                path = message.substring(with: rng) as NSString
             }
 
-            self.delegate?.displayWebviewForURL(NSURL(string: path as String)!, username: loginFields.username, password: loginFields.password)
+            self.delegate?.displayWebviewForURL(URL(string: path as String)!, username: loginFields.username, password: loginFields.password)
         }
 
         let secondCallback: SigninErrorCallback = { [unowned self] in
@@ -261,10 +261,10 @@ class SigninErrorViewController : UIViewController
     ///
     /// - Parameter message: The error message to show.
     ///
-    func displayErrorMessageForBadURL(message: String) {
+    func displayErrorMessageForBadURL(_ message: String) {
         let callback: SigninErrorCallback = { [unowned self] in
             self.dismiss()
-            self.delegate?.displayWebviewForURL(NSURL(string: "https://apps.wordpress.org/support/#faq-ios-3")!, username: nil, password: nil)
+            self.delegate?.displayWebviewForURL(URL(string: "https://apps.wordpress.org/support/#faq-ios-3")!, username: nil, password: nil)
         }
 
         configureView(message,
@@ -280,8 +280,7 @@ class SigninErrorViewController : UIViewController
 
 /// Defines responsibilities for the delegate of a SigninErrorViewController.
 ///
-protocol SigninErrorViewControllerDelegate
-{
+protocol SigninErrorViewControllerDelegate {
     /// Delegates should implement this method and display the support view controller when called.
     ///
     func displaySupportViewController()
@@ -294,5 +293,5 @@ protocol SigninErrorViewControllerDelegate
 
     /// Delegates should implement this method and display the in-app web browser when called.
     ///
-    func displayWebviewForURL(url: NSURL, username: String?, password: String?)
+    func displayWebviewForURL(_ url: URL, username: String?, password: String?)
 }

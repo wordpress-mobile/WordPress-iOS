@@ -3,14 +3,13 @@ import XCTest
 @testable import WordPress
 
 
-class StringExtensionsTests: XCTestCase
-{
+class StringExtensionsTests: XCTestCase {
     // Note:
     // Specially extra aligned for my RWC friends. With love.
     //
-    private let links   = ["http://www.google.com", "http://www.automattic.com", "http://wordpress.com?some=random"]
-    private let text    = " Lorem Ipsum Matarem Les Idiotum Sarasum Zorrentum Modus Operandum "
-    private let anchor  = "<a href=\"%@\">%@</a>"
+    fileprivate let links   = ["http://www.google.com", "http://www.automattic.com", "http://wordpress.com?some=random"]
+    fileprivate let text    = " Lorem Ipsum Matarem Les Idiotum Sarasum Zorrentum Modus Operandum "
+    fileprivate let anchor  = "<a href=\"%@\">%@</a>"
 
 
     func testLinkifyingPlainLinks() {

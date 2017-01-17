@@ -3,7 +3,7 @@ import WordPressComAnalytics
 
 /// A collection of helper methods used by the Reader.
 ///
-@objc public class ReaderHelpers : NSObject {
+@objc open class ReaderHelpers: NSObject {
 
 
     // MARK: - Topic Helpers
@@ -16,8 +16,8 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is a default topic
     ///
-    public class func isTopicDefault(topic:ReaderAbstractTopic) -> Bool {
-        return topic.isKindOfClass(ReaderDefaultTopic)
+    open class func isTopicDefault(_ topic: ReaderAbstractTopic) -> Bool {
+        return topic.isKind(of: ReaderDefaultTopic.self)
     }
 
 
@@ -28,8 +28,8 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is a list topic
     ///
-    public class func isTopicList(topic:ReaderAbstractTopic) -> Bool {
-        return topic.isKindOfClass(ReaderListTopic)
+    open class func isTopicList(_ topic: ReaderAbstractTopic) -> Bool {
+        return topic.isKind(of: ReaderListTopic.self)
     }
 
 
@@ -40,8 +40,8 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is a site topic
     ///
-    public class func isTopicSite(topic:ReaderAbstractTopic) -> Bool {
-        return topic.isKindOfClass(ReaderSiteTopic)
+    open class func isTopicSite(_ topic: ReaderAbstractTopic) -> Bool {
+        return topic.isKind(of: ReaderSiteTopic.self)
     }
 
 
@@ -52,8 +52,8 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is a tag topic
     ///
-    public class func isTopicTag(topic:ReaderAbstractTopic) -> Bool {
-        return topic.isKindOfClass(ReaderTagTopic)
+    open class func isTopicTag(_ topic: ReaderAbstractTopic) -> Bool {
+        return topic.isKind(of: ReaderTagTopic.self)
     }
 
 
@@ -64,8 +64,8 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is a search topic
     ///
-    public class func isTopicSearchTopic(topic: ReaderAbstractTopic) -> Bool {
-        return topic.isKindOfClass(ReaderSearchTopic)
+    open class func isTopicSearchTopic(_ topic: ReaderAbstractTopic) -> Bool {
+        return topic.isKind(of: ReaderSearchTopic.self)
     }
 
 
@@ -76,7 +76,7 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is for Freshly Pressed
     ///
-    public class func topicIsFreshlyPressed(topic: ReaderAbstractTopic) -> Bool {
+    open class func topicIsFreshlyPressed(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.path.hasSuffix("/freshly-pressed")
     }
 
@@ -88,8 +88,8 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is for Discover
     ///
-    public class func topicIsDiscover(topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.containsString("/read/sites/53424024/posts")
+    open class func topicIsDiscover(_ topic: ReaderAbstractTopic) -> Bool {
+        return topic.path.contains("/read/sites/53424024/posts")
     }
 
 
@@ -100,7 +100,7 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is for Following
     ///
-    public class func topicIsFollowing(topic: ReaderAbstractTopic) -> Bool {
+    open class func topicIsFollowing(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.path.hasSuffix("/read/following")
     }
 
@@ -112,28 +112,28 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the topic is for Posts I Like
     ///
-    public class func topicIsLiked(topic: ReaderAbstractTopic) -> Bool {
+    open class func topicIsLiked(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.path.hasSuffix("/read/liked")
     }
 
 
     // MARK: Analytics Helpers
 
-    public class func trackLoadedTopic(topic: ReaderAbstractTopic, withProperties properties:[NSObject : AnyObject]) {
-        var stat:WPAnalyticsStat?
+    open class func trackLoadedTopic(_ topic: ReaderAbstractTopic, withProperties properties: [AnyHashable: Any]) {
+        var stat: WPAnalyticsStat?
 
         if topicIsFreshlyPressed(topic) {
-            stat = .ReaderFreshlyPressedLoaded
+            stat = .readerFreshlyPressedLoaded
 
         } else if isTopicDefault(topic) && topicIsDiscover(topic) {
             // Tracks Discover only if it was one of the default menu items.
-            stat = .ReaderDiscoverViewed
+            stat = .readerDiscoverViewed
 
         } else if isTopicList(topic) {
-            stat = .ReaderListLoaded
+            stat = .readerListLoaded
 
         } else if isTopicTag(topic) {
-            stat = .ReaderTagLoaded
+            stat = .readerTagLoaded
 
         }
         if (stat != nil) {
@@ -142,17 +142,17 @@ import WordPressComAnalytics
     }
 
 
-    public class func statsPropertiesForPost(post:ReaderPost, andValue value:AnyObject?, forKey key:String?) -> [NSObject: AnyObject] {
-        var properties = [NSObject: AnyObject]()
+    open class func statsPropertiesForPost(_ post: ReaderPost, andValue value: AnyObject?, forKey key: String?) -> [AnyHashable: Any] {
+        var properties = [AnyHashable: Any]()
         properties[WPAppAnalyticsKeyBlogID] = post.siteID
         properties[WPAppAnalyticsKeyPostID] = post.postID
         properties[WPAppAnalyticsKeyIsJetpack] = post.isJetpack
-        if let feedID = post.feedID, feedItemID = post.feedItemID {
+        if let feedID = post.feedID, let feedItemID = post.feedItemID {
             properties[WPAppAnalyticsKeyFeedID] = feedID
             properties[WPAppAnalyticsKeyFeedItemID] = feedItemID
         }
 
-        if let value = value, key = key {
+        if let value = value, let key = key {
             properties[key] = value
         }
 
@@ -160,7 +160,7 @@ import WordPressComAnalytics
     }
 
 
-    public class func bumpPageViewForPost(post: ReaderPost) {
+    open class func bumpPageViewForPost(_ post: ReaderPost) {
         // Don't bump page views for feeds else the wrong blog/post get's bumped
         if post.isExternal && !post.isJetpack {
             return
@@ -181,33 +181,33 @@ import WordPressComAnalytics
 
         let pixelStatReferrer = "https://wordpress.com/"
         let pixel = "https://pixel.wp.com/g.gif"
-        let params:NSArray = [
+        let params: NSArray = [
             "v=wpcom",
             "reader=1",
             "ref=\(pixelStatReferrer)",
             "host=\(host)",
             "blog=\(siteID)",
             "post=\(postID)",
-            NSString(format:"t=%d", arc4random())
+            NSString(format: "t=%d", arc4random())
         ]
 
-        let userAgent = WPUserAgent.wordPressUserAgent()
-        let path  = NSString(format: "%@?%@", pixel, params.componentsJoinedByString("&")) as String
-        let url = NSURL(string: path)
+        let userAgent = WPUserAgent.wordPress()
+        let path  = NSString(format: "%@?%@", pixel, params.componentsJoined(by: "&")) as String
+        let url = URL(string: path)
 
-        let request = NSMutableURLRequest(URL: url!)
+        let request = NSMutableURLRequest(url: url!)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         request.addValue(pixelStatReferrer, forHTTPHeaderField: "Referer")
 
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request)
+        let session = URLSession.shared
+        let task = session.dataTask(with: request as URLRequest)
         task.resume()
     }
 
-    public class func isUserAdminOnSiteWithID(siteID:NSNumber) -> Bool {
+    open class func isUserAdminOnSiteWithID(_ siteID: NSNumber) -> Bool {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
-        if let blog = blogService.blogByBlogId(siteID) {
+        if let blog = blogService?.blog(byBlogId: siteID) {
             return blog.isAdmin
         }
         return false
@@ -216,7 +216,7 @@ import WordPressComAnalytics
 
     // MARK: Logged in helper
 
-    public class func isLoggedIn() -> Bool {
+    open class func isLoggedIn() -> Bool {
         return AccountHelper.isDotcomAvailable()
     }
 }

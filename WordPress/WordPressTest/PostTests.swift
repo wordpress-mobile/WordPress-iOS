@@ -5,22 +5,22 @@ import XCTest
 
 class PostTests: XCTestCase {
 
-    private var contextManager: TestContextManager!
-    private var context: NSManagedObjectContext!
+    fileprivate var contextManager: TestContextManager!
+    fileprivate var context: NSManagedObjectContext!
 
-    private func newTestBlog() -> Blog {
-        return NSEntityDescription.insertNewObjectForEntityForName("Blog", inManagedObjectContext: context) as! Blog
+    fileprivate func newTestBlog() -> Blog {
+        return NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
     }
 
-    private func newTestPost() -> Post {
-        return NSEntityDescription.insertNewObjectForEntityForName(Post.entityName, inManagedObjectContext: context) as! Post
+    fileprivate func newTestPost() -> Post {
+        return NSEntityDescription.insertNewObject(forEntityName: Post.entityName, into: context) as! Post
     }
 
-    private func newTestPostCategory() -> PostCategory {
-        return NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: context) as! PostCategory
+    fileprivate func newTestPostCategory() -> PostCategory {
+        return NSEntityDescription.insertNewObject(forEntityName: "Category", into: context) as! PostCategory
     }
 
-    private func newTestPostCategory(name: String) -> PostCategory {
+    fileprivate func newTestPostCategory(_ name: String) -> PostCategory {
         let category = newTestPostCategory()
         category.categoryName = name
 
@@ -30,8 +30,8 @@ class PostTests: XCTestCase {
     override func setUp() {
         super.setUp()
         contextManager = TestContextManager()
-        context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        context.parentContext = contextManager.mainContext
+        context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        context.parent = contextManager.mainContext
     }
 
     override func tearDown() {
@@ -264,22 +264,22 @@ class PostTests: XCTestCase {
         XCTAssertNil(post.statusForDisplay())
 
         post.status = PostStatusPending
-        XCTAssertEqual(post.statusForDisplay(), Post.titleForStatus(PostStatusPending))
+        XCTAssertEqual(post.statusForDisplay(), Post.title(forStatus: PostStatusPending))
 
         post.status = PostStatusPrivate
-        XCTAssertEqual(post.statusForDisplay(), Post.titleForStatus(PostStatusPrivate))
+        XCTAssertEqual(post.statusForDisplay(), Post.title(forStatus: PostStatusPrivate))
 
         post.status = PostStatusPublish
         XCTAssertNil(post.statusForDisplay())
 
         post.status = PostStatusScheduled
-        XCTAssertEqual(post.statusForDisplay(), Post.titleForStatus(PostStatusScheduled))
+        XCTAssertEqual(post.statusForDisplay(), Post.title(forStatus: PostStatusScheduled))
 
         post.status = PostStatusTrash
-        XCTAssertEqual(post.statusForDisplay(), Post.titleForStatus(PostStatusTrash))
+        XCTAssertEqual(post.statusForDisplay(), Post.title(forStatus: PostStatusTrash))
 
         post.status = PostStatusDeleted
-        XCTAssertEqual(post.statusForDisplay(), Post.titleForStatus(PostStatusDeleted))
+        XCTAssertEqual(post.statusForDisplay(), Post.title(forStatus: PostStatusDeleted))
     }
 
     func testThatStatusForDisplayWorksForRevisionPost() {
@@ -290,22 +290,22 @@ class PostTests: XCTestCase {
         XCTAssertEqual(revision.statusForDisplay(), "Local")
 
         revision.status = PostStatusPending
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.titleForStatus(PostStatusPending)), Local")
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(forStatus: PostStatusPending)), Local")
 
         revision.status = PostStatusPrivate
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.titleForStatus(PostStatusPrivate)), Local")
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(forStatus: PostStatusPrivate)), Local")
 
         revision.status = PostStatusPublish
         XCTAssertEqual(revision.statusForDisplay(), "Local")
 
         revision.status = PostStatusScheduled
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.titleForStatus(PostStatusScheduled)), Local")
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(forStatus: PostStatusScheduled)), Local")
 
         revision.status = PostStatusTrash
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.titleForStatus(PostStatusTrash)), Local")
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(forStatus: PostStatusTrash)), Local")
 
         revision.status = PostStatusDeleted
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.titleForStatus(PostStatusDeleted)), Local")
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(forStatus: PostStatusDeleted)), Local")
     }
 
     func testThatHasLocalChangesWorks() {

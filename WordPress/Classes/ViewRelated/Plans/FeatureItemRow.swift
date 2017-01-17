@@ -1,15 +1,15 @@
 import UIKit
 import WordPressShared
 
-struct FeatureItemRow : ImmuTableRow {
-    static let cell = ImmuTableCell.Class(FeatureItemCell)
+struct FeatureItemRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(FeatureItemCell.self)
 
     let title: String
     let description: String
-    let iconURL: NSURL
+    let iconURL: URL
     let action: ImmuTableAction? = nil
 
-    func configureCell(cell: UITableViewCell) {
+    func configureCell(_ cell: UITableViewCell) {
         guard let cell = cell as? FeatureItemCell else { return }
 
         cell.featureTitleLabel?.text = title
@@ -18,14 +18,14 @@ struct FeatureItemRow : ImmuTableRow {
             cell.featureDescriptionLabel?.attributedText = attributedDescriptionText(description, font: featureDescriptionLabel.font)
         }
 
-        cell.featureIconImageView?.setImageWithURL(iconURL, placeholderImage: nil)
+        cell.featureIconImageView?.setImageWith(iconURL, placeholderImage: nil)
 
         cell.featureTitleLabel.textColor = WPStyleGuide.darkGrey()
         cell.featureDescriptionLabel.textColor = WPStyleGuide.grey()
         WPStyleGuide.configureTableViewCell(cell)
     }
 
-    private func attributedDescriptionText(text: String, font: UIFont) -> NSAttributedString {
+    fileprivate func attributedDescriptionText(_ text: String, font: UIFont) -> NSAttributedString {
         let lineHeight: CGFloat = 18
 
         let paragraphStyle = NSMutableParagraphStyle()

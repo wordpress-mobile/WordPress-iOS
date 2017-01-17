@@ -38,27 +38,27 @@ class RoundedButton: UIButton {
         updateAppearance()
     }
 
-    override func willMoveToSuperview(newSuperview: UIView?) {
-        super.willMoveToSuperview(newSuperview)
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
 
         updateAppearance()
     }
 
-    private func updateAppearance() {
+    fileprivate func updateAppearance() {
         contentEdgeInsets = UIEdgeInsets(top: verticalEdgeInset, left: horizontalEdgeInset, bottom: verticalEdgeInset, right: horizontalEdgeInset)
 
         layer.masksToBounds = true
         layer.cornerRadius = cornerRadius
         layer.borderWidth = borderWidth
-        layer.borderColor = tintColor.CGColor
+        layer.borderColor = tintColor.cgColor
 
-        setTitleColor(tintColor, forState: .Normal)
+        setTitleColor(tintColor, for: UIControlState())
 
         if reversesTitleShadowWhenHighlighted {
-            setTitleColor(backgroundColor, forState: [.Highlighted])
-            setBackgroundImage(UIImage(color: tintColor), forState: .Highlighted)
+            setTitleColor(backgroundColor, for: [.highlighted])
+            setBackgroundImage(UIImage(color: tintColor), for: .highlighted)
         } else {
-            setTitleColor(tintColor.colorWithAlphaComponent(0.3), forState: .Highlighted)
+            setTitleColor(tintColor.withAlphaComponent(0.3), for: .highlighted)
         }
     }
 }

@@ -61,11 +61,8 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 // Used for tracking when a post is rendered (displayed), and bumping the train tracks rendered event.
 @property (nonatomic) BOOL rendered;
 
-// When true indicates a post should not be deleted/cleaned-up as its needed
-// for state restoration.
-// This property should be set when the app is encoding for state restoration
-// and unset after state is restored.
-@property (nonatomic) BOOL preserveForRestoration;
+// When true indicates a post should not be deleted/cleaned-up as its currently being used.
+@property (nonatomic) BOOL inUse;
 
 - (BOOL)isCrossPost;
 - (BOOL)isPrivate;

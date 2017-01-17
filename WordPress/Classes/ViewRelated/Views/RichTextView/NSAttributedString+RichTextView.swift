@@ -9,16 +9,15 @@ import UIKit
 //
 public let UIKitAttachmentAttributeName = "NSAttachment"
 
-extension NSAttributedString
-{
-    public func enumerateAttachments(block: (attachment: NSTextAttachment, range: NSRange) -> ()) {
+extension NSAttributedString {
+    public func enumerateAttachments(_ block: @escaping (_ attachment: NSTextAttachment, _ range: NSRange) -> ()) {
         let range = NSMakeRange(0, length)
 
-        enumerateAttribute(UIKitAttachmentAttributeName, inRange: range, options: .LongestEffectiveRangeNotRequired) {
-            (value: AnyObject?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+        enumerateAttribute(UIKitAttachmentAttributeName, in: range, options: .longestEffectiveRangeNotRequired) {
+            (value: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
 
             if let attachment = value as? NSTextAttachment {
-                block(attachment: attachment, range: range)
+                block(attachment, range)
             }
         }
     }

@@ -1,15 +1,14 @@
 import Foundation
 import CoreData
 
-@objc public class ReaderCrossPostMeta : NSManagedObject
-{
+@objc open class ReaderCrossPostMeta: NSManagedObject {
     // Relations
-    @NSManaged public var post: ReaderPost
+    @NSManaged open var post: ReaderPost
 
     // Properties
-    @NSManaged public var siteURL: String
-    @NSManaged public var postURL: String
-    @NSManaged public var commentURL: String
-    @NSManaged public var siteID: NSNumber
-    @NSManaged public var postID: NSNumber
+    @NSManaged open var siteURL: String
+    @NSManaged open var postURL: String
+    @NSManaged open var commentURL: String
+    @NSManaged open var siteID: NSNumber
+    @NSManaged open var postID: NSNumber
 }

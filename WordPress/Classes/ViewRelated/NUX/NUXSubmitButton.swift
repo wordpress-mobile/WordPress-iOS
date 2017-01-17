@@ -6,30 +6,36 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 /// A stylized button used by NUX controllers. The button presents white text
 /// surrounded by a white border.  It also can display a `UIActivityIndicatorView`.
 ///
-@objc class NUXSubmitButton : UIButton
-{
+@IBDesignable
+@objc class NUXSubmitButton: UIButton {
+    @IBInspectable var isPrimary: Bool = false {
+        didSet {
+            configureButton()
+        }
+    }
+    let cornerRadius = CGFloat(5.0)
+
     var isAnimating: Bool {
         get {
-            return activityIndicator.isAnimating()
+            return activityIndicator.isAnimating
         }
     }
 
-
     let activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .White)
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         indicator.hidesWhenStopped = true
         return indicator
     }()
 
 
-    override var enabled: Bool {
+    override var isEnabled: Bool {
         didSet {
             configureBorderColor()
         }
     }
 
 
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         didSet {
             configureBorderColor()
         }
@@ -38,15 +44,8 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 
     // MARK: - LifeCycle Methods
 
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureButton()
-    }
-
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    override func awakeFromNib() {
+        super.awakeFromNib()
         configureButton()
     }
 
@@ -54,8 +53,8 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        if activityIndicator.isAnimating() {
-            titleLabel?.frame = CGRectZero
+        if activityIndicator.isAnimating {
+            titleLabel?.frame = CGRect.zero
 
             var frm = activityIndicator.frame
             frm.origin.x = (frame.width - frm.width) / 2.0
@@ -73,21 +72,31 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
     func configureButton() {
         contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
 
-        let cornerRadius = CGFloat(5.0)
         layer.cornerRadius = cornerRadius
         layer.borderWidth = 1
-        layer.borderColor = UIColor.whiteColor().CGColor
+        layer.borderColor = UIColor.white.cgColor
+        clipsToBounds = true
 
-        titleLabel?.font = WPFontManager.systemRegularFontOfSize(14.0)
-        setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        setTitleColor(WPStyleGuide.lightBlue(), forState: .Highlighted)
-        setTitleColor(UIColor(white: 1.0, alpha: NUXSubmitButtonDisabledAlpha), forState: .Disabled)
+        titleLabel?.font = WPFontManager.systemSemiBoldFont(ofSize: 17.0)
 
         let capInsets = UIEdgeInsets(top: cornerRadius, left: cornerRadius, bottom: cornerRadius, right: cornerRadius)
-        let normalImage = UIImage(color: UIColor.clearColor(), havingSize: CGSize(width: 44, height: 44))
+        var backgroundColor = UIColor.clear
+        var titleColorNormal = UIColor.white
+        var titleColorHighlighted = WPStyleGuide.lightBlue()
+        var titleColorDisabled = UIColor(white: 1.0, alpha: NUXSubmitButtonDisabledAlpha)
+        if (isPrimary) {
+            backgroundColor = UIColor.white
+            titleColorNormal = WPStyleGuide.wordPressBlue()
+            titleColorHighlighted = WPStyleGuide.darkBlue()
+            titleColorDisabled = titleColorNormal.withAlphaComponent(NUXSubmitButtonDisabledAlpha)
+        }
+        let normalImage = UIImage(color: backgroundColor, havingSize: CGSize(width: 44, height: 44))
+        setBackgroundImage(normalImage?.resizableImage(withCapInsets: capInsets), for: .normal)
+        setBackgroundImage(normalImage?.resizableImage(withCapInsets: capInsets), for: .highlighted)
 
-        setBackgroundImage(normalImage.resizableImageWithCapInsets(capInsets), forState: .Normal)
-        setBackgroundImage(normalImage.resizableImageWithCapInsets(capInsets), forState: .Highlighted)
+        setTitleColor(titleColorNormal, for: .normal)
+        setTitleColor(titleColorHighlighted, for: .highlighted)
+        setTitleColor(titleColorDisabled, for: .disabled)
 
         addSubview(activityIndicator)
     }
@@ -97,12 +106,12 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
     ///
     func configureBorderColor() {
         var color: UIColor
-        if enabled {
-            color = highlighted ? WPStyleGuide.lightBlue() : UIColor.whiteColor()
+        if isEnabled {
+            color = isHighlighted ? WPStyleGuide.lightBlue() : UIColor.white
         } else {
             color = UIColor(white: 1.0, alpha: NUXSubmitButtonDisabledAlpha)
         }
-        layer.borderColor = color.CGColor
+        layer.borderColor = color.cgColor
     }
 
 
@@ -114,7 +123,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
     ///
     /// - Parameter show: True to show the spinner. False hides it.
     ///
-    func showActivityIndicator(show: Bool) {
+    func showActivityIndicator(_ show: Bool) {
         if show {
             activityIndicator.startAnimating()
         } else {

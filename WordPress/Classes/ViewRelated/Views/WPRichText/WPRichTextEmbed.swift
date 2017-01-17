@@ -1,29 +1,28 @@
 import Foundation
 
-class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
-{
+class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
     typealias successBlock = ((WPRichTextEmbed)->Void)
 
 
     // MARK: Properties
 
-    var fixedHeight : CGFloat = 0.0
-    var attachmentSize = CGSizeZero
-    var documentSize : CGSize {
+    var fixedHeight: CGFloat = 0.0
+    var attachmentSize = CGSize.zero
+    var documentSize: CGSize {
         get {
             var contentSize = webView.scrollView.contentSize
-            if let heightStr = webView.stringByEvaluatingJavaScriptFromString("document.documentElement.scrollHeight") {
-                if let height = NSNumberFormatter().numberFromString(heightStr) {
+            if let heightStr = webView.stringByEvaluatingJavaScript(from: "document.documentElement.scrollHeight") {
+                if let height = NumberFormatter().number(from: heightStr) {
                     contentSize.height = CGFloat(height)
                 }
             }
             return contentSize
         }
     }
-    var success : successBlock?
-    var linkURL : NSURL?
-    var contentURL : NSURL?
-    var webView : UIWebView
+    var success: successBlock?
+    var linkURL: URL?
+    var contentURL: URL?
+    var webView: UIWebView
 
     override var frame: CGRect {
         didSet {
@@ -40,7 +39,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 
     override init(frame: CGRect) {
         // A small starting frame to avoid being sized too tall
-        webView = UIWebView(frame: CGRectMake(0.0, 0.0, 20.0, 20.0))
+        webView = UIWebView(frame: CGRect(x: 0.0, y: 0.0, width: 20.0, height: 20.0))
 
         super.init(frame: frame)
 
@@ -49,10 +48,10 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     }
 
     required init?(coder aDecoder: NSCoder) {
-        if let decodedWebView = aDecoder.decodeObjectForKey("webView") as? UIWebView {
+        if let decodedWebView = aDecoder.decodeObject(forKey: "webView") as? UIWebView {
             webView = decodedWebView
         } else {
-            webView = UIWebView(frame: CGRectMake(0.0, 0.0, 20.0, 20.0))
+            webView = UIWebView(frame: CGRect(x: 0.0, y: 0.0, width: 20.0, height: 20.0))
         }
 
         super.init(coder: aDecoder)
@@ -60,18 +59,18 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
         configureWebView()
     }
 
-    override func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(webView, forKey: "webView")
+    override func encode(with aCoder: NSCoder) {
+        aCoder.encode(webView, forKey: "webView")
 
-        super.encodeWithCoder(aCoder)
+        super.encode(with: aCoder)
     }
 
 
     // MARK: Configuration
 
     func configureWebView() {
-        webView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        webView.scrollView.scrollEnabled = false
+        webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        webView.scrollView.isScrollEnabled = false
         webView.scalesPageToFit = true
         webView.delegate = self
     }
@@ -81,15 +80,15 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 
     func contentSize() -> CGSize {
         if webView.superview == nil {
-            return CGSizeMake(1.0, 1.0)
+            return CGSize(width: 1.0, height: 1.0)
         }
 
         // embeds, unlike images, typically have no intrinsic content size that we can use to fall back on
         if (fixedHeight > 0) {
-            return CGSizeMake(CGFloat.max, fixedHeight)
+            return CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedHeight)
         }
 
-        if !CGSizeEqualToSize(attachmentSize, CGSizeZero) {
+        if !attachmentSize.equalTo(CGSize.zero) {
             return attachmentSize
         }
 
@@ -101,43 +100,42 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
             return 0.0
         }
 
-        if !CGSizeEqualToSize(attachmentSize, CGSizeZero) {
+        if !attachmentSize.equalTo(CGSize.zero) {
             return attachmentSize.width / attachmentSize.height
         }
 
-        if (!CGSizeEqualToSize(documentSize, CGSizeZero)) {
+        if (!documentSize.equalTo(CGSize.zero)) {
             return documentSize.width / documentSize.height
         }
 
         return 0.0
     }
 
-    func loadContentURL(url: NSURL) {
+    func loadContentURL(_ url: URL) {
         var url = url
-        if  let absoluteString = url.absoluteString,
-            let components = NSURLComponents(string: absoluteString) {
+        if var components = URLComponents(string: url.absoluteString) {
                 if components.scheme == nil {
                     components.scheme = "http"
                 }
             if  let componentStr = components.string,
-                let componentURL = NSURL(string: componentStr) {
+                let componentURL = URL(string: componentStr) {
                     url = componentURL
             }
         }
 
         contentURL = url
-        let request = NSURLRequest(URL: url)
+        let request = URLRequest(url: url)
         webView.loadRequest(request)
     }
 
-    func loadHTMLString(html: NSString) {
+    func loadHTMLString(_ html: NSString) {
         let htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /></head><body>%@</body></html>", html)
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
 
 
     func checkIfDoneLoading() {
-        if webView.loading {
+        if webView.isLoading {
             return
         }
 
@@ -150,7 +148,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 
     // MARK: WebView delegate methods
 
-    func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
         // Add the webView as a subview if it hasn't been already.
         if webView.superview == nil {
             // Make sure that any viewport meta tag does not have a min scale incase we're display smaller than the device width.
@@ -162,7 +160,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
                 "       viewport.setAttribute('content', 'width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');" +
                 "   }" +
                 "}, 100 );"
-            webView.stringByEvaluatingJavaScriptFromString(viewport)
+            webView.stringByEvaluatingJavaScript(from: viewport)
 
             webView.frame = bounds
             addSubview(webView)
@@ -170,13 +168,13 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 
         // The webViewDidFinishLoad method can be called many times for a single
         // web page. Wait a brief moment then check if the webview is done loading content.
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
+        let delayTime = DispatchTime.now() + Double(Int64(0.3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) { [weak self] in
             self?.checkIfDoneLoading()
         }
     }
 
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         if let url = contentURL {
             DDLogSwift.logError("RichTextEmbed failed to load content URL: \(url).")
         }

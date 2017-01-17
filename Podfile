@@ -1,8 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 project 'WordPress/WordPress.xcodeproj'
-install! 'cocoapods',
-         :deterministic_uuids => false
 
 inhibit_all_warnings!
 use_frameworks!
@@ -10,9 +8,9 @@ use_frameworks!
 platform :ios, '9.0'
 
 abstract_target 'WordPress_Base' do
-  pod 'WordPress-iOS-Shared', '0.7.0'
+  pod 'WordPress-iOS-Shared', '0.7.1'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
-  pod 'WordPressComKit',   '0.0.5'
+  pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
   pod 'WordPressCom-Stats-iOS', '0.8.1'
 
   target 'WordPress' do
@@ -22,7 +20,6 @@ abstract_target 'WordPress_Base' do
     pod '1PasswordExtension', '1.8.1'
     pod 'AFNetworking',	'3.1.0'
     pod 'CocoaLumberjack', '~> 2.2.0'
-    pod 'DTCoreText',   '1.6.16'
     pod 'FormatterKit', '~> 1.8.1'
     pod 'Helpshift', '~> 5.7.1'
     pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
@@ -35,7 +32,9 @@ abstract_target 'WordPress_Base' do
     pod 'Crashlytics'
     pod 'BuddyBuildSDK', '~> 1.0.11', :configurations => ['Release-Alpha']
     pod 'FLAnimatedImage', '~> 1.0'
-    pod 'Starscream', '~> 1.1.4' # Pinned to v1 for Swift 2
+    # Temporary until this fix is merged and released
+    # https://github.com/daltoniam/Starscream/pull/294
+    pod 'Starscream', :git => 'https://github.com/wordpress-mobile/Starscream', :branch => 'wordpress-ios'
     # ----------------------------
     # Forked third party libraries
     # ----------------------------
@@ -44,24 +43,24 @@ abstract_target 'WordPress_Base' do
     # --------------------
     # WordPress components
     # --------------------
-    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.1'
-    pod 'Gridicons', :git => "https://github.com/Automattic/Gridicons-iOS.git", :commit => "8bd04e18eddaaf36810887c94837571e68f7cc24"
+    pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.2'
+    pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :tag => '0.4'
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '~> 0.10.3'
     pod 'WordPress-iOS-Editor', '1.8.1'
-    pod 'WordPressCom-Analytics-iOS', '0.1.21'
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => '7d02c77349245c6e4d3bcdf63a878f90eb4a4e39'
+    pod 'WordPressCom-Analytics-iOS', '0.1.22'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => '2829e11af539e1c7c1cb449bb318a344aa8fc191'
     pod 'wpxmlrpc', '~> 0.8'
 
     target :WordPressTest do
       inherit! :search_paths
-      pod 'OHHTTPStubs', '~> 4.6.0'
-      pod 'OHHTTPStubs/Swift', '~> 4.6.0'
+      pod 'OHHTTPStubs'
+      pod 'OHHTTPStubs/Swift'
       pod 'OCMock', '3.1.2'
       pod 'Specta', '1.0.5'
       pod 'Expecta', '1.0.5'
-      pod 'Nimble', '~> 4.0.0'
+      pod 'Nimble', '~> 5.0.0'
     end
   end
 
@@ -69,32 +68,6 @@ abstract_target 'WordPress_Base' do
   end
 
   target 'WordPressTodayWidget' do
-  end
-
-end
-
-post_install do |installer_representation|
-#   installer_representation.pods_project.targets.each do |target|
-#     # See https://github.com/CocoaPods/CocoaPods/issues/3838
-#     if target.name.end_with?('WordPressCom-Stats-iOS')
-#       target.build_configurations.each do |config|
-#         config.build_settings['FRAMEWORK_SEARCH_PATHS'] ||= ['$(inherited)', '$PODS_FRAMEWORK_BUILD_PATH', '$PODS_FRAMEWORK_BUILD_PATH/..']
-#       end
-#     end
-#   end
-#
-#   # Directly set the Targeted Device Family
-#   # See https://github.com/CocoaPods/CocoaPods/issues/2292
-#   installer_representation.pods_project.build_configurations.each do |config|
-#       config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
-#   end
-
-  # Specify Swift 2.3 Setting!
-  #
-  installer_representation.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['SWIFT_VERSION'] = '2.3'
-    end
   end
 
 end

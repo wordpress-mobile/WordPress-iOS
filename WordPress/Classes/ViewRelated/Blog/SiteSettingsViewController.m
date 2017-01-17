@@ -153,7 +153,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         [sections addObject:@(SiteSettingsSectionWriting)];
     }
 
-    if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
+    if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
         [sections addObject:@(SiteSettingsSectionDiscussion)];
     }
 

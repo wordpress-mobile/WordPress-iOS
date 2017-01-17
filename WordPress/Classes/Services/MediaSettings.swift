@@ -2,14 +2,14 @@ import Foundation
 
 class MediaSettings: NSObject {
     // MARK: - Constants
-    private let maxImageSizeKey = "SavedMaxImageSizeSetting"
-    private let removeLocationKey = "SavedRemoveLocationSetting"
+    fileprivate let maxImageSizeKey = "SavedMaxImageSizeSetting"
+    fileprivate let removeLocationKey = "SavedRemoveLocationSetting"
 
-    private let minImageDimension = 150
-    private let maxImageDimension = 3000
+    fileprivate let minImageDimension = 150
+    fileprivate let maxImageDimension = 3000
 
     // MARK: - Internal variables
-    private let database: KeyValueDatabase
+    fileprivate let database: KeyValueDatabase
 
     // MARK: - Initialization
     init(database: KeyValueDatabase) {
@@ -18,7 +18,7 @@ class MediaSettings: NSObject {
     }
 
     convenience override init() {
-        self.init(database: NSUserDefaults())
+        self.init(database: UserDefaults() as KeyValueDatabase)
     }
 
     // MARK: Public accessors
@@ -54,11 +54,11 @@ class MediaSettings: NSObject {
     ///
     var maxImageSizeSetting: Int {
         get {
-            if let savedSize = database.objectForKey(maxImageSizeKey) as? Int {
+            if let savedSize = database.object(forKey: maxImageSizeKey) as? Int {
                 return savedSize
-            } else if let savedSize = database.objectForKey(maxImageSizeKey) as? String {
+            } else if let savedSize = database.object(forKey: maxImageSizeKey) as? String {
                 let newSize = CGSizeFromString(savedSize).width
-                database.setObject(newSize, forKey: maxImageSizeKey)
+                database.set(newSize, forKey: maxImageSizeKey)
                 return Int(newSize)
             } else {
                 return maxImageDimension
@@ -66,20 +66,20 @@ class MediaSettings: NSObject {
         }
         set {
             let size = newValue.clamp(min: minImageDimension, max: maxImageDimension)
-            database.setObject(size, forKey: maxImageSizeKey)
+            database.set(size, forKey: maxImageSizeKey)
         }
     }
 
     var removeLocationSetting: Bool {
         get {
-            if let savedRemoveLocation = database.objectForKey(removeLocationKey) as? Bool {
+            if let savedRemoveLocation = database.object(forKey: removeLocationKey) as? Bool {
                 return savedRemoveLocation
             } else {
                 return true
             }
         }
         set {
-            database.setObject(newValue, forKey: removeLocationKey)
+            database.set(newValue, forKey: removeLocationKey)
         }
     }
 }

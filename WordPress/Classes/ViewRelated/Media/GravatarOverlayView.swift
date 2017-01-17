@@ -4,12 +4,11 @@ import UIKit
 
 // Renders an "Outer Ellipse Overlay", to be used on top of the Gravatar Image
 //
-class GravatarOverlayView : UIView
-{
+class GravatarOverlayView: UIView {
     // MARK: - Public Properties
     var borderWidth = CGFloat(3)
-    var borderColor : UIColor?
-    var outerColor : UIColor?
+    var borderColor: UIColor?
+    var outerColor: UIColor?
 
     // MARK: - Overriden Methods
     override func layoutSubviews() {
@@ -17,8 +16,8 @@ class GravatarOverlayView : UIView
         setNeedsDisplay()
     }
 
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
 
         let context = UIGraphicsGetCurrentContext()!
 
@@ -27,23 +26,23 @@ class GravatarOverlayView : UIView
         let ellipseRect = bounds.insetBy(dx: delta, dy: delta)
 
         // Setup
-        CGContextSaveGState(context)
-        CGContextSetLineWidth(context, borderWidth)
-        CGContextSetAllowsAntialiasing(context, true)
-        CGContextSetShouldAntialias(context, true)
+        context.saveGState()
+        context.setLineWidth(borderWidth)
+        context.setAllowsAntialiasing(true)
+        context.setShouldAntialias(true)
 
         // Outer
         outerColor?.setFill()
-        CGContextAddRect(context, bounds)
-        CGContextAddEllipseInRect(context, ellipseRect)
-        CGContextEOFillPath(context)
+        context.addRect(bounds)
+        context.addEllipse(in: ellipseRect)
+        context.fillPath(using: .evenOdd)
 
         // Border
         borderColor?.setStroke()
-        CGContextAddEllipseInRect(context, ellipseRect)
-        CGContextStrokePath(context)
+        context.addEllipse(in: ellipseRect)
+        context.strokePath()
 
         // Wrap Up
-        CGContextRestoreGState(context)
+        context.restoreGState()
     }
 }

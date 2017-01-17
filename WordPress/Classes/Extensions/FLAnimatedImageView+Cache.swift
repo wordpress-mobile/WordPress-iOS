@@ -1,15 +1,14 @@
 import Foundation
 import FLAnimatedImage
 
-public class CachedAnimatedImageView: FLAnimatedImageView {
+open class CachedAnimatedImageView: FLAnimatedImageView {
 
-    var currentTask: NSURLSessionTask?
+    var currentTask: URLSessionTask?
 
-    func setAnimatedImage(urlRequest: NSURLRequest,
+    func setAnimatedImage(_ urlRequest: URLRequest,
                           placeholderImage: UIImage?,
-                          success:((FLAnimatedImage) -> ())? ,
-                          failure:((NSError?) -> ())? )
-    {
+                          success: ((FLAnimatedImage) -> ())? ,
+                          failure: ((NSError?) -> ())? ) {
         if let ongoingTask = currentTask {
             ongoingTask.cancel()
         }
@@ -19,7 +18,7 @@ public class CachedAnimatedImageView: FLAnimatedImageView {
                                                     guard let strongSelf = self else {
                                                         return
                                                     }
-                                                    dispatch_async(dispatch_get_main_queue(), {
+                                                    DispatchQueue.main.async(execute: {
                                                         strongSelf.animatedImage = animatedImage
                                                     })
                                                 },
@@ -31,34 +30,33 @@ class AnimatedImageCache {
 
     static let shared: AnimatedImageCache = AnimatedImageCache()
 
-    private lazy var session: NSURLSession = {
-        let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: sessionConfiguration)
+    fileprivate lazy var session: URLSession = {
+        let sessionConfiguration = URLSessionConfiguration.default
+        let session = URLSession(configuration: sessionConfiguration)
         return session
     }()
 
-    private lazy var cache: NSCache = {
-        return NSCache()
+    fileprivate lazy var cache: NSCache = {
+        return NSCache<AnyObject, AnyObject>()
     }()
 
-    func animatedImage(urlRequest: NSURLRequest,
+    func animatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
-                       success:((FLAnimatedImage) -> ())? ,
-                       failure:((NSError?) -> ())? ) -> NSURLSessionTask?
-    {
-        if  let key = urlRequest.URL,
-            let animatedImage = cache.objectForKey(key) as? FLAnimatedImage {
+                       success: ((FLAnimatedImage) -> ())? ,
+                       failure: ((NSError?) -> ())? ) -> URLSessionTask? {
+        if  let key = urlRequest.url,
+            let animatedImage = cache.object(forKey: key as AnyObject) as? FLAnimatedImage {
             success?(animatedImage)
             return nil
         }
-        let task = session.dataTaskWithRequest(urlRequest, completionHandler:{ [weak self](data, response, error) in
+        let task = session.dataTask(with: urlRequest, completionHandler: { [weak self](data, response, error) in
             //check if view is still here
             guard let strongSelf = self else {
                 return
             }
             // check if there is an error
             if let error = error {
-                failure?(error)
+                failure?(error as NSError?)
                 return
             }
             // check if data is here and is animated gif
@@ -70,8 +68,8 @@ class AnimatedImageCache {
                     return
             }
 
-            if  let key = urlRequest.URL {
-                strongSelf.cache.setObject(animatedImage, forKey: key)
+            if  let key = urlRequest.url {
+                strongSelf.cache.setObject(animatedImage, forKey: key as AnyObject)
             }
             success?(animatedImage)
 
