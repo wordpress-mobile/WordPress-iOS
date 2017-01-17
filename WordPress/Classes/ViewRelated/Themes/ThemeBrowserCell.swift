@@ -121,9 +121,9 @@ open class ThemeBrowserCell: UICollectionViewCell {
             nameLabel.text = theme.name
             if theme.isCurrentTheme() {
                 backgroundColor = Styles.activeCellBackgroundColor
-                layer.borderColor = Styles.activeCellBorderColor?.cgColor
-                infoBar.layer.borderColor = Styles.activeCellDividerColor?.cgColor
-                actionButton.layer.borderColor = Styles.activeCellDividerColor?.cgColor
+                layer.borderColor = Styles.activeCellBorderColor.cgColor
+                infoBar.layer.borderColor = Styles.activeCellDividerColor.cgColor
+                actionButton.layer.borderColor = Styles.activeCellDividerColor.cgColor
                 actionButton.setImage(activeEllipsisImage, for: UIControlState())
 
                 nameLabel.textColor = Styles.activeCellNameColor
@@ -131,9 +131,9 @@ open class ThemeBrowserCell: UICollectionViewCell {
                 infoLabel.text = NSLocalizedString("ACTIVE", comment: "Label for active Theme browser cell")
             } else {
                 backgroundColor = Styles.inactiveCellBackgroundColor
-                layer.borderColor = Styles.inactiveCellBorderColor?.cgColor
-                infoBar.layer.borderColor = Styles.inactiveCellDividerColor?.cgColor
-                actionButton.layer.borderColor = Styles.inactiveCellDividerColor?.cgColor
+                layer.borderColor = Styles.inactiveCellBorderColor.cgColor
+                infoBar.layer.borderColor = Styles.inactiveCellDividerColor.cgColor
+                actionButton.layer.borderColor = Styles.inactiveCellDividerColor.cgColor
                 actionButton.setImage(inactiveEllipsisImage, for: UIControlState())
 
                 nameLabel.textColor = Styles.inactiveCellNameColor
