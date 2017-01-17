@@ -498,7 +498,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
             let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
             let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
-            let messageText = NSLocalizedString("Delete Trashed Post", comment: "Deletes post permanently")
+            let messageText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
             let alertController = UIAlertController(title: nil, message: messageText, preferredStyle: .alert)
 
             alertController.addCancelActionWithTitle(cancelText)
