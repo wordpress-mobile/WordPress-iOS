@@ -72,6 +72,11 @@ class AztecPostViewController: UIViewController {
         return v
     }()
 
+    private lazy var closeBarButtonItem: UIBarButtonItem = {
+        let image = Gridicon.iconOfType(.cross)
+        return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancelEditingAction))
+    }()
+
     private lazy var moreBarButtonItem: UIBarButtonItem = {
         let image = Gridicon.iconOfType(.ellipsis)
         return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(displayMoreSheet))
@@ -147,11 +152,6 @@ class AztecPostViewController: UIViewController {
         configureNavigationBar()
 
         title = NSLocalizedString("Aztec Native Editor", comment: "")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedString("Cancel", comment: "Action button to close editor and cancel changes or insertion of post"),
-            style: .done,
-            target: self,
-            action: #selector(AztecPostViewController.cancelEditingAction(_:)))
         view.backgroundColor = .white
     }
 
@@ -217,6 +217,7 @@ class AztecPostViewController: UIViewController {
     }
 
     func configureNavigationBar() {
+        navigationItem.leftBarButtonItem = closeBarButtonItem
         navigationItem.rightBarButtonItem = moreBarButtonItem
     }
 
