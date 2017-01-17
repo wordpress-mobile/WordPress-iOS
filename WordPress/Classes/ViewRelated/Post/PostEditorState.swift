@@ -23,7 +23,7 @@ enum PostStatusState {
 protocol PostEditorState {
     // Actions that change state
     func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorState
-    func updated(publishDate: NSDate?, context: PostEditorStateContext) -> PostEditorState
+    func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorState
 
     // Things that change with each state
     func getPublishButtonText(context: PostEditorStateContext) -> String
@@ -43,7 +43,7 @@ class PostEditorStateContext {
 
     }
 
-    func updated(publishDate: NSDate?) {
+    func updated(publishDate: Date?) {
 
     }
 
@@ -74,7 +74,7 @@ class PostEditorStateNew: PostEditorState {
         return self
     }
 
-    func updated(publishDate: NSDate?, context: PostEditorStateContext) -> PostEditorState {
+    func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorState {
         return self
     }
 
