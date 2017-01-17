@@ -5,8 +5,7 @@ import WordPressShared.WPStyleGuide
 /// The purpose of this class is to render a simple AlertView, with a custom style, and the following
 /// sections: [ Title, Message, Button ]
 ///
-public class AlertView : NSObject
-{
+open class AlertView: NSObject {
     // MARK: - Public Aliases
     public typealias Completion = (() -> ())
 
@@ -20,7 +19,7 @@ public class AlertView : NSObject
     public init(title: String, message: String, button: String, completion: Completion?) {
         super.init()
 
-        NSBundle.mainBundle().loadNibNamed(AlertView.classNameWithoutNamespaces(), owner: self, options: nil)
+        Bundle.main.loadNibNamed(AlertView.classNameWithoutNamespaces(), owner: self, options: nil)
 
         assert(internalView != nil)
         internalView.titleLabel.text = title
@@ -33,7 +32,7 @@ public class AlertView : NSObject
 
     /// Displays the AlertView in the window.
     ///
-    public func show() {
+    open func show() {
         let targetView = keyView()
 
         // Attach the BackgroundView
@@ -60,16 +59,16 @@ public class AlertView : NSObject
     /// Finds the root view attached to the window
     /// - Returns: The Key View.
     ///
-    private func keyView() -> UIView {
-        return (UIApplication.sharedApplication().keyWindow?.subviews.first)!
+    fileprivate func keyView() -> UIView {
+        return (UIApplication.shared.keyWindow?.subviews.first)!
     }
 
 
 
     /// Fades out the AlertView, and, on completion, will cleanup and hit the completion closure.
     ///
-    private func dismiss() {
-        UIView.animateWithDuration(WPAnimationDurationFast, animations: { () -> Void in
+    fileprivate func dismiss() {
+        UIView.animate(withDuration: WPAnimationDurationFast, animations: { () -> Void in
                 self.internalView.alpha = WPAlphaZero
             },
             completion: { (success: Bool) -> Void in
@@ -86,9 +85,9 @@ public class AlertView : NSObject
     ///
     /// - Returns: The Message with Bold Substrings styled.
     ///
-    private func applyBoldStyles(message: NSMutableAttributedString) -> NSMutableAttributedString {
+    fileprivate func applyBoldStyles(_ message: NSMutableAttributedString) -> NSMutableAttributedString {
         let boldPattern = "(\\*{1,2}).+?\\1"
-        message.applyStylesToMatchesWithPattern(boldPattern, styles: Style.detailsBoldAttributes)
+        message.applyStylesToMatchesWithPattern(boldPattern, styles: Style.detailsBoldAttributes as [String : AnyObject])
         return message
     }
 
@@ -100,11 +99,11 @@ public class AlertView : NSObject
     ///
     /// - Returns: The Message without the **bold** markers.
     ///
-    private func removeBoldMarkers(message: NSMutableAttributedString) -> NSMutableAttributedString {
+    fileprivate func removeBoldMarkers(_ message: NSMutableAttributedString) -> NSMutableAttributedString {
         let range = NSRange(location: 0, length: message.length)
-        message.mutableString.replaceOccurrencesOfString("**",
-            withString  : "",
-            options     : .CaseInsensitiveSearch,
+        message.mutableString.replaceOccurrences(of: "**",
+            with  : "",
+            options     : .caseInsensitive,
             range       : range)
         return message
     }
@@ -112,11 +111,11 @@ public class AlertView : NSObject
 
 
     // MARK: - Private Aliases
-    private typealias Style = WPStyleGuide.AlertView
+    fileprivate typealias Style = WPStyleGuide.AlertView
 
     // MARK: - Private Properties
-    private var onCompletion : Completion?
+    fileprivate var onCompletion: Completion?
 
     // MARK: - Private Outlets
-    @IBOutlet private var internalView : AlertInternalView!
+    @IBOutlet fileprivate var internalView: AlertInternalView!
 }

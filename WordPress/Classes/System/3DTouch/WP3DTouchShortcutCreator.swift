@@ -7,28 +7,27 @@ public protocol ApplicationShortcutsProvider {
 
 extension UIApplication: ApplicationShortcutsProvider {
     public var is3DTouchAvailable: Bool {
-        return keyWindow?.traitCollection.forceTouchCapability == .Available
+        return keyWindow?.traitCollection.forceTouchCapability == .available
     }
 }
 
-public class WP3DTouchShortcutCreator: NSObject
-{
+open class WP3DTouchShortcutCreator: NSObject {
     enum LoggedIn3DTouchShortcutIndex: Int {
-        case Notifications = 0,
-        Stats,
-        NewPhotoPost,
-        NewPost
+        case notifications = 0,
+        stats,
+        newPhotoPost,
+        newPost
     }
 
     var shortcutsProvider: ApplicationShortcutsProvider
     let mainContext = ContextManager.sharedInstance().mainContext
     let blogService: BlogService
 
-    private let logInShortcutIconImageName = "icon-shortcut-signin"
-    private let notificationsShortcutIconImageName = "icon-shortcut-notifications"
-    private let statsShortcutIconImageName = "icon-shortcut-stats"
-    private let newPhotoPostShortcutIconImageName = "icon-shortcut-new-photo"
-    private let newPostShortcutIconImageName = "icon-shortcut-new-post"
+    fileprivate let logInShortcutIconImageName = "icon-shortcut-signin"
+    fileprivate let notificationsShortcutIconImageName = "icon-shortcut-notifications"
+    fileprivate let statsShortcutIconImageName = "icon-shortcut-stats"
+    fileprivate let newPhotoPostShortcutIconImageName = "icon-shortcut-new-photo"
+    fileprivate let newPostShortcutIconImageName = "icon-shortcut-new-post"
 
     public init(shortcutsProvider: ApplicationShortcutsProvider) {
         self.shortcutsProvider = shortcutsProvider
@@ -37,10 +36,10 @@ public class WP3DTouchShortcutCreator: NSObject
     }
 
     public convenience override init() {
-        self.init(shortcutsProvider: UIApplication.sharedApplication())
+        self.init(shortcutsProvider: UIApplication.shared)
     }
 
-    public func createShortcutsIf3DTouchAvailable(loggedIn: Bool) {
+    open func createShortcutsIf3DTouchAvailable(_ loggedIn: Bool) {
         guard shortcutsProvider.is3DTouchAvailable else {
             return
         }
@@ -56,7 +55,7 @@ public class WP3DTouchShortcutCreator: NSObject
         }
     }
 
-    private func loggedOutShortcutArray() -> [UIApplicationShortcutItem] {
+    fileprivate func loggedOutShortcutArray() -> [UIApplicationShortcutItem] {
         let logInShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.type,
                                                    localizedTitle: NSLocalizedString("Log In", comment: "Log In 3D Touch Shortcut"),
                                                 localizedSubtitle: nil,
@@ -66,7 +65,7 @@ public class WP3DTouchShortcutCreator: NSObject
         return [logInShortcut]
     }
 
-    private func loggedInShortcutArray() -> [UIApplicationShortcutItem] {
+    fileprivate func loggedInShortcutArray() -> [UIApplicationShortcutItem] {
         var defaultBlogName: String?
         if blogService.blogCountForAllAccounts() > 1 {
             defaultBlogName = blogService.lastUsedOrFirstBlog()?.settings?.name
@@ -99,51 +98,51 @@ public class WP3DTouchShortcutCreator: NSObject
         return [notificationsShortcut, statsShortcut, newPhotoPostShortcut, newPostShortcut]
     }
 
-    private func createLoggedInShortcuts() {
+    fileprivate func createLoggedInShortcuts() {
         var entireShortcutArray = loggedInShortcutArray()
         var visibleShortcutArray = [UIApplicationShortcutItem]()
 
         if hasWordPressComAccount() {
-            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.Notifications.rawValue])
+            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.notifications.rawValue])
         }
 
         if doesCurrentBlogSupportStats() {
-            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.Stats.rawValue])
+            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.stats.rawValue])
         }
 
-        visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.NewPhotoPost.rawValue])
-        visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.NewPost.rawValue])
+        visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPhotoPost.rawValue])
+        visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPost.rawValue])
 
         shortcutsProvider.shortcutItems = visibleShortcutArray
     }
 
-    private func clearShortcuts() {
+    fileprivate func clearShortcuts() {
         shortcutsProvider.shortcutItems = nil
     }
 
-    private func createLoggedOutShortcuts() {
+    fileprivate func createLoggedOutShortcuts() {
         shortcutsProvider.shortcutItems = loggedOutShortcutArray()
     }
 
-    private func is3DTouchAvailable() -> Bool {
-        let window = UIApplication.sharedApplication().keyWindow
+    fileprivate func is3DTouchAvailable() -> Bool {
+        let window = UIApplication.shared.keyWindow
 
-        return window?.traitCollection.forceTouchCapability == .Available
+        return window?.traitCollection.forceTouchCapability == .available
     }
 
-    private func hasWordPressComAccount() -> Bool {
+    fileprivate func hasWordPressComAccount() -> Bool {
         return AccountHelper.isDotcomAvailable()
     }
 
-    private func doesCurrentBlogSupportStats() -> Bool {
+    fileprivate func doesCurrentBlogSupportStats() -> Bool {
         guard let currentBlog = blogService.lastUsedOrFirstBlog() else {
             return false
         }
 
-        return hasWordPressComAccount() && currentBlog.supports(BlogFeature.Stats)
+        return hasWordPressComAccount() && currentBlog.supports(BlogFeature.stats)
     }
 
-    private func hasBlog() -> Bool {
+    fileprivate func hasBlog() -> Bool {
         return blogService.blogCountForAllAccounts() > 0
     }
 }

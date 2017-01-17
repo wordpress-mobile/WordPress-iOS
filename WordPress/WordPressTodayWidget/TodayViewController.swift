@@ -16,7 +16,7 @@ class TodayViewController: UIViewController {
     @IBOutlet var configureMeButton: UIButton!
 
     var siteID: NSNumber?
-    var timeZone: NSTimeZone?
+    var timeZone: TimeZone?
     var oauthToken: String?
     var siteName: String = ""
     var visitorCount: String = ""
@@ -27,11 +27,11 @@ class TodayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let backgroundImage = UIImage(color: WPStyleGuide.wordPressBlue()).resizableImageWithCapInsets(UIEdgeInsetsZero)
+        let backgroundImage = UIImage(color: WPStyleGuide.wordPressBlue()).resizableImage(withCapInsets: UIEdgeInsets.zero)
 
         configureMeLabel.text = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app under your site > Stats > Today.", comment: "Unconfigured stats today widget helper text")
-        configureMeButton.setTitle(NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app"), forState: .Normal)
-        configureMeButton.setBackgroundImage(backgroundImage, forState: .Normal)
+        configureMeButton.setTitle(NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app"), for: UIControlState())
+        configureMeButton.setBackgroundImage(backgroundImage, for: UIControlState())
         configureMeButton.clipsToBounds = true
         configureMeButton.layer.cornerRadius = 5.0
 
@@ -47,16 +47,16 @@ class TodayViewController: UIViewController {
         updateUIBasedOnWidgetConfiguration()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // Manual state restoration
-        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
-        siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
+        let sharedDefaults = UserDefaults(suiteName: WPAppGroupName)!
+        siteName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
 
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        visitorCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsVisitorCountKey) ?? "0"
-        viewCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsViewCountKey) ?? "0"
+        let userDefaults = UserDefaults.standard
+        visitorCount = userDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey) ?? "0"
+        viewCount = userDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsViewCountKey) ?? "0"
 
         siteNameLabel.text = siteName
         visitorsCountLabel.text = visitorCount
@@ -68,47 +68,47 @@ class TodayViewController: UIViewController {
 
     func changeTextColorIfIOS10() {
         if #available(iOS 10, *) {
-            configureMeLabel.textColor = UIColor.blackColor()
-            siteNameLabel.textColor = UIColor.blackColor()
-            visitorsCountLabel.textColor = UIColor.blackColor()
-            viewsCountLabel.textColor = UIColor.blackColor()
+            configureMeLabel.textColor = UIColor.black
+            siteNameLabel.textColor = UIColor.black
+            visitorsCountLabel.textColor = UIColor.black
+            viewsCountLabel.textColor = UIColor.black
         }
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         // Manual state restoration
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setObject(visitorCount, forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey)
-        userDefaults.setObject(viewCount, forKey: WPStatsTodayWidgetUserDefaultsViewCountKey)
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(visitorCount, forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey)
+        userDefaults.set(viewCount, forKey: WPStatsTodayWidgetUserDefaultsViewCountKey)
     }
 
     @IBAction func launchContainingApp() {
         if let unwrappedSiteID = siteID {
-            tracks.trackExtensionStatsLaunched(unwrappedSiteID.integerValue)
-            extensionContext!.openURL(NSURL(string: "\(WPComScheme)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
+            tracks.trackExtensionStatsLaunched(unwrappedSiteID.intValue)
+            extensionContext!.open(URL(string: "\(WPComScheme)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
         } else {
             tracks.trackExtensionConfigureLaunched()
-            extensionContext!.openURL(NSURL(string: "\(WPComScheme)://")!, completionHandler: nil)
+            extensionContext!.open(URL(string: "\(WPComScheme)://")!, completionHandler: nil)
         }
     }
 
     func updateUIBasedOnWidgetConfiguration() {
-        unconfiguredView.hidden = isConfigured
-        configuredView.hidden = !isConfigured
+        unconfiguredView.isHidden = isConfigured
+        configuredView.isHidden = !isConfigured
 
         view.setNeedsUpdateConstraints()
     }
 
     func retrieveSiteConfiguration() {
-        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
-        siteID = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
-        siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
+        let sharedDefaults = UserDefaults(suiteName: WPAppGroupName)!
+        siteID = sharedDefaults.object(forKey: WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
+        siteName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
         oauthToken = fetchOAuthBearerToken()
 
-        if let timeZoneName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey) {
-            timeZone = NSTimeZone(name: timeZoneName)
+        if let timeZoneName = sharedDefaults.string(forKey: WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey) {
+            timeZone = TimeZone(identifier: timeZoneName)
         }
 
         isConfigured = siteID != nil && timeZone != nil && oauthToken != nil
@@ -122,43 +122,43 @@ class TodayViewController: UIViewController {
 }
 
 extension TodayViewController: NCWidgetProviding {
-    func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)) {
+    func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         retrieveSiteConfiguration()
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.updateUIBasedOnWidgetConfiguration()
         }
 
         if isConfigured == false {
             WPDDLogWrapper.logError("Missing site ID, timeZone or oauth2Token")
 
-            completionHandler(NCUpdateResult.Failed)
+            completionHandler(NCUpdateResult.failed)
             return
         }
 
         tracks.trackExtensionAccessed()
 
-        let statsService: WPStatsService = WPStatsService(siteId: siteID, siteTimeZone: timeZone, oauth2Token: oauthToken, andCacheExpirationInterval:0)
-        statsService.retrieveTodayStatsWithCompletionHandler({ wpStatsSummary, error in
+        let statsService: WPStatsService = WPStatsService(siteId: siteID, siteTimeZone: timeZone, oauth2Token: oauthToken, andCacheExpirationInterval: 0)
+        statsService.retrieveTodayStats(completionHandler: { wpStatsSummary, error in
             WPDDLogWrapper.logInfo("Downloaded data in the Today widget")
 
-            dispatch_async(dispatch_get_main_queue()) {
-                self.visitorCount = wpStatsSummary.visitors
-                self.viewCount = wpStatsSummary.views
+            DispatchQueue.main.async {
+                self.visitorCount = (wpStatsSummary?.visitors)!
+                self.viewCount = (wpStatsSummary?.views)!
 
                 self.siteNameLabel?.text = self.siteName
                 self.visitorsCountLabel?.text = self.visitorCount
                 self.viewsCountLabel?.text = self.viewCount
             }
-            completionHandler(NCUpdateResult.NewData)
+            completionHandler(NCUpdateResult.newData)
             }, failureHandler: { error in
                 WPDDLogWrapper.logError("\(error)")
 
-                if error.code == NSURLErrorBadServerResponse {
+                if let error = error as? URLError, error.code == URLError.badServerResponse {
                     self.isConfigured = false
                     self.updateUIBasedOnWidgetConfiguration()
                 }
 
-                completionHandler(NCUpdateResult.Failed)
+                completionHandler(NCUpdateResult.failed)
         })
     }
 }

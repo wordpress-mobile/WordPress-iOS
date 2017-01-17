@@ -7,8 +7,7 @@ import WordPressShared
 /// button and badge.
 /// It is assumed that NUX controllers will always be presented modally.
 ///
-class NUXAbstractViewController : UIViewController
-{
+class NUXAbstractViewController: UIViewController {
     var helpBadge: WPNUXHelpBadgeLabel!
     var helpButton: UIButton!
     var loginFields = LoginFields()
@@ -17,13 +16,13 @@ class NUXAbstractViewController : UIViewController
     let helpBadgeSize = CGSize(width: 12, height: 10)
     let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
-    var dismissBlock: ((cancelled: Bool) -> Void)?
+    var dismissBlock: ((_ cancelled: Bool) -> Void)?
 
     // MARK: - Lifecycle Methods
 
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
 
@@ -38,20 +37,20 @@ class NUXAbstractViewController : UIViewController
     }
 
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         HelpshiftUtils.refreshUnreadNotificationCount()
     }
 
 
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
 
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIDevice.isPad() ? .All : .Portrait
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
     }
 
 
@@ -74,7 +73,7 @@ class NUXAbstractViewController : UIViewController
             return
         }
 
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(NUXAbstractViewController.handleCancelButtonTapped(_:)))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(NUXAbstractViewController.handleCancelButtonTapped(_:)))
         navigationItem.leftBarButtonItem = cancelButton
     }
 
@@ -82,15 +81,15 @@ class NUXAbstractViewController : UIViewController
     /// Sets up the help button and the helpshift conversation badge.
     ///
     func setupHelpButtonAndBadge() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: HelpshiftUnreadCountUpdatedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
 
         let customView = UIView(frame: helpButtonContainerFrame)
 
-        helpButton = UIButton(type: .Custom)
-        helpButton.setImage(UIImage(named: "btn-help"), forState: .Normal)
+        helpButton = UIButton(type: .custom)
+        helpButton.setImage(UIImage(named: "btn-help"), for: UIControlState())
         helpButton.sizeToFit()
         helpButton.accessibilityLabel = NSLocalizedString("Help", comment: "Help button")
-        helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), forControlEvents: .TouchUpInside)
+        helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), for: .touchUpInside)
 
         var frame = helpButton.frame
         frame.origin.x = helpButtonContainerFrame.width - frame.width
@@ -105,10 +104,10 @@ class NUXAbstractViewController : UIViewController
             height: helpBadgeSize.height
         )
         helpBadge = WPNUXHelpBadgeLabel(frame: badgeFrame)
-        helpBadge.hidden = true
+        helpBadge.isHidden = true
         customView.addSubview(helpBadge)
 
-        let spacer = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
+        let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         spacer.width = helpButtonMarginSpacerWidth
 
         let barButton = UIBarButtonItem(customView: customView)
@@ -142,7 +141,7 @@ class NUXAbstractViewController : UIViewController
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
 
-        return AccountHelper.isDotcomAvailable() || blogService.blogCountForAllAccounts() > 0
+        return AccountHelper.isDotcomAvailable() || blogService!.blogCountForAllAccounts() > 0
     }
 
 
@@ -150,7 +149,7 @@ class NUXAbstractViewController : UIViewController
     ///
     /// - Parameter error: An NSError instance
     ///
-    func displayError(error: NSError) {
+    func displayError(_ error: NSError) {
         let presentingController = navigationController ?? self
         let controller = SigninErrorViewController.controller()
         controller.presentFromController(presentingController)
@@ -171,9 +170,9 @@ class NUXAbstractViewController : UIViewController
     /// - Parameters:
     ///     - cancelled: Should be passed true only when dismissed by a tap on the cancel button.
     ///
-    private func dismiss(cancelled cancelled: Bool) {
-        dismissBlock?(cancelled: cancelled)
-        dismissViewControllerAnimated(true, completion: nil)
+    fileprivate func dismiss(cancelled: Bool) {
+        dismissBlock?(cancelled)
+        self.dismiss(animated: true, completion: nil)
     }
 
 
@@ -182,45 +181,44 @@ class NUXAbstractViewController : UIViewController
 
     /// Updates the badge count and its visibility.
     ///
-    func handleHelpshiftUnreadCountUpdated(notification: NSNotification) {
+    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
         let count = HelpshiftUtils.unreadNotificationCount()
         helpBadge.text = "\(count)"
-        helpBadge.hidden = (count == 0)
+        helpBadge.isHidden = (count == 0)
     }
 
 
     // MARK: - Actions
 
 
-    func handleBackgroundTapGesture(tgr: UITapGestureRecognizer) {
+    func handleBackgroundTapGesture(_ tgr: UITapGestureRecognizer) {
         view.endEditing(true)
     }
 
 
-    func handleCancelButtonTapped(sender: UIButton) {
+    func handleCancelButtonTapped(_ sender: UIButton) {
         dismiss(cancelled: true)
     }
 
 
-    func handleHelpButtonTapped(sender: UIButton) {
+    func handleHelpButtonTapped(_ sender: UIButton) {
         displaySupportViewController()
     }
 
 }
 
 
-extension NUXAbstractViewController : SigninErrorViewControllerDelegate
-{
+extension NUXAbstractViewController : SigninErrorViewControllerDelegate {
 
     /// Displays the support vc.
     ///
     func displaySupportViewController() {
         let controller = SupportViewController()
         let navController = UINavigationController(rootViewController: controller)
-        navController.navigationBar.translucent = false
-        navController.modalPresentationStyle = .FormSheet
+        navController.navigationBar.isTranslucent = false
+        navController.modalPresentationStyle = .formSheet
 
-        navigationController?.presentViewController(navController, animated: true, completion: nil)
+        navigationController?.present(navController, animated: true, completion: nil)
     }
 
 
@@ -232,8 +230,8 @@ extension NUXAbstractViewController : SigninErrorViewControllerDelegate
             "Username": loginFields.username,
             "SiteURL": loginFields.siteUrl
         ]
-        HelpshiftSupport.showConversation(self, withOptions: [HelpshiftSupportCustomMetadataKey: metaData])
-        WPAppAnalytics.track(.SupportOpenedHelpshiftScreen)
+        HelpshiftSupport.showConversation(self, withOptions: [HelpshiftSupportCustomMetadataKey: metaData, "showSearchOnNewConversation": "YES"])
+        WPAppAnalytics.track(.supportOpenedHelpshiftScreen)
     }
 
 
@@ -245,17 +243,16 @@ extension NUXAbstractViewController : SigninErrorViewControllerDelegate
     ///     - username: Optional. A username if authentication is needed.
     ///     - password: Optional. A password if authentication is needed.
     ///
-    func displayWebviewForURL(url: NSURL, username: String?, password: String?) {
-        let controller = WPWebViewController(URL: url)
+    func displayWebviewForURL(_ url: URL, username: String?, password: String?) {
+        let controller = WPWebViewController(url: url)
 
         if let username = username,
-            password = password
-        {
-            controller.username = username
-            controller.password = password
+            let password = password {
+            controller?.username = username
+            controller?.password = password
         }
-        let navController = UINavigationController(rootViewController: controller)
-        navigationController?.presentViewController(navController, animated: true, completion: nil)
+        let navController = UINavigationController(rootViewController: controller!)
+        navigationController?.present(navController, animated: true, completion: nil)
     }
 
 }

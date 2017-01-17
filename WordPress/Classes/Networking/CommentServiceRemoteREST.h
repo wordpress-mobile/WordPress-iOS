@@ -39,7 +39,7 @@
                   failure:(void (^)(NSError *error))failure;
 
 /**
- Adds a reply to a comment with commentID
+ Adds a reply to a comment with commentID.
  */
 - (void)replyToCommentWithID:(NSNumber *)commentID
                      content:(NSString *)content

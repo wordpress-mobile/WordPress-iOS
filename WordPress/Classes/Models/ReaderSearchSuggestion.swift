@@ -1,8 +1,7 @@
 import Foundation
 import CoreData
 
-@objc public class ReaderSearchSuggestion : NSManagedObject
-{
-    @NSManaged public var date: NSDate?
-    @NSManaged public var searchPhrase: String
+@objc open class ReaderSearchSuggestion: NSManagedObject {
+    @NSManaged open var date: Date?
+    @NSManaged open var searchPhrase: String
 }

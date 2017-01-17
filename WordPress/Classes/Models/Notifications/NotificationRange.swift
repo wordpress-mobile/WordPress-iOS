@@ -4,8 +4,7 @@ import Foundation
 
 // MARK: - NotificationRange Entity
 //
-class NotificationRange
-{
+class NotificationRange {
     /// Kind of the current Range
     ///
     let kind: Kind
@@ -16,35 +15,34 @@ class NotificationRange
 
     /// Resource URL, if any.
     ///
-    private(set) var url: NSURL?
+    fileprivate(set) var url: URL?
 
     /// Comment ID, if any.
     ///
-    private(set) var commentID: NSNumber?
+    fileprivate(set) var commentID: NSNumber?
 
     /// Post ID, if any.
     ///
-    private(set) var postID: NSNumber?
+    fileprivate(set) var postID: NSNumber?
 
     /// Site ID, if any.
     ///
-    private(set) var siteID: NSNumber?
+    fileprivate(set) var siteID: NSNumber?
 
     /// User ID, if any.
     ///
-    private(set) var userID: NSNumber?
+    fileprivate(set) var userID: NSNumber?
 
     /// String Payload, if any.
     ///
-    private(set) var value: String?
+    fileprivate(set) var value: String?
 
 
     /// Designated Initializer
     ///
     init?(dictionary: [String: AnyObject]) {
         guard let type = dictionary[RangeKeys.RawType] as? String, let indices = dictionary[RangeKeys.Indices] as? [Int],
-            let start = indices.first, let end = indices.last else
-        {
+            let start = indices.first, let end = indices.last else {
             return nil
         }
 
@@ -53,7 +51,7 @@ class NotificationRange
         siteID = dictionary[RangeKeys.SiteId] as? NSNumber
 
         if let rawURL = dictionary[RangeKeys.URL] as? String {
-            url = NSURL(string: rawURL)
+            url = URL(string: rawURL)
         }
 
         //  SORRY: << Let me stress this. Sorry, i'm 1000% against Duck Typing.
@@ -86,11 +84,10 @@ class NotificationRange
 
 // MARK: - NotificationRange Parsers
 //
-extension NotificationRange
-{
+extension NotificationRange {
     /// Parses NotificationRange instances, given an array of raw ranges.
     ///
-    class func rangesFromArray(ranges: [[String: AnyObject]]?) -> [NotificationRange] {
+    class func rangesFromArray(_ ranges: [[String: AnyObject]]?) -> [NotificationRange] {
         let parsed = ranges?.flatMap {
             return NotificationRange(dictionary: $0)
         }
@@ -102,8 +99,7 @@ extension NotificationRange
 
 // MARK: - NotificationRange Types
 //
-extension NotificationRange
-{
+extension NotificationRange {
     /// Known kinds of Range
     ///
     enum Kind: String {
@@ -120,7 +116,7 @@ extension NotificationRange
 
     /// Parsing Keys
     ///
-    private enum RangeKeys {
+    fileprivate enum RangeKeys {
         static let RawType      = "type"
         static let URL          = "url"
         static let Indices      = "indices"

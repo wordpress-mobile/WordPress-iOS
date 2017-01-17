@@ -3,8 +3,7 @@ import UIKit
 /// Step two in the auth link flow. This VC prompts the user to open their email
 /// app to look for the emailed authentication link.
 ///
-class SigninLinkMailViewController : NUXAbstractViewController
-{
+class SigninLinkMailViewController: NUXAbstractViewController {
 
     @IBOutlet var label: UILabel!
     @IBOutlet var openMailButton: NUXSubmitButton!
@@ -15,9 +14,9 @@ class SigninLinkMailViewController : NUXAbstractViewController
     ///
     /// - Parameter loginFields: A LoginFields instance containing any prefilled credentials.
     ///
-    class func controller(loginFields: LoginFields) -> SigninLinkMailViewController {
-        let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateViewControllerWithIdentifier("SigninLinkMailViewController") as! SigninLinkMailViewController
+    class func controller(_ loginFields: LoginFields) -> SigninLinkMailViewController {
+        let storyboard = UIStoryboard(name: "Signin", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "SigninLinkMailViewController") as! SigninLinkMailViewController
         controller.loginFields = loginFields
         return controller
     }
@@ -38,7 +37,7 @@ class SigninLinkMailViewController : NUXAbstractViewController
     }
 
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
                "Only present parts of the magic link signin flow from the application's root vc.")
@@ -52,29 +51,29 @@ class SigninLinkMailViewController : NUXAbstractViewController
     ///
     func localizeControls() {
         let format = NSLocalizedString("We've sent your link to %@.", comment: "Short instructional text. The %@ is a placeholder for the user's email address.")
-        label.text = NSString(format: format, loginFields.username) as String
+        label.text = NSString(format: format as NSString, loginFields.username) as String
 
-        let openMailButtonTitle = NSLocalizedString("Open Mail", comment: "Title of a button. The text should be uppercase.  Clicking opens the mail app in the user's iOS device.").localizedUppercaseString
-        openMailButton.setTitle(openMailButtonTitle, forState: .Normal)
-        openMailButton.setTitle(openMailButtonTitle, forState: .Highlighted)
+        let openMailButtonTitle = NSLocalizedString("Open Mail", comment: "Title of a button. The text should be uppercase.  Clicking opens the mail app in the user's iOS device.").localizedUppercase
+        openMailButton.setTitle(openMailButtonTitle, for: UIControlState())
+        openMailButton.setTitle(openMailButtonTitle, for: .highlighted)
 
         let usePasswordTitle = NSLocalizedString("Enter your password instead", comment: "Title of a button. ")
-        usePasswordButton.setTitle(usePasswordTitle, forState: .Normal)
-        usePasswordButton.setTitle(usePasswordTitle, forState: .Highlighted)
+        usePasswordButton.setTitle(usePasswordTitle, for: UIControlState())
+        usePasswordButton.setTitle(usePasswordTitle, for: .highlighted)
     }
 
 
     // MARK: - Actions
 
 
-    @IBAction func handleOpenMailTapped(sender: UIButton) {
-        let url = NSURL(string: "message://")!
-        UIApplication.sharedApplication().openURL(url)
+    @IBAction func handleOpenMailTapped(_ sender: UIButton) {
+        let url = URL(string: "message://")!
+        UIApplication.shared.openURL(url)
     }
 
 
-    @IBAction func handleUsePasswordTapped(sender: UIButton) {
-        WPAppAnalytics.track(.LoginMagicLinkExited)
+    @IBAction func handleUsePasswordTapped(_ sender: UIButton) {
+        WPAppAnalytics.track(.loginMagicLinkExited)
         let controller = SigninWPComViewController.controller(loginFields)
         controller.dismissBlock = dismissBlock
         controller.restrictSigninToWPCom = restrictSigninToWPCom

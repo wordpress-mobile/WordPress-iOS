@@ -8,21 +8,21 @@ class WPReusableTableViewCell: WPTableViewCell {
         super.prepareForReuse()
 
         textLabel?.text = nil
-        textLabel?.textAlignment = .Left
+        textLabel?.textAlignment = .left
         textLabel?.adjustsFontSizeToFitWidth = false
         detailTextLabel?.text = nil
-        detailTextLabel?.textColor = UIColor.blackColor()
+        detailTextLabel?.textColor = UIColor.black
         imageView?.image = nil
-        accessoryType = .None
+        accessoryType = .none
         accessoryView = nil
-        selectionStyle = .Default
+        selectionStyle = .default
         accessibilityLabel = nil
     }
 }
 
 class WPTableViewCellDefault: WPReusableTableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -32,7 +32,7 @@ class WPTableViewCellDefault: WPReusableTableViewCell {
 
 class WPTableViewCellSubtitle: WPReusableTableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Subtitle, reuseIdentifier: reuseIdentifier)
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -42,7 +42,7 @@ class WPTableViewCellSubtitle: WPReusableTableViewCell {
 
 class WPTableViewCellValue1: WPReusableTableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Value1, reuseIdentifier: reuseIdentifier)
+        super.init(style: .value1, reuseIdentifier: reuseIdentifier)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -52,7 +52,7 @@ class WPTableViewCellValue1: WPReusableTableViewCell {
 
 class WPTableViewCellValue2: WPReusableTableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .Value2, reuseIdentifier: reuseIdentifier)
+        super.init(style: .value2, reuseIdentifier: reuseIdentifier)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -66,25 +66,25 @@ class WPTableViewCellBadge: WPTableViewCellDefault {
             if badgeCount > 0 {
                 badgeLabel.text = String(badgeCount)
                 accessoryView = badgeLabel
-                accessoryType = .None
+                accessoryType = .none
             } else {
                 accessoryView = nil
             }
         }
     }
 
-    private lazy var badgeLabel: UILabel = {
-        let label = UILabel(frame: CGRect(origin: CGPointZero, size: WPTableViewCellBadge.badgeSize))
+    fileprivate lazy var badgeLabel: UILabel = {
+        let label = UILabel(frame: CGRect(origin: CGPoint.zero, size: WPTableViewCellBadge.badgeSize))
         label.layer.masksToBounds = true
         label.layer.cornerRadius = WPTableViewCellBadge.badgeCornerRadius
-        label.textAlignment = .Center
+        label.textAlignment = .center
         label.backgroundColor = WPStyleGuide.newKidOnTheBlockBlue()
-        label.textColor = UIColor.whiteColor()
+        label.textColor = UIColor.white
         return label
     }()
 
-    private static let badgeSize = CGSize(width: 50, height: 30)
-    private static var badgeCornerRadius: CGFloat {
+    fileprivate static let badgeSize = CGSize(width: 50, height: 30)
+    fileprivate static var badgeCornerRadius: CGFloat {
         return badgeSize.height / 2
     }
 }

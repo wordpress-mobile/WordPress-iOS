@@ -6,7 +6,7 @@ import XCTest
 
 /// Notifications Tests
 ///
-class NotificationTests : XCTestCase {
+class NotificationTests: XCTestCase {
 
     var contextManager: TestContextManager!
 
@@ -49,7 +49,7 @@ class NotificationTests : XCTestCase {
 
     func testBadgeNotificationContainsOneImageBlockGroup() {
         let note = loadBadgeNotification()
-        let group = note.blockGroupOfKind(.Image)
+        let group = note.blockGroupOfKind(.image)
         XCTAssertNotNil(group)
 
         let imageBlock = group!.blocks.first
@@ -77,20 +77,20 @@ class NotificationTests : XCTestCase {
         let header = note.headerBlockGroup
         XCTAssertNotNil(header)
 
-        let gravatarBlock = header!.blockOfKind(.Image)
+        let gravatarBlock = header!.blockOfKind(.image)
         XCTAssertNotNil(gravatarBlock!.text)
 
         let media = gravatarBlock!.media.first
         XCTAssertNotNil(media!.mediaURL)
 
-        let snippetBlock = header!.blockOfKind(.Text)
+        let snippetBlock = header!.blockOfKind(.text)
         XCTAssertNotNil(snippetBlock!.text)
     }
 
     func testLikeNotificationContainsUserBlocksInTheBody() {
         let note = loadLikeNotification()
         for group in note.bodyBlockGroups {
-            XCTAssertTrue(group.kind == .User)
+            XCTAssertTrue(group.kind == .user)
         }
     }
 
@@ -126,7 +126,7 @@ class NotificationTests : XCTestCase {
 
         // Note: Account for 'View All Followers'
         for group in note.bodyBlockGroups {
-            XCTAssertTrue(group.kind == .User || group.kind == .Footer)
+            XCTAssertTrue(group.kind == .user || group.kind == .footer)
         }
     }
 
@@ -135,7 +135,7 @@ class NotificationTests : XCTestCase {
 
         let lastGroup = note.bodyBlockGroups.last
         XCTAssertNotNil(lastGroup)
-        XCTAssertTrue(lastGroup!.kind == .Footer)
+        XCTAssertTrue(lastGroup!.kind == .footer)
 
         let block = lastGroup!.blocks.first
         XCTAssertNotNil(block)
@@ -172,7 +172,7 @@ class NotificationTests : XCTestCase {
         let header = note.headerBlockGroup
         XCTAssertNotNil(header)
 
-        let gravatarBlock = header!.blockOfKind(.Image)
+        let gravatarBlock = header!.blockOfKind(.image)
         XCTAssertNotNil(gravatarBlock)
         XCTAssertNotNil(gravatarBlock!.text)
 
@@ -180,7 +180,7 @@ class NotificationTests : XCTestCase {
         XCTAssertNotNil(media)
         XCTAssertNotNil(media!.mediaURL)
 
-        let snippetBlock = header!.blockOfKind(.Text)
+        let snippetBlock = header!.blockOfKind(.text)
         XCTAssertNotNil(snippetBlock)
         XCTAssertNotNil(snippetBlock!.text)
     }
@@ -200,7 +200,7 @@ class NotificationTests : XCTestCase {
         let note = loadCommentNotification()
         XCTAssertNotNil(note.metaReplyID)
 
-        let textBlock = note.blockGroupOfKind(.Footer)?.blockOfKind(.Text)
+        let textBlock = note.blockGroupOfKind(.footer)?.blockOfKind(.text)
         XCTAssertNotNil(textBlock)
 
         let replyID = note.metaReplyID
@@ -212,7 +212,7 @@ class NotificationTests : XCTestCase {
 
     func testFindingNotificationRangeSearchingByURL() {
         let note = loadBadgeNotification()
-        let targetURL = NSURL(string: "http://www.wordpress.com")!
+        let targetURL = URL(string: "http://www.wordpress.com")!
         let range = note.notificationRangeWithUrl(targetURL)
 
         XCTAssertNotNil(range)
@@ -225,19 +225,19 @@ class NotificationTests : XCTestCase {
         return Notification.classNameWithoutNamespaces()
     }
 
-    func loadBadgeNotification() -> Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-badge.json") as! Notification
+    func loadBadgeNotification() -> WordPress.Notification {
+        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-badge.json") as! WordPress.Notification
     }
 
-    func loadLikeNotification() -> Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-like.json") as! Notification
+    func loadLikeNotification() -> WordPress.Notification {
+        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-like.json") as! WordPress.Notification
     }
 
-    func loadFollowerNotification() -> Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-new-follower.json") as! Notification
+    func loadFollowerNotification() -> WordPress.Notification {
+        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-new-follower.json") as! WordPress.Notification
     }
 
-    func loadCommentNotification() -> Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-replied-comment.json") as! Notification
+    func loadCommentNotification() -> WordPress.Notification {
+        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-replied-comment.json") as! WordPress.Notification
     }
 }

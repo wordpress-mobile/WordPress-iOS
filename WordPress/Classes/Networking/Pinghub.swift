@@ -8,23 +8,23 @@ import Starscream
 /// The delegate of a PinghubClient must adopt the PinghubClientDelegate
 /// protocol. The client will inform the delegate of any relevant events.
 ///
-public protocol PinghubClientDelegate {
+public protocol PinghubClientDelegate: class {
     /// The client connected successfully.
     ///
-    func pingubConnected(client client: PinghubClient)
+    func pingubDidConnect(_ client: PinghubClient)
 
     /// The client disconnected. This might be intentional or due to an error.
     /// The optional error argument will contain the error if there is one.
     ///
-    func pinghubDisconnected(client client: PinghubClient, error: ErrorType?)
+    func pinghubDidDisconnect(_ client: PinghubClient, error: Error?)
 
     /// The client received an action.
     ///
-    func pinghubActionReceived(client client: PinghubClient, action: PinghubClient.Action)
+    func pinghub(_ client: PinghubClient, actionReceived action: PinghubClient.Action)
 
     /// The client received some data that it didn't look like a known action.
     ///
-    func pinghubUnexpectedDataReceived(client client: PinghubClient, message: String)
+    func pinghub(_ client: PinghubClient, unexpected message: PinghubClient.Unexpected)
 }
 
 
@@ -34,7 +34,7 @@ public class PinghubClient {
 
     /// The client's delegate.
     ///
-    public var delegate: PinghubClientDelegate? = nil
+    public weak var delegate: PinghubClientDelegate?
 
     /// The web socket to use for communication with the PingHub server.
     ///
@@ -50,13 +50,22 @@ public class PinghubClient {
     /// Initializes the client with an OAuth2 token.
     ///
     public convenience init(token: String) {
-        let socket = starscreamSocket(PinghubClient.endpoint, token: token)
+        let socket = starscreamSocket(url: PinghubClient.endpoint, token: token)
         self.init(socket: socket)
     }
 
     /// Connects the client to the server.
     ///
     public func connect() {
+        #if DEBUG
+            guard !Debug._simulateUnreachableHost else {
+                DispatchQueue.main.async { [weak self] in
+                    guard let client = self else { return }
+                    client.delegate?.pinghubDidDisconnect(client, error: Debug.unreachableHostError)
+                }
+                return
+            }
+        #endif
         socket.connect()
     }
 
@@ -71,39 +80,89 @@ public class PinghubClient {
             guard let client = self else {
                 return
             }
-            client.delegate?.pingubConnected(client: client)
+            client.delegate?.pingubDidConnect(client)
         }
         socket.onDisconnect = { [weak self] error in
             guard let client = self else {
                 return
             }
-            client.delegate?.pinghubDisconnected(client: client, error: error)
+            let filteredError: NSError? = error.flatMap({ error in
+                // Filter out normal disconnects that we initiated
+                if error.domain == WebSocket.ErrorDomain && error.code == Int(WebSocket.CloseCode.normal.rawValue) {
+                    return nil
+                }
+                return error
+            })
+            client.delegate?.pinghubDidDisconnect(client, error: filteredError)
         }
         socket.onData = { [weak self] data in
             guard let client = self else {
                 return
             }
-            let error = "PingHub received unexpected data: \(data)"
-            client.delegate?.pinghubUnexpectedDataReceived(client: client, message: error)
+            client.delegate?.pinghub(client, unexpected: .data(data))
         }
         socket.onText = { [weak self] text in
             guard let client = self else {
                 return
             }
-            guard let data = text.dataUsingEncoding(NSUTF8StringEncoding),
-                let json = try? NSJSONSerialization.JSONObjectWithData(data, options: []),
+            guard let data = text.data(using: .utf8),
+                let json = try? JSONSerialization.jsonObject(with: data, options: []),
                 let message = json as? [String: AnyObject],
                 let action = Action.from(message: message) else {
-                    let error = "PingHub received unexpected message: \(text)"
-                    client.delegate?.pinghubUnexpectedDataReceived(client: client, message: error)
+                    client.delegate?.pinghub(client, unexpected: .action(text))
                     return
             }
-            client.delegate?.pinghubActionReceived(client: client, action: action)
+            client.delegate?.pinghub(client, actionReceived: action)
         }
     }
 
-    internal static let endpoint = NSURL(string: "wss://public-api.wordpress.com/pinghub/wpcom/me/newest-note-data")!
+    public enum Unexpected {
+        /// The client received some data that was not a valid message
+        ///
+        case data(Data)
+
+        /// The client received a valid message that represented an unknown action
+        ///
+        case action(String)
+
+        var description: String {
+            switch self {
+            case .data(let data):
+                return "PingHub received unexpected data: \(data)"
+            case .action(let text):
+                return "PingHub received unexpected message: \(text)"
+            }
+        }
+    }
+
+    internal static let endpoint = URL(string: "wss://public-api.wordpress.com/pinghub/wpcom/me/newest-note-data")!
 }
+
+
+
+
+
+// MARK: - Debug
+
+
+#if DEBUG
+extension PinghubClient {
+    enum Debug {
+        fileprivate static var _simulateUnreachableHost = false
+        static func simulateUnreachableHost(_ simulate: Bool) {
+            _simulateUnreachableHost = simulate
+        }
+
+        fileprivate static let unreachableHostError = NSError(domain: kCFErrorDomainCFNetwork as String, code: Int(CFNetworkErrors.cfHostErrorUnknown.rawValue), userInfo: nil)
+    }
+}
+
+@objc class PinghubDebug: NSObject {
+    static func simulateUnreachableHost(_ simulate: Bool) {
+        PinghubClient.Debug._simulateUnreachableHost = simulate
+    }
+}
+#endif
 
 
 
@@ -130,7 +189,7 @@ extension PinghubClient {
         /// Creates an action from a received message, if it represents a known
         /// action. Otherwise, it returns `nil`
         ///
-        public static func from(message message: [String: AnyObject]) -> Action? {
+        public static func from(message: [String: AnyObject]) -> Action? {
             guard let action = message["action"] as? String else {
                 return nil
             }
@@ -168,7 +227,7 @@ internal protocol Socket: class {
     var onConnect: (() -> Void)? { get set }
     var onDisconnect: ((NSError?) -> Void)? { get set }
     var onText: ((String) -> Void)? { get set }
-    var onData: ((NSData) -> Void)? { get set }
+    var onData: ((Data) -> Void)? { get set }
 }
 
 
@@ -177,10 +236,10 @@ internal protocol Socket: class {
 // MARK: - Starscream
 
 
-private func starscreamSocket(url: NSURL, token: String) -> Socket {
+private func starscreamSocket(url: URL, token: String) -> Socket {
     let socket = WebSocket(url: PinghubClient.endpoint)
     socket.origin = nil
-    socket.headers = ["Authorization" : "Bearer \(token)"]
+    socket.headers = ["Authorization": "Bearer \(token)"]
     return socket
 }
 

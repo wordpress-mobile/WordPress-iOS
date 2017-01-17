@@ -1,13 +1,13 @@
 import Foundation
 
 extension WPAccount {
-    func applyChange(change: AccountSettingsChange) {
+    func applyChange(_ change: AccountSettingsChange) {
         switch change {
-        case .DisplayName(let value):
+        case .displayName(let value):
             self.displayName = value
-        case .PrimarySite(let value):
+        case .primarySite(let value):
             let service = BlogService(managedObjectContext: managedObjectContext)
-            defaultBlog = service.blogByBlogId(value)
+            defaultBlog = service!.blog(byBlogId: NSNumber(value: value))
         default:
             break
         }

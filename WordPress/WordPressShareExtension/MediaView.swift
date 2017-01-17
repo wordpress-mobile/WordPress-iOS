@@ -4,13 +4,12 @@ import UIKit
 
 /// Displays an Image with a capped size, defined by the maximumSize property.
 ///
-class MediaView : UIView
-{
+class MediaView: UIView {
     // MARK: - Properties
 
     /// Defines the maximum size that this view might occupy.
     ///
-    var maximumSize = CGSizeMake(90, 90) {
+    var maximumSize = CGSize(width: 90, height: 90) {
         didSet {
             refreshContentSize()
         }
@@ -18,7 +17,7 @@ class MediaView : UIView
 
     /// The image that should be displayed
     ///
-    private var image: UIImage? {
+    fileprivate var image: UIImage? {
         get {
             return imageView.image
         }
@@ -30,19 +29,24 @@ class MediaView : UIView
 
     /// Internal imageView Instance
     ///
-    private let imageView = UIImageView()
+    fileprivate lazy var imageView: UIImageView = {
+        let view = UIImageView()
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFill
+        return view
+    }()
 
     /// Internal Width Constraint
     ///
-    private var widthConstraint: NSLayoutConstraint!
+    fileprivate var widthConstraint: NSLayoutConstraint!
 
     /// Internal Height Constraint
     ///
-    private var heightConstraint: NSLayoutConstraint!
+    fileprivate var heightConstraint: NSLayoutConstraint!
 
     /// Internal activityIndicator Instance
     ///
-    private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+    fileprivate let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 
 
 
@@ -78,20 +82,20 @@ class MediaView : UIView
 
     /// Workaround to prevent having a zero contentSize before the image is effectively loaded
     ///
-    override func intrinsicContentSize() -> CGSize {
+    override var intrinsicContentSize: CGSize {
         return maximumSize
     }
 
     /// Resizes -to fit screen- and displays given image
     ///
-    func resizeIfNeededAndDisplay(image: UIImage) {
-        let scale = UIScreen.mainScreen().scale
+    func resizeIfNeededAndDisplay(_ image: UIImage) {
+        let scale = UIScreen.main.scale
         let scaledMaximumSize = CGSize(width: maximumSize.width * scale, height: maximumSize.height * scale)
 
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
             let resizedImage = image.resizeWithMaximumSize(scaledMaximumSize)
 
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.image = resizedImage
             }
         }
@@ -100,29 +104,29 @@ class MediaView : UIView
 
     // MARK: - Private Helpers
 
-    private func setupSubviews() {
+    fileprivate func setupSubviews() {
         translatesAutoresizingMaskIntoConstraints = false
-        widthConstraint = widthAnchor.constraintEqualToConstant(maximumSize.width)
-        heightConstraint = heightAnchor.constraintEqualToConstant(maximumSize.height)
+        widthConstraint = widthAnchor.constraint(equalToConstant: maximumSize.width)
+        heightConstraint = heightAnchor.constraint(equalToConstant: maximumSize.height)
 
-        widthConstraint.active = true
-        heightConstraint.active = true
+        widthConstraint.isActive = true
+        heightConstraint.isActive = true
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(imageView)
-        imageView.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
-        imageView.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
-        imageView.topAnchor.constraintEqualToAnchor(topAnchor).active = true
-        imageView.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
+        imageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        imageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
 
         addSubview(activityIndicatorView)
-        activityIndicatorView.centerXAnchor.constraintEqualToAnchor(centerXAnchor).active = true
-        activityIndicatorView.centerYAnchor.constraintEqualToAnchor(centerYAnchor).active = true
+        activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
 
-    private func refreshContentSize() {
+    fileprivate func refreshContentSize() {
         widthConstraint.constant = maximumSize.width
         heightConstraint.constant = maximumSize.height
     }
@@ -131,7 +135,7 @@ class MediaView : UIView
 
     // MARK: - Private Enums
 
-    private enum Constants {
+    fileprivate enum Constants {
         static let alphaDimming = CGFloat(0.3)
         static let alphaFull = CGFloat(1.0)
     }

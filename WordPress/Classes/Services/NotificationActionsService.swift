@@ -3,20 +3,19 @@ import Foundation
 
 /// This service encapsulates all of the Actions that can be performed with a NotificationBlock
 ///
-public class NotificationActionsService: LocalCoreDataService
-{
+open class NotificationActionsService: LocalCoreDataService {
     /// Follows a Site referenced by a given NotificationBlock.
     ///
     /// - Parameter block: The Notification's Site Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func followSiteWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
-        guard let siteID = block.metaSiteID?.unsignedIntegerValue else {
+    func followSiteWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+        guard let siteID = block.metaSiteID?.uintValue else {
             completion?(false)
             return
         }
 
-        siteService.followSiteWithID(siteID, success: {
+        siteService.followSite(withID: siteID, success: {
             DDLogSwift.logInfo("Successfully followed site \(siteID)")
             completion?(true)
         }, failure: { error in
@@ -34,13 +33,13 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Site Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func unfollowSiteWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
-        guard let siteID = block.metaSiteID?.unsignedIntegerValue else {
+    func unfollowSiteWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+        guard let siteID = block.metaSiteID?.uintValue else {
             completion?(false)
             return
         }
 
-        siteService.unfollowSiteWithID(siteID, success: {
+        siteService.unfollowSite(withID: siteID, success: {
             DDLogSwift.logInfo("Successfully unfollowed site \(siteID)")
             completion?(true)
         }, failure: { error in
@@ -59,13 +58,13 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter content: The Reply's Content
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func replyCommentWithBlock(block: NotificationBlock, content: String, completion: (Bool -> Void)? = nil) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+    func replyCommentWithBlock(_ block: NotificationBlock, content: String, completion: ((Bool) -> Void)? = nil) {
+        guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
         }
 
-        commentService.replyToCommentWithID(commentID, siteID: siteID, content: content, success: {
+        commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
             DDLogSwift.logInfo("Successfully replied to comment \(siteID).\(commentID)")
             completion?(true)
         }, failure: { error in
@@ -81,8 +80,8 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter content: The Comment's New Content
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func updateCommentWithBlock(block: NotificationBlock, content: String, completion: (Bool -> Void)? = nil) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+    func updateCommentWithBlock(_ block: NotificationBlock, content: String, completion: ((Bool) -> Void)? = nil) {
+        guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
         }
@@ -91,7 +90,7 @@ public class NotificationActionsService: LocalCoreDataService
         block.textOverride = content
 
         // Hit the backend
-        commentService.updateCommentWithID(commentID, siteID: siteID, content: content, success: {
+        commentService.updateComment(withID: commentID, siteID: siteID, content: content, success: {
             DDLogSwift.logInfo("Successfully updated to comment \(siteID).\(commentID)")
             completion?(true)
         }, failure: { error in
@@ -106,8 +105,8 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func likeCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+    func likeCommentWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+        guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
         }
@@ -118,7 +117,7 @@ public class NotificationActionsService: LocalCoreDataService
         }
 
         // Proceed toggling the Like field
-        commentService.likeCommentWithID(commentID, siteID: siteID, success: {
+        commentService.likeComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully liked comment \(siteID).\(commentID)")
             completion?(true)
         }, failure: { error in
@@ -136,13 +135,13 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func unlikeCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+    func unlikeCommentWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+        guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
         }
 
-        commentService.unlikeCommentWithID(commentID, siteID: siteID, success: {
+        commentService.unlikeComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully unliked comment \(siteID).\(commentID)")
             completion?(true)
         }, failure: { error in
@@ -160,13 +159,13 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func approveCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+    func approveCommentWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+        guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
         }
 
-        commentService.approveCommentWithID(commentID, siteID: siteID, success: {
+        commentService.approveComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully approved comment \(siteID).\(commentID)")
             completion?(true)
         }, failure: { error in
@@ -184,13 +183,13 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func unapproveCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+    func unapproveCommentWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+        guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
         }
 
-        commentService.unapproveCommentWithID(commentID, siteID: siteID, success: {
+        commentService.unapproveComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully unapproved comment \(siteID).\(commentID)")
             completion?(true)
         }, failure: { error in
@@ -208,13 +207,13 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func spamCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+    func spamCommentWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+        guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
         }
 
-        commentService.spamCommentWithID(commentID, siteID: siteID, success: {
+        commentService.spamComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully spammed comment \(siteID).\(commentID)")
             completion?(true)
         }, failure: { error in
@@ -229,13 +228,13 @@ public class NotificationActionsService: LocalCoreDataService
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func deleteCommentWithBlock(block: NotificationBlock, completion: (Bool -> Void)? = nil) {
-        guard let commentID = block.metaCommentID, siteID = block.metaSiteID else {
+    func deleteCommentWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+        guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
         }
 
-        commentService.deleteCommentWithID(commentID, siteID: siteID, success: {
+        commentService.deleteComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully deleted comment \(siteID).\(commentID)")
             completion?(true)
         }, failure: { error in
@@ -248,11 +247,11 @@ public class NotificationActionsService: LocalCoreDataService
 
     // MARK: - Private Helpers
 
-    private var commentService: CommentService {
+    fileprivate var commentService: CommentService {
         return CommentService(managedObjectContext: managedObjectContext)
     }
 
-    private var siteService: ReaderSiteService {
+    fileprivate var siteService: ReaderSiteService {
         return ReaderSiteService(managedObjectContext: managedObjectContext)
     }
 }
