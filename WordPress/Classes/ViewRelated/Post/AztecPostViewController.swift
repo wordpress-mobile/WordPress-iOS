@@ -13,7 +13,7 @@ class AztecPostViewController: UIViewController {
     static let margin = CGFloat(20)
 
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
-        let defaultFont = WPFontManager.merriweatherRegularFont(ofSize: 16)!
+        let defaultFont = WPFontManager.merriweatherRegularFont(ofSize: 16)
         // TODO: Add a proper defaultMissingImage
         let defaultMissingImage = UIImage()
         let tv = Aztec.TextView(defaultFont: defaultFont, defaultMissingImage: defaultMissingImage)
