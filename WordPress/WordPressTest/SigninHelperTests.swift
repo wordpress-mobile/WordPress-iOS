@@ -16,34 +16,34 @@ class SigninHelperTests: XCTestCase {
 
     func testBaseSiteURL() {
         var baseURL = "testsite.wordpress.com"
-        var url = SigninHelpers.baseSiteURL("http://\(baseURL)")
+        var url = SigninHelpers.baseSiteURL(string: "http://\(baseURL)")
         XCTAssert(url == "https://\(baseURL)", "Should force https for a wpcom site having http.")
 
-        url = SigninHelpers.baseSiteURL(baseURL)
+        url = SigninHelpers.baseSiteURL(string: baseURL)
         XCTAssert(url == "https://\(baseURL)", "Should force https for a wpcom site without a scheme.")
 
         baseURL = "www.selfhostedsite.com"
-        url = SigninHelpers.baseSiteURL(baseURL)
+        url = SigninHelpers.baseSiteURL(string: baseURL)
         XCTAssert((url == "http://\(baseURL)"), "Should add http:\\ for a non wpcom site missing a scheme.")
 
-        url = SigninHelpers.baseSiteURL("\(baseURL)/wp-login.php")
+        url = SigninHelpers.baseSiteURL(string: "\(baseURL)/wp-login.php")
         XCTAssert((url == "http://\(baseURL)"), "Should remove wp-login.php from the path.")
 
-        url = SigninHelpers.baseSiteURL("\(baseURL)/wp-admin")
+        url = SigninHelpers.baseSiteURL(string: "\(baseURL)/wp-admin")
         XCTAssert((url == "http://\(baseURL)"), "Should remove /wp-admin from the path.")
 
-        url = SigninHelpers.baseSiteURL("\(baseURL)/wp-admin/")
+        url = SigninHelpers.baseSiteURL(string: "\(baseURL)/wp-admin/")
         XCTAssert((url == "http://\(baseURL)"), "Should remove /wp-admin/ from the path.")
 
-        url = SigninHelpers.baseSiteURL("\(baseURL)/")
+        url = SigninHelpers.baseSiteURL(string: "\(baseURL)/")
         XCTAssert((url == "http://\(baseURL)"), "Should remove a trailing slash from the url.")
 
         // Check non-latin characters and puny code
         baseURL = "http://例.例"
         let punycode = "http://xn--fsq.xn--fsq"
-        url = SigninHelpers.baseSiteURL(baseURL)
+        url = SigninHelpers.baseSiteURL(string: baseURL)
         XCTAssert(url == baseURL)
-        url = SigninHelpers.baseSiteURL(punycode)
+        url = SigninHelpers.baseSiteURL(string: punycode)
         XCTAssert(url == baseURL)
     }
 
