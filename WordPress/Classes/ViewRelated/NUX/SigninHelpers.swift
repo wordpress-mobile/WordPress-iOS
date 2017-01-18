@@ -183,7 +183,7 @@ import Mixpanel
     /// - Returns: The base URL or an empty string.
     ///
     class func baseSiteURL(string: String) -> String {
-        guard let siteURL = NSURL(string: NSURL.IDNEncodedURL(string)) where string.characters.count > 0 else {
+        guard let siteURL = URL(string: NSURL.idnEncodedURL(string)), string.characters.count > 0 else {
             return ""
         }
 
@@ -205,7 +205,7 @@ import Mixpanel
             .trimSuffix(regexp: "/wp-admin/?")
             .trimSuffix(regexp: "/?")
 
-        return NSURL.IDNDecodedURL(path)
+        return NSURL.idnEncodedURL(path)
     }
 
 
@@ -347,7 +347,7 @@ import Mixpanel
     /// - Parameter loginFields: A LoginFields instance.
     ///
     class func openForgotPasswordURL(_ loginFields: LoginFields) {
-        let baseURL = loginFields.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(loginFields.siteUrl)
+        let baseURL = loginFields.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(string: loginFields.siteUrl)
         let forgotPasswordURL = URL(string: baseURL + "/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F")!
         UIApplication.shared.openURL(forgotPasswordURL)
     }
