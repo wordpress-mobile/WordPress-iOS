@@ -72,6 +72,12 @@ class AztecPostViewController: UIViewController {
         return v
     }()
 
+    fileprivate lazy var separatorButtonItem: UIBarButtonItem = {
+        let separator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        separator.width = -12
+        return separator
+    }()
+
     fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
         let image = Gridicon.iconOfType(.cross)
         return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancelEditingAction))
@@ -202,7 +208,7 @@ class AztecPostViewController: UIViewController {
     }
 
     func configureNavigationBar() {
-        navigationItem.leftBarButtonItem = closeBarButtonItem
+        navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem]
         navigationItem.rightBarButtonItem = moreBarButtonItem
     }
 
@@ -328,6 +334,7 @@ extension AztecPostViewController : UITextFieldDelegate {
         ContextManager.sharedInstance().save(post.managedObjectContext)
     }
 }
+
 
 // MARK: - HTML Mode Switch methods
 extension AztecPostViewController {
