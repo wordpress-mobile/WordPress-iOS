@@ -183,11 +183,11 @@ import Mixpanel
     /// - Returns: The base URL or an empty string.
     ///
     class func baseSiteURL(string: String) -> String {
-        guard let siteURL = URL(string: NSURL.idnEncodedURL(string)), string.characters.count > 0 else {
+        guard let siteURL = NSURL(string: NSURL.idnEncodedURL(string)), string.characters.count > 0 else {
             return ""
         }
 
-        var path = siteURL.absoluteString.lowercased()
+        var path = siteURL.absoluteString!.lowercased()
         let isSiteURLSchemeEmpty = siteURL.scheme == nil || siteURL.scheme!.isEmpty
 
         if path.isWordPressComPath() {
@@ -205,7 +205,7 @@ import Mixpanel
             .trimSuffix(regexp: "/wp-admin/?")
             .trimSuffix(regexp: "/?")
 
-        return NSURL.idnEncodedURL(path)
+        return NSURL.idnDecodedURL(path)
     }
 
 
