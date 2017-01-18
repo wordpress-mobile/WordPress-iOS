@@ -22,7 +22,7 @@ class SigninHelperTests: XCTestCase {
         url = SigninHelpers.baseSiteURL(baseURL)
         XCTAssert(url == "https://\(baseURL)", "Should force https for a wpcom site without a scheme.")
 
-        baseURL = "www.sefhostedsite.com"
+        baseURL = "www.selfhostedsite.com"
         url = SigninHelpers.baseSiteURL(baseURL)
         XCTAssert((url == "http://\(baseURL)"), "Should add http:\\ for a non wpcom site missing a scheme.")
 
@@ -38,6 +38,13 @@ class SigninHelperTests: XCTestCase {
         url = SigninHelpers.baseSiteURL("\(baseURL)/")
         XCTAssert((url == "http://\(baseURL)"), "Should remove a trailing slash from the url.")
 
+        // Check non-latin characters and puny code
+        baseURL = "http://例.例"
+        let punycode = "http://xn--fsq.xn--fsq"
+        url = SigninHelpers.baseSiteURL(baseURL)
+        XCTAssert(url == baseURL)
+        url = SigninHelpers.baseSiteURL(punycode)
+        XCTAssert(url == baseURL)
     }
 
 
