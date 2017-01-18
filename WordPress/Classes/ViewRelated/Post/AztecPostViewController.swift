@@ -72,32 +72,15 @@ class AztecPostViewController: UIViewController {
         return v
     }()
 
-    private lazy var moreBarButtonItem: UIBarButtonItem = {
+    fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
+        let image = Gridicon.iconOfType(.cross)
+        return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancelEditingAction))
+    }()
+
+    fileprivate lazy var moreBarButtonItem: UIBarButtonItem = {
         let image = Gridicon.iconOfType(.ellipsis)
         return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(displayMoreSheet))
     }()
-
-    private var switchHTMLAlertAction: UIAlertAction {
-        let title = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
-        return UIAlertAction(title: title, style: .default, handler: { _ in
-            self.mode = .html
-        })
-    }
-
-    private var switchRichAlertAction: UIAlertAction {
-        let title = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
-        return UIAlertAction(title: title, style: .default, handler: { _ in
-            self.mode = .richText
-        })
-    }
-
-    private var optionsAlertAction: UIAlertAction {
-        let title = NSLocalizedString("Options", comment: "Displays the Post's Options")
-        return UIAlertAction(title: title, style: .default, handler: { _ in
-            self.displayPostOptions()
-        })
-    }
-
 
     fileprivate(set) var mode = EditionMode.richText {
         didSet {
@@ -154,11 +137,6 @@ class AztecPostViewController: UIViewController {
         configureNavigationBar()
 
         title = NSLocalizedString("Aztec Native Editor", comment: "")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedString("Cancel", comment: "Action button to close editor and cancel changes or insertion of post"),
-            style: .done,
-            target: self,
-            action: #selector(AztecPostViewController.cancelEditingAction(_:)))
         view.backgroundColor = .white
     }
 
@@ -224,34 +202,8 @@ class AztecPostViewController: UIViewController {
     }
 
     func configureNavigationBar() {
+        navigationItem.leftBarButtonItem = closeBarButtonItem
         navigationItem.rightBarButtonItem = moreBarButtonItem
-    }
-
-
-    // MARK: - Helpers
-
-    @IBAction func displayMoreSheet() {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        switch mode {
-        case .richText:
-            alertController.addAction(switchHTMLAlertAction)
-        case .html:
-            alertController.addAction(switchRichAlertAction)
-        }
-
-        alertController.addAction(optionsAlertAction)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen"))
-        alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
-
-        view.endEditing(true)
-        present(alertController, animated: true, completion: nil)
-    }
-
-    func displayPostOptions() {
-        let settingsViewController = PostSettingsViewController(post: post)
-        settingsViewController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
 
@@ -267,7 +219,6 @@ class AztecPostViewController: UIViewController {
 
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
-
 
     func keyboardWillHide(_ notification: Foundation.Notification) {
         guard
@@ -297,6 +248,55 @@ class AztecPostViewController: UIViewController {
         let range = richTextView.selectedRange
         let identifiers = richTextView.formatIdentifiersSpanningRange(range)
         toolbar.selectItemsMatchingIdentifiers(identifiers)
+    }
+}
+
+
+// MARK: - More Sheet
+extension AztecPostViewController {
+    @IBAction func displayMoreSheet() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        switch mode {
+        case .richText:
+            alertController.addAction(switchHTMLAlertAction())
+        case .html:
+            alertController.addAction(switchRichAlertAction())
+        }
+
+        alertController.addAction(optionsAlertAction())
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen"))
+        alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
+
+        view.endEditing(true)
+        present(alertController, animated: true, completion: nil)
+    }
+
+    private func switchHTMLAlertAction() -> UIAlertAction {
+        let title = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
+        return UIAlertAction(title: title, style: .default, handler: { _ in
+            self.mode = .html
+        })
+    }
+
+    private func switchRichAlertAction() -> UIAlertAction {
+        let title = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        return UIAlertAction(title: title, style: .default, handler: { _ in
+            self.mode = .richText
+        })
+    }
+
+    private func optionsAlertAction() -> UIAlertAction {
+        let title = NSLocalizedString("Options", comment: "Displays the Post's Options")
+        return UIAlertAction(title: title, style: .default, handler: { _ in
+            self.displayPostOptions()
+        })
+    }
+
+    private func displayPostOptions() {
+        let settingsViewController = PostSettingsViewController(post: post)
+        settingsViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
 }
 
