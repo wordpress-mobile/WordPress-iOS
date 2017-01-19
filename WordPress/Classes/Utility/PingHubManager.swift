@@ -205,6 +205,9 @@ fileprivate extension PingHubManager {
 // MARK: - Actions
 fileprivate extension PingHubManager {
     func connect() {
+        guard !state.connected else {
+            return
+        }
         state.connected = true
         client?.connect()
     }
