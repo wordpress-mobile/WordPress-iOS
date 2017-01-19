@@ -209,6 +209,7 @@ fileprivate extension PingHubManager {
             return
         }
         state.connected = true
+        DDLogSwift.logInfo("PingHub connecting")
         client?.connect()
     }
 
@@ -221,6 +222,7 @@ fileprivate extension PingHubManager {
 
     func disconnect() {
         delayedRetry?.cancel()
+        DDLogSwift.logInfo("PingHub disconnecting")
         client?.disconnect()
         state.connected = false
     }
