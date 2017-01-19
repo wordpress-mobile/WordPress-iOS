@@ -73,7 +73,15 @@ class AztecPostViewController: UIViewController {
         return v
     }()
 
+    fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
+        let image = Gridicon.iconOfType(.cross)
+        return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancelEditingAction))
+    }()
 
+    fileprivate lazy var moreBarButtonItem: UIBarButtonItem = {
+        let image = Gridicon.iconOfType(.ellipsis)
+        return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(displayMoreSheet))
+    }()
 
     fileprivate(set) var mode = EditionMode.richText {
         didSet {
@@ -130,11 +138,6 @@ class AztecPostViewController: UIViewController {
         configureNavigationBar()
 
         title = NSLocalizedString("Aztec Native Editor", comment: "")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedString("Cancel", comment: "Action button to close editor and cancel changes or insertion of post"),
-            style: .done,
-            target: self,
-            action: #selector(AztecPostViewController.cancelEditingAction(_:)))
         view.backgroundColor = .white
     }
 
@@ -200,20 +203,9 @@ class AztecPostViewController: UIViewController {
     }
 
     func configureNavigationBar() {
-        let title = NSLocalizedString("HTML", comment: "HTML!")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: title,
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(switchEditionMode))
+        navigationItem.leftBarButtonItem = closeBarButtonItem
+        navigationItem.rightBarButtonItem = moreBarButtonItem
     }
-
-
-    // MARK: - Helpers
-
-    @IBAction func switchEditionMode() {
-        mode.toggle()
-    }
-
 
     // MARK: - Keyboard Handling
 
@@ -260,6 +252,41 @@ class AztecPostViewController: UIViewController {
 }
 
 
+// MARK: - More Sheet
+extension AztecPostViewController {
+    @IBAction func displayMoreSheet() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        switch mode {
+        case .richText:
+            alertController.addAction(switchHTMLAlertAction())
+        case .html:
+            alertController.addAction(switchRichAlertAction())
+        }
+
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen"))
+        alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
+
+        view.endEditing(true)
+        present(alertController, animated: true, completion: nil)
+    }
+
+    private func switchHTMLAlertAction() -> UIAlertAction {
+        let title = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
+        return UIAlertAction(title: title, style: .default, handler: { _ in
+            self.mode = .html
+        })
+    }
+
+    private func switchRichAlertAction() -> UIAlertAction {
+        let title = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        return UIAlertAction(title: title, style: .default, handler: { _ in
+            self.mode = .richText
+        })
+    }
+}
+
+
 // MARK: - UITextViewDelegate methods
 extension AztecPostViewController : UITextViewDelegate {
     func textViewDidChangeSelection(_ textView: UITextView) {
@@ -293,33 +320,20 @@ extension AztecPostViewController {
     enum EditionMode {
         case richText
         case html
-
-        mutating func toggle() {
-            switch self {
-            case .html:
-                self = .richText
-            case .richText:
-                self = .html
-            }
-        }
     }
 
     fileprivate func switchToHTML() {
-        navigationItem.rightBarButtonItem?.title = NSLocalizedString("Native", comment: "Rich Edition!")
+        view.endEditing(true)
 
         htmlTextView.text = richTextView.getHTML()
-
-        view.endEditing(true)
         htmlTextView.isHidden = false
         richTextView.isHidden = true
     }
 
     fileprivate func switchToRichText() {
-        navigationItem.rightBarButtonItem?.title = NSLocalizedString("HTML", comment: "HTML!")
+        view.endEditing(true)
 
         richTextView.setHTML(htmlTextView.text)
-
-        view.endEditing(true)
         richTextView.isHidden = false
         htmlTextView.isHidden = true
     }
