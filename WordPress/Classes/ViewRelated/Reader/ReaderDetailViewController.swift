@@ -591,6 +591,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         guard let post = post else {
             return
         }
+        textView.fontSize = WPStyleGuide.readerDetailContentFontSize()
         textView.isPrivate = post.isPrivate()
         textView.content = post.contentForDisplay()
 

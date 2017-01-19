@@ -102,7 +102,7 @@ extension WPStyleGuide {
     }
 
     public class func readerCardTitleAttributes() -> [String: AnyObject] {
-        let fontSize = Cards.titleFontSize
+        let fontSize = Cards.titleFontSize + singleStepFontSizeDelta(UIApplication.shared.preferredContentSizeCategory)
         let font = WPFontManager.merriweatherBoldFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -115,7 +115,7 @@ extension WPStyleGuide {
     }
 
     public class func readerCardSummaryAttributes() -> [String: AnyObject] {
-        let fontSize = Cards.contentFontSize
+        let fontSize = Cards.contentFontSize + singleStepFontSizeDelta(UIApplication.shared.preferredContentSizeCategory)
         let font = WPFontManager.merriweatherRegularFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -140,7 +140,7 @@ extension WPStyleGuide {
     // MARK: - Detail styles
 
     public class func readerDetailTitleAttributes() -> [String: AnyObject] {
-        let fontSize = Detail.titleFontSize
+        let fontSize = Detail.titleFontSize + singleStepFontSizeDelta(UIApplication.shared.preferredContentSizeCategory)
         let font = WPFontManager.merriweatherBoldFont(ofSize: fontSize)
 
         let lineHeight = Detail.titleLineHeight
@@ -152,6 +152,11 @@ extension WPStyleGuide {
             NSParagraphStyleAttributeName: paragraphStyle,
             NSFontAttributeName: font!
         ]
+    }
+
+
+    public class func readerDetailContentFontSize() -> CGFloat {
+        return Detail.contentFontSize + singleStepFontSizeDelta(UIApplication.shared.preferredContentSizeCategory)
     }
 
 

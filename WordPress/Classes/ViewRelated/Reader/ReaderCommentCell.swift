@@ -173,7 +173,7 @@ class ReaderCommentCell: UITableViewCell {
         guard let comment = comment else {
             return
         }
-
+        textView.fontSize = WPStyleGuide.readerDetailContentFontSize()
         textView.isPrivate = comment.isPrivateContent()
         // Use `content` vs `contentForDisplay`. Hierarchcial comments are already
         // correctly formatted during the sync process.

@@ -19,6 +19,8 @@ class WPRichContentView: UITextView {
         static let defaultAttachmentHeight = CGFloat(50.0)
     }
 
+    var fontSize = CGFloat(16.0)
+
     /// Used to keep references to image attachments.
     ///
     var mediaArray = [RichMedia]()
@@ -112,9 +114,9 @@ class WPRichContentView: UITextView {
         set {
             let str = newValue
             let style = "<style>" +
-                "body { font-family: Merriweather; font-size:16.0; line-height:1.6875; color: #2e4453; } " +
+                "body { font-family: Merriweather; font-size:\(self.fontSize); line-height:1.6875; color: #2e4453; } " +
                 "blockquote { color:#4f748e; } " +
-                "em, i { font-size:18.0; font-style: italic; font-family: Merriweather-Italic; } " +
+                "em, i { font-size:\(self.fontSize + 2); font-style: italic; font-family: Merriweather-Italic; } " +
                 "a { color: #0087be; text-decoration: none; } " +
                 "a:active { color: #005082; } " +
                 "</style>"
