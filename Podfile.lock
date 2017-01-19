@@ -213,7 +213,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Gridicons-iOS.git
     :tag: '0.4'
   Starscream:
-    :commit: 14313df360c12bfa0d760c0bffb9ccbab16f6c43
+    :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
     :git: https://github.com/wordpress-mobile/Starscream
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
