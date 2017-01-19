@@ -181,13 +181,11 @@ fileprivate extension PingHubManager {
     @objc
     func applicationDidEnterBackground() {
         state.foreground = false
-        client?.disconnect()
     }
 
     @objc
     func applicationWillEnterForeground() {
         state.foreground = true
-        client?.connect()
     }
 
     // MARK: reachability
