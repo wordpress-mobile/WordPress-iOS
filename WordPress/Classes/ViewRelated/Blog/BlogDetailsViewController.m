@@ -573,7 +573,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (row.showsSelectionState) {
         self.restorableSelectedIndexPath = indexPath;
-    } else {
+    } else if (![self splitViewControllerIsHorizontallyCompact]) {
         // Reselect the previous row
         [tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
                                animated:YES

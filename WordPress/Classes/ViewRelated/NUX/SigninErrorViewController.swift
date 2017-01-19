@@ -232,7 +232,7 @@ class SigninErrorViewController: UIViewController {
             let regex = try! NSRegularExpression(pattern: "http\\S+writing.php", options: .caseInsensitive)
             let rng = regex.rangeOfFirstMatch(in: message, options: .reportCompletion, range: NSRange(location: 0, length: message.characters.count))
             if rng.location == NSNotFound {
-                path = SigninHelpers.baseSiteURL(loginFields.siteUrl) as NSString
+                path = SigninHelpers.baseSiteURL(string: loginFields.siteUrl) as NSString
                 path = path.replacingOccurrences(of: "xmlrpc.php", with: "") as NSString
                 path = path.appending("/wp-admin/options-writing.php") as NSString
             } else {

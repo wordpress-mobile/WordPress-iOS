@@ -13,7 +13,7 @@ class AztecPostViewController: UIViewController {
     static let margin = CGFloat(20)
 
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
-        let defaultFont = WPFontManager.merriweatherRegularFont(ofSize: 16)!
+        let defaultFont = WPFontManager.merriweatherRegularFont(ofSize: 16)
         let defaultMissingImage = Gridicon.iconOfType(.image)
         let tv = Aztec.TextView(defaultFont: defaultFont, defaultMissingImage: defaultMissingImage)
 
@@ -130,28 +130,28 @@ class AztecPostViewController: UIViewController {
         configureNavigationBar()
 
         title = NSLocalizedString("Aztec Native Editor", comment: "")
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Cancel", comment: "Action button to close editor and cancel changes or insertion of post"),
             style: .done,
             target: self,
             action: #selector(AztecPostViewController.cancelEditingAction(_:)))
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = .white
     }
 
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
     }
 
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
 
 
@@ -256,22 +256,6 @@ class AztecPostViewController: UIViewController {
 
         let identifiers = richTextView.formatIdentifiersForTypingAttributes()
         toolbar.selectItemsMatchingIdentifiers(identifiers)
-    }
-
-
-    // MARK: - Sample Content
-
-    func getSampleHTML() -> String {
-        let htmlFilePath = Bundle.main.path(forResource: "content", ofType: "html")!
-        let fileContents: String
-
-        do {
-            fileContents = try String(contentsOfFile: htmlFilePath)
-        } catch {
-            fatalError("Could not load the sample HTML.  Check the file exists in the target and that it has the correct name.")
-        }
-
-        return fileContents
     }
 }
 
@@ -535,23 +519,23 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let items = [
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage), identifier: Aztec.FormattingIdentifier.media),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage), identifier: .media),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold), identifier: Aztec.FormattingIdentifier.bold),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold), identifier: .bold),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic), identifier: Aztec.FormattingIdentifier.italic),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic), identifier: .italic),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline), identifier: Aztec.FormattingIdentifier.underline),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline), identifier: .underline),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough), identifier: Aztec.FormattingIdentifier.strikethrough),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough), identifier: .strikethrough),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote), identifier: Aztec.FormattingIdentifier.blockquote),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote), identifier: .blockquote),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: Aztec.FormattingIdentifier.unorderedlist),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: .unorderedlist),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: Aztec.FormattingIdentifier.orderedlist),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: .orderedlist),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link), identifier: Aztec.FormattingIdentifier.link),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link), identifier: .link),
             flex,
             ]
 
