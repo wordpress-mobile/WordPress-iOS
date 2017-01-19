@@ -14,11 +14,10 @@ class AztecPostViewController: UIViewController {
 
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
         let defaultFont = WPFontManager.merriweatherRegularFont(ofSize: 16)
-        // TODO: Add a proper defaultMissingImage
-        let defaultMissingImage = UIImage()
+        let defaultMissingImage = Gridicon.iconOfType(.image)
         let tv = Aztec.TextView(defaultFont: defaultFont, defaultMissingImage: defaultMissingImage)
 
-        tv.font = WPFontManager.merriweatherRegularFont(ofSize: 16)
+        tv.font = defaultFont
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         tv.delegate = self
         let toolbar = self.createToolbar()
@@ -27,6 +26,7 @@ class AztecPostViewController: UIViewController {
         tv.inputAccessoryView = toolbar
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.keyboardDismissMode = .interactive
 
         return tv
     }()
@@ -39,6 +39,7 @@ class AztecPostViewController: UIViewController {
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.isHidden = true
+        tv.keyboardDismissMode = .interactive
 
         return tv
     }()
@@ -253,8 +254,7 @@ class AztecPostViewController: UIViewController {
             return
         }
 
-        let range = richTextView.selectedRange
-        let identifiers = richTextView.formatIdentifiersSpanningRange(range)
+        let identifiers = richTextView.formatIdentifiersForTypingAttributes()
         toolbar.selectItemsMatchingIdentifiers(identifiers)
     }
 }
