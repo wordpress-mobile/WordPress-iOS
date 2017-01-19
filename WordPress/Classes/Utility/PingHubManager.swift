@@ -230,6 +230,8 @@ extension PingHubManager: PinghubClientDelegate {
         DDLogSwift.logInfo("PingHub connected")
         delay.reset()
         state.connected = true
+        // Trigger a full sync, since we might have missed notes while PingHub was disconnected
+        NotificationSyncMediator()?.sync()
     }
 
     func pinghubDidDisconnect(_ client: PinghubClient, error: Error?) {
