@@ -122,6 +122,9 @@
 {
     CGFloat fontSize = [UIDevice isPad] ? 24.0 : 18.0;
     CGFloat lineHeight = [UIDevice isPad] ? 32.0 : 24.0;
+    CGFloat sizeDelta = [WPStyleGuide singleStepFontSizeDelta:[[UIApplication sharedApplication] preferredContentSizeCategory]];
+    fontSize += sizeDelta;
+    lineHeight += sizeDelta;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
@@ -132,6 +135,9 @@
 {
     CGFloat fontSize = [UIDevice isPad] ? 16.0 : 14.0;
     CGFloat lineHeight = [UIDevice isPad] ? 26.0 : 22.0;
+    CGFloat sizeDelta = [WPStyleGuide singleStepFontSizeDelta:[[UIApplication sharedApplication] preferredContentSizeCategory]];
+    fontSize += sizeDelta;
+    lineHeight += sizeDelta;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
@@ -190,14 +196,14 @@
 
 + (void)applyPageTitleStyle:(UILabel *)label
 {
-    CGFloat fontSize = 15.0;
-    label.font = [WPFontManager merriweatherRegularFontOfSize:fontSize];
     label.textColor = [self wordPressBlue];
 }
 
 + (NSDictionary *)pageCellTitleAttributes
 {
     CGFloat fontSize = 15.0;
+    CGFloat sizeDelta = [WPStyleGuide singleStepFontSizeDelta:[[UIApplication sharedApplication] preferredContentSizeCategory]];
+    fontSize += sizeDelta;
     NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
     paragraphStyle.lineSpacing = 4.0;
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager merriweatherRegularFontOfSize:fontSize]};
