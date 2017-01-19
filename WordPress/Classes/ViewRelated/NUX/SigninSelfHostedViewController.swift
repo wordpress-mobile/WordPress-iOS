@@ -228,7 +228,7 @@ import WordPressShared
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
         loginFields.username = usernameField.nonNilTrimmedText()
         loginFields.password = passwordField.nonNilTrimmedText()
-        loginFields.siteUrl = SigninHelpers.baseSiteURL(siteURLField.nonNilTrimmedText())
+        loginFields.siteUrl = SigninHelpers.baseSiteURL(string: siteURLField.nonNilTrimmedText())
 
         configureForgotPasswordButton()
         configureSubmitButton(animating: false)
