@@ -5,9 +5,7 @@ import Gridicons
 import WordPressShared
 
 class AztecPostViewController: UIViewController {
-    func cancelEditingAction(_ sender: AnyObject) {
-        cancelEditing()
-    }
+
     var onClose: ((_ changesSaved: Bool) -> ())?
 
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
@@ -125,10 +123,8 @@ class AztecPostViewController: UIViewController {
 
         edgesForExtendedLayout = UIRectEdge()
 
-        view.addSubview(titleTextField)
-        view.addSubview(separatorView)
-        view.addSubview(richTextView)
-        view.addSubview(htmlTextView)
+        configureNavigationBar()
+        configureSubviews()
 
         createRevisionOfPost()
         titleTextField.text = post.postTitle
@@ -138,9 +134,6 @@ class AztecPostViewController: UIViewController {
         }
 
         view.setNeedsUpdateConstraints()
-        view.backgroundColor = .white
-
-        configureNavigationBar()
     }
 
 
@@ -216,6 +209,14 @@ class AztecPostViewController: UIViewController {
         navigationItem.rightBarButtonItem = moreBarButtonItem
     }
 
+    func configureSubviews() {
+        view.backgroundColor = .white
+        view.addSubview(titleTextField)
+        view.addSubview(separatorView)
+        view.addSubview(richTextView)
+        view.addSubview(htmlTextView)
+    }
+
 
     // MARK: - Keyboard Handling
 
@@ -261,8 +262,16 @@ class AztecPostViewController: UIViewController {
 }
 
 
-// MARK: - More Sheet
+// MARK: - Actions
 extension AztecPostViewController {
+    @IBAction func cancelEditingAction() {
+        cancelEditing()
+    }
+
+    @IBAction func displayBlogSelector() {
+
+    }
+
     @IBAction func displayMoreSheet() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
@@ -279,6 +288,12 @@ extension AztecPostViewController {
 
         view.endEditing(true)
         present(alertController, animated: true, completion: nil)
+    }
+
+    private func displayPostOptions() {
+        let settingsViewController = PostSettingsViewController(post: post)
+        settingsViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
     private func switchHTMLAlertAction() -> UIAlertAction {
@@ -300,12 +315,6 @@ extension AztecPostViewController {
         return UIAlertAction(title: title, style: .default, handler: { _ in
             self.displayPostOptions()
         })
-    }
-
-    private func displayPostOptions() {
-        let settingsViewController = PostSettingsViewController(post: post)
-        settingsViewController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
 }
 
@@ -723,8 +732,8 @@ fileprivate extension AztecPostViewController {
     struct Constants {
         static let defaultMargin            = CGFloat(20)
         static let separatorButtonWidth     = CGFloat(-12)
-        static let compactTitleButtonWidth  = 125
-        static let regularTitleButtonWidth  = 300
-        static let regularTitleButtonHeight = 30
+        static let compactTitleButtonWidth  = CGFloat(125)
+        static let regularTitleButtonWidth  = CGFloat(300)
+        static let regularTitleButtonHeight = CGFloat(30)
     }
 }
