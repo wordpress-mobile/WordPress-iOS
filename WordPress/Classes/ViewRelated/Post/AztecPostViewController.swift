@@ -10,8 +10,6 @@ class AztecPostViewController: UIViewController {
     }
     var onClose: ((_ changesSaved: Bool) -> ())?
 
-    static let margin = CGFloat(20)
-
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
         let defaultFont = WPFontManager.merriweatherRegularFont(ofSize: 16)
         let defaultMissingImage = Gridicon.iconOfType(.image)
@@ -75,7 +73,7 @@ class AztecPostViewController: UIViewController {
 
     fileprivate lazy var separatorButtonItem: UIBarButtonItem = {
         let separator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        separator.width = -12
+        separator.width = Constants.separatorButtonWidth
         return separator
     }()
 
@@ -179,25 +177,27 @@ class AztecPostViewController: UIViewController {
 
         super.updateViewConstraints()
 
+        let defaultMargin = Constants.defaultMargin
+
         NSLayoutConstraint.activate([
-            titleTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: type(of: self).margin),
-            titleTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -type(of: self).margin),
-            titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: type(of: self).margin),
+            titleTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: defaultMargin),
+            titleTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -defaultMargin),
+            titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: defaultMargin),
             titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
             ])
 
         NSLayoutConstraint.activate([
-            separatorView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: type(of: self).margin),
-            separatorView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -type(of: self).margin),
-            separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: type(of: self).margin),
+            separatorView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: defaultMargin),
+            separatorView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -defaultMargin),
+            separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: defaultMargin),
             separatorView.heightAnchor.constraint(equalToConstant: separatorView.frame.height)
             ])
 
         NSLayoutConstraint.activate([
-            richTextView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: type(of: self).margin),
-            richTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -type(of: self).margin),
-            richTextView.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: type(of: self).margin),
-            richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -type(of: self).margin)
+            richTextView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: defaultMargin),
+            richTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -defaultMargin),
+            richTextView.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: defaultMargin),
+            richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -defaultMargin)
             ])
 
         NSLayoutConstraint.activate([
@@ -712,5 +712,16 @@ private extension AztecPostViewController {
         //let index = richTextView.positionForCursor()
         //richTextView.insertImage(image, index: index)
         assertionFailure("Error: Aztec.TextView.swift no longer supports insertImage(image: UIImage, index: Int")
+    }
+}
+
+
+fileprivate extension AztecPostViewController {
+    struct Constants {
+        static let defaultMargin            = CGFloat(20)
+        static let separatorButtonWidth     = CGFloat(-12)
+        static let compactTitleButtonWidth  = 125
+        static let regularTitleButtonWidth  = 300
+        static let regularTitleButtonHeight = 30
     }
 }
