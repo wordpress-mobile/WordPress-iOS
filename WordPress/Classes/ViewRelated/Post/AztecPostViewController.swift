@@ -124,7 +124,6 @@ class AztecPostViewController: UIViewController {
         WPFontManager.loadMerriweatherFontFamily()
 
         edgesForExtendedLayout = UIRectEdge()
-        navigationController?.navigationBar.isTranslucent = false
 
         view.addSubview(titleTextField)
         view.addSubview(separatorView)
@@ -139,10 +138,9 @@ class AztecPostViewController: UIViewController {
         }
 
         view.setNeedsUpdateConstraints()
-        configureNavigationBar()
-
-        title = NSLocalizedString("Aztec Native Editor", comment: "")
         view.backgroundColor = .white
+
+        configureNavigationBar()
     }
 
 
@@ -209,7 +207,12 @@ class AztecPostViewController: UIViewController {
     }
 
     func configureNavigationBar() {
-        navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem]
+        title = NSLocalizedString("Aztec Native Editor", comment: "")
+
+        navigationController?.navigationBar.isTranslucent = false
+
+        let test = UIBarButtonItem(customView: blogPickerButton)
+        navigationItem.leftBarButtonItems = [separatorButtonItem, test, closeBarButtonItem]
         navigationItem.rightBarButtonItem = moreBarButtonItem
     }
 
