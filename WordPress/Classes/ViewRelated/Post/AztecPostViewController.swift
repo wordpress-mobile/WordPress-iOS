@@ -207,6 +207,7 @@ class AztecPostViewController: UIViewController {
         navigationItem.rightBarButtonItem = moreBarButtonItem
     }
 
+
     // MARK: - Keyboard Handling
 
     func keyboardWillShow(_ notification: Foundation.Notification) {
@@ -219,7 +220,6 @@ class AztecPostViewController: UIViewController {
 
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
-
 
     func keyboardWillHide(_ notification: Foundation.Notification) {
         guard
@@ -264,6 +264,7 @@ extension AztecPostViewController {
             alertController.addAction(switchRichAlertAction())
         }
 
+        alertController.addAction(optionsAlertAction())
         alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen"))
         alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
@@ -283,6 +284,19 @@ extension AztecPostViewController {
         return UIAlertAction(title: title, style: .default, handler: { _ in
             self.mode = .richText
         })
+    }
+
+    private func optionsAlertAction() -> UIAlertAction {
+        let title = NSLocalizedString("Options", comment: "Displays the Post's Options")
+        return UIAlertAction(title: title, style: .default, handler: { _ in
+            self.displayPostOptions()
+        })
+    }
+
+    private func displayPostOptions() {
+        let settingsViewController = PostSettingsViewController(post: post)
+        settingsViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
 }
 
