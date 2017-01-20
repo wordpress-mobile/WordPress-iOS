@@ -77,12 +77,26 @@ class AztecPostViewController: UIViewController {
 
     fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
         let image = Gridicon.iconOfType(.cross)
-        return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancelEditingAction))
+        let cancelButton = WPStyleGuide.buttonForBar(with: image, target: self, selector: #selector(cancelEditingAction))
+        cancelButton.leftSpacing = Constants.cancelButtonPadding.left
+        cancelButton.rightSpacing = Constants.cancelButtonPadding.right
+
+        let cancelItem = UIBarButtonItem(customView: cancelButton)
+        cancelItem.accessibilityLabel = NSLocalizedString("Cancel", comment: "Action button to close edior and cancel changes or insertion of post")
+        return cancelItem
     }()
 
     fileprivate lazy var moreBarButtonItem: UIBarButtonItem = {
         let image = Gridicon.iconOfType(.ellipsis)
-        return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(displayMoreSheet))
+        let moreItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(displayMoreSheet))
+        moreItem.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
+        return moreItem
+    }()
+
+    fileprivate lazy var blogPickerButton: WPBlogSelectorButton = {
+        let button = WPBlogSelectorButton(frame: .zero, buttonStyle: .typeSingleLine)
+        button.addTarget(self, action: #selector(displayBlogSelector), for: .touchUpInside)
+        return button
     }()
 
     fileprivate(set) var mode = EditionMode.richText {
