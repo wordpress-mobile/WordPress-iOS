@@ -241,6 +241,27 @@ class AztecPostViewController: UIViewController {
         notificationCenter.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
 
+    func refreshNavigationBarButtons() {
+        // Refresh the Picker's Title
+        let blogName = post.blog.settings?.name ?? post.blog.url ?? String()
+        let titleText = NSMutableAttributedString(string: blogName, attributes: Constants.titleAttributes)
+
+        blogPickerButton.setAttributedTitle(titleText, for: .normal)
+        blogPickerButton.sizeToFit()
+
+        // Update the Blog Picker's width to the appropriate size for the horizontal size class
+        let pickerButtonMaxWidth = hasHorizontallyCompactView() ? Constants.titleButtonRegularWidth : Constants.titleButtonRegularWidth
+        var pickerButtonFrame = blogPickerButton.frame
+        pickerButtonFrame.size.width = min(pickerButtonFrame.width, pickerButtonMaxWidth)
+        pickerButtonFrame.size.height = Constants.titleButtonRegularHeight
+        blogPickerButton.frame = pickerButtonFrame
+
+        // Refresh Button Items
+        let pickerBarButtonItem = UIBarButtonItem(customView: blogPickerButton)
+        navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, pickerBarButtonItem]
+        navigationItem.rightBarButtonItem = moreBarButtonItem
+    }
+
 
     // MARK: - Keyboard Handling
 
