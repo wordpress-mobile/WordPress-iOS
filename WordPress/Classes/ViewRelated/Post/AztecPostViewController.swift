@@ -732,8 +732,10 @@ fileprivate extension AztecPostViewController {
     struct Constants {
         static let defaultMargin            = CGFloat(20)
         static let separatorButtonWidth     = CGFloat(-12)
-        static let compactTitleButtonWidth  = CGFloat(125)
-        static let regularTitleButtonWidth  = CGFloat(300)
-        static let regularTitleButtonHeight = CGFloat(30)
+        static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        static let titleAttributes          = [NSFontAttributeName: WPFontManager.systemSemiBoldFont(ofSize: 16)]
+        static let titleButtonCompactWidth  = CGFloat(125)
+        static let titleButtonRegularWidth  = CGFloat(300)
+        static let titleButtonRegularHeight = CGFloat(30)
     }
 }
