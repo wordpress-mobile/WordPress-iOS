@@ -135,9 +135,8 @@ class AztecPostViewController: UIViewController {
 
         WPFontManager.loadMerriweatherFontFamily()
 
-        edgesForExtendedLayout = UIRectEdge()
-
         configureNavigationBar()
+        configureView()
         configureSubviews()
 
         createRevisionOfPost()
@@ -151,19 +150,18 @@ class AztecPostViewController: UIViewController {
     }
 
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        startListeningToNotifications()
+        refreshNavigationBarButtons()
     }
 
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        stopListeningToNotifications()
     }
 
 
@@ -214,21 +212,33 @@ class AztecPostViewController: UIViewController {
     }
 
     func configureNavigationBar() {
-        title = NSLocalizedString("Aztec Native Editor", comment: "")
+        title = NSLocalizedString("Aztec", comment: "Aztec Editor's Title")
 
         navigationController?.navigationBar.isTranslucent = false
+    }
 
-        let test = UIBarButtonItem(customView: blogPickerButton)
-        navigationItem.leftBarButtonItems = [separatorButtonItem, test, closeBarButtonItem]
-        navigationItem.rightBarButtonItem = moreBarButtonItem
+    func configureView() {
+        edgesForExtendedLayout = UIRectEdge()
+        view.backgroundColor = .white
     }
 
     func configureSubviews() {
-        view.backgroundColor = .white
         view.addSubview(titleTextField)
         view.addSubview(separatorView)
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
+    }
+
+    func startListeningToNotifications() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+
+    func stopListeningToNotifications() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        notificationCenter.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
 
 
