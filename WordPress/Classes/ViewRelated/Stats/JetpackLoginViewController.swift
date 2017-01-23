@@ -6,21 +6,41 @@ import WordPressComAnalytics
 /// A view controller that presents a Jetpack login form
 ///
 class JetpackLoginViewController: UIViewController {
-    @IBOutlet weak var jetpackImage: UIImageView!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var usernameTextField: WPWalkthroughTextField!
-    @IBOutlet weak var passwordTextField: WPWalkthroughTextField!
+    @IBOutlet private weak var jetpackImage: UIImageView!
+    @IBOutlet private weak var descriptionLabel: UILabel!
+    @IBOutlet private weak var usernameTextField: WPWalkthroughTextField!
+    @IBOutlet private weak var passwordTextField: WPWalkthroughTextField!
+    @IBOutlet private weak var scrollView: UIScrollView!
+
+    var activeField: UITextField?
+
+    // MARK: - LifeCycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = WPStyleGuide.itsEverywhereGrey()
         setupControls()
+        setupKeyboard()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        registerForKeyboardNotifications()
+    }
+
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        deregisterFromKeyboardNotifications()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
     }
+    
+
+    // MARK: - Configuration
 
     func setupControls() {
         //TODO: Complete the NSLocalized string comments
@@ -44,5 +64,68 @@ class JetpackLoginViewController: UIViewController {
         self.passwordTextField.showSecureTextEntryToggle = true
         self.passwordTextField.clearsOnBeginEditing = true
         self.passwordTextField.showTopLineSeparator = true
+    }
+
+    func setupKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(hideKeyboard))
+
+        self.scrollView.addGestureRecognizer(tap)
+    }
+
+
+    // MARK: - Keyboard
+
+    func registerForKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_ :)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(_ :)), name: .UIKeyboardWillHide, object: nil)
+    }
+
+    func deregisterFromKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+
+    func keyboardWillShow(_ notification: Foundation.Notification) {
+        self.scrollView.isScrollEnabled = true
+        var info = notification.userInfo!
+        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+        let contentInsets: UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize!.height, 0.0)
+
+        self.scrollView.contentInset = contentInsets
+        self.scrollView.scrollIndicatorInsets = contentInsets
+
+        var aRect: CGRect = self.view.frame
+        aRect.size.height -= keyboardSize!.height
+        if let activeField = self.activeField {
+            if (!aRect.contains(activeField.frame.origin)) {
+                self.scrollView.scrollRectToVisible(activeField.frame, animated: true)
+            }
+        }
+    }
+
+    func keyboardWillBeHidden(_ notification: Foundation.Notification) {
+        self.scrollView.contentInset = UIEdgeInsets.zero
+        self.scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
+        self.view.endEditing(true)
+        self.scrollView.isScrollEnabled = false
+    }
+
+    func hideKeyboard() {
+        self.view.endEditing(true)
+    }
+}
+
+
+// MARK: - UITextViewDelegate methods
+
+extension JetpackLoginViewController : UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        activeField = textField
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        activeField = nil
     }
 }
