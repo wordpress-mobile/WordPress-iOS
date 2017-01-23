@@ -110,13 +110,11 @@ class AztecPostViewController: UIViewController {
         }
     }
 
-    fileprivate(set) var blog: Blog
     fileprivate(set) var post: AbstractPost
 
     // MARK: - Lifecycle Methods
 
     init(post: AbstractPost) {
-        self.blog = post.blog
         self.post = post
         super.init(nibName: nil, bundle: nil)
     }
