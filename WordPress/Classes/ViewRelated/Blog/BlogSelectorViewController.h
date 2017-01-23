@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef void (^BlogSelectorSuccessHandler)(NSManagedObjectID *selectedObjectID);
 typedef void (^BlogSelectorSuccessDotComHandler)(NSNumber *dotComId);
 typedef void (^BlogSelectorDismissHandler)();
@@ -22,3 +24,5 @@ typedef void (^BlogSelectorDismissHandler)();
 @property (nonatomic, assign) BOOL dismissOnCompletion;
 
 @end
+
+NS_ASSUME_NONNULL_END
