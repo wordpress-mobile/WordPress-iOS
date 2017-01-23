@@ -312,8 +312,7 @@ final public class PushNotificationsManager: NSObject {
             return false
         }
 
-        // TODO: JLP Nov.3.2016. Nuke applicationState == .Active once PingHub is in place!
-        guard applicationState == .background || applicationState == .active else {
+        guard applicationState == .background else {
             return false
         }
 
