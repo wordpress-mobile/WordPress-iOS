@@ -763,6 +763,22 @@ extension AztecPostViewController {
 
 
 private extension AztecPostViewController {
+    var mainContext: NSManagedObjectContext {
+        return ContextManager.sharedInstance().mainContext
+    }
+
+    var currentBlogCount: Int {
+        let service = BlogService(managedObjectContext: mainContext)
+        return service?.blogCountForAllAccounts() ?? 0
+    }
+
+    var isSingleSiteMode: Bool {
+        return currentBlogCount <= 1 || post.hasRemote()
+    }
+}
+
+
+private extension AztecPostViewController {
     func insertImage(_ image: UIImage) {
         //let index = richTextView.positionForCursor()
         //richTextView.insertImage(image, index: index)
