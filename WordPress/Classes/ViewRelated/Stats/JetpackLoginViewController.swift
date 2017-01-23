@@ -6,11 +6,11 @@ import WordPressComAnalytics
 /// A view controller that presents a Jetpack login form
 ///
 class JetpackLoginViewController: UIViewController {
-    @IBOutlet private weak var jetpackImage: UIImageView!
-    @IBOutlet private weak var descriptionLabel: UILabel!
-    @IBOutlet private weak var usernameTextField: WPWalkthroughTextField!
-    @IBOutlet private weak var passwordTextField: WPWalkthroughTextField!
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet fileprivate weak var jetpackImage: UIImageView!
+    @IBOutlet fileprivate weak var descriptionLabel: UILabel!
+    @IBOutlet fileprivate weak var usernameTextField: WPWalkthroughTextField!
+    @IBOutlet fileprivate weak var passwordTextField: WPWalkthroughTextField!
+    @IBOutlet fileprivate weak var scrollView: UIScrollView!
 
     var activeField: UITextField?
 
@@ -36,9 +36,8 @@ class JetpackLoginViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-
     }
-    
+
 
     // MARK: - Configuration
 
@@ -49,6 +48,7 @@ class JetpackLoginViewController: UIViewController {
         self.descriptionLabel.textColor = WPStyleGuide.allTAllShadeGrey()
         self.descriptionLabel.backgroundColor = UIColor.clear
 
+        self.usernameTextField.delegate = self
         self.usernameTextField.backgroundColor = UIColor.white
         self.usernameTextField.placeholder = NSLocalizedString("WordPress.com username", comment: "")
         self.usernameTextField.font = WPNUXUtility.textFieldFont()
@@ -57,6 +57,7 @@ class JetpackLoginViewController: UIViewController {
         self.usernameTextField.autocapitalizationType = .none
         self.usernameTextField.clearButtonMode = .whileEditing
 
+        self.passwordTextField.delegate = self
         self.passwordTextField.backgroundColor = UIColor.white
         self.passwordTextField.placeholder = NSLocalizedString("WordPress.com password", comment: "")
         self.passwordTextField.font = WPNUXUtility.textFieldFont()
@@ -92,23 +93,22 @@ class JetpackLoginViewController: UIViewController {
         var info = notification.userInfo!
         let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
         let contentInsets: UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize!.height, 0.0)
-
         self.scrollView.contentInset = contentInsets
         self.scrollView.scrollIndicatorInsets = contentInsets
 
+        guard let activeField = self.activeField else {
+            return
+        }
         var aRect: CGRect = self.view.frame
         aRect.size.height -= keyboardSize!.height
-        if let activeField = self.activeField {
-            if (!aRect.contains(activeField.frame.origin)) {
-                self.scrollView.scrollRectToVisible(activeField.frame, animated: true)
-            }
+        if (!aRect.contains(activeField.frame.origin)) {
+            self.scrollView.scrollRectToVisible(activeField.frame, animated: true)
         }
     }
 
     func keyboardWillBeHidden(_ notification: Foundation.Notification) {
         self.scrollView.contentInset = UIEdgeInsets.zero
         self.scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
-        self.view.endEditing(true)
         self.scrollView.isScrollEnabled = false
     }
 
@@ -127,5 +127,15 @@ extension JetpackLoginViewController : UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         activeField = nil
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == self.usernameTextField {
+            self.passwordTextField.becomeFirstResponder()
+        } else if textField == self.passwordTextField {
+            hideKeyboard()
+            //TODO: Login!
+        }
+        return true
     }
 }
