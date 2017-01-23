@@ -11,11 +11,11 @@ typedef void (^BlogSelectorDismissHandler)();
 
 - (instancetype)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
                               successHandler:(BlogSelectorSuccessHandler)successHandler
-                              dismissHandler:(BlogSelectorDismissHandler)dismissHandler;
+                              dismissHandler:(nullable BlogSelectorDismissHandler)dismissHandler;
 
 - (instancetype)initWithSelectedBlogDotComID:(NSNumber *)dotComID
                               successHandler:(BlogSelectorSuccessDotComHandler)successHandler
-                              dismissHandler:(BlogSelectorDismissHandler)dismissHandler;
+                              dismissHandler:(nullable BlogSelectorDismissHandler)dismissHandler;
 
 @property (nonatomic, assign) BOOL displaysPrimaryBlogOnTop;
 @property (nonatomic, assign) BOOL displaysOnlyDefaultAccountSites;
