@@ -538,15 +538,20 @@
         return 0;
     }
 
+    NSError *error;
+    NSString *errorMessage;
+    // Check if asset being used is a video, if not this method fails
     if (self.assetType != MediaTypeVideo) {
-        NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain
+        errorMessage = NSLocalizedString(@"Media selected is not a video.",@"Error message when user tries to preview an image media like a video");
+        error = [NSError errorWithDomain:WPMediaPickerErrorDomain
                                              code:WPMediaErrorCodeVideoURLNotAvailable
-                                         userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Media selected is not a video.",@"Error message when user tries to preview an image media like a video")}];
+                                userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
         completionHandler(nil, error);
         return 0;
     }
 
     NSURL *url = nil;
+    // Do we have a local url, or remote url to use for the video
     if (self.absoluteLocalURL) {
         url = [NSURL URLWithString:self.absoluteLocalURL];
     } else if (self.remoteURL) {
@@ -554,20 +559,23 @@
     }
 
     if (!url) {
-        NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain
-                                             code:WPMediaErrorCodeVideoURLNotAvailable
-                                         userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Media selected is not available.",@"Error message when user tries a non longer existent video media object.")}];
+        errorMessage = NSLocalizedString(@"Media selected is not available.",@"Error message when user tries a non longer existent video media object.");
+        error = [NSError errorWithDomain:WPMediaPickerErrorDomain
+                                    code:WPMediaErrorCodeVideoURLNotAvailable
+                                userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
         completionHandler(nil, error);
-        return [self.mediaID intValue];
+        return 0;
     }
 
+    // Let see if can create an asset with this url
     AVURLAsset *asset = [AVURLAsset assetWithURL:url];
-    if (!asset) {
-        NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain
-                                             code:WPMediaErrorCodeVideoURLNotAvailable
-                                         userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Media selected is not available.",@"Error message when user tries a non longer existent video media object.")}];
+    if (!asset || !asset.isPlayable) {
+        errorMessage = NSLocalizedString(@"Media selected is not available.",@"Error message when user tries a non longer existent video media object.");
+        error = [NSError errorWithDomain:WPMediaPickerErrorDomain
+                                    code:WPMediaErrorCodeVideoURLNotAvailable
+                                userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
         completionHandler(nil, error);
-        return [self.mediaID intValue];
+        return 0;
     }
 
     completionHandler(asset, nil);
