@@ -9,11 +9,9 @@ class AztecPostViewController: UIViewController {
     var onClose: ((_ changesSaved: Bool) -> ())?
 
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
-        let defaultFont = WPFontManager.merriweatherRegularFont(ofSize: 16)
-        let defaultMissingImage = Gridicon.iconOfType(.image)
-        let tv = Aztec.TextView(defaultFont: defaultFont, defaultMissingImage: defaultMissingImage)
+        let tv = Aztec.TextView(defaultFont: Constants.defaultFont, defaultMissingImage: Constants.defaultMissingImage)
 
-        tv.font = defaultFont
+        tv.font = Constants.defaultFont
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         tv.delegate = self
         let toolbar = self.createToolbar()
@@ -789,7 +787,9 @@ private extension AztecPostViewController {
 
 fileprivate extension AztecPostViewController {
     struct Constants {
+        static let defaultFont              = WPFontManager.merriweatherRegularFont(ofSize: 16)
         static let defaultMargin            = CGFloat(20)
+        static let defaultMissingImage      = Gridicon.iconOfType(.image)
         static let separatorButtonWidth     = CGFloat(-12)
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let titleAttributes          = [NSFontAttributeName: WPFontManager.systemSemiBoldFont(ofSize: 16)]
