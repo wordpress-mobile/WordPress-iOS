@@ -180,7 +180,7 @@ extension Role {
             fatalError()
         }
 
-        return color!
+        return color
     }
 
     var description: String {
