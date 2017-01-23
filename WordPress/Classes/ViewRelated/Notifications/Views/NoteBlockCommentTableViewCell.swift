@@ -90,7 +90,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
     override func refreshSeparators() {
         // Left Separator
         separatorsView.leftVisible = !isApproved
-        separatorsView.leftColor = Style.blockUnapprovedSideColor!
+        separatorsView.leftColor = Style.blockUnapprovedSideColor
 
         // Bottom Separator
         var bottomInsets = separatorUnapprovedInsets
@@ -129,7 +129,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
 
         let range = NSRange(location: 0, length: commentText.length)
         let textColor = Style.blockUnapprovedTextColor
-        commentText.addAttribute(NSForegroundColorAttributeName, value: textColor!, range: range)
+        commentText.addAttribute(NSForegroundColorAttributeName, value: textColor, range: range)
 
         return commentText
     }

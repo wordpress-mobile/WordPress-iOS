@@ -71,6 +71,7 @@
 #import "PostPreviewViewController.h"
 #import "PostService.h"
 #import "PostServiceOptions.h"
+#import "PostSettingsViewController.h"
 #import "PrivateSiteURLProtocol.h"
 
 #import "ReachabilityUtils.h"
@@ -128,6 +129,7 @@
 #import "WPNUXMainButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPPostViewController.h"
+#import "WPScrollableViewController.h"
 #import "WPStyleGuide+Posts.h"
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPTableImageSource.h"

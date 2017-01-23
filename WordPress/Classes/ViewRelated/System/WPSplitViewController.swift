@@ -273,16 +273,20 @@ class WPSplitViewController: UISplitViewController {
     /// first view controller after the last `WPSplitViewControllerDetailProvider`
     /// in the primary stack if the split view is collapsed).
     var rootDetailViewController: UIViewController? {
-        if isCollapsed {
-            if let navigationController = viewControllers.first as? UINavigationController,
-                let index = navigationController.viewControllers.lastIndex(where: { $0 is WPSplitViewControllerDetailProvider }), navigationController.viewControllers.count > index+1  {
-                return navigationController.viewControllers[index+1]
-            }
-        } else {
+        guard isCollapsed else {
             return (viewControllers.last as? UINavigationController)?.viewControllers.first
         }
 
-        return nil
+        guard let navigationController = viewControllers.first as? UINavigationController else {
+            return nil
+        }
+
+        guard let index = navigationController.viewControllers.lastIndex(where: { $0 is WPSplitViewControllerDetailProvider }),
+            navigationController.viewControllers.count > index + 1 else {
+            return nil
+        }
+
+        return navigationController.viewControllers[index + 1]
     }
 
     /** Sets the primary view controller of the split view as specified, and
@@ -348,6 +352,28 @@ class WPSplitViewController: UISplitViewController {
             }
         } else {
             updateDisplayMode()
+        }
+    }
+
+    /// Pops both the primary and detail navigation controllers (if present)
+    /// to their roots.
+    ///
+    func popToRootViewControllersAnimated(_ animated: Bool) {
+        let popOrScrollToTop = { (navigationController: UINavigationController) in
+            if navigationController.viewControllers.count > 1 {
+                navigationController.popToRootViewController(animated: animated)
+            } else {
+                navigationController.scrollContentToTopAnimated(animated)
+            }
+        }
+
+        if let primaryNavigationController = viewControllers.first as? UINavigationController {
+            popOrScrollToTop(primaryNavigationController)
+
+            if let detailNavigationController = viewControllers.last as? UINavigationController,
+                primaryNavigationController != detailNavigationController {
+                popOrScrollToTop(detailNavigationController)
+            }
         }
     }
 }

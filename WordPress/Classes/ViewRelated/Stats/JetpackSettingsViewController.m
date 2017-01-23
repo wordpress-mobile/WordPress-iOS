@@ -459,12 +459,13 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
         // Ensure options are up to date after connecting Jetpack as there may
         // now be new info.
         BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        [service syncBlog:self.blog completionHandler:^() {
-            [self setAuthenticating:NO];
-            if (self.completionBlock) {
-                self.completionBlock(YES);
-            }
-        }];
+        [service syncBlogAndAllMetadata:self.blog
+                      completionHandler:^{
+                          [self setAuthenticating:NO];
+                          if (self.completionBlock) {
+                              self.completionBlock(YES);
+                          }
+                      }];
     };
 
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
@@ -696,14 +697,15 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncOptionsForBlog:self.blog success:^{
-        if (self.blog.jetpack.isInstalled) {
-            [self updateForm];
-        }
-        [self reloadInterface];
-    } failure:^(NSError *error) {
-        [WPError showNetworkingAlertWithError:error];
-    }];
+    [blogService syncBlog:self.blog
+                  success:^{
+                      if (self.blog.jetpack.isInstalled) {
+                          [self updateForm];
+                      }
+                      [self reloadInterface];
+                  } failure:^(NSError * _Nonnull error) {
+                      [WPError showNetworkingAlertWithError:error];
+                  }];
 }
 
 
