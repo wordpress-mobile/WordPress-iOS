@@ -365,8 +365,8 @@ import Mixpanel
 
         let loginURL = loginFields.userIsDotCom ? "wordpress.com" : loginFields.siteUrl
 
-        let onePasswordFacade = OnePasswordFacade()
-        onePasswordFacade.findLogin(forURLString: loginURL, viewController: controller, sender: sourceView, completion: { (username: String?, password: String?, oneTimePassword: String?, error: NSError?) in
+
+        let completion: OnePasswordFacadeCallback = { (username, password, oneTimePassword, error) in
             if let error = error {
                 DDLogSwift.logError("OnePassword Error: \(error.localizedDescription)")
                 WPAppAnalytics.track(.onePasswordFailed)
@@ -391,8 +391,10 @@ import Mixpanel
             WPAppAnalytics.track(.onePasswordLogin)
 
             success(loginFields)
-        } as! OnePasswordFacadeCallback)
+        }
 
+        let onePasswordFacade = OnePasswordFacade()
+        onePasswordFacade.findLogin(forURLString: loginURL, viewController: controller, sender: sourceView, completion: completion)
     }
 
 
