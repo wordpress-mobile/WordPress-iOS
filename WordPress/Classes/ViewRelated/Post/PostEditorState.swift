@@ -32,12 +32,19 @@ protocol PostEditorState {
     func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool
 }
 
+protocol PostEditorStateContextDelegate {
+    func context(_ context: PostEditorStateContext, didChangeState: PostEditorState)
+
+}
+
 class PostEditorStateContext {
     private var state: PostEditorState = PostEditorStateNew()
     private var userCanPublish = true
+    private var delegate: PostEditorStateContextDelegate?
 
-    init(withPost post: AbstractPost, previousPost: AbstractPost, userCanPublish: Bool = true) {
+    init(withPost post: AbstractPost, previousPost: AbstractPost, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
         self.userCanPublish = userCanPublish
+        self.delegate = delegate
     }
 
     func updated(postStatus: PostStatus) {
