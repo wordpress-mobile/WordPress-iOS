@@ -181,13 +181,11 @@ fileprivate extension PingHubManager {
     @objc
     func applicationDidEnterBackground() {
         state.foreground = false
-        client?.disconnect()
     }
 
     @objc
     func applicationWillEnterForeground() {
         state.foreground = true
-        client?.connect()
     }
 
     // MARK: reachability
@@ -207,7 +205,11 @@ fileprivate extension PingHubManager {
 // MARK: - Actions
 fileprivate extension PingHubManager {
     func connect() {
+        guard !state.connected else {
+            return
+        }
         state.connected = true
+        DDLogSwift.logInfo("PingHub connecting")
         client?.connect()
     }
 
@@ -220,6 +222,7 @@ fileprivate extension PingHubManager {
 
     func disconnect() {
         delayedRetry?.cancel()
+        DDLogSwift.logInfo("PingHub disconnecting")
         client?.disconnect()
         state.connected = false
     }
@@ -230,6 +233,8 @@ extension PingHubManager: PinghubClientDelegate {
         DDLogSwift.logInfo("PingHub connected")
         delay.reset()
         state.connected = true
+        // Trigger a full sync, since we might have missed notes while PingHub was disconnected
+        NotificationSyncMediator()?.sync()
     }
 
     func pinghubDidDisconnect(_ client: PinghubClient, error: Error?) {
