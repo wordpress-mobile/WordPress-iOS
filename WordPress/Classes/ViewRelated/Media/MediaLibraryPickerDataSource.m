@@ -532,6 +532,53 @@
     return [self.mediaID intValue];
 }
 
+- (WPMediaRequestID)videoAssetWithCompletionHandler:(WPMediaAssetBlock)completionHandler
+{
+    if (!completionHandler) {
+        return 0;
+    }
+
+    if (self.assetType != MediaTypeVideo) {
+        NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain
+                                             code:WPMediaErrorCodeVideoURLNotAvailable
+                                         userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Media selected is not a video.",@"Error message when user tries to preview an image media like a video")}];
+        completionHandler(nil, error);
+        return 0;
+    }
+
+    NSURL *url = nil;
+    if (self.absoluteLocalURL) {
+        url = [NSURL URLWithString:self.absoluteLocalURL];
+    } else if (self.remoteURL) {
+        url = [NSURL URLWithString:self.remoteURL];
+    }
+
+    if (!url) {
+        NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain
+                                             code:WPMediaErrorCodeVideoURLNotAvailable
+                                         userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Media selected is not available.",@"Error message when user tries a non longer existent video media object.")}];
+        completionHandler(nil, error);
+        return [self.mediaID intValue];
+    }
+
+    AVURLAsset *asset = [AVURLAsset assetWithURL:url];
+    if (!asset) {
+        NSError *error = [NSError errorWithDomain:WPMediaPickerErrorDomain
+                                             code:WPMediaErrorCodeVideoURLNotAvailable
+                                         userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"Media selected is not available.",@"Error message when user tries a non longer existent video media object.")}];
+        completionHandler(nil, error);
+        return [self.mediaID intValue];
+    }
+
+    completionHandler(asset, nil);
+    return [self.mediaID intValue];
+}
+
+- (CGSize)pixelSize
+{
+    return CGSizeMake([self.width floatValue], [self.height floatValue]);
+}
+
 - (void)cancelImageRequest:(WPMediaRequestID)requestID
 {
 
