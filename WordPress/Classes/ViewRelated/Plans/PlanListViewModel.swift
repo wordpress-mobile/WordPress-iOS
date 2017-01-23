@@ -57,9 +57,9 @@ enum PlanListViewModel {
         let tos = NSLocalizedString("By checking out, you agree to our <a>fascinating terms and&nbsp;conditions</a>.", comment: "Terms of Service link displayed when a user is making a purchase. Text inside <a> tags will be highlighted.")
 
         let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFont(ofSize: 12),
-                                                                   NSForegroundColorAttributeName: bodyColor! ],
+                                                                   NSForegroundColorAttributeName: bodyColor ],
                                                  .ATagAttribute: [ NSUnderlineStyleAttributeName: NSUnderlineStyle.styleNone.rawValue as AnyObject,
-                                                                   NSForegroundColorAttributeName: linkColor!] ]
+                                                                   NSForegroundColorAttributeName: linkColor] ]
 
         let attributedTos = NSAttributedString.attributedStringWithHTML(tos, attributes: attributes)
 
