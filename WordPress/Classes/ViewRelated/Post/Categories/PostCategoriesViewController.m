@@ -6,6 +6,7 @@
 #import "WPCategoryTree.h"
 #import "WPTableViewCell.h"
 #import "CustomHighlightButton.h"
+#import "PostCategoryService.h"
 
 static NSString * const CategoryCellIdentifier = @"CategoryCellIdentifier";
 static const CGFloat CategoryCellIndentation = 16.0;
@@ -45,7 +46,9 @@ static const CGFloat CategoryCellIndentation = 16.0;
     // Hide extra cell separators.
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:CategoryCellIdentifier];
-    
+
+    [self setupRefreshControl];
+
     // Show the add category button if we're selecting categories for a post.
     if (self.selectionMode == CategoriesSelectionModePost || self.selectionMode == CategoriesSelectionModeBlogDefault) {
         UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-add"]
@@ -72,10 +75,20 @@ static const CGFloat CategoryCellIndentation = 16.0;
 {
     [super viewWillAppear:animated];
 
-    [self configureCategories];
+    [self reloadCategoriesTableViewData];
 }
 
 #pragma mark - Instance Methods
+
+- (void)setupRefreshControl
+{
+    if (self.refreshControl) {
+        return;
+    }
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refreshCategoriesWithInteraction:) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+}
 
 - (BOOL)hasChanges
 {
@@ -95,7 +108,19 @@ static const CGFloat CategoryCellIndentation = 16.0;
                      completion:nil];
 }
 
-- (void)configureCategories
+- (void)syncCategories
+{
+    __weak __typeof__(self) weakSelf = self;
+    PostCategoryService *service = [[PostCategoryService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [service syncCategoriesForBlog:self.blog success:^{
+        [self reloadCategoriesTableViewData];
+        [weakSelf.refreshControl endRefreshing];
+    } failure:^(NSError * _Nonnull error) {
+        [weakSelf.refreshControl endRefreshing];
+    }];
+}
+
+- (void)reloadCategoriesTableViewData
 {
     if (!self.selectedCategories) {
         self.selectedCategories = [self.originalSelection mutableCopy];
@@ -136,6 +161,13 @@ static const CGFloat CategoryCellIndentation = 16.0;
 
     PostCategory *category = [categoryDict objectForKey:parentID];
     return ([self indentationLevelForCategory:category.parentID categoryCollection:categoryDict]) + 1;
+}
+
+#pragma mark - Button Actions
+
+- (void)refreshCategoriesWithInteraction:(UIRefreshControl *)refreshControl
+{
+    [self syncCategories];
 }
 
 #pragma mark - UITableView Delegate & DataSource
