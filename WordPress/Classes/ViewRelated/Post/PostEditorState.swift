@@ -34,9 +34,10 @@ protocol PostEditorState {
 
 class PostEditorStateContext {
     private var state: PostEditorState = PostEditorStateNew()
+    private var userCanPublish = true
 
-    init(withPost post: AbstractPost, previousPost: AbstractPost) {
-
+    init(withPost post: AbstractPost, previousPost: AbstractPost, userCanPublish: Bool = true) {
+        self.userCanPublish = userCanPublish
     }
 
     func updated(postStatus: PostStatus) {
@@ -79,15 +80,41 @@ class PostEditorStateNew: PostEditorState {
     }
 
     func getPublishButtonText(context: PostEditorStateContext) -> String {
-        return ""
+        return NSLocalizedString("Publish", comment: "Publish button label.")
     }
 
     func getPublishVerbText(context: PostEditorStateContext) -> String {
-        return ""
+        return NSLocalizedString("Publishing...", comment: "Text displayed in HUD while a post is being published.")
     }
 
     func isPostPostShown(context: PostEditorStateContext) -> Bool {
+        return true
+    }
+
+    func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool {
         return false
+    }
+}
+
+class PostEditorStateDrafted: PostEditorState {
+    func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorState {
+        return self
+    }
+
+    func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorState {
+        return self
+    }
+
+    func getPublishButtonText(context: PostEditorStateContext) -> String {
+        return NSLocalizedString("Publish", comment: "Publish button label.")
+    }
+
+    func getPublishVerbText(context: PostEditorStateContext) -> String {
+        return NSLocalizedString("Publishing...", comment: "Text displayed in HUD while a post is being published.")
+    }
+
+    func isPostPostShown(context: PostEditorStateContext) -> Bool {
+        return true
     }
 
     func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool {
