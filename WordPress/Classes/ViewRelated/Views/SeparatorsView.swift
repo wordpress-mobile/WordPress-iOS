@@ -105,7 +105,7 @@ open class SeparatorsView: UIView {
 
         // Top Separator
         if topVisible {
-            topColor?.setStroke()
+            topColor.setStroke()
             let lineWidth = topHeightInPixels / scale
             ctx!.setLineWidth(lineWidth)
             ctx!.move(to: CGPoint(x: topInsets.left, y: lineWidth))
@@ -115,7 +115,7 @@ open class SeparatorsView: UIView {
 
         // Bottom Separator
         if bottomVisible {
-            bottomColor?.setStroke()
+            bottomColor.setStroke()
             ctx!.setLineWidth(bottomHeightInPixels / scale)
             ctx!.move(to: CGPoint(x: bottomInsets.left, y: bounds.height))
             ctx!.addLine(to: CGPoint(x: bounds.maxX - bottomInsets.right, y: bounds.height))

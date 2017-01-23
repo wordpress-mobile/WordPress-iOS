@@ -71,6 +71,7 @@
 #import "PostPreviewViewController.h"
 #import "PostService.h"
 #import "PostServiceOptions.h"
+#import "PostSettingsViewController.h"
 #import "PrivateSiteURLProtocol.h"
 
 #import "ReachabilityUtils.h"
