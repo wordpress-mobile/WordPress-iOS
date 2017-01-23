@@ -413,7 +413,7 @@ extension AztecPostViewController {
     }
 }
 
-// MARK: -
+// MARK: - FormatBarDelegate Conformance
 extension AztecPostViewController : Aztec.FormatBarDelegate {
 
     func handleActionForIdentifier(_ identifier: FormattingIdentifier) {
@@ -644,11 +644,13 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 }
 
 
+// MARK: - UINavigationControllerDelegate Conformance
 extension AztecPostViewController: UINavigationControllerDelegate {
 
 }
 
 
+// MARK: - UIImagePickerControllerDelegate Conformance
 extension AztecPostViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         dismiss(animated: true, completion: nil)
@@ -760,6 +762,7 @@ extension AztecPostViewController {
 }
 
 
+// MARK: - Computed Properties
 private extension AztecPostViewController {
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
@@ -776,6 +779,7 @@ private extension AztecPostViewController {
 }
 
 
+// MARK: - Media Support
 private extension AztecPostViewController {
     func insertImage(_ image: UIImage) {
         //let index = richTextView.positionForCursor()
@@ -785,6 +789,7 @@ private extension AztecPostViewController {
 }
 
 
+// MARK: - Constants
 fileprivate extension AztecPostViewController {
     struct Constants {
         static let defaultFont              = WPFontManager.merriweatherRegularFont(ofSize: 16)
