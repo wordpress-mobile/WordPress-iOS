@@ -242,6 +242,7 @@ class AztecPostViewController: UIViewController {
         let blogName = post.blog.settings?.name ?? post.blog.url ?? String()
         let titleText = NSMutableAttributedString(string: blogName, attributes: Constants.titleAttributes)
 
+        blogPickerButton.buttonMode = isSingleSiteMode ? .singleSite : .multipleSite
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
         blogPickerButton.sizeToFit()
 
@@ -310,7 +311,32 @@ extension AztecPostViewController {
     }
 
     @IBAction func displayBlogSelector() {
+        let successHandler: BlogSelectorSuccessHandler = { selectedObjectID in
+            guard let blog = self.mainContext.object(with: selectedObjectID) as? Blog else {
+                return
+            }
 
+            self.createRevisionOfPost(in: blog)
+        }
+
+        let dismissHandler: BlogSelectorDismissHandler = {
+            self.dismiss(animated: true, completion: nil)
+        }
+
+        let selectorViewController = BlogSelectorViewController(selectedBlogObjectID: post.blog.objectID,
+                                                                successHandler: successHandler,
+                                                                dismissHandler: dismissHandler)
+        selectorViewController.title = NSLocalizedString("Select Site", comment: "Blog Picker's Title")
+        selectorViewController.displaysPrimaryBlogOnTop = true
+
+        let navigationController = UINavigationController(rootViewController: selectorViewController)
+        navigationController.modalPresentationStyle = .popover
+
+        let popoverController = navigationController.popoverPresentationController
+        popoverController?.permittedArrowDirections = .up
+        popoverController?.sourceView = blogPickerButton
+
+        present(navigationController, animated: true, completion: nil)
     }
 
     @IBAction func displayMoreSheet() {
@@ -683,6 +709,10 @@ extension AztecPostViewController {
             self.post = self.post.createRevision()
             ContextManager.sharedInstance().save(context)
         }
+    }
+
+    fileprivate func createRevisionOfPost(in blog: Blog) {
+// TODO: Implement Me
     }
 
     fileprivate func cancelEditing() {
