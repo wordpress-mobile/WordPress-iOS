@@ -538,15 +538,11 @@
         return 0;
     }
 
-    NSError *error;
     NSString *errorMessage;
     // Check if asset being used is a video, if not this method fails
     if (self.assetType != MediaTypeVideo) {
         errorMessage = NSLocalizedString(@"Media selected is not a video.",@"Error message when user tries to preview an image media like a video");
-        error = [NSError errorWithDomain:WPMediaPickerErrorDomain
-                                             code:WPMediaErrorCodeVideoURLNotAvailable
-                                userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
-        completionHandler(nil, error);
+        completionHandler(nil, [self errorWithMessage:errorMessage]);
         return 0;
     }
 
@@ -560,10 +556,7 @@
 
     if (!url) {
         errorMessage = NSLocalizedString(@"Media selected is not available.",@"Error message when user tries a non longer existent video media object.");
-        error = [NSError errorWithDomain:WPMediaPickerErrorDomain
-                                    code:WPMediaErrorCodeVideoURLNotAvailable
-                                userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
-        completionHandler(nil, error);
+        completionHandler(nil, [self errorWithMessage:errorMessage]);
         return 0;
     }
 
@@ -571,15 +564,18 @@
     AVURLAsset *asset = [AVURLAsset assetWithURL:url];
     if (!asset || !asset.isPlayable) {
         errorMessage = NSLocalizedString(@"Media selected is not available.",@"Error message when user tries a non longer existent video media object.");
-        error = [NSError errorWithDomain:WPMediaPickerErrorDomain
-                                    code:WPMediaErrorCodeVideoURLNotAvailable
-                                userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
-        completionHandler(nil, error);
+        completionHandler(nil, [self errorWithMessage:errorMessage]);
         return 0;
     }
 
     completionHandler(asset, nil);
     return [self.mediaID intValue];
+}
+
+- (NSError *)errorWithMessage:(NSString *)errorMessage {
+    return [NSError errorWithDomain:WPMediaPickerErrorDomain
+                                code:WPMediaErrorCodeVideoURLNotAvailable
+                            userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
 }
 
 - (CGSize)pixelSize
