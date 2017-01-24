@@ -1,8 +1,16 @@
 import Foundation
+import WordPressShared
 
 
 /// This UINavigationController subclass will take care, automatically, of hiding the UINavigationBar
-/// whenever the presentation style is not set to fullscreen (AKA "we're in Popover Mode!").
+/// whenever:
+///
+/// -   We're running on an iPad Device
+/// -   The presentation style is not set to fullscreen (AKA "we're in Popover Mode!")
+///
+/// Note that we won't hide the NavigationBar on iPhone devices, since the *Plus* devices, in landscape mode,
+/// do render the presentedView within a popover, but you cannot actually dismiss it, by tapping over the
+/// gray area.
 ///
 class AdaptiveNavigationController: UINavigationController {
 
@@ -39,7 +47,7 @@ extension AdaptiveNavigationController: UIPopoverPresentationControllerDelegate 
             return
         }
 
-        let hidesNavigationBar = style != .fullScreen
+        let hidesNavigationBar = style != .fullScreen && WPDeviceIdentification.isiPad()
         navigationController.navigationBar.isHidden = hidesNavigationBar
     }
 }
