@@ -561,7 +561,7 @@
 
     // Let see if can create an asset with this url
     AVURLAsset *asset = [AVURLAsset assetWithURL:url];
-    if (!asset || !asset.isPlayable) {
+    if (!asset) {
         NSString *errorMessage = NSLocalizedString(@"Media selected is not available.", @"Error message when user tries a non longer existent video media object.");
         completionHandler(nil, [self errorWithMessage:errorMessage]);
         return 0;
