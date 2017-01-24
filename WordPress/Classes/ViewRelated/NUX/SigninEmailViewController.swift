@@ -53,6 +53,8 @@ import WordPressShared
         setupOnePasswordButtonIfNeeded()
         configureSafariPasswordButton(false)
         configureForWPComOnlyIfNeeded()
+        
+        self.sourceTag = SupportSourceTag.generalLogin
     }
 
 

@@ -34,6 +34,8 @@ class SigninLinkMailViewController: NUXAbstractViewController {
         }
 
         localizeControls()
+        
+        self.sourceTag = SupportSourceTag.wpComLogin
     }
 
 

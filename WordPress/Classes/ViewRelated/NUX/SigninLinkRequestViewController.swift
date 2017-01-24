@@ -35,6 +35,8 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
         if !email.isValidEmail() {
             assert(email.isValidEmail(), "The value of loginFields.username was not a valid email address.")
         }
+        
+        self.sourceTag = SupportSourceTag.wpComLogin
     }
 
 
