@@ -53,6 +53,8 @@ import WordPressShared
         configureTermsButtonText()
         setupOnePasswordButtonIfNeeded()
         displayLoginMessage("")
+        
+        self.sourceTag = SupportSourceTag.wpComSignup
     }
 
 

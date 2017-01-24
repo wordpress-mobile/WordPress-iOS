@@ -43,6 +43,8 @@ import WordPressShared
         localizeControls()
         setupOnePasswordButtonIfNeeded()
         displayLoginMessage("")
+        
+        self.sourceTag = SupportSourceTag.wpOrgLogin
     }
 
 

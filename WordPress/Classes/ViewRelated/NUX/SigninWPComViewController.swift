@@ -58,6 +58,8 @@ import WordPressShared
         setupOnePasswordButtonIfNeeded()
         configureStatusLabel("")
         configureForWPComOnlyIfNeeded()
+        
+        self.sourceTag = SupportSourceTag.wpComLogin
     }
 
 
