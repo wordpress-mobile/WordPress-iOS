@@ -108,7 +108,6 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, assign, readwrite) BOOL ownsPost;
 
 #pragma mark - Unsaved changes support
-@property (nonatomic, assign, readwrite) BOOL shouldShowUnsavedChangesAlert;
 @property (nonatomic, assign, readonly) BOOL changedToEditModeDueToUnsavedChanges;
 
 #pragma mark - State restoration
@@ -225,10 +224,6 @@ EditImageDetailsViewControllerDelegate
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
         
-        if (post.postTitle.length > 0 || post.content.length > 0) {
-            _shouldShowUnsavedChangesAlert = [post hasLocalChanges];
-        }
-        
         if ([post isRevision]
             && [post hasLocalChanges]
             && post.original.postTitle.length == 0
@@ -343,11 +338,6 @@ EditImageDetailsViewControllerDelegate
         if (self.isEditing) {
             [self setNeedsStatusBarAppearanceUpdate];
         }
-    }
-
-    if (self.shouldShowUnsavedChangesAlert) {
-        self.shouldShowUnsavedChangesAlert = NO;
-        [self showUnsavedChangesAlert];
     }
 }
 
@@ -577,22 +567,6 @@ EditImageDetailsViewControllerDelegate
 {
     self.mediaInProgress = [NSMutableDictionary dictionary];
     self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-}
-
-#pragma mark - Alerts
-
-- (void)showUnsavedChangesAlert
-{
-    [self.editorView endEditing];
-
-    NSString *title = NSLocalizedString(@"Unsaved changes.",
-                                        @"Title of the alert that lets the users know there are unsaved changes in a post they're opening.");
-    NSString *message = NSLocalizedString(@"This post has local changes that were not saved. You can now save them or discard them.",
-                                          @"Message of the alert that lets the users know there are unsaved changes in a post they're opening.");
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addActionWithTitle:NSLocalizedString(@"OK",@"") style:UIAlertActionStyleDefault handler:nil];
-    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Actions
