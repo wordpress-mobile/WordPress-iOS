@@ -515,8 +515,9 @@
         if (media.mediaType == MediaTypeImage) {
             pathForFile = media.absoluteThumbnailLocalURL;
             availableSize = [self sizeOfMediaFileAtPath:pathForFile];
-            if (CGSizeEqualToSize(availableSize, CGSizeZero)) {
+            if (size.height > availableSize.height && size.width > availableSize.width) {
                 pathForFile = media.absoluteLocalURL;
+                availableSize = [self sizeOfMediaFileAtPath:pathForFile];
             }
         } else if (media.mediaType == MediaTypeVideo) {
             pathForFile = media.absoluteThumbnailLocalURL;
