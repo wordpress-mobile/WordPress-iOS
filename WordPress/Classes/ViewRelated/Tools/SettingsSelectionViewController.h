@@ -25,15 +25,14 @@ extern NSString * const SettingsSelectionCurrentValueKey;
 @property (nonatomic, strong) NSObject              *defaultValue;
 @property (nonatomic, strong) NSObject              *currentValue;
 @property (nonatomic,   copy) void                  (^onItemSelected)(id);
+@property (nonatomic,   copy) void                  (^onRefresh)(UIRefreshControl *refreshControl);
 @property (nonatomic,   copy) void                  (^onCancel)();
-
 
 /**
  *  @brief      Initializes the SettingsSelection Instance.
  *
  *  @param      dictionary  A Dictionary containing the target "Settings".
  */
-
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
 
@@ -43,14 +42,18 @@ extern NSString * const SettingsSelectionCurrentValueKey;
  *  @param      style       The desired TableView Style.
  *  @param      dictionary  A Dictionary containing the target "Settings".
  */
-
 - (instancetype)initWithStyle:(UITableViewStyle)style andDictionary:(NSDictionary *)dictionary;
 
+/**
+ *  @brief      Reloads the SettingsSelection data with a new dictionary.
+ *
+ *  @param      dictionary  A Dictionary containing the target "Settings".
+ */
+- (void)reloadWithDictionary:(NSDictionary *)dictionary;
 
 /**
  *  @brief      Dismisses the Settings Picker from the window.
  */
-
 - (void)dismiss;
 
 @end
