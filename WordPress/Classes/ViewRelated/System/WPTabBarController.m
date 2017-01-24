@@ -384,6 +384,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                self.newPostViewController,
                                self.meSplitViewController,
                                self.notificationsNavigationController]];
+    // Reset the selectedIndex
+    self.selectedIndex = 0;
 }
 
 #pragma mark - Navigation Helpers
