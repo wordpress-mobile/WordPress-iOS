@@ -29,7 +29,7 @@ class AztecPostViewController: UIViewController {
         let tv = UITextView()
 
         tv.accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
-        tv.font = WPFontManager.merriweatherRegularFont(ofSize: 16)
+        tv.font = Constants.defaultFont
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.isHidden = true
@@ -311,6 +311,11 @@ extension AztecPostViewController {
     }
 
     @IBAction func displayBlogSelector() {
+        guard let sourceView = blogPickerButton.imageView else {
+            fatalError()
+        }
+
+        // Setup Handlers
         let successHandler: BlogSelectorSuccessHandler = { selectedObjectID in
             guard let blog = self.mainContext.object(with: selectedObjectID) as? Blog else {
                 return
@@ -323,25 +328,18 @@ extension AztecPostViewController {
             self.dismiss(animated: true, completion: nil)
         }
 
+        // Setup Picker
         let selectorViewController = BlogSelectorViewController(selectedBlogObjectID: post.blog.objectID,
                                                                 successHandler: successHandler,
                                                                 dismissHandler: dismissHandler)
         selectorViewController.title = NSLocalizedString("Select Site", comment: "Blog Picker's Title")
         selectorViewController.displaysPrimaryBlogOnTop = true
 
-        // Wrap the Picker within a NavigationController
-        let navigationController = UINavigationController(rootViewController: selectorViewController)
-        navigationController.modalPresentationStyle = .popover
+        // Setup Navigation
+        let navigationController = AdaptiveNavigationController(rootViewController: selectorViewController)
+        navigationController.configurePopoverPresentationStyle(from: sourceView)
 
-        // Popover from the Blog Picker Button
-        guard let popoverController = navigationController.popoverPresentationController, let sourceView = blogPickerButton.imageView else {
-            return
-        }
-
-        popoverController.permittedArrowDirections = .up
-        popoverController.sourceRect = sourceView.bounds.insetBy(dx: Constants.popoverInsets.dx, dy: Constants.popoverInsets.dy)
-        popoverController.sourceView = sourceView
-
+        // Done!
         present(navigationController, animated: true, completion: nil)
     }
 
@@ -833,7 +831,6 @@ fileprivate extension AztecPostViewController {
         static let defaultMissingImage      = Gridicon.iconOfType(.image)
         static let separatorButtonWidth     = CGFloat(-12)
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
-        static let popoverInsets            = CGVector(dx: -10, dy: 0)
         static let titleAttributes          = [NSFontAttributeName: WPFontManager.systemSemiBoldFont(ofSize: 16)]
         static let titleButtonCompactWidth  = CGFloat(125)
         static let titleButtonRegularWidth  = CGFloat(300)
