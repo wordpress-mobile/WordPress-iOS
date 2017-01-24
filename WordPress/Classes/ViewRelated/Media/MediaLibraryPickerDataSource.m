@@ -519,7 +519,7 @@
 {
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
-    [mediaService thumbnailForMedia:self size:size success:^(UIImage *image) {
+    [mediaService imageForMedia:self size:size success:^(UIImage *image) {
         if (completionHandler) {
             completionHandler(image, nil);
         }

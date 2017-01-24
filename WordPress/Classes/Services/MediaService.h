@@ -126,16 +126,18 @@
                         failure:(void (^)(NSError *error))failure;
 
 /**
- + Get a thumbnail image for a Media by downloading its image or using the local cache
- +
- + @param media
- + @param success a block that will be invoked when the media is retrieved
- + @failure a block that will be invoked if an error happens returnin the associated error object with the details.
- + */
-- (void)thumbnailForMedia:(Media *)media
-                     size:(CGSize)size
-                  success:(void (^)(UIImage *image))success
-                  failure:(void (^)(NSError *error))failure;
+ Get a the image for a Media object by downloading its image or using the local cache
+
+ @param mediaInRandomContext the object from where to get the thumbnail
+ @param requestSize the request size for the image
+ @param success a block that will be invoked when the media is retrieved
+ @param failure a block that will be invoked if an error happens, provinding an error object with details.
+ */
+- (void)imageForMedia:(Media *)mediaInRandomContext
+                 size:(CGSize)requestSize
+              success:(void (^)(UIImage *image))success
+              failure:(void (^)(NSError *error))failure;
+
 /**
  *  Get the number of items in a blog media library that are of a certain type.
  *
