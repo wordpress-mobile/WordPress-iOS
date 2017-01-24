@@ -67,7 +67,6 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
     }
 
     [self setupRefreshControl];
-    [self configureCancelButton];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -81,17 +80,6 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
     }
 
     return size;
-}
-
-- (void)configureCancelButton
-{
-    if ([self.navigationController.viewControllers count] > 1) {
-        // showing a back button instead
-        return;
-    }
-
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(didTapCancelButton:)];
-    self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
 - (void)didTapCancelButton:(id)sender
@@ -125,6 +113,12 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
 {
     [self setupWithDictionary:dictionary];
     [self.tableView reloadData];
+}
+
+- (void)configureCancelBarButtonItem
+{
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(didTapCancelButton:)];
+    self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
 - (void)dismiss

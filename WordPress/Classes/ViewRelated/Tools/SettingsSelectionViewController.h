@@ -52,6 +52,13 @@ extern NSString * const SettingsSelectionCurrentValueKey;
 - (void)reloadWithDictionary:(NSDictionary *)dictionary;
 
 /**
+ *  @brief      Configures a cancel button as a barButtonItem that dismisses the view and call the onCancel block.
+ *
+ *  @note       This should be used only for modal presentations.
+ */
+- (void)configureCancelBarButtonItem;
+
+/**
  *  @brief      Dismisses the Settings Picker from the window.
  */
 - (void)dismiss;
