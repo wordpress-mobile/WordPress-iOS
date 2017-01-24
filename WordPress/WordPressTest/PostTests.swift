@@ -319,5 +319,11 @@ class PostTests: XCTestCase {
 
         revision.tags = original.tags
         XCTAssertFalse(revision.hasLocalChanges())
+
+        revision.mt_excerpt = "Say cheese"
+        XCTAssertTrue(revision.hasLocalChanges())
+
+        revision.mt_excerpt = original.mt_excerpt
+        XCTAssertFalse(revision.hasLocalChanges())
     }
 }
