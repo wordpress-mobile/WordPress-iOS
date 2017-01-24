@@ -135,7 +135,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }
     self.showingJetpackLogin = YES;
     //JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
-    JetpackLoginViewController *controller = [[JetpackLoginViewController alloc] init];
+    JetpackLoginViewController *controller = [[JetpackLoginViewController alloc] initWithBlog:self.blog];
 //    controller.showFullScreen = NO;
 //    __weak JetpackSettingsViewController *safeController = controller;
 //    [controller setCompletionBlock:^(BOOL didAuthenticate) {
