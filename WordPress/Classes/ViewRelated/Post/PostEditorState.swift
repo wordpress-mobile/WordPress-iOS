@@ -38,7 +38,9 @@ protocol PostEditorStateContextDelegate {
 }
 
 class PostEditorStateContext {
-    private var state: PostEditorState = PostEditorStateNew()
+    private var state: PostEditorState = PostEditorStateNew() {
+
+    }
     private var userCanPublish = true
     private var delegate: PostEditorStateContextDelegate?
 

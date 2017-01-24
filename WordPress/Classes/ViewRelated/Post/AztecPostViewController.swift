@@ -78,6 +78,12 @@ class AztecPostViewController: UIViewController {
         return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancelEditingAction))
     }()
 
+    fileprivate(set) lazy var publishButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: "Publish", style: WPStyleGuide.barButtonStyleForDone(), target: self, action: #selector(publishButtonTapped(sender:)))
+
+        return button
+    }()
+
     fileprivate lazy var moreBarButtonItem: UIBarButtonItem = {
         let image = Gridicon.iconOfType(.ellipsis)
         return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(displayMoreSheet))
@@ -96,6 +102,11 @@ class AztecPostViewController: UIViewController {
 
     fileprivate(set) var blog: Blog
     fileprivate(set) var post: AbstractPost
+
+    fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
+        let context = PostEditorStateContext(withPost: self.post, previousPost: self.post, delegate: self)
+        return context
+    }()
 
     // MARK: - Lifecycle Methods
 
@@ -204,7 +215,7 @@ class AztecPostViewController: UIViewController {
 
     func configureNavigationBar() {
         navigationItem.leftBarButtonItem = closeBarButtonItem
-        navigationItem.rightBarButtonItem = moreBarButtonItem
+        navigationItem.rightBarButtonItems = [moreBarButtonItem, publishButton]
     }
 
 
@@ -297,6 +308,16 @@ extension AztecPostViewController {
         let settingsViewController = PostSettingsViewController(post: post)
         settingsViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+}
+
+
+
+// MARK: - Publish Button Methods
+extension AztecPostViewController: PostEditorStateContextDelegate {
+    internal func context(_ context: PostEditorStateContext, didChangeState: PostEditorState) {
+        publishButton.title = context.getPublishButtonText()
+        publishButton.isEnabled = context.isPublishButtonEnabled()
     }
 }
 
@@ -605,6 +626,10 @@ extension AztecPostViewController: UIImagePickerControllerDelegate {
 
 // MARK: - Cancel/Dismiss/Persistence Logic
 extension AztecPostViewController {
+    @objc fileprivate func publishButtonTapped(sender: UIBarButtonItem) {
+
+    }
+
     // TODO: Rip this out and put it into the PostService
     fileprivate func createRevisionOfPost() {
         guard let context = post.managedObjectContext else {
