@@ -155,6 +155,7 @@
 
 #import <WPMediaPicker/WPMediaPicker.h>
 
+#import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPStyleGuide.h>
