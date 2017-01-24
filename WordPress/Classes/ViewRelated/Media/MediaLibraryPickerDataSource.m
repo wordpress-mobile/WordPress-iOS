@@ -548,7 +548,7 @@
     NSURL *url = nil;
     // Do we have a local url, or remote url to use for the video
     if (self.absoluteLocalURL) {
-        url = [NSURL URLWithString:self.absoluteLocalURL];
+        url = [NSURL fileURLWithPath:self.absoluteLocalURL];
     } else if (self.remoteURL) {
         url = [NSURL URLWithString:self.remoteURL];
     }
