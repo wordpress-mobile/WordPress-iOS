@@ -10,7 +10,9 @@ class JetpackLoginViewController: UIViewController {
     @IBOutlet fileprivate weak var descriptionLabel: UILabel!
     @IBOutlet fileprivate weak var usernameTextField: WPWalkthroughTextField!
     @IBOutlet fileprivate weak var passwordTextField: WPWalkthroughTextField!
+    @IBOutlet fileprivate weak var verificationCodeTextField: WPWalkthroughTextField!
     @IBOutlet fileprivate weak var scrollView: UIScrollView!
+    @IBOutlet fileprivate weak var signinButton: WPNUXMainButton!
 
     var activeField: UITextField?
 
@@ -26,12 +28,14 @@ class JetpackLoginViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         registerForKeyboardNotifications()
+        registerForTextFieldNotifications()
     }
 
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         deregisterFromKeyboardNotifications()
+        deregisterFromTextFieldNotifications()
     }
 
     override func didReceiveMemoryWarning() {
@@ -56,6 +60,7 @@ class JetpackLoginViewController: UIViewController {
         self.usernameTextField.autocorrectionType = .no
         self.usernameTextField.autocapitalizationType = .none
         self.usernameTextField.clearButtonMode = .whileEditing
+        self.verificationCodeTextField.returnKeyType = .next
 
         self.passwordTextField.delegate = self
         self.passwordTextField.backgroundColor = UIColor.white
@@ -65,6 +70,21 @@ class JetpackLoginViewController: UIViewController {
         self.passwordTextField.showSecureTextEntryToggle = true
         self.passwordTextField.clearsOnBeginEditing = true
         self.passwordTextField.showTopLineSeparator = true
+        self.passwordTextField.returnKeyType = .next
+
+        self.verificationCodeTextField.delegate = self
+        self.verificationCodeTextField.backgroundColor = UIColor.white
+        self.verificationCodeTextField.placeholder = NSLocalizedString("Verification Code", comment: "")
+        self.verificationCodeTextField.font = WPNUXUtility.textFieldFont()
+        self.verificationCodeTextField.textAlignment = .center
+        self.verificationCodeTextField.adjustsFontSizeToFitWidth = true
+        self.verificationCodeTextField.keyboardType = .numberPad
+        self.verificationCodeTextField.returnKeyType = .done
+        self.verificationCodeTextField.showTopLineSeparator = true
+        self.verificationCodeTextField.isHidden = true // Hidden by default
+
+        self.signinButton.isEnabled = false
+        self.signinButton.setTitle(NSLocalizedString("Sign In", comment: ""), for: .normal)
     }
 
     func setupKeyboard() {
@@ -75,6 +95,21 @@ class JetpackLoginViewController: UIViewController {
         self.scrollView.addGestureRecognizer(tap)
     }
 
+    // MARK: - Textfield
+
+    func registerForTextFieldNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(textFieldChanged(_ :)), name: .UITextFieldTextDidChange, object: self.usernameTextField)
+        NotificationCenter.default.addObserver(self, selector: #selector(textFieldChanged(_ :)), name: .UITextFieldTextDidChange, object: self.passwordTextField)
+    }
+
+    func deregisterFromTextFieldNotifications() {
+        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidChange, object: self.usernameTextField)
+        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidChange, object: self.passwordTextField)
+    }
+
+    func textFieldChanged(_ notification: Foundation.Notification) {
+        updateSaveButton()
+    }
 
     // MARK: - Keyboard
 
@@ -112,8 +147,31 @@ class JetpackLoginViewController: UIViewController {
         self.scrollView.isScrollEnabled = false
     }
 
+    // MARK: - UI Helpers
+
+    func updateSaveButton() {
+        guard let usernameText = self.usernameTextField.text, !usernameText.isEmpty else {
+            self.signinButton.isEnabled = false
+            return
+        }
+        guard let passwordText = self.passwordTextField.text, !passwordText.isEmpty else {
+            self.signinButton.isEnabled = false
+            return
+        }
+        self.signinButton.isEnabled = true
+    }
+
     func hideKeyboard() {
         self.view.endEditing(true)
+    }
+
+    // MARK: - Actions
+
+    @IBAction func didTouchSignInButton(_ sender: Any) {
+        hideKeyboard()
+        self.usernameTextField.isEnabled = false
+        self.passwordTextField.isEnabled = false
+        self.signinButton.showActivityIndicator(true)
     }
 }
 
@@ -133,6 +191,8 @@ extension JetpackLoginViewController : UITextFieldDelegate {
         if textField == self.usernameTextField {
             self.passwordTextField.becomeFirstResponder()
         } else if textField == self.passwordTextField {
+            self.verificationCodeTextField.becomeFirstResponder()
+        } else if textField == self.verificationCodeTextField {
             hideKeyboard()
             //TODO: Login!
         }
