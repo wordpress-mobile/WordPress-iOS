@@ -266,12 +266,6 @@
     }
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView
-{
-    DDLogMethod();
-    self.loadingView.hidden = NO;
-}
-
 - (void)webViewDidFinishLoad:(UIWebView *)awebView
 {
     DDLogMethod();
