@@ -335,6 +335,11 @@ extension AztecPostViewController {
         selectorViewController.title = NSLocalizedString("Select Site", comment: "Blog Picker's Title")
         selectorViewController.displaysPrimaryBlogOnTop = true
 
+        // Note:
+        // On iPad Devices, we'll disable the Picker's SearchController's "Autohide Navbar Feature", since
+        // upon dismissal, it may force the NavigationBar to show up, even when it was initially hidden.
+        selectorViewController.displaysNavigationBarWhenSearching = WPDeviceIdentification.isiPad()
+
         // Setup Navigation
         let navigationController = AdaptiveNavigationController(rootViewController: selectorViewController)
         navigationController.configurePopoverPresentationStyle(from: sourceView)
