@@ -41,6 +41,8 @@ import WordPressShared
         configureSendCodeButtonText()
         configureStatusLabel("")
         configureSubmitButton(animating: false)
+        
+        self.sourceTag = SupportSourceTag.wpComLogin
     }
 
 

@@ -1,7 +1,16 @@
 #import <UIKit/UIKit.h>
 
-@interface SupportViewController : UITableViewController
+typedef NSString * SupportSourceTag NS_EXTENSIBLE_STRING_ENUM;
+extern SupportSourceTag const SupportSourceTagWPComLogin;
+extern SupportSourceTag const SupportSourceTagWPComSignup;
+extern SupportSourceTag const SupportSourceTagWPOrgLogin;
+extern SupportSourceTag const SupportSourceTagJetpackLogin;
+extern SupportSourceTag const SupportSourceTagGeneralLogin;
 
+@interface SupportViewController : UITableViewController
+@property (nonatomic, strong) SupportSourceTag sourceTag;
+
+- (id)initFromSource:(SupportSourceTag)sourceTag;
 + (void)showFromTabBar;
 
 @end

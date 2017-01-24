@@ -184,7 +184,7 @@ class SigninErrorViewController: UIViewController {
     func displayGenericErrorMessage(_ message: String) {
         let callback: SigninErrorCallback = { [unowned self] in
             self.dismiss()
-            self.delegate?.displaySupportViewController()
+            self.delegate?.displaySupportViewController(sourceTag: SupportSourceTag.generalLogin)
         }
 
         configureView(message,
@@ -204,7 +204,7 @@ class SigninErrorViewController: UIViewController {
     func displayGenericErrorMessageWithHelpshiftButton(_ message: String) {
         let callback: SigninErrorCallback = { [unowned self] in
             self.dismiss()
-            self.delegate?.displayHelpshiftConversationView()
+            self.delegate?.displayHelpshiftConversationView(sourceTag: SupportSourceTag.wpComLogin)
         }
 
         configureView(message,
@@ -245,7 +245,7 @@ class SigninErrorViewController: UIViewController {
 
         let secondCallback: SigninErrorCallback = { [unowned self] in
             self.dismiss()
-            self.delegate?.displaySupportViewController()
+            self.delegate?.displaySupportViewController(sourceTag: SupportSourceTag.wpOrgLogin)
         }
 
         configureView(message,
@@ -283,12 +283,12 @@ class SigninErrorViewController: UIViewController {
 protocol SigninErrorViewControllerDelegate {
     /// Delegates should implement this method and display the support view controller when called.
     ///
-    func displaySupportViewController()
+    func displaySupportViewController(sourceTag: SupportSourceTag)
 
 
     /// Delegates should implement this method and display the helpshift conversation when called.
     ///
-    func displayHelpshiftConversationView()
+    func displayHelpshiftConversationView(sourceTag: SupportSourceTag)
 
 
     /// Delegates should implement this method and display the in-app web browser when called.
