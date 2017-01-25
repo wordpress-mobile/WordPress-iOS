@@ -13,12 +13,11 @@ class AztecPostViewController: UIViewController {
     static let margin = CGFloat(20)
 
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
-        let defaultFont = WPFontManager.merriweatherRegularFont(ofSize: 16)!
-        // TODO: Add a proper defaultMissingImage
-        let defaultMissingImage = UIImage()
+        let defaultFont = WPFontManager.merriweatherRegularFont(ofSize: 16)
+        let defaultMissingImage = Gridicon.iconOfType(.image)
         let tv = Aztec.TextView(defaultFont: defaultFont, defaultMissingImage: defaultMissingImage)
 
-        tv.font = WPFontManager.merriweatherRegularFont(ofSize: 16)
+        tv.font = defaultFont
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         tv.delegate = self
         let toolbar = self.createToolbar()
@@ -27,6 +26,7 @@ class AztecPostViewController: UIViewController {
         tv.inputAccessoryView = toolbar
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.keyboardDismissMode = .interactive
 
         return tv
     }()
@@ -39,6 +39,7 @@ class AztecPostViewController: UIViewController {
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.isHidden = true
+        tv.keyboardDismissMode = .interactive
 
         return tv
     }()
@@ -72,7 +73,15 @@ class AztecPostViewController: UIViewController {
         return v
     }()
 
+    fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
+        let image = Gridicon.iconOfType(.cross)
+        return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(cancelEditingAction))
+    }()
 
+    fileprivate lazy var moreBarButtonItem: UIBarButtonItem = {
+        let image = Gridicon.iconOfType(.ellipsis)
+        return UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(displayMoreSheet))
+    }()
 
     fileprivate(set) var mode = EditionMode.richText {
         didSet {
@@ -129,28 +138,23 @@ class AztecPostViewController: UIViewController {
         configureNavigationBar()
 
         title = NSLocalizedString("Aztec Native Editor", comment: "")
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedString("Cancel", comment: "Action button to close editor and cancel changes or insertion of post"),
-            style: .done,
-            target: self,
-            action: #selector(AztecPostViewController.cancelEditingAction(_:)))
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = .white
     }
 
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
     }
 
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
 
 
@@ -199,18 +203,8 @@ class AztecPostViewController: UIViewController {
     }
 
     func configureNavigationBar() {
-        let title = NSLocalizedString("HTML", comment: "HTML!")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: title,
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(switchEditionMode))
-    }
-
-
-    // MARK: - Helpers
-
-    @IBAction func switchEditionMode() {
-        mode.toggle()
+        navigationItem.leftBarButtonItem = closeBarButtonItem
+        navigationItem.rightBarButtonItem = moreBarButtonItem
     }
 
 
@@ -226,7 +220,6 @@ class AztecPostViewController: UIViewController {
 
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
-
 
     func keyboardWillHide(_ notification: Foundation.Notification) {
         guard
@@ -253,25 +246,57 @@ class AztecPostViewController: UIViewController {
             return
         }
 
-        let range = richTextView.selectedRange
-        let identifiers = richTextView.formatIdentifiersSpanningRange(range)
+        let identifiers = richTextView.formatIdentifiersForTypingAttributes()
         toolbar.selectItemsMatchingIdentifiers(identifiers)
     }
+}
 
 
-    // MARK: - Sample Content
+// MARK: - More Sheet
+extension AztecPostViewController {
+    @IBAction func displayMoreSheet() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-    func getSampleHTML() -> String {
-        let htmlFilePath = Bundle.main.path(forResource: "content", ofType: "html")!
-        let fileContents: String
-
-        do {
-            fileContents = try String(contentsOfFile: htmlFilePath)
-        } catch {
-            fatalError("Could not load the sample HTML.  Check the file exists in the target and that it has the correct name.")
+        switch mode {
+        case .richText:
+            alertController.addAction(switchHTMLAlertAction())
+        case .html:
+            alertController.addAction(switchRichAlertAction())
         }
 
-        return fileContents
+        alertController.addAction(optionsAlertAction())
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen"))
+        alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
+
+        view.endEditing(true)
+        present(alertController, animated: true, completion: nil)
+    }
+
+    private func switchHTMLAlertAction() -> UIAlertAction {
+        let title = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
+        return UIAlertAction(title: title, style: .default, handler: { _ in
+            self.mode = .html
+        })
+    }
+
+    private func switchRichAlertAction() -> UIAlertAction {
+        let title = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        return UIAlertAction(title: title, style: .default, handler: { _ in
+            self.mode = .richText
+        })
+    }
+
+    private func optionsAlertAction() -> UIAlertAction {
+        let title = NSLocalizedString("Options", comment: "Displays the Post's Options")
+        return UIAlertAction(title: title, style: .default, handler: { _ in
+            self.displayPostOptions()
+        })
+    }
+
+    private func displayPostOptions() {
+        let settingsViewController = PostSettingsViewController(post: post)
+        settingsViewController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
 }
 
@@ -309,33 +334,20 @@ extension AztecPostViewController {
     enum EditionMode {
         case richText
         case html
-
-        mutating func toggle() {
-            switch self {
-            case .html:
-                self = .richText
-            case .richText:
-                self = .html
-            }
-        }
     }
 
     fileprivate func switchToHTML() {
-        navigationItem.rightBarButtonItem?.title = NSLocalizedString("Native", comment: "Rich Edition!")
+        view.endEditing(true)
 
         htmlTextView.text = richTextView.getHTML()
-
-        view.endEditing(true)
         htmlTextView.isHidden = false
         richTextView.isHidden = true
     }
 
     fileprivate func switchToRichText() {
-        navigationItem.rightBarButtonItem?.title = NSLocalizedString("HTML", comment: "HTML!")
+        view.endEditing(true)
 
         richTextView.setHTML(htmlTextView.text)
-
-        view.endEditing(true)
         richTextView.isHidden = false
         htmlTextView.isHidden = true
     }
@@ -535,23 +547,23 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let items = [
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage), identifier: Aztec.FormattingIdentifier.media),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage), identifier: .media),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold), identifier: Aztec.FormattingIdentifier.bold),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold), identifier: .bold),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic), identifier: Aztec.FormattingIdentifier.italic),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic), identifier: .italic),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline), identifier: Aztec.FormattingIdentifier.underline),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline), identifier: .underline),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough), identifier: Aztec.FormattingIdentifier.strikethrough),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough), identifier: .strikethrough),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote), identifier: Aztec.FormattingIdentifier.blockquote),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote), identifier: .blockquote),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: Aztec.FormattingIdentifier.unorderedlist),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: .unorderedlist),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: Aztec.FormattingIdentifier.orderedlist),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: .orderedlist),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link), identifier: Aztec.FormattingIdentifier.link),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link), identifier: .link),
             flex,
             ]
 
