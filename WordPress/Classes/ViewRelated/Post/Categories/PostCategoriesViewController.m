@@ -113,7 +113,7 @@ static const CGFloat CategoryCellIndentation = 16.0;
     __weak __typeof__(self) weakSelf = self;
     PostCategoryService *service = [[PostCategoryService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [service syncCategoriesForBlog:self.blog success:^{
-        [self reloadCategoriesTableViewData];
+        [weakSelf reloadCategoriesTableViewData];
         [weakSelf.refreshControl endRefreshing];
     } failure:^(NSError * _Nonnull error) {
         [weakSelf.refreshControl endRefreshing];
