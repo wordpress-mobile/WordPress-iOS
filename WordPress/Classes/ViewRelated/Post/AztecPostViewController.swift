@@ -147,7 +147,15 @@ class AztecPostViewController: UIViewController {
         }
     }
 
-    fileprivate(set) var post: AbstractPost
+
+    /// Post being currently edited
+    ///
+    fileprivate(set) var post: AbstractPost {
+        didSet {
+            refreshNavigationBarButtons()
+        }
+    }
+
 
     // MARK: - Lifecycle Methods
 
@@ -189,7 +197,6 @@ class AztecPostViewController: UIViewController {
         super.viewWillAppear(animated)
 
         startListeningToNotifications()
-        refreshNavigationBarButtons()
     }
 
 
@@ -202,6 +209,11 @@ class AztecPostViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.refreshNavigationBarButtons()
+        })
+
         // TODO: Update toolbars
         //    [self.editorToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
         //    [self.titleToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
@@ -280,19 +292,26 @@ class AztecPostViewController: UIViewController {
     }
 
     func refreshNavigationBarButtons() {
-        // Refresh the Picker's Title
+        refreshBlogPicker()
+        resizeBlogPicker()
+    }
+
+    func refreshBlogPicker() {
         let blogName = post.blog.settings?.name ?? post.blog.url ?? String()
-        let titleText = NSAttributedString(string: blogName, attributes: Constants.titleAttributes)
+        let titleText = NSAttributedString(string: blogName, attributes: Constants.blogPickerAttributes)
 
         blogPickerButton.buttonMode = isSingleSiteMode ? .singleSite : .multipleSite
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
+    }
+
+    func resizeBlogPicker() {
+        // Ensure the BlogPicker gets it's maximum possible size
         blogPickerButton.sizeToFit()
 
-        // Update the Blog Picker's width to the appropriate size for the horizontal size class
-        let pickerButtonMaxWidth = hasHorizontallyCompactView() ? Constants.titleButtonCompactWidth : Constants.titleButtonRegularWidth
-        var blogPickerSize = blogPickerButton.frame.size
-        blogPickerSize.width = min(blogPickerSize.width, pickerButtonMaxWidth)
-        blogPickerSize.height = Constants.titleButtonRegularHeight
+        // Cap the size, according to the current traits
+        var blogPickerSize = hasHorizontallyCompactView() ? Constants.blogPickerCompactSize : Constants.blogPickerRegularSize
+        blogPickerSize.width = min(blogPickerSize.width, blogPickerButton.frame.width)
+
         blogPickerButton.frame.size = blogPickerSize
     }
 
@@ -873,9 +892,8 @@ fileprivate extension AztecPostViewController {
         static let defaultMissingImage      = Gridicon.iconOfType(.image)
         static let separatorButtonWidth     = CGFloat(-12)
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
-        static let titleAttributes          = [NSFontAttributeName: WPFontManager.systemSemiBoldFont(ofSize: 16)]
-        static let titleButtonCompactWidth  = CGFloat(125)
-        static let titleButtonRegularWidth  = CGFloat(300)
-        static let titleButtonRegularHeight = CGFloat(30)
+        static let blogPickerAttributes     = [NSFontAttributeName: WPFontManager.systemSemiBoldFont(ofSize: 16)]
+        static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
+        static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
     }
 }
