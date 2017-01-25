@@ -84,6 +84,10 @@ class AztecPostViewController: UIViewController {
         return cancelItem
     }()
 
+    fileprivate lazy var blogPickerBarButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(customView: self.blogPickerButton)
+    }()
+
     fileprivate lazy var moreBarButtonItem: UIBarButtonItem = {
         let image = Gridicon.iconOfType(.ellipsis)
         let moreItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(displayMoreSheet))
@@ -211,6 +215,9 @@ class AztecPostViewController: UIViewController {
         title = NSLocalizedString("Aztec", comment: "Aztec Editor's Title")
 
         navigationController?.navigationBar.isTranslucent = false
+
+        navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
+        navigationItem.rightBarButtonItem = moreBarButtonItem
     }
 
     func configureView() {
@@ -240,23 +247,18 @@ class AztecPostViewController: UIViewController {
     func refreshNavigationBarButtons() {
         // Refresh the Picker's Title
         let blogName = post.blog.settings?.name ?? post.blog.url ?? String()
-        let titleText = NSMutableAttributedString(string: blogName, attributes: Constants.titleAttributes)
+        let titleText = NSAttributedString(string: blogName, attributes: Constants.titleAttributes)
 
         blogPickerButton.buttonMode = isSingleSiteMode ? .singleSite : .multipleSite
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
         blogPickerButton.sizeToFit()
 
         // Update the Blog Picker's width to the appropriate size for the horizontal size class
-        let pickerButtonMaxWidth = hasHorizontallyCompactView() ? Constants.titleButtonRegularWidth : Constants.titleButtonRegularWidth
-        var pickerButtonFrame = blogPickerButton.frame
-        pickerButtonFrame.size.width = min(pickerButtonFrame.width, pickerButtonMaxWidth)
-        pickerButtonFrame.size.height = Constants.titleButtonRegularHeight
-        blogPickerButton.frame = pickerButtonFrame
-
-        // Refresh Button Items
-        let pickerBarButtonItem = UIBarButtonItem(customView: blogPickerButton)
-        navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, pickerBarButtonItem]
-        navigationItem.rightBarButtonItem = moreBarButtonItem
+        let pickerButtonMaxWidth = hasHorizontallyCompactView() ? Constants.titleButtonCompactWidth : Constants.titleButtonRegularWidth
+        var blogPickerSize = blogPickerButton.frame.size
+        blogPickerSize.width = min(blogPickerSize.width, pickerButtonMaxWidth)
+        blogPickerSize.height = Constants.titleButtonRegularHeight
+        blogPickerButton.frame.size = blogPickerSize
     }
 
 
