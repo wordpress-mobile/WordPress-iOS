@@ -373,6 +373,8 @@ extension AztecPostViewController {
 
         // Setup Handlers
         let successHandler: BlogSelectorSuccessHandler = { selectedObjectID in
+            self.dismiss(animated: true, completion: nil)
+
             guard let blog = self.mainContext.object(with: selectedObjectID) as? Blog else {
                 return
             }
