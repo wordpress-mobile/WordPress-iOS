@@ -11,7 +11,6 @@ class NUXAbstractViewController: UIViewController {
     var helpBadge: WPNUXHelpBadgeLabel!
     var helpButton: UIButton!
     var loginFields = LoginFields()
-    var sourceTag = SupportSourceTag.generalLogin
 
     let helpButtonMarginSpacerWidth = CGFloat(-8)
     let helpBadgeSize = CGSize(width: 12, height: 10)
@@ -25,7 +24,6 @@ class NUXAbstractViewController: UIViewController {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -210,6 +208,12 @@ class NUXAbstractViewController: UIViewController {
 
 
 extension NUXAbstractViewController : SigninErrorViewControllerDelegate {
+
+    var sourceTag: SupportSourceTag {
+        get {
+            return .generalLogin
+        }
+    }
 
     /// Displays the support vc.
     ///

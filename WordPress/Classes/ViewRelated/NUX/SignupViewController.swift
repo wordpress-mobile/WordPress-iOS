@@ -33,6 +33,11 @@ import WordPressShared
     let BlogIDKey = "blogid"
     let URLKey = "url"
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComSignup
+        }
+    }
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
@@ -53,8 +58,6 @@ import WordPressShared
         configureTermsButtonText()
         setupOnePasswordButtonIfNeeded()
         displayLoginMessage("")
-        
-        self.sourceTag = SupportSourceTag.wpComSignup
     }
 
 

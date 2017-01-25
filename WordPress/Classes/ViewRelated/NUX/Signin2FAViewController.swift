@@ -21,6 +21,12 @@ import WordPressShared
         return facade
     }()
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComLogin
+        }
+    }
+
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
@@ -41,8 +47,6 @@ import WordPressShared
         configureSendCodeButtonText()
         configureStatusLabel("")
         configureSubmitButton(animating: false)
-        
-        self.sourceTag = SupportSourceTag.wpComLogin
     }
 
 

@@ -281,6 +281,10 @@ class SigninErrorViewController: UIViewController {
 /// Defines responsibilities for the delegate of a SigninErrorViewController.
 ///
 protocol SigninErrorViewControllerDelegate {
+    /// The Helpshift tag to track the origin of user conversations
+    ///
+    var sourceTag: SupportSourceTag { get }
+    
     /// Delegates should implement this method and display the support view controller when called.
     ///
     func displaySupportViewController(sourceTag: SupportSourceTag)
