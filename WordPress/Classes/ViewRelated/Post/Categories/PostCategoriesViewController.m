@@ -20,6 +20,8 @@ static const CGFloat CategoryCellIndentation = 16.0;
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, assign) CategoriesSelectionMode selectionMode;
 @property (nonatomic, assign) BOOL addingNewCategory;
+@property (nonatomic, assign) BOOL hasInitiallySyncedCategories;
+
 @end
 
 @implementation PostCategoriesViewController
@@ -69,8 +71,6 @@ static const CGFloat CategoryCellIndentation = 16.0;
             self.title = NSLocalizedString(@"Default Category", @"Title for selecting a default category for a post");
         }
     }
-
-    [self syncCategories];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -78,6 +78,11 @@ static const CGFloat CategoryCellIndentation = 16.0;
     [super viewWillAppear:animated];
 
     [self reloadCategoriesTableViewData];
+
+    if (!self.hasInitiallySyncedCategories) {
+        self.hasInitiallySyncedCategories = YES;
+        [self syncCategories];
+    }
 }
 
 #pragma mark - Instance Methods
