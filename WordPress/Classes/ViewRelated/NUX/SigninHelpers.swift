@@ -182,12 +182,12 @@ import Mixpanel
     ///
     /// - Returns: The base URL or an empty string.
     ///
-    class func baseSiteURL(_ string: String) -> String {
-        guard let siteURL = URL(string: NSURL.idnDecodedURL(string)) else {
+    class func baseSiteURL(string: String) -> String {
+        guard let siteURL = NSURL(string: NSURL.idnEncodedURL(string)), string.characters.count > 0 else {
             return ""
         }
 
-        var path = siteURL.absoluteString.lowercased()
+        var path = siteURL.absoluteString!.lowercased()
         let isSiteURLSchemeEmpty = siteURL.scheme == nil || siteURL.scheme!.isEmpty
 
         if path.isWordPressComPath() {
@@ -205,7 +205,7 @@ import Mixpanel
             .trimSuffix(regexp: "/wp-admin/?")
             .trimSuffix(regexp: "/?")
 
-        return path
+        return NSURL.idnDecodedURL(path)
     }
 
 
@@ -347,7 +347,7 @@ import Mixpanel
     /// - Parameter loginFields: A LoginFields instance.
     ///
     class func openForgotPasswordURL(_ loginFields: LoginFields) {
-        let baseURL = loginFields.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(loginFields.siteUrl)
+        let baseURL = loginFields.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(string: loginFields.siteUrl)
         let forgotPasswordURL = URL(string: baseURL + "/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F")!
         UIApplication.shared.openURL(forgotPasswordURL)
     }
@@ -365,8 +365,8 @@ import Mixpanel
 
         let loginURL = loginFields.userIsDotCom ? "wordpress.com" : loginFields.siteUrl
 
-        let onePasswordFacade = OnePasswordFacade()
-        onePasswordFacade.findLogin(forURLString: loginURL, viewController: controller, sender: sourceView, completion: { (username: String?, password: String?, oneTimePassword: String?, error: NSError?) in
+
+        let completion: OnePasswordFacadeCallback = { (username, password, oneTimePassword, error) in
             if let error = error {
                 DDLogSwift.logError("OnePassword Error: \(error.localizedDescription)")
                 WPAppAnalytics.track(.onePasswordFailed)
@@ -391,8 +391,10 @@ import Mixpanel
             WPAppAnalytics.track(.onePasswordLogin)
 
             success(loginFields)
-        } as! OnePasswordFacadeCallback)
+        }
 
+        let onePasswordFacade = OnePasswordFacade()
+        onePasswordFacade.findLogin(forURLString: loginURL, viewController: controller, sender: sourceView, completion: completion)
     }
 
 
