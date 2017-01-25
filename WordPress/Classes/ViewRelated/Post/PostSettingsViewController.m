@@ -992,6 +992,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             [refreshControl endRefreshing];
         }];
     };
+    vc.invokesRefreshOnViewWillAppear = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
