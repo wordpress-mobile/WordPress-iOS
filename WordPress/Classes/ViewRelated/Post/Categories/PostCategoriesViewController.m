@@ -69,6 +69,8 @@ static const CGFloat CategoryCellIndentation = 16.0;
             self.title = NSLocalizedString(@"Default Category", @"Title for selecting a default category for a post");
         }
     }
+
+    [self syncCategories];
 }
 
 - (void)viewWillAppear:(BOOL)animated
