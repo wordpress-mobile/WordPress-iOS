@@ -27,7 +27,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
             }
             newMedia = media
         })
-        self.waitForExpectations(timeout: 2000, handler: nil)
+        self.waitForExpectations(timeout: 5, handler: nil)
         return newMedia
     }
 
@@ -59,6 +59,41 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
         let size = media.pixelSize()
         XCTAssertTrue(size.width == 1024, "Width should be 1024")
         XCTAssertTrue(size.height == 680 , "Height should be 680")
+    }
+
+    func testImage() {
+        guard let media = newMediaImage() else {
+            XCTFail("Media should be created without error")
+            return
+        }
+        var expect = self.expectation(description: "Image should be returned")
+        // test if using size zero give back the full image
+        media.image(with: CGSize.zero, completionHandler: { (image, error) in
+            expect.fulfill()
+            guard error == nil, let image = image else {
+                XCTFail("Image should be returned without error")
+                return
+            }
+            let size = image.size
+            XCTAssertTrue(size.width == 1024, "Width should be 1024")
+            XCTAssertTrue(size.height == 680 , "Height should be 680")
+        })
+        self.waitForExpectations(timeout: 5, handler: nil)
+
+        expect = self.expectation(description: "Image should be returned")
+        let requestedSize = CGSize(width: 512, height: 340)
+        // test if using size zero give back the full image
+        media.image(with: CGSize.zero, completionHandler: { (image, error) in
+            expect.fulfill()
+            guard error == nil, let image = image else {
+                XCTFail("Image should be returned without error")
+                return
+            }
+            let size = image.size
+            XCTAssertTrue(size.width == requestedSize.width, "Width should match requested size")
+            XCTAssertTrue(size.height == requestedSize.height , "Height should match requested size")
+        })
+        self.waitForExpectations(timeout: 5, handler: nil)
     }
 
 }
