@@ -136,4 +136,39 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
 
     }
 
+    func testVideo() {
+        guard let image = newImageMedia() else {
+            XCTFail("Media should be created without error")
+            return
+        }
+        var expect = self.expectation(description: "Image should fail to return a video asset.")
+        // test if using a image media returns an error
+        image.videoAsset(completionHandler: { (asset, error) in
+            expect.fulfill()
+            guard let error = error as? NSError, asset == nil else {
+                XCTFail("Image should fail when asked for a video")
+                return
+            }
+            XCTAssertTrue(error.domain == WPMediaPickerErrorDomain, "Should return a WPMediaPickerError")
+            XCTAssertTrue(error.code == WPMediaPickerErrorCode.errorCodeVideoURLNotAvailable.rawValue, "Should return a errorCodeVideoURLNotAvailable")
+        })
+        self.waitForExpectations(timeout: 5, handler: nil)
+
+        guard let video = newVideoMedia() else {
+            XCTFail("Media should be created without error")
+            return
+        }
+        expect = self.expectation(description: "Video asset should be returned")
+        video.videoAsset(completionHandler: { (asset, error) in
+            expect.fulfill()
+            guard error == nil, let asset = asset else {
+                XCTFail("Image should be returned without error")
+                return
+            }
+
+            XCTAssertTrue(asset.duration.value > 0, "Asset should have a duration")
+        })
+        self.waitForExpectations(timeout: 5, handler: nil)
+    }
+
 }
