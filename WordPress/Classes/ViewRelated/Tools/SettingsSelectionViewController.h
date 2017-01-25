@@ -27,6 +27,7 @@ extern NSString * const SettingsSelectionCurrentValueKey;
 @property (nonatomic,   copy) void                  (^onItemSelected)(id);
 @property (nonatomic,   copy) void                  (^onRefresh)(UIRefreshControl *refreshControl);
 @property (nonatomic,   copy) void                  (^onCancel)();
+@property (nonatomic, assign) BOOL                  invokesRefreshOnViewWillAppear;
 
 /**
  *  @brief      Initializes the SettingsSelection Instance.

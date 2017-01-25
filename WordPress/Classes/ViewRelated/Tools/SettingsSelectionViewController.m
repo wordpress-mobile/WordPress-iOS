@@ -71,6 +71,16 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    if (self.invokesRefreshOnViewWillAppear && self.onRefresh) {
+        // Go ahead and trigger a refresh on viewDidLoad.
+        self.onRefresh(nil);
+    }
+}
+
 - (CGSize)preferredContentSize
 {
     CGSize size = [super preferredContentSize];
