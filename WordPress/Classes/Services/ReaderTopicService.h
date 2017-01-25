@@ -55,6 +55,11 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)deleteNonMenuTopics;
 
 /**
+ Globally sets the `inUse` flag to fall for all posts.
+ */
+- (void)clearInUseFlags;
+
+/**
  Deletes all topics from core data and saves the context. Call when switching accounts.
  */
 - (void)deleteAllTopics;

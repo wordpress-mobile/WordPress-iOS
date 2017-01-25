@@ -267,7 +267,7 @@ open class SignupService: LocalCoreDataService {
         let blogService = BlogService(managedObjectContext: managedObjectContext)
 
         status(.syncing)
-        blogService?.syncBlog(blog, completionHandler: {
+        blogService?.syncBlogAndAllMetadata(blog, completionHandler: {
             // The final step
             accountService!.updateUserDetails(for: blog.account!, success: success, failure: failure)
         })

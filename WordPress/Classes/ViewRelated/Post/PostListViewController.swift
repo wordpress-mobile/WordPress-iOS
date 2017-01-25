@@ -494,7 +494,22 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
-        deletePost(post)
+        if (post.status == PostStatusTrash) {
+
+            let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+            let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
+            let messageText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
+            let alertController = UIAlertController(title: nil, message: messageText, preferredStyle: .alert)
+
+            alertController.addCancelActionWithTitle(cancelText)
+            alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
+                self?.deletePost(post)
+            }
+            alertController.presentFromRootViewController()
+
+        } else {
+            deletePost(post)
+        }
     }
 
     func cell(_ cell: UITableViewCell, handleRestore post: AbstractPost) {
