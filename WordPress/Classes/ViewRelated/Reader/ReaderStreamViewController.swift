@@ -84,6 +84,13 @@ import WordPressComAnalytics
     /// The topic can be nil while a site or tag topic is being fetched, hence, optional.
     open var readerTopic: ReaderAbstractTopic? {
         didSet {
+            oldValue?.inUse = false
+
+            if let newTopic = readerTopic {
+                newTopic.inUse = true
+                ContextManager.sharedInstance().save(newTopic.managedObjectContext)
+            }
+
             if readerTopic != nil && readerTopic != oldValue {
                 if didSetupView {
                     configureControllerForTopic()
@@ -163,9 +170,6 @@ import WordPressComAnalytics
             return nil
         }
 
-        topic.preserveForRestoration = false
-        ContextManager.sharedInstance().saveContextAndWait(context)
-
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
@@ -175,8 +179,6 @@ import WordPressComAnalytics
 
     open override func encodeRestorableState(with coder: NSCoder) {
         if let topic = readerTopic {
-            topic.preserveForRestoration = true
-            ContextManager.sharedInstance().saveContextAndWait(topic.managedObjectContext)
             coder.encode(topic.path, forKey: type(of: self).restorableTopicPathKey)
         }
         super.encodeRestorableState(with: coder)
@@ -184,6 +186,13 @@ import WordPressComAnalytics
 
 
     // MARK: - LifeCycle Methods
+
+    deinit {
+        if let topic = readerTopic {
+            topic.inUse = false
+            ContextManager.sharedInstance().save(topic.managedObjectContext)
+        }
+    }
 
 
     open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
@@ -225,7 +234,6 @@ import WordPressComAnalytics
             displayLoadingStream()
         }
     }
-
 
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -372,7 +380,6 @@ import WordPressComAnalytics
         resultsStatusView = WPNoResultsView()
     }
 
-
     fileprivate func setupFooterView() {
         guard let footer = Bundle.main.loadNibNamed(footerViewNibName, owner: nil, options: nil)!.first as? PostListFooterView else {
             assertionFailure()
@@ -497,7 +504,7 @@ import WordPressComAnalytics
     // Refresh the header of a site topic when returning in case the
     // topic's following status changed.
     func refreshTableHeaderIfNeeded() {
-        guard let topic = readerTopic as? ReaderSiteTopic,
+        guard let topic = readerTopic,
             let header = tableView.tableHeaderView as? ReaderStreamHeader else {
             return
         }
@@ -535,21 +542,7 @@ import WordPressComAnalytics
         tableView.setContentOffset(CGPoint.zero, animated: false)
         tableViewHandler.refreshTableView()
         refreshTableViewHeaderLayout()
-
-        if let _ = view.window {
-            // The controller can be configured for a topic while its not the
-            // active view controller. For example, when state restoration restores
-            // the controller, but some other controller (like the detail vc) is
-            // top most.
-            //
-            // For now, we want to avoid syncing while the controller is not active
-            // or about to be active. This is a stop gap to prevent crashes that can
-            // occur when a post is deleted during the sync while it is still being
-            // used by another controller, or before this controller has a chance
-            // to render its cells at least once.
-            // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/6297
-            syncIfAppropriate()
-        }
+        syncIfAppropriate()
 
         bumpStats()
 
@@ -1730,7 +1723,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
         }
 
-        navigationController?.pushViewController(controller, animated: true)
+        navigationController?.pushFullscreenViewController(controller, animated: true)
     }
 
 
