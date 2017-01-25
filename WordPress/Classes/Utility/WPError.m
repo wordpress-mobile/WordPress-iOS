@@ -8,7 +8,8 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 
 NSInteger const SupportButtonIndex = 0;
-NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
+NSString * const WordPressAppErrorDomain = @"org.wordpress.iphone";
+NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
 
 @interface WPError ()
 
@@ -104,15 +105,17 @@ NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
             title = customTitle;
         }
     }
+    
+    NSString *sourceTag = [error.userInfo stringForKey:WPErrorSupportSourceKey];
 
-    [self showAlertWithTitle:title message:message];
+    [self showAlertWithTitle:title message:message fromSource:sourceTag];
 }
 
 + (void)showXMLRPCErrorAlert:(NSError *)error
 {
     NSString *cleanedErrorMsg = [error localizedDescription];
 
-    if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain] && error.code == 401){
+    if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain] && error.code == 401) {
         cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this site.", @"");
     }
 
@@ -129,17 +132,17 @@ NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
     [self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
 }
 
-+ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message fromSource:(NSString *)sourceTag
 {
-    [self showAlertWithTitle:title message:message withSupportButton:YES okPressedBlock:nil];
+    [self showAlertWithTitle:title message:message withSupportButton:YES fromSource:sourceTag okPressedBlock:nil];
 }
 
 + (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport
 {
-    [self showAlertWithTitle:title message:message withSupportButton:showSupport okPressedBlock:nil];
+    [self showAlertWithTitle:title message:message withSupportButton:showSupport fromSource:nil okPressedBlock:nil];
 }
 
-+ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertController *))okBlock
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport fromSource:(NSString *)sourceTag okPressedBlock:(void (^)(UIAlertController *))okBlock
 {
     if ([WPError internalInstance].alertShowing) {
         return;
@@ -164,7 +167,9 @@ NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
         UIAlertAction *action = [UIAlertAction actionWithTitle:supportText
                                                          style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * _Nonnull action) {
-                                                            [SupportViewController showFromTabBar];
+                                                           SupportViewController *supportVC = [SupportViewController new];
+                                                           supportVC.sourceTag = sourceTag;
+                                                           [supportVC showFromTabBar];
                                                            [WPError internalInstance].alertShowing = NO;
                                                        }];
         [alertController addAction:action];
