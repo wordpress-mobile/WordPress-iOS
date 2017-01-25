@@ -4,6 +4,8 @@ typedef NS_ENUM(NSUInteger, WordPressAppErrorCode) {
     WordPressAppErrorCodeInvalidVersion = 5000
 };
 
+extern NSString * const WPErrorSupportSourceKey;
+
 @interface WPError : NSObject
 
 

@@ -67,10 +67,9 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     return [[self alloc] init];
 }
 
-+ (void)showFromTabBar
+- (void)showFromTabBar
 {
-    SupportViewController *supportViewController = [[SupportViewController alloc] init];
-    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
+    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:self];
     aNavigationController.navigationBar.translucent = NO;
 
     if (IS_IPAD) {

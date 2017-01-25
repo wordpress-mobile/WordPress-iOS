@@ -10,7 +10,6 @@ extern SupportSourceTag const SupportSourceTagGeneralLogin;
 @interface SupportViewController : UITableViewController
 @property (nonatomic, strong) SupportSourceTag sourceTag;
 
-- (id)initFromSource:(SupportSourceTag)sourceTag;
-+ (void)showFromTabBar;
+- (void)showFromTabBar;
 
 @end
