@@ -100,7 +100,7 @@ public extension String {
     ///     - suffix: A possible suffix to remove from this string.
     ///
     mutating func removeSuffix(_ suffix: String) {
-        if let suffixRange = range(of: suffix), suffixRange.upperBound == endIndex {
+        if let suffixRange = range(of: suffix, options: [.backwards]), suffixRange.upperBound == endIndex {
             removeSubrange(suffixRange)
         }
     }
