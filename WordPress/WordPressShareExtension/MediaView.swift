@@ -29,7 +29,12 @@ class MediaView: UIView {
 
     /// Internal imageView Instance
     ///
-    fileprivate let imageView = UIImageView()
+    fileprivate lazy var imageView: UIImageView = {
+        let view = UIImageView()
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFill
+        return view
+    }()
 
     /// Internal Width Constraint
     ///

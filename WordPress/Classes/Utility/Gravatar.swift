@@ -73,6 +73,12 @@ extension UIImageView {
             return
         }
 
+        // Starting with iOS 10, it seems `initWithCoder` uses a default size
+        // of 1000x1000, which was messing with our size calculations for gravatars
+        // on newly created table cells.
+        // Calling `layoutIfNeeded()` forces UIKit to calculate the actual size.
+        layoutIfNeeded()
+
         let size = Int(ceil(frame.width * contentScaleFactor))
         let url = gravatar.urlWithSize(size)
 
