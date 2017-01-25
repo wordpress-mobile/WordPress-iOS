@@ -27,9 +27,10 @@ class StringHelperTests: XCTestCase {
     }
 
     func testRemoveSuffix() {
-        let string = "X-Post: This is a test"
-        XCTAssertEqual("X-Post: This is", string.removingSuffix(" a test"))
-        XCTAssertEqual(string, string.removingSuffix("Something Else"))
+        let string = "http://example.com/"
+        XCTAssertEqual("http://example.com", string.removingSuffix("/"))
+        XCTAssertEqual("http://example", string.removingSuffix(".com/"))
+        XCTAssertEqual(string, string.removingSuffix(".org/"))
     }
 
     func testRemovePrefixPattern() {
