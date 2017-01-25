@@ -668,15 +668,13 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                 }
 
                 success?(filter.hasMore)
-            }, failure: {[weak self] (error) -> () in
+            }, failure: {(error) -> () in
 
-                guard let strongSelf = self,
-                    let error = error else {
+                guard let error = error else {
                         return
                 }
 
                 failure?(error as NSError)
-                strongSelf.handleSyncFailure(error as NSError)
             })
     }
 
@@ -836,6 +834,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let post = apost.hasRevision() ? apost.revision : apost
 
         let controller = PostPreviewViewController(post: post)
+        // NOTE: We'll set the title to match the title of the View action button.
+        // If the button title changes we should also update the title here.
+        controller?.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
         controller?.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller!, animated: true)
     }

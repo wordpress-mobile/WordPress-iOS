@@ -508,10 +508,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
             blog.url = blogOptions[@"url"];
             blog.settings.name = [[blogOptions stringForKey:@"blogname"] stringByDecodingXMLCharacters];
 
-            [[ContextManager sharedInstance] saveContext:context];
-
-            // syncBlog will need a permanent ID so it can fetch and update the blog in its request completion blocks 
-            [[ContextManager sharedInstance] obtainPermanentIDForObject:blog];
+            [[ContextManager sharedInstance] saveContextAndWait:context];
 
             __weak __typeof(self) weakSelf = self;
 
@@ -527,13 +524,14 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
                 }];
             };
 
-            [blogService syncBlog:blog completionHandler:^{
-                [accountService updateUserDetailsForAccount:defaultAccount
-                                                    success:completion
-                                                    failure:^(NSError * _Nonnull error) {
-                                                        completion();
-                                                    }];
-            }];
+            [blogService syncBlogAndAllMetadata:blog
+                              completionHandler:^{
+                                  [accountService updateUserDetailsForAccount:defaultAccount
+                                                                      success:completion
+                                                                      failure:^(NSError * _Nonnull error) {
+                                                                          completion();
+                                                                      }];
+                              }];
         };
 
         WordPressComServiceFailureBlock createBlogFailure = ^(NSError *error) {

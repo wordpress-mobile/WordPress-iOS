@@ -79,11 +79,6 @@ import WordPressShared
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
-
-
-        if !didRequestSafariSharedCredentials {
-            fetchSharedWebCredentialsIfAvailable()
-        }
     }
 
 
@@ -372,6 +367,11 @@ import WordPressShared
         configureSubmitButton()
     }
 
+    @IBAction func handleTextFieldEditingDidBegin(_ sender: UITextField) {
+        if !didRequestSafariSharedCredentials {
+            fetchSharedWebCredentialsIfAvailable()
+        }
+    }
 
     // MARK: - Keyboard Notifications
 

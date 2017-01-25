@@ -228,7 +228,7 @@ import WordPressShared
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
         loginFields.username = usernameField.nonNilTrimmedText()
         loginFields.password = passwordField.nonNilTrimmedText()
-        loginFields.siteUrl = SigninHelpers.baseSiteURL(siteURLField.nonNilTrimmedText())
+        loginFields.siteUrl = SigninHelpers.baseSiteURL(string: siteURLField.nonNilTrimmedText())
 
         configureForgotPasswordButton()
         configureSubmitButton(animating: false)
@@ -287,6 +287,12 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
 
         BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
             self?.configureViewLoading(false)
+
+            let context = ContextManager.sharedInstance().mainContext
+            if let service = BlogService(managedObjectContext: context),
+                let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) {
+                service.flagBlog(asLastUsed: blog)
+            }
 
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
 
