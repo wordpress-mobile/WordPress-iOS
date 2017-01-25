@@ -16,6 +16,12 @@ import WordPressShared
     @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComLogin
+        }
+    }
+
     var immediateSignin = false
 
     var restrictSigninToWPCom = false {
@@ -58,8 +64,6 @@ import WordPressShared
         setupOnePasswordButtonIfNeeded()
         configureStatusLabel("")
         configureForWPComOnlyIfNeeded()
-        
-        self.sourceTag = SupportSourceTag.wpComLogin
     }
 
 

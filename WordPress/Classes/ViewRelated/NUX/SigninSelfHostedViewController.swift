@@ -21,6 +21,11 @@ import WordPressShared
         return facade
     }()
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpOrgLogin
+        }
+    }
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
@@ -43,8 +48,6 @@ import WordPressShared
         localizeControls()
         setupOnePasswordButtonIfNeeded()
         displayLoginMessage("")
-        
-        self.sourceTag = SupportSourceTag.wpOrgLogin
     }
 
 
