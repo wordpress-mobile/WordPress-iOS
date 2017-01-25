@@ -201,7 +201,7 @@ class NUXAbstractViewController: UIViewController {
 
 
     func handleHelpButtonTapped(_ sender: UIButton) {
-        displaySupportViewController(sourceTag: self.sourceTag)
+        displaySupportViewController(sourceTag: sourceTag)
     }
 
 }

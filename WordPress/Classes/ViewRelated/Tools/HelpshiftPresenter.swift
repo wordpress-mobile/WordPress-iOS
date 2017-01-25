@@ -88,9 +88,11 @@ import UIKit
     }
 
     fileprivate var optionsDictionary: [AnyHashable: Any] {
-        var tags: [String]? = nil
+        let tags: [String]
         if let sourceTag = sourceTag {
             tags = [String(sourceTag.rawValue)]
+        } else {
+            tags = []
         }
         let options: [AnyHashable: Any] = [HelpshiftSupportCustomMetadataKey: HelpshiftUtils.helpshiftMetadata(withTags: tags),
                 HelpshiftPresenter.HelpshiftShowsSearchOnNewConversationKey: true]
