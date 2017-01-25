@@ -773,7 +773,9 @@ static NSString * const MediaDirectory = @"Media";
 {
     media.mediaID =  remoteMedia.mediaID;
     media.remoteURL = [remoteMedia.url absoluteString];
-    media.creationDate = remoteMedia.date;
+    if (remoteMedia.date) {
+        media.creationDate = remoteMedia.date;
+    }
     media.filename = remoteMedia.file;
     [media mediaTypeFromUrl:[remoteMedia extension]];
     media.title = remoteMedia.title;
