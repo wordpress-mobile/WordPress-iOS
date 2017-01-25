@@ -4,10 +4,18 @@ import Aztec
 import Gridicons
 import WordPressShared
 
+
+// MARK: - Aztec's Native Editor!
+//
 class AztecPostViewController: UIViewController {
 
+    /// Closure to be executed when the editor gets closed
+    ///
     var onClose: ((_ changesSaved: Bool) -> ())?
 
+
+    /// Aztec's Awesomeness
+    ///
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
         let tv = Aztec.TextView(defaultFont: Constants.defaultFont, defaultMissingImage: Constants.defaultMissingImage)
 
@@ -25,6 +33,9 @@ class AztecPostViewController: UIViewController {
         return tv
     }()
 
+
+    /// Raw HTML Editor
+    ///
     fileprivate(set) lazy var htmlTextView: UITextView = {
         let tv = UITextView()
 
@@ -38,6 +49,9 @@ class AztecPostViewController: UIViewController {
         return tv
     }()
 
+
+    /// Title's TextField
+    ///
     fileprivate(set) lazy var titleTextField: UITextField = {
         let placeholderText = NSLocalizedString("Enter title here", comment: "Label for the title of the post field. Should be the same as WP core.")
         let tf = UITextField()
@@ -58,6 +72,9 @@ class AztecPostViewController: UIViewController {
         return tf
     }()
 
+
+    /// Separator View
+    ///
     fileprivate(set) lazy var separatorView: UIView = {
         let v = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 1))
 
@@ -67,12 +84,18 @@ class AztecPostViewController: UIViewController {
         return v
     }()
 
+
+    /// Negative Offset BarButtonItem: Used to fine tune navigationBar Items
+    ///
     fileprivate lazy var separatorButtonItem: UIBarButtonItem = {
         let separator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         separator.width = Constants.separatorButtonWidth
         return separator
     }()
 
+
+    /// NavigationBar's Close Button
+    ///
     fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
         let image = Gridicon.iconOfType(.cross)
         let cancelButton = WPStyleGuide.buttonForBar(with: image, target: self, selector: #selector(cancelEditingAction))
@@ -84,10 +107,16 @@ class AztecPostViewController: UIViewController {
         return cancelItem
     }()
 
+
+    /// NavigationBar's Blog Picker Button
+    ///
     fileprivate lazy var blogPickerBarButtonItem: UIBarButtonItem = {
         return UIBarButtonItem(customView: self.blogPickerButton)
     }()
 
+
+    /// NavigationBar's More Button
+    ///
     fileprivate lazy var moreBarButtonItem: UIBarButtonItem = {
         let image = Gridicon.iconOfType(.ellipsis)
         let moreItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(displayMoreSheet))
@@ -95,12 +124,18 @@ class AztecPostViewController: UIViewController {
         return moreItem
     }()
 
+
+    /// Blog Picker's Button
+    ///
     fileprivate lazy var blogPickerButton: WPBlogSelectorButton = {
         let button = WPBlogSelectorButton(frame: .zero, buttonStyle: .typeSingleLine)
         button.addTarget(self, action: #selector(displayBlogSelector), for: .touchUpInside)
         return button
     }()
 
+
+    /// Active Editor's Mode
+    ///
     fileprivate(set) var mode = EditionMode.richText {
         didSet {
             switch mode {
