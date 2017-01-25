@@ -681,13 +681,16 @@ static const NSUInteger ReaderPostTitleLength = 30;
         featuredImage = [dict stringForKey:PostRESTKeyFeaturedImage];
     }
 
-    // If no featured image specified, try featured media.
-    if (([featuredImage length] == 0) && ([[featured_media stringForKey:@"type"] isEqualToString:@"image"])) {
-        featuredImage = [self stringOrEmptyString:[featured_media stringForKey:@"uri"]];
-    }
-
     // Get the post content.
     NSString *content = [dict stringForKey:PostRESTKeyContent];
+
+    // If no featured image specified, try featured media.
+    if (([featuredImage length] == 0) && ([[featured_media stringForKey:@"type"] isEqualToString:@"image"])) {
+        NSString *imageToDisplay = [self stringOrEmptyString:[featured_media stringForKey:@"uri"]];
+        if (imageToDisplay && [content containsString:imageToDisplay]) {
+            featuredImage = imageToDisplay;
+        }
+    }
 
     // If still no image specified, try attachments.
     if ([featuredImage length] == 0) {
