@@ -113,9 +113,8 @@ class JetpackLoginViewController: UIViewController {
         self.passwordTextField.font = WPNUXUtility.textFieldFont()
         self.passwordTextField.isSecureTextEntry = true
         self.passwordTextField.showSecureTextEntryToggle = true
-        self.passwordTextField.clearsOnBeginEditing = true
         self.passwordTextField.showTopLineSeparator = true
-        self.passwordTextField.returnKeyType = .next
+        self.passwordTextField.returnKeyType = .done
 
         self.verificationCodeTextField.delegate = self
         self.verificationCodeTextField.backgroundColor = UIColor.white
@@ -235,7 +234,14 @@ class JetpackLoginViewController: UIViewController {
 
         self.usernameTextField.isHidden = !self.hasJetpack
         self.passwordTextField.isHidden = !self.hasJetpack
-        self.verificationCodeTextField.isHidden = (!self.hasJetpack || !self.shouldDisplayMultifactor)
+
+        if self.hasJetpack && self.shouldDisplayMultifactor {
+            self.passwordTextField.returnKeyType = .next
+            self.verificationCodeTextField.isHidden = false
+        } else {
+            self.passwordTextField.returnKeyType = .done
+            self.verificationCodeTextField.isHidden = true
+        }
 
         updateSignInButton()
     }
@@ -303,10 +309,7 @@ class JetpackLoginViewController: UIViewController {
                           })
     }
 
-
-    // MARK: - Actions
-
-    @IBAction func didTouchSignInButton(_ sender: Any) {
+    fileprivate func signIn() {
         let jetpackService = JetpackService(managedObjectContext: managedObjectContext())
         guard let jpService = jetpackService else {
             return
@@ -317,27 +320,34 @@ class JetpackLoginViewController: UIViewController {
         jpService.validateAndLogin(withUsername: self.usernameTextField.text, password: self.passwordTextField.text,
                                    multifactorCode: "", siteID: self.blog.jetpack?.siteID,
                                    success: {[weak self] (account) in
-                                       guard let strongSelf = self else {
-                                           return
-                                       }
-                                       // Ensure options are up to date after connecting Jetpack as there may
-                                       // now be new info.
-                                       let blogService = BlogService(managedObjectContext: strongSelf.managedObjectContext())
-                                       guard let bService = blogService else {
-                                           strongSelf.isAuthenticating = false
-                                           return
-                                       }
-                                       bService.syncBlogAndAllMetadata(strongSelf.blog, completionHandler: {
-                                           strongSelf.isAuthenticating = false
-                                           // TODO: Completion
-                                       })
-                                   }, failure: {[weak self] (error: Error?) -> () in
-                                       guard let strongSelf = self, let error = error else {
-                                           return
-                                       }
-                                       strongSelf.isAuthenticating = false
-                                       strongSelf.handleSignInError(error: error)
-                                   })
+                                    guard let strongSelf = self else {
+                                        return
+                                    }
+                                    // Ensure options are up to date after connecting Jetpack as there may
+                                    // now be new info.
+                                    let blogService = BlogService(managedObjectContext: strongSelf.managedObjectContext())
+                                    guard let bService = blogService else {
+                                        strongSelf.isAuthenticating = false
+                                        return
+                                    }
+                                    bService.syncBlogAndAllMetadata(strongSelf.blog, completionHandler: {
+                                        strongSelf.isAuthenticating = false
+                                        // TODO: Completion
+                                    })
+            }, failure: {[weak self] (error: Error?) -> () in
+                guard let strongSelf = self, let error = error else {
+                    return
+                }
+                strongSelf.isAuthenticating = false
+                strongSelf.handleSignInError(error: error)
+        })
+    }
+
+
+    // MARK: - Actions
+
+    @IBAction func didTouchSignInButton(_ sender: Any) {
+        signIn()
     }
 }
 
@@ -357,10 +367,13 @@ extension JetpackLoginViewController : UITextFieldDelegate {
         if textField == self.usernameTextField {
             self.passwordTextField.becomeFirstResponder()
         } else if textField == self.passwordTextField {
-            self.verificationCodeTextField.becomeFirstResponder()
+            if self.verificationCodeTextField.isHidden {
+                signIn()
+            } else {
+                self.verificationCodeTextField.becomeFirstResponder()
+            }
         } else if textField == self.verificationCodeTextField {
-            hideKeyboard()
-            //TODO: Login!
+            signIn()
         }
         return true
     }
