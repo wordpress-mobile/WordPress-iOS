@@ -8,7 +8,7 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
 
 @implementation DisplayableImageHelper
 
-+ (NSString *)searchPostAttachmentsForImageToDisplay:(NSDictionary *)attachmentsDict
++ (NSString *)searchPostAttachmentsForImageToDisplay:(NSDictionary *)attachmentsDict existingInContent:(NSString *)content
 {
     NSArray *attachments = [attachmentsDict allValues];
     if ([attachments count] == 0) {
@@ -19,10 +19,17 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
 
     attachments = [self filteredAttachmentsArray:attachments];
 
-    NSDictionary *attachment = [attachments firstObject];
-    NSInteger width = [[attachment numberForKey:AttachmentsDictionaryKeyWidth] integerValue];
-    if (width >= FeaturedImageMinimumWidth) {
-        imageToDisplay = [attachment stringForKey:AttachmentsDictionaryKeyURL];
+    for (NSDictionary *attachment in attachments) {
+        NSInteger width = [[attachment numberForKey:AttachmentsDictionaryKeyWidth] integerValue];
+        if (width < FeaturedImageMinimumWidth) {
+            // The remaining images are too small so just stop now.
+            break;
+        }
+        NSString *maybeImage = [attachment stringForKey:AttachmentsDictionaryKeyURL];
+        if ([content containsString:maybeImage]) {
+            imageToDisplay = maybeImage;
+            break;
+        }
     }
 
     return imageToDisplay;
