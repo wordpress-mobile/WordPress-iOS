@@ -108,7 +108,7 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
     
     NSString *sourceTag = [error.userInfo stringForKey:WPErrorSupportSourceKey];
 
-    [self showAlertWithTitle:title message:message fromSource:sourceTag];
+    [self showAlertWithTitle:title message:message withSupportButton:YES fromSource:sourceTag okPressedBlock:nil];
 }
 
 + (void)showXMLRPCErrorAlert:(NSError *)error
@@ -132,14 +132,19 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
     [self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
 }
 
-+ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message fromSource:(NSString *)sourceTag
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
 {
-    [self showAlertWithTitle:title message:message withSupportButton:YES fromSource:sourceTag okPressedBlock:nil];
+    [self showAlertWithTitle:title message:message withSupportButton:YES okPressedBlock:nil];
 }
 
 + (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport
 {
-    [self showAlertWithTitle:title message:message withSupportButton:showSupport fromSource:nil okPressedBlock:nil];
+    [self showAlertWithTitle:title message:message withSupportButton:showSupport okPressedBlock:nil];
+}
+
++ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertController *))okBlock
+{
+    [self showAlertWithTitle:title message:message withSupportButton:showSupport fromSource:nil okPressedBlock:okBlock];
 }
 
 + (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport fromSource:(NSString *)sourceTag okPressedBlock:(void (^)(UIAlertController *))okBlock
