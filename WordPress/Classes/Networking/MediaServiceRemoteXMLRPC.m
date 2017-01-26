@@ -202,6 +202,9 @@
     remoteMedia.file = [[xmlRPC objectForKeyPath:@"file"] lastPathComponent];
     remoteMedia.mimeType = [xmlRPC stringForKey:@"type"];
     remoteMedia.extension = [[[xmlRPC objectForKeyPath:@"file"] lastPathComponent] pathExtension];
+    if (xmlRPC[@"date_created_gmt"] != nil) {
+        remoteMedia.date = xmlRPC[@"date_created_gmt"];
+    }
     return remoteMedia;
 }
 

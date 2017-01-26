@@ -10,6 +10,9 @@ import UIKit
     fileprivate static let HelpshiftShowsSearchOnNewConversationKey = "showSearchOnNewConversation"
 
 
+    /// set the source of the presenter for tagging in Helpshift
+    var sourceTag: SupportSourceTag?
+
     /// Presents a Helpshift window displaying a specific FAQ.
     ///
     /// - Parameters:
@@ -85,7 +88,14 @@ import UIKit
     }
 
     fileprivate var optionsDictionary: [AnyHashable: Any] {
-        return [HelpshiftSupportCustomMetadataKey: HelpshiftUtils.helpshiftMetadata(),
+        let tags: [String]
+        if let sourceTag = sourceTag {
+            tags = [String(sourceTag.rawValue)]
+        } else {
+            tags = []
+        }
+        let options: [AnyHashable: Any] = [HelpshiftSupportCustomMetadataKey: HelpshiftUtils.helpshiftMetadata(withTags: tags),
                 HelpshiftPresenter.HelpshiftShowsSearchOnNewConversationKey: true]
+        return options
     }
 }
