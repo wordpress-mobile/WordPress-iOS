@@ -25,7 +25,6 @@ class NUXAbstractViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -202,7 +201,7 @@ class NUXAbstractViewController: UIViewController {
 
 
     func handleHelpButtonTapped(_ sender: UIButton) {
-        displaySupportViewController()
+        displaySupportViewController(sourceTag: sourceTag)
     }
 
 }
@@ -210,10 +209,18 @@ class NUXAbstractViewController: UIViewController {
 
 extension NUXAbstractViewController : SigninErrorViewControllerDelegate {
 
+    var sourceTag: SupportSourceTag {
+        get {
+            return .generalLogin
+        }
+    }
+
     /// Displays the support vc.
     ///
-    func displaySupportViewController() {
+    func displaySupportViewController(sourceTag: SupportSourceTag) {
         let controller = SupportViewController()
+        controller.sourceTag = sourceTag
+
         let navController = UINavigationController(rootViewController: controller)
         navController.navigationBar.isTranslucent = false
         navController.modalPresentationStyle = .formSheet
@@ -224,11 +231,12 @@ extension NUXAbstractViewController : SigninErrorViewControllerDelegate {
 
     /// Displays the Helpshift conversation feature.
     ///
-    func displayHelpshiftConversationView() {
-        let metaData = [
-            "Source": "Failed login",
-            "Username": loginFields.username,
-            "SiteURL": loginFields.siteUrl
+    func displayHelpshiftConversationView(sourceTag: SupportSourceTag) {
+        let metaData: [String: AnyObject] = [
+            "Source": "Failed login" as AnyObject,
+            "Username": loginFields.username as AnyObject,
+            "SiteURL": loginFields.siteUrl as AnyObject,
+            HelpshiftSupportTagsKey: [sourceTag.rawValue]  as AnyObject
         ]
         HelpshiftSupport.showConversation(self, withOptions: [HelpshiftSupportCustomMetadataKey: metaData, "showSearchOnNewConversation": "YES"])
         WPAppAnalytics.track(.supportOpenedHelpshiftScreen)
