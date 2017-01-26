@@ -110,7 +110,8 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
 extension PlanListViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView!) {
-        SupportViewController.showFromTabBar()
+        let supportVC = SupportViewController()
+        supportVC.showFromTabBar()
     }
 }
 
