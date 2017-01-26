@@ -152,7 +152,7 @@ class AztecPostViewController: UIViewController {
     ///
     fileprivate(set) var post: AbstractPost {
         didSet {
-            refreshNavigationBarButtons()
+            refreshInterface()
         }
     }
 
@@ -183,11 +183,6 @@ class AztecPostViewController: UIViewController {
         configureSubviews()
 
         createRevisionOfPost()
-        titleTextField.text = post.postTitle
-
-        if let content = post.content {
-            richTextView.setHTML(content)
-        }
 
         view.setNeedsUpdateConstraints()
     }
@@ -211,7 +206,7 @@ class AztecPostViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         coordinator.animate(alongsideTransition: { _ in
-            self.refreshNavigationBarButtons()
+            self.resizeBlogPickerTitle()
         })
 
         // TODO: Update toolbars
@@ -291,12 +286,20 @@ class AztecPostViewController: UIViewController {
         notificationCenter.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
 
-    func refreshNavigationBarButtons() {
-        refreshBlogPicker()
-        resizeBlogPicker()
+    func refreshInterface() {
+        reloadBlogPickerTitle()
+        reloadEditorContents()
+        resizeBlogPickerTitle()
     }
 
-    func refreshBlogPicker() {
+    func reloadEditorContents() {
+        let content = post.content ?? String()
+
+        titleTextField.text = post.postTitle
+        richTextView.setHTML(content)
+    }
+
+    func reloadBlogPickerTitle() {
         let blogName = post.blog.settings?.name ?? post.blog.url ?? String()
         let titleText = NSAttributedString(string: blogName, attributes: Constants.blogPickerAttributes)
 
@@ -304,7 +307,7 @@ class AztecPostViewController: UIViewController {
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
     }
 
-    func resizeBlogPicker() {
+    func resizeBlogPickerTitle() {
         // Ensure the BlogPicker gets it's maximum possible size
         blogPickerButton.sizeToFit()
 
@@ -379,7 +382,7 @@ extension AztecPostViewController {
                 return
             }
 
-            self.createRevisionOfPost(in: blog)
+            self.recreatePostRevision(in: blog)
         }
 
         let dismissHandler: BlogSelectorDismissHandler = {
@@ -778,8 +781,41 @@ extension AztecPostViewController {
         }
     }
 
-    fileprivate func createRevisionOfPost(in blog: Blog) {
-// TODO: Implement Me
+    // TODO: Rip this and put it into PostService, as well
+    fileprivate func recreatePostRevision(in blog: Blog) {
+        guard
+            let blogService = BlogService(managedObjectContext: mainContext),
+            let postService = PostService(managedObjectContext: mainContext),
+            let newPost = postService.createDraftPost(for: blog)
+            else {
+                return
+        }
+
+        blogService.flagBlog(asLastUsed: blog)
+
+        //  TODO: Strip Media!
+        //  NSString *content = oldPost.content;
+        //  for (Media *media in oldPost.media) {
+        //      content = [self removeMedia:media fromString:content];
+        //  }
+
+        newPost.content = post.content
+        newPost.postTitle = post.postTitle
+        newPost.password = post.password
+        newPost.status = post.status
+        newPost.dateCreated = post.dateCreated
+        newPost.dateModified = post.dateModified
+
+        if let source = post as? Post {
+            newPost.tags = source.tags
+        }
+
+        discardChanges()
+        post = newPost
+        createRevisionOfPost()
+
+        // TODO: Add this snippet, if needed, once we've relocated this helper to PostService
+        //[self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
     }
 
     fileprivate func cancelEditing() {
