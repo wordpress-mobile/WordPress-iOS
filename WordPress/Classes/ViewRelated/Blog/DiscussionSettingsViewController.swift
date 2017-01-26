@@ -64,8 +64,8 @@ open class DiscussionSettingsViewController: UITableViewController {
 
     // MARK: - Persistance!
     fileprivate func refreshSettings() {
-        let service = BlogService(managedObjectContext: settings.managedObjectContext)
-        service?.syncSettings(for: blog,
+        let service = BlogService(managedObjectContext: settings.managedObjectContext!)
+        service.syncSettings(for: blog,
             success: { [weak self] in
                 self?.tableView.reloadData()
                 DDLogSwift.logInfo("Reloaded Settings")
@@ -80,8 +80,8 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
 
-        let service = BlogService(managedObjectContext: settings.managedObjectContext)
-        service?.updateSettings(for: blog,
+        let service = BlogService(managedObjectContext: settings.managedObjectContext!)
+        service.updateSettings(for: blog,
             success: nil,
             failure: { (error: Error) -> Void in
                 DDLogSwift.logError("Error while persisting settings: \(error)")

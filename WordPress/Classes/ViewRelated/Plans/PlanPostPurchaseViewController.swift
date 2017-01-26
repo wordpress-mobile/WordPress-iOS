@@ -311,7 +311,7 @@ class PlanPostPurchasePageViewController: UIViewController {
         switch pageType {
         case .Customize:
             let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            WPTabBarController.sharedInstance().switchMySitesTabToCustomizeView(for: service?.primaryBlog())
+            WPTabBarController.sharedInstance().switchMySitesTabToCustomizeView(for: service.primaryBlog())
 
             WPTabBarController.sharedInstance().dismiss(animated: true, completion: nil)
         case .VideoPress:
@@ -320,7 +320,7 @@ class PlanPostPurchasePageViewController: UIViewController {
             }
         case .Themes:
             let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            WPTabBarController.sharedInstance().switchMySitesTabToThemesView(for: service?.primaryBlog())
+            WPTabBarController.sharedInstance().switchMySitesTabToThemesView(for: service.primaryBlog())
 
             WPTabBarController.sharedInstance().dismiss(animated: true, completion: nil)
         default: break
