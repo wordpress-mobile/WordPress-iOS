@@ -525,7 +525,7 @@ private extension NotificationDetailsViewController {
 
         // Setup: Properties
         cell.name                   = userBlock.text
-        cell.timestamp              = (note.timestampAsDate as NSDate).shortString()
+        cell.timestamp              = (note.timestampAsDate as NSDate).mediumString()
         cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
         cell.attributedCommentText  = text.trimNewlines()
         cell.isApproved             = commentBlock.isCommentApproved
