@@ -139,7 +139,7 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
     return [tags allObjects];
 }
 
-+ (NSDictionary<NSString *, NSObject *> *)helpshiftMetadata
++ (NSDictionary<NSString *, NSObject *> *)helpshiftMetadataWithTags:(NSArray<NSString *> *)extraTags;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -148,7 +148,8 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 
     NSString *isWPCom = (defaultAccount != nil) ? @"Yes" : @"No";
     NSMutableDictionary *metaData = [NSMutableDictionary dictionaryWithDictionary:@{ @"isWPCom" : isWPCom }];
-
+    NSMutableArray *tags = [NSMutableArray arrayWithArray:extraTags];
+    
     NSArray *allBlogs = [blogService blogsForAllAccounts];
     for (int i = 0; i < allBlogs.count; i++) {
         Blog *blog = allBlogs[i];
@@ -159,12 +160,14 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 
         if (defaultAccount) {
             [metaData addEntriesFromDictionary:@{@"WPCom Username": defaultAccount.username}];
-            NSArray *tags = [HelpshiftUtils planTagsForAccount:defaultAccount];
-            if (tags) {
-                [metaData setObject:tags forKey:HelpshiftSupportTagsKey];
+            NSArray *planTags = [HelpshiftUtils planTagsForAccount:defaultAccount];
+            if (planTags) {
+                [tags addObjectsFromArray:planTags];
             }
         }
     }
+    
+    [metaData setObject:tags forKey:HelpshiftSupportTagsKey];
 
     return [metaData copy];
 }

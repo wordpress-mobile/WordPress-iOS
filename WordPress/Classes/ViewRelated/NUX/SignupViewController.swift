@@ -34,6 +34,11 @@ import WordPressShared
     let URLKey = "url"
     let nonAlphanumericCharacterSet = NSCharacterSet.alphanumerics.inverted
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComSignup
+        }
+    }
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///

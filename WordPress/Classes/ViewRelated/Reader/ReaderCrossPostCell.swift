@@ -117,9 +117,7 @@ open class ReaderCrossPostCell: UITableViewCell {
 
         // Compose the title.
         var title = contentProvider!.titleForDisplay() ?? ""
-        if let prefixRange = title.range(of: xPostTitlePrefix) {
-            title.removeSubrange(prefixRange)
-        }
+        title.removePrefix(xPostTitlePrefix)
         let attrText = NSMutableAttributedString(string: "\(title)\n", attributes: readerCrossPostTitleAttributes)
 
         // Compose the subtitle
