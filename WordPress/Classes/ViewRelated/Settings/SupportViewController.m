@@ -20,6 +20,11 @@
 #import "WPLogger.h"
 #import "WPGUIConstants.h"
 
+SupportSourceTag const SupportSourceTagWPComLogin = @"origin:wpcom-login-screen";
+SupportSourceTag const SupportSourceTagWPComSignup = @"origin:signup-screen";
+SupportSourceTag const SupportSourceTagWPOrgLogin = @"origin:wporg-login-screen";
+SupportSourceTag const SupportSourceTagJetpackLogin = @"origin:jetpack-login-screen";
+SupportSourceTag const SupportSourceTagGeneralLogin = @"origin:login-screen";
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
 
@@ -62,10 +67,9 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     return [[self alloc] init];
 }
 
-+ (void)showFromTabBar
+- (void)showFromTabBar
 {
-    SupportViewController *supportViewController = [[SupportViewController alloc] init];
-    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:supportViewController];
+    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:self];
     aNavigationController.navigationBar.translucent = NO;
 
     if (IS_IPAD) {
@@ -142,6 +146,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
 - (void)prepareAndDisplayHelpshiftWindowOfType:(int)helpshiftType
 {
     HelpshiftPresenter *presenter = [HelpshiftPresenter new];
+    presenter.sourceTag = self.sourceTag;
 
     __weak __typeof(self) weakSelf = self;
     void (^completion)() = ^{

@@ -505,7 +505,11 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
         return;
     }
     
-    [WPError showNetworkingAlertWithError:error];
+    NSMutableDictionary *userInfo = error.userInfo.mutableCopy;
+    userInfo[WPErrorSupportSourceKey] = SupportSourceTagJetpackLogin;
+    NSError *errorWithSource = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
+    
+    [WPError showNetworkingAlertWithError:errorWithSource];
 }
 
 
