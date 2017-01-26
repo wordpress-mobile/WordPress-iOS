@@ -9,7 +9,7 @@ import UIKit
     // a list of possibly related FAQs with matching terms before posting a new conversation.
     fileprivate static let HelpshiftShowsSearchOnNewConversationKey = "showSearchOnNewConversation"
 
-    
+
     /// set the source of the presenter for tagging in Helpshift
     var sourceTag: SupportSourceTag?
 
