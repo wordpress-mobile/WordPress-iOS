@@ -10,48 +10,6 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
     fileprivate var blog: Blog!
     fileprivate var post: Post!
 
-    fileprivate func newImageMedia() -> Media? {
-        var newMedia: Media?
-        guard let url = Bundle(for: type(of: self)).url(forResource: "test-image", withExtension: "jpg"),
-            let mediaService = MediaService(managedObjectContext: context) else {
-            XCTFail("Pre condition to create media service failed")
-            return nil
-        }
-        let expect = self.expectation(description: "Media should be create with success")
-        mediaService.createMedia(url: url, forPost: post.objectID, thumbnailCallback: { (url) in
-        }, completion: { (media, error) in
-            expect.fulfill()
-            if let _ = error {
-                XCTFail("Media should be created without error")
-                return
-            }
-            newMedia = media
-        })
-        self.waitForExpectations(timeout: 5, handler: nil)
-        return newMedia
-    }
-
-    fileprivate func newVideoMedia() -> Media? {
-        var newMedia: Media?
-        guard let url = Bundle(for: type(of: self)).url(forResource: "test-video", withExtension: "mp4"),
-            let mediaService = MediaService(managedObjectContext: context) else {
-                XCTFail("Pre condition to create media service failed")
-                return nil
-        }
-        let expect = self.expectation(description: "Media should be create with success")
-        mediaService.createMedia(url: url, forPost: post.objectID, thumbnailCallback: { (url) in
-        }, completion: { (media, error) in
-            expect.fulfill()
-            if let _ = error {
-                XCTFail("Media should be created without error")
-                return
-            }
-            newMedia = media
-        })
-        self.waitForExpectations(timeout: 5, handler: nil)
-        return newMedia
-    }
-
     override func setUp() {
         super.setUp()
         contextManager = TestContextManager()
@@ -81,12 +39,12 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
         XCTAssertTrue(size.height == 680 , "Height should be 680")
     }
 
-    func testImage() {
+    func testImageFetchUsingSizeZero() {
         guard let media = newImageMedia() else {
             XCTFail("Media should be created without error")
             return
         }
-        var expect = self.expectation(description: "Image should be returned")
+        let expect = self.expectation(description: "Image should be returned")
         // test if using size zero give back the full image
         media.image(with: CGSize.zero, completionHandler: { (image, error) in
             expect.fulfill()
@@ -99,9 +57,15 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
             XCTAssertTrue(size.height == 680 , "Height should be 680")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
+    }
 
-        expect = self.expectation(description: "Image should be returned")
-        var requestedSize = CGSize(width: 512, height: 340)
+    func testImageFetchUsingFixedSize() {
+        guard let media = newImageMedia() else {
+            XCTFail("Media should be created without error")
+            return
+        }
+        let expect = self.expectation(description: "Image should be returned")
+        let requestedSize = CGSize(width: 512, height: 340)
         // test if using size zero give back the full image
         media.image(with: requestedSize, completionHandler: { (image, error) in
             expect.fulfill()
@@ -114,14 +78,16 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
             XCTAssertTrue(size.height == requestedSize.height , "Height should match requested size")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
+    }
 
+    func testImageFetchUsingVideoSource() {
         guard let video = newVideoMedia() else {
             XCTFail("Media should be created without error")
             return
         }
 
-        expect = self.expectation(description: "Image should be returned")
-        requestedSize = CGSize(width: 213, height: 120)
+        let expect = self.expectation(description: "Image should be returned")
+        let requestedSize = CGSize(width: 213, height: 120)
         video.image(with: requestedSize, completionHandler: { (image, error) in
             expect.fulfill()
             guard error == nil, let image = image else {
@@ -136,12 +102,12 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
 
     }
 
-    func testVideo() {
+    func testVideoFetchForImage() {
         guard let image = newImageMedia() else {
             XCTFail("Media should be created without error")
             return
         }
-        var expect = self.expectation(description: "Image should fail to return a video asset.")
+        let expect = self.expectation(description: "Image should fail to return a video asset.")
         // test if using a image media returns an error
         image.videoAsset(completionHandler: { (asset, error) in
             expect.fulfill()
@@ -153,12 +119,14 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
             XCTAssertTrue(error.code == WPMediaPickerErrorCode.errorCodeVideoURLNotAvailable.rawValue, "Should return a errorCodeVideoURLNotAvailable")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
+    }
 
+    func testVideoFetchForVideo() {
         guard let video = newVideoMedia() else {
             XCTFail("Media should be created without error")
             return
         }
-        expect = self.expectation(description: "Video asset should be returned")
+        let expect = self.expectation(description: "Video asset should be returned")
         video.videoAsset(completionHandler: { (asset, error) in
             expect.fulfill()
             guard error == nil, let asset = asset else {
@@ -169,6 +137,35 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
             XCTAssertTrue(asset.duration.value > 0, "Asset should have a duration")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    fileprivate func newImageMedia() -> Media? {
+        return newMedia(fromResource: "test-image", withExtension:"jpg")
+    }
+
+    fileprivate func newVideoMedia() -> Media? {
+        return newMedia(fromResource: "test-video", withExtension:"mp4")
+    }
+
+    fileprivate func newMedia(fromResource resource: String, withExtension ext: String) -> Media? {
+        var newMedia: Media?
+        guard let url = Bundle(for: type(of: self)).url(forResource: resource, withExtension: ext),
+            let mediaService = MediaService(managedObjectContext: context) else {
+                XCTFail("Pre condition to create media service failed")
+                return nil
+        }
+        let expect = self.expectation(description: "Media should be create with success")
+        mediaService.createMedia(url: url, forPost: post.objectID, thumbnailCallback: { (url) in
+        }, completion: { (media, error) in
+            expect.fulfill()
+            if let _ = error {
+                XCTFail("Media should be created without error")
+                return
+            }
+            newMedia = media
+        })
+        self.waitForExpectations(timeout: 5, handler: nil)
+        return newMedia
     }
 
 }
