@@ -917,6 +917,8 @@
 		FF75933B1BE2423800814D3B /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF75933A1BE2423800814D3B /* Photos.framework */; };
 		FF76A9D21D1C58EB0080EF1F /* WordPressOrgXMLRPCValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF76A9D01D1C58EB0080EF1F /* WordPressOrgXMLRPCValidator.swift */; };
 		FF76A9D31D1C58EB0080EF1F /* WordPressRSDParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF76A9D11D1C58EB0080EF1F /* WordPressRSDParser.swift */; };
+		FF7C89A31E3A1029000472A8 /* MediaLibraryPickerDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7C89A21E3A1029000472A8 /* MediaLibraryPickerDataSourceTests.swift */; };
+		FF7C89A51E3A103A000472A8 /* test-video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = FF7C89A41E3A103A000472A8 /* test-video.mp4 */; };
 		FF8A04E01D9BFE7400523BC4 /* FLAnimatedImageView+Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8A04DF1D9BFE7400523BC4 /* FLAnimatedImageView+Cache.swift */; };
 		FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */; };
 		FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FF945F6F1B28242300FB8AC4 /* MediaLibraryPickerDataSource.m */; };
@@ -2318,6 +2320,8 @@
 		FF75933A1BE2423800814D3B /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		FF76A9D01D1C58EB0080EF1F /* WordPressOrgXMLRPCValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressOrgXMLRPCValidator.swift; sourceTree = "<group>"; };
 		FF76A9D11D1C58EB0080EF1F /* WordPressRSDParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressRSDParser.swift; sourceTree = "<group>"; };
+		FF7C89A21E3A1029000472A8 /* MediaLibraryPickerDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryPickerDataSourceTests.swift; sourceTree = "<group>"; };
+		FF7C89A41E3A103A000472A8 /* test-video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "test-video.mp4"; sourceTree = "<group>"; };
 		FF7EACDD1B6CE6E100AB6AB9 /* WordPress 37.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 37.xcdatamodel"; sourceTree = "<group>"; };
 		FF8A04DF1D9BFE7400523BC4 /* FLAnimatedImageView+Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FLAnimatedImageView+Cache.swift"; sourceTree = "<group>"; };
 		FF8DDCDD1B5DB1C10098826F /* SettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingTableViewCell.h; sourceTree = "<group>"; };
@@ -2381,19 +2385,6 @@
 		FFE69A291B1BFE050073C2EB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFE69A2A1B1BFE200073C2EB /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFE69A2B1B1BFE620073C2EB /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		FFF96F8F19EBE81F00DFC821 /* CommentsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsTests.m; sourceTree = "<group>"; };
-		FFF96F9119EBE81F00DFC821 /* LoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginTests.m; sourceTree = "<group>"; };
-		FFF96F9219EBE81F00DFC821 /* MeTabTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeTabTests.m; sourceTree = "<group>"; };
-		FFF96F9319EBE81F00DFC821 /* NotificationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTests.m; sourceTree = "<group>"; };
-		FFF96F9419EBE81F00DFC821 /* PagesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PagesTests.m; sourceTree = "<group>"; };
-		FFF96F9519EBE81F00DFC821 /* PostsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsTests.m; sourceTree = "<group>"; };
-		FFF96F9619EBE81F00DFC821 /* ReaderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTests.m; sourceTree = "<group>"; };
-		FFF96F9719EBE81F00DFC821 /* StatsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsTests.m; sourceTree = "<group>"; };
-		FFF96F9A19EBE81F00DFC821 /* WPUITestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUITestCase.h; sourceTree = "<group>"; };
-		FFF96F9B19EBE81F00DFC821 /* WPUITestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUITestCase.m; sourceTree = "<group>"; };
-		FFF96FA919ED724F00DFC821 /* KIFUITestActor-WPExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KIFUITestActor-WPExtras.h"; sourceTree = "<group>"; };
-		FFF96FAA19ED724F00DFC821 /* KIFUITestActor-WPExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KIFUITestActor-WPExtras.m"; sourceTree = "<group>"; };
-		FFF96FAC19ED7F4D00DFC821 /* wp_test_credentials_sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wp_test_credentials_sample; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2702,7 +2693,6 @@
 				93E5283D19A7741A003A1A9C /* WordPressTodayWidget */,
 				E16AB92F14D978240047A2E5 /* WordPressTest */,
 				FF2716901CAAC87B0006E2D4 /* WordPressUITests */,
-				FFF96F8319EBE7FB00DFC821 /* UITests */,
 				8511CFB71C607A7000B7CEED /* WordPressScreenshotGeneration */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -4553,6 +4543,7 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				FF7C89A11E3A1029000472A8 /* MediaPicker */,
 				E6A216911DCE851000E7DF73 /* WPRichText */,
 				FF9839A71CD3960600E85258 /* WordPressAPI */,
 				BEA0E4821BD8353B000AEE81 /* System */,
@@ -4745,6 +4736,7 @@
 		E16AB94414D9A13A0047A2E5 /* Mock Data */ = {
 			isa = PBXGroup;
 			children = (
+				FF7C89A41E3A103A000472A8 /* test-video.mp4 */,
 				1702BBE71CF357A200766A33 /* Domains */,
 				B58CE5DD1DC1284C004AA81D /* Notifications */,
 				FFB8DC971CE320C700D4D1B7 /* WordPressComRestApiFailInvalidInput.json */,
@@ -5061,6 +5053,14 @@
 			path = WordPressUITests;
 			sourceTree = "<group>";
 		};
+		FF7C89A11E3A1029000472A8 /* MediaPicker */ = {
+			isa = PBXGroup;
+			children = (
+				FF7C89A21E3A1029000472A8 /* MediaLibraryPickerDataSourceTests.swift */,
+			);
+			path = MediaPicker;
+			sourceTree = "<group>";
+		};
 		FF9839A71CD3960600E85258 /* WordPressAPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -5069,34 +5069,6 @@
 				FF9839A81CD3963200E85258 /* WordPressComOAuthClientTests.swift */,
 			);
 			name = WordPressAPI;
-			sourceTree = "<group>";
-		};
-		FFF96F8319EBE7FB00DFC821 /* UITests */ = {
-			isa = PBXGroup;
-			children = (
-				FFF96FAC19ED7F4D00DFC821 /* wp_test_credentials_sample */,
-				FFF96F8419EBE7FB00DFC821 /* Supporting Files */,
-				FFF96F8F19EBE81F00DFC821 /* CommentsTests.m */,
-				FFF96F9119EBE81F00DFC821 /* LoginTests.m */,
-				FFF96F9219EBE81F00DFC821 /* MeTabTests.m */,
-				FFF96F9319EBE81F00DFC821 /* NotificationsTests.m */,
-				FFF96F9419EBE81F00DFC821 /* PagesTests.m */,
-				FFF96F9519EBE81F00DFC821 /* PostsTests.m */,
-				FFF96F9619EBE81F00DFC821 /* ReaderTests.m */,
-				FFF96F9719EBE81F00DFC821 /* StatsTests.m */,
-				FFF96F9A19EBE81F00DFC821 /* WPUITestCase.h */,
-				FFF96F9B19EBE81F00DFC821 /* WPUITestCase.m */,
-				FFF96FA919ED724F00DFC821 /* KIFUITestActor-WPExtras.h */,
-				FFF96FAA19ED724F00DFC821 /* KIFUITestActor-WPExtras.m */,
-			);
-			path = UITests;
-			sourceTree = "<group>";
-		};
-		FFF96F8419EBE7FB00DFC821 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -5502,6 +5474,7 @@
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
 				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,
+				FF7C89A51E3A103A000472A8 /* test-video.mp4 in Resources */,
 				FFB8DC9E1CE320C700D4D1B7 /* WordPressComRestApiFailRequestInvalidToken.json in Resources */,
 				FF34EEAB1CF480F100F8B38D /* WordPressComRestApiFailThrottled.json in Resources */,
 				B5EA71381DC294B00083032A /* notifications-load-all.json in Resources */,
@@ -6552,6 +6525,7 @@
 				E1926C091C779868009F3C2C /* PlanListViewControllerTest.swift in Sources */,
 				59ECF87B1CB7061D00E68F25 /* PostSharingControllerTests.swift in Sources */,
 				E157D5E01C690A6C00F04FB9 /* ImmuTableTestUtils.swift in Sources */,
+				FF7C89A31E3A1029000472A8 /* MediaLibraryPickerDataSourceTests.swift in Sources */,
 				E1C9AA561C10427100732665 /* MathTest.swift in Sources */,
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
 				59E2AAEC1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m in Sources */,

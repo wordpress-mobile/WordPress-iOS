@@ -19,3 +19,6 @@
 #import <NSObject_SafeExpectations/NSObject+SafeExpectations.h>
 #import <WordPressComAnalytics/WPAnalytics.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import "MediaLibraryPickerDataSource.h"
+#import "Media.h"
+#import "MediaService.h"

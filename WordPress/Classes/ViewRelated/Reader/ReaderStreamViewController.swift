@@ -1659,7 +1659,11 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         // Check to see if we need to load more.
         let criticalRow = tableView.numberOfRows(inSection: indexPath.section) - loadMoreThreashold
         if (indexPath.section == tableView.numberOfSections - 1) && (indexPath.row >= criticalRow) {
-            if syncHelper.hasMoreContent && !syncHelper.isSyncing {
+            // We only what to load more when:
+            // - there is more content,
+            // - when we are not alrady syncing
+            // - when we are not waiting for scrolling to end to cleanup and refresh the list
+            if syncHelper.hasMoreContent && !syncHelper.isSyncing && !cleanupAndRefreshAfterScrolling {
                 syncHelper.syncMoreContent()
             }
         }
