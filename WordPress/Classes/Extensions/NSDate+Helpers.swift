@@ -1,5 +1,5 @@
 import Foundation
-
+import FormatterKit
 
 extension Date {
     /// Private Date Formatters
@@ -18,6 +18,29 @@ extension Date {
             formatter.locale        = Locale(identifier: "en_US_POSIX")
             formatter.dateFormat    = "EEE, dd MMM yyyy HH:mm:ss z"
             formatter.timeZone      = TimeZone(secondsFromGMT: 0)
+            return formatter
+        }()
+
+        static let mediumDate: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .none
+            return formatter
+        }()
+
+        static let mediumDateTime: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.doesRelativeDateFormatting = true
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .short
+            return formatter
+        }()
+
+        static let shortDateTime: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.doesRelativeDateFormatting = true
+            formatter.dateStyle = .short
+            formatter.timeStyle = .short
             return formatter
         }()
     }
@@ -53,10 +76,42 @@ extension Date {
     public func toStringAsRFC1123() -> String {
         return DateFormatters.rfc1123.string(from: self)
     }
+
+    public func mediumString() -> String {
+        let relativeFormatter = TTTTimeIntervalFormatter()
+        let absoluteFormatter = DateFormatters.mediumDate
+
+        let components = Calendar.current.dateComponents([.day], from: self, to: Date())
+        if let days = components.day, abs(days) < 7 {
+            return relativeFormatter.string(forTimeInterval: timeIntervalSinceNow)
+        } else {
+            return absoluteFormatter.string(from: self)
+        }
+    }
+
+    public func mediumStringWithTime() -> String {
+        return DateFormatters.mediumDateTime.string(from: self)
+    }
+
+    public func shortStringWithTime() -> String {
+        return DateFormatters.shortDateTime.string(from: self)
+    }
 }
 
 extension NSDate {
     public static func dateWithISO8601String(_ string: String) -> NSDate? {
         return Date.DateFormatters.iso8601.date(from: string) as NSDate?
+    }
+
+    public func mediumString() -> String {
+        return (self as Date).mediumString()
+    }
+
+    public func mediumStringWithTime() -> String {
+        return (self as Date).mediumStringWithTime()
+    }
+
+    public func shortStringWithTime() -> String {
+        return (self as Date).shortStringWithTime()
     }
 }
