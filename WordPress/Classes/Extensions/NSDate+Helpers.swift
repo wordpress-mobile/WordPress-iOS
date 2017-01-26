@@ -20,6 +20,16 @@ extension Date {
             formatter.timeZone      = TimeZone(secondsFromGMT: 0)
             return formatter
         }()
+
+        static let pageSectionFormatter: TTTTimeIntervalFormatter = {
+            let formatter = TTTTimeIntervalFormatter()
+
+            formatter.leastSignificantUnit = .day
+            formatter.usesIdiomaticDeicticExpressions = true
+            formatter.presentDeicticExpression = NSLocalizedString("today", comment: "Today")
+
+            return formatter
+        }()
     }
 
     /// Returns a NSDate Instance, given it's ISO8601 String Representation
@@ -53,10 +63,24 @@ extension Date {
     public func toStringAsRFC1123() -> String {
         return DateFormatters.rfc1123.string(from: self)
     }
+
+    public func toStringForPageSections() -> String {
+        let interval = timeIntervalSinceNow
+
+        if interval > 0 && interval < 86400 {
+            return NSLocalizedString("later today", comment: "Later today")
+        } else {
+            return DateFormatters.pageSectionFormatter.string(forTimeInterval: interval)
+        }
+    }
 }
 
 extension NSDate {
     public static func dateWithISO8601String(_ string: String) -> NSDate? {
         return Date.DateFormatters.iso8601.date(from: string) as NSDate?
+    }
+
+    public func toStringForPageSections() -> String {
+        return (self as Date).toStringForPageSections()
     }
 }
