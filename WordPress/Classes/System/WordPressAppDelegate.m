@@ -37,7 +37,6 @@
 #import "WPLogger.h"
 
 // Misc managers, helpers, utilities
-#import "AppRatingUtility.h"
 #import "ContextManager.h"
 #import "HelpshiftUtils.h"
 #import "HockeyManager.h"
@@ -602,12 +601,13 @@ int ddLogLevel = DDLogLevelInfo;
 #pragma mark - App Rating
 
 - (void)initializeAppRatingUtility
-{    
+{
+    AppRatingUtility *utility = [AppRatingUtility shared];
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:5];
-    [AppRatingUtility setSystemWideSignificantEventsCount:10];
-    [AppRatingUtility initializeForVersion:version];
-    [AppRatingUtility checkIfAppReviewPromptsHaveBeenDisabled:nil failure:^{
+    [utility registerSection:@"notifications" withSignificantEventCount:5];
+    utility.systemWideSignificantEventCountRequiredForPrompt = 10;
+    [utility setVersion:version];
+    [utility checkIfAppReviewPromptsHaveBeenDisabledWithSuccess:nil failure:^{
         DDLogError(@"Was unable to retrieve data about throttling");
     }];
 }
