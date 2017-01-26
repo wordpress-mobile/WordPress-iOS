@@ -315,7 +315,7 @@ extension AztecPostViewController : UITextViewDelegate {
         // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
         post.content = richTextView.getHTML()
 
-        ContextManager.sharedInstance().save(post.managedObjectContext)
+        ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
 }
 
@@ -325,7 +325,7 @@ extension AztecPostViewController : UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         post.postTitle = textField.text
 
-        ContextManager.sharedInstance().save(post.managedObjectContext)
+        ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
 }
 

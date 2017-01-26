@@ -40,9 +40,9 @@ extension PlanService {
     init?(siteID: Int, store: S) {
         self.store = store
         let manager = ContextManager.sharedInstance()
-        let context = manager?.mainContext
+        let context = manager.mainContext
         let service = BlogService(managedObjectContext: context)
-        guard let blog = service?.blog(byBlogId: NSNumber(value: siteID)) else {
+        guard let blog = service.blog(byBlogId: NSNumber(value: siteID)) else {
             let error = "Tried to obtain a PlanService for a non-existing site (ID: \(siteID))"
             assertionFailure(error)
             DDLogSwift.logError(error)
@@ -67,10 +67,10 @@ extension PlanService {
 struct PlanStorage {
     static func activatePlan(_ planID: PlanID, forSite siteID: Int) {
         let manager = ContextManager.sharedInstance()
-        let context = manager?.newDerivedContext()
+        let context = manager.newDerivedContext()
         let service = BlogService(managedObjectContext: context)
-        context?.performAndWait {
-            guard let blog = service?.blog(byBlogId: NSNumber(value: siteID)) else {
+        context.performAndWait {
+            guard let blog = service.blog(byBlogId: NSNumber(value: siteID)) else {
                 let error = "Tried to activate a plan for a non-existing site (ID: \(siteID))"
                 assertionFailure(error)
                 DDLogSwift.logError(error)
@@ -78,7 +78,7 @@ struct PlanStorage {
             }
             if blog.planID?.intValue != planID {
                 blog.planID = NSNumber(value: planID)
-                manager?.saveContextAndWait(context)
+                manager.saveContextAndWait(context)
             }
         }
     }

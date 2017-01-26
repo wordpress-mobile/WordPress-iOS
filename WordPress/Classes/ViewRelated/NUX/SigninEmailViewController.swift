@@ -308,7 +308,7 @@ import WordPressShared
         configureViewLoading(true)
 
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.isEmailAvailable(emailOrUsername,
+        service.isEmailAvailable(emailOrUsername,
             success: { [weak self] (available: Bool) in
                 self?.configureViewLoading(false)
                 if (available) {

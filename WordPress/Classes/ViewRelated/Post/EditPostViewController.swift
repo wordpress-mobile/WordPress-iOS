@@ -13,7 +13,7 @@ class EditPostViewController: UIViewController {
     fileprivate(set) lazy var blog: Blog = {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
-        return blogService!.lastUsedOrFirstBlog()!
+        return blogService.lastUsedOrFirstBlog()!
     }()
     fileprivate lazy var postPost: PostPostViewController = {
         return UIStoryboard(name: "PostPost", bundle: nil).instantiateViewController(withIdentifier: "PostPostViewController") as! PostPostViewController
@@ -110,9 +110,9 @@ class EditPostViewController: UIViewController {
         } else {
             let context = ContextManager.sharedInstance().mainContext
             let postService = PostService(managedObjectContext: context)
-            let newPost = postService?.createDraftPost(for: blog)!
+            let newPost = postService.createDraftPost(for: blog)!
             post = newPost
-            return newPost!
+            return newPost
         }
     }
 
@@ -267,8 +267,8 @@ extension EditPostViewController: UIViewControllerRestoration {
         var post: Post?
         if let postURL = coder.decodeObject(forKey: RestorationKey.post.rawValue) as? URL {
             let context = ContextManager.sharedInstance().mainContext
-            if let postID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURL) {
-                post = context?.object(with: postID) as? Post
+            if let postID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURL) {
+                post = context.object(with: postID) as? Post
             }
         }
 
