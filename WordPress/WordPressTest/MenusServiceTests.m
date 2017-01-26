@@ -64,11 +64,6 @@
 
 @implementation MenusServiceTests
 
-- (void)testThatInitializationFailsWithoutAManagedObjectContext
-{
-    XCTAssertThrows([[MenusService alloc] initWithManagedObjectContext:nil]);
-}
-
 - (void)testThatWordPressBlogSupportsMenusServices
 {
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
