@@ -10,7 +10,7 @@ struct PlanListRow: ImmuTableRow {
     let active: Bool
     let price: String
     let description: String
-    let iconUrl: URL
+    let iconUrl: URL?
 
     let action: ImmuTableAction?
 
