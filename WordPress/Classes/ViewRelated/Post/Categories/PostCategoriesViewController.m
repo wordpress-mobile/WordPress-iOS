@@ -157,6 +157,20 @@ static const CGFloat CategoryCellIndentation = 16.0;
                                               forKey:[category.categoryID stringValue]];
     }
 
+    // Remove any previously selected category objects that are no longer available.
+    NSArray *selectedCategories = [self.selectedCategories copy];
+    for (PostCategory *category in selectedCategories) {
+        if ([category isDeleted] || ![self.blog.sortedCategories containsObject:category]) {
+            [self.selectedCategories removeObject:category];
+        }
+    }
+    // Notify the delegate of any changes for selectedCategories.
+    if (self.selectedCategories.count != selectedCategories.count) {
+        if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didUpdateSelectedCategories:)]) {
+            [self.delegate postCategoriesViewController:self didUpdateSelectedCategories:[NSSet setWithArray:self.selectedCategories]];
+        }
+    }
+
     [self.tableView reloadData];
 }
 
