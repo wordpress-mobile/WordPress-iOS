@@ -21,69 +21,44 @@ class NoteTableHeaderView: UIView {
 
     var separatorColor: UIColor? {
         set {
-            layoutView.bottomColor = newValue ?? UIColor.clear
-            layoutView.topColor = newValue ?? UIColor.clear
+            contentView.bottomColor = newValue ?? UIColor.clear
+            contentView.topColor = newValue ?? UIColor.clear
         }
         get {
-            return layoutView.bottomColor
+            return contentView.bottomColor
         }
     }
 
-
+    class func makeFromNib() -> NoteTableHeaderView {
+        return Bundle.main.loadNibNamed("NoteTableHeaderView", owner: self, options: nil)?.first as! NoteTableHeaderView
+    }
 
     // MARK: - Convenience Initializers
-    convenience init() {
-        self.init(frame: CGRect.zero)
-    }
-
-    required override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupView()
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)!
-        setupView()
-    }
-
-
-
-    // MARK - Private Helpers
-    fileprivate func setupView() {
-        Bundle.main.loadNibNamed("NoteTableHeaderView", owner: self, options: nil)
-        addSubview(contentView)
+    override func awakeFromNib() {
+        super.awakeFromNib()
 
         // Make sure the Outlets are loaded
         assert(contentView != nil)
-        assert(layoutView != nil)
         assert(imageView != nil)
         assert(titleLabel != nil)
-
-        // Layout
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        pinSubviewToAllEdges(contentView)
 
         // Background + Separators
         backgroundColor = UIColor.clear
 
-        layoutView.backgroundColor = Style.sectionHeaderBackgroundColor
-        layoutView.bottomVisible = true
-        layoutView.topVisible = true
-
-        titleLabel.backgroundColor = Style.sectionHeaderBackgroundColor
+        contentView.backgroundColor = Style.sectionHeaderBackgroundColor
+        contentView.bottomVisible = true
+        contentView.topVisible = true
     }
-
 
 
     // MARK: - Aliases
     typealias Style = WPStyleGuide.Notifications
 
     // MARK: - Static Properties
-    static let headerHeight  = CGFloat(26)
+    static let estimatedHeight  = CGFloat(26)
 
     // MARK: - Outlets
-    @IBOutlet fileprivate var contentView: UIView!
-    @IBOutlet fileprivate var layoutView: SeparatorsView!
+    @IBOutlet fileprivate var contentView: SeparatorsView!
     @IBOutlet fileprivate var imageView: UIImageView!
     @IBOutlet fileprivate var titleLabel: UILabel!
 }
