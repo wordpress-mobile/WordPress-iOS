@@ -98,7 +98,7 @@ class AztecPostViewController: UIViewController {
     ///
     fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
         let image = Gridicon.iconOfType(.cross)
-        let cancelButton = WPStyleGuide.buttonForBar(with: image, target: self, selector: #selector(cancelEditingAction))
+        let cancelButton = WPStyleGuide.buttonForBar(with: image, target: self, selector: #selector(closeWasPressed))
         cancelButton.leftSpacing = Constants.cancelButtonPadding.left
         cancelButton.rightSpacing = Constants.cancelButtonPadding.right
 
@@ -119,7 +119,7 @@ class AztecPostViewController: UIViewController {
     ///
     fileprivate lazy var moreBarButtonItem: UIBarButtonItem = {
         let image = Gridicon.iconOfType(.ellipsis)
-        let moreItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(displayMoreSheet))
+        let moreItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(moreWasPressed))
         moreItem.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
         return moreItem
     }()
@@ -129,7 +129,7 @@ class AztecPostViewController: UIViewController {
     ///
     fileprivate lazy var blogPickerButton: WPBlogSelectorButton = {
         let button = WPBlogSelectorButton(frame: .zero, buttonStyle: .typeSingleLine)
-        button.addTarget(self, action: #selector(displayBlogSelector), for: .touchUpInside)
+        button.addTarget(self, action: #selector(blogPickerWasPressed), for: .touchUpInside)
         return button
     }()
 
@@ -365,11 +365,35 @@ class AztecPostViewController: UIViewController {
 
 // MARK: - Actions
 extension AztecPostViewController {
-    @IBAction func cancelEditingAction() {
+
+    @IBAction func closeWasPressed() {
         cancelEditing()
     }
 
-    @IBAction func displayBlogSelector() {
+    @IBAction func blogPickerWasPressed() {
+        guard isSingleSiteMode == false else {
+            cancelEditing()
+            return
+        }
+
+        guard post.hasSiteSpecificChanges() else {
+            displayBlogSelector()
+            return
+        }
+
+        displaySwitchSiteAlert()
+    }
+
+    @IBAction func moreWasPressed() {
+        displayMoreSheet()
+    }
+}
+
+
+// MARK: - Private Helpers
+private extension AztecPostViewController {
+
+    func displayBlogSelector() {
         guard let sourceView = blogPickerButton.imageView else {
             fatalError()
         }
@@ -409,49 +433,41 @@ extension AztecPostViewController {
         present(navigationController, animated: true, completion: nil)
     }
 
-    @IBAction func displayMoreSheet() {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    func displayMoreSheet() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        switch mode {
-        case .richText:
-            alertController.addAction(switchHTMLAlertAction())
-        case .html:
-            alertController.addAction(switchRichAlertAction())
+        let switchModeTitle = (mode == .richText) ? MoreSheetAlert.htmlTitle : MoreSheetAlert.richTitle
+        alert.addDefaultActionWithTitle(switchModeTitle) { _ in
+            self.mode.toggle()
         }
 
-        alertController.addAction(optionsAlertAction())
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen"))
-        alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
+        alert.addDefaultActionWithTitle(MoreSheetAlert.optionsTitle) { _ in
+            self.displayPostOptions()
+        }
+
+        alert.addCancelActionWithTitle(MoreSheetAlert.cancelTitle)
+        alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
         view.endEditing(true)
-        present(alertController, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 
-    private func displayPostOptions() {
+    func displaySwitchSiteAlert() {
+        let alert = UIAlertController(title: SwitchSiteAlert.title, message: SwitchSiteAlert.message, preferredStyle: .alert)
+
+        alert.addDefaultActionWithTitle(SwitchSiteAlert.acceptTitle) { _ in
+            self.displayBlogSelector()
+        }
+
+        alert.addCancelActionWithTitle(SwitchSiteAlert.cancelTitle)
+
+        present(alert, animated: true, completion: nil)
+    }
+
+    func displayPostOptions() {
         let settingsViewController = PostSettingsViewController(post: post)
         settingsViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(settingsViewController, animated: true)
-    }
-
-    private func switchHTMLAlertAction() -> UIAlertAction {
-        let title = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
-        return UIAlertAction(title: title, style: .default, handler: { _ in
-            self.mode = .html
-        })
-    }
-
-    private func switchRichAlertAction() -> UIAlertAction {
-        let title = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
-        return UIAlertAction(title: title, style: .default, handler: { _ in
-            self.mode = .richText
-        })
-    }
-
-    private func optionsAlertAction() -> UIAlertAction {
-        let title = NSLocalizedString("Options", comment: "Displays the Post's Options")
-        return UIAlertAction(title: title, style: .default, handler: { _ in
-            self.displayPostOptions()
-        })
     }
 }
 
@@ -490,6 +506,15 @@ extension AztecPostViewController {
     enum EditionMode {
         case richText
         case html
+
+        mutating func toggle() {
+            switch self {
+            case .richText:
+                self = .html
+            case .html:
+                self = .richText
+            }
+        }
     }
 
     fileprivate func switchToHTML() {
