@@ -128,9 +128,10 @@ private func mapPlanFeaturesResponse(_ response: AnyObject) throws -> PlanFeatur
         guard let slug = featureDetails["product_slug"] as? String,
             let title = featureDetails["title"] as? String,
             var description = featureDetails["description"] as? String,
-            let iconURLString = featureDetails["icon"] as? String,
-            let iconURL = URL(string: iconURLString),
             let planDetails = featureDetails["plans"] as? [String: AnyObject] else { throw PlansRemote.ResponseError.decodingFailure }
+
+        let iconURLString = featureDetails["icon"] as? String
+        let iconURL = iconURLString.flatMap({ URL(string: $0) })
 
         for (planID, planInfo) in planDetails {
             guard let planID = Int(planID) else { throw PlansRemote.ResponseError.decodingFailure }
