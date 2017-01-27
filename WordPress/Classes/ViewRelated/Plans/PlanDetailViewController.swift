@@ -38,6 +38,7 @@ class PlanDetailViewController: UIViewController {
         if noResultsView.isDescendant(of: tableView) {
             noResultsView.centerInSuperview()
         } else {
+            noResultsView.delegate = self
             tableView.addSubview(withFadeAnimation: noResultsView)
         }
     }
@@ -292,5 +293,12 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionHeader(view)
+    }
+}
+
+extension PlanDetailViewController: WPNoResultsViewDelegate {
+    func didTap(_ noResultsView: WPNoResultsView!) {
+        let supportVC = SupportViewController()
+        supportVC.showFromTabBar()
     }
 }
