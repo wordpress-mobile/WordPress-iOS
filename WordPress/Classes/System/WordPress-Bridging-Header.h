@@ -119,6 +119,7 @@
 #import "WPAppAnalytics.h"
 #import "WPAsyncBlockOperation.h"
 #import "WPBlogTableViewCell.h"
+#import "WPBlogSelectorButton.h"
 #import "WPLegacyEditPostViewController.h"
 #import "WPError.h"
 #import "WPGUIConstants.h"
@@ -154,6 +155,7 @@
 
 #import <WPMediaPicker/WPMediaPicker.h>
 
+#import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPStyleGuide.h>
