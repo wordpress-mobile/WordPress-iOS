@@ -200,10 +200,9 @@ import Mixpanel
             path = "http://\(path)"
         }
 
-        path = path
-            .trimSuffix(regexp: "/wp-login.php")
-            .trimSuffix(regexp: "/wp-admin/?")
-            .trimSuffix(regexp: "/?")
+        path.removeSuffix("/wp-login.php")
+        try? path.removeSuffix(pattern: "/wp-admin/?")
+        path.removeSuffix("/")
 
         return NSURL.idnDecodedURL(path)
     }
