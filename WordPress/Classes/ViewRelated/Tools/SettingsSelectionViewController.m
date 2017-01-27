@@ -35,15 +35,27 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
 {
     self = [self initWithStyle:style];
     if (self) {
-        self.title = [dictionary stringForKey:SettingsSelectionTitleKey];
-        _titles = [dictionary arrayForKey:SettingsSelectionTitlesKey];
-        _values = [dictionary arrayForKey:SettingsSelectionValuesKey];
-        _hints = [dictionary arrayForKey:SettingsSelectionHintsKey];
-        _defaultValue = dictionary[SettingsSelectionDefaultValueKey];
-        _currentValue = dictionary[SettingsSelectionCurrentValueKey] ?: _defaultValue;
+        [self setupWithDictionary:dictionary];
     }
-    
     return self;
+}
+
+- (void)setupWithDictionary:(NSDictionary *)dictionary
+{
+    self.title = [dictionary stringForKey:SettingsSelectionTitleKey];
+    _titles = [dictionary arrayForKey:SettingsSelectionTitlesKey];
+    _values = [dictionary arrayForKey:SettingsSelectionValuesKey];
+    _hints = [dictionary arrayForKey:SettingsSelectionHintsKey];
+    _defaultValue = dictionary[SettingsSelectionDefaultValueKey];
+    _currentValue = dictionary[SettingsSelectionCurrentValueKey] ?: _defaultValue;
+}
+
+- (void)setupRefreshControl
+{
+    if (self.onRefresh && !self.refreshControl) {
+        self.refreshControl = [[UIRefreshControl alloc] init];
+        [self.refreshControl addTarget:self action:@selector(refreshControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+    }
 }
 
 - (void)viewDidLoad
@@ -54,9 +66,19 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
         self.tableView.tableFooterView = [UIView new];
     }
 
-    [self configureCancelButton];
+    [self setupRefreshControl];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    if (self.invokesRefreshOnViewWillAppear && self.onRefresh) {
+        // Go ahead and trigger a refresh on viewDidLoad.
+        self.onRefresh(nil);
+    }
 }
 
 - (CGSize)preferredContentSize
@@ -70,23 +92,48 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
     return size;
 }
 
-- (void)configureCancelButton
-{
-    if ([self.navigationController.viewControllers count] > 1) {
-        // showing a back button instead
-        return;
-    }
-
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(didTapCancelButton:)];
-    self.navigationItem.rightBarButtonItem = cancelButton;
-}
-
 - (void)didTapCancelButton:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     if (self.onCancel) {
         self.onCancel();
     }
+}
+
+- (void)refreshControlValueChanged:(UIRefreshControl *)refreshControl
+{
+    if (self.onRefresh) {
+        self.onRefresh(refreshControl);
+    } else {
+        [refreshControl endRefreshing];
+    }
+}
+
+#pragma mark - Public Instance Methods
+
+- (void)setOnRefresh:(void (^)(UIRefreshControl *))onRefresh
+{
+    if (_onRefresh != onRefresh) {
+        _onRefresh = onRefresh;
+        [self setupRefreshControl];
+    }
+}
+
+- (void)reloadWithDictionary:(NSDictionary *)dictionary
+{
+    [self setupWithDictionary:dictionary];
+    [self.tableView reloadData];
+}
+
+- (void)configureCancelBarButtonItem
+{
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(didTapCancelButton:)];
+    self.navigationItem.rightBarButtonItem = cancelButton;
+}
+
+- (void)dismiss
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Table view data source
@@ -144,11 +191,6 @@ CGFloat const SettingsSelectionDefaultTableViewCellHeight = 44.0f;
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
 {
     [WPStyleGuide configureTableViewSectionFooter:view];
-}
-
-- (void)dismiss
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end
