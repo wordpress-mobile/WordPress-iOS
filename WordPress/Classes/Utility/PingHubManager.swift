@@ -92,7 +92,7 @@ class PingHubManager: NSObject {
     override init() {
         let foreground = (UIApplication.shared.applicationState != .background)
         let authToken = defaultAccountToken()
-        state = State(connected: false, reachable: true, foreground: foreground, authToken: authToken)
+        state = State(connected: false, reachable: reachability.isReachable(), foreground: foreground, authToken: authToken)
         super.init()
 
         guard enabled else {
