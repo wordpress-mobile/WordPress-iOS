@@ -54,6 +54,10 @@ class NotificationDetailsViewController: UIViewController {
     ///
     fileprivate var keyboardManager: KeyboardDismissHelper!
 
+    /// Cached values used for returning the estimated row heights of autosizing cells.
+    ///
+    fileprivate let estimatedRowHeightsCache = NSCache<AnyObject, AnyObject>()
+
     /// Notification to-be-displayed
     ///
     var note: Notification! {
@@ -200,6 +204,20 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
         return cell
     }
 
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        estimatedRowHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        if let height = estimatedRowHeightsCache.object(forKey: indexPath as AnyObject) as? CGFloat {
+            return height
+        }
+        return Settings.estimatedRowHeight
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let group = blockGroupForIndexPath(indexPath)
@@ -238,8 +256,6 @@ extension NotificationDetailsViewController {
     }
 
     func setupTableView() {
-        tableView.estimatedRowHeight        = Settings.estimatedRowHeight
-        tableView.rowHeight                 = UITableViewAutomaticDimension
         tableView.separatorStyle            = .none
         tableView.keyboardDismissMode       = .interactive
         tableView.backgroundColor           = WPStyleGuide.greyLighten30()
@@ -420,9 +436,6 @@ private extension NotificationDetailsViewController {
 //
 private extension NotificationDetailsViewController {
     func setupCell(_ cell: NoteBlockTableViewCell, blockGroup: NotificationBlockGroup) {
-        // Temporarily force margins for WPTableViewCell hack.
-        cell.forceCustomCellMargins = true
-
         switch cell {
         case let cell as NoteBlockHeaderTableViewCell:
             setupHeaderCell(cell, blockGroup: blockGroup)
