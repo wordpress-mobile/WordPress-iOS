@@ -974,9 +974,6 @@ private extension AztecPostViewController {
 // MARK: - Constants
 fileprivate extension AztecPostViewController {
 
-    struct SwitchSiteAlert {
-        static let title        = NSLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
-        static let message      = NSLocalizedString("Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", comment: "And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
     struct Assets {
         static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
         static let closeButtonRegularImage  = UIImage(named: "icon-posts-editor-chevron")
@@ -985,8 +982,13 @@ fileprivate extension AztecPostViewController {
         static let defaultMissingImage      = Gridicon.iconOfType(.image)
     }
 
-        static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
-        static let cancelTitle  = NSLocalizedString("Cancel", comment: "Cancel Action")
+    struct Constants {
+        static let defaultMargin            = CGFloat(20)
+        static let separatorButtonWidth     = CGFloat(-12)
+        static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        static let blogPickerAttributes     = [NSFontAttributeName: Assets.defaultSemiBoldFont]
+        static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
+        static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
     }
 
     struct MoreSheetAlert {
@@ -997,14 +999,11 @@ fileprivate extension AztecPostViewController {
         static let cancelTitle  = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
     }
 
-    struct Constants {
-        static let defaultFont              = WPFontManager.merriweatherRegularFont(ofSize: 16)
-        static let defaultMargin            = CGFloat(20)
-        static let defaultMissingImage      = Gridicon.iconOfType(.image)
-        static let separatorButtonWidth     = CGFloat(-12)
-        static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
-        static let blogPickerAttributes     = [NSFontAttributeName: WPFontManager.systemSemiBoldFont(ofSize: 16)]
-        static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
-        static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
+    struct SwitchSiteAlert {
+        static let title        = NSLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
+        static let message      = NSLocalizedString("Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", comment: "And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
+
+        static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
+        static let cancelTitle  = NSLocalizedString("Cancel", comment: "Cancel Action")
     }
 }
