@@ -97,13 +97,8 @@ class AztecPostViewController: UIViewController {
     /// NavigationBar's Close Button
     ///
     fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
-        let image = Gridicon.iconOfType(.cross)
-        let cancelButton = WPStyleGuide.buttonForBar(with: image, target: self, selector: #selector(closeWasPressed))
-        cancelButton.leftSpacing = Constants.cancelButtonPadding.left
-        cancelButton.rightSpacing = Constants.cancelButtonPadding.right
-
-        let cancelItem = UIBarButtonItem(customView: cancelButton)
-        cancelItem.accessibilityLabel = NSLocalizedString("Cancel", comment: "Action button to close edior and cancel changes or insertion of post")
+        let cancelItem = UIBarButtonItem(customView: self.closeButton)
+        cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
         return cancelItem
     }()
 
@@ -111,7 +106,9 @@ class AztecPostViewController: UIViewController {
     /// NavigationBar's Blog Picker Button
     ///
     fileprivate lazy var blogPickerBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(customView: self.blogPickerButton)
+        let pickerItem = UIBarButtonItem(customView: self.blogPickerButton)
+        pickerItem.accessibilityLabel = NSLocalizedString("Switch Blog", comment: "Action button to switch the blog to which you'll be posting")
+        return pickerItem
     }()
 
 
@@ -122,6 +119,17 @@ class AztecPostViewController: UIViewController {
         let moreItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(moreWasPressed))
         moreItem.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
         return moreItem
+    }()
+
+
+    /// Dismiss Button
+    ///
+    fileprivate lazy var closeButton: WPButtonForNavigationBar = {
+        let cancelButton = WPStyleGuide.buttonForBar(with: Assets.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
+        cancelButton.leftSpacing = Constants.cancelButtonPadding.left
+        cancelButton.rightSpacing = Constants.cancelButtonPadding.right
+
+        return cancelButton
     }()
 
 
@@ -179,6 +187,7 @@ class AztecPostViewController: UIViewController {
         WPFontManager.loadMerriweatherFontFamily()
 
         configureNavigationBar()
+        configureDismissButton()
         configureView()
         configureSubviews()
 
@@ -260,6 +269,11 @@ class AztecPostViewController: UIViewController {
 
         navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
         navigationItem.rightBarButtonItem = moreBarButtonItem
+    }
+
+    func configureDismissButton() {
+        let image = isModal() ? Assets.closeButtonModalImage : Assets.closeButtonRegularImage
+        closeButton.setImage(image, for: .normal)
     }
 
     func configureView() {
