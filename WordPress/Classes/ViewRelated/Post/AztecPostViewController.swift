@@ -17,9 +17,9 @@ class AztecPostViewController: UIViewController {
     /// Aztec's Awesomeness
     ///
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
-        let tv = Aztec.TextView(defaultFont: Constants.defaultFont, defaultMissingImage: Constants.defaultMissingImage)
+        let tv = Aztec.TextView(defaultFont: Assets.defaultRegularFont, defaultMissingImage: Assets.defaultMissingImage)
 
-        tv.font = Constants.defaultFont
+        tv.font = Assets.defaultRegularFont
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         tv.delegate = self
         let toolbar = self.createToolbar()
@@ -40,7 +40,7 @@ class AztecPostViewController: UIViewController {
         let tv = UITextView()
 
         tv.accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
-        tv.font = Constants.defaultFont
+        tv.font = Assets.defaultRegularFont
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.isHidden = true
@@ -963,6 +963,13 @@ fileprivate extension AztecPostViewController {
     struct SwitchSiteAlert {
         static let title        = NSLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
         static let message      = NSLocalizedString("Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", comment: "And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
+    struct Assets {
+        static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
+        static let closeButtonRegularImage  = UIImage(named: "icon-posts-editor-chevron")
+        static let defaultRegularFont       = WPFontManager.merriweatherRegularFont(ofSize: 16)
+        static let defaultSemiBoldFont      = WPFontManager.systemSemiBoldFont(ofSize: 16)
+        static let defaultMissingImage      = Gridicon.iconOfType(.image)
+    }
 
         static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
         static let cancelTitle  = NSLocalizedString("Cancel", comment: "Cancel Action")
