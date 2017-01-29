@@ -39,10 +39,17 @@ protocol PostEditorStateContextDelegate {
 
 class PostEditorStateContext {
     private var state: PostEditorState = PostEditorStateNew() {
-
+        didSet {
+            delegate?.context(self, didChangeState: state)
+        }
     }
+
     private var userCanPublish = true
     private var delegate: PostEditorStateContextDelegate?
+
+    private var hasContent = false
+    private var isDirty = false
+    private var isBeingPublished = false
 
     init(withPost post: AbstractPost, previousPost: AbstractPost, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
         self.userCanPublish = userCanPublish
@@ -50,31 +57,44 @@ class PostEditorStateContext {
     }
 
     func updated(postStatus: PostStatus) {
+        let updatedState = state.updated(postStatus: postStatus, context: self)
+        guard type(of: state) != type(of: updatedState) else {
+            return
+        }
 
+        state = updatedState
     }
 
     func updated(publishDate: Date?) {
 
     }
 
-    func getPublishButtonText() -> String {
+    func updated(hasContent: Bool) {
+        self.hasContent = hasContent
+    }
+
+    func updated(isDirty: Bool) {
+        self.isDirty = isDirty
+    }
+
+    var publishButtonText: String {
         return state.getPublishButtonText(context: self)
     }
 
-    func getPublishVerbText() -> String {
+    var publishVerbText: String {
         return state.getPublishVerbText(context: self)
     }
 
-    func isPostPostShown() -> Bool {
+    var isPostPostShown: Bool {
         return state.isPostPostShown(context: self)
     }
 
-    func isSecondaryPublishButtonShown() -> Bool {
+    var isSecondaryPublishButtonShown: Bool {
         return state.isSecondaryPublishButtonShown(context: self)
     }
 
-    func isPublishButtonEnabled() -> Bool {
-        return true
+    var isPublishButtonEnabled: Bool {
+        return hasContent
     }
 
 }
