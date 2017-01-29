@@ -79,7 +79,7 @@ class AztecPostViewController: UIViewController {
     }()
 
     fileprivate(set) lazy var publishButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(title: "Publish", style: WPStyleGuide.barButtonStyleForDone(), target: self, action: #selector(publishButtonTapped(sender:)))
+        let button = UIBarButtonItem(title: self.postEditorStateContext.publishButtonText, style: WPStyleGuide.barButtonStyleForDone(), target: self, action: #selector(publishButtonTapped(sender:)))
 
         return button
     }()
@@ -316,8 +316,8 @@ extension AztecPostViewController {
 // MARK: - Publish Button Methods
 extension AztecPostViewController: PostEditorStateContextDelegate {
     internal func context(_ context: PostEditorStateContext, didChangeState: PostEditorState) {
-        publishButton.title = context.getPublishButtonText()
-        publishButton.isEnabled = context.isPublishButtonEnabled()
+        publishButton.title = context.publishButtonText
+        publishButton.isEnabled = context.isPublishButtonEnabled
     }
 }
 
