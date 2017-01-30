@@ -75,8 +75,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         guard let blogID = coder.decodeObject(forKey: postsViewControllerRestorationKey) as? String,
             let objectURL = URL(string: blogID),
-            let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
-            let restoredBlog = (try? context?.existingObject(with: objectID)) as? Blog else {
+            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
+            let restoredBlog = (try? context.existingObject(with: objectID)) as? Blog else {
 
             return nil
         }
@@ -470,7 +470,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         viewController.postID = apost.postID
         viewController.postTitle = apost.titleForDisplay()
-        viewController.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service?.timeZone(for: blog), oauth2Token: blog.authToken, andCacheExpirationInterval: type(of: self).statsCacheInterval)
+        viewController.statsService = WPStatsService(siteId: blog.dotComID, siteTimeZone: service.timeZone(for: blog), oauth2Token: blog.authToken, andCacheExpirationInterval: type(of: self).statsCacheInterval)
 
         navigationController?.pushViewController(viewController, animated: true)
     }

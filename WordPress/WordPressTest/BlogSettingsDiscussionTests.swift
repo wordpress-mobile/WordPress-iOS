@@ -84,7 +84,7 @@ class BlogSettingsDiscussionTests: XCTestCase {
     fileprivate func newSettings() -> BlogSettings {
         let context = manager!.mainContext
         let name = BlogSettings.classNameWithoutNamespaces()
-        let entity = NSEntityDescription.insertNewObject(forEntityName: name, into: context!)
+        let entity = NSEntityDescription.insertNewObject(forEntityName: name, into: context)
 
         return entity as! BlogSettings
     }

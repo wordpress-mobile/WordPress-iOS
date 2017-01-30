@@ -19,7 +19,7 @@
 - (void)createMediaWithURL:(NSURL *)url
            forPostObjectID:(NSManagedObjectID *)postObjectID
          thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
-                completion:(void (^)(Media *media, NSError *error))completion;
+                completion:(void (^)(Media *media, NSError *error))completion NS_SWIFT_NAME(createMedia(url:forPost:thumbnailCallback:completion:));
 
 /**
  Create a Media object using the asset as the source and making it a child of the post with postObjectId.
@@ -32,7 +32,7 @@
 - (void)createMediaWithPHAsset:(PHAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
            thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
-                  completion:(void (^)(Media *media, NSError *error))completion;
+                    completion:(void (^)(Media *media, NSError *error))completion;
 
 - (void)createMediaWithImage:(UIImage *)image
                  withMediaID:(NSString *)mediaID
@@ -126,16 +126,20 @@
                         failure:(void (^)(NSError *error))failure;
 
 /**
- + Get a thumbnail image for a Media by downloading its image or using the local cache
- +
- + @param media
- + @param success a block that will be invoked when the media is retrieved
- + @failure a block that will be invoked if an error happens returnin the associated error object with the details.
- + */
-- (void)thumbnailForMedia:(Media *)media
-                     size:(CGSize)size
-                  success:(void (^)(UIImage *image))success
-                  failure:(void (^)(NSError *error))failure;
+ Fetchs the associated the image for a Media object by downloading it or using the local cache if available.
+ 
+ @discussion If the media asset is a video a frame of the video is returned.
+
+ @param mediaInRandomContext the object from where to get the thumbnail
+ @param requestSize the request size for the image, if CGSizeZero the image returned has the image original pixel dimensions.
+ @param success a block that will be invoked when the media is retrieved
+ @param failure a block that will be invoked if an error happens, provinding an error object with details.
+ */
+- (void)imageForMedia:(Media *)mediaInRandomContext
+                 size:(CGSize)requestSize
+              success:(void (^)(UIImage *image))success
+              failure:(void (^)(NSError *error))failure;
+
 /**
  *  Get the number of items in a blog media library that are of a certain type.
  *

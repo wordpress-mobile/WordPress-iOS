@@ -200,7 +200,10 @@
     imagePath = [remoteService featuredImageFromPostDictionary:dict];
     XCTAssertTrue([@"" isEqualToString:imagePath], @"Non image media types should be ignored.");
 
-    dict = @{@"attachments": @{@"111": @{@"mime_type": @"image/jpg", @"width":@(2048), @"URL":uri}}};
+    dict = @{
+             @"attachments": @{@"111": @{@"mime_type": @"image/jpg", @"width":@(2048), @"URL":uri}},
+             @"content": [NSString stringWithFormat:@"Sample text %@ sample text", uri]
+             };
     imagePath = [remoteService featuredImageFromPostDictionary:dict];
     XCTAssertTrue([uri isEqualToString:imagePath], @"Failed to retrieve the uri from attachments.");
 
