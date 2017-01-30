@@ -11,7 +11,6 @@
 #import "AccountServiceFacade.h"
 #import "AccountServiceRemoteREST.h"
 #import "ApiCredentials.h"
-#import "AppRatingUtility.h"
 
 #import "Blog.h"
 #import "BlogService.h"
