@@ -214,7 +214,6 @@
 		5D1D9C50198837D0009D13B7 /* RemoteReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1B1988243700378BD6 /* RemoteReaderPost.m */; };
 		5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE211988245B00378BD6 /* RemoteReaderSite.m */; };
 		5D1D9C52198837D0009D13B7 /* RemoteReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1D1988243700378BD6 /* RemoteReaderTopic.m */; };
-		5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */; };
 		5D2B30B91B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B30B81B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift */; };
 		5D2BEB4919758102005425F7 /* PhotonImageURLHelperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BEB4819758102005425F7 /* PhotonImageURLHelperTest.m */; };
 		5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2C05551AD2F56200A753FE /* NavBarTitleDropdownButton.m */; };
@@ -1322,8 +1321,6 @@
 		5D1D04741B7A50B100CDE646 /* ReaderStreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderStreamViewController.swift; sourceTree = "<group>"; };
 		5D1D33CD1AE56250000DE623 /* RemoteUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteUser.h; sourceTree = "<group>"; };
 		5D1D33CE1AE56250000DE623 /* RemoteUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteUser.m; sourceTree = "<group>"; };
-		5D1EE7FF15E7AF3E007F1F02 /* JetpackSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackSettingsViewController.h; sourceTree = "<group>"; };
-		5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackSettingsViewController.m; sourceTree = "<group>"; };
 		5D229A78199AB74F00685123 /* WordPress 21.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 21.xcdatamodel"; sourceTree = "<group>"; };
 		5D2B30B81B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderCardDiscoverAttributionView.swift; sourceTree = "<group>"; };
 		5D2BEB4819758102005425F7 /* PhotonImageURLHelperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotonImageURLHelperTest.m; sourceTree = "<group>"; };
@@ -2909,8 +2906,6 @@
 		3792259E12F6DBCC00F2176A /* Stats */ = {
 			isa = PBXGroup;
 			children = (
-				5D1EE7FF15E7AF3E007F1F02 /* JetpackSettingsViewController.h */,
-				5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */,
 				C56636E61868D0CE00226AAB /* StatsViewController.h */,
 				C56636E71868D0CE00226AAB /* StatsViewController.m */,
 				7470840D1E269669002CA726 /* JetpackLoginViewController.swift */,
@@ -6176,7 +6171,6 @@
 				B5C9401A1DB900DC0079D4FF /* AccountHelper.swift in Sources */,
 				E6E57CD51D0F08B200C22E3E /* ReaderMenuViewController.swift in Sources */,
 				08D978591CD2AF7D0054F19A /* MenuItemSourceTextBar.m in Sources */,
-				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
 				E1A8CACB1C22FF7C0038689E /* MeViewController.swift in Sources */,
 				08216FD31CDBF96000304BA7 /* MenuItemTagsViewController.m in Sources */,
 				E6B896DC1CB7FB1F00E3FD8F /* SigninLinkAuthViewController.swift in Sources */,

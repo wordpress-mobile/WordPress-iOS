@@ -4,7 +4,6 @@
 #import "StatsViewController.h"
 #import "Blog.h"
 #import "WordPressAppDelegate.h"
-#import "JetpackSettingsViewController.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "BlogService.h"
@@ -79,6 +78,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     
     [self addChildViewController:self.statsVC];
     [self.view addSubview:self.statsVC.view];
+    self.statsVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view pinSubviewToAllEdges:self.statsVC.view];
     [self.statsVC didMoveToParentViewController:self];
 }
 
