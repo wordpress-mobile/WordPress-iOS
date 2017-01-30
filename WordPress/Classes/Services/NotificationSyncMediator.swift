@@ -54,13 +54,13 @@ class NotificationSyncMediator {
     ///
     convenience init?() {
         let manager = ContextManager.sharedInstance()
-        let service = AccountService(managedObjectContext: manager?.mainContext)
+        let service = AccountService(managedObjectContext: manager.mainContext)
 
-        guard let dotcomAPI = service?.defaultWordPressComAccount()?.wordPressComRestApi else {
+        guard let dotcomAPI = service.defaultWordPressComAccount()?.wordPressComRestApi else {
             return nil
         }
 
-        self.init(manager: manager!, dotcomAPI: dotcomAPI)
+        self.init(manager: manager, dotcomAPI: dotcomAPI)
     }
 
     /// Initializer: Useful for Unit Testing

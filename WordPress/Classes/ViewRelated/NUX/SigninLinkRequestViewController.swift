@@ -95,7 +95,7 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
 
         configureLoading(true)
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.requestAuthenticationLink(email,
+        service.requestAuthenticationLink(email,
             success: { [weak self] in
                 self?.didRequestAuthenticationLink()
                 self?.configureLoading(false)
