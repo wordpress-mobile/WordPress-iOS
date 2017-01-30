@@ -277,8 +277,13 @@ class JetpackLoginViewController: UIViewController {
     }
 
     fileprivate func handleMultifactorCodeRequest() {
-        shouldDisplayMultifactor = true // TODO: Animate the multifactor field
-        updateControls()
+        shouldDisplayMultifactor = true
+        UIView.animate(withDuration: WPAnimationDurationDefault, animations: { () -> Void in
+            self.updateControls()
+        },
+        completion: { (success: Bool) -> Void in
+            //noop
+        })
     }
 
     func hideKeyboard() {
