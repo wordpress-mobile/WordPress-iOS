@@ -88,7 +88,7 @@ import WordPressComAnalytics
 
             if let newTopic = readerTopic {
                 newTopic.inUse = true
-                ContextManager.sharedInstance().save(newTopic.managedObjectContext)
+                ContextManager.sharedInstance().save(newTopic.managedObjectContext!)
             }
 
             if readerTopic != nil && readerTopic != oldValue {
@@ -166,7 +166,7 @@ import WordPressComAnalytics
 
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context)
-        guard let topic = service?.find(withPath: path) else {
+        guard let topic = service.find(withPath: path) else {
             return nil
         }
 
@@ -190,7 +190,7 @@ import WordPressComAnalytics
     deinit {
         if let topic = readerTopic {
             topic.inUse = false
-            ContextManager.sharedInstance().save(topic.managedObjectContext)
+            ContextManager.sharedInstance().save(topic.managedObjectContext!)
         }
     }
 
@@ -291,12 +291,12 @@ import WordPressComAnalytics
         }
         assert(siteID != nil, "A siteID is required before fetching a site topic")
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.siteTopicForSite(withID: siteID!,
+        service.siteTopicForSite(withID: siteID!,
             isFeed: isFeed,
             success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
 
                 let context = ContextManager.sharedInstance().mainContext
-                guard let objectID = objectID, let topic = (try? context?.existingObject(with: objectID)) as? ReaderAbstractTopic else {
+                guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogSwift.logError("Reader: Error retriving an existing site topic by its objectID")
                     self?.displayLoadingStreamFailed()
                     return
@@ -318,11 +318,11 @@ import WordPressComAnalytics
         }
         assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic")
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.tagTopicForTag(withSlug: tagSlug,
+        service.tagTopicForTag(withSlug: tagSlug,
             success: { [weak self] (objectID: NSManagedObjectID?) in
 
                 let context = ContextManager.sharedInstance().mainContext
-                guard let objectID = objectID, let topic = (try? context?.existingObject(with: objectID)) as? ReaderAbstractTopic else {
+                guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogSwift.logError("Reader: Error retriving an existing tag topic by its objectID")
                     self?.displayLoadingStreamFailed()
                     return
@@ -576,7 +576,7 @@ import WordPressComAnalytics
     /// Fetch and cache the current defaultAccount authtoken, if available.
     fileprivate func refreshImageRequestAuthToken() {
         let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        imageRequestAuthToken = acctServ?.defaultWordPressComAccount()?.authToken
+        imageRequestAuthToken = acctServ.defaultWordPressComAccount()?.authToken
     }
 
 
@@ -775,7 +775,7 @@ import WordPressComAnalytics
 
         SVProgressHUD.show()
         let postService = ReaderPostService(managedObjectContext: managedObjectContext())
-        postService?.toggleFollowing(for: post,
+        postService.toggleFollowing(for: post,
                                             success: {
                                                 SVProgressHUD.showSuccess(withStatus: successMessage)
                                             },
@@ -842,7 +842,7 @@ import WordPressComAnalytics
             WPNotificationFeedbackGenerator.notificationOccurred(.success)
         }
         let service = ReaderPostService(managedObjectContext: managedObjectContext())
-        service?.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
+        service.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
             if let anError = error {
                 DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
             }
@@ -899,7 +899,7 @@ import WordPressComAnalytics
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
-        service?.flagSite(withID: post.siteID,
+        service.flagSite(withID: post.siteID,
             asBlocked: true,
             success: nil,
             failure: { [weak self] (error: Error?) in
@@ -929,7 +929,7 @@ import WordPressComAnalytics
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
-        service?.flagSite(withID: post.siteID,
+        service.flagSite(withID: post.siteID,
             asBlocked: false,
             success: nil,
             failure: { [weak self] (error: Error?) in
@@ -1021,7 +1021,7 @@ import WordPressComAnalytics
     ///
     func updateLastSyncedForTopic(_ objectID: NSManagedObjectID) {
         let context = ContextManager.sharedInstance().mainContext
-        guard let topic = (try? context?.existingObject(with: objectID)) as? ReaderAbstractTopic else {
+        guard let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
             DDLogSwift.logError("Failed to retrive an existing topic when updating last sync date.")
             return
         }
@@ -1118,8 +1118,8 @@ import WordPressComAnalytics
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
 
-        syncContext?.perform { [weak self] in
-            guard let topicInContext = (try? syncContext?.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
+        syncContext.perform { [weak self] in
+            guard let topicInContext = (try? syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
                 DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
@@ -1148,9 +1148,9 @@ import WordPressComAnalytics
             }
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
-                service?.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: false, success: successBlock, failure: failureBlock)
+                service.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: false, success: successBlock, failure: failureBlock)
             } else {
-                service?.fetchPosts(for: topicInContext, earlierThan: Date(), success: successBlock, failure: failureBlock)
+                service.fetchPosts(for: topicInContext, earlierThan: Date(), success: successBlock, failure: failureBlock)
             }
         }
     }
@@ -1180,8 +1180,8 @@ import WordPressComAnalytics
         let service =  ReaderPostService(managedObjectContext: syncContext)
         let sortDate = post.sortDate
 
-        syncContext?.perform { [weak self] in
-            guard let topicInContext = (try? syncContext?.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
+        syncContext.perform { [weak self] in
+            guard let topicInContext = (try? syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
                 DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
@@ -1207,9 +1207,9 @@ import WordPressComAnalytics
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
                 assertionFailure("Search topics should no have a gap to fill.")
-                service?.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
+                service.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
             } else {
-                service?.fetchPosts(for: topicInContext, earlierThan: sortDate, deletingEarlier: true, success: successBlock, failure: failureBlock)
+                service.fetchPosts(for: topicInContext, earlierThan: sortDate, deletingEarlier: true, success: successBlock, failure: failureBlock)
             }
         }
     }
@@ -1232,8 +1232,8 @@ import WordPressComAnalytics
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
         let offset = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
-        syncContext?.perform {
-            guard let topicInContext = (try? syncContext?.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
+        syncContext.perform {
+            guard let topicInContext = (try? syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
                 DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
@@ -1251,9 +1251,9 @@ import WordPressComAnalytics
             }
 
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
-                service?.fetchPosts(for: topicInContext, atOffset: UInt(offset), deletingEarlier: false, success: successBlock, failure: failureBlock)
+                service.fetchPosts(for: topicInContext, atOffset: UInt(offset), deletingEarlier: false, success: successBlock, failure: failureBlock)
             } else {
-                service?.fetchPosts(for: topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
+                service.fetchPosts(for: topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
             }
         }
 
@@ -1380,12 +1380,13 @@ import WordPressComAnalytics
             WPNotificationFeedbackGenerator.notificationOccurred(.success)
         }
 
-        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
-        service?.toggleFollowing(forTag: topic, success: nil, failure: { (error: Error?) in
+        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
+        service.toggleFollowing(forTag: topic, success: nil, failure: { (error: Error?) in
             WPNotificationFeedbackGenerator.notificationOccurred(.error)
             self.updateStreamHeaderIfNeeded()
         })
-        self.updateStreamHeaderIfNeeded()
+
+        updateStreamHeaderIfNeeded()
     }
 
 
@@ -1394,12 +1395,13 @@ import WordPressComAnalytics
             WPNotificationFeedbackGenerator.notificationOccurred(.success)
         }
 
-        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
-        service?.toggleFollowing(forSite: topic, success: nil, failure: { (error: Error?) in
+        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
+        service.toggleFollowing(forSite: topic, success: nil, failure: { (error: Error?) in
             WPNotificationFeedbackGenerator.notificationOccurred(.error)
             self.updateStreamHeaderIfNeeded()
         })
-        self.updateStreamHeaderIfNeeded()
+
+        updateStreamHeaderIfNeeded()
     }
 }
 

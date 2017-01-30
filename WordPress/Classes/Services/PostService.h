@@ -2,18 +2,24 @@
 #import "LocalCoreDataService.h"
 #import "PostServiceOptions.h"
 
-@class Blog, Post, Page, AbstractPost;
+@class AbstractPost;
+@class Blog;
+@class Post;
+@class Page;
 @class RemotePost;
 
+
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NSString * PostServiceType;
+typedef void(^PostServiceSyncSuccess)(NSArray<AbstractPost *> * _Nullable posts);
+typedef void(^PostServiceSyncFailure)(NSError * _Nullable error);
+
 extern PostServiceType const PostServiceTypePost;
 extern PostServiceType const PostServiceTypePage;
 extern PostServiceType const PostServiceTypeAny;
-
 extern const NSUInteger PostServiceDefaultNumberToSync;
 
-typedef void(^PostServiceSyncSuccess)(NSArray<AbstractPost *> *posts);
-typedef void(^PostServiceSyncFailure)(NSError *error);
 
 @interface PostService : LocalCoreDataService
 
@@ -81,8 +87,8 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
  @param failure A failure block
  */
 - (void)uploadPost:(AbstractPost *)post
-           success:(void (^)(AbstractPost *post))success
-           failure:(void (^)(NSError *error))failure;
+           success:(nullable void (^)(AbstractPost *post))success
+           failure:(void (^)(NSError * _Nullable error))failure;
 
 /**
  Attempts to delete the specified post outright vs moving it to the 
@@ -93,8 +99,8 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
  @param failure A failure block
  */
 - (void)deletePost:(AbstractPost *)post
-           success:(void (^)())success
-           failure:(void (^)(NSError *error))failure;
+           success:(nullable void (^)())success
+           failure:(void (^)(NSError * _Nullable error))failure;
 
 /**
  Moves the specified post into the trash bin. Does not delete
@@ -105,8 +111,8 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
  @param failure A failure block
  */
 - (void)trashPost:(AbstractPost *)post
-          success:(void (^)())success
-          failure:(void (^)(NSError *error))failure;
+          success:(nullable nullable void (^)())success
+          failure:(void (^)(NSError * _Nullable error))failure;
 
 /**
  Moves the specified post out of the trash bin.
@@ -116,7 +122,9 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
  @param failure A failure block
  */
 - (void)restorePost:(AbstractPost *)post
-           success:(void (^)())success
-           failure:(void (^)(NSError *error))failure;
+           success:(nullable void (^)())success
+           failure:(void (^)(NSError * _Nullable error))failure;
 
 @end
+
+NS_ASSUME_NONNULL_END

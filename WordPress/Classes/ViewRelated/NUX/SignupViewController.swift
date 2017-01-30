@@ -351,7 +351,7 @@ import WordPressShared
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
-        service?.createBlogAndSigninToWPCom(blogURL: loginFields.siteUrl,
+        service.createBlogAndSigninToWPCom(blogURL: loginFields.siteUrl,
                                            blogTitle: loginFields.username,
                                            emailAddress: loginFields.emailAddress,
                                            username: loginFields.username,

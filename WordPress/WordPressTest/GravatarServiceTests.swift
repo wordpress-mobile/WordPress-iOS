@@ -49,9 +49,9 @@ class GravatarServiceTests: XCTestCase {
         let mainContext = contextManager.mainContext
 
         let accountService = AccountService(managedObjectContext: mainContext)
-        accountService?.removeDefaultWordPressComAccount()
+        accountService.removeDefaultWordPressComAccount()
 
-        let gravatarService = GravatarService(context: mainContext!)
+        let gravatarService = GravatarService(context: mainContext)
         XCTAssertNil(gravatarService)
     }
 
@@ -59,7 +59,7 @@ class GravatarServiceTests: XCTestCase {
         createTestAccount(username: "some", token: "1234", emailAddress: "email@wordpress.com")
 
         let mainContext = contextManager.mainContext
-        let gravatarService = GravatarService(context: mainContext!)
+        let gravatarService = GravatarService(context: mainContext)
         XCTAssertNotNil(gravatarService)
     }
 
@@ -67,7 +67,7 @@ class GravatarServiceTests: XCTestCase {
         createTestAccount(username: "some", token: "1234", emailAddress: "emAil@wordpress.com")
 
         let mainContext = contextManager.mainContext
-        let gravatarService = GravatarServiceTester(context: mainContext!)
+        let gravatarService = GravatarServiceTester(context: mainContext)
         gravatarService?.uploadImage(UIImage())
 
         XCTAssertEqual("email@wordpress.com", gravatarService!.gravatarServiceRemoteMock!.capturedAccountEmail)
@@ -77,7 +77,7 @@ class GravatarServiceTests: XCTestCase {
         createTestAccount(username: "some", token: "1234", emailAddress: " email@wordpress.com ")
 
         let mainContext = contextManager.mainContext
-        let gravatarService = GravatarServiceTester(context: mainContext!)
+        let gravatarService = GravatarServiceTester(context: mainContext)
         gravatarService?.uploadImage(UIImage())
 
         XCTAssertEqual("email@wordpress.com", gravatarService!.gravatarServiceRemoteMock!.capturedAccountEmail)
@@ -87,11 +87,11 @@ class GravatarServiceTests: XCTestCase {
         let mainContext = contextManager.mainContext
 
         let accountService = AccountService(managedObjectContext: mainContext)
-        let defaultAccount = accountService?.createOrUpdateAccount(withUsername: username, authToken: token)
-        defaultAccount?.email = emailAddress
+        let defaultAccount = accountService.createOrUpdateAccount(withUsername: username, authToken: token)
+        defaultAccount.email = emailAddress
         contextManager.saveContextAndWait(mainContext)
 
-        accountService?.setDefaultWordPressComAccount(defaultAccount!)
-        XCTAssertNotNil(accountService?.defaultWordPressComAccount())
+        accountService.setDefaultWordPressComAccount(defaultAccount)
+        XCTAssertNotNil(accountService.defaultWordPressComAccount())
     }
 }
