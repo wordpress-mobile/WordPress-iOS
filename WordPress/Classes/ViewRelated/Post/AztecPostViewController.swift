@@ -811,13 +811,9 @@ extension AztecPostViewController {
 
     // TODO: Rip this and put it into PostService, as well
     fileprivate func recreatePostRevision(in blog: Blog) {
-        guard
-            let blogService = BlogService(managedObjectContext: mainContext),
-            let postService = PostService(managedObjectContext: mainContext),
-            let newPost = postService.createDraftPost(for: blog)
-            else {
-                return
-        }
+        let blogService = BlogService(managedObjectContext: mainContext)
+        let postService = PostService(managedObjectContext: mainContext)
+        let newPost = postService.createDraftPost(for: blog)
 
         blogService.flagBlog(asLastUsed: blog)
 
@@ -931,7 +927,7 @@ private extension AztecPostViewController {
 
     var currentBlogCount: Int {
         let service = BlogService(managedObjectContext: mainContext)
-        return service?.blogCountForAllAccounts() ?? 0
+        return service.blogCountForAllAccounts()
     }
 
     var isSingleSiteMode: Bool {

@@ -149,11 +149,12 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
 
     fileprivate func newMedia(fromResource resource: String, withExtension ext: String) -> Media? {
         var newMedia: Media?
-        guard let url = Bundle(for: type(of: self)).url(forResource: resource, withExtension: ext),
-            let mediaService = MediaService(managedObjectContext: context) else {
-                XCTFail("Pre condition to create media service failed")
-                return nil
+        guard let url = Bundle(for: type(of: self)).url(forResource: resource, withExtension: ext) else {
+            XCTFail("Pre condition to create media service failed")
+            return nil
         }
+
+        let mediaService = MediaService(managedObjectContext: context)
         let expect = self.expectation(description: "Media should be create with success")
         mediaService.createMedia(url: url, forPost: post.objectID, thumbnailCallback: { (url) in
         }, completion: { (media, error) in
