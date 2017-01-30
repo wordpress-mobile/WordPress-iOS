@@ -30,7 +30,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                     <subviews>
                         <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wZ5-Fs-qlA">
-                            <rect key="frame" x="361.5" y="244.5" width="300" height="278"/>
+                            <rect key="frame" x="361.5" y="214.5" width="300" height="338"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-jetpack-gray" translatesAutoresizingMaskIntoConstraints="NO" id="GNi-Lj-sLf">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="90"/>
@@ -42,7 +42,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Email or Username" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="xxp-Ie-Xxe" customClass="WPWalkthroughTextField">
-                                    <rect key="frame" x="0.0" y="146" width="300" height="24"/>
+                                    <rect key="frame" x="0.0" y="146" width="300" height="44"/>
                                     <nil key="textColor"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -53,7 +53,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3Mb-EC-IEi" customClass="WPWalkthroughTextField">
-                                    <rect key="frame" x="0.0" y="180" width="300" height="24"/>
+                                    <rect key="frame" x="0.0" y="200" width="300" height="44"/>
                                     <nil key="textColor"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
@@ -64,7 +64,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Verification Code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xnn-gG-Lam" customClass="WPWalkthroughTextField">
-                                    <rect key="frame" x="0.0" y="214" width="300" height="24"/>
+                                    <rect key="frame" x="0.0" y="254" width="300" height="44"/>
                                     <nil key="textColor"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -74,7 +74,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMy-o2-gd3" customClass="WPNUXMainButton">
-                                    <rect key="frame" x="0.0" y="248" width="300" height="30"/>
+                                    <rect key="frame" x="0.0" y="308" width="300" height="30"/>
                                     <state key="normal" title="Button"/>
                                     <connections>
                                         <action selector="didTouchSignInButton:" destination="-1" eventType="touchUpInside" id="4XZ-kZ-sw4"/>
