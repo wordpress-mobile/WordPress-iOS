@@ -16,7 +16,7 @@ import WordPressComAnalytics
 
     override convenience init() {
         let context = ContextManager.sharedInstance().mainContext
-        let service = PushAuthenticationService(managedObjectContext: context!)
+        let service = PushAuthenticationService(managedObjectContext: context)
         self.init(pushAuthenticationService: service)
     }
 
