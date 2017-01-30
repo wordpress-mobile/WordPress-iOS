@@ -631,7 +631,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     func configureCellActions(_ cell: NoteTableViewCell, note: Notification) {
         if !note.read {
             cell.leftButtons = [
-                MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"), backgroundColor: WPStyleGuide.wordPressBlue(), callback: { _ in
+                MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"), backgroundColor: WPStyleGuide.greyDarken20(), callback: { _ in
                     NotificationSyncMediator()?.markAsRead(note)
                     return true
                 })
