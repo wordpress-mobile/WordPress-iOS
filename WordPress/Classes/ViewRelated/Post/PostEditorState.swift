@@ -37,7 +37,7 @@ public protocol PostEditorStateContextDelegate {
 }
 
 public class PostEditorStateContext {
-    private var editorState: PostEditorActionState = PostEditorStatePublish() {
+    private var editorState: PostEditorActionState {
         didSet {
             delegate?.context(self, didChangeAction: editorState.action())
         }
@@ -55,6 +55,13 @@ public class PostEditorStateContext {
         self.originalPostStatus = originalPostStatus
         self.userCanPublish = userCanPublish
         self.delegate = delegate
+
+        switch originalPostStatus {
+        case .draft:
+            editorState = PostEditorStatePublish()
+        default:
+            editorState = PostEditorStateUpdate()
+        }
     }
 
     func updated(postStatus: PostStatus) {

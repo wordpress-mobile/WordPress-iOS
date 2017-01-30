@@ -35,7 +35,11 @@ class PostEditorStateTests: XCTestCase {
 
         XCTAssertFalse(context.isPublishButtonEnabled)
     }
+}
 
+// These tests are all based off of Calypso unit tests
+// https://github.com/Automattic/wp-calypso/blob/master/client/post-editor/editor-publish-button/test/index.jsx
+extension PostEditorStateTests {
     func testContextChangedPublishedPostToDraft() {
         context = PostEditorStateContext(originalPostStatus: .publish, userCanPublish: true, delegate: self)
 
