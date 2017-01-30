@@ -51,7 +51,7 @@ private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Plan
             let activeIcon = planDetails["icon_active"] as? String,
             let activeIconUrl = URL(string: activeIcon),
             let featureGroupsJson = planDetails["features_highlight"] as? [[String: AnyObject]] else {
-            throw PlansRemote.ResponseError.decodingFailure
+            return result
         }
 
         let productIdentifier = (planDetails["apple_sku"] as? String).flatMap({ $0.nonEmptyString() })

@@ -12,8 +12,8 @@ struct Plan {
     let title: String
     let fullTitle: String
     let tagline: String
-    let iconUrl: URL?
-    let activeIconUrl: URL?
+    let iconUrl: URL
+    let activeIconUrl: URL
     let productIdentifier: String?
     let featureGroups: [PlanFeatureGroupPlaceholder]
 }
