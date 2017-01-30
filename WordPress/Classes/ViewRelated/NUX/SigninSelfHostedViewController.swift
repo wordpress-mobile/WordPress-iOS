@@ -21,6 +21,11 @@ import WordPressShared
         return facade
     }()
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpOrgLogin
+        }
+    }
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
@@ -289,8 +294,8 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
             self?.configureViewLoading(false)
 
             let context = ContextManager.sharedInstance().mainContext
-            if let service = BlogService(managedObjectContext: context),
-                let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) {
+            let service = BlogService(managedObjectContext: context)
+            if let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) {
                 service.flagBlog(asLastUsed: blog)
             }
 

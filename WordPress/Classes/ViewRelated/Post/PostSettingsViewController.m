@@ -267,7 +267,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self.blogService syncPostFormatsForBlog:self.apost.blog success:^{
         [weakSelf setupFormatsList];
         completionBlock();
-    } failure:nil];
+    } failure:^(NSError * _Nonnull error) {
+        completionBlock();
+    }];
 }
 
 #pragma mark - KVO
@@ -959,17 +961,20 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     if (post == nil || titles.count == 0 || post.postFormatText == nil || self.formatsList.count == 0) {
         return;
     }
-
-    NSDictionary *postFormatsDict = @{
-        @"DefaultValue"   : [titles firstObject],
-        @"Title"          : NSLocalizedString(@"Post Format", nil),
-        @"Titles"         : titles,
-        @"Values"         : titles,
-        @"CurrentValue"   : post.postFormatText
+    NSDictionary *(^postFormatsDictionary)(NSArray *) = ^NSDictionary *(NSArray *titles) {
+        return @{
+                 SettingsSelectionDefaultValueKey   : [titles firstObject],
+                 SettingsSelectionTitleKey          : NSLocalizedString(@"Post Format", nil),
+                 SettingsSelectionTitlesKey         : titles,
+                 SettingsSelectionValuesKey         : titles,
+                 SettingsSelectionCurrentValueKey   : post.postFormatText
+                 };;
     };
 
-    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
+    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:postFormatsDictionary(titles)];
     __weak SettingsSelectionViewController *weakVc = vc;
+    __weak __typeof(self) weakSelf = self;
+    __weak Post *weakPost = post;
     vc.onItemSelected = ^(NSString *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
         if ([status isKindOfClass:[NSString class]]) {
@@ -978,7 +983,16 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             [self.tableView reloadData];
         }
     };
-
+    vc.onRefresh = ^(UIRefreshControl *refreshControl) {
+        [weakSelf synchPostFormatsAndDo:^{
+            NSArray *titles = weakPost.blog.sortedPostFormatNames;
+            if (titles.count) {
+                [weakVc reloadWithDictionary:postFormatsDictionary(titles)];
+            }
+            [refreshControl endRefreshing];
+        }];
+    };
+    vc.invokesRefreshOnViewWillAppear = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

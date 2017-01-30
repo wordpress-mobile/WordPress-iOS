@@ -31,6 +31,12 @@ import WordPressShared
         }
     }
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .generalLogin
+        }
+    }
+
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
     /// - Parameter loginFields: Optional. A LoginFields instance containing any prefilled credentials.
@@ -302,7 +308,7 @@ import WordPressShared
         configureViewLoading(true)
 
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.isEmailAvailable(emailOrUsername,
+        service.isEmailAvailable(emailOrUsername,
             success: { [weak self] (available: Bool) in
                 self?.configureViewLoading(false)
                 if (available) {

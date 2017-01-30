@@ -46,7 +46,7 @@ public extension SiteSettingsViewController {
         let trackedBlog = blog
         WPAppAnalytics.track(.siteSettingsExportSiteRequested, with: trackedBlog)
         let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.exportContentForBlog(blog,
+        service.exportContentForBlog(blog,
             success: {
                 WPAppAnalytics.track(.siteSettingsExportSiteResponseOK, with: trackedBlog)
                 let status = NSLocalizedString("Email sent!", comment: "Overlay message displayed when export content started")
@@ -77,7 +77,7 @@ public extension SiteSettingsViewController {
 
         WPAppAnalytics.track(.siteSettingsDeleteSitePurchasesRequested, with: blog)
         let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.getActivePurchasesForBlog(blog,
+        service.getActivePurchasesForBlog(blog,
             success: { [weak self] purchases in
                 SVProgressHUD.dismiss()
                 guard let strongSelf = self else {
@@ -156,7 +156,7 @@ public extension SiteSettingsViewController {
         let trackedBlog = blog
         WPAppAnalytics.track(.siteSettingsDeleteSiteRequested, with: trackedBlog)
         let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.deleteSiteForBlog(blog,
+        service.deleteSiteForBlog(blog,
             success: { [weak self] in
                 WPAppAnalytics.track(.siteSettingsDeleteSiteResponseOK, with: trackedBlog)
                 let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
@@ -165,7 +165,7 @@ public extension SiteSettingsViewController {
                 self?.updateNavigationStackAfterSiteDeletion()
 
                 let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-                accountService?.updateUserDetails(for: (accountService?.defaultWordPressComAccount()!)!, success: { _ in }, failure: { _ in })
+                accountService.updateUserDetails(for: (accountService.defaultWordPressComAccount()!), success: { _ in }, failure: { _ in })
             },
             failure: { error in
                 DDLogSwift.logError("Error deleting site: \(error.localizedDescription)")

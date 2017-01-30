@@ -105,7 +105,7 @@ import Mixpanel
         }
 
         let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let account = accountService?.defaultWordPressComAccount() {
+        if let account = accountService.defaultWordPressComAccount() {
             DDLogSwift.logInfo("App opened with authentication link but there is already an existing wpcom account. \(account)")
             return false
         }
@@ -200,10 +200,9 @@ import Mixpanel
             path = "http://\(path)"
         }
 
-        path = path
-            .trimSuffix(regexp: "/wp-login.php")
-            .trimSuffix(regexp: "/wp-admin/?")
-            .trimSuffix(regexp: "/?")
+        path.removeSuffix("/wp-login.php")
+        try? path.removeSuffix(pattern: "/wp-admin/?")
+        path.removeSuffix("/")
 
         return NSURL.idnDecodedURL(path)
     }
