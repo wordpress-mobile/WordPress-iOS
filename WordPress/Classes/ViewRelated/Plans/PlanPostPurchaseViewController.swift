@@ -277,7 +277,7 @@ class PlanPostPurchasePageViewController: UIViewController {
         switch pageType {
         case .PurchaseComplete:
             if let plan = plan {
-                imageView.setImageWith(plan.activeIconUrl as URL)
+                imageView.setImageWith(plan.activeIconUrl)
             }
             headingLabel.text = NSLocalizedString("It’s all yours! Way to go!", comment: "Heading displayed after successful purchase of a plan")
             setDescriptionText(NSLocalizedString("Your site is doing somersaults in excitement! Now explore your site’s new features and choose where you’d like to begin.", comment: "Subtitle displayed after successful purchase of a plan"))
@@ -311,7 +311,7 @@ class PlanPostPurchasePageViewController: UIViewController {
         switch pageType {
         case .Customize:
             let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            WPTabBarController.sharedInstance().switchMySitesTabToCustomizeView(for: service?.primaryBlog())
+            WPTabBarController.sharedInstance().switchMySitesTabToCustomizeView(for: service.primaryBlog())
 
             WPTabBarController.sharedInstance().dismiss(animated: true, completion: nil)
         case .VideoPress:
@@ -320,7 +320,7 @@ class PlanPostPurchasePageViewController: UIViewController {
             }
         case .Themes:
             let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            WPTabBarController.sharedInstance().switchMySitesTabToThemesView(for: service?.primaryBlog())
+            WPTabBarController.sharedInstance().switchMySitesTabToThemesView(for: service.primaryBlog())
 
             WPTabBarController.sharedInstance().dismiss(animated: true, completion: nil)
         default: break

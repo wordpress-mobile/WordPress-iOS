@@ -314,11 +314,14 @@ class AztecPostViewController: UIViewController {
     }
 
     func reloadBlogPickerTitle() {
-        let blogName = post.blog.settings?.name ?? post.blog.url ?? String()
-        let titleText = NSAttributedString(string: blogName, attributes: Constants.blogPickerAttributes)
+        var pickerTitle = post.blog.url ?? String()
+        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
+            pickerTitle = blogName
+        }
 
-        blogPickerButton.buttonMode = isSingleSiteMode ? .singleSite : .multipleSite
+        let titleText = NSAttributedString(string: pickerTitle, attributes: Constants.blogPickerAttributes)
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
+        blogPickerButton.buttonMode = isSingleSiteMode ? .singleSite : .multipleSite
     }
 
     func resizeBlogPickerTitle() {
@@ -510,7 +513,7 @@ extension AztecPostViewController : UITextViewDelegate {
         // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
         post.content = richTextView.getHTML()
 
-        ContextManager.sharedInstance().save(post.managedObjectContext)
+        ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
 }
 
@@ -520,7 +523,7 @@ extension AztecPostViewController : UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         post.postTitle = textField.text
 
-        ContextManager.sharedInstance().save(post.managedObjectContext)
+        ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
 }
 
@@ -832,13 +835,9 @@ extension AztecPostViewController {
 
     // TODO: Rip this and put it into PostService, as well
     fileprivate func recreatePostRevision(in blog: Blog) {
-        guard
-            let blogService = BlogService(managedObjectContext: mainContext),
-            let postService = PostService(managedObjectContext: mainContext),
-            let newPost = postService.createDraftPost(for: blog)
-            else {
-                return
-        }
+        let blogService = BlogService(managedObjectContext: mainContext)
+        let postService = PostService(managedObjectContext: mainContext)
+        let newPost = postService.createDraftPost(for: blog)
 
         blogService.flagBlog(asLastUsed: blog)
 
@@ -952,7 +951,7 @@ private extension AztecPostViewController {
 
     var currentBlogCount: Int {
         let service = BlogService(managedObjectContext: mainContext)
-        return service?.blogCountForAllAccounts() ?? 0
+        return service.blogCountForAllAccounts()
     }
 
     var isSingleSiteMode: Bool {

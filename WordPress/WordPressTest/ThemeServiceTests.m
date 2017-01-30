@@ -29,13 +29,6 @@
 
 @implementation ThemeServiceTests
 
-#pragma mark - Initialization
-
-- (void)testThatInitializationFailsWithoutAManagedObjectContext
-{
-    XCTAssertThrows([[ThemeService alloc] initWithManagedObjectContext:nil]);
-}
-
 #pragma mark - Themes availability
 
 - (void)testThatWordPressBlogSupportsThemeServices
