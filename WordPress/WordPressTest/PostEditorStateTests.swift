@@ -15,30 +15,46 @@ class PostEditorStateTests: XCTestCase {
     }
 
     func testContextDefaultStateIsNew() {
-        context = PostEditorStateContext(userCanPublish: true, delegate: self)
+        context = PostEditorStateContext(originalPostStatus: .publish, userCanPublish: true, delegate: self)
 
-        XCTAssertEqual(PostStatusState.new, context.state)
+        XCTAssertEqual(PostEditorAction.publish, context.action)
     }
 
     func testContextPublished() {
-        context = PostEditorStateContext(userCanPublish: true, delegate: self)
+        context = PostEditorStateContext(originalPostStatus: .publish, userCanPublish: true, delegate: self)
 
         context.updated(postStatus: .publish)
 
-        XCTAssertEqual(PostStatusState.published, context.state)
+        XCTAssertEqual(PostEditorAction.publish, context.action)
     }
 
     func testContextNoContentPublishButtonDisabled() {
-        context = PostEditorStateContext(userCanPublish: true, delegate: self)
+        context = PostEditorStateContext(originalPostStatus: .publish, userCanPublish: true, delegate: self)
 
         context.updated(hasContent: false)
 
         XCTAssertFalse(context.isPublishButtonEnabled)
     }
+
+    func testContextChangedPublishedPostToDraft() {
+        context = PostEditorStateContext(originalPostStatus: .publish, userCanPublish: true, delegate: self)
+
+        context.updated(postStatus: .draft)
+
+        XCTAssertEqual(PostEditorAction.update, context.action)
+    }
+
+    func testContextChangedNewPostToDraft() {
+        context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, delegate: self)
+
+        context.updated(postStatus: .draft)
+
+        XCTAssertEqual(PostEditorAction.save, context.action)
+    }
 }
 
 extension PostEditorStateTests: PostEditorStateContextDelegate {
-    func context(_ context: PostEditorStateContext, didChangeState: PostStatusState) {
+    func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
 
     }
 }
