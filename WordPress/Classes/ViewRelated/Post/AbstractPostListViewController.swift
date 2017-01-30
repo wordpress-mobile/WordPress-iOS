@@ -600,7 +600,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         options.number = numberOfPostsPerSync() as NSNumber!
         options.purgesLocalSync = true
 
-        postService?.syncPosts(
+        postService.syncPosts(
             ofType: postTypeToSync() as String,
             with: options,
             for: blog,
@@ -653,7 +653,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         options.number = numberOfPostsPerSync() as NSNumber!
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber!
 
-        postService?.syncPosts(
+        postService.syncPosts(
             ofType: postTypeToSync() as String,
             with: options,
             for: blog,
@@ -668,10 +668,10 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                 }
 
                 success?(filter.hasMore)
-            }, failure: {(error) -> () in
+            }, failure: { (error) -> () in
 
                 guard let error = error else {
-                        return
+                    return
                 }
 
                 failure?(error as NSError)
@@ -787,7 +787,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         options.purgesLocalSync = false
         options.search = searchText
 
-        postService?.syncPosts(
+        postService.syncPosts(
             ofType: postTypeToSync() as String,
             with: options,
             for: blog,
@@ -805,13 +805,13 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
 
         apost.status = PostStatusPublish
-        if let date = apost.dateCreated(), date == (Date() as NSDate).laterDate(date) {
-            apost.setDateCreated(Date())
+        if let date = apost.dateCreated, date == (Date() as NSDate).laterDate(date) {
+            apost.dateCreated = Date()
         }
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService?.uploadPost(apost, success: nil) { [weak self] (error: Error?) in
+        postService.uploadPost(apost, success: nil) { [weak self] (error: Error?) in
 
             let error = error as? NSError
             guard let strongSelf = self else {
@@ -859,7 +859,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService?.trashPost(apost, success: nil) { [weak self] (error) in
+        postService.trashPost(apost, success: nil) { [weak self] (error) in
 
             guard let strongSelf = self else {
                 return
@@ -893,7 +893,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService?.restore(apost, success: { [weak self] in
+        postService.restore(apost, success: { [weak self] in
 
             guard let strongSelf = self else {
                 return

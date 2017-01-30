@@ -1,6 +1,9 @@
 #import "ContextManager.h"
 #import <XCTest/XCTest.h>
 
+
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  @class      TestContextManager
  *  @brief      This class overrides standard ContextManager functionality, for testing purposes.
@@ -13,9 +16,9 @@
 @property (nonatomic, readwrite, strong) NSManagedObjectModel           *managedObjectModel;
 @property (nonatomic, readwrite, strong) NSPersistentStoreCoordinator   *persistentStoreCoordinator;
 @property (nonatomic, readonly,  strong) NSPersistentStoreCoordinator   *standardPSC;
-@property (nonatomic, readwrite, strong) XCTestExpectation              *testExpectation;
 @property (nonatomic, readwrite, assign) BOOL                           requiresTestExpectation;
 @property (nonatomic, readonly,  strong) NSURL                          *storeURL;
+@property (nonatomic, nullable,  readwrite, strong) XCTestExpectation   *testExpectation;
 
 
 /**
@@ -28,3 +31,5 @@
 - (NSManagedObject *)loadEntityNamed:(NSString *)entityName withContentsOfFile:(NSString *)filename;
 
 @end
+
+NS_ASSUME_NONNULL_END
