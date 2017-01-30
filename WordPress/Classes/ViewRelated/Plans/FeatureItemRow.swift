@@ -18,7 +18,6 @@ struct FeatureItemRow: ImmuTableRow {
             cell.featureDescriptionLabel?.attributedText = attributedDescriptionText(description, font: featureDescriptionLabel.font)
         }
 
-        cell.featureIconImageView?.image = nil
         if let iconURL = iconURL {
             cell.featureIconImageView?.setImageWith(iconURL, placeholderImage: nil)
         }
