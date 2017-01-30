@@ -151,7 +151,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }
         isSyncing = true
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        service?.fetchFollowedSites(success: {[weak self] in
+        service.fetchFollowedSites(success: {[weak self] in
             self?.isSyncing = false
             self?.configureNoResultsView()
             self?.refreshControl.endRefreshing()
@@ -172,7 +172,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     func refreshFollowedPosts() {
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
-        service?.syncPostsForFollowedSites()
+        service.syncPostsForFollowedSites()
     }
 
 
@@ -182,7 +182,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }
 
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        service?.toggleFollowing(forSite: site, success: { [weak self] in
+        service.toggleFollowing(forSite: site, success: { [weak self] in
             self?.syncSites()
             self?.refreshFollowedPosts()
         }, failure: { [weak self] (error) in
@@ -202,7 +202,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }
 
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
-        service?.followSite(by: url, success: { [weak self] in
+        service.followSite(by: url, success: { [weak self] in
             let success = NSLocalizedString("Followed", comment: "User followed a site.")
             SVProgressHUD.showSuccess(withStatus: success)
             WPNotificationFeedbackGenerator.notificationOccurred(.success)
@@ -223,7 +223,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     func refreshPostsForFollowedTopic() {
         let service = ReaderPostService(managedObjectContext: managedObjectContext())
-        service?.refreshPostsForFollowedTopic()
+        service.refreshPostsForFollowedTopic()
     }
 
 
