@@ -32,21 +32,21 @@ class ContextManagerTests: XCTestCase {
         let psc = contextManager.persistentStoreCoordinator
 
         // Insert a Theme Entity
-        let objectOriginal = NSEntityDescription.insertNewObject(forEntityName: "Theme", into: mocOriginal!)
-        try! mocOriginal?.obtainPermanentIDs(for: [objectOriginal])
-        try! mocOriginal?.save()
+        let objectOriginal = NSEntityDescription.insertNewObject(forEntityName: "Theme", into: mocOriginal)
+        try! mocOriginal.obtainPermanentIDs(for: [objectOriginal])
+        try! mocOriginal.save()
 
         let objectID = objectOriginal.objectID
         XCTAssertFalse(objectID.isTemporaryID, "Should be a permanent object")
 
         // Migrate to the latest
-        let persistentStore = psc?.persistentStores.first!
-        try! psc?.remove(persistentStore!)
+        let persistentStore = psc.persistentStores.first!
+        try! psc.remove(persistentStore)
 
         let standardPSC = contextManager.standardPSC
 
         XCTAssertNotNil(standardPSC, "New store should exist")
-        XCTAssertTrue(standardPSC?.persistentStores.count == 1, "Should be one persistent store.")
+        XCTAssertTrue(standardPSC.persistentStores.count == 1, "Should be one persistent store.")
 
         // Verify if the Theme Entity is there
         let mocSecond = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
@@ -67,22 +67,22 @@ class ContextManagerTests: XCTestCase {
         _ = contextManager.persistentStoreCoordinator
 
         // Insert a WordPress.com account with a Jetpack blog
-        let wrongAccount = newAccountInContext(context: mainContext!)
+        let wrongAccount = newAccountInContext(context: mainContext)
         let wrongBlog = newBlogInAccount(account: wrongAccount)
         wrongAccount.addJetpackBlogsObject(wrongBlog)
 
         // Insert a WordPress.com account with a Dotcom blog
-        let rightAccount = newAccountInContext(context: mainContext!)
+        let rightAccount = newAccountInContext(context: mainContext)
         let rightBlog = newBlogInAccount(account: rightAccount)
         rightAccount.addBlogsObject(rightBlog)
         rightAccount.username = "Right"
 
         // Insert an offsite WordPress account
-        let offsiteAccount = newAccountInContext(context: mainContext!)
+        let offsiteAccount = newAccountInContext(context: mainContext)
         offsiteAccount.setValue(false, forKey: "isWpcom")
 
-        try! mainContext?.obtainPermanentIDs(for: [wrongAccount, rightAccount, offsiteAccount])
-        try! mainContext?.save()
+        try! mainContext.obtainPermanentIDs(for: [wrongAccount, rightAccount, offsiteAccount])
+        try! mainContext.save()
 
         // Set the DefaultDotCom
         let oldRightAccountURL = rightAccount.objectID.uriRepresentation()
@@ -120,13 +120,13 @@ class ContextManagerTests: XCTestCase {
         _ = contextManager.persistentStoreCoordinator
 
         // Insert a WPAccount entity
-        let dotcomAccount = newAccountInContext(context: mainContext!)
-        let offsiteAccount = newAccountInContext(context: mainContext!)
+        let dotcomAccount = newAccountInContext(context: mainContext)
+        let offsiteAccount = newAccountInContext(context: mainContext)
         offsiteAccount.setValue(false, forKey: "isWpcom")
         offsiteAccount.username = "OffsiteUsername"
 
-        try! mainContext?.obtainPermanentIDs(for: [dotcomAccount, offsiteAccount])
-        try! mainContext?.save()
+        try! mainContext.obtainPermanentIDs(for: [dotcomAccount, offsiteAccount])
+        try! mainContext.save()
 
         // Set the DefaultDotCom
         let dotcomAccountURL = dotcomAccount.objectID.uriRepresentation()
@@ -166,22 +166,22 @@ class ContextManagerTests: XCTestCase {
         _ = contextManager.persistentStoreCoordinator
 
         // Insert a WordPress.com account with a Jetpack blog
-        let wrongAccount = newAccountInContext(context: mainContext!)
+        let wrongAccount = newAccountInContext(context: mainContext)
         let wrongBlog = newBlogInAccount(account: wrongAccount)
         wrongAccount.addJetpackBlogsObject(wrongBlog)
 
         // Insert a WordPress.com account with a Dotcom blog
-        let rightAccount = newAccountInContext(context: mainContext!)
+        let rightAccount = newAccountInContext(context: mainContext)
         let rightBlog = newBlogInAccount(account: rightAccount)
         rightAccount.addBlogsObject(rightBlog)
         rightAccount.username = "Right"
 
         // Insert an offsite WordPress account
-        let offsiteAccount = newAccountInContext(context: mainContext!)
+        let offsiteAccount = newAccountInContext(context: mainContext)
         offsiteAccount.setValue(false, forKey: "isWpcom")
 
-        try! mainContext?.obtainPermanentIDs(for: [wrongAccount, rightAccount, offsiteAccount])
-        try! mainContext?.save()
+        try! mainContext.obtainPermanentIDs(for: [wrongAccount, rightAccount, offsiteAccount])
+        try! mainContext.save()
 
         // Set the DefaultDotCom
         let offsiteAccountURL = offsiteAccount.objectID.uriRepresentation()
@@ -221,19 +221,19 @@ class ContextManagerTests: XCTestCase {
         let mainContext = contextManager.mainContext
         _ = contextManager.persistentStoreCoordinator
 
-        let account = newAccountInContext(context: mainContext!)
+        let account = newAccountInContext(context: mainContext)
         let blog = newBlogInAccount(account: account)
 
         let authorAvatarURL = "http://lorempixum.com/"
 
-        let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: mainContext!) as! Post
+        let post = NSEntityDescription.insertNewObject(forEntityName: "Post", into: mainContext) as! Post
         post.blog = blog
         post.authorAvatarURL = authorAvatarURL
 
-        let readerPost = NSEntityDescription.insertNewObject(forEntityName: "ReaderPost", into: mainContext!) as! ReaderPost
+        let readerPost = NSEntityDescription.insertNewObject(forEntityName: "ReaderPost", into: mainContext) as! ReaderPost
         readerPost.authorAvatarURL = authorAvatarURL
 
-        try! mainContext?.save()
+        try! mainContext.save()
 
         // Initialize 24 > 25 Migration
         let secondContext = performCoredataMigration(model25Name)
@@ -274,11 +274,11 @@ class ContextManagerTests: XCTestCase {
 
     fileprivate func startupCoredataStack(_ modelName: String) {
         let modelURL = urlForModelName(modelName)!
-        let model = NSManagedObjectModel(contentsOf: modelURL)
-        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model!)
+        let model = NSManagedObjectModel(contentsOf: modelURL)!
+        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
 
         let storeUrl = contextManager.storeURL
-        removeStoresBasedOnStoreURL(storeUrl!)
+        removeStoresBasedOnStoreURL(storeUrl)
         do {
             _ = try persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeUrl, options: nil)
         } catch let error as NSError {
@@ -294,18 +294,18 @@ class ContextManagerTests: XCTestCase {
     }
 
     fileprivate func performCoredataMigration(_ newModelName: String) -> NSManagedObjectContext {
-        let psc = contextManager.persistentStoreCoordinator!
+        let psc = contextManager.persistentStoreCoordinator
         _ = contextManager.mainContext
 
         let persistentStore = psc.persistentStores.first!
         try! psc.remove(persistentStore)
 
         let newModelURL = urlForModelName(newModelName)!
-        contextManager.managedObjectModel = NSManagedObjectModel(contentsOf: newModelURL)
+        contextManager.managedObjectModel = NSManagedObjectModel(contentsOf: newModelURL)!
         let standardPSC = contextManager.standardPSC
 
         XCTAssertNotNil(standardPSC, "New store should exist")
-        XCTAssertTrue(standardPSC?.persistentStores.count == 1, "Should be one persistent store.")
+        XCTAssertTrue(standardPSC.persistentStores.count == 1, "Should be one persistent store.")
 
         let secondContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType)
         secondContext.persistentStoreCoordinator = standardPSC
