@@ -307,11 +307,7 @@ class JetpackLoginViewController: UIViewController {
 
     fileprivate func prefillJetPackUsernameIfAvailible() {
         let blogService = BlogService(managedObjectContext: managedObjectContext())
-        guard let bService = blogService else {
-            return
-        }
-
-        bService.syncBlog(self.blog, success: {[weak self] () -> Void in
+        blogService.syncBlog(self.blog, success: {[weak self] () -> Void in
                               guard let strongSelf = self, let jetpack = strongSelf.blog.jetpack else {
                                   return
                               }
