@@ -110,7 +110,7 @@ class EditPostViewController: UIViewController {
         } else {
             let context = ContextManager.sharedInstance().mainContext
             let postService = PostService(managedObjectContext: context)
-            let newPost = postService.createDraftPost(for: blog)!
+            let newPost = postService.createDraftPost(for: blog)
             post = newPost
             return newPost
         }

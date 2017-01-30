@@ -668,10 +668,10 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                 }
 
                 success?(filter.hasMore)
-            }, failure: {(error) -> () in
+            }, failure: { (error) -> () in
 
                 guard let error = error else {
-                        return
+                    return
                 }
 
                 failure?(error as NSError)

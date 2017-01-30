@@ -327,7 +327,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 let context = ContextManager.sharedInstance().mainContext
                 let postService = PostService(managedObjectContext: context)
                 let page = postService.createDraftPage(for: blog)
-                postViewController = AztecPostViewController(post: page!)
+                postViewController = AztecPostViewController(post: page)
                 navController = UINavigationController(rootViewController: postViewController)
             } else {
                 postViewController = EditPageViewController(draftFor: blog)
