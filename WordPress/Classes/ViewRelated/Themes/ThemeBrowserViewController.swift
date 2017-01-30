@@ -100,7 +100,7 @@ public protocol ThemePresenter: class {
         let sort = NSSortDescriptor(key: "order", ascending: true)
         fetchRequest.sortDescriptors = [sort]
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
-            managedObjectContext: (self.themeService?.managedObjectContext)!,
+            managedObjectContext: self.themeService.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
         frc.delegate = self
@@ -332,7 +332,7 @@ public protocol ThemePresenter: class {
     fileprivate func updateActiveTheme() {
         let lastActiveThemeId = blog.currentThemeId
 
-        _ = themeService?.getActiveTheme(for: blog,
+        _ = themeService.getActiveTheme(for: blog,
             success: { [weak self] (theme: Theme?) in
                 if lastActiveThemeId != theme?.themeId {
                     self?.collectionView?.collectionViewLayout.invalidateLayout()
@@ -363,7 +363,7 @@ public protocol ThemePresenter: class {
         assert(page > 0)
 
         syncingPage = page
-        _ = themeService?.getThemesFor(blog,
+        _ = themeService.getThemesFor(blog,
             page: syncingPage,
             sync: page == 1,
             success: {(themes: [Theme]?, hasMore: Bool) in
@@ -656,7 +656,7 @@ public protocol ThemePresenter: class {
         }
 
         searchController.isActive = false
-        _ = themeService?.activate(theme,
+        _ = themeService.activate(theme,
             for: blog,
             success: { [weak self] (theme: Theme?) in
                 WPAppAnalytics.track(.themesChangedTheme, withProperties: ["themeId": theme?.themeId ?? ""], with: self?.blog)
