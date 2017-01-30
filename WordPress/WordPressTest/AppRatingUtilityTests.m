@@ -4,12 +4,6 @@
 
 #import "WordPress-Swift.h"
 
-@interface AppRatingUtility(Tests)
-
-+ (void)unregisterAllSections;
-
-@end
-
 @interface AppRatingUtilityTests : XCTestCase
 @property (nonatomic, strong) NSUserDefaults *defaults;
 @property (nonatomic, strong) AppRatingUtility *utility;
