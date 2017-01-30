@@ -104,9 +104,9 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) var post: AbstractPost
 
     fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
-        let postStatus = PostStatus(rawValue: self.post.status ?? "publish") ?? .publish
+        let postStatus = PostStatus(rawValue: self.post.status ?? "draft") ?? .draft
 
-        let context = PostEditorStateContext(initialPostStatus: postStatus, userCanPublish: true, delegate: self)
+        let context = PostEditorStateContext(originalPostStatus: postStatus, userCanPublish: true, delegate: self)
         return context
     }()
 
