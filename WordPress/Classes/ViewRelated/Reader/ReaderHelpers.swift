@@ -207,7 +207,7 @@ import WordPressComAnalytics
     open class func isUserAdminOnSiteWithID(_ siteID: NSNumber) -> Bool {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
-        if let blog = blogService?.blog(byBlogId: siteID) {
+        if let blog = blogService.blog(byBlogId: siteID) {
             return blog.isAdmin
         }
         return false

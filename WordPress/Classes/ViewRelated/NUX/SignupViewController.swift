@@ -34,6 +34,11 @@ import WordPressShared
     let URLKey = "url"
     let nonAlphanumericCharacterSet = NSCharacterSet.alphanumerics.inverted
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComSignup
+        }
+    }
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
@@ -346,7 +351,7 @@ import WordPressShared
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
-        service?.createBlogAndSigninToWPCom(blogURL: loginFields.siteUrl,
+        service.createBlogAndSigninToWPCom(blogURL: loginFields.siteUrl,
                                            blogTitle: loginFields.username,
                                            emailAddress: loginFields.emailAddress,
                                            username: loginFields.username,
