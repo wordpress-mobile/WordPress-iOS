@@ -2,6 +2,12 @@ import UIKit
 
 class EditPostViewController: UIViewController {
 
+    enum editor: String {
+        case hybridVisual = "HybridVisualEditor"
+        case nativeVisual = "NativeVisualEditor"
+        case text = "TextEditor"
+    }
+    
     /// appear instantly, without animations
     var showImmediately: Bool = false
     /// appear with the media picker open
@@ -110,24 +116,39 @@ class EditPostViewController: UIViewController {
         } else {
             let context = ContextManager.sharedInstance().mainContext
             let postService = PostService(managedObjectContext: context)
-            let newPost = postService?.createDraftPost(for: blog)!
+            let newPost = (postService?.createDraftPost(for: blog))!
             post = newPost
-            return newPost!
+            return newPost
         }
     }
 
     // MARK: show the editor
 
-    fileprivate func showEditor() {
+    fileprivate func editorToUse() -> editor {
         let editorSettings = EditorSettings()
-        let editor: UIViewController
         if editorSettings.visualEditorEnabled {
             if editorSettings.nativeEditorEnabled {
-                editor = editPostInNativeVisualEditor()
+                return .nativeVisual
             } else {
-                editor = editPostInHybridVisualEditor()
+                return .hybridVisual
             }
         } else {
+            return .text
+        }
+    }
+
+    public func editorType() -> String {
+        return editorToUse().rawValue
+    }
+
+    fileprivate func showEditor() {
+        let editor: UIViewController
+        switch editorToUse() {
+        case .nativeVisual:
+            editor = editPostInNativeVisualEditor()
+        case .hybridVisual:
+            editor = editPostInHybridVisualEditor()
+        case .text:
             editor = editPostInTextEditor()
         }
 
