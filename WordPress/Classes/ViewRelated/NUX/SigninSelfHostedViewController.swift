@@ -294,8 +294,8 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
             self?.configureViewLoading(false)
 
             let context = ContextManager.sharedInstance().mainContext
-            if let service = BlogService(managedObjectContext: context),
-                let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) {
+            let service = BlogService(managedObjectContext: context)
+            if let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) {
                 service.flagBlog(asLastUsed: blog)
             }
 

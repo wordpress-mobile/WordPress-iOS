@@ -351,8 +351,8 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
         guard let blogID = coder.decodeObject(forKey: RestorationKeys.blog) as? String,
             let objectURL = URL(string: blogID),
-            let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
-            let restoredBlog = try? context?.existingObject(with: objectID),
+            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
+            let restoredBlog = try? context.existingObject(with: objectID),
             let blog = restoredBlog  as? Blog else {
             return nil
         }
