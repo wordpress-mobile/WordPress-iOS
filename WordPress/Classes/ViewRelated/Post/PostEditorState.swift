@@ -16,6 +16,36 @@ public enum PostEditorAction {
     case publish
     case update
     case submitForReview
+
+    func publishActionLabel() -> String {
+        switch self {
+        case .publish:
+            return NSLocalizedString("Publish", comment: "Publish button label.")
+        case .save:
+            return NSLocalizedString("Save", comment: "Save button label (saving content, ex: Post, Page, Comment).")
+        case .schedule:
+            return NSLocalizedString("Schedule", comment: "Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.")
+        case .submitForReview:
+            return NSLocalizedString("Submit for Review", comment: "Submit for review button label (saving content, ex: Post, Page, Comment).")
+        case .update:
+            return NSLocalizedString("Update", comment: "Update button label (saving content, ex: Post, Page, Comment).")
+        }
+    }
+
+    func publishingActionLabel() -> String {
+        switch self {
+        case .publish:
+            return NSLocalizedString("Publishing...", comment: "Text displayed in HUD while a post is being published.")
+        case .save:
+            return NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
+        case .schedule:
+            return NSLocalizedString("Scheduling...", comment: "Text displayed in HUD while a post is being scheduled to be published.")
+        case .submitForReview:
+            return NSLocalizedString("Submitting for Review...", comment: "Text displayed in HUD while a post is being submitted for review.")
+        case .update:
+            return NSLocalizedString("Updating...", comment: "Text displayed in HUD while a draft or scheduled post is being updated.")
+        }
+    }
 }
 
 fileprivate protocol PostEditorActionState {
@@ -26,8 +56,6 @@ fileprivate protocol PostEditorActionState {
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState
 
     // Things that change with each state
-    func getPublishButtonText(context: PostEditorStateContext) -> String
-    func getPublishVerbText(context: PostEditorStateContext) -> String
     func isPostPostShown(context: PostEditorStateContext) -> Bool
     func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool
 }
@@ -95,11 +123,11 @@ public class PostEditorStateContext {
     }
 
     var publishButtonText: String {
-        return editorState.getPublishButtonText(context: self)
+        return editorState.action().publishActionLabel()
     }
 
     var publishVerbText: String {
-        return editorState.getPublishVerbText(context: self)
+        return editorState.action().publishingActionLabel()
     }
 
     var isPostPostShown: Bool {
@@ -136,14 +164,6 @@ fileprivate class PostEditorStatePublish: PostEditorActionState {
         return self
     }
 
-    func getPublishButtonText(context: PostEditorStateContext) -> String {
-        return NSLocalizedString("Publish", comment: "Publish button label.")
-    }
-
-    func getPublishVerbText(context: PostEditorStateContext) -> String {
-        return NSLocalizedString("Publishing...", comment: "Text displayed in HUD while a post is being published.")
-    }
-
     func isPostPostShown(context: PostEditorStateContext) -> Bool {
         return true
     }
@@ -164,14 +184,6 @@ fileprivate class PostEditorStateSave: PostEditorActionState {
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
         return self
-    }
-
-    func getPublishButtonText(context: PostEditorStateContext) -> String {
-        return NSLocalizedString("Save", comment: "Save button label (saving content, ex: Post, Page, Comment).")
-    }
-
-    func getPublishVerbText(context: PostEditorStateContext) -> String {
-        return NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
     }
 
     func isPostPostShown(context: PostEditorStateContext) -> Bool {
@@ -196,14 +208,6 @@ fileprivate class PostEditorStateSchedule: PostEditorActionState {
         return self
     }
 
-    func getPublishButtonText(context: PostEditorStateContext) -> String {
-        return NSLocalizedString("Schedule", comment: "Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.")
-    }
-
-    func getPublishVerbText(context: PostEditorStateContext) -> String {
-        return NSLocalizedString("Scheduling...", comment: "Text displayed in HUD while a post is being scheduled to be published.")
-    }
-
     func isPostPostShown(context: PostEditorStateContext) -> Bool {
         return true
     }
@@ -226,14 +230,6 @@ fileprivate class PostEditorStateSubmitForReview: PostEditorActionState {
         return self
     }
 
-    func getPublishButtonText(context: PostEditorStateContext) -> String {
-        return NSLocalizedString("Submit for Review", comment: "Submit for review button label (saving content, ex: Post, Page, Comment).")
-    }
-
-    func getPublishVerbText(context: PostEditorStateContext) -> String {
-        return NSLocalizedString("Submitting for Review...", comment: "Text displayed in HUD while a post is being submitted for review.")
-    }
-
     func isPostPostShown(context: PostEditorStateContext) -> Bool {
         return true
     }
@@ -254,14 +250,6 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
         return self
-    }
-
-    func getPublishButtonText(context: PostEditorStateContext) -> String {
-        return NSLocalizedString("Update", comment: "Update button label (saving content, ex: Post, Page, Comment).")
-    }
-
-    func getPublishVerbText(context: PostEditorStateContext) -> String {
-        return NSLocalizedString("Updating...", comment: "Text displayed in HUD while a draft or scheduled post is being updated.")
     }
 
     func isPostPostShown(context: PostEditorStateContext) -> Bool {
