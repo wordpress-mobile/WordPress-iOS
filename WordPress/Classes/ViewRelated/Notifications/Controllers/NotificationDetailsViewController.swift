@@ -99,7 +99,7 @@ class NotificationDetailsViewController: UIViewController {
         setupKeyboardManager()
         setupNotificationListeners()
 
-        AppRatingUtility.incrementSignificantEvent(forSection: "notifications")
+        AppRatingUtility.shared.incrementSignificantEvent(section: "notifications")
     }
 
     override func viewWillAppear(_ animated: Bool) {
