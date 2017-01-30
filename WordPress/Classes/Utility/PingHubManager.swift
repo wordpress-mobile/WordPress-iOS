@@ -5,7 +5,7 @@ import Reachability
 private func defaultAccountToken() -> String? {
     let context = ContextManager.sharedInstance().mainContext
     let service = AccountService(managedObjectContext: context)
-    guard let account = service?.defaultWordPressComAccount() else {
+    guard let account = service.defaultWordPressComAccount() else {
         return nil
     }
     guard let token = account.authToken, !token.isEmpty else {

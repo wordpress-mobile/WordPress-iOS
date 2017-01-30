@@ -45,8 +45,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         guard let blogID = coder.decodeObject(forKey: pagesViewControllerRestorationKey) as? String,
             let objectURL = URL(string: blogID),
-            let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
-            let restoredBlog = try? context?.existingObject(with: objectID) as! Blog else {
+            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
+            let restoredBlog = try? context.existingObject(with: objectID) as! Blog else {
 
                 return nil
         }
@@ -326,8 +326,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             if editorSettings.nativeEditorEnabled {
                 let context = ContextManager.sharedInstance().mainContext
                 let postService = PostService(managedObjectContext: context)
-                let page = postService?.createDraftPage(for: blog)
-                postViewController = AztecPostViewController(post: page!)
+                let page = postService.createDraftPage(for: blog)
+                postViewController = AztecPostViewController(post: page)
                 navController = UINavigationController(rootViewController: postViewController)
             } else {
                 postViewController = EditPageViewController(draftFor: blog)
@@ -386,13 +386,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         apost.status = PostStatusDraft
 
         let contextManager = ContextManager.sharedInstance()
-        let postService = PostService(managedObjectContext: contextManager?.mainContext)
+        let postService = PostService(managedObjectContext: contextManager.mainContext)
 
-        postService?.uploadPost(apost, success: nil) { [weak self] (error) in
+        postService.uploadPost(apost, success: nil) { [weak self] (error) in
             apost.status = previousStatus
 
             if let strongSelf = self {
-                contextManager?.save(strongSelf.managedObjectContext())
+                contextManager.save(strongSelf.managedObjectContext())
             }
 
             WPError.showXMLRPCErrorAlert(error)
