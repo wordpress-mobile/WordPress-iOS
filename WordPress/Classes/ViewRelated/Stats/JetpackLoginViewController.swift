@@ -9,6 +9,12 @@ class JetpackLoginViewController: UIViewController {
 
     // MARK: - Properties
 
+    typealias CompletionBlock = (Bool) -> Void
+    /// This completion handler closure is executed when the authentication process handled
+    /// by this VC is completed.
+    ///
+    open var completionBlock: CompletionBlock?
+
     @IBOutlet fileprivate weak var jetpackImage: UIImageView!
     @IBOutlet fileprivate weak var descriptionLabel: UILabel!
     @IBOutlet fileprivate weak var usernameTextField: WPWalkthroughTextField!
@@ -20,6 +26,13 @@ class JetpackLoginViewController: UIViewController {
     fileprivate var blog: Blog!
     fileprivate var activeField: UITextField?
     fileprivate var shouldDisplayMultifactor: Bool = false
+    fileprivate var loginFields = LoginFields()
+
+    fileprivate lazy var loginFacade: LoginFacade = {
+        let facade = LoginFacade()
+        facade.delegate = self
+        return facade
+    }()
 
     /// Returns true if this VC is currently authenticating with the server.
     /// After setting, the UI controls will be updated accordingly
@@ -92,14 +105,13 @@ class JetpackLoginViewController: UIViewController {
     // MARK: - Configuration
 
     func setupControls() {
-        //TODO: Complete the NSLocalized string comments
         self.passwordTextField.font = WPNUXUtility.descriptionTextFont()
         self.descriptionLabel.textColor = WPStyleGuide.allTAllShadeGrey()
         self.descriptionLabel.backgroundColor = UIColor.clear
 
         self.usernameTextField.delegate = self
         self.usernameTextField.backgroundColor = UIColor.white
-        self.usernameTextField.placeholder = NSLocalizedString("WordPress.com username", comment: "")
+        self.usernameTextField.placeholder = NSLocalizedString("WordPress.com username", comment: "Username placeholder")
         self.usernameTextField.font = WPNUXUtility.textFieldFont()
         self.usernameTextField.adjustsFontSizeToFitWidth = true
         self.usernameTextField.autocorrectionType = .no
@@ -109,7 +121,7 @@ class JetpackLoginViewController: UIViewController {
 
         self.passwordTextField.delegate = self
         self.passwordTextField.backgroundColor = UIColor.white
-        self.passwordTextField.placeholder = NSLocalizedString("WordPress.com password", comment: "")
+        self.passwordTextField.placeholder = NSLocalizedString("WordPress.com password", comment: "Password placeholder")
         self.passwordTextField.font = WPNUXUtility.textFieldFont()
         self.passwordTextField.isSecureTextEntry = true
         self.passwordTextField.showSecureTextEntryToggle = true
@@ -118,7 +130,7 @@ class JetpackLoginViewController: UIViewController {
 
         self.verificationCodeTextField.delegate = self
         self.verificationCodeTextField.backgroundColor = UIColor.white
-        self.verificationCodeTextField.placeholder = NSLocalizedString("Verification Code", comment: "")
+        self.verificationCodeTextField.placeholder = NSLocalizedString("Verification Code", comment: "Two factor code placeholder")
         self.verificationCodeTextField.font = WPNUXUtility.textFieldFont()
         self.verificationCodeTextField.textAlignment = .center
         self.verificationCodeTextField.adjustsFontSizeToFitWidth = true
@@ -208,7 +220,6 @@ class JetpackLoginViewController: UIViewController {
         var message: String
 
         if jetPack.isInstalled() {
-            //TODO: Complete the NSLocalized string comments
             if jetPack.isUpdatedToRequiredVersion() {
                 message = NSLocalizedString("Looks like you have Jetpack set up on your site.\nCongrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", comment: "")
             } else {
@@ -247,10 +258,10 @@ class JetpackLoginViewController: UIViewController {
     }
 
     fileprivate func updateSignInButton() {
-        //TODO: Complete the NSLocalized string comments
-        var title = NSLocalizedString("Sign In", comment: "")
+        var title = NSLocalizedString("Sign In", comment: "Title of a button for signing in. The text should be uppercase.").localizedUppercase
+
         if self.shouldDisplayMultifactor {
-            title = NSLocalizedString("Verify", comment:"")
+            title = NSLocalizedString("Verify", comment: "Title of a button for 2FA verification. The text should be uppercase.").localizedUppercase
         }
         self.signinButton.setTitle(title, for: .normal)
 
@@ -265,6 +276,11 @@ class JetpackLoginViewController: UIViewController {
         self.signinButton.isEnabled = true
     }
 
+    fileprivate func handleMultifactorCodeRequest() {
+        shouldDisplayMultifactor = true // TODO: Animate the multifactor field
+        updateControls()
+    }
+
     func hideKeyboard() {
         self.view.endEditing(true)
     }
@@ -276,16 +292,9 @@ class JetpackLoginViewController: UIViewController {
         return ContextManager.sharedInstance().mainContext
     }
 
-    fileprivate func handleSignInError(error: Error) {
+    fileprivate func handleSignInError(_ error: Error) {
         let error = error as NSError
-
-        if error.code == WordPressComOAuthError.needsMultifactorCode.rawValue {
-            shouldDisplayMultifactor = true // TODO: Animate the multifactor field
-            updateControls()
-            return
-        }
         WPError.showNetworkingAlertWithError(error)
-        shouldDisplayMultifactor = false  // TODO: Animate the multifactor field
         updateControls()
     }
 
@@ -310,37 +319,21 @@ class JetpackLoginViewController: UIViewController {
     }
 
     fileprivate func signIn() {
-        let jetpackService = JetpackService(managedObjectContext: managedObjectContext())
-        guard let jpService = jetpackService else {
-            return
-        }
-
         self.isAuthenticating = true
         hideKeyboard()
-        jpService.validateAndLogin(withUsername: self.usernameTextField.text, password: self.passwordTextField.text,
-                                   multifactorCode: "", siteID: self.blog.jetpack?.siteID,
-                                   success: {[weak self] (account) in
-                                    guard let strongSelf = self else {
-                                        return
-                                    }
-                                    // Ensure options are up to date after connecting Jetpack as there may
-                                    // now be new info.
-                                    let blogService = BlogService(managedObjectContext: strongSelf.managedObjectContext())
-                                    guard let bService = blogService else {
-                                        strongSelf.isAuthenticating = false
-                                        return
-                                    }
-                                    bService.syncBlogAndAllMetadata(strongSelf.blog, completionHandler: {
-                                        strongSelf.isAuthenticating = false
-                                        // TODO: Completion
-                                    })
-            }, failure: {[weak self] (error: Error?) -> () in
-                guard let strongSelf = self, let error = error else {
-                    return
-                }
-                strongSelf.isAuthenticating = false
-                strongSelf.handleSignInError(error: error)
-        })
+        loginFields.userIsDotCom = true
+        loginFields.username = self.usernameTextField.nonNilTrimmedText()
+        loginFields.password = self.passwordTextField.nonNilTrimmedText()
+        loginFields.multifactorCode = self.verificationCodeTextField.nonNilTrimmedText()
+        self.loginFacade.signIn(with: self.loginFields)
+    }
+
+    fileprivate func completeLogin() {
+        self.isAuthenticating = false
+        guard let completionBlock = self.completionBlock else {
+            return
+        }
+        completionBlock(true)
     }
 
 
@@ -376,5 +369,47 @@ extension JetpackLoginViewController : UITextFieldDelegate {
             signIn()
         }
         return true
+    }
+}
+
+
+// MARK: - LoginFacadeDelegate methods
+
+extension JetpackLoginViewController : LoginFacadeDelegate {
+    func displayRemoteError(_ error: Error!) {
+        self.isAuthenticating = false
+        handleSignInError(error)
+    }
+
+    func needsMultifactorCode() {
+        WPAppAnalytics.track(.twoFactorCodeRequested)
+        self.isAuthenticating = false
+        handleMultifactorCodeRequest()
+    }
+
+    func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+        let accountFacade = AccountServiceFacade()
+        let account = accountFacade.createOrUpdateWordPressComAccount(withUsername: username, authToken: authToken)
+        accountFacade.setDefaultWordPressComAccount(account)
+        BlogSyncFacade().syncBlogs(for: account, success: { [weak self] in
+            accountFacade.updateUserDetails(for: account, success: { [weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.completeLogin()
+
+            }, failure: { [weak self] (error: Error?) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.completeLogin()
+            })
+
+            }, failure: { [weak self] (error: Error?) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.completeLogin()
+        })
     }
 }

@@ -134,23 +134,18 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         return;
     }
     self.showingJetpackLogin = YES;
-    //JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     JetpackLoginViewController *controller = [[JetpackLoginViewController alloc] initWithBlog:self.blog];
-//    controller.showFullScreen = NO;
-//    __weak JetpackSettingsViewController *safeController = controller;
-//    [controller setCompletionBlock:^(BOOL didAuthenticate) {
-//        if (didAuthenticate) {
-//            
-//            [WPAppAnalytics track:WPAnalyticsStatSignedInToJetpack withBlog:self.blog];
-//            [WPAppAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen withBlog:self.blog];
-//
-//            [safeController.view removeFromSuperview];
-//            [safeController removeFromParentViewController];
-//            self.showingJetpackLogin = NO;
-//            
-//            [self initStats];
-//        }
-//    }];
+    __weak JetpackLoginViewController *safeController = controller;
+    [controller setCompletionBlock:^(BOOL didAuthenticate) {
+        if (didAuthenticate) {
+            [WPAppAnalytics track:WPAnalyticsStatSignedInToJetpack withBlog:self.blog];
+            [WPAppAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen withBlog:self.blog];
+            [safeController.view removeFromSuperview];
+            [safeController removeFromParentViewController];
+            self.showingJetpackLogin = NO;
+            [self initStats];
+        }
+    }];
 
     [self addChildViewController:controller];
     [self.view addSubview:controller.view];
