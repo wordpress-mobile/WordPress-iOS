@@ -7,7 +7,7 @@ import WordPressShared
 /// Supports specific styles for Unapproved Comment Notifications, Unread Notifications, and a brand
 /// new "Undo Deletion" mechanism has been implemented. See "NoteUndoOverlayView" for reference.
 ///
-class NoteTableViewCell: WPTableViewCell {
+class NoteTableViewCell: UITableViewCell {
     // MARK: - Public Properties
     var read: Bool = false {
         didSet {
@@ -163,11 +163,24 @@ class NoteTableViewCell: WPTableViewCell {
         separatorsView.bottomColor = WPStyleGuide.Notifications.noteSeparatorColor
         separatorsView.bottomInsets = Settings.separatorInsets
         backgroundView = separatorsView
+
+        // Needed as long as we have custom margins
+        clipsToBounds = true
+    }
+
+    override var frame: CGRect {
+        get {
+            return super.frame
+        }
+        set {
+            super.frame = CustomCellMarginBehavior().correctedFrame(newValue, for: self)
+        }
     }
 
     override func layoutSubviews() {
         refreshBackgrounds()
         super.layoutSubviews()
+        CustomCellMarginBehavior().cellDidLayoutSubviews(self)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
