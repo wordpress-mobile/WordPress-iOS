@@ -300,11 +300,14 @@ class AztecPostViewController: UIViewController {
     }
 
     func reloadBlogPickerTitle() {
-        let blogName = post.blog.settings?.name ?? post.blog.url ?? String()
-        let titleText = NSAttributedString(string: blogName, attributes: Constants.blogPickerAttributes)
+        var pickerTitle = post.blog.url ?? String()
+        if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
+            pickerTitle = blogName
+        }
 
-        blogPickerButton.buttonMode = isSingleSiteMode ? .singleSite : .multipleSite
+        let titleText = NSAttributedString(string: pickerTitle, attributes: Constants.blogPickerAttributes)
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
+        blogPickerButton.buttonMode = isSingleSiteMode ? .singleSite : .multipleSite
     }
 
     func resizeBlogPickerTitle() {
