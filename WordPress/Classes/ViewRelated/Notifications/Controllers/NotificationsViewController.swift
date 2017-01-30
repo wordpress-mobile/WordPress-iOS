@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import MGSwipeTableCell
 import WordPressComAnalytics
 import WordPress_AppbotX
 import WordPressShared
@@ -222,93 +223,6 @@ class NotificationsViewController: UITableViewController {
         detailsViewController.onDeletionRequestCallback = { request in
             self.showUndeleteForNoteWithID(note.objectID, request: request)
         }
-    }
-}
-
-
-// MARK: - Row Actions
-//
-extension NotificationsViewController {
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        return .delete
-    }
-
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
-            let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
-            // Not every single row will have actions: Slight hack so that the UX isn't terrible:
-            //  -   First: Return an Empty UITableViewRowAction
-            //  -   Second: Hide it after a few seconds.
-            //
-            tableView.disableEditionAfterDelay()
-
-            return noopRowActions()
-        }
-
-        // Helpers
-        var actions = [UITableViewRowAction]()
-
-        // Comments: Trash
-        if block.isActionEnabled(.Trash) {
-            let title = NSLocalizedString("Trash", comment: "Trashes a comment")
-
-            let trash = UITableViewRowAction(style: .destructive, title: title, handler: { [weak self] (action, indexPath) in
-                let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
-                    self?.actionsService.deleteCommentWithBlock(block) { success in
-                        onCompletion(success)
-                    }
-                })
-
-                self?.showUndeleteForNoteWithID(note.objectID, request: request)
-
-                self?.tableView.setEditing(false, animated: true)
-            })
-
-            trash.backgroundColor = WPStyleGuide.errorRed()
-            actions.append(trash)
-        }
-
-        // Comments: Moderation Disabled
-        guard block.isActionEnabled(.Approve) else {
-            return actions
-        }
-
-        // Comments: Unapprove
-        if block.isActionOn(.Approve) {
-            let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
-
-            let trash = UITableViewRowAction(style: .normal, title: title, handler: { [weak self] _ in
-                self?.actionsService.unapproveCommentWithBlock(block)
-                self?.tableView.setEditing(false, animated: true)
-            })
-
-            trash.backgroundColor = WPStyleGuide.grey()
-            actions.append(trash)
-
-        // Comments: Approve
-        } else {
-            let title = NSLocalizedString("Approve", comment: "Approves a Comment")
-
-            let trash = UITableViewRowAction(style: .normal, title: title, handler: { [weak self] _ in
-                self?.actionsService.approveCommentWithBlock(block)
-                self?.tableView.setEditing(false, animated: true)
-            })
-
-            trash.backgroundColor = WPStyleGuide.wordPressBlue()
-            actions.append(trash)
-        }
-
-        return actions
-    }
-
-    fileprivate func noopRowActions() -> [UITableViewRowAction] {
-        let noop = UITableViewRowAction(style: .normal, title: title, handler: { _ in })
-        noop.backgroundColor = UIColor.clear
-        return [noop]
     }
 }
 
@@ -698,7 +612,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
-        cell.forceCustomCellMargins = true
         cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
         cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
         cell.read                   = note.read
@@ -711,6 +624,74 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         }
 
         cell.downloadIconWithURL(note.iconURL)
+
+        configureCellActions(cell, note: note)
+    }
+
+    func configureCellActions(_ cell: NoteTableViewCell, note: Notification) {
+        if !note.read {
+            cell.leftButtons = [
+                MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"), backgroundColor: WPStyleGuide.wordPressBlue(), callback: { _ in
+                    NotificationSyncMediator()?.markAsRead(note)
+                    return true
+                })
+            ]
+            cell.leftExpansion.buttonIndex = 0
+        }
+
+        cell.rightButtons = cellRightButtons(note: note)
+    }
+
+    private func cellRightButtons(note: Notification) -> [MGSwipeButton] {
+        var rightButtons = [MGSwipeButton]()
+
+        guard let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
+            return []
+        }
+
+        // Comments: Trash
+        if block.isActionEnabled(.Trash) {
+            let trashButton = MGSwipeButton(title: NSLocalizedString("Trash", comment: "Trashes a comment"), backgroundColor: WPStyleGuide.errorRed(), callback: { [weak self] _ in
+                let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
+                    self?.actionsService.deleteCommentWithBlock(block) { success in
+                        onCompletion(success)
+                    }
+                })
+
+                self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                return true
+            })
+            rightButtons.append(trashButton)
+        }
+
+        guard block.isActionEnabled(.Approve) else {
+            return rightButtons
+        }
+
+        // Comments: Unapprove
+        if block.isActionOn(.Approve) {
+            let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
+
+            let unapproveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.grey(), callback: { [weak self] _ in
+                self?.actionsService.unapproveCommentWithBlock(block)
+                return true
+            })
+
+            rightButtons.append(unapproveButton)
+
+            // Comments: Approve
+        } else {
+            let title = NSLocalizedString("Approve", comment: "Approves a Comment")
+
+            let approveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue(), callback: { [weak self] _ in
+                self?.actionsService.approveCommentWithBlock(block)
+                return true
+            })
+
+            rightButtons.append(approveButton)
+        }
+
+        return rightButtons
     }
 
     func sectionNameKeyPath() -> String {
