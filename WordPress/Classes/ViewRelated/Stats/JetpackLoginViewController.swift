@@ -56,7 +56,6 @@ class JetpackLoginViewController: UIViewController {
         return (jetpack.isInstalled() && jetpack.isUpdatedToRequiredVersion())
     }
 
-
     // MARK: - Initializers
 
     /// Preferred initializer for JetpackLoginViewController
@@ -67,7 +66,6 @@ class JetpackLoginViewController: UIViewController {
         self.init()
         self.blog = blog
     }
-
 
     // MARK: - LifeCycle Methods
 
@@ -90,7 +88,6 @@ class JetpackLoginViewController: UIViewController {
         prefillJetPackUsernameIfAvailible()
     }
 
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         deregisterFromKeyboardNotifications()
@@ -101,7 +98,6 @@ class JetpackLoginViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
 
-
     // MARK: - Configuration
 
     func setupControls() {
@@ -111,7 +107,8 @@ class JetpackLoginViewController: UIViewController {
 
         self.usernameTextField.delegate = self
         self.usernameTextField.backgroundColor = UIColor.white
-        self.usernameTextField.placeholder = NSLocalizedString("WordPress.com username", comment: "Username placeholder")
+        self.usernameTextField.placeholder = NSLocalizedString("WordPress.com username",
+                                                               comment: "Username placeholder")
         self.usernameTextField.font = WPNUXUtility.textFieldFont()
         self.usernameTextField.adjustsFontSizeToFitWidth = true
         self.usernameTextField.autocorrectionType = .no
@@ -121,7 +118,8 @@ class JetpackLoginViewController: UIViewController {
 
         self.passwordTextField.delegate = self
         self.passwordTextField.backgroundColor = UIColor.white
-        self.passwordTextField.placeholder = NSLocalizedString("WordPress.com password", comment: "Password placeholder")
+        self.passwordTextField.placeholder = NSLocalizedString("WordPress.com password",
+                                                               comment: "Password placeholder")
         self.passwordTextField.font = WPNUXUtility.textFieldFont()
         self.passwordTextField.isSecureTextEntry = true
         self.passwordTextField.showSecureTextEntryToggle = true
@@ -130,7 +128,8 @@ class JetpackLoginViewController: UIViewController {
 
         self.verificationCodeTextField.delegate = self
         self.verificationCodeTextField.backgroundColor = UIColor.white
-        self.verificationCodeTextField.placeholder = NSLocalizedString("Verification Code", comment: "Two factor code placeholder")
+        self.verificationCodeTextField.placeholder = NSLocalizedString("Verification Code",
+                                                                       comment: "Two factor code placeholder")
         self.verificationCodeTextField.font = WPNUXUtility.textFieldFont()
         self.verificationCodeTextField.textAlignment = .center
         self.verificationCodeTextField.adjustsFontSizeToFitWidth = true
@@ -150,12 +149,13 @@ class JetpackLoginViewController: UIViewController {
         self.scrollView.addGestureRecognizer(tap)
     }
 
-
     // MARK: - Textfield
 
     func registerForTextFieldNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(textFieldChanged(_ :)), name: .UITextFieldTextDidChange, object: self.usernameTextField)
-        NotificationCenter.default.addObserver(self, selector: #selector(textFieldChanged(_ :)), name: .UITextFieldTextDidChange, object: self.passwordTextField)
+        NotificationCenter.default.addObserver(self, selector: #selector(textFieldChanged(_ :)),
+                                               name: .UITextFieldTextDidChange, object: self.usernameTextField)
+        NotificationCenter.default.addObserver(self, selector: #selector(textFieldChanged(_ :)),
+                                               name: .UITextFieldTextDidChange, object: self.passwordTextField)
     }
 
     func deregisterFromTextFieldNotifications() {
@@ -167,12 +167,13 @@ class JetpackLoginViewController: UIViewController {
         updateSignInButton()
     }
 
-
     // MARK: - Keyboard
 
     func registerForKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_ :)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(_ :)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_ :)),
+                                               name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(_ :)),
+                                               name: .UIKeyboardWillHide, object: nil)
     }
 
     func deregisterFromKeyboardNotifications() {
@@ -184,7 +185,7 @@ class JetpackLoginViewController: UIViewController {
         self.scrollView.isScrollEnabled = true
         var info = notification.userInfo!
         let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
-        let contentInsets: UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize!.height, 0.0)
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize!.height, right: 0)
         self.scrollView.contentInset = contentInsets
         self.scrollView.scrollIndicatorInsets = contentInsets
 
@@ -204,7 +205,6 @@ class JetpackLoginViewController: UIViewController {
         self.scrollView.isScrollEnabled = false
     }
 
-
     // MARK: - UI Helpers
 
     fileprivate func reloadInterface() {
@@ -221,9 +221,12 @@ class JetpackLoginViewController: UIViewController {
 
         if jetPack.isInstalled() {
             if jetPack.isUpdatedToRequiredVersion() {
-                message = NSLocalizedString("Looks like you have Jetpack set up on your site.\nCongrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", comment: "")
+                message = NSLocalizedString("Looks like you have Jetpack set up on your site.\nCongrats!\n" +
+                                            "Sign in with your WordPress.com credentials below to enable " +
+                                            "Stats and Notifications.", comment: "")
             } else {
-                message = NSLocalizedString("Jetpack \(JetpackVersionMinimumRequired) or later is required for stats. Do you want to update Jetpack?", comment: "")
+                message = NSLocalizedString("Jetpack \(JetpackVersionMinimumRequired) or later is required " +
+                                            "for stats. Do you want to update Jetpack?", comment: "")
             }
         } else {
             message = NSLocalizedString("Jetpack is required for stats. Do you want to install Jetpack?", comment: "")
@@ -256,10 +259,12 @@ class JetpackLoginViewController: UIViewController {
     }
 
     fileprivate func updateSignInButton() {
-        var title = NSLocalizedString("Sign In", comment: "Title of a button for signing in. The text should be uppercase.").localizedUppercase
+        var title = NSLocalizedString("Sign In", comment: "Title of a button for signing in. " +
+                                                          "The text should be uppercase.").localizedUppercase
 
         if self.shouldDisplayMultifactor {
-            title = NSLocalizedString("Verify", comment: "Title of a button for 2FA verification. The text should be uppercase.").localizedUppercase
+            title = NSLocalizedString("Verify", comment: "Title of a button for 2FA verification. The text " +
+                                                         "should be uppercase.").localizedUppercase
         }
         self.signinButton.setTitle(title, for: .normal)
 
@@ -279,7 +284,7 @@ class JetpackLoginViewController: UIViewController {
         UIView.animate(withDuration: WPAnimationDurationDefault, animations: { () -> Void in
             self.updateControls()
         },
-        completion: { (success: Bool) -> Void in
+        completion: { (_) -> Void in
             //noop
         })
     }
@@ -287,7 +292,6 @@ class JetpackLoginViewController: UIViewController {
     func hideKeyboard() {
         self.view.endEditing(true)
     }
-
 
     // MARK: - Helpers
 
@@ -307,7 +311,7 @@ class JetpackLoginViewController: UIViewController {
             return
         }
 
-        bService.syncBlog(self.blog, success: {[weak self] () -> () in
+        bService.syncBlog(self.blog, success: {[weak self] () -> Void in
                               guard let strongSelf = self, let jetpack = strongSelf.blog.jetpack else {
                                   return
                               }
@@ -339,14 +343,12 @@ class JetpackLoginViewController: UIViewController {
         completionBlock(true)
     }
 
-
     // MARK: - Actions
 
     @IBAction func didTouchSignInButton(_ sender: Any) {
         signIn()
     }
 }
-
 
 // MARK: - UITextViewDelegate methods
 
@@ -375,7 +377,6 @@ extension JetpackLoginViewController : UITextFieldDelegate {
     }
 }
 
-
 // MARK: - LoginFacadeDelegate methods
 
 extension JetpackLoginViewController : LoginFacadeDelegate {
@@ -401,17 +402,13 @@ extension JetpackLoginViewController : LoginFacadeDelegate {
                 }
                 strongSelf.completeLogin()
 
-            }, failure: { [weak self] (error: Error?) in
-                guard let strongSelf = self else {
-                    return
-                }
+            }, failure: { [weak self] (_) in
+                guard let strongSelf = self else { return }
                 strongSelf.completeLogin()
             })
 
-            }, failure: { [weak self] (error: Error?) in
-                guard let strongSelf = self else {
-                    return
-                }
+            }, failure: { [weak self] (_) in
+                guard let strongSelf = self else { return }
                 strongSelf.completeLogin()
         })
     }
