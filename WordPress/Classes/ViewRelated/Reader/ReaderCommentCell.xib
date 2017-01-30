@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -15,125 +15,119 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="147"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="byi-Wo-fAK" id="9mZ-R9-DZW">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="146.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="146"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="tuz-Kk-vW9">
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YXw-gg-IAV">
                         <rect key="frame" x="15" y="11" width="345" height="125"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xei-sV-oL6">
-                                <rect key="frame" x="0.0" y="0.0" width="32" height="125"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="PBm-HG-IYD">
+                                <rect key="frame" x="0.0" y="0.0" width="345" height="32"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XPU-fY-7js" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="4" width="32" height="32"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="32" id="28l-JO-bUu"/>
                                             <constraint firstAttribute="width" constant="32" id="zc8-qN-Uzl"/>
                                         </constraints>
                                     </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="XPU-fY-7js" secondAttribute="trailing" id="4J0-Pa-PYc"/>
-                                    <constraint firstItem="XPU-fY-7js" firstAttribute="leading" secondItem="xei-sV-oL6" secondAttribute="leading" id="FXJ-Uh-Z0M"/>
-                                    <constraint firstItem="XPU-fY-7js" firstAttribute="top" secondItem="xei-sV-oL6" secondAttribute="top" constant="4" id="eMR-sM-z8I"/>
-                                </constraints>
-                            </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YXw-gg-IAV">
-                                <rect key="frame" x="40" y="0.0" width="305" height="122"/>
-                                <subviews>
-                                    <button contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wUR-85-LXr">
-                                        <rect key="frame" x="0.0" y="0.0" width="305" height="22"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="22" id="JKT-lg-QCw"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <state key="normal" title="Author">
-                                            <color key="titleColor" red="0.0" green="0.66666666669999997" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" red="0.47058823529411764" green="0.86274509803921573" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="handleAuthorTappedWithSender:" destination="byi-Wo-fAK" eventType="touchUpInside" id="iOm-MD-5eK"/>
-                                        </connections>
-                                    </button>
-                                    <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srn-Fn-Of7">
-                                        <rect key="frame" x="0.0" y="22" width="305" height="14.5"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <color key="textColor" red="0.6588235294117647" green="0.74509803921568629" blue="0.80784313725490198" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Lorem ipsum dolor sit er elit lamet, " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MZj-2b-1Xd" customClass="WPRichContentView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="36.5" width="305" height="35.5"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                        <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                    </textView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fSc-Wq-XZ6">
-                                        <rect key="frame" x="0.0" y="72" width="305" height="50"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="OsT-Wk-2aG">
+                                        <rect key="frame" x="40" y="0.0" width="305" height="32"/>
                                         <subviews>
-                                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BlX-um-sZ8">
-                                                <rect key="frame" x="0.0" y="0.0" width="38" height="50"/>
+                                            <button contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wUR-85-LXr">
+                                                <rect key="frame" x="0.0" y="0.0" width="305" height="22"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <state key="normal" title="Reply">
-                                                    <color key="titleColor" red="0.52941176470588236" green="0.65098039215686276" blue="0.73725490196078436" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
-                                                <state key="selected">
-                                                    <color key="titleColor" red="0.52941176469999995" green="0.65098039220000004" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="22" id="JKT-lg-QCw"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <state key="normal" title="Author">
+                                                    <color key="titleColor" red="0.0" green="0.66666666669999997" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <state key="highlighted">
-                                                    <color key="titleColor" red="0.47058823529999999" green="0.86274509799999999" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="titleColor" red="0.47058823529411764" green="0.86274509803921573" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="handleReplyTappedWithSender:" destination="byi-Wo-fAK" eventType="touchUpInside" id="2LF-Lb-A5M"/>
+                                                    <action selector="handleAuthorTappedWithSender:" destination="byi-Wo-fAK" eventType="touchUpInside" id="iOm-MD-5eK"/>
                                                 </connections>
                                             </button>
-                                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yhR-P3-CEb">
-                                                <rect key="frame" x="46" y="0.0" width="30" height="50"/>
+                                            <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srn-Fn-Of7">
+                                                <rect key="frame" x="0.0" y="22" width="305" height="10"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <state key="normal" title="Like">
-                                                    <color key="titleColor" red="0.52941176470588236" green="0.65098039215686276" blue="0.73725490196078436" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
-                                                <state key="selected">
-                                                    <color key="titleColor" red="0.94117647059999998" green="0.50980392159999999" blue="0.1176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <state key="highlighted">
-                                                    <color key="titleColor" red="0.47058823529999999" green="0.86274509799999999" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="handleLikeTappedWithSender:" destination="byi-Wo-fAK" eventType="touchUpInside" id="EVY-ph-mUt"/>
-                                                </connections>
-                                            </button>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TwD-Em-50O">
-                                                <rect key="frame" x="84" y="0.0" width="221" height="50"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </view>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <color key="textColor" red="0.6588235294117647" green="0.74509803921568629" blue="0.80784313725490198" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                     </stackView>
+                                </subviews>
+                            </stackView>
+                            <textView clipsSubviews="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Lorem ipsum dolor sit er elit lamet, " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MZj-2b-1Xd" customClass="WPRichContentView" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="32" width="345" height="43"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fSc-Wq-XZ6">
+                                <rect key="frame" x="0.0" y="75" width="345" height="50"/>
+                                <subviews>
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BlX-um-sZ8">
+                                        <rect key="frame" x="0.0" y="0.0" width="249" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <state key="normal" title="Reply">
+                                            <color key="titleColor" red="0.52941176470588236" green="0.65098039215686276" blue="0.73725490196078436" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" red="0.52941176469999995" green="0.65098039220000004" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="0.47058823529999999" green="0.86274509799999999" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="handleReplyTappedWithSender:" destination="byi-Wo-fAK" eventType="touchUpInside" id="2LF-Lb-A5M"/>
+                                        </connections>
+                                    </button>
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yhR-P3-CEb">
+                                        <rect key="frame" x="257" y="0.0" width="30" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <state key="normal" title="Like">
+                                            <color key="titleColor" red="0.52941176470588236" green="0.65098039215686276" blue="0.73725490196078436" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" red="0.94117647059999998" green="0.50980392159999999" blue="0.1176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" red="0.47058823529999999" green="0.86274509799999999" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="handleLikeTappedWithSender:" destination="byi-Wo-fAK" eventType="touchUpInside" id="EVY-ph-mUt"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TwD-Em-50O">
+                                        <rect key="frame" x="295" y="0.0" width="50" height="50"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                             </stackView>
                         </subviews>
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="tuz-Kk-vW9" secondAttribute="trailing" id="EQG-XH-M0s"/>
-                    <constraint firstItem="tuz-Kk-vW9" firstAttribute="top" secondItem="9mZ-R9-DZW" secondAttribute="topMargin" id="FhN-oM-Gtq"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="tuz-Kk-vW9" secondAttribute="bottom" id="raL-7h-l8Y"/>
-                    <constraint firstItem="tuz-Kk-vW9" firstAttribute="leading" secondItem="9mZ-R9-DZW" secondAttribute="leadingMargin" id="zOD-a0-VKC"/>
+                    <constraint firstItem="YXw-gg-IAV" firstAttribute="leading" secondItem="9mZ-R9-DZW" secondAttribute="leadingMargin" id="U70-GE-VG6"/>
+                    <constraint firstItem="YXw-gg-IAV" firstAttribute="top" secondItem="9mZ-R9-DZW" secondAttribute="topMargin" id="iOE-kz-UW6"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="YXw-gg-IAV" secondAttribute="trailing" id="k1M-2n-WKm"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="YXw-gg-IAV" secondAttribute="bottom" id="ppQ-CU-Xdj"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="actionBar" destination="fSc-Wq-XZ6" id="xX2-yQ-PFG"/>
                 <outlet property="authorButton" destination="wUR-85-LXr" id="V7Q-yP-YEZ"/>
                 <outlet property="avatarImageView" destination="XPU-fY-7js" id="4eM-MZ-zDm"/>
-                <outlet property="leadingContentConstraint" destination="zOD-a0-VKC" id="Kfo-9V-U5d"/>
+                <outlet property="leadingContentConstraint" destination="U70-GE-VG6" id="5mD-Tg-9LS"/>
                 <outlet property="likeButton" destination="yhR-P3-CEb" id="9Z2-HS-Lqa"/>
                 <outlet property="replyButton" destination="BlX-um-sZ8" id="XaA-1v-rgG"/>
                 <outlet property="textView" destination="MZj-2b-1Xd" id="ObL-MN-eQT"/>
