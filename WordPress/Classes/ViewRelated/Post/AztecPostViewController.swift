@@ -104,7 +104,7 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) var post: AbstractPost
 
     fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
-        let context = PostEditorStateContext(withPost: self.post, previousPost: self.post, delegate: self)
+        let context = PostEditorStateContext(userCanPublish: true, delegate: self)
         return context
     }()
 
@@ -315,7 +315,7 @@ extension AztecPostViewController {
 
 // MARK: - Publish Button Methods
 extension AztecPostViewController: PostEditorStateContextDelegate {
-    internal func context(_ context: PostEditorStateContext, didChangeState: PostEditorState) {
+    internal func context(_ context: PostEditorStateContext, didChangeState: PostStatusState) {
         publishButton.title = context.publishButtonText
         publishButton.isEnabled = context.isPublishButtonEnabled
     }
