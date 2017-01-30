@@ -16,6 +16,6 @@ typedef NS_ENUM(NSUInteger, WPBlogSelectorButtonMode) {
 @property (nonatomic, assign) WPBlogSelectorButtonStyle buttonStyle;
 @property (nonatomic, assign) WPBlogSelectorButtonMode buttonMode;
 
-+ (id)buttonWithFrame:(CGRect)frame buttonStyle:(WPBlogSelectorButtonStyle)buttonStyle;
++ (nonnull instancetype)buttonWithFrame:(CGRect)frame buttonStyle:(WPBlogSelectorButtonStyle)buttonStyle;
 
 @end
