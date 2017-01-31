@@ -146,7 +146,7 @@ private class AccountSettingsController: SettingsController {
                     let change = AccountSettingsChange.primarySite((dotComID?.intValue)!)
                     service.saveChange(change)
                 },
-                dismissHandler: nil)!
+                dismissHandler: nil)
 
             selectorViewController.title = NSLocalizedString("Primary Site", comment: "Primary Site Picker's Title")
             selectorViewController.displaysOnlyDefaultAccountSites = true
