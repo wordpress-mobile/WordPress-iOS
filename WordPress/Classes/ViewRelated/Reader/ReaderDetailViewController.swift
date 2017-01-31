@@ -3,7 +3,7 @@ import WordPressShared
 import WordPressComAnalytics
 
 
-open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
+open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration, DefinesVariableStatusBarStyle {
 
     static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
 
@@ -65,6 +65,16 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate var footerViewHeightConstraintConstant = CGFloat(0.0)
 
     fileprivate let sharingController = PostSharingController()
+
+    var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
+        didSet {
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+
+    override open var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentPreferredStatusBarStyle
+    }
 
     open var post: ReaderPost? {
         didSet {
@@ -787,7 +797,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
     }
 
-
     func setBarsHidden(_ hidden: Bool) {
         if (navigationController?.isNavigationBarHidden == hidden) {
             return
@@ -796,6 +805,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         if (hidden) {
             // Hides the navbar and footer view
             navigationController?.setNavigationBarHidden(true, animated: true)
+            currentPreferredStatusBarStyle = .default
             footerViewHeightConstraint.constant = 0.0
             UIView.animate(withDuration: 0.3,
                 delay: 0.0,
@@ -809,6 +819,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             let pinToBottom = isScrollViewAtBottom()
 
             navigationController?.setNavigationBarHidden(false, animated: true)
+            currentPreferredStatusBarStyle = .lightContent
             footerViewHeightConstraint.constant = footerViewHeightConstraintConstant
             UIView.animate(withDuration: 0.3,
                 delay: 0.0,
