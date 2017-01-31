@@ -133,6 +133,38 @@ class Post: AbstractPost {
         categories = newCategories
     }
 
+    // MARK: - PublicizeConnections
+
+    func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
+        if let disabled = disabledPublicizeConnections?[keyringID]?["value"],
+            disabled == "1" {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
+        if let _ = disabledPublicizeConnections?[keyringID] {
+            if let _ = disabledPublicizeConnections?[keyringID]?["id"] {
+                disabledPublicizeConnections?[keyringID]!["value"] = "0"
+            } else {
+                _ = disabledPublicizeConnections?.removeValue(forKey: keyringID)
+            }
+        }
+    }
+
+    func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
+        if let _ = disabledPublicizeConnections?[keyringID] {
+            disabledPublicizeConnections![keyringID]!["value"] = "1"
+        } else {
+            if disabledPublicizeConnections == nil {
+                disabledPublicizeConnections = [NSNumber: [String: String]]()
+            }
+            disabledPublicizeConnections?[keyringID] = ["value": "1"]
+        }
+    }
+
     // MARK: - Comments
 
     func numberOfComments() -> Int {
@@ -202,6 +234,15 @@ class Post: AbstractPost {
             if let coord1 = geolocation?.coordinate,
                 let coord2 = originalPost.geolocation?.coordinate, coord1.latitude != coord2.latitude || coord1.longitude != coord2.longitude {
 
+                return true
+            }
+
+            if publicizeMessage ?? "" != originalPost.publicizeMessage ?? "" {
+                return true
+            }
+
+            if (!NSDictionary(dictionary: disabledPublicizeConnections ?? [:])
+                             .isEqual(to: originalPost.disabledPublicizeConnections ?? [:])) {
                 return true
             }
         }
