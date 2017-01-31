@@ -711,7 +711,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
-    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
     [service syncHierarchicalCommentsForPost:self.post page:1 success:^(NSInteger count, BOOL hasMore) {
         if (success) {
             success(hasMore);
@@ -724,7 +724,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [self.activityFooter startAnimating];
 
-    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
     NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
     [service syncHierarchicalCommentsForPost:self.post page:page success:^(NSInteger count, BOOL hasMore) {
         if (success) {
