@@ -310,6 +310,7 @@ class PostTests: XCTestCase {
 
     func testThatHasLocalChangesWorks() {
         let original = newTestPost()
+        original.disablePublicizeConnectionWithKeyringID(8888)
         let revision = original.createRevision() as! Post
 
         XCTAssertFalse(original.hasLocalChanges())
@@ -319,5 +320,36 @@ class PostTests: XCTestCase {
 
         revision.tags = original.tags
         XCTAssertFalse(revision.hasLocalChanges())
+
+        revision.publicizeMessage = ""
+        XCTAssertFalse(revision.hasLocalChanges())
+
+        revision.publicizeMessage = "Make it notorious"
+        XCTAssertTrue(revision.hasLocalChanges())
+
+        revision.publicizeMessage = original.publicizeMessage
+        XCTAssertFalse(revision.hasLocalChanges())
+
+        revision.disablePublicizeConnectionWithKeyringID(1234)
+        XCTAssertTrue(revision.hasLocalChanges())
+
+        revision.enablePublicizeConnectionWithKeyringID(1234)
+        XCTAssertFalse(revision.hasLocalChanges())
+
+        revision.enablePublicizeConnectionWithKeyringID(8888)
+        XCTAssertTrue(revision.hasLocalChanges())
+
+        revision.disablePublicizeConnectionWithKeyringID(8888)
+        XCTAssertFalse(revision.hasLocalChanges())
+    }
+
+    func testThatEnablingDisablingPublicizeConnectionsWorks() {
+        let post = newTestPost()
+
+        post.disablePublicizeConnectionWithKeyringID(1234)
+        XCTAssertTrue(post.publicizeConnectionDisabledForKeyringID(1234))
+
+        post.enablePublicizeConnectionWithKeyringID(1234)
+        XCTAssertFalse(post.publicizeConnectionDisabledForKeyringID(1234))
     }
 }

@@ -40,6 +40,8 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowFeaturedImage,
     PostSettingsRowFeaturedImageAdd,
     PostSettingsRowFeaturedLoading,
+    PostSettingsRowShareConnection,
+    PostSettingsRowShareMessage,
     PostSettingsRowGeolocation
 };
 
@@ -67,6 +69,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 @property (nonatomic, assign) BOOL isUploadingMedia;
 @property (nonatomic, strong) NSProgress *featuredImageProgress;
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
+@property (nonatomic, strong) NSArray *publicizeConnections;
 
 @property (nonatomic, strong) PostGeolocationCell *postGeoLocationCell;
 @property (nonatomic, strong) WPTableViewCell *setGeoLocationCell;
@@ -74,6 +77,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 #pragma mark - Properties: Services
 
 @property (nonatomic, strong, readonly) BlogService *blogService;
+@property (nonatomic, strong, readonly) SharingService *sharingService;
 @property (nonatomic, strong, readonly) LocationService *locationService;
 
 #pragma mark - Properties: Reachability
@@ -120,7 +124,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                            NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
     
     [self setupFormatsList];
-    
+    [self setupPublicizeConnections];
+
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTagsKeyboardIfAppropriate:)];
     gestureRecognizer.cancelsTouchesInView = NO;
     gestureRecognizer.numberOfTapsRequired = 1;
@@ -223,6 +228,11 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (void)setupFormatsList
 {
     self.formatsList = self.post.blog.sortedPostFormatNames;
+}
+
+- (void)setupPublicizeConnections
+{
+    self.publicizeConnections = self.post.blog.sortedConnections;
 }
 
 - (void)setupReachability
@@ -397,6 +407,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                       @(PostSettingsSectionMeta),
                       @(PostSettingsSectionFormat),
                       @(PostSettingsSectionFeaturedImage),
+                      @(PostSettingsSectionShare),
                       @(PostSettingsSectionGeolocation)
                       ];
 }
@@ -427,6 +438,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return 1;
 
+    } else if (sec == PostSettingsSectionShare) {
+        return self.apost.blog.supportsPublicize && self.publicizeConnections.count ? (self.publicizeConnections.count + 1) : 0;
+
     } else if (sec == PostSettingsSectionGeolocation) {
         return 1;
     }
@@ -448,6 +462,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return NSLocalizedString(@"Featured Image", @"Label for the Featured Image area in post settings.");
+
+    } else if (sec == PostSettingsSectionShare) {
+        return NSLocalizedString(@"Sharing", @"Label for the Sharing section in post Settings. Should be the same as WP core.");
 
     } else if (sec == PostSettingsSectionGeolocation) {
         return NSLocalizedString(@"Location", @"Label for the geolocation feature (tagging posts by their physical location).");
@@ -506,6 +523,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         cell = [self configurePostFormatCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionFeaturedImage) {
         cell = [self configureFeaturedImageCellForIndexPath:indexPath];
+    } else if (sec == PostSettingsSectionShare) {
+        cell = [self configureShareCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionGeolocation) {
         cell = [self configureGeolocationCellForIndexPath:indexPath];
     }
@@ -533,6 +552,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         [self showFeaturedImageSelector];
     } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
         [self showFeaturedImageSelector];
+    } else if (cell.tag == PostSettingsRowShareMessage) {
+        [self showEditShareMessageController];
     } else if (cell.tag == PostSettingsRowGeolocation) {
         [self showPostGeolocationSelector];
     }
@@ -715,6 +736,50 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     return cell;
 }
 
+- (UITableViewCell *)configureShareCellForIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self getWPTableViewCell];
+
+    if (indexPath.row < self.publicizeConnections.count) {
+        PublicizeConnection *connection = self.publicizeConnections[indexPath.row];
+        UIImage *image = [WPStyleGuide iconForService: connection.service];
+        [cell.imageView setImage:image];
+        cell.imageView.tintColor = [WPStyleGuide tintColorForConnectedService: connection.service];
+        cell.textLabel.text = connection.externalDisplay;
+        if (connection.isBroken) {
+            cell.accessoryView = [WPStyleGuide sharingCellWarningAccessoryImageView];
+        } else {
+            UISwitch *switchAccessory = [[UISwitch alloc] initWithFrame:CGRectZero];
+            switchAccessory.tag = indexPath.row;
+            [switchAccessory addTarget:self action:@selector(handleShareConnectionCellSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+            switchAccessory.on = ![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID];
+            cell.accessoryView = switchAccessory;
+        }
+        cell.tag = PostSettingsRowShareConnection;
+        cell.accessibilityIdentifier = [NSString stringWithFormat:@"%@ %@", connection.service, connection.externalDisplay];
+    } else {
+        cell.textLabel.text = NSLocalizedString(@"Message", @"Label for the share message field on the post settings.");
+        cell.detailTextLabel.text = self.post.publicizeMessage ? self.post.publicizeMessage : self.post.titleForDisplay;
+        cell.tag = PostSettingsRowShareMessage;
+        cell.accessibilityIdentifier = @"Customize the message";
+    }
+    return cell;
+}
+
+- (void)handleShareConnectionCellSwitchChanged:(id)sender
+{
+    UISwitch *aSwitch = (UISwitch *)sender;
+
+    if (aSwitch.tag < self.publicizeConnections.count) {
+        PublicizeConnection *connection = self.publicizeConnections[aSwitch.tag];
+        if (aSwitch.on) {
+            [self.post enablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
+        } else {
+            [self.post disablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
+        }
+    }
+}
+
 - (PostGeolocationCell *)postGeoLocationCell {
     if (!_postGeoLocationCell) {
         _postGeoLocationCell = [[PostGeolocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
@@ -773,6 +838,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         [WPStyleGuide configureTableViewCell:cell];
     }
     cell.tag = 0;
+    cell.accessoryView = nil;
+    cell.imageView.image = nil;
     return cell;
 }
 
@@ -1010,6 +1077,22 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [alertController addCancelActionWithTitle:cancelButtonTitle handler:nil];
     
     [alertController presentFromRootViewController];
+}
+
+- (void)showEditShareMessageController
+{
+    SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:self.post.publicizeMessage
+                                                                                    placeholder:self.post.titleForDisplay
+                                                                                           hint:NSLocalizedString(@"Customize the message you want to share.", @"Hint displayed when the user is customizing the share message.")
+                                                                                     isPassword:NO];
+    vc.title = NSLocalizedString(@"Customize the message", @"Title for the edition of the share message.");
+    vc.onValueChanged = ^(NSString *value) {
+        if (value.length) {
+            self.post.publicizeMessage = value;
+        }
+        [self.tableView reloadData];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showPostGeolocationSelector
