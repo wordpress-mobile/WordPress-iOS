@@ -56,6 +56,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
+@property (nonatomic, strong) NSCache *estimatedRowHeights;
 
 @end
 
@@ -282,6 +283,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+
+    self.estimatedRowHeights = [[NSCache alloc] init];
 }
 
 - (void)configureTableViewHandler
@@ -815,6 +818,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSNumber *cachedHeight = [self.estimatedRowHeights objectForKey:indexPath];
+    if (cachedHeight.doubleValue) {
+        return cachedHeight.doubleValue;
+    }
     return EstimatedCommentRowHeight;
 }
 
@@ -842,6 +849,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self.estimatedRowHeights setObject:[NSNumber numberWithDouble:cell.frame.size.height] forKey:indexPath];
+
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self.tableViewHandler numberOfSectionsInTableView:tableView]) &&
         (indexPath.row + 4 >= [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section])) {
