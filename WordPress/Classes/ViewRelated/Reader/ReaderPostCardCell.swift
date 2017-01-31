@@ -287,7 +287,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
         blogNameLabel.text = arr.joined(separator: ", ")
 
-        let byline = (contentProvider?.dateForDisplay() as NSDate?)?.shortString() ?? ""
+        let byline = (contentProvider?.dateForDisplay() as NSDate?)?.mediumString() ?? ""
         bylineLabel.text = byline
     }
 
