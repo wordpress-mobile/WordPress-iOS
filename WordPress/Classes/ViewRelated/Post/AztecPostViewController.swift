@@ -104,9 +104,17 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) var post: AbstractPost
 
     fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
-        let postStatus = PostStatus(rawValue: self.post.status ?? "draft") ?? .draft
+        let originalPostStatus: PostStatus
 
-        let context = PostEditorStateContext(originalPostStatus: postStatus, userCanPublish: true, delegate: self)
+        if let originalPost = self.post.original,
+            let postStatus = originalPost.status,
+            originalPost.hasRemote() {
+            originalPostStatus = PostStatus(rawValue: postStatus) ?? .draft
+        } else {
+            originalPostStatus = .draft
+        }
+
+        let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: true, delegate: self)
         return context
     }()
 
@@ -115,7 +123,11 @@ class AztecPostViewController: UIViewController {
     init(post: AbstractPost) {
         self.blog = post.blog
         self.post = post
+
         super.init(nibName: nil, bundle: nil)
+
+        post.addObserver(self, forKeyPath: #keyPath(AbstractPost.status), options: [.old, .new], context: nil)
+        post.addObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated), options: [.old, .new], context: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -124,6 +136,9 @@ class AztecPostViewController: UIViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+
+        post.removeObserver(self, forKeyPath: #keyPath(AbstractPost.status))
+        post.removeObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated))
     }
 
 
@@ -632,7 +647,7 @@ extension AztecPostViewController: UIImagePickerControllerDelegate {
 // MARK: - Cancel/Dismiss/Persistence Logic
 extension AztecPostViewController {
     @objc fileprivate func publishButtonTapped(sender: UIBarButtonItem) {
-
+        print("If this were working, it would be \(postEditorStateContext.publishVerbText)")
     }
 
     // TODO: Rip this out and put it into the PostService
