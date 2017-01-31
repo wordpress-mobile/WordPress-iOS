@@ -319,6 +319,9 @@ extension AztecPostViewController {
 extension AztecPostViewController: PostEditorStateContextDelegate {
     internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
         publishButton.title = context.publishButtonText
+    }
+
+    internal func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool) {
         publishButton.isEnabled = context.isPublishButtonEnabled
     }
 }

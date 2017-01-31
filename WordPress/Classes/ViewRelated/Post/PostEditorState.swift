@@ -17,7 +17,7 @@ public enum PostEditorAction {
     case update
     case submitForReview
 
-    func publishActionLabel() -> String {
+    var publishActionLabel: String {
         switch self {
         case .publish:
             return NSLocalizedString("Publish", comment: "Publish button label.")
@@ -32,7 +32,7 @@ public enum PostEditorAction {
         }
     }
 
-    func publishingActionLabel() -> String {
+    var publishingActionLabel: String {
         switch self {
         case .publish:
             return NSLocalizedString("Publishing...", comment: "Text displayed in HUD while a post is being published.")
@@ -46,6 +46,15 @@ public enum PostEditorAction {
             return NSLocalizedString("Updating...", comment: "Text displayed in HUD while a draft or scheduled post is being updated.")
         }
     }
+
+    var isPostPostShown: Bool {
+        switch self {
+        case .publish:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 fileprivate protocol PostEditorActionState {
@@ -56,12 +65,12 @@ fileprivate protocol PostEditorActionState {
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState
 
     // Things that change with each state
-    func isPostPostShown(context: PostEditorStateContext) -> Bool
     func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool
 }
 
 public protocol PostEditorStateContextDelegate {
     func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction)
+    func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool)
 }
 
 public class PostEditorStateContext {
@@ -71,13 +80,31 @@ public class PostEditorStateContext {
         }
     }
 
+    private var publishActionAllowed = false {
+        didSet {
+            delegate?.context(self, didChangeActionAllowed: publishActionAllowed)
+        }
+    }
+
     fileprivate var originalPostStatus: PostStatus
     fileprivate var userCanPublish: Bool
     private var delegate: PostEditorStateContextDelegate?
 
-    fileprivate var hasContent = false
+    fileprivate var hasContent = false {
+        didSet {
+            if hasContent != oldValue {
+                publishActionAllowed = hasContent && !isBeingPublished
+            }
+        }
+    }
     fileprivate var isDirty = false
-    fileprivate var isBeingPublished = false
+    fileprivate var isBeingPublished = false {
+        didSet {
+            if isBeingPublished != oldValue {
+                publishActionAllowed = hasContent && !isBeingPublished
+            }
+        }
+    }
 
     init(originalPostStatus: PostStatus, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
         self.originalPostStatus = originalPostStatus
@@ -85,6 +112,8 @@ public class PostEditorStateContext {
         self.delegate = delegate
 
         switch originalPostStatus {
+        case .draft where userCanPublish == false:
+            editorState = PostEditorStateSubmitForReview()
         case .draft:
             editorState = PostEditorStatePublish()
         default:
@@ -118,20 +147,24 @@ public class PostEditorStateContext {
         self.isDirty = isDirty
     }
 
+    func updated(isBeingPublished: Bool) {
+        self.isBeingPublished = isBeingPublished
+    }
+
     var action: PostEditorAction {
         return editorState.action()
     }
 
     var publishButtonText: String {
-        return editorState.action().publishActionLabel()
+        return editorState.action().publishActionLabel
     }
 
     var publishVerbText: String {
-        return editorState.action().publishingActionLabel()
+        return editorState.action().publishingActionLabel
     }
 
     var isPostPostShown: Bool {
-        return editorState.isPostPostShown(context: self)
+        return editorState.action().isPostPostShown
     }
 
     var isSecondaryPublishButtonShown: Bool {
@@ -139,7 +172,7 @@ public class PostEditorStateContext {
     }
 
     var isPublishButtonEnabled: Bool {
-        return hasContent
+        return publishActionAllowed
     }
 
 }
@@ -161,11 +194,15 @@ fileprivate class PostEditorStatePublish: PostEditorActionState {
     }
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
-        return self
-    }
+        guard let publishDate = publishDate else {
+            return self
+        }
 
-    func isPostPostShown(context: PostEditorStateContext) -> Bool {
-        return true
+        if isFutureDated(publishDate) {
+            return PostEditorStateSchedule()
+        }
+
+        return self
     }
 
     func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool {
@@ -179,15 +216,24 @@ fileprivate class PostEditorStateSave: PostEditorActionState {
     }
 
     func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState {
-        return self
+        switch postStatus {
+        case .publish:
+            return PostEditorStateUpdate()
+        default:
+            return self
+        }
     }
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
-        return self
-    }
+        guard let publishDate = publishDate else {
+            return self
+        }
 
-    func isPostPostShown(context: PostEditorStateContext) -> Bool {
-        return true
+        if isFutureDated(publishDate) {
+            return PostEditorStateSchedule()
+        }
+
+        return self
     }
 
     func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool {
@@ -208,10 +254,6 @@ fileprivate class PostEditorStateSchedule: PostEditorActionState {
         return self
     }
 
-    func isPostPostShown(context: PostEditorStateContext) -> Bool {
-        return true
-    }
-
     func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool {
         return false
     }
@@ -230,10 +272,6 @@ fileprivate class PostEditorStateSubmitForReview: PostEditorActionState {
         return self
     }
 
-    func isPostPostShown(context: PostEditorStateContext) -> Bool {
-        return true
-    }
-
     func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool {
         return false
     }
@@ -249,14 +287,35 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
     }
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
-        return self
-    }
+        guard let publishDate = publishDate else {
+            return self
+        }
 
-    func isPostPostShown(context: PostEditorStateContext) -> Bool {
-        return true
+        if isFutureDated(publishDate) && context.originalPostStatus != .scheduled {
+            return PostEditorStateSchedule()
+        }
+
+        if isPastDated(publishDate) && context.originalPostStatus == .scheduled {
+            return PostEditorStatePublish()
+        }
+
+        return self
     }
 
     func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool {
         return false
+    }
+}
+
+fileprivate extension PostEditorActionState {
+    func isFutureDated(_ date: Date) -> Bool {
+        let oneMinute: TimeInterval = 60.0
+        let dateOneMinuteFromNow = Date(timeInterval: oneMinute, since: Date())
+
+        return dateOneMinuteFromNow < date
+    }
+
+    func isPastDated(_ date: Date) -> Bool {
+        return date < Date()
     }
 }
