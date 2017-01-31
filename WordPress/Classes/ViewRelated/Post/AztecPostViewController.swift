@@ -117,6 +117,7 @@ class AztecPostViewController: UIViewController {
     /// Publish Button
     fileprivate(set) lazy var publishButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: self.postEditorStateContext.publishButtonText, style: WPStyleGuide.barButtonStyleForDone(), target: self, action: #selector(publishButtonTapped(sender:)))
+        button.isEnabled = self.postEditorStateContext.isPublishButtonEnabled
 
         return button
     }()
@@ -181,9 +182,6 @@ class AztecPostViewController: UIViewController {
 
         // TODO: Determine if user can actually publish to site or not
         let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: true, delegate: self)
-        let characterCount = self.post.content?.characters.count ?? 0
-
-        context.updated(hasContent: characterCount > 0)
 
         return context
     }()
