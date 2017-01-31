@@ -271,7 +271,7 @@ import WordPressShared
         let controller = SigninErrorViewController.controller()
         controller.delegate = self
         controller.presentFromController(presentingController)
-        controller.displayGenericErrorMessage(message)
+        controller.displayGenericErrorMessage(message, sourceTag: sourceTag)
     }
 
 
@@ -345,7 +345,7 @@ import WordPressShared
             self.displayLoginMessage("")
             self.configureLoading(false)
             if let error = error as? NSError {
-                self.displayError(error)
+                self.displayError(error, sourceTag: self.sourceTag)
             }
         }
 
