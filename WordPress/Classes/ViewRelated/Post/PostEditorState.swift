@@ -90,17 +90,13 @@ public class PostEditorStateContext {
 
     fileprivate var hasContent = false {
         didSet {
-            if hasContent != oldValue {
-                publishActionAllowed = hasContent && !isBeingPublished
-            }
+            publishActionAllowed = hasContent && !isBeingPublished
         }
     }
 
     fileprivate var isBeingPublished = false {
         didSet {
-            if isBeingPublished != oldValue {
-                publishActionAllowed = hasContent && !isBeingPublished
-            }
+            publishActionAllowed = hasContent && !isBeingPublished
         }
     }
 
