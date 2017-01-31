@@ -1,6 +1,6 @@
 import Foundation
 
-// Taken from AbstractPost.m
+// Taken from AbstractPost.m - this should get a better home than here
 enum PostStatus: String {
     case draft = "draft"
     case pending = "pending"
