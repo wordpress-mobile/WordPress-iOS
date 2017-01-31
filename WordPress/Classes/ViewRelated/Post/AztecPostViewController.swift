@@ -4,7 +4,7 @@ import Aztec
 import Gridicons
 import WordPressShared
 import AFNetworking
-
+import WPMediaPicker
 
 // MARK: - Aztec's Native Editor!
 //
@@ -159,6 +159,10 @@ class AztecPostViewController: UIViewController {
     }
 
     fileprivate var activeMediaRequests = [AFImageDownloadReceipt]()
+
+    fileprivate lazy var mediaLibraryDataSource: WPAndDeviceMediaLibraryDataSource = {
+        return WPAndDeviceMediaLibraryDataSource(post: self.post)
+    }()
 
     // MARK: - Lifecycle Methods
 
@@ -715,14 +719,12 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         insertAction.isEnabled = !urlFieldText.isEmpty
     }
 
-
     func showImagePicker() {
-        let picker = UIImagePickerController()
-        picker.sourceType = .photoLibrary
-        picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) ?? []
+
+        let picker = WPMediaPickerViewController()
+        picker.dataSource = mediaLibraryDataSource
+        picker.showMostRecentFirst = true
         picker.delegate = self
-        picker.allowsEditing = false
-        picker.navigationBar.isTranslucent = false
         picker.modalPresentationStyle = .currentContext
 
         present(picker, animated: true, completion: nil)
@@ -775,22 +777,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 // MARK: - UINavigationControllerDelegate Conformance
 extension AztecPostViewController: UINavigationControllerDelegate {
 
-}
-
-
-// MARK: - UIImagePickerControllerDelegate Conformance
-extension AztecPostViewController: UIImagePickerControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        dismiss(animated: true, completion: nil)
-
-        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-            return
-        }
-
-        // Insert Image + Reclaim Focus
-        insertImage(image)
-        richTextView.becomeFirstResponder()
-    }
 }
 
 // MARK: - Cancel/Dismiss/Persistence Logic
@@ -994,6 +980,20 @@ extension AztecPostViewController: TextViewMediaDelegate {
             imageDownloader.cancelTask(for: receipt)
         }
     }
+}
+
+extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
+
+    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
+        dismiss(animated: true, completion: nil)
+        richTextView.becomeFirstResponder()
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
+        dismiss(animated: true, completion: nil)
+        richTextView.becomeFirstResponder()
+    }
+
 }
 
 // MARK: - Constants
