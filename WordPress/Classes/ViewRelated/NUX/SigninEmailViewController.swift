@@ -31,6 +31,12 @@ import WordPressShared
         }
     }
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .generalLogin
+        }
+    }
+
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
     /// - Parameter loginFields: Optional. A LoginFields instance containing any prefilled credentials.
@@ -79,11 +85,6 @@ import WordPressShared
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
-
-
-        if !didRequestSafariSharedCredentials {
-            fetchSharedWebCredentialsIfAvailable()
-        }
     }
 
 
@@ -307,7 +308,7 @@ import WordPressShared
         configureViewLoading(true)
 
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.isEmailAvailable(emailOrUsername,
+        service.isEmailAvailable(emailOrUsername,
             success: { [weak self] (available: Bool) in
                 self?.configureViewLoading(false)
                 if (available) {
@@ -372,6 +373,11 @@ import WordPressShared
         configureSubmitButton()
     }
 
+    @IBAction func handleTextFieldEditingDidBegin(_ sender: UITextField) {
+        if !didRequestSafariSharedCredentials {
+            fetchSharedWebCredentialsIfAvailable()
+        }
+    }
 
     // MARK: - Keyboard Notifications
 

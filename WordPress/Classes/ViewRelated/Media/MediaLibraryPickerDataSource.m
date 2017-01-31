@@ -519,7 +519,7 @@
 {
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
-    [mediaService thumbnailForMedia:self size:size success:^(UIImage *image) {
+    [mediaService imageForMedia:self size:size success:^(UIImage *image) {
         if (completionHandler) {
             completionHandler(image, nil);
         }
@@ -530,6 +530,56 @@
     }];
 
     return [self.mediaID intValue];
+}
+
+- (WPMediaRequestID)videoAssetWithCompletionHandler:(WPMediaAssetBlock)completionHandler
+{
+    if (!completionHandler) {
+        return 0;
+    }
+    
+    // Check if asset being used is a video, if not this method fails
+    if (self.assetType != MediaTypeVideo) {
+        NSString *errorMessage = NSLocalizedString(@"Media selected is not a video.", @"Error message when user tries to preview an image media like a video");
+        completionHandler(nil, [self errorWithMessage:errorMessage]);
+        return 0;
+    }
+
+    NSURL *url = nil;
+    // Do we have a local url, or remote url to use for the video
+    if (self.absoluteLocalURL) {
+        url = [NSURL fileURLWithPath:self.absoluteLocalURL];
+    } else if (self.remoteURL) {
+        url = [NSURL URLWithString:self.remoteURL];
+    }
+
+    if (!url) {
+        NSString *errorMessage = NSLocalizedString(@"Media selected is not available.", @"Error message when user tries a non longer existent video media object.");
+        completionHandler(nil, [self errorWithMessage:errorMessage]);
+        return 0;
+    }
+
+    // Let see if can create an asset with this url
+    AVURLAsset *asset = [AVURLAsset assetWithURL:url];
+    if (!asset) {
+        NSString *errorMessage = NSLocalizedString(@"Media selected is not available.", @"Error message when user tries a non longer existent video media object.");
+        completionHandler(nil, [self errorWithMessage:errorMessage]);
+        return 0;
+    }
+
+    completionHandler(asset, nil);
+    return [self.mediaID intValue];
+}
+
+- (NSError *)errorWithMessage:(NSString *)errorMessage {
+    return [NSError errorWithDomain:WPMediaPickerErrorDomain
+                                code:WPMediaErrorCodeVideoURLNotAvailable
+                            userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
+}
+
+- (CGSize)pixelSize
+{
+    return CGSizeMake([self.width floatValue], [self.height floatValue]);
 }
 
 - (void)cancelImageRequest:(WPMediaRequestID)requestID

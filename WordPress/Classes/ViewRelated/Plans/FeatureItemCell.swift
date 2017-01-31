@@ -34,6 +34,10 @@ class FeatureItemCell: WPTableViewCell {
         super.prepareForReuse()
 
         separator.isHidden = false
+
+        featureTitleLabel.text = nil
+        featureDescriptionLabel.text = nil
+        featureIconImageView.image = nil
     }
 
     override func layoutSubviews() {

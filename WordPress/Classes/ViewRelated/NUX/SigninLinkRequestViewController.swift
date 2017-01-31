@@ -11,6 +11,12 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
     @IBOutlet var usePasswordButton: UIButton!
     var restrictSigninToWPCom = false
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComLogin
+        }
+    }
+
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
     /// - Parameter loginFields: A LoginFields instance containing any prefilled credentials.
@@ -89,7 +95,7 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
 
         configureLoading(true)
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.requestAuthenticationLink(email,
+        service.requestAuthenticationLink(email,
             success: { [weak self] in
                 self?.didRequestAuthenticationLink()
                 self?.configureLoading(false)

@@ -13,7 +13,7 @@ fileprivate let fadeAnimationDuration: TimeInterval = 0.1
 // UIKit glitch.
 extension UINavigationController {
     func pushFullscreenViewController(_ viewController: UIViewController, animated: Bool) {
-        if splitViewController?.preferredDisplayMode != .primaryHidden {
+        if let splitViewController = splitViewController, splitViewController.preferredDisplayMode != .primaryHidden {
             if !splitViewControllerIsHorizontallyCompact {
                 navigationBar.fadeOutNavigationItems(animated: animated)
             }

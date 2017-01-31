@@ -105,7 +105,7 @@ import Mixpanel
         }
 
         let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let account = accountService?.defaultWordPressComAccount() {
+        if let account = accountService.defaultWordPressComAccount() {
             DDLogSwift.logInfo("App opened with authentication link but there is already an existing wpcom account. \(account)")
             return false
         }
@@ -200,10 +200,9 @@ import Mixpanel
             path = "http://\(path)"
         }
 
-        path = path
-            .trimSuffix(regexp: "/wp-login.php")
-            .trimSuffix(regexp: "/wp-admin/?")
-            .trimSuffix(regexp: "/?")
+        path.removeSuffix("/wp-login.php")
+        try? path.removeSuffix(pattern: "/wp-admin/?")
+        path.removeSuffix("/")
 
         return NSURL.idnDecodedURL(path)
     }
@@ -365,8 +364,8 @@ import Mixpanel
 
         let loginURL = loginFields.userIsDotCom ? "wordpress.com" : loginFields.siteUrl
 
-        let onePasswordFacade = OnePasswordFacade()
-        onePasswordFacade.findLogin(forURLString: loginURL, viewController: controller, sender: sourceView, completion: { (username: String?, password: String?, oneTimePassword: String?, error: NSError?) in
+
+        let completion: OnePasswordFacadeCallback = { (username, password, oneTimePassword, error) in
             if let error = error {
                 DDLogSwift.logError("OnePassword Error: \(error.localizedDescription)")
                 WPAppAnalytics.track(.onePasswordFailed)
@@ -391,8 +390,10 @@ import Mixpanel
             WPAppAnalytics.track(.onePasswordLogin)
 
             success(loginFields)
-        } as! OnePasswordFacadeCallback)
+        }
 
+        let onePasswordFacade = OnePasswordFacade()
+        onePasswordFacade.findLogin(forURLString: loginURL, viewController: controller, sender: sourceView, completion: completion)
     }
 
 
