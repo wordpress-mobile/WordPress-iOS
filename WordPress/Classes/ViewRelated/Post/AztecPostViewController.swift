@@ -972,7 +972,7 @@ extension AztecPostViewController: TextViewMediaDelegate {
     }
 
     func textView(_ textView: TextView, urlForImage image: UIImage) -> URL {
-
+        //TODO: add support for saving images that result from a copy/paste to the editor, this should save locally to file, and import to the media library.
         return URL(string:"")!
     }
 
