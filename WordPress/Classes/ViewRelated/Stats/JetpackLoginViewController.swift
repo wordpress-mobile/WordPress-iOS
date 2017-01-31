@@ -8,6 +8,11 @@ import WordPressComAnalytics
 ///
 class JetpackLoginViewController: UIViewController {
 
+    // MARK: - Constants
+
+    fileprivate let jetpackInstallRelativePath = "plugin-install.php?tab=plugin-information&plugin=jetpack"
+    fileprivate let jetpackMoreInformationURL = "https://apps.wordpress.com/support/#faq-ios-15"
+
     // MARK: - Properties
 
     typealias CompletionBlock = (Bool) -> Void
@@ -24,6 +29,8 @@ class JetpackLoginViewController: UIViewController {
     @IBOutlet fileprivate weak var scrollView: UIScrollView!
     @IBOutlet fileprivate weak var signinButton: WPNUXMainButton!
     @IBOutlet fileprivate weak var sendSMSCodeButton: UIButton!
+    @IBOutlet fileprivate weak var installJetpackButton: WPNUXMainButton!
+    @IBOutlet fileprivate weak var moreInformationButton: UIButton!
 
     fileprivate var blog: Blog!
     fileprivate var activeField: UITextField?
@@ -127,6 +134,14 @@ class JetpackLoginViewController: UIViewController {
 
         setupSendSMSCodeButtonText()
         self.sendSMSCodeButton.isHidden = true // Hidden by default
+
+        setupMoreInformationButtonText()
+        self.moreInformationButton.isHidden = true // Hidden by default
+
+        let title = NSLocalizedString("Install Jetpack", comment: "Title of a button for Jetpack Installation. The text " +
+                "should be uppercase.").localizedUppercase
+        self.installJetpackButton.setTitle(title, for: .normal)
+        self.installJetpackButton.isHidden = true // Hidden by default
     }
 
     /// Configures the button text that requests a 2fa code be sent via SMS.
@@ -154,6 +169,33 @@ class JetpackLoginViewController: UIViewController {
 
         self.sendSMSCodeButton.setAttributedTitle(attributedCode, for: UIControlState())
         self.sendSMSCodeButton.setAttributedTitle(attributedCodeHighlighted, for: .highlighted)
+    }
+
+    /// Configures the button text for requesting more information about jetpack.
+    ///
+    fileprivate func setupMoreInformationButtonText() {
+        let string = NSLocalizedString("<u>More information</u>",
+                                       comment: "Text used for a button to request more information.")
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14),
+                                                                   NSForegroundColorAttributeName: WPStyleGuide.allTAllShadeGrey(),
+                                                                   NSParagraphStyleAttributeName: paragraphStyle ]]
+
+        let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
+        let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
+        attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
+
+        if let titleLabel = self.sendSMSCodeButton.titleLabel {
+            titleLabel.lineBreakMode = .byWordWrapping
+            titleLabel.textAlignment = .center
+            titleLabel.numberOfLines = 3
+        }
+
+        self.moreInformationButton.setAttributedTitle(attributedCode, for: UIControlState())
+        self.moreInformationButton.setAttributedTitle(attributedCodeHighlighted, for: .highlighted)
     }
 
     fileprivate func setupKeyboard() {
@@ -265,6 +307,9 @@ class JetpackLoginViewController: UIViewController {
         self.usernameTextField.isHidden = !self.hasJetpack
         self.passwordTextField.isHidden = !self.hasJetpack
 
+        self.installJetpackButton.isHidden = self.hasJetpack
+        self.moreInformationButton.isHidden = self.hasJetpack
+
         if self.hasJetpack && self.shouldDisplayMultifactor {
             self.passwordTextField.returnKeyType = .next
             self.verificationCodeTextField.isHidden = false
@@ -279,6 +324,11 @@ class JetpackLoginViewController: UIViewController {
     }
 
     fileprivate func updateSignInButton() {
+        guard self.hasJetpack else {
+            self.signinButton.isHidden = true
+            return
+        }
+
         var title = NSLocalizedString("Sign In", comment: "Title of a button for signing in. " +
                                                           "The text should be uppercase.").localizedUppercase
         if self.shouldDisplayMultifactor {
@@ -302,6 +352,7 @@ class JetpackLoginViewController: UIViewController {
                 return
             }
         }
+        self.signinButton.isHidden = false
         self.signinButton.isEnabled = true
     }
 
@@ -319,7 +370,7 @@ class JetpackLoginViewController: UIViewController {
         self.view.endEditing(true)
     }
 
-    // MARK: - Helpers
+    // MARK: - Private Helpers
 
     fileprivate func managedObjectContext() -> NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
@@ -374,6 +425,43 @@ class JetpackLoginViewController: UIViewController {
         completionBlock(true)
     }
 
+    // MARK: - Browser
+
+    fileprivate func openInstallJetpackURL() {
+        WPAppAnalytics.track(.selectedInstallJetpack)
+        let targetURL = self.blog.adminUrl(withPath: self.jetpackInstallRelativePath)
+        self.displayWebView(url: targetURL,
+                            username: self.blog.usernameForSite!,
+                            password: self.blog.password!,
+                            wpLoginURL: URL(string: self.blog.loginUrl()))
+    }
+
+    fileprivate func openMoreInformationURL() {
+        WPAppAnalytics.track(.selectedLearnMoreInConnectToJetpackScreen)
+        self.displayWebView(url: self.jetpackMoreInformationURL, username: nil, password: nil, wpLoginURL: nil)
+    }
+
+    fileprivate func displayWebView(url: String, username: String?, password: String?, wpLoginURL: URL?) {
+        guard let url =  URL(string: url) else {
+            return
+        }
+        guard let webViewController = WPWebViewController(url: url) else {
+            return
+        }
+
+        webViewController.username = username
+        webViewController.password = password
+        webViewController.wpLoginURL = wpLoginURL
+
+        if presentingViewController != nil {
+            navigationController?.pushViewController(webViewController, animated: true)
+        } else {
+            let navController = UINavigationController(rootViewController: webViewController)
+            navController.modalPresentationStyle = .pageSheet
+            present(navController, animated: true, completion: nil)
+        }
+    }
+
     // MARK: - Actions
 
     @IBAction func didTouchSignInButton(_ sender: Any) {
@@ -382,6 +470,14 @@ class JetpackLoginViewController: UIViewController {
 
     @IBAction func didTouchSendSMSCodeButton(_ sender: Any) {
         sendSMSCode()
+    }
+
+    @IBAction func didTouchInstallJetpackButton(_ sender: Any) {
+        openInstallJetpackURL()
+    }
+
+    @IBAction func didTouchMoreInformationButton(_ sender: Any) {
+        openMoreInformationURL()
     }
 }
 

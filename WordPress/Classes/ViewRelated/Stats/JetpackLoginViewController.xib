@@ -12,7 +12,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JetpackLoginViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
                 <outlet property="descriptionLabel" destination="5EX-8b-0NL" id="D6j-Vu-Grr"/>
+                <outlet property="installJetpackButton" destination="Qm1-Pi-98R" id="nNU-KI-fYA"/>
                 <outlet property="jetpackImage" destination="GNi-Lj-sLf" id="OLq-eC-Ez8"/>
+                <outlet property="moreInformationButton" destination="9Kv-7j-SnM" id="4xT-az-q2M"/>
                 <outlet property="passwordTextField" destination="3Mb-EC-IEi" id="jsl-YN-YtP"/>
                 <outlet property="scrollView" destination="BSZ-Dy-TNX" id="GHi-Th-IDj"/>
                 <outlet property="sendSMSCodeButton" destination="l8Z-ub-qSz" id="RTG-kv-GDC"/>
@@ -31,7 +33,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                     <subviews>
                         <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wZ5-Fs-qlA">
-                            <rect key="frame" x="361.5" y="204.5" width="300" height="358"/>
+                            <rect key="frame" x="361.5" y="164.5" width="300" height="438"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-jetpack-gray" translatesAutoresizingMaskIntoConstraints="NO" id="GNi-Lj-sLf">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="90"/>
@@ -85,7 +87,7 @@
                                 </stackView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMy-o2-gd3" customClass="WPNUXMainButton">
                                     <rect key="frame" x="0.0" y="288" width="300" height="30"/>
-                                    <state key="normal" title="Button"/>
+                                    <state key="normal" title="Save"/>
                                     <connections>
                                         <action selector="didTouchSignInButton:" destination="-1" eventType="touchUpInside" id="4XZ-kZ-sw4"/>
                                     </connections>
@@ -95,6 +97,20 @@
                                     <state key="normal" title="Send Code"/>
                                     <connections>
                                         <action selector="didTouchSendSMSCodeButton:" destination="-1" eventType="touchUpInside" id="IFD-po-d3n"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qm1-Pi-98R" customClass="WPNUXMainButton">
+                                    <rect key="frame" x="0.0" y="368" width="300" height="30"/>
+                                    <state key="normal" title="Install Jetpack"/>
+                                    <connections>
+                                        <action selector="didTouchInstallJetpackButton:" destination="-1" eventType="touchUpInside" id="jig-Gw-45O"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Kv-7j-SnM">
+                                    <rect key="frame" x="0.0" y="408" width="300" height="30"/>
+                                    <state key="normal" title="More Information"/>
+                                    <connections>
+                                        <action selector="didTouchMoreInformationButton:" destination="-1" eventType="touchUpInside" id="IQm-Ea-4Un"/>
                                     </connections>
                                 </button>
                             </subviews>
