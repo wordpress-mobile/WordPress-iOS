@@ -110,7 +110,8 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
 extension PlanListViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView!) {
-        SupportViewController.showFromTabBar()
+        let supportVC = SupportViewController()
+        supportVC.showFromTabBar()
     }
 }
 
@@ -131,8 +132,8 @@ extension PlanListViewController: UIViewControllerRestoration {
         }
 
         let context = ContextManager.sharedInstance().mainContext
-        guard let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: blogURL),
-            let object = try? context?.existingObject(with: objectID),
+        guard let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: blogURL),
+            let object = try? context.existingObject(with: objectID),
             let blog = object as? Blog else {
                 return nil
         }

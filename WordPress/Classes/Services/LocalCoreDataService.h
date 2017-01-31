@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LocalCoreDataService : NSObject
 
 /**
@@ -18,3 +20,5 @@
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
+
+NS_ASSUME_NONNULL_END

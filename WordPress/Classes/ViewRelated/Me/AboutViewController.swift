@@ -154,7 +154,7 @@ open class AboutViewController: UITableViewController {
         // manually decides to rate the app, we don't render the prompt!
         //
         WPAnalytics.track(.appReviewsRatedApp)
-        AppRatingUtility.ratedCurrentVersion()
+        AppRatingUtility.shared.ratedCurrentVersion()
         ABXAppStore.open(forApp: WPiTunesAppId)
     }
 

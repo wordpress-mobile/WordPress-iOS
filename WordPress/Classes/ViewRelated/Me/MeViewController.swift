@@ -352,7 +352,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     fileprivate func defaultAccount() -> WPAccount? {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
-        let account = service?.defaultWordPressComAccount()
+        let account = service.defaultWordPressComAccount()
         // Again, ! isn't cool, but let's keep it for now until we refactor the VC
         // initialization parameters.
         return account
@@ -362,13 +362,13 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         guard let account = defaultAccount() else { return }
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
-        service?.updateUserDetails(for: account, success: { _ in }, failure: { _ in })
+        service.updateUserDetails(for: account, success: { _ in }, failure: { _ in })
     }
 
     fileprivate func logOut() {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
-        service?.removeDefaultWordPressComAccount()
+        service.removeDefaultWordPressComAccount()
     }
 
     // MARK: - Private Properties
