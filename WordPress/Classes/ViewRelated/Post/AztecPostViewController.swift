@@ -942,7 +942,9 @@ extension AztecPostViewController: TextViewMediaDelegate {
         let imageMaxDimension = max(UIScreen.main.nativeBounds.size.width, UIScreen.main.nativeBounds.size.height)
         let size = CGSize(width: imageMaxDimension, height: imageMaxDimension)
         let request: URLRequest
-        if self.post.blog.isPrivate() {
+        if url.isFileURL {
+            request = URLRequest(url: url)
+        } else if self.post.blog.isPrivate() {
             // private wpcom image needs special handling.
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
@@ -992,6 +994,38 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
         dismiss(animated: true, completion: nil)
         richTextView.becomeFirstResponder()
+
+        if assets.isEmpty {
+            return
+        }
+
+        for asset in assets {
+            switch asset {
+            case let phAsset as PHAsset:
+                addDeviceMediaAsset(phAsset)
+            case let media as Media:
+                addSiteMediaAsset(media)
+            default:
+                continue
+            }
+        }
+
+    }
+
+    func addDeviceMediaAsset(_ phAsset: PHAsset) {
+
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
+            DispatchQueue.main.async {
+                self.richTextView.insertImage(sourceURL: thumbnailURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: nil)
+            }
+        }, completion: { (media, error) in
+
+        })
+    }
+
+    func addSiteMediaAsset(_ media: Media) {
+
     }
 
 }
