@@ -179,6 +179,7 @@ class AztecPostViewController: UIViewController {
             originalPostStatus = .draft
         }
 
+        // TODO: Determine if user can actually publish to site or not
         let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: true, delegate: self)
         let characterCount = self.post.content?.characters.count ?? 0
 
@@ -404,6 +405,9 @@ class AztecPostViewController: UIViewController {
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
         print("If this were working, it would be \(postEditorStateContext.publishVerbText)")
+
+        // TODO: Implement publishing ;)
+        // Don't forget to set postEditorStateContext.updated(isBeingPublished: true) during publishing
     }
 
     @IBAction func closeWasPressed() {
