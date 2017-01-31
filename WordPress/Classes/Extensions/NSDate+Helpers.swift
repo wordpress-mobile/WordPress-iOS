@@ -77,6 +77,15 @@ extension Date {
         return DateFormatters.rfc1123.string(from: self)
     }
 
+    /// Formats the current date as relative date if it's within a week of
+    /// today, or with DateFormatter.Style.medium otherwise.
+    ///
+    /// - Example: 22 hours from now
+    /// - Example: 5 minutes ago
+    /// - Example: 8 hours ago
+    /// - Example: 2 days ago
+    /// - Example: Jan 22, 2017
+    ///
     public func mediumString() -> String {
         let relativeFormatter = TTTTimeIntervalFormatter()
         let absoluteFormatter = DateFormatters.mediumDate
@@ -89,10 +98,26 @@ extension Date {
         }
     }
 
+    /// Formats the current date as a medium relative date/time.
+    ///
+    /// - Example: Tomorrow, 6:45 AM
+    /// - Example: Today, 8:09 AM
+    /// - Example: Yesterday, 11:36 PM
+    /// - Example: Jan 28, 2017, 1:51 PM
+    /// - Example: Jan 22, 2017, 2:18 AM
+    ///
     public func mediumStringWithTime() -> String {
         return DateFormatters.mediumDateTime.string(from: self)
     }
 
+    /// Formats the current date as a short relative date/time.
+    ///
+    /// - Example: Tomorrow, 6:45 AM
+    /// - Example: Today, 8:09 AM
+    /// - Example: Yesterday, 11:36 PM
+    /// - Example: 1/28/17, 1:51 PM
+    /// - Example: 1/22/17, 2:18 AM
+    ///
     public func shortStringWithTime() -> String {
         return DateFormatters.shortDateTime.string(from: self)
     }
@@ -103,14 +128,39 @@ extension NSDate {
         return Date.DateFormatters.iso8601.date(from: string) as NSDate?
     }
 
+    /// Formats the current date as relative date if it's within a week of
+    /// today, or with NSDateFormatterMediumStyle otherwise.
+    ///
+    /// - Example: 22 hours from now
+    /// - Example: 5 minutes ago
+    /// - Example: 8 hours ago
+    /// - Example: 2 days ago
+    /// - Example: Jan 22, 2017
+    ///
     public func mediumString() -> String {
         return (self as Date).mediumString()
     }
 
+    /// Formats the current date as a medium relative date/time.
+    ///
+    /// - Example: Tomorrow, 6:45 AM
+    /// - Example: Today, 8:09 AM
+    /// - Example: Yesterday, 11:36 PM
+    /// - Example: Jan 28, 2017, 1:51 PM
+    /// - Example: Jan 22, 2017, 2:18 AM
+    ///
     public func mediumStringWithTime() -> String {
         return (self as Date).mediumStringWithTime()
     }
 
+    /// Formats the current date as a short relative date/time.
+    ///
+    /// - Example: Tomorrow, 6:45 AM
+    /// - Example: Today, 8:09 AM
+    /// - Example: Yesterday, 11:36 PM
+    /// - Example: 1/28/17, 1:51 PM
+    /// - Example: 1/22/17, 2:18 AM
+    ///
     public func shortStringWithTime() -> String {
         return (self as Date).shortStringWithTime()
     }
