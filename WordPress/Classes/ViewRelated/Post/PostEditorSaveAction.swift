@@ -14,7 +14,8 @@ import WordPressComAnalytics
 extension WPPostViewController {
     /// What action should be taken when the user taps the editor's save button?
     var currentSaveAction: PostEditorSaveAction {
-        if let status = post.status,
+        if let post = post,
+            let status = post.status,
             let originalStatus = post.original?.status
             where status != originalStatus || !post.hasRemote() {
             if (post.isScheduled()) {
