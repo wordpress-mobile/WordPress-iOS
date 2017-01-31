@@ -102,60 +102,36 @@ class JetpackLoginViewController: UIViewController {
 
     // MARK: - Configuration
 
-    func setupControls() {
-        self.passwordTextField.font = WPNUXUtility.descriptionTextFont()
+    /// One time setup of the form textfields and buttons
+    ///
+    fileprivate func setupControls() {
+        self.descriptionLabel.font = WPNUXUtility.descriptionTextFont()
         self.descriptionLabel.textColor = WPStyleGuide.allTAllShadeGrey()
-        self.descriptionLabel.backgroundColor = UIColor.clear
 
         self.usernameTextField.delegate = self
-        self.usernameTextField.backgroundColor = UIColor.white
+        self.usernameTextField.font = WPNUXUtility.textFieldFont()
         self.usernameTextField.placeholder = NSLocalizedString("WordPress.com username",
                                                                comment: "Username placeholder")
-        self.usernameTextField.font = WPNUXUtility.textFieldFont()
-        self.usernameTextField.adjustsFontSizeToFitWidth = true
-        self.usernameTextField.autocorrectionType = .no
-        self.usernameTextField.autocapitalizationType = .none
-        self.usernameTextField.clearButtonMode = .whileEditing
-        self.verificationCodeTextField.returnKeyType = .next
 
         self.passwordTextField.delegate = self
-        self.passwordTextField.backgroundColor = UIColor.white
+        self.passwordTextField.font = WPNUXUtility.textFieldFont()
         self.passwordTextField.placeholder = NSLocalizedString("WordPress.com password",
                                                                comment: "Password placeholder")
-        self.passwordTextField.font = WPNUXUtility.textFieldFont()
-        self.passwordTextField.isSecureTextEntry = true
-        self.passwordTextField.showSecureTextEntryToggle = true
-        self.passwordTextField.showTopLineSeparator = true
-        self.passwordTextField.returnKeyType = .done
 
         self.verificationCodeTextField.delegate = self
-        self.verificationCodeTextField.backgroundColor = UIColor.white
+        self.verificationCodeTextField.font = WPNUXUtility.textFieldFont()
+        self.verificationCodeTextField.isHidden = true // Hidden by default
         self.verificationCodeTextField.placeholder = NSLocalizedString("Verification Code",
                                                                        comment: "Two factor code placeholder")
-        self.verificationCodeTextField.font = WPNUXUtility.textFieldFont()
-        self.verificationCodeTextField.textAlignment = .center
-        self.verificationCodeTextField.adjustsFontSizeToFitWidth = true
-        self.verificationCodeTextField.keyboardType = .numberPad
-        self.verificationCodeTextField.returnKeyType = .done
-        self.verificationCodeTextField.showTopLineSeparator = true
-        self.verificationCodeTextField.isHidden = true // Hidden by default
-
         self.signinButton.isEnabled = false
 
-        setupSendCodeButton()
+        setupSendSMSCodeButtonText()
+        self.sendSMSCodeButton.isHidden = true // Hidden by default
     }
 
-    func setupKeyboard() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(hideKeyboard))
-
-        self.scrollView.addGestureRecognizer(tap)
-    }
-
-    /// Configures the appearance of the button to request a 2fa code be sent via SMS.
+    /// Configures the button text that requests a 2fa code be sent via SMS.
     ///
-    func setupSendCodeButton() {
+    fileprivate func setupSendSMSCodeButtonText() {
         let string = NSLocalizedString("Enter the code on your authenticator app or <u>send the code via text message</u>.",
                                        comment: "Message displayed when a verification code is needed")
 
@@ -178,7 +154,14 @@ class JetpackLoginViewController: UIViewController {
 
         self.sendSMSCodeButton.setAttributedTitle(attributedCode, for: UIControlState())
         self.sendSMSCodeButton.setAttributedTitle(attributedCodeHighlighted, for: .highlighted)
-        self.sendSMSCodeButton.isHidden = true // Hidden by default
+    }
+
+    fileprivate func setupKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(hideKeyboard))
+
+        self.scrollView.addGestureRecognizer(tap)
     }
 
     // MARK: - Textfield
