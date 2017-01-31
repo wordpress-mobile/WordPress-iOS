@@ -326,8 +326,11 @@ import WordPressShared
             },
             failure: { [weak self] (error: Error) in
                 DDLogSwift.logError(error.localizedDescription)
-                self?.configureViewLoading(false)
-                self?.displayError(error as NSError)
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.configureViewLoading(false)
+                strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
             })
     }
 
