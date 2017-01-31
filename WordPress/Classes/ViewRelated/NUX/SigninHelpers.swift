@@ -105,7 +105,7 @@ import Mixpanel
         }
 
         let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let account = accountService?.defaultWordPressComAccount() {
+        if let account = accountService.defaultWordPressComAccount() {
             DDLogSwift.logInfo("App opened with authentication link but there is already an existing wpcom account. \(account)")
             return false
         }
