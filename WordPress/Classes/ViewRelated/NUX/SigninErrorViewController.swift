@@ -141,7 +141,7 @@ class SigninErrorViewController: UIViewController {
     ///
     /// - Parameter error: An NSError instance
     ///
-    func displayError(_ error: NSError, loginFields: LoginFields, delegate: SigninErrorViewControllerDelegate) {
+    func displayError(_ error: NSError, loginFields: LoginFields, delegate: SigninErrorViewControllerDelegate, sourceTag: SupportSourceTag) {
         self.loginFields = loginFields
         self.delegate = delegate
 
@@ -151,10 +151,10 @@ class SigninErrorViewController: UIViewController {
 
         if error.domain != WPXMLRPCFaultErrorDomain && error.code != NSURLErrorBadURL {
             if HelpshiftUtils.isHelpshiftEnabled() {
-                displayGenericErrorMessageWithHelpshiftButton(message)
+                displayGenericErrorMessageWithHelpshiftButton(message, sourceTag: sourceTag)
 
             } else {
-                displayGenericErrorMessage(message)
+                displayGenericErrorMessage(message, sourceTag: sourceTag)
             }
             return
         }
@@ -168,11 +168,11 @@ class SigninErrorViewController: UIViewController {
         }
 
         if error.code == 405 {
-            displayErrorMessageForXMLRPC(message)
+            displayErrorMessageForXMLRPC(message, sourceTag: sourceTag)
         } else  if error.code == NSURLErrorBadURL {
             displayErrorMessageForBadURL(message)
         } else {
-            displayGenericErrorMessage(message)
+            displayGenericErrorMessage(message, sourceTag: sourceTag)
         }
     }
 
@@ -181,10 +181,10 @@ class SigninErrorViewController: UIViewController {
     ///
     /// - Parameter message: The error message to show.
     ///
-    func displayGenericErrorMessage(_ message: String) {
+    func displayGenericErrorMessage(_ message: String, sourceTag: SupportSourceTag) {
         let callback: SigninErrorCallback = { [unowned self] in
             self.dismiss()
-            self.delegate?.displaySupportViewController(sourceTag: SupportSourceTag.generalLogin)
+            self.delegate?.displaySupportViewController(sourceTag: sourceTag)
         }
 
         configureView(message,
@@ -200,11 +200,12 @@ class SigninErrorViewController: UIViewController {
     /// is configured so the user can open Helpshift for assistance.
     ///
     /// - Parameter message: The error message to show.
+    /// - Parameter sourceTag: tag of the source of the error
     ///
-    func displayGenericErrorMessageWithHelpshiftButton(_ message: String) {
+    func displayGenericErrorMessageWithHelpshiftButton(_ message: String, sourceTag: SupportSourceTag) {
         let callback: SigninErrorCallback = { [unowned self] in
             self.dismiss()
-            self.delegate?.displayHelpshiftConversationView(sourceTag: SupportSourceTag.wpComLogin)
+            self.delegate?.displayHelpshiftConversationView(sourceTag: sourceTag)
         }
 
         configureView(message,
@@ -220,7 +221,7 @@ class SigninErrorViewController: UIViewController {
     ///
     /// - Parameter message: The error message to show.
     ///
-    func displayErrorMessageForXMLRPC(_ message: String) {
+    func displayErrorMessageForXMLRPC(_ message: String, sourceTag: SupportSourceTag) {
         let firstCallback: SigninErrorCallback = { [unowned self] in
             self.dismiss()
 
@@ -245,7 +246,7 @@ class SigninErrorViewController: UIViewController {
 
         let secondCallback: SigninErrorCallback = { [unowned self] in
             self.dismiss()
-            self.delegate?.displaySupportViewController(sourceTag: SupportSourceTag.wpOrgLogin)
+            self.delegate?.displaySupportViewController(sourceTag: sourceTag)
         }
 
         configureView(message,
