@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import SVProgressHUD
 import WordPressShared
 import WordPressComAnalytics
 
@@ -22,6 +23,7 @@ class JetpackLoginViewController: UIViewController {
     @IBOutlet fileprivate weak var verificationCodeTextField: WPWalkthroughTextField!
     @IBOutlet fileprivate weak var scrollView: UIScrollView!
     @IBOutlet fileprivate weak var signinButton: WPNUXMainButton!
+    @IBOutlet fileprivate weak var sendSMSCodeButton: UIButton!
 
     fileprivate var blog: Blog!
     fileprivate var activeField: UITextField?
@@ -139,6 +141,8 @@ class JetpackLoginViewController: UIViewController {
         self.verificationCodeTextField.isHidden = true // Hidden by default
 
         self.signinButton.isEnabled = false
+
+        setupSendCodeButton()
     }
 
     func setupKeyboard() {
@@ -149,6 +153,34 @@ class JetpackLoginViewController: UIViewController {
         self.scrollView.addGestureRecognizer(tap)
     }
 
+    /// Configures the appearance of the button to request a 2fa code be sent via SMS.
+    ///
+    func setupSendCodeButton() {
+        let string = NSLocalizedString("Enter the code on your authenticator app or <u>send the code via text message</u>.",
+                                       comment: "Message displayed when a verification code is needed")
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14),
+                                                                   NSForegroundColorAttributeName: WPStyleGuide.allTAllShadeGrey(),
+                                                                   NSParagraphStyleAttributeName: paragraphStyle ]]
+
+        let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
+        let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
+        attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
+
+        if let titleLabel = self.sendSMSCodeButton.titleLabel {
+            titleLabel.lineBreakMode = .byWordWrapping
+            titleLabel.textAlignment = .center
+            titleLabel.numberOfLines = 3
+        }
+
+        self.sendSMSCodeButton.setAttributedTitle(attributedCode, for: UIControlState())
+        self.sendSMSCodeButton.setAttributedTitle(attributedCodeHighlighted, for: .highlighted)
+        self.sendSMSCodeButton.isHidden = true // Hidden by default
+    }
+
     // MARK: - Textfield
 
     func registerForTextFieldNotifications() {
@@ -156,11 +188,14 @@ class JetpackLoginViewController: UIViewController {
                                                name: .UITextFieldTextDidChange, object: self.usernameTextField)
         NotificationCenter.default.addObserver(self, selector: #selector(textFieldChanged(_ :)),
                                                name: .UITextFieldTextDidChange, object: self.passwordTextField)
+        NotificationCenter.default.addObserver(self, selector: #selector(textFieldChanged(_ :)),
+                                               name: .UITextFieldTextDidChange, object: self.verificationCodeTextField)
     }
 
     func deregisterFromTextFieldNotifications() {
         NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidChange, object: self.usernameTextField)
         NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidChange, object: self.passwordTextField)
+        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidChange, object: self.verificationCodeTextField)
     }
 
     func textFieldChanged(_ notification: Foundation.Notification) {
@@ -250,9 +285,11 @@ class JetpackLoginViewController: UIViewController {
         if self.hasJetpack && self.shouldDisplayMultifactor {
             self.passwordTextField.returnKeyType = .next
             self.verificationCodeTextField.isHidden = false
+            self.sendSMSCodeButton.isHidden = false
         } else {
             self.passwordTextField.returnKeyType = .done
             self.verificationCodeTextField.isHidden = true
+            self.sendSMSCodeButton.isHidden = true
         }
 
         updateSignInButton()
@@ -261,20 +298,26 @@ class JetpackLoginViewController: UIViewController {
     fileprivate func updateSignInButton() {
         var title = NSLocalizedString("Sign In", comment: "Title of a button for signing in. " +
                                                           "The text should be uppercase.").localizedUppercase
-
         if self.shouldDisplayMultifactor {
             title = NSLocalizedString("Verify", comment: "Title of a button for 2FA verification. The text " +
                                                          "should be uppercase.").localizedUppercase
         }
         self.signinButton.setTitle(title, for: .normal)
 
-        guard let usernameText = self.usernameTextField.text, !usernameText.isEmpty else {
-            self.signinButton.isEnabled = false
-            return
-        }
-        guard let passwordText = self.passwordTextField.text, !passwordText.isEmpty else {
-            self.signinButton.isEnabled = false
-            return
+        if self.shouldDisplayMultifactor {
+            guard let verifcationCodeText = self.verificationCodeTextField.text, !verifcationCodeText.isEmpty else {
+                self.signinButton.isEnabled = false
+                return
+            }
+        } else {
+            guard let usernameText = self.usernameTextField.text, !usernameText.isEmpty else {
+                self.signinButton.isEnabled = false
+                return
+            }
+            guard let passwordText = self.passwordTextField.text, !passwordText.isEmpty else {
+                self.signinButton.isEnabled = false
+                return
+            }
         }
         self.signinButton.isEnabled = true
     }
@@ -331,6 +374,15 @@ class JetpackLoginViewController: UIViewController {
         self.loginFacade.signIn(with: self.loginFields)
     }
 
+    fileprivate func sendSMSCode() {
+        let message = NSLocalizedString("SMS Sent", comment: "One Time Code has been sent via SMS")
+        loginFields.userIsDotCom = true
+        loginFields.username = self.usernameTextField.nonNilTrimmedText()
+        loginFields.password = self.passwordTextField.nonNilTrimmedText()
+        loginFacade.requestOneTimeCode(with: loginFields)
+        SVProgressHUD.showSuccess(withStatus: message)
+    }
+
     fileprivate func completeLogin() {
         self.isAuthenticating = false
         guard let completionBlock = self.completionBlock else {
@@ -343,6 +395,10 @@ class JetpackLoginViewController: UIViewController {
 
     @IBAction func didTouchSignInButton(_ sender: Any) {
         signIn()
+    }
+
+    @IBAction func didTouchSendSMSCodeButton(_ sender: Any) {
+        sendSMSCode()
     }
 }
 

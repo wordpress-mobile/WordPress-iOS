@@ -15,6 +15,7 @@
                 <outlet property="jetpackImage" destination="GNi-Lj-sLf" id="OLq-eC-Ez8"/>
                 <outlet property="passwordTextField" destination="3Mb-EC-IEi" id="jsl-YN-YtP"/>
                 <outlet property="scrollView" destination="BSZ-Dy-TNX" id="GHi-Th-IDj"/>
+                <outlet property="sendSMSCodeButton" destination="l8Z-ub-qSz" id="RTG-kv-GDC"/>
                 <outlet property="signinButton" destination="lMy-o2-gd3" id="9I4-sr-k0G"/>
                 <outlet property="usernameTextField" destination="xxp-Ie-Xxe" id="TUV-s7-vlb"/>
                 <outlet property="verificationCodeTextField" destination="xnn-gG-Lam" id="eJv-Xa-wmM"/>
@@ -30,7 +31,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                     <subviews>
                         <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wZ5-Fs-qlA">
-                            <rect key="frame" x="361.5" y="224.5" width="300" height="318"/>
+                            <rect key="frame" x="361.5" y="204.5" width="300" height="358"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-jetpack-gray" translatesAutoresizingMaskIntoConstraints="NO" id="GNi-Lj-sLf">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="90"/>
@@ -83,6 +84,13 @@
                                     <state key="normal" title="Button"/>
                                     <connections>
                                         <action selector="didTouchSignInButton:" destination="-1" eventType="touchUpInside" id="4XZ-kZ-sw4"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l8Z-ub-qSz">
+                                    <rect key="frame" x="0.0" y="328" width="300" height="30"/>
+                                    <state key="normal" title="Send Code"/>
+                                    <connections>
+                                        <action selector="didTouchSendSMSCodeButton:" destination="-1" eventType="touchUpInside" id="IFD-po-d3n"/>
                                     </connections>
                                 </button>
                             </subviews>
