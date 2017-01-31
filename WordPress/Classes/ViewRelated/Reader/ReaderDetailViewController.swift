@@ -579,9 +579,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         // Byline
         let date = NSDate(timeIntervalSinceReferenceDate: (post?.dateForDisplay().timeIntervalSinceReferenceDate)!)
-        var byline = date.shortString()
+        var byline = date.mediumString()
         if let author = post?.authorForDisplay() {
-            byline = String(format: "%@ · %@", author, byline!)
+            byline = String(format: "%@ · %@", author, byline)
         }
         bylineLabel.text = byline
     }
