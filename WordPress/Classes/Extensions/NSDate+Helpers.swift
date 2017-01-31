@@ -43,6 +43,16 @@ extension Date {
             formatter.timeStyle = .short
             return formatter
         }()
+
+        static let pageSectionFormatter: TTTTimeIntervalFormatter = {
+            let formatter = TTTTimeIntervalFormatter()
+
+            formatter.leastSignificantUnit = .day
+            formatter.usesIdiomaticDeicticExpressions = true
+            formatter.presentDeicticExpression = NSLocalizedString("today", comment: "Today")
+
+            return formatter
+        }()
     }
 
     /// Returns a NSDate Instance, given it's ISO8601 String Representation
@@ -121,6 +131,16 @@ extension Date {
     public func shortStringWithTime() -> String {
         return DateFormatters.shortDateTime.string(from: self)
     }
+
+    public func toStringForPageSections() -> String {
+        let interval = timeIntervalSinceNow
+
+        if interval > 0 && interval < 86400 {
+            return NSLocalizedString("later today", comment: "Later today")
+        } else {
+            return DateFormatters.pageSectionFormatter.string(forTimeInterval: interval)
+        }
+    }
 }
 
 extension NSDate {
@@ -163,5 +183,9 @@ extension NSDate {
     ///
     public func shortStringWithTime() -> String {
         return (self as Date).shortStringWithTime()
+    }
+
+    public func toStringForPageSections() -> String {
+        return (self as Date).toStringForPageSections()
     }
 }
