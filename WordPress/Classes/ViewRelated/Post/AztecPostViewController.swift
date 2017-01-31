@@ -156,7 +156,7 @@ class AztecPostViewController: UIViewController {
 
     /// Post being currently edited
     ///
-    dynamic fileprivate(set) var post: AbstractPost {
+    fileprivate(set) var post: AbstractPost {
         didSet {
             removeObservers(fromPost: oldValue)
             addObservers(toPost: post)
