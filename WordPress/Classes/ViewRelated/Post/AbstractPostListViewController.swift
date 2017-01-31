@@ -378,15 +378,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        // Ascending only for scheduled posts/pages.
-        let ascending = filterSettings.currentPostListFilter().filterType == .scheduled
-
         let sortDescriptorLocal = NSSortDescriptor(key: "metaIsLocal", ascending: false)
         let sortDescriptorImmediately = NSSortDescriptor(key: "metaPublishImmediately", ascending: false)
-        if filterSettings.currentPostListFilter().filterType == .draft {
-            return [sortDescriptorLocal, NSSortDescriptor(key: "dateModified", ascending: ascending)]
-        }
-        let sortDescriptorDate = NSSortDescriptor(key: "date_created_gmt", ascending: ascending)
+        let sortDescriptorDate = dateSortDescriptor()
         return [sortDescriptorLocal, sortDescriptorImmediately, sortDescriptorDate]
     }
 
@@ -721,6 +715,29 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         WPError.showAlert(withTitle: NSLocalizedString("Unable to Connect", comment: ""), message: message, withSupportButton: true) { _ in
             self.present(navController, animated: true, completion: nil)
         }
+    }
+
+    // MARK: - Sorting
+
+    enum SortField: String {
+        case dateCreated = "date_created_gmt"
+        case dateModified = "dateModified"
+    }
+
+    func sortField() -> SortField {
+        if filterSettings.currentPostListFilter().filterType == .draft {
+            return .dateModified
+        } else {
+            return .dateCreated
+        }
+    }
+
+    func dateSortDescriptor() -> NSSortDescriptor {
+        let field = sortField()
+        // Ascending only for scheduled posts/pages.
+        let ascending = filterSettings.currentPostListFilter().filterType == .scheduled
+
+        return NSSortDescriptor(key: field.rawValue, ascending: ascending)
     }
 
     // MARK: - Searching
