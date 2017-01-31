@@ -347,7 +347,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     cell.approved       = [comment.status isEqualToString:CommentStatusApproved];
     cell.postTitle      = comment.titleForDisplay;
     cell.content        = comment.contentPreviewForDisplay;
-    cell.timestamp      = [comment.dateCreated shortString];
+    cell.timestamp      = [comment.dateCreated mediumString];
     
     // Don't download the gravatar, if it's the layout cell!
     if ([cell.reuseIdentifier isEqualToString:CommentsLayoutIdentifier]) {

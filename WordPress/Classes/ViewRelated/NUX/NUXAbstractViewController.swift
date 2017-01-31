@@ -140,7 +140,7 @@ class NUXAbstractViewController: UIViewController {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
 
-        return AccountHelper.isDotcomAvailable() || blogService!.blogCountForAllAccounts() > 0
+        return AccountHelper.isDotcomAvailable() || blogService.blogCountForAllAccounts() > 0
     }
 
 

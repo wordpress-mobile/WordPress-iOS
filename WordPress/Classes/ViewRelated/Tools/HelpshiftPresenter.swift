@@ -68,7 +68,7 @@ import UIKit
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
 
-        guard let defaultAccount = accountService?.defaultWordPressComAccount() else {
+        guard let defaultAccount = accountService.defaultWordPressComAccount() else {
             completion()
             return
         }
@@ -79,7 +79,7 @@ import UIKit
             return
         }
 
-        accountService?.updateUserDetails(for: defaultAccount, success: {
+        accountService.updateUserDetails(for: defaultAccount, success: {
             self.updateHelpshiftUserDetailsWithAccount(defaultAccount)
             completion()
             }, failure: { _ in

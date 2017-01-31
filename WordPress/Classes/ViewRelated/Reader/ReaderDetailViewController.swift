@@ -71,9 +71,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             oldValue?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
             oldValue?.inUse = false
 
-            if let newPost = post {
+            if let newPost = post, let context = newPost.managedObjectContext {
                 newPost.inUse = true
-                ContextManager.sharedInstance().save(newPost.managedObjectContext)
+                ContextManager.sharedInstance().save(context)
                 newPost.addObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath, options: .new, context: nil)
             }
             if isViewLoaded {
@@ -127,11 +127,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         let context = ContextManager.sharedInstance().mainContext
         guard let url = URL(string: path),
-            let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) else {
+            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) else {
             return nil
         }
 
-        guard let post = (try? context?.existingObject(with: objectID)) as? ReaderPost else {
+        guard let post = (try? context.existingObject(with: objectID)) as? ReaderPost else {
             return nil
         }
 
@@ -152,9 +152,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     deinit {
-        if let post = post {
+        if let post = post, let context = post.managedObjectContext {
             post.inUse = false
-            ContextManager.sharedInstance().save(post.managedObjectContext)
+            ContextManager.sharedInstance().save(context)
             post.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
         }
         NotificationCenter.default.removeObserver(self)
@@ -276,7 +276,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderPostService(managedObjectContext: context)
 
-        service?.fetchPost(
+        service.fetchPost(
         postID.uintValue,
         forSite: siteID.uintValue,
         success: {[weak self] (post: ReaderPost?) in
@@ -546,7 +546,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let request = NSMutableURLRequest(url: requestURL)
 
         let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let account = acctServ?.defaultWordPressComAccount() {
+        if let account = acctServ.defaultWordPressComAccount() {
             let token = account.authToken
             let headerValue = String(format: "Bearer %@", token!)
             request.addValue(headerValue, forHTTPHeaderField: "Authorization")
@@ -579,9 +579,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         // Byline
         let date = NSDate(timeIntervalSinceReferenceDate: (post?.dateForDisplay().timeIntervalSinceReferenceDate)!)
-        var byline = date.shortString()
+        var byline = date.mediumString()
         if let author = post?.authorForDisplay() {
-            byline = String(format: "%@ · %@", author, byline!)
+            byline = String(format: "%@ · %@", author, byline)
         }
         bylineLabel.text = byline
     }
@@ -912,8 +912,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             WPNotificationFeedbackGenerator.notificationOccurred(.success)
         }
 
-        let service = ReaderPostService(managedObjectContext: post.managedObjectContext)
-        service?.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
+        let service = ReaderPostService(managedObjectContext: post.managedObjectContext!)
+        service.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
             if let anError = error {
                 DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
             }
