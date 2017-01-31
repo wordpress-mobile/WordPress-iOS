@@ -51,7 +51,6 @@
 #import "NSString+Helpers.h"
 #import "NSAttributedString+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
-#import "NSDate+StringFormatting.h"
 #import "NSObject+Helpers.h"
 #import "NSString+Helpers.h"
 #import "NSURL+Util.h"
