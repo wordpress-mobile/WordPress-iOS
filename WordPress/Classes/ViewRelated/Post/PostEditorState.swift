@@ -64,9 +64,6 @@ fileprivate protocol PostEditorActionState {
     // Actions that change state
     func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState
-
-    // Things that change with each state
-    func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool
 }
 
 public protocol PostEditorStateContextDelegate {
@@ -98,7 +95,7 @@ public class PostEditorStateContext {
             }
         }
     }
-    fileprivate var isDirty = false
+
     fileprivate var isBeingPublished = false {
         didSet {
             if isBeingPublished != oldValue {
@@ -144,10 +141,6 @@ public class PostEditorStateContext {
         self.hasContent = hasContent
     }
 
-    func updated(isDirty: Bool) {
-        self.isDirty = isDirty
-    }
-
     func updated(isBeingPublished: Bool) {
         self.isBeingPublished = isBeingPublished
     }
@@ -168,9 +161,10 @@ public class PostEditorStateContext {
         return editorState.action().isPostPostShown
     }
 
-    var isSecondaryPublishButtonShown: Bool {
-        return editorState.isSecondaryPublishButtonShown(context: self)
-    }
+    // TODO: Replace with a method to bring label and such back for secondary publish button
+//    var isSecondaryPublishButtonShown: Bool {
+//        return editorState.isSecondaryPublishButtonShown(context: self)
+//    }
 
     var isPublishButtonEnabled: Bool {
         return publishActionAllowed
@@ -205,10 +199,6 @@ fileprivate class PostEditorStatePublish: PostEditorActionState {
 
         return self
     }
-
-    func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool {
-        return false
-    }
 }
 
 fileprivate class PostEditorStateSave: PostEditorActionState {
@@ -236,10 +226,6 @@ fileprivate class PostEditorStateSave: PostEditorActionState {
 
         return self
     }
-
-    func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool {
-        return false
-    }
 }
 
 fileprivate class PostEditorStateSchedule: PostEditorActionState {
@@ -254,10 +240,6 @@ fileprivate class PostEditorStateSchedule: PostEditorActionState {
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
         return self
     }
-
-    func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool {
-        return false
-    }
 }
 
 fileprivate class PostEditorStateSubmitForReview: PostEditorActionState {
@@ -271,10 +253,6 @@ fileprivate class PostEditorStateSubmitForReview: PostEditorActionState {
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
         return self
-    }
-
-    func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool {
-        return false
     }
 }
 
@@ -301,10 +279,6 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
         }
 
         return self
-    }
-
-    func isSecondaryPublishButtonShown(context: PostEditorStateContext) -> Bool {
-        return false
     }
 }
 
