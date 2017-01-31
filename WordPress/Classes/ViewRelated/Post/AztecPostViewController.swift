@@ -3,6 +3,7 @@ import UIKit
 import Aztec
 import Gridicons
 import WordPressShared
+import AFNetworking
 
 
 // MARK: - Aztec's Native Editor!
@@ -29,6 +30,7 @@ class AztecPostViewController: UIViewController {
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.keyboardDismissMode = .interactive
+        tv.mediaDelegate = self
 
         return tv
     }()
@@ -156,6 +158,7 @@ class AztecPostViewController: UIViewController {
         }
     }
 
+    fileprivate var activeMediaRequests = [AFImageDownloadReceipt]()
 
     // MARK: - Lifecycle Methods
 
@@ -170,6 +173,7 @@ class AztecPostViewController: UIViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+        cancelAllPendingMediaRequests()
     }
 
 
@@ -945,6 +949,52 @@ private extension AztecPostViewController {
     }
 }
 
+extension AztecPostViewController: TextViewMediaDelegate {
+
+    func textView(_ textView: TextView, imageAtUrl url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) -> UIImage {
+        var requestURL = url
+        let imageMaxDimension = max(UIScreen.main.nativeBounds.size.width, UIScreen.main.nativeBounds.size.height)
+        let size = CGSize(width: imageMaxDimension, height: imageMaxDimension)
+        let request: URLRequest
+        if self.post.blog.isPrivate() {
+            // private wpcom image needs special handling.
+            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
+            request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
+        } else {
+            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: requestURL)
+            request = URLRequest(url: requestURL)
+        }
+
+        let imageDownloader = AFImageDownloader.defaultInstance()
+        let receipt = imageDownloader.downloadImage(for: request, success: { (request, response, image) in
+            DispatchQueue.main.async(execute: {
+                success(image)
+            })
+        }) { (request, response, error) in
+            DispatchQueue.main.async(execute: {
+                failure()
+            })
+        }
+
+        if let receipt = receipt {
+            activeMediaRequests.append(receipt)
+        }
+
+        return Gridicon.iconOfType(.image)
+    }
+
+    func textView(_ textView: TextView, urlForImage image: UIImage) -> URL {
+
+        return URL(string:"")!
+    }
+
+    func cancelAllPendingMediaRequests() {
+        let imageDownloader = AFImageDownloader.defaultInstance()
+        for receipt in activeMediaRequests {
+            imageDownloader.cancelTask(for: receipt)
+        }
+    }
+}
 
 // MARK: - Constants
 fileprivate extension AztecPostViewController {
