@@ -256,7 +256,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(margin)-[headerView(44)]-(>=1)-[borderView(1@1000)]|"
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(margin)-[headerView(44)]-(>=1@900)-[borderView(1@1000)]|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
