@@ -233,7 +233,7 @@ extension InvitePersonViewController {
     }
 
     func sendInvitation(_ blog: Blog, recipient: String, role: Role, message: String) {
-        guard let service = PeopleService(blog: blog, context: context!) else {
+        guard let service = PeopleService(blog: blog, context: context) else {
             return
         }
 
@@ -271,7 +271,7 @@ extension InvitePersonViewController {
 private extension InvitePersonViewController {
 
     func validateInvitation() {
-        guard let usernameOrEmail = usernameOrEmail, let service = PeopleService(blog: blog, context: context!) else {
+        guard let usernameOrEmail = usernameOrEmail, let service = PeopleService(blog: blog, context: context) else {
             sendActionEnabled = false
             return
         }

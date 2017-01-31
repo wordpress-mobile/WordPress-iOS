@@ -214,7 +214,7 @@ open class NotificationSettingDetailsViewController: UITableViewController {
         }
 
         let context = ContextManager.sharedInstance().mainContext
-        let service = NotificationSettingsService(managedObjectContext: context!)
+        let service = NotificationSettingsService(managedObjectContext: context)
 
         service.updateSettings(settings!,
             stream              : stream!,

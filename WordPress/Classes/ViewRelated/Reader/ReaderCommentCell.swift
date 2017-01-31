@@ -165,7 +165,7 @@ class ReaderCommentCell: UITableViewCell {
             return
         }
 
-        timeLabel.text = (comment.dateForDisplay() as NSDate).shortString()
+        timeLabel.text = (comment.dateForDisplay() as NSDate).mediumString()
     }
 
 

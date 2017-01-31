@@ -59,7 +59,7 @@ import WordPressShared
         navigationItem.title = NSLocalizedString("Manage", comment: "Verb. Title of the screen for managing sharing buttons and settings related to sharing.")
 
         let service = SharingService(managedObjectContext: managedObjectContext)
-        buttons = service!.allSharingButtonsForBlog(self.blog)
+        buttons = service.allSharingButtonsForBlog(self.blog)
         configureTableView()
         setupSections()
 
@@ -528,7 +528,7 @@ import WordPressShared
         let context = ContextManager.sharedInstance().mainContext
         let service = BlogService(managedObjectContext: context)
         let dotComID = blog.dotComID
-        service?.updateSettings(
+        service.updateSettings(
             for: self.blog,
             success: {
                 WPAppAnalytics.track(.sharingButtonSettingsChanged, withBlogID: dotComID)
@@ -546,7 +546,7 @@ import WordPressShared
     ///
     func syncSharingButtons() {
         let service = SharingService(managedObjectContext: managedObjectContext)
-        service?.syncSharingButtonsForBlog(self.blog,
+        service.syncSharingButtonsForBlog(self.blog,
             success: { [weak self] in
                 self?.reloadButtons()
             },
@@ -561,7 +561,7 @@ import WordPressShared
     ///
     func syncSharingSettings() {
         let service = BlogService(managedObjectContext: managedObjectContext)
-        service?.syncSettings(for: blog, success: { [weak self] in
+        service.syncSettings(for: blog, success: { [weak self] in
                 self?.reloadSettingsSections()
             },
             failure: { (error: Error) in
@@ -638,7 +638,7 @@ import WordPressShared
     ///
     func reloadButtons() {
         let service = SharingService(managedObjectContext: managedObjectContext)
-        buttons = service!.allSharingButtonsForBlog(blog)
+        buttons = service.allSharingButtonsForBlog(blog)
 
         refreshButtonsSection()
         refreshMoreSection()
@@ -651,7 +651,7 @@ import WordPressShared
     ///
     func syncButtonChangesToBlog(_ refresh: Bool) {
         let service = SharingService(managedObjectContext: managedObjectContext)
-        service?.updateSharingButtonsForBlog(blog,
+        service.updateSharingButtonsForBlog(blog,
             sharingButtons: buttons,
             success: {[weak self] in
                 if refresh {

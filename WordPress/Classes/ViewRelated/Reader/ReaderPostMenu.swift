@@ -102,8 +102,9 @@ open class ReaderPostMenu {
         }
 
         SVProgressHUD.show()
-        let postService = ReaderPostService(managedObjectContext: post.managedObjectContext)
-        postService?.toggleFollowing(for: post, success: { () in
+
+        let postService = ReaderPostService(managedObjectContext: post.managedObjectContext!)
+        postService.toggleFollowing(for: post, success: { () in
             SVProgressHUD.showSuccess(withStatus: successMessage)
             }, failure: { (error: Error?) in
                 SVProgressHUD.dismiss()

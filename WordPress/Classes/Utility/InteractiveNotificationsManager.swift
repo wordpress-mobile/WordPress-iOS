@@ -122,7 +122,7 @@ final public class InteractiveNotificationsManager: NSObject {
         let context = ContextManager.sharedInstance().mainContext
         let service = CommentService(managedObjectContext: context)
 
-        service?.likeComment(withID: commentID, siteID: siteID, success: {
+        service.likeComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Liked comment from push notification")
         }, failure: { error in
             DDLogSwift.logInfo("Couldn't like comment from push notification")
@@ -140,7 +140,7 @@ final public class InteractiveNotificationsManager: NSObject {
         let context = ContextManager.sharedInstance().mainContext
         let service = CommentService(managedObjectContext: context)
 
-        service?.approveComment(withID: commentID, siteID: siteID, success: {
+        service.approveComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully moderated comment from push notification")
         }, failure: { error in
             DDLogSwift.logInfo("Couldn't moderate comment from push notification")
@@ -168,7 +168,7 @@ final public class InteractiveNotificationsManager: NSObject {
         let context = ContextManager.sharedInstance().mainContext
         let service = CommentService(managedObjectContext: context)
 
-        service?.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
+        service.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
             DDLogSwift.logInfo("Successfully replied comment from push notification")
         }, failure: { error in
             DDLogSwift.logInfo("Couldn't reply to comment from push notification")
