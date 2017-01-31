@@ -104,10 +104,46 @@ extension PostEditorStateTests {
 
         XCTAssertEqual(PostEditorAction.submitForReview, context.action, "should return 'Submit for Review' if the post is a draft and user can't publish")
     }
+
+
+
+    func testPublishEnabledHasContentNotPublishing() {
+        context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, delegate: self)
+        context.updated(hasContent: true)
+        context.updated(isBeingPublished: false)
+
+        XCTAssertTrue(context.isPublishButtonEnabled, "should return true if form is not publishing and post is not empty")
+    }
+
+    // Missing test: should return false if form is not publishing and post is not empty, but user is not verified
+
+    // Missing test: should return true if form is not published and post is new and has content, but is not dirty
+
+    func testPublishDisabledDuringPublishing() {
+        context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, delegate: self)
+        context.updated(isBeingPublished: true)
+
+        XCTAssertFalse(context.isPublishButtonEnabled, "should return false if form is publishing")
+    }
+
+    // Missing test: should return false if saving is blocked
+
+    // Missing test: should return false if not dirty and has no content
+
+    func testPublishDisabledNoContent() {
+        context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, delegate: self)
+        context.updated(hasContent: false)
+
+        XCTAssertFalse(context.isPublishButtonEnabled, "should return false if post has no content")
+    }
 }
 
 extension PostEditorStateTests: PostEditorStateContextDelegate {
     func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
+
+    }
+
+    func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool) {
 
     }
 }
