@@ -102,8 +102,11 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
 
             }, failure: { [weak self] (error: Error) in
                 WPAppAnalytics.track(.loginMagicLinkFailed)
-                self?.displayError(error as NSError)
-                self?.configureLoading(false)
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
+                strongSelf.configureLoading(false)
             })
     }
 
