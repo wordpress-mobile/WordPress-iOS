@@ -714,9 +714,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [service syncHierarchicalCommentsForPost:self.post page:1 success:^(NSInteger count, BOOL hasMore) {
         if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                success(hasMore);
-            });
+            success(hasMore);
         }
     } failure:failure];
     [self refreshNoResultsView];
@@ -730,9 +728,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
     [service syncHierarchicalCommentsForPost:self.post page:page success:^(NSInteger count, BOOL hasMore) {
         if (success) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                success(hasMore);
-            });
+            success(hasMore);
         }
     } failure:failure];
 }
