@@ -326,7 +326,6 @@ private extension NotificationsViewController {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         nc.addObserver(self, selector: #selector(notificationsWereUpdated), name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
-        nc.addObserver(self, selector: #selector(localeChanged), name: NSLocale.currentLocaleDidChangeNotification, object: nil)
     }
 
     func startListeningToAccountNotifications() {
@@ -338,7 +337,6 @@ private extension NotificationsViewController {
         let nc = NotificationCenter.default
         nc.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         nc.removeObserver(self, name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
-        nc.removeObserver(self, name: NSLocale.currentLocaleDidChangeNotification, object: nil)
     }
 
     @objc func applicationDidBecomeActive(_ note: Foundation.Notification) {
@@ -368,12 +366,6 @@ private extension NotificationsViewController {
 
         resetApplicationBadge()
         updateLastSeenTime()
-    }
-
-    @objc func localeChanged(_ note: Foundation.Notification) {
-        // Reload table data so we can ensure swipe actions are in the right place
-        // if we switched from/to a RTL language.
-        tableView.reloadData()
     }
 }
 
