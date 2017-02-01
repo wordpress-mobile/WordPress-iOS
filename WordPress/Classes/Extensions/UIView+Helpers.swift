@@ -79,4 +79,8 @@ extension UIView {
             }
         }
     }
+
+    public func userInterfaceLayoutDirection() -> UIUserInterfaceLayoutDirection {
+        return UIView.userInterfaceLayoutDirection(for: semanticContentAttribute)
+    }
 }

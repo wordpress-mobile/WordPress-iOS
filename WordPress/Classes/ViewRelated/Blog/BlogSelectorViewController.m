@@ -319,7 +319,7 @@ static CGFloat BlogCellRowHeight = 74.0;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    cell.textLabel.textAlignment = NSTextAlignmentLeft;
+    cell.textLabel.textAlignment = NSTextAlignmentNatural;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
 
