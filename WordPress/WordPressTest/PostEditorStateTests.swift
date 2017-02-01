@@ -43,6 +43,20 @@ class PostEditorStateTests: XCTestCase {
 
         XCTAssertEqual(PostEditorAction.publish, context.action)
     }
+
+    func testContextScheduledPost() {
+        context = PostEditorStateContext(originalPostStatus: .scheduled, userCanPublish: true, delegate: self)
+
+        XCTAssertEqual(PostEditorAction.update, context.action, "Scheduled posts should show Update")
+    }
+
+    func testContextScheduledPostUpdated() {
+        context = PostEditorStateContext(originalPostStatus: .scheduled, userCanPublish: true, delegate: self)
+
+        context.updated(postStatus: .scheduled)
+
+        XCTAssertEqual(PostEditorAction.update, context.action, "Scheduled posts that get updated should still show Update")
+    }
 }
 
 // These tests are all based off of Calypso unit tests
