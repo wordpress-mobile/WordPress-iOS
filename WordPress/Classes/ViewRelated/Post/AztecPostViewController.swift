@@ -173,14 +173,12 @@ class AztecPostViewController: UIViewController {
     /// Maintainer of state for editor - like for post button
     ///
     fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
-        let originalPostStatus: PostStatus
+        var originalPostStatus: PostStatus? = nil
 
         if let originalPost = self.post.original,
             let postStatus = originalPost.status,
             originalPost.hasRemote() {
-            originalPostStatus = PostStatus(rawValue: postStatus) ?? .draft
-        } else {
-            originalPostStatus = .draft
+            originalPostStatus = PostStatus(rawValue: postStatus)
         }
 
         // TODO: Determine if user can actually publish to site or not
@@ -215,11 +213,11 @@ class AztecPostViewController: UIViewController {
 
         WPFontManager.loadMerriweatherFontFamily()
 
+        createRevisionOfPost()
+
         configureNavigationBar()
         configureView()
         configureSubviews()
-
-        createRevisionOfPost()
 
         view.setNeedsUpdateConstraints()
     }
