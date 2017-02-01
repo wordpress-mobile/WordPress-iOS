@@ -190,12 +190,12 @@ import WordPressShared.WPStyleGuide
         textView.layoutIfNeeded()
 
         // Calculate the entire control's size
-        let topPadding      = textView.constraintForAttribute(.top)    ?? textViewDefaultPadding
-        let bottomPadding   = textView.constraintForAttribute(.bottom) ?? textViewDefaultPadding
+        let topMargin      = bezierContainerView.layoutMargins.top
+        let bottomMargin   = bezierContainerView.layoutMargins.bottom
 
         let contentHeight   = textView.contentSize.height
         let fullWidth       = frame.width
-        let textHeight      = floor(contentHeight + topPadding + bottomPadding)
+        let textHeight      = floor(contentHeight + topMargin + bottomMargin)
 
         let newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
         let intrinsicSize   = CGSize(width: fullWidth, height: newHeight)
@@ -210,12 +210,12 @@ import WordPressShared.WPStyleGuide
 
         // Load the nib + add its container view
         bundle = Bundle.main.loadNibNamed("ReplyTextView", owner: self, options: nil) as NSArray?
-        addSubview(containerView)
+        addSubview(contentView)
 
         // Setup Layout
         self.translatesAutoresizingMaskIntoConstraints = false
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        pinSubviewToAllEdges(containerView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        pinSubviewToAllEdges(contentView)
 
         // Setup the TextView
         textView.delegate               = self
@@ -242,11 +242,11 @@ import WordPressShared.WPStyleGuide
         replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor,  for: UIControlState())
 
         // Background
-        layoutView.backgroundColor      = WPStyleGuide.Reply.backgroundColor
-        bezierView.outerColor           = WPStyleGuide.Reply.backgroundColor
+        contentView.backgroundColor      = WPStyleGuide.Reply.backgroundColor
+        bezierContainerView.outerColor           = WPStyleGuide.Reply.backgroundColor
 
         // Bezier
-        bezierView.bezierColor          = WPStyleGuide.Reply.separatorColor
+        bezierContainerView.bezierColor          = WPStyleGuide.Reply.separatorColor
 
         // Separators
         separatorsView.topColor         = WPStyleGuide.Reply.separatorColor
@@ -295,9 +295,8 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Constants
-    fileprivate let textViewDefaultPadding  = CGFloat(12)
-    fileprivate let textViewMaxHeight       = CGFloat(82)   // Fits 3 lines onscreen
-    fileprivate let textViewMinHeight       = CGFloat(44)
+    fileprivate let textViewMaxHeight       = CGFloat(88)   // Fits 3 lines onscreen
+    fileprivate let textViewMinHeight       = CGFloat(48)
 
     // MARK: - Private Properties
     fileprivate var bundle: NSArray?
@@ -306,8 +305,7 @@ import WordPressShared.WPStyleGuide
     @IBOutlet fileprivate var textView: UITextView!
     @IBOutlet fileprivate var placeholderLabel: UILabel!
     @IBOutlet fileprivate var replyButton: UIButton!
-    @IBOutlet fileprivate var bezierView: ReplyBezierView!
+    @IBOutlet fileprivate var bezierContainerView: ReplyBezierView!
     @IBOutlet fileprivate var separatorsView: SeparatorsView!
-    @IBOutlet fileprivate var layoutView: UIView!
-    @IBOutlet fileprivate var containerView: UIView!
+    @IBOutlet fileprivate var contentView: UIView!
 }
