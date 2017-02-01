@@ -290,10 +290,9 @@ fileprivate extension PostEditorActionState {
             return false
         }
 
-        let oneMinute: TimeInterval = 60.0
-        let dateOneMinuteFromNow = Date(timeInterval: oneMinute, since: Date())
+        let comparison = Calendar.current.compare(Date(), to: date, toGranularity: .minute)
 
-        return dateOneMinuteFromNow < date
+        return comparison == .orderedAscending
     }
 
     func isPastDated(_ date: Date?) -> Bool {
