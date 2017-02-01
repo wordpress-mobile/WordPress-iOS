@@ -814,7 +814,11 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         cell.textField.returnKeyType = UIReturnKeyDone;
         cell.textField.delegate = self;
         [WPStyleGuide configureTableViewTextCell:cell];
-        cell.textField.textAlignment = NSTextAlignmentRight;
+        if ([self.view userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
+            cell.textField.textAlignment = NSTextAlignmentRight;
+        } else {
+            cell.textField.textAlignment = NSTextAlignmentLeft;
+        }
     }
     cell.tag = 0;
     return cell;

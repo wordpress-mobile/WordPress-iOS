@@ -384,6 +384,9 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [metaButton setImage:image forState:UIControlStateHighlighted];
     metaButton.selected = NO;
     metaButton.hidden = NO;
+    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionRightToLeft) {
+        [metaButton flipInsetsForRightToLeftLayoutDirection];
+    }
 }
 
 
@@ -411,6 +414,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     }
     self.currentActionBarMode = ActionBarModePublish;
 
+    UIEdgeInsets imageInsets = ActionbarButtonImageInsets;
+    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionRightToLeft) {
+        imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:imageInsets];
+    }
+
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *items = [NSMutableArray array];
     PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Edit", @"Label for the edit post button. Tapping displays the editor.")
@@ -419,7 +427,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf editPostAction];
     };
-    item.imageInsets = ActionbarButtonImageInsets;
+    item.imageInsets = imageInsets;
     [items addObject:item];
 
     item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"View", @"Label for the view post button. Tapping displays the post as it appears on the web.")
@@ -428,7 +436,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf viewPostAction];
     };
-    item.imageInsets = ActionbarButtonImageInsets;
+    item.imageInsets = imageInsets;
     [items addObject:item];
 
     if ([self.post supportsStats]) {
@@ -438,7 +446,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         item.callback = ^{
             [weakSelf statsPostAction];
         };
-        item.imageInsets = ActionbarButtonImageInsets;
+        item.imageInsets = imageInsets;
         [items addObject:item];
     }
 
@@ -448,7 +456,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf trashPostAction];
     };
-    item.imageInsets = ActionbarButtonImageInsets;
+    item.imageInsets = imageInsets;
     [items addObject:item];
 
     [self.actionBar setItems:items];
@@ -461,6 +469,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     }
     self.currentActionBarMode = ActionBarModeDraft;
 
+    UIEdgeInsets imageInsets = ActionbarButtonImageInsets;
+    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionRightToLeft) {
+        imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:imageInsets];
+    }
+
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *items = [NSMutableArray array];
     PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Edit", @"Label for the edit post button. Tapping displays the editor.")
@@ -469,7 +482,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf editPostAction];
     };
-    item.imageInsets = ActionbarButtonImageInsets;
+    item.imageInsets = imageInsets;
     [items addObject:item];
 
     item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Preview", @"Label for the preview post button. Tapping shows a preview of the post.")
@@ -478,7 +491,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf viewPostAction];
     };
-    item.imageInsets = ActionbarButtonImageInsets;
+    item.imageInsets = imageInsets;
     [items addObject:item];
 
     item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Publish", @"Label for the publish button. Tapping publishes a draft post.")
@@ -487,7 +500,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf publishPostAction];
     };
-    item.imageInsets = ActionbarButtonImageInsets;
+    item.imageInsets = imageInsets;
     [items addObject:item];
 
     item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Trash", @"Label for the trash post button. Tapping moves a post to the trash bin.")
@@ -496,7 +509,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf trashPostAction];
     };
-    item.imageInsets = ActionbarButtonImageInsets;
+    item.imageInsets = imageInsets;
     [items addObject:item];
 
     [self.actionBar setItems:items];
@@ -509,6 +522,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     }
     self.currentActionBarMode = ActionBarModeTrash;
 
+    UIEdgeInsets imageInsets = ActionbarButtonImageInsets;
+    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionRightToLeft) {
+        imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:imageInsets];
+    }
+
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *items = [NSMutableArray array];
     PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Restore", @"Label for restoring a trashed post.")
@@ -517,7 +535,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf restorePostAction];
     };
-    item.imageInsets = ActionbarButtonImageInsets;
+    item.imageInsets = imageInsets;
     [items addObject:item];
 
     item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Delete", @"Label for the delete post buton. Tapping permanently deletes a post.")
@@ -526,7 +544,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf trashPostAction];
     };
-    item.imageInsets = ActionbarButtonImageInsets;
+    item.imageInsets = imageInsets;
     [items addObject:item];
 
     [self.actionBar setItems:items];
