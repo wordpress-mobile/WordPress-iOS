@@ -3,7 +3,7 @@ import WordPressShared
 import WordPressComAnalytics
 
 
-open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration, DefinesVariableStatusBarStyle {
+open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
 
     static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
 
@@ -1102,3 +1102,6 @@ extension ReaderDetailViewController : UIScrollViewDelegate {
 
 // Expand this view controller to full screen if possible
 extension ReaderDetailViewController: PrefersFullscreenDisplay {}
+
+// Let's the split view know this vc changes the status bar style.
+extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
