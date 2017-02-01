@@ -3,6 +3,7 @@ import UIKit
 import Aztec
 import Gridicons
 import WordPressShared
+import AFNetworking
 
 
 // MARK: - Aztec's Native Editor!
@@ -29,6 +30,7 @@ class AztecPostViewController: UIViewController {
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.keyboardDismissMode = .interactive
+        tv.mediaDelegate = self
 
         return tv
     }()
@@ -156,6 +158,7 @@ class AztecPostViewController: UIViewController {
         }
     }
 
+    fileprivate var activeMediaRequests = [AFImageDownloadReceipt]()
 
     // MARK: - Lifecycle Methods
 
@@ -170,6 +173,7 @@ class AztecPostViewController: UIViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+        cancelAllPendingMediaRequests()
     }
 
 
@@ -444,6 +448,10 @@ private extension AztecPostViewController {
             self.mode.toggle()
         }
 
+        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { _ in
+            self.displayPreview()
+        }
+
         alert.addDefaultActionWithTitle(MoreSheetAlert.optionsTitle) { _ in
             self.displayPostOptions()
         }
@@ -471,6 +479,12 @@ private extension AztecPostViewController {
         let settingsViewController = PostSettingsViewController(post: post)
         settingsViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+
+    func displayPreview() {
+        let previewController = PostPreviewViewController(post: post)
+        previewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(previewController, animated: true)
     }
 }
 
@@ -945,6 +959,52 @@ private extension AztecPostViewController {
     }
 }
 
+extension AztecPostViewController: TextViewMediaDelegate {
+
+    func textView(_ textView: TextView, imageAtUrl url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) -> UIImage {
+        var requestURL = url
+        let imageMaxDimension = max(UIScreen.main.nativeBounds.size.width, UIScreen.main.nativeBounds.size.height)
+        let size = CGSize(width: imageMaxDimension, height: imageMaxDimension)
+        let request: URLRequest
+        if self.post.blog.isPrivate() {
+            // private wpcom image needs special handling.
+            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
+            request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
+        } else {
+            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: requestURL)
+            request = URLRequest(url: requestURL)
+        }
+
+        let imageDownloader = AFImageDownloader.defaultInstance()
+        let receipt = imageDownloader.downloadImage(for: request, success: { (request, response, image) in
+            DispatchQueue.main.async(execute: {
+                success(image)
+            })
+        }) { (request, response, error) in
+            DispatchQueue.main.async(execute: {
+                failure()
+            })
+        }
+
+        if let receipt = receipt {
+            activeMediaRequests.append(receipt)
+        }
+
+        return Gridicon.iconOfType(.image)
+    }
+
+    func textView(_ textView: TextView, urlForImage image: UIImage) -> URL {
+        //TODO: add support for saving images that result from a copy/paste to the editor, this should save locally to file, and import to the media library.
+        return URL(string:"")!
+    }
+
+    func cancelAllPendingMediaRequests() {
+        let imageDownloader = AFImageDownloader.defaultInstance()
+        for receipt in activeMediaRequests {
+            imageDownloader.cancelTask(for: receipt)
+        }
+    }
+}
 
 // MARK: - Constants
 fileprivate extension AztecPostViewController {
@@ -960,6 +1020,7 @@ fileprivate extension AztecPostViewController {
     struct MoreSheetAlert {
         static let htmlTitle    = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
         static let richTitle    = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
         static let optionsTitle = NSLocalizedString("Options", comment: "Displays the Post's Options")
         static let cancelTitle  = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
     }
