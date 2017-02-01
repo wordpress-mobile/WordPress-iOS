@@ -914,7 +914,6 @@ extension AztecPostViewController {
 
         post = originalPost
         post.deleteRevision()
-        post.remove()
 
         ContextManager.sharedInstance().save(context)
     }
