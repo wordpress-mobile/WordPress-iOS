@@ -102,6 +102,13 @@ class WPSplitViewController: UISplitViewController {
         return .lightContent
     }
 
+    override var childViewControllerForStatusBarStyle: UIViewController? {
+        if let _ = topDetailViewController as? DefinesVariableStatusBarStyle {
+            return topDetailViewController
+        }
+        return nil
+    }
+
     var overrideTraitCollection: UITraitCollection? = nil
 
     override var traitCollection: UITraitCollection {
@@ -597,6 +604,10 @@ extension UIViewController {
 /// delegate method detects that there are no fullscreen view controllers left
 /// in the stack.
 protocol PrefersFullscreenDisplay: class {}
+
+/// Used to indicate whether a view controller varies its preferred status bar style.
+///
+protocol DefinesVariableStatusBarStyle: class {}
 
 // MARK: - WPSplitViewControllerDetailProvider Protocol
 
