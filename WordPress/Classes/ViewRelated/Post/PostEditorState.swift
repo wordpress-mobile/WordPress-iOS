@@ -138,6 +138,7 @@ public class PostEditorStateContext {
         editorState = updatedState
     }
 
+    // TODO: Add isDirty to the state context for enabling/disabling the button
     func updated(hasContent: Bool) {
         self.hasContent = hasContent
     }
