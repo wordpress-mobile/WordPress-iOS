@@ -308,7 +308,7 @@ import WordPressShared
         configureViewLoading(true)
 
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.isEmailAvailable(emailOrUsername,
+        service.isEmailAvailable(emailOrUsername,
             success: { [weak self] (available: Bool) in
                 self?.configureViewLoading(false)
                 if (available) {
@@ -321,8 +321,11 @@ import WordPressShared
             },
             failure: { [weak self] (error: Error) in
                 DDLogSwift.logError(error.localizedDescription)
-                self?.configureViewLoading(false)
-                self?.displayError(error as NSError)
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.configureViewLoading(false)
+                strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
             })
     }
 

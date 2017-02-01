@@ -140,7 +140,7 @@ class NUXAbstractViewController: UIViewController {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
 
-        return AccountHelper.isDotcomAvailable() || blogService!.blogCountForAllAccounts() > 0
+        return AccountHelper.isDotcomAvailable() || blogService.blogCountForAllAccounts() > 0
     }
 
 
@@ -148,11 +148,11 @@ class NUXAbstractViewController: UIViewController {
     ///
     /// - Parameter error: An NSError instance
     ///
-    func displayError(_ error: NSError) {
+    func displayError(_ error: NSError, sourceTag: SupportSourceTag) {
         let presentingController = navigationController ?? self
         let controller = SigninErrorViewController.controller()
         controller.presentFromController(presentingController)
-        controller.displayError(error, loginFields: loginFields, delegate: self)
+        controller.displayError(error, loginFields: loginFields, delegate: self, sourceTag: sourceTag)
     }
 
 

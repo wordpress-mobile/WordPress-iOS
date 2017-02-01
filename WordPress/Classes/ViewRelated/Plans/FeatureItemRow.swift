@@ -6,7 +6,7 @@ struct FeatureItemRow: ImmuTableRow {
 
     let title: String
     let description: String
-    let iconURL: URL
+    let iconURL: URL?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -18,7 +18,9 @@ struct FeatureItemRow: ImmuTableRow {
             cell.featureDescriptionLabel?.attributedText = attributedDescriptionText(description, font: featureDescriptionLabel.font)
         }
 
-        cell.featureIconImageView?.setImageWith(iconURL, placeholderImage: nil)
+        if let iconURL = iconURL {
+            cell.featureIconImageView?.setImageWith(iconURL, placeholderImage: nil)
+        }
 
         cell.featureTitleLabel.textColor = WPStyleGuide.darkGrey()
         cell.featureDescriptionLabel.textColor = WPStyleGuide.grey()
