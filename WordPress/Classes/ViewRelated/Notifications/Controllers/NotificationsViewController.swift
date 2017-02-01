@@ -629,36 +629,72 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func configureCellActions(_ cell: NoteTableViewCell, note: Notification) {
-        var leadingButtons = [MGSwipeButton]()
-        var leadingExpansionButton = -1
+        // Let "Mark as Read" expand
+        let leadingExpansionButton = 0
 
-        if !note.read {
-            leadingButtons = [
-                MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"), backgroundColor: WPStyleGuide.greyDarken20(), callback: { _ in
-                    NotificationSyncMediator()?.markAsRead(note)
-                    return true
-                })
-            ]
-            leadingExpansionButton = 0
-        }
-
-        let trailingButtons = cellRightButtons(note: note)
+        // Don't expand "Trash"
         let trailingExpansionButton = -1
 
         if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .leftToRight {
-            cell.leftButtons = leadingButtons
+            cell.leftButtons = leadingButtons(note: note)
             cell.leftExpansion.buttonIndex = leadingExpansionButton
-            cell.rightButtons = trailingButtons
+            cell.rightButtons = trailingButtons(note: note)
             cell.rightExpansion.buttonIndex = trailingExpansionButton
         } else {
-            cell.rightButtons = leadingButtons
+            cell.rightButtons = leadingButtons(note: note)
             cell.rightExpansion.buttonIndex = trailingExpansionButton
-            cell.leftButtons = trailingButtons
+            cell.leftButtons = trailingButtons(note: note)
             cell.leftExpansion.buttonIndex = trailingExpansionButton
         }
     }
 
-    private func cellRightButtons(note: Notification) -> [MGSwipeButton] {
+    func sectionNameKeyPath() -> String {
+        return "sectionIdentifier"
+    }
+
+    func entityName() -> String {
+        return Notification.classNameWithoutNamespaces()
+    }
+
+    func tableViewDidChangeContent(_ tableView: UITableView) {
+        // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
+        // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+        //
+        for indexPath in tableView.indexPathsForVisibleRows ?? [] {
+            guard let cell = tableView.cellForRow(at: indexPath) as? NoteTableViewCell else {
+                continue
+            }
+
+            let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
+            cell.showsBottomSeparator = !isLastRow
+        }
+
+        // Update NoResults View
+        showNoResultsViewIfNeeded()
+    }
+}
+
+
+
+// MARK: - Actions
+//
+
+
+private extension NotificationsViewController {
+    func leadingButtons(note: Notification) -> [MGSwipeButton] {
+        guard note.read else {
+            return []
+        }
+
+        return [
+            MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"), backgroundColor: WPStyleGuide.greyDarken20(), callback: { _ in
+                NotificationSyncMediator()?.markAsRead(note)
+                return true
+            })
+        ]
+    }
+
+    func trailingButtons(note: Notification) -> [MGSwipeButton] {
         var rightButtons = [MGSwipeButton]()
 
         guard let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
@@ -708,31 +744,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         }
 
         return rightButtons
-    }
-
-    func sectionNameKeyPath() -> String {
-        return "sectionIdentifier"
-    }
-
-    func entityName() -> String {
-        return Notification.classNameWithoutNamespaces()
-    }
-
-    func tableViewDidChangeContent(_ tableView: UITableView) {
-        // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
-        // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
-        //
-        for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            guard let cell = tableView.cellForRow(at: indexPath) as? NoteTableViewCell else {
-                continue
-            }
-
-            let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
-            cell.showsBottomSeparator = !isLastRow
-        }
-
-        // Update NoResults View
-        showNoResultsViewIfNeeded()
     }
 }
 
