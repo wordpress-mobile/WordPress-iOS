@@ -71,6 +71,8 @@ class AztecPostViewController: UIViewController {
         tf.textColor = UIColor.darkText
         tf.translatesAutoresizingMaskIntoConstraints = false
 
+        tf.addTarget(self, action: #selector(titleTextFieldDidChange), for: [.editingChanged])
+
         return tf
     }()
 
@@ -204,6 +206,7 @@ class AztecPostViewController: UIViewController {
     deinit {
         NotificationCenter.default.removeObserver(self)
         removeObservers(fromPost: post)
+
         cancelAllPendingMediaRequests()
     }
 
@@ -535,9 +538,21 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
             let dateCreated = post.dateCreated ?? Date()
             postEditorStateContext.updated(publishDate: dateCreated)
         } else if keyPath == #keyPath(AbstractPost.content) {
-            let characterCount = post.content?.characters.count ?? 0
-            postEditorStateContext.updated(hasContent: characterCount > 0)
+            postEditorStateContext.updated(hasContent: editorHasContent)
         }
+    }
+
+    internal func titleTextFieldDidChange(textField: UITextField) {
+        postEditorStateContext.updated(hasContent: editorHasContent)
+    }
+
+    // TODO: We should be tracking hasContent and isDirty separately for enabling button in the state context
+    private var editorHasContent: Bool {
+        let contentCharacterCount = post.content?.characters.count ?? 0
+        // Title isn't updated on post until editing is done - this looks at realtime changes
+        let titleCharacterCount = titleTextField.text?.characters.count ?? 0
+
+        return contentCharacterCount + titleCharacterCount > 0
     }
 
     internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
