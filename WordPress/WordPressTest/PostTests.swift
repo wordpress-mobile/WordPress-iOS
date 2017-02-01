@@ -312,6 +312,7 @@ class PostTests: XCTestCase {
         let original = newTestPost()
         var revision = original.createRevision() as! Post
 
+        XCTAssertFalse(original.hasLocalChanges())
         XCTAssertFalse(revision.hasLocalChanges())
 
         revision.tags = "Ahoi"
