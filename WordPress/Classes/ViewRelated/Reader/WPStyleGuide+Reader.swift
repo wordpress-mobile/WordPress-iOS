@@ -28,7 +28,7 @@ extension WPStyleGuide {
         paragraphStyle.lineSpacing = Cards.defaultLineSpacing
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font!,
+            NSFontAttributeName: font,
         ]
     }
 
@@ -68,7 +68,7 @@ extension WPStyleGuide {
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font!,
+            NSFontAttributeName: font,
             NSForegroundColorAttributeName: darkGrey()
         ]
     }
@@ -82,7 +82,7 @@ extension WPStyleGuide {
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font!,
+            NSFontAttributeName: font,
             NSForegroundColorAttributeName: grey()
         ]
     }
@@ -96,7 +96,7 @@ extension WPStyleGuide {
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font!,
+            NSFontAttributeName: font,
             NSForegroundColorAttributeName: grey()
         ]
     }
@@ -110,7 +110,7 @@ extension WPStyleGuide {
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font!
+            NSFontAttributeName: font
         ]
     }
 
@@ -124,7 +124,7 @@ extension WPStyleGuide {
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font!
+            NSFontAttributeName: font
         ]
     }
 
@@ -133,7 +133,7 @@ extension WPStyleGuide {
         let font = WPFontManager.systemRegularFont(ofSize: fontSize)
 
         return [
-            NSFontAttributeName: font!,
+            NSFontAttributeName: font,
         ]
     }
 
@@ -150,7 +150,7 @@ extension WPStyleGuide {
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font!
+            NSFontAttributeName: font
         ]
     }
 
@@ -167,7 +167,7 @@ extension WPStyleGuide {
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font!
+            NSFontAttributeName: font
         ]
     }
 

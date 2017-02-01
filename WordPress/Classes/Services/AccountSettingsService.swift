@@ -116,7 +116,7 @@ class AccountSettingsService {
 
     func primarySiteNameForSettings(_ settings: AccountSettings) -> String? {
         let service = BlogService(managedObjectContext: context)
-        let blog = service?.blog(byBlogId: NSNumber(value: settings.primarySiteID))
+        let blog = service.blog(byBlogId: NSNumber(value: settings.primarySiteID))
 
         return blog?.settings?.name
     }
@@ -159,7 +159,7 @@ class AccountSettingsService {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedAccountSettings.entityName)
         request.predicate = NSPredicate(format: "account.userID = %d", userID)
         request.fetchLimit = 1
-        guard let results = (try? context?.fetch(request)) as? [ManagedAccountSettings] else {
+        guard let results = (try? context.fetch(request)) as? [ManagedAccountSettings] else {
             return nil
         }
         return results.first
@@ -167,12 +167,12 @@ class AccountSettingsService {
 
     fileprivate func createAccountSettings(_ userID: Int, settings: AccountSettings) {
         let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService?.findAccount(withUserID: NSNumber(value: userID)) else {
+        guard let account = accountService.findAccount(withUserID: NSNumber(value: userID)) else {
             DDLogSwift.logError("Tried to create settings for a missing account (ID: \(userID)): \(settings)")
             return
         }
 
-        if let managedSettings = NSEntityDescription.insertNewObject(forEntityName: ManagedAccountSettings.entityName, into: context!) as? ManagedAccountSettings {
+        if let managedSettings = NSEntityDescription.insertNewObject(forEntityName: ManagedAccountSettings.entityName, into: context) as? ManagedAccountSettings {
             managedSettings.updateWith(settings)
             managedSettings.account = account
         }

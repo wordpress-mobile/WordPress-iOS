@@ -21,6 +21,11 @@ import WordPressShared
         return facade
     }()
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpOrgLogin
+        }
+    }
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
@@ -228,7 +233,7 @@ import WordPressShared
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
         loginFields.username = usernameField.nonNilTrimmedText()
         loginFields.password = passwordField.nonNilTrimmedText()
-        loginFields.siteUrl = SigninHelpers.baseSiteURL(siteURLField.nonNilTrimmedText())
+        loginFields.siteUrl = SigninHelpers.baseSiteURL(string: siteURLField.nonNilTrimmedText())
 
         configureForgotPasswordButton()
         configureSubmitButton(animating: false)
@@ -288,6 +293,12 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
         BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
             self?.configureViewLoading(false)
 
+            let context = ContextManager.sharedInstance().mainContext
+            let service = BlogService(managedObjectContext: context)
+            if let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) {
+                service.flagBlog(asLastUsed: blog)
+            }
+
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
 
             self?.dismiss()
@@ -304,7 +315,7 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
     func displayRemoteError(_ error: Error!) {
         displayLoginMessage("")
         configureViewLoading(false)
-        displayError(error as NSError)
+        displayError(error as NSError, sourceTag: sourceTag)
     }
 
 

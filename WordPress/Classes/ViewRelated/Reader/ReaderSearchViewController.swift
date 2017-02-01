@@ -45,7 +45,7 @@ import Gridicons
 
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context)
-        guard let topic = service?.find(withPath: path) as? ReaderSearchTopic else {
+        guard let topic = service.find(withPath: path) as? ReaderSearchTopic else {
             return ReaderSearchViewController.controller()
         }
 
@@ -207,7 +207,7 @@ import Gridicons
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context)
 
-        let topic = service?.searchTopic(forSearchPhrase: phrase)
+        let topic = service.searchTopic(forSearchPhrase: phrase)
         streamController.readerTopic = topic
         WPAppAnalytics.track(.readerSearchPerformed)
 
@@ -216,7 +216,7 @@ import Gridicons
         endSearch()
 
         if let previousTopic = previousTopic {
-            service?.delete(previousTopic)
+            service.delete(previousTopic)
         }
     }
 
@@ -236,9 +236,12 @@ import Gridicons
         controller.delegate = self
         addChildViewController(controller)
 
-        let autoView = controller.view
-        autoView?.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(autoView!)
+        guard let autoView = controller.view, let searchBar = searchBar else {
+            fatalError("Unexpected")
+        }
+
+        autoView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(autoView)
 
         let views = [
             "searchBar": searchBar,
@@ -257,7 +260,7 @@ import Gridicons
             views: views))
         // Center on the search bar.
         view.addConstraint(NSLayoutConstraint(
-            item: autoView!,
+            item: autoView,
             attribute: .centerX,
             relatedBy: .equal,
             toItem: searchBar,

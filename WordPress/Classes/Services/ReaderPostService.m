@@ -204,10 +204,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 - (void)refreshPostsForFollowedTopic
 {
-    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    // Do all of this work on a background thread.
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
     ReaderAbstractTopic *topic = [topicService topicForFollowedSites];
     if (topic) {
-        [self fetchPostsForTopic:topic earlierThan:[NSDate date] deletingEarlier:YES success:nil failure:nil];
+        ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+        [service fetchPostsForTopic:topic earlierThan:[NSDate date] deletingEarlier:YES success:nil failure:nil];
     }
 }
 

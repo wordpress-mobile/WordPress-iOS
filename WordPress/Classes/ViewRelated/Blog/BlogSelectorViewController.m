@@ -40,6 +40,7 @@ static CGFloat BlogCellRowHeight = 74.0;
         _successHandler = successHandler;
         _dismissHandler = dismissHandler;
         _displaysCancelButton = YES;
+        _displaysNavigationBarWhenSearching = YES;
     }
 
     return self;
@@ -118,6 +119,17 @@ static CGFloat BlogCellRowHeight = 74.0;
     self.resultsController.delegate = nil;
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    // Note:
+    // We're toggling the SearchController as inactive, since, on iPad devices, upon rotation, an
+    // active UISearchBar might break violently when Adaptivity kicks in.
+    //
+    self.searchController.active = NO;
+}
+
 - (void)configureSearchController
 {
     self.extendedLayoutIncludesOpaqueBars = YES;
@@ -125,7 +137,7 @@ static CGFloat BlogCellRowHeight = 74.0;
 
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.dimsBackgroundDuringPresentation = NO;
-
+    self.searchController.hidesNavigationBarDuringPresentation = !_displaysNavigationBarWhenSearching;
     self.searchController.delegate = self;
     self.searchController.searchResultsUpdater = self;
 

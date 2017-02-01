@@ -219,7 +219,7 @@ import WordPressShared
 
         isSyncing = true
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.fetchReaderMenu(success: { [weak self] in
+        service.fetchReaderMenu(success: { [weak self] in
                 self?.didSyncTopics = true
                 self?.cleanupAfterSync()
             }, failure: { [weak self] (error) in
@@ -246,7 +246,7 @@ import WordPressShared
     ///
     func openPost(_ postID: NSNumber, onBlog blogID: NSNumber) {
         let controller = ReaderDetailViewController.controllerWithPostID(postID, siteID: blogID)
-        navigationController?.pushViewController(controller, animated: true)
+        navigationController?.pushFullscreenViewController(controller, animated: true)
     }
 
 
@@ -338,7 +338,7 @@ import WordPressShared
     ///
     func unfollowTagTopic(_ topic: ReaderTagTopic) {
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.unfollowTag(topic, withSuccess: nil) { (error) in
+        service.unfollowTag(topic, withSuccess: nil) { (error) in
             DDLogSwift.logError("Could not unfollow topic \(topic), \(error)")
 
             let title = NSLocalizedString("Could Not Remove Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
@@ -358,11 +358,11 @@ import WordPressShared
     func followTagNamed(_ tagName: String) {
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        service?.followTagNamed(tagName, withSuccess: { [weak self] in
+        service.followTagNamed(tagName, withSuccess: { [weak self] in
             WPNotificationFeedbackGenerator.notificationOccurred(.success)
 
             // A successful follow makes the new tag the currentTopic.
-            if let tag = service?.currentTopic as? ReaderTagTopic {
+            if let tag = service.currentTopic as? ReaderTagTopic {
                 self?.scrollToTag(tag)
             }
 
@@ -567,7 +567,7 @@ extension ReaderMenuViewController : WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
         if restorableSelectedIndexPath == defaultIndexPath {
             let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            if let topic = service?.topicForDiscover() {
+            if let topic = service.topicForDiscover() {
                 return ReaderStreamViewController.controllerWithTopic(topic)
             } else {
                 restorableSelectedIndexPath = IndexPath(row: 0, section: 0)

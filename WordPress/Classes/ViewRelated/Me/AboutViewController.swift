@@ -154,7 +154,7 @@ open class AboutViewController: UITableViewController {
         // manually decides to rate the app, we don't render the prompt!
         //
         WPAnalytics.track(.appReviewsRatedApp)
-        AppRatingUtility.ratedCurrentVersion()
+        AppRatingUtility.shared.ratedCurrentVersion()
         ABXAppStore.open(forApp: WPiTunesAppId)
     }
 
@@ -187,8 +187,7 @@ open class AboutViewController: UITableViewController {
 
     // MARK: - Private Properties
     fileprivate lazy var footerTitleText: String = {
-        let calendar = Calendar.current
-        let year = (calendar as NSCalendar).components(.year, from: Date()).year
+        let year = Calendar.current.component(.year, from: Date())
         return NSLocalizedString("© \(year) Automattic, Inc.", comment: "About View's Footer Text")
     }()
 

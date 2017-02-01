@@ -179,13 +179,13 @@ open class SignupService: LocalCoreDataService {
                                             // Now that we have an auth token, create the user account.
                                             let service = AccountService(managedObjectContext: self.managedObjectContext)
 
-                                            let account = service?.createOrUpdateAccount(withUsername: params.username, authToken: authToken)
-                                            account?.email = params.email
-                                            if service?.defaultWordPressComAccount() == nil {
-                                                service?.setDefaultWordPressComAccount(account!)
+                                            let account = service.createOrUpdateAccount(withUsername: params.username, authToken: authToken)
+                                            account.email = params.email
+                                            if service.defaultWordPressComAccount() == nil {
+                                                service.setDefaultWordPressComAccount(account)
                                             }
 
-                                            success(account!)
+                                            success(account)
                                         },
                                         failure: failure)
     }
@@ -267,9 +267,9 @@ open class SignupService: LocalCoreDataService {
         let blogService = BlogService(managedObjectContext: managedObjectContext)
 
         status(.syncing)
-        blogService?.syncBlog(blog, completionHandler: {
+        blogService.syncBlogAndAllMetadata(blog, completionHandler: {
             // The final step
-            accountService!.updateUserDetails(for: blog.account!, success: success, failure: failure)
+            accountService.updateUserDetails(for: blog.account!, success: success, failure: failure)
         })
     }
 
@@ -304,7 +304,7 @@ open class SignupService: LocalCoreDataService {
                 return nil
         }
 
-        guard let defaultAccount = accountService?.defaultWordPressComAccount() else {
+        guard let defaultAccount = accountService.defaultWordPressComAccount() else {
             DDLogSwift.logError("Failed finishing account creation. The default wpcom account was not found.")
             assertionFailure()
 
@@ -314,10 +314,10 @@ open class SignupService: LocalCoreDataService {
         }
 
         var blog: Blog
-        if let existingBlog = blogService?.findBlog(withXmlrpc: xmlrpc, in: defaultAccount) {
+        if let existingBlog = blogService.findBlog(withXmlrpc: xmlrpc, in: defaultAccount) {
             blog = existingBlog
         } else {
-            blog = (blogService?.createBlog(with: defaultAccount))!
+            blog = blogService.createBlog(with: defaultAccount)
             blog.xmlrpc = xmlrpc
         }
 

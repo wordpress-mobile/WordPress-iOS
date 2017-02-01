@@ -296,7 +296,7 @@ public class ReaderCard: UIView {
         }
         headerAuthorLabel.text = arr.joined(separator: ", ")
 
-        let date = (readerPost?.dateForDisplay() as NSDate?)?.shortString() ?? ""
+        let date = (readerPost?.dateForDisplay() as NSDate?)?.mediumString() ?? ""
         headerDateLabel.text = date
     }
 

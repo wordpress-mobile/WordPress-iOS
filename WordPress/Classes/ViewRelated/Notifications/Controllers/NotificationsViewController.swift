@@ -502,7 +502,7 @@ extension NotificationsViewController {
         // Display Details
         if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-            navigationController?.pushViewController(readerViewController, animated: true)
+            navigationController?.pushFullscreenViewController(readerViewController, animated: true)
             return
         }
 
@@ -859,7 +859,7 @@ extension NotificationsViewController: WPNoResultsViewDelegate {
 //
 private extension NotificationsViewController {
     func showRatingViewIfApplicable() {
-        guard AppRatingUtility.shouldPromptForAppReview(forSection: Ratings.section) else {
+        guard AppRatingUtility.shared.shouldPromptForAppReview(section: Ratings.section) else {
             return
         }
 
@@ -972,35 +972,33 @@ private extension NotificationsViewController {
 extension NotificationsViewController: ABXPromptViewDelegate {
     func appbotPromptForReview() {
         WPAnalytics.track(.appReviewsRatedApp)
-        AppRatingUtility.ratedCurrentVersion()
+        AppRatingUtility.shared.ratedCurrentVersion()
         hideRatingView()
 
-        if let targetURL = URL(string: Ratings.reviewURL!) {
-            UIApplication.shared.openURL(targetURL)
-        }
+        UIApplication.shared.openURL(Ratings.reviewURL)
     }
 
     func appbotPromptForFeedback() {
         WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
         ABXFeedbackViewController.show(from: self, placeholder: nil, delegate: nil)
-        AppRatingUtility.gaveFeedbackForCurrentVersion()
+        AppRatingUtility.shared.gaveFeedbackForCurrentVersion()
         hideRatingView()
     }
 
     func appbotPromptClose() {
         WPAnalytics.track(.appReviewsDeclinedToRateApp)
-        AppRatingUtility.declinedToRateCurrentVersion()
+        AppRatingUtility.shared.declinedToRateCurrentVersion()
         hideRatingView()
     }
 
     func appbotPromptLiked() {
         WPAnalytics.track(.appReviewsLikedApp)
-        AppRatingUtility.likedCurrentVersion()
+        AppRatingUtility.shared.likedCurrentVersion()
     }
 
     func appbotPromptDidntLike() {
         WPAnalytics.track(.appReviewsDidntLikeApp)
-        AppRatingUtility.dislikedCurrentVersion()
+        AppRatingUtility.shared.dislikedCurrentVersion()
     }
 
     func abxFeedbackDidSendFeedback () {
@@ -1098,6 +1096,6 @@ private extension NotificationsViewController {
         static let heightZero = CGFloat(0)
         static let animationDelay = TimeInterval(0.5)
         static let fontSize = CGFloat(15.0)
-        static let reviewURL = AppRatingUtility.appReviewUrl()
+        static let reviewURL = AppRatingUtility.shared.appReviewUrl
     }
 }

@@ -3,8 +3,8 @@
 
 @interface PostSettingsViewController : UITableViewController
 
-- (instancetype)initWithPost:(AbstractPost *)aPost;
-- (void)endEditingAction:(id)sender;
+- (nonnull instancetype)initWithPost:(nonnull AbstractPost *)aPost;
+- (void)endEditingAction:(nullable id)sender;
 
-@property (nonatomic, strong, readonly) AbstractPost *apost;
+@property (nonnull, nonatomic, strong, readonly) AbstractPost *apost;
 @end

@@ -311,7 +311,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         }
 
         ReaderDetailViewController *vc = [ReaderDetailViewController controllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID];
-        [self.navigationController pushViewController:vc animated:YES];
+        [self.navigationController pushFullscreenViewController:vc animated:YES];
     }
 }
 
@@ -371,7 +371,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
     // Setup the Fields
     cell.name = self.comment.author;
-    cell.timestamp = [self.comment.dateCreated shortString];
+    cell.timestamp = [self.comment.dateCreated mediumString];
     cell.site = self.comment.authorUrlForDisplay;
     cell.commentText = [self.comment contentForDisplay];
     cell.isApproved = [self.comment.status isEqualToString:CommentStatusApproved];

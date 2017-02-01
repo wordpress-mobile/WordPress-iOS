@@ -2,16 +2,11 @@
 @import OHHTTPStubs;
 @import OHHTTPStubs.OHPathHelpers;
 
-#import "AppRatingUtility.h"
-
-@interface AppRatingUtility(Tests)
-
-+ (void)unregisterAllSections;
-
-@end
+#import "WordPress-Swift.h"
 
 @interface AppRatingUtilityTests : XCTestCase
-
+@property (nonatomic, strong) NSUserDefaults *defaults;
+@property (nonatomic, strong) AppRatingUtility *utility;
 @end
 
 @implementation AppRatingUtilityTests
@@ -19,205 +14,205 @@
 - (void)setUp {
     NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
-    
-    [AppRatingUtility initializeForVersion:@"1.0"];
-    [AppRatingUtility setSystemWideSignificantEventsCount:1];
+
+    self.defaults = [NSUserDefaults new];
+    self.utility = [[AppRatingUtility alloc] initWithDefaults:self.defaults];
+    [self.utility setVersion:@"1.0"];
+    self.utility.systemWideSignificantEventCountRequiredForPrompt = 1;
+
     [super setUp];
 }
 
 - (void)tearDown {
-    // A hack to reset everything
-    [AppRatingUtility initializeForVersion:@"10.0"];
-    [AppRatingUtility unregisterAllSections];
     [super tearDown];
 }
 
 - (void)testCheckForPromptReturnsFalseWithoutEnoughSignificantEvents
 {
-    [AppRatingUtility setSystemWideSignificantEventsCount:1];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    [self.utility setSystemWideSignificantEventCountRequiredForPrompt:1];
+    XCTAssertFalse([self.utility shouldPromptForAppReview]);
 }
 
 - (void)testCheckForPromptReturnsTrueWithEnoughSignificantEvents
 {
-    [AppRatingUtility setSystemWideSignificantEventsCount:1];
-    [AppRatingUtility incrementSignificantEvent];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
+    [self.utility setSystemWideSignificantEventCountRequiredForPrompt:1];
+    [self.utility incrementSignificantEvent];
+    XCTAssertTrue([self.utility shouldPromptForAppReview]);
 }
 
 - (void)createConditionsForPositiveAppReviewPrompt
 {
-    [AppRatingUtility setSystemWideSignificantEventsCount:1];
-    [AppRatingUtility incrementSignificantEvent];
+    [self.utility setSystemWideSignificantEventCountRequiredForPrompt:1];
+    [self.utility incrementSignificantEvent];
 }
 
 - (void)testCheckForPromptReturnsFalseIfUserHasRatedCurrentVersion
 {
     [self createConditionsForPositiveAppReviewPrompt];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
-    [AppRatingUtility ratedCurrentVersion];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    XCTAssertTrue([self.utility shouldPromptForAppReview]);
+    [self.utility ratedCurrentVersion];
+    XCTAssertFalse([self.utility shouldPromptForAppReview]);
 }
 
 - (void)testCheckForPromptReturnsFalseIfUserHasGivenFeedbackForCurrentVersion
 {
     [self createConditionsForPositiveAppReviewPrompt];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
-    [AppRatingUtility gaveFeedbackForCurrentVersion];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    XCTAssertTrue([self.utility shouldPromptForAppReview]);
+    [self.utility gaveFeedbackForCurrentVersion];
+    XCTAssertFalse([self.utility shouldPromptForAppReview]);
 }
 
 - (void)testCheckForPromptReturnsFalseIfUserHasDeclinedToRateCurrentVersion
 {
     [self createConditionsForPositiveAppReviewPrompt];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
-    [AppRatingUtility declinedToRateCurrentVersion];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    XCTAssertTrue([self.utility shouldPromptForAppReview]);
+    [self.utility declinedToRateCurrentVersion];
+    XCTAssertFalse([self.utility shouldPromptForAppReview]);
 }
 
 - (void)testCheckForPromptShouldResetForNewVersion
 {
     [self createConditionsForPositiveAppReviewPrompt];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
-    [AppRatingUtility initializeForVersion:@"2.0"];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    XCTAssertTrue([self.utility shouldPromptForAppReview]);
+    [self.utility setVersion:@"2.0"];
+    XCTAssertFalse([self.utility shouldPromptForAppReview]);
 }
 
 - (void)testCheckForPromptShouldTriggerWithNewVersion
 {
     [self createConditionsForPositiveAppReviewPrompt];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
-    [AppRatingUtility initializeForVersion:@"2.0"];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    XCTAssertTrue([self.utility shouldPromptForAppReview]);
+    [self.utility setVersion:@"2.0"];
+    XCTAssertFalse([self.utility shouldPromptForAppReview]);
     [self createConditionsForPositiveAppReviewPrompt];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
+    XCTAssertTrue([self.utility shouldPromptForAppReview]);
 }
 
 - (void)testUserIsNotPromptedForAReviewForOneVersionIfTheyLikedTheApp;
 {
-    [AppRatingUtility initializeForVersion:@"4.7"];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
-    [AppRatingUtility likedCurrentVersion];
+    [self.utility setVersion:@"4.7"];
+    XCTAssertFalse([self.utility shouldPromptForAppReview]);
+    [self.utility likedCurrentVersion];
     
-    [AppRatingUtility initializeForVersion:@"4.8"];
-    [AppRatingUtility incrementSignificantEvent];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview], @"should not prompt for a review after liking last version");
+    [self.utility setVersion:@"4.8"];
+    [self.utility incrementSignificantEvent];
+    XCTAssertFalse([self.utility shouldPromptForAppReview], @"should not prompt for a review after liking last version");
     
-    [AppRatingUtility initializeForVersion:@"4.9"];
-    [AppRatingUtility incrementSignificantEvent];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview], @"should prompt for a review after skipping a version");
+    [self.utility setVersion:@"4.9"];
+    [self.utility incrementSignificantEvent];
+    XCTAssertTrue([self.utility shouldPromptForAppReview], @"should prompt for a review after skipping a version");
 }
 
 - (void)testUserIsNotPromptedForAReviewForTwoVersionsIfTheyDeclineToRate
 {
-    [AppRatingUtility initializeForVersion:@"4.7"];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
-    [AppRatingUtility dislikedCurrentVersion];
+    [self.utility setVersion:@"4.7"];
+    XCTAssertFalse([self.utility shouldPromptForAppReview]);
+    [self.utility dislikedCurrentVersion];
     
-    [AppRatingUtility initializeForVersion:@"4.8"];
-    [AppRatingUtility incrementSignificantEvent];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview], @"should not prompt for a review after declining on this first upgrade");
+    [self.utility setVersion:@"4.8"];
+    [self.utility incrementSignificantEvent];
+    XCTAssertFalse([self.utility shouldPromptForAppReview], @"should not prompt for a review after declining on this first upgrade");
     
-    [AppRatingUtility initializeForVersion:@"4.9"];
-    [AppRatingUtility incrementSignificantEvent];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview], @"should not prompt for a review after declining on this second upgrade");
+    [self.utility setVersion:@"4.9"];
+    [self.utility incrementSignificantEvent];
+    XCTAssertFalse([self.utility shouldPromptForAppReview], @"should not prompt for a review after declining on this second upgrade");
     
-    [AppRatingUtility initializeForVersion:@"5.0"];
-    [AppRatingUtility incrementSignificantEvent];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview], @"should prompt for a review two versions later");
+    [self.utility setVersion:@"5.0"];
+    [self.utility incrementSignificantEvent];
+    XCTAssertTrue([self.utility shouldPromptForAppReview], @"should prompt for a review two versions later");
 }
 
 - (void)testHasUserEverLikedApp
 {
-    [AppRatingUtility initializeForVersion:@"4.7"];
-    XCTAssertFalse([AppRatingUtility hasUserEverLikedApp]);
-    [AppRatingUtility declinedToRateCurrentVersion];
+    [self.utility setVersion:@"4.7"];
+    XCTAssertFalse([self.utility hasUserEverLikedApp]);
+    [self.utility declinedToRateCurrentVersion];
     
-    [AppRatingUtility initializeForVersion:@"4.8"];
-    XCTAssertFalse([AppRatingUtility hasUserEverLikedApp]);
-    [AppRatingUtility likedCurrentVersion];
-    XCTAssertTrue([AppRatingUtility hasUserEverLikedApp]);
+    [self.utility setVersion:@"4.8"];
+    XCTAssertFalse([self.utility hasUserEverLikedApp]);
+    [self.utility likedCurrentVersion];
+    XCTAssertTrue([self.utility hasUserEverLikedApp]);
     
-    [AppRatingUtility initializeForVersion:@"4.9"];
-    [AppRatingUtility dislikedCurrentVersion];
-    XCTAssertTrue([AppRatingUtility hasUserEverLikedApp]);
+    [self.utility setVersion:@"4.9"];
+    [self.utility dislikedCurrentVersion];
+    XCTAssertTrue([self.utility hasUserEverLikedApp]);
 }
 
 - (void)testHasUserEverDislikedTheApp
 {
-    [AppRatingUtility initializeForVersion:@"4.7"];
-    XCTAssertFalse([AppRatingUtility hasUserEverDislikedApp]);
-    [AppRatingUtility declinedToRateCurrentVersion];
+    [self.utility setVersion:@"4.7"];
+    XCTAssertFalse([self.utility hasUserEverDislikedApp]);
+    [self.utility declinedToRateCurrentVersion];
     
-    [AppRatingUtility initializeForVersion:@"4.8"];
-    XCTAssertFalse([AppRatingUtility hasUserEverDislikedApp]);
-    [AppRatingUtility dislikedCurrentVersion];
-    XCTAssertTrue([AppRatingUtility hasUserEverDislikedApp]);
+    [self.utility setVersion:@"4.8"];
+    XCTAssertFalse([self.utility hasUserEverDislikedApp]);
+    [self.utility dislikedCurrentVersion];
+    XCTAssertTrue([self.utility hasUserEverDislikedApp]);
     
-    [AppRatingUtility initializeForVersion:@"4.9"];
-    [AppRatingUtility likedCurrentVersion];
-    XCTAssertTrue([AppRatingUtility hasUserEverDislikedApp]);
+    [self.utility setVersion:@"4.9"];
+    [self.utility likedCurrentVersion];
+    XCTAssertTrue([self.utility hasUserEverDislikedApp]);
 }
 
 - (void)testShouldPromptForAppReviewForSection
 {
-    [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:2];
-    [AppRatingUtility initializeForVersion:@"4.7"];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
-    [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
-    [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
+    [self.utility registerSection:@"notifications" withSignificantEventCount:2];
+    [self.utility setVersion:@"4.7"];
+    XCTAssertFalse([self.utility shouldPromptForAppReviewForSection:@"notifications"]);
+    [self.utility incrementSignificantEventForSection:@"notifications"];
+    XCTAssertFalse([self.utility shouldPromptForAppReviewForSection:@"notifications"]);
+    [self.utility incrementSignificantEventForSection:@"notifications"];
+    XCTAssertTrue([self.utility shouldPromptForAppReviewForSection:@"notifications"]);
 }
 
 - (void)testShouldPromptAppReviewSystemWideWithEnoughSmallerSignficantEvents
 {
-    [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:2];
-    [AppRatingUtility registerSection:@"editor" withSignificantEventCount:2];
-    [AppRatingUtility setSystemWideSignificantEventsCount:3];
-    [AppRatingUtility initializeForVersion:@"4.7"];
+    [self.utility registerSection:@"notifications" withSignificantEventCount:2];
+    [self.utility registerSection:@"editor" withSignificantEventCount:2];
+    [self.utility setSystemWideSignificantEventCountRequiredForPrompt:3];
+    [self.utility setVersion:@"4.7"];
     
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"editor"]);
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    XCTAssertFalse([self.utility shouldPromptForAppReviewForSection:@"notifications"]);
+    XCTAssertFalse([self.utility shouldPromptForAppReviewForSection:@"editor"]);
+    XCTAssertFalse([self.utility shouldPromptForAppReview]);
     
-    [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
-    [AppRatingUtility incrementSignificantEventForSection:@"editor"];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    [self.utility incrementSignificantEventForSection:@"notifications"];
+    [self.utility incrementSignificantEventForSection:@"editor"];
+    XCTAssertFalse([self.utility shouldPromptForAppReview]);
     
-    [AppRatingUtility incrementSignificantEventForSection:@"editor"];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
+    [self.utility incrementSignificantEventForSection:@"editor"];
+    XCTAssertTrue([self.utility shouldPromptForAppReview]);
 }
 
 - (void)testShouldPromptForAppReviewSystemWideWithEnoughSmallerSignificantEventsIncludingNonSectionedEvents
 {
-    [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:2];
-    [AppRatingUtility registerSection:@"editor" withSignificantEventCount:2];
-    [AppRatingUtility setSystemWideSignificantEventsCount:3];
-    [AppRatingUtility initializeForVersion:@"4.7"];
+    [self.utility registerSection:@"notifications" withSignificantEventCount:2];
+    [self.utility registerSection:@"editor" withSignificantEventCount:2];
+    [self.utility setSystemWideSignificantEventCountRequiredForPrompt:3];
+    [self.utility setVersion:@"4.7"];
     
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"editor"]);
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    XCTAssertFalse([self.utility shouldPromptForAppReviewForSection:@"notifications"]);
+    XCTAssertFalse([self.utility shouldPromptForAppReviewForSection:@"editor"]);
+    XCTAssertFalse([self.utility shouldPromptForAppReview]);
     
-    [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
-    [AppRatingUtility incrementSignificantEventForSection:@"editor"];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    [self.utility incrementSignificantEventForSection:@"notifications"];
+    [self.utility incrementSignificantEventForSection:@"editor"];
+    XCTAssertFalse([self.utility shouldPromptForAppReview]);
     
-    [AppRatingUtility incrementSignificantEvent];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
+    [self.utility incrementSignificantEvent];
+    XCTAssertTrue([self.utility shouldPromptForAppReview]);
 }
 
 - (void)testAppReviewPromptRemoteDisableWhenRemoteCheckIndicatesEverythingIsEnabled
 {
-    [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:1];
-    [AppRatingUtility initializeForVersion:@"4.7"];
-    [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
+    [self.utility registerSection:@"notifications" withSignificantEventCount:1];
+    [self.utility setVersion:@"4.7"];
+    [self.utility incrementSignificantEventForSection:@"notifications"];
+    XCTAssertTrue([self.utility shouldPromptForAppReviewForSection:@"notifications"]);
     
     [self stubAppReviewCheckWithFile:@"app-review-prompt-all-enabled.json"];
     XCTestExpectation *testExpectation = [self expectationWithDescription:@"remote check"];
-    [AppRatingUtility checkIfAppReviewPromptsHaveBeenDisabled:^{
+    [self.utility checkIfAppReviewPromptsHaveBeenDisabledWithSuccess:^{
         [testExpectation fulfill];
     } failure:^{
         [NSException raise:@"Error" format:@"Shouldn't get here..."];
@@ -225,19 +220,19 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
     // We shouldn't disable the check when the remote check indicates everything is enabled
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
+    XCTAssertTrue([self.utility shouldPromptForAppReviewForSection:@"notifications"]);
 }
 
 - (void)testAppReviewPromptRemoteDisableWhenRemoteCheckIndicatesNotificationsAreDisabled
 {
-    [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:1];
-    [AppRatingUtility initializeForVersion:@"4.7"];
-    [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
+    [self.utility registerSection:@"notifications" withSignificantEventCount:1];
+    [self.utility setVersion:@"4.7"];
+    [self.utility incrementSignificantEventForSection:@"notifications"];
+    XCTAssertTrue([self.utility shouldPromptForAppReviewForSection:@"notifications"]);
     
     [self stubAppReviewCheckWithFile:@"app-review-prompt-notifications-disabled.json"];
     XCTestExpectation *testExpectation = [self expectationWithDescription:@"remote check"];
-    [AppRatingUtility checkIfAppReviewPromptsHaveBeenDisabled:^{
+    [self.utility checkIfAppReviewPromptsHaveBeenDisabledWithSuccess:^{
         [testExpectation fulfill];
     } failure:^{
         [NSException raise:@"Error" format:@"Shouldn't get here..."];
@@ -245,19 +240,19 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
     // We should disable the check when the remote check indicates notifications is disabled
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
+    XCTAssertFalse([self.utility shouldPromptForAppReviewForSection:@"notifications"]);
 }
 
 - (void)testAppReviewPromptRemoteDisableWhenRemoteCheckIndicatesEverythingIsDisabled
 {
-    [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:1];
-    [AppRatingUtility initializeForVersion:@"4.7"];
-    [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
+    [self.utility registerSection:@"notifications" withSignificantEventCount:1];
+    [self.utility setVersion:@"4.7"];
+    [self.utility incrementSignificantEventForSection:@"notifications"];
+    XCTAssertTrue([self.utility shouldPromptForAppReviewForSection:@"notifications"]);
     
     [self stubAppReviewCheckWithFile:@"app-review-prompt-global-disable.json"];
     XCTestExpectation *testExpectation = [self expectationWithDescription:@"remote check"];
-    [AppRatingUtility checkIfAppReviewPromptsHaveBeenDisabled:^{
+    [self.utility checkIfAppReviewPromptsHaveBeenDisabledWithSuccess:^{
         [testExpectation fulfill];
     } failure:^{
         [NSException raise:@"Error" format:@"Shouldn't get here..."];
@@ -265,21 +260,21 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
     
     // We should disable the check when the remote check indicates notifications is disabled
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
+    XCTAssertFalse([self.utility shouldPromptForAppReviewForSection:@"notifications"]);
 }
 
 - (void)testAppReviewPromptRemoteDisableForGlobalPromptWhenRemoteCheckIndicatesEverythingIsDisabled
 {
-    [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:1];
-    [AppRatingUtility setSystemWideSignificantEventsCount:2];
-    [AppRatingUtility initializeForVersion:@"4.7"];
-    [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
-    [AppRatingUtility incrementSignificantEvent];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
+    [self.utility registerSection:@"notifications" withSignificantEventCount:1];
+    [self.utility setSystemWideSignificantEventCountRequiredForPrompt:2];
+    [self.utility setVersion:@"4.7"];
+    [self.utility incrementSignificantEventForSection:@"notifications"];
+    [self.utility incrementSignificantEvent];
+    XCTAssertTrue([self.utility shouldPromptForAppReview]);
     
     [self stubAppReviewCheckWithFile:@"app-review-prompt-global-disable.json"];
     XCTestExpectation *testExpectation = [self expectationWithDescription:@"remote check"];
-    [AppRatingUtility checkIfAppReviewPromptsHaveBeenDisabled:^{
+    [self.utility checkIfAppReviewPromptsHaveBeenDisabledWithSuccess:^{
         [testExpectation fulfill];
     } failure:^{
         [NSException raise:@"Error" format:@"Shouldn't get here..."];
@@ -287,7 +282,7 @@
     [self waitForExpectationsWithTimeout:5.0 handler:nil];
     
     // We should disable the check when the remote check indicates notifications is disabled
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
+    XCTAssertFalse([self.utility shouldPromptForAppReviewForSection:@"notifications"]);
 }
 
 - (void)stubAppReviewCheckWithFile:(NSString *)file

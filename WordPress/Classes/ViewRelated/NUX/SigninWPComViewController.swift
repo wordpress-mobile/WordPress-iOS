@@ -16,6 +16,12 @@ import WordPressShared
     @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComLogin
+        }
+    }
+
     var immediateSignin = false
 
     var restrictSigninToWPCom = false {
@@ -325,7 +331,7 @@ extension SigninWPComViewController: LoginFacadeDelegate {
     func displayRemoteError(_ error: Error!) {
         configureStatusLabel("")
         configureViewLoading(false)
-        displayError(error as NSError)
+        displayError(error as NSError, sourceTag: sourceTag)
     }
 
 
