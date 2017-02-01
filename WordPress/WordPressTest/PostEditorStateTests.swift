@@ -29,6 +29,20 @@ class PostEditorStateTests: XCTestCase {
 
         XCTAssertEqual(PostEditorAction.save, context.action, "New posts switched to draft should show Save button.")
     }
+
+    func testContextPostSwitchedBetweenFutureAndCurrent() {
+        context = PostEditorStateContext(originalPostStatus: nil, userCanPublish: true, delegate: self)
+
+        XCTAssertEqual(PostEditorAction.publish, context.action)
+
+        context.updated(publishDate: Date.distantFuture)
+
+        XCTAssertEqual(PostEditorAction.schedule, context.action)
+
+        context.updated(publishDate: nil)
+
+        XCTAssertEqual(PostEditorAction.publish, context.action)
+    }
 }
 
 // These tests are all based off of Calypso unit tests
