@@ -180,8 +180,6 @@ class AztecPostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPFontManager.loadMerriweatherFontFamily()
-
         configureNavigationBar()
         configureView()
         configureSubviews()
