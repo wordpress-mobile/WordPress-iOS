@@ -452,6 +452,10 @@ private extension AztecPostViewController {
             self.mode.toggle()
         }
 
+        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { _ in
+            self.displayPreview()
+        }
+
         alert.addDefaultActionWithTitle(MoreSheetAlert.optionsTitle) { _ in
             self.displayPostOptions()
         }
@@ -479,6 +483,12 @@ private extension AztecPostViewController {
         let settingsViewController = PostSettingsViewController(post: post)
         settingsViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+
+    func displayPreview() {
+        let previewController = PostPreviewViewController(post: post)
+        previewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(previewController, animated: true)
     }
 }
 
@@ -1044,6 +1054,7 @@ fileprivate extension AztecPostViewController {
     struct MoreSheetAlert {
         static let htmlTitle    = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
         static let richTitle    = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
         static let optionsTitle = NSLocalizedString("Options", comment: "Displays the Post's Options")
         static let cancelTitle  = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
     }
