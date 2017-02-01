@@ -1,6 +1,17 @@
 import Foundation
 import WordPressShared
 
+/// Implements the custom iPad margins behavior
+///
+/// This is a transitional helper to move this logic away from WPTableViewCell.
+/// We should not need this when Notifications on iPad use a split view.
+/// In the meantime, we need to extract this behavior for NoteTableViewCell, so
+/// it can be a subclass of MGSwipeTableCell instead of WPTableViewCell.
+///
+/// This duplicates the margins logic in two places, but since WPTableViewCell
+/// should be gone soon, it's not worth refactoring every usage of
+/// WPTableViewCell to use this instead.
+///
 struct CustomCellMarginBehavior {
     private let fixedWidth = CGFloat(600)
 
