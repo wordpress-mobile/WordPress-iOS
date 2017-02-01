@@ -389,8 +389,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                                         views:views]];
 
     // ReplyTextView Constraints
-    [[self.replyTextView.leftAnchor constraintEqualToAnchor:self.tableView.layoutMarginsGuide.leftAnchor constant:-16] setActive:YES];
-    [[self.replyTextView.rightAnchor constraintEqualToAnchor:self.tableView.layoutMarginsGuide.rightAnchor constant:16] setActive:YES];
+    [[self.replyTextView.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
+    [[self.replyTextView.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
 
     self.replyTextViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
                                                                       attribute:NSLayoutAttributeBottom
