@@ -145,6 +145,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         setupAttributionView()
         setupCommentActionButton()
         setupLikeActionButton()
+        adjustInsetsForTextDirection()
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -215,6 +216,21 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         menuButton.setImage(tintedIcon, for: .normal)
         menuButton.setImage(highlightIcon, for: .highlighted)
+    }
+
+    fileprivate func adjustInsetsForTextDirection() {
+        guard userInterfaceLayoutDirection() == .rightToLeft else {
+            return
+        }
+
+        let buttonsToAdjust: [UIButton] = [
+            visitButton,
+            likeActionButton,
+            commentActionButton,
+            shareButton]
+        for button in buttonsToAdjust {
+            button.flipInsetsForRightToLeftLayoutDirection()
+        }
     }
 
     /**

@@ -1,4 +1,5 @@
 #import "WPButtonForNavigationBar.h"
+#import "WordPress-Swift.h"
 
 static CGFloat kDefaultAnimationDuration = 0.3;
 static CGFloat kHighlightedAlpha = 0.2f;
@@ -55,7 +56,11 @@ static CGFloat kNormalAlpha = 1.0f;
 	if (self.removeDefaultRightSpacing) {
 		insets = UIEdgeInsetsMake(0, 0, 0, kDefaultSpacing - self.rightSpacing);
 	}
-	
+
+    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionRightToLeft) {
+        insets = [InsetsHelper flipForRightToLeftLayoutDirection:insets];
+    }
+
 	return insets;
 }
 
