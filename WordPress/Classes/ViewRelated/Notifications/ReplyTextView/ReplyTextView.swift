@@ -190,15 +190,15 @@ import WordPressShared.WPStyleGuide
         textView.layoutIfNeeded()
 
         // Calculate the entire control's size
-        let topMargin      = bezierContainerView.layoutMargins.top
-        let bottomMargin   = bezierContainerView.layoutMargins.bottom
+        let topMargin = bezierContainerView.layoutMargins.top
+        let bottomMargin = bezierContainerView.layoutMargins.bottom
 
-        let contentHeight   = textView.contentSize.height
-        let fullWidth       = frame.width
-        let textHeight      = floor(contentHeight + topMargin + bottomMargin)
+        let contentHeight = textView.contentSize.height
+        let fullWidth = frame.width
+        let textHeight = floor(contentHeight + topMargin + bottomMargin)
 
-        let newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
-        let intrinsicSize   = CGSize(width: fullWidth, height: newHeight)
+        let newHeight = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
+        let intrinsicSize = CGSize(width: fullWidth, height: newHeight)
 
         return intrinsicSize
     }
@@ -206,7 +206,7 @@ import WordPressShared.WPStyleGuide
 
     // MARK: - Setup Helpers
     fileprivate func setupView() {
-        self.frame.size.height          = textViewMinHeight
+        self.frame.size.height = textViewMinHeight
 
         // Load the nib + add its container view
         bundle = Bundle.main.loadNibNamed("ReplyTextView", owner: self, options: nil) as NSArray?
@@ -218,43 +218,43 @@ import WordPressShared.WPStyleGuide
         pinSubviewToAllEdges(contentView)
 
         // Setup the TextView
-        textView.delegate               = self
-        textView.scrollsToTop           = false
-        textView.contentInset           = UIEdgeInsets.zero
-        textView.textContainerInset     = UIEdgeInsets.zero
-        textView.font                   = WPStyleGuide.Reply.textFont
-        textView.textColor              = WPStyleGuide.Reply.textColor
-        textView.textContainer.lineFragmentPadding  = 0
+        textView.delegate = self
+        textView.scrollsToTop = false
+        textView.contentInset = UIEdgeInsets.zero
+        textView.textContainerInset = UIEdgeInsets.zero
+        textView.font = WPStyleGuide.Reply.textFont
+        textView.textColor = WPStyleGuide.Reply.textColor
+        textView.textContainer.lineFragmentPadding = 0
         textView.layoutManager.allowsNonContiguousLayout = false
         textView.accessibilityIdentifier = "ReplyText"
 
         // Enable QuickType
-        textView.autocorrectionType     = .yes
+        textView.autocorrectionType = .yes
 
         // Placeholder
-        placeholderLabel.font           = WPStyleGuide.Reply.textFont
-        placeholderLabel.textColor      = WPStyleGuide.Reply.placeholderColor
+        placeholderLabel.font = WPStyleGuide.Reply.textFont
+        placeholderLabel.textColor = WPStyleGuide.Reply.placeholderColor
 
         // Reply
-        replyButton.isEnabled             = false
-        replyButton.titleLabel?.font    = WPStyleGuide.Reply.buttonFont
+        replyButton.isEnabled = false
+        replyButton.titleLabel?.font = WPStyleGuide.Reply.buttonFont
         replyButton.setTitleColor(WPStyleGuide.Reply.disabledColor, for: .disabled)
-        replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor,  for: UIControlState())
+        replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor, for: UIControlState())
 
         // Background
-        contentView.backgroundColor      = WPStyleGuide.Reply.backgroundColor
-        bezierContainerView.outerColor           = WPStyleGuide.Reply.backgroundColor
+        contentView.backgroundColor = WPStyleGuide.Reply.backgroundColor
+        bezierContainerView.outerColor = WPStyleGuide.Reply.backgroundColor
 
         // Bezier
-        bezierContainerView.bezierColor          = WPStyleGuide.Reply.separatorColor
+        bezierContainerView.bezierColor = WPStyleGuide.Reply.separatorColor
 
         // Separators
-        separatorsView.topColor         = WPStyleGuide.Reply.separatorColor
-        separatorsView.topVisible       = true
+        separatorsView.topColor = WPStyleGuide.Reply.separatorColor
+        separatorsView.topVisible = true
 
         // Recognizers
-        let recognizer                  = UITapGestureRecognizer(target: self, action: #selector(ReplyTextView.backgroundWasTapped))
-        gestureRecognizers              = [recognizer]
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(ReplyTextView.backgroundWasTapped))
+        gestureRecognizers = [recognizer]
     }
 
 
@@ -267,8 +267,8 @@ import WordPressShared.WPStyleGuide
     }
 
     fileprivate func refreshSizeIfNeeded() {
-        let newSize         = intrinsicContentSize
-        let oldSize         = frame.size
+        let newSize = intrinsicContentSize
+        let oldSize = frame.size
 
         if newSize.height == oldSize.height {
             return
@@ -278,25 +278,25 @@ import WordPressShared.WPStyleGuide
     }
 
     fileprivate func refreshPlaceholder() {
-        placeholderLabel.isHidden         = !textView.text.isEmpty
+        placeholderLabel.isHidden = !textView.text.isEmpty
     }
 
     fileprivate func refreshReplyButton() {
-        let whitespaceCharSet           = CharacterSet.whitespacesAndNewlines
-        replyButton.isEnabled             = textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
+        let whitespaceCharSet = CharacterSet.whitespacesAndNewlines
+        replyButton.isEnabled = textView.text.trimmingCharacters(in: whitespaceCharSet).isEmpty == false
     }
 
     fileprivate func refreshScrollPosition() {
-        let selectedRangeStart      = textView.selectedTextRange?.start ?? UITextPosition()
-        var caretRect               = textView.caretRect(for: selectedRangeStart)
-        caretRect                   = caretRect.integral
+        let selectedRangeStart = textView.selectedTextRange?.start ?? UITextPosition()
+        var caretRect = textView.caretRect(for: selectedRangeStart)
+        caretRect = caretRect.integral
         textView.scrollRectToVisible(caretRect, animated: false)
     }
 
 
     // MARK: - Constants
-    fileprivate let textViewMaxHeight       = CGFloat(88)   // Fits 3 lines onscreen
-    fileprivate let textViewMinHeight       = CGFloat(48)
+    fileprivate let textViewMaxHeight = CGFloat(88)   // Fits 3 lines onscreen
+    fileprivate let textViewMinHeight = CGFloat(48)
 
     // MARK: - Private Properties
     fileprivate var bundle: NSArray?
