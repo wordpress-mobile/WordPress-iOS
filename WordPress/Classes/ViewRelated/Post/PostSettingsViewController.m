@@ -581,10 +581,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                 cell.textLabel.text = NSLocalizedString(@"Published on", @"Published on [date]");
             }
 
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-            [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-            cell.detailTextLabel.text = [dateFormatter stringFromDate:self.apost.dateCreated];
+            cell.detailTextLabel.text = [self.apost.dateCreated shortStringWithTime];
         } else {
             cell.textLabel.text = NSLocalizedString(@"Publish", @"");
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");

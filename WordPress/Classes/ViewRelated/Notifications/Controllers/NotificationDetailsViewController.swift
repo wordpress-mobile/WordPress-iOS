@@ -148,11 +148,11 @@ extension NotificationDetailsViewController: UIViewControllerRestoration {
     class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
         let context = ContextManager.sharedInstance().mainContext
         guard let noteURI = coder.decodeObject(forKey: Restoration.noteIdKey) as? URL,
-            let objectID = context?.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: noteURI) else {
+            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: noteURI) else {
             return nil
         }
 
-        let notification = try? context?.existingObject(with: objectID)
+        let notification = try? context.existingObject(with: objectID)
         guard let restoredNotification = notification as? Notification else {
             return nil
         }
@@ -525,7 +525,7 @@ private extension NotificationDetailsViewController {
 
         // Setup: Properties
         cell.name                   = userBlock.text
-        cell.timestamp              = (note.timestampAsDate as NSDate).shortString()
+        cell.timestamp              = (note.timestampAsDate as NSDate).mediumString()
         cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
         cell.attributedCommentText  = text.trimNewlines()
         cell.isApproved             = commentBlock.isCommentApproved
@@ -828,7 +828,7 @@ private extension NotificationDetailsViewController {
         }
 
         let service = BlogService(managedObjectContext: mainContext)
-        return service?.blog(byBlogId: blogID)
+        return service.blog(byBlogId: blogID)
     }
 
     func newStatsViewController() -> StatsViewAllTableViewController {
@@ -848,7 +848,7 @@ private extension NotificationDetailsViewController {
     func newStatsServiceWithBlog(_ blog: Blog) -> WPStatsService {
         let blogService = BlogService(managedObjectContext: mainContext)
         return WPStatsService(siteId: blog.dotComID,
-                              siteTimeZone: blogService!.timeZone(for: blog),
+                              siteTimeZone: blogService.timeZone(for: blog),
                               oauth2Token: blog.authToken,
                               andCacheExpirationInterval: Settings.expirationFiveMinutes)
     }
@@ -934,7 +934,7 @@ private extension NotificationDetailsViewController {
         let request = NotificationDeletionRequest(kind: .spamming, action: { onCompletion in
             let mainContext = ContextManager.sharedInstance().mainContext
             let service = NotificationActionsService(managedObjectContext: mainContext)
-            service?.spamCommentWithBlock(block) { (success) in
+            service.spamCommentWithBlock(block) { (success) in
                 onCompletion(success)
             }
 
@@ -954,7 +954,7 @@ private extension NotificationDetailsViewController {
         let request = NotificationDeletionRequest(kind: .deletion, action: { onCompletion in
             let mainContext = ContextManager.sharedInstance().mainContext
             let service = NotificationActionsService(managedObjectContext: mainContext)
-            service?.deleteCommentWithBlock(block) { (success) in
+            service.deleteCommentWithBlock(block) { (success) in
                 onCompletion(success)
             }
 

@@ -45,8 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 //date conversion
-- (nullable NSDate *)dateCreated;
-- (void)setDateCreated:(nullable NSDate *)localDate;
+@property (nonatomic, strong, nullable) NSDate * dateCreated;
 
 //comments
 - (void)findComments;
