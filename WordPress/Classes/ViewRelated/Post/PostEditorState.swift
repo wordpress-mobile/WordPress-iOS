@@ -1,6 +1,7 @@
 import Foundation
 
 // Taken from AbstractPost.m - this should get a better home than here
+///
 enum PostStatus: String {
     case draft = "draft"
     case pending = "pending"
@@ -11,6 +12,10 @@ enum PostStatus: String {
     case deleted = "deleted" // Returned by wpcom REST API when a post is permanently deleted.
 }
 
+/// The various states of the editor interface and all associated UI values
+///
+/// None of the associated values should be (nor can be) accessed directly by the UI, only through the `PostEditorStateContext` instance.
+///
 public enum PostEditorAction {
     case save
     case schedule
@@ -18,7 +23,7 @@ public enum PostEditorAction {
     case update
     case submitForReview
 
-    var publishActionLabel: String {
+    fileprivate var publishActionLabel: String {
         switch self {
         case .publish:
             return NSLocalizedString("Publish", comment: "Publish button label.")
@@ -33,7 +38,7 @@ public enum PostEditorAction {
         }
     }
 
-    var publishingActionLabel: String {
+    fileprivate var publishingActionLabel: String {
         switch self {
         case .publish:
             return NSLocalizedString("Publishing...", comment: "Text displayed in HUD while a post is being published.")
@@ -48,7 +53,7 @@ public enum PostEditorAction {
         }
     }
 
-    var isPostPostShown: Bool {
+    fileprivate var isPostPostShown: Bool {
         switch self {
         case .publish:
             return true
@@ -58,6 +63,8 @@ public enum PostEditorAction {
     }
 }
 
+/// Protocol used by all concrete states for the UI - never exposed outside of `PostEditorStateContext`
+///
 fileprivate protocol PostEditorActionState {
     var action: PostEditorAction { get }
 
@@ -71,6 +78,9 @@ public protocol PostEditorStateContextDelegate {
     func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool)
 }
 
+
+/// Encapsulates all of the editor UI state based upon actions performed on the post being edited.
+///
 public class PostEditorStateContext {
     private var editorState: PostEditorActionState {
         didSet {
@@ -100,6 +110,12 @@ public class PostEditorStateContext {
         }
     }
 
+    /// The default initializer
+    ///
+    /// - Parameters:
+    ///   - originalPostStatus: If the post was already published (saved to the server) what is the status
+    ///   - userCanPublish: Does the user have permission to publish posts or merely create drafts
+    ///   - delegate: Delegate for listening to change in state for the editor
     init(originalPostStatus: PostStatus? = nil, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
         self.originalPostStatus = originalPostStatus
         self.userCanPublish = userCanPublish
@@ -120,6 +136,8 @@ public class PostEditorStateContext {
         }
     }
 
+    /// Call when the post status has changed due to a remote operation
+    ///
     func updated(postStatus: PostStatus) {
         let updatedState = editorState.updated(postStatus: postStatus, context: self)
         guard type(of: editorState) != type(of: updatedState) else {
@@ -129,6 +147,8 @@ public class PostEditorStateContext {
         editorState = updatedState
     }
 
+    /// Call when the publish date has changed (picked a future date) or nil if publish immediately selected
+    ///
     func updated(publishDate: Date?) {
         let updatedState = editorState.updated(publishDate: publishDate, context: self)
         guard type(of: editorState) != type(of: updatedState) else {
@@ -138,26 +158,40 @@ public class PostEditorStateContext {
         editorState = updatedState
     }
 
+    /// Call whenever the post content is changed - title or content body
+    ///
     func updated(hasContent: Bool) {
         self.hasContent = hasContent
     }
 
+    /// Call when the post is being published or has finished
+    ///
     func updated(isBeingPublished: Bool) {
         self.isBeingPublished = isBeingPublished
     }
 
+    /// Returns the current PostEditorAction state the UI is in
+    ///
     var action: PostEditorAction {
         return editorState.action
     }
 
+    /// Returns appropriate Publish button text for the current action
+    /// e.g. Publish, Schedule, Update, Save
+    ///
     var publishButtonText: String {
         return editorState.action.publishActionLabel
     }
 
+    /// Returns appropriate publishing UI text text for the current action
+    /// e.g. Publishing...
+    ///
     var publishVerbText: String {
         return editorState.action.publishingActionLabel
     }
 
+    /// Should post-post be shown for the current editor when publishing has happened
+    ///
     var isPostPostShown: Bool {
         return editorState.action.isPostPostShown
     }
@@ -167,6 +201,8 @@ public class PostEditorStateContext {
 //        return editorState.isSecondaryPublishButtonShown(context: self)
 //    }
 
+    /// Should the publish button be enabled given the current state
+    ///
     var isPublishButtonEnabled: Bool {
         return publishActionAllowed
     }
@@ -177,6 +213,8 @@ public class PostEditorStateContext {
     }
 }
 
+/// Concrete State for Publish
+///
 fileprivate class PostEditorStatePublish: PostEditorActionState {
     var action: PostEditorAction {
         return .publish
@@ -185,8 +223,10 @@ fileprivate class PostEditorStatePublish: PostEditorActionState {
     func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState {
         switch postStatus {
         case .draft where context.originalPostStatus == .publish:
+            // If switching to a draft the post should show Update
             return PostEditorStateUpdate()
         case .draft:
+            // Posts switching to Draft should show Save
             return PostEditorStateSave()
         default:
             return self
@@ -195,6 +235,7 @@ fileprivate class PostEditorStatePublish: PostEditorActionState {
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
         if isFutureDated(publishDate) {
+            // When future scheduling, button should show Schedule
             return PostEditorStateSchedule()
         }
 
@@ -202,6 +243,8 @@ fileprivate class PostEditorStatePublish: PostEditorActionState {
     }
 }
 
+/// Concrete State for Save
+///
 fileprivate class PostEditorStateSave: PostEditorActionState {
     var action: PostEditorAction {
         return .save
@@ -210,6 +253,7 @@ fileprivate class PostEditorStateSave: PostEditorActionState {
     func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState {
         switch postStatus {
         case .publish:
+            // If a draft is published, it should show Update
             return PostEditorStateUpdate()
         default:
             return self
@@ -218,6 +262,7 @@ fileprivate class PostEditorStateSave: PostEditorActionState {
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
         if isFutureDated(publishDate) {
+            // When future scheduling a draft, button should show Schedule
             return PostEditorStateSchedule()
         }
 
@@ -225,6 +270,8 @@ fileprivate class PostEditorStateSave: PostEditorActionState {
     }
 }
 
+/// Concrete State for Schedule
+///
 fileprivate class PostEditorStateSchedule: PostEditorActionState {
     var action: PostEditorAction {
         return .schedule
@@ -233,6 +280,7 @@ fileprivate class PostEditorStateSchedule: PostEditorActionState {
     func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState {
         switch postStatus {
         case .scheduled:
+            // When a post is scheduled, button should transition to Update
             return PostEditorStateUpdate()
         default:
             return self
@@ -241,6 +289,7 @@ fileprivate class PostEditorStateSchedule: PostEditorActionState {
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
         if isFutureDated(publishDate) == false {
+            // If a post changed to a future date then back, button should be Publish again
             return PostEditorStatePublish()
         }
 
@@ -248,6 +297,8 @@ fileprivate class PostEditorStateSchedule: PostEditorActionState {
     }
 }
 
+/// Concrete State for Submit for Review
+///
 fileprivate class PostEditorStateSubmitForReview: PostEditorActionState {
     var action: PostEditorAction {
         return .submitForReview
@@ -262,6 +313,8 @@ fileprivate class PostEditorStateSubmitForReview: PostEditorActionState {
     }
 }
 
+/// Concrete State for Update
+///
 fileprivate class PostEditorStateUpdate: PostEditorActionState {
     var action: PostEditorAction {
         return .update
@@ -284,6 +337,8 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
     }
 }
 
+/// Helper methods for all concrete PostEditorActionState classes
+///
 fileprivate extension PostEditorActionState {
     func isFutureDated(_ date: Date?) -> Bool {
         guard let date = date else {
