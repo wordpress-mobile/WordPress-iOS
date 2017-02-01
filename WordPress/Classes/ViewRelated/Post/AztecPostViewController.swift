@@ -210,7 +210,7 @@ class AztecPostViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         coordinator.animate(alongsideTransition: { _ in
-            self.resizeBlogPickerTitle()
+            self.resizeBlogPickerButton()
         })
 
         // TODO: Update toolbars
@@ -291,9 +291,9 @@ class AztecPostViewController: UIViewController {
     }
 
     func refreshInterface() {
-        reloadBlogPickerTitle()
+        reloadBlogPickerButton()
         reloadEditorContents()
-        resizeBlogPickerTitle()
+        resizeBlogPickerButton()
     }
 
     func reloadEditorContents() {
@@ -303,18 +303,21 @@ class AztecPostViewController: UIViewController {
         richTextView.setHTML(content)
     }
 
-    func reloadBlogPickerTitle() {
+    func reloadBlogPickerButton() {
         var pickerTitle = post.blog.url ?? String()
         if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
             pickerTitle = blogName
         }
 
         let titleText = NSAttributedString(string: pickerTitle, attributes: Constants.blogPickerAttributes)
+        let shouldEnable = !isSingleSiteMode
+
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
-        blogPickerButton.buttonMode = isSingleSiteMode ? .singleSite : .multipleSite
+        blogPickerButton.buttonMode = shouldEnable ? .multipleSite : .singleSite
+        blogPickerButton.isEnabled = shouldEnable
     }
 
-    func resizeBlogPickerTitle() {
+    func resizeBlogPickerButton() {
         // Ensure the BlogPicker gets it's maximum possible size
         blogPickerButton.sizeToFit()
 
@@ -378,11 +381,7 @@ extension AztecPostViewController {
     }
 
     @IBAction func blogPickerWasPressed() {
-        guard isSingleSiteMode == false else {
-            cancelEditing()
-            return
-        }
-
+        assert(isSingleSiteMode == false)
         guard post.hasSiteSpecificChanges() else {
             displayBlogSelector()
             return
