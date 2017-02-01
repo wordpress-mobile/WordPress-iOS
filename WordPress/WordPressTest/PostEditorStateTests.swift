@@ -94,7 +94,7 @@ extension PostEditorStateTests {
     }
 
     func testContextDraftPost() {
-        context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, delegate: self)
+        context = PostEditorStateContext(originalPostStatus: nil, userCanPublish: true, delegate: self)
 
         XCTAssertEqual(PostEditorAction.publish, context.action, "should return Publish if the post is a draft")
     }

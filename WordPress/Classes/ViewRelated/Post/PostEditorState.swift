@@ -84,7 +84,7 @@ public class PostEditorStateContext {
         }
     }
 
-    fileprivate var originalPostStatus: PostStatus
+    fileprivate var originalPostStatus: PostStatus?
     fileprivate var userCanPublish: Bool
     private var delegate: PostEditorStateContextDelegate?
 
@@ -100,16 +100,21 @@ public class PostEditorStateContext {
         }
     }
 
-    init(originalPostStatus: PostStatus, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
+    init(originalPostStatus: PostStatus? = nil, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
         self.originalPostStatus = originalPostStatus
         self.userCanPublish = userCanPublish
         self.delegate = delegate
+
+        guard let originalPostStatus = originalPostStatus else {
+            editorState = PostEditorStatePublish()
+            return
+        }
 
         switch originalPostStatus {
         case .draft where userCanPublish == false:
             editorState = PostEditorStateSubmitForReview()
         case .draft:
-            editorState = PostEditorStatePublish()
+            editorState = PostEditorStateSave()
         default:
             editorState = PostEditorStateUpdate()
         }
