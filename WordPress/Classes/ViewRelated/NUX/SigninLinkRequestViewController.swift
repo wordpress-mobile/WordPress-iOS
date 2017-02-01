@@ -95,15 +95,18 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
 
         configureLoading(true)
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service?.requestAuthenticationLink(email,
+        service.requestAuthenticationLink(email,
             success: { [weak self] in
                 self?.didRequestAuthenticationLink()
                 self?.configureLoading(false)
 
             }, failure: { [weak self] (error: Error) in
                 WPAppAnalytics.track(.loginMagicLinkFailed)
-                self?.displayError(error as NSError)
-                self?.configureLoading(false)
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
+                strongSelf.configureLoading(false)
             })
     }
 
