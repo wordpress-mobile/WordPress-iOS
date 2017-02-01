@@ -90,13 +90,13 @@ public class PostEditorStateContext {
 
     fileprivate var hasContent = false {
         didSet {
-            publishActionAllowed = hasContent && !isBeingPublished
+            updatePublishActionAllowed()
         }
     }
 
     fileprivate var isBeingPublished = false {
         didSet {
-            publishActionAllowed = hasContent && !isBeingPublished
+            updatePublishActionAllowed()
         }
     }
 
@@ -138,7 +138,6 @@ public class PostEditorStateContext {
         editorState = updatedState
     }
 
-    // TODO: Add isDirty to the state context for enabling/disabling the button
     func updated(hasContent: Bool) {
         self.hasContent = hasContent
     }
@@ -172,6 +171,10 @@ public class PostEditorStateContext {
         return publishActionAllowed
     }
 
+    // TODO: Add isDirty to the state context for enabling/disabling the button
+    private func updatePublishActionAllowed() {
+        publishActionAllowed = hasContent && !isBeingPublished
+    }
 }
 
 fileprivate class PostEditorStatePublish: PostEditorActionState {
