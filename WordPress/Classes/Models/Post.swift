@@ -227,7 +227,7 @@ class Post: AbstractPost {
 
         if let originalPost = original as? Post {
 
-            if tags?.characters.count != originalPost.tags?.characters.count && tags != originalPost.tags {
+            if tags ?? "" != originalPost.tags ?? "" {
                 return true
             }
 
