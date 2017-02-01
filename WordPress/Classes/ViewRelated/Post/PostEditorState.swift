@@ -59,7 +59,7 @@ public enum PostEditorAction {
 }
 
 fileprivate protocol PostEditorActionState {
-    func action() -> PostEditorAction
+    var action: PostEditorAction { get }
 
     // Actions that change state
     func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState
@@ -74,7 +74,7 @@ public protocol PostEditorStateContextDelegate {
 public class PostEditorStateContext {
     private var editorState: PostEditorActionState {
         didSet {
-            delegate?.context(self, didChangeAction: editorState.action())
+            delegate?.context(self, didChangeAction: editorState.action)
         }
     }
 
@@ -142,19 +142,19 @@ public class PostEditorStateContext {
     }
 
     var action: PostEditorAction {
-        return editorState.action()
+        return editorState.action
     }
 
     var publishButtonText: String {
-        return editorState.action().publishActionLabel
+        return editorState.action.publishActionLabel
     }
 
     var publishVerbText: String {
-        return editorState.action().publishingActionLabel
+        return editorState.action.publishingActionLabel
     }
 
     var isPostPostShown: Bool {
-        return editorState.action().isPostPostShown
+        return editorState.action.isPostPostShown
     }
 
     // TODO: Replace with a method to bring label and such back for secondary publish button
@@ -169,7 +169,7 @@ public class PostEditorStateContext {
 }
 
 fileprivate class PostEditorStatePublish: PostEditorActionState {
-    func action() -> PostEditorAction {
+    var action: PostEditorAction {
         return .publish
     }
 
@@ -198,7 +198,7 @@ fileprivate class PostEditorStatePublish: PostEditorActionState {
 }
 
 fileprivate class PostEditorStateSave: PostEditorActionState {
-    func action() -> PostEditorAction {
+    var action: PostEditorAction {
         return .save
     }
 
@@ -225,7 +225,7 @@ fileprivate class PostEditorStateSave: PostEditorActionState {
 }
 
 fileprivate class PostEditorStateSchedule: PostEditorActionState {
-    func action() -> PostEditorAction {
+    var action: PostEditorAction {
         return .schedule
     }
 
@@ -239,7 +239,7 @@ fileprivate class PostEditorStateSchedule: PostEditorActionState {
 }
 
 fileprivate class PostEditorStateSubmitForReview: PostEditorActionState {
-    func action() -> PostEditorAction {
+    var action: PostEditorAction {
         return .submitForReview
     }
 
@@ -253,7 +253,7 @@ fileprivate class PostEditorStateSubmitForReview: PostEditorActionState {
 }
 
 fileprivate class PostEditorStateUpdate: PostEditorActionState {
-    func action() -> PostEditorAction {
+    var action: PostEditorAction {
         return .update
     }
 
