@@ -194,10 +194,6 @@ fileprivate class PostEditorStatePublish: PostEditorActionState {
     }
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
-        guard let publishDate = publishDate else {
-            return self
-        }
-
         if isFutureDated(publishDate) {
             return PostEditorStateSchedule()
         }
@@ -221,10 +217,6 @@ fileprivate class PostEditorStateSave: PostEditorActionState {
     }
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
-        guard let publishDate = publishDate else {
-            return self
-        }
-
         if isFutureDated(publishDate) {
             return PostEditorStateSchedule()
         }
@@ -239,10 +231,19 @@ fileprivate class PostEditorStateSchedule: PostEditorActionState {
     }
 
     func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState {
-        return self
+        switch postStatus {
+        case .scheduled:
+            return PostEditorStateUpdate()
+        default:
+            return self
+        }
     }
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
+        if isFutureDated(publishDate) == false {
+            return PostEditorStatePublish()
+        }
+
         return self
     }
 }
@@ -271,10 +272,6 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
     }
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
-        guard let publishDate = publishDate else {
-            return self
-        }
-
         if isFutureDated(publishDate) && context.originalPostStatus != .scheduled {
             return PostEditorStateSchedule()
         }
@@ -288,14 +285,22 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
 }
 
 fileprivate extension PostEditorActionState {
-    func isFutureDated(_ date: Date) -> Bool {
+    func isFutureDated(_ date: Date?) -> Bool {
+        guard let date = date else {
+            return false
+        }
+
         let oneMinute: TimeInterval = 60.0
         let dateOneMinuteFromNow = Date(timeInterval: oneMinute, since: Date())
 
         return dateOneMinuteFromNow < date
     }
 
-    func isPastDated(_ date: Date) -> Bool {
+    func isPastDated(_ date: Date?) -> Bool {
+        guard let date = date else {
+            return false
+        }
+
         return date < Date()
     }
 }
