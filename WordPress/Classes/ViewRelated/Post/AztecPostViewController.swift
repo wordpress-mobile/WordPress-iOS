@@ -18,9 +18,9 @@ class AztecPostViewController: UIViewController {
     /// Aztec's Awesomeness
     ///
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
-        let tv = Aztec.TextView(defaultFont: Constants.defaultFont, defaultMissingImage: Constants.defaultMissingImage)
+        let tv = Aztec.TextView(defaultFont: Assets.defaultRegularFont, defaultMissingImage: Assets.defaultMissingImage)
 
-        tv.font = Constants.defaultFont
+        tv.font = Assets.defaultRegularFont
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         tv.delegate = self
         let toolbar = self.createToolbar()
@@ -42,7 +42,7 @@ class AztecPostViewController: UIViewController {
         let tv = UITextView()
 
         tv.accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
-        tv.font = Constants.defaultFont
+        tv.font = Assets.defaultRegularFont
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.isHidden = true
@@ -70,6 +70,8 @@ class AztecPostViewController: UIViewController {
         tf.returnKeyType = .next
         tf.textColor = UIColor.darkText
         tf.translatesAutoresizingMaskIntoConstraints = false
+
+        tf.addTarget(self, action: #selector(titleTextFieldDidChange), for: [.editingChanged])
 
         return tf
     }()
@@ -99,13 +101,8 @@ class AztecPostViewController: UIViewController {
     /// NavigationBar's Close Button
     ///
     fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
-        let image = Gridicon.iconOfType(.cross)
-        let cancelButton = WPStyleGuide.buttonForBar(with: image, target: self, selector: #selector(closeWasPressed))
-        cancelButton.leftSpacing = Constants.cancelButtonPadding.left
-        cancelButton.rightSpacing = Constants.cancelButtonPadding.right
-
-        let cancelItem = UIBarButtonItem(customView: cancelButton)
-        cancelItem.accessibilityLabel = NSLocalizedString("Cancel", comment: "Action button to close edior and cancel changes or insertion of post")
+        let cancelItem = UIBarButtonItem(customView: self.closeButton)
+        cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
         return cancelItem
     }()
 
@@ -113,9 +110,18 @@ class AztecPostViewController: UIViewController {
     /// NavigationBar's Blog Picker Button
     ///
     fileprivate lazy var blogPickerBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(customView: self.blogPickerButton)
+        let pickerItem = UIBarButtonItem(customView: self.blogPickerButton)
+        pickerItem.accessibilityLabel = NSLocalizedString("Switch Blog", comment: "Action button to switch the blog to which you'll be posting")
+        return pickerItem
     }()
 
+    /// Publish Button
+    fileprivate(set) lazy var publishButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: self.postEditorStateContext.publishButtonText, style: WPStyleGuide.barButtonStyleForDone(), target: self, action: #selector(publishButtonTapped(sender:)))
+        button.isEnabled = self.postEditorStateContext.isPublishButtonEnabled
+
+        return button
+    }()
 
     /// NavigationBar's More Button
     ///
@@ -124,6 +130,17 @@ class AztecPostViewController: UIViewController {
         let moreItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(moreWasPressed))
         moreItem.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
         return moreItem
+    }()
+
+
+    /// Dismiss Button
+    ///
+    fileprivate lazy var closeButton: WPButtonForNavigationBar = {
+        let cancelButton = WPStyleGuide.buttonForBar(with: Assets.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
+        cancelButton.leftSpacing = Constants.cancelButtonPadding.left
+        cancelButton.rightSpacing = Constants.cancelButtonPadding.right
+
+        return cancelButton
     }()
 
 
@@ -154,17 +171,40 @@ class AztecPostViewController: UIViewController {
     ///
     fileprivate(set) var post: AbstractPost {
         didSet {
+            removeObservers(fromPost: oldValue)
+            addObservers(toPost: post)
+
             refreshInterface()
         }
     }
 
     fileprivate var activeMediaRequests = [AFImageDownloadReceipt]()
 
+    /// Maintainer of state for editor - like for post button
+    ///
+    fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
+        var originalPostStatus: PostStatus? = nil
+
+        if let originalPost = self.post.original,
+            let postStatus = originalPost.status,
+            originalPost.hasRemote() {
+            originalPostStatus = PostStatus(rawValue: postStatus)
+        }
+
+        // TODO: Determine if user can actually publish to site or not
+        let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: true, delegate: self)
+
+        return context
+    }()
+
     // MARK: - Lifecycle Methods
 
     init(post: AbstractPost) {
         self.post = post
+
         super.init(nibName: nil, bundle: nil)
+
+        addObservers(toPost: post)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -173,6 +213,8 @@ class AztecPostViewController: UIViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+        removeObservers(fromPost: post)
+
         cancelAllPendingMediaRequests()
     }
 
@@ -180,13 +222,12 @@ class AztecPostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPFontManager.loadMerriweatherFontFamily()
+        createRevisionOfPost()
 
         configureNavigationBar()
+        configureDismissButton()
         configureView()
         configureSubviews()
-
-        createRevisionOfPost()
 
         view.setNeedsUpdateConstraints()
     }
@@ -210,7 +251,7 @@ class AztecPostViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         coordinator.animate(alongsideTransition: { _ in
-            self.resizeBlogPickerTitle()
+            self.resizeBlogPickerButton()
         })
 
         // TODO: Update toolbars
@@ -218,7 +259,6 @@ class AztecPostViewController: UIViewController {
         //    [self.titleToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
 
     }
-
 
     // MARK: - Configuration Methods
 
@@ -263,7 +303,12 @@ class AztecPostViewController: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
 
         navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
-        navigationItem.rightBarButtonItem = moreBarButtonItem
+        navigationItem.rightBarButtonItems = [moreBarButtonItem, publishButton]
+    }
+
+    func configureDismissButton() {
+        let image = isModal() ? Assets.closeButtonModalImage : Assets.closeButtonRegularImage
+        closeButton.setImage(image, for: .normal)
     }
 
     func configureView() {
@@ -291,9 +336,9 @@ class AztecPostViewController: UIViewController {
     }
 
     func refreshInterface() {
-        reloadBlogPickerTitle()
+        reloadBlogPickerButton()
         reloadEditorContents()
-        resizeBlogPickerTitle()
+        resizeBlogPickerButton()
     }
 
     func reloadEditorContents() {
@@ -303,18 +348,21 @@ class AztecPostViewController: UIViewController {
         richTextView.setHTML(content)
     }
 
-    func reloadBlogPickerTitle() {
+    func reloadBlogPickerButton() {
         var pickerTitle = post.blog.url ?? String()
         if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
             pickerTitle = blogName
         }
 
         let titleText = NSAttributedString(string: pickerTitle, attributes: Constants.blogPickerAttributes)
+        let shouldEnable = !isSingleSiteMode
+
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
-        blogPickerButton.buttonMode = isSingleSiteMode ? .singleSite : .multipleSite
+        blogPickerButton.buttonMode = shouldEnable ? .multipleSite : .singleSite
+        blogPickerButton.isEnabled = shouldEnable
     }
 
-    func resizeBlogPickerTitle() {
+    func resizeBlogPickerButton() {
         // Ensure the BlogPicker gets it's maximum possible size
         blogPickerButton.sizeToFit()
 
@@ -372,17 +420,19 @@ class AztecPostViewController: UIViewController {
 
 // MARK: - Actions
 extension AztecPostViewController {
+    @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
+        print("If this were working, it would be \(postEditorStateContext.publishVerbText)")
+
+        // TODO: Implement publishing ;)
+        // Don't forget to set postEditorStateContext.updated(isBeingPublished: true) during publishing
+    }
 
     @IBAction func closeWasPressed() {
         cancelEditing()
     }
 
     @IBAction func blogPickerWasPressed() {
-        guard isSingleSiteMode == false else {
-            cancelEditing()
-            return
-        }
-
+        assert(isSingleSiteMode == false)
         guard post.hasSiteSpecificChanges() else {
             displayBlogSelector()
             return
@@ -485,6 +535,55 @@ private extension AztecPostViewController {
         let previewController = PostPreviewViewController(post: post)
         previewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(previewController, animated: true)
+    }
+}
+
+
+
+// MARK: - Publish Button Methods
+extension AztecPostViewController: PostEditorStateContextDelegate {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(AbstractPost.status), let status = post.status {
+            postEditorStateContext.updated(postStatus: PostStatus(rawValue: status) ?? .draft)
+        } else if keyPath == #keyPath(AbstractPost.dateCreated) {
+            let dateCreated = post.dateCreated ?? Date()
+            postEditorStateContext.updated(publishDate: dateCreated)
+        } else if keyPath == #keyPath(AbstractPost.content) {
+            postEditorStateContext.updated(hasContent: editorHasContent)
+        }
+    }
+
+    internal func titleTextFieldDidChange(textField: UITextField) {
+        postEditorStateContext.updated(hasContent: editorHasContent)
+    }
+
+    // TODO: We should be tracking hasContent and isDirty separately for enabling button in the state context
+    private var editorHasContent: Bool {
+        let contentCharacterCount = post.content?.characters.count ?? 0
+        // Title isn't updated on post until editing is done - this looks at realtime changes
+        let titleCharacterCount = titleTextField.text?.characters.count ?? 0
+
+        return contentCharacterCount + titleCharacterCount > 0
+    }
+
+    internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
+        publishButton.title = context.publishButtonText
+    }
+
+    internal func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool) {
+        publishButton.isEnabled = context.isPublishButtonEnabled
+    }
+
+    internal func addObservers(toPost: AbstractPost) {
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.status), options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated), options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.content), options: [], context: nil)
+    }
+
+    internal func removeObservers(fromPost: AbstractPost) {
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.status))
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated))
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
     }
 }
 
@@ -1009,12 +1108,21 @@ extension AztecPostViewController: TextViewMediaDelegate {
 // MARK: - Constants
 fileprivate extension AztecPostViewController {
 
-    struct SwitchSiteAlert {
-        static let title        = NSLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
-        static let message      = NSLocalizedString("Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", comment: "And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
+    struct Assets {
+        static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
+        static let closeButtonRegularImage  = UIImage(named: "icon-posts-editor-chevron")
+        static let defaultRegularFont       = WPFontManager.merriweatherRegularFont(ofSize: 16)
+        static let defaultSemiBoldFont      = WPFontManager.systemSemiBoldFont(ofSize: 16)
+        static let defaultMissingImage      = Gridicon.iconOfType(.image)
+    }
 
-        static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
-        static let cancelTitle  = NSLocalizedString("Cancel", comment: "Cancel Action")
+    struct Constants {
+        static let defaultMargin            = CGFloat(20)
+        static let separatorButtonWidth     = CGFloat(-12)
+        static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        static let blogPickerAttributes     = [NSFontAttributeName: Assets.defaultSemiBoldFont]
+        static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
+        static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
     }
 
     struct MoreSheetAlert {
@@ -1025,14 +1133,11 @@ fileprivate extension AztecPostViewController {
         static let cancelTitle  = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
     }
 
-    struct Constants {
-        static let defaultFont              = WPFontManager.merriweatherRegularFont(ofSize: 16)
-        static let defaultMargin            = CGFloat(20)
-        static let defaultMissingImage      = Gridicon.iconOfType(.image)
-        static let separatorButtonWidth     = CGFloat(-12)
-        static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
-        static let blogPickerAttributes     = [NSFontAttributeName: WPFontManager.systemSemiBoldFont(ofSize: 16)]
-        static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
-        static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
+    struct SwitchSiteAlert {
+        static let title        = NSLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
+        static let message      = NSLocalizedString("Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", comment: "And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
+
+        static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
+        static let cancelTitle  = NSLocalizedString("Cancel", comment: "Cancel Action")
     }
 }

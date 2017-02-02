@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import MGSwipeTableCell
 
 /// The purpose of this class is to render a Notification entity, onscreen.
 /// This cell should be loaded from its nib, since the autolayout constraints and outlets are not generated
@@ -7,7 +8,7 @@ import WordPressShared
 /// Supports specific styles for Unapproved Comment Notifications, Unread Notifications, and a brand
 /// new "Undo Deletion" mechanism has been implemented. See "NoteUndoOverlayView" for reference.
 ///
-class NoteTableViewCell: WPTableViewCell {
+class NoteTableViewCell: MGSwipeTableCell {
     // MARK: - Public Properties
     var read: Bool = false {
         didSet {
@@ -162,11 +163,24 @@ class NoteTableViewCell: WPTableViewCell {
         // Separators: Setup bottom separators!
         separatorsView.bottomColor = WPStyleGuide.Notifications.noteSeparatorColor
         backgroundView = separatorsView
+
+        // Needed as long as we have custom margins
+        clipsToBounds = true
+    }
+
+    override var frame: CGRect {
+        get {
+            return super.frame
+        }
+        set {
+            super.frame = CustomCellMarginBehavior().correctedFrame(newValue, for: self)
+        }
     }
 
     override func layoutSubviews() {
         refreshBackgrounds()
         super.layoutSubviews()
+        CustomCellMarginBehavior().cellDidLayoutSubviews(self)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
