@@ -579,7 +579,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             NSArray *disabledPublicizeConnectionsArray = [self entriesWithKeyLike:@"_wpas_skip_*" inMetadata:remotePost.metadata];
             for (NSDictionary *disabledConnectionDictionary in disabledPublicizeConnectionsArray) {
                 NSString *dictKey = [disabledConnectionDictionary stringForKey:@"key"];
-                NSNumber *keyringConnectionID = @([[dictKey stringByReplacingOccurrencesOfString:@"_wpas_skip_" withString:@""]integerValue]);
+                // We only want to keep the keyringID value from the key
+                NSNumber *keyringConnectionID = @([[dictKey stringByReplacingOccurrencesOfString:@"_wpas_skip_"
+                                                                                      withString:@""]integerValue]);
                 NSMutableDictionary *keyringConnectionData = [NSMutableDictionary dictionaryWithCapacity:2];
                 keyringConnectionData[@"id"] = [disabledConnectionDictionary stringForKey:@"id"];
                 keyringConnectionData[@"value"] = [disabledConnectionDictionary stringForKey:@"value"];
@@ -702,7 +704,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     }
     for (NSNumber *keyringConnectionId in post.disabledPublicizeConnections.allKeys) {
         NSMutableDictionary *disabledConnectionsDictionary = [NSMutableDictionary dictionaryWithCapacity: 3];
-        disabledConnectionsDictionary[@"key"] = [NSString stringWithFormat:@"_wpas_skip_%@", keyringConnectionId];
+        // We need to compose back the key
+        disabledConnectionsDictionary[@"key"] = [NSString stringWithFormat:@"_wpas_skip_%@",
+                                                                           keyringConnectionId];
         [disabledConnectionsDictionary addEntriesFromDictionary:post.disabledPublicizeConnections[keyringConnectionId]];
         [metadata addObject:disabledConnectionsDictionary];
     }
