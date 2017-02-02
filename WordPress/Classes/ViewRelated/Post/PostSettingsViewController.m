@@ -593,6 +593,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (NSInteger)numberOfRowsForShareSection
 {
     if (self.apost.blog.supportsPublicize && self.publicizeConnections.count > 0) {
+        // One row per publicize connection plus an extra row for the publicze message
         return self.publicizeConnections.count + 1;
     } else {
         return 0;
