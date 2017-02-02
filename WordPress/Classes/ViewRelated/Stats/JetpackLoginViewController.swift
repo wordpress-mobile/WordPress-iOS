@@ -175,7 +175,7 @@ class JetpackLoginViewController: UIViewController {
     /// Configures the button text for requesting more information about jetpack.
     ///
     fileprivate func setupMoreInformationButtonText() {
-        let string = NSLocalizedString("<u>More information</u>",
+        let string = NSLocalizedString("More information",
                                        comment: "Text used for a button to request more information.")
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -183,6 +183,7 @@ class JetpackLoginViewController: UIViewController {
 
         let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14),
                                                                    NSForegroundColorAttributeName: WPStyleGuide.allTAllShadeGrey(),
+                                                                   NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue as AnyObject,
                                                                    NSParagraphStyleAttributeName: paragraphStyle ]]
 
         let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
