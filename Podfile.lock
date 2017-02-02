@@ -71,6 +71,7 @@ PODS:
   - HockeySDK/AllFeaturesLib (3.8.6)
   - Lookback (1.4.1):
     - PDKTZipArchive
+  - MGSwipeTableCell (1.5.6)
   - Mixpanel (2.9.4):
     - Mixpanel/Mixpanel (= 2.9.4)
   - Mixpanel/Mixpanel (2.9.4)
@@ -162,6 +163,7 @@ DEPENDENCIES:
   - Helpshift (~> 5.7.1)
   - HockeySDK (~> 3.8.0)
   - Lookback (= 1.4.1)
+  - MGSwipeTableCell (~> 1.5.6)
   - Mixpanel (= 2.9.4)
   - MRProgress (~> 0.7.0)
   - Nimble (~> 5.0.0)
@@ -241,6 +243,7 @@ SPEC CHECKSUMS:
   Helpshift: 48ee4b24dc5f0ae7d1dfd8dded6eea327069a014
   HockeySDK: ab68303eec6680f6b539de65d747742dd276e934
   Lookback: 37c23f97894612f6eccc215440c8f990fbb5a607
+  MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   Mixpanel: 80d2ca9bb38ae91c1044d738e80fe448377ac89f
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
   Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
@@ -264,6 +267,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 3bda8ac8cb8939c797fde230c093803c719aaad5
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 396b548b9654655609db7b9b9d9596b76c1c1efc
+PODFILE CHECKSUM: bfce0ccdec8c9f4931e08746812fc259d1e709a6
 
 COCOAPODS: 1.1.1
