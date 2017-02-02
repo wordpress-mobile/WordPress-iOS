@@ -268,7 +268,7 @@ extension EditPostViewController: UIViewControllerRestoration {
         if let postURL = coder.decodeObject(forKey: RestorationKey.post.rawValue) as? URL {
             let context = ContextManager.sharedInstance().mainContext
             if let postID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURL) {
-                post = context.object(with: postID) as? Post
+                post = try! context.existingObject(with: postID) as? Post
             }
         }
 
