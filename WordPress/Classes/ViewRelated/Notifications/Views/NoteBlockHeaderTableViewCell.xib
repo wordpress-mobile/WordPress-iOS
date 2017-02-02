@@ -18,52 +18,57 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Fx-cw-9OG" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                        <rect key="frame" x="15" y="11" width="37" height="37"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="37" id="DMw-1c-pNS"/>
-                            <constraint firstAttribute="height" constant="32" id="KBo-qG-huZ"/>
-                            <constraint firstAttribute="width" constant="37" id="bQA-lh-KOQ"/>
-                            <constraint firstAttribute="width" constant="32" id="yaH-Wc-jzV"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="DMw-1c-pNS"/>
-                                <exclude reference="bQA-lh-KOQ"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <mask key="constraints">
-                                <include reference="DMw-1c-pNS"/>
-                                <exclude reference="KBo-qG-huZ"/>
-                                <include reference="bQA-lh-KOQ"/>
-                                <exclude reference="yaH-Wc-jzV"/>
-                            </mask>
-                        </variation>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rnJ-hn-LCK">
-                        <rect key="frame" x="62" y="6" width="243" height="15"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Snippet" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wLG-3c-VUY">
-                        <rect key="frame" x="62" y="21" width="243" height="15"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZNg-sw-Tsx">
+                        <rect key="frame" x="15" y="11" width="290" height="48"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Fx-cw-9OG" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="5.5" width="37" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="37" id="DMw-1c-pNS"/>
+                                    <constraint firstAttribute="height" constant="32" id="KBo-qG-huZ"/>
+                                    <constraint firstAttribute="width" constant="37" id="bQA-lh-KOQ"/>
+                                    <constraint firstAttribute="width" constant="32" id="yaH-Wc-jzV"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="DMw-1c-pNS"/>
+                                        <exclude reference="bQA-lh-KOQ"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="DMw-1c-pNS"/>
+                                        <exclude reference="KBo-qG-huZ"/>
+                                        <include reference="bQA-lh-KOQ"/>
+                                        <exclude reference="yaH-Wc-jzV"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3q1-8d-Ceo">
+                                <rect key="frame" x="45" y="9.5" width="245" height="29"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rnJ-hn-LCK">
+                                        <rect key="frame" x="0.0" y="0.0" width="245" height="14.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Snippet" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wLG-3c-VUY">
+                                        <rect key="frame" x="0.0" y="14.5" width="245" height="14.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                    </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="wLG-3c-VUY" firstAttribute="top" secondItem="rnJ-hn-LCK" secondAttribute="bottom" id="5hK-Dd-vxI"/>
-                    <constraint firstItem="wLG-3c-VUY" firstAttribute="trailing" secondItem="rnJ-hn-LCK" secondAttribute="trailing" id="7dg-ca-GYQ"/>
-                    <constraint firstItem="6Fx-cw-9OG" firstAttribute="leading" secondItem="VpH-7p-vak" secondAttribute="leadingMargin" id="FsN-sb-kB8"/>
-                    <constraint firstItem="6Fx-cw-9OG" firstAttribute="top" secondItem="rnJ-hn-LCK" secondAttribute="top" constant="5" id="GfJ-aK-4ZP"/>
-                    <constraint firstItem="wLG-3c-VUY" firstAttribute="leading" secondItem="rnJ-hn-LCK" secondAttribute="leading" id="GtJ-hH-Oma"/>
-                    <constraint firstItem="rnJ-hn-LCK" firstAttribute="leading" secondItem="6Fx-cw-9OG" secondAttribute="trailing" constant="10" id="RuR-rP-YK0"/>
-                    <constraint firstItem="6Fx-cw-9OG" firstAttribute="top" secondItem="VpH-7p-vak" secondAttribute="topMargin" id="WZJ-vI-kN5"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="rnJ-hn-LCK" secondAttribute="trailing" id="jU4-LM-FcU"/>
-                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="6Fx-cw-9OG" secondAttribute="bottom" priority="750" id="mjK-7s-4we"/>
+                    <constraint firstItem="ZNg-sw-Tsx" firstAttribute="top" secondItem="VpH-7p-vak" secondAttribute="topMargin" id="89G-OR-82M"/>
+                    <constraint firstItem="ZNg-sw-Tsx" firstAttribute="leading" secondItem="VpH-7p-vak" secondAttribute="leadingMargin" id="XzS-gX-ECh"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="ZNg-sw-Tsx" secondAttribute="bottom" id="Y9a-Vh-Zka"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="ZNg-sw-Tsx" secondAttribute="trailing" id="p5F-pK-OIk"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
