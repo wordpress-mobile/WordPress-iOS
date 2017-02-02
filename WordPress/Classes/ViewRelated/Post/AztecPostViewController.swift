@@ -71,6 +71,8 @@ class AztecPostViewController: UIViewController {
         tf.textColor = UIColor.darkText
         tf.translatesAutoresizingMaskIntoConstraints = false
 
+        tf.addTarget(self, action: #selector(titleTextFieldDidChange), for: [.editingChanged])
+
         return tf
     }()
 
@@ -113,6 +115,13 @@ class AztecPostViewController: UIViewController {
         return pickerItem
     }()
 
+    /// Publish Button
+    fileprivate(set) lazy var publishButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: self.postEditorStateContext.publishButtonText, style: WPStyleGuide.barButtonStyleForDone(), target: self, action: #selector(publishButtonTapped(sender:)))
+        button.isEnabled = self.postEditorStateContext.isPublishButtonEnabled
+
+        return button
+    }()
 
     /// NavigationBar's More Button
     ///
@@ -162,17 +171,40 @@ class AztecPostViewController: UIViewController {
     ///
     fileprivate(set) var post: AbstractPost {
         didSet {
+            removeObservers(fromPost: oldValue)
+            addObservers(toPost: post)
+
             refreshInterface()
         }
     }
 
     fileprivate var activeMediaRequests = [AFImageDownloadReceipt]()
 
+    /// Maintainer of state for editor - like for post button
+    ///
+    fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
+        var originalPostStatus: PostStatus? = nil
+
+        if let originalPost = self.post.original,
+            let postStatus = originalPost.status,
+            originalPost.hasRemote() {
+            originalPostStatus = PostStatus(rawValue: postStatus)
+        }
+
+        // TODO: Determine if user can actually publish to site or not
+        let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: true, delegate: self)
+
+        return context
+    }()
+
     // MARK: - Lifecycle Methods
 
     init(post: AbstractPost) {
         self.post = post
+
         super.init(nibName: nil, bundle: nil)
+
+        addObservers(toPost: post)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -181,6 +213,8 @@ class AztecPostViewController: UIViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+        removeObservers(fromPost: post)
+
         cancelAllPendingMediaRequests()
     }
 
@@ -188,12 +222,12 @@ class AztecPostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        createRevisionOfPost()
+
         configureNavigationBar()
         configureDismissButton()
         configureView()
         configureSubviews()
-
-        createRevisionOfPost()
 
         view.setNeedsUpdateConstraints()
     }
@@ -225,7 +259,6 @@ class AztecPostViewController: UIViewController {
         //    [self.titleToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
 
     }
-
 
     // MARK: - Configuration Methods
 
@@ -270,7 +303,7 @@ class AztecPostViewController: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
 
         navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
-        navigationItem.rightBarButtonItem = moreBarButtonItem
+        navigationItem.rightBarButtonItems = [moreBarButtonItem, publishButton]
     }
 
     func configureDismissButton() {
@@ -387,6 +420,12 @@ class AztecPostViewController: UIViewController {
 
 // MARK: - Actions
 extension AztecPostViewController {
+    @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
+        print("If this were working, it would be \(postEditorStateContext.publishVerbText)")
+
+        // TODO: Implement publishing ;)
+        // Don't forget to set postEditorStateContext.updated(isBeingPublished: true) during publishing
+    }
 
     @IBAction func closeWasPressed() {
         cancelEditing()
@@ -496,6 +535,55 @@ private extension AztecPostViewController {
         let previewController = PostPreviewViewController(post: post)
         previewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(previewController, animated: true)
+    }
+}
+
+
+
+// MARK: - Publish Button Methods
+extension AztecPostViewController: PostEditorStateContextDelegate {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(AbstractPost.status), let status = post.status {
+            postEditorStateContext.updated(postStatus: PostStatus(rawValue: status) ?? .draft)
+        } else if keyPath == #keyPath(AbstractPost.dateCreated) {
+            let dateCreated = post.dateCreated ?? Date()
+            postEditorStateContext.updated(publishDate: dateCreated)
+        } else if keyPath == #keyPath(AbstractPost.content) {
+            postEditorStateContext.updated(hasContent: editorHasContent)
+        }
+    }
+
+    internal func titleTextFieldDidChange(textField: UITextField) {
+        postEditorStateContext.updated(hasContent: editorHasContent)
+    }
+
+    // TODO: We should be tracking hasContent and isDirty separately for enabling button in the state context
+    private var editorHasContent: Bool {
+        let contentCharacterCount = post.content?.characters.count ?? 0
+        // Title isn't updated on post until editing is done - this looks at realtime changes
+        let titleCharacterCount = titleTextField.text?.characters.count ?? 0
+
+        return contentCharacterCount + titleCharacterCount > 0
+    }
+
+    internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
+        publishButton.title = context.publishButtonText
+    }
+
+    internal func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool) {
+        publishButton.isEnabled = context.isPublishButtonEnabled
+    }
+
+    internal func addObservers(toPost: AbstractPost) {
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.status), options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated), options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.content), options: [], context: nil)
+    }
+
+    internal func removeObservers(fromPost: AbstractPost) {
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.status))
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated))
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
     }
 }
 
