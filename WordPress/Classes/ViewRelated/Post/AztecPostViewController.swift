@@ -184,6 +184,7 @@ class AztecPostViewController: UIViewController {
         return WPAndDeviceMediaLibraryDataSource(post: self.post)
     }()
 
+
     /// Maintainer of state for editor - like for post button
     ///
     fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
@@ -229,17 +230,16 @@ class AztecPostViewController: UIViewController {
         createRevisionOfPost()
 
         configureNavigationBar()
-        configureDismissButton()
         configureView()
         configureSubviews()
 
         view.setNeedsUpdateConstraints()
     }
 
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        configureDismissButton()
         startListeningToNotifications()
     }
 
