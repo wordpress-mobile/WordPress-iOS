@@ -780,7 +780,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (UITableViewCell *)configureShareCellForIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    BOOL canEditSharing = ![self.apost.status isEqualToString:PostStatusPublish];
+    BOOL canEditSharing = [self.post canEditPublicizeSettings];
 
     if (indexPath.row < self.publicizeConnections.count) {
         cell = [self getWPTableViewImageAndAccessoryCell];
