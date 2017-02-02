@@ -766,14 +766,18 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (UITableViewCell *)configureShareCellForIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
+    BOOL canEditSharing = ![self.apost.status isEqualToString:PostStatusPublish];
 
     if (indexPath.row < self.publicizeConnections.count) {
         cell = [self getWPTableViewImageAndAccessoryCell];
         PublicizeConnection *connection = self.publicizeConnections[indexPath.row];
         UIImage *image = [WPStyleGuide iconForService: connection.service];
         [cell.imageView setImage:image];
-        cell.imageView.tintColor = [WPStyleGuide tintColorForConnectedService: connection.service];
+        if (canEditSharing) {
+            cell.imageView.tintColor = [WPStyleGuide tintColorForConnectedService: connection.service];
+        }
         cell.textLabel.text = connection.externalDisplay;
+        cell.textLabel.enabled = canEditSharing;
         if (connection.isBroken) {
             cell.accessoryView = [WPStyleGuide sharingCellWarningAccessoryImageView];
         } else {
@@ -781,6 +785,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             switchAccessory.tag = indexPath.row;
             [switchAccessory addTarget:self action:@selector(handleShareConnectionCellSwitchChanged:) forControlEvents:UIControlEventValueChanged];
             switchAccessory.on = ![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID];
+            switchAccessory.enabled = canEditSharing;
             cell.accessoryView = switchAccessory;
         }
         cell.tag = PostSettingsRowShareConnection;
@@ -788,10 +793,13 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     } else {
         cell = [self getWPTableViewDisclosureCell];
         cell.textLabel.text = NSLocalizedString(@"Message", @"Label for the share message field on the post settings.");
+        cell.textLabel.enabled = canEditSharing;
         cell.detailTextLabel.text = self.post.publicizeMessage ? self.post.publicizeMessage : self.post.titleForDisplay;
+        cell.detailTextLabel.enabled = canEditSharing;
         cell.tag = PostSettingsRowShareMessage;
         cell.accessibilityIdentifier = @"Customize the message";
     }
+    cell.userInteractionEnabled = canEditSharing;
     return cell;
 }
 
