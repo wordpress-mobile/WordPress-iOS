@@ -227,11 +227,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     // Wrapper view
     UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderHeight)];
     headerWrapper.translatesAutoresizingMaskIntoConstraints = NO;
+    headerWrapper.preservesSuperviewLayoutMargins = YES;
     headerWrapper.backgroundColor = [UIColor whiteColor];
     headerWrapper.clipsToBounds = YES;
 
     // Post header view
-    ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderViewAvatarSize)];
+    ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] init];
     headerView.onClick = ^{
         [weakSelf handleHeaderTapped];
     };
@@ -251,18 +252,17 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     // Layout
     NSDictionary *views = NSDictionaryOfVariableBindings(headerView, borderView);
-    NSDictionary *metrics = @{@"margin":@12};
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(15)-[headerView]-(15)-|"
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[headerView]|"
                                                                           options:0
-                                                                          metrics:metrics
+                                                                          metrics:nil
                                                                             views:views]];
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(margin)-[headerView(44)]-(>=1@900)-[borderView(1@1000)]|"
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerView][borderView(1@1000)]|"
                                                                           options:0
-                                                                          metrics:metrics
+                                                                          metrics:nil
                                                                             views:views]];
     [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[borderView]|"
                                                                           options:0
-                                                                          metrics:metrics
+                                                                          metrics:nil
                                                                             views:views]];
 
     self.postHeaderView = headerView;
@@ -374,8 +374,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     };
     
     // PostHeader Constraints
-    [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.layoutMarginsGuide.leftAnchor constant:-15] setActive:YES];
-    [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.layoutMarginsGuide.rightAnchor constant:15] setActive:YES];
+    [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
+    [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
 
     // TableView Contraints
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader(headerHeight)][tableView][replyTextView]"
