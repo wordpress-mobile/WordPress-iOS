@@ -6,7 +6,8 @@ typedef enum {
     PostSettingsSectionFormat,
     PostSettingsSectionFeaturedImage,
     PostSettingsSectionShare,
-    PostSettingsSectionGeolocation
+    PostSettingsSectionGeolocation,
+    PostSettingsSectionMoreOptions
 } PostSettingsSection;
 
 
