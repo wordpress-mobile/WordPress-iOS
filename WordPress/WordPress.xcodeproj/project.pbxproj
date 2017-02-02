@@ -767,6 +767,7 @@
 		E1F8E1231B0B411E0073E628 /* JetpackService.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F8E1221B0B411E0073E628 /* JetpackService.m */; };
 		E1F8E1261B0B422C0073E628 /* JetpackServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F8E1251B0B422C0073E628 /* JetpackServiceRemote.m */; };
 		E1FD45E01C030B3800750F4C /* AccountSettingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FD45DF1C030B3800750F4C /* AccountSettingsService.swift */; };
+		E1FFA9DC1E3FA84500CED178 /* CustomCellMarginBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FFA9DB1E3FA84500CED178 /* CustomCellMarginBehavior.swift */; };
 		E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = E240859B183D82AE002EB0EF /* WPAnimatedBox.m */; };
 		E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */ = {isa = PBXBuildFile; fileRef = E2AA87A418523E5300886693 /* UIView+Subviews.m */; };
 		E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E2E7EB45185FB140004F5E72 /* WPBlogSelectorButton.m */; };
@@ -2133,6 +2134,7 @@
 		E1F8E1241B0B422C0073E628 /* JetpackServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackServiceRemote.h; sourceTree = "<group>"; };
 		E1F8E1251B0B422C0073E628 /* JetpackServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackServiceRemote.m; sourceTree = "<group>"; };
 		E1FD45DF1C030B3800750F4C /* AccountSettingsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsService.swift; sourceTree = "<group>"; };
+		E1FFA9DB1E3FA84500CED178 /* CustomCellMarginBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCellMarginBehavior.swift; sourceTree = "<group>"; };
 		E240859A183D82AE002EB0EF /* WPAnimatedBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAnimatedBox.h; sourceTree = "<group>"; };
 		E240859B183D82AE002EB0EF /* WPAnimatedBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnimatedBox.m; sourceTree = "<group>"; };
 		E2AA87A318523E5300886693 /* UIView+Subviews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Subviews.h"; sourceTree = "<group>"; };
@@ -3228,6 +3230,7 @@
 		8320B5CF11FCA3EA00607422 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				E1FFA9DB1E3FA84500CED178 /* CustomCellMarginBehavior.swift */,
 				E14977171C0DC0770057CD60 /* MediaSizeSliderCell.swift */,
 				E14977191C0DCB6F0057CD60 /* MediaSizeSliderCell.xib */,
 				B5CABB161C0E382C0050AB9F /* PickerTableViewCell.swift */,
@@ -6009,6 +6012,7 @@
 				08D345561CD7FBA900358E8C /* MenuHeaderViewController.m in Sources */,
 				B5120B381D47CC6C0059361A /* NotificationDetailsViewController.swift in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
+				E1FFA9DC1E3FA84500CED178 /* CustomCellMarginBehavior.swift in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				B574CE111B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift in Sources */,
 				E6417BA41CA07E260084050A /* SigninWPComViewController.swift in Sources */,
