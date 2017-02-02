@@ -10,7 +10,7 @@
 #import "WPImageSource.h"
 #import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "WordPress-swift.h"
+#import "WordPress-Swift.h"
 #import "WPXMLRPCDecoder.h"
 #import "PhotonImageURLHelper.h"
 
