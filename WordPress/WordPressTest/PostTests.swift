@@ -373,4 +373,20 @@ class PostTests: XCTestCase {
         post.enablePublicizeConnectionWithKeyringID(1234)
         XCTAssertFalse(post.publicizeConnectionDisabledForKeyringID(1234))
     }
+
+    func testThatCanEditPublicizeSettingsWorks() {
+        let post = newTestPost()
+
+        post.status = PostStatusPublish
+        XCTAssertTrue(post.canEditPublicizeSettings())
+
+        post.postID = 2905
+        XCTAssertFalse(post.canEditPublicizeSettings())
+
+        post.status = PostStatusScheduled
+        XCTAssertTrue(post.canEditPublicizeSettings())
+
+        post.status = PostStatusDraft
+        XCTAssertTrue(post.canEditPublicizeSettings())
+    }
 }
