@@ -6,7 +6,7 @@
 #import "UIImageView+Gravatar.h"
 #import <WordPressShared/WPStyleGuide.h>
 #import "WPStyleGuide+Posts.h"
-#import "Wordpress-Swift.h"
+#import "WordPress-Swift.h"
 #import "FLAnimatedImage.h"
 
 static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
