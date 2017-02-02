@@ -32,7 +32,7 @@
                     <rect key="frame" x="8" y="1" width="230" height="128"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Lf-XI-exE" userLabel="Placeholder">
-                            <rect key="frame" x="10" y="14" width="216" height="100"/>
+                            <rect key="frame" x="8" y="14" width="218" height="100"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -40,7 +40,7 @@
                             <size key="shadowOffset" width="-1" height="-1"/>
                         </label>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfH-NN-dph">
-                            <rect key="frame" x="10" y="14" width="216" height="100"/>
+                            <rect key="frame" x="8" y="14" width="218" height="100"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -57,7 +57,7 @@
                         <constraint firstItem="6Lf-XI-exE" firstAttribute="trailing" secondItem="gfH-NN-dph" secondAttribute="trailing" id="gUe-w8-JiB"/>
                         <constraint firstAttribute="bottomMargin" secondItem="gfH-NN-dph" secondAttribute="bottom" id="rqH-Tc-Wyo"/>
                     </constraints>
-                    <edgeInsets key="layoutMargins" top="14" left="10" bottom="14" right="4"/>
+                    <edgeInsets key="layoutMargins" top="14" left="8" bottom="14" right="4"/>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VGi-tL-gUc">
                     <rect key="frame" x="238" y="1" width="74" height="128"/>
