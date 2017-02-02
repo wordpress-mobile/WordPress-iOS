@@ -1024,19 +1024,52 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func addDeviceMediaAsset(_ phAsset: PHAsset) {
-
+        let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Constants.defaultMissingImage)
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
             DispatchQueue.main.async {
-                self.richTextView.insertImage(sourceURL: thumbnailURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: nil)
+                self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: thumbnailURL)
             }
         }, completion: { (media, error) in
+            guard let media = media, error == nil else {
+                if let error = error {
+                    DispatchQueue.main.async {
+                        self.displayError(error, onAttachment: attachment)
+                    }
+                }
+                return
+            }
+            var uploadProgress: Progress?
+            mediaService.uploadMedia(media, progress: &uploadProgress, success: {
+                DispatchQueue.main.async {
+                    self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
+                }
+            }, failure: { (error) in
+                DispatchQueue.main.async {
+                    self.displayError(error, onAttachment: attachment)
+                }
+            })
 
         })
     }
 
     func addSiteMediaAsset(_ media: Media) {
 
+    }
+
+    func displayError(_ error: Error?, onAttachment attachment: Aztec.TextAttachment) {
+        var message = NSLocalizedString("Failed to insert media on your post. Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
+        if let error = error {
+            message = error.localizedDescription
+        }
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        let attributes: [String:Any] = [NSFontAttributeName: Constants.defaultFont,
+                                        NSParagraphStyleAttributeName: paragraphStyle,
+                                        NSForegroundColorAttributeName: UIColor.darkGray]
+        let attributeMessage = NSAttributedString(string: message, attributes: attributes)
+        richTextView.update(attachment: attachment, message: attributeMessage)
     }
 
 }
