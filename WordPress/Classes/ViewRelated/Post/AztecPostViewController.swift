@@ -1035,7 +1035,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func addDeviceMediaAsset(_ phAsset: PHAsset) {
-        let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Constants.defaultMissingImage)
+        let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
             DispatchQueue.main.async {
@@ -1070,14 +1070,14 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             guard let remoteURL = URL(string: media.remoteURL) else {
                 return
             }
-            let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Constants.defaultMissingImage)
+            let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
         } else {
             var tempMediaURL = URL(string:"placeholder://")!
             if let mediaLocalPath = media.absoluteLocalURL,
                let localURL = URL(string: mediaLocalPath) {
                tempMediaURL = localURL
             }
-            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL  , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Constants.defaultMissingImage)
+            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL  , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
 
             let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
             var uploadProgress: Progress?
@@ -1101,7 +1101,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        let attributes: [String:Any] = [NSFontAttributeName: Constants.defaultFont,
+        let attributes: [String:Any] = [NSFontAttributeName: Assets.defaultRegularFont,
                                         NSParagraphStyleAttributeName: paragraphStyle,
                                         NSForegroundColorAttributeName: UIColor.darkGray]
         let attributeMessage = NSAttributedString(string: message, attributes: attributes)
