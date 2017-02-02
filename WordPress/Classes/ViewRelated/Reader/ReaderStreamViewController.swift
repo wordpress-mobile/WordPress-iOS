@@ -1228,6 +1228,7 @@ import WordPressComAnalytics
 
         footerView.showSpinner(true)
 
+        let properties = topicPropertyForStats()
         let earlierThan = post.sortDate
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
@@ -1255,10 +1256,10 @@ import WordPressComAnalytics
             } else {
                 service?.fetchPosts(for: topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
             }
-        }
 
-        if let properties = topicPropertyForStats() {
-            WPAppAnalytics.track(.readerInfiniteScroll, withProperties: properties)
+            if let properties = properties {
+                WPAppAnalytics.track(.readerInfiniteScroll, withProperties: properties)
+            }
         }
     }
 
