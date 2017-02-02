@@ -32,7 +32,7 @@ class JetpackLoginViewController: UIViewController {
     @IBOutlet fileprivate weak var installJetpackButton: WPNUXMainButton!
     @IBOutlet fileprivate weak var moreInformationButton: UIButton!
 
-    fileprivate var blog: Blog!
+    fileprivate let blog: Blog
     fileprivate var activeField: UITextField?
     fileprivate var shouldDisplayMultifactor: Bool = false
     fileprivate var loginFields = LoginFields()
@@ -67,19 +67,22 @@ class JetpackLoginViewController: UIViewController {
 
     // MARK: - Initializers
 
-    /// Preferred initializer for JetpackLoginViewController
+    /// Required initializer for JetpackLoginViewController
     ///
     /// - Parameter blog: The current blog
     ///
-    convenience init(blog: Blog) {
-        self.init()
+    init(blog: Blog) {
         self.blog = blog
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        preconditionFailure("Jetpack Login View Controller must be initialized by code")
     }
 
     // MARK: - LifeCycle Methods
 
     override func viewDidLoad() {
-        assert(self.blog != nil)
         super.viewDidLoad()
         self.view.backgroundColor = WPStyleGuide.itsEverywhereGrey()
         setupControls()
