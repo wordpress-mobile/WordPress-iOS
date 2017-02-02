@@ -133,6 +133,12 @@ class Post: AbstractPost {
         categories = newCategories
     }
 
+    // MARK: - Sharing
+
+    func canEditPublicizeSettings() -> Bool {
+        return !self.hasRemote() || self.status != PostStatusPublish
+    }
+
     // MARK: - PublicizeConnections
 
     func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
