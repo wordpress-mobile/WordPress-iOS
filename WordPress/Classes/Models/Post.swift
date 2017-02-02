@@ -151,12 +151,10 @@ class Post: AbstractPost {
     }
 
     func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
-        if let _ = disabledPublicizeConnections?[keyringID] {
-            if let _ = disabledPublicizeConnections?[keyringID]?["id"] {
-                disabledPublicizeConnections?[keyringID]!["value"] = "0"
-            } else {
-                _ = disabledPublicizeConnections?.removeValue(forKey: keyringID)
-            }
+        if let _ = disabledPublicizeConnections?[keyringID]?["id"] {
+            disabledPublicizeConnections![keyringID]!["value"] = "0"
+        } else {
+            _ = disabledPublicizeConnections?.removeValue(forKey: keyringID)
         }
     }
 
