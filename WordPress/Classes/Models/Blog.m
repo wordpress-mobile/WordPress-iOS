@@ -267,7 +267,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     NSSortDescriptor *sortExternalNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"externalName"
                                                                                ascending:YES
                                                                                 selector:@selector(caseInsensitiveCompare:)];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortServiceDescriptor, sortExternalNameDescriptor, nil];
+    NSArray *sortDescriptors = @[sortServiceDescriptor, sortExternalNameDescriptor];
     return [[self.connections allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
 

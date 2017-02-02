@@ -490,7 +490,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if ([self tableView:tableView numberOfRowsInSection:section] == 0) {
-        return 0.01f;
+        return CGFLOAT_MIN;
     } else {
         return UITableViewAutomaticDimension;
     }
@@ -499,7 +499,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if ([self tableView:tableView numberOfRowsInSection:section] == 0) {
-        return 0.01f;
+        return CGFLOAT_MIN;
     } else {
         return UITableViewAutomaticDimension;
     }
@@ -595,9 +595,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     if (self.apost.blog.supportsPublicize && self.publicizeConnections.count > 0) {
         // One row per publicize connection plus an extra row for the publicze message
         return self.publicizeConnections.count + 1;
-    } else {
-        return 0;
     }
+    return 0;
 }
 
 - (UITableViewCell *)configureTaxonomyCellForIndexPath:(NSIndexPath *)indexPath
@@ -891,10 +890,10 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (WPTableViewCell *)getWPTableViewDisclosureCell
 {
-    static NSString *wpTableViewDisclosureCellIdentifier = @"wpTableViewDisclosureCellIdentifier";
-    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:wpTableViewDisclosureCellIdentifier];
+    static NSString *WPTableViewDisclosureCellIdentifier = @"WPTableViewDisclosureCellIdentifier";
+    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:WPTableViewDisclosureCellIdentifier];
     if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:wpTableViewDisclosureCellIdentifier];
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:WPTableViewDisclosureCellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [WPStyleGuide configureTableViewCell:cell];
     }
@@ -904,10 +903,10 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (WPTableViewCell *)getWPTableViewImageAndAccessoryCell
 {
-    static NSString *wpTableViewImageAndAccesoryCellIdentifier = @"wpTableViewImageAndAccesoryCellIdentifier";
-    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:wpTableViewImageAndAccesoryCellIdentifier];
+    static NSString *WPTableViewImageAndAccesoryCellIdentifier = @"WPTableViewImageAndAccesoryCellIdentifier";
+    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:WPTableViewImageAndAccesoryCellIdentifier];
     if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:wpTableViewImageAndAccesoryCellIdentifier];
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:WPTableViewImageAndAccesoryCellIdentifier];
         [WPStyleGuide configureTableViewCell:cell];
     }
     cell.accessoryView = nil;
@@ -918,10 +917,10 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (WPTableViewCell *)getWPTableViewDatePickerCell
 {
-    static NSString *wpTableViewDatePickerCellIdentifier = @"wpTableViewDatePickerCellIdentifier";
-    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:wpTableViewDatePickerCellIdentifier];
+    static NSString *WPTableViewDatePickerCellIdentifier = @"WPTableViewDatePickerCellIdentifier";
+    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:WPTableViewDatePickerCellIdentifier];
     if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:wpTableViewDatePickerCellIdentifier];
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:WPTableViewDatePickerCellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [WPStyleGuide configureTableViewCell:cell];
@@ -947,10 +946,10 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (WPTextFieldTableViewCell *)getWPTableViewTextFieldCell
 {
-    static NSString *textFieldCellIdentifier = @"textFieldCellIdentifier";
-    WPTextFieldTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:textFieldCellIdentifier];
+    static NSString *WPTextFieldCellIdentifier = @"WPTextFieldCellIdentifier";
+    WPTextFieldTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:WPTextFieldCellIdentifier];
     if (!cell) {
-        cell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:textFieldCellIdentifier];
+        cell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:WPTextFieldCellIdentifier];
         cell.textField.returnKeyType = UIReturnKeyDone;
         cell.textField.delegate = self;
         [WPStyleGuide configureTableViewTextCell:cell];

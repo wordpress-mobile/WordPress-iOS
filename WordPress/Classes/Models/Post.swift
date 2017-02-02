@@ -31,6 +31,13 @@ class Post: AbstractPost {
     static let entityName = "Post"
     static let typeDefaultIdentifier = "post"
 
+    struct Constants {
+        static let publicizeIdKey = "id"
+        static let publicizeValueKey = "value"
+        static let publicizeDisabledValue = "1"
+        static let publicizeEnabledValue = "0"
+    }
+
     // MARK: - Properties
 
     fileprivate var storedContentPreviewForDisplay = ""
@@ -142,17 +149,12 @@ class Post: AbstractPost {
     // MARK: - PublicizeConnections
 
     func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
-        if let disabled = disabledPublicizeConnections?[keyringID]?["value"],
-            disabled == "1" {
-            return true
-        } else {
-            return false
-        }
+        return disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
     }
 
     func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
-        if let _ = disabledPublicizeConnections?[keyringID]?["id"] {
-            disabledPublicizeConnections![keyringID]!["value"] = "0"
+        if let _ = disabledPublicizeConnections?[keyringID]?[Constants.publicizeIdKey] {
+            disabledPublicizeConnections![keyringID]![Constants.publicizeValueKey] = Constants.publicizeEnabledValue
         } else {
             _ = disabledPublicizeConnections?.removeValue(forKey: keyringID)
         }
@@ -160,12 +162,12 @@ class Post: AbstractPost {
 
     func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
         if let _ = disabledPublicizeConnections?[keyringID] {
-            disabledPublicizeConnections![keyringID]!["value"] = "1"
+            disabledPublicizeConnections![keyringID]![Constants.publicizeValueKey] = Constants.publicizeDisabledValue
         } else {
             if disabledPublicizeConnections == nil {
                 disabledPublicizeConnections = [NSNumber: [String: String]]()
             }
-            disabledPublicizeConnections?[keyringID] = ["value": "1"]
+            disabledPublicizeConnections?[keyringID] = [Constants.publicizeValueKey: Constants.publicizeDisabledValue]
         }
     }
 
