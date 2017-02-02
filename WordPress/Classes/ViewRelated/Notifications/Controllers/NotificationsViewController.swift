@@ -682,7 +682,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 
 private extension NotificationsViewController {
     func leadingButtons(note: Notification) -> [MGSwipeButton] {
-        guard note.read else {
+        guard !note.read else {
             return []
         }
 
