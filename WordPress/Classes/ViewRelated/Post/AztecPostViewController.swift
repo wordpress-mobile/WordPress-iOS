@@ -734,6 +734,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let picker = WPMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
         picker.showMostRecentFirst = true
+        picker.filter = WPMediaType.image
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
 
