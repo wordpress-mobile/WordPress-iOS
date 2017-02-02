@@ -1131,7 +1131,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (void)showEditShareMessageController
 {
     SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:self.post.publicizeMessage
-                                                                                    placeholder:self.post.titleForDisplay
+                                                                                    placeholder:nil
                                                                                            hint:NSLocalizedString(@"Customize the message you want to share.", @"Hint displayed when the user is customizing the share message.")
                                                                                      isPassword:NO];
     vc.title = NSLocalizedString(@"Customize the message", @"Title for the edition of the share message.");
