@@ -4,7 +4,7 @@ import Aztec
 import Gridicons
 import WordPressShared
 import AFNetworking
-
+import WPMediaPicker
 
 // MARK: - Aztec's Native Editor!
 //
@@ -179,6 +179,10 @@ class AztecPostViewController: UIViewController {
     }
 
     fileprivate var activeMediaRequests = [AFImageDownloadReceipt]()
+
+    fileprivate lazy var mediaLibraryDataSource: WPAndDeviceMediaLibraryDataSource = {
+        return WPAndDeviceMediaLibraryDataSource(post: self.post)
+    }()
 
     /// Maintainer of state for editor - like for post button
     ///
@@ -824,14 +828,13 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         insertAction.isEnabled = !urlFieldText.isEmpty
     }
 
-
     func showImagePicker() {
-        let picker = UIImagePickerController()
-        picker.sourceType = .photoLibrary
-        picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) ?? []
+
+        let picker = WPMediaPickerViewController()
+        picker.dataSource = mediaLibraryDataSource
+        picker.showMostRecentFirst = true
+        picker.filter = WPMediaType.image
         picker.delegate = self
-        picker.allowsEditing = false
-        picker.navigationBar.isTranslucent = false
         picker.modalPresentationStyle = .currentContext
 
         present(picker, animated: true, completion: nil)
@@ -884,22 +887,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 // MARK: - UINavigationControllerDelegate Conformance
 extension AztecPostViewController: UINavigationControllerDelegate {
 
-}
-
-
-// MARK: - UIImagePickerControllerDelegate Conformance
-extension AztecPostViewController: UIImagePickerControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        dismiss(animated: true, completion: nil)
-
-        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-            return
-        }
-
-        // Insert Image + Reclaim Focus
-        insertImage(image)
-        richTextView.becomeFirstResponder()
-    }
 }
 
 // MARK: - Cancel/Dismiss/Persistence Logic
@@ -1065,7 +1052,9 @@ extension AztecPostViewController: TextViewMediaDelegate {
         let imageMaxDimension = max(UIScreen.main.nativeBounds.size.width, UIScreen.main.nativeBounds.size.height)
         let size = CGSize(width: imageMaxDimension, height: imageMaxDimension)
         let request: URLRequest
-        if self.post.blog.isPrivate() {
+        if url.isFileURL {
+            request = URLRequest(url: url)
+        } else if self.post.blog.isPrivate() {
             // private wpcom image needs special handling.
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
@@ -1103,6 +1092,110 @@ extension AztecPostViewController: TextViewMediaDelegate {
             imageDownloader.cancelTask(for: receipt)
         }
     }
+}
+
+extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
+
+    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
+        dismiss(animated: true, completion: nil)
+        richTextView.becomeFirstResponder()
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
+        dismiss(animated: true, completion: nil)
+        richTextView.becomeFirstResponder()
+
+        if assets.isEmpty {
+            return
+        }
+
+        for asset in assets {
+            switch asset {
+            case let phAsset as PHAsset:
+                addDeviceMediaAsset(phAsset)
+            case let media as Media:
+                addSiteMediaAsset(media)
+            default:
+                continue
+            }
+        }
+
+    }
+
+    func addDeviceMediaAsset(_ phAsset: PHAsset) {
+        let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
+            DispatchQueue.main.async {
+                self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: thumbnailURL)
+            }
+        }, completion: { (media, error) in
+            guard let media = media, error == nil else {
+                if let error = error {
+                    DispatchQueue.main.async {
+                        self.displayError(error, onAttachment: attachment)
+                    }
+                }
+                return
+            }
+            var uploadProgress: Progress?
+            mediaService.uploadMedia(media, progress: &uploadProgress, success: {
+                DispatchQueue.main.async {
+                    self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
+                }
+            }, failure: { (error) in
+                DispatchQueue.main.async {
+                    self.displayError(error, onAttachment: attachment)
+                }
+            })
+
+        })
+    }
+
+    func addSiteMediaAsset(_ media: Media) {
+
+        if media.mediaID.intValue != 0 {
+            guard let remoteURL = URL(string: media.remoteURL) else {
+                return
+            }
+            let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+        } else {
+            var tempMediaURL = URL(string:"placeholder://")!
+            if let mediaLocalPath = media.absoluteLocalURL,
+               let localURL = URL(string: mediaLocalPath) {
+               tempMediaURL = localURL
+            }
+            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL  , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+
+            let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+            var uploadProgress: Progress?
+            mediaService.uploadMedia(media, progress: &uploadProgress, success: {
+                DispatchQueue.main.async {
+                    self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
+                }
+            }, failure: { (error) in
+                DispatchQueue.main.async {
+                    self.displayError(error, onAttachment: attachment)
+                }
+            })
+        }
+    }
+
+    func displayError(_ error: Error?, onAttachment attachment: Aztec.TextAttachment) {
+        var message = NSLocalizedString("Failed to insert media on your post. Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
+        if let error = error {
+            message = error.localizedDescription
+        }
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        let attributes: [String:Any] = [NSFontAttributeName: Assets.defaultRegularFont,
+                                        NSParagraphStyleAttributeName: paragraphStyle,
+                                        NSForegroundColorAttributeName: UIColor.darkGray]
+        let attributeMessage = NSAttributedString(string: message, attributes: attributes)
+        richTextView.update(attachment: attachment, message: attributeMessage)
+    }
+
 }
 
 // MARK: - Constants
