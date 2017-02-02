@@ -1055,6 +1055,31 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     func addSiteMediaAsset(_ media: Media) {
 
+        if media.mediaID.intValue != 0 {
+            guard let remoteURL = URL(string: media.remoteURL) else {
+                return
+            }
+            let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Constants.defaultMissingImage)
+        } else {
+            var tempMediaURL = URL(string:"placeholder://")!
+            if let mediaLocalPath = media.absoluteLocalURL,
+               let localURL = URL(string: mediaLocalPath) {
+               tempMediaURL = localURL
+            }
+            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL  , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Constants.defaultMissingImage)
+
+            let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+            var uploadProgress: Progress?
+            mediaService.uploadMedia(media, progress: &uploadProgress, success: {
+                DispatchQueue.main.async {
+                    self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
+                }
+            }, failure: { (error) in
+                DispatchQueue.main.async {
+                    self.displayError(error, onAttachment: attachment)
+                }
+            })
+        }
     }
 
     func displayError(_ error: Error?, onAttachment attachment: Aztec.TextAttachment) {
