@@ -42,8 +42,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 @property (nonatomic,   weak) IBOutlet UIWebView                *webView;
 @property (nonatomic,   weak) IBOutlet UIProgressView           *progressView;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem          *dismissButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem          *optionsButton;
+@property (nonatomic, strong) UIBarButtonItem          *dismissButton;
+@property (nonatomic, strong) UIBarButtonItem          *optionsButton;
 
 @property (nonatomic,   weak) IBOutlet UIToolbar                *toolbar;
 @property (nonatomic,   weak) IBOutlet UIBarButtonItem          *backButton;
@@ -75,9 +75,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
     NSAssert(_webView,                 @"Missing Outlet!");
     NSAssert(_progressView,            @"Missing Outlet!");
-    NSAssert(_dismissButton,           @"Missing Outlet!");
-    NSAssert(_optionsButton,           @"Missing Outlet!");
-    
+
     NSAssert(_toolbar,                 @"Missing Outlet!");
     NSAssert(_backButton,              @"Missing Outlet!");
     NSAssert(_forwardButton,           @"Missing Outlet!");
@@ -90,16 +88,17 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.navigationItem.titleView           = self.titleView;
     
     // Buttons
+    self.optionsButton = [[UIBarButtonItem alloc] initWithImage:[Gridicon iconOfType:GridiconTypeShareIOS] style:UIBarButtonItemStylePlain target:self action:@selector(showLinkOptions)];
+    self.dismissButton = [[UIBarButtonItem alloc] initWithImage:[Gridicon iconOfType:GridiconTypeCross] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+
     self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share",   @"Spoken accessibility label");
     self.dismissButton.accessibilityLabel   = NSLocalizedString(@"Dismiss", @"Dismiss a view. Verb");
     self.backButton.accessibilityLabel      = NSLocalizedString(@"Back",    @"Previous web page");
     self.forwardButton.accessibilityLabel   = NSLocalizedString(@"Forward", @"Next web page");
     
-    self.optionsButton.image                = [Gridicon iconOfType:GridiconTypeShareIOS];
-    self.dismissButton.image                = [Gridicon iconOfType:GridiconTypeCross];
-    self.backButton.image                   = [Gridicon iconOfType:GridiconTypeChevronLeft];
-    self.forwardButton.image                = [Gridicon iconOfType:GridiconTypeChevronRight];
-    
+    self.backButton.image                   = [[Gridicon iconOfType:GridiconTypeChevronLeft] imageFlippedForRightToLeftLayoutDirection];
+    self.forwardButton.image                = [[Gridicon iconOfType:GridiconTypeChevronRight] imageFlippedForRightToLeftLayoutDirection];
+
     // Toolbar: Hidden by default!
     self.toolbar.barTintColor               = [UIColor whiteColor];
     self.backButton.tintColor               = [WPStyleGuide greyLighten10];
