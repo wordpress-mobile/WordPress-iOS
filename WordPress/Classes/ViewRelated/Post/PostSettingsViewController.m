@@ -439,7 +439,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         return 1;
 
     } else if (sec == PostSettingsSectionShare) {
-        return self.apost.blog.supportsPublicize && self.publicizeConnections.count ? (self.publicizeConnections.count + 1) : 0;
+        return [self numberOfRowsForShareSection];
 
     } else if (sec == PostSettingsSectionGeolocation) {
         return 1;
@@ -463,7 +463,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return NSLocalizedString(@"Featured Image", @"Label for the Featured Image area in post settings.");
 
-    } else if (sec == PostSettingsSectionShare) {
+    } else if (sec == PostSettingsSectionShare && [self numberOfRowsForShareSection] > 0) {
         return NSLocalizedString(@"Sharing", @"Label for the Sharing section in post Settings. Should be the same as WP core.");
 
     } else if (sec == PostSettingsSectionGeolocation) {
@@ -476,6 +476,24 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     [WPStyleGuide configureTableViewSectionHeader:view];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if ([self tableView:tableView numberOfRowsInSection:section] == 0) {
+        return 0.01f;
+    } else {
+        return UITableViewAutomaticDimension;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if ([self tableView:tableView numberOfRowsInSection:section] == 0) {
+        return 0.01f;
+    } else {
+        return UITableViewAutomaticDimension;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -556,6 +574,15 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         [self showEditShareMessageController];
     } else if (cell.tag == PostSettingsRowGeolocation) {
         [self showPostGeolocationSelector];
+    }
+}
+
+- (NSInteger)numberOfRowsForShareSection
+{
+    if (self.apost.blog.supportsPublicize && self.publicizeConnections.count > 0) {
+        return self.publicizeConnections.count + 1;
+    } else {
+        return 0;
     }
 }
 
