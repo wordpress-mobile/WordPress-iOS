@@ -15,6 +15,11 @@ class NoteBlockTableViewCell: WPTableViewCell {
     }
     var separatorsView = SeparatorsView()
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        refreshSeparators()
+    }
+
     // MARK: - Public Methods
     func refreshSeparators() {
         // Exception: Badges require no separators
@@ -24,7 +29,7 @@ class NoteBlockTableViewCell: WPTableViewCell {
         }
 
         // Last Rows requires full separators
-        separatorsView.bottomInsets = isLastRow ? fullSeparatorInsets : indentedSeparatorInsets
+        separatorsView.bottomInsets = isLastRow ? fullSeparatorInsets : readableIndentedSeparatorInsets
         separatorsView.bottomVisible = true
     }
     class func reuseIdentifier() -> String {
@@ -38,7 +43,12 @@ class NoteBlockTableViewCell: WPTableViewCell {
         backgroundView = separatorsView
     }
 
-    // MARK: - Private Constants
+    // MARK: - Private
     fileprivate let fullSeparatorInsets = UIEdgeInsets.zero
-    fileprivate let indentedSeparatorInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
+
+    fileprivate var readableIndentedSeparatorInsets: UIEdgeInsets {
+        var insets = UIEdgeInsets.zero
+        insets.left = readableContentGuide.layoutFrame.origin.x
+        return insets
+    }
 }
