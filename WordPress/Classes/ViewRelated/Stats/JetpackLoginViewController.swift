@@ -287,8 +287,11 @@ class JetpackLoginViewController: UIViewController {
                                             "Sign in with your WordPress.com credentials below to enable " +
                                             "Stats and Notifications.", comment: "")
             } else {
-                message = NSLocalizedString("Jetpack \(JetpackVersionMinimumRequired) or later is required " +
-                                            "for stats. Do you want to update Jetpack?", comment: "")
+                message = String.localizedStringWithFormat(NSLocalizedString("Jetpack %@ or later is required " +
+                                                                             "for stats. Do you want to update Jetpack?",
+                                                                             comment: "Message stating the minimum required " +
+                                                                             "version for Jetpack and asks the user " +
+                                                                             "if they want to upgrade"), JetpackVersionMinimumRequired)
             }
         } else {
             message = NSLocalizedString("Jetpack is required for stats. Do you want to install Jetpack?", comment: "")
