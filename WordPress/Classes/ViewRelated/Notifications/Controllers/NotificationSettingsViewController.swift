@@ -215,7 +215,7 @@ open class NotificationSettingsViewController: UIViewController {
         // Pagination Rows don't really have a Settings entity
         if isPaginationRow(indexPath) {
             cell.textLabel?.text            = paginationRowDescription(indexPath)
-            cell.textLabel?.textAlignment   = .left
+            cell.textLabel?.textAlignment   = .natural
             cell.accessoryType              = .none
             WPStyleGuide.configureTableViewCell(cell)
             return
@@ -239,7 +239,7 @@ open class NotificationSettingsViewController: UIViewController {
 
         default:
             cell.textLabel?.text            = settings.channel.description()
-            cell.textLabel?.textAlignment   = .left
+            cell.textLabel?.textAlignment   = .natural
             cell.accessoryType              = .disclosureIndicator
             WPStyleGuide.configureTableViewCell(cell)
         }
