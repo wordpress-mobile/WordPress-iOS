@@ -1,6 +1,7 @@
 #import "WPWalkthroughTextField.h"
 #import "Constants.h"
 #import "WPNUXUtility.h"
+#import "WordPress-Swift.h"
 
 @import Gridicons;
 
@@ -108,10 +109,19 @@
 
     self.secureTextEntryToggle.hidden = !self.showSecureTextEntryToggle;
     if (self.showSecureTextEntryToggle) {
-        self.secureTextEntryToggle.frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame),
-                                                                     (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0,
-                                                                     CGRectGetWidth(self.secureTextEntryToggle.frame),
-                                                                     CGRectGetHeight(self.secureTextEntryToggle.frame)));
+        CGRect frame = self.secureTextEntryToggle.frame;
+        if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
+            frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame),
+                                              (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0,
+                                              CGRectGetWidth(self.secureTextEntryToggle.frame),
+                                              CGRectGetHeight(self.secureTextEntryToggle.frame)));
+        } else {
+            frame = CGRectIntegral(CGRectMake(CGRectGetMinX(self.bounds),
+                                              (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0,
+                                              CGRectGetWidth(self.secureTextEntryToggle.frame),
+                                              CGRectGetHeight(self.secureTextEntryToggle.frame)));
+        }
+        self.secureTextEntryToggle.frame = frame;
         [self bringSubviewToFront:self.secureTextEntryToggle];
     }
 }

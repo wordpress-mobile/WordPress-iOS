@@ -132,7 +132,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 {
     NSAssert(self.stackView != nil, @"stackView was nil");
 
-    UIImage *chevronImage = [UIImage imageNamed:@"disclosure-chevron"];
+    UIImage *chevronImage = [[UIImage imageNamed:@"disclosure-chevron"] imageFlippedForRightToLeftLayoutDirection];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     [button setBackgroundImage:chevronImage forState:UIControlStateNormal];

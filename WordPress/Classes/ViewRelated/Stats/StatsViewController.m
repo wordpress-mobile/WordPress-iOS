@@ -1,5 +1,6 @@
 @import WordPressComStatsiOS;
 @import WordPressShared;
+@import Reachability;
 
 #import "StatsViewController.h"
 #import "Blog.h"
@@ -21,6 +22,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 @interface StatsViewController () <WPStatsViewControllerDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, assign) BOOL showingJetpackLogin;
+// Stores if we tried to initStats and failed because we are offline.
+// If true, initStats will be retried as soon as we are online again.
+@property (nonatomic, assign) BOOL offline;
 @property (nonatomic, strong) UINavigationController *statsNavVC;
 @property (nonatomic, strong) WPStatsViewController *statsVC;
 @property (nonatomic, weak) WPNoResultsView *noResultsView;
@@ -37,6 +41,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         self.restorationIdentifier = NSStringFromClass([self class]);
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -61,6 +69,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         self.title = self.blog.settings.name;
     }
 
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:appDelegate.internetReachability];
     [self initStats];
 }
 
@@ -88,8 +98,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if (!appDelegate.connectionAvailable) {
         [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
+        self.offline = YES;
         return;
     }
+    self.offline = NO;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -195,6 +207,14 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     WPNoResultsView *noResultsView = [WPNoResultsView noResultsViewWithTitle:title message:message accessoryView:nil buttonTitle:nil];
     self.noResultsView = noResultsView;
     [self.view addSubview:self.noResultsView];
+}
+
+- (void)reachabilityChanged:(NSNotification *)notification
+{
+    Reachability *reachability = notification.object;
+    if (reachability.isReachable) {
+        [self initStats];
+    }
 }
 
 #pragma mark - Restoration
