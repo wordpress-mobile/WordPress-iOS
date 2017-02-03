@@ -283,9 +283,10 @@ class JetpackLoginViewController: UIViewController {
 
         if jetPack.isInstalled() {
             if jetPack.isUpdatedToRequiredVersion() {
-                message = NSLocalizedString("Looks like you have Jetpack set up on your site.\nCongrats!\n" +
+                message = NSLocalizedString("Looks like you have Jetpack set up on your site. Congrats! \n" +
                                             "Sign in with your WordPress.com credentials below to enable " +
-                                            "Stats and Notifications.", comment: "")
+                                            "Stats and Notifications.",
+                                            comment: "Message asking the user to sign into Jetpack with WordPress.com credentials")
             } else {
                 message = String.localizedStringWithFormat(NSLocalizedString("Jetpack %@ or later is required " +
                                                                              "for stats. Do you want to update Jetpack?",
@@ -294,7 +295,8 @@ class JetpackLoginViewController: UIViewController {
                                                                              "if they want to upgrade"), JetpackVersionMinimumRequired)
             }
         } else {
-            message = NSLocalizedString("Jetpack is required for stats. Do you want to install Jetpack?", comment: "")
+            message = NSLocalizedString("Jetpack is required for stats. Do you want to install Jetpack?",
+                                        comment: "Message asking the user if they want to install Jetpack")
         }
         descriptionLabel.text = message
         descriptionLabel.sizeToFit()
