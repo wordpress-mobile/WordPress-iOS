@@ -168,6 +168,7 @@ class NoteTableViewCell: MGSwipeTableCell {
     override func layoutSubviews() {
         refreshBackgrounds()
         super.layoutSubviews()
+        refreshSeparators()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -183,8 +184,14 @@ class NoteTableViewCell: MGSwipeTableCell {
     }
 
 
-
     // MARK: - Private Methods
+
+    func refreshSeparators() {
+        var insets = UIEdgeInsets.zero
+        insets.left = readableContentGuide.layoutFrame.origin.x
+        separatorsView.bottomInsets = insets
+    }
+
     fileprivate func refreshBackgrounds() {
         // Noticon Background
         if unapproved {

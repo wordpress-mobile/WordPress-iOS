@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="87"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="9ZS-co-ZCe" id="9Ex-yA-LkS">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="86"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="87"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JUi-EY-Obv" userLabel="IconImageView" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
