@@ -3,7 +3,8 @@ import UIKit
 import Aztec
 import Gridicons
 import WordPressShared
-
+import AFNetworking
+import WPMediaPicker
 
 // MARK: - Aztec's Native Editor!
 //
@@ -17,9 +18,9 @@ class AztecPostViewController: UIViewController {
     /// Aztec's Awesomeness
     ///
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
-        let tv = Aztec.TextView(defaultFont: Constants.defaultFont, defaultMissingImage: Constants.defaultMissingImage)
+        let tv = Aztec.TextView(defaultFont: Assets.defaultRegularFont, defaultMissingImage: Assets.defaultMissingImage)
 
-        tv.font = Constants.defaultFont
+        tv.font = Assets.defaultRegularFont
         tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         tv.delegate = self
         let toolbar = self.createToolbar()
@@ -29,6 +30,7 @@ class AztecPostViewController: UIViewController {
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.keyboardDismissMode = .interactive
+        tv.mediaDelegate = self
 
         return tv
     }()
@@ -40,7 +42,7 @@ class AztecPostViewController: UIViewController {
         let tv = UITextView()
 
         tv.accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
-        tv.font = Constants.defaultFont
+        tv.font = Assets.defaultRegularFont
         tv.textColor = UIColor.darkText
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.isHidden = true
@@ -68,6 +70,8 @@ class AztecPostViewController: UIViewController {
         tf.returnKeyType = .next
         tf.textColor = UIColor.darkText
         tf.translatesAutoresizingMaskIntoConstraints = false
+
+        tf.addTarget(self, action: #selector(titleTextFieldDidChange), for: [.editingChanged])
 
         return tf
     }()
@@ -97,13 +101,8 @@ class AztecPostViewController: UIViewController {
     /// NavigationBar's Close Button
     ///
     fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
-        let image = Gridicon.iconOfType(.cross)
-        let cancelButton = WPStyleGuide.buttonForBar(with: image, target: self, selector: #selector(closeWasPressed))
-        cancelButton.leftSpacing = Constants.cancelButtonPadding.left
-        cancelButton.rightSpacing = Constants.cancelButtonPadding.right
-
-        let cancelItem = UIBarButtonItem(customView: cancelButton)
-        cancelItem.accessibilityLabel = NSLocalizedString("Cancel", comment: "Action button to close edior and cancel changes or insertion of post")
+        let cancelItem = UIBarButtonItem(customView: self.closeButton)
+        cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
         return cancelItem
     }()
 
@@ -111,9 +110,18 @@ class AztecPostViewController: UIViewController {
     /// NavigationBar's Blog Picker Button
     ///
     fileprivate lazy var blogPickerBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(customView: self.blogPickerButton)
+        let pickerItem = UIBarButtonItem(customView: self.blogPickerButton)
+        pickerItem.accessibilityLabel = NSLocalizedString("Switch Blog", comment: "Action button to switch the blog to which you'll be posting")
+        return pickerItem
     }()
 
+    /// Publish Button
+    fileprivate(set) lazy var publishButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: self.postEditorStateContext.publishButtonText, style: WPStyleGuide.barButtonStyleForDone(), target: self, action: #selector(publishButtonTapped(sender:)))
+        button.isEnabled = self.postEditorStateContext.isPublishButtonEnabled
+
+        return button
+    }()
 
     /// NavigationBar's More Button
     ///
@@ -122,6 +130,17 @@ class AztecPostViewController: UIViewController {
         let moreItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(moreWasPressed))
         moreItem.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
         return moreItem
+    }()
+
+
+    /// Dismiss Button
+    ///
+    fileprivate lazy var closeButton: WPButtonForNavigationBar = {
+        let cancelButton = WPStyleGuide.buttonForBar(with: Assets.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
+        cancelButton.leftSpacing = Constants.cancelButtonPadding.left
+        cancelButton.rightSpacing = Constants.cancelButtonPadding.right
+
+        return cancelButton
     }()
 
 
@@ -152,16 +171,44 @@ class AztecPostViewController: UIViewController {
     ///
     fileprivate(set) var post: AbstractPost {
         didSet {
+            removeObservers(fromPost: oldValue)
+            addObservers(toPost: post)
+
             refreshInterface()
         }
     }
 
+    fileprivate var activeMediaRequests = [AFImageDownloadReceipt]()
+
+    fileprivate lazy var mediaLibraryDataSource: WPAndDeviceMediaLibraryDataSource = {
+        return WPAndDeviceMediaLibraryDataSource(post: self.post)
+    }()
+
+    /// Maintainer of state for editor - like for post button
+    ///
+    fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
+        var originalPostStatus: PostStatus? = nil
+
+        if let originalPost = self.post.original,
+            let postStatus = originalPost.status,
+            originalPost.hasRemote() {
+            originalPostStatus = PostStatus(rawValue: postStatus)
+        }
+
+        // TODO: Determine if user can actually publish to site or not
+        let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: true, delegate: self)
+
+        return context
+    }()
 
     // MARK: - Lifecycle Methods
 
     init(post: AbstractPost) {
         self.post = post
+
         super.init(nibName: nil, bundle: nil)
+
+        addObservers(toPost: post)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -170,19 +217,21 @@ class AztecPostViewController: UIViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+        removeObservers(fromPost: post)
+
+        cancelAllPendingMediaRequests()
     }
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPFontManager.loadMerriweatherFontFamily()
+        createRevisionOfPost()
 
         configureNavigationBar()
+        configureDismissButton()
         configureView()
         configureSubviews()
-
-        createRevisionOfPost()
 
         view.setNeedsUpdateConstraints()
     }
@@ -206,7 +255,7 @@ class AztecPostViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
 
         coordinator.animate(alongsideTransition: { _ in
-            self.resizeBlogPickerTitle()
+            self.resizeBlogPickerButton()
         })
 
         // TODO: Update toolbars
@@ -214,7 +263,6 @@ class AztecPostViewController: UIViewController {
         //    [self.titleToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
 
     }
-
 
     // MARK: - Configuration Methods
 
@@ -259,7 +307,12 @@ class AztecPostViewController: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
 
         navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
-        navigationItem.rightBarButtonItem = moreBarButtonItem
+        navigationItem.rightBarButtonItems = [moreBarButtonItem, publishButton]
+    }
+
+    func configureDismissButton() {
+        let image = isModal() ? Assets.closeButtonModalImage : Assets.closeButtonRegularImage
+        closeButton.setImage(image, for: .normal)
     }
 
     func configureView() {
@@ -287,9 +340,9 @@ class AztecPostViewController: UIViewController {
     }
 
     func refreshInterface() {
-        reloadBlogPickerTitle()
+        reloadBlogPickerButton()
         reloadEditorContents()
-        resizeBlogPickerTitle()
+        resizeBlogPickerButton()
     }
 
     func reloadEditorContents() {
@@ -299,18 +352,21 @@ class AztecPostViewController: UIViewController {
         richTextView.setHTML(content)
     }
 
-    func reloadBlogPickerTitle() {
+    func reloadBlogPickerButton() {
         var pickerTitle = post.blog.url ?? String()
         if let blogName = post.blog.settings?.name, blogName.isEmpty == false {
             pickerTitle = blogName
         }
 
         let titleText = NSAttributedString(string: pickerTitle, attributes: Constants.blogPickerAttributes)
+        let shouldEnable = !isSingleSiteMode
+
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
-        blogPickerButton.buttonMode = isSingleSiteMode ? .singleSite : .multipleSite
+        blogPickerButton.buttonMode = shouldEnable ? .multipleSite : .singleSite
+        blogPickerButton.isEnabled = shouldEnable
     }
 
-    func resizeBlogPickerTitle() {
+    func resizeBlogPickerButton() {
         // Ensure the BlogPicker gets it's maximum possible size
         blogPickerButton.sizeToFit()
 
@@ -368,17 +424,19 @@ class AztecPostViewController: UIViewController {
 
 // MARK: - Actions
 extension AztecPostViewController {
+    @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
+        print("If this were working, it would be \(postEditorStateContext.publishVerbText)")
+
+        // TODO: Implement publishing ;)
+        // Don't forget to set postEditorStateContext.updated(isBeingPublished: true) during publishing
+    }
 
     @IBAction func closeWasPressed() {
         cancelEditing()
     }
 
     @IBAction func blogPickerWasPressed() {
-        guard isSingleSiteMode == false else {
-            cancelEditing()
-            return
-        }
-
+        assert(isSingleSiteMode == false)
         guard post.hasSiteSpecificChanges() else {
             displayBlogSelector()
             return
@@ -444,6 +502,10 @@ private extension AztecPostViewController {
             self.mode.toggle()
         }
 
+        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { _ in
+            self.displayPreview()
+        }
+
         alert.addDefaultActionWithTitle(MoreSheetAlert.optionsTitle) { _ in
             self.displayPostOptions()
         }
@@ -471,6 +533,61 @@ private extension AztecPostViewController {
         let settingsViewController = PostSettingsViewController(post: post)
         settingsViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+
+    func displayPreview() {
+        let previewController = PostPreviewViewController(post: post)
+        previewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(previewController, animated: true)
+    }
+}
+
+
+
+// MARK: - Publish Button Methods
+extension AztecPostViewController: PostEditorStateContextDelegate {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(AbstractPost.status), let status = post.status {
+            postEditorStateContext.updated(postStatus: PostStatus(rawValue: status) ?? .draft)
+        } else if keyPath == #keyPath(AbstractPost.dateCreated) {
+            let dateCreated = post.dateCreated ?? Date()
+            postEditorStateContext.updated(publishDate: dateCreated)
+        } else if keyPath == #keyPath(AbstractPost.content) {
+            postEditorStateContext.updated(hasContent: editorHasContent)
+        }
+    }
+
+    internal func titleTextFieldDidChange(textField: UITextField) {
+        postEditorStateContext.updated(hasContent: editorHasContent)
+    }
+
+    // TODO: We should be tracking hasContent and isDirty separately for enabling button in the state context
+    private var editorHasContent: Bool {
+        let contentCharacterCount = post.content?.characters.count ?? 0
+        // Title isn't updated on post until editing is done - this looks at realtime changes
+        let titleCharacterCount = titleTextField.text?.characters.count ?? 0
+
+        return contentCharacterCount + titleCharacterCount > 0
+    }
+
+    internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
+        publishButton.title = context.publishButtonText
+    }
+
+    internal func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool) {
+        publishButton.isEnabled = context.isPublishButtonEnabled
+    }
+
+    internal func addObservers(toPost: AbstractPost) {
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.status), options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated), options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.content), options: [], context: nil)
+    }
+
+    internal func removeObservers(fromPost: AbstractPost) {
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.status))
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated))
+        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
     }
 }
 
@@ -711,14 +828,13 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         insertAction.isEnabled = !urlFieldText.isEmpty
     }
 
-
     func showImagePicker() {
-        let picker = UIImagePickerController()
-        picker.sourceType = .photoLibrary
-        picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) ?? []
+
+        let picker = WPMediaPickerViewController()
+        picker.dataSource = mediaLibraryDataSource
+        picker.showMostRecentFirst = true
+        picker.filter = WPMediaType.image
         picker.delegate = self
-        picker.allowsEditing = false
-        picker.navigationBar.isTranslucent = false
         picker.modalPresentationStyle = .currentContext
 
         present(picker, animated: true, completion: nil)
@@ -771,22 +887,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 // MARK: - UINavigationControllerDelegate Conformance
 extension AztecPostViewController: UINavigationControllerDelegate {
 
-}
-
-
-// MARK: - UIImagePickerControllerDelegate Conformance
-extension AztecPostViewController: UIImagePickerControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        dismiss(animated: true, completion: nil)
-
-        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-            return
-        }
-
-        // Insert Image + Reclaim Focus
-        insertImage(image)
-        richTextView.becomeFirstResponder()
-    }
 }
 
 // MARK: - Cancel/Dismiss/Persistence Logic
@@ -945,9 +1045,186 @@ private extension AztecPostViewController {
     }
 }
 
+extension AztecPostViewController: TextViewMediaDelegate {
+
+    func textView(_ textView: TextView, imageAtUrl url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) -> UIImage {
+        var requestURL = url
+        let imageMaxDimension = max(UIScreen.main.nativeBounds.size.width, UIScreen.main.nativeBounds.size.height)
+        let size = CGSize(width: imageMaxDimension, height: imageMaxDimension)
+        let request: URLRequest
+        if url.isFileURL {
+            request = URLRequest(url: url)
+        } else if self.post.blog.isPrivate() {
+            // private wpcom image needs special handling.
+            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
+            request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
+        } else {
+            requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: requestURL)
+            request = URLRequest(url: requestURL)
+        }
+
+        let imageDownloader = AFImageDownloader.defaultInstance()
+        let receipt = imageDownloader.downloadImage(for: request, success: { (request, response, image) in
+            DispatchQueue.main.async(execute: {
+                success(image)
+            })
+        }) { (request, response, error) in
+            DispatchQueue.main.async(execute: {
+                failure()
+            })
+        }
+
+        if let receipt = receipt {
+            activeMediaRequests.append(receipt)
+        }
+
+        return Gridicon.iconOfType(.image)
+    }
+
+    func textView(_ textView: TextView, urlForImage image: UIImage) -> URL {
+        //TODO: add support for saving images that result from a copy/paste to the editor, this should save locally to file, and import to the media library.
+        return URL(string:"")!
+    }
+
+    func cancelAllPendingMediaRequests() {
+        let imageDownloader = AFImageDownloader.defaultInstance()
+        for receipt in activeMediaRequests {
+            imageDownloader.cancelTask(for: receipt)
+        }
+    }
+}
+
+extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
+
+    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
+        dismiss(animated: true, completion: nil)
+        richTextView.becomeFirstResponder()
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
+        dismiss(animated: true, completion: nil)
+        richTextView.becomeFirstResponder()
+
+        if assets.isEmpty {
+            return
+        }
+
+        for asset in assets {
+            switch asset {
+            case let phAsset as PHAsset:
+                addDeviceMediaAsset(phAsset)
+            case let media as Media:
+                addSiteMediaAsset(media)
+            default:
+                continue
+            }
+        }
+
+    }
+
+    func addDeviceMediaAsset(_ phAsset: PHAsset) {
+        let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
+            DispatchQueue.main.async {
+                self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: thumbnailURL)
+            }
+        }, completion: { (media, error) in
+            guard let media = media, error == nil else {
+                if let error = error {
+                    DispatchQueue.main.async {
+                        self.displayError(error, onAttachment: attachment)
+                    }
+                }
+                return
+            }
+            var uploadProgress: Progress?
+            mediaService.uploadMedia(media, progress: &uploadProgress, success: {
+                DispatchQueue.main.async {
+                    self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
+                }
+            }, failure: { (error) in
+                DispatchQueue.main.async {
+                    self.displayError(error, onAttachment: attachment)
+                }
+            })
+
+        })
+    }
+
+    func addSiteMediaAsset(_ media: Media) {
+
+        if media.mediaID.intValue != 0 {
+            guard let remoteURL = URL(string: media.remoteURL) else {
+                return
+            }
+            let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+        } else {
+            var tempMediaURL = URL(string:"placeholder://")!
+            if let mediaLocalPath = media.absoluteLocalURL,
+               let localURL = URL(string: mediaLocalPath) {
+               tempMediaURL = localURL
+            }
+            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL  , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+
+            let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+            var uploadProgress: Progress?
+            mediaService.uploadMedia(media, progress: &uploadProgress, success: {
+                DispatchQueue.main.async {
+                    self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
+                }
+            }, failure: { (error) in
+                DispatchQueue.main.async {
+                    self.displayError(error, onAttachment: attachment)
+                }
+            })
+        }
+    }
+
+    func displayError(_ error: Error?, onAttachment attachment: Aztec.TextAttachment) {
+        var message = NSLocalizedString("Failed to insert media on your post. Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
+        if let error = error {
+            message = error.localizedDescription
+        }
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        let attributes: [String:Any] = [NSFontAttributeName: Assets.defaultRegularFont,
+                                        NSParagraphStyleAttributeName: paragraphStyle,
+                                        NSForegroundColorAttributeName: UIColor.darkGray]
+        let attributeMessage = NSAttributedString(string: message, attributes: attributes)
+        richTextView.update(attachment: attachment, message: attributeMessage)
+    }
+
+}
 
 // MARK: - Constants
 fileprivate extension AztecPostViewController {
+
+    struct Assets {
+        static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
+        static let closeButtonRegularImage  = UIImage(named: "icon-posts-editor-chevron")
+        static let defaultRegularFont       = WPFontManager.merriweatherRegularFont(ofSize: 16)
+        static let defaultSemiBoldFont      = WPFontManager.systemSemiBoldFont(ofSize: 16)
+        static let defaultMissingImage      = Gridicon.iconOfType(.image)
+    }
+
+    struct Constants {
+        static let defaultMargin            = CGFloat(20)
+        static let separatorButtonWidth     = CGFloat(-12)
+        static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        static let blogPickerAttributes     = [NSFontAttributeName: Assets.defaultSemiBoldFont]
+        static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
+        static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
+    }
+
+    struct MoreSheetAlert {
+        static let htmlTitle    = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
+        static let richTitle    = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
+        static let optionsTitle = NSLocalizedString("Options", comment: "Displays the Post's Options")
+        static let cancelTitle  = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
+    }
 
     struct SwitchSiteAlert {
         static let title        = NSLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
@@ -955,23 +1232,5 @@ fileprivate extension AztecPostViewController {
 
         static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
         static let cancelTitle  = NSLocalizedString("Cancel", comment: "Cancel Action")
-    }
-
-    struct MoreSheetAlert {
-        static let htmlTitle    = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
-        static let richTitle    = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
-        static let optionsTitle = NSLocalizedString("Options", comment: "Displays the Post's Options")
-        static let cancelTitle  = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
-    }
-
-    struct Constants {
-        static let defaultFont              = WPFontManager.merriweatherRegularFont(ofSize: 16)
-        static let defaultMargin            = CGFloat(20)
-        static let defaultMissingImage      = Gridicon.iconOfType(.image)
-        static let separatorButtonWidth     = CGFloat(-12)
-        static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
-        static let blogPickerAttributes     = [NSFontAttributeName: WPFontManager.systemSemiBoldFont(ofSize: 16)]
-        static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
-        static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
     }
 }
