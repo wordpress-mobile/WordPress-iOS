@@ -66,6 +66,16 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate let sharingController = PostSharingController()
 
+    var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
+        didSet {
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+
+    override open var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentPreferredStatusBarStyle
+    }
+
     open var post: ReaderPost? {
         didSet {
             oldValue?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
@@ -389,6 +399,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         configureTag()
         configureActionButtons()
         configureFooterIfNeeded()
+        adjustInsetsForTextDirection()
 
         bumpStats()
         bumpPageViewsForPost()
@@ -761,6 +772,19 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         footerViewHeightConstraintConstant = footerViewHeightConstraint.constant
     }
 
+    fileprivate func adjustInsetsForTextDirection() {
+        guard view.userInterfaceLayoutDirection() == .rightToLeft else {
+            return
+        }
+
+        let buttonsToAdjust: [UIButton] = [
+            likeButton,
+            commentButton]
+        for button in buttonsToAdjust {
+            button.flipInsetsForRightToLeftLayoutDirection()
+        }
+    }
+
 
     // MARK: - Instance Methods
 
@@ -787,7 +811,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
     }
 
-
     func setBarsHidden(_ hidden: Bool) {
         if (navigationController?.isNavigationBarHidden == hidden) {
             return
@@ -796,6 +819,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         if (hidden) {
             // Hides the navbar and footer view
             navigationController?.setNavigationBarHidden(true, animated: true)
+            currentPreferredStatusBarStyle = .default
             footerViewHeightConstraint.constant = 0.0
             UIView.animate(withDuration: 0.3,
                 delay: 0.0,
@@ -809,6 +833,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             let pinToBottom = isScrollViewAtBottom()
 
             navigationController?.setNavigationBarHidden(false, animated: true)
+            currentPreferredStatusBarStyle = .lightContent
             footerViewHeightConstraint.constant = footerViewHeightConstraintConstant
             UIView.animate(withDuration: 0.3,
                 delay: 0.0,
@@ -1091,3 +1116,6 @@ extension ReaderDetailViewController : UIScrollViewDelegate {
 
 // Expand this view controller to full screen if possible
 extension ReaderDetailViewController: PrefersFullscreenDisplay {}
+
+// Let's the split view know this vc changes the status bar style.
+extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}

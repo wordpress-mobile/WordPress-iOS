@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-
+import WordPressShared
 
 @objc protocol WPRichContentViewDelegate: UITextViewDelegate {
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
@@ -114,11 +114,15 @@ class WPRichContentView: UITextView {
             let style = "<style>" +
                 "body { font-family: Merriweather; font-size:16.0; line-height:1.6875; color: #2e4453; } " +
                 "blockquote { color:#4f748e; } " +
-                "em, i { font-size:18.0; font-style: italic; font-family: Merriweather-Italic; } " +
+                "em, i { font-size:16.0; font-style: italic; font-family: Merriweather-Italic; } " +
                 "a { color: #0087be; text-decoration: none; } " +
                 "a:active { color: #005082; } " +
                 "</style>"
             let content = style + str
+            // Request the font to ensure it's loaded. Otherwise NSAttributedString
+            // falls back to Times New Roman :o
+            // https://github.com/wordpress-mobile/WordPress-iOS/issues/6564
+            _ = WPFontManager.merriweatherItalicFont(ofSize: 16)
             do {
                 if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(content, defaultDocumentAttributes: nil) {
                     let mattrTxt = NSMutableAttributedString(attributedString: attrTxt)
