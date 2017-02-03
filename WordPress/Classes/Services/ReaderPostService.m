@@ -674,7 +674,16 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
         [self deletePostsFromBlockedSites];
 
-        BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < [self maxPostsToSaveForTopic:readerTopic]));
+        BOOL hasMore = NO;
+        BOOL spaceAvailable = ([self numberOfPostsForTopic:readerTopic] < [self maxPostsToSaveForTopic:readerTopic]);
+        if ([ReaderHelpers isTopicTag:readerTopic]) {
+            // For tags, assume there is more content as long as more than zero results are returned.
+            hasMore = (postsCount > 0 ) && spaceAvailable;
+        } else {
+            // For other topics, assume there is more content as long as the number of results requested is returned.
+            hasMore = ([remotePosts count] == [self numberToSyncForTopic:readerTopic]) && spaceAvailable;
+        }
+
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
             // Is called on main queue
             if (success) {
