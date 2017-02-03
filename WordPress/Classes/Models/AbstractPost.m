@@ -603,6 +603,12 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
         return YES;
     }
     
+    if (!([self.mt_excerpt length] == 0 && [original.mt_excerpt length] == 0)
+        && (![self.mt_excerpt isEqual:original.mt_excerpt]))
+    {
+        return YES;
+    }
+
     return NO;
 }
 

@@ -142,6 +142,7 @@
 #import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
 #import "WordPressComServiceRemote.h"
+#import "WPAndDeviceMediaLibraryDataSource.h"
 
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>

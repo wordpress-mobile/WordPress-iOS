@@ -239,7 +239,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    cell.textLabel.textAlignment = NSTextAlignmentLeft;
+    cell.textLabel.textAlignment = NSTextAlignmentNatural;
     [WPStyleGuide configureTableViewCell:cell];
 
     if (indexPath.section == SettingsSectionFAQForums) {
@@ -281,7 +281,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
             }
         }
     } else if (indexPath.section == SettingsSectionSettings) {
-        cell.textLabel.textAlignment = NSTextAlignmentLeft;
+        cell.textLabel.textAlignment = NSTextAlignmentNatural;
 
         if (indexPath.row == SettingsSectionSettingsRowVersion) {
             // App Version

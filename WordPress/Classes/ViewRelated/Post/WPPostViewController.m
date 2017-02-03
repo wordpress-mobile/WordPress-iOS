@@ -1088,7 +1088,7 @@ EditImageDetailsViewControllerDelegate
         return _cancelChevronButton;
     }
     
-    UIImage *image = [UIImage imageNamed:@"icon-posts-editor-chevron"];
+    UIImage *image = [[UIImage imageNamed:@"icon-posts-editor-chevron"] imageFlippedForRightToLeftLayoutDirection];
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     WPButtonForNavigationBar* cancelButton = [WPStyleGuide buttonForBarWithImage:image
