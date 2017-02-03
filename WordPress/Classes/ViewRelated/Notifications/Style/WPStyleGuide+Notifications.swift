@@ -218,19 +218,19 @@ extension WPStyleGuide {
 
         // ParagraphStyle's
         fileprivate static let sectionHeaderParagraph   = NSMutableParagraphStyle(
-            minLineHeight: headerLineSize, maxLineHeight: headerLineSize, lineBreakMode: .byWordWrapping, alignment: .left
+            minLineHeight: headerLineSize, maxLineHeight: headerLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
         fileprivate static let subjectParagraph         = NSMutableParagraphStyle(
-            minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .byWordWrapping, alignment: .left
+            minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
         fileprivate static let snippetParagraph         = NSMutableParagraphStyle(
-            minLineHeight: snippetLineSize, maxLineHeight: snippetLineSize, lineBreakMode: .byWordWrapping, alignment: .left
+            minLineHeight: snippetLineSize, maxLineHeight: snippetLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
         fileprivate static let blockParagraph           = NSMutableParagraphStyle(
-            minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .left
+            minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
         fileprivate static let contentBlockParagraph     = NSMutableParagraphStyle(
-            minLineHeight: contentBlockLineSize, lineBreakMode: .byWordWrapping, alignment: .left
+            minLineHeight: contentBlockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
         fileprivate static let badgeParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center
