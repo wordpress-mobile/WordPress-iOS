@@ -184,13 +184,11 @@ class AztecPostViewController: UIViewController {
         return WPAndDeviceMediaLibraryDataSource(post: self.post)
     }()
 
-    fileprivate var mediaUploadingProgress: Progress?
-
-    fileprivate lazy var mediaUploading: [String:Progress] = {
-        return [String: Progress]()
+    fileprivate lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
+        let coordinator = MediaProgressCoordinator()
+        coordinator.delegate = self
+        return coordinator
     }()
-
-    fileprivate var mediaUploadingProgressObserverContext: String = "mediaUploadingProgressObserverContext"
 
     /// Maintainer of state for editor - like for post button
     ///
@@ -569,22 +567,11 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
             return
         }
 
-        // Only handle observations for the playerItemContext
-        guard context == &mediaUploadingProgressObserverContext,
-            keyPath == #keyPath(Progress.fractionCompleted)
 
-            else {
-                super.observeValue(forKeyPath: keyPath,
-                                   of: object,
-                                   change: change,
-                                   context: context)
-                return
-        }
-
-        //update progress bar
-        DispatchQueue.main.async {
-            self.refreshMediaProgress()
-        }
+        super.observeValue(forKeyPath: keyPath,
+                           of: object,
+                           change: change,
+                           context: context)
     }
 
     internal func titleTextFieldDidChange(textField: UITextField) {
@@ -618,7 +605,6 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.status))
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated))
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
-        mediaUploadingProgress?.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
     }
 }
 
@@ -1068,29 +1054,7 @@ private extension AztecPostViewController {
 
 
 // MARK: - Media Support
-private extension AztecPostViewController {
-
-    func addToMediaProgress(numberOfItems count: Int) {
-        if let mediaUploadingProgress = self.mediaUploadingProgress,
-            mediaUploadingProgress.isCancelled ||
-                mediaUploadingProgress.completedUnitCount >= mediaUploadingProgress.totalUnitCount {
-            mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
-            self.mediaUploadingProgress = nil
-        }
-
-        if self.mediaUploadingProgress == nil {
-            self.mediaUploadingProgress = Progress.discreteProgress(totalUnitCount: 0)
-            self.mediaUploadingProgress?.addObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted), options:[.new], context:&mediaUploadingProgressObserverContext)
-        }
-
-        self.mediaUploadingProgress?.totalUnitCount += count
-    }
-
-    func track(progress: Progress, ofMediaID mediaID: String) {
-        progress.setUserInfoObject(mediaID, forKey: ProgressUserInfoKey("mediaID"))
-        mediaUploadingProgress?.addChild(progress, withPendingUnitCount: 1)
-        mediaUploading[mediaID] = progress
-    }
+extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
     func addDeviceMediaAsset(_ phAsset: PHAsset) {
         let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
@@ -1122,7 +1086,7 @@ private extension AztecPostViewController {
                 }
             })
             if let progress = uploadProgress {
-                strongSelf.track(progress: progress, ofMediaID: attachment.identifier)
+                strongSelf.mediaProgressCoordinator.track(progress: progress, ofMediaID: attachment.identifier)
             }
         })
     }
@@ -1134,7 +1098,7 @@ private extension AztecPostViewController {
                 return
             }
             let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
-            self.mediaUploadingProgress?.completedUnitCount += 1
+            self.mediaProgressCoordinator.finishOneItem()
         } else {
             var tempMediaURL = URL(string:"placeholder://")!
             if let mediaLocalPath = media.absoluteLocalURL,
@@ -1161,7 +1125,7 @@ private extension AztecPostViewController {
                 }
             })
             if let progress = uploadProgress {
-                self.track(progress: progress, ofMediaID: attachment.identifier)
+                self.mediaProgressCoordinator.track(progress: progress, ofMediaID: attachment.identifier)
             }
         }
     }
@@ -1181,8 +1145,8 @@ private extension AztecPostViewController {
         richTextView.update(attachment: attachment, message: attributeMessage)
     }
 
-    func refreshMediaProgress() {
-        for (attachmentID, progress) in mediaUploading {
+    func refreshProgress() {
+        for (attachmentID, progress) in self.mediaProgressCoordinator.mediaUploading {
             guard let attachment = richTextView.attachment(withId: attachmentID) else {
                 continue
             }
@@ -1259,7 +1223,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             return
         }
 
-        addToMediaProgress(numberOfItems: assets.count)
+        mediaProgressCoordinator.addToMediaProgress(numberOfItems: assets.count)
         for asset in assets {
             switch asset {
             case let phAsset as PHAsset:
@@ -1308,5 +1272,73 @@ fileprivate extension AztecPostViewController {
 
         static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
         static let cancelTitle  = NSLocalizedString("Cancel", comment: "Cancel Action")
+    }
+}
+
+protocol MediaProgressCoordinatorDelegate: class {
+    func refreshProgress()
+}
+
+class MediaProgressCoordinator: NSObject {
+
+    weak var delegate: MediaProgressCoordinatorDelegate?
+
+    private(set) var mediaUploadingProgress: Progress?
+
+    private(set) lazy var mediaUploading: [String:Progress] = {
+        return [String: Progress]()
+    }()
+
+    private var mediaUploadingProgressObserverContext: String = "mediaUploadingProgressObserverContext"
+
+    deinit {
+        mediaUploadingProgress?.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
+    }
+
+    func finishOneItem() {
+        mediaUploadingProgress?.completedUnitCount += 1
+    }
+
+    func addToMediaProgress(numberOfItems count: Int) {
+        if let mediaUploadingProgress = self.mediaUploadingProgress,
+            mediaUploadingProgress.isCancelled ||
+                mediaUploadingProgress.completedUnitCount >= mediaUploadingProgress.totalUnitCount {
+            mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
+            self.mediaUploadingProgress = nil
+        }
+
+        if self.mediaUploadingProgress == nil {
+            self.mediaUploadingProgress = Progress.discreteProgress(totalUnitCount: 0)
+            self.mediaUploadingProgress?.addObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted), options:[.new], context:&mediaUploadingProgressObserverContext)
+        }
+
+        self.mediaUploadingProgress?.totalUnitCount += count
+    }
+
+    func track(progress: Progress, ofMediaID mediaID: String) {
+        progress.setUserInfoObject(mediaID, forKey: ProgressUserInfoKey("mediaID"))
+        mediaUploadingProgress?.addChild(progress, withPendingUnitCount: 1)
+        mediaUploading[mediaID] = progress
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard
+            context == &mediaUploadingProgressObserverContext,
+            keyPath == #keyPath(Progress.fractionCompleted)
+            else {
+                super.observeValue(forKeyPath: keyPath,
+                                   of: object,
+                                   change: change,
+                                   context: context)
+                return
+        }
+
+        DispatchQueue.main.async {
+            self.refreshMediaProgress()
+        }
+    }
+
+    func refreshMediaProgress() {
+        delegate?.refreshProgress()
     }
 }
