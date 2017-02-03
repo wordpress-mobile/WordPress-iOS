@@ -26,19 +26,9 @@ class NoteBlockTableViewCell: WPTableViewCell {
         // Last Rows requires full separators
         separatorsView.bottomInsets = isLastRow ? fullSeparatorInsets : indentedSeparatorInsets
         separatorsView.bottomVisible = true
-
     }
-
-    func isLayoutCell() -> Bool {
-        return type(of: self).layoutIdentifier() == reuseIdentifier
-    }
-
     class func reuseIdentifier() -> String {
         return classNameWithoutNamespaces()
-    }
-
-    class func layoutIdentifier() -> String {
-        return classNameWithoutNamespaces() + "-Layout"
     }
 
 
