@@ -13,15 +13,72 @@ fileprivate let fadeAnimationDuration: TimeInterval = 0.1
 // UIKit glitch.
 extension UINavigationController {
     func pushFullscreenViewController(_ viewController: UIViewController, animated: Bool) {
-        if let splitViewController = splitViewController, splitViewController.preferredDisplayMode != .primaryHidden {
-            if !splitViewControllerIsHorizontallyCompact {
-                navigationBar.fadeOutNavigationItems(animated: animated)
+        guard let splitViewController = splitViewController, splitViewController.preferredDisplayMode != .primaryHidden else {
+            pushViewController(viewController, animated: animated)
+            return
+        }
+
+        let performTransition = { (animated: Bool) in
+            if !self.splitViewControllerIsHorizontallyCompact {
+                self.navigationBar.fadeOutNavigationItems(animated: animated)
             }
 
             (splitViewController as? WPSplitViewController)?.setPrimaryViewControllerHidden(true, animated: animated)
+
+            self.pushViewController(viewController, animated: animated)
         }
 
-        pushViewController(viewController, animated: animated)
+        if UIAccessibilityIsReduceMotionEnabled() {
+            splitViewController.view.hideWithBlankingSnapshot(afterScreenUpdates: true)
+            performTransition(false)
+        } else {
+            performTransition(animated)
+        }
+    }
+}
+
+// UIView hiding for use when "Reduce Motion" is enabled
+//
+extension UIView {
+    private static let blankingSnapshotFadeDuration: TimeInterval = 0.3
+
+    // Private class used so we can locate an existing blanking view
+    private class BlankingView: UIView {}
+
+
+    /// Hides this view by inserting a snapshot into the view hierarchy.
+    ///
+    /// - Parameter afterScreenUpdates: A Boolean value that specifies whether 
+    ///             the snapshot should be taken after recent changes have been 
+    ///             incorporated. Pass the value false to capture the screen in 
+    ///             its current state, which might not include recent changes.
+    func hideWithBlankingSnapshot(afterScreenUpdates: Bool = false) {
+        if subviews.first is BlankingView {
+            return
+        }
+
+        let blankingView = BlankingView(frame: bounds)
+
+        if let snapshot = snapshotView(afterScreenUpdates: afterScreenUpdates) {
+            blankingView.addSubview(snapshot)
+        }
+
+        addSubview(blankingView)
+    }
+
+
+    /// Animates away any existing blanking snapshot.
+    func fadeOutAndRemoveBlankingSnapshot() {
+        guard let blankingView = subviews.last as? BlankingView else {
+            return
+        }
+
+        UIView.animate(withDuration: UIView.blankingSnapshotFadeDuration,
+                       animations: {
+                        blankingView.alpha = WPAlphaZero
+        }, completion: { _ in
+            blankingView.removeFromSuperview()
+        })
     }
 }
 
