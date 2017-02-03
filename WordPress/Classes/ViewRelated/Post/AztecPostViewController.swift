@@ -166,7 +166,6 @@ class AztecPostViewController: UIViewController {
         }
     }
 
-
     /// Post being currently edited
     ///
     fileprivate(set) var post: AbstractPost {
@@ -178,11 +177,20 @@ class AztecPostViewController: UIViewController {
         }
     }
 
+    // MARK: - Media related properties
     fileprivate var activeMediaRequests = [AFImageDownloadReceipt]()
 
     fileprivate lazy var mediaLibraryDataSource: WPAndDeviceMediaLibraryDataSource = {
         return WPAndDeviceMediaLibraryDataSource(post: self.post)
     }()
+
+    fileprivate var mediaUploadingProgress: Progress?
+
+    fileprivate lazy var mediaUploading: [String:Progress] = {
+        return [String: Progress]()
+    }()
+
+    fileprivate var mediaUploadingProgressObserverContext: String = "mediaUploadingProgressObserverContext"
 
     /// Maintainer of state for editor - like for post button
     ///
@@ -547,13 +555,35 @@ private extension AztecPostViewController {
 // MARK: - Publish Button Methods
 extension AztecPostViewController: PostEditorStateContextDelegate {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(AbstractPost.status), let status = post.status {
-            postEditorStateContext.updated(postStatus: PostStatus(rawValue: status) ?? .draft)
+        if keyPath == #keyPath(AbstractPost.status) {
+            if let status = post.status {
+                postEditorStateContext.updated(postStatus: PostStatus(rawValue: status) ?? .draft)
+            }
+            return
         } else if keyPath == #keyPath(AbstractPost.dateCreated) {
             let dateCreated = post.dateCreated ?? Date()
             postEditorStateContext.updated(publishDate: dateCreated)
+            return
         } else if keyPath == #keyPath(AbstractPost.content) {
             postEditorStateContext.updated(hasContent: editorHasContent)
+            return
+        }
+
+        // Only handle observations for the playerItemContext
+        guard context == &mediaUploadingProgressObserverContext,
+            keyPath == #keyPath(Progress.fractionCompleted)
+
+            else {
+                super.observeValue(forKeyPath: keyPath,
+                                   of: object,
+                                   change: change,
+                                   context: context)
+                return
+        }
+
+        //update progress bar
+        DispatchQueue.main.async {
+            self.refreshMediaProgress()
         }
     }
 
@@ -588,6 +618,7 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.status))
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated))
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
+        mediaUploadingProgress?.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
     }
 }
 
@@ -1038,10 +1069,129 @@ private extension AztecPostViewController {
 
 // MARK: - Media Support
 private extension AztecPostViewController {
-    func insertImage(_ image: UIImage) {
-        //let index = richTextView.positionForCursor()
-        //richTextView.insertImage(image, index: index)
-        assertionFailure("Error: Aztec.TextView.swift no longer supports insertImage(image: UIImage, index: Int")
+
+    func addToMediaProgress(numberOfItems count: Int) {
+        if let mediaUploadingProgress = self.mediaUploadingProgress,
+            mediaUploadingProgress.isCancelled ||
+                mediaUploadingProgress.completedUnitCount >= mediaUploadingProgress.totalUnitCount {
+            mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
+            self.mediaUploadingProgress = nil
+        }
+
+        if self.mediaUploadingProgress == nil {
+            self.mediaUploadingProgress = Progress.discreteProgress(totalUnitCount: 0)
+            self.mediaUploadingProgress?.addObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted), options:[.new], context:&mediaUploadingProgressObserverContext)
+        }
+
+        self.mediaUploadingProgress?.totalUnitCount += count
+    }
+
+    func track(progress: Progress, ofMediaID mediaID: String) {
+        progress.setUserInfoObject(mediaID, forKey: ProgressUserInfoKey("mediaID"))
+        mediaUploadingProgress?.addChild(progress, withPendingUnitCount: 1)
+        mediaUploading[mediaID] = progress
+    }
+
+    func addDeviceMediaAsset(_ phAsset: PHAsset) {
+        let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
+            DispatchQueue.main.async {
+                self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: thumbnailURL)
+            }
+        }, completion: { [weak self](media, error) in
+            guard let strongSelf = self else {
+                return
+            }
+            guard let media = media, error == nil else {
+                if let error = error {
+                    DispatchQueue.main.async {
+                        strongSelf.displayError(error, onAttachment: attachment)
+                    }
+                }
+                return
+            }
+            var uploadProgress: Progress?
+            mediaService.uploadMedia(media, progress: &uploadProgress, success: {
+                DispatchQueue.main.async {
+                    strongSelf.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
+                }
+            }, failure: { (error) in
+                DispatchQueue.main.async {
+                    strongSelf.displayError(error, onAttachment: attachment)
+                }
+            })
+            if let progress = uploadProgress {
+                strongSelf.track(progress: progress, ofMediaID: attachment.identifier)
+            }
+        })
+    }
+
+    func addSiteMediaAsset(_ media: Media) {
+
+        if media.mediaID.intValue != 0 {
+            guard let remoteURL = URL(string: media.remoteURL) else {
+                return
+            }
+            let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+            self.mediaUploadingProgress?.completedUnitCount += 1
+        } else {
+            var tempMediaURL = URL(string:"placeholder://")!
+            if let mediaLocalPath = media.absoluteLocalURL,
+                let localURL = URL(string: mediaLocalPath) {
+                tempMediaURL = localURL
+            }
+            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL  , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+
+            let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+            var uploadProgress: Progress?
+            mediaService.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                DispatchQueue.main.async {
+                    strongSelf.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
+                }
+            }, failure: { [weak self](error) in
+                guard let strongSelf = self else {
+                    return
+                }
+                DispatchQueue.main.async {
+                    strongSelf.displayError(error, onAttachment: attachment)
+                }
+            })
+            if let progress = uploadProgress {
+                self.track(progress: progress, ofMediaID: attachment.identifier)
+            }
+        }
+    }
+
+    func displayError(_ error: Error?, onAttachment attachment: Aztec.TextAttachment) {
+        var message = NSLocalizedString("Failed to insert media on your post. Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
+        if let error = error {
+            message = error.localizedDescription
+        }
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        let attributes: [String:Any] = [NSFontAttributeName: Assets.defaultRegularFont,
+                                        NSParagraphStyleAttributeName: paragraphStyle,
+                                        NSForegroundColorAttributeName: UIColor.darkGray]
+        let attributeMessage = NSAttributedString(string: message, attributes: attributes)
+        richTextView.update(attachment: attachment, message: attributeMessage)
+    }
+
+    func refreshMediaProgress() {
+        for (attachmentID, progress) in mediaUploading {
+            guard let attachment = richTextView.attachment(withId: attachmentID) else {
+                continue
+            }
+            if progress.fractionCompleted >= 1 {
+                richTextView.update(attachment: attachment, progress: nil)
+            } else {
+                richTextView.update(attachment: attachment, progress: progress.fractionCompleted)
+            }
+        }
     }
 }
 
@@ -1109,6 +1259,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             return
         }
 
+        addToMediaProgress(numberOfItems: assets.count)
         for asset in assets {
             switch asset {
             case let phAsset as PHAsset:
@@ -1121,81 +1272,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         }
 
     }
-
-    func addDeviceMediaAsset(_ phAsset: PHAsset) {
-        let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
-        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
-        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
-            DispatchQueue.main.async {
-                self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: thumbnailURL)
-            }
-        }, completion: { (media, error) in
-            guard let media = media, error == nil else {
-                if let error = error {
-                    DispatchQueue.main.async {
-                        self.displayError(error, onAttachment: attachment)
-                    }
-                }
-                return
-            }
-            var uploadProgress: Progress?
-            mediaService.uploadMedia(media, progress: &uploadProgress, success: {
-                DispatchQueue.main.async {
-                    self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
-                }
-            }, failure: { (error) in
-                DispatchQueue.main.async {
-                    self.displayError(error, onAttachment: attachment)
-                }
-            })
-
-        })
-    }
-
-    func addSiteMediaAsset(_ media: Media) {
-
-        if media.mediaID.intValue != 0 {
-            guard let remoteURL = URL(string: media.remoteURL) else {
-                return
-            }
-            let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
-        } else {
-            var tempMediaURL = URL(string:"placeholder://")!
-            if let mediaLocalPath = media.absoluteLocalURL,
-               let localURL = URL(string: mediaLocalPath) {
-               tempMediaURL = localURL
-            }
-            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL  , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
-
-            let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
-            var uploadProgress: Progress?
-            mediaService.uploadMedia(media, progress: &uploadProgress, success: {
-                DispatchQueue.main.async {
-                    self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
-                }
-            }, failure: { (error) in
-                DispatchQueue.main.async {
-                    self.displayError(error, onAttachment: attachment)
-                }
-            })
-        }
-    }
-
-    func displayError(_ error: Error?, onAttachment attachment: Aztec.TextAttachment) {
-        var message = NSLocalizedString("Failed to insert media on your post. Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
-        if let error = error {
-            message = error.localizedDescription
-        }
-
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        let attributes: [String:Any] = [NSFontAttributeName: Assets.defaultRegularFont,
-                                        NSParagraphStyleAttributeName: paragraphStyle,
-                                        NSForegroundColorAttributeName: UIColor.darkGray]
-        let attributeMessage = NSAttributedString(string: message, attributes: attributes)
-        richTextView.update(attachment: attachment, message: attributeMessage)
-    }
-
 }
 
 // MARK: - Constants
