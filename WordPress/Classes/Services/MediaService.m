@@ -10,7 +10,7 @@
 #import "WPImageSource.h"
 #import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "WordPress-swift.h"
+#import "WordPress-Swift.h"
 #import "WPXMLRPCDecoder.h"
 #import "PhotonImageURLHelper.h"
 
@@ -101,10 +101,12 @@
     NSURL *mediaURL = [self urlForMediaWithFilename:mediaName andExtension:extension];
     NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
                                                 andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
-    
+    CGFloat imageMaxDimension = MAX([UIScreen mainScreen].nativeBounds.size.width, [UIScreen mainScreen].nativeBounds.size.height);
+    CGSize thumbnailSize = CGSizeMake(imageMaxDimension, imageMaxDimension);
+
     [[self.class queueForResizeMediaOperations] addOperationWithBlock:^{
         [asset exportThumbnailToURL:mediaThumbnailURL
-                         targetSize:[UIScreen mainScreen].bounds.size
+                         targetSize:thumbnailSize
                         synchronous:YES
                      successHandler:^(CGSize thumbnailSize) {
                          if (thumbnailCallback) {

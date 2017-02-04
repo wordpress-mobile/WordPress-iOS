@@ -1,5 +1,5 @@
 #import "WordPressXMLRPCAPIFacade.h"
-#import <WPXMLRPC/WPXMLRPC.h>
+#import <wpxmlrpc/WPXMLRPC.h>
 #import "WordPress-Swift.h"
 
 

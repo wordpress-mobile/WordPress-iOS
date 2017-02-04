@@ -89,8 +89,6 @@ class PostPostViewController: UIViewController {
         viewButtonWidth.constant = shareButton.frame.size.width * animationScaleBegin
         view.layoutIfNeeded()
 
-        revealPost = false
-
         guard let transitionCoordinator = transitionCoordinator else {
             return
         }
@@ -166,12 +164,10 @@ class PostPostViewController: UIViewController {
 
     @IBAction func editTapped() {
         reshowEditor?()
-        revealPost = true
     }
 
     @IBAction func viewTapped() {
         preview?()
-        revealPost = true
     }
 
     @IBAction func doneTapped() {

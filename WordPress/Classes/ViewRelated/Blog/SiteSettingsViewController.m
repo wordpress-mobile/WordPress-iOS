@@ -18,7 +18,7 @@
 #import "WordPress-Swift.h"
 #import "BlogServiceRemoteXMLRPC.h"
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <WPXMLRPC/WPXMLRPC.h>
+#import <wpxmlrpc/WPXMLRPC.h>
 
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
