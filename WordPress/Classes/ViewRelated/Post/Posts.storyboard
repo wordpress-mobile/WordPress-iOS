@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Posts-->
@@ -14,17 +18,17 @@
                         <viewControllerLayoutGuide type="bottom" id="AIH-s0-RTt"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Zhd-4n-wcm">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="cnu-9z-5GZ">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <connections>
                                     <segue destination="zOz-bT-2ph" kind="embed" id="m8J-kl-Bnz"/>
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="Zhd-4n-wcm" secondAttribute="topMargin" id="142-xs-2mp"/>
                             <constraint firstAttribute="bottomMargin" secondItem="cnu-9z-5GZ" secondAttribute="bottom" id="CxD-qt-v2d"/>
@@ -52,10 +56,10 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qr8-Nf-Mwl" customClass="NavBarTitleDropdownButton">
                     <rect key="frame" x="0.0" y="0.0" width="77" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <inset key="imageEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="Button" image="icon-nav-chevron">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="didTapFilterButton:" destination="VTO-0U-HpP" eventType="touchUpInside" id="B6R-YT-dc3"/>
@@ -64,10 +68,13 @@
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ph-e4-iOe">
                     <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Az-zB-Hwe">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Az-zB-Hwe">
                             <rect key="frame" x="40" y="0.0" width="40" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="Moj-01-1lI"/>
+                            </constraints>
                             <state key="normal" image="icon-post-add">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <state key="highlighted" image="icon-post-add-highlight"/>
                             <connections>
@@ -75,6 +82,11 @@
                             </connections>
                         </button>
                     </subviews>
+                    <constraints>
+                        <constraint firstItem="9Az-zB-Hwe" firstAttribute="top" secondItem="8Ph-e4-iOe" secondAttribute="top" id="Hjj-Ra-6M9"/>
+                        <constraint firstAttribute="trailing" secondItem="9Az-zB-Hwe" secondAttribute="trailing" id="STW-Iw-FBG"/>
+                        <constraint firstAttribute="bottom" secondItem="9Az-zB-Hwe" secondAttribute="bottom" id="Usu-ZA-zoK"/>
+                    </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" id="PF5-eU-KAv">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="88"/>
@@ -82,14 +94,14 @@
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sFK-WP-z2Z" customClass="SearchWrapperView" customModule="WordPress" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9at-tM-m4A">
                             <rect key="frame" x="0.0" y="44" width="600" height="44"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ESQ-oX-ZqN">
                                     <rect key="frame" x="0.0" y="43" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.82352941176470584" green="0.87058823529411766" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.82352941176470584" green="0.87058823529411766" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="4Sy-We-JMj"/>
                                     </constraints>
@@ -127,9 +139,9 @@
             <objects>
                 <tableViewController id="zOz-bT-2ph" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="300" sectionHeaderHeight="22" sectionFooterHeight="22" id="srU-rF-GC6">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <connections>
                             <outlet property="dataSource" destination="zOz-bT-2ph" id="lbh-fP-TC8"/>
                             <outlet property="delegate" destination="zOz-bT-2ph" id="xw7-aO-PKI"/>
@@ -137,6 +149,7 @@
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="yaY-3g-ZFU">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
                 </tableViewController>
