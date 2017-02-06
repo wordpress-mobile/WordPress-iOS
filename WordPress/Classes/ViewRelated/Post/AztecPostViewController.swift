@@ -209,6 +209,9 @@ class AztecPostViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 
+        self.restorationIdentifier = Restoration.restorationIdentifier
+        self.restorationClass = type(of: self)
+
         addObservers(toPost: post)
     }
 
@@ -1198,8 +1201,34 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
 }
 
+
+// MARK: - State Restoration
+//
+extension AztecPostViewController: UIViewControllerRestoration {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+        let context = ContextManager.sharedInstance().mainContext
+        guard let postURI = coder.decodeObject(forKey: Restoration.postIdentifierKey) as? URL,
+            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURI) else {
+                return nil
+        }
+
+        let post = try? context.existingObject(with: objectID)
+        guard let restoredPost = post as? AbstractPost else {
+            return nil
+        }
+
+        return AztecPostViewController(post: restoredPost)
+    }
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+        coder.encode(post.objectID.uriRepresentation(), forKey: Restoration.postIdentifierKey)
+    }
+}
+
+
 // MARK: - Constants
-fileprivate extension AztecPostViewController {
+extension AztecPostViewController {
 
     struct Assets {
         static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
@@ -1219,18 +1248,24 @@ fileprivate extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
-        static let htmlTitle    = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
-        static let richTitle    = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
-        static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
-        static let optionsTitle = NSLocalizedString("Options", comment: "Displays the Post's Options")
-        static let cancelTitle  = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
+        static let htmlTitle                = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
+        static let richTitle                = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        static let previewTitle             = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
+        static let optionsTitle             = NSLocalizedString("Options", comment: "Displays the Post's Options")
+        static let cancelTitle              = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
+    }
+
+    struct Restoration {
+        static let restorationIdentifier    = "AztecPostViewController"
+        static let navigationIdentifier     = "AztecPostNavigationViewController"
+        static let postIdentifierKey        = AbstractPost.classNameWithoutNamespaces()
     }
 
     struct SwitchSiteAlert {
-        static let title        = NSLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
-        static let message      = NSLocalizedString("Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", comment: "And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
+        static let title                    = NSLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
+        static let message                  = NSLocalizedString("Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", comment: "And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
 
-        static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
-        static let cancelTitle  = NSLocalizedString("Cancel", comment: "Cancel Action")
+        static let acceptTitle              = NSLocalizedString("OK", comment: "Accept Action")
+        static let cancelTitle              = NSLocalizedString("Cancel", comment: "Cancel Action")
     }
 }
