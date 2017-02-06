@@ -879,6 +879,7 @@
 		E6DAABDD1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DAABDC1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift */; };
 		E6DB765F1CD10D7C0069BC82 /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DB765E1CD10D7C0069BC82 /* SignupViewController.swift */; };
 		E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */; };
+		E6DEA81C1E4915100057D703 /* RelatedPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DEA81B1E4915100057D703 /* RelatedPostsViewController.swift */; };
 		E6E27D601C613B3C0063F821 /* RemoteSharingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E27D5F1C613B3C0063F821 /* RemoteSharingButton.swift */; };
 		E6E27D621C6144DB0063F821 /* SharingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E27D611C6144DB0063F821 /* SharingButton.swift */; };
 		E6E57CD51D0F08B200C22E3E /* ReaderMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E57CD41D0F08B200C22E3E /* ReaderMenuViewController.swift */; };
@@ -2269,6 +2270,7 @@
 		E6DB765E1CD10D7C0069BC82 /* SignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderHelpers.swift; sourceTree = "<group>"; };
 		E6DEA81A1E490CD50057D703 /* WordPress 56.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 56.xcdatamodel"; sourceTree = "<group>"; };
+		E6DEA81B1E4915100057D703 /* RelatedPostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedPostsViewController.swift; sourceTree = "<group>"; };
 		E6E27D5F1C613B3C0063F821 /* RemoteSharingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteSharingButton.swift; path = "Remote Objects/RemoteSharingButton.swift"; sourceTree = "<group>"; };
 		E6E27D611C6144DB0063F821 /* SharingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingButton.swift; sourceTree = "<group>"; };
 		E6E57CD41D0F08B200C22E3E /* ReaderMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderMenuViewController.swift; sourceTree = "<group>"; };
@@ -2993,6 +2995,7 @@
 				5D1D04741B7A50B100CDE646 /* ReaderStreamViewController.swift */,
 				E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */,
 				E69EF9D21BFA539F00ED0554 /* ReaderDetailViewController.swift */,
+				E6DEA81B1E4915100057D703 /* RelatedPostsViewController.swift */,
 				E64ECA4C1CE62041000188A0 /* ReaderSearchViewController.swift */,
 				E6DAABDC1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift */,
 				E6D3B1421D1C702600008D4B /* ReaderFollowedSitesViewController.swift */,
@@ -6326,6 +6329,7 @@
 				E60C2ED71DE5075100488630 /* ReaderCommentCell.swift in Sources */,
 				5DBCD9D518F35D7500B32229 /* ReaderTopicService.m in Sources */,
 				E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */,
+				E6DEA81C1E4915100057D703 /* RelatedPostsViewController.swift in Sources */,
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				FACB36F11C5C2BF800C6DF4E /* ThemeWebViewController.swift in Sources */,
 				E6F66D421E00966000F875A5 /* UIImage+Rotation.swift in Sources */,
