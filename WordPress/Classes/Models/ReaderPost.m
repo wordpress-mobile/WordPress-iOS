@@ -47,6 +47,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isSharingEnabled;
 @dynamic isSiteBlocked;
 @dynamic sourceAttribution;
+@dynamic relatedPost;
+@dynamic relatedPosts;
 
 @dynamic primaryTag;
 @dynamic primaryTagSlug;

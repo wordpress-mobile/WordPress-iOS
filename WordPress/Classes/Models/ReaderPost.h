@@ -48,6 +48,8 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) BOOL isSharingEnabled;
 @property (nonatomic) BOOL isSiteBlocked;
 @property (nonatomic, strong) SourcePostAttribution *sourceAttribution;
+@property (nonatomic, strong) ReaderPost *relatedPost;
+@property (nonatomic, strong) NSSet *relatedPosts;
 
 @property (nonatomic, strong) NSString *primaryTag;
 @property (nonatomic, strong) NSString *primaryTagSlug;
