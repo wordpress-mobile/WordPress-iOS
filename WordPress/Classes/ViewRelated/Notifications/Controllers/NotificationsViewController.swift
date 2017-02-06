@@ -219,7 +219,7 @@ class NotificationsViewController: UITableViewController {
             return
         }
 
-        detailsViewController.datasource = self
+        detailsViewController.dataSource = self
         detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { request in
             self.showUndeleteForNoteWithID(note.objectID, request: request)
@@ -1049,7 +1049,7 @@ extension NotificationsViewController: ABXPromptViewDelegate {
 
 // MARK: - Details Navigation Datasource
 //
-extension NotificationsViewController: NotificationsNavigationDatasource {
+extension NotificationsViewController: NotificationsNavigationDataSource {
     func notification(succeeding note: Notification) -> Notification? {
         return loadNotification(near: note, withIndexDelta: -1)
     }
