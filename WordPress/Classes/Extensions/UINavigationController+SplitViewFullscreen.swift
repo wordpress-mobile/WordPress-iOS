@@ -220,8 +220,7 @@ private struct WPFullscreenNavigationTransitionViewModel {
 
         // RTL support
 
-        let attribute = transitionContext.containerView.semanticContentAttribute
-        let layoutDirection = UIView.userInterfaceLayoutDirection(for: attribute)
+        let layoutDirection = transitionContext.containerView.userInterfaceLayoutDirection()
         let isRTLLayout = (layoutDirection == .rightToLeft)
 
         // Transforms
