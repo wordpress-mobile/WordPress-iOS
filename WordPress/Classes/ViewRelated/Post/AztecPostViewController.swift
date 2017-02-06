@@ -1034,10 +1034,7 @@ fileprivate extension AztecPostViewController {
     }
 
     func shouldRemoveOnDismiss(post: AbstractPost) -> Bool {
-        let originalTitleIsEmpty = post.original?.postTitle?.isEmpty ?? true
-        let originalContentIsEmpty = post.original?.content?.isEmpty ?? true
-
-        return post.isRevision() && post.hasLocalChanges() && originalTitleIsEmpty && originalContentIsEmpty
+        return post.isRevision() && post.hasLocalChanges() || post.hasNeverAttemptedToUpload()
     }
 }
 
