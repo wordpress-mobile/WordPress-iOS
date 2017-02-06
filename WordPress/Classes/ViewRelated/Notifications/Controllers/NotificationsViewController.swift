@@ -226,6 +226,9 @@ class NotificationsViewController: UITableViewController {
         }
         detailsViewController.onSelectedNoteChange = { note in
             self.selectRowForNotification(note: note)
+            if !note.read {
+                NotificationSyncMediator()?.markAsRead(note)
+            }
         }
     }
 }
