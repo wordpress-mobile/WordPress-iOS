@@ -14,12 +14,6 @@ extension String {
         return trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }
 
-    /// Returns the NSRange instance matching the full string contents.
-    ///
-    func rangeOfFullString() -> NSRange {
-        return NSMakeRange(0, characters.count)
-    }
-
     /// Returns `self` if not empty, or `nil` otherwise
     ///
     func nonEmptyString() -> String? {
@@ -121,6 +115,7 @@ public extension String {
         copy.removeSuffix(suffix)
         return copy
     }
+
     /// Removes the suffix from the string that matches the given pattern, if any.
     ///
     /// Calling this method might invalidate any existing indices for use with this string.
