@@ -399,6 +399,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         configureTag()
         configureActionButtons()
         configureFooterIfNeeded()
+        adjustInsetsForTextDirection()
 
         bumpStats()
         bumpPageViewsForPost()
@@ -769,6 +770,19 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             footerViewHeightConstraint.constant = 0
         }
         footerViewHeightConstraintConstant = footerViewHeightConstraint.constant
+    }
+
+    fileprivate func adjustInsetsForTextDirection() {
+        guard view.userInterfaceLayoutDirection() == .rightToLeft else {
+            return
+        }
+
+        let buttonsToAdjust: [UIButton] = [
+            likeButton,
+            commentButton]
+        for button in buttonsToAdjust {
+            button.flipInsetsForRightToLeftLayoutDirection()
+        }
     }
 
 
