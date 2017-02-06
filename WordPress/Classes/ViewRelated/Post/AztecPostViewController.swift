@@ -242,7 +242,7 @@ class AztecPostViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        configureDismissButton()
+        reloadDismissButton()
         startListeningToNotifications()
     }
 
@@ -313,11 +313,6 @@ class AztecPostViewController: UIViewController {
         navigationItem.rightBarButtonItems = [moreBarButtonItem, publishButton]
     }
 
-    func configureDismissButton() {
-        let image = isModal() ? Assets.closeButtonModalImage : Assets.closeButtonRegularImage
-        closeButton.setImage(image, for: .normal)
-    }
-
     func configureView() {
         edgesForExtendedLayout = UIRectEdge()
         view.backgroundColor = .white
@@ -378,6 +373,11 @@ class AztecPostViewController: UIViewController {
         blogPickerSize.width = min(blogPickerSize.width, blogPickerButton.frame.width)
 
         blogPickerButton.frame.size = blogPickerSize
+    }
+
+    func reloadDismissButton() {
+        let image = isModal() ? Assets.closeButtonModalImage : Assets.closeButtonRegularImage
+        closeButton.setImage(image, for: .normal)
     }
 
 
