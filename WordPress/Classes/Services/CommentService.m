@@ -350,13 +350,19 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                                                  if (([parents count] < WPTopLevelHierarchicalCommentsPerPage) || (page > 1 && !includesNewComments)) {
                                                      hasMore = NO;
                                                  }
-                                                 success([comments count], hasMore);
+
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     success([comments count], hasMore);
+                                                 });
+
                                              }
                                          }];
                                      } failure:^(NSError *error) {
                                          [self.managedObjectContext performBlock:^{
                                              if (failure) {
-                                                 failure(error);
+                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                     failure(error);
+                                                 });
                                              }
                                          }];
                                      }];
@@ -904,7 +910,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         post.commentCount = @([commentsToKeep count]);
     }
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 
     return newCommentCount > 0;
 }

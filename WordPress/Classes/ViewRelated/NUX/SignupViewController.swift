@@ -32,7 +32,13 @@ import WordPressShared
     let XMLRPCKey = "xmlrpc"
     let BlogIDKey = "blogid"
     let URLKey = "url"
+    let nonAlphanumericCharacterSet = NSCharacterSet.alphanumerics.inverted
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComSignup
+        }
+    }
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
@@ -265,7 +271,7 @@ import WordPressShared
         let controller = SigninErrorViewController.controller()
         controller.delegate = self
         controller.presentFromController(presentingController)
-        controller.displayGenericErrorMessage(message)
+        controller.displayGenericErrorMessage(message, sourceTag: sourceTag)
     }
 
 
@@ -339,13 +345,13 @@ import WordPressShared
             self.displayLoginMessage("")
             self.configureLoading(false)
             if let error = error as? NSError {
-                self.displayError(error)
+                self.displayError(error, sourceTag: self.sourceTag)
             }
         }
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
-        service?.createBlogAndSigninToWPCom(blogURL: loginFields.siteUrl,
+        service.createBlogAndSigninToWPCom(blogURL: loginFields.siteUrl,
                                            blogTitle: loginFields.username,
                                            emailAddress: loginFields.emailAddress,
                                            username: loginFields.username,
@@ -391,6 +397,11 @@ import WordPressShared
 
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
+        // Ensure that username and site fields are lower cased.
+        if sender == usernameField || sender == siteURLField {
+            sender.text = sender.text?.lowercased()
+        }
+
         loginFields.emailAddress = emailField.nonNilTrimmedText()
         loginFields.username = usernameField.nonNilTrimmedText()
         loginFields.password = passwordField.nonNilTrimmedText()
@@ -511,6 +522,13 @@ extension SignupViewController: UITextFieldDelegate {
         // Disallow spaces except for the password field
         if string == " " && (textField == emailField || textField == usernameField || textField == siteURLField) {
             return false
+        }
+
+        // Disallow punctuation in username and site names
+        if (textField == usernameField || textField == siteURLField) {
+            if (string as NSString).rangeOfCharacter(from: nonAlphanumericCharacterSet).location != NSNotFound {
+                return false
+            }
         }
 
         if textField == siteURLField {

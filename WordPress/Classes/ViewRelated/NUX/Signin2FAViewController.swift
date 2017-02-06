@@ -21,6 +21,12 @@ import WordPressShared
         return facade
     }()
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComLogin
+        }
+    }
+
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
@@ -249,6 +255,6 @@ extension Signin2FAViewController: LoginFacadeDelegate {
     func displayRemoteError(_ error: Error!) {
         configureStatusLabel("")
         configureViewLoading(false)
-        displayError(error as NSError)
+        displayError(error as NSError, sourceTag: sourceTag)
     }
 }

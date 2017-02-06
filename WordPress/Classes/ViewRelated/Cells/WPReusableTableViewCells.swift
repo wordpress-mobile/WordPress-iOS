@@ -8,7 +8,7 @@ class WPReusableTableViewCell: WPTableViewCell {
         super.prepareForReuse()
 
         textLabel?.text = nil
-        textLabel?.textAlignment = .left
+        textLabel?.textAlignment = .natural
         textLabel?.adjustsFontSizeToFitWidth = false
         detailTextLabel?.text = nil
         detailTextLabel?.textColor = UIColor.black
