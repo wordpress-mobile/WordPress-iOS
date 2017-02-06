@@ -11,7 +11,7 @@ import WordPressComStatsiOS
 ///
 protocol NotificationsNavigationDataSource: class {
     func notification(succeeding note: Notification) -> Notification?
-    func notification(preceeding note: Notification) -> Notification?
+    func notification(preceding note: Notification) -> Notification?
 }
 
 
@@ -1187,7 +1187,7 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
 //
 extension NotificationDetailsViewController {
     @IBAction func previousNotificationWasPressed() {
-        guard let previous = dataSource?.notification(preceeding: note) else {
+        guard let previous = dataSource?.notification(preceding: note) else {
             return
         }
 
@@ -1205,7 +1205,7 @@ extension NotificationDetailsViewController {
     }
 
     var shouldEnablePreviousButton: Bool {
-        return dataSource?.notification(preceeding: note) != nil
+        return dataSource?.notification(preceding: note) != nil
     }
 
     var shouldEnableNextButton: Bool {

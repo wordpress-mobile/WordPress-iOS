@@ -1070,7 +1070,7 @@ extension NotificationsViewController: NotificationsNavigationDataSource {
         return loadNotification(near: note, withIndexDelta: -1)
     }
 
-    func notification(preceeding note: Notification) -> Notification? {
+    func notification(preceding note: Notification) -> Notification? {
         return loadNotification(near: note, withIndexDelta: +1)
     }
 }
