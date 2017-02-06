@@ -1723,7 +1723,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
         }
 
-        navigationController?.pushFullscreenViewController(controller, animated: true)
+        navigationController?.pushViewController(controller, animated: true)
     }
 
 
