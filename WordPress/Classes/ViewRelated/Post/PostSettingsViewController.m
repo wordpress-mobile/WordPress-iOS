@@ -40,7 +40,8 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowFeaturedImage,
     PostSettingsRowFeaturedImageAdd,
     PostSettingsRowFeaturedLoading,
-    PostSettingsRowGeolocation
+    PostSettingsRowGeolocation,
+    PostSettingsRowExcerpt
 };
 
 static CGFloat CellHeight = 44.0f;
@@ -397,7 +398,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                       @(PostSettingsSectionMeta),
                       @(PostSettingsSectionFormat),
                       @(PostSettingsSectionFeaturedImage),
-                      @(PostSettingsSectionGeolocation)
+                      @(PostSettingsSectionGeolocation),
+                      @(PostSettingsSectionMoreOptions)
                       ];
 }
 
@@ -429,6 +431,10 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
     } else if (sec == PostSettingsSectionGeolocation) {
         return 1;
+
+    } else if (sec == PostSettingsSectionMoreOptions) {
+        return 1;
+
     }
 
     return 0;
@@ -452,6 +458,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     } else if (sec == PostSettingsSectionGeolocation) {
         return NSLocalizedString(@"Location", @"Label for the geolocation feature (tagging posts by their physical location).");
         
+    } else if (sec == PostSettingsSectionMoreOptions) {
+        return NSLocalizedString(@"More Options", @"Label for the More Options area in post settings. Should use the same translation as core WP.");
+
     }
     return nil;
 }
@@ -508,6 +517,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         cell = [self configureFeaturedImageCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionGeolocation) {
         cell = [self configureGeolocationCellForIndexPath:indexPath];
+    } else if (sec == PostSettingsSectionMoreOptions) {
+        cell = [self configureExcerptCellForIndexPath:indexPath];
     }
 
     return cell;
@@ -535,6 +546,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         [self showFeaturedImageSelector];
     } else if (cell.tag == PostSettingsRowGeolocation) {
         [self showPostGeolocationSelector];
+    } else if (cell.tag == PostSettingsRowExcerpt) {
+        [self showEditExcerptController];
     }
 }
 
@@ -763,6 +776,16 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     return cell;
 }
 
+- (UITableViewCell *)configureExcerptCellForIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self getWPTableViewCell];
+    cell.textLabel.text = NSLocalizedString(@"Excerpt", @"Label for the excerpt field. Should be the same as WP core.");
+    cell.detailTextLabel.text = self.apost.mt_excerpt;
+    cell.tag = PostSettingsRowExcerpt;
+    cell.accessibilityIdentifier = @"Excerpt";
+    return cell;
+}
+
 - (WPTableViewCell *)getWPTableViewCell
 {
     static NSString *wpTableViewCellIdentifier = @"wpTableViewCellIdentifier";
@@ -814,7 +837,11 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         cell.textField.returnKeyType = UIReturnKeyDone;
         cell.textField.delegate = self;
         [WPStyleGuide configureTableViewTextCell:cell];
-        cell.textField.textAlignment = NSTextAlignmentRight;
+        if ([self.view userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
+            cell.textField.textAlignment = NSTextAlignmentRight;
+        } else {
+            cell.textField.textAlignment = NSTextAlignmentLeft;
+        }
     }
     cell.tag = 0;
     return cell;
@@ -1034,6 +1061,20 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             [self showMediaPicker];
         }
     }
+}
+
+- (void)showEditExcerptController
+{
+    SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:self.apost.mt_excerpt
+                                                                                    placeholder:nil
+                                                                                           hint:NSLocalizedString(@"Excerpts are optional hand-crafted summaries of your content.", @"Should be the same as the text displayed if the user clicks the (i) in Calypso.")
+                                                                                     isPassword:NO];
+    vc.title = NSLocalizedString(@"Excerpt", @"Label for the excerpt field. Should be the same as WP core.");
+    vc.onValueChanged = ^(NSString *value) {
+        self.apost.mt_excerpt = value;
+        [self.tableView reloadData];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showMediaPicker

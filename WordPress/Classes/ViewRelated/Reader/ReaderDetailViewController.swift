@@ -32,6 +32,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate weak var commentButton: UIButton!
     @IBOutlet fileprivate weak var likeButton: UIButton!
     @IBOutlet fileprivate weak var footerViewHeightConstraint: NSLayoutConstraint!
+    fileprivate var relatedPostsController: RelatedPostsViewController?
 
     // Wrapper views
     @IBOutlet fileprivate weak var textHeaderStackView: UIStackView!
@@ -66,6 +67,16 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate let sharingController = PostSharingController()
 
+    var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
+        didSet {
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+
+    override open var preferredStatusBarStyle: UIStatusBarStyle {
+        return currentPreferredStatusBarStyle
+    }
+
     open var post: ReaderPost? {
         didSet {
             oldValue?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
@@ -81,7 +92,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             }
         }
     }
-
 
     fileprivate var isLoaded: Bool {
         return post != nil
@@ -259,6 +269,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
+    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        relatedPostsController = segue.destination as? RelatedPostsViewController
+    }
+
+
     // MARK: - Multitasking Splitview Support
 
     func handleApplicationDidBecomeActive(_ notification: Foundation.Notification) {
@@ -387,8 +402,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         configureRichText()
         configureDiscoverAttribution()
         configureTag()
+        configureRelatedPosts()
         configureActionButtons()
         configureFooterIfNeeded()
+        adjustInsetsForTextDirection()
 
         bumpStats()
         bumpPageViewsForPost()
@@ -621,6 +638,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
+    fileprivate func configureRelatedPosts() {
+        guard let post = post else {
+            return
+        }
+        relatedPostsController?.post = post
+    }
+
+
     fileprivate func configureActionButtons() {
         resetActionButton(likeButton)
         resetActionButton(commentButton)
@@ -761,6 +786,19 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         footerViewHeightConstraintConstant = footerViewHeightConstraint.constant
     }
 
+    fileprivate func adjustInsetsForTextDirection() {
+        guard view.userInterfaceLayoutDirection() == .rightToLeft else {
+            return
+        }
+
+        let buttonsToAdjust: [UIButton] = [
+            likeButton,
+            commentButton]
+        for button in buttonsToAdjust {
+            button.flipInsetsForRightToLeftLayoutDirection()
+        }
+    }
+
 
     // MARK: - Instance Methods
 
@@ -787,7 +825,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
     }
 
-
     func setBarsHidden(_ hidden: Bool) {
         if (navigationController?.isNavigationBarHidden == hidden) {
             return
@@ -796,6 +833,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         if (hidden) {
             // Hides the navbar and footer view
             navigationController?.setNavigationBarHidden(true, animated: true)
+            currentPreferredStatusBarStyle = .default
             footerViewHeightConstraint.constant = 0.0
             UIView.animate(withDuration: 0.3,
                 delay: 0.0,
@@ -809,6 +847,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             let pinToBottom = isScrollViewAtBottom()
 
             navigationController?.setNavigationBarHidden(false, animated: true)
+            currentPreferredStatusBarStyle = .lightContent
             footerViewHeightConstraint.constant = footerViewHeightConstraintConstant
             UIView.animate(withDuration: 0.3,
                 delay: 0.0,
@@ -1091,3 +1130,6 @@ extension ReaderDetailViewController : UIScrollViewDelegate {
 
 // Expand this view controller to full screen if possible
 extension ReaderDetailViewController: PrefersFullscreenDisplay {}
+
+// Let's the split view know this vc changes the status bar style.
+extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
