@@ -7,12 +7,6 @@ import WordPressComStatsiOS
 
 
 
-/// TODO:
-/// -   Relocate Mark as Read? Navigation Protocol?
-/// -   Notifications icon should show indicator if the list isn't visible
-
-
-
 ///
 ///
 protocol NotificationsNavigationDataSource: class {
