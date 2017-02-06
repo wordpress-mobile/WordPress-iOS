@@ -265,19 +265,17 @@ extension EditPostViewController: UIViewControllerRestoration {
             return nil
         }
 
-        var post: Post?
-        if let postURL = coder.decodeObject(forKey: RestorationKey.post.rawValue) as? URL {
-            let context = ContextManager.sharedInstance().mainContext
-            if let postID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURL) {
-                post = try! context.existingObject(with: postID) as? Post
-            }
+        let context = ContextManager.sharedInstance().mainContext
+
+        guard let postURL = coder.decodeObject(forKey: RestorationKey.post.rawValue) as? URL,
+            let postID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURL),
+            let post = try? context.existingObject(with: postID),
+            let reloadedPost = post as? Post
+            else {
+                return EditPostViewController()
         }
 
-        if let post = post {
-            return EditPostViewController(post: post)
-        } else {
-            return EditPostViewController()
-        }
+        return EditPostViewController(post: reloadedPost)
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
