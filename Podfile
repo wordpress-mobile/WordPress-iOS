@@ -32,6 +32,7 @@ abstract_target 'WordPress_Base' do
     pod 'Crashlytics'
     pod 'BuddyBuildSDK', '~> 1.0.11', :configurations => ['Release-Alpha']
     pod 'FLAnimatedImage', '~> 1.0'
+    pod 'MGSwipeTableCell', '~> 1.5.6'
     # Temporary until this fix is merged and released
     # https://github.com/daltoniam/Starscream/pull/294
     pod 'Starscream', :git => 'https://github.com/wordpress-mobile/Starscream', :branch => 'wordpress-ios'
@@ -50,7 +51,7 @@ abstract_target 'WordPress_Base' do
     pod 'WPMediaPicker', '0.11'
     pod 'WordPress-iOS-Editor', '1.8.1'
     pod 'WordPressCom-Analytics-iOS', '0.1.22'
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => '9c389f5069e9c1aa8957b74fc3a06f61e75f5bbb'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => '7b4caa9bee964061bf33f86fda29d8d26d032720'
     pod 'wpxmlrpc', '~> 0.8'
 
     target :WordPressTest do

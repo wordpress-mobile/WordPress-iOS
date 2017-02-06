@@ -39,6 +39,8 @@
 #import "InteractivePostView.h"
 #import "InteractivePostViewDelegate.h"
 
+#import "JetpackService.h"
+
 #import "LoginFacade.h"
 #import "LoginFields.h"
 
@@ -140,6 +142,7 @@
 #import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
 #import "WordPressComServiceRemote.h"
+#import "WPAndDeviceMediaLibraryDataSource.h"
 
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>
