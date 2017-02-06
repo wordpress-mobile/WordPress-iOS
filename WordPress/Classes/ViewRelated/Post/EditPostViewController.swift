@@ -144,6 +144,7 @@ class EditPostViewController: UIViewController {
         }
 
         let navController = UINavigationController(rootViewController: postViewController)
+        navController.restorationIdentifier = AztecPostViewController.Restoration.navigationIdentifier
         navController.modalPresentationStyle = .fullScreen
 
         return navController
