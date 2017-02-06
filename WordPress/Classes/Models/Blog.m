@@ -263,7 +263,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 {
     NSSortDescriptor *sortServiceDescriptor = [[NSSortDescriptor alloc] initWithKey:@"service"
                                                                           ascending:YES
-                                                                           selector:@selector(caseInsensitiveCompare:)];
+                                                                           selector:@selector(localizedCaseInsensitiveCompare:)];
     NSSortDescriptor *sortExternalNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"externalName"
                                                                                ascending:YES
                                                                                 selector:@selector(caseInsensitiveCompare:)];
