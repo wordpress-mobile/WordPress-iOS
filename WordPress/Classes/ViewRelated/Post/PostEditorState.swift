@@ -53,6 +53,17 @@ public enum PostEditorAction {
         }
     }
 
+    fileprivate var secondaryPublishActionLabel: String? {
+        switch self {
+        case .publish:
+            return NSLocalizedString("Publish Now", comment: "Title of button allowing the user to immediately publish the post they are editing.")
+        case .update:
+            return NSLocalizedString("Save as Draft", comment: "Title of button allowing users to change the status of the post they are currently editing to Draft.")
+        default:
+            return nil
+        }
+    }
+
     fileprivate var isPostPostShown: Bool {
         switch self {
         case .publish:
@@ -61,6 +72,18 @@ public enum PostEditorAction {
             return false
         }
     }
+
+    fileprivate var secondaryPublishAction: PostEditorAction? {
+        switch self {
+        case .publish:
+            return .save
+        case .update:
+            return .publish
+        default:
+            return nil
+        }
+    }
+
 }
 
 /// Protocol used by all concrete states for the UI - never exposed outside of `PostEditorStateContext`
