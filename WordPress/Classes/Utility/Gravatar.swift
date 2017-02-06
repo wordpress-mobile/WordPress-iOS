@@ -85,6 +85,10 @@ extension UIImageView {
         self.downloadImage(url,
             placeholderImage: placeholder,
             success: { image in
+                guard image != self.image else {
+                    return
+                }
+
                 self.image = image
                 if animate {
                     self.fadeInAnimation()
