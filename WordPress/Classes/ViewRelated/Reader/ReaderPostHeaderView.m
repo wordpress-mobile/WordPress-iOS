@@ -194,7 +194,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 
 - (UIButton *)newDisclosureButton
 {
-    UIImage *chevronImage = [UIImage imageNamed:@"disclosure-chevron"];
+    UIImage *chevronImage = [[UIImage imageNamed:@"disclosure-chevron"] imageFlippedForRightToLeftLayoutDirection];
     UIButton *disclosureButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [disclosureButton setBackgroundImage:chevronImage forState:UIControlStateNormal];
     disclosureButton.translatesAutoresizingMaskIntoConstraints = NO;
