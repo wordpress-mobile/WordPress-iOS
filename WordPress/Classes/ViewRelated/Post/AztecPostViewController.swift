@@ -178,8 +178,19 @@ class AztecPostViewController: UIViewController {
         }
     }
 
+
+    /// Active Downloads
+    ///
     fileprivate var activeMediaRequests = [AFImageDownloadReceipt]()
 
+
+    /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
+    ///
+    fileprivate var shouldRemovePostOnDismiss = false
+
+
+    /// Media Library Data Source
+    ///
     fileprivate lazy var mediaLibraryDataSource: WPAndDeviceMediaLibraryDataSource = {
         return WPAndDeviceMediaLibraryDataSource(post: self.post)
     }()
@@ -201,6 +212,7 @@ class AztecPostViewController: UIViewController {
         return context
     }()
 
+
     // MARK: - Lifecycle Methods
 
     init(post: AbstractPost) {
@@ -208,6 +220,7 @@ class AztecPostViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 
+        self.shouldRemovePostOnDismiss = shouldRemoveOnDismiss(post: post)
         addObservers(toPost: post)
     }
 
@@ -890,9 +903,9 @@ extension AztecPostViewController: UINavigationControllerDelegate {
 }
 
 // MARK: - Cancel/Dismiss/Persistence Logic
-extension AztecPostViewController {
+fileprivate extension AztecPostViewController {
     // TODO: Rip this out and put it into the PostService
-    fileprivate func createRevisionOfPost() {
+    func createRevisionOfPost() {
         guard let context = post.managedObjectContext else {
             return
         }
@@ -910,7 +923,7 @@ extension AztecPostViewController {
     }
 
     // TODO: Rip this and put it into PostService, as well
-    fileprivate func recreatePostRevision(in blog: Blog) {
+    func recreatePostRevision(in blog: Blog) {
         let blogService = BlogService(managedObjectContext: mainContext)
         let postService = PostService(managedObjectContext: mainContext)
         let newPost = postService.createDraftPost(for: blog)
@@ -942,7 +955,7 @@ extension AztecPostViewController {
         //[self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
     }
 
-    fileprivate func cancelEditing() {
+    func cancelEditing() {
         stopEditing()
 
         if post.canSave() && post.hasUnsavedChanges() {
@@ -952,7 +965,7 @@ extension AztecPostViewController {
         }
     }
 
-    fileprivate func stopEditing() {
+    func stopEditing() {
         if titleTextField.isFirstResponder {
             titleTextField.resignFirstResponder()
         }
@@ -960,7 +973,7 @@ extension AztecPostViewController {
         view.endEditing(true)
     }
 
-    fileprivate func showPostHasChangesAlert() {
+    func showPostHasChangesAlert() {
         let alertController = UIAlertController(
             title: NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post."),
             message: nil,
@@ -993,19 +1006,22 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    fileprivate func discardChanges() {
+    func discardChanges() {
         guard let context = post.managedObjectContext, let originalPost = post.original else {
             return
         }
 
         post = originalPost
         post.deleteRevision()
-        post.remove()
+
+        if shouldRemovePostOnDismiss {
+            post.remove()
+        }
 
         ContextManager.sharedInstance().save(context)
     }
 
-    fileprivate func discardChangesAndUpdateGUI() {
+    func discardChangesAndUpdateGUI() {
         discardChanges()
 
         onClose?(false)
@@ -1015,6 +1031,13 @@ extension AztecPostViewController {
         } else {
             _ = navigationController?.popViewController(animated: true)
         }
+    }
+
+    func shouldRemoveOnDismiss(post: AbstractPost) -> Bool {
+        let originalTitleIsEmpty = post.original?.postTitle?.isEmpty ?? true
+        let originalContentIsEmpty = post.original?.content?.isEmpty ?? true
+
+        return post.isRevision() && post.hasLocalChanges() && originalTitleIsEmpty && originalContentIsEmpty
     }
 }
 
