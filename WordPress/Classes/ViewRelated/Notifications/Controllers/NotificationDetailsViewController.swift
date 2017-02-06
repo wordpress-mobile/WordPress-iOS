@@ -12,6 +12,7 @@ import WordPressComStatsiOS
 /// -   Relocate Mark as Read? Navigation Protocol?
 /// -   Back: Dehighlights the wrong notification
 ///	-	Notifications Media Downloader: 403 Access
+/// -   Notifications icon should show indicator if the list isn't visible
 
 
 
@@ -178,7 +179,7 @@ class NotificationDetailsViewController: UIViewController {
         refreshNavigationBar()
     }
 
-    private func refreshNavigationBar() {
+    fileprivate func refreshNavigationBar() {
         title = note.title
         previousNavigationButton.isEnabled = shouldEnablePreviousButton
         nextNavigationButton.isEnabled = shouldEnableNextButton
@@ -721,6 +722,9 @@ extension NotificationDetailsViewController {
         // Reload the table, if *our* notification got updated
         if updated.contains(note) || refreshed.contains(note) {
             refreshInterface()
+        } else {
+            // Otherwise, refresh the navigation bar as the notes list might have changed
+            refreshNavigationBar()
         }
 
         // Dismiss this ViewController if *our* notification... just got deleted
