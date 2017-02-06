@@ -9,8 +9,6 @@ import WordPressComStatsiOS
 
 /// TODO:
 /// -   Skip Mattcher Notifications? (Details are Broken)
-/// -   Refresh Next/Previous on update
-/// -   Keep Unread Notifications Around
 /// -   Relocate Mark as Read? Navigation Protocol?
 /// -   Back: Dehighlights the wrong notification
 ///	-	Notifications Media Downloader: 403 Access
@@ -173,11 +171,11 @@ class NotificationDetailsViewController: UIViewController {
     }
 
     fileprivate func refreshInterface() {
-        title = note.title
         tableView.reloadData()
         attachReplyViewIfNeeded()
         attachSuggestionsViewIfNeeded()
         adjustLayoutConstraintsIfNeeded()
+        refreshNavigationBar()
     }
 
     private func refreshNavigationBar() {
