@@ -10,7 +10,7 @@
 #import "WPImageSource.h"
 #import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "WordPress-swift.h"
+#import "WordPress-Swift.h"
 #import "WPXMLRPCDecoder.h"
 #import "PhotonImageURLHelper.h"
 
@@ -101,10 +101,12 @@
     NSURL *mediaURL = [self urlForMediaWithFilename:mediaName andExtension:extension];
     NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
                                                 andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
-    
+    CGFloat imageMaxDimension = MAX([UIScreen mainScreen].nativeBounds.size.width, [UIScreen mainScreen].nativeBounds.size.height);
+    CGSize thumbnailSize = CGSizeMake(imageMaxDimension, imageMaxDimension);
+
     [[self.class queueForResizeMediaOperations] addOperationWithBlock:^{
         [asset exportThumbnailToURL:mediaThumbnailURL
-                         targetSize:[UIScreen mainScreen].bounds.size
+                         targetSize:thumbnailSize
                         synchronous:YES
                      successHandler:^(CGSize thumbnailSize) {
                          if (thumbnailCallback) {
@@ -447,30 +449,98 @@
     return _queueForResizeMediaOperations;
 }
 
-- (void)thumbnailForMedia:(Media *)mediaInRandomContext
-                 size:(CGSize)size
+- (CGSize)sizeOfMediaFileAtPath:(NSString *)pathForFile {
+    if (pathForFile == nil || ![[NSFileManager defaultManager] fileExistsAtPath:pathForFile isDirectory:nil]) {
+        return CGSizeZero;
+    }
+    NSURL *imageFileURL = [NSURL fileURLWithPath:pathForFile];
+    CGImageSourceRef imageSource = CGImageSourceCreateWithURL((CFURLRef)imageFileURL, NULL);
+    if (imageSource == NULL) {
+        // Error loading image
+        return CGSizeZero;
+    }
+
+    CGFloat width = 0.0f, height = 0.0f;
+    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, NULL);
+
+    CFRelease(imageSource);
+
+    if (imageProperties == NULL) {
+        return CGSizeZero;
+    }
+
+    CFNumberRef widthNum  = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth);
+    if (widthNum != NULL) {
+        CFNumberGetValue(widthNum, kCFNumberCGFloatType, &width);
+    }
+
+    CFNumberRef heightNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight);
+    if (heightNum != NULL) {
+        CFNumberGetValue(heightNum, kCFNumberCGFloatType, &height);
+    }
+
+    // Check orientation and flip size if required
+    CFNumberRef orientationNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyOrientation);
+    if (orientationNum != NULL) {
+        int orientation;
+        CFNumberGetValue(orientationNum, kCFNumberIntType, &orientation);
+        if (orientation > 4) {
+            CGFloat temp = width;
+            width = height;
+            height = temp;
+        }
+    }
+    
+    CFRelease(imageProperties);
+
+    return CGSizeMake(width, height);
+}
+
+- (void)imageForMedia:(Media *)mediaInRandomContext
+                 size:(CGSize)requestSize
               success:(void (^)(UIImage *image))success
               failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
     [self.managedObjectContext performBlock:^{
-        Media *media = (Media *)[self.managedObjectContext objectWithID:mediaID];
+        Media *media = (Media *)[self.managedObjectContext objectWithID: mediaID];
         BOOL isPrivate = media.blog.isPrivate;
+
+        // search if there is a local copy of the file already
         NSString *pathForFile;
+        CGSize mediaOriginalSize = CGSizeMake([media.width floatValue], [media.height floatValue]);
+        CGSize size = requestSize;
+        if (CGSizeEqualToSize(requestSize, CGSizeZero)) {
+            size = mediaOriginalSize;
+        }
+        CGSize availableSize = CGSizeZero;
         if (media.mediaType == MediaTypeImage) {
             pathForFile = media.absoluteThumbnailLocalURL;
+            availableSize = [self sizeOfMediaFileAtPath:pathForFile];
+            if (size.height > availableSize.height && size.width > availableSize.width) {
+                pathForFile = media.absoluteLocalURL;
+                availableSize = [self sizeOfMediaFileAtPath:pathForFile];
+            }
         } else if (media.mediaType == MediaTypeVideo) {
             pathForFile = media.absoluteThumbnailLocalURL;
+            availableSize = [self sizeOfMediaFileAtPath:pathForFile];
         }
-        if (pathForFile && [[NSFileManager defaultManager] fileExistsAtPath:pathForFile isDirectory:nil]) {
+
+        // check if the available local image is equal or larger than the requested size
+        if (availableSize.height >= size.height && availableSize.width >= size.width) {
             [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{
                 UIImage *image = [UIImage imageWithContentsOfFile:pathForFile];
                 if (success) {
+                    if (!CGSizeEqualToSize(image.size, size)){
+                        image = [image resizedImage:size interpolationQuality:kCGInterpolationMedium];
+                    }
                     success(image);
                 }
             }];
             return;
         }
+
+        // No Image available so let's download it
         NSURL *remoteURL = nil;
         if (media.mediaType == MediaTypeVideo) {
             remoteURL = [NSURL URLWithString:media.remoteThumbnailURL];
@@ -495,7 +565,11 @@
             [self.managedObjectContext performBlock:^{
                 NSURL *fileURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:media.filename]
                                                   andExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]];
-                media.absoluteThumbnailLocalURL = [fileURL path];
+                if (CGSizeEqualToSize(size, mediaOriginalSize)) {
+                    media.absoluteLocalURL = [fileURL path];
+                } else {
+                    media.absoluteThumbnailLocalURL = [fileURL path];
+                }
                 [self.managedObjectContext save:nil];
                 [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{                    
                     [image writeToURL:fileURL type:(__bridge NSString*)kUTTypeJPEG compressionQuality:0.9 metadata:nil error:nil];
@@ -701,7 +775,9 @@ static NSString * const MediaDirectory = @"Media";
 {
     media.mediaID =  remoteMedia.mediaID;
     media.remoteURL = [remoteMedia.url absoluteString];
-    media.creationDate = remoteMedia.date;
+    if (remoteMedia.date) {
+        media.creationDate = remoteMedia.date;
+    }
     media.filename = remoteMedia.file;
     [media mediaTypeFromUrl:[remoteMedia extension]];
     media.title = remoteMedia.title;

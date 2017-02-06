@@ -31,7 +31,7 @@ import WordPressShared.WPStyleGuide
         titleLabel.textColor = WPStyleGuide.darkGrey()
         titleLabel.text = NSLocalizedString("Manage", comment: "Button title. Tapping lets the user manage the sites they follow.")
 
-        disclosureIcon.image = Gridicon.iconOfType(.chevronRight, withSize: disclosureIcon.frame.size)
+        disclosureIcon.image = Gridicon.iconOfType(.chevronRight, withSize: disclosureIcon.frame.size).imageFlippedForRightToLeftLayoutDirection()
         disclosureIcon.tintColor = WPStyleGuide.accessoryDefaultTintColor()
 
         imageView.image = Gridicon.iconOfType(.cog)
