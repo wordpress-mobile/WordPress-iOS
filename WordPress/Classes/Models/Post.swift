@@ -153,11 +153,17 @@ class Post: AbstractPost {
     }
 
     func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
-        if let _ = disabledPublicizeConnections?[keyringID]?[Constants.publicizeIdKey] {
-            disabledPublicizeConnections![keyringID]![Constants.publicizeValueKey] = Constants.publicizeEnabledValue
-        } else {
-            _ = disabledPublicizeConnections?.removeValue(forKey: keyringID)
+        guard var connection = disabledPublicizeConnections?[keyringID] else {
+            return
         }
+
+        guard connection[Constants.publicizeIdKey] != nil else {
+            _ = disabledPublicizeConnections?.removeValue(forKey: keyringID)
+            return
+        }
+
+        connection[Constants.publicizeValueKey] = Constants.publicizeEnabledValue
+        disabledPublicizeConnections?[keyringID] = connection
     }
 
     func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
