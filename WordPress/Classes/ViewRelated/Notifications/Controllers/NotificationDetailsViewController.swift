@@ -17,7 +17,7 @@ import WordPressComStatsiOS
 
 ///
 ///
-protocol NotificationsNavigationDatasource: class {
+protocol NotificationsNavigationDataSource: class {
     func notification(succeeding note: Notification) -> Notification?
     func notification(preceeding note: Notification) -> Notification?
 }
@@ -82,7 +82,7 @@ class NotificationDetailsViewController: UIViewController {
 
     /// Arrows Navigation Datasource
     ///
-    weak var datasource: NotificationsNavigationDatasource?
+    weak var dataSource: NotificationsNavigationDataSource?
 
     /// Notification to-be-displayed
     ///
@@ -1192,7 +1192,7 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
 //
 extension NotificationDetailsViewController {
     @IBAction func previousNotificationWasPressed() {
-        guard let previous = datasource?.notification(preceeding: note) else {
+        guard let previous = dataSource?.notification(preceeding: note) else {
             return
         }
 
@@ -1201,7 +1201,7 @@ extension NotificationDetailsViewController {
     }
 
     @IBAction func nextNotificationWasPressed() {
-        guard let next = datasource?.notification(succeeding: note) else {
+        guard let next = dataSource?.notification(succeeding: note) else {
             return
         }
 
@@ -1210,11 +1210,11 @@ extension NotificationDetailsViewController {
     }
 
     var shouldEnablePreviousButton: Bool {
-        return datasource?.notification(preceeding: note) != nil
+        return dataSource?.notification(preceeding: note) != nil
     }
 
     var shouldEnableNextButton: Bool {
-        return datasource?.notification(succeeding: note) != nil
+        return dataSource?.notification(succeeding: note) != nil
     }
 }
 
