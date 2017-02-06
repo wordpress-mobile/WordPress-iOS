@@ -333,7 +333,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 let postService = PostService(managedObjectContext: context)
                 let page = postService.createDraftPage(for: blog)
                 postViewController = AztecPostViewController(post: page)
+
                 navController = UINavigationController(rootViewController: postViewController)
+                navController.restorationIdentifier = AztecPostViewController.Restoration.navigationIdentifier
             } else {
                 postViewController = EditPageViewController(draftFor: blog)
 
