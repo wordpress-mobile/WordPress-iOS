@@ -8,10 +8,7 @@ import WordPressComStatsiOS
 
 
 /// TODO:
-/// -   Skip Mattcher Notifications? (Details are Broken)
 /// -   Relocate Mark as Read? Navigation Protocol?
-/// -   Back: Dehighlights the wrong notification
-///	-	Notifications Media Downloader: 403 Access
 /// -   Notifications icon should show indicator if the list isn't visible
 
 
