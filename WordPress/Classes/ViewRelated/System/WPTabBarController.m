@@ -706,7 +706,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)updateNotificationBadgeIconPosition
 {
-    CGRect notificationsButtonFrame = [self lastTabBarButtonFrame];
+    CGRect notificationsButtonFrame = [self notificationsButtonFrame];
     CGRect rect = self.notificationBadgeIconView.frame;
     rect.origin.y = WPNotificationBadgeIconVerticalOffsetFromTop;
     rect.origin.x = CGRectGetMidX(notificationsButtonFrame) - WPNotificationBadgeIconHorizontalOffsetFromCenter;
@@ -773,6 +773,29 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return lastButtonRect;
 }
 
+- (CGRect)firstTabBarButtonFrame
+{
+    CGRect firstButtonRect = CGRectInfinite;
+
+    for (UIView *subview in self.tabBar.subviews) {
+        if ([WPTabBarButtonClassname isEqualToString:NSStringFromClass([subview class])]) {
+            if (CGRectGetMaxX(subview.frame) < CGRectGetMaxX(firstButtonRect)) {
+                firstButtonRect = subview.frame;
+            }
+        }
+    }
+
+    return firstButtonRect;
+}
+
+- (CGRect)notificationsButtonFrame
+{
+    if ([self.view userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
+        return [self lastTabBarButtonFrame];
+    } else {
+        return [self firstTabBarButtonFrame];
+    }
+}
 
 #pragma mark - Handling Layout
 
