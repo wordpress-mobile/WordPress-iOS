@@ -972,7 +972,20 @@ private extension NotificationsViewController {
             return nil
         }
 
-        return notifications[targetIndex]
+        func notMatcher(_ note: Notification) -> Bool {
+            return note.kind != .Matcher
+        }
+
+        if delta > 0 {
+            return notifications
+                .suffix(from: targetIndex)
+                .first(where: notMatcher)
+        } else {
+            return notifications
+                .prefix(through: targetIndex)
+                .reversed()
+                .first(where: notMatcher)
+        }
     }
 
     func resetNotifications() {
