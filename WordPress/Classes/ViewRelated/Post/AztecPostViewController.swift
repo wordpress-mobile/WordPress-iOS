@@ -190,6 +190,15 @@ class AztecPostViewController: UIViewController {
         return coordinator
     }()
 
+    fileprivate lazy var mediaProgressView: UIProgressView = {
+        let progressView = UIProgressView(progressViewStyle: .bar)
+        progressView.backgroundColor = WPStyleGuide.wordPressBlue()
+        progressView.progressTintColor = UIColor.white
+        progressView.trackTintColor = WPStyleGuide.wordPressBlue()
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        return progressView
+    }()
+
     /// Maintainer of state for editor - like for post button
     ///
     fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
@@ -305,6 +314,12 @@ class AztecPostViewController: UIViewController {
             htmlTextView.topAnchor.constraint(equalTo: richTextView.topAnchor),
             htmlTextView.bottomAnchor.constraint(equalTo: richTextView.bottomAnchor),
             ])
+
+        NSLayoutConstraint.activate([
+            mediaProgressView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mediaProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            mediaProgressView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor)
+            ])
     }
 
     func configureNavigationBar() {
@@ -331,6 +346,8 @@ class AztecPostViewController: UIViewController {
         view.addSubview(separatorView)
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
+        mediaProgressView.isHidden = true
+        view.addSubview(mediaProgressView)
     }
 
     func startListeningToNotifications() {
@@ -1145,7 +1162,9 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         richTextView.update(attachment: attachment, message: attributeMessage)
     }
 
-    func refreshProgress() {
+    func refresh(mediaProgressCoordinator: MediaProgressCoordinator, progress: Float) {
+        mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning()
+        mediaProgressView.setProgress(progress, animated: true)
         for (attachmentID, progress) in self.mediaProgressCoordinator.mediaUploading {
             guard let attachment = richTextView.attachment(withId: attachmentID) else {
                 continue
@@ -1276,7 +1295,8 @@ fileprivate extension AztecPostViewController {
 }
 
 protocol MediaProgressCoordinatorDelegate: class {
-    func refreshProgress()
+
+    func refresh(mediaProgressCoordinator: MediaProgressCoordinator, progress: Float)
 }
 
 class MediaProgressCoordinator: NSObject {
@@ -1300,9 +1320,7 @@ class MediaProgressCoordinator: NSObject {
     }
 
     func addToMediaProgress(numberOfItems count: Int) {
-        if let mediaUploadingProgress = self.mediaUploadingProgress,
-            mediaUploadingProgress.isCancelled ||
-                mediaUploadingProgress.completedUnitCount >= mediaUploadingProgress.totalUnitCount {
+        if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning() {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
             self.mediaUploadingProgress = nil
         }
@@ -1339,6 +1357,33 @@ class MediaProgressCoordinator: NSObject {
     }
 
     func refreshMediaProgress() {
-        delegate?.refreshProgress()
+        var value = Float(0)
+        if let progress = mediaUploadingProgress {
+            // make sure the progress value reflects the number of upload finished 100%
+            let fractionOfUploadsCompleted = Float(Float((progress.completedUnitCount + 1))/Float(progress.totalUnitCount))
+            value = min(fractionOfUploadsCompleted, Float(progress.fractionCompleted))
+        }
+        delegate?.refresh(mediaProgressCoordinator:self, progress: value)
+    }
+
+    func isRunning() -> Bool {
+        guard let progress = mediaUploadingProgress else {
+            return false
+        }
+
+        if progress.isCancelled {
+            return false
+        }
+
+        if mediaUploading.isEmpty {
+            return progress.totalUnitCount != progress.completedUnitCount
+        }
+
+        for progress in mediaUploading.values {
+            if !progress.isCancelled && (progress.totalUnitCount != progress.completedUnitCount) {
+                return true
+            }
+        }
+        return false
     }
 }
