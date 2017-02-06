@@ -186,10 +186,10 @@ class AztecPostViewController: UIViewController {
 
     /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
     ///
-    fileprivate var shouldRemovePostOnDiscard = false
+    fileprivate var shouldRemovePostOnDismiss = false
 
 
-    /// Media Library Helper
+    /// Media Library Data Source
     ///
     fileprivate lazy var mediaLibraryDataSource: WPAndDeviceMediaLibraryDataSource = {
         return WPAndDeviceMediaLibraryDataSource(post: self.post)
@@ -220,7 +220,7 @@ class AztecPostViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 
-        self.shouldRemovePostOnDiscard = shouldRemoveOnDismiss(post: post)
+        self.shouldRemovePostOnDismiss = shouldRemoveOnDismiss(post: post)
         addObservers(toPost: post)
     }
 
@@ -1014,7 +1014,7 @@ fileprivate extension AztecPostViewController {
         post = originalPost
         post.deleteRevision()
 
-        if shouldRemovePostOnDiscard {
+        if shouldRemovePostOnDismiss {
             post.remove()
         }
 
