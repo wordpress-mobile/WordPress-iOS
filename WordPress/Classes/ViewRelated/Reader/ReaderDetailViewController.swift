@@ -1100,8 +1100,5 @@ extension ReaderDetailViewController : UIScrollViewDelegate {
 
 }
 
-// Expand this view controller to full screen if possible
-extension ReaderDetailViewController: PrefersFullscreenDisplay {}
-
 // Let's the split view know this vc changes the status bar style.
 extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
