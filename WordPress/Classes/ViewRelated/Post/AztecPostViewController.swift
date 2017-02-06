@@ -1194,7 +1194,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             if progress.fractionCompleted >= 1 {
                 richTextView.update(attachment: attachment, progress: nil)
             } else {
-                richTextView.update(attachment: attachment, progress: progress.fractionCompleted)
+                richTextView.update(attachment: attachment, progress: progress.fractionCompleted, progressColor: WPStyleGuide.wordPressBlue())
             }
         }
     }
