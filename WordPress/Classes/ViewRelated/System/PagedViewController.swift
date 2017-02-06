@@ -157,7 +157,7 @@ extension PagedViewController: UIScrollViewDelegate {
         // Calculate which plan's VC is at the center of the view
         let pageWidth = scrollView.bounds.width
         let centerX = scrollView.contentOffset.x + (pageWidth / 2)
-        let currentPage = Int(floor(centerX / pageWidth))
+        let currentPage = rtlCorrectedPage(Int(floor(centerX / pageWidth)))
 
         // Keep it within bounds
         return currentPage.clamp(min: 0, max: viewControllers.count - 1)
@@ -168,10 +168,18 @@ extension PagedViewController: UIScrollViewDelegate {
         guard viewControllers.indices.contains(page) else { return false }
 
         let pageWidth = view.bounds.width
-        scrollView.setContentOffset(CGPoint(x: CGFloat(page) * pageWidth, y: 0), animated: animated)
+        scrollView.setContentOffset(CGPoint(x: CGFloat(rtlCorrectedPage(page)) * pageWidth, y: 0), animated: animated)
 
         currentIndex = page
 
         return true
+    }
+
+    fileprivate func rtlCorrectedPage(_ page: Int) -> Int {
+        if view.userInterfaceLayoutDirection() == .leftToRight {
+            return page
+        } else {
+            return viewControllers.count - page - 1
+        }
     }
 }
