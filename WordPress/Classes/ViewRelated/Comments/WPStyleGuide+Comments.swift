@@ -81,6 +81,6 @@ extension WPStyleGuide {
         fileprivate static let titleParagraph       = NSMutableParagraphStyle(minLineHeight: titleLineSize,
                                                     maxLineHeight:  titleLineSize,
                                                     lineBreakMode:  .byWordWrapping,
-                                                    alignment:      .left)
+                                                    alignment:      .natural)
     }
 }

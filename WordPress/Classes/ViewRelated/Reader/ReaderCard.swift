@@ -149,6 +149,7 @@ public class ReaderCard: UIView {
         setupAttributionView()
         setupcommentButton()
         setuplikeButton()
+        adjustInsetsForTextDirection()
     }
 
 
@@ -228,6 +229,23 @@ public class ReaderCard: UIView {
 
         menuButton.setImage(tintedIcon, for: .normal)
         menuButton.setImage(highlightIcon, for: .highlighted)
+    }
+
+
+    fileprivate func adjustInsetsForTextDirection() {
+        guard userInterfaceLayoutDirection() == .rightToLeft else {
+            return
+        }
+
+        let buttonsToAdjust: [UIButton] = [
+            visitButton,
+            likeButton,
+            commentButton,
+            shareButton]
+
+        for button in buttonsToAdjust {
+            button.flipInsetsForRightToLeftLayoutDirection()
+        }
     }
 
 

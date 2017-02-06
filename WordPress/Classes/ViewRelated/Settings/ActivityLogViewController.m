@@ -96,7 +96,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
         DDLogFileInfo *logFileInfo = (DDLogFileInfo *)self.logFiles[indexPath.row];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.text = indexPath.row == 0 ? NSLocalizedString(@"Current", @"") : [self.dateFormatter stringFromDate:logFileInfo.creationDate];
-        cell.textLabel.textAlignment = NSTextAlignmentLeft;
+        cell.textLabel.textAlignment = NSTextAlignmentNatural;
         [WPStyleGuide configureTableViewCell:cell];
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
