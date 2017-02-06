@@ -5,7 +5,7 @@ import Reachability
 private func defaultAccountToken() -> String? {
     let context = ContextManager.sharedInstance().mainContext
     let service = AccountService(managedObjectContext: context)
-    guard let account = service?.defaultWordPressComAccount() else {
+    guard let account = service.defaultWordPressComAccount() else {
         return nil
     }
     guard let token = account.authToken, !token.isEmpty else {
@@ -92,7 +92,7 @@ class PingHubManager: NSObject {
     override init() {
         let foreground = (UIApplication.shared.applicationState != .background)
         let authToken = defaultAccountToken()
-        state = State(connected: false, reachable: true, foreground: foreground, authToken: authToken)
+        state = State(connected: false, reachable: reachability.isReachable(), foreground: foreground, authToken: authToken)
         super.init()
 
         guard enabled else {
@@ -181,13 +181,11 @@ fileprivate extension PingHubManager {
     @objc
     func applicationDidEnterBackground() {
         state.foreground = false
-        client?.disconnect()
     }
 
     @objc
     func applicationWillEnterForeground() {
         state.foreground = true
-        client?.connect()
     }
 
     // MARK: reachability
@@ -207,7 +205,11 @@ fileprivate extension PingHubManager {
 // MARK: - Actions
 fileprivate extension PingHubManager {
     func connect() {
+        guard !state.connected else {
+            return
+        }
         state.connected = true
+        DDLogSwift.logInfo("PingHub connecting")
         client?.connect()
     }
 
@@ -220,6 +222,7 @@ fileprivate extension PingHubManager {
 
     func disconnect() {
         delayedRetry?.cancel()
+        DDLogSwift.logInfo("PingHub disconnecting")
         client?.disconnect()
         state.connected = false
     }
@@ -230,6 +233,8 @@ extension PingHubManager: PinghubClientDelegate {
         DDLogSwift.logInfo("PingHub connected")
         delay.reset()
         state.connected = true
+        // Trigger a full sync, since we might have missed notes while PingHub was disconnected
+        NotificationSyncMediator()?.sync()
     }
 
     func pinghubDidDisconnect(_ client: PinghubClient, error: Error?) {

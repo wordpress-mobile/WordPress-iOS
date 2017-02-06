@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import MGSwipeTableCell
 import WordPressComAnalytics
 import WordPress_AppbotX
 import WordPressShared
@@ -226,93 +227,6 @@ class NotificationsViewController: UITableViewController {
         detailsViewController.onSelectedNoteChange = { note in
             self.selectRowForNotification(note: note)
         }
-    }
-}
-
-
-// MARK: - Row Actions
-//
-extension NotificationsViewController {
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        return .delete
-    }
-
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification,
-            let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
-            // Not every single row will have actions: Slight hack so that the UX isn't terrible:
-            //  -   First: Return an Empty UITableViewRowAction
-            //  -   Second: Hide it after a few seconds.
-            //
-            tableView.disableEditionAfterDelay()
-
-            return noopRowActions()
-        }
-
-        // Helpers
-        var actions = [UITableViewRowAction]()
-
-        // Comments: Trash
-        if block.isActionEnabled(.Trash) {
-            let title = NSLocalizedString("Trash", comment: "Trashes a comment")
-
-            let trash = UITableViewRowAction(style: .destructive, title: title, handler: { [weak self] (action, indexPath) in
-                let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
-                    self?.actionsService.deleteCommentWithBlock(block) { success in
-                        onCompletion(success)
-                    }
-                })
-
-                self?.showUndeleteForNoteWithID(note.objectID, request: request)
-
-                self?.tableView.setEditing(false, animated: true)
-            })
-
-            trash.backgroundColor = WPStyleGuide.errorRed()
-            actions.append(trash)
-        }
-
-        // Comments: Moderation Disabled
-        guard block.isActionEnabled(.Approve) else {
-            return actions
-        }
-
-        // Comments: Unapprove
-        if block.isActionOn(.Approve) {
-            let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
-
-            let trash = UITableViewRowAction(style: .normal, title: title, handler: { [weak self] _ in
-                self?.actionsService.unapproveCommentWithBlock(block)
-                self?.tableView.setEditing(false, animated: true)
-            })
-
-            trash.backgroundColor = WPStyleGuide.grey()
-            actions.append(trash)
-
-        // Comments: Approve
-        } else {
-            let title = NSLocalizedString("Approve", comment: "Approves a Comment")
-
-            let trash = UITableViewRowAction(style: .normal, title: title, handler: { [weak self] _ in
-                self?.actionsService.approveCommentWithBlock(block)
-                self?.tableView.setEditing(false, animated: true)
-            })
-
-            trash.backgroundColor = WPStyleGuide.wordPressBlue()
-            actions.append(trash)
-        }
-
-        return actions
-    }
-
-    fileprivate func noopRowActions() -> [UITableViewRowAction] {
-        let noop = UITableViewRowAction(style: .normal, title: title, handler: { _ in })
-        noop.backgroundColor = UIColor.clear
-        return [noop]
     }
 }
 
@@ -702,7 +616,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
-        cell.forceCustomCellMargins = true
         cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
         cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
         cell.read                   = note.read
@@ -715,6 +628,28 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         }
 
         cell.downloadIconWithURL(note.iconURL)
+
+        configureCellActions(cell, note: note)
+    }
+
+    func configureCellActions(_ cell: NoteTableViewCell, note: Notification) {
+        // Let "Mark as Read" expand
+        let leadingExpansionButton = 0
+
+        // Don't expand "Trash"
+        let trailingExpansionButton = -1
+
+        if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .leftToRight {
+            cell.leftButtons = leadingButtons(note: note)
+            cell.leftExpansion.buttonIndex = leadingExpansionButton
+            cell.rightButtons = trailingButtons(note: note)
+            cell.rightExpansion.buttonIndex = trailingExpansionButton
+        } else {
+            cell.rightButtons = leadingButtons(note: note)
+            cell.rightExpansion.buttonIndex = trailingExpansionButton
+            cell.leftButtons = trailingButtons(note: note)
+            cell.leftExpansion.buttonIndex = trailingExpansionButton
+        }
     }
 
     func sectionNameKeyPath() -> String {
@@ -740,6 +675,79 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 
         // Update NoResults View
         showNoResultsViewIfNeeded()
+    }
+}
+
+
+
+// MARK: - Actions
+//
+
+
+private extension NotificationsViewController {
+    func leadingButtons(note: Notification) -> [MGSwipeButton] {
+        guard !note.read else {
+            return []
+        }
+
+        return [
+            MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"), backgroundColor: WPStyleGuide.greyDarken20(), callback: { _ in
+                NotificationSyncMediator()?.markAsRead(note)
+                return true
+            })
+        ]
+    }
+
+    func trailingButtons(note: Notification) -> [MGSwipeButton] {
+        var rightButtons = [MGSwipeButton]()
+
+        guard let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
+            return []
+        }
+
+        // Comments: Trash
+        if block.isActionEnabled(.Trash) {
+            let trashButton = MGSwipeButton(title: NSLocalizedString("Trash", comment: "Trashes a comment"), backgroundColor: WPStyleGuide.errorRed(), callback: { [weak self] _ in
+                let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
+                    self?.actionsService.deleteCommentWithBlock(block) { success in
+                        onCompletion(success)
+                    }
+                })
+
+                self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                return true
+            })
+            rightButtons.append(trashButton)
+        }
+
+        guard block.isActionEnabled(.Approve) else {
+            return rightButtons
+        }
+
+        // Comments: Unapprove
+        if block.isActionOn(.Approve) {
+            let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
+
+            let unapproveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.grey(), callback: { [weak self] _ in
+                self?.actionsService.unapproveCommentWithBlock(block)
+                return true
+            })
+
+            rightButtons.append(unapproveButton)
+
+            // Comments: Approve
+        } else {
+            let title = NSLocalizedString("Approve", comment: "Approves a Comment")
+
+            let approveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue(), callback: { [weak self] _ in
+                self?.actionsService.approveCommentWithBlock(block)
+                return true
+            })
+
+            rightButtons.append(approveButton)
+        }
+
+        return rightButtons
     }
 }
 
@@ -863,7 +871,7 @@ extension NotificationsViewController: WPNoResultsViewDelegate {
 //
 private extension NotificationsViewController {
     func showRatingViewIfApplicable() {
-        guard AppRatingUtility.shouldPromptForAppReview(forSection: Ratings.section) else {
+        guard AppRatingUtility.shared.shouldPromptForAppReview(section: Ratings.section) else {
             return
         }
 
@@ -1000,35 +1008,33 @@ private extension NotificationsViewController {
 extension NotificationsViewController: ABXPromptViewDelegate {
     func appbotPromptForReview() {
         WPAnalytics.track(.appReviewsRatedApp)
-        AppRatingUtility.ratedCurrentVersion()
+        AppRatingUtility.shared.ratedCurrentVersion()
         hideRatingView()
 
-        if let targetURL = URL(string: Ratings.reviewURL!) {
-            UIApplication.shared.openURL(targetURL)
-        }
+        UIApplication.shared.openURL(Ratings.reviewURL)
     }
 
     func appbotPromptForFeedback() {
         WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
         ABXFeedbackViewController.show(from: self, placeholder: nil, delegate: nil)
-        AppRatingUtility.gaveFeedbackForCurrentVersion()
+        AppRatingUtility.shared.gaveFeedbackForCurrentVersion()
         hideRatingView()
     }
 
     func appbotPromptClose() {
         WPAnalytics.track(.appReviewsDeclinedToRateApp)
-        AppRatingUtility.declinedToRateCurrentVersion()
+        AppRatingUtility.shared.declinedToRateCurrentVersion()
         hideRatingView()
     }
 
     func appbotPromptLiked() {
         WPAnalytics.track(.appReviewsLikedApp)
-        AppRatingUtility.likedCurrentVersion()
+        AppRatingUtility.shared.likedCurrentVersion()
     }
 
     func appbotPromptDidntLike() {
         WPAnalytics.track(.appReviewsDidntLikeApp)
-        AppRatingUtility.dislikedCurrentVersion()
+        AppRatingUtility.shared.dislikedCurrentVersion()
     }
 
     func abxFeedbackDidSendFeedback () {
@@ -1043,8 +1049,7 @@ extension NotificationsViewController: ABXPromptViewDelegate {
 
 // MARK: - Details Navigation Datasource
 //
-extension NotificationsViewController: NotificationsNavigationDatasource
-{
+extension NotificationsViewController: NotificationsNavigationDatasource {
     func notification(succeeding note: Notification) -> Notification? {
         return loadNotification(near: note, withIndexDelta: -1)
     }
@@ -1139,6 +1144,6 @@ private extension NotificationsViewController {
         static let heightZero = CGFloat(0)
         static let animationDelay = TimeInterval(0.5)
         static let fontSize = CGFloat(15.0)
-        static let reviewURL = AppRatingUtility.appReviewUrl()
+        static let reviewURL = AppRatingUtility.shared.appReviewUrl
     }
 }

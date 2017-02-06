@@ -42,13 +42,13 @@ class DomainsServiceTests: XCTestCase {
     fileprivate func makeTestBlog() -> Blog {
         let accountService = AccountService(managedObjectContext: context)
         let blogService = BlogService(managedObjectContext: context)
-        let account = accountService?.createOrUpdateAccount(withUsername: "user", authToken: "token")
-        let blog = blogService?.createBlog(with: account!)
-        blog?.xmlrpc = "http://dotcom1.wordpress.com/xmlrpc.php"
-        blog?.url = "http://dotcom1.wordpress.com/"
-        blog?.dotComID = testSiteID as NSNumber?
+        let account = accountService.createOrUpdateAccount(withUsername: "user", authToken: "token")
+        let blog = blogService.createBlog(with: account)
+        blog.xmlrpc = "http://dotcom1.wordpress.com/xmlrpc.php"
+        blog.url = "http://dotcom1.wordpress.com/"
+        blog.dotComID = testSiteID as NSNumber?
 
-        return blog!
+        return blog
     }
 
 

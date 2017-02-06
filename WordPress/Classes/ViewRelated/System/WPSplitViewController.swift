@@ -102,6 +102,13 @@ class WPSplitViewController: UISplitViewController {
         return .lightContent
     }
 
+    override var childViewControllerForStatusBarStyle: UIViewController? {
+        if let _ = topDetailViewController as? DefinesVariableStatusBarStyle {
+            return topDetailViewController
+        }
+        return nil
+    }
+
     var overrideTraitCollection: UITraitCollection? = nil
 
     override var traitCollection: UITraitCollection {
@@ -233,9 +240,7 @@ class WPSplitViewController: UISplitViewController {
         if dimmingView.superview != nil {
             dimmingView.frame = view.frame
 
-            let attribute = view.semanticContentAttribute
-            let layoutDirection = UIView.userInterfaceLayoutDirection(for: attribute)
-            if layoutDirection == .leftToRight {
+            if view.userInterfaceLayoutDirection() == .leftToRight {
                 dimmingView.frame.origin.x = primaryColumnWidth
             } else {
                 dimmingView.frame.size.width = dimmingView.frame.size.width - primaryColumnWidth
@@ -273,16 +278,20 @@ class WPSplitViewController: UISplitViewController {
     /// first view controller after the last `WPSplitViewControllerDetailProvider`
     /// in the primary stack if the split view is collapsed).
     var rootDetailViewController: UIViewController? {
-        if isCollapsed {
-            if let navigationController = viewControllers.first as? UINavigationController,
-                let index = navigationController.viewControllers.lastIndex(where: { $0 is WPSplitViewControllerDetailProvider }), navigationController.viewControllers.count > index+1  {
-                return navigationController.viewControllers[index+1]
-            }
-        } else {
+        guard isCollapsed else {
             return (viewControllers.last as? UINavigationController)?.viewControllers.first
         }
 
-        return nil
+        guard let navigationController = viewControllers.first as? UINavigationController else {
+            return nil
+        }
+
+        guard let index = navigationController.viewControllers.lastIndex(where: { $0 is WPSplitViewControllerDetailProvider }),
+            navigationController.viewControllers.count > index + 1 else {
+            return nil
+        }
+
+        return navigationController.viewControllers[index + 1]
     }
 
     /** Sets the primary view controller of the split view as specified, and
@@ -593,6 +602,10 @@ extension UIViewController {
 /// delegate method detects that there are no fullscreen view controllers left
 /// in the stack.
 protocol PrefersFullscreenDisplay: class {}
+
+/// Used to indicate whether a view controller varies its preferred status bar style.
+///
+protocol DefinesVariableStatusBarStyle: class {}
 
 // MARK: - WPSplitViewControllerDetailProvider Protocol
 

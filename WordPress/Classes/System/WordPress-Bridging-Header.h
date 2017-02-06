@@ -11,7 +11,6 @@
 #import "AccountServiceFacade.h"
 #import "AccountServiceRemoteREST.h"
 #import "ApiCredentials.h"
-#import "AppRatingUtility.h"
 
 #import "Blog.h"
 #import "BlogService.h"
@@ -52,7 +51,6 @@
 #import "NSString+Helpers.h"
 #import "NSAttributedString+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
-#import "NSDate+StringFormatting.h"
 #import "NSObject+Helpers.h"
 #import "NSString+Helpers.h"
 #import "NSURL+Util.h"
@@ -71,6 +69,7 @@
 #import "PostPreviewViewController.h"
 #import "PostService.h"
 #import "PostServiceOptions.h"
+#import "PostSettingsViewController.h"
 #import "PrivateSiteURLProtocol.h"
 
 #import "ReachabilityUtils.h"
@@ -118,6 +117,7 @@
 #import "WPAppAnalytics.h"
 #import "WPAsyncBlockOperation.h"
 #import "WPBlogTableViewCell.h"
+#import "WPBlogSelectorButton.h"
 #import "WPLegacyEditPostViewController.h"
 #import "WPError.h"
 #import "WPGUIConstants.h"
@@ -140,6 +140,7 @@
 #import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
 #import "WordPressComServiceRemote.h"
+#import "WPAndDeviceMediaLibraryDataSource.h"
 
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>
@@ -153,6 +154,7 @@
 
 #import <WPMediaPicker/WPMediaPicker.h>
 
+#import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPStyleGuide.h>

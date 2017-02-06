@@ -175,23 +175,23 @@ extension WPStyleGuide {
         }
 
         public static func blockSeparatorColorForComment(isApproved approved: Bool) -> UIColor {
-            return (approved ? blockSeparatorColor : blockUnapprovedSideColor)!
+            return (approved ? blockSeparatorColor : blockUnapprovedSideColor)
         }
 
         public static func blockBackgroundColorForComment(isApproved approved: Bool) -> UIColor {
-            return approved ? blockApprovedBgColor : blockUnapprovedBgColor!
+            return approved ? blockApprovedBgColor : blockUnapprovedBgColor
         }
 
         public static func blockTitleColorForComment(isApproved approved: Bool) -> UIColor {
-            return (approved ? blockTextColor : blockUnapprovedTextColor)!
+            return (approved ? blockTextColor : blockUnapprovedTextColor)
         }
 
         public static func blockDetailsColorForComment(isApproved approved: Bool) -> UIColor {
-            return approved ? blockQuotedColor : blockUnapprovedSideColor!
+            return approved ? blockQuotedColor : blockUnapprovedSideColor
         }
 
         public static func blockLinkColorForComment(isApproved approved: Bool) -> UIColor {
-            return (approved ? blockLinkColor : blockUnapprovedLinkColor)!
+            return (approved ? blockLinkColor : blockUnapprovedLinkColor)
         }
 
         // Filters Helpers
@@ -221,22 +221,22 @@ extension WPStyleGuide {
 
         // ParagraphStyle's
         fileprivate static let sectionHeaderParagraph   = NSMutableParagraphStyle(
-            minLineHeight: headerLineSize, maxLineHeight: headerLineSize, lineBreakMode: .byWordWrapping, alignment: .left
+            minLineHeight: headerLineSize, maxLineHeight: headerLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
         fileprivate static let subjectParagraph         = NSMutableParagraphStyle(
-            minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .byWordWrapping, alignment: .left
+            minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
         fileprivate static let snippetParagraph         = NSMutableParagraphStyle(
-            minLineHeight: snippetLineSize, maxLineHeight: snippetLineSize, lineBreakMode: .byWordWrapping, alignment: .left
+            minLineHeight: snippetLineSize, maxLineHeight: snippetLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
         fileprivate static let headerTitleParagraph     = NSMutableParagraphStyle(
-            minLineHeight: blockLineSize, lineBreakMode: .byTruncatingTail, alignment: .left
+            minLineHeight: blockLineSize, lineBreakMode: .byTruncatingTail, alignment: .natural
         )
         fileprivate static let blockParagraph           = NSMutableParagraphStyle(
-            minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .left
+            minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
         fileprivate static let contentBlockParagraph     = NSMutableParagraphStyle(
-            minLineHeight: contentBlockLineSize, lineBreakMode: .byWordWrapping, alignment: .left
+            minLineHeight: contentBlockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
         )
         fileprivate static let badgeParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .center

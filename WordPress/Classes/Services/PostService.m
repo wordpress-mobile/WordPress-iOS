@@ -185,6 +185,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
                 NSPredicate *unattachedMediaPredicate = [NSPredicate predicateWithFormat:@"postID <= 0"];
                 NSArray<Media *> *mediaToUpdate = [[postInContext.media filteredSetUsingPredicate:unattachedMediaPredicate] allObjects];
+                for (Media *media in mediaToUpdate) {
+                    media.postID = post.postID;
+                }
 
                 MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.managedObjectContext];
                 [mediaService updateMultipleMedia:mediaToUpdate overallSuccess:^{
@@ -599,6 +602,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         remotePost.tags = [postPost.tags componentsSeparatedByString:@","];
         remotePost.categories = [self remoteCategoriesForPost:postPost];
         remotePost.metadata = [self remoteMetadataForPost:postPost];
+        remotePost.excerpt = post.mt_excerpt;
     }
 
     remotePost.isFeaturedImageChanged = post.isFeaturedImageChanged;

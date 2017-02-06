@@ -1,4 +1,5 @@
 #import "NavBarTitleDropdownButton.h"
+#import "WordPress-Swift.h"
 #import <WordPressShared/WPFontManager.h>
 
 @implementation NavBarTitleDropdownButton
@@ -17,6 +18,7 @@
 {
     [super awakeFromNib];
     [self setupStyle];
+    [self adjustInsetsForTextDirection];
 }
 
 - (void)setupStyle
@@ -28,17 +30,33 @@
     [self setImage:[UIImage imageNamed:@"icon-nav-chevron-highlight"] forState:UIControlStateHighlighted];
 }
 
+- (void)adjustInsetsForTextDirection
+{
+    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
+        return;
+    }
+    [self flipInsetsForRightToLeftLayoutDirection];
+}
+
 - (CGRect)imageRectForContentRect:(CGRect)contentRect
 {
     CGRect frame = [super imageRectForContentRect:contentRect];
-    frame.origin.x = CGRectGetMaxX(contentRect) - CGRectGetWidth(frame) -  self.imageEdgeInsets.right + self.imageEdgeInsets.left;
+    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
+        frame.origin.x = CGRectGetMaxX(contentRect) - CGRectGetWidth(frame) -  self.imageEdgeInsets.right + self.imageEdgeInsets.left;
+    } else {
+        frame.origin.x = CGRectGetMinX(contentRect);
+    }
     return frame;
 }
 
 - (CGRect)titleRectForContentRect:(CGRect)contentRect
 {
     CGRect frame = [super titleRectForContentRect:contentRect];
-    frame.origin.x = CGRectGetMinX(frame) - CGRectGetWidth([self imageRectForContentRect:contentRect]);
+    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
+        frame.origin.x = CGRectGetMinX(frame) - CGRectGetWidth([self imageRectForContentRect:contentRect]);
+    } else {
+        frame.origin.x = CGRectGetMaxX([self imageRectForContentRect:contentRect]) + self.imageEdgeInsets.right - self.imageEdgeInsets.left;
+    }
     return frame;
 }
 

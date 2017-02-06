@@ -557,7 +557,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
     cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
-    cell.textLabel.textAlignment = NSTextAlignmentLeft;
+    cell.textLabel.textAlignment = NSTextAlignmentNatural;
     cell.imageView.tintColor = [WPStyleGuide greyLighten10];
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
@@ -573,7 +573,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if (row.showsSelectionState) {
         self.restorableSelectedIndexPath = indexPath;
-    } else {
+    } else if (![self splitViewControllerIsHorizontallyCompact]) {
         // Reselect the previous row
         [tableView selectRowAtIndexPath:self.restorableSelectedIndexPath
                                animated:YES

@@ -449,13 +449,17 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 -(BOOL)supportsSharing
 {
-    return ([self supportsPublicize] || [self supportsShareButtons]) && [self isAdmin];
+    return [self supportsPublicize] || [self supportsShareButtons];
 }
 
 - (BOOL)supportsPublicize
 {
-    // Publicize is only supported via REST, and for admins
+    // Publicize is only supported via REST
     if (![self supports:BlogFeatureWPComRESTAPI]) {
+        return NO;
+    }
+
+    if (![self isPublishingPostsAllowed]) {
         return NO;
     }
 
@@ -472,7 +476,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 - (BOOL)supportsShareButtons
 {
     // Share Button settings are only supported via REST, and for admins
-    if (![self supports:BlogFeatureWPComRESTAPI]) {
+    if (![self isAdmin] || ![self supports:BlogFeatureWPComRESTAPI]) {
         return NO;
     }
 

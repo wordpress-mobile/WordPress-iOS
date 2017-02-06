@@ -310,14 +310,30 @@ class PostTests: XCTestCase {
 
     func testThatHasLocalChangesWorks() {
         let original = newTestPost()
-        let revision = original.createRevision() as! Post
+        var revision = original.createRevision() as! Post
 
         XCTAssertFalse(original.hasLocalChanges())
+        XCTAssertFalse(revision.hasLocalChanges())
+
+        revision.tags = "Ahoi"
+        XCTAssertTrue(revision.hasLocalChanges())
+
+        original.deleteRevision()
+        original.tags = "ioha"
+        revision = original.createRevision() as! Post
+
+        XCTAssertFalse(revision.hasLocalChanges())
 
         revision.tags = "Ahoi"
         XCTAssertTrue(revision.hasLocalChanges())
 
         revision.tags = original.tags
+        XCTAssertFalse(revision.hasLocalChanges())
+
+        revision.mt_excerpt = "Say cheese"
+        XCTAssertTrue(revision.hasLocalChanges())
+
+        revision.mt_excerpt = original.mt_excerpt
         XCTAssertFalse(revision.hasLocalChanges())
     }
 }

@@ -145,6 +145,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         setupAttributionView()
         setupCommentActionButton()
         setupLikeActionButton()
+        adjustInsetsForTextDirection()
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -217,6 +218,21 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         menuButton.setImage(highlightIcon, for: .highlighted)
     }
 
+    fileprivate func adjustInsetsForTextDirection() {
+        guard userInterfaceLayoutDirection() == .rightToLeft else {
+            return
+        }
+
+        let buttonsToAdjust: [UIButton] = [
+            visitButton,
+            likeActionButton,
+            commentActionButton,
+            shareButton]
+        for button in buttonsToAdjust {
+            button.flipInsetsForRightToLeftLayoutDirection()
+        }
+    }
+
     /**
         Applies the default styles to the cell's subviews
     */
@@ -287,7 +303,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
         blogNameLabel.text = arr.joined(separator: ", ")
 
-        let byline = (contentProvider?.dateForDisplay() as NSDate?)?.shortString() ?? ""
+        let byline = (contentProvider?.dateForDisplay() as NSDate?)?.mediumString() ?? ""
         bylineLabel.text = byline
     }
 

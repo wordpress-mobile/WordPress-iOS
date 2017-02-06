@@ -378,15 +378,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        // Ascending only for scheduled posts/pages.
-        let ascending = filterSettings.currentPostListFilter().filterType == .scheduled
-
         let sortDescriptorLocal = NSSortDescriptor(key: "metaIsLocal", ascending: false)
         let sortDescriptorImmediately = NSSortDescriptor(key: "metaPublishImmediately", ascending: false)
-        if filterSettings.currentPostListFilter().filterType == .draft {
-            return [sortDescriptorLocal, NSSortDescriptor(key: "dateModified", ascending: ascending)]
-        }
-        let sortDescriptorDate = NSSortDescriptor(key: "date_created_gmt", ascending: ascending)
+        let sortDescriptorDate = dateSortDescriptor()
         return [sortDescriptorLocal, sortDescriptorImmediately, sortDescriptorDate]
     }
 
@@ -600,7 +594,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         options.number = numberOfPostsPerSync() as NSNumber!
         options.purgesLocalSync = true
 
-        postService?.syncPosts(
+        postService.syncPosts(
             ofType: postTypeToSync() as String,
             with: options,
             for: blog,
@@ -653,7 +647,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         options.number = numberOfPostsPerSync() as NSNumber!
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber!
 
-        postService?.syncPosts(
+        postService.syncPosts(
             ofType: postTypeToSync() as String,
             with: options,
             for: blog,
@@ -668,15 +662,13 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                 }
 
                 success?(filter.hasMore)
-            }, failure: {[weak self] (error) -> () in
+            }, failure: { (error) -> () in
 
-                guard let strongSelf = self,
-                    let error = error else {
-                        return
+                guard let error = error else {
+                    return
                 }
 
                 failure?(error as NSError)
-                strongSelf.handleSyncFailure(error as NSError)
             })
     }
 
@@ -723,6 +715,29 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         WPError.showAlert(withTitle: NSLocalizedString("Unable to Connect", comment: ""), message: message, withSupportButton: true) { _ in
             self.present(navController, animated: true, completion: nil)
         }
+    }
+
+    // MARK: - Sorting
+
+    enum SortField: String {
+        case dateCreated = "date_created_gmt"
+        case dateModified = "dateModified"
+    }
+
+    func sortField() -> SortField {
+        if filterSettings.currentPostListFilter().filterType == .draft {
+            return .dateModified
+        } else {
+            return .dateCreated
+        }
+    }
+
+    func dateSortDescriptor() -> NSSortDescriptor {
+        let field = sortField()
+        // Ascending only for scheduled posts/pages.
+        let ascending = filterSettings.currentPostListFilter().filterType == .scheduled
+
+        return NSSortDescriptor(key: field.rawValue, ascending: ascending)
     }
 
     // MARK: - Searching
@@ -789,7 +804,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         options.purgesLocalSync = false
         options.search = searchText
 
-        postService?.syncPosts(
+        postService.syncPosts(
             ofType: postTypeToSync() as String,
             with: options,
             for: blog,
@@ -807,13 +822,13 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
 
         apost.status = PostStatusPublish
-        if let date = apost.dateCreated(), date == (Date() as NSDate).laterDate(date) {
-            apost.setDateCreated(Date())
+        if let date = apost.dateCreated, date == (Date() as NSDate).laterDate(date) {
+            apost.dateCreated = Date()
         }
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService?.uploadPost(apost, success: nil) { [weak self] (error: Error?) in
+        postService.uploadPost(apost, success: nil) { [weak self] (error: Error?) in
 
             let error = error as? NSError
             guard let strongSelf = self else {
@@ -833,11 +848,14 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func viewPost(_ apost: AbstractPost) {
         WPAnalytics.track(.postListViewAction, withProperties: propertiesForAnalytics())
 
-        let post = apost.hasRevision() ? apost.revision : apost
+        let post = apost.hasRevision() ? apost.revision! : apost
 
         let controller = PostPreviewViewController(post: post)
-        controller?.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(controller!, animated: true)
+        // NOTE: We'll set the title to match the title of the View action button.
+        // If the button title changes we should also update the title here.
+        controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     func deletePost(_ apost: AbstractPost) {
@@ -858,7 +876,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService?.trashPost(apost, success: nil) { [weak self] (error) in
+        postService.trashPost(apost, success: nil) { [weak self] (error) in
 
             guard let strongSelf = self else {
                 return
@@ -892,7 +910,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService?.restore(apost, success: { [weak self] in
+        postService.restore(apost, success: { [weak self] in
 
             guard let strongSelf = self else {
                 return
