@@ -63,12 +63,12 @@
                     <rect key="frame" x="238" y="1" width="74" height="73"/>
                     <subviews>
                         <view contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Chg-FI-dzN" userLabel="Spacer View">
-                            <rect key="frame" x="0.0" y="0.0" width="74" height="23"/>
+                            <rect key="frame" x="0.0" y="0.0" width="74" height="21"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8sg-79-AsR" userLabel="Reply Button">
-                            <rect key="frame" x="0.0" y="23" width="74" height="50"/>
-                            <inset key="contentEdgeInsets" minX="10" minY="14" maxX="10" maxY="14"/>
+                            <rect key="frame" x="0.0" y="21" width="74" height="52"/>
+                            <inset key="contentEdgeInsets" minX="10" minY="15" maxX="10" maxY="15"/>
                             <state key="normal" title="Button">
                                 <color key="titleColor" red="0.034757062790000001" green="0.31522077320000003" blue="0.81491315360000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -82,10 +82,10 @@
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="t6q-rh-Bzh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="1" id="7Fj-lO-ua1"/>
+                <constraint firstItem="t6q-rh-Bzh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="750" constant="1" id="7Fj-lO-ua1"/>
                 <constraint firstItem="VGi-tL-gUc" firstAttribute="top" secondItem="t6q-rh-Bzh" secondAttribute="top" id="Dmg-aG-rgT"/>
                 <constraint firstItem="VGi-tL-gUc" firstAttribute="bottom" secondItem="t6q-rh-Bzh" secondAttribute="bottom" id="FXH-pq-kmV"/>
-                <constraint firstAttribute="bottom" secondItem="t6q-rh-Bzh" secondAttribute="bottom" constant="1" id="Ocu-Gu-5Xw"/>
+                <constraint firstAttribute="bottom" secondItem="t6q-rh-Bzh" secondAttribute="bottom" priority="750" constant="1" id="Ocu-Gu-5Xw"/>
                 <constraint firstAttribute="trailing" secondItem="IdZ-UI-Nwf" secondAttribute="trailing" id="Vdg-Rq-CX8"/>
                 <constraint firstAttribute="bottom" secondItem="IdZ-UI-Nwf" secondAttribute="bottom" id="bXl-m5-l4L"/>
                 <constraint firstItem="IdZ-UI-Nwf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eHd-2o-Jp5"/>
