@@ -32,6 +32,12 @@ class AztecPostViewController: UIViewController {
         tv.keyboardDismissMode = .interactive
         tv.mediaDelegate = self
 
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
+        recognizer.cancelsTouchesInView = false
+        recognizer.delegate = self
+
+        tv.addGestureRecognizer(recognizer)
+
         return tv
     }()
 
@@ -1107,10 +1113,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 return
             }
             guard let media = media, error == nil else {
-                if let error = error {
-                    DispatchQueue.main.async {
-                        strongSelf.displayError(error, onAttachment: attachment)
-                    }
+                DispatchQueue.main.async {
+                    strongSelf.handleError(error as? NSError, onAttachment: attachment)
                 }
                 return
             }
@@ -1121,7 +1125,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 }
             }, failure: { (error) in
                 DispatchQueue.main.async {
-                    strongSelf.displayError(error, onAttachment: attachment)
+                    strongSelf.handleError(error as NSError, onAttachment: attachment)
                 }
             })
             if let progress = uploadProgress {
@@ -1144,7 +1148,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 let localURL = URL(string: mediaLocalPath) {
                 tempMediaURL = localURL
             }
-            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL  , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
 
             let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
             var uploadProgress: Progress?
@@ -1160,7 +1164,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                     return
                 }
                 DispatchQueue.main.async {
-                    strongSelf.displayError(error, onAttachment: attachment)
+                    strongSelf.handleError(error as NSError, onAttachment: attachment)
                 }
             })
             if let progress = uploadProgress {
@@ -1169,10 +1173,14 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         }
     }
 
-    func displayError(_ error: Error?, onAttachment attachment: Aztec.TextAttachment) {
+    func handleError(_ error: NSError?, onAttachment attachment: Aztec.TextAttachment) {
         var message = NSLocalizedString("Failed to insert media on your post. Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
         if let error = error {
-            message = error.localizedDescription
+            if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
+                //remove media
+            } else {
+                message = error.localizedDescription
+            }
         }
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -1197,6 +1205,44 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 richTextView.update(attachment: attachment, progress: progress.fractionCompleted, progressColor: WPStyleGuide.wordPressBlue())
             }
         }
+    }
+
+    func displayActions(forAttachment attachment: TextAttachment, position: CGPoint) {
+        let mediaID = attachment.identifier
+
+        guard let mediaProgress = mediaProgressCoordinator.mediaUploading[mediaID] else {
+
+            return
+        }
+
+        let title: String = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        let message: String? = nil
+        let alertController = UIAlertController(title: title, message:message, preferredStyle: .actionSheet)
+        alertController.addActionWithTitle(NSLocalizedString("Dismiss", comment: "User action to dismiss media options."),
+                                           style: .cancel,
+                                           handler: { (action) in
+        })
+        // Is upload still going?
+        if (mediaProgress.completedUnitCount < mediaProgress.totalUnitCount) {
+            alertController.addActionWithTitle(NSLocalizedString("Stop Upload", comment: "User action to stop upload."),
+                                               style: .destructive,
+                                               handler: { (action) in
+                                                mediaProgress.cancel()
+            })
+        } else {
+            alertController.addActionWithTitle(NSLocalizedString("Remove Media", comment: "User action to remove media."),
+                                               style: .destructive,
+                                               handler: { (action) in
+                                                mediaProgress.cancel()
+            })
+        }
+
+        alertController.title = title
+        alertController.message = message
+        alertController.popoverPresentationController?.sourceView = richTextView
+        alertController.popoverPresentationController?.sourceRect = CGRect(origin: richTextView.center, size: CGSize(width: 1, height: 1))
+        alertController.popoverPresentationController?.permittedArrowDirections = .up
+        present(alertController, animated:true, completion: nil)
     }
 }
 
@@ -1276,6 +1322,21 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             }
         }
 
+    }
+}
+
+extension AztecPostViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+
+    func richTextViewWasPressed(_ recognizer: UIGestureRecognizer) {
+        let locationInTextView = recognizer.location(in: richTextView)
+        guard let attachment = richTextView.attachmentAtPoint(locationInTextView) else {
+            return
+        }
+
+        displayActions(forAttachment: attachment, position: locationInTextView)
     }
 }
 
