@@ -664,7 +664,6 @@
 		E166FA1D1BB0658600374B5B /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA1C1BB0658600374B5B /* Person.swift */; };
 		E166FA221BB1359E00374B5B /* PeopleRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA211BB1359E00374B5B /* PeopleRemote.swift */; };
 		E16AB92E14D978240047A2E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
-		E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E16AB93214D978240047A2E5 /* InfoPlist.strings */; };
 		E1703A5C1C28006B00C57FA0 /* UITableViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1703A5B1C28006B00C57FA0 /* UITableViewController+Helpers.swift */; };
 		E1718EA01CAD0800006F9E2D /* HockeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E1718E9F1CAD0800006F9E2D /* HockeyManager.m */; };
 		E174F6E6172A73960004F23A /* WPAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E105E9CE1726955600C0D9E7 /* WPAccount.m */; };
@@ -1503,7 +1502,6 @@
 		855408891A6F107D00DDBD79 /* app-review-prompt-global-disable.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "app-review-prompt-global-disable.json"; sourceTree = "<group>"; };
 		8574469C1BF154E1007FDB5F /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8574469D1BF154E2007FDB5F /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
-		8574469E1BF154E3007FDB5F /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		859F761B18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAnalyticsTrackerMixpanelInstructionsForStat.h; sourceTree = "<group>"; };
 		859F761C18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalyticsTrackerMixpanelInstructionsForStat.m; sourceTree = "<group>"; };
 		85AD6AEA173CCF9E002CB896 /* WPNUXPrimaryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXPrimaryButton.h; sourceTree = "<group>"; };
@@ -1586,6 +1584,16 @@
 		9363113D19F9DE0700B0C739 /* WordPress 23.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 23.xcdatamodel"; sourceTree = "<group>"; };
 		9363113E19FA996700B0C739 /* AccountServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountServiceTests.swift; sourceTree = "<group>"; };
 		93652B811A006C96006A4C47 /* WordPress 24.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 24.xcdatamodel"; sourceTree = "<group>"; };
+		9371F25C1E4A207F00BF26A0 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9371F25D1E4A208E00BF26A0 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9371F25E1E4A20A100BF26A0 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9371F25F1E4A20B000BF26A0 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9371F2601E4A20D700BF26A0 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		9371F2611E4A211900BF26A0 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9371F2621E4A211900BF26A0 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9371F2641E4A213300BF26A0 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9371F2651E4A213300BF26A0 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9371F2691E4A23A200BF26A0 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/Localizable.strings; sourceTree = "<group>"; };
 		937D9A0C19F83744007B9D5F /* WordPress 22.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 22.xcdatamodel"; sourceTree = "<group>"; };
 		937D9A0E19F83812007B9D5F /* WordPress-22-23.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-22-23.xcmappingmodel"; sourceTree = "<group>"; };
 		937D9A1019F838C2007B9D5F /* AccountToAccount22to23.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountToAccount22to23.swift; sourceTree = "<group>"; };
@@ -1607,7 +1615,6 @@
 		93D6D6461924FDAD00A4F44A /* TaxonomyServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemote.h; sourceTree = "<group>"; };
 		93D86B931C63EC31003D8E3E /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		93D86B941C63EC31003D8E3E /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		93D86B951C63EC31003D8E3E /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		93DEB88019E5BF7100F9546D /* TodayExtensionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayExtensionService.h; sourceTree = "<group>"; };
 		93DEB88119E5BF7100F9546D /* TodayExtensionService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayExtensionService.m; sourceTree = "<group>"; };
 		93E5283A19A7741A003A1A9C /* WordPressTodayWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressTodayWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1640,10 +1647,8 @@
 		A0E293F00E21027E00C6919C /* WPAddPostCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WPAddPostCategoryViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A20971B419B0BC390058F395 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		A20971B519B0BC390058F395 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		A20971B619B0BC390058F395 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		A20971B719B0BC570058F395 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		A20971B819B0BC570058F395 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		A20971B919B0BC580058F395 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		A284044518BFE7F300D982B6 /* WordPress 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 15.xcdatamodel"; sourceTree = "<group>"; };
 		A28F6FD119B61ACA00AADE55 /* SwiftPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SwiftPlayground.playground; sourceTree = "<group>"; };
 		A2DC5B181953451B009584C3 /* WPNUXHelpBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXHelpBadgeLabel.h; sourceTree = "<group>"; };
@@ -1986,8 +1991,6 @@
 		E15644F01CE0E56600D96E64 /* FeatureItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureItemCell.swift; sourceTree = "<group>"; };
 		E15644F21CE0E5A500D96E64 /* PlanDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailViewModel.swift; sourceTree = "<group>"; };
 		E157D5DF1C690A6C00F04FB9 /* ImmuTableTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImmuTableTestUtils.swift; sourceTree = "<group>"; };
-		E16228C91B0C7A090048DA91 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E16228CB1B0C7A1B0048DA91 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E16273E01B2ACEB600088AF7 /* BlogToBlog32to33.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogToBlog32to33.swift; sourceTree = "<group>"; };
 		E16273E21B2AD89A00088AF7 /* MIGRATIONS.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = MIGRATIONS.md; path = ../MIGRATIONS.md; sourceTree = "<group>"; };
 		E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleCellViewModel.swift; sourceTree = "<group>"; };
@@ -1999,7 +2002,6 @@
 		E167745D1377F26D00EE44DD /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E16AB92A14D978240047A2E5 /* WordPressTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordPressTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E16AB93114D978240047A2E5 /* WordPressTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WordPressTest-Info.plist"; sourceTree = "<group>"; };
-		E16AB93314D978240047A2E5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E16AB93814D978240047A2E5 /* WordPressTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressTest-Prefix.pch"; sourceTree = "<group>"; };
 		E1703A5B1C28006B00C57FA0 /* UITableViewController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewController+Helpers.swift"; sourceTree = "<group>"; };
 		E1718E9E1CAD0800006F9E2D /* HockeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HockeyManager.h; sourceTree = "<group>"; };
@@ -2022,7 +2024,6 @@
 		E18EE95019349EC300B0A40C /* ReaderTopicServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopicServiceRemote.m; sourceTree = "<group>"; };
 		E1939C671B15B4D2001AFEF7 /* WordPress 30.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 30.xcdatamodel"; sourceTree = "<group>"; };
 		E19853331755E461001CC6D5 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E19853341755E4B3001CC6D5 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E19A10C91B010AA0006192B0 /* WPURLRequestTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPURLRequestTest.m; sourceTree = "<group>"; };
 		E19BF8F913CC69E7004753FE /* WordPress 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 3.xcdatamodel"; sourceTree = "<group>"; };
 		E19DF740141F7BDD000002F3 /* libz.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -2378,7 +2379,6 @@
 		FFE69A281B1BFDE50073C2EB /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFE69A291B1BFE050073C2EB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFE69A2A1B1BFE200073C2EB /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		FFE69A2B1B1BFE620073C2EB /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFF96F8F19EBE81F00DFC821 /* CommentsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsTests.m; sourceTree = "<group>"; };
 		FFF96F9119EBE81F00DFC821 /* LoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginTests.m; sourceTree = "<group>"; };
 		FFF96F9219EBE81F00DFC821 /* MeTabTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeTabTests.m; sourceTree = "<group>"; };
@@ -4733,7 +4733,6 @@
 			children = (
 				93E9050219E6F240005513C9 /* WordPressTest-Bridging-Header.h */,
 				E16AB93114D978240047A2E5 /* WordPressTest-Info.plist */,
-				E16AB93214D978240047A2E5 /* InfoPlist.strings */,
 				E16AB93814D978240047A2E5 /* WordPressTest-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -5327,19 +5326,25 @@
 				pl,
 				ru,
 				da,
-				ko,
 				th,
 				fr,
 				nl,
 				de,
 				"en-GB",
 				"pt-BR",
-				ar,
 				hr,
 				he,
 				cy,
 				"en-CA",
 				Base,
+				cs,
+				ro,
+				sq,
+				is,
+				"en-AU",
+				ko,
+				ar,
+				bg,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
@@ -5477,7 +5482,6 @@
 				E15027621E03E51500B847E3 /* notes-action-push.json in Resources */,
 				B5BC25A21CFCBA5400F7D8B9 /* people-validate-invitation-success.json in Resources */,
 				B5A6BB8C1BF4DF38002F6A96 /* rest-site-settings.json in Resources */,
-				E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */,
 				FFB8DCA01CE320C700D4D1B7 /* WordPressComRestApiMedia.json in Resources */,
 				93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */,
 				93CD939319099BE70049096E /* authtoken.json in Resources */,
@@ -6691,7 +6695,6 @@
 				931DF4DF18D09B3900540BDD /* id */,
 				A20971B519B0BC390058F395 /* en-GB */,
 				A20971B819B0BC570058F395 /* pt-BR */,
-				E16228CB1B0C7A1B0048DA91 /* ar */,
 				FFE69A1E1B1BD4F10073C2EB /* es */,
 				FFE69A1F1B1BD6D60073C2EB /* ja */,
 				FFE69A201B1BD79F0073C2EB /* sv */,
@@ -6705,9 +6708,10 @@
 				FFE69A281B1BFDE50073C2EB /* pl */,
 				FFE69A291B1BFE050073C2EB /* ru */,
 				FFE69A2A1B1BFE200073C2EB /* da */,
-				FFE69A2B1B1BFE620073C2EB /* ko */,
 				8574469C1BF154E1007FDB5F /* cy */,
 				93D86B931C63EC31003D8E3E /* en-CA */,
+				9371F2611E4A211900BF26A0 /* ko */,
+				9371F2641E4A213300BF26A0 /* ar */,
 			);
 			name = InfoPlist.strings;
 			path = Resources;
@@ -6721,18 +6725,6 @@
 			name = MainInterface.storyboard;
 			path = WordPressShareExtension/Base.lproj;
 			sourceTree = SOURCE_ROOT;
-		};
-		E16AB93214D978240047A2E5 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E16AB93314D978240047A2E5 /* en */,
-				A20971B619B0BC390058F395 /* en-GB */,
-				A20971B919B0BC580058F395 /* pt-BR */,
-				8574469E1BF154E3007FDB5F /* cy */,
-				93D86B951C63EC31003D8E3E /* en-CA */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
 		};
 		E1D91454134A853D0089019C /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
@@ -6757,13 +6749,19 @@
 				E12F95A71557CA400067A653 /* pl */,
 				E12963A8174654B2002E7744 /* ru */,
 				E19853331755E461001CC6D5 /* da */,
-				E19853341755E4B3001CC6D5 /* ko */,
 				E1E977BC17B0FA9A00AFB867 /* th */,
 				A20971B419B0BC390058F395 /* en-GB */,
 				A20971B719B0BC570058F395 /* pt-BR */,
-				E16228C91B0C7A090048DA91 /* ar */,
 				8574469D1BF154E2007FDB5F /* cy */,
 				93D86B941C63EC31003D8E3E /* en-CA */,
+				9371F25C1E4A207F00BF26A0 /* cs */,
+				9371F25D1E4A208E00BF26A0 /* ro */,
+				9371F25E1E4A20A100BF26A0 /* sq */,
+				9371F25F1E4A20B000BF26A0 /* is */,
+				9371F2601E4A20D700BF26A0 /* en-AU */,
+				9371F2621E4A211900BF26A0 /* ko */,
+				9371F2651E4A213300BF26A0 /* ar */,
+				9371F2691E4A23A200BF26A0 /* bg */,
 			);
 			name = Localizable.strings;
 			path = Resources;
