@@ -211,6 +211,13 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
 - (void)setSelectedMenu:(Menu *)menu
 {
+    if (menu == self.selectedMenuLocation.menu) {
+        /* Ignore, already selected this menu at this point.
+         * Note: we may arrive at this condition after a discard has occurred for
+         * a previously selected menu that was unsaved.
+         */
+        return;
+    }
     Menu *defaultMenu = [Menu defaultMenuForBlog:self.blog];
     if (menu == defaultMenu) {
         /*
