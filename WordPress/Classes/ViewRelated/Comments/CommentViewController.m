@@ -306,7 +306,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     if (cachedHeight.doubleValue) {
         return cachedHeight.doubleValue;
     }
-    return 44.0;
+    return WPTableViewDefaultRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
