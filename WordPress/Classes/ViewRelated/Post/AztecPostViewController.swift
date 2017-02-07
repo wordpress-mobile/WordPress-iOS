@@ -1177,7 +1177,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         var message = NSLocalizedString("Failed to insert media on your post. Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
         if let error = error {
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
-                //remove media
+                return
             } else {
                 message = error.localizedDescription
             }
@@ -1194,7 +1194,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
     func refresh(mediaProgressCoordinator: MediaProgressCoordinator, progress: Float) {
         mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning()
-        mediaProgressView.setProgress(progress, animated: true)
+        mediaProgressView.progress = progress
         for (attachmentID, progress) in self.mediaProgressCoordinator.mediaUploading {
             guard let attachment = richTextView.attachment(withId: attachmentID) else {
                 continue
@@ -1209,12 +1209,6 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
     func displayActions(forAttachment attachment: TextAttachment, position: CGPoint) {
         let mediaID = attachment.identifier
-
-        guard let mediaProgress = mediaProgressCoordinator.mediaUploading[mediaID] else {
-
-            return
-        }
-
         let title: String = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
         let message: String? = nil
         let alertController = UIAlertController(title: title, message:message, preferredStyle: .actionSheet)
@@ -1223,17 +1217,19 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                            handler: { (action) in
         })
         // Is upload still going?
-        if (mediaProgress.completedUnitCount < mediaProgress.totalUnitCount) {
+        if let mediaProgress = mediaProgressCoordinator.mediaUploading[mediaID],
+            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
             alertController.addActionWithTitle(NSLocalizedString("Stop Upload", comment: "User action to stop upload."),
                                                style: .destructive,
                                                handler: { (action) in
                                                 mediaProgress.cancel()
+                                                self.richTextView.remove(attachmentID: mediaID)
             })
         } else {
             alertController.addActionWithTitle(NSLocalizedString("Remove Media", comment: "User action to remove media."),
                                                style: .destructive,
                                                handler: { (action) in
-                                                mediaProgress.cancel()
+                                                self.richTextView.remove(attachmentID: mediaID)
             })
         }
 
@@ -1291,6 +1287,13 @@ extension AztecPostViewController: TextViewMediaDelegate {
         let imageDownloader = AFImageDownloader.defaultInstance()
         for receipt in activeMediaRequests {
             imageDownloader.cancelTask(for: receipt)
+        }
+    }
+
+    func textView(_ textView: TextView, deletedAttachmentWithID attachmentID: String) {
+        if let mediaProgress = mediaProgressCoordinator.mediaUploading[attachmentID],
+            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
+            mediaProgress.cancel()
         }
     }
 }
