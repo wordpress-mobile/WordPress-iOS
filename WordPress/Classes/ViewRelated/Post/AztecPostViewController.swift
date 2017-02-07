@@ -1216,6 +1216,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                            style: .cancel,
                                            handler: { (action) in
         })
+
+        alertController.addActionWithTitle(NSLocalizedString("Details", comment: "User action to edit media details."),
+                                           style: .default,
+                                           handler: { (action) in
+                                            self.displayDetails(forAttachment: attachment)
+        })
         // Is upload still going?
         if let mediaProgress = mediaProgressCoordinator.mediaUploading[mediaID],
             mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
@@ -1255,6 +1261,15 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         alertController.popoverPresentationController?.sourceRect = CGRect(origin: richTextView.center, size: CGSize(width: 1, height: 1))
         alertController.popoverPresentationController?.permittedArrowDirections = .up
         present(alertController, animated:true, completion: nil)
+    }
+
+    func displayDetails(forAttachment attachment: TextAttachment) {
+
+        let controller = AztecAttachmentViewController()
+
+        let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = .formSheet
+        present(navController, animated: true, completion: nil)
     }
 }
 
