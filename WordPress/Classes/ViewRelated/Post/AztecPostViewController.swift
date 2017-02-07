@@ -1178,9 +1178,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         if let error = error {
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
                 return
-            } else {
-                message = error.localizedDescription
             }
+            message = error.localizedDescription
         }
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -1210,8 +1209,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     func displayActions(forAttachment attachment: TextAttachment, position: CGPoint) {
         let mediaID = attachment.identifier
         let title: String = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
-        let message: String? = nil
-        let alertController = UIAlertController(title: title, message:message, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alertController.addActionWithTitle(NSLocalizedString("Dismiss", comment: "User action to dismiss media options."),
                                            style: .cancel,
                                            handler: { (action) in
@@ -1234,7 +1232,6 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         }
 
         alertController.title = title
-        alertController.message = message
         alertController.popoverPresentationController?.sourceView = richTextView
         alertController.popoverPresentationController?.sourceRect = CGRect(origin: richTextView.center, size: CGSize(width: 1, height: 1))
         alertController.popoverPresentationController?.permittedArrowDirections = .up
@@ -1334,6 +1331,9 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
     }
 
     func richTextViewWasPressed(_ recognizer: UIGestureRecognizer) {
+        guard recognizer.state == .began else {
+            return
+        }
         let locationInTextView = recognizer.location(in: richTextView)
         guard let attachment = richTextView.attachmentAtPoint(locationInTextView) else {
             return
