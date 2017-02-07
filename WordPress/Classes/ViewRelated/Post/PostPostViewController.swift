@@ -130,7 +130,7 @@ class PostPostViewController: UIViewController {
         }
         self.post = post
 
-        titleLabel.text = post.titleForDisplay().stripHtmlTags()
+        titleLabel.text = post.titleForDisplay().strippingHTML()
 
         if post.isScheduled() {
             let format = NSLocalizedString("Scheduled for %@ on", comment: "Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for.")
