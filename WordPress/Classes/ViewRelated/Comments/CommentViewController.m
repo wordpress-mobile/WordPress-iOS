@@ -280,7 +280,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.estimatedRowHeights setObject:[NSNumber numberWithDouble:cell.frame.size.height] forKey:indexPath];
+    [self.estimatedRowHeights setObject:@(cell.frame.size.height) forKey:indexPath];
 }
 
 #pragma mark - Table view delegate
