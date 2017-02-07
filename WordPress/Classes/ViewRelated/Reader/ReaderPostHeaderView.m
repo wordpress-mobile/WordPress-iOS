@@ -14,7 +14,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
 @property (nonatomic, strong) UIButton *disclosureButton;
-@property (nonatomic, strong) UITapGestureRecognizer *tapRegoznier;
+@property (nonatomic, strong) UITapGestureRecognizer *tapRecognizer;
 
 @end
 
@@ -157,7 +157,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
     tapGesture.numberOfTapsRequired = 1;
 
     [self addGestureRecognizer:tapGesture];
-    self.tapRegoznier = tapGesture;
+    self.tapRecognizer = tapGesture;
 }
 
 #pragma mark - Public Methods
