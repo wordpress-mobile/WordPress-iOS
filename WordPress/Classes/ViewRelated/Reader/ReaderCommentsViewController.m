@@ -849,7 +849,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.estimatedRowHeights setObject:[NSNumber numberWithDouble:cell.frame.size.height] forKey:indexPath];
+    [self.estimatedRowHeights setObject:@(cell.frame.size.height) forKey:indexPath];
 
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self.tableViewHandler numberOfSectionsInTableView:tableView]) &&
