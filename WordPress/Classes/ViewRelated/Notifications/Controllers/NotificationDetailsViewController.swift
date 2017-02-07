@@ -269,12 +269,12 @@ extension NotificationDetailsViewController {
                                          target: nil,
                                          action: nil)
 
-        let previousButton = UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft),
+        let previousButton = UIBarButtonItem(image: Gridicon.iconOfType(.arrowDown),
                                              style: .plain,
                                              target: self,
                                              action: #selector(previousNotificationWasPressed))
 
-        let nextButton = UIBarButtonItem(image: Gridicon.iconOfType(.chevronRight),
+        let nextButton = UIBarButtonItem(image: Gridicon.iconOfType(.arrowUp),
                                          style: .plain,
                                          target: self,
                                          action: #selector(nextNotificationWasPressed))
