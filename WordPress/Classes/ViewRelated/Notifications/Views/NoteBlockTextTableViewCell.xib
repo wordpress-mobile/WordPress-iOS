@@ -19,17 +19,15 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hE4-fp-yCe" customClass="RichTextView" customModule="WordPress">
-                        <rect key="frame" x="15" y="4" width="290" height="35"/>
+                        <rect key="frame" x="15" y="8" width="290" height="25"/>
                         <color key="backgroundColor" red="0.90245449542999268" green="0.91623926162719727" blue="0.93599998950958252" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="centerX" secondItem="hE4-fp-yCe" secondAttribute="centerX" id="5Jk-hd-uYv"/>
-                    <constraint firstItem="hE4-fp-yCe" firstAttribute="top" secondItem="viy-Fi-ur6" secondAttribute="top" constant="4" id="NKT-QG-MST"/>
-                    <constraint firstAttribute="bottom" secondItem="hE4-fp-yCe" secondAttribute="bottom" constant="4" id="PRW-Vw-tNv"/>
+                    <constraint firstItem="hE4-fp-yCe" firstAttribute="top" secondItem="viy-Fi-ur6" secondAttribute="topMargin" constant="-3" id="NKT-QG-MST"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="hE4-fp-yCe" secondAttribute="bottom" id="PRW-Vw-tNv"/>
                     <constraint firstAttribute="trailingMargin" secondItem="hE4-fp-yCe" secondAttribute="trailing" id="dkA-7C-ajm"/>
                     <constraint firstItem="hE4-fp-yCe" firstAttribute="leading" secondItem="viy-Fi-ur6" secondAttribute="leadingMargin" id="hYV-Xw-F9X"/>
-                    <constraint firstAttribute="centerY" secondItem="hE4-fp-yCe" secondAttribute="centerY" id="w5K-iF-hcS"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
