@@ -1108,11 +1108,11 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         var uploadProgress: Progress?
         mediaService.uploadMedia(media, progress: &uploadProgress, success: {[weak self]() in
-            guard let strongSelf = self else {
+            guard let strongSelf = self, let remoteURL = URL(string:media.remoteURL) else {
                 return
             }
             DispatchQueue.main.async {
-                strongSelf.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
+                strongSelf.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: remoteURL)
             }
         }, failure: { [weak self](error) in
             guard let strongSelf = self else {
