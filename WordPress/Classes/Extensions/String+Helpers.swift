@@ -27,7 +27,6 @@ extension String {
         copy.remove(at: index)
         return copy
     }
-
 }
 
 // MARK: - Prefix removal

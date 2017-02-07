@@ -18,7 +18,7 @@ class MediaProgressCoordinatorTest: XCTestCase {
     func testAddToMediaProgress() {
         let totalItems = 10
 
-        mediaProgressCoordinator.addToMediaProgress(numberOfItems: totalItems)
+        mediaProgressCoordinator.track(numberOfItems: totalItems)
         XCTAssertNotNil(mediaProgressCoordinator.mediaUploadingProgress, "Progress should exist")
 
         XCTAssertTrue(mediaProgressCoordinator.mediaUploadingProgress!.totalUnitCount == Int64(totalItems), "There should a total number of 10 items")
@@ -27,7 +27,7 @@ class MediaProgressCoordinatorTest: XCTestCase {
 
         for index in 1...totalItems {
             let progress = Progress.discreteProgress(totalUnitCount: 1)
-            mediaProgressCoordinator.track(progress: progress, ofMediaID: "/(index)")
+            mediaProgressCoordinator.track(progress: progress, ofObject:index , withMediaID: "/(index)")
             progress.completedUnitCount = 1
             XCTAssertTrue(mediaProgressCoordinator.mediaUploadingProgress!.completedUnitCount == Int64(index))
         }
@@ -37,13 +37,13 @@ class MediaProgressCoordinatorTest: XCTestCase {
 
     func testMediaProgressThatFails() {
 
-        mediaProgressCoordinator.addToMediaProgress(numberOfItems: 1)
+        mediaProgressCoordinator.track(numberOfItems: 1)
         XCTAssertNotNil(mediaProgressCoordinator.mediaUploadingProgress, "Progress should exist")
 
         XCTAssertTrue(mediaProgressCoordinator.mediaUploadingProgress!.totalUnitCount == Int64(1), "There should 1 item")
 
         let progress = Progress.discreteProgress(totalUnitCount: 1)
-        mediaProgressCoordinator.track(progress: progress, ofMediaID: "1")
+        mediaProgressCoordinator.track(progress: progress, ofObject:1 , withMediaID: "/(index)")
 
         XCTAssertTrue(mediaProgressCoordinator.isRunning())
         // simulate a failed request
@@ -57,13 +57,13 @@ class MediaProgressCoordinatorTest: XCTestCase {
 
     func testMediaProgressThatIsCanceled() {
 
-        mediaProgressCoordinator.addToMediaProgress(numberOfItems: 1)
+        mediaProgressCoordinator.track(numberOfItems: 1)
         XCTAssertNotNil(mediaProgressCoordinator.mediaUploadingProgress, "Progress should exist")
 
         XCTAssertTrue(mediaProgressCoordinator.mediaUploadingProgress!.totalUnitCount == Int64(1), "There should 1 item")
 
         let progress = Progress.discreteProgress(totalUnitCount: 1)
-        mediaProgressCoordinator.track(progress: progress, ofMediaID: "1")
+        mediaProgressCoordinator.track(progress: progress, ofObject:1 , withMediaID: "/(index)")
 
         XCTAssertTrue(mediaProgressCoordinator.isRunning())
 
