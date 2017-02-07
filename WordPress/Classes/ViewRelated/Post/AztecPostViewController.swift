@@ -1186,7 +1186,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                         NSForegroundColorAttributeName: UIColor.darkGray,
                                         NSShadowAttributeName: shadow]
         let attributeMessage = NSAttributedString(string: message, attributes: attributes)
-        richTextView.update(attachment: attachment, message: attributeMessage)
+        attachment.message = attributeMessage
+        richTextView.refreshLayoutFor(attachment: attachment)
     }
 
     func refresh(mediaProgressCoordinator: MediaProgressCoordinator, progress: Float) {
@@ -1197,10 +1198,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 continue
             }
             if progress.fractionCompleted >= 1 {
-                richTextView.update(attachment: attachment, progress: nil)
+                attachment.progress = nil
             } else {
-                richTextView.update(attachment: attachment, progress: progress.fractionCompleted, progressColor: WPStyleGuide.wordPressBlue())
+                attachment.progress = progress.fractionCompleted
+                attachment.progressColor = WPStyleGuide.wordPressBlue()
             }
+            richTextView.refreshLayoutFor(attachment: attachment)
         }
     }
 
@@ -1236,8 +1239,9 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                     //retry upload
                                                     if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
-                                                        self.richTextView.update(attachment: attachment, message: nil)
-                                                        self.richTextView.update(attachment: attachment, progress: 0)
+                                                        attachment.message = nil
+                                                        attachment.progress = 0
+                                                        self.richTextView.refreshLayoutFor(attachment: attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
                                                         self.upload(media: media, mediaID: mediaID)
                                                     }
