@@ -1169,20 +1169,22 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 
     func handleError(_ error: NSError?, onAttachment attachment: Aztec.TextAttachment) {
-        var message = NSLocalizedString("Failed to insert media on your post. Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
+        let message = NSLocalizedString("Failed to insert media on your post.\n Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
         if let error = error {
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
                 return
             }
-            message = error.localizedDescription
             mediaProgressCoordinator.attach(error: error, toMediaID: attachment.identifier)
         }
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        let attributes: [String:Any] = [NSFontAttributeName: Assets.defaultRegularFont,
+        let shadow = NSShadow()
+        shadow.shadowColor = UIColor(white: 0, alpha: 0.6)
+        let attributes: [String:Any] = [NSFontAttributeName: Assets.defaultSemiBoldFont,
                                         NSParagraphStyleAttributeName: paragraphStyle,
-                                        NSForegroundColorAttributeName: UIColor.darkGray]
+                                        NSForegroundColorAttributeName: UIColor.darkGray,
+                                        NSShadowAttributeName: shadow]
         let attributeMessage = NSAttributedString(string: message, attributes: attributes)
         richTextView.update(attachment: attachment, message: attributeMessage)
     }
