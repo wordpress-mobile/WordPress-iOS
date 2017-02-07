@@ -27,13 +27,6 @@ extension String {
         copy.remove(at: index)
         return copy
     }
-
-    func stripHtmlTags() -> String {
-        let data = self.data(using: String.Encoding.utf8)!
-        guard let html = try? NSAttributedString(data: data, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType], documentAttributes: nil) else {return self}
-        return html.string
-    }
-
 }
 
 // MARK: - Prefix removal

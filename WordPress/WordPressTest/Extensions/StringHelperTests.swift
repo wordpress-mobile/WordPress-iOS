@@ -20,12 +20,6 @@ class StringHelperTests: XCTestCase {
         XCTAssert(trimmedString == sourceString.trim())
     }
 
-    func testStripHtmlTags() {
-        let strippedHtmlString = "And here?"
-        let sourceString = "And <em>here?</em>"
-        XCTAssert(strippedHtmlString == sourceString.stripHtmlTags())
-    }
-
     func testRemovePrefix() {
         let string = "X-Post: This is a test"
         XCTAssertEqual("This is a test", string.removingPrefix("X-Post: "))
