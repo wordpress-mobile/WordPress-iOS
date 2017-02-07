@@ -213,9 +213,16 @@ class NotificationsViewController: UITableViewController {
             return
         }
 
+        detailsViewController.dataSource = self
         detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { request in
             self.showUndeleteForNoteWithID(note.objectID, request: request)
+        }
+        detailsViewController.onSelectedNoteChange = { note in
+            self.selectRowForNotification(note: note)
+            if !note.read {
+                NotificationSyncMediator()?.markAsRead(note)
+            }
         }
     }
 }
@@ -947,6 +954,36 @@ private extension NotificationsViewController {
         return helper.firstObject(matchingPredicate: predicate)
     }
 
+    func loadNotification(near note: Notification, withIndexDelta delta: Int) -> Notification? {
+        guard let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+            return nil
+        }
+
+        guard let noteIndex = notifications.index(of: note) else {
+            return nil
+        }
+
+        let targetIndex = noteIndex + delta
+        guard targetIndex >= 0 && targetIndex < notifications.count else {
+            return nil
+        }
+
+        func notMatcher(_ note: Notification) -> Bool {
+            return note.kind != .Matcher
+        }
+
+        if delta > 0 {
+            return notifications
+                .suffix(from: targetIndex)
+                .first(where: notMatcher)
+        } else {
+            return notifications
+                .prefix(through: targetIndex)
+                .reversed()
+                .first(where: notMatcher)
+        }
+    }
+
     func resetNotifications() {
         do {
             let helper = CoreDataHelper<Notification>(context: mainContext)
@@ -963,6 +1000,13 @@ private extension NotificationsViewController {
 
     func resetApplicationBadge() {
         UIApplication.shared.applicationIconBadgeNumber = 0
+    }
+
+    func selectRowForNotification(note: Notification) {
+        guard let targetIndexPath = tableViewHandler.resultsController.indexPath(forObject: note) else {
+            return
+        }
+        tableView.selectRow(at: targetIndexPath, animated: false, scrollPosition: .middle)
     }
 }
 
@@ -1011,6 +1055,18 @@ extension NotificationsViewController: ABXPromptViewDelegate {
     }
 }
 
+
+// MARK: - Details Navigation Datasource
+//
+extension NotificationsViewController: NotificationsNavigationDataSource {
+    func notification(succeeding note: Notification) -> Notification? {
+        return loadNotification(near: note, withIndexDelta: -1)
+    }
+
+    func notification(preceding note: Notification) -> Notification? {
+        return loadNotification(near: note, withIndexDelta: +1)
+    }
+}
 
 
 // MARK: - Private Properties
