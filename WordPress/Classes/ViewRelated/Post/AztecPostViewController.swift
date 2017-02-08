@@ -259,6 +259,9 @@ class AztecPostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // TODO: Fix the warnings triggered by this one!
+        WPFontManager.loadMerriweatherFontFamily()
+
         createRevisionOfPost()
 
         configureNavigationBar()
