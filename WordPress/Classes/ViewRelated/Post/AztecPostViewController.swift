@@ -1278,7 +1278,7 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 
 
     func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: TextAttachment) {
-        richTextView.refreshLayoutFor(attachment: changedAttachment)
+        richTextView.update(attachment: changedAttachment, alignment: changedAttachment.alignment, size: changedAttachment.size, url: changedAttachment.url!)
     }
 }
 
