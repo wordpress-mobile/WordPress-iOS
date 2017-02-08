@@ -311,7 +311,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         }
 
         ReaderDetailViewController *vc = [ReaderDetailViewController controllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID];
-        [self.navigationController pushFullscreenViewController:vc animated:YES];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
