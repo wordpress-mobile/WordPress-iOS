@@ -469,10 +469,11 @@ class AztecPostViewController: UIViewController {
 // MARK: - Actions
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
-        print("If this were working, it would be \(postEditorStateContext.publishVerbText)")
+        publishPost()
+    }
 
-        // TODO: Implement publishing ;)
-        // Don't forget to set postEditorStateContext.updated(isBeingPublished: true) during publishing
+    @IBAction func secondaryPublishButtonTapped() {
+        publishPost(secondaryPublishTapped: true)
     }
 
     @IBAction func closeWasPressed() {
@@ -541,6 +542,13 @@ private extension AztecPostViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
+        if postEditorStateContext.isSecondaryPublishButtonShown,
+            let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
+            alert.addActionWithTitle(buttonTitle, style: .destructive) { _ in
+
+            }
+        }
+
         let switchModeTitle = (mode == .richText) ? MoreSheetAlert.htmlTitle : MoreSheetAlert.richTitle
         alert.addDefaultActionWithTitle(switchModeTitle) { _ in
             self.mode.toggle()
@@ -588,7 +596,7 @@ private extension AztecPostViewController {
 
 
 
-// MARK: - Publish Button Methods
+// MARK: - PostEditorStateContextDelegate & support methods
 extension AztecPostViewController: PostEditorStateContextDelegate {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(AbstractPost.status) {
@@ -1077,6 +1085,18 @@ fileprivate extension AztecPostViewController {
 
     func shouldRemoveOnDismiss(post: AbstractPost) -> Bool {
         return post.isRevision() && post.hasLocalChanges() || post.hasNeverAttemptedToUpload()
+    }
+
+    fileprivate func publishPost(secondaryPublishTapped: Bool = false) {
+        print("If this were working, it would be \(postEditorStateContext.publishVerbText)")
+
+        let managedObjectContext = ContextManager.sharedInstance().mainContext
+        let postService = PostService(managedObjectContext: managedObjectContext)
+        postService.uploadPost(post, success: { uploadedPost in
+
+        }) { error in
+
+        }
     }
 }
 

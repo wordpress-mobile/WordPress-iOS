@@ -199,6 +199,12 @@ public class PostEditorStateContext {
         return editorState.action
     }
 
+    /// Should the publish button be enabled given the current state
+    ///
+    var isPublishButtonEnabled: Bool {
+        return publishActionAllowed
+    }
+
     /// Returns appropriate Publish button text for the current action
     /// e.g. Publish, Schedule, Update, Save
     ///
@@ -220,14 +226,20 @@ public class PostEditorStateContext {
     }
 
     // TODO: Replace with a method to bring label and such back for secondary publish button
-//    var isSecondaryPublishButtonShown: Bool {
-//        return editorState.isSecondaryPublishButtonShown(context: self)
-//    }
+    var isSecondaryPublishButtonShown: Bool {
+        return editorState.action.secondaryPublishAction != nil
+    }
 
-    /// Should the publish button be enabled given the current state
-    ///
-    var isPublishButtonEnabled: Bool {
-        return publishActionAllowed
+    var secondaryPublishButtonAction: PostEditorAction? {
+        return editorState.action.secondaryPublishAction
+    }
+
+    var secondaryPublishButtonText: String? {
+        return editorState.action.secondaryPublishAction?.publishActionLabel
+    }
+
+    var secondaryPublishVerbText: String? {
+        return editorState.action.secondaryPublishAction?.publishingActionLabel
     }
 
     // TODO: Add isDirty to the state context for enabling/disabling the button
