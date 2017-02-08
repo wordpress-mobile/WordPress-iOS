@@ -56,6 +56,10 @@ class NotificationsViewController: UITableViewController {
     ///
     fileprivate var notificationIdsBeingDeleted = Set<NSManagedObjectID>()
 
+    /// Notifications that were unread when the list was loaded.
+    ///
+    fileprivate var unreadNotificationIds = Set<NSManagedObjectID>()
+
 
 
     // MARK: - View Lifecycle
@@ -488,6 +492,42 @@ private extension NotificationsViewController {
 
 
 
+// MARK: - Unread notifications caching
+//
+private extension NotificationsViewController {
+    /// Updates the cached list of unread notifications, and optionally reloads the results controller.
+    ///
+    func refreshUnreadNotifications(reloadingResultsController: Bool = true) {
+        guard let notes = tableViewHandler.resultsController.fetchedObjects as? [Notification] else {
+            return
+        }
+
+        let previous = unreadNotificationIds
+
+        // This is additive because we don't want to remove anything
+        // from the list unless we explicitly call
+        // clearUnreadNotifications()
+        notes.lazy.filter({ !$0.read }).forEach { note in
+            unreadNotificationIds.insert(note.objectID)
+        }
+        if previous != unreadNotificationIds && reloadingResultsController {
+            reloadResultsController()
+        }
+    }
+
+    /// Empties the cached list of unread notifications.
+    ///
+    func clearUnreadNotifications() {
+        let shouldReload = !unreadNotificationIds.isEmpty
+        unreadNotificationIds.removeAll()
+        if shouldReload {
+            reloadResultsController()
+        }
+    }
+}
+
+
+
 // MARK: - WPTableViewHandler Helpers
 //
 private extension NotificationsViewController {
@@ -507,7 +547,7 @@ private extension NotificationsViewController {
     func reloadResultsController() {
         // Update the Predicate: We can't replace the previous fetchRequest, since it's readonly!
         let fetchRequest = tableViewHandler.resultsController.fetchRequest
-        fetchRequest.predicate = predicateForSelectedFilters()
+        fetchRequest.predicate = predicateForFetchRequest()
 
         /// Refetch + Reload
         tableViewHandler.clearCachedRowHeights()
@@ -555,6 +595,7 @@ extension NotificationsViewController {
 
             DispatchQueue.main.asyncAfter(deadline: delay) { _ in
                 self.refreshControl?.endRefreshing()
+                self.clearUnreadNotifications()
             }
         }
     }
@@ -566,6 +607,12 @@ extension NotificationsViewController {
 //
 extension NotificationsViewController {
     func segmentedControlDidChange(_ sender: UISegmentedControl) {
+        if Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) == .unread {
+            refreshUnreadNotifications(reloadingResultsController: false)
+        } else {
+            clearUnreadNotifications()
+        }
+
         reloadResultsController()
 
         // It's a long way, to the top (if you wanna rock'n roll!)
@@ -590,18 +637,29 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName())
         request.sortDescriptors = [NSSortDescriptor(key: Filter.sortKey, ascending: false)]
-        request.predicate = predicateForSelectedFilters()
+        request.predicate = predicateForFetchRequest()
 
         return request
     }
 
+    func predicateForFetchRequest() -> NSPredicate {
+        let deletedIdsPredicate = NSPredicate(format: "NOT (SELF IN %@)", Array(notificationIdsBeingDeleted))
+        let selectedFilterPredicate = predicateForSelectedFilters()
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [deletedIdsPredicate, selectedFilterPredicate])
+    }
+
     func predicateForSelectedFilters() -> NSPredicate {
-        var format = "NOT (SELF IN %@)"
-        if let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex), let condition = filter.condition {
-            format += " AND \(condition)"
+        guard let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex),
+            let condition = filter.condition else {
+                return NSPredicate(value: true)
         }
 
-        return NSPredicate(format: format, Array(notificationIdsBeingDeleted))
+        var subpredicates: [NSPredicate] = [NSPredicate(format: condition)]
+
+        if filter == .unread {
+            subpredicates.append(NSPredicate(format: "SELF IN %@", Array(unreadNotificationIds)))
+        }
+        return NSCompoundPredicate(orPredicateWithSubpredicates: subpredicates)
     }
 
     func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
@@ -675,6 +733,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
             let isLastRow = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
             cell.showsBottomSeparator = !isLastRow
         }
+
+        refreshUnreadNotifications()
 
         // Update NoResults View
         showNoResultsViewIfNeeded()
