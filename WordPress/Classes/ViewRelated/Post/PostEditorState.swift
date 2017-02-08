@@ -133,6 +133,12 @@ public class PostEditorStateContext {
         }
     }
 
+    fileprivate var isUploadingMedia = false {
+        didSet {
+            updatePublishActionAllowed()
+        }
+    }
+
     /// The default initializer
     ///
     /// - Parameters:
@@ -193,6 +199,10 @@ public class PostEditorStateContext {
         self.isBeingPublished = isBeingPublished
     }
 
+    func update(isUploadingMedia: Bool) {
+        self.isUploadingMedia = isUploadingMedia
+    }
+
     /// Returns the current PostEditorAction state the UI is in
     ///
     var action: PostEditorAction {
@@ -244,7 +254,7 @@ public class PostEditorStateContext {
 
     // TODO: Add isDirty to the state context for enabling/disabling the button
     private func updatePublishActionAllowed() {
-        publishActionAllowed = hasContent && !isBeingPublished
+        publishActionAllowed = hasContent && !isBeingPublished && !isUploadingMedia
     }
 }
 
