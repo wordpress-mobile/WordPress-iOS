@@ -3,9 +3,30 @@ import UIKit
 import WordPressShared
 import Aztec
 
+protocol AztecAttachmentViewControllerDelegate: class {
+
+    func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: TextAttachment)
+
+}
+
 class AztecAttachmentViewController: UITableViewController {
 
+    var attachment: TextAttachment? {
+        didSet {
+            if let attachment = attachment {
+                alignment = attachment.alignment
+                size = attachment.size
+            }
+        }
+    }
+
+    var alignment = TextAttachment.Alignment.none
+    var size = TextAttachment.Size.full
+
     fileprivate var handler: ImmuTableViewHandler!
+
+    weak var delegate: AztecAttachmentViewControllerDelegate?
+
     // MARK: - Initialization
 
     override init(style: UITableViewStyle) {
@@ -52,12 +73,12 @@ class AztecAttachmentViewController: UITableViewController {
 
         let alignmentRow = EditableTextRow(
             title: NSLocalizedString("Alignment", comment: "Image alignment option title."),
-            value: alignTitles[.none]!,
+            value: alignTitles[alignment]!,
             action: displayAlignmentSelector)
 
         let sizeRow = EditableTextRow(
             title: NSLocalizedString("Size", comment: "Image size option title."),
-            value: sizeTitles[.full]!,
+            value: sizeTitles[size]!,
             action: displaySizeSelector)
 
         return ImmuTable(sections: [
@@ -76,30 +97,96 @@ class AztecAttachmentViewController: UITableViewController {
 
     func displayAlignmentSelector(row: ImmuTableRow) {
 
+        let values = alignTitles.map { (key: TextAttachment.Alignment, value: String) -> TextAttachment.Alignment in
+            return key
+        }
+
+        let titles = values.map { (value: TextAttachment.Alignment) -> String in
+            return alignTitles[value]!
+        }
+
+        let currentValue = alignment
+
+        let dict: [String: Any] = [
+            "DefaultValue": alignment,
+            "Title": NSLocalizedString("Alignment", comment:"Title of the screen for choosing an image's alignment."),
+            "Titles": titles,
+            "Values": values,
+            "CurrentValue": currentValue
+        ]
+
+        guard let vc = SettingsSelectionViewController(dictionary: dict) else {
+            return
+        }
+
+        vc.onItemSelected = { (status: Any) in
+            if let newAlignment = status as? TextAttachment.Alignment {
+                self.alignment = newAlignment
+            }
+            vc.dismiss()
+            self.tableView.reloadData()
+        }
+
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     func displaySizeSelector(row: ImmuTableRow) {
+        let values = sizeTitles.map { (key: TextAttachment.Size, value: String) -> TextAttachment.Size in
+            return key
+        }
 
+        let titles = values.map { (value: TextAttachment.Size) -> String in
+            return sizeTitles[value]!
+        }
+
+        let currentValue = size
+
+        let dict: [String: Any] = [
+            "DefaultValue": size,
+            "Title": NSLocalizedString("Image Size", comment: "Title of the screen for choosing an image's size."),
+            "Titles": titles,
+            "Values": values,
+            "CurrentValue": currentValue
+        ]
+
+        guard let vc = SettingsSelectionViewController(dictionary: dict) else {
+            return
+        }
+        vc.onItemSelected = { (status: Any) in
+            // do interesting work here... like updating the value of image meta.
+            if let newSize = status as? TextAttachment.Size {
+                self.size = newSize
+            }
+            vc.dismiss()
+            self.tableView.reloadData()
+        }
+
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     // MARK: - Helper methods
 
     func handleCancelButtonTapped(sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
     func handleDoneButtonTapped(sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+        if let attachment = self.attachment {
+            attachment.alignment = alignment
+            attachment.size = size
+            delegate?.aztecAttachmentViewController(self, changedAttachment: attachment)
+        }
+        dismiss(animated: true, completion: nil)
     }
 
-    fileprivate let alignTitles: [TextAttachment.Alignment: String] = [
+    private let alignTitles: [TextAttachment.Alignment: String] = [
         .left: NSLocalizedString("Left", comment: "Left alignment for an image. Should be the same as in core WP."),
         .center: NSLocalizedString("Center", comment: "Center alignment for an image. Should be the same as in core WP."),
         .right: NSLocalizedString("Right", comment: "Right alignment for an image. Should be the same as in core WP."),
         .none: NSLocalizedString("None", comment: "No alignment for an image (default). Should be the same as in core WP.")
     ]
 
-    fileprivate let sizeTitles: [TextAttachment.Size: String] = [
+    private let sizeTitles: [TextAttachment.Size: String] = [
         .thumbnail: NSLocalizedString("Thumbnail", comment: "Thumbnail image size. Should be the same as in core WP."),
         .medium: NSLocalizedString("Medium", comment: "Medium image size. Should be the same as in core WP."),
         .large: NSLocalizedString("Large", comment: "Large image size. Should be the same as in core WP."),
