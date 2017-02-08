@@ -5,7 +5,6 @@
 #import "StatsViewController.h"
 #import "Blog.h"
 #import "WordPressAppDelegate.h"
-#import "JetpackSettingsViewController.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "BlogService.h"
@@ -89,6 +88,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     
     [self addChildViewController:self.statsVC];
     [self.view addSubview:self.statsVC.view];
+    self.statsVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view pinSubviewToAllEdges:self.statsVC.view];
     [self.statsVC didMoveToParentViewController:self];
 }
 
@@ -146,25 +147,23 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         return;
     }
     self.showingJetpackLogin = YES;
-    JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
-    controller.showFullScreen = NO;
-    __weak JetpackSettingsViewController *safeController = controller;
+    JetpackLoginViewController *controller = [[JetpackLoginViewController alloc] initWithBlog:self.blog];
+    __weak JetpackLoginViewController *safeController = controller;
     [controller setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
-            
             [WPAppAnalytics track:WPAnalyticsStatSignedInToJetpack withBlog:self.blog];
             [WPAppAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen withBlog:self.blog];
-
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
             self.showingJetpackLogin = NO;
-            
             [self initStats];
         }
     }];
 
     [self addChildViewController:controller];
     [self.view addSubview:controller.view];
+    controller.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view pinSubviewToAllEdges:controller.view];
 }
 
 
