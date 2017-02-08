@@ -966,7 +966,13 @@ private extension NotificationsViewController {
     }
 }
 
-
+// MARK: - WPSplitViewControllerDetailProvider
+//
+extension NotificationsViewController: WPSplitViewControllerDetailProvider {
+    func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
+        return UIViewController()
+    }
+}
 
 // MARK: - ABXPromptViewDelegate Methods
 //
