@@ -1266,10 +1266,19 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     func displayDetails(forAttachment attachment: TextAttachment) {
 
         let controller = AztecAttachmentViewController()
-
+        controller.delegate = self
+        controller.attachment = attachment
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
+    }
+}
+
+extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
+
+
+    func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: TextAttachment) {
+        richTextView.refreshLayoutFor(attachment: changedAttachment)
     }
 }
 
