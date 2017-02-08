@@ -511,7 +511,7 @@ private extension NotificationsViewController {
     /// Empties the cached list of unread notifications.
     ///
     func clearUnreadNotifications() {
-        let shouldReload = unreadNotificationIds.isEmpty
+        let shouldReload = !unreadNotificationIds.isEmpty
         unreadNotificationIds.removeAll()
         if shouldReload {
             reloadResultsController()
