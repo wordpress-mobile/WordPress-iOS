@@ -29,10 +29,10 @@
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
                 <view multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="t6q-rh-Bzh" customClass="ReplyBezierView" customModule="WordPress">
-                    <rect key="frame" x="8" y="1" width="230" height="73"/>
+                    <rect key="frame" x="7" y="1" width="231" height="73"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Lf-XI-exE" userLabel="Placeholder">
-                            <rect key="frame" x="8" y="14" width="218" height="45"/>
+                            <rect key="frame" x="8" y="14" width="219" height="45"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -40,7 +40,7 @@
                             <size key="shadowOffset" width="-1" height="-1"/>
                         </label>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfH-NN-dph">
-                            <rect key="frame" x="8" y="14" width="218" height="45"/>
+                            <rect key="frame" x="8" y="14" width="219" height="45"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -90,7 +90,7 @@
                 <constraint firstAttribute="bottom" secondItem="IdZ-UI-Nwf" secondAttribute="bottom" id="bXl-m5-l4L"/>
                 <constraint firstItem="IdZ-UI-Nwf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eHd-2o-Jp5"/>
                 <constraint firstItem="VGi-tL-gUc" firstAttribute="leading" secondItem="t6q-rh-Bzh" secondAttribute="trailing" id="ePB-na-u5a"/>
-                <constraint firstItem="t6q-rh-Bzh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="lsU-Q5-o2N"/>
+                <constraint firstItem="t6q-rh-Bzh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" constant="-1" id="lsU-Q5-o2N"/>
                 <constraint firstAttribute="trailingMargin" secondItem="VGi-tL-gUc" secondAttribute="trailing" id="w8C-10-xAd"/>
                 <constraint firstItem="IdZ-UI-Nwf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xW3-yX-z7r"/>
             </constraints>
