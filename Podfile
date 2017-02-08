@@ -45,13 +45,13 @@ abstract_target 'WordPress_Base' do
     # WordPress components
     # --------------------
     pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.2'
-    pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :tag => '0.4'
+    pod 'Gridicons', '0.4'
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '0.11'
     pod 'WordPress-iOS-Editor', '1.8.1'
     pod 'WordPressCom-Analytics-iOS', '0.1.22'
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => 'e474df16708fdf361560227cf33056ca6453bd07'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => 'dca3831e270851a6f0eaa0118837f96ac9cbd3cb'
     pod 'wpxmlrpc', '~> 0.8'
 
     target :WordPressTest do
