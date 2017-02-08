@@ -423,7 +423,7 @@ extension NotificationsViewController {
         // Display Details
         if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-            navigationController?.pushViewController(readerViewController, animated: true)
+            navigationController?.pushFullscreenViewController(readerViewController, animated: true)
             return
         }
 
