@@ -473,7 +473,15 @@ extension AztecPostViewController {
     }
 
     @IBAction func secondaryPublishButtonTapped() {
-        publishPost(secondaryPublishTapped: true)
+        let publishPostClosure = {
+            self.publishPost(secondaryPublishTapped: true)
+        }
+
+        if presentedViewController != nil {
+            dismiss(animated: true, completion: publishPostClosure)
+        } else {
+            publishPostClosure()
+        }
     }
 
     @IBAction func closeWasPressed() {
@@ -1087,15 +1095,15 @@ fileprivate extension AztecPostViewController {
         return post.isRevision() && post.hasLocalChanges() || post.hasNeverAttemptedToUpload()
     }
 
-    fileprivate func publishPost(secondaryPublishTapped: Bool = false) {
+    fileprivate func publishPost(secondaryPublishTapped: Bool = false, completion: (() -> Void)? = nil) {
         print("If this were working, it would be \(postEditorStateContext.publishVerbText)")
 
         let managedObjectContext = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: managedObjectContext)
         postService.uploadPost(post, success: { uploadedPost in
-
+            completion?()
         }) { error in
-
+            completion?()
         }
     }
 }
