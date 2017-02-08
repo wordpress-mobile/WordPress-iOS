@@ -48,7 +48,7 @@ abstract_target 'WordPress_Base' do
     pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :tag => '0.4'
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
-    pod 'WPMediaPicker', '0.11'
+    pod 'WPMediaPicker', '0.11.1'
     pod 'WordPress-iOS-Editor', '1.8.1'
     pod 'WordPressCom-Analytics-iOS', '0.1.22'
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => 'dca3831e270851a6f0eaa0118837f96ac9cbd3cb'
