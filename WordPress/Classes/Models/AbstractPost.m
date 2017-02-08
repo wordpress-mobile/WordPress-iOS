@@ -204,13 +204,13 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 - (void)cloneFrom:(AbstractPost *)source
 {
     for (NSString *key in [[[source entity] attributesByName] allKeys]) {
-        if ([key isEqualToString:@"permalink"]) {            
-        } else {
+        if (![key isEqualToString:@"permalink"]) {
             [self setValue:[source valueForKey:key] forKey:key];
         }
     }
     for (NSString *key in [[[source entity] relationshipsByName] allKeys]) {
         if ([key isEqualToString:@"original"] || [key isEqualToString:@"revision"]) {
+            continue;
         } else if ([key isEqualToString:@"comments"]) {
             [self setComments:[source comments]];
         } else {
