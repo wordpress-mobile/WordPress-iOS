@@ -246,7 +246,7 @@ import WordPressShared
     ///
     func openPost(_ postID: NSNumber, onBlog blogID: NSNumber) {
         let controller = ReaderDetailViewController.controllerWithPostID(postID, siteID: blogID)
-        navigationController?.pushViewController(controller, animated: true)
+        navigationController?.pushFullscreenViewController(controller, animated: true)
     }
 
 
