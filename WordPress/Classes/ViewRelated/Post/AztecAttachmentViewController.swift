@@ -73,12 +73,12 @@ class AztecAttachmentViewController: UITableViewController {
 
         let alignmentRow = EditableTextRow(
             title: NSLocalizedString("Alignment", comment: "Image alignment option title."),
-            value: alignTitles[alignment]!,
+            value: alignment.localizedString,
             action: displayAlignmentSelector)
 
         let sizeRow = EditableTextRow(
             title: NSLocalizedString("Size", comment: "Image size option title."),
-            value: sizeTitles[size]!,
+            value: size.localizedString,
             action: displaySizeSelector)
 
         return ImmuTable(sections: [
@@ -97,22 +97,20 @@ class AztecAttachmentViewController: UITableViewController {
 
     func displayAlignmentSelector(row: ImmuTableRow) {
 
-        let values = alignTitles.map { (key: TextAttachment.Alignment, value: String) -> TextAttachment.Alignment in
-            return key
-        }
+        let values: [TextAttachment.Alignment] = [.left, .center, .right, .none]
 
-        let titles = values.map { (value: TextAttachment.Alignment) -> String in
-            return alignTitles[value]!
+        let titles = values.map { (value) in
+            return value.localizedString
         }
 
         let currentValue = alignment
 
         let dict: [String: Any] = [
-            "DefaultValue": alignment,
-            "Title": NSLocalizedString("Alignment", comment:"Title of the screen for choosing an image's alignment."),
-            "Titles": titles,
-            "Values": values,
-            "CurrentValue": currentValue
+            SettingsSelectionDefaultValueKey: alignment,
+            SettingsSelectionTitleKey: NSLocalizedString("Alignment", comment:"Title of the screen for choosing an image's alignment."),
+            SettingsSelectionTitlesKey: titles,
+            SettingsSelectionValuesKey: values,
+            SettingsSelectionCurrentValueKey: currentValue
         ]
 
         guard let vc = SettingsSelectionViewController(dictionary: dict) else {
@@ -131,22 +129,20 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     func displaySizeSelector(row: ImmuTableRow) {
-        let values = sizeTitles.map { (key: TextAttachment.Size, value: String) -> TextAttachment.Size in
-            return key
-        }
+        let values: [TextAttachment.Size] = [.thumbnail, .medium, .large, .full]
 
-        let titles = values.map { (value: TextAttachment.Size) -> String in
-            return sizeTitles[value]!
+        let titles = values.map { (value) in
+            return value.localizedString
         }
 
         let currentValue = size
 
         let dict: [String: Any] = [
-            "DefaultValue": size,
-            "Title": NSLocalizedString("Image Size", comment: "Title of the screen for choosing an image's size."),
-            "Titles": titles,
-            "Values": values,
-            "CurrentValue": currentValue
+            SettingsSelectionDefaultValueKey: size,
+            SettingsSelectionTitleKey: NSLocalizedString("Image Size", comment: "Title of the screen for choosing an image's size."),
+            SettingsSelectionTitlesKey: titles,
+            SettingsSelectionValuesKey: values,
+            SettingsSelectionCurrentValueKey: currentValue
         ]
 
         guard let vc = SettingsSelectionViewController(dictionary: dict) else {
@@ -179,17 +175,28 @@ class AztecAttachmentViewController: UITableViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    private let alignTitles: [TextAttachment.Alignment: String] = [
-        .left: NSLocalizedString("Left", comment: "Left alignment for an image. Should be the same as in core WP."),
-        .center: NSLocalizedString("Center", comment: "Center alignment for an image. Should be the same as in core WP."),
-        .right: NSLocalizedString("Right", comment: "Right alignment for an image. Should be the same as in core WP."),
-        .none: NSLocalizedString("None", comment: "No alignment for an image (default). Should be the same as in core WP.")
-    ]
+}
 
-    private let sizeTitles: [TextAttachment.Size: String] = [
-        .thumbnail: NSLocalizedString("Thumbnail", comment: "Thumbnail image size. Should be the same as in core WP."),
-        .medium: NSLocalizedString("Medium", comment: "Medium image size. Should be the same as in core WP."),
-        .large: NSLocalizedString("Large", comment: "Large image size. Should be the same as in core WP."),
-        .full: NSLocalizedString("Full Size", comment: "Full size image. (default). Should be the same as in core WP.")
-    ]
+extension TextAttachment.Alignment {
+
+    var localizedString: String {
+        switch self {
+        case .left: return NSLocalizedString("Left", comment: "Left alignment for an image. Should be the same as in core WP.")
+        case .center: return NSLocalizedString("Center", comment: "Center alignment for an image. Should be the same as in core WP.")
+        case .right: return NSLocalizedString("Right", comment: "Right alignment for an image. Should be the same as in core WP.")
+        case .none: return NSLocalizedString("None", comment: "No alignment for an image (default). Should be the same as in core WP.")
+        }
+    }
+}
+
+extension TextAttachment.Size {
+
+    var localizedString: String {
+        switch self {
+        case .thumbnail: return NSLocalizedString("Thumbnail", comment: "Thumbnail image size. Should be the same as in core WP.")
+        case .medium: return NSLocalizedString("Medium", comment: "Medium image size. Should be the same as in core WP.")
+        case .large: return NSLocalizedString("Large", comment: "Large image size. Should be the same as in core WP.")
+        case .full: return NSLocalizedString("Full Size", comment: "Full size image. (default). Should be the same as in core WP.")
+        }
+    }
 }
