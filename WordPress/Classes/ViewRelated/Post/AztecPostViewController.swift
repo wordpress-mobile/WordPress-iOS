@@ -469,12 +469,12 @@ class AztecPostViewController: UIViewController {
 // MARK: - Actions
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
-        publishPost()
+        handlePublishButtonTapped(secondaryPublishTapped: false)
     }
 
     @IBAction func secondaryPublishButtonTapped() {
         let publishPostClosure = {
-            self.publishPost(secondaryPublishTapped: true)
+            self.handlePublishButtonTapped(secondaryPublishTapped: true)
         }
 
         if presentedViewController != nil {
@@ -482,6 +482,18 @@ extension AztecPostViewController {
         } else {
             publishPostClosure()
         }
+    }
+
+    private func handlePublishButtonTapped(secondaryPublishTapped: Bool) {
+        if mediaProgressCoordinator.isRunning() {
+            let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
+            alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
+            present(alertController, animated: true, completion: nil)
+
+            return
+        }
+
+        publishPost(secondaryPublishTapped: secondaryPublishTapped)
     }
 
     @IBAction func closeWasPressed() {
@@ -1128,34 +1140,32 @@ private extension AztecPostViewController {
 
 // MARK: - Media Support
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
-
-    func upload(media: Media, mediaID: String) {
-        guard let attachment = richTextView.attachment(withId: mediaID) else {
-            return
-        }
-        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
-        var uploadProgress: Progress?
-        mediaService.uploadMedia(media, progress: &uploadProgress, success: {[weak self]() in
-            guard let strongSelf = self, let remoteURL = URL(string:media.remoteURL) else {
-                return
+    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
+        mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning()
+        mediaProgressView.progress = progress
+        for (attachmentID, progress) in self.mediaProgressCoordinator.mediaUploading {
+            guard let attachment = richTextView.attachment(withId: attachmentID) else {
+                continue
             }
-            DispatchQueue.main.async {
-                strongSelf.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: remoteURL)
+            if progress.fractionCompleted >= 1 {
+                attachment.progress = nil
+            } else {
+                attachment.progress = progress.fractionCompleted
+                attachment.progressColor = WPStyleGuide.wordPressBlue()
             }
-        }, failure: { [weak self](error) in
-            guard let strongSelf = self else {
-                return
-            }
-            DispatchQueue.main.async {
-                strongSelf.handleError(error as NSError, onAttachment: attachment)
-            }
-        })
-        if let progress = uploadProgress {
-            mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
+            richTextView.refreshLayoutFor(attachment: attachment)
         }
     }
 
-    func addDeviceMediaAsset(_ phAsset: PHAsset) {
+    func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator) {
+        postEditorStateContext.update(isUploadingMedia: true)
+    }
+
+    func mediaProgressCoordinatorDidFinishingUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
+        postEditorStateContext.update(isUploadingMedia: false)
+    }
+
+    fileprivate func addDeviceMediaAsset(_ phAsset: PHAsset) {
         let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
@@ -1176,8 +1186,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         })
     }
 
-    func addSiteMediaAsset(_ media: Media) {
-
+    fileprivate func addSiteMediaAsset(_ media: Media) {
         if media.mediaID.intValue != 0 {
             guard let remoteURL = URL(string: media.remoteURL) else {
                 return
@@ -1196,7 +1205,33 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         }
     }
 
-    func handleError(_ error: NSError?, onAttachment attachment: Aztec.TextAttachment) {
+    private func upload(media: Media, mediaID: String) {
+        guard let attachment = richTextView.attachment(withId: mediaID) else {
+            return
+        }
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        var uploadProgress: Progress?
+        mediaService.uploadMedia(media, progress: &uploadProgress, success: {[weak self]() in
+            guard let strongSelf = self, let remoteURL = URL(string:media.remoteURL) else {
+                return
+            }
+            DispatchQueue.main.async {
+                strongSelf.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: remoteURL)
+            }
+            }, failure: { [weak self](error) in
+                guard let strongSelf = self else {
+                    return
+                }
+                DispatchQueue.main.async {
+                    strongSelf.handleError(error as NSError, onAttachment: attachment)
+                }
+        })
+        if let progress = uploadProgress {
+            mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
+        }
+    }
+
+    private func handleError(_ error: NSError?, onAttachment attachment: Aztec.TextAttachment) {
         let message = NSLocalizedString("Failed to insert media on your post.\n Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
         if let error = error {
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
@@ -1218,24 +1253,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         richTextView.refreshLayoutFor(attachment: attachment)
     }
 
-    func refresh(mediaProgressCoordinator: MediaProgressCoordinator, progress: Float) {
-        mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning()
-        mediaProgressView.progress = progress
-        for (attachmentID, progress) in self.mediaProgressCoordinator.mediaUploading {
-            guard let attachment = richTextView.attachment(withId: attachmentID) else {
-                continue
-            }
-            if progress.fractionCompleted >= 1 {
-                attachment.progress = nil
-            } else {
-                attachment.progress = progress.fractionCompleted
-                attachment.progressColor = WPStyleGuide.wordPressBlue()
-            }
-            richTextView.refreshLayoutFor(attachment: attachment)
-        }
-    }
-
-    func displayActions(forAttachment attachment: TextAttachment, position: CGPoint) {
+    // TODO: Extract these strings into structs like other items
+    fileprivate func displayActions(forAttachment attachment: TextAttachment, position: CGPoint) {
         let mediaID = attachment.identifier
         let title: String = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
         var message: String?
@@ -1425,11 +1444,19 @@ fileprivate extension AztecPostViewController {
         static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
         static let cancelTitle  = NSLocalizedString("Cancel", comment: "Cancel Action")
     }
+
+    struct MediaUploadingAlert {
+        static let title = NSLocalizedString("Uploading media", comment: "Title for alert when trying to save/exit a post before media upload process is complete.")
+        static let message = NSLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
+        static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
+    }
 }
 
 protocol MediaProgressCoordinatorDelegate: class {
 
-    func refresh(mediaProgressCoordinator: MediaProgressCoordinator, progress: Float)
+    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float)
+    func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator)
+    func mediaProgressCoordinatorDidFinishingUpload(_ mediaProgressCoordinator: MediaProgressCoordinator)
 }
 
 class MediaProgressCoordinator: NSObject {
@@ -1455,7 +1482,15 @@ class MediaProgressCoordinator: NSObject {
     }
 
     func finishOneItem() {
-        mediaUploadingProgress?.completedUnitCount += 1
+        guard let mediaUploadingProgress = mediaUploadingProgress else {
+            return
+        }
+
+        mediaUploadingProgress.completedUnitCount += 1
+
+        if !isRunning() {
+            delegate?.mediaProgressCoordinatorDidFinishingUpload(self)
+        }
     }
 
     func track(numberOfItems count: Int) {
@@ -1467,6 +1502,8 @@ class MediaProgressCoordinator: NSObject {
         if self.mediaUploadingProgress == nil {
             self.mediaUploadingProgress = Progress.discreteProgress(totalUnitCount: 0)
             self.mediaUploadingProgress?.addObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted), options:[.new], context:&mediaUploadingProgressObserverContext)
+
+            delegate?.mediaProgressCoordinatorDidStartUploading(self)
         }
 
         self.mediaUploadingProgress?.totalUnitCount += count
@@ -1530,7 +1567,7 @@ class MediaProgressCoordinator: NSObject {
             let fractionOfUploadsCompleted = Float(Float((progress.completedUnitCount + 1))/Float(progress.totalUnitCount))
             value = min(fractionOfUploadsCompleted, Float(progress.fractionCompleted))
         }
-        delegate?.refresh(mediaProgressCoordinator:self, progress: value)
+        delegate?.mediaProgressCoordinator(self, progressDidChange: value)
     }
 
     func isRunning() -> Bool {
