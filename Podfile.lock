@@ -159,7 +159,7 @@ DEPENDENCIES:
   - Expecta (= 1.0.5)
   - FLAnimatedImage (~> 1.0)
   - FormatterKit (~> 1.8.1)
-  - Gridicons (from `https://github.com/Automattic/Gridicons-iOS.git`, tag `0.4`)
+  - Gridicons (= 0.4)
   - Helpshift (~> 5.7.1)
   - HockeySDK (~> 3.8.0)
   - Lookback (= 1.4.1)
@@ -191,9 +191,6 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.1.2
-  Gridicons:
-    :git: https://github.com/Automattic/Gridicons-iOS.git
-    :tag: '0.4'
   Starscream:
     :branch: wordpress-ios
     :git: https://github.com/wordpress-mobile/Starscream
@@ -211,9 +208,6 @@ CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.1.2
-  Gridicons:
-    :git: https://github.com/Automattic/Gridicons-iOS.git
-    :tag: '0.4'
   Starscream:
     :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
     :git: https://github.com/wordpress-mobile/Starscream
@@ -239,7 +233,7 @@ SPEC CHECKSUMS:
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
-  Gridicons: 168e0c1f038e34f0d307e7dab7acacd3461ec7ea
+  Gridicons: 66be278835b8b98ad009c2902a3d57b8da81702e
   Helpshift: 48ee4b24dc5f0ae7d1dfd8dded6eea327069a014
   HockeySDK: ab68303eec6680f6b539de65d747742dd276e934
   Lookback: 37c23f97894612f6eccc215440c8f990fbb5a607
@@ -267,6 +261,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 3bda8ac8cb8939c797fde230c093803c719aaad5
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: e084b5d6a0dee0a9784d1f67837f5c1932c14613
+PODFILE CHECKSUM: dc5f010943bc830cb069457cdd37de8753fb1883
 
 COCOAPODS: 1.1.1
