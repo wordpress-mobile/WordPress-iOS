@@ -1417,12 +1417,16 @@ extension AztecPostViewController: UIViewControllerRestoration {
             return nil
         }
 
-        return AztecPostViewController(post: restoredPost)
+        let aztecViewController = AztecPostViewController(post: restoredPost)
+        aztecViewController.shouldRemovePostOnDismiss = coder.decodeBool(forKey: Restoration.shouldRemovePostKey)
+
+        return aztecViewController
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
         super.encodeRestorableState(with: coder)
         coder.encode(post.objectID.uriRepresentation(), forKey: Restoration.postIdentifierKey)
+        coder.encode(shouldRemovePostOnDismiss, forKey: Restoration.shouldRemovePostKey)
     }
 }
 
@@ -1459,6 +1463,7 @@ extension AztecPostViewController {
         static let restorationIdentifier    = "AztecPostViewController"
         static let navigationIdentifier     = "AztecPostNavigationViewController"
         static let postIdentifierKey        = AbstractPost.classNameWithoutNamespaces()
+        static let shouldRemovePostKey      = "shouldRemovePostOnDismiss"
     }
 
     struct SwitchSiteAlert {
