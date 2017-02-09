@@ -28,11 +28,8 @@ extension UINavigationController {
             self.pushViewController(viewController, animated: animated)
         }
 
-        if UIAccessibilityIsReduceMotionEnabled() {
-            // We only actual see the transition if we're in a regular size class
-            if !self.splitViewControllerIsHorizontallyCompact {
-                splitViewController.view.hideWithBlankingSnapshot(afterScreenUpdates: true)
-            }
+        if UIAccessibilityIsReduceMotionEnabled() && !self.splitViewControllerIsHorizontallyCompact {
+            splitViewController.view.hideWithBlankingSnapshot(afterScreenUpdates: true)
             performTransition(false)
         } else {
             performTransition(animated)
