@@ -431,7 +431,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [items addObject:item];
 
     item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"View", @"Label for the view post button. Tapping displays the post as it appears on the web.")
-                                          image:[UIImage imageNamed:@"icon-post-actionbar-view"]
+                                          image:[[UIImage imageNamed:@"icon-post-actionbar-view"] imageFlippedForRightToLeftLayoutDirection]
                                highlightedImage:nil];
     item.callback = ^{
         [weakSelf viewPostAction];
@@ -486,7 +486,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [items addObject:item];
 
     item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Preview", @"Label for the preview post button. Tapping shows a preview of the post.")
-                                          image:[UIImage imageNamed:@"icon-post-actionbar-view"]
+                                          image:[[UIImage imageNamed:@"icon-post-actionbar-view"] imageFlippedForRightToLeftLayoutDirection]
                                highlightedImage:nil];
     item.callback = ^{
         [weakSelf viewPostAction];
