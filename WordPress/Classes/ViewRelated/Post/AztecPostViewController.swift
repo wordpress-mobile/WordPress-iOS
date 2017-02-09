@@ -5,6 +5,7 @@ import Gridicons
 import WordPressShared
 import AFNetworking
 import WPMediaPicker
+import SVProgressHUD
 
 // MARK: - Aztec's Native Editor!
 //
@@ -494,6 +495,7 @@ extension AztecPostViewController {
             return
         }
 
+        // If there is any failed media allow it to be removed or cancel publishing
         if mediaProgressCoordinator.hasFailedMedia {
             let alertController = UIAlertController(title: FailedMediaRemovalAlert.title, message: FailedMediaRemovalAlert.message, preferredStyle: .alert)
             alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
@@ -506,7 +508,40 @@ extension AztecPostViewController {
             present(alertController, animated: true, completion: nil)
         }
 
-        publishPost(secondaryPublishTapped: secondaryPublishTapped)
+        let hudText = secondaryPublishTapped ? postEditorStateContext.secondaryPublishVerbText : postEditorStateContext.publishVerbText
+        SVProgressHUD.show(withStatus: hudText, maskType: .clear)
+
+        // Finally, publish the post.
+        publishPost(secondaryPublishTapped: secondaryPublishTapped) { uploadedPost, error in
+            SVProgressHUD.dismiss()
+
+            if let error = error {
+                DDLogSwift.logError("Error publishing post: \(error.localizedDescription)")
+
+                let hudText = secondaryPublishTapped ? self.postEditorStateContext.secondaryPublishErrorText : self.postEditorStateContext.publishErrorText
+
+                SVProgressHUD.showError(withStatus: hudText)
+                WPNotificationFeedbackGenerator.notificationOccurred(.error)
+            } else if let uploadedPost = uploadedPost {
+                // TODO: Determine if this is necessary; if it is then ensure state machine is updated
+                self.post = uploadedPost
+
+                WPNotificationFeedbackGenerator.notificationOccurred(.success)
+            }
+
+//            void (^stopEditingAndDismiss)() = ^{
+//                if (shouldDismiss) {
+//                    [self stopEditing];
+//                    [self.view endEditing:YES];
+//                    [self didSaveNewPost];
+//                    [self dismissEditView:YES];
+//                } else {
+//                    [self startEditing];
+//                }
+//            };
+            // TODO: Dismiss the window if necessary
+
+        }
     }
 
     @IBAction func closeWasPressed() {
@@ -1119,16 +1154,15 @@ fileprivate extension AztecPostViewController {
         ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
 
-    fileprivate func publishPost(secondaryPublishTapped: Bool = false, completion: (() -> Void)? = nil) {
-        print("If this were working, it would be \(postEditorStateContext.publishVerbText)")
+    fileprivate func publishPost(secondaryPublishTapped: Bool = false, completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)? = nil) {
         mapUIContentToPostAndSave()
 
         let managedObjectContext = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: managedObjectContext)
         postService.uploadPost(post, success: { uploadedPost in
-            completion?()
+            completion?(uploadedPost, nil)
         }) { error in
-            completion?()
+            completion?(nil, error)
         }
     }
 }

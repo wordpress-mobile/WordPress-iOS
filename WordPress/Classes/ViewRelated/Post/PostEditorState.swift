@@ -53,6 +53,17 @@ public enum PostEditorAction {
         }
     }
 
+    fileprivate var publishingErrorLabel: String {
+        switch self {
+        case .publish:
+            return NSLocalizedString("Error occurred\nduring publishing", comment: "Text displayed in HUD while a post is being published.")
+        case .schedule:
+            return NSLocalizedString("Error occurred\nduring scheduling", comment: "Text displayed in HUD while a post is being scheduled to be published.")
+        case .save, .submitForReview, .update:
+            return NSLocalizedString("Error occurred\nduring saving", comment: "Text displayed in HUD after attempting to save a draft post and an error occurred.")
+        }
+    }
+
     fileprivate var secondaryPublishActionLabel: String? {
         switch self {
         case .publish:
@@ -229,6 +240,10 @@ public class PostEditorStateContext {
         return editorState.action.publishingActionLabel
     }
 
+    var publishErrorText: String {
+        return editorState.action.publishingErrorLabel
+    }
+
     /// Should post-post be shown for the current editor when publishing has happened
     ///
     var isPostPostShown: Bool {
@@ -250,6 +265,10 @@ public class PostEditorStateContext {
 
     var secondaryPublishVerbText: String? {
         return editorState.action.secondaryPublishAction?.publishingActionLabel
+    }
+
+    var secondaryPublishErrorText: String? {
+        return editorState.action.secondaryPublishAction?.publishingErrorLabel
     }
 
     // TODO: Add isDirty to the state context for enabling/disabling the button
