@@ -15,13 +15,13 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="76"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="rfv-Np-qYy" id="spe-vQ-kSe">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="75.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Gw9-Ao-Lgs">
                         <rect key="frame" x="15" y="11" width="290" height="54"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="left.png" translatesAutoresizingMaskIntoConstraints="NO" id="LYp-ge-5Fb" userLabel="GravatarImageView" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LYp-ge-5Fb" userLabel="GravatarImageView" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="54" height="54"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="bZH-BB-fLL"/>
@@ -67,7 +67,7 @@
                                                     <constraint firstAttribute="width" constant="100" id="lla-7C-ydl"/>
                                                 </constraints>
                                                 <inset key="contentEdgeInsets" minX="-2" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="Button" image="reader-postaction-follow.png">
+                                                <state key="normal" title="Button">
                                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
@@ -104,8 +104,4 @@
             <point key="canvasLocation" x="15" y="115"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="left.png" width="21" height="21"/>
-        <image name="reader-postaction-follow.png" width="21" height="21"/>
-    </resources>
 </document>
