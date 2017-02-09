@@ -32,9 +32,6 @@
 
 - (void)adjustInsetsForTextDirection
 {
-    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
-        return;
-    }
     [self flipInsetsForRightToLeftLayoutDirection];
 }
 
