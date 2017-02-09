@@ -695,14 +695,7 @@ extension AztecPostViewController : UITextViewDelegate {
     }
 
     func textViewDidChange(_ textView: UITextView) {
-        guard let richTextView = textView as? Aztec.TextView else {
-            return
-        }
-
-        // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
-        post.content = richTextView.getHTML()
-
-        ContextManager.sharedInstance().save(post.managedObjectContext!)
+        mapUIContentToPostAndSave()
     }
 }
 
@@ -710,9 +703,7 @@ extension AztecPostViewController : UITextViewDelegate {
 // MARK: - UITextFieldDelegate methods
 extension AztecPostViewController : UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        post.postTitle = textField.text
-
-        ContextManager.sharedInstance().save(post.managedObjectContext!)
+        mapUIContentToPostAndSave()
     }
 }
 
@@ -1120,8 +1111,17 @@ fileprivate extension AztecPostViewController {
         return post.isRevision() && post.hasLocalChanges() || post.hasNeverAttemptedToUpload()
     }
 
+    fileprivate func mapUIContentToPostAndSave() {
+        post.postTitle = richTextView.text
+        // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
+        post.content = richTextView.getHTML()
+
+        ContextManager.sharedInstance().save(post.managedObjectContext!)
+    }
+
     fileprivate func publishPost(secondaryPublishTapped: Bool = false, completion: (() -> Void)? = nil) {
         print("If this were working, it would be \(postEditorStateContext.publishVerbText)")
+        mapUIContentToPostAndSave()
 
         let managedObjectContext = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: managedObjectContext)
