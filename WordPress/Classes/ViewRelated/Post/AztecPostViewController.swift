@@ -1406,6 +1406,32 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
 //
 extension AztecPostViewController: UIViewControllerRestoration {
     class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+        guard let lastIdentifierComponent = identifierComponents.last as? String else {
+            return nil
+        }
+
+        switch lastIdentifierComponent {
+        case Restoration.navigationIdentifier:
+            return restoreNavigation(withCoder: coder)
+        default:
+            return restoreAztec(withCoder: coder)
+        }
+    }
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+        coder.encode(post.objectID.uriRepresentation(), forKey: Restoration.postIdentifierKey)
+        coder.encode(shouldRemovePostOnDismiss, forKey: Restoration.shouldRemovePostKey)
+    }
+
+    class func restoreNavigation(withCoder coder: NSCoder) -> UINavigationController? {
+        let navigationController = UINavigationController()
+        navigationController.restorationIdentifier = Restoration.navigationIdentifier
+        navigationController.restorationClass = self
+        return navigationController
+    }
+
+    class func restoreAztec(withCoder coder: NSCoder) -> AztecPostViewController? {
         let context = ContextManager.sharedInstance().mainContext
         guard let postURI = coder.decodeObject(forKey: Restoration.postIdentifierKey) as? URL,
             let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURI) else {
@@ -1421,12 +1447,6 @@ extension AztecPostViewController: UIViewControllerRestoration {
         aztecViewController.shouldRemovePostOnDismiss = coder.decodeBool(forKey: Restoration.shouldRemovePostKey)
 
         return aztecViewController
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-        coder.encode(post.objectID.uriRepresentation(), forKey: Restoration.postIdentifierKey)
-        coder.encode(shouldRemovePostOnDismiss, forKey: Restoration.shouldRemovePostKey)
     }
 }
 
