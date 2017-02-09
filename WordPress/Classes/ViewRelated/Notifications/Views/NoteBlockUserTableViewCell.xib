@@ -25,9 +25,9 @@
                                 <rect key="frame" x="0.0" y="0.0" width="54" height="54"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="46" id="bZH-BB-fLL"/>
-                                    <constraint firstAttribute="height" constant="54" id="cVy-mP-YcX"/>
+                                    <constraint firstAttribute="height" priority="999" constant="54" id="cVy-mP-YcX"/>
                                     <constraint firstAttribute="width" constant="54" id="vh6-ju-ORT"/>
-                                    <constraint firstAttribute="height" constant="46" id="wNV-SL-4zo"/>
+                                    <constraint firstAttribute="height" priority="999" constant="46" id="wNV-SL-4zo"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
