@@ -3,12 +3,17 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress55
+## WordPress 56
+- @aerych 2016-12-21
+- `ReaderPost` added relation `relatedPosts` 1-n to `relatedPost`. Optional. Cascade.
+- `ReaderPost` added relation `relatedPost` 1-1 to `relatedPosts`. Optional. Nullify.
+
+## WordPress 55
 - @aerych 2016-12-21
 - `ReaderPost` renamed `preserveForRestoration` to "inUse"
 - `ReaderAbstractTopic` renamed `preserveForRestoration` to "inUse"
 
-## WordPress54
+## WordPress 54
 - @aerych 2016-12-08
 - `ReaderPost` added `preserveForRestoration` boolean. Indexed. Default `NO`. Not optional.
 
