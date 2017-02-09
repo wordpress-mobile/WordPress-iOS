@@ -1683,7 +1683,11 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
+        if !UIAccessibilityIsReduceMotionEnabled() {
+            // This can conflict with the reduce motion fullscreen push animation
+            tableView.deselectRow(at: indexPath, animated: false)
+        }
+
         guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
             DDLogSwift.logError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             return
