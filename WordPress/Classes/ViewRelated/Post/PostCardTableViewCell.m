@@ -289,7 +289,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 {
     AbstractPost *post = [self.post latest];
     NSString *str = [post titleForDisplay] ?: [NSString string];
-    self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardTitleAttributes]];
+    self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str.stringByStrippingHTML attributes:[WPStyleGuide postCardTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.titleLowerConstraint.constant = ([str length] > 0) ? self.titleViewLowerMargin : 0.0;
 }
@@ -298,7 +298,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 {
     AbstractPost *post = [self.post latest];
     NSString *str = [post contentPreviewForDisplay] ?: [NSString string];
-    self.snippetLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardSnippetAttributes]];
+    self.snippetLabel.attributedText = [[NSAttributedString alloc] initWithString:str.stringByStrippingHTML attributes:[WPStyleGuide postCardSnippetAttributes]];
     self.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.snippetLowerConstraint.constant = ([str length] > 0) ? self.snippetViewLowerMargin : 0.0;
 }
