@@ -145,6 +145,14 @@ open class CommentsTableViewCell: WPTableViewCell {
             attributedDetails.replaceCharacters(in: range, with: attributedString)
         }
 
+        if userInterfaceLayoutDirection() == .leftToRight {
+            // LEFT-TO-RIGHT MARK
+            attributedDetails.insert(NSAttributedString(string: "\u{200E}"), at: 0)
+        } else {
+            // RIGHT-TO-LEFT MARK
+            attributedDetails.insert(NSAttributedString(string: "\u{200F}"), at: 0)
+        }
+
         return attributedDetails
     }
 
