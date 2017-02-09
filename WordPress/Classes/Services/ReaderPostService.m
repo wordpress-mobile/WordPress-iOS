@@ -438,7 +438,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     // Even if a post has no topic, do not delete it if its in use, or if it
     // is a relatedPost. In these cases, the post will be deleted up when its
     // no longer in use, or when its relatedPost is deleted.
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = NULL AND inUse = false && relatedPost = NULL"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = NULL AND inUse = false AND relatedPost = NULL"];
     [fetchRequest setPredicate:pred];
 
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
