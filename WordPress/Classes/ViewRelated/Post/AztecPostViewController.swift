@@ -32,7 +32,7 @@ class AztecPostViewController: UIViewController {
         tv.keyboardDismissMode = .interactive
         tv.mediaDelegate = self
 
-        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
         recognizer.cancelsTouchesInView = false
         recognizer.delegate = self
 
@@ -214,6 +214,8 @@ class AztecPostViewController: UIViewController {
         progressView.translatesAutoresizingMaskIntoConstraints = false
         return progressView
     }()
+
+    fileprivate var currentSelectedAttachment: TextAttachment?
 
     /// Maintainer of state for editor - like for post button
     ///
@@ -1177,15 +1179,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             mediaProgressCoordinator.attach(error: error, toMediaID: attachment.identifier)
         }
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        let shadow = NSShadow()
-        shadow.shadowColor = UIColor(white: 0, alpha: 0.6)
-        let attributes: [String:Any] = [NSFontAttributeName: Assets.defaultSemiBoldFont,
-                                        NSParagraphStyleAttributeName: paragraphStyle,
-                                        NSForegroundColorAttributeName: UIColor.darkGray,
-                                        NSShadowAttributeName: shadow]
-        let attributeMessage = NSAttributedString(string: message, attributes: attributes)
+        let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
         richTextView.refreshLayoutFor(attachment: attachment)
     }
@@ -1260,7 +1254,9 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         alertController.popoverPresentationController?.sourceView = richTextView
         alertController.popoverPresentationController?.sourceRect = CGRect(origin: richTextView.center, size: CGSize(width: 1, height: 1))
         alertController.popoverPresentationController?.permittedArrowDirections = .up
-        present(alertController, animated:true, completion: nil)
+        present(alertController, animated:true, completion: { () in
+            UIMenuController.shared.setMenuVisible(false, animated: false)
+        })
     }
 
     func displayDetails(forAttachment attachment: TextAttachment) {
@@ -1271,6 +1267,19 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
+    }
+
+    var mediaMessageAttributes: [String: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        let shadow = NSShadow()
+        shadow.shadowOffset = CGSize(width: 1, height: 1)
+        shadow.shadowColor = UIColor(white: 0, alpha: 0.6)
+        let attributes: [String:Any] = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20),
+                                        NSParagraphStyleAttributeName: paragraphStyle,
+                                        NSForegroundColorAttributeName: UIColor.white,
+                                        NSShadowAttributeName: shadow]
+        return attributes
     }
 }
 
@@ -1369,20 +1378,44 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 }
 
 extension AztecPostViewController: UIGestureRecognizerDelegate {
+
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 
     func richTextViewWasPressed(_ recognizer: UIGestureRecognizer) {
-        guard recognizer.state == .began else {
+        guard recognizer.state == .recognized else {
             return
         }
         let locationInTextView = recognizer.location(in: richTextView)
+        // check if we have an attachment in the position we tapped
         guard let attachment = richTextView.attachmentAtPoint(locationInTextView) else {
+            // if we have an attachment marked lets unmark it
+            if let selectedAttachment = currentSelectedAttachment {
+                selectedAttachment.message = nil
+                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+                currentSelectedAttachment = nil
+            }
             return
         }
-
-        displayActions(forAttachment: attachment, position: locationInTextView)
+        // move the selection to the position of the attachment
+        let index = richTextView.layoutManager.characterIndex(for: locationInTextView, in: richTextView.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+        richTextView.selectedRange = NSRange(location: index, length: 0)
+        if attachment == currentSelectedAttachment {
+            //if it's the same attachment has before let's display the options
+            displayActions(forAttachment: attachment, position: locationInTextView)
+        } else {
+            // if it's a new attachment tapped let unmark the previous one
+            if let selectedAttachment = currentSelectedAttachment {
+                selectedAttachment.message = nil
+                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+            }
+            // and mark the newly tapped attachment
+            let message = NSLocalizedString("Tap to Edit", comment: "Options to show when tapping on a image on the post/page editor.")
+            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+            richTextView.refreshLayoutFor(attachment: attachment)
+            currentSelectedAttachment = attachment
+        }
     }
 }
 
