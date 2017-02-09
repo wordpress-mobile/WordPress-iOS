@@ -39,6 +39,8 @@
 #import "InteractivePostView.h"
 #import "InteractivePostViewDelegate.h"
 
+#import "JetpackService.h"
+
 #import "LoginFacade.h"
 #import "LoginFields.h"
 
