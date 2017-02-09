@@ -14,22 +14,19 @@
             <rect key="frame" x="0.0" y="0.0" width="389" height="72"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="vbp-eh-kPo" id="g83-Wv-yJ5">
-                <rect key="frame" x="0.0" y="0.0" width="389" height="71"/>
+                <rect key="frame" x="0.0" y="0.0" width="389" height="71.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8I0-Zx-4NW">
                         <rect key="frame" x="0.0" y="0.0" width="389" height="72"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="V3D-QS-G4g">
-                                <rect key="frame" x="29.5" y="11" width="330" height="50.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="V3D-QS-G4g">
+                                <rect key="frame" x="15" y="11" width="359" height="50.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DXE-y2-DWd" userLabel="Reply" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="0.0" y="8.5" width="55" height="34"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" priority="750" constant="55" id="bGa-bG-COl"/>
-                                            <constraint firstAttribute="height" priority="750" constant="34" id="pOv-Wo-AuU"/>
-                                        </constraints>
+                                        <rect key="frame" x="0.0" y="9" width="60" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Reply" image="notifications-reply">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -41,12 +38,9 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8r-Uo-uFk" userLabel="Like" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="55" y="8.5" width="55" height="34"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" priority="750" constant="34" id="4s5-KZ-g7U"/>
-                                            <constraint firstAttribute="width" constant="55" id="bXC-wE-QDO"/>
-                                        </constraints>
+                                        <rect key="frame" x="60" y="9" width="59.5" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Like" image="notifications-like">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -58,12 +52,9 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agc-K2-0vs" userLabel="Approve" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="110" y="8.5" width="55" height="34"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="55" id="2hn-PC-Yxs"/>
-                                            <constraint firstAttribute="height" priority="750" constant="34" id="Tfs-lE-WZO"/>
-                                        </constraints>
+                                        <rect key="frame" x="119.5" y="9" width="60" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Approve" image="notifications-approve">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -75,12 +66,9 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYK-fl-vc7" userLabel="Trash" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="165" y="8.5" width="55" height="34"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" priority="750" constant="34" id="0ou-ht-WQC"/>
-                                            <constraint firstAttribute="width" constant="55" id="Cvd-xS-e5I"/>
-                                        </constraints>
+                                        <rect key="frame" x="179.5" y="9" width="60" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Trash" image="notifications-trash">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -90,12 +78,9 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hU3-yd-ZtO" userLabel="Spam" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="220" y="8.5" width="55" height="34"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" priority="750" constant="34" id="OBj-Qu-Mty"/>
-                                            <constraint firstAttribute="width" constant="55" id="Rq6-Ta-vBZ"/>
-                                        </constraints>
+                                        <rect key="frame" x="239.5" y="9" width="59.5" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Spam" image="notifications-spam">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -105,12 +90,9 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LLz-LW-VxX" userLabel="Edit" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="275" y="8.5" width="55" height="34"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="55" id="5ti-dt-dqt"/>
-                                            <constraint firstAttribute="height" priority="750" constant="34" id="ejb-LG-iQi"/>
-                                        </constraints>
+                                        <rect key="frame" x="299" y="9.5" width="60" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Edit" image="icon-pencil">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -143,7 +125,7 @@
                 <outlet property="btnSpam" destination="hU3-yd-ZtO" id="H1K-eP-bp7"/>
                 <outlet property="btnTrash" destination="TYK-fl-vc7" id="amO-Qa-IZv"/>
             </connections>
-            <point key="canvasLocation" x="175" y="388"/>
+            <point key="canvasLocation" x="104" y="353"/>
         </tableViewCell>
     </objects>
     <resources>
