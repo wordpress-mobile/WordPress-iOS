@@ -32,6 +32,12 @@ class AztecPostViewController: UIViewController {
         tv.keyboardDismissMode = .interactive
         tv.mediaDelegate = self
 
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
+        recognizer.cancelsTouchesInView = false
+        recognizer.delegate = self
+
+        tv.addGestureRecognizer(recognizer)
+
         return tv
     }()
 
@@ -252,6 +258,9 @@ class AztecPostViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // TODO: Fix the warnings triggered by this one!
+        WPFontManager.loadMerriweatherFontFamily()
 
         createRevisionOfPost()
 
@@ -781,7 +790,15 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     func showLinkDialog(forURL url: URL?, title: String?, range: NSRange) {
 
         let isInsertingNewLink = (url == nil)
-        // TODO: grab link from pasteboard if available
+        var urlToUse = url
+
+        if isInsertingNewLink {
+            let pasteboard = UIPasteboard.general
+            if let pastedURL = pasteboard.value(forPasteboardType:String(kUTTypeURL)) as? URL {
+                urlToUse = pastedURL
+            }
+        }
+
 
         let insertButtonTitle = isInsertingNewLink ? NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor") : NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
         let removeButtonTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
@@ -795,7 +812,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             textField.clearButtonMode = UITextFieldViewMode.always
             textField.placeholder = NSLocalizedString("URL", comment: "URL text field placeholder")
 
-            textField.text = url?.absoluteString
+            textField.text = urlToUse?.absoluteString
 
             textField.addTarget(self,
                 action: #selector(AztecPostViewController.alertTextFieldDidChange),
@@ -1067,10 +1084,7 @@ fileprivate extension AztecPostViewController {
     }
 
     func shouldRemoveOnDismiss(post: AbstractPost) -> Bool {
-        let originalTitleIsEmpty = post.original?.postTitle?.isEmpty ?? true
-        let originalContentIsEmpty = post.original?.content?.isEmpty ?? true
-
-        return post.isRevision() && post.hasLocalChanges() && originalTitleIsEmpty && originalContentIsEmpty
+        return post.isRevision() && post.hasLocalChanges() || post.hasNeverAttemptedToUpload()
     }
 }
 
@@ -1095,6 +1109,32 @@ private extension AztecPostViewController {
 // MARK: - Media Support
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
+    func upload(media: Media, mediaID: String) {
+        guard let attachment = richTextView.attachment(withId: mediaID) else {
+            return
+        }
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        var uploadProgress: Progress?
+        mediaService.uploadMedia(media, progress: &uploadProgress, success: {[weak self]() in
+            guard let strongSelf = self, let remoteURL = URL(string:media.remoteURL) else {
+                return
+            }
+            DispatchQueue.main.async {
+                strongSelf.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: remoteURL)
+            }
+        }, failure: { [weak self](error) in
+            guard let strongSelf = self else {
+                return
+            }
+            DispatchQueue.main.async {
+                strongSelf.handleError(error as NSError, onAttachment: attachment)
+            }
+        })
+        if let progress = uploadProgress {
+            mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
+        }
+    }
+
     func addDeviceMediaAsset(_ phAsset: PHAsset) {
         let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
@@ -1107,26 +1147,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 return
             }
             guard let media = media, error == nil else {
-                if let error = error {
-                    DispatchQueue.main.async {
-                        strongSelf.displayError(error, onAttachment: attachment)
-                    }
+                DispatchQueue.main.async {
+                    strongSelf.handleError(error as? NSError, onAttachment: attachment)
                 }
                 return
             }
-            var uploadProgress: Progress?
-            mediaService.uploadMedia(media, progress: &uploadProgress, success: {
-                DispatchQueue.main.async {
-                    strongSelf.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
-                }
-            }, failure: { (error) in
-                DispatchQueue.main.async {
-                    strongSelf.displayError(error, onAttachment: attachment)
-                }
-            })
-            if let progress = uploadProgress {
-                strongSelf.mediaProgressCoordinator.track(progress: progress, ofMediaID: attachment.identifier)
-            }
+            strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
     }
 
@@ -1144,59 +1170,123 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 let localURL = URL(string: mediaLocalPath) {
                 tempMediaURL = localURL
             }
-            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL  , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
 
-            let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
-            var uploadProgress: Progress?
-            mediaService.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
-                guard let strongSelf = self else {
-                    return
-                }
-                DispatchQueue.main.async {
-                    strongSelf.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: URL(string:media.remoteURL)!)
-                }
-            }, failure: { [weak self](error) in
-                guard let strongSelf = self else {
-                    return
-                }
-                DispatchQueue.main.async {
-                    strongSelf.displayError(error, onAttachment: attachment)
-                }
-            })
-            if let progress = uploadProgress {
-                self.mediaProgressCoordinator.track(progress: progress, ofMediaID: attachment.identifier)
-            }
+            upload(media: media, mediaID: attachment.identifier)
         }
     }
 
-    func displayError(_ error: Error?, onAttachment attachment: Aztec.TextAttachment) {
-        var message = NSLocalizedString("Failed to insert media on your post. Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
+    func handleError(_ error: NSError?, onAttachment attachment: Aztec.TextAttachment) {
+        let message = NSLocalizedString("Failed to insert media on your post.\n Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
         if let error = error {
-            message = error.localizedDescription
+            if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
+                return
+            }
+            mediaProgressCoordinator.attach(error: error, toMediaID: attachment.identifier)
         }
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        let attributes: [String:Any] = [NSFontAttributeName: Assets.defaultRegularFont,
+        let shadow = NSShadow()
+        shadow.shadowColor = UIColor(white: 0, alpha: 0.6)
+        let attributes: [String:Any] = [NSFontAttributeName: Assets.defaultSemiBoldFont,
                                         NSParagraphStyleAttributeName: paragraphStyle,
-                                        NSForegroundColorAttributeName: UIColor.darkGray]
+                                        NSForegroundColorAttributeName: UIColor.darkGray,
+                                        NSShadowAttributeName: shadow]
         let attributeMessage = NSAttributedString(string: message, attributes: attributes)
-        richTextView.update(attachment: attachment, message: attributeMessage)
+        attachment.message = attributeMessage
+        richTextView.refreshLayoutFor(attachment: attachment)
     }
 
     func refresh(mediaProgressCoordinator: MediaProgressCoordinator, progress: Float) {
         mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning()
-        mediaProgressView.setProgress(progress, animated: true)
+        mediaProgressView.progress = progress
         for (attachmentID, progress) in self.mediaProgressCoordinator.mediaUploading {
             guard let attachment = richTextView.attachment(withId: attachmentID) else {
                 continue
             }
             if progress.fractionCompleted >= 1 {
-                richTextView.update(attachment: attachment, progress: nil)
+                attachment.progress = nil
             } else {
-                richTextView.update(attachment: attachment, progress: progress.fractionCompleted, progressColor: WPStyleGuide.wordPressBlue())
+                attachment.progress = progress.fractionCompleted
+                attachment.progressColor = WPStyleGuide.wordPressBlue()
+            }
+            richTextView.refreshLayoutFor(attachment: attachment)
+        }
+    }
+
+    func displayActions(forAttachment attachment: TextAttachment, position: CGPoint) {
+        let mediaID = attachment.identifier
+        let title: String = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        var message: String?
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.addActionWithTitle(NSLocalizedString("Dismiss", comment: "User action to dismiss media options."),
+                                           style: .cancel,
+                                           handler: { (action) in
+        })
+
+        alertController.addActionWithTitle(NSLocalizedString("Details", comment: "User action to edit media details."),
+                                           style: .default,
+                                           handler: { (action) in
+                                            self.displayDetails(forAttachment: attachment)
+        })
+        // Is upload still going?
+        if let mediaProgress = mediaProgressCoordinator.mediaUploading[mediaID],
+            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
+            alertController.addActionWithTitle(NSLocalizedString("Stop Upload", comment: "User action to stop upload."),
+                                               style: .destructive,
+                                               handler: { (action) in
+                                                mediaProgress.cancel()
+                                                self.richTextView.remove(attachmentID: mediaID)
+            })
+        } else {
+            alertController.addActionWithTitle(NSLocalizedString("Remove Media", comment: "User action to remove media."),
+                                               style: .destructive,
+                                               handler: { (action) in
+                                                self.richTextView.remove(attachmentID: mediaID)
+            })
+            if let error = mediaProgressCoordinator.error(forMediaID: mediaID) {
+                message = error.localizedDescription
+                alertController.addActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload."),
+                                                   style: .default,
+                                                   handler: { (action) in
+                                                    //retry upload
+                                                    if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
+                                                        let attachment = self.richTextView.attachment(withId: mediaID) {
+                                                        attachment.message = nil
+                                                        attachment.progress = 0
+                                                        self.richTextView.refreshLayoutFor(attachment: attachment)
+                                                        self.mediaProgressCoordinator.track(numberOfItems: 1)
+                                                        self.upload(media: media, mediaID: mediaID)
+                                                    }
+                })
             }
         }
+
+        alertController.title = title
+        alertController.message = message
+        alertController.popoverPresentationController?.sourceView = richTextView
+        alertController.popoverPresentationController?.sourceRect = CGRect(origin: richTextView.center, size: CGSize(width: 1, height: 1))
+        alertController.popoverPresentationController?.permittedArrowDirections = .up
+        present(alertController, animated:true, completion: nil)
+    }
+
+    func displayDetails(forAttachment attachment: TextAttachment) {
+
+        let controller = AztecAttachmentViewController()
+        controller.delegate = self
+        controller.attachment = attachment
+        let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = .formSheet
+        present(navController, animated: true, completion: nil)
+    }
+}
+
+extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
+
+
+    func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: TextAttachment) {
+        richTextView.update(attachment: changedAttachment, alignment: changedAttachment.alignment, size: changedAttachment.size, url: changedAttachment.url!)
     }
 }
 
@@ -1247,6 +1337,13 @@ extension AztecPostViewController: TextViewMediaDelegate {
             imageDownloader.cancelTask(for: receipt)
         }
     }
+
+    func textView(_ textView: TextView, deletedAttachmentWithID attachmentID: String) {
+        if let mediaProgress = mediaProgressCoordinator.mediaUploading[attachmentID],
+            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
+            mediaProgress.cancel()
+        }
+    }
 }
 
 extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
@@ -1264,7 +1361,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             return
         }
 
-        mediaProgressCoordinator.addToMediaProgress(numberOfItems: assets.count)
+        mediaProgressCoordinator.track(numberOfItems: assets.count)
         for asset in assets {
             switch asset {
             case let phAsset as PHAsset:
@@ -1276,6 +1373,24 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             }
         }
 
+    }
+}
+
+extension AztecPostViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+
+    func richTextViewWasPressed(_ recognizer: UIGestureRecognizer) {
+        guard recognizer.state == .began else {
+            return
+        }
+        let locationInTextView = recognizer.location(in: richTextView)
+        guard let attachment = richTextView.attachmentAtPoint(locationInTextView) else {
+            return
+        }
+
+        displayActions(forAttachment: attachment, position: locationInTextView)
     }
 }
 
@@ -1323,6 +1438,12 @@ protocol MediaProgressCoordinatorDelegate: class {
 
 class MediaProgressCoordinator: NSObject {
 
+    enum ProgressMediaKeys: String {
+        case mediaID = "mediaID"
+        case error = "mediaError"
+        case mediaObject = "mediaObject"
+    }
+
     weak var delegate: MediaProgressCoordinatorDelegate?
 
     private(set) var mediaUploadingProgress: Progress?
@@ -1341,7 +1462,7 @@ class MediaProgressCoordinator: NSObject {
         mediaUploadingProgress?.completedUnitCount += 1
     }
 
-    func addToMediaProgress(numberOfItems count: Int) {
+    func track(numberOfItems count: Int) {
         if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning() {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
             self.mediaUploadingProgress = nil
@@ -1355,10 +1476,38 @@ class MediaProgressCoordinator: NSObject {
         self.mediaUploadingProgress?.totalUnitCount += count
     }
 
-    func track(progress: Progress, ofMediaID mediaID: String) {
-        progress.setUserInfoObject(mediaID, forKey: ProgressUserInfoKey("mediaID"))
+    func track(progress: Progress, ofObject object: Any, withMediaID mediaID: String) {
+        progress.setUserInfoObject(mediaID, forKey: ProgressUserInfoKey(ProgressMediaKeys.mediaID.rawValue))
+        progress.setUserInfoObject(object, forKey: ProgressUserInfoKey(ProgressMediaKeys.mediaObject.rawValue))
         mediaUploadingProgress?.addChild(progress, withPendingUnitCount: 1)
         mediaUploading[mediaID] = progress
+    }
+
+    func attach(error: NSError, toMediaID mediaID: String) {
+        guard let progress = mediaUploading[mediaID] else {
+            return
+        }
+        progress.setUserInfoObject(error, forKey: ProgressUserInfoKey(ProgressMediaKeys.error.rawValue))
+    }
+
+    func error(forMediaID mediaID: String) -> NSError? {
+        guard let progress = mediaUploading[mediaID],
+              let error = progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.error.rawValue)] as? NSError
+        else {
+            return nil
+        }
+
+        return error
+    }
+
+    func object(forMediaID mediaID: String) -> Any? {
+        guard let progress = mediaUploading[mediaID],
+            let object = progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.mediaObject.rawValue)]
+            else {
+                return nil
+        }
+
+        return object
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
