@@ -426,8 +426,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         // Make sure the text view is scrolled to the top the first time after
         // the view is first configured.
-        view.layoutIfNeeded()
-        textView.setContentOffset(CGPoint.zero, animated: false)
+        // TODO: Restore the following when we restore the full screen reader detail.
+        // Aerych 2017-02-09
+        // view.layoutIfNeeded()
+        //textView.setContentOffset(CGPoint.zero, animated: false)
     }
 
 
