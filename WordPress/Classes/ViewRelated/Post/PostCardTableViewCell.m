@@ -73,6 +73,9 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [super awakeFromNib];
 
     [self applyStyles];
+
+    [self.metaButtonLeft flipInsetsForRightToLeftLayoutDirection];
+    [self.metaButtonRight flipInsetsForRightToLeftLayoutDirection];
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
@@ -384,9 +387,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [metaButton setImage:image forState:UIControlStateHighlighted];
     metaButton.selected = NO;
     metaButton.hidden = NO;
-    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionRightToLeft) {
-        [metaButton flipInsetsForRightToLeftLayoutDirection];
-    }
 }
 
 
