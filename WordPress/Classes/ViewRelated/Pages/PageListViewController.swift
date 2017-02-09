@@ -336,6 +336,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
                 navController = UINavigationController(rootViewController: postViewController)
                 navController.restorationIdentifier = AztecPostViewController.Restoration.navigationIdentifier
+                navController.restorationClass = AztecPostViewController.self
             } else {
                 postViewController = EditPageViewController(draftFor: blog)
 
