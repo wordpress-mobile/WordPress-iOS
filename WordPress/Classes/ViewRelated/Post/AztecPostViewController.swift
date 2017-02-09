@@ -485,12 +485,25 @@ extension AztecPostViewController {
     }
 
     private func handlePublishButtonTapped(secondaryPublishTapped: Bool) {
-        if mediaProgressCoordinator.isRunning() {
+        // Cancel publishing if media is currently being uploaded
+        if mediaProgressCoordinator.isRunning {
             let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
             alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
             present(alertController, animated: true, completion: nil)
 
             return
+        }
+
+        if mediaProgressCoordinator.hasFailedMedia {
+            let alertController = UIAlertController(title: FailedMediaRemovalAlert.title, message: FailedMediaRemovalAlert.message, preferredStyle: .alert)
+            alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
+                self.removeFailedMedia()
+                // Failed media is removed, try again.
+                self.handlePublishButtonTapped(secondaryPublishTapped: secondaryPublishTapped)
+            }
+
+            alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
+            present(alertController, animated: true, completion: nil)
         }
 
         publishPost(secondaryPublishTapped: secondaryPublishTapped)
@@ -1141,7 +1154,7 @@ private extension AztecPostViewController {
 // MARK: - Media Support
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
-        mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning()
+        mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
         mediaProgressView.progress = progress
         for (attachmentID, progress) in self.mediaProgressCoordinator.mediaUploading {
             guard let attachment = richTextView.attachment(withId: attachmentID) else {
@@ -1251,6 +1264,10 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         let attributeMessage = NSAttributedString(string: message, attributes: attributes)
         attachment.message = attributeMessage
         richTextView.refreshLayoutFor(attachment: attachment)
+    }
+
+    fileprivate func removeFailedMedia() {
+        // TODO: Implement this method to remove failed media.
     }
 
     // TODO: Extract these strings into structs like other items
@@ -1450,6 +1467,13 @@ fileprivate extension AztecPostViewController {
         static let message = NSLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
         static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
     }
+
+    struct FailedMediaRemovalAlert {
+        static let title = NSLocalizedString("Uploads failed", comment: "Title for alert when trying to save post with failed media items")
+        static let message = NSLocalizedString("Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", comment: "Confirms with the user if they save the post all media that failed to upload will be removed from it.")
+        static let acceptTitle  = NSLocalizedString("Yes", comment: "Accept Action")
+        static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
+    }
 }
 
 protocol MediaProgressCoordinatorDelegate: class {
@@ -1488,13 +1512,13 @@ class MediaProgressCoordinator: NSObject {
 
         mediaUploadingProgress.completedUnitCount += 1
 
-        if !isRunning() {
+        if !isRunning {
             delegate?.mediaProgressCoordinatorDidFinishingUpload(self)
         }
     }
 
     func track(numberOfItems count: Int) {
-        if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning() {
+        if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
             self.mediaUploadingProgress = nil
         }
@@ -1570,7 +1594,7 @@ class MediaProgressCoordinator: NSObject {
         delegate?.mediaProgressCoordinator(self, progressDidChange: value)
     }
 
-    func isRunning() -> Bool {
+    var isRunning: Bool {
         guard let progress = mediaUploadingProgress else {
             return false
         }
@@ -1588,6 +1612,12 @@ class MediaProgressCoordinator: NSObject {
                 return true
             }
         }
+        return false
+    }
+
+    // TODO: Implement this method to return true if there is failed media.
+    //       This may not be the right place for the bool.
+    var hasFailedMedia: Bool {
         return false
     }
 }
