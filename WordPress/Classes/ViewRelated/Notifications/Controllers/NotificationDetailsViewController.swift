@@ -1,12 +1,22 @@
 import Foundation
 import CoreData
+import Gridicons
 import SVProgressHUD
 import WordPressShared
 import WordPressComStatsiOS
 
 
-/// Renders a given Notification entity, onscreen
+
 ///
+///
+protocol NotificationsNavigationDataSource: class {
+    func notification(succeeding note: Notification) -> Notification?
+    func notification(preceding note: Notification) -> Notification?
+}
+
+
+// MARK: - Renders a given Notification entity, onscreen
+//
 class NotificationDetailsViewController: UIViewController {
     // MARK: - Properties
 
@@ -58,11 +68,27 @@ class NotificationDetailsViewController: UIViewController {
     ///
     fileprivate let estimatedRowHeightsCache = NSCache<AnyObject, AnyObject>()
 
+    /// Previous NavBar Navigation Button
+    ///
+    var previousNavigationButton: UIBarButtonItem!
+
+    /// Next NavBar Navigation Button
+    ///
+    var nextNavigationButton: UIBarButtonItem!
+
+    /// Arrows Navigation Datasource
+    ///
+    weak var dataSource: NotificationsNavigationDataSource?
+
     /// Notification to-be-displayed
     ///
     var note: Notification! {
         didSet {
-            refreshInterfaceIfNeeded()
+            guard oldValue != note && isViewLoaded else {
+                return
+            }
+
+            refreshInterface()
         }
     }
 
@@ -72,6 +98,12 @@ class NotificationDetailsViewController: UIViewController {
     /// in the eventuallity of a failure.
     ///
     var onDeletionRequestCallback: ((NotificationDeletionRequest) -> Void)?
+
+    /// Closure to be executed whenever the notification that's being currently displayed, changes.
+    /// This happens due to Navigation Events (Next / Previous)
+    ///
+    var onSelectedNoteChange: ((Notification) -> Void)?
+
 
 
     deinit {
@@ -135,12 +167,17 @@ class NotificationDetailsViewController: UIViewController {
     }
 
     fileprivate func refreshInterface() {
-        title = note.title
         tableView.reloadData()
-
         attachReplyViewIfNeeded()
         attachSuggestionsViewIfNeeded()
         adjustLayoutConstraintsIfNeeded()
+        refreshNavigationBar()
+    }
+
+    fileprivate func refreshNavigationBar() {
+        title = note.title
+        previousNavigationButton.isEnabled = shouldEnablePreviousButton
+        nextNavigationButton.isEnabled = shouldEnableNextButton
     }
 }
 
@@ -245,10 +282,26 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
 extension NotificationDetailsViewController {
     func setupNavigationBar() {
         // Don't show the notification title in the next-view's back button
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(),
-                                                           style: .plain,
-                                                           target: nil,
-                                                           action: nil)
+        let backButton = UIBarButtonItem(title: String(),
+                                         style: .plain,
+                                         target: nil,
+                                         action: nil)
+
+        let previousButton = UIBarButtonItem(image: Gridicon.iconOfType(.arrowDown),
+                                             style: .plain,
+                                             target: self,
+                                             action: #selector(previousNotificationWasPressed))
+
+        let nextButton = UIBarButtonItem(image: Gridicon.iconOfType(.arrowUp),
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(nextNotificationWasPressed))
+
+        navigationItem.backBarButtonItem = backButton
+        navigationItem.rightBarButtonItems = [nextButton, previousButton]
+
+        previousNavigationButton = previousButton
+        nextNavigationButton = nextButton
     }
 
     func setupMainView() {
@@ -673,6 +726,9 @@ extension NotificationDetailsViewController {
         // Reload the table, if *our* notification got updated
         if updated.contains(note) || refreshed.contains(note) {
             refreshInterface()
+        } else {
+            // Otherwise, refresh the navigation bar as the notes list might have changed
+            refreshNavigationBar()
         }
 
         // Dismiss this ViewController if *our* notification... just got deleted
@@ -1135,6 +1191,38 @@ extension NotificationDetailsViewController: SuggestionsTableViewDelegate {
     func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
         replyTextView.replaceTextAtCaret(text as NSString?, withText: suggestion)
         suggestionsTableView.showSuggestions(forWord: String())
+    }
+}
+
+
+
+// MARK: - Navigation Helpers
+//
+extension NotificationDetailsViewController {
+    @IBAction func previousNotificationWasPressed() {
+        guard let previous = dataSource?.notification(preceding: note) else {
+            return
+        }
+
+        onSelectedNoteChange?(previous)
+        note = previous
+    }
+
+    @IBAction func nextNotificationWasPressed() {
+        guard let next = dataSource?.notification(succeeding: note) else {
+            return
+        }
+
+        onSelectedNoteChange?(next)
+        note = next
+    }
+
+    var shouldEnablePreviousButton: Bool {
+        return dataSource?.notification(preceding: note) != nil
+    }
+
+    var shouldEnableNextButton: Bool {
+        return dataSource?.notification(succeeding: note) != nil
     }
 }
 
