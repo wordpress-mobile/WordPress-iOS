@@ -544,11 +544,6 @@ private extension AztecPostViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        let switchModeTitle = (mode == .richText) ? MoreSheetAlert.htmlTitle : MoreSheetAlert.richTitle
-        alert.addDefaultActionWithTitle(switchModeTitle) { _ in
-            self.mode.toggle()
-        }
-
         alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { _ in
             self.displayPreview()
         }
