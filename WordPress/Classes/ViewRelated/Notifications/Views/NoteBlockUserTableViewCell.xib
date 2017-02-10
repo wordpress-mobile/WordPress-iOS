@@ -1,82 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="ipad9_7" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="70" id="rfv-Np-qYy" userLabel="User" customClass="NoteBlockUserTableViewCell" customModule="WordPress">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+        <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="76" id="rfv-Np-qYy" userLabel="User" customClass="NoteBlockUserTableViewCell" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="76"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rfv-Np-qYy" id="spe-vQ-kSe">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="rfv-Np-qYy" id="spe-vQ-kSe">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="75.666666666666671"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="left.png" translatesAutoresizingMaskIntoConstraints="NO" id="LYp-ge-5Fb" userLabel="GravatarImageView" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                        <rect key="frame" x="12" y="12" width="54" height="54"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="46" id="bZH-BB-fLL"/>
-                            <constraint firstAttribute="height" constant="54" id="cVy-mP-YcX"/>
-                            <constraint firstAttribute="width" constant="54" id="vh6-ju-ORT"/>
-                            <constraint firstAttribute="height" constant="46" id="wNV-SL-4zo"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="cVy-mP-YcX"/>
-                                <exclude reference="vh6-ju-ORT"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <mask key="constraints">
-                                <exclude reference="bZH-BB-fLL"/>
-                                <include reference="cVy-mP-YcX"/>
-                                <include reference="vh6-ju-ORT"/>
-                                <exclude reference="wNV-SL-4zo"/>
-                            </mask>
-                        </variation>
-                    </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Lastname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBR-jy-KRp" userLabel="NameLabel">
-                        <rect key="frame" x="78" y="8" width="230" height="14"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blog URL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lsp-ya-PNI" userLabel="BlogUrlLabel">
-                        <rect key="frame" x="78" y="19" width="230" height="15"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7h0-qK-qQQ" userLabel="FollowButton">
-                        <rect key="frame" x="74" y="32" width="100" height="22"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="100" id="lla-7C-ydl"/>
-                        </constraints>
-                        <inset key="contentEdgeInsets" minX="2" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <state key="normal" title="Button" image="reader-postaction-follow.png">
-                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </state>
-                        <connections>
-                            <action selector="followWasPressed:" destination="rfv-Np-qYy" eventType="touchUpInside" id="gyz-xq-cN1"/>
-                        </connections>
-                    </button>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Gw9-Ao-Lgs">
+                        <rect key="frame" x="15" y="11" width="290" height="54"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LYp-ge-5Fb" userLabel="GravatarImageView" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="46" height="46"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="bZH-BB-fLL"/>
+                                    <constraint firstAttribute="height" priority="999" constant="54" id="cVy-mP-YcX"/>
+                                    <constraint firstAttribute="width" constant="54" id="vh6-ju-ORT"/>
+                                    <constraint firstAttribute="height" priority="999" constant="46" id="wNV-SL-4zo"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="bZH-BB-fLL"/>
+                                        <exclude reference="wNV-SL-4zo"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="bZH-BB-fLL"/>
+                                        <exclude reference="cVy-mP-YcX"/>
+                                        <exclude reference="vh6-ju-ORT"/>
+                                        <include reference="wNV-SL-4zo"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="bZH-BB-fLL"/>
+                                        <exclude reference="cVy-mP-YcX"/>
+                                        <exclude reference="vh6-ju-ORT"/>
+                                        <include reference="wNV-SL-4zo"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tJB-h9-inM">
+                                <rect key="frame" x="58" y="0.0" width="232" height="54"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="ilL-3r-WNn">
+                                        <rect key="frame" x="0.0" y="-2" width="232" height="56"/>
+                                        <subviews>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Lastname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBR-jy-KRp" userLabel="NameLabel">
+                                                <rect key="frame" x="0.0" y="0.0" width="88" height="14"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blog URL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lsp-ya-PNI" userLabel="BlogUrlLabel">
+                                                <rect key="frame" x="0.0" y="14" width="52.333333333333329" height="14.333333333333336"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7h0-qK-qQQ" userLabel="FollowButton">
+                                                <rect key="frame" x="0.0" y="28.333333333333339" width="100" height="27.666666666666661"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="100" id="lla-7C-ydl"/>
+                                                </constraints>
+                                                <inset key="contentEdgeInsets" minX="-2" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Button">
+                                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="followWasPressed:" destination="rfv-Np-qYy" eventType="touchUpInside" id="gyz-xq-cN1"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="ilL-3r-WNn" secondAttribute="trailing" id="O56-bz-iWL"/>
+                                    <constraint firstItem="ilL-3r-WNn" firstAttribute="top" secondItem="tJB-h9-inM" secondAttribute="top" constant="-2" id="Xjb-8R-L2Y"/>
+                                    <constraint firstItem="ilL-3r-WNn" firstAttribute="leading" secondItem="tJB-h9-inM" secondAttribute="leading" id="ddy-gi-Ve5"/>
+                                    <constraint firstAttribute="bottom" secondItem="ilL-3r-WNn" secondAttribute="bottom" id="pGo-8t-bIh"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                    </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="bBR-jy-KRp" firstAttribute="leading" secondItem="LYp-ge-5Fb" secondAttribute="trailing" constant="12" id="0OR-cW-eTf"/>
-                    <constraint firstAttribute="trailing" secondItem="bBR-jy-KRp" secondAttribute="trailing" constant="12" id="4Sk-pm-mkY"/>
-                    <constraint firstItem="LYp-ge-5Fb" firstAttribute="leading" secondItem="spe-vQ-kSe" secondAttribute="leading" constant="12" id="7Ly-Vn-Sfw"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="LYp-ge-5Fb" secondAttribute="bottom" priority="250" constant="12" id="AcE-0Y-1gg"/>
-                    <constraint firstItem="7h0-qK-qQQ" firstAttribute="top" secondItem="Lsp-ya-PNI" secondAttribute="bottom" constant="-2" id="EZ1-1B-8sM"/>
-                    <constraint firstItem="Lsp-ya-PNI" firstAttribute="top" secondItem="bBR-jy-KRp" secondAttribute="bottom" constant="-3" id="GCI-JA-ENQ"/>
-                    <constraint firstAttribute="trailing" secondItem="Lsp-ya-PNI" secondAttribute="trailing" constant="12" id="Pry-tM-EvJ"/>
-                    <constraint firstItem="Lsp-ya-PNI" firstAttribute="leading" secondItem="LYp-ge-5Fb" secondAttribute="trailing" constant="12" id="SmI-6f-bhD"/>
-                    <constraint firstItem="7h0-qK-qQQ" firstAttribute="leading" secondItem="LYp-ge-5Fb" secondAttribute="trailing" constant="8" id="WPV-yR-HKF"/>
-                    <constraint firstItem="LYp-ge-5Fb" firstAttribute="top" secondItem="spe-vQ-kSe" secondAttribute="top" constant="12" id="rOR-r1-XWR"/>
-                    <constraint firstItem="LYp-ge-5Fb" firstAttribute="top" secondItem="bBR-jy-KRp" secondAttribute="top" constant="4" id="tg7-Wt-iKr"/>
+                    <constraint firstItem="Gw9-Ao-Lgs" firstAttribute="top" secondItem="spe-vQ-kSe" secondAttribute="topMargin" id="AiR-sj-Yqj"/>
+                    <constraint firstItem="Gw9-Ao-Lgs" firstAttribute="leading" secondItem="spe-vQ-kSe" secondAttribute="leadingMargin" id="F1K-Km-2Hy"/>
+                    <constraint firstItem="Gw9-Ao-Lgs" firstAttribute="bottom" secondItem="spe-vQ-kSe" secondAttribute="bottomMargin" id="Y1B-rr-sof"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Gw9-Ao-Lgs" secondAttribute="trailing" id="r4i-8V-wpo"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -85,10 +109,7 @@
                 <outlet property="gravatarImageView" destination="LYp-ge-5Fb" id="zlq-p2-dIB"/>
                 <outlet property="nameLabel" destination="bBR-jy-KRp" id="qrk-bR-zkq"/>
             </connections>
+            <point key="canvasLocation" x="15" y="115"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="left.png" width="21" height="21"/>
-        <image name="reader-postaction-follow.png" width="21" height="21"/>
-    </resources>
 </document>

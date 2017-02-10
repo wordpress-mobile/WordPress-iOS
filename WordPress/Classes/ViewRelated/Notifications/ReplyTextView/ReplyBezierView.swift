@@ -20,7 +20,7 @@ class ReplyBezierView: UIView {
             setNeedsDisplay()
         }
     }
-    var insets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 1) {
+    var insets = UIEdgeInsets(top: 8, left: 1, bottom: 8, right: 1) {
         didSet {
             setNeedsDisplay()
         }

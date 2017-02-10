@@ -162,26 +162,13 @@ class NoteTableViewCell: MGSwipeTableCell {
 
         // Separators: Setup bottom separators!
         separatorsView.bottomColor = WPStyleGuide.Notifications.noteSeparatorColor
-        separatorsView.bottomInsets = Settings.separatorInsets
         backgroundView = separatorsView
-
-        // Needed as long as we have custom margins
-        clipsToBounds = true
-    }
-
-    override var frame: CGRect {
-        get {
-            return super.frame
-        }
-        set {
-            super.frame = CustomCellMarginBehavior().correctedFrame(newValue, for: self)
-        }
     }
 
     override func layoutSubviews() {
         refreshBackgrounds()
         super.layoutSubviews()
-        CustomCellMarginBehavior().cellDidLayoutSubviews(self)
+        refreshSeparators()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -197,8 +184,14 @@ class NoteTableViewCell: MGSwipeTableCell {
     }
 
 
-
     // MARK: - Private Methods
+
+    func refreshSeparators() {
+        var insets = UIEdgeInsets.zero
+        insets.left = readableContentGuide.layoutFrame.origin.x
+        separatorsView.bottomInsets = insets
+    }
+
     fileprivate func refreshBackgrounds() {
         // Noticon Background
         if unapproved {
@@ -266,65 +259,19 @@ class NoteTableViewCell: MGSwipeTableCell {
     }
 
 
-    // MARK: - Public Static Helpers
-    class func layoutHeightWithWidth(_ width: CGFloat, subject: NSAttributedString?, snippet: NSAttributedString?) -> CGFloat {
-
-        // Limit the width (iPad Devices)
-        let cellWidth = min(width, Style.maximumCellWidth)
-        var cellHeight = Settings.textInsets.top + Settings.textInsets.bottom
-
-        // Calculate the maximum label size
-        let maxLabelWidth = cellWidth - Settings.textInsets.left - Settings.textInsets.right
-        let maxLabelSize = CGSize(width: maxLabelWidth, height: CGFloat.greatestFiniteMagnitude)
-
-        // Helpers
-        let showsSnippet = snippet != nil
-
-        // If we must render a snippet, the maximum subject height will change. Account for that please
-        if let unwrappedSubject = subject {
-            let subjectRect = unwrappedSubject.boundingRect(with: maxLabelSize,
-                                                                    options: .usesLineFragmentOrigin,
-                                                                    context: nil)
-
-            cellHeight += min(subjectRect.height, Settings.subjectMaximumHeight(showsSnippet))
-        }
-
-        if let unwrappedSubject = snippet {
-            let snippetRect = unwrappedSubject.boundingRect(with: maxLabelSize,
-                                                                    options: .usesLineFragmentOrigin,
-                                                                    context: nil)
-
-            cellHeight += min(snippetRect.height, Settings.snippetMaximumHeight())
-        }
-
-        return max(cellHeight, Settings.minimumCellHeight)
-    }
-
-
     // MARK: - Private Alias
     fileprivate typealias Style = WPStyleGuide.Notifications
 
     // MARK: - Private Settings
     fileprivate struct Settings {
-        static let separatorInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
         static let subjectNumberOfLinesWithoutSnippet = 3
         static let subjectNumberOfLinesWithSnippet = 2
         static let snippetNumberOfLines = 2
         static let noticonRadius = CGFloat(10)
         static let noticonContainerRadius = CGFloat(12)
-        static let minimumCellHeight = CGFloat(70)
-        static let textInsets = UIEdgeInsets(top: 9.0, left: 71.0, bottom: 12.0, right: 12.0)
 
         static func subjectNumberOfLines(_ showsSnippet: Bool) -> Int {
             return showsSnippet ? subjectNumberOfLinesWithSnippet : subjectNumberOfLinesWithoutSnippet
-        }
-
-        static func subjectMaximumHeight(_ showsSnippet: Bool) -> CGFloat {
-            return CGFloat(Settings.subjectNumberOfLines(showsSnippet)) * Style.subjectLineSize
-        }
-
-        static func snippetMaximumHeight() -> CGFloat {
-            return CGFloat(snippetNumberOfLines) * Style.snippetLineSize
         }
     }
 
@@ -339,7 +286,6 @@ class NoteTableViewCell: MGSwipeTableCell {
     @IBOutlet var noticonView: UIView!
     @IBOutlet var subjectLabel: UILabel!
     @IBOutlet var snippetLabel: UILabel!
-    @IBOutlet var timestampLabel: UILabel!
 
     // MARK: - Undo Overlay Optional
     @IBOutlet var undoOverlayView: NoteUndoOverlayView!
