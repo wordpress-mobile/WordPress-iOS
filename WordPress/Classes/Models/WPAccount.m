@@ -20,6 +20,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
 @dynamic uuid;
 @dynamic dateCreated;
 @dynamic email;
+@dynamic emailVerified;
 @dynamic displayName;
 @dynamic userID;
 @dynamic avatarURL;
