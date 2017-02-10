@@ -64,6 +64,8 @@ class NotificationsViewController: UITableViewController {
     ///
     fileprivate var unreadNotificationIds = Set<NSManagedObjectID>()
 
+    fileprivate var restorableSelectedIndexPath: IndexPath?
+    fileprivate let defaultIndexPath = IndexPath(row: 0, section: 0)
 
     // MARK: - View Lifecycle
 
@@ -77,6 +79,10 @@ class NotificationsViewController: UITableViewController {
         // Note: This class doesn't actually conform to restoration?
         // Swift 3 migration: Brent Nov. 28/16
         //restorationClass = NotificationsViewController.self
+
+        if restorableSelectedIndexPath == nil {
+            restorableSelectedIndexPath = defaultIndexPath
+        }
 
         startListeningToAccountNotifications()
     }
@@ -95,14 +101,19 @@ class NotificationsViewController: UITableViewController {
         setupNoResultsView()
         setupFiltersSegmentedControl()
 
-        tableView.reloadData()
+        reloadTableViewPreservingSelection()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
-        tableView.deselectSelectedRowWithAnimation(true)
+        // Manually deselect the selected row. 
+        // This is required due to a bug in iOS7 / iOS8
+        if splitViewControllerIsHorizontallyCompact {
+            tableView.deselectSelectedRowWithAnimation(true)
+
+            restorableSelectedIndexPath = defaultIndexPath
+        }
 
         // While we're onscreen, please, update rows with animations
         tableViewHandler.updateRowAnimation = .fade
@@ -117,6 +128,7 @@ class NotificationsViewController: UITableViewController {
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
+        reloadTableViewPreservingSelection()
         showNoResultsViewIfNeeded()
     }
 
@@ -204,6 +216,8 @@ class NotificationsViewController: UITableViewController {
         guard deletionRequestForNoteWithID(note.objectID) == nil else {
             return
         }
+
+        restorableSelectedIndexPath = indexPath
 
         showDetailsForNotification(note)
     }
@@ -553,7 +567,7 @@ private extension NotificationsViewController {
 
         /// Refetch + Reload
         _ = try? tableViewHandler.resultsController.performFetch()
-        tableView.reloadData()
+        reloadTableViewPreservingSelection()
 
         // Empty State?
         showNoResultsViewIfNeeded()
@@ -574,9 +588,19 @@ private extension NotificationsViewController {
             DDLogSwift.logError("Error refreshing Notification Row \(error)")
         }
     }
+
+    func reloadTableViewPreservingSelection() {
+        let selectedIndexPath = restorableSelectedIndexPath
+
+        tableView.reloadData()
+
+        // Show the current selection if our split view isn't collapsed
+        if !splitViewControllerIsHorizontallyCompact {
+            tableView.selectRow(at: selectedIndexPath,
+                                animated: false, scrollPosition: .none)
+        }
+    }
 }
-
-
 
 // MARK: - UIRefreshControl Methods
 //
