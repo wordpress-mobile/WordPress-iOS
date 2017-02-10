@@ -27,7 +27,7 @@ class AztecPostViewController: UIViewController {
         tv.mediaDelegate = self
         toolbar.formatter = self
 
-        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
         recognizer.cancelsTouchesInView = false
         recognizer.delegate = self
 
@@ -208,6 +208,8 @@ class AztecPostViewController: UIViewController {
         progressView.translatesAutoresizingMaskIntoConstraints = false
         return progressView
     }()
+
+    fileprivate var currentSelectedAttachment: TextAttachment?
 
     /// Maintainer of state for editor - like for post button
     ///
@@ -1193,7 +1195,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 
     func handleError(_ error: NSError?, onAttachment attachment: Aztec.TextAttachment) {
-        let message = NSLocalizedString("Failed to insert media on your post.\n Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
+        let message = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
         if let error = error {
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
                 return
@@ -1201,15 +1203,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             mediaProgressCoordinator.attach(error: error, toMediaID: attachment.identifier)
         }
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        let shadow = NSShadow()
-        shadow.shadowColor = UIColor(white: 0, alpha: 0.6)
-        let attributes: [String:Any] = [NSFontAttributeName: Assets.defaultSemiBoldFont,
-                                        NSParagraphStyleAttributeName: paragraphStyle,
-                                        NSForegroundColorAttributeName: UIColor.darkGray,
-                                        NSShadowAttributeName: shadow]
-        let attributeMessage = NSAttributedString(string: message, attributes: attributes)
+        let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
         richTextView.refreshLayoutFor(attachment: attachment)
     }
@@ -1239,9 +1233,14 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         alertController.addActionWithTitle(NSLocalizedString("Dismiss", comment: "User action to dismiss media options."),
                                            style: .cancel,
                                            handler: { (action) in
+                                            if attachment == self.currentSelectedAttachment {
+                                                self.currentSelectedAttachment = nil
+                                                attachment.message = nil
+                                                self.richTextView.refreshLayoutFor(attachment: attachment)
+                                            }
         })
 
-        alertController.addActionWithTitle(NSLocalizedString("Details", comment: "User action to edit media details."),
+        alertController.preferredAction = alertController.addActionWithTitle(NSLocalizedString("Details", comment: "User action to edit media details."),
                                            style: .default,
                                            handler: { (action) in
                                             self.displayDetails(forAttachment: attachment)
@@ -1256,11 +1255,6 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                 self.richTextView.remove(attachmentID: mediaID)
             })
         } else {
-            alertController.addActionWithTitle(NSLocalizedString("Remove Media", comment: "User action to remove media."),
-                                               style: .destructive,
-                                               handler: { (action) in
-                                                self.richTextView.remove(attachmentID: mediaID)
-            })
             if let error = mediaProgressCoordinator.error(forMediaID: mediaID) {
                 message = error.localizedDescription
                 alertController.addActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload."),
@@ -1277,14 +1271,21 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                     }
                 })
             }
+            alertController.addActionWithTitle(NSLocalizedString("Remove Media", comment: "User action to remove media."),
+                                               style: .destructive,
+                                               handler: { (action) in
+                                                self.richTextView.remove(attachmentID: mediaID)
+            })
         }
 
         alertController.title = title
         alertController.message = message
         alertController.popoverPresentationController?.sourceView = richTextView
-        alertController.popoverPresentationController?.sourceRect = CGRect(origin: richTextView.center, size: CGSize(width: 1, height: 1))
-        alertController.popoverPresentationController?.permittedArrowDirections = .up
-        present(alertController, animated:true, completion: nil)
+        alertController.popoverPresentationController?.sourceRect = CGRect(origin: position, size: CGSize(width: 1, height: 1))
+        alertController.popoverPresentationController?.permittedArrowDirections = .any
+        present(alertController, animated:true, completion: { () in
+            UIMenuController.shared.setMenuVisible(false, animated: false)
+        })
     }
 
     func displayDetails(forAttachment attachment: TextAttachment) {
@@ -1295,6 +1296,19 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
+    }
+
+    var mediaMessageAttributes: [String: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        let shadow = NSShadow()
+        shadow.shadowOffset = CGSize(width: 1, height: 1)
+        shadow.shadowColor = UIColor(white: 0, alpha: 0.6)
+        let attributes: [String:Any] = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20),
+                                        NSParagraphStyleAttributeName: paragraphStyle,
+                                        NSForegroundColorAttributeName: UIColor.white,
+                                        NSShadowAttributeName: shadow]
+        return attributes
     }
 }
 
@@ -1393,20 +1407,45 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 }
 
 extension AztecPostViewController: UIGestureRecognizerDelegate {
+
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 
     func richTextViewWasPressed(_ recognizer: UIGestureRecognizer) {
-        guard recognizer.state == .began else {
+        guard recognizer.state == .recognized else {
             return
         }
         let locationInTextView = recognizer.location(in: richTextView)
+        // check if we have an attachment in the position we tapped
         guard let attachment = richTextView.attachmentAtPoint(locationInTextView) else {
+            // if we have a current selected attachment marked lets unmark it
+            if let selectedAttachment = currentSelectedAttachment {
+                selectedAttachment.message = nil
+                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+                currentSelectedAttachment = nil
+            }
             return
         }
+        // move the selection to the position of the attachment
+        richTextView.moveSelectionToPoint(locationInTextView)
 
-        displayActions(forAttachment: attachment, position: locationInTextView)
+        //check if it's the current selected attachment or an failed upload
+        if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
+            //if it's the same attachment has before let's display the options
+            displayActions(forAttachment: attachment, position: locationInTextView)
+        } else {
+            // if it's a new attachment tapped let's unmark the previous one
+            if let selectedAttachment = currentSelectedAttachment {
+                selectedAttachment.message = nil
+                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+            }
+            // and mark the newly tapped attachment
+            let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a image on the post/page editor.")
+            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+            richTextView.refreshLayoutFor(attachment: attachment)
+            currentSelectedAttachment = attachment
+        }
     }
 }
 
