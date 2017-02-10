@@ -527,10 +527,19 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         // left in the navigation stack that prefer to be fullscreen, then
         // animate back to a standard split view.
         if isCurrentlyFullscreen && !hasFullscreenViewControllersInStack {
-            setPrimaryViewControllerHidden(false, animated: animated)
+            let performTransition = { (animated: Bool) in
+                self.setPrimaryViewControllerHidden(false, animated: animated)
 
-            if animated && !isViewHorizontallyCompact() {
-                navigationController.navigationBar.fadeOutNavigationItems(animated: true)
+                if animated && !self.isViewHorizontallyCompact() {
+                    navigationController.navigationBar.fadeOutNavigationItems(animated: true)
+                }
+            }
+
+            if UIAccessibilityIsReduceMotionEnabled() {
+                view.hideWithBlankingSnapshot(afterScreenUpdates: false)
+                performTransition(false)
+            } else {
+                performTransition(animated)
             }
         }
     }
@@ -552,6 +561,10 @@ extension WPSplitViewController: UINavigationControllerDelegate {
             // we can set the delegate to nil (see: http://stackoverflow.com/a/38859457/570547)
             navigationController.interactivePopGestureRecognizer?.delegate = nil
             navigationController.interactivePopGestureRecognizer?.isEnabled = allowInteractiveBackGesture
+
+            if UIAccessibilityIsReduceMotionEnabled() {
+                view.fadeOutAndRemoveBlankingSnapshot()
+            }
         }
     }
 

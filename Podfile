@@ -48,10 +48,10 @@ abstract_target 'WordPress_Base' do
     pod 'Gridicons', '0.4'
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
-    pod 'WPMediaPicker', '0.11'
+    pod 'WPMediaPicker', '0.11.1'
     pod 'WordPress-iOS-Editor', '1.8.1'
     pod 'WordPressCom-Analytics-iOS', '0.1.22'
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => '297cb09fec269ab0168e3a7ced641d54cd258cc0'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :commit => 'f682b3b2ca111875372781e1c55e1c28e2a1ce2b'
     pod 'wpxmlrpc', '~> 0.8'
 
     target :WordPressTest do
