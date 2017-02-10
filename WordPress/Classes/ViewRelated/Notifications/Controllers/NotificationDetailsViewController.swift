@@ -176,8 +176,15 @@ class NotificationDetailsViewController: UIViewController {
 
     fileprivate func refreshNavigationBar() {
         title = note.title
-        previousNavigationButton.isEnabled = shouldEnablePreviousButton
-        nextNavigationButton.isEnabled = shouldEnableNextButton
+
+        if splitViewControllerIsHorizontallyCompact {
+            navigationItem.rightBarButtonItems = [nextNavigationButton, previousNavigationButton]
+
+            previousNavigationButton.isEnabled = shouldEnablePreviousButton
+            nextNavigationButton.isEnabled = shouldEnableNextButton
+        } else {
+            navigationItem.rightBarButtonItems = nil
+        }
     }
 }
 
