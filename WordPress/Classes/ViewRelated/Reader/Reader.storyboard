@@ -216,7 +216,7 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="fO8-Q5-Boc">
-                                <rect key="frame" x="14" y="0.0" width="345" height="50"/>
+                                <rect key="frame" x="14" y="0.0" width="345" height="150"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJH-3y-QkU" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
                                         <rect key="frame" x="0.0" y="0.0" width="345" height="50"/>
@@ -257,6 +257,15 @@
                                             <outlet property="textLabel" destination="I5s-ci-UB0" id="ekY-ts-7Ib"/>
                                         </connections>
                                     </view>
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eSz-e2-SRW">
+                                        <rect key="frame" x="0.0" y="50" width="345" height="100"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" placeholder="YES" id="O7D-BL-yWr"/>
+                                        </constraints>
+                                        <connections>
+                                            <segue destination="7Pc-dm-R7a" kind="embed" id="vhA-Ne-kEy"/>
+                                        </connections>
+                                    </containerView>
                                 </subviews>
                             </stackView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vSH-j9-J3c">
@@ -612,6 +621,20 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ETa-G8-d6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1373" y="1811"/>
+        </scene>
+        <!--Related Posts View Controller-->
+        <scene sceneID="uVg-vg-oQl">
+            <objects>
+                <viewController storyboardIdentifier="RelatedPostsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7Pc-dm-R7a" customClass="RelatedPostsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BsZ-Gd-gmn">
+                        <rect key="frame" x="0.0" y="0.0" width="345" height="100"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="b7O-t0-EA1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1484" y="1129"/>
         </scene>
     </scenes>
     <resources>

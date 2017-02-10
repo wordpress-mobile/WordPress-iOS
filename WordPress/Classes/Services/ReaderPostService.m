@@ -175,6 +175,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                          success:(void (^)())success
                          failure:(void (^)(NSError *error))failure
 {
+    NSManagedObjectID *postObjectID = post.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
 
     NSUInteger postID = [post.postID integerValue];
@@ -185,20 +186,43 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                             localCount:count
                            globalCount:count
                                success:^(NSArray<RemoteReaderPost *> *remotePosts) {
+                                   [self.managedObjectContext performBlock:^{
+                                       NSError *error;
+                                       ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
+                                       if (error || !readerPost) {
+                                           // if there was an error or the post was deleted just bail.
+                                           if (failure){
+                                               failure(error);
+                                           }
+                                           return;
+                                       }
 
-                                   NSMutableArray *posts = [NSMutableArray array];
-                                   for (RemoteReaderPost *remotePost in remotePosts) {
-                                       ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil];
-                                       [posts addObject:post];
-                                   }
-                                   if (success) {
-                                       success();
-                                   }
+                                       // Clear any existing relations.
+                                       for (ReaderPost *post in readerPost.relatedPosts) {
+                                           post.relatedPost =  nil;
+                                       }
 
+                                       // Assign new relations
+                                       for (RemoteReaderPost *remotePost in remotePosts) {
+                                           ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil];
+                                           post.relatedPost = readerPost;
+                                       }
+
+                                       // Save all the things
+                                       [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+
+                                       if (success) {
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               success();
+                                           });
+                                       }
+                                   }];
                                } failure:^(NSError *error) {
-                                   if (failure){
-                                       failure(error);
-                                   }
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                       if (failure){
+                                           failure(error);
+                                       }
+                                   });
                                }];
 }
 
@@ -411,7 +435,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = NULL AND inUse = false"];
+    // Even if a post has no topic, do not delete it if its in use, or if it
+    // is a relatedPost. In these cases, the post will be deleted up when its
+    // no longer in use, or when its relatedPost is deleted.
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = NULL AND inUse = false AND relatedPost = NULL"];
     [fetchRequest setPredicate:pred];
 
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
