@@ -532,12 +532,10 @@ extension AztecPostViewController {
                 WPNotificationFeedbackGenerator.notificationOccurred(.success)
             }
 
-            // TODO: Switch to posts list if appropriate
-
             // Don't dismiss - make draft now in secondary publish
             let shouldDismissWindow: Bool
-            if let secondaryAction = self.postEditorStateContext.secondaryPublishButtonAction,
-                secondaryPublishTapped && secondaryAction == .save {
+            if self.postEditorStateContext.secondaryPublishButtonAction == .save,
+                secondaryPublishTapped {
                 shouldDismissWindow = false
             } else {
                 shouldDismissWindow = true
