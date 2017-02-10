@@ -66,16 +66,13 @@ extension WPStyleGuide {
         public static let headerDetailsColor        = blockSubtitleColor
         public static let headerDetailsRegularFont  = blockRegularFont
 
-        public static let headerTitleRegularStyle   = [ NSParagraphStyleAttributeName: headerTitleParagraph,
-                                                        NSFontAttributeName: headerTitleRegularFont,
+        public static let headerTitleRegularStyle   = [ NSFontAttributeName: headerTitleRegularFont,
                                                         NSForegroundColorAttributeName: headerTitleColor]
 
-        public static let headerTitleBoldStyle      =  [ NSParagraphStyleAttributeName: headerTitleParagraph,
-                                                        NSFontAttributeName: headerTitleBoldFont,
+        public static let headerTitleBoldStyle      =  [ NSFontAttributeName: headerTitleBoldFont,
                                                         NSForegroundColorAttributeName: headerTitleColor]
 
-        public static let headerTitleContextStyle   = [ NSParagraphStyleAttributeName: headerTitleParagraph,
-                                                        NSFontAttributeName: headerTitleItalicsFont,
+        public static let headerTitleContextStyle   = [ NSFontAttributeName: headerTitleItalicsFont,
                                                         NSForegroundColorAttributeName: headerTitleContextColor]
 
         // Footer
@@ -228,9 +225,6 @@ extension WPStyleGuide {
         )
         fileprivate static let snippetParagraph         = NSMutableParagraphStyle(
             minLineHeight: snippetLineSize, maxLineHeight: snippetLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
-        )
-        fileprivate static let headerTitleParagraph     = NSMutableParagraphStyle(
-            minLineHeight: blockLineSize, lineBreakMode: .byTruncatingTail, alignment: .natural
         )
         fileprivate static let blockParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, lineBreakMode: .byWordWrapping, alignment: .natural
