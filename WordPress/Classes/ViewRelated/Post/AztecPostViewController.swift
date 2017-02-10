@@ -20,17 +20,12 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
         let tv = Aztec.TextView(defaultFont: Assets.defaultRegularFont, defaultMissingImage: Assets.defaultMissingImage)
 
-        tv.font = Assets.defaultRegularFont
-        tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
+        let toolbar = self.createToolbar(htmlMode: false)
+        let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
+        self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         tv.delegate = self
-        let toolbar = self.createToolbar()
-        toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
-        toolbar.formatter = self
-        tv.inputAccessoryView = toolbar
-        tv.textColor = UIColor.darkText
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.keyboardDismissMode = .interactive
         tv.mediaDelegate = self
+        toolbar.formatter = self
 
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
         recognizer.cancelsTouchesInView = false
@@ -47,12 +42,11 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) lazy var htmlTextView: UITextView = {
         let tv = UITextView()
 
-        tv.accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
-        tv.font = Assets.defaultRegularFont
-        tv.textColor = UIColor.darkText
-        tv.translatesAutoresizingMaskIntoConstraints = false
+        let toolbar = self.createToolbar(htmlMode: true)
+        let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
+        self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
+        toolbar.formatter = self
         tv.isHidden = true
-        tv.keyboardDismissMode = .interactive
 
         return tv
     }()
@@ -69,13 +63,13 @@ class AztecPostViewController: UIViewController {
                                                       attributes: [NSForegroundColorAttributeName: WPStyleGuide.greyLighten30()])
         tf.delegate = self
         tf.font = WPFontManager.merriweatherBoldFont(ofSize: 24.0)
-        let toolbar = self.createToolbar()
-        toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
-        toolbar.enabled = false
-        tf.inputAccessoryView = toolbar
         tf.returnKeyType = .next
         tf.textColor = UIColor.darkText
         tf.translatesAutoresizingMaskIntoConstraints = false
+
+        let toolbar = self.createToolbar(htmlMode: true)
+        toolbar.formatter = self
+        tf.inputAccessoryView = toolbar
 
         tf.addTarget(self, action: #selector(titleTextFieldDidChange), for: [.editingChanged])
 
@@ -345,6 +339,15 @@ class AztecPostViewController: UIViewController {
             ])
     }
 
+    private func configureDefaultProperties(for textView: UITextView, using formatBar: Aztec.FormatBar, accessibilityLabel: String) {
+        textView.accessibilityLabel = accessibilityLabel
+        textView.font = Assets.defaultRegularFont
+        textView.inputAccessoryView = formatBar
+        textView.keyboardDismissMode = .interactive
+        textView.textColor = UIColor.darkText
+        textView.translatesAutoresizingMaskIntoConstraints = false
+    }
+
     func configureNavigationBar() {
         title = NSLocalizedString("Aztec", comment: "Aztec Editor's Title")
 
@@ -543,11 +546,6 @@ private extension AztecPostViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        let switchModeTitle = (mode == .richText) ? MoreSheetAlert.htmlTitle : MoreSheetAlert.richTitle
-        alert.addDefaultActionWithTitle(switchModeTitle) { _ in
-            self.mode.toggle()
-        }
-
         alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { _ in
             self.displayPreview()
         }
@@ -700,6 +698,7 @@ extension AztecPostViewController {
         htmlTextView.text = richTextView.getHTML()
         htmlTextView.isHidden = false
         richTextView.isHidden = true
+        htmlTextView.becomeFirstResponder()
     }
 
     fileprivate func switchToRichText() {
@@ -708,6 +707,7 @@ extension AztecPostViewController {
         richTextView.setHTML(htmlTextView.text)
         richTextView.isHidden = false
         htmlTextView.isHidden = true
+        richTextView.becomeFirstResponder()
     }
 }
 
@@ -735,6 +735,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                 toggleLink()
             case .media:
                 showImagePicker()
+            case .sourcecode:
+                toggleEditingMode()
         }
         updateFormatBar()
     }
@@ -905,46 +907,60 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         present(picker, animated: true, completion: nil)
     }
 
+    func toggleEditingMode() {
+        mode.toggle()
+    }
 
-    // MARK: -
 
-    func createToolbar() -> Aztec.FormatBar {
+    // MARK: - Toolbar creation
+
+    func createToolbar(htmlMode: Bool) -> Aztec.FormatBar {
         let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let items = [
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage), identifier: .media),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage).withRenderingMode(.alwaysTemplate), identifier: .media),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold), identifier: .bold),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold).withRenderingMode(.alwaysTemplate), identifier: .bold),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic), identifier: .italic),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic).withRenderingMode(.alwaysTemplate), identifier: .italic),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline), identifier: .underline),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline).withRenderingMode(.alwaysTemplate), identifier: .underline),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough), identifier: .strikethrough),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough).withRenderingMode(.alwaysTemplate), identifier: .strikethrough),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote), identifier: .blockquote),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote).withRenderingMode(.alwaysTemplate), identifier: .blockquote),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: .unorderedlist),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered).withRenderingMode(.alwaysTemplate), identifier: .unorderedlist),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: .orderedlist),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered).withRenderingMode(.alwaysTemplate), identifier: .orderedlist),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link), identifier: .link),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link).withRenderingMode(.alwaysTemplate), identifier: .link),
+            flex,
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.code).withRenderingMode(.alwaysTemplate), identifier: .sourcecode),
             flex,
             ]
 
         let toolbar = Aztec.FormatBar()
 
+        if htmlMode {
+            for item in items {
+                item.isEnabled = false
+                if let sourceItem = item as? FormatBarItem, sourceItem.identifier == .sourcecode {
+                    item.isEnabled = true
+                }
+            }
+        }
+
+        toolbar.items = items
         toolbar.barTintColor = UIColor(fromHex: 0xF9FBFC, alpha: 1)
         toolbar.tintColor = WPStyleGuide.greyLighten10()
         toolbar.highlightedTintColor = UIColor.blue
         toolbar.selectedTintColor = UIColor.darkGray
         toolbar.disabledTintColor = UIColor.lightGray
-        toolbar.items = items
-        return toolbar
-    }
+        toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
+        toolbar.formatter = self
 
-    func templateImage(named: String) -> UIImage {
-        return UIImage(named: named)!.withRenderingMode(.alwaysTemplate)
+        return toolbar
     }
 }
 
