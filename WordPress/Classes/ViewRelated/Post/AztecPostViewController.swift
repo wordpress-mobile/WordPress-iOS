@@ -473,6 +473,12 @@ extension AztecPostViewController {
 
     @IBAction func secondaryPublishButtonTapped() {
         let publishPostClosure = {
+            if self.postEditorStateContext.secondaryPublishButtonAction == .save {
+                self.post.status = PostStatusDraft
+            } else if self.postEditorStateContext.secondaryPublishButtonAction == .publish {
+                self.post.status = PostStatusPublish
+            }
+
             self.handlePublishButtonTapped(secondaryPublishTapped: true)
         }
 
@@ -506,19 +512,18 @@ extension AztecPostViewController {
             present(alertController, animated: true, completion: nil)
         }
 
-        let hudText = secondaryPublishTapped ? postEditorStateContext.secondaryPublishVerbText : postEditorStateContext.publishVerbText
-        SVProgressHUD.show(withStatus: hudText, maskType: .clear)
+        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText, maskType: .clear)
+        postEditorStateContext.updated(isBeingPublished: true)
 
         // Finally, publish the post.
         publishPost(secondaryPublishTapped: secondaryPublishTapped) { uploadedPost, error in
+            self.postEditorStateContext.updated(isBeingPublished: false)
             SVProgressHUD.dismiss()
 
             if let error = error {
                 DDLogSwift.logError("Error publishing post: \(error.localizedDescription)")
 
-                let hudText = secondaryPublishTapped ? self.postEditorStateContext.secondaryPublishErrorText : self.postEditorStateContext.publishErrorText
-
-                SVProgressHUD.showError(withStatus: hudText)
+                SVProgressHUD.showError(withStatus: self.postEditorStateContext.publishErrorText)
                 WPNotificationFeedbackGenerator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
                 // TODO: Determine if this is necessary; if it is then ensure state machine is updated
@@ -613,7 +618,7 @@ private extension AztecPostViewController {
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
             alert.addActionWithTitle(buttonTitle, style: .destructive) { _ in
-
+                self.secondaryPublishButtonTapped()
             }
         }
 
