@@ -13,9 +13,6 @@ import SVProgressHUD
         if let str = summary {
             postDictionary["summary"] = str
         }
-        if let str = tags {
-            postDictionary["tags"] = str
-        }
 
         activityItems.append(postDictionary)
         if let urlPath = link, let url = URL(string: urlPath) {
