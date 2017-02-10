@@ -790,7 +790,15 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     func showLinkDialog(forURL url: URL?, title: String?, range: NSRange) {
 
         let isInsertingNewLink = (url == nil)
-        // TODO: grab link from pasteboard if available
+        var urlToUse = url
+
+        if isInsertingNewLink {
+            let pasteboard = UIPasteboard.general
+            if let pastedURL = pasteboard.value(forPasteboardType:String(kUTTypeURL)) as? URL {
+                urlToUse = pastedURL
+            }
+        }
+
 
         let insertButtonTitle = isInsertingNewLink ? NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor") : NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
         let removeButtonTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
@@ -804,7 +812,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             textField.clearButtonMode = UITextFieldViewMode.always
             textField.placeholder = NSLocalizedString("URL", comment: "URL text field placeholder")
 
-            textField.text = url?.absoluteString
+            textField.text = urlToUse?.absoluteString
 
             textField.addTarget(self,
                 action: #selector(AztecPostViewController.alertTextFieldDidChange),
@@ -1216,6 +1224,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                            style: .cancel,
                                            handler: { (action) in
         })
+
+        alertController.addActionWithTitle(NSLocalizedString("Details", comment: "User action to edit media details."),
+                                           style: .default,
+                                           handler: { (action) in
+                                            self.displayDetails(forAttachment: attachment)
+        })
         // Is upload still going?
         if let mediaProgress = mediaProgressCoordinator.mediaUploading[mediaID],
             mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
@@ -1255,6 +1269,24 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         alertController.popoverPresentationController?.sourceRect = CGRect(origin: richTextView.center, size: CGSize(width: 1, height: 1))
         alertController.popoverPresentationController?.permittedArrowDirections = .up
         present(alertController, animated:true, completion: nil)
+    }
+
+    func displayDetails(forAttachment attachment: TextAttachment) {
+
+        let controller = AztecAttachmentViewController()
+        controller.delegate = self
+        controller.attachment = attachment
+        let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = .formSheet
+        present(navController, animated: true, completion: nil)
+    }
+}
+
+extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
+
+
+    func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: TextAttachment) {
+        richTextView.update(attachment: changedAttachment, alignment: changedAttachment.alignment, size: changedAttachment.size, url: changedAttachment.url!)
     }
 }
 
