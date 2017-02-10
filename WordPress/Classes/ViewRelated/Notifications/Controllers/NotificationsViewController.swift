@@ -217,6 +217,10 @@ class NotificationsViewController: UITableViewController {
             return
         }
 
+        configureDetailsViewController(detailsViewController, withNote: note)
+    }
+
+    fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: Notification) {
         detailsViewController.dataSource = self
         detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { request in
@@ -403,6 +407,19 @@ extension NotificationsViewController {
     func showDetailsForNotification(_ note: Notification) {
         DDLogSwift.logInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
+        prepareToShowDetailsForNotification(note)
+
+        // Display Details
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
+            let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+            navigationController?.pushFullscreenViewController(readerViewController, animated: true)
+            return
+        }
+
+        performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+    }
+
+    fileprivate func prepareToShowDetailsForNotification(_ note: Notification) {
         // Track
         let properties = [Stats.noteTypeKey: note.type ?? Stats.noteTypeUnknown]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
@@ -417,15 +434,6 @@ extension NotificationsViewController {
             let mediator = NotificationSyncMediator()
             mediator?.markAsRead(note)
         }
-
-        // Display Details
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
-            let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-            navigationController?.pushFullscreenViewController(readerViewController, animated: true)
-            return
-        }
-
-        performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
     }
 
     /// Will display an Undelete button on top of a given notification.
@@ -615,6 +623,15 @@ extension NotificationsViewController {
 
         let path = IndexPath(row: 0, section: 0)
         tableView.scrollToRow(at: path, at: .bottom, animated: true)
+
+        if !splitViewControllerIsHorizontallyCompact {
+            if let indexPath = tableView.indexPathForSelectedRow,
+                let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification {
+                showDetailsForNotification(note)
+            } else {
+                showDetailViewController(UIViewController(), sender: nil)
+            }
+        }
     }
 }
 
@@ -1074,7 +1091,34 @@ private extension NotificationsViewController {
 //
 extension NotificationsViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
-        return UIViewController()
+        guard let note = fetchFirstNotification() else {
+            return nil
+        }
+
+        prepareToShowDetailsForNotification(note)
+
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
+            return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+        }
+
+        if let detailsViewController = storyboard?.instantiateViewController(withIdentifier: "NotificationDetailsViewController") as? NotificationDetailsViewController {
+            configureDetailsViewController(detailsViewController, withNote: note)
+            return detailsViewController
+        }
+
+        return nil
+    }
+
+    private func fetchFirstNotification() -> Notification? {
+        let context = managedObjectContext()
+        let fetchRequest = self.fetchRequest()
+        fetchRequest.fetchLimit = 1
+
+        if let results = try? context.fetch(fetchRequest) as? [Notification] {
+            return results?.first
+        }
+
+        return nil
     }
 }
 
