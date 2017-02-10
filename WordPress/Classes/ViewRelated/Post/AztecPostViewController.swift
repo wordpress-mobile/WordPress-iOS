@@ -21,19 +21,14 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
         let tv = Aztec.TextView(defaultFont: Assets.defaultRegularFont, defaultMissingImage: Assets.defaultMissingImage)
 
-        tv.font = Assets.defaultRegularFont
-        tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
+        let toolbar = self.createToolbar(htmlMode: false)
+        let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
+        self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         tv.delegate = self
-        let toolbar = self.createToolbar()
-        toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
-        toolbar.formatter = self
-        tv.inputAccessoryView = toolbar
-        tv.textColor = UIColor.darkText
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.keyboardDismissMode = .interactive
         tv.mediaDelegate = self
+        toolbar.formatter = self
 
-        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
         recognizer.cancelsTouchesInView = false
         recognizer.delegate = self
 
@@ -48,12 +43,11 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) lazy var htmlTextView: UITextView = {
         let tv = UITextView()
 
-        tv.accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
-        tv.font = Assets.defaultRegularFont
-        tv.textColor = UIColor.darkText
-        tv.translatesAutoresizingMaskIntoConstraints = false
+        let toolbar = self.createToolbar(htmlMode: true)
+        let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
+        self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
+        toolbar.formatter = self
         tv.isHidden = true
-        tv.keyboardDismissMode = .interactive
 
         return tv
     }()
@@ -70,13 +64,13 @@ class AztecPostViewController: UIViewController {
                                                       attributes: [NSForegroundColorAttributeName: WPStyleGuide.greyLighten30()])
         tf.delegate = self
         tf.font = WPFontManager.merriweatherBoldFont(ofSize: 24.0)
-        let toolbar = self.createToolbar()
-        toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
-        toolbar.enabled = false
-        tf.inputAccessoryView = toolbar
         tf.returnKeyType = .next
         tf.textColor = UIColor.darkText
         tf.translatesAutoresizingMaskIntoConstraints = false
+
+        let toolbar = self.createToolbar(htmlMode: true)
+        toolbar.formatter = self
+        tf.inputAccessoryView = toolbar
 
         tf.addTarget(self, action: #selector(titleTextFieldDidChange), for: [.editingChanged])
 
@@ -216,6 +210,8 @@ class AztecPostViewController: UIViewController {
         return progressView
     }()
 
+    fileprivate var currentSelectedAttachment: TextAttachment?
+
     /// Maintainer of state for editor - like for post button
     ///
     fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
@@ -342,6 +338,15 @@ class AztecPostViewController: UIViewController {
             mediaProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
             mediaProgressView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor)
             ])
+    }
+
+    private func configureDefaultProperties(for textView: UITextView, using formatBar: Aztec.FormatBar, accessibilityLabel: String) {
+        textView.accessibilityLabel = accessibilityLabel
+        textView.font = Assets.defaultRegularFont
+        textView.inputAccessoryView = formatBar
+        textView.keyboardDismissMode = .interactive
+        textView.textColor = UIColor.darkText
+        textView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     func configureNavigationBar() {
@@ -654,11 +659,6 @@ private extension AztecPostViewController {
             }
         }
 
-        let switchModeTitle = (mode == .richText) ? MoreSheetAlert.htmlTitle : MoreSheetAlert.richTitle
-        alert.addDefaultActionWithTitle(switchModeTitle) { _ in
-            self.mode.toggle()
-        }
-
         alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { _ in
             self.displayPreview()
         }
@@ -802,6 +802,7 @@ extension AztecPostViewController {
         htmlTextView.text = richTextView.getHTML()
         htmlTextView.isHidden = false
         richTextView.isHidden = true
+        htmlTextView.becomeFirstResponder()
     }
 
     fileprivate func switchToRichText() {
@@ -810,6 +811,7 @@ extension AztecPostViewController {
         richTextView.setHTML(htmlTextView.text)
         richTextView.isHidden = false
         htmlTextView.isHidden = true
+        richTextView.becomeFirstResponder()
     }
 }
 
@@ -837,6 +839,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                 toggleLink()
             case .media:
                 showImagePicker()
+            case .sourcecode:
+                toggleEditingMode()
         }
         updateFormatBar()
     }
@@ -1007,46 +1011,60 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         present(picker, animated: true, completion: nil)
     }
 
+    func toggleEditingMode() {
+        mode.toggle()
+    }
 
-    // MARK: -
 
-    func createToolbar() -> Aztec.FormatBar {
+    // MARK: - Toolbar creation
+
+    func createToolbar(htmlMode: Bool) -> Aztec.FormatBar {
         let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let items = [
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage), identifier: .media),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage).withRenderingMode(.alwaysTemplate), identifier: .media),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold), identifier: .bold),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold).withRenderingMode(.alwaysTemplate), identifier: .bold),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic), identifier: .italic),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic).withRenderingMode(.alwaysTemplate), identifier: .italic),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline), identifier: .underline),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline).withRenderingMode(.alwaysTemplate), identifier: .underline),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough), identifier: .strikethrough),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough).withRenderingMode(.alwaysTemplate), identifier: .strikethrough),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote), identifier: .blockquote),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote).withRenderingMode(.alwaysTemplate), identifier: .blockquote),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: .unorderedlist),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered).withRenderingMode(.alwaysTemplate), identifier: .unorderedlist),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: .orderedlist),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered).withRenderingMode(.alwaysTemplate), identifier: .orderedlist),
             flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link), identifier: .link),
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link).withRenderingMode(.alwaysTemplate), identifier: .link),
+            flex,
+            Aztec.FormatBarItem(image: Gridicon.iconOfType(.code).withRenderingMode(.alwaysTemplate), identifier: .sourcecode),
             flex,
             ]
 
         let toolbar = Aztec.FormatBar()
 
+        if htmlMode {
+            for item in items {
+                item.isEnabled = false
+                if let sourceItem = item as? FormatBarItem, sourceItem.identifier == .sourcecode {
+                    item.isEnabled = true
+                }
+            }
+        }
+
+        toolbar.items = items
         toolbar.barTintColor = UIColor(fromHex: 0xF9FBFC, alpha: 1)
         toolbar.tintColor = WPStyleGuide.greyLighten10()
         toolbar.highlightedTintColor = UIColor.blue
         toolbar.selectedTintColor = UIColor.darkGray
         toolbar.disabledTintColor = UIColor.lightGray
-        toolbar.items = items
-        return toolbar
-    }
+        toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
+        toolbar.formatter = self
 
-    func templateImage(named: String) -> UIImage {
-        return UIImage(named: named)!.withRenderingMode(.alwaysTemplate)
+        return toolbar
     }
 }
 
@@ -1295,7 +1313,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 
     private func handleError(_ error: NSError?, onAttachment attachment: Aztec.TextAttachment) {
-        let message = NSLocalizedString("Failed to insert media on your post.\n Please tap to retry.", comment: "Error message to show to use when media insertion on a post fails")
+        let message = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
+
         if let error = error {
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
                 return
@@ -1303,15 +1322,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             mediaProgressCoordinator.attach(error: error, toMediaID: attachment.identifier)
         }
 
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        let shadow = NSShadow()
-        shadow.shadowColor = UIColor(white: 0, alpha: 0.6)
-        let attributes: [String:Any] = [NSFontAttributeName: Assets.defaultSemiBoldFont,
-                                        NSParagraphStyleAttributeName: paragraphStyle,
-                                        NSForegroundColorAttributeName: UIColor.darkGray,
-                                        NSShadowAttributeName: shadow]
-        let attributeMessage = NSAttributedString(string: message, attributes: attributes)
+        let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
         richTextView.refreshLayoutFor(attachment: attachment)
     }
@@ -1329,9 +1340,14 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         alertController.addActionWithTitle(NSLocalizedString("Dismiss", comment: "User action to dismiss media options."),
                                            style: .cancel,
                                            handler: { (action) in
+                                            if attachment == self.currentSelectedAttachment {
+                                                self.currentSelectedAttachment = nil
+                                                attachment.message = nil
+                                                self.richTextView.refreshLayoutFor(attachment: attachment)
+                                            }
         })
 
-        alertController.addActionWithTitle(NSLocalizedString("Details", comment: "User action to edit media details."),
+        alertController.preferredAction = alertController.addActionWithTitle(NSLocalizedString("Details", comment: "User action to edit media details."),
                                            style: .default,
                                            handler: { (action) in
                                             self.displayDetails(forAttachment: attachment)
@@ -1346,11 +1362,6 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                 self.richTextView.remove(attachmentID: mediaID)
             })
         } else {
-            alertController.addActionWithTitle(NSLocalizedString("Remove Media", comment: "User action to remove media."),
-                                               style: .destructive,
-                                               handler: { (action) in
-                                                self.richTextView.remove(attachmentID: mediaID)
-            })
             if let error = mediaProgressCoordinator.error(forMediaID: mediaID) {
                 message = error.localizedDescription
                 alertController.addActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload."),
@@ -1367,14 +1378,21 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                     }
                 })
             }
+            alertController.addActionWithTitle(NSLocalizedString("Remove Media", comment: "User action to remove media."),
+                                               style: .destructive,
+                                               handler: { (action) in
+                                                self.richTextView.remove(attachmentID: mediaID)
+            })
         }
 
         alertController.title = title
         alertController.message = message
         alertController.popoverPresentationController?.sourceView = richTextView
-        alertController.popoverPresentationController?.sourceRect = CGRect(origin: richTextView.center, size: CGSize(width: 1, height: 1))
-        alertController.popoverPresentationController?.permittedArrowDirections = .up
-        present(alertController, animated:true, completion: nil)
+        alertController.popoverPresentationController?.sourceRect = CGRect(origin: position, size: CGSize(width: 1, height: 1))
+        alertController.popoverPresentationController?.permittedArrowDirections = .any
+        present(alertController, animated:true, completion: { () in
+            UIMenuController.shared.setMenuVisible(false, animated: false)
+        })
     }
 
     func displayDetails(forAttachment attachment: TextAttachment) {
@@ -1385,6 +1403,19 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
+    }
+
+    var mediaMessageAttributes: [String: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        let shadow = NSShadow()
+        shadow.shadowOffset = CGSize(width: 1, height: 1)
+        shadow.shadowColor = UIColor(white: 0, alpha: 0.6)
+        let attributes: [String:Any] = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20),
+                                        NSParagraphStyleAttributeName: paragraphStyle,
+                                        NSForegroundColorAttributeName: UIColor.white,
+                                        NSShadowAttributeName: shadow]
+        return attributes
     }
 }
 
@@ -1483,20 +1514,45 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 }
 
 extension AztecPostViewController: UIGestureRecognizerDelegate {
+
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 
     func richTextViewWasPressed(_ recognizer: UIGestureRecognizer) {
-        guard recognizer.state == .began else {
+        guard recognizer.state == .recognized else {
             return
         }
         let locationInTextView = recognizer.location(in: richTextView)
+        // check if we have an attachment in the position we tapped
         guard let attachment = richTextView.attachmentAtPoint(locationInTextView) else {
+            // if we have a current selected attachment marked lets unmark it
+            if let selectedAttachment = currentSelectedAttachment {
+                selectedAttachment.message = nil
+                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+                currentSelectedAttachment = nil
+            }
             return
         }
+        // move the selection to the position of the attachment
+        richTextView.moveSelectionToPoint(locationInTextView)
 
-        displayActions(forAttachment: attachment, position: locationInTextView)
+        //check if it's the current selected attachment or an failed upload
+        if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
+            //if it's the same attachment has before let's display the options
+            displayActions(forAttachment: attachment, position: locationInTextView)
+        } else {
+            // if it's a new attachment tapped let's unmark the previous one
+            if let selectedAttachment = currentSelectedAttachment {
+                selectedAttachment.message = nil
+                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+            }
+            // and mark the newly tapped attachment
+            let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a image on the post/page editor.")
+            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+            richTextView.refreshLayoutFor(attachment: attachment)
+            currentSelectedAttachment = attachment
+        }
     }
 }
 
