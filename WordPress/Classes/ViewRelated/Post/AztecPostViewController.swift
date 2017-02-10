@@ -345,8 +345,6 @@ class AztecPostViewController: UIViewController {
     }
 
     func configureNavigationBar() {
-        title = NSLocalizedString("Aztec", comment: "Aztec Editor's Title")
-
         navigationController?.navigationBar.isTranslucent = false
 
         navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
