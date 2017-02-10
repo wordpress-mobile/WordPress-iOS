@@ -68,7 +68,7 @@ public enum PostEditorAction {
         switch self {
         case .publish:
             return NSLocalizedString("Publish Now", comment: "Title of button allowing the user to immediately publish the post they are editing.")
-        case .update:
+        case .save:
             return NSLocalizedString("Save as Draft", comment: "Title of button allowing users to change the status of the post they are currently editing to Draft.")
         default:
             return nil
@@ -260,15 +260,7 @@ public class PostEditorStateContext {
     }
 
     var secondaryPublishButtonText: String? {
-        return editorState.action.secondaryPublishAction?.publishActionLabel
-    }
-
-    var secondaryPublishVerbText: String? {
-        return editorState.action.secondaryPublishAction?.publishingActionLabel
-    }
-
-    var secondaryPublishErrorText: String? {
-        return editorState.action.secondaryPublishAction?.publishingErrorLabel
+        return editorState.action.secondaryPublishAction?.secondaryPublishActionLabel
     }
 
     // TODO: Add isDirty to the state context for enabling/disabling the button
