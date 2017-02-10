@@ -8,6 +8,9 @@ extension UIEdgeInsets {
 
 extension UIButton {
     func flipInsetsForRightToLeftLayoutDirection() {
+        guard userInterfaceLayoutDirection() == .rightToLeft else {
+            return
+        }
         contentEdgeInsets = contentEdgeInsets.flippedForRightToLeftLayoutDirection()
         imageEdgeInsets = imageEdgeInsets.flippedForRightToLeftLayoutDirection()
         titleEdgeInsets = titleEdgeInsets.flippedForRightToLeftLayoutDirection()
