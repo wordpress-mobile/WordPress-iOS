@@ -135,10 +135,12 @@ open class SignupService: LocalCoreDataService {
                                    failure: @escaping SignupFailureBlock) {
 
         status(.creatingUser)
+        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
         let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
         remote?.createWPComAccount(withEmail: params.email,
                                             andUsername: params.username,
                                             andPassword: params.password,
+                                            andLocale: locale,
                                             success: { (responseDictionary) in
                                                 // Note: User creation is deferred until we have a WPCom auth token.
                                                 success()
