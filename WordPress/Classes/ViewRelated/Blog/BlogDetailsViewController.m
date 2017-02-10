@@ -393,7 +393,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                            [weakSelf showViewAdmin];
                                                            [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
                                                        }];
-    UIImage *image = [Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(BLogDetailGridiconAccessorySize, BLogDetailGridiconAccessorySize)];
+    UIImage *image = [[Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(BLogDetailGridiconAccessorySize, BLogDetailGridiconAccessorySize)] imageFlippedForRightToLeftLayoutDirection];
     UIImageView *accessoryView = [[UIImageView alloc] initWithImage:image];
     accessoryView.tintColor = [WPStyleGuide cellGridiconAccessoryColor]; // Match disclosure icon color.
     row.accessoryView = accessoryView;

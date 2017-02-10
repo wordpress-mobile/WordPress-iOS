@@ -8,6 +8,7 @@
 - (void)createWPComAccountWithEmail:(NSString *)email
                         andUsername:(NSString *)username
                         andPassword:(NSString *)password
+                          andLocale:(NSString *)locale
                             success:(WordPressComServiceSuccessBlock)success
                             failure:(WordPressComServiceFailureBlock)failure
 {
@@ -18,6 +19,7 @@
     [self createWPComAccountWithEmail:email
                           andUsername:username
                           andPassword:password
+                            andLocale:locale
                              validate:NO
                               success:success
                               failure:failure];
@@ -26,6 +28,7 @@
 - (void)createWPComAccountWithEmail:(NSString *)email
                         andUsername:(NSString *)username
                         andPassword:(NSString *)password
+                          andLocale:(NSString *)locale
                            validate:(BOOL)validate
                             success:(WordPressComServiceSuccessBlock)success
                             failure:(WordPressComServiceFailureBlock)failure
@@ -45,11 +48,12 @@
     
     NSDictionary *params = @{
                              @"email": email,
-                             @"username" : username,
-                             @"password" : password,
-                             @"validate" : @(validate),
-                             @"client_id" : [ApiCredentials client],
-                             @"client_secret" : [ApiCredentials secret]
+                             @"username": username,
+                             @"password": password,
+                             @"validate": @(validate),
+                             @"locale": locale,
+                             @"client_id": [ApiCredentials client],
+                             @"client_secret": [ApiCredentials secret]
                              };
     
     NSString *requestUrl = [self pathForEndpoint:@"users/new"

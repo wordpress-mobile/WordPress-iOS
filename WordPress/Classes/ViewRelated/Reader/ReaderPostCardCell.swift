@@ -219,10 +219,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     fileprivate func adjustInsetsForTextDirection() {
-        guard userInterfaceLayoutDirection() == .rightToLeft else {
-            return
-        }
-
         let buttonsToAdjust: [UIButton] = [
             visitButton,
             likeActionButton,
