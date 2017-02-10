@@ -1164,7 +1164,7 @@ fileprivate extension AztecPostViewController {
     }
 
     fileprivate func mapUIContentToPostAndSave() {
-        post.postTitle = richTextView.text
+        post.postTitle = titleTextField.text
         // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
         post.content = richTextView.getHTML()
 
