@@ -773,10 +773,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
     fileprivate func adjustInsetsForTextDirection() {
-        guard view.userInterfaceLayoutDirection() == .rightToLeft else {
-            return
-        }
-
         let buttonsToAdjust: [UIButton] = [
             likeButton,
             commentButton]
