@@ -544,6 +544,7 @@ extension AztecPostViewController {
 
             alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
             present(alertController, animated: true, completion: nil)
+            return
         }
 
         SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText, maskType: .clear)
@@ -1317,7 +1318,11 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 
     fileprivate func removeFailedMedia() {
-        // TODO: Implement this method to remove failed media.
+        let failedMediaIDs = mediaProgressCoordinator.failedMediaIDs
+        for mediaID in failedMediaIDs {
+            richTextView.remove(attachmentID: mediaID)
+            mediaProgressCoordinator.cancelAndStopTrack(of: mediaID)
+        }
     }
 
     // TODO: Extract these strings into structs like other items
@@ -1445,10 +1450,7 @@ extension AztecPostViewController: TextViewMediaDelegate {
     }
 
     func textView(_ textView: TextView, deletedAttachmentWithID attachmentID: String) {
-        if let mediaProgress = mediaProgressCoordinator.mediaUploading[attachmentID],
-            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
-            mediaProgress.cancel()
-        }
+        mediaProgressCoordinator.cancelAndStopTrack(of:attachmentID)
     }
 }
 
@@ -1689,9 +1691,33 @@ class MediaProgressCoordinator: NSObject {
         return false
     }
 
-    // TODO: Implement this method to return true if there is failed media.
-    //       This may not be the right place for the bool.
     var hasFailedMedia: Bool {
+        for progress in mediaUploading.values {
+            if !progress.isCancelled && progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.error.rawValue)] != nil {
+                return true
+            }
+        }
         return false
+    }
+
+    func cancelAndStopTrack(of mediaID: String) {
+        guard let mediaProgress = mediaUploading[mediaID] else {
+            return
+        }
+        if mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
+            mediaProgress.cancel()
+        }
+        finishOneItem()
+        mediaUploading.removeValue(forKey: mediaID)
+    }
+
+    var failedMediaIDs: [String] {
+        var failedMediaIDs = [String]()
+        for (key, progress) in mediaUploading {
+            if !progress.isCancelled && progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.error.rawValue)] != nil {
+                failedMediaIDs.append(key)
+            }
+        }
+        return failedMediaIDs
     }
 }
