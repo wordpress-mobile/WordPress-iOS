@@ -62,7 +62,7 @@ class AztecPostViewController: UIViewController {
     /// Title's TextField
     ///
     fileprivate(set) lazy var titleTextField: UITextField = {
-        let placeholderText = NSLocalizedString("Enter title here", comment: "Label for the title of the post field. Should be the same as WP core.")
+        let placeholderText = NSLocalizedString("Post title", comment: "Placeholder for the post title.")
         let tf = UITextField()
 
         tf.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
