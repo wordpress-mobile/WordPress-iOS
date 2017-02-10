@@ -529,18 +529,20 @@ extension AztecPostViewController {
                 WPNotificationFeedbackGenerator.notificationOccurred(.success)
             }
 
-//            void (^stopEditingAndDismiss)() = ^{
-//                if (shouldDismiss) {
-//                    [self stopEditing];
-//                    [self.view endEditing:YES];
-//                    [self didSaveNewPost];
-//                    [self dismissEditView:YES];
-//                } else {
-//                    [self startEditing];
-//                }
-//            };
-            // TODO: Dismiss the window if necessary
+            // TODO: Switch to posts list if appropriate
 
+            // Don't dismiss - make draft now in secondary publish
+            let shouldDismissWindow: Bool
+            if let secondaryAction = self.postEditorStateContext.secondaryPublishButtonAction,
+                secondaryPublishTapped && secondaryAction == .save {
+                shouldDismissWindow = false
+            } else {
+                shouldDismissWindow = true
+            }
+
+            if shouldDismissWindow {
+                self.dismissOrPopView(didSave: true)
+            }
         }
     }
 
@@ -1101,12 +1103,12 @@ fileprivate extension AztecPostViewController {
             if post.hasRemote() {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
-                    // Save Draft
+                    // TODO: Save Draft
                 }
             } else if post.status == PostStatusDraft {
                 // The post was already a draft
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
-                    // Save Draft
+                    // TODO: Save Draft
                 }
             }
         }
@@ -1133,7 +1135,11 @@ fileprivate extension AztecPostViewController {
     func discardChangesAndUpdateGUI() {
         discardChanges()
 
-        onClose?(false)
+        dismissOrPopView(didSave: false)
+    }
+
+    func dismissOrPopView(didSave: Bool) {
+        onClose?(didSave)
 
         if isModal() {
             presentingViewController?.dismiss(animated: true, completion: nil)
