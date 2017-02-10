@@ -20,17 +20,12 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
         let tv = Aztec.TextView(defaultFont: Assets.defaultRegularFont, defaultMissingImage: Assets.defaultMissingImage)
 
-        tv.font = Assets.defaultRegularFont
-        tv.accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
-        tv.delegate = self
-        tv.textColor = UIColor.darkText
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.keyboardDismissMode = .interactive
-        tv.mediaDelegate = self
-
         let toolbar = self.createToolbar(htmlMode: false)
+        let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
+        self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
+        tv.delegate = self
+        tv.mediaDelegate = self
         toolbar.formatter = self
-        tv.inputAccessoryView = toolbar
 
         let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
         recognizer.cancelsTouchesInView = false
@@ -47,16 +42,11 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) lazy var htmlTextView: UITextView = {
         let tv = UITextView()
 
-        tv.accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
-        tv.font = Assets.defaultRegularFont
-        tv.textColor = UIColor.darkText
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.isHidden = true
-        tv.keyboardDismissMode = .interactive
-
         let toolbar = self.createToolbar(htmlMode: true)
+        let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
+        self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         toolbar.formatter = self
-        tv.inputAccessoryView = toolbar
+        tv.isHidden = true
 
         return tv
     }()
@@ -345,6 +335,15 @@ class AztecPostViewController: UIViewController {
             mediaProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
             mediaProgressView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor)
             ])
+    }
+
+    private func configureDefaultProperties(for textView: UITextView, using formatBar: Aztec.FormatBar, accessibilityLabel: String) {
+        textView.accessibilityLabel = accessibilityLabel
+        textView.font = Assets.defaultRegularFont
+        textView.inputAccessoryView = formatBar
+        textView.keyboardDismissMode = .interactive
+        textView.textColor = UIColor.darkText
+        textView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     func configureNavigationBar() {
