@@ -1668,7 +1668,6 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
         guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
             DDLogSwift.logError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             return
@@ -1715,6 +1714,8 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         }
 
         navigationController?.pushFullscreenViewController(controller, animated: true)
+
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 
 

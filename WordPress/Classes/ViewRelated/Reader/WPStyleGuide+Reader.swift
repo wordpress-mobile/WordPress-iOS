@@ -208,6 +208,8 @@ extension WPStyleGuide {
         button.setTitleColor(mediumBlue(), for: UIControlState())
         button.setTitleColor(lightBlue(), for: .highlighted)
         button.titleLabel?.font = WPFontManager.systemRegularFont(ofSize: fontSize)
+        button.titleLabel?.allowsDefaultTighteningForTruncation = false
+        button.titleLabel?.lineBreakMode = .byTruncatingTail
     }
 
     public class func applyReaderCardActionButtonStyle(_ button: UIButton) {

@@ -233,10 +233,6 @@ public class ReaderCard: UIView {
 
 
     fileprivate func adjustInsetsForTextDirection() {
-        guard userInterfaceLayoutDirection() == .rightToLeft else {
-            return
-        }
-
         let buttonsToAdjust: [UIButton] = [
             visitButton,
             likeButton,
