@@ -792,7 +792,15 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     func showLinkDialog(forURL url: URL?, title: String?, range: NSRange) {
 
         let isInsertingNewLink = (url == nil)
-        // TODO: grab link from pasteboard if available
+        var urlToUse = url
+
+        if isInsertingNewLink {
+            let pasteboard = UIPasteboard.general
+            if let pastedURL = pasteboard.value(forPasteboardType:String(kUTTypeURL)) as? URL {
+                urlToUse = pastedURL
+            }
+        }
+
 
         let insertButtonTitle = isInsertingNewLink ? NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor") : NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
         let removeButtonTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
@@ -806,7 +814,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             textField.clearButtonMode = UITextFieldViewMode.always
             textField.placeholder = NSLocalizedString("URL", comment: "URL text field placeholder")
 
-            textField.text = url?.absoluteString
+            textField.text = urlToUse?.absoluteString
 
             textField.addTarget(self,
                 action: #selector(AztecPostViewController.alertTextFieldDidChange),
