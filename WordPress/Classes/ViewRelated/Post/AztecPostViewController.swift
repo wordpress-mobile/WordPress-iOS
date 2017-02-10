@@ -1324,16 +1324,20 @@ extension AztecPostViewController: TextViewMediaDelegate {
 
     func textView(_ textView: TextView, imageAtUrl url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) -> UIImage {
         var requestURL = url
-        let imageMaxDimension = max(UIScreen.main.nativeBounds.size.width, UIScreen.main.nativeBounds.size.height)
-        let size = CGSize(width: imageMaxDimension, height: imageMaxDimension)
+        let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
+        //use height zero to maintain the aspect ratio when fetching
+        var size = CGSize(width: imageMaxDimension, height: 0)
         let request: URLRequest
         if url.isFileURL {
             request = URLRequest(url: url)
         } else if self.post.blog.isPrivate() {
             // private wpcom image needs special handling.
+            // the size that WPImageHelper expects is pixel size
+            size.width = size.width * UIScreen.main.scale
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
         } else {
+            // the size that PhotonImageURLHelper expects is points size
             requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: requestURL)
             request = URLRequest(url: requestURL)
         }
