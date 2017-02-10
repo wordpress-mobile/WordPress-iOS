@@ -489,6 +489,40 @@ extension AztecPostViewController {
         }
     }
 
+    func showPostHasChangesAlert() {
+        let alertController = UIAlertController(
+            title: NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post."),
+            message: nil,
+            preferredStyle: .actionSheet)
+
+        // Button: Keep editing
+        alertController.addCancelActionWithTitle(NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post."))
+
+        // Button: Discard
+        alertController.addDestructiveActionWithTitle(NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
+            self.discardChangesAndUpdateGUI()
+        }
+
+        // Button: Save Draft/Update Draft
+        if post.hasLocalChanges() {
+            if post.hasRemote() {
+                // The post is a local draft or an autosaved draft: Discard or Save
+                alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
+                    self.post.status = PostStatusDraft
+                    self.handlePublishButtonTapped(secondaryPublishTapped: false)
+                }
+            } else if post.status == PostStatusDraft {
+                // The post was already a draft
+                alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
+                    self.handlePublishButtonTapped(secondaryPublishTapped: false)
+                }
+            }
+        }
+
+        alertController.popoverPresentationController?.barButtonItem = self.navigationItem.leftBarButtonItem
+        present(alertController, animated: true, completion: nil)
+    }
+
     private func handlePublishButtonTapped(secondaryPublishTapped: Bool) {
         // Cancel publishing if media is currently being uploaded
         if mediaProgressCoordinator.isRunning {
@@ -1091,39 +1125,6 @@ fileprivate extension AztecPostViewController {
         }
 
         view.endEditing(true)
-    }
-
-    func showPostHasChangesAlert() {
-        let alertController = UIAlertController(
-            title: NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post."),
-            message: nil,
-            preferredStyle: .actionSheet)
-
-        // Button: Keep editing
-        alertController.addCancelActionWithTitle(NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post."))
-
-        // Button: Discard
-        alertController.addDestructiveActionWithTitle(NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
-            self.discardChangesAndUpdateGUI()
-        }
-
-        // Button: Save Draft/Update Draft
-        if post.hasLocalChanges() {
-            if post.hasRemote() {
-                // The post is a local draft or an autosaved draft: Discard or Save
-                alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
-                    // TODO: Save Draft
-                }
-            } else if post.status == PostStatusDraft {
-                // The post was already a draft
-                alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
-                    // TODO: Save Draft
-                }
-            }
-        }
-
-        alertController.popoverPresentationController?.barButtonItem = self.navigationItem.leftBarButtonItem
-        present(alertController, animated: true, completion: nil)
     }
 
     func discardChanges() {
