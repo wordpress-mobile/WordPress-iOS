@@ -305,10 +305,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     /// Composes the views for the post header and Discover attribution.
     fileprivate func setupContentHeaderAndFooter() {
+        // Add the footer first so its behind the header. This way the header
+        // obscures the footer until its properly positioned.
+        textView.addSubview(textFooterStackView)
         textView.addSubview(textHeaderStackView)
+
         textHeaderStackView.topAnchor.constraint(equalTo: textView.topAnchor).isActive = true
 
-        textView.addSubview(textFooterStackView)
         textFooterTopConstraint = NSLayoutConstraint(item: textFooterStackView,
                                                      attribute: .top,
                                                      relatedBy: .equal,
@@ -773,10 +776,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
     fileprivate func adjustInsetsForTextDirection() {
-        guard view.userInterfaceLayoutDirection() == .rightToLeft else {
-            return
-        }
-
         let buttonsToAdjust: [UIButton] = [
             likeButton,
             commentButton]
