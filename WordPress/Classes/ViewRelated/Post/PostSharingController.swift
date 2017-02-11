@@ -3,7 +3,7 @@ import SVProgressHUD
 
 @objc class PostSharingController: NSObject {
 
-    func shareController(_ title: String?, summary: String?, tags: String?, link: String?) -> UIActivityViewController {
+    func shareController(_ title: String?, summary: String?, link: String?) -> UIActivityViewController {
         var activityItems = [AnyObject]()
         let postDictionary = NSMutableDictionary()
 
@@ -12,9 +12,6 @@ import SVProgressHUD
         }
         if let str = summary {
             postDictionary["summary"] = str
-        }
-        if let str = tags {
-            postDictionary["tags"] = str
         }
 
         activityItems.append(postDictionary)
@@ -36,11 +33,10 @@ import SVProgressHUD
         return controller
     }
 
-    func sharePost(_ title: String, summary: String, tags: String?, link: String?, fromBarButtonItem anchorBarButtonItem: UIBarButtonItem, inViewController viewController: UIViewController) {
+    func sharePost(_ title: String, summary: String, link: String?, fromBarButtonItem anchorBarButtonItem: UIBarButtonItem, inViewController viewController: UIViewController) {
         let controller = shareController(
             title,
             summary: summary,
-            tags: tags,
             link: link)
 
         if !UIDevice.isPad() {
@@ -57,11 +53,10 @@ import SVProgressHUD
         }
     }
 
-    func sharePost(_ title: String, summary: String, tags: String?, link: String?, fromView anchorView: UIView, inViewController viewController: UIViewController) {
+    func sharePost(_ title: String, summary: String, link: String?, fromView anchorView: UIView, inViewController viewController: UIViewController) {
         let controller = shareController(
             title,
             summary: summary,
-            tags: tags,
             link: link)
 
         if !UIDevice.isPad() {
@@ -84,7 +79,6 @@ import SVProgressHUD
         sharePost(
             post.titleForDisplay(),
             summary: post.contentPreviewForDisplay(),
-            tags: post.tags,
             link: post.permaLink,
             fromBarButtonItem: anchorBarButtonItem,
             inViewController: viewController)
@@ -95,7 +89,6 @@ import SVProgressHUD
         sharePost(
             post.titleForDisplay(),
             summary: post.contentPreviewForDisplay(),
-            tags: post.tags,
             link: post.permaLink,
             fromView: anchorView,
             inViewController: viewController)
@@ -106,14 +99,13 @@ import SVProgressHUD
         sharePost(
             post.titleForDisplay(),
             summary: post.contentPreviewForDisplay(),
-            tags: post.tags,
             link: post.permaLink,
             fromView: anchorView,
             inViewController: viewController)
     }
 
     func shareURL(url: NSURL, fromRect rect: CGRect, inView view: UIView, inViewController viewController: UIViewController) {
-        let controller = shareController("", summary: "", tags: "", link: url.absoluteString)
+        let controller = shareController("", summary: "", link: url.absoluteString)
 
         if !UIDevice.isPad() {
             viewController.present(controller, animated: true, completion: nil)
