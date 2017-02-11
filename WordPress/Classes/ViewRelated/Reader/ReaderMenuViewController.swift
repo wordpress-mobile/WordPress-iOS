@@ -18,7 +18,7 @@ import WordPressShared
     var didSyncTopics = false
 
     fileprivate var defaultIndexPath: IndexPath {
-        return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .discover)
+        return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .followed)
     }
 
     fileprivate var restorableSelectedIndexPath: IndexPath?
@@ -198,6 +198,9 @@ import WordPressShared
     /// When logged out return the nav stack to the menu
     ///
     func handleAccountChanged(_ notification: Foundation.Notification) {
+        // Reset the selected index path
+        restorableSelectedIndexPath = defaultIndexPath
+
         // Clean up obsolete content.
         unflagInUseContent()
         cleanupStaleContent(removeAllTopics: true)
@@ -567,7 +570,7 @@ extension ReaderMenuViewController : WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
         if restorableSelectedIndexPath == defaultIndexPath {
             let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            if let topic = service.topicForDiscover() {
+            if let topic = service.topicForFollowedSites() {
                 return ReaderStreamViewController.controllerWithTopic(topic)
             } else {
                 restorableSelectedIndexPath = IndexPath(row: 0, section: 0)

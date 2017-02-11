@@ -73,7 +73,7 @@ fileprivate protocol PostEditorActionState {
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState
 }
 
-public protocol PostEditorStateContextDelegate {
+public protocol PostEditorStateContextDelegate: class {
     func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction)
     func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool)
 }
@@ -96,7 +96,7 @@ public class PostEditorStateContext {
 
     fileprivate var originalPostStatus: PostStatus?
     fileprivate var userCanPublish: Bool
-    private var delegate: PostEditorStateContextDelegate?
+    private weak var delegate: PostEditorStateContextDelegate?
 
     fileprivate var hasContent = false {
         didSet {

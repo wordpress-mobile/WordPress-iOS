@@ -64,8 +64,6 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
         btnFollow.titleLabel?.font = WPStyleGuide.Notifications.blockRegularFont
 
         backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
-        accessoryType = .none
-        contentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
 
         nameLabel.font = WPStyleGuide.Notifications.blockBoldFont
         nameLabel.textColor = WPStyleGuide.Notifications.blockTextColor
@@ -84,7 +82,6 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     }
 
     // MARK: - Private
-    fileprivate let gravatarImageSizePad = CGSize(width: 54.0, height: 54.0)
     fileprivate var gravatarURL: URL?
 
     // MARK: - IBOutlets
