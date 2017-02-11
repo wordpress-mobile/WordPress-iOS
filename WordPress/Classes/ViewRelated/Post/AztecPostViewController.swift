@@ -1242,7 +1242,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         postEditorStateContext.update(isUploadingMedia: true)
     }
 
-    func mediaProgressCoordinatorDidFinishingUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
+    func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         postEditorStateContext.update(isUploadingMedia: false)
     }
 
@@ -1610,7 +1610,7 @@ protocol MediaProgressCoordinatorDelegate: class {
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float)
     func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator)
-    func mediaProgressCoordinatorDidFinishingUpload(_ mediaProgressCoordinator: MediaProgressCoordinator)
+    func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator)
 }
 
 class MediaProgressCoordinator: NSObject {
@@ -1641,10 +1641,6 @@ class MediaProgressCoordinator: NSObject {
         }
 
         mediaUploadingProgress.completedUnitCount += 1
-
-        if !isRunning {
-            delegate?.mediaProgressCoordinatorDidFinishingUpload(self)
-        }
     }
 
     func track(numberOfItems count: Int) {
@@ -1721,7 +1717,12 @@ class MediaProgressCoordinator: NSObject {
             let fractionOfUploadsCompleted = Float(Float((progress.completedUnitCount + 1))/Float(progress.totalUnitCount))
             value = min(fractionOfUploadsCompleted, Float(progress.fractionCompleted))
         }
+
         delegate?.mediaProgressCoordinator(self, progressDidChange: value)
+
+        if !isRunning {
+            delegate?.mediaProgressCoordinatorDidFinishUpload(self)
+        }
     }
 
     var isRunning: Bool {
