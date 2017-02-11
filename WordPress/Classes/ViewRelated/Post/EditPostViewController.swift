@@ -140,7 +140,18 @@ class EditPostViewController: UIViewController {
     fileprivate func editPostInNativeVisualEditor() -> UIViewController {
         let postViewController = AztecPostViewController(post: postToEdit())
         postViewController.onClose = { [weak self] (changesSaved) in
-            self?.closeEditor(changesSaved)
+            guard let strongSelf = self else {
+                postViewController.dismiss(animated: true) {}
+                return
+            }
+
+            // NOTE:
+            // We need to grab the latest Post Reference, since it may have changed (ie. revision / user picked a 
+            // new blog).
+            if changesSaved {
+                strongSelf.post = postViewController.post as? Post
+            }
+            strongSelf.closeEditor(changesSaved)
         }
 
         let navController = UINavigationController(rootViewController: postViewController)
