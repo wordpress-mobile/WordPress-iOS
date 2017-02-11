@@ -538,7 +538,7 @@ extension AztecPostViewController {
             }
         }
 
-        alertController.popoverPresentationController?.barButtonItem = self.navigationItem.leftBarButtonItem
+        alertController.popoverPresentationController?.barButtonItem = closeBarButtonItem
         present(alertController, animated: true, completion: nil)
     }
 
