@@ -9,13 +9,13 @@ class PostSharingControllerTests: XCTestCase {
 
         let sharingController = PostSharingController()
 
-        var controller = sharingController.shareController("test", summary: "test", tags: "test", link: "test")
+        var controller = sharingController.shareController("test", summary: "test", link: "test")
         XCTAssertNotNil(controller, "Controller should not be nil")
 
-        controller = sharingController.shareController("", summary: "", tags: "", link: "")
+        controller = sharingController.shareController("", summary: "", link: "")
         XCTAssertNotNil(controller, "Controller should not be nil")
 
-        controller = sharingController.shareController(nil, summary: nil, tags: nil, link: nil)
+        controller = sharingController.shareController(nil, summary: nil, link: nil)
         XCTAssertNotNil(controller, "Controller should not be nil")
     }
 
