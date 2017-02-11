@@ -194,11 +194,13 @@ class AztecPostViewController: UIViewController {
         return WPAndDeviceMediaLibraryDataSource(post: self.post)
     }()
 
+
     fileprivate lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
         return coordinator
     }()
+
 
     fileprivate lazy var mediaProgressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
@@ -236,7 +238,10 @@ class AztecPostViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 
+        self.restorationIdentifier = Restoration.restorationIdentifier
+        self.restorationClass = type(of: self)
         self.shouldRemovePostOnDismiss = shouldRemoveOnDismiss(post: post)
+
         addObservers(toPost: post)
     }
 
@@ -258,13 +263,18 @@ class AztecPostViewController: UIViewController {
         // TODO: Fix the warnings triggered by this one!
         WPFontManager.loadMerriweatherFontFamily()
 
+        // New Post Revision!
         createRevisionOfPost()
 
+        // Setup Elements
         configureNavigationBar()
-        configureDismissButton()
         configureView()
         configureSubviews()
 
+        // UI elements might get their properties reset when the view is effectively loaded. Refresh it all!
+        refreshInterface()
+
+        // Setup Autolayout
         view.setNeedsUpdateConstraints()
     }
 
@@ -272,6 +282,10 @@ class AztecPostViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        // We can only configure the dismiss button, when we know the way this VC will be presented
+        configureDismissButton()
+
+        // Wire Notification Listeners!
         startListeningToNotifications()
     }
 
@@ -1453,8 +1467,58 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
     }
 }
 
+
+// MARK: - State Restoration
+//
+extension AztecPostViewController: UIViewControllerRestoration {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+        guard let lastIdentifierComponent = identifierComponents.last as? String else {
+            return nil
+        }
+
+        switch lastIdentifierComponent {
+        case Restoration.navigationIdentifier:
+            return restoreNavigation(withCoder: coder)
+        default:
+            return restoreAztec(withCoder: coder)
+        }
+    }
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+        coder.encode(post.objectID.uriRepresentation(), forKey: Restoration.postIdentifierKey)
+        coder.encode(shouldRemovePostOnDismiss, forKey: Restoration.shouldRemovePostKey)
+    }
+
+    class func restoreNavigation(withCoder coder: NSCoder) -> UINavigationController? {
+        let navigationController = UINavigationController()
+        navigationController.restorationIdentifier = Restoration.navigationIdentifier
+        navigationController.restorationClass = self
+        return navigationController
+    }
+
+    class func restoreAztec(withCoder coder: NSCoder) -> AztecPostViewController? {
+        let context = ContextManager.sharedInstance().mainContext
+        guard let postURI = coder.decodeObject(forKey: Restoration.postIdentifierKey) as? URL,
+            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURI) else {
+                return nil
+        }
+
+        let post = try? context.existingObject(with: objectID)
+        guard let restoredPost = post as? AbstractPost else {
+            return nil
+        }
+
+        let aztecViewController = AztecPostViewController(post: restoredPost)
+        aztecViewController.shouldRemovePostOnDismiss = coder.decodeBool(forKey: Restoration.shouldRemovePostKey)
+
+        return aztecViewController
+    }
+}
+
+
 // MARK: - Constants
-fileprivate extension AztecPostViewController {
+extension AztecPostViewController {
 
     struct Assets {
         static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
@@ -1474,19 +1538,26 @@ fileprivate extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
-        static let htmlTitle    = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
-        static let richTitle    = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
-        static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
-        static let optionsTitle = NSLocalizedString("Options", comment: "Displays the Post's Options")
-        static let cancelTitle  = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
+        static let htmlTitle                = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
+        static let richTitle                = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        static let previewTitle             = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
+        static let optionsTitle             = NSLocalizedString("Options", comment: "Displays the Post's Options")
+        static let cancelTitle              = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
+    }
+
+    struct Restoration {
+        static let restorationIdentifier    = "AztecPostViewController"
+        static let navigationIdentifier     = "AztecPostNavigationViewController"
+        static let postIdentifierKey        = AbstractPost.classNameWithoutNamespaces()
+        static let shouldRemovePostKey      = "shouldRemovePostOnDismiss"
     }
 
     struct SwitchSiteAlert {
-        static let title        = NSLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
-        static let message      = NSLocalizedString("Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", comment: "And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
+        static let title                    = NSLocalizedString("Change Site", comment: "Title of an alert prompting the user that they are about to change the blog they are posting to.")
+        static let message                  = NSLocalizedString("Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", comment: "And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
 
-        static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
-        static let cancelTitle  = NSLocalizedString("Cancel", comment: "Cancel Action")
+        static let acceptTitle              = NSLocalizedString("OK", comment: "Accept Action")
+        static let cancelTitle              = NSLocalizedString("Cancel", comment: "Cancel Action")
     }
 }
 
