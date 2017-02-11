@@ -1182,9 +1182,9 @@ fileprivate extension AztecPostViewController {
     }
 
     func dismissOrPopView(didSave: Bool) {
-        onClose?(didSave)
-
-        if isModal() {
+        if let onClose = onClose {
+            onClose(didSave)
+        } else if isModal() {
             presentingViewController?.dismiss(animated: true, completion: nil)
         } else {
             _ = navigationController?.popViewController(animated: true)
