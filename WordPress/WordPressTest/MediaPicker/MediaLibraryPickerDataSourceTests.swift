@@ -29,7 +29,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
         ContextManager.overrideSharedInstance(nil)
     }
 
-    func testPixelSize() {
+    func testMediaPixelSize() {
         guard let media = newImageMedia() else {
             XCTFail("Media should be created without error")
             return
