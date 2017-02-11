@@ -75,12 +75,6 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         textView.delegate = self
 
         textView.translatesAutoresizingMaskIntoConstraints = false
-
-        // TODO:
-        // Nuke this snippet once Readability is in place. REF. #6085
-        let maxWidth = WPTableViewFixedWidth
-        let padding = type(of: self).defaultLabelPadding
-        textView.preferredMaxLayoutWidth = maxWidth - padding.left - padding.right
     }
 
 

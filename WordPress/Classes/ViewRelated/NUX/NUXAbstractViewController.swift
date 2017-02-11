@@ -90,21 +90,19 @@ class NUXAbstractViewController: UIViewController {
         helpButton.accessibilityLabel = NSLocalizedString("Help", comment: "Help button")
         helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), for: .touchUpInside)
 
-        var frame = helpButton.frame
-        frame.origin.x = helpButtonContainerFrame.width - frame.width
-        frame.origin.y = (helpButtonContainerFrame.height - frame.height) / 2
-        helpButton.frame = frame
         customView.addSubview(helpButton)
+        helpButton.translatesAutoresizingMaskIntoConstraints = false
+        helpButton.trailingAnchor.constraint(equalTo: customView.trailingAnchor).isActive = true
+        helpButton.centerYAnchor.constraint(equalTo: customView.centerYAnchor).isActive = true
 
-        let badgeFrame = CGRect(
-            x: frame.maxX - (helpBadgeSize.width / 2),
-            y: frame.minY - (helpBadgeSize.height / 2),
-            width: helpBadgeSize.width,
-            height: helpBadgeSize.height
-        )
-        helpBadge = WPNUXHelpBadgeLabel(frame: badgeFrame)
+        helpBadge = WPNUXHelpBadgeLabel()
+        helpBadge.translatesAutoresizingMaskIntoConstraints = false
         helpBadge.isHidden = true
         customView.addSubview(helpBadge)
+        helpBadge.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor).isActive = true
+        helpBadge.centerYAnchor.constraint(equalTo: helpButton.topAnchor).isActive = true
+        helpBadge.widthAnchor.constraint(equalToConstant: helpBadgeSize.width).isActive = true
+        helpBadge.heightAnchor.constraint(equalToConstant: helpBadgeSize.height).isActive = true
 
         let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         spacer.width = helpButtonMarginSpacerWidth
