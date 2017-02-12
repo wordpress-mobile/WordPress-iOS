@@ -570,7 +570,7 @@ extension AztecPostViewController {
         postEditorStateContext.updated(isBeingPublished: true)
 
         // Finally, publish the post.
-        publishPost(secondaryPublishTapped: secondaryPublishTapped) { uploadedPost, error in
+        publishPost() { uploadedPost, error in
             self.postEditorStateContext.updated(isBeingPublished: false)
             SVProgressHUD.dismiss()
 
@@ -1203,7 +1203,7 @@ fileprivate extension AztecPostViewController {
         ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
 
-    fileprivate func publishPost(secondaryPublishTapped: Bool = false, completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)? = nil) {
+    fileprivate func publishPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)? = nil) {
         mapUIContentToPostAndSave()
 
         let managedObjectContext = ContextManager.sharedInstance().mainContext
