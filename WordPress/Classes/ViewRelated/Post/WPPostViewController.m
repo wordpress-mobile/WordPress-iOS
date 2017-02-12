@@ -1262,14 +1262,14 @@ EditImageDetailsViewControllerDelegate
         // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
         // to showing Publish Now instead of Submit for Review.
         if (!self.post.blog.capabilities || [self.post.blog isPublishingPostsAllowed]) {
-            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Publish Now", "Title of button allowing the user to immediately publish the post they are editing.")
+            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Publish Now", @"Title of button allowing the user to immediately publish the post they are editing.")
                                             style:UIAlertActionStyleDestructive
                                           handler:^(UIAlertAction * _Nonnull action) {
                                               [self.post publishImmediately];
                                               [self saveAction:action];
                                           }];
         } else {
-            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Submit for Review", "Title of button allowing a contributor to a site to submit the post they are editing for review.")
+            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Submit for Review", @"Title of button allowing a contributor to a site to submit the post they are editing for review.")
                                             style:UIAlertActionStyleDestructive
                                           handler:^(UIAlertAction * _Nonnull action) {
                                               [self.post publishImmediately];
@@ -1277,7 +1277,7 @@ EditImageDetailsViewControllerDelegate
                                           }];
         }
     } else if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
-        return [UIAlertAction actionWithTitle:NSLocalizedString(@"Save as Draft", "Title of button allowing users to change the status of the post they are currently editing to Draft.")
+        return [UIAlertAction actionWithTitle:NSLocalizedString(@"Save as Draft", @"Title of button allowing users to change the status of the post they are currently editing to Draft.")
                                         style:UIAlertActionStyleDefault
                                       handler:^(UIAlertAction * _Nonnull action) {
                                           self.post.status = PostStatusDraft;
