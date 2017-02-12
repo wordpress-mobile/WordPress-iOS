@@ -169,8 +169,6 @@ public class PostEditorStateContext {
         switch originalPostStatus {
         case .draft where userCanPublish == false:
             editorState = PostEditorStateSubmitForReview()
-        case .draft:
-            editorState = PostEditorStateSave()
         default:
             editorState = PostEditorStateUpdate()
         }
