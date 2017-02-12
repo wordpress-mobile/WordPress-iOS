@@ -23,11 +23,17 @@ class PostEditorStateTests: XCTestCase {
     }
 
     func testContextChangedNewPostToDraft() {
-        context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, delegate: self)
+        context = PostEditorStateContext(originalPostStatus: nil, userCanPublish: true, delegate: self)
 
         context.updated(postStatus: .draft)
 
         XCTAssertEqual(PostEditorAction.save, context.action, "New posts switched to draft should show Save button.")
+    }
+
+    func testContextExistingDraft() {
+        context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, delegate: self)
+
+        XCTAssertEqual(PostEditorAction.update, context.action, "Existing draft posts should show Update button.")
     }
 
     func testContextPostSwitchedBetweenFutureAndCurrent() {

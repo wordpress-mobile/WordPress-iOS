@@ -23,7 +23,7 @@ class MediaProgressCoordinatorTest: XCTestCase {
 
         XCTAssertTrue(mediaProgressCoordinator.mediaUploadingProgress!.totalUnitCount == Int64(totalItems), "There should a total number of 10 items")
 
-        XCTAssertTrue(mediaProgressCoordinator.isRunning())
+        XCTAssertTrue(mediaProgressCoordinator.isRunning)
 
         for index in 1...totalItems {
             let progress = Progress.discreteProgress(totalUnitCount: 1)
@@ -32,7 +32,7 @@ class MediaProgressCoordinatorTest: XCTestCase {
             XCTAssertTrue(mediaProgressCoordinator.mediaUploadingProgress!.completedUnitCount == Int64(index))
         }
 
-        XCTAssertFalse(mediaProgressCoordinator.isRunning())
+        XCTAssertFalse(mediaProgressCoordinator.isRunning)
     }
 
     func testMediaProgressThatFails() {
@@ -45,14 +45,14 @@ class MediaProgressCoordinatorTest: XCTestCase {
         let progress = Progress.discreteProgress(totalUnitCount: 1)
         mediaProgressCoordinator.track(progress: progress, ofObject:1 , withMediaID: "/(index)")
 
-        XCTAssertTrue(mediaProgressCoordinator.isRunning())
+        XCTAssertTrue(mediaProgressCoordinator.isRunning)
         // simulate a failed request
         progress.totalUnitCount = 0
         progress.completedUnitCount = 0
 
         XCTAssertTrue(mediaProgressCoordinator.mediaUploadingProgress!.completedUnitCount == 0)
 
-        XCTAssertFalse(mediaProgressCoordinator.isRunning())
+        XCTAssertFalse(mediaProgressCoordinator.isRunning)
     }
 
     func testMediaProgressThatIsCanceled() {
@@ -65,14 +65,14 @@ class MediaProgressCoordinatorTest: XCTestCase {
         let progress = Progress.discreteProgress(totalUnitCount: 1)
         mediaProgressCoordinator.track(progress: progress, ofObject:1 , withMediaID: "/(index)")
 
-        XCTAssertTrue(mediaProgressCoordinator.isRunning())
+        XCTAssertTrue(mediaProgressCoordinator.isRunning)
 
         // simulate a canceled request
         progress.cancel()
 
         XCTAssertFalse(mediaProgressCoordinator.mediaUploadingProgress!.isCancelled)
 
-        XCTAssertFalse(mediaProgressCoordinator.isRunning())
+        XCTAssertFalse(mediaProgressCoordinator.isRunning)
     }
 
 }
