@@ -36,7 +36,7 @@ extern NSString * const PostStatusDeleted;
 @property (weak, readonly) AbstractPost *original;
 @property (weak, readonly) AbstractPost *revision;
 @property (nonatomic, strong) NSSet *comments;
-@property (nonatomic, strong) Media *featuredImage;
+@property (nonatomic, strong, nullable) Media *featuredImage;
 
 // By convention these should be treated as read only and not manually set.
 // These are primarily used as helpers sorting fetchRequests.
