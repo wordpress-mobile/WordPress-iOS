@@ -154,9 +154,14 @@ class NotificationDetailsViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        refreshInterface()
+        refreshInterfaceIfNeeded()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        refreshNavigationBar()
+    }
 
     fileprivate func refreshInterfaceIfNeeded() {
         guard isViewLoaded else {
