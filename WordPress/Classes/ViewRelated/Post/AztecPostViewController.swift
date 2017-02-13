@@ -484,6 +484,27 @@ class AztecPostViewController: UIViewController {
 }
 
 
+// MARK: - SDK Workarounds!
+//
+extension AztecPostViewController {
+
+    /// Note:
+    /// When presenting an UIAlertController using a navigationBarButton as a source, the entire navigationBar
+    /// gets set as a passthru view, allowing invalid scenarios, such as: pressing the Dismiss Button, while there's
+    /// an ActionSheet onscreen.
+    ///
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.present(viewControllerToPresent, animated: flag) {
+            if let alert = viewControllerToPresent as? UIAlertController, alert.preferredStyle == .actionSheet {
+                alert.popoverPresentationController?.passthroughViews = nil
+            }
+
+            completion?()
+        }
+    }
+}
+
+
 // MARK: - Actions
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
