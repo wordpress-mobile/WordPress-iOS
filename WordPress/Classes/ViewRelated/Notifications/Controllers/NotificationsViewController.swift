@@ -884,6 +884,8 @@ private extension NotificationsViewController {
 //
 private extension NotificationsViewController {
     func showNoResultsViewIfNeeded() {
+        updateSplitViewAppearanceForNoResultsView()
+
         // Remove + Show Filters, if needed
         guard shouldDisplayNoResultsView == true else {
             noResultsView.removeFromSuperview()
@@ -904,6 +906,15 @@ private extension NotificationsViewController {
 
         // Hide the filter header if we're showing the Jetpack prompt
         hideFiltersSegmentedControlIfApplicable()
+    }
+
+    func updateSplitViewAppearanceForNoResultsView() {
+        if let splitViewController = splitViewController as? WPSplitViewController {
+            let columnWidth: WPSplitViewControllerPrimaryColumnWidth = shouldDisplayFullscreenNoResultsView ? .full : .default
+            if splitViewController.wpPrimaryColumnWidth != columnWidth {
+                splitViewController.wpPrimaryColumnWidth = columnWidth
+            }
+        }
     }
 
     var noResultsTitleText: String {
@@ -942,6 +953,12 @@ private extension NotificationsViewController {
 
     var shouldDisplayNoResultsView: Bool {
         return tableViewHandler.resultsController.fetchedObjects?.count == 0
+    }
+
+    var shouldDisplayFullscreenNoResultsView: Bool {
+        let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
+
+        return shouldDisplayNoResultsView && (shouldDisplayJetpackMessage || currentFilter == .none)
     }
 }
 
