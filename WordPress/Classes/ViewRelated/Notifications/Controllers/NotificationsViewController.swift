@@ -1107,6 +1107,9 @@ private extension NotificationsViewController {
         guard let targetIndexPath = tableViewHandler.resultsController.indexPath(forObject: note) else {
             return
         }
+
+        restorableSelectedIndexPath = targetIndexPath
+
         tableView.selectRow(at: targetIndexPath, animated: false, scrollPosition: .middle)
     }
 }
