@@ -13,7 +13,11 @@ import WordPressShared
 /// Plus, we provide a simple mechanism to render the details for a specific Notification,
 /// given its remote identifier.
 ///
-class NotificationsViewController: UITableViewController {
+class NotificationsViewController: UITableViewController, UIViewControllerRestoration {
+
+    static let selectedIndexPathRestorationIdentifier = "NotificationsSelectedIndexPathKey"
+    static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
+
     // MARK: - Properties
 
     /// TableHeader
@@ -66,6 +70,7 @@ class NotificationsViewController: UITableViewController {
 
     fileprivate var restorableSelectedIndexPath: IndexPath?
     fileprivate let defaultIndexPath = IndexPath(row: 0, section: 0)
+    fileprivate var restorableSelectedSegmentIndex: Int = 0
 
     // MARK: - View Lifecycle
 
@@ -76,9 +81,7 @@ class NotificationsViewController: UITableViewController {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
-        // Note: This class doesn't actually conform to restoration?
-        // Swift 3 migration: Brent Nov. 28/16
-        //restorationClass = NotificationsViewController.self
+        restorationClass = NotificationsViewController.self
 
         if restorableSelectedIndexPath == nil {
             restorableSelectedIndexPath = defaultIndexPath
@@ -109,8 +112,8 @@ class NotificationsViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         // Manually deselect the selected row. 
-        // This is required due to a bug in iOS7 / iOS8
         if splitViewControllerIsHorizontallyCompact {
+            // This is required due to a bug in iOS7 / iOS8
             tableView.deselectSelectedRowWithAnimation(true)
 
             restorableSelectedIndexPath = defaultIndexPath
@@ -147,6 +150,41 @@ class NotificationsViewController: UITableViewController {
         tableViewHandler.updateRowAnimation = .none
     }
 
+    // MARK: - State Restoration
+
+    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+        return WPTabBarController.sharedInstance().notificationsViewController
+    }
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        coder.encode(restorableSelectedIndexPath, forKey: type(of: self).selectedIndexPathRestorationIdentifier)
+        coder.encode(filtersSegmentedControl.selectedSegmentIndex, forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
+
+        super.encodeRestorableState(with: coder)
+    }
+
+    override func decodeRestorableState(with coder: NSCoder) {
+        decodeSelectedSegmentIndexWithCoder(coder: coder)
+        decodeRestorableSelectedIndexPathWithCoder(coder: coder)
+
+        reloadResultsController()
+
+        super.decodeRestorableState(with: coder)
+    }
+
+    fileprivate func decodeRestorableSelectedIndexPathWithCoder(coder: NSCoder) {
+        if let indexPath = coder.decodeObject(forKey: type(of: self).selectedIndexPathRestorationIdentifier) as? IndexPath {
+            restorableSelectedIndexPath = indexPath
+        }
+    }
+
+    fileprivate func decodeSelectedSegmentIndexWithCoder(coder: NSCoder) {
+        restorableSelectedSegmentIndex = coder.decodeInteger(forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
+
+        if let filtersSegmentedControl = filtersSegmentedControl {
+            filtersSegmentedControl.selectedSegmentIndex = restorableSelectedSegmentIndex
+        }
+    }
 
     // MARK: - UITableView Methods
 
@@ -338,6 +376,8 @@ private extension NotificationsViewController {
         }
 
         WPStyleGuide.Notifications.configureSegmentedControl(filtersSegmentedControl)
+
+        filtersSegmentedControl.selectedSegmentIndex = restorableSelectedSegmentIndex
     }
 }
 
@@ -647,22 +687,25 @@ extension NotificationsViewController {
 //
 extension NotificationsViewController {
     func segmentedControlDidChange(_ sender: UISegmentedControl) {
-        if Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) == .unread {
-            refreshUnreadNotifications(reloadingResultsController: false)
-        } else {
-            clearUnreadNotifications()
-        }
+        updateUnreadNotificationsForSegmentedControlChange()
 
         reloadResultsController()
 
         if !splitViewControllerIsHorizontallyCompact {
             if tableViewHandler.resultsController.fetchedObjects?.count != 0 {
-                let path = IndexPath(row: 0, section: 0)
-                tableView.selectRow(at: path, animated: false, scrollPosition: .bottom)
-                self.tableView(tableView, didSelectRowAt: path)
+                tableView.selectRow(at: defaultIndexPath, animated: false, scrollPosition: .bottom)
+                self.tableView(tableView, didSelectRowAt: defaultIndexPath)
             } else {
                 showDetailViewController(UIViewController(), sender: nil)
             }
+        }
+    }
+
+    func updateUnreadNotificationsForSegmentedControlChange() {
+        if Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) == .unread {
+            refreshUnreadNotifications(reloadingResultsController: false)
+        } else {
+            clearUnreadNotifications()
         }
     }
 }
