@@ -79,7 +79,7 @@ extension UIImageView {
         // Calling `layoutIfNeeded()` forces UIKit to calculate the actual size.
         layoutIfNeeded()
 
-        let size = Int(ceil(frame.width * contentScaleFactor))
+        let size = Int(ceil(frame.width * UIScreen.main.scale))
         let url = gravatar.urlWithSize(size)
 
         self.downloadImage(url,

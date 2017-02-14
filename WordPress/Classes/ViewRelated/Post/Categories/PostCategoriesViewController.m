@@ -221,7 +221,7 @@ static const CGFloat CategoryCellIndentation = 16.0;
     if (self.selectionMode == CategoriesSelectionModeParent) {
         if (row == 0) {
             [WPStyleGuide configureTableViewDestructiveActionCell:cell];
-            cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            cell.textLabel.textAlignment = NSTextAlignmentNatural;
             
             cell.textLabel.text = NSLocalizedString(@"No Category",
                                                     @"Text shown (to select no-category) in the parent-category-selection screen when creating a new category.");

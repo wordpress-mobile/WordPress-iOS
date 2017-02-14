@@ -3722,43 +3722,43 @@
 		AC3439790E11434600E5D79B /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				5DBFC8A81A9BE07B00E00DE4 /* Posts.storyboard */,
-				430693731DD25F31009398A2 /* PostPost.storyboard */,
+				5D1EBF56187C9B95003393F8 /* Categories */,
 				5DF3DD691A9377220051A229 /* Controllers */,
+				5D577D301891278D00B964C3 /* Geolocation */,
 				5DF3DD6B1A93773B0051A229 /* Style */,
 				5D09CBA61ACDE532007A23BD /* Utils */,
 				5DF3DD6A1A93772D0051A229 /* Views */,
-				5D577D301891278D00B964C3 /* Geolocation */,
-				5D1EBF56187C9B95003393F8 /* Categories */,
-				ACC156CA0E10E67600D6E1A0 /* WPPostViewController.h */,
-				ACC156CB0E10E67600D6E1A0 /* WPPostViewController.m */,
-				5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */,
-				5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */,
-				ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */,
-				ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */,
-				74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */,
-				74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */,
-				ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */,
-				ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */,
-				5D62BAD818AAAE9B0044E5F7 /* PostSettingsViewController_Internal.h */,
-				5D146EB9189857ED0068FDC6 /* FeaturedImageViewController.h */,
-				5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */,
-				5DB3BA0318D0E7B600F3F3E9 /* WPPickerView.h */,
-				5DB3BA0418D0E7B600F3F3E9 /* WPPickerView.m */,
-				593F26601CAB00CA00F14073 /* PostSharingController.swift */,
-				5DB3BA0618D11D8D00F3F3E9 /* PublishDatePickerView.h */,
-				5DB3BA0718D11D8D00F3F3E9 /* PublishDatePickerView.m */,
-				5D17F0BC1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.h */,
-				5D17F0BD1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m */,
-				FF0AAE0B1A16550D0089841D /* WPMediaProgressTableViewController.h */,
-				FF0AAE0C1A16550D0089841D /* WPMediaProgressTableViewController.m */,
+				FF0CAC311E4A8A0D00C7D4F1 /* AztecAttachmentViewController.swift */,
+				FF06FFB71D65CB480095CDF7 /* AztecPostViewController.swift */,
 				5D8CBC451A6F47880081F4AE /* EditImageDetailsViewController.h */,
 				5D8CBC461A6F47880081F4AE /* EditImageDetailsViewController.m */,
-				FF06FFB71D65CB480095CDF7 /* AztecPostViewController.swift */,
-				43D54D121DCAA070007F575F /* PostPostViewController.swift */,
 				437542E21DD4E19E00D6B727 /* EditPostViewController.swift */,
+				5D146EB9189857ED0068FDC6 /* FeaturedImageViewController.h */,
+				5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */,
 				93414DE41E2D25AE003143A3 /* PostEditorState.swift */,
-				FF0CAC311E4A8A0D00C7D4F1 /* AztecAttachmentViewController.swift */,
+				430693731DD25F31009398A2 /* PostPost.storyboard */,
+				43D54D121DCAA070007F575F /* PostPostViewController.swift */,
+				ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */,
+				ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */,
+				5DBFC8A81A9BE07B00E00DE4 /* Posts.storyboard */,
+				5D62BAD818AAAE9B0044E5F7 /* PostSettingsViewController_Internal.h */,
+				ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */,
+				ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */,
+				593F26601CAB00CA00F14073 /* PostSharingController.swift */,
+				5D17F0BC1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.h */,
+				5D17F0BD1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m */,
+				5DB3BA0618D11D8D00F3F3E9 /* PublishDatePickerView.h */,
+				5DB3BA0718D11D8D00F3F3E9 /* PublishDatePickerView.m */,
+				5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */,
+				5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */,
+				74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */,
+				74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */,
+				FF0AAE0B1A16550D0089841D /* WPMediaProgressTableViewController.h */,
+				FF0AAE0C1A16550D0089841D /* WPMediaProgressTableViewController.m */,
+				5DB3BA0318D0E7B600F3F3E9 /* WPPickerView.h */,
+				5DB3BA0418D0E7B600F3F3E9 /* WPPickerView.m */,
+				ACC156CA0E10E67600D6E1A0 /* WPPostViewController.h */,
+				ACC156CB0E10E67600D6E1A0 /* WPPostViewController.m */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -6791,7 +6791,6 @@
 				CODE_SIGN_ENTITLEMENTS = WordPress.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_BITCODE = YES;
@@ -6860,7 +6859,6 @@
 				CODE_SIGN_ENTITLEMENTS = WordPress.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_BITCODE = NO;
@@ -7149,7 +7147,6 @@
 				CODE_SIGN_ENTITLEMENTS = "WordPress-Alpha.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7623,7 +7620,6 @@
 				CODE_SIGN_ENTITLEMENTS = "WordPress-Internal.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
