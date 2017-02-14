@@ -1468,17 +1468,14 @@ EditImageDetailsViewControllerDelegate
                         self.post = post;
 
                         DDLogInfo(@"post uploaded: %@", postTitle);
-                        NSString *hudText;
 
-                        if (postIsScheduled) {
-                            hudText = NSLocalizedString(@"Scheduled!", @"Text displayed in HUD after a post was successfully scheduled to be published.");
-                        } else if ([postStatus isEqualToString:@"publish"]){
-                            hudText = NSLocalizedString(@"Published!", @"Text displayed in HUD after a post was successfully published.");
+                        if (post.isDraft) {
+                            NSString *hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
+                            [SVProgressHUD showSuccessWithStatus:hudText];
                         } else {
-                            hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
+                            [SVProgressHUD dismiss];
                         }
 
-                        [SVProgressHUD dismiss];
                         [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
 
                         stopEditingAndDismiss();
