@@ -379,6 +379,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         _notificationsSplitViewController.restorationIdentifier = WPNotificationsSplitViewRestorationID;
         _notificationsSplitViewController.fullscreenDisplayEnabled = NO;
         _notificationsSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthDefault;
+        _notificationsSplitViewController.collapseMode = WPSplitViewControllerCollapseModeAlwaysKeepDetail;
 
         [_notificationsSplitViewController setInitialPrimaryViewController:self.notificationsNavigationController];
 
