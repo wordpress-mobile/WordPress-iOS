@@ -180,7 +180,7 @@ DEPENDENCIES:
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
   - WordPress-Aztec-iOS (= 0.5a2)
   - WordPress-iOS-Editor (= 1.8.1)
-  - WordPress-iOS-Shared (= 0.7.2)
+  - WordPress-iOS-Shared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `feature/noto`)
   - WordPressCom-Analytics-iOS (= 0.1.22)
   - WordPressCom-Stats-iOS (= 0.8.1)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
@@ -197,6 +197,9 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-iOS-Shared:
+    :branch: feature/noto
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -211,6 +214,9 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-iOS-Shared:
+    :commit: 8713c139c5cc7d027b3ce51f63a5ee4873199e42
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -255,6 +261,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: f5b1c20a25abc9ed710747f7019dbf43f03caa4f
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: ce8c32fd216626bdd4eefe775bf347e1bd3c526d
+PODFILE CHECKSUM: 5c5bd920c40bac70a307e6fc4333719666aec83d
 
 COCOAPODS: 1.1.1
