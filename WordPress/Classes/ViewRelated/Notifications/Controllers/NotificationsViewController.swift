@@ -947,6 +947,10 @@ private extension NotificationsViewController {
         // Attach the view
         if noResultsView.superview == nil {
             tableView.addSubview(withFadeAnimation: noResultsView)
+
+            noResultsView.translatesAutoresizingMaskIntoConstraints = false
+            tableView.pinSubviewAtCenter(noResultsView)
+            noResultsView.layoutIfNeeded()
         }
 
         // Refresh its properties: The user may have signed into WordPress.com
