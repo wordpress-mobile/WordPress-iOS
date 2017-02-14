@@ -4,6 +4,7 @@ import CoreData
 extension Post {
 
     @NSManaged var commentCount: NSNumber?
+    @NSManaged var disabledPublicizeConnections: [NSNumber: [String: String]]?
     @NSManaged var geolocation: Coordinate?
     @NSManaged var latitudeID: String?
     @NSManaged var likeCount: NSNumber?
@@ -11,6 +12,8 @@ extension Post {
     @NSManaged var postFormat: String?
     @NSManaged var postType: String?
     @NSManaged var publicID: String?
+    @NSManaged var publicizeMessage: String?
+    @NSManaged var publicizeMessageID: String?
     @NSManaged var tags: String?
     @NSManaged var categories: Set<PostCategory>?
 
