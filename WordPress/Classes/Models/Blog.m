@@ -259,6 +259,18 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     }];
 }
 
+- (NSArray *)sortedConnections
+{
+    NSSortDescriptor *sortServiceDescriptor = [[NSSortDescriptor alloc] initWithKey:@"service"
+                                                                          ascending:YES
+                                                                           selector:@selector(localizedCaseInsensitiveCompare:)];
+    NSSortDescriptor *sortExternalNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"externalName"
+                                                                               ascending:YES
+                                                                                selector:@selector(caseInsensitiveCompare:)];
+    NSArray *sortDescriptors = @[sortServiceDescriptor, sortExternalNameDescriptor];
+    return [[self.connections allObjects] sortedArrayUsingDescriptors:sortDescriptors];
+}
+
 - (NSString *)defaultPostFormatText
 {
     return [self postFormatTextFromSlug:self.settings.defaultPostFormat];
