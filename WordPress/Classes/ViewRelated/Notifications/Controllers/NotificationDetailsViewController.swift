@@ -326,7 +326,7 @@ extension NotificationDetailsViewController {
 
         let width = buttonSize + buttonSpacing + buttonSize
         let height = buttonSize
-        let buttons = UIStackView(arrangedSubviews: [previous, next])
+        let buttons = UIStackView(arrangedSubviews: [next, previous])
         buttons.axis = .horizontal
         buttons.spacing = buttonSpacing
         buttons.frame = CGRect(x: 0, y: 0, width: width, height: height)
