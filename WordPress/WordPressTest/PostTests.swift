@@ -330,10 +330,63 @@ class PostTests: XCTestCase {
         revision.tags = original.tags
         XCTAssertFalse(revision.hasLocalChanges())
 
+        revision.publicizeMessage = ""
+        XCTAssertFalse(revision.hasLocalChanges())
+
+        revision.publicizeMessage = "Make it notorious"
+        XCTAssertTrue(revision.hasLocalChanges())
+
+        revision.publicizeMessage = original.publicizeMessage
+        XCTAssertFalse(revision.hasLocalChanges())
+
+        original.deleteRevision()
+        original.disablePublicizeConnectionWithKeyringID(8888)
+        revision = original.createRevision() as! Post
+
+        XCTAssertFalse(revision.hasLocalChanges())
+
+        revision.disablePublicizeConnectionWithKeyringID(1234)
+        XCTAssertTrue(revision.hasLocalChanges())
+
+        revision.enablePublicizeConnectionWithKeyringID(1234)
+        XCTAssertFalse(revision.hasLocalChanges())
+
+        revision.enablePublicizeConnectionWithKeyringID(8888)
+        XCTAssertTrue(revision.hasLocalChanges())
+
+        revision.disablePublicizeConnectionWithKeyringID(8888)
+        XCTAssertFalse(revision.hasLocalChanges())
+
         revision.mt_excerpt = "Say cheese"
         XCTAssertTrue(revision.hasLocalChanges())
 
         revision.mt_excerpt = original.mt_excerpt
         XCTAssertFalse(revision.hasLocalChanges())
+    }
+
+    func testThatEnablingDisablingPublicizeConnectionsWorks() {
+        let post = newTestPost()
+
+        post.disablePublicizeConnectionWithKeyringID(1234)
+        XCTAssertTrue(post.publicizeConnectionDisabledForKeyringID(1234))
+
+        post.enablePublicizeConnectionWithKeyringID(1234)
+        XCTAssertFalse(post.publicizeConnectionDisabledForKeyringID(1234))
+    }
+
+    func testThatCanEditPublicizeSettingsWorks() {
+        let post = newTestPost()
+
+        post.status = PostStatusPublish
+        XCTAssertTrue(post.canEditPublicizeSettings())
+
+        post.postID = 2905
+        XCTAssertFalse(post.canEditPublicizeSettings())
+
+        post.status = PostStatusScheduled
+        XCTAssertTrue(post.canEditPublicizeSettings())
+
+        post.status = PostStatusDraft
+        XCTAssertTrue(post.canEditPublicizeSettings())
     }
 }

@@ -272,6 +272,17 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                        dispatch_group_leave(syncGroup);
                                    }];
 
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    dispatch_group_enter(syncGroup);
+    [sharingService syncPublicizeConnectionsForBlog:blog
+                                            success:^{
+                                                dispatch_group_leave(syncGroup);
+                                            }
+                                            failure:^(NSError *error) {
+                                                DDLogError(@"Failed syncing publicize connections for blog %@: %@", blog.url, error);
+                                                dispatch_group_leave(syncGroup);
+                                            }];
+
     dispatch_group_enter(syncGroup);
     [remote checkMultiAuthorWithSuccess:^(BOOL isMultiAuthor) {
         [self updateMultiAuthor:isMultiAuthor forBlog:blogObjectID];
