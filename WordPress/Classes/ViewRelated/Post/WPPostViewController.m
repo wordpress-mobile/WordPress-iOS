@@ -302,7 +302,6 @@ EditImageDetailsViewControllerDelegate
     [WPFontManager notoBoldFontOfSize:16.0];
     [WPFontManager notoBoldItalicFontOfSize:16.0];
     [WPFontManager notoItalicFontOfSize:16.0];
-    [WPFontManager notoLightFontOfSize:16.0];
     [WPFontManager notoRegularFontOfSize:16.0];
 
     self.placeholderColor = [WPStyleGuide grey];
