@@ -217,7 +217,7 @@ class WPSplitViewController: UISplitViewController {
     fileprivate let dimmingViewAlpha: CGFloat = 0.5
     fileprivate let dimmingViewAnimationDuration: TimeInterval = 0.3
 
-    fileprivate func dimDetailViewController(_ dimmed: Bool) {
+    func dimDetailViewController(_ dimmed: Bool) {
         if dimmed {
             if dimmingView.superview == nil {
                 view.addSubview(dimmingView)
