@@ -150,6 +150,18 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         tableViewHandler.updateRowAnimation = .none
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if splitViewControllerIsHorizontallyCompact {
+            tableView.deselectSelectedRowWithAnimation(true)
+        } else {
+            tableView.selectRow(at: restorableSelectedIndexPath,
+                                animated: true,
+                                scrollPosition: .middle)
+        }
+    }
+
     // MARK: - State Restoration
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
