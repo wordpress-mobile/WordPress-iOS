@@ -299,14 +299,14 @@ EditImageDetailsViewControllerDelegate
 - (void)customizeAppearance
 {
     [super customizeAppearance];
-    [WPFontManager merriweatherBoldFontOfSize:16.0];
-    [WPFontManager merriweatherBoldItalicFontOfSize:16.0];
-    [WPFontManager merriweatherItalicFontOfSize:16.0];
-    [WPFontManager merriweatherLightFontOfSize:16.0];
-    [WPFontManager merriweatherRegularFontOfSize:16.0];
+    [WPFontManager notoBoldFontOfSize:16.0];
+    [WPFontManager notoBoldItalicFontOfSize:16.0];
+    [WPFontManager notoItalicFontOfSize:16.0];
+    [WPFontManager notoLightFontOfSize:16.0];
+    [WPFontManager notoRegularFontOfSize:16.0];
 
     self.placeholderColor = [WPStyleGuide grey];
-    self.editorView.sourceViewTitleField.font = [WPFontManager merriweatherBoldFontOfSize:24.0];
+    self.editorView.sourceViewTitleField.font = [WPFontManager notoBoldFontOfSize:24.0];
     self.editorView.sourceContentDividerView.backgroundColor = [WPStyleGuide greyLighten30];
     [self.toolbarView setBorderColor:[WPStyleGuide greyLighten10]];
     [self.toolbarView setItemTintColor: [WPStyleGuide greyLighten10]];
