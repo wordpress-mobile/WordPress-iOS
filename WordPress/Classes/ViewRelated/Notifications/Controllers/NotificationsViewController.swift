@@ -1049,6 +1049,7 @@ private extension NotificationsViewController {
             let helper = CoreDataHelper<Notification>(context: mainContext)
             helper.deleteAllObjects()
             try mainContext.save()
+            tableView.reloadData()
         } catch {
             DDLogSwift.logError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
