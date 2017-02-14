@@ -655,18 +655,11 @@ extension NotificationsViewController {
 
         reloadResultsController()
 
-        // It's a long way, to the top (if you wanna rock'n roll!)
-        guard tableViewHandler.resultsController.fetchedObjects?.count != 0 else {
-            return
-        }
-
-        let path = IndexPath(row: 0, section: 0)
-        tableView.scrollToRow(at: path, at: .bottom, animated: true)
-
         if !splitViewControllerIsHorizontallyCompact {
-            if let indexPath = tableView.indexPathForSelectedRow,
-                let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification {
-                showDetailsForNotification(note)
+            if tableViewHandler.resultsController.fetchedObjects?.count != 0 {
+                let path = IndexPath(row: 0, section: 0)
+                tableView.selectRow(at: path, animated: false, scrollPosition: .bottom)
+                self.tableView(tableView, didSelectRowAt: path)
             } else {
                 showDetailViewController(UIViewController(), sender: nil)
             }
