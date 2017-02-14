@@ -28,6 +28,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 @property (nonatomic, strong) WPNoResultsView           *noResultsView;
 @property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
 @property (nonatomic, strong) UIView                    *footerView;
+@property (nonatomic, strong) NSCache                   *estimatedRowHeights;
 @end
 
 
@@ -46,6 +47,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     if (self) {
         self.restorationClass = [self class];
         self.restorationIdentifier = NSStringFromClass([self class]);
+        self.estimatedRowHeights = [[NSCache alloc] init];
     }
     return self;
 }
@@ -166,6 +168,10 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSNumber *cachedHeight = [self.estimatedRowHeights objectForKey:indexPath];
+    if (cachedHeight.doubleValue) {
+        return cachedHeight.doubleValue;
+    }
     return WPTableViewDefaultRowHeight;
 }
 
@@ -186,6 +192,8 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self.estimatedRowHeights setObject:@(cell.frame.size.height) forKey:indexPath];
+
     // Refresh only when we reach the last 3 rows in the last section!
     NSInteger numberOfRowsInSection     = [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section];
     NSInteger lastSection               = [self.tableViewHandler numberOfSectionsInTableView:tableView] - 1;
