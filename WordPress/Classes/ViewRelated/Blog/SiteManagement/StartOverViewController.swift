@@ -48,6 +48,10 @@ open class StartOverViewController: UITableViewController {
 
         title = NSLocalizedString("Start Over", comment: "Title of Start Over settings page")
 
+        tableView.cellLayoutMarginsFollowReadableWidth = true
+        tableView.estimatedSectionHeaderHeight = 100.0
+        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
@@ -73,13 +77,6 @@ open class StartOverViewController: UITableViewController {
 
     override open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return headerView
-    }
-
-    override open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        headerView.layoutWidth = tableView.frame.width
-        let height = headerView.intrinsicContentSize.height
-
-        return height
     }
 
     // MARK: - Actions
