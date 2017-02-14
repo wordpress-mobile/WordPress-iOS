@@ -969,6 +969,10 @@ private extension NotificationsViewController {
             if splitViewController.wpPrimaryColumnWidth != columnWidth {
                 splitViewController.wpPrimaryColumnWidth = columnWidth
             }
+
+            if columnWidth == .default {
+                splitViewController.dimDetailViewController(shouldDimDetailViewController)
+            }
         }
     }
 
@@ -1014,6 +1018,12 @@ private extension NotificationsViewController {
         let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
 
         return shouldDisplayNoResultsView && (shouldDisplayJetpackMessage || currentFilter == .none)
+    }
+
+    var shouldDimDetailViewController: Bool {
+        let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
+
+        return shouldDisplayNoResultsView && !shouldDisplayJetpackMessage && currentFilter != .none
     }
 }
 
