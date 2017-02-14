@@ -8,7 +8,8 @@ use_frameworks!
 platform :ios, '9.0'
 
 abstract_target 'WordPress_Base' do
-  pod 'WordPress-iOS-Shared', '0.7.2'
+  # pod 'WordPress-iOS-Shared', '0.7.2'
+  pod 'WordPress-iOS-Shared', :branch => 'feature/noto', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
   pod 'WordPressCom-Stats-iOS', '0.8.1'

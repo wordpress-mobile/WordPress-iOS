@@ -112,9 +112,9 @@ class WPRichContentView: UITextView {
         set {
             let str = newValue
             let style = "<style>" +
-                "body { font-family: Merriweather; font-size:16.0; line-height:1.6875; color: #2e4453; } " +
+                "body { font-family: Noto; font-size:16.0; line-height:1.6875; color: #2e4453; } " +
                 "blockquote { color:#4f748e; } " +
-                "em, i { font-size:16.0; font-style: italic; font-family: Merriweather-Italic; } " +
+                "em, i { font-size:16.0; font-style: italic; font-family: Noto-Italic; } " +
                 "a { color: #0087be; text-decoration: none; } " +
                 "a:active { color: #005082; } " +
                 "</style>"
@@ -122,7 +122,7 @@ class WPRichContentView: UITextView {
             // Request the font to ensure it's loaded. Otherwise NSAttributedString
             // falls back to Times New Roman :o
             // https://github.com/wordpress-mobile/WordPress-iOS/issues/6564
-            _ = WPFontManager.merriweatherItalicFont(ofSize: 16)
+            _ = WPFontManager.notoItalicFont(ofSize: 16)
             do {
                 if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(content, defaultDocumentAttributes: nil) {
                     let mattrTxt = NSMutableAttributedString(attributedString: attrTxt)

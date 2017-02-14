@@ -61,7 +61,7 @@ extension WPStyleGuide {
 
     public class func readerCrossPostTitleAttributes() -> [String: AnyObject] {
         let fontSize = Cards.crossPostTitleFontSize
-        let font = WPFontManager.merriweatherBoldFont(ofSize: fontSize)
+        let font = WPFontManager.notoBoldFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
@@ -103,7 +103,7 @@ extension WPStyleGuide {
 
     public class func readerCardTitleAttributes() -> [String: AnyObject] {
         let fontSize = Cards.titleFontSize
-        let font = WPFontManager.merriweatherBoldFont(ofSize: fontSize)
+        let font = WPFontManager.notoBoldFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.titleLineSpacing
@@ -116,7 +116,7 @@ extension WPStyleGuide {
 
     public class func readerCardSummaryAttributes() -> [String: AnyObject] {
         let fontSize = Cards.contentFontSize
-        let font = WPFontManager.merriweatherRegularFont(ofSize: fontSize)
+        let font = WPFontManager.notoRegularFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.contentLineSpacing
@@ -141,7 +141,7 @@ extension WPStyleGuide {
 
     public class func readerDetailTitleAttributes() -> [String: AnyObject] {
         let fontSize = Detail.titleFontSize
-        let font = WPFontManager.merriweatherBoldFont(ofSize: fontSize)
+        let font = WPFontManager.notoBoldFont(ofSize: fontSize)
 
         let lineHeight = Detail.titleLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
@@ -159,7 +159,7 @@ extension WPStyleGuide {
 
     public class func readerStreamHeaderDescriptionAttributes() -> [String: AnyObject] {
         let fontSize = Cards.contentFontSize
-        let font = WPFontManager.merriweatherRegularFont(ofSize: fontSize)
+        let font = WPFontManager.notoRegularFont(ofSize: fontSize)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.defaultLineSpacing
@@ -238,7 +238,7 @@ extension WPStyleGuide {
 
     public class func applyReaderSiteStreamDescriptionStyle(_ label: UILabel) {
         let fontSize = Cards.contentFontSize
-        label.font = WPFontManager.merriweatherRegularFont(ofSize: fontSize)
+        label.font = WPFontManager.notoRegularFont(ofSize: fontSize)
         label.textColor = darkGrey()
     }
 
