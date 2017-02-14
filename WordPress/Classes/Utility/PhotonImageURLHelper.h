@@ -10,7 +10,9 @@
  The source image is resized and the URL is constructed with a
  default 80% quality as a speed/size optimization.
 
- @param size The desired size of the photon image. 
+ @param size The desired "points" size of the photon image. The scale of the screen will be
+        multiplied to this value. If height is set to zero the returned image will have a
+        height proportional to the requested width.
  @param url The URL to the source image.
  
  @return A URL to the photon service with the source image as its subject.
@@ -21,8 +23,9 @@
 /**
  Create a "photonized" URL from the passed arguments.
 
- @param size The desired size of the photon image. If height is set to zero the
-        returned image will have a height proportional to the requested width.
+ @param size The desired "points" size of the photon image. The scale of the screen will be
+        multiplied to this value. If height is set to zero the returned image will have a height
+        proportional to the requested width.
  @param url The URL to the source image.
  @param forceResize By default Photon does not upscale beyond a certain percentage. 
         Setting this to YES forces the returned image to match the specified size.

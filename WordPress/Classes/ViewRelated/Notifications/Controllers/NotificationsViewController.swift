@@ -85,6 +85,7 @@ class NotificationsViewController: UITableViewController {
         }
 
         startListeningToAccountNotifications()
+        startListeningToTimeChangeNotifications()
     }
 
     override func viewDidLoad() {
@@ -356,6 +357,11 @@ private extension NotificationsViewController {
         nc.addObserver(self, selector: #selector(defaultAccountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
+    func startListeningToTimeChangeNotifications() {
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(significantTimeChange), name: .UIApplicationSignificantTimeChange, object: nil)
+    }
+
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
@@ -389,6 +395,15 @@ private extension NotificationsViewController {
 
         resetApplicationBadge()
         updateLastSeenTime()
+    }
+
+    @objc func significantTimeChange(_ note: Foundation.Notification) {
+        needsReloadResults = true
+        if UIApplication.shared.applicationState == .active
+            && isViewLoaded == true
+            && view.window != nil {
+            reloadResultsControllerIfNeeded()
+        }
     }
 }
 
@@ -1107,6 +1122,7 @@ private extension NotificationsViewController {
             let helper = CoreDataHelper<Notification>(context: mainContext)
             helper.deleteAllObjects()
             try mainContext.save()
+            tableView.reloadData()
         } catch {
             DDLogSwift.logError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
