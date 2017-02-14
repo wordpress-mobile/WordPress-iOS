@@ -12,7 +12,7 @@ enum FeatureFlag: Int {
             return true
         case .nativeEditor:
             // At the moment this is only active in debug mode
-            if build(.alpha, .debug) {
+            if build(.alpha, .debug, .internal) {
                 return true
             }
             return false

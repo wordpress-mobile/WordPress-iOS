@@ -5,7 +5,8 @@ open class WPImageURLHelper: NSObject {
     /**
      Adds to the provided url width and height parameters to allow the image to be resized on the server
 
-     - parameter size: the required size for the image
+     - parameter size: the required pixel size for the image.  If height is set to zero the
+                       returned image will have a height proportional to the requested width and vice versa.
      - parameter url:  the original url for the image
 
      - returns: an URL with the added query parameters.
