@@ -55,6 +55,7 @@ import WordPressComAnalytics
     fileprivate var listentingForBlockedSiteNotification = false
     fileprivate var imageRequestAuthToken: String?
     fileprivate var didBumpStats = false
+    fileprivate var isRefreshingAndPreservingOffset = false
 
     /// Used for fetching content.
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
@@ -1228,6 +1229,7 @@ import WordPressComAnalytics
 
         footerView.showSpinner(true)
 
+        let properties = topicPropertyForStats()
         let earlierThan = post.sortDate
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
@@ -1255,10 +1257,10 @@ import WordPressComAnalytics
             } else {
                 service?.fetchPosts(for: topicInContext, earlierThan: earlierThan, success: successBlock, failure: failureBlock)
             }
-        }
 
-        if let properties = topicPropertyForStats() {
-            WPAppAnalytics.track(.readerInfiniteScroll, withProperties: properties)
+            if let properties = properties {
+                WPAppAnalytics.track(.readerInfiniteScroll, withProperties: properties)
+            }
         }
     }
 
@@ -1268,7 +1270,9 @@ import WordPressComAnalytics
         indexPathForGapMarker = nil
         cleanupAndRefreshAfterScrolling = false
         if refresh {
+            isRefreshingAndPreservingOffset = true
             tableViewHandler.refreshTableViewPreservingOffset()
+            isRefreshingAndPreservingOffset = false
         }
         refreshControl.endRefreshing()
         footerView.showSpinner(false)
@@ -1655,6 +1659,16 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
         // Cache the cell's layout height as the currently known height, for estimation.
         // See estimatedHeightForRowAtIndexPath
         estimatedHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
+
+        // This check is an attempt to prevent a potential situation where the reader
+        // get stuck in a reloading loop. For background see https://github.com/wordpress-mobile/WordPress-iOS/issues/6459
+        // and issues that reference it. We can remove this check once we've identified
+        // and resovled the underlying cause of the issue, or if the fix proves to be
+        // ineffective.
+        // @aerych 2017-02-01
+        if isRefreshingAndPreservingOffset {
+            return
+        }
 
         // Check to see if we need to load more.
         let criticalRow = tableView.numberOfRows(inSection: indexPath.section) - loadMoreThreashold
