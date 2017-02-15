@@ -19,6 +19,10 @@ func fix(file: String) throws {
     try output.write(toFile: file, atomically: true, encoding: encoding)
 }
 
-try CommandLine.arguments.dropFirst().forEach { file in
+do {
+  try CommandLine.arguments.dropFirst().forEach { file in
     try fix(file: file)
+  }
+} catch {
+  print(error)
 }
