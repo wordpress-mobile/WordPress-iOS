@@ -31,6 +31,13 @@ class Post: AbstractPost {
     static let entityName = "Post"
     static let typeDefaultIdentifier = "post"
 
+    struct Constants {
+        static let publicizeIdKey = "id"
+        static let publicizeValueKey = "value"
+        static let publicizeDisabledValue = "1"
+        static let publicizeEnabledValue = "0"
+    }
+
     // MARK: - Properties
 
     fileprivate var storedContentPreviewForDisplay = ""
@@ -133,6 +140,43 @@ class Post: AbstractPost {
         categories = newCategories
     }
 
+    // MARK: - Sharing
+
+    func canEditPublicizeSettings() -> Bool {
+        return !self.hasRemote() || self.status != PostStatusPublish
+    }
+
+    // MARK: - PublicizeConnections
+
+    func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
+        return disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
+    }
+
+    func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
+        guard var connection = disabledPublicizeConnections?[keyringID] else {
+            return
+        }
+
+        guard connection[Constants.publicizeIdKey] != nil else {
+            _ = disabledPublicizeConnections?.removeValue(forKey: keyringID)
+            return
+        }
+
+        connection[Constants.publicizeValueKey] = Constants.publicizeEnabledValue
+        disabledPublicizeConnections?[keyringID] = connection
+    }
+
+    func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
+        if let _ = disabledPublicizeConnections?[keyringID] {
+            disabledPublicizeConnections![keyringID]![Constants.publicizeValueKey] = Constants.publicizeDisabledValue
+        } else {
+            if disabledPublicizeConnections == nil {
+                disabledPublicizeConnections = [NSNumber: [String: String]]()
+            }
+            disabledPublicizeConnections?[keyringID] = [Constants.publicizeValueKey: Constants.publicizeDisabledValue]
+        }
+    }
+
     // MARK: - Comments
 
     func numberOfComments() -> Int {
@@ -202,6 +246,15 @@ class Post: AbstractPost {
             if let coord1 = geolocation?.coordinate,
                 let coord2 = originalPost.geolocation?.coordinate, coord1.latitude != coord2.latitude || coord1.longitude != coord2.longitude {
 
+                return true
+            }
+
+            if publicizeMessage ?? "" != originalPost.publicizeMessage ?? "" {
+                return true
+            }
+
+            if (!NSDictionary(dictionary: disabledPublicizeConnections ?? [:])
+                             .isEqual(to: originalPost.disabledPublicizeConnections ?? [:])) {
                 return true
             }
         }
