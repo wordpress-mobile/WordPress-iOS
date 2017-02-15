@@ -149,6 +149,8 @@ def localize(path, language, include_pods):
         os.system('genstrings -q -o "%s" %s' % (language, filelist))
 
 if __name__ == '__main__':
-    localize(os.path.join(os.getcwd(), 'WordPress'), 'Resources/en.lproj', True)
-    localize(os.path.join(os.getcwd(), 'WordPressTodayWidget'), 'Base.lproj', False)
+    basedir = os.getcwd()
+    localize(os.path.join(basedir, 'WordPress'), 'Resources/en.lproj', True)
+    localize(os.path.join(basedir, 'WordPress', 'WordPressTodayWidget'), 'Base.lproj', False)
+    localize(os.path.join(basedir, 'WordPress', 'WordPressShareExtension'), 'Base.lproj', False)
 
