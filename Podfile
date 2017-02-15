@@ -5,7 +5,7 @@ project 'WordPress/WordPress.xcodeproj'
 inhibit_all_warnings!
 use_frameworks!
 
-platform :ios, '9.0'
+platform :ios, '10.0'
 
 abstract_target 'WordPress_Base' do
   pod 'WordPress-iOS-Shared', '0.7.2'
