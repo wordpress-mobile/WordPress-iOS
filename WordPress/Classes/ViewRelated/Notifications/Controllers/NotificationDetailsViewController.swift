@@ -295,32 +295,7 @@ extension NotificationDetailsViewController {
         previous.setImage(Gridicon.iconOfType(.arrowDown), for: .normal)
         previous.addTarget(self, action: #selector(previousNotificationWasPressed), for: .touchUpInside)
 
-        /*
-
-            |                     |           |                     |
-            |-------- 24 ---------|--- 12 ----|--------- 24 --------|
-            |                     |           |                     |
-        --- +---------------------+           +---------------------+
-         |  |                     |           |                     |
-         |  |         |           |           |         /|\         |
-         |  |         |           |           |        / | \        |
-         |  |         |           |           |       /  |  \       |
-         |  |         |           |           |      /   |   \      |
-         |  |         |           |           |     /    |    \     |
-            |         |           |           |          |          |
-         2  |         |           |           |          |          |
-         4  |         |           |           |          |          |
-            |         |           |           |          |          |
-         |  |    \    |    /      |           |          |          |
-         |  |     \   |   /       |           |          |          |
-         |  |      \  |  /        |           |          |          |
-         |  |       \ | /         |           |          |          |
-         |  |        \|/          |           |          |          |
-         |  |                     |           |                     |
-        --- +---------------------+           +---------------------+
-
-         https://github.com/wordpress-mobile/WordPress-iOS/issues/6662#issue-207316186
-         */
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/6662#issue-207316186
         let buttonSize = CGFloat(24)
         let buttonSpacing = CGFloat(12)
 
