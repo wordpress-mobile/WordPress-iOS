@@ -21,8 +21,8 @@ abstract_target 'WordPress_Base' do
     pod 'AFNetworking',	'3.1.0'
     pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'FormatterKit', '~> 1.8.1'
-    pod 'Helpshift', '~> 5.7.1'
-    pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'Helpshift', '~> 5.9.3'
+    pod 'HockeySDK', '~> 4.1.3', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'Lookback', '1.4.1', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
     pod 'Mixpanel', '2.9.4'
@@ -30,7 +30,7 @@ abstract_target 'WordPress_Base' do
     pod 'SVProgressHUD', '~>1.1.3'
     pod 'UIDeviceIdentifier', '~> 0.1'
     pod 'Crashlytics'
-    pod 'BuddyBuildSDK', '~> 1.0.11', :configurations => ['Release-Alpha']
+    pod 'BuddyBuildSDK', '~> 1.0.14', :configurations => ['Release-Alpha']
     pod 'FLAnimatedImage', '~> 1.0'
     pod 'MGSwipeTableCell', '~> 1.5.6'
     # Temporary until this fix is merged and released
