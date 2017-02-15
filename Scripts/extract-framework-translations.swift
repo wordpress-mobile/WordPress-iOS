@@ -10,7 +10,8 @@ let base = cwd
 let projectDir = base.appending("/WordPress")
 let resources = projectDir.appending("/Resources")
 let frameworkRoots = [
-    "WordPressTodayWidget"
+    "WordPressTodayWidget",
+    "WordPressShareExtension"
     ].map({ projectDir.appending("/\($0)") })
 
 guard fileManager.fileExists(atPath: projectDir) else {
