@@ -722,6 +722,7 @@
 		E1B23B081BFB3B370006559B /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B23B071BFB3B370006559B /* MyProfileViewController.swift */; };
 		E1B289DB19F7AF7000DB0707 /* RemoteBlog.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B289DA19F7AF7000DB0707 /* RemoteBlog.m */; };
 		E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */; };
+		E1B6A9CC1E54B6B2008FD47E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1B6A9CE1E54B6B2008FD47E /* Localizable.strings */; };
 		E1B84F001E02E94D00BF6434 /* PingHubManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B84EFF1E02E94D00BF6434 /* PingHubManager.swift */; };
 		E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1B912801BB00EFD003C25B9 /* People.storyboard */; };
 		E1B912831BB01047003C25B9 /* PeopleRoleBadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B912821BB01047003C25B9 /* PeopleRoleBadgeLabel.swift */; };
@@ -2074,6 +2075,7 @@
 		E1B34C0C1CCDFFCE00889709 /* ApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiCredentials.m; sourceTree = "<group>"; };
 		E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebViewController.h; sourceTree = "<group>"; };
 		E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebViewController.m; sourceTree = "<group>"; };
+		E1B6A9CD1E54B6B2008FD47E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1B84EFF1E02E94D00BF6434 /* PingHubManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PingHubManager.swift; sourceTree = "<group>"; };
 		E1B912801BB00EFD003C25B9 /* People.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = People.storyboard; sourceTree = "<group>"; };
 		E1B912821BB01047003C25B9 /* PeopleRoleBadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleRoleBadgeLabel.swift; sourceTree = "<group>"; };
@@ -3655,6 +3657,7 @@
 				93267A6019B896CD00997EB8 /* Info-Internal.plist */,
 				591252291A38AE9C00468279 /* TodayWidgetPrefix.pch */,
 				8546B44A1BEAD3B300193C07 /* Info-Alpha.plist */,
+				E1B6A9CE1E54B6B2008FD47E /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -5462,6 +5465,7 @@
 				93E5284319A7741A003A1A9C /* MainInterface.storyboard in Resources */,
 				8546B4511BEAD4D100193C07 /* WordPressTodayWidget-Alpha.entitlements in Resources */,
 				8546B44D1BEAD3EC00193C07 /* Wordpress-Alpha-Info.plist in Resources */,
+				E1B6A9CC1E54B6B2008FD47E /* Localizable.strings in Resources */,
 				934884AF19B7875C004028D8 /* WordPress-Internal.entitlements in Resources */,
 				8546B44F1BEAD48900193C07 /* WordPress-Alpha.entitlements in Resources */,
 				934884AD19B78723004028D8 /* WordPressTodayWidget-Internal.entitlements in Resources */,
@@ -6733,6 +6737,14 @@
 			name = MainInterface.storyboard;
 			path = WordPressShareExtension/Base.lproj;
 			sourceTree = SOURCE_ROOT;
+		};
+		E1B6A9CE1E54B6B2008FD47E /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E1B6A9CD1E54B6B2008FD47E /* Base */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
 		};
 		E1D91454134A853D0089019C /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
