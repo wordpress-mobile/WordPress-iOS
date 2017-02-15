@@ -202,7 +202,7 @@ open class NotificationSettingDetailsViewController: UITableViewController {
 
     fileprivate func openApplicationSettings() {
         let targetURL = URL(string: UIApplicationOpenSettingsURLString)
-        UIApplication.shared.openURL(targetURL!)
+        UIApplication.shared.open(targetURL!)
     }
 
 

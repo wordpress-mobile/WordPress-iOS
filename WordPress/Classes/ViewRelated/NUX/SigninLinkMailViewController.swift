@@ -74,7 +74,7 @@ class SigninLinkMailViewController: NUXAbstractViewController {
 
     @IBAction func handleOpenMailTapped(_ sender: UIButton) {
         let url = URL(string: "message://")!
-        UIApplication.shared.openURL(url)
+        UIApplication.shared.open(url)
     }
 
 

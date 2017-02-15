@@ -824,7 +824,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     } else {
         dashboardUrl = [self.blog adminUrlWithPath:@""];
     }
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl] options:nil completionHandler:nil];
 }
 
 
