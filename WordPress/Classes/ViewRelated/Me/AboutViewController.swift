@@ -160,7 +160,7 @@ open class AboutViewController: UITableViewController {
 
     fileprivate func displayTwitterAccount() {
         let twitterURL = URL(string: WPTwitterWordPressMobileURL)!
-        UIApplication.shared.openURL(twitterURL)
+        UIApplication.shared.open(twitterURL)
     }
 
     // MARK: - Nested Row Class
