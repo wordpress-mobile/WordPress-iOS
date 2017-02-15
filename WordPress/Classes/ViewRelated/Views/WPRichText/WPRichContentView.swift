@@ -112,9 +112,9 @@ class WPRichContentView: UITextView {
         set {
             let str = newValue
             let style = "<style>" +
-                "body { font-family: Noto; font-size:16.0; line-height:1.6875; color: #2e4453; } " +
+                "body { font-family: Noto Serif; font-size:16.0; line-height:1.6875; color: #2e4453; } " +
                 "blockquote { color:#4f748e; } " +
-                "em, i { font-size:16.0; font-style: italic; font-family: Noto-Italic; } " +
+                "em, i { font-size:16.0; font-style: italic; font-family: Noto Serif; } " +
                 "a { color: #0087be; text-decoration: none; } " +
                 "a:active { color: #005082; } " +
                 "</style>"
