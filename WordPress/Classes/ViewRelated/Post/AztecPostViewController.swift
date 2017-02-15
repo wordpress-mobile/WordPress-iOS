@@ -1162,10 +1162,6 @@ fileprivate extension AztecPostViewController {
     }
 
     func stopEditing() {
-        if titleTextField.isFirstResponder {
-            titleTextField.resignFirstResponder()
-        }
-
         view.endEditing(true)
     }
 
