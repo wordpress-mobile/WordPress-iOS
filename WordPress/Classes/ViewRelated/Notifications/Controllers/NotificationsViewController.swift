@@ -15,7 +15,7 @@ import WordPressShared
 ///
 class NotificationsViewController: UITableViewController, UIViewControllerRestoration {
 
-    static let selectedIndexPathRestorationIdentifier = "NotificationsSelectedIndexPathKey"
+    static let selectedNotificationRestorationIdentifier = "NotificationsSelectedNotificationKey"
     static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
 
     // MARK: - Properties
@@ -68,9 +68,14 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     fileprivate var unreadNotificationIds = Set<NSManagedObjectID>()
 
-    fileprivate var restorableSelectedIndexPath: IndexPath?
-    fileprivate let defaultIndexPath = IndexPath(row: 0, section: 0)
+    /// Used to store (and restore) the currently selected filter segment.
+    ///
     fileprivate var restorableSelectedSegmentIndex: Int = 0
+
+    /// Used to keep track of the currently selected notification,
+    /// to restore it between table view reloads and state restoration.
+    ///
+    fileprivate var selectedNotification: Notification? = nil
 
     // MARK: - View Lifecycle
 
@@ -82,10 +87,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         super.init(coder: aDecoder)
 
         restorationClass = NotificationsViewController.self
-
-        if restorableSelectedIndexPath == nil {
-            restorableSelectedIndexPath = defaultIndexPath
-        }
 
         startListeningToAccountNotifications()
         startListeningToTimeChangeNotifications()
@@ -116,7 +117,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             // This is required due to a bug in iOS7 / iOS8
             tableView.deselectSelectedRowWithAnimation(true)
 
-            restorableSelectedIndexPath = defaultIndexPath
+            selectedNotification = nil
         }
 
         // While we're onscreen, please, update rows with animations
@@ -156,9 +157,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         if splitViewControllerIsHorizontallyCompact {
             tableView.deselectSelectedRowWithAnimation(true)
         } else {
-            tableView.selectRow(at: restorableSelectedIndexPath,
-                                animated: true,
-                                scrollPosition: .middle)
+            selectRowForNotification(selectedNotification, animated: true, scrollPosition: .middle)
         }
     }
 
@@ -169,7 +168,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
-        coder.encode(restorableSelectedIndexPath, forKey: type(of: self).selectedIndexPathRestorationIdentifier)
+        if let uriRepresentation = selectedNotification?.objectID.uriRepresentation() {
+            coder.encode(uriRepresentation, forKey: type(of: self).selectedNotificationRestorationIdentifier)
+        }
+
         coder.encode(filtersSegmentedControl.selectedSegmentIndex, forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
 
         super.encodeRestorableState(with: coder)
@@ -177,16 +179,21 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     override func decodeRestorableState(with coder: NSCoder) {
         decodeSelectedSegmentIndexWithCoder(coder: coder)
-        decodeRestorableSelectedIndexPathWithCoder(coder: coder)
+        decodeSelectedNotificationWithCoder(coder: coder)
 
         reloadResultsController()
 
         super.decodeRestorableState(with: coder)
     }
 
-    fileprivate func decodeRestorableSelectedIndexPathWithCoder(coder: NSCoder) {
-        if let indexPath = coder.decodeObject(forKey: type(of: self).selectedIndexPathRestorationIdentifier) as? IndexPath {
-            restorableSelectedIndexPath = indexPath
+    fileprivate func decodeSelectedNotificationWithCoder(coder: NSCoder) {
+        if let uriRepresentation = coder.decodeObject(forKey: type(of: self).selectedNotificationRestorationIdentifier) as? URL {
+            let context = ContextManager.sharedInstance().mainContext
+            if let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: uriRepresentation),
+                let object = try? context.existingObject(with: objectID),
+                let notification = object as? Notification {
+                selectedNotification = notification
+            }
         }
     }
 
@@ -268,7 +275,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             return
         }
 
-        restorableSelectedIndexPath = indexPath
+        selectedNotification = note
 
         showDetailsForNotification(note)
     }
@@ -292,7 +299,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             self.showUndeleteForNoteWithID(note.objectID, request: request)
         }
         detailsViewController.onSelectedNoteChange = { note in
-            self.selectRowForNotification(note: note)
+            self.selectRowForNotification(note)
             if !note.read {
                 NotificationSyncMediator()?.markAsRead(note)
             }
@@ -634,6 +641,7 @@ private extension NotificationsViewController {
 
         /// Refetch + Reload
         _ = try? tableViewHandler.resultsController.performFetch()
+
         reloadTableViewPreservingSelection()
 
         // Empty State?
@@ -656,15 +664,22 @@ private extension NotificationsViewController {
         }
     }
 
-    func reloadTableViewPreservingSelection() {
-        let selectedIndexPath = restorableSelectedIndexPath
+    func selectRowForNotification(_ notification: Notification?, animated: Bool = true, scrollPosition: UITableViewScrollPosition = .none) {
+        guard let notification = notification else { return }
 
+        selectedNotification = notification
+
+        if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification) {
+            tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
+        }
+    }
+
+    func reloadTableViewPreservingSelection() {
         tableView.reloadData()
 
         // Show the current selection if our split view isn't collapsed
         if !splitViewControllerIsHorizontallyCompact {
-            tableView.selectRow(at: selectedIndexPath,
-                                animated: false, scrollPosition: .none)
+            selectRowForNotification(selectedNotification, animated: false, scrollPosition: .none)
         }
     }
 }
@@ -699,14 +714,23 @@ extension NotificationsViewController {
 //
 extension NotificationsViewController {
     func segmentedControlDidChange(_ sender: UISegmentedControl) {
+        selectedNotification = nil
+
         updateUnreadNotificationsForSegmentedControlChange()
 
         reloadResultsController()
 
-        if !splitViewControllerIsHorizontallyCompact {
-            if tableViewHandler.resultsController.fetchedObjects?.count != 0 {
-                tableView.selectRow(at: defaultIndexPath, animated: false, scrollPosition: .bottom)
-                self.tableView(tableView, didSelectRowAt: defaultIndexPath)
+        selectFirstNotificationIfAppropriate()
+    }
+
+    func selectFirstNotificationIfAppropriate() {
+        // If we don't currently have a selected notification and there is a notification
+        // in the list, then select it.
+        if !splitViewControllerIsHorizontallyCompact && selectedNotification == nil {
+            if let firstNotification = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
+                let indexPath = tableViewHandler.resultsController.indexPath(forObject: firstNotification) {
+                selectRowForNotification(firstNotification, animated: false, scrollPosition: .none)
+                self.tableView(tableView, didSelectRowAt: indexPath)
             } else {
                 showDetailViewController(UIViewController(), sender: nil)
             }
@@ -835,6 +859,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 
         // Update NoResults View
         showNoResultsViewIfNeeded()
+
+        selectFirstNotificationIfAppropriate()
     }
 }
 
@@ -1197,16 +1223,6 @@ private extension NotificationsViewController {
     func resetApplicationBadge() {
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
-
-    func selectRowForNotification(note: Notification) {
-        guard let targetIndexPath = tableViewHandler.resultsController.indexPath(forObject: note) else {
-            return
-        }
-
-        restorableSelectedIndexPath = targetIndexPath
-
-        tableView.selectRow(at: targetIndexPath, animated: false, scrollPosition: .middle)
-    }
 }
 
 // MARK: - WPSplitViewControllerDetailProvider
@@ -1216,6 +1232,8 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
         guard let note = fetchFirstNotification() else {
             return nil
         }
+
+        selectedNotification = note
 
         prepareToShowDetailsForNotification(note)
 
