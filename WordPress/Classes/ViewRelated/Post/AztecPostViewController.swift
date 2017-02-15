@@ -167,6 +167,7 @@ class AztecPostViewController: UIViewController {
         }
     }
 
+
     /// Post being currently edited
     ///
     fileprivate(set) var post: AbstractPost {
@@ -196,6 +197,8 @@ class AztecPostViewController: UIViewController {
     }()
 
 
+    /// Media Progress Coordinator
+    ///
     fileprivate lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
@@ -203,6 +206,8 @@ class AztecPostViewController: UIViewController {
     }()
 
 
+    /// Media Progress View
+    ///
     fileprivate lazy var mediaProgressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.backgroundColor = WPStyleGuide.wordPressBlue()
@@ -212,6 +217,9 @@ class AztecPostViewController: UIViewController {
         return progressView
     }()
 
+
+    /// Selected Text Attachment
+    ///
     fileprivate var currentSelectedAttachment: TextAttachment?
 
     /// Maintainer of state for editor - like for post button
@@ -230,6 +238,7 @@ class AztecPostViewController: UIViewController {
 
         return context
     }()
+
 
 
     // MARK: - Lifecycle Methods
