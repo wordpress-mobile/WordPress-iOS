@@ -45,7 +45,7 @@ if Dir.pwd =~ /Scripts/
   exit
 end
 
-LANGS={
+ALL_LANGS={
   'ar' => 'ar',         # Arabic
   'bg' => 'bg',         # Bulgarian
   'cs' => 'cs',         # Czech
@@ -80,7 +80,20 @@ LANGS={
   'zh-tw' => 'zh-Hant', # Chinese (Taiwan)
 }
 
-LANGS.each do |code,local|
+langs = {}
+if ARGV.count > 0
+  for key in ARGV
+    unless local = ALL_LANGS[key]
+      puts "Unknown language #{key}"
+      exit 1
+    end
+    langs[key] = local
+  end
+else
+  langs = ALL_LANGS
+end
+
+langs.each do |code,local|
   lang_dir = File.join('WordPress', 'Resources', "#{local}.lproj")
   puts "Updating #{code}"
   system "mkdir -p #{lang_dir}"
