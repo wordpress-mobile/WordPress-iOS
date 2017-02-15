@@ -103,5 +103,5 @@ langs.each do |code,local|
   end
   system "./Scripts/fix-translation #{lang_dir}/Localizable.strings"
   system "plutil -lint #{lang_dir}/Localizable.strings" and system "rm #{lang_dir}/Localizable.strings.bak"
-  system "grep -a '\\x00\\x22\\x00\\x22' #{lang_dir}/Localizable.strings"
+  system "grep -a '\\x00\\x20\\x00\\x22\\x00\\x22\\x00\\x3b$' #{lang_dir}/Localizable.strings"
 end
