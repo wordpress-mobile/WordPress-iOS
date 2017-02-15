@@ -222,6 +222,12 @@ class AztecPostViewController: UIViewController {
     ///
     fileprivate var currentSelectedAttachment: TextAttachment?
 
+
+    /// Last Interface Element that was a First Responder
+    ///
+    fileprivate var lastFirstResponder: UIView?
+
+
     /// Maintainer of state for editor - like for post button
     ///
     fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
@@ -299,11 +305,22 @@ class AztecPostViewController: UIViewController {
         startListeningToNotifications()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Bring back the keyboard on the last known Responder
+        restoreFirstResponder()
+    }
+
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+        // Notifications Listeners Cleanup
         stopListeningToNotifications()
+
+        // Remember the current First Responder
+        rememberFirstResponder()
     }
 
 
@@ -319,6 +336,7 @@ class AztecPostViewController: UIViewController {
         //    [self.titleToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
 
     }
+
 
     // MARK: - Configuration Methods
 
@@ -408,6 +426,15 @@ class AztecPostViewController: UIViewController {
         let notificationCenter = NotificationCenter.default
         notificationCenter.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
         notificationCenter.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+
+    func rememberFirstResponder() {
+        lastFirstResponder = view.findFirstResponder()
+    }
+
+    func restoreFirstResponder() {
+        let nextFirstResponder = lastFirstResponder ?? titleTextField
+        nextFirstResponder.becomeFirstResponder()
     }
 
     func refreshInterface() {
@@ -715,7 +742,6 @@ private extension AztecPostViewController {
         alert.addCancelActionWithTitle(MoreSheetAlert.cancelTitle)
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
-        view.endEditing(true)
         present(alert, animated: true, completion: nil)
     }
 
