@@ -1,6 +1,8 @@
 import Foundation
 
 
+// MARK: - UIView Helpers
+//
 extension UIView {
 
     func pinSubviewAtCenter(_ subview: UIView) {
@@ -30,11 +32,20 @@ extension UIView {
         subview.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor).isActive = true
     }
 
+    func findFirstResponder() -> UIView? {
+        if isFirstResponder {
+            return self
         }
 
+        for subview in subviews {
+            guard let responder = subview.findFirstResponder() else {
+                continue
             }
 
+            return responder
         }
+
+        return nil
     }
 
     func userInterfaceLayoutDirection() -> UIUserInterfaceLayoutDirection {
