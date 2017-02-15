@@ -23,6 +23,7 @@ func projectLanguages() -> [String] {
     return (try? fileManager.contentsOfDirectory(atPath: resources)
         .filter({ $0.hasSuffix(".lproj") })
         .map({ $0.replacingOccurrences(of: ".lproj", with: "") })
+        .filter({ $0 != "en" })
         ) ?? []
 }
 
