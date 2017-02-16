@@ -554,6 +554,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         NSString *latitudeID = nil;
         NSString *longitudeID = nil;
         NSString *publicID = nil;
+        NSString *publicizeMessage = nil;
+        NSString *publicizeMessageID = nil;
+        NSMutableDictionary *disabledPublicizeConnections = [NSMutableDictionary dictionary];
         if (remotePost.metadata) {
             NSDictionary *latitudeDictionary = [self dictionaryWithKey:@"geo_latitude" inMetadata:remotePost.metadata];
             NSDictionary *longitudeDictionary = [self dictionaryWithKey:@"geo_longitude" inMetadata:remotePost.metadata];
@@ -569,11 +572,29 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 longitudeID = [longitudeDictionary stringForKey:@"id"];
                 publicID = [geoPublicDictionary stringForKey:@"id"];
             }
+            NSDictionary *publicizeMessageDictionary = [self dictionaryWithKey:@"_wpas_mess" inMetadata:remotePost.metadata];
+            publicizeMessage = [publicizeMessageDictionary stringForKey:@"value"];
+            publicizeMessageID = [publicizeMessageDictionary stringForKey:@"id"];
+
+            NSArray *disabledPublicizeConnectionsArray = [self entriesWithKeyLike:@"_wpas_skip_*" inMetadata:remotePost.metadata];
+            for (NSDictionary *disabledConnectionDictionary in disabledPublicizeConnectionsArray) {
+                NSString *dictKey = [disabledConnectionDictionary stringForKey:@"key"];
+                // We only want to keep the keyringID value from the key
+                NSNumber *keyringConnectionID = @([[dictKey stringByReplacingOccurrencesOfString:@"_wpas_skip_"
+                                                                                      withString:@""]integerValue]);
+                NSMutableDictionary *keyringConnectionData = [NSMutableDictionary dictionaryWithCapacity:2];
+                keyringConnectionData[@"id"] = [disabledConnectionDictionary stringForKey:@"id"];
+                keyringConnectionData[@"value"] = [disabledConnectionDictionary stringForKey:@"value"];
+                disabledPublicizeConnections[keyringConnectionID] = keyringConnectionData;
+            }
         }
         postPost.geolocation = geolocation;
         postPost.latitudeID = latitudeID;
         postPost.longitudeID = longitudeID;
         postPost.publicID = publicID;
+        postPost.publicizeMessage = publicizeMessage;
+        postPost.publicizeMessageID = publicizeMessageID;
+        postPost.disabledPublicizeConnections = disabledPublicizeConnections;
     }
 }
 
@@ -672,6 +693,23 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         }
         [metadata addObject:publicDictionary];
     }
+    if (post.publicizeMessageID || post.publicizeMessage.length) {
+        NSMutableDictionary *publicizeMessageDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+        if (post.publicizeMessageID) {
+            publicizeMessageDictionary[@"id"] = post.publicizeMessageID;
+        }
+        publicizeMessageDictionary[@"key"] = @"_wpas_mess";
+        publicizeMessageDictionary[@"value"] = post.publicizeMessage.length ? post.publicizeMessage : @"";
+        [metadata addObject:publicizeMessageDictionary];
+    }
+    for (NSNumber *keyringConnectionId in post.disabledPublicizeConnections.allKeys) {
+        NSMutableDictionary *disabledConnectionsDictionary = [NSMutableDictionary dictionaryWithCapacity: 3];
+        // We need to compose back the key
+        disabledConnectionsDictionary[@"key"] = [NSString stringWithFormat:@"_wpas_skip_%@",
+                                                                           keyringConnectionId];
+        [disabledConnectionsDictionary addEntriesFromDictionary:post.disabledPublicizeConnections[keyringConnectionId]];
+        [metadata addObject:disabledConnectionsDictionary];
+    }
     return metadata;
 }
 
@@ -705,6 +743,11 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     // In theory, there shouldn't be duplicated fields, but I've seen some bugs where there's more than one geo_* value
     // In any case, they should be sorted by id, so `lastObject` should have the newer value
     return [matchingEntries lastObject];
+}
+
+- (NSArray *)entriesWithKeyLike:(NSString *)key inMetadata:(NSArray *)metadata
+{
+    return [metadata filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"key like %@", key]];
 }
 
 - (id<PostServiceRemote>)remoteForBlog:(Blog *)blog {

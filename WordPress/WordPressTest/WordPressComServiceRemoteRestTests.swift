@@ -53,6 +53,7 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
         service.createWPComAccount(withEmail: "fakeEmail",
                                             andUsername: "fakeUsername",
                                             andPassword: "fakePassword",
+                                            andLocale: "en",
                                             success: { (responseObject) in
                                                 expect.fulfill()
                                                 XCTFail("This call should fail")

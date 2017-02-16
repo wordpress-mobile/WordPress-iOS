@@ -21,12 +21,14 @@ typedef void(^WordPressComServiceFailureBlock)(NSError *error);
  *  @param      email       The email to use for the new account.  Cannot be nil.
  *  @param      username    The username of the new account.  Cannot be nil.
  *  @param      password    The password of the new account.  Cannot be nil.
+ *  @param      locale      The locale for the new account.  Cannot be nil.
  *  @param      success     The block to execute on success.  Can be nil.
  *  @param      failure     The block to execute on failure.  Can be nil.
  */
 - (void)createWPComAccountWithEmail:(NSString *)email
                         andUsername:(NSString *)username
                         andPassword:(NSString *)password
+                          andLocale:(NSString *)locale
                             success:(WordPressComServiceSuccessBlock)success
                             failure:(WordPressComServiceFailureBlock)failure;
 
