@@ -298,17 +298,13 @@ class AztecPostViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // We can only configure the dismiss button, when we know the way this VC will be presented
         configureDismissButton()
-
-        // Wire Notification Listeners!
         startListeningToNotifications()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        // Bring back the keyboard on the last known Responder
         restoreFirstResponder()
     }
 
@@ -316,10 +312,7 @@ class AztecPostViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        // Notifications Listeners Cleanup
         stopListeningToNotifications()
-
-        // Remember the current First Responder
         rememberFirstResponder()
     }
 
