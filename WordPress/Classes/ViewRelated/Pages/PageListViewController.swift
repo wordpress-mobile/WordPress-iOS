@@ -333,7 +333,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 let postService = PostService(managedObjectContext: context)
                 let page = postService.createDraftPage(for: blog)
                 postViewController = AztecPostViewController(post: page)
+
                 navController = UINavigationController(rootViewController: postViewController)
+                navController.restorationIdentifier = AztecPostViewController.Restoration.navigationIdentifier
+                navController.restorationClass = AztecPostViewController.self
             } else {
                 postViewController = EditPageViewController(draftFor: blog)
 
@@ -361,18 +364,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
 
         let editorSettings = EditorSettings()
-        if editorSettings.visualEditorEnabled {
-            let pageViewController: UIViewController
 
-            if editorSettings.nativeEditorEnabled {
-                pageViewController = AztecPostViewController(post: apost)
-            } else {
-                pageViewController = EditPageViewController(post: apost, mode: kWPPostViewControllerModePreview)
-            }
-
-            navigationController?.pushViewController(pageViewController, animated: true)
-        } else {
-            // In legacy mode, view means edit
+        // Legacy
+        if editorSettings.visualEditorEnabled == false {
             let editPageViewController = WPLegacyEditPageViewController(post: apost)
             let navController = UINavigationController(rootViewController: editPageViewController!)
 
@@ -381,7 +375,31 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             navController.restorationClass = WPLegacyEditPageViewController.self
 
             present(navController, animated: true, completion: nil)
+            return
         }
+
+        // Aztec
+        if editorSettings.nativeEditorEnabled {
+            let aztecViewController = AztecPostViewController(post: apost)
+            let navController = UINavigationController(rootViewController: aztecViewController)
+
+            navController.modalPresentationStyle = .fullScreen
+            navController.restorationIdentifier = AztecPostViewController.Restoration.navigationIdentifier
+            navController.restorationClass = AztecPostViewController.self
+
+            present(navController, animated: true, completion: nil)
+            return
+        }
+
+        // Hybrid!
+        let pageViewController = EditPageViewController(post: apost, mode: kWPPostViewControllerModePreview)
+        let navController = UINavigationController(rootViewController: pageViewController!)
+
+        navController.modalPresentationStyle = .fullScreen
+        navController.restorationIdentifier = WPEditorNavigationRestorationID
+        navController.restorationClass = EditPageViewController.self
+
+        present(navController, animated: true, completion: nil)
     }
 
     fileprivate func draftPage(_ apost: AbstractPost) {

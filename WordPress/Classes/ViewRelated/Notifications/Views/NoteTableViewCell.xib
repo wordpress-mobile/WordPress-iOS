@@ -1,38 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="70" id="9ZS-co-ZCe" customClass="NoteTableViewCell" customModule="WordPress">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+        <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="9ZS-co-ZCe" customClass="NoteTableViewCell" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="87"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9ZS-co-ZCe" id="9Ex-yA-LkS">
-                <frame key="frameInset" width="320" height="69"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="9ZS-co-ZCe" id="9Ex-yA-LkS">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="86.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GgS-tD-1kB" userLabel="IconImageView" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JUi-EY-Obv" userLabel="IconImageView" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                        <rect key="frame" x="15" y="11" width="46" height="46"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="46" id="NFx-6b-mLk"/>
-                            <constraint firstAttribute="height" constant="46" id="ta1-tG-DqK"/>
+                            <constraint firstAttribute="width" constant="46" id="JQZ-Z6-YPJ"/>
+                            <constraint firstAttribute="height" constant="46" id="R98-OQ-ZNf"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wfO-j3-kM6" userLabel="NoticonContainerView">
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="WuB-h0-mSd">
+                        <rect key="frame" x="74" y="8" width="231" height="38"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iFs-j8-6X0" userLabel="NoticonView">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Text" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="81k-rx-Ws8" userLabel="SubjectLabel">
+                                <rect key="frame" x="0.0" y="0.0" width="231" height="19"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LwI-5x-Xx8" userLabel="SnippetLabel">
+                                <rect key="frame" x="0.0" y="19" width="231" height="19"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z3U-oU-FSh" userLabel="NoticonContainerView">
+                        <rect key="frame" x="45" y="41" width="24" height="24"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v6e-fz-xh3" userLabel="NoticonView">
+                                <rect key="frame" x="2" y="2" width="20" height="20"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a81-9a-t1j" userLabel="NoticonLabel">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p3T-gY-I5l" userLabel="NoticonLabel">
+                                        <rect key="frame" x="2" y="2" width="16" height="16"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" image="YES"/>
                                             <bool key="isElement" value="NO"/>
                                         </accessibility>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="16" id="JQk-W6-25b"/>
-                                            <constraint firstAttribute="width" constant="16" id="PZS-KM-g6P"/>
+                                            <constraint firstAttribute="height" constant="16" id="6re-w2-PC4"/>
+                                            <constraint firstAttribute="width" constant="16" id="Ftz-BS-hba"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -41,60 +70,44 @@
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="a81-9a-t1j" secondAttribute="centerX" id="7hc-hH-Vbr"/>
-                                    <constraint firstAttribute="height" constant="20" id="F1Q-2h-RZO"/>
-                                    <constraint firstItem="a81-9a-t1j" firstAttribute="top" secondItem="iFs-j8-6X0" secondAttribute="top" constant="2" id="FeZ-kR-zN9"/>
-                                    <constraint firstAttribute="width" constant="20" id="xql-ql-Uzf"/>
+                                    <constraint firstItem="p3T-gY-I5l" firstAttribute="top" secondItem="v6e-fz-xh3" secondAttribute="top" constant="2" id="Qmb-sM-qOL"/>
+                                    <constraint firstAttribute="width" constant="20" id="h8E-AX-vFT"/>
+                                    <constraint firstAttribute="centerX" secondItem="p3T-gY-I5l" secondAttribute="centerX" id="hGJ-FW-Tia"/>
+                                    <constraint firstAttribute="height" constant="20" id="ubF-uU-Q8E"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="iFs-j8-6X0" secondAttribute="centerY" id="43Q-C4-k3t"/>
-                            <constraint firstAttribute="width" constant="24" id="5MP-uM-RZI"/>
-                            <constraint firstAttribute="centerX" secondItem="iFs-j8-6X0" secondAttribute="centerX" id="aC0-GU-q9z"/>
-                            <constraint firstAttribute="height" constant="24" id="t5b-6V-yq3"/>
+                            <constraint firstAttribute="centerX" secondItem="v6e-fz-xh3" secondAttribute="centerX" id="1eN-Ve-4wo"/>
+                            <constraint firstAttribute="width" constant="24" id="7VV-Ux-nIo"/>
+                            <constraint firstAttribute="centerY" secondItem="v6e-fz-xh3" secondAttribute="centerY" id="MCB-Ul-UcB"/>
+                            <constraint firstAttribute="height" constant="24" id="NW8-Gc-54w"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Text" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SfC-6n-kyD" userLabel="SubjectLabel">
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" text="Snippet" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wcv-fL-daS" userLabel="SnippetLabel">
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="SfC-6n-kyD" firstAttribute="leading" secondItem="wcv-fL-daS" secondAttribute="leading" id="3gF-DJ-y1E"/>
-                    <constraint firstAttribute="trailing" secondItem="SfC-6n-kyD" secondAttribute="trailing" constant="12" id="6YI-0h-7xG"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="wcv-fL-daS" secondAttribute="bottom" constant="12" id="AFb-po-J3Z"/>
-                    <constraint firstItem="GgS-tD-1kB" firstAttribute="top" secondItem="SfC-6n-kyD" secondAttribute="top" constant="3" id="LJX-o9-vZJ"/>
-                    <constraint firstAttribute="trailing" secondItem="wcv-fL-daS" secondAttribute="trailing" constant="12" id="MFS-Lb-Dh4"/>
-                    <constraint firstItem="wfO-j3-kM6" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="42" id="NI5-rg-Yif"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="GgS-tD-1kB" secondAttribute="bottom" constant="12" id="O3R-0F-z4J"/>
-                    <constraint firstItem="GgS-tD-1kB" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="12" id="UVx-Pm-foz"/>
-                    <constraint firstItem="GgS-tD-1kB" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="12" id="a80-yz-Nlv"/>
-                    <constraint firstItem="SfC-6n-kyD" firstAttribute="leading" secondItem="GgS-tD-1kB" secondAttribute="trailing" constant="13" id="dT8-x1-JZI"/>
-                    <constraint firstItem="wcv-fL-daS" firstAttribute="top" secondItem="SfC-6n-kyD" secondAttribute="bottom" id="vFp-hy-O2S"/>
-                    <constraint firstItem="wfO-j3-kM6" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="42" id="wvg-PE-czH"/>
+                    <constraint firstItem="Z3U-oU-FSh" firstAttribute="centerX" secondItem="JUi-EY-Obv" secondAttribute="centerX" constant="19" id="6if-Fj-ZiN"/>
+                    <constraint firstItem="WuB-h0-mSd" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="topMargin" constant="-3" id="CiS-sV-QaR"/>
+                    <constraint firstItem="JUi-EY-Obv" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leadingMargin" id="FNd-KV-ja4"/>
+                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="WuB-h0-mSd" secondAttribute="bottom" id="W83-eQ-gaV"/>
+                    <constraint firstItem="WuB-h0-mSd" firstAttribute="leading" secondItem="JUi-EY-Obv" secondAttribute="trailing" constant="13" id="Wef-tC-bRq"/>
+                    <constraint firstAttribute="topMargin" secondItem="JUi-EY-Obv" secondAttribute="top" id="Zav-nr-UzA"/>
+                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="JUi-EY-Obv" secondAttribute="bottom" constant="3" id="bb5-uM-agq"/>
+                    <constraint firstItem="Z3U-oU-FSh" firstAttribute="centerY" secondItem="JUi-EY-Obv" secondAttribute="centerY" constant="19" id="h5p-yY-IvK"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="WuB-h0-mSd" secondAttribute="trailing" id="tuw-OS-5Gn"/>
                 </constraints>
             </tableViewCellContentView>
             <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
-                <outlet property="iconImageView" destination="GgS-tD-1kB" id="fdU-t2-UFf"/>
-                <outlet property="noticonContainerView" destination="wfO-j3-kM6" id="g1d-st-HbJ"/>
-                <outlet property="noticonLabel" destination="a81-9a-t1j" id="8QY-8p-5cq"/>
-                <outlet property="noticonView" destination="iFs-j8-6X0" id="LIs-g5-KSf"/>
-                <outlet property="snippetLabel" destination="wcv-fL-daS" id="vXn-Z0-vQW"/>
-                <outlet property="subjectLabel" destination="SfC-6n-kyD" id="r2y-qC-96l"/>
+                <outlet property="iconImageView" destination="JUi-EY-Obv" id="TRa-w4-qvm"/>
+                <outlet property="noticonContainerView" destination="Z3U-oU-FSh" id="sEj-sO-l50"/>
+                <outlet property="noticonLabel" destination="p3T-gY-I5l" id="fpd-ba-G4z"/>
+                <outlet property="noticonView" destination="v6e-fz-xh3" id="mLR-H8-dHz"/>
+                <outlet property="snippetLabel" destination="LwI-5x-Xx8" id="cNh-MV-sUL"/>
+                <outlet property="subjectLabel" destination="81k-rx-Ws8" id="w03-Ne-Ka1"/>
             </connections>
+            <point key="canvasLocation" x="34" y="10"/>
         </tableViewCell>
     </objects>
 </document>
