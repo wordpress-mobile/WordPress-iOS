@@ -1560,6 +1560,21 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
         return true
     }
 
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        let locationInTextView = gestureRecognizer.location(in: richTextView)
+        // check if we have an attachment in the position we tapped
+        guard richTextView.attachmentAtPoint(locationInTextView) != nil else {
+            // if we have a current selected attachment marked lets unmark it
+            if let selectedAttachment = currentSelectedAttachment {
+                selectedAttachment.message = nil
+                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+                currentSelectedAttachment = nil
+            }
+            return false
+        }
+        return true
+    }
+
     func richTextViewWasPressed(_ recognizer: UIGestureRecognizer) {
         guard recognizer.state == .recognized else {
             return
