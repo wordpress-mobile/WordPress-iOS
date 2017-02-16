@@ -426,11 +426,18 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [self dismissViewControllerAnimated:NO completion:nil];
     }
 
-    EditPostViewController* editor = [EditPostViewController new];
+    Blog *blog = [self currentlyVisibleBlog];
+    if (blog == nil) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        blog = [blogService lastUsedOrFirstBlog];
+    }
+
+    EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog];
     editor.modalPresentationStyle = UIModalPresentationFullScreen;
     editor.showImmediately = !animated;
     editor.openWithMediaPicker = openToMedia;
-    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:editor.blog];
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:blog];
     [self presentViewController:editor animated:NO completion:nil];
     return;
 }
@@ -524,6 +531,18 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             break;
     }
     return currentlySelectedScreen;
+}
+
+- (Blog *)currentlyVisibleBlog
+{
+    if (self.selectedIndex != WPTabMySites) {
+        return nil;
+    }
+
+    BlogDetailsViewController *blogDetailsController = (BlogDetailsViewController *)[[self.blogListNavigationController.viewControllers wp_filter:^BOOL(id obj) {
+        return [obj isKindOfClass:[BlogDetailsViewController class]];
+    }] firstObject];
+    return blogDetailsController.blog;
 }
 
 #pragma mark - UITabBarControllerDelegate methods

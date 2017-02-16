@@ -10,11 +10,7 @@ class EditPostViewController: UIViewController {
     fileprivate(set) var post: Post?
     fileprivate var hasShownEditor = false
     fileprivate var editingExistingPost = false
-    fileprivate(set) lazy var blog: Blog = {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        return blogService.lastUsedOrFirstBlog()!
-    }()
+    fileprivate let blog: Blog
     fileprivate lazy var postPost: PostPostViewController = {
         return UIStoryboard(name: "PostPost", bundle: nil).instantiateViewController(withIdentifier: "PostPostViewController") as! PostPostViewController
     }()
@@ -48,29 +44,21 @@ class EditPostViewController: UIViewController {
         self.init(post: nil, blog: blog)
     }
 
-    /// Initialize as an editor to create a new post for the last used or default blog
-    convenience init() {
-        self.init(post: nil, blog: nil)
-    }
-
-
     /// Initialize as an editor with a specified post to edit and blog to post too.
     ///
     /// - Parameters:
     ///   - post: the post to edit
     ///   - blog: the blog to create a post for, if post is nil
     /// - Note: it's preferable to use one of the convenience initializers
-    fileprivate init(post: Post?, blog: Blog?) {
+    fileprivate init(post: Post?, blog: Blog) {
         self.post = post
         if let post = post {
             if !post.isDraft() {
                 editingExistingPost = true
             }
         }
+        self.blog = blog
         super.init(nibName: nil, bundle: nil)
-        if let blog = blog {
-            self.blog = blog
-        }
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .coverVertical
         restorationIdentifier = RestorationKey.viewController.rawValue
@@ -82,7 +70,7 @@ class EditPostViewController: UIViewController {
     }
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -283,7 +271,7 @@ extension EditPostViewController: UIViewControllerRestoration {
             let post = try? context.existingObject(with: postID),
             let reloadedPost = post as? Post
             else {
-                return EditPostViewController()
+                return nil
         }
 
         return EditPostViewController(post: reloadedPost)
