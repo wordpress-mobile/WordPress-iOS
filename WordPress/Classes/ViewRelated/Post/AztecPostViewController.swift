@@ -61,7 +61,7 @@ class AztecPostViewController: UIViewController {
 
         tf.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
-                                                      attributes: [NSForegroundColorAttributeName: WPStyleGuide.greyLighten30()])
+                                                      attributes: [NSForegroundColorAttributeName: WPStyleGuide.grey()])
         tf.delegate = self
         tf.font = WPFontManager.merriweatherBoldFont(ofSize: 24.0)
         tf.returnKeyType = .next
