@@ -172,7 +172,12 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             coder.encode(uriRepresentation, forKey: type(of: self).selectedNotificationRestorationIdentifier)
         }
 
-        coder.encode(filtersSegmentedControl.selectedSegmentIndex, forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
+        if let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) {
+            // If the filter's 'Unread', we won't save it because the notification
+            // that's selected won't be unread any more once we come back to it.
+            let index = (filter != .unread) ? filter.rawValue : Filter.none.rawValue
+            coder.encode(index, forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
+        }
 
         super.encodeRestorableState(with: coder)
     }
