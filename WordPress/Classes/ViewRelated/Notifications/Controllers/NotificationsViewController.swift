@@ -157,7 +157,11 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         if splitViewControllerIsHorizontallyCompact {
             tableView.deselectSelectedRowWithAnimation(true)
         } else {
-            selectRowForNotification(selectedNotification, animated: true, scrollPosition: .middle)
+            if let selectedNotification = selectedNotification {
+                selectRowForNotification(selectedNotification, animated: true, scrollPosition: .middle)
+            } else {
+                selectFirstNotificationIfAppropriate()
+            }
         }
     }
 
