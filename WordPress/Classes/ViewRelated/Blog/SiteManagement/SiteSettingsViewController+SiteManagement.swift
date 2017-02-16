@@ -41,7 +41,8 @@ public extension SiteSettingsViewController {
     ///
     fileprivate func exportContent() {
         let status = NSLocalizedString("Exporting content…", comment: "Overlay message displayed while starting content export")
-        SVProgressHUD.show(withStatus: status, maskType: .black)
+        SVProgressHUD.setDefaultMaskType(.black)
+        SVProgressHUD.show(withStatus: status)
 
         let trackedBlog = blog
         WPAppAnalytics.track(.siteSettingsExportSiteRequested, with: trackedBlog)
@@ -151,7 +152,8 @@ public extension SiteSettingsViewController {
     ///
     fileprivate func deleteSiteConfirmed() {
         let status = NSLocalizedString("Deleting site…", comment: "Overlay message displayed while deleting site")
-        SVProgressHUD.show(withStatus: status, maskType: .black)
+        SVProgressHUD.setDefaultMaskType(.black)
+        SVProgressHUD.show(withStatus: status)
 
         let trackedBlog = blog
         WPAppAnalytics.track(.siteSettingsDeleteSiteRequested, with: trackedBlog)
