@@ -6,7 +6,6 @@ public enum WPNotificationFeedbackType: Int {
     case warning
     case error
 
-    @available(iOS 10, *)
     var systemFeedbackType: UINotificationFeedbackType {
         switch self {
         case .success: return .success
@@ -19,7 +18,6 @@ public enum WPNotificationFeedbackType: Int {
 // This allows us to more easily inject a generator into our custom wrapper
 // for testing, whilst also supporting iOS 9.
 protocol WPNotificationFeedbackGeneratorConformance {
-    @available(iOS 10, *)
     func notificationOccurred(_ notificationType: UINotificationFeedbackType)
 }
 
@@ -36,8 +34,6 @@ class WPNotificationFeedbackGenerator: NSObject {
     static var generator: WPNotificationFeedbackGeneratorConformance?
 
     class func notificationOccurred(_ notificationType: WPNotificationFeedbackType) {
-        guard #available(iOS 10, *) else { return }
-
         if generator == nil {
             generator = UINotificationFeedbackGenerator()
         }
@@ -52,7 +48,6 @@ public enum WPImpactFeedbackStyle: Int {
     case medium
     case heavy
 
-    @available(iOS 10, *)
     var systemFeedbackStyle: UIImpactFeedbackStyle {
         switch self {
         case .light: return .light
@@ -68,7 +63,6 @@ protocol WPImpactFeedbackGeneratorConformance {
     func impactOccurred()
 }
 
-@available(iOS 10, *)
 extension UIImpactFeedbackGenerator: WPImpactFeedbackGeneratorConformance {}
 
 
@@ -82,9 +76,7 @@ class WPImpactFeedbackGenerator: NSObject {
     internal var generator: WPImpactFeedbackGeneratorConformance?
 
     init(style: WPImpactFeedbackStyle) {
-        if #available(iOS 10, *) {
-            generator = UIImpactFeedbackGenerator(style: style.systemFeedbackStyle)
-        }
+        generator = UIImpactFeedbackGenerator(style: style.systemFeedbackStyle)
 
         super.init()
     }
