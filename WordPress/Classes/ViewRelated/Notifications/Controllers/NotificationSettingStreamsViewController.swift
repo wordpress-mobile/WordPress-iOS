@@ -42,43 +42,40 @@ class NotificationSettingStreamsViewController: UITableViewController {
 
 
 
-    // MARK: - Initializers
     convenience init(settings: NotificationSettings) {
         self.init(style: .grouped)
         setupWithSettings(settings)
     }
 
+    deinit {
+        stopListeningToNotifications()
+    }
 
-
-    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNotifications()
+
         setupTableView()
+        startListeningToNotifications()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
         tableView.deselectSelectedRowWithAnimation(true)
-
-        // iOS +10: Push Notifications Auth is now.. async. Lovely
         refreshPushAuthorizationStatus()
 
         WPAnalytics.track(.openedNotificationSettingStreams)
     }
 
 
-
     // MARK: - Setup Helpers
-    private func setupNotifications() {
-        // Reload whenever the app becomes active again since Push Settings may have changed in the meantime!
+    private func startListeningToNotifications() {
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self,
-            selector:   #selector(NotificationSettingStreamsViewController.reloadTable),
-            name:       NSNotification.Name.UIApplicationDidBecomeActive,
-            object:     nil)
+        notificationCenter.addObserver(self, selector: #selector(refreshPushAuthorizationStatus), name: .UIApplicationDidBecomeActive, object: nil)
+    }
+
+    private func stopListeningToNotifications() {
+        NotificationCenter.default.removeObserver(self)
     }
 
     private func setupTableView() {
@@ -91,7 +88,6 @@ class NotificationSettingStreamsViewController: UITableViewController {
         // Style!
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
-
 
 
     // MARK: - Public Helpers
@@ -114,11 +110,6 @@ class NotificationSettingStreamsViewController: UITableViewController {
 
         tableView.reloadData()
     }
-
-    func reloadTable() {
-        tableView.reloadData()
-    }
-
 
 
     // MARK: - UITableView Delegate Methods
@@ -194,7 +185,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
 
 
     // MARK: - Disabled Push Notifications Helpers
-    private func refreshPushAuthorizationStatus() {
+    func refreshPushAuthorizationStatus() {
         PushNotificationsManager.sharedInstance.loadAuthorizationStatus { authorized in
             self.pushNotificationsAuthorized = authorized
         }
