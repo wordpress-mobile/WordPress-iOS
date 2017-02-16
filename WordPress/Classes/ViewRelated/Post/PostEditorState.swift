@@ -53,6 +53,28 @@ public enum PostEditorAction {
         }
     }
 
+    fileprivate var publishingErrorLabel: String {
+        switch self {
+        case .publish:
+            return NSLocalizedString("Error occurred\nduring publishing", comment: "Text displayed in HUD while a post is being published.")
+        case .schedule:
+            return NSLocalizedString("Error occurred\nduring scheduling", comment: "Text displayed in HUD while a post is being scheduled to be published.")
+        case .save, .submitForReview, .update:
+            return NSLocalizedString("Error occurred\nduring saving", comment: "Text displayed in HUD after attempting to save a draft post and an error occurred.")
+        }
+    }
+
+    fileprivate var secondaryPublishActionLabel: String? {
+        switch self {
+        case .publish:
+            return NSLocalizedString("Publish Now", comment: "Title of button allowing the user to immediately publish the post they are editing.")
+        case .save:
+            return NSLocalizedString("Save as Draft", comment: "Title of button allowing users to change the status of the post they are currently editing to Draft.")
+        default:
+            return nil
+        }
+    }
+
     fileprivate var isPostPostShown: Bool {
         switch self {
         case .publish:
@@ -61,6 +83,18 @@ public enum PostEditorAction {
             return false
         }
     }
+
+    fileprivate var secondaryPublishAction: PostEditorAction? {
+        switch self {
+        case .publish:
+            return .save
+        case .update:
+            return .publish
+        default:
+            return nil
+        }
+    }
+
 }
 
 /// Protocol used by all concrete states for the UI - never exposed outside of `PostEditorStateContext`
@@ -73,7 +107,7 @@ fileprivate protocol PostEditorActionState {
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState
 }
 
-public protocol PostEditorStateContextDelegate {
+public protocol PostEditorStateContextDelegate: class {
     func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction)
     func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool)
 }
@@ -96,7 +130,7 @@ public class PostEditorStateContext {
 
     fileprivate var originalPostStatus: PostStatus?
     fileprivate var userCanPublish: Bool
-    private var delegate: PostEditorStateContextDelegate?
+    private weak var delegate: PostEditorStateContextDelegate?
 
     fileprivate var hasContent = false {
         didSet {
@@ -105,6 +139,12 @@ public class PostEditorStateContext {
     }
 
     fileprivate var isBeingPublished = false {
+        didSet {
+            updatePublishActionAllowed()
+        }
+    }
+
+    fileprivate var isUploadingMedia = false {
         didSet {
             updatePublishActionAllowed()
         }
@@ -129,8 +169,6 @@ public class PostEditorStateContext {
         switch originalPostStatus {
         case .draft where userCanPublish == false:
             editorState = PostEditorStateSubmitForReview()
-        case .draft:
-            editorState = PostEditorStateSave()
         default:
             editorState = PostEditorStateUpdate()
         }
@@ -170,10 +208,20 @@ public class PostEditorStateContext {
         self.isBeingPublished = isBeingPublished
     }
 
+    func update(isUploadingMedia: Bool) {
+        self.isUploadingMedia = isUploadingMedia
+    }
+
     /// Returns the current PostEditorAction state the UI is in
     ///
     var action: PostEditorAction {
         return editorState.action
+    }
+
+    /// Should the publish button be enabled given the current state
+    ///
+    var isPublishButtonEnabled: Bool {
+        return publishActionAllowed
     }
 
     /// Returns appropriate Publish button text for the current action
@@ -190,6 +238,10 @@ public class PostEditorStateContext {
         return editorState.action.publishingActionLabel
     }
 
+    var publishErrorText: String {
+        return editorState.action.publishingErrorLabel
+    }
+
     /// Should post-post be shown for the current editor when publishing has happened
     ///
     var isPostPostShown: Bool {
@@ -197,19 +249,21 @@ public class PostEditorStateContext {
     }
 
     // TODO: Replace with a method to bring label and such back for secondary publish button
-//    var isSecondaryPublishButtonShown: Bool {
-//        return editorState.isSecondaryPublishButtonShown(context: self)
-//    }
+    var isSecondaryPublishButtonShown: Bool {
+        return editorState.action.secondaryPublishAction != nil
+    }
 
-    /// Should the publish button be enabled given the current state
-    ///
-    var isPublishButtonEnabled: Bool {
-        return publishActionAllowed
+    var secondaryPublishButtonAction: PostEditorAction? {
+        return editorState.action.secondaryPublishAction
+    }
+
+    var secondaryPublishButtonText: String? {
+        return editorState.action.secondaryPublishAction?.secondaryPublishActionLabel
     }
 
     // TODO: Add isDirty to the state context for enabling/disabling the button
     private func updatePublishActionAllowed() {
-        publishActionAllowed = hasContent && !isBeingPublished
+        publishActionAllowed = hasContent && !isBeingPublished && !isUploadingMedia
     }
 }
 

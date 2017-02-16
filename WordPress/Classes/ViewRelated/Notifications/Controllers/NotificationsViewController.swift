@@ -48,6 +48,10 @@ class NotificationsViewController: UITableViewController {
     ///
     fileprivate var needsReloadResults = false
 
+    /// Cached values used for returning the estimated row heights of autosizing cells.
+    ///
+    fileprivate let estimatedRowHeightsCache = NSCache<AnyObject, AnyObject>()
+
     /// Notifications that must be deleted display an "Undo" button, which simply cancels the deletion task.
     ///
     fileprivate var notificationDeletionRequests: [NSManagedObjectID: NotificationDeletionRequest] = [:]
@@ -59,7 +63,6 @@ class NotificationsViewController: UITableViewController {
     /// Notifications that were unread when the list was loaded.
     ///
     fileprivate var unreadNotificationIds = Set<NSManagedObjectID>()
-
 
 
     // MARK: - View Lifecycle
@@ -76,6 +79,7 @@ class NotificationsViewController: UITableViewController {
         //restorationClass = NotificationsViewController.self
 
         startListeningToAccountNotifications()
+        startListeningToTimeChangeNotifications()
     }
 
     override func viewDidLoad() {
@@ -131,22 +135,15 @@ class NotificationsViewController: UITableViewController {
         tableViewHandler.updateRowAnimation = .none
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        // Note: We're assuming `tableViewHandler` might be nil. Weird case in which the view
-        // hasn't loaded, yet, but the method is still executed.
-        tableViewHandler?.clearCachedRowHeights()
-    }
-
 
     // MARK: - UITableView Methods
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return nil
+    override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return NoteTableHeaderView.estimatedHeight
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return NoteTableHeaderView.headerHeight
+        return UITableViewAutomaticDimension
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -154,7 +151,7 @@ class NotificationsViewController: UITableViewController {
             return nil
         }
 
-        let headerView = NoteTableHeaderView()
+        let headerView = NoteTableHeaderView.makeFromNib()
         headerView.title = Notification.descriptionForSectionIdentifier(sectionInfo.name)
         headerView.separatorColor = tableView.separatorColor
 
@@ -182,21 +179,19 @@ class NotificationsViewController: UITableViewController {
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        estimatedRowHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
+    }
+
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        if let height = estimatedRowHeightsCache.object(forKey: indexPath as AnyObject) as? CGFloat {
+            return height
+        }
         return Settings.estimatedRowHeight
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // Load the Subject + Snippet
-        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
-            return CGFloat.leastNormalMagnitude
-        }
-
-        // Old School Height Calculation
-        let subject = note.subjectBlock?.attributedSubjectText
-        let snippet = note.snippetBlock?.attributedSnippetText
-
-        return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject: subject, snippet: snippet)
+        return UITableViewAutomaticDimension
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -289,7 +284,7 @@ private extension NotificationsViewController {
 
     func setupTableHandler() {
         let handler = WPTableViewHandler(tableView: tableView)
-        handler.cacheRowHeights = true
+        handler.cacheRowHeights = false
         handler.delegate = self
         tableViewHandler = handler
     }
@@ -344,6 +339,11 @@ private extension NotificationsViewController {
         nc.addObserver(self, selector: #selector(defaultAccountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
+    func startListeningToTimeChangeNotifications() {
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(significantTimeChange), name: .UIApplicationSignificantTimeChange, object: nil)
+    }
+
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
@@ -377,6 +377,15 @@ private extension NotificationsViewController {
 
         resetApplicationBadge()
         updateLastSeenTime()
+    }
+
+    @objc func significantTimeChange(_ note: Foundation.Notification) {
+        needsReloadResults = true
+        if UIApplication.shared.applicationState == .active
+            && isViewLoaded == true
+            && view.window != nil {
+            reloadResultsControllerIfNeeded()
+        }
     }
 }
 
@@ -550,7 +559,6 @@ private extension NotificationsViewController {
         fetchRequest.predicate = predicateForFetchRequest()
 
         /// Refetch + Reload
-        tableViewHandler.clearCachedRowHeights()
         _ = try? tableViewHandler.resultsController.performFetch()
         tableView.reloadData()
 
@@ -1056,6 +1064,7 @@ private extension NotificationsViewController {
             let helper = CoreDataHelper<Notification>(context: mainContext)
             helper.deleteAllObjects()
             try mainContext.save()
+            tableView.reloadData()
         } catch {
             DDLogSwift.logError("Error while trying to nuke Notifications Collection: [\(error)]")
         }

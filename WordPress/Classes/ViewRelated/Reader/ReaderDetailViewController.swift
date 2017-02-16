@@ -227,6 +227,22 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // This is something we do to help with the resizing that can occur with
         // split screen multitasking on the iPad.
         view.layoutIfNeeded()
+
+        // NOTE: On the iPad, when being presented in a splitView, the size of
+        // the view and textView are updated after the view is added to its window.
+        // The traitCollection is updated after the call to viewWillAppear: finally
+        // providing the correct geometry for the view.  At this point the textView's
+        // insets need to be updated and, because updating the insets impacts
+        // the its contentOffset, the offset needs to be reset to zero.
+        // We should be able to remove this bit of code when we start showing
+        // the detail full screen again.
+        // Aerych - 2017-02-09
+        let offset = textView.contentOffset
+        updateContentInsets()
+        updateTextViewMargins()
+        if offset == .zero {
+            textView.setContentOffset(.zero, animated: false)
+        }
     }
 
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -305,10 +321,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     /// Composes the views for the post header and Discover attribution.
     fileprivate func setupContentHeaderAndFooter() {
+        // Add the footer first so its behind the header. This way the header
+        // obscures the footer until its properly positioned.
+        textView.addSubview(textFooterStackView)
         textView.addSubview(textHeaderStackView)
+
         textHeaderStackView.topAnchor.constraint(equalTo: textView.topAnchor).isActive = true
 
-        textView.addSubview(textFooterStackView)
         textFooterTopConstraint = NSLayoutConstraint(item: textFooterStackView,
                                                      attribute: .top,
                                                      relatedBy: .equal,
@@ -411,8 +430,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         // Make sure the text view is scrolled to the top the first time after
         // the view is first configured.
-        view.layoutIfNeeded()
-        textView.setContentOffset(CGPoint.zero, animated: false)
+        // TODO: Restore the following when we restore the full screen reader detail.
+        // Aerych 2017-02-09
+        // view.layoutIfNeeded()
+        //textView.setContentOffset(CGPoint.zero, animated: false)
     }
 
 
