@@ -131,8 +131,10 @@ class EditPostViewController: UIViewController {
             editor = editPostInTextEditor()
         }
 
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.prepare()
+
         postPost.present(editor, animated: !showImmediately) {
-            let generator = WPImpactFeedbackGenerator(style: .medium)
             generator.impactOccurred()
         }
     }

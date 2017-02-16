@@ -574,16 +574,19 @@ extension AztecPostViewController {
             self.postEditorStateContext.updated(isBeingPublished: false)
             SVProgressHUD.dismiss()
 
+            let generator = UINotificationFeedbackGenerator()
+            generator.prepare()
+
             if let error = error {
                 DDLogSwift.logError("Error publishing post: \(error.localizedDescription)")
 
                 SVProgressHUD.showError(withStatus: self.postEditorStateContext.publishErrorText)
-                WPNotificationFeedbackGenerator.notificationOccurred(.error)
+                generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
                 // TODO: Determine if this is necessary; if it is then ensure state machine is updated
                 self.post = uploadedPost
 
-                WPNotificationFeedbackGenerator.notificationOccurred(.success)
+                generator.notificationOccurred(.success)
             }
 
             // Don't dismiss - make draft now in secondary publish
