@@ -27,7 +27,7 @@ abstract_target 'WordPress_Base' do
     pod 'MRProgress', '~>0.7.0'
     pod 'Mixpanel', '2.9.4'
     pod 'Reachability',	'3.2'
-    pod 'SVProgressHUD', '~>1.1.3'
+    pod 'SVProgressHUD', '~>2.1.2'
     pod 'UIDeviceIdentifier', '~> 0.1'
     pod 'Crashlytics'
     pod 'BuddyBuildSDK', '~> 1.0.11', :configurations => ['Release-Alpha']
