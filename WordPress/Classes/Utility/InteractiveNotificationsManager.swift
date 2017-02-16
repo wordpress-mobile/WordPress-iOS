@@ -33,11 +33,9 @@ final public class InteractiveNotificationsManager: NSObject {
             return
         }
 
-        if #available(iOS 10.0, *) {
-            let notificationCenter = UNUserNotificationCenter.current()
-            notificationCenter.delegate = self
-            notificationCenter.setNotificationCategories(supportedNotificationCategories())
-        }
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.delegate = self
+        notificationCenter.setNotificationCategories(supportedNotificationCategories())
     }
 
     /// Requests authorization to interact with the user when notifications arrive.
@@ -77,11 +75,9 @@ final public class InteractiveNotificationsManager: NSObject {
             return
         }
 
-        if #available(iOS 10.0, *) {
-            if identifier == UNNotificationDefaultActionIdentifier {
-                showDetailsWithNoteID(noteId)
-                return
-            }
+        if identifier == UNNotificationDefaultActionIdentifier {
+            showDetailsWithNoteID(noteId)
+            return
         }
 
         guard let action = NoteActionDefinition(rawValue: identifier) else {
