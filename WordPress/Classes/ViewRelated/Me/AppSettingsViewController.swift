@@ -177,7 +177,8 @@ class AppSettingsViewController: UITableViewController {
     func openApplicationSettings() -> ImmuTableAction {
         return { row in
             if let targetURL = URL(string: UIApplicationOpenSettingsURLString) {
-                UIApplication.shared.openURL(targetURL)
+                UIApplication.shared.open(targetURL)
+
             } else {
                 assertionFailure("Couldn't unwrap Settings URL")
             }

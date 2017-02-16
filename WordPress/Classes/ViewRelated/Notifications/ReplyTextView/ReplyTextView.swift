@@ -138,8 +138,8 @@ import WordPressShared.WPStyleGuide
         delegate?.textViewDidChange?(textView)
     }
 
-    open func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
-        return delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange) ?? true
+    open func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        return delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange, interaction: interaction) ?? true
     }
 
 
