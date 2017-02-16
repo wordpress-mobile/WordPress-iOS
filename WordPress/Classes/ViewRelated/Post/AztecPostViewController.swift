@@ -44,7 +44,7 @@ class AztecPostViewController: UIViewController {
         let tv = UITextView()
 
         let toolbar = self.createToolbar(htmlMode: true)
-        let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
+        let accessibilityLabel = NSLocalizedString("Post content", comment: "Post content")
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         toolbar.formatter = self
         tv.isHidden = true
@@ -56,12 +56,12 @@ class AztecPostViewController: UIViewController {
     /// Title's TextField
     ///
     fileprivate(set) lazy var titleTextField: UITextField = {
-        let placeholderText = NSLocalizedString("Post title", comment: "Placeholder for the post title.")
+        let placeholderText = NSLocalizedString("Title", comment: "Placeholder for the post title.")
         let tf = UITextField()
 
         tf.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
-                                                      attributes: [NSForegroundColorAttributeName: WPStyleGuide.greyLighten30()])
+                                                      attributes: [NSForegroundColorAttributeName: WPStyleGuide.grey()])
         tf.delegate = self
         tf.font = WPFontManager.merriweatherBoldFont(ofSize: 24.0)
         tf.returnKeyType = .next
@@ -167,6 +167,7 @@ class AztecPostViewController: UIViewController {
         }
     }
 
+
     /// Post being currently edited
     ///
     fileprivate(set) var post: AbstractPost {
@@ -196,6 +197,8 @@ class AztecPostViewController: UIViewController {
     }()
 
 
+    /// Media Progress Coordinator
+    ///
     fileprivate lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
@@ -203,6 +206,8 @@ class AztecPostViewController: UIViewController {
     }()
 
 
+    /// Media Progress View
+    ///
     fileprivate lazy var mediaProgressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.backgroundColor = WPStyleGuide.wordPressBlue()
@@ -212,7 +217,16 @@ class AztecPostViewController: UIViewController {
         return progressView
     }()
 
+
+    /// Selected Text Attachment
+    ///
     fileprivate var currentSelectedAttachment: TextAttachment?
+
+
+    /// Last Interface Element that was a First Responder
+    ///
+    fileprivate var lastFirstResponder: UIView?
+
 
     /// Maintainer of state for editor - like for post button
     ///
@@ -230,6 +244,7 @@ class AztecPostViewController: UIViewController {
 
         return context
     }()
+
 
 
     // MARK: - Lifecycle Methods
@@ -283,11 +298,14 @@ class AztecPostViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // We can only configure the dismiss button, when we know the way this VC will be presented
         configureDismissButton()
-
-        // Wire Notification Listeners!
         startListeningToNotifications()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        restoreFirstResponder()
     }
 
 
@@ -295,6 +313,7 @@ class AztecPostViewController: UIViewController {
         super.viewWillDisappear(animated)
 
         stopListeningToNotifications()
+        rememberFirstResponder()
     }
 
 
@@ -310,6 +329,7 @@ class AztecPostViewController: UIViewController {
         //    [self.titleToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
 
     }
+
 
     // MARK: - Configuration Methods
 
@@ -399,6 +419,15 @@ class AztecPostViewController: UIViewController {
         let notificationCenter = NotificationCenter.default
         notificationCenter.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
         notificationCenter.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+
+    func rememberFirstResponder() {
+        lastFirstResponder = view.findFirstResponder()
+    }
+
+    func restoreFirstResponder() {
+        let nextFirstResponder = lastFirstResponder ?? titleTextField
+        nextFirstResponder.becomeFirstResponder()
     }
 
     func refreshInterface() {
@@ -688,7 +717,6 @@ private extension AztecPostViewController {
         alert.addCancelActionWithTitle(MoreSheetAlert.cancelTitle)
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
-        view.endEditing(true)
         present(alert, animated: true, completion: nil)
     }
 
@@ -1156,10 +1184,6 @@ fileprivate extension AztecPostViewController {
     }
 
     func stopEditing() {
-        if titleTextField.isFirstResponder {
-            titleTextField.resignFirstResponder()
-        }
-
         view.endEditing(true)
     }
 
