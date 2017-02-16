@@ -44,7 +44,7 @@ class AztecPostViewController: UIViewController {
         let tv = UITextView()
 
         let toolbar = self.createToolbar(htmlMode: true)
-        let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
+        let accessibilityLabel = NSLocalizedString("Post content", comment: "Post content")
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         toolbar.formatter = self
         tv.isHidden = true
@@ -56,7 +56,7 @@ class AztecPostViewController: UIViewController {
     /// Title's TextField
     ///
     fileprivate(set) lazy var titleTextField: UITextField = {
-        let placeholderText = NSLocalizedString("Post title", comment: "Placeholder for the post title.")
+        let placeholderText = NSLocalizedString("Title", comment: "Placeholder for the post title.")
         let tf = UITextField()
 
         tf.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
