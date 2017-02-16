@@ -648,8 +648,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     __typeof(self) __weak weakSelf = self;
     ReaderPost *post = self.post;
     NSDictionary *railcar = post.railcarDictionary;
+
+    UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
+    [generator prepare];
+
     void (^successBlock)() = ^void() {
-        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
+        [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
 
         NSMutableDictionary *properties = [NSMutableDictionary dictionary];
         properties[WPAppAnalyticsKeyBlogID] = post.siteID;
@@ -672,7 +676,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         DDLogError(@"Error sending reply: %@", error);
 
-        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeError];
+        [generator notificationOccurred:UINotificationFeedbackTypeError];
 
         NSString *alertMessage = NSLocalizedString(@"There has been an unexpected error while sending your reply", nil);
         NSString *alertCancel = NSLocalizedString(@"Cancel", @"Verb. A button label. Tapping the button dismisses a prompt.");
@@ -953,7 +957,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
 
     if (!comment.isLiked) {
-        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
+        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
     }
 
     __typeof(self) __weak weakSelf = self;

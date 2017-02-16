@@ -34,7 +34,7 @@
 - (void)testPushNotificationsAreDisabledInDeviceSettingsWhenRegisteredTypeIsNone
 {
     id mockSettings = OCMPartialMock([[UIApplication sharedApplication] currentUserNotificationSettings]);
-    [OCMStub([mockSettings types]) andReturnValue:OCMOCK_VALUE(UIUserNotificationTypeNone)];
+    [OCMStub([mockSettings types]) andReturnValue:OCMOCK_VALUE(UNAuthorizationOptionNone)];
     
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
     [OCMStub([mockApplication currentUserNotificationSettings]) andReturn:mockSettings];
@@ -49,7 +49,7 @@
 - (void)testPushNotificationsAreEnabledInDeviceSettingsWhenRegisteredTypeIsAlert
 {
     id mockSettings = OCMPartialMock([[UIApplication sharedApplication] currentUserNotificationSettings]);
-    [OCMStub([mockSettings types]) andReturnValue:OCMOCK_VALUE(UIUserNotificationTypeAlert)];
+    [OCMStub([mockSettings types]) andReturnValue:OCMOCK_VALUE(UNAuthorizationOptionAlert)];
     
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
     [OCMStub([mockApplication currentUserNotificationSettings]) andReturn:mockSettings];

@@ -22,17 +22,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
 
     fileprivate var uploadSession: Foundation.URLSession {
         get {
-            if #available(iOS 10.0, *) {
-                return self.session
-            }
-            let sessionConfiguration = URLSessionConfiguration.default
-            var additionalHeaders: [String : AnyObject] = ["Accept-Encoding": "gzip, deflate" as AnyObject]
-            if let userAgent = self.userAgent {
-                additionalHeaders["User-Agent"] = userAgent as AnyObject?
-            }
-            sessionConfiguration.httpAdditionalHeaders = additionalHeaders
-            let session = Foundation.URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
-            return session
+            return self.session
         }
     }
 

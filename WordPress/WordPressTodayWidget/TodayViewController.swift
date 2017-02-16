@@ -41,7 +41,7 @@ class TodayViewController: UIViewController {
         viewsLabel.text = NSLocalizedString("Views", comment: "Stats Views Label")
         viewsCountLabel.text = "-"
 
-        changeTextColorIfIOS10()
+        changeTextColor()
 
         retrieveSiteConfiguration()
         updateUIBasedOnWidgetConfiguration()
@@ -66,13 +66,11 @@ class TodayViewController: UIViewController {
         updateUIBasedOnWidgetConfiguration()
     }
 
-    func changeTextColorIfIOS10() {
-        if #available(iOS 10, *) {
-            configureMeLabel.textColor = UIColor.black
-            siteNameLabel.textColor = UIColor.black
-            visitorsCountLabel.textColor = UIColor.black
-            viewsCountLabel.textColor = UIColor.black
-        }
+    func changeTextColor() {
+        configureMeLabel.textColor = UIColor.black
+        siteNameLabel.textColor = UIColor.black
+        visitorsCountLabel.textColor = UIColor.black
+        viewsCountLabel.textColor = UIColor.black
     }
 
     override func viewWillDisappear(_ animated: Bool) {
