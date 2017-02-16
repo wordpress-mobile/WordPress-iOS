@@ -29,10 +29,14 @@ class AztecPostViewController: UIViewController {
         toolbar.formatter = self
 
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
-        recognizer.cancelsTouchesInView = false
+        recognizer.cancelsTouchesInView = true
         recognizer.delegate = self
-
         tv.addGestureRecognizer(recognizer)
+        for gesture in tv.gestureRecognizers ?? [] {
+            if let otherTapGesture = gesture as? UITapGestureRecognizer, otherTapGesture != recognizer {
+                otherTapGesture.require(toFail: recognizer)
+            }
+        }
 
         return tv
     }()
