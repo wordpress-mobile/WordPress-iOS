@@ -30,6 +30,8 @@ class AztecPostViewController: UIViewController {
 
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
         recognizer.cancelsTouchesInView = true
+        recognizer.delaysTouchesBegan = true
+        recognizer.delaysTouchesEnded = true
         recognizer.delegate = self
         tv.addGestureRecognizer(recognizer)
         for gesture in tv.gestureRecognizers ?? [] {
