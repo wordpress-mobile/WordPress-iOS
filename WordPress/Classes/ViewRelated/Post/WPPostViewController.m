@@ -1462,6 +1462,9 @@ EditImageDetailsViewControllerDelegate
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
     [SVProgressHUD showWithStatus:hudText];
 
+    UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
+    [generator prepare];
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService uploadPost:self.post
@@ -1477,7 +1480,7 @@ EditImageDetailsViewControllerDelegate
                             [SVProgressHUD dismiss];
                         }
 
-                        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
+                        [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
 
                         stopEditingAndDismiss();
                     } failure:^(NSError *error) {
@@ -1492,7 +1495,7 @@ EditImageDetailsViewControllerDelegate
                         }
 
                         [SVProgressHUD showErrorWithStatus:hudText];
-                        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeError];
+                        [generator notificationOccurred:UINotificationFeedbackTypeError];
 
                         stopEditingAndDismiss();
                     }];
