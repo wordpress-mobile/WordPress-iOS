@@ -178,15 +178,15 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
-        decodeSelectedSegmentIndexWithCoder(coder: coder)
-        decodeSelectedNotificationWithCoder(coder: coder)
+        decodeSelectedSegmentIndex(with: coder)
+        decodeSelectedNotification(with: coder)
 
         reloadResultsController()
 
         super.decodeRestorableState(with: coder)
     }
 
-    fileprivate func decodeSelectedNotificationWithCoder(coder: NSCoder) {
+    fileprivate func decodeSelectedNotification(with coder: NSCoder) {
         if let uriRepresentation = coder.decodeObject(forKey: type(of: self).selectedNotificationRestorationIdentifier) as? URL {
             let context = ContextManager.sharedInstance().mainContext
             if let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: uriRepresentation),
@@ -197,7 +197,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
     }
 
-    fileprivate func decodeSelectedSegmentIndexWithCoder(coder: NSCoder) {
+    fileprivate func decodeSelectedSegmentIndex(with coder: NSCoder) {
         restorableSelectedSegmentIndex = coder.decodeInteger(forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
 
         if let filtersSegmentedControl = filtersSegmentedControl {
@@ -732,6 +732,8 @@ extension NotificationsViewController {
                 selectRowForNotification(firstNotification, animated: false, scrollPosition: .none)
                 self.tableView(tableView, didSelectRowAt: indexPath)
             } else {
+                // If there's no notification to select, we should wipe out
+                // any detail view controller that may be present.
                 showDetailViewController(UIViewController(), sender: nil)
             }
         }
