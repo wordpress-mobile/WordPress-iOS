@@ -1,6 +1,7 @@
 import Foundation
 import Mixpanel
 import WordPressComAnalytics
+import UserNotifications
 
 
 
@@ -85,9 +86,15 @@ final public class PushNotificationsManager: NSObject {
 
 
 
-    /// Indicates whether Push Notifications are enabled in Settings.app, or not.
-    func notificationsEnabledInDeviceSettings() -> Bool {
-        return (sharedApplication.currentUserNotificationSettings?.types ?? UIUserNotificationType()) != UIUserNotificationType()
+    /// Checks asynchronously if Notifications are enabled in the Device's Settings, or not.
+    ///
+    func loadAuthorizationStatus(completion: @escaping ((_ authorized: Bool) -> Void)) {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                let enabled = settings.authorizationStatus == .authorized
+                completion(enabled)
+            }
+        }
     }
 
 
