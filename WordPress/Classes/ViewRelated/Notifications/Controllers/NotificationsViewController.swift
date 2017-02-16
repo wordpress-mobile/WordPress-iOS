@@ -133,7 +133,11 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
-        reloadTableViewPreservingSelection()
+
+        if !splitViewControllerIsHorizontallyCompact {
+            reloadTableViewPreservingSelection()
+        }
+
         showNoResultsViewIfNeeded()
     }
 
