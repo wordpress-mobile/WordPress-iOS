@@ -632,7 +632,7 @@ private extension NotificationDetailsViewController {
         // Setup: Properties
         // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
         //
-        cell.isReplyEnabled     = !hasHorizontallyCompactView() && commentBlock.isActionOn(.Reply)
+        cell.isReplyEnabled     = !shouldAttachReplyView && commentBlock.isActionOn(.Reply)
         cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
         cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
         cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
