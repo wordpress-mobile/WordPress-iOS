@@ -632,7 +632,7 @@ private extension NotificationDetailsViewController {
         // Setup: Properties
         // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
         //
-        cell.isReplyEnabled     = !hasHorizontallyCompactView() && commentBlock.isActionOn(.Reply)
+        cell.isReplyEnabled     = !shouldAttachReplyView && commentBlock.isActionOn(.Reply)
         cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
         cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
         cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
@@ -964,7 +964,7 @@ private extension NotificationDetailsViewController {
 //
 private extension NotificationDetailsViewController {
     func followSiteWithBlock(_ block: NotificationBlock) {
-        WPNotificationFeedbackGenerator.notificationOccurred(.success)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
 
         actionsService.followSiteWithBlock(block)
         WPAppAnalytics.track(.notificationsSiteFollowAction, withBlogID: block.metaSiteID)
@@ -976,7 +976,7 @@ private extension NotificationDetailsViewController {
     }
 
     func likeCommentWithBlock(_ block: NotificationBlock) {
-        WPNotificationFeedbackGenerator.notificationOccurred(.success)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
 
         actionsService.likeCommentWithBlock(block)
         WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: block.metaSiteID)
@@ -1037,11 +1037,13 @@ private extension NotificationDetailsViewController {
     }
 
     func replyCommentWithBlock(_ block: NotificationBlock, content: String) {
-        WPNotificationFeedbackGenerator.notificationOccurred(.success)
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        generator.notificationOccurred(.success)
 
         actionsService.replyCommentWithBlock(block, content: content, completion: { success in
             guard success else {
-                WPNotificationFeedbackGenerator.notificationOccurred(.error)
+                generator.notificationOccurred(.error)
                 self.displayReplyErrorWithBlock(block, content: content)
                 return
             }
@@ -1052,11 +1054,13 @@ private extension NotificationDetailsViewController {
     }
 
     func updateCommentWithBlock(_ block: NotificationBlock, content: String) {
-        WPNotificationFeedbackGenerator.notificationOccurred(.success)
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        generator.notificationOccurred(.success)
 
         actionsService.updateCommentWithBlock(block, content: content, completion: { success in
             guard success == false else {
-            WPNotificationFeedbackGenerator.notificationOccurred(.error)
+            generator.notificationOccurred(.error)
                 return
             }
             self.displayCommentUpdateErrorWithBlock(block, content: content)

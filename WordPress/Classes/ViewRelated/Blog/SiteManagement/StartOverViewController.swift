@@ -95,7 +95,7 @@ open class StartOverViewController: UITableViewController {
             HelpshiftSupport.showConversation(self, withOptions: metadata)
         } else {
             if let contact = URL(string: "https://support.wordpress.com/contact/") {
-                UIApplication.shared.openURL(contact)
+                UIApplication.shared.open(contact)
             }
         }
     }
