@@ -178,7 +178,7 @@ class AppSettingsViewController: UITableViewController {
         return { row in
             if let targetURL = URL(string: UIApplicationOpenSettingsURLString) {
                 UIApplication.shared.open(targetURL)
-                
+
             } else {
                 assertionFailure("Couldn't unwrap Settings URL")
             }
