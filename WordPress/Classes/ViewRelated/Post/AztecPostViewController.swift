@@ -1575,8 +1575,6 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
             }
             return
         }
-        // move the selection to the position of the attachment
-        richTextView.moveSelectionToPoint(locationInTextView)
 
         //check if it's the current selected attachment or an failed upload
         if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
