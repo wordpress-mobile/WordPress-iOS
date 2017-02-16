@@ -503,7 +503,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
             // interactive pop transition, we need to check whether the gesture
             // gets cancelled so that we can undim the detail view if necessary.
             // (i.e. the user begins a back swipe but doesn't go through with it)
-            coordinator.notifyWhenInteractionEnds({ [weak self] context in
+            coordinator.notifyWhenInteractionChanges({ [weak self] context in
                 if context.initiallyInteractive && context.isCancelled {
                     self?.dimDetailViewController(false)
                 }
