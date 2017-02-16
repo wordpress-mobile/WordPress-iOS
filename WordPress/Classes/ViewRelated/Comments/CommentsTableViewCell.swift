@@ -60,7 +60,6 @@ open class CommentsTableViewCell: WPTableViewCell {
     open override func awakeFromNib() {
         super.awakeFromNib()
 
-        assert(layoutView != nil)
         assert(gravatarImageView != nil)
         assert(detailsLabel != nil)
         assert(timestampImageView != nil)
@@ -162,7 +161,6 @@ open class CommentsTableViewCell: WPTableViewCell {
     }
 
     // MARK: - IBOutlets
-    @IBOutlet fileprivate var layoutView: UIView!
     @IBOutlet fileprivate var gravatarImageView: CircularImageView!
     @IBOutlet fileprivate var detailsLabel: UILabel!
     @IBOutlet fileprivate var timestampImageView: UIImageView!

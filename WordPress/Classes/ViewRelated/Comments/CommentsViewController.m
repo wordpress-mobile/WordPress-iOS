@@ -26,9 +26,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 @property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
 @property (nonatomic, strong) WPNoResultsView           *noResultsView;
-@property (nonatomic, strong) CommentsTableViewCell     *layoutCell;
 @property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
 @property (nonatomic, strong) UIView                    *footerView;
+@property (nonatomic, strong) NSCache                   *estimatedRowHeights;
 @end
 
 
@@ -47,6 +47,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     if (self) {
         self.restorationClass = [self class];
         self.restorationIdentifier = NSStringFromClass([self class]);
+        self.estimatedRowHeights = [[NSCache alloc] init];
     }
     return self;
 }
@@ -63,7 +64,6 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self configureTableView];
     [self configureTableViewFooter];
     [self configureTableViewHandler];
-    [self configureTableViewLayoutCell];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -140,13 +140,13 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)configureTableView
 {
+    self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     self.tableView.accessibilityIdentifier  = @"Comments Table";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // Register the cells
     NSString *nibName   = [CommentsTableViewCell classNameWithoutNamespaces];
     UINib *nibInstance  = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsLayoutIdentifier];
     [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsReuseIdentifier];
 }
 
@@ -157,15 +157,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
-- (void)configureTableViewLayoutCell
-{
-    self.layoutCell = [self.tableView dequeueReusableCellWithIdentifier:CommentsLayoutIdentifier];
-}
-
 - (void)configureTableViewHandler
 {
     WPTableViewHandler *tableViewHandler    = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    tableViewHandler.cacheRowHeights        = YES;
     tableViewHandler.delegate               = self;
     self.tableViewHandler                   = tableViewHandler;
 }
@@ -174,17 +168,16 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Note:
-    // Without an estimated height, UITableView will have an erratic behavior
+    NSNumber *cachedHeight = [self.estimatedRowHeights objectForKey:indexPath];
+    if (cachedHeight.doubleValue) {
+        return cachedHeight.doubleValue;
+    }
     return WPTableViewDefaultRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSParameterAssert(self.layoutCell);
-    [self configureCell:self.layoutCell atIndexPath:indexPath];
-    
-    return [self.layoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+    return UITableViewAutomaticDimension;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -199,6 +192,8 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self.estimatedRowHeights setObject:@(cell.frame.size.height) forKey:indexPath];
+
     // Refresh only when we reach the last 3 rows in the last section!
     NSInteger numberOfRowsInSection     = [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section];
     NSInteger lastSection               = [self.tableViewHandler numberOfSectionsInTableView:tableView] - 1;
