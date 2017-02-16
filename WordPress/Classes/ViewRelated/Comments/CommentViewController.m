@@ -452,7 +452,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     __typeof(self) __weak weakSelf = self;
 
     if (!self.comment.isLiked) {
-        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
+        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
     }
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
