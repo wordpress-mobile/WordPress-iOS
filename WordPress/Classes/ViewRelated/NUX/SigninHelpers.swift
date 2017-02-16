@@ -348,7 +348,7 @@ import Mixpanel
     class func openForgotPasswordURL(_ loginFields: LoginFields) {
         let baseURL = loginFields.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(string: loginFields.siteUrl)
         let forgotPasswordURL = URL(string: baseURL + "/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F")!
-        UIApplication.shared.openURL(forgotPasswordURL)
+        UIApplication.shared.open(forgotPasswordURL)
     }
 
 
