@@ -238,7 +238,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     if (otherButtonTitle) {
         UIAlertAction *otherAction = [UIAlertAction actionWithTitle:otherButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-            [[UIApplication sharedApplication] openURL:settingsURL];
+            [[UIApplication sharedApplication] openURL:settingsURL options:nil completionHandler:nil];
         }];
         [alertController addAction:otherAction];
     }
