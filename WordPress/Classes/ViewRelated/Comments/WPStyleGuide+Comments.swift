@@ -80,7 +80,7 @@ extension WPStyleGuide {
         fileprivate static let titleLineSize        = CGFloat(18)
         fileprivate static let titleParagraph       = NSMutableParagraphStyle(minLineHeight: titleLineSize,
                                                     maxLineHeight:  titleLineSize,
-                                                    lineBreakMode:  .byWordWrapping,
+                                                    lineBreakMode:  .byTruncatingTail,
                                                     alignment:      .natural)
     }
 }
