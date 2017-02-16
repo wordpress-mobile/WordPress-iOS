@@ -1236,7 +1236,7 @@ private extension NotificationsViewController {
 //
 extension NotificationsViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
-        guard let note = fetchFirstNotification() else {
+        guard let note = selectedNotification ?? fetchFirstNotification() else {
             return nil
         }
 
