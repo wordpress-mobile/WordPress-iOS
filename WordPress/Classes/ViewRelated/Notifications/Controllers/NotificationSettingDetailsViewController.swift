@@ -52,56 +52,56 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
 
 
-    // MARK: - Initializers
-    public convenience init(settings: NotificationSettings) {
+    convenience init(settings: NotificationSettings) {
         self.init(settings: settings, stream: settings.streams.first!)
     }
 
-    public convenience init(settings: NotificationSettings, stream: NotificationSettings.Stream) {
+    convenience init(settings: NotificationSettings, stream: NotificationSettings.Stream) {
         self.init(style: .grouped)
         self.settings = settings
         self.stream = stream
     }
 
+    deinit {
+        stopListeningToNotifications()
+    }
 
-
-    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupTitle()
-        setupNotifications()
         setupTableView()
         reloadTable()
+
+        startListeningToNotifications()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // iOS +10: Push Notifications Auth is now.. async. Lovely
         refreshPushAuthorizationStatus()
-
         WPAnalytics.track(.openedNotificationSettingDetails)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         saveSettingsIfNeeded()
     }
 
 
-
     // MARK: - Setup Helpers
-    private func setupTitle() {
-        title = stream?.kind.description()
+    private func startListeningToNotifications() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(refreshPushAuthorizationStatus), name: .UIApplicationDidBecomeActive, object: nil)
     }
 
-    private func setupNotifications() {
-        // Reload whenever the app becomes active again since Push Settings may have changed in the meantime!
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self,
-            selector:   #selector(NotificationSettingDetailsViewController.reloadTable),
-            name:       NSNotification.Name.UIApplicationDidBecomeActive,
-            object:     nil)
+    private func stopListeningToNotifications() {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    private func setupTitle() {
+        title = stream?.kind.description()
     }
 
     private func setupTableView() {
@@ -120,7 +120,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
         sections = isDeviceStreamDisabled() ? sectionsForDisabledDeviceStream() : sectionsForSettings(settings!, stream: stream!)
         tableView.reloadData()
     }
-
 
 
     // MARK: - Private Helpers
@@ -169,7 +168,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
         return [section]
     }
-
 
 
     // MARK: - UITableView Delegate Methods
@@ -224,7 +222,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
     }
 
 
-
     // MARK: - UITableView Helpers
     private func configureTextCell(_ cell: WPTableViewCell, row: Row) {
         cell.textLabel?.text    = row.description
@@ -242,7 +239,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
     }
 
 
-
     // MARK: - Disabled Push Notifications Handling
     private func isDeviceStreamDisabled() -> Bool {
         return stream?.kind == .Device && pushNotificationsAuthorized == false
@@ -253,7 +249,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
         UIApplication.shared.open(targetURL!)
     }
 
-    private func refreshPushAuthorizationStatus() {
+    func refreshPushAuthorizationStatus() {
         PushNotificationsManager.sharedInstance.loadAuthorizationStatus { authorized in
             self.pushNotificationsAuthorized = authorized
         }
@@ -298,7 +294,6 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
         alertController.presentFromRootViewController()
     }
-
 
 
     // MARK: - Private Nested Class'ess
