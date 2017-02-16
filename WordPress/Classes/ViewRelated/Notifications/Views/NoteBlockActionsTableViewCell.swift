@@ -72,7 +72,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     ///
     var isReplyEnabled: Bool = false {
         didSet {
-            btnReply.isHidden = !isReplyEnabled
+            toggleAction(button: btnReply, hidden: !isReplyEnabled)
         }
     }
 
@@ -80,7 +80,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     ///
     var isLikeEnabled: Bool = false {
         didSet {
-            btnLike.isHidden = !isLikeEnabled
+            toggleAction(button: btnLike, hidden: !isLikeEnabled)
         }
     }
 
@@ -88,7 +88,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     ///
     var isApproveEnabled: Bool = false {
         didSet {
-            btnApprove.isHidden = !isApproveEnabled
+            toggleAction(button: btnApprove, hidden: !isApproveEnabled)
         }
     }
 
@@ -96,7 +96,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     ///
     var isTrashEnabled: Bool = false {
         didSet {
-            btnTrash.isHidden = !isTrashEnabled
+            toggleAction(button: btnTrash, hidden: !isTrashEnabled)
         }
     }
 
@@ -104,7 +104,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     ///
     var isSpamEnabled: Bool = false {
         didSet {
-            btnSpam.isHidden = !isSpamEnabled
+            toggleAction(button: btnSpam, hidden: !isSpamEnabled)
         }
     }
 
@@ -112,7 +112,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     ///
     var isEditEnabled: Bool = false {
         didSet {
-            btnEdit.isHidden = !isEditEnabled
+            toggleAction(button: btnEdit, hidden: !isEditEnabled)
         }
     }
 
@@ -268,9 +268,23 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
 
 
 
-// MARK: - Animation Helpers
+// MARK: - Action Button Helpers
 //
 private extension NoteBlockActionsTableViewCell {
+
+    func toggleAction(button: UIButton, hidden: Bool) {
+        button.isHidden = hidden
+        /*
+         * Since these buttons are in a stackView, and since they are
+         * subclasses of `VerticallyStackedButton`, we need to zero the alpha of the button.
+         * This keeps the custom layout in `VerticallyStackedButton` from breaking out
+         * of the constraint-based layout the stackView sets on the button, once hidden.
+         * Note: ideally, we wouldn't be doing custom layout in `VerticallyStackedButton`.
+         * - Brent Feb 15/2017
+         */
+        button.alpha = hidden ? 0.0 : 1.0
+    }
+
     func animateLikeButton(_ button: UIButton, completion: @escaping (() -> Void)) {
         guard let overlayImageView = overlayForButton(button, state: .selected) else {
             return

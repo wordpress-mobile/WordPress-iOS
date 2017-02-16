@@ -48,6 +48,10 @@ open class StartOverViewController: UITableViewController {
 
         title = NSLocalizedString("Start Over", comment: "Title of Start Over settings page")
 
+        tableView.cellLayoutMarginsFollowReadableWidth = true
+        tableView.estimatedSectionHeaderHeight = 100.0
+        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
@@ -75,13 +79,6 @@ open class StartOverViewController: UITableViewController {
         return headerView
     }
 
-    override open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        headerView.layoutWidth = tableView.frame.width
-        let height = headerView.intrinsicContentSize.height
-
-        return height
-    }
-
     // MARK: - Actions
 
     fileprivate func contactSupport() {
@@ -95,7 +92,7 @@ open class StartOverViewController: UITableViewController {
             HelpshiftSupport.showConversation(self, withOptions: metadata)
         } else {
             if let contact = URL(string: "https://support.wordpress.com/contact/") {
-                UIApplication.shared.openURL(contact)
+                UIApplication.shared.open(contact)
             }
         }
     }

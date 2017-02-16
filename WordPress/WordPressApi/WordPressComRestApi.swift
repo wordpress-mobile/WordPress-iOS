@@ -49,10 +49,7 @@ open class WordPressComRestApi: NSObject {
 
     fileprivate var uploadSessionManager: AFHTTPSessionManager {
         get {
-            if #available(iOS 10.0, *) {
-                return self.sessionManager
-            }
-            return self.createSessionManager()
+            return self.sessionManager
         }
     }
 

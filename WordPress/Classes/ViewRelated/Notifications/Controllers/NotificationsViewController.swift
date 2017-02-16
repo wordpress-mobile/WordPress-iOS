@@ -1096,7 +1096,7 @@ extension NotificationsViewController: ABXPromptViewDelegate {
         AppRatingUtility.shared.ratedCurrentVersion()
         hideRatingView()
 
-        UIApplication.shared.openURL(Ratings.reviewURL)
+        UIApplication.shared.open(Ratings.reviewURL)
     }
 
     func appbotPromptForFeedback() {
