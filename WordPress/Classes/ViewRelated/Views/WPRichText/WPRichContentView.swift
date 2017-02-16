@@ -353,7 +353,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         if let url = sender.linkURL,
             let range = attachmentRangeForRichTextImage(sender) {
 
-            _ = delegate.textView?(self, shouldInteractWith: url as URL, in: range)
+            _ = delegate.textView?(self, shouldInteractWith: url as URL, in: range, interaction: .invokeDefaultAction)
             return
         }
 

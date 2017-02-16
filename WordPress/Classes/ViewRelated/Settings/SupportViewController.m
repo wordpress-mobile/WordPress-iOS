@@ -335,14 +335,14 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
             if ([HelpshiftUtils isHelpshiftEnabled]) {
                 [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeFAQs];
             } else {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://apps.wordpress.com/support/"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://apps.wordpress.com/support/"] options:nil completionHandler:nil];
             }
         } else if (indexPath.row == SettingsSectionFAQForumsRowContact) {
             if ([HelpshiftUtils isHelpshiftEnabled]) {
                 [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
                 [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeConversation];
             } else {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://ios.forums.wordpress.org"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://ios.forums.wordpress.org"] options:nil completionHandler:nil];
             }
         }
     } else if (indexPath.section == SettingsSectionSettings) {
