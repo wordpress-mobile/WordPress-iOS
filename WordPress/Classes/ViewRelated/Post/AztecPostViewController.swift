@@ -594,8 +594,8 @@ extension AztecPostViewController {
             present(alertController, animated: true, completion: nil)
             return
         }
-
-        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText, maskType: .clear)
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
         postEditorStateContext.updated(isBeingPublished: true)
 
         // Finally, publish the post.
