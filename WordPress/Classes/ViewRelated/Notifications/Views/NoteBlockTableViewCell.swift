@@ -13,6 +13,13 @@ class NoteBlockTableViewCell: WPTableViewCell {
             refreshSeparators()
         }
     }
+    var readableIndentedSeparatorInsets: UIEdgeInsets {
+        var insets = UIEdgeInsets.zero
+        let readableLayoutFrame = readableContentGuide.layoutFrame
+        insets.left = readableLayoutFrame.origin.x
+        insets.right = frame.size.width - (readableLayoutFrame.origin.x + readableLayoutFrame.size.width)
+        return insets
+    }
     var separatorsView = SeparatorsView()
 
     override func layoutSubviews() {
@@ -45,10 +52,4 @@ class NoteBlockTableViewCell: WPTableViewCell {
 
     // MARK: - Private
     fileprivate let fullSeparatorInsets = UIEdgeInsets.zero
-
-    fileprivate var readableIndentedSeparatorInsets: UIEdgeInsets {
-        var insets = UIEdgeInsets.zero
-        insets.left = readableContentGuide.layoutFrame.origin.x
-        return insets
-    }
 }
