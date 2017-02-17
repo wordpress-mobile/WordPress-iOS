@@ -183,13 +183,29 @@ class NotificationDetailsViewController: UIViewController {
         title = note.title
 
         if splitViewControllerIsHorizontallyCompact {
-            navigationItem.rightBarButtonItems = [nextNavigationButton, previousNavigationButton]
-
-            previousNavigationButton.isEnabled = shouldEnablePreviousButton
-            nextNavigationButton.isEnabled = shouldEnableNextButton
+            enableNavigationRightBarButtonItems()
         } else {
             navigationItem.rightBarButtonItems = nil
         }
+    }
+
+    fileprivate func enableNavigationRightBarButtonItems() {
+
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/6662#issue-207316186
+        let buttonSize = CGFloat(24)
+        let buttonSpacing = CGFloat(12)
+
+        let width = buttonSize + buttonSpacing + buttonSize
+        let height = buttonSize
+        let buttons = UIStackView(arrangedSubviews: [nextNavigationButton, previousNavigationButton])
+        buttons.axis = .horizontal
+        buttons.spacing = buttonSpacing
+        buttons.frame = CGRect(x: 0, y: 0, width: width, height: height)
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttons)
+
+        previousNavigationButton.isEnabled = shouldEnablePreviousButton
+        nextNavigationButton.isEnabled = shouldEnableNextButton
     }
 }
 
@@ -299,6 +315,8 @@ extension NotificationDetailsViewController {
                                          target: nil,
                                          action: nil)
 
+        navigationItem.backBarButtonItem = backButton
+
         let next = UIButton(type: .custom)
         next.setImage(Gridicon.iconOfType(.arrowUp), for: .normal)
         next.addTarget(self, action: #selector(nextNotificationWasPressed), for: .touchUpInside)
@@ -307,22 +325,10 @@ extension NotificationDetailsViewController {
         previous.setImage(Gridicon.iconOfType(.arrowDown), for: .normal)
         previous.addTarget(self, action: #selector(previousNotificationWasPressed), for: .touchUpInside)
 
-        // https://github.com/wordpress-mobile/WordPress-iOS/issues/6662#issue-207316186
-        let buttonSize = CGFloat(24)
-        let buttonSpacing = CGFloat(12)
-
-        let width = buttonSize + buttonSpacing + buttonSize
-        let height = buttonSize
-        let buttons = UIStackView(arrangedSubviews: [next, previous])
-        buttons.axis = .horizontal
-        buttons.spacing = buttonSpacing
-        buttons.frame = CGRect(x: 0, y: 0, width: width, height: height)
-
-        navigationItem.backBarButtonItem = backButton
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttons)
-
         previousNavigationButton = previous
         nextNavigationButton = next
+
+        enableNavigationRightBarButtonItems()
     }
 
     func setupMainView() {
