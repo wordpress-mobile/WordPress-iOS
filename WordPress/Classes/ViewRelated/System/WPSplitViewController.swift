@@ -370,6 +370,8 @@ class WPSplitViewController: UISplitViewController {
             } else {
                 navigationController.scrollContentToTopAnimated(animated)
             }
+
+            navigationController.setNavigationBarHidden(false, animated: animated)
         }
 
         if let primaryNavigationController = viewControllers.first as? UINavigationController {
