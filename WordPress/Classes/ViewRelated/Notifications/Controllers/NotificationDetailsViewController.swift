@@ -154,9 +154,14 @@ class NotificationDetailsViewController: UIViewController {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        refreshInterface()
+        refreshInterfaceIfNeeded()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        refreshNavigationBar()
+    }
 
     fileprivate func refreshInterfaceIfNeeded() {
         guard isViewLoaded else {
@@ -176,8 +181,15 @@ class NotificationDetailsViewController: UIViewController {
 
     fileprivate func refreshNavigationBar() {
         title = note.title
-        previousNavigationButton.isEnabled = shouldEnablePreviousButton
-        nextNavigationButton.isEnabled = shouldEnableNextButton
+
+        if splitViewControllerIsHorizontallyCompact {
+            navigationItem.rightBarButtonItems = [nextNavigationButton, previousNavigationButton]
+
+            previousNavigationButton.isEnabled = shouldEnablePreviousButton
+            nextNavigationButton.isEnabled = shouldEnableNextButton
+        } else {
+            navigationItem.rightBarButtonItems = nil
+        }
     }
 }
 
