@@ -13,7 +13,7 @@ class NoteBlockTableViewCell: WPTableViewCell {
             refreshSeparators()
         }
     }
-    var readableIndentedSeparatorInsets: UIEdgeInsets {
+    var readableSeparatorInsets: UIEdgeInsets {
         var insets = UIEdgeInsets.zero
         let readableLayoutFrame = readableContentGuide.layoutFrame
         insets.left = readableLayoutFrame.origin.x
@@ -36,7 +36,7 @@ class NoteBlockTableViewCell: WPTableViewCell {
         }
 
         // Last Rows requires full separators
-        separatorsView.bottomInsets = isLastRow ? fullSeparatorInsets : readableIndentedSeparatorInsets
+        separatorsView.bottomInsets = isLastRow ? fullSeparatorInsets : readableSeparatorInsets
         separatorsView.bottomVisible = true
     }
     class func reuseIdentifier() -> String {
