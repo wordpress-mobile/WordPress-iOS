@@ -977,11 +977,8 @@ private extension NotificationDetailsViewController {
     }
 
     var maxMediaEmbedWidth: CGFloat {
-        let textPadding = NoteBlockTextTableViewCell.defaultLabelPadding
-        let portraitWidth = hasHorizontallyCompactView() ? view.bounds.width : WPTableViewFixedWidth
-        let maxWidth = portraitWidth - (textPadding.left + textPadding.right)
-
-        return maxWidth
+        let readableWidth = view.readableContentGuide.layoutFrame.size.width
+        return readableWidth > 0 ? readableWidth : view.frame.size.width
     }
 }
 
