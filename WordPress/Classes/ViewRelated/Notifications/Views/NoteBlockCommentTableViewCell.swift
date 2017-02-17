@@ -88,7 +88,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
         separatorsView.leftColor = Style.blockUnapprovedSideColor
 
         // Bottom Separator
-        let bottomInsets = isApproved ? readableIndentedSeparatorInsets : separatorUnapprovedInsets
+        let bottomInsets = isApproved ? readableSeparatorInsets : separatorUnapprovedInsets
         separatorsView.bottomVisible = true
         separatorsView.bottomInsets = bottomInsets
         separatorsView.bottomColor = Style.blockSeparatorColorForComment(isApproved: isApproved)
