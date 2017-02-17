@@ -1226,6 +1226,7 @@ private extension NotificationsViewController {
 
     func resetNotifications() {
         do {
+            selectedNotification = nil
             let helper = CoreDataHelper<Notification>(context: mainContext)
             helper.deleteAllObjects()
             try mainContext.save()
