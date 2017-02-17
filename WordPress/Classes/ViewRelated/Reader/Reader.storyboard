@@ -626,15 +626,103 @@
         <scene sceneID="uVg-vg-oQl">
             <objects>
                 <viewController storyboardIdentifier="RelatedPostsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7Pc-dm-R7a" customClass="RelatedPostsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="8SY-iT-OP4"/>
+                        <viewControllerLayoutGuide type="bottom" id="QmE-6Y-E2Q"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="BsZ-Gd-gmn">
-                        <rect key="frame" x="0.0" y="0.0" width="345" height="100"/>
+                        <rect key="frame" x="0.0" y="0.0" width="345" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="E2m-1H-RWJ">
+                                <rect key="frame" x="0.0" y="0.0" width="345" height="300"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="CaP-Js-Bfx">
+                                        <rect key="frame" x="0.0" y="0.0" width="345" height="47"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VKf-La-zGo">
+                                                <rect key="frame" x="0.0" y="0.0" width="345" height="1"/>
+                                                <color key="backgroundColor" red="0.52941176469999995" green="0.65098039220000004" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="Z9C-ax-HC2"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MORE IN SITE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UOZ-a8-rsU">
+                                                <rect key="frame" x="0.0" y="17" width="345" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="kLQ-hy-82P"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="iWe-88-Zql">
+                                        <rect key="frame" x="0.0" y="63" width="345" height="47"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eh1-Hn-3Y5">
+                                                <rect key="frame" x="0.0" y="0.0" width="345" height="1"/>
+                                                <color key="backgroundColor" red="0.52941176469999995" green="0.65098039220000004" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="dsg-mq-3a4"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MORE ON WPCOM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DqU-Qf-LhN">
+                                                <rect key="frame" x="0.0" y="17" width="345" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="30" id="JXn-XM-OV2"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d3Y-ea-8mA">
+                                        <rect key="frame" x="0.0" y="126" width="345" height="174"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="E2m-1H-RWJ" firstAttribute="top" secondItem="8SY-iT-OP4" secondAttribute="bottom" id="0ut-cE-Qvh"/>
+                            <constraint firstItem="E2m-1H-RWJ" firstAttribute="leading" secondItem="BsZ-Gd-gmn" secondAttribute="leading" id="Dc0-xi-5G0"/>
+                            <constraint firstAttribute="trailing" secondItem="E2m-1H-RWJ" secondAttribute="trailing" id="QOg-wd-ead"/>
+                            <constraint firstItem="QmE-6Y-E2Q" firstAttribute="top" secondItem="E2m-1H-RWJ" secondAttribute="bottom" id="ak9-FV-5sM"/>
+                        </constraints>
                     </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="345" height="300"/>
+                    <connections>
+                        <outlet property="relatedSitestackView" destination="CaP-Js-Bfx" id="cXl-pX-UiW"/>
+                        <outlet property="relatedWPComStackView" destination="iWe-88-Zql" id="bQj-bU-gza"/>
+                        <outlet property="siteLabel" destination="UOZ-a8-rsU" id="GCY-yB-LpR"/>
+                        <outlet property="wpcomLabel" destination="DqU-Qf-LhN" id="lQ3-qG-Vh2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b7O-t0-EA1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1484" y="1129"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="DQf-eH-W1U">
+            <objects>
+                <viewController id="A4R-jX-ijH" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lLN-PE-jd3"/>
+                        <viewControllerLayoutGuide type="bottom" id="yHr-4P-kAs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8hd-r1-xUZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ydc-0N-yfp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>
