@@ -31,6 +31,7 @@ class RelatedPostsViewController: UIViewController {
 
     // Lifecycle Methods
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -72,6 +73,7 @@ class RelatedPostsViewController: UIViewController {
         for post in posts {
             let card = ReaderCard(frame: frame)
             card.readerPost = post
+            card.cardContentMargins = .zero
 
             relatedSitestackView.addArrangedSubview(card)
         }
@@ -100,6 +102,7 @@ class RelatedPostsViewController: UIViewController {
         for post in posts {
             let card = ReaderCard(frame: frame)
             card.readerPost = post
+            card.cardContentMargins = .zero
 
             relatedWPComStackView.addArrangedSubview(card)
         }
@@ -129,6 +132,7 @@ class RelatedPostsViewController: UIViewController {
         }
 
         if post.relatedPosts.count > 0 {
+            configureView()
             return
         }
 
