@@ -367,11 +367,15 @@ class WPSplitViewController: UISplitViewController {
         let popOrScrollToTop = { (navigationController: UINavigationController) in
             if navigationController.viewControllers.count > 1 {
                 navigationController.popToRootViewController(animated: animated)
+
+                // Ensure navigation bars are visible – otherwise if we popped
+                // back from e.g. a Reader Detail screen which had hidden its
+                // bars, they'd stay hidden.
+                navigationController.setNavigationBarHidden(false, animated: animated)
             } else {
                 navigationController.scrollContentToTopAnimated(animated)
             }
 
-            navigationController.setNavigationBarHidden(false, animated: animated)
         }
 
         if let primaryNavigationController = viewControllers.first as? UINavigationController {
