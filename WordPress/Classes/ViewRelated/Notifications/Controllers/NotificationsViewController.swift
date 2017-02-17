@@ -875,7 +875,11 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         // Update NoResults View
         showNoResultsViewIfNeeded()
 
-        selectFirstNotificationIfAppropriate()
+        if let selectedNotification = selectedNotification {
+            selectRowForNotification(selectedNotification, animated: false, scrollPosition: .none)
+        } else {
+            selectFirstNotificationIfAppropriate()
+        }
     }
 }
 
