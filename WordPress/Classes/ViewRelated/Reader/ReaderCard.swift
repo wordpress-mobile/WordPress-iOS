@@ -72,6 +72,16 @@ public class ReaderCard: UIView {
     }()
 
 
+    var cardContentMargins: UIEdgeInsets {
+        get {
+            return cardStackView.layoutMargins
+        }
+        set {
+            cardStackView.layoutMargins = newValue
+        }
+    }
+
+
     // MARK: - Public Accessors
     open var hidesFollowButton = false
     open var enableLoggedInFeatures = true
