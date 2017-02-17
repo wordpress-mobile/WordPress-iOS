@@ -70,11 +70,11 @@ class NotificationDetailsViewController: UIViewController {
 
     /// Previous NavBar Navigation Button
     ///
-    var previousNavigationButton: UIBarButtonItem!
+    var previousNavigationButton: UIButton!
 
     /// Next NavBar Navigation Button
     ///
-    var nextNavigationButton: UIBarButtonItem!
+    var nextNavigationButton: UIButton!
 
     /// Arrows Navigation Datasource
     ///
@@ -287,21 +287,55 @@ extension NotificationDetailsViewController {
                                          target: nil,
                                          action: nil)
 
-        let previousButton = UIBarButtonItem(image: Gridicon.iconOfType(.arrowDown),
-                                             style: .plain,
-                                             target: self,
-                                             action: #selector(previousNotificationWasPressed))
+        let next = UIButton(type: .custom)
+        next.setImage(Gridicon.iconOfType(.arrowUp), for: .normal)
+        next.addTarget(self, action: #selector(nextNotificationWasPressed), for: .touchUpInside)
 
-        let nextButton = UIBarButtonItem(image: Gridicon.iconOfType(.arrowUp),
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(nextNotificationWasPressed))
+        let previous = UIButton(type: .custom)
+        previous.setImage(Gridicon.iconOfType(.arrowDown), for: .normal)
+        previous.addTarget(self, action: #selector(previousNotificationWasPressed), for: .touchUpInside)
+
+        /*
+
+            |                     |           |                     |
+            |-------- 24 ---------|--- 12 ----|--------- 24 --------|
+            |                     |           |                     |
+        --- +---------------------+           +---------------------+
+         |  |                     |           |                     |
+         |  |         |           |           |         /|\         |
+         |  |         |           |           |        / | \        |
+         |  |         |           |           |       /  |  \       |
+         |  |         |           |           |      /   |   \      |
+         |  |         |           |           |     /    |    \     |
+            |         |           |           |          |          |
+         2  |         |           |           |          |          |
+         4  |         |           |           |          |          |
+            |         |           |           |          |          |
+         |  |    \    |    /      |           |          |          |
+         |  |     \   |   /       |           |          |          |
+         |  |      \  |  /        |           |          |          |
+         |  |       \ | /         |           |          |          |
+         |  |        \|/          |           |          |          |
+         |  |                     |           |                     |
+        --- +---------------------+           +---------------------+
+
+         https://github.com/wordpress-mobile/WordPress-iOS/issues/6662#issue-207316186
+         */
+        let buttonSize = CGFloat(24)
+        let buttonSpacing = CGFloat(12)
+
+        let width = buttonSize + buttonSpacing + buttonSize
+        let height = buttonSize
+        let buttons = UIStackView(arrangedSubviews: [next, previous])
+        buttons.axis = .horizontal
+        buttons.spacing = buttonSpacing
+        buttons.frame = CGRect(x: 0, y: 0, width: width, height: height)
 
         navigationItem.backBarButtonItem = backButton
-        navigationItem.rightBarButtonItems = [nextButton, previousButton]
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttons)
 
-        previousNavigationButton = previousButton
-        nextNavigationButton = nextButton
+        previousNavigationButton = previous
+        nextNavigationButton = next
     }
 
     func setupMainView() {
