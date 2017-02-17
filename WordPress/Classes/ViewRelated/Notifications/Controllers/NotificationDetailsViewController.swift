@@ -622,7 +622,6 @@ private extension NotificationDetailsViewController {
         cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
         cell.attributedCommentText  = text.trimNewlines()
         cell.isApproved             = commentBlock.isCommentApproved
-        cell.isRepliedComment       = note.isRepliedComment
 
         // Setup: Callbacks
         cell.onDetailsClick = { [weak self] sender in
