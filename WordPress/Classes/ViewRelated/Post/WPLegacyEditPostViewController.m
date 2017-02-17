@@ -693,8 +693,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     } else {
         hudText = NSLocalizedString(@"Updating...", @"Text displayed in HUD while a published or draft post is being updated.");
     }
-    [SVProgressHUD showWithStatus:hudText maskType:SVProgressHUDMaskTypeClear];
 
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showWithStatus:hudText];
     if (upload) {
         NSString *postTitle = self.post.original.postTitle;
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];

@@ -1469,7 +1469,8 @@ EditImageDetailsViewControllerDelegate
             hudText = NSLocalizedString(@"Saving...", @"Text displayed in HUD while a post is being saved as a draft.");
             break;
     }
-    [SVProgressHUD showWithStatus:hudText maskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showWithStatus:hudText];
 
     UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
     [generator prepare];
