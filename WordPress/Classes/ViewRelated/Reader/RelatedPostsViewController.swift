@@ -72,8 +72,11 @@ class RelatedPostsViewController: UIViewController {
         let frame = CGRect(x: 0, y: 0, width: 320, height: 100)
         for post in posts {
             let card = ReaderCard(frame: frame)
-            card.readerPost = post
+            card.hidesActionbar = true
+            card.headerButtonIsEnabled = false
             card.cardContentMargins = .zero
+            card.hidesFollowButton = true
+            card.readerPost = post
 
             relatedSitestackView.addArrangedSubview(card)
         }
@@ -101,8 +104,10 @@ class RelatedPostsViewController: UIViewController {
         let frame = CGRect(x: 0, y: 0, width: 320, height: 100)
         for post in posts {
             let card = ReaderCard(frame: frame)
-            card.readerPost = post
+            card.hidesActionbar = true
+            card.headerButtonIsEnabled = false
             card.cardContentMargins = .zero
+            card.readerPost = post
 
             relatedWPComStackView.addArrangedSubview(card)
         }
