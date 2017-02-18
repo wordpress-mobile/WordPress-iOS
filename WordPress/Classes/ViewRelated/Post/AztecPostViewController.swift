@@ -29,10 +29,16 @@ class AztecPostViewController: UIViewController {
         toolbar.formatter = self
 
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
-        recognizer.cancelsTouchesInView = false
+        recognizer.cancelsTouchesInView = true
+        recognizer.delaysTouchesBegan = true
+        recognizer.delaysTouchesEnded = true
         recognizer.delegate = self
-
         tv.addGestureRecognizer(recognizer)
+        for gesture in tv.gestureRecognizers ?? [] {
+            if let otherTapGesture = gesture as? UITapGestureRecognizer, otherTapGesture != recognizer {
+                otherTapGesture.require(toFail: recognizer)
+            }
+        }
 
         return tv
     }()
@@ -167,6 +173,7 @@ class AztecPostViewController: UIViewController {
         }
     }
 
+
     /// Post being currently edited
     ///
     fileprivate(set) var post: AbstractPost {
@@ -196,6 +203,8 @@ class AztecPostViewController: UIViewController {
     }()
 
 
+    /// Media Progress Coordinator
+    ///
     fileprivate lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
@@ -203,6 +212,8 @@ class AztecPostViewController: UIViewController {
     }()
 
 
+    /// Media Progress View
+    ///
     fileprivate lazy var mediaProgressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.backgroundColor = WPStyleGuide.wordPressBlue()
@@ -212,7 +223,16 @@ class AztecPostViewController: UIViewController {
         return progressView
     }()
 
+
+    /// Selected Text Attachment
+    ///
     fileprivate var currentSelectedAttachment: TextAttachment?
+
+
+    /// Last Interface Element that was a First Responder
+    ///
+    fileprivate var lastFirstResponder: UIView?
+
 
     /// Maintainer of state for editor - like for post button
     ///
@@ -230,6 +250,7 @@ class AztecPostViewController: UIViewController {
 
         return context
     }()
+
 
 
     // MARK: - Lifecycle Methods
@@ -283,11 +304,14 @@ class AztecPostViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // We can only configure the dismiss button, when we know the way this VC will be presented
         configureDismissButton()
-
-        // Wire Notification Listeners!
         startListeningToNotifications()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        restoreFirstResponder()
     }
 
 
@@ -295,6 +319,7 @@ class AztecPostViewController: UIViewController {
         super.viewWillDisappear(animated)
 
         stopListeningToNotifications()
+        rememberFirstResponder()
     }
 
 
@@ -310,6 +335,7 @@ class AztecPostViewController: UIViewController {
         //    [self.titleToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
 
     }
+
 
     // MARK: - Configuration Methods
 
@@ -399,6 +425,15 @@ class AztecPostViewController: UIViewController {
         let notificationCenter = NotificationCenter.default
         notificationCenter.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
         notificationCenter.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+
+    func rememberFirstResponder() {
+        lastFirstResponder = view.findFirstResponder()
+    }
+
+    func restoreFirstResponder() {
+        let nextFirstResponder = lastFirstResponder ?? titleTextField
+        nextFirstResponder.becomeFirstResponder()
     }
 
     func refreshInterface() {
@@ -703,7 +738,6 @@ private extension AztecPostViewController {
         alert.addCancelActionWithTitle(MoreSheetAlert.cancelTitle)
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
-        view.endEditing(true)
         present(alert, animated: true, completion: nil)
     }
 
@@ -1181,10 +1215,6 @@ fileprivate extension AztecPostViewController {
     }
 
     func stopEditing() {
-        if titleTextField.isFirstResponder {
-            titleTextField.resignFirstResponder()
-        }
-
         view.endEditing(true)
     }
 
@@ -1567,6 +1597,21 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
         return true
     }
 
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        let locationInTextView = gestureRecognizer.location(in: richTextView)
+        // check if we have an attachment in the position we tapped
+        guard richTextView.attachmentAtPoint(locationInTextView) != nil else {
+            // if we have a current selected attachment marked lets unmark it
+            if let selectedAttachment = currentSelectedAttachment {
+                selectedAttachment.message = nil
+                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+                currentSelectedAttachment = nil
+            }
+            return false
+        }
+        return true
+    }
+
     func richTextViewWasPressed(_ recognizer: UIGestureRecognizer) {
         guard recognizer.state == .recognized else {
             return
@@ -1582,8 +1627,6 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
             }
             return
         }
-        // move the selection to the position of the attachment
-        richTextView.moveSelectionToPoint(locationInTextView)
 
         //check if it's the current selected attachment or an failed upload
         if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
