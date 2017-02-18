@@ -83,6 +83,7 @@ public class ReaderCard: UIView {
 
 
     // MARK: - Public Accessors
+
     open var hidesFollowButton = false
     open var enableLoggedInFeatures = true
     open weak var delegate: ReaderCardDelegate?
@@ -107,6 +108,16 @@ public class ReaderCard: UIView {
                     headerAuthorLabel.textColor = WPStyleGuide.readerCardBlogNameLabelDisabledTextColor()
                 }
             }
+        }
+    }
+
+
+    open var hidesActionbar: Bool {
+        get {
+            return actionStackView.isHidden
+        }
+        set {
+            actionStackView.isHidden = newValue
         }
     }
 
