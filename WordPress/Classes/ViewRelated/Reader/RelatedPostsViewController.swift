@@ -157,6 +157,7 @@ class RelatedPostsViewController: UIViewController {
     }
 
 
+    /// No op
     func handleCardLongPress() {}
 
 
@@ -189,7 +190,9 @@ class RelatedPostsViewController: UIViewController {
 extension RelatedPostsViewController: ReaderCardDelegate {
 
     func readerCard(_ card: ReaderCard, followActionForPost post: ReaderPost) {
-        // TODO:
+        ReaderHelpers.toggleFollowingForPost(post)
+        // Reassigning the post updates the card and the status of the follow button
+        card.readerPost = post
     }
 
     func readerCardImageRequestAuthToken() -> String? {
