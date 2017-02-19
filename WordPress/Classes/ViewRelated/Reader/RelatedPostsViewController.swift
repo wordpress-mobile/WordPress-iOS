@@ -13,12 +13,19 @@ class RelatedPostsViewController: UIViewController {
     @IBOutlet var siteLabel: UILabel!
     @IBOutlet var wpcomLabel: UILabel!
 
+    var cards = [ReaderCard]()
+
     var delegate: RelatedPostsViewControllerDelegate?
 
     var post: ReaderPost? {
         didSet {
             setupSiteLable()
             fetchRelatedPostsIfNeeded()
+
+            if let context = post?.managedObjectContext {
+                NotificationCenter.default.addObserver(self, selector: #selector(self.handleContextDidSave), name: .NSManagedObjectContextDidSave, object: context)
+            }
+
         }
     }
 
@@ -30,7 +37,12 @@ class RelatedPostsViewController: UIViewController {
     }
 
 
-    // Lifecycle Methods
+    // MARK: - Lifecycle Methods
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +53,7 @@ class RelatedPostsViewController: UIViewController {
     }
 
 
-    // Configuration
+    // MARK: - Configuration
 
     /// NOTE: Because of how the RelatedPostsViewController's view is composed in
     /// the ReaderDetailViewController, a longpress on the view or its subviews
@@ -78,7 +90,7 @@ class RelatedPostsViewController: UIViewController {
     }
 
 
-    // Content
+    // MARK: - Content
 
     func configureSitePosts() {
         let posts = filteredSitePosts()
@@ -135,6 +147,7 @@ class RelatedPostsViewController: UIViewController {
         let frame = CGRect(x: 0, y: 0, width: 320, height: 100)
 
         let card = ReaderCard(frame: frame)
+        cards.append(card)
         card.delegate = self
         card.hidesActionbar = true
         card.headerButtonIsEnabled = false
@@ -150,7 +163,19 @@ class RelatedPostsViewController: UIViewController {
     }
 
 
-    // Actions
+    // MARK: - Notifications
+
+    func handleContextDidSave() {
+        // Reassigning the post updates the card and the status of the follow button
+        for card in cards {
+            if let post = card.readerPost {
+                card.readerPost = post
+            }
+        }
+    }
+
+
+    // MARK: - Actions
 
     func handleCardTapped(sender: UITapGestureRecognizer) {
         guard let card = sender.view as? ReaderCard else {
@@ -170,7 +195,7 @@ class RelatedPostsViewController: UIViewController {
     func handleCardLongPress() {}
 
 
-    // Fetching
+    // MARK: - Fetching
 
     func fetchRelatedPostsIfNeeded() {
         guard let post = post else {
@@ -200,9 +225,8 @@ extension RelatedPostsViewController: ReaderCardDelegate {
 
     func readerCard(_ card: ReaderCard, followActionForPost post: ReaderPost) {
         ReaderHelpers.toggleFollowingForPost(post)
-        // Reassigning the post updates the card and the status of the follow button
-        card.readerPost = post
     }
+
 
     func readerCardImageRequestAuthToken() -> String? {
         return nil
