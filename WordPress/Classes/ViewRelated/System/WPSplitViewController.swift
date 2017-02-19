@@ -25,6 +25,9 @@ class WPSplitViewController: UISplitViewController {
     /// primary navigation stack.
     var collapseMode: WPSplitViewControllerCollapseMode = .Automatic
 
+    /// Set to false to disable fullscreen display mode
+    var fullscreenDisplayEnabled = true
+
     var wpPrimaryColumnWidth: WPSplitViewControllerPrimaryColumnWidth = .default {
         didSet {
             updateSplitViewForPrimaryColumnWidth()
@@ -214,7 +217,7 @@ class WPSplitViewController: UISplitViewController {
     fileprivate let dimmingViewAlpha: CGFloat = 0.5
     fileprivate let dimmingViewAnimationDuration: TimeInterval = 0.3
 
-    fileprivate func dimDetailViewController(_ dimmed: Bool) {
+    func dimDetailViewController(_ dimmed: Bool) {
         if dimmed {
             if dimmingView.superview == nil {
                 view.addSubview(dimmingView)
@@ -347,6 +350,8 @@ class WPSplitViewController: UISplitViewController {
     ///
     /// - Parameter hidden: If `true`, hide the primary view controller.
     func setPrimaryViewControllerHidden(_ hidden: Bool, animated: Bool = true) {
+        guard fullscreenDisplayEnabled else { return }
+
         let updateDisplayMode = {
             self.preferredDisplayMode = (hidden) ? .primaryHidden : .allVisible
         }
@@ -367,9 +372,15 @@ class WPSplitViewController: UISplitViewController {
         let popOrScrollToTop = { (navigationController: UINavigationController) in
             if navigationController.viewControllers.count > 1 {
                 navigationController.popToRootViewController(animated: animated)
+
+                // Ensure navigation bars are visible – otherwise if we popped
+                // back from e.g. a Reader Detail screen which had hidden its
+                // bars, they'd stay hidden.
+                navigationController.setNavigationBarHidden(false, animated: animated)
             } else {
                 navigationController.scrollContentToTopAnimated(animated)
             }
+
         }
 
         if let primaryNavigationController = viewControllers.first as? UINavigationController {
@@ -503,7 +514,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
             // interactive pop transition, we need to check whether the gesture
             // gets cancelled so that we can undim the detail view if necessary.
             // (i.e. the user begins a back swipe but doesn't go through with it)
-            coordinator.notifyWhenInteractionEnds({ [weak self] context in
+            coordinator.notifyWhenInteractionChanges({ [weak self] context in
                 if context.initiallyInteractive && context.isCancelled {
                     self?.dimDetailViewController(false)
                 }
@@ -526,7 +537,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         // If we're currently in fullscreen mode, and there are no view controllers
         // left in the navigation stack that prefer to be fullscreen, then
         // animate back to a standard split view.
-        if isCurrentlyFullscreen && !hasFullscreenViewControllersInStack {
+        if fullscreenDisplayEnabled && isCurrentlyFullscreen && !hasFullscreenViewControllersInStack {
             let performTransition = { (animated: Bool) in
                 self.setPrimaryViewControllerHidden(false, animated: animated)
 
@@ -545,22 +556,14 @@ extension WPSplitViewController: UINavigationControllerDelegate {
     }
 
     func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        // Unfortunately by default when implementing custom navigation controller
+        // transitions, the interactive gesture is disabled. To work around this,
+        // we can implement the delegate ourselves (see: http://stackoverflow.com/a/38859457/570547)
+        navigationController.interactivePopGestureRecognizer?.delegate = self
+
         if !isViewHorizontallyCompact() {
             // Restore navigation items after a push or pop if they were previously hidden
             navigationController.navigationBar.fadeInNavigationItemsIfNecessary()
-
-            let hasSingleFullscreenViewControllerInStack = navigationController.viewControllers.filter({$0 is PrefersFullscreenDisplay}).count == 1
-            let allowInteractiveBackGesture = !(hasSingleFullscreenViewControllerInStack && viewController is PrefersFullscreenDisplay)
-
-            // Disable the interactive back gesture if we only have a single fullscreen view controller
-            // left in the navigation stack (and that view controller is at the top of the stack)
-            // so that we don't trigger the fullscreen transition with a gesture
-            //
-            // Unfortunately by default when implementing custom navigation controller
-            // transitions, the interactive gesture is disabled. To work around this,
-            // we can set the delegate to nil (see: http://stackoverflow.com/a/38859457/570547)
-            navigationController.interactivePopGestureRecognizer?.delegate = nil
-            navigationController.interactivePopGestureRecognizer?.isEnabled = allowInteractiveBackGesture
 
             if UIAccessibilityIsReduceMotionEnabled() {
                 view.fadeOutAndRemoveBlankingSnapshot()
@@ -569,6 +572,8 @@ extension WPSplitViewController: UINavigationControllerDelegate {
     }
 
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard fullscreenDisplayEnabled else { return nil }
+
         var stack = navigationController.viewControllers
         if operation == .push {
             // During a push, the new VC has already been added to the stack
@@ -592,6 +597,56 @@ extension WPSplitViewController: UINavigationControllerDelegate {
             let shouldDim = primaryNavigationController.viewControllers.count == 1
             dimDetailViewController(shouldDim)
         }
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+// Used to selectively enable / disable our navigation controllers'
+// interactive pop gesture recognizers
+extension WPSplitViewController: UIGestureRecognizerDelegate {
+
+    // We want to disable the interactive back gesture in a couple of situations:
+    //
+    // 1. There's only one view controller in the navigation stack
+    //
+    // 2. The top view controller is a fullscreen view controller, and navigating
+    //    back means we would switch back to a split view. The interactive
+    //    gesture doesn't work with the split view showing / hiding its primary
+    //    view controller pane.
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        func gestureIsValidInNavigationController(_ navigationController: UINavigationController) -> Bool {
+            return gestureRecognizer.view == navigationController.view &&
+                navigationController.viewControllers.count > 1
+        }
+
+        // If the gesture is in the primary view controller and there's more 
+        // than 2 view controllers in the primary navigation stack then allow 
+        // the back gesture.
+        if let primaryNavigationController = viewControllers.first as? UINavigationController,
+            gestureIsValidInNavigationController(primaryNavigationController) {
+            return true
+        }
+
+        // Same check but for the detail view controller
+        if let detailNavigationController = viewControllers.last as? UINavigationController,
+            gestureIsValidInNavigationController(detailNavigationController) && !isCollapsed {
+            guard fullscreenDisplayEnabled else { return true }
+
+            // Don't allow the back gesture if we're switching back from
+            // fullscreen to split view
+            var stack = detailNavigationController.viewControllers
+            let topViewController = stack.popLast() // Remove the top view controller
+
+            let currentlyFullscreen = topViewController is PrefersFullscreenDisplay
+            let hasFullscreenViewControllersInStack = stack.filter({$0 is PrefersFullscreenDisplay}).count > 0
+
+            let movingFromFullscreen = currentlyFullscreen && !hasFullscreenViewControllersInStack
+
+            return !movingFromFullscreen
+        }
+
+        return false
     }
 }
 

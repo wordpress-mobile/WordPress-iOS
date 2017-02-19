@@ -131,8 +131,10 @@ class EditPostViewController: UIViewController {
             editor = editPostInTextEditor()
         }
 
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.prepare()
+
         postPost.present(editor, animated: !showImmediately) {
-            let generator = WPImpactFeedbackGenerator(style: .medium)
             generator.impactOccurred()
         }
     }
@@ -140,10 +142,22 @@ class EditPostViewController: UIViewController {
     fileprivate func editPostInNativeVisualEditor() -> UIViewController {
         let postViewController = AztecPostViewController(post: postToEdit())
         postViewController.onClose = { [weak self] (changesSaved) in
-            self?.closeEditor(changesSaved)
+            guard let strongSelf = self else {
+                postViewController.dismiss(animated: true) {}
+                return
+            }
+
+            // NOTE:
+            // We need to grab the latest Post Reference, since it may have changed (ie. revision / user picked a 
+            // new blog).
+            if changesSaved {
+                strongSelf.post = postViewController.post as? Post
+            }
+            strongSelf.closeEditor(changesSaved)
         }
 
         let navController = UINavigationController(rootViewController: postViewController)
+        navController.restorationIdentifier = AztecPostViewController.Restoration.navigationIdentifier
         navController.modalPresentationStyle = .fullScreen
 
         return navController
@@ -264,19 +278,17 @@ extension EditPostViewController: UIViewControllerRestoration {
             return nil
         }
 
-        var post: Post?
-        if let postURL = coder.decodeObject(forKey: RestorationKey.post.rawValue) as? URL {
-            let context = ContextManager.sharedInstance().mainContext
-            if let postID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURL) {
-                post = context.object(with: postID) as? Post
-            }
+        let context = ContextManager.sharedInstance().mainContext
+
+        guard let postURL = coder.decodeObject(forKey: RestorationKey.post.rawValue) as? URL,
+            let postID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURL),
+            let post = try? context.existingObject(with: postID),
+            let reloadedPost = post as? Post
+            else {
+                return EditPostViewController()
         }
 
-        if let post = post {
-            return EditPostViewController(post: post)
-        } else {
-            return EditPostViewController()
-        }
+        return EditPostViewController(post: reloadedPost)
     }
 
     override func encodeRestorableState(with coder: NSCoder) {

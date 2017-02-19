@@ -227,11 +227,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     // Wrapper view
     UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderHeight)];
     headerWrapper.translatesAutoresizingMaskIntoConstraints = NO;
+    headerWrapper.preservesSuperviewLayoutMargins = YES;
     headerWrapper.backgroundColor = [UIColor whiteColor];
     headerWrapper.clipsToBounds = YES;
 
     // Post header view
-    ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderViewAvatarSize)];
+    ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] init];
     headerView.onClick = ^{
         [weakSelf handleHeaderTapped];
     };
@@ -251,18 +252,17 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     // Layout
     NSDictionary *views = NSDictionaryOfVariableBindings(headerView, borderView);
-    NSDictionary *metrics = @{@"margin":@12};
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(15)-[headerView]-(15)-|"
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[headerView]|"
                                                                           options:0
-                                                                          metrics:metrics
+                                                                          metrics:nil
                                                                             views:views]];
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(margin)-[headerView(44)]-(>=1@900)-[borderView(1@1000)]|"
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerView][borderView(1@1000)]|"
                                                                           options:0
-                                                                          metrics:metrics
+                                                                          metrics:nil
                                                                             views:views]];
     [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[borderView]|"
                                                                           options:0
-                                                                          metrics:metrics
+                                                                          metrics:nil
                                                                             views:views]];
 
     self.postHeaderView = headerView;
@@ -275,6 +275,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
+    self.tableView.preservesSuperviewLayoutMargins = YES;
     self.tableView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
 
@@ -374,8 +375,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     };
     
     // PostHeader Constraints
-    [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.layoutMarginsGuide.leftAnchor constant:-15] setActive:YES];
-    [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.layoutMarginsGuide.rightAnchor constant:15] setActive:YES];
+    [[self.postHeaderWrapper.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
+    [[self.postHeaderWrapper.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
 
     // TableView Contraints
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader(headerHeight)][tableView][replyTextView]"
@@ -389,8 +390,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                                         views:views]];
 
     // ReplyTextView Constraints
-    [[self.replyTextView.leftAnchor constraintEqualToAnchor:self.tableView.layoutMarginsGuide.leftAnchor constant:-16] setActive:YES];
-    [[self.replyTextView.rightAnchor constraintEqualToAnchor:self.tableView.layoutMarginsGuide.rightAnchor constant:16] setActive:YES];
+    [[self.replyTextView.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
+    [[self.replyTextView.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
 
     self.replyTextViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
                                                                       attribute:NSLayoutAttributeBottom
@@ -647,8 +648,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     __typeof(self) __weak weakSelf = self;
     ReaderPost *post = self.post;
     NSDictionary *railcar = post.railcarDictionary;
+
+    UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
+    [generator prepare];
+
     void (^successBlock)() = ^void() {
-        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
+        [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
 
         NSMutableDictionary *properties = [NSMutableDictionary dictionary];
         properties[WPAppAnalyticsKeyBlogID] = post.siteID;
@@ -671,7 +676,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         DDLogError(@"Error sending reply: %@", error);
 
-        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeError];
+        [generator notificationOccurred:UINotificationFeedbackTypeError];
 
         NSString *alertMessage = NSLocalizedString(@"There has been an unexpected error while sending your reply", nil);
         NSString *alertCancel = NSLocalizedString(@"Cancel", @"Verb. A button label. Tapping the button dismisses a prompt.");
@@ -849,7 +854,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.estimatedRowHeights setObject:[NSNumber numberWithDouble:cell.frame.size.height] forKey:indexPath];
+    [self.estimatedRowHeights setObject:@(cell.frame.size.height) forKey:indexPath];
 
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self.tableViewHandler numberOfSectionsInTableView:tableView]) &&
@@ -952,7 +957,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
 
     if (!comment.isLiked) {
-        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
+        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
     }
 
     __typeof(self) __weak weakSelf = self;

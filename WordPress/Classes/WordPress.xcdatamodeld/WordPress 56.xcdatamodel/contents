@@ -399,6 +399,9 @@
     </entity>
     <entity name="Post" representedClassName="Post" parentEntity="AbstractPost">
         <attribute name="commentCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="disabledPublicizeConnections" optional="YES" attributeType="Transformable">
+            <userInfo/>
+        </attribute>
         <attribute name="geolocation" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
@@ -416,6 +419,10 @@
         <attribute name="publicID" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="publicizeMessage" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="publicizeMessageID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tags" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -636,7 +643,7 @@
         <element name="Notification" positionX="18" positionY="162" width="128" height="240"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Person" positionX="18" positionY="153" width="128" height="30"/>
-        <element name="Post" positionX="0" positionY="0" width="128" height="195"/>
+        <element name="Post" positionX="0" positionY="0" width="128" height="240"/>
         <element name="PostTag" positionX="27" positionY="153" width="128" height="105"/>
         <element name="PostType" positionX="27" positionY="153" width="128" height="105"/>
         <element name="PublicizeConnection" positionX="27" positionY="162" width="128" height="330"/>

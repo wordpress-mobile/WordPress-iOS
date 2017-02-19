@@ -8,11 +8,13 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 
 @interface ReaderPostHeaderView()
 
-@property (nonatomic, strong) UITapGestureRecognizer *tapsRegoznier;
+@property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) CircularImageView *avatarImageView;
+@property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
 @property (nonatomic, strong) UIButton *disclosureButton;
+@property (nonatomic, strong) UITapGestureRecognizer *tapRecognizer;
 
 @end
 
@@ -22,26 +24,141 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _avatarImageView = [self newImageViewForAvatar];
-        [self addSubview:_avatarImageView];
 
-        _titleLabel = [self newLabelForTitle];
-        [self addSubview:_titleLabel];
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.preservesSuperviewLayoutMargins = YES;
 
-        _subtitleLabel = [self newLabelForSubtitle];
-        [self addSubview:_subtitleLabel];
-
-        _tapsRegoznier = [self newTapGestureRecognizer];
-        [self addGestureRecognizer:_tapsRegoznier];
-
-        _disclosureButton = [self newDisclosureButton];
-        [self addSubview:_disclosureButton];
-
-        [self configureConstraints];
+        [self setupStackView];
+        [self setupAvatarImageView];
+        [self setupLabelsStackView];
+        [self setupSubtTitleLabel];
+        [self setupTitleLabel];
+        [self setupDisclosureButton];
+        [self setupTapGesture];
     }
     return self;
 }
 
+- (void)setupStackView
+{
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.axis = UILayoutConstraintAxisHorizontal;
+    stackView.distribution = UIStackViewAlignmentFill;
+    stackView.alignment = UIStackViewAlignmentCenter;
+    stackView.spacing = 8.0;
+
+    [self addSubview:stackView];
+    self.stackView = stackView;
+
+    UILayoutGuide *readableGuide = self.readableContentGuide;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [stackView.leadingAnchor constraintEqualToAnchor:readableGuide.leadingAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:readableGuide.trailingAnchor],
+                                              [stackView.topAnchor constraintEqualToAnchor:readableGuide.topAnchor],
+                                              [stackView.bottomAnchor constraintEqualToAnchor:readableGuide.bottomAnchor]
+                                              ]];
+}
+
+- (void)setupAvatarImageView
+{
+    NSAssert(self.stackView != nil, @"stackView was nil");
+
+    CircularImageView *imageView = [[CircularImageView alloc] init];
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [NSLayoutConstraint activateConstraints:@[
+                                             [imageView.widthAnchor constraintEqualToConstant:PostHeaderViewAvatarSize],
+                                             [imageView.heightAnchor constraintEqualToConstant:PostHeaderViewAvatarSize]
+                                             ]];
+
+    [self.stackView addArrangedSubview:imageView];
+    self.avatarImageView = imageView;
+}
+
+- (void)setupLabelsStackView
+{
+    NSAssert(self.stackView != nil, @"stackView was nil");
+
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    stackView.layoutMarginsRelativeArrangement = YES;
+    stackView.preservesSuperviewLayoutMargins = YES;
+    stackView.axis = UILayoutConstraintAxisVertical;
+    stackView.distribution = UIStackViewAlignmentFill;
+    stackView.alignment = UIStackViewAlignmentFill;
+
+    [self.stackView addArrangedSubview:stackView];
+    self.labelsStackView = stackView;
+
+    [stackView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+}
+
+- (void)setupSubtTitleLabel
+{
+    NSAssert(self.labelsStackView != nil, @"labelsStackView was nil");
+
+    UILabel *label = [[UILabel alloc] init];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.numberOfLines = 1;
+    label.backgroundColor = [UIColor whiteColor];
+    label.opaque = YES;
+    label.textColor = [WPStyleGuide allTAllShadeGrey];
+    label.font = [WPStyleGuide subtitleFont];
+    label.adjustsFontSizeToFitWidth = NO;
+
+    [self.labelsStackView addArrangedSubview:label];
+    self.subtitleLabel = label;
+}
+
+- (void)setupTitleLabel
+{
+    NSAssert(self.labelsStackView != nil, @"labelsStackView was nil");
+
+    UILabel *label = [[UILabel alloc] init];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.numberOfLines = 1;
+    label.backgroundColor = [UIColor whiteColor];
+    label.opaque = YES;
+    label.textColor = [WPStyleGuide littleEddieGrey];
+    label.font = [WPStyleGuide subtitleFont];
+    label.adjustsFontSizeToFitWidth = NO;
+
+    [self.labelsStackView addArrangedSubview:label];
+    self.titleLabel = label;
+}
+
+- (void)setupDisclosureButton
+{
+    NSAssert(self.stackView != nil, @"stackView was nil");
+
+    UIImage *chevronImage = [[UIImage imageNamed:@"disclosure-chevron"] imageFlippedForRightToLeftLayoutDirection];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [button setBackgroundImage:chevronImage forState:UIControlStateNormal];
+
+    NSLayoutConstraint *width = [button.widthAnchor constraintEqualToConstant:chevronImage.size.width];
+    width.priority = 999;
+    NSLayoutConstraint *height = [button.heightAnchor constraintEqualToConstant:chevronImage.size.height];
+
+    [NSLayoutConstraint activateConstraints:@[
+                                              width,
+                                              height
+                                              ]];
+
+    [self.stackView addArrangedSubview:button];
+    self.disclosureButton = button;
+}
+
+- (void)setupTapGesture
+{
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped:)];
+    tapGesture.numberOfTouchesRequired = 1;
+    tapGesture.numberOfTapsRequired = 1;
+
+    [self addGestureRecognizer:tapGesture];
+    self.tapRecognizer = tapGesture;
+}
 
 #pragma mark - Public Methods
 
@@ -53,7 +170,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 - (void)setShowsDisclosureIndicator:(BOOL)showsDisclosure
 {
     _showsDisclosureIndicator = showsDisclosure;
-    [self refreshDisclosureButton];
+    self.disclosureButton.hidden = !showsDisclosure;
 }
 
 - (UIImage *)avatarImage
@@ -85,122 +202,6 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 {
     self.subtitleLabel.text = title;
 }
-
-
-#pragma mark - Private Methods
-
-- (void)refreshDisclosureButton
-{
-    // TODO: iOS 7 doesn't allow us to simply disable a constraint. Let's improve this once the deploymentTarget is updated!
-    CGFloat targetWidth = self.showsDisclosureIndicator ? PostHeaderDisclosureButtonWidth : 0.0f;
-    [self.disclosureButton updateConstraint:NSLayoutAttributeWidth constant:targetWidth];
-    self.disclosureButton.hidden = !self.showsDisclosureIndicator;
-}
-
-- (void)configureConstraints
-{
-    NSDictionary *views   = NSDictionaryOfVariableBindings(_avatarImageView, _titleLabel, _subtitleLabel, _disclosureButton);
-    NSDictionary *metrics = @{
-                              @"avatarSize"       : @(PostHeaderViewAvatarSize),
-                              @"labelHeight"      : @(PostHeaderViewLabelHeight),
-                              @"disclosureWidth"  : @(PostHeaderDisclosureButtonWidth),
-                              @"disclosureHeight" : @(PostHeaderDisclosureButtonHeight)
-                              };
-
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_avatarImageView(avatarSize)]"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_avatarImageView(avatarSize)]-(>=0)-|"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_disclosureButton(disclosureWidth)]|"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_disclosureButton(disclosureHeight)]"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_avatarImageView]-[_titleLabel]-[_disclosureButton]"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_avatarImageView]-[_subtitleLabel]-[_disclosureButton]"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[_subtitleLabel(labelHeight)][_titleLabel(labelHeight)]"
-                                                                 options:NSLayoutFormatAlignAllLeft
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_disclosureButton
-                                                     attribute:NSLayoutAttributeCenterY
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:_avatarImageView
-                                                     attribute:NSLayoutAttributeCenterY
-                                                    multiplier:1.0f
-                                                      constant:0.0f]];
-    [super setNeedsUpdateConstraints];
-}
-
-
-#pragma mark - Subview factories
-
-- (UILabel *)newLabelForTitle
-{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.translatesAutoresizingMaskIntoConstraints = NO;
-    label.numberOfLines = 1;
-    label.backgroundColor = [UIColor whiteColor];
-    label.opaque = YES;
-    label.textColor = [WPStyleGuide littleEddieGrey];
-    label.font = [WPStyleGuide subtitleFont];
-    label.adjustsFontSizeToFitWidth = NO;
-
-    return label;
-}
-
-- (UILabel *)newLabelForSubtitle
-{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.translatesAutoresizingMaskIntoConstraints = NO;
-    label.numberOfLines = 1;
-    label.backgroundColor = [UIColor whiteColor];
-    label.opaque = YES;
-    label.textColor = [WPStyleGuide allTAllShadeGrey];
-    label.font = [WPStyleGuide subtitleFont];
-    label.adjustsFontSizeToFitWidth = NO;
-
-    return label;
-}
-
-- (CircularImageView *)newImageViewForAvatar
-{
-    CGRect avatarFrame = CGRectMake(0.0f, 0.0f, PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
-    CircularImageView *imageView = [[CircularImageView alloc] initWithFrame:avatarFrame];
-    imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    return imageView;
-}
-
-- (UITapGestureRecognizer *)newTapGestureRecognizer
-{
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped:)];
-    tapGesture.numberOfTouchesRequired = 1;
-    tapGesture.numberOfTapsRequired = 1;
-    return tapGesture;
-}
-
-- (UIButton *)newDisclosureButton
-{
-    UIImage *chevronImage = [[UIImage imageNamed:@"disclosure-chevron"] imageFlippedForRightToLeftLayoutDirection];
-    UIButton *disclosureButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [disclosureButton setBackgroundImage:chevronImage forState:UIControlStateNormal];
-    disclosureButton.translatesAutoresizingMaskIntoConstraints = NO;
-    return disclosureButton;
-}
-
 
 #pragma mark - Recognizer Helpers
 

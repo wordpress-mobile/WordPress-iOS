@@ -839,7 +839,7 @@ import WordPressComAnalytics
             // Solves a long-standing question from folks who ask 'why do I
             // have more likes than page views?'.
             ReaderHelpers.bumpPageViewForPost(post)
-            WPNotificationFeedbackGenerator.notificationOccurred(.success)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
         }
         let service = ReaderPostService(managedObjectContext: managedObjectContext())
         service.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
@@ -1376,13 +1376,16 @@ import WordPressComAnalytics
 
 
     func toggleFollowingForTag(_ topic: ReaderTagTopic) {
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+
         if !topic.following {
-            WPNotificationFeedbackGenerator.notificationOccurred(.success)
+            generator.notificationOccurred(.success)
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
         service.toggleFollowing(forTag: topic, success: nil, failure: { (error: Error?) in
-            WPNotificationFeedbackGenerator.notificationOccurred(.error)
+            generator.notificationOccurred(.error)
             self.updateStreamHeaderIfNeeded()
         })
 
@@ -1391,13 +1394,16 @@ import WordPressComAnalytics
 
 
     func toggleFollowingForSite(_ topic: ReaderSiteTopic) {
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+
         if !topic.following {
-            WPNotificationFeedbackGenerator.notificationOccurred(.success)
+            generator.notificationOccurred(.success)
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
         service.toggleFollowing(forSite: topic, success: nil, failure: { (error: Error?) in
-            WPNotificationFeedbackGenerator.notificationOccurred(.error)
+            generator.notificationOccurred(.error)
             self.updateStreamHeaderIfNeeded()
         })
 

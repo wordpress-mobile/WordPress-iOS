@@ -31,36 +31,6 @@
     XCTAssert([manager.deviceToken isEmpty]);
 }
 
-- (void)testPushNotificationsAreDisabledInDeviceSettingsWhenRegisteredTypeIsNone
-{
-    id mockSettings = OCMPartialMock([[UIApplication sharedApplication] currentUserNotificationSettings]);
-    [OCMStub([mockSettings types]) andReturnValue:OCMOCK_VALUE(UIUserNotificationTypeNone)];
-    
-    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
-    [OCMStub([mockApplication currentUserNotificationSettings]) andReturn:mockSettings];
-    
-    PushNotificationsManager *manager = [PushNotificationsManager new];
-    id mockManager = OCMPartialMock(manager);
-    [OCMStub([mockManager sharedApplication]) andReturn:mockApplication];
-
-    XCTAssertFalse([mockManager notificationsEnabledInDeviceSettings]);
-}
-
-- (void)testPushNotificationsAreEnabledInDeviceSettingsWhenRegisteredTypeIsAlert
-{
-    id mockSettings = OCMPartialMock([[UIApplication sharedApplication] currentUserNotificationSettings]);
-    [OCMStub([mockSettings types]) andReturnValue:OCMOCK_VALUE(UIUserNotificationTypeAlert)];
-    
-    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
-    [OCMStub([mockApplication currentUserNotificationSettings]) andReturn:mockSettings];
-    
-    PushNotificationsManager *manager = [PushNotificationsManager new];
-    id mockManager = OCMPartialMock(manager);
-    [OCMStub([mockManager sharedApplication]) andReturn:mockApplication];
-    
-    XCTAssertTrue([mockManager notificationsEnabledInDeviceSettings]);
-}
-
 - (void)testRegisterForRemoteNotificationsCallsSharedApplicationRegisterForRemoteNotifications
 {
     // Note:

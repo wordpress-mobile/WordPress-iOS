@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -27,10 +28,10 @@
                         <outlet property="ratingsHeightConstraint" destination="R1T-Iv-5Q8" id="380-AS-dyd"/>
                         <outlet property="ratingsView" destination="ZnY-3K-upT" id="lUG-fd-Stc"/>
                         <outlet property="tableHeaderView" destination="Uvo-9e-l6I" id="dxx-mK-msp"/>
-                        <segue destination="veA-Pg-QAw" kind="show" identifier="NotificationDetailsViewController" id="7uj-uJ-yZ8"/>
+                        <segue destination="veA-Pg-QAw" kind="showDetail" identifier="NotificationDetailsViewController" id="qci-jy-59F"/>
                     </connections>
                 </tableViewController>
-                <view contentMode="scaleToFill" id="Uvo-9e-l6I" userLabel="Header View">
+                <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" id="Uvo-9e-l6I" userLabel="Header View">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="144"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -41,7 +42,7 @@
                                 <constraint firstAttribute="height" constant="100" id="R1T-Iv-5Q8"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pEF-oN-cih" userLabel="Filters View">
+                        <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pEF-oN-cih" userLabel="Filters View">
                             <rect key="frame" x="0.0" y="100" width="600" height="44"/>
                             <subviews>
                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="W2i-rX-Pc4">
@@ -60,25 +61,11 @@
                             </subviews>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstItem="W2i-rX-Pc4" firstAttribute="top" secondItem="pEF-oN-cih" secondAttribute="top" constant="8" id="5Uj-Sc-fd3"/>
-                                <constraint firstAttribute="trailing" secondItem="W2i-rX-Pc4" secondAttribute="trailing" constant="8" id="Hd9-33-6h0"/>
-                                <constraint firstAttribute="width" priority="750" constant="600" id="NiC-Kd-d2r"/>
-                                <constraint firstAttribute="height" constant="44" id="Ulw-T6-S4x"/>
-                                <constraint firstItem="W2i-rX-Pc4" firstAttribute="leading" secondItem="pEF-oN-cih" secondAttribute="leading" constant="8" id="ZuC-wG-15P"/>
-                                <constraint firstAttribute="bottom" secondItem="W2i-rX-Pc4" secondAttribute="bottom" constant="8" id="fLC-a5-Sxh"/>
-                                <constraint firstItem="W2i-rX-Pc4" firstAttribute="top" secondItem="pEF-oN-cih" secondAttribute="top" constant="8" id="uz8-N3-mlI"/>
+                                <constraint firstItem="W2i-rX-Pc4" firstAttribute="top" secondItem="pEF-oN-cih" secondAttribute="topMargin" id="5Uj-Sc-fd3"/>
+                                <constraint firstAttribute="trailingMargin" secondItem="W2i-rX-Pc4" secondAttribute="trailing" id="Hd9-33-6h0"/>
+                                <constraint firstItem="W2i-rX-Pc4" firstAttribute="leading" secondItem="pEF-oN-cih" secondAttribute="leadingMargin" id="ZuC-wG-15P"/>
+                                <constraint firstAttribute="bottomMargin" secondItem="W2i-rX-Pc4" secondAttribute="bottom" id="fLC-a5-Sxh"/>
                             </constraints>
-                            <variation key="default">
-                                <mask key="constraints">
-                                    <exclude reference="NiC-Kd-d2r"/>
-                                    <exclude reference="uz8-N3-mlI"/>
-                                </mask>
-                            </variation>
-                            <variation key="heightClass=regular-widthClass=regular">
-                                <mask key="constraints">
-                                    <include reference="NiC-Kd-d2r"/>
-                                </mask>
-                            </variation>
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -92,12 +79,6 @@
                         <constraint firstItem="pEF-oN-cih" firstAttribute="centerX" secondItem="Uvo-9e-l6I" secondAttribute="centerX" identifier="FiltersCenter" id="rGu-9k-JxJ"/>
                         <constraint firstAttribute="bottom" secondItem="pEF-oN-cih" secondAttribute="bottom" identifier="FiltersBottom" id="zwD-z0-d6i"/>
                     </constraints>
-                    <variation key="heightClass=regular-widthClass=regular">
-                        <mask key="constraints">
-                            <exclude reference="0TE-M7-WfE"/>
-                            <exclude reference="222-MX-igM"/>
-                        </mask>
-                    </variation>
                 </view>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9wK-eg-RBm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -118,7 +99,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="t2r-NP-ili">
                                 <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <subviews>
-                                    <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dcn-Il-AtN" customClass="IntrinsicTableView" customModule="WordPress">
+                                    <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dcn-Il-AtN" customClass="IntrinsicTableView" customModule="WordPress">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <gestureRecognizers/>

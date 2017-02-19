@@ -61,7 +61,7 @@
     [super viewWillAppear:animated];
     [self refreshWebView];
     NSMutableArray *rightButtons = [NSMutableArray new];
-    if (self.isBeingPresented || self.navigationController.isBeingPresented) {
+    if (self.isModal) {
         [rightButtons addObject:[self doneBarButtonItem]];
     }
     if ([self.apost isKindOfClass:[Post class]]) {

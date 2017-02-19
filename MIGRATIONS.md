@@ -4,11 +4,14 @@ This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
 ## WordPress 56
-- @aerych 2016-12-21
+- @aerych 2016-02-06
 - `ReaderPost` added relation `relatedPosts` 1-n to `relatedPost`. Optional. Cascade.
 - `ReaderPost` added relation `relatedPost` 1-1 to `relatedPosts`. Optional. Nullify.
+- @elibud 2011-02-02
+- `Post` added optional `disabledPublicizeConnections` transformable property.
+- `Post` added optional `publicizeMessage` and `publicizeMessageID` string properties.
 
-## WordPress 55
+## WordPress55
 - @aerych 2016-12-21
 - `ReaderPost` renamed `preserveForRestoration` to "inUse"
 - `ReaderAbstractTopic` renamed `preserveForRestoration` to "inUse"

@@ -48,6 +48,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 @property (nonatomic, assign) NSUInteger                rowNumberForComment;
 @property (nonatomic, assign) NSUInteger                rowNumberForActions;
 
+@property (nonatomic, strong) NSCache                   *estimatedRowHeights;
+
 @end
 
 @implementation CommentViewController
@@ -68,11 +70,10 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    tableView.cellLayoutMarginsFollowReadableWidth = YES;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.delegate = self;
     tableView.dataSource = self;
-    tableView.estimatedRowHeight = 44.0;
     [tableView addGestureRecognizer:tapRecognizer];
     [self.view addSubview:tableView];
 
@@ -98,8 +99,9 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [self attachSuggestionsTableViewIfNeeded];
     [self attachReplyViewIfNeeded];
     [self setupAutolayoutConstraints];
-    [self adjustTableViewInsetsIfNeeded];
     [self setupKeyboardManager];
+
+    self.estimatedRowHeights = [[NSCache alloc] init];
 }
 
 - (void)attachSuggestionsTableViewIfNeeded
@@ -203,20 +205,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                                                       bottomLayoutConstraint:self.bottomLayoutConstraint];
 }
 
-- (void)adjustTableViewInsetsIfNeeded
-{
-    if ([WPDeviceIdentification isiPad]) {
-        BOOL isPadFullScreen = [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassRegular]];
-        if (isPadFullScreen) {
-            UIEdgeInsets inset = self.tableView.contentInset;
-            inset.top = WPTableViewTopMargin;
-            self.tableView.contentInset = inset;
-        } else {
-            self.tableView.contentInset = UIEdgeInsetsZero;
-        }
-    }
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -238,13 +226,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [super viewWillDisappear:animated];
 
     [self.keyboardManager stopListeningToKeyboardNotifications];
-}
-
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-
-    [self adjustTableViewInsetsIfNeeded];
 }
 
 #pragma mark - Fetching Post
@@ -297,6 +278,10 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.estimatedRowHeights setObject:@(cell.frame.size.height) forKey:indexPath];
+}
 
 #pragma mark - Table view delegate
 
@@ -315,6 +300,15 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSNumber *cachedHeight = [self.estimatedRowHeights objectForKey:indexPath];
+    if (cachedHeight.doubleValue) {
+        return cachedHeight.doubleValue;
+    }
+    return WPTableViewDefaultRowHeight;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewAutomaticDimension;
@@ -325,12 +319,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)setupCell:(UITableViewCell *)cell
 {
     NSParameterAssert(cell);
-
-    if ([cell isKindOfClass:[WPTableViewCell class]]) {
-        // Temporarily force margins for WPTableViewCell hack.
-        // Brent C. Jul/19/2016
-        [(WPTableViewCell *)cell setForceCustomCellMargins:YES];
-    }
 
     // This is gonna look way better in Swift!
     if ([cell isKindOfClass:[NoteBlockHeaderTableViewCell class]]) {
@@ -464,7 +452,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     __typeof(self) __weak weakSelf = self;
 
     if (!self.comment.isLiked) {
-        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
+        [[UINotificationFeedbackGenerator new] notificationOccurred:UINotificationFeedbackTypeSuccess];
     }
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];

@@ -418,8 +418,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             name: NSNotification.Name(rawValue: ReaderPostMenu.BlockSiteNotification),
             object: nil)
 
-        // Make sure the text view is scrolled to the top the first time after
-        // the view is first configured.
         view.layoutIfNeeded()
         textView.setContentOffset(CGPoint.zero, animated: false)
     }
@@ -947,7 +945,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         if !post.isLiked {
-            WPNotificationFeedbackGenerator.notificationOccurred(.success)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
         }
 
         let service = ReaderPostService(managedObjectContext: post.managedObjectContext!)

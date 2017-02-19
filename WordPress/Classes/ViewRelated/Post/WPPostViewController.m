@@ -1262,14 +1262,14 @@ EditImageDetailsViewControllerDelegate
         // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
         // to showing Publish Now instead of Submit for Review.
         if (!self.post.blog.capabilities || [self.post.blog isPublishingPostsAllowed]) {
-            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Publish Now", "Title of button allowing the user to immediately publish the post they are editing.")
+            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Publish Now", @"Title of button allowing the user to immediately publish the post they are editing.")
                                             style:UIAlertActionStyleDestructive
                                           handler:^(UIAlertAction * _Nonnull action) {
                                               [self.post publishImmediately];
                                               [self saveAction:action];
                                           }];
         } else {
-            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Submit for Review", "Title of button allowing a contributor to a site to submit the post they are editing for review.")
+            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Submit for Review", @"Title of button allowing a contributor to a site to submit the post they are editing for review.")
                                             style:UIAlertActionStyleDestructive
                                           handler:^(UIAlertAction * _Nonnull action) {
                                               [self.post publishImmediately];
@@ -1277,7 +1277,7 @@ EditImageDetailsViewControllerDelegate
                                           }];
         }
     } else if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
-        return [UIAlertAction actionWithTitle:NSLocalizedString(@"Save as Draft", "Title of button allowing users to change the status of the post they are currently editing to Draft.")
+        return [UIAlertAction actionWithTitle:NSLocalizedString(@"Save as Draft", @"Title of button allowing users to change the status of the post they are currently editing to Draft.")
                                         style:UIAlertActionStyleDefault
                                       handler:^(UIAlertAction * _Nonnull action) {
                                           self.post.status = PostStatusDraft;
@@ -1430,72 +1430,98 @@ EditImageDetailsViewControllerDelegate
         [self showFailedMediaRemovalAlertAndDismissEditorOnSave:shouldDismiss];
         return;
     }
+    __weak __typeof__(self) weakSelf = self;
+    __block NSString *postTitle = self.post.postTitle;
+    __block PostEditorSaveAction currentSaveAction = self.currentSaveAction;
+
+    void (^stopEditingAndDismiss)() = ^{
+        __typeof__(self) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        if (shouldDismiss) {
+            [strongSelf stopEditing];
+            [strongSelf.view endEditing:YES];
+            [strongSelf didSaveNewPost];
+            [strongSelf dismissEditView:YES];
+        } else {
+            [strongSelf startEditing];
+        }
+    };
 
     DDLogMethod();
 
     // Make sure that we are saving the latest content on the editor.
     [self autosaveContent];
 
-    void (^stopEditingAndDismiss)() = ^{
-        if (shouldDismiss) {
-            [self stopEditing];
-            [self.view endEditing:YES];
-            [self didSaveNewPost];
-            [self dismissEditView:YES];
-        } else {
-            [self startEditing];
-        }
-    };
-
-    __block NSString *postTitle = self.post.postTitle;
-    __block NSString *postStatus = self.post.status;
-    __block BOOL postIsScheduled = self.post.isScheduled;
-
     NSString *hudText;
-    if (postIsScheduled) {
-        hudText = NSLocalizedString(@"Scheduling...", @"Text displayed in HUD while a post is being scheduled to be published.");
-    } else if ([postStatus isEqualToString:@"publish"]){
-        hudText = NSLocalizedString(@"Publishing...", @"Text displayed in HUD while a post is being published.");
-    } else {
-        hudText = NSLocalizedString(@"Saving...", @"Text displayed in HUD while a post is being saved as a draft.");
+    switch (currentSaveAction) {
+        case PostEditorSaveActionSchedule:
+            hudText = NSLocalizedString(@"Scheduling...", @"Text displayed in HUD while a post is being scheduled to be published.");
+            break;
+        case PostEditorSaveActionUpdate:
+            hudText = NSLocalizedString(@"Updating...", @"Text displayed in HUD while a published or draft post is being updated.");
+            break;
+        case PostEditorSaveActionPost:
+            hudText = NSLocalizedString(@"Publishing...", @"Text displayed in HUD while a post is being published.");
+            break;
+        default:
+            hudText = NSLocalizedString(@"Saving...", @"Text displayed in HUD while a post is being saved as a draft.");
+            break;
     }
-    [SVProgressHUD showWithStatus:hudText maskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showWithStatus:hudText];
+
+    UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
+    [generator prepare];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService uploadPost:self.post
                     success:^(AbstractPost *post) {
-                        self.post = post;
-
                         DDLogInfo(@"post uploaded: %@", postTitle);
-                        NSString *hudText;
-
-                        if (postIsScheduled) {
-                            hudText = NSLocalizedString(@"Scheduled!", @"Text displayed in HUD after a post was successfully scheduled to be published.");
-                        } else if ([postStatus isEqualToString:@"publish"]){
-                            hudText = NSLocalizedString(@"Published!", @"Text displayed in HUD after a post was successfully published.");
-                        } else {
-                            hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
+                        __typeof__(self) strongSelf = weakSelf;
+                        if (!strongSelf) {
+                            return;
                         }
+                        strongSelf.post = post;
 
-                        [SVProgressHUD dismiss];
-                        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
-
+                        switch (currentSaveAction) {
+                            case PostEditorSaveActionSave: {
+                                NSString *hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
+                                [SVProgressHUD showSuccessWithStatus:hudText];
+                                break;
+                            }
+                            case PostEditorSaveActionUpdate: {
+                                NSString *hudText = NSLocalizedString(@"Updated!", @"Text displayed in HUD after a post was successfully updated.");
+                                [SVProgressHUD showSuccessWithStatus:hudText];
+                                break;
+                            }
+                            default:
+                                [SVProgressHUD dismiss];
+                                break;
+                        }                        
+                        [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
                         stopEditingAndDismiss();
                     } failure:^(NSError *error) {
                         DDLogError(@"post failed: %@", [error localizedDescription]);
                         NSString *hudText;
-                        if (postIsScheduled) {
-                            hudText = NSLocalizedString(@"Error occurred\nduring scheduling", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
-                        } else if ([postStatus isEqualToString:@"publish"]){
-                            hudText = NSLocalizedString(@"Error occurred\nduring publishing", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
-                        } else {
-                            hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
+                        switch (currentSaveAction) {
+                            case PostEditorSaveActionSchedule:
+                                hudText = NSLocalizedString(@"Error occurred\nduring scheduling", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
+                                break;
+                            case PostEditorSaveActionUpdate:
+                                hudText = NSLocalizedString(@"Error occurred\nduring updating", @"Text displayed in HUD after attempting to update a post and an error occurred.");
+                                break;
+                            case PostEditorSaveActionPost:
+                                hudText = NSLocalizedString(@"Error occurred\nduring publishing", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
+                                break;
+                            default:
+                                hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
+                                break;
                         }
-
                         [SVProgressHUD showErrorWithStatus:hudText];
-                        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeError];
-
+                        [generator notificationOccurred:UINotificationFeedbackTypeError];
                         stopEditingAndDismiss();
                     }];
 }

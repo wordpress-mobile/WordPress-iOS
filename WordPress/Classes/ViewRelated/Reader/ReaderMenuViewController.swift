@@ -18,7 +18,7 @@ import WordPressShared
     var didSyncTopics = false
 
     fileprivate var defaultIndexPath: IndexPath {
-        return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .discover)
+        return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .followed)
     }
 
     fileprivate var restorableSelectedIndexPath: IndexPath?
@@ -198,6 +198,9 @@ import WordPressShared
     /// When logged out return the nav stack to the menu
     ///
     func handleAccountChanged(_ notification: Foundation.Notification) {
+        // Reset the selected index path
+        restorableSelectedIndexPath = defaultIndexPath
+
         // Clean up obsolete content.
         unflagInUseContent()
         cleanupStaleContent(removeAllTopics: true)
@@ -318,7 +321,7 @@ import WordPressShared
     ///
     func promptUnfollowTagTopic(_ topic: ReaderTagTopic) {
         let title = NSLocalizedString("Remove", comment: "Title of a prompt asking the user to confirm they no longer wish to subscribe to a certain tag.")
-        let template = NSLocalizedString("Are you sure you wish to remove the tag '%@'", comment: "A short message asking the user if they wish to unfollow the specified tag. The %@ is a placeholder for the name of the tag.")
+        let template = NSLocalizedString("Are you sure you wish to remove the tag '%@'?", comment: "A short message asking the user if they wish to unfollow the specified tag. The %@ is a placeholder for the name of the tag.")
         let message = String(format: template, topic.title)
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Title of a cancel button.")) { (action) in
@@ -358,8 +361,11 @@ import WordPressShared
     func followTagNamed(_ tagName: String) {
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+
         service.followTagNamed(tagName, withSuccess: { [weak self] in
-            WPNotificationFeedbackGenerator.notificationOccurred(.success)
+            generator.notificationOccurred(.success)
 
             // A successful follow makes the new tag the currentTopic.
             if let tag = service.currentTopic as? ReaderTagTopic {
@@ -369,7 +375,7 @@ import WordPressShared
             }, failure: { (error) in
                 DDLogSwift.logError("Could not follow tag named \(tagName) : \(error)")
 
-                WPNotificationFeedbackGenerator.notificationOccurred(.error)
+                generator.notificationOccurred(.error)
 
                 let title = NSLocalizedString("Could Not Follow Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
                 let message = error?.localizedDescription
@@ -567,7 +573,7 @@ extension ReaderMenuViewController : WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
         if restorableSelectedIndexPath == defaultIndexPath {
             let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            if let topic = service.topicForDiscover() {
+            if let topic = service.topicForFollowedSites() {
                 return ReaderStreamViewController.controllerWithTopic(topic)
             } else {
                 restorableSelectedIndexPath = IndexPath(row: 0, section: 0)

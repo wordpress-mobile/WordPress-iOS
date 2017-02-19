@@ -13,7 +13,11 @@ import WordPressShared
 /// Plus, we provide a simple mechanism to render the details for a specific Notification,
 /// given its remote identifier.
 ///
-class NotificationsViewController: UITableViewController {
+class NotificationsViewController: UITableViewController, UIViewControllerRestoration {
+
+    static let selectedNotificationRestorationIdentifier = "NotificationsSelectedNotificationKey"
+    static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
+
     // MARK: - Properties
 
     /// TableHeader
@@ -48,6 +52,10 @@ class NotificationsViewController: UITableViewController {
     ///
     fileprivate var needsReloadResults = false
 
+    /// Cached values used for returning the estimated row heights of autosizing cells.
+    ///
+    fileprivate let estimatedRowHeightsCache = NSCache<AnyObject, AnyObject>()
+
     /// Notifications that must be deleted display an "Undo" button, which simply cancels the deletion task.
     ///
     fileprivate var notificationDeletionRequests: [NSManagedObjectID: NotificationDeletionRequest] = [:]
@@ -60,7 +68,14 @@ class NotificationsViewController: UITableViewController {
     ///
     fileprivate var unreadNotificationIds = Set<NSManagedObjectID>()
 
+    /// Used to store (and restore) the currently selected filter segment.
+    ///
+    fileprivate var restorableSelectedSegmentIndex: Int = 0
 
+    /// Used to keep track of the currently selected notification,
+    /// to restore it between table view reloads and state restoration.
+    ///
+    fileprivate var selectedNotification: Notification? = nil
 
     // MARK: - View Lifecycle
 
@@ -71,11 +86,10 @@ class NotificationsViewController: UITableViewController {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
-        // Note: This class doesn't actually conform to restoration?
-        // Swift 3 migration: Brent Nov. 28/16
-        //restorationClass = NotificationsViewController.self
+        restorationClass = NotificationsViewController.self
 
         startListeningToAccountNotifications()
+        startListeningToTimeChangeNotifications()
     }
 
     override func viewDidLoad() {
@@ -92,14 +106,19 @@ class NotificationsViewController: UITableViewController {
         setupNoResultsView()
         setupFiltersSegmentedControl()
 
-        tableView.reloadData()
+        reloadTableViewPreservingSelection()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
-        tableView.deselectSelectedRowWithAnimation(true)
+        // Manually deselect the selected row. 
+        if splitViewControllerIsHorizontallyCompact {
+            // This is required due to a bug in iOS7 / iOS8
+            tableView.deselectSelectedRowWithAnimation(true)
+
+            selectedNotification = nil
+        }
 
         // While we're onscreen, please, update rows with animations
         tableViewHandler.updateRowAnimation = .fade
@@ -114,6 +133,11 @@ class NotificationsViewController: UITableViewController {
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
+
+        if !splitViewControllerIsHorizontallyCompact {
+            reloadTableViewPreservingSelection()
+        }
+
         showNoResultsViewIfNeeded()
     }
 
@@ -131,22 +155,77 @@ class NotificationsViewController: UITableViewController {
         tableViewHandler.updateRowAnimation = .none
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        // Note: We're assuming `tableViewHandler` might be nil. Weird case in which the view
-        // hasn't loaded, yet, but the method is still executed.
-        tableViewHandler?.clearCachedRowHeights()
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if splitViewControllerIsHorizontallyCompact {
+            tableView.deselectSelectedRowWithAnimation(true)
+        } else {
+            if let selectedNotification = selectedNotification {
+                selectRowForNotification(selectedNotification, animated: true, scrollPosition: .middle)
+            } else {
+                selectFirstNotificationIfAppropriate()
+            }
+        }
     }
 
+    // MARK: - State Restoration
+
+    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+        return WPTabBarController.sharedInstance().notificationsViewController
+    }
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        if let uriRepresentation = selectedNotification?.objectID.uriRepresentation() {
+            coder.encode(uriRepresentation, forKey: type(of: self).selectedNotificationRestorationIdentifier)
+        }
+
+        if let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) {
+            // If the filter's 'Unread', we won't save it because the notification
+            // that's selected won't be unread any more once we come back to it.
+            let index = (filter != .unread) ? filter.rawValue : Filter.none.rawValue
+            coder.encode(index, forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
+        }
+
+        super.encodeRestorableState(with: coder)
+    }
+
+    override func decodeRestorableState(with coder: NSCoder) {
+        decodeSelectedSegmentIndex(with: coder)
+        decodeSelectedNotification(with: coder)
+
+        reloadResultsController()
+
+        super.decodeRestorableState(with: coder)
+    }
+
+    fileprivate func decodeSelectedNotification(with coder: NSCoder) {
+        if let uriRepresentation = coder.decodeObject(forKey: type(of: self).selectedNotificationRestorationIdentifier) as? URL {
+            let context = ContextManager.sharedInstance().mainContext
+            if let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: uriRepresentation),
+                let object = try? context.existingObject(with: objectID),
+                let notification = object as? Notification {
+                selectedNotification = notification
+            }
+        }
+    }
+
+    fileprivate func decodeSelectedSegmentIndex(with coder: NSCoder) {
+        restorableSelectedSegmentIndex = coder.decodeInteger(forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
+
+        if let filtersSegmentedControl = filtersSegmentedControl {
+            filtersSegmentedControl.selectedSegmentIndex = restorableSelectedSegmentIndex
+        }
+    }
 
     // MARK: - UITableView Methods
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return nil
+    override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return NoteTableHeaderView.estimatedHeight
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return NoteTableHeaderView.headerHeight
+        return UITableViewAutomaticDimension
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -154,7 +233,7 @@ class NotificationsViewController: UITableViewController {
             return nil
         }
 
-        let headerView = NoteTableHeaderView()
+        let headerView = NoteTableHeaderView.makeFromNib()
         headerView.title = Notification.descriptionForSectionIdentifier(sectionInfo.name)
         headerView.separatorColor = tableView.separatorColor
 
@@ -182,21 +261,19 @@ class NotificationsViewController: UITableViewController {
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        estimatedRowHeightsCache.setObject(cell.frame.height as AnyObject, forKey: indexPath as AnyObject)
+    }
+
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        if let height = estimatedRowHeightsCache.object(forKey: indexPath as AnyObject) as? CGFloat {
+            return height
+        }
         return Settings.estimatedRowHeight
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // Load the Subject + Snippet
-        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
-            return CGFloat.leastNormalMagnitude
-        }
-
-        // Old School Height Calculation
-        let subject = note.subjectBlock?.attributedSubjectText
-        let snippet = note.snippetBlock?.attributedSnippetText
-
-        return NoteTableViewCell.layoutHeightWithWidth(tableView.bounds.width, subject: subject, snippet: snippet)
+        return UITableViewAutomaticDimension
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -211,6 +288,8 @@ class NotificationsViewController: UITableViewController {
             return
         }
 
+        selectedNotification = note
+
         showDetailsForNotification(note)
     }
 
@@ -223,13 +302,17 @@ class NotificationsViewController: UITableViewController {
             return
         }
 
+        configureDetailsViewController(detailsViewController, withNote: note)
+    }
+
+    fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: Notification) {
         detailsViewController.dataSource = self
         detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { request in
             self.showUndeleteForNoteWithID(note.objectID, request: request)
         }
         detailsViewController.onSelectedNoteChange = { note in
-            self.selectRowForNotification(note: note)
+            self.selectRowForNotification(note)
             if !note.read {
                 NotificationSyncMediator()?.markAsRead(note)
             }
@@ -289,7 +372,7 @@ private extension NotificationsViewController {
 
     func setupTableHandler() {
         let handler = WPTableViewHandler(tableView: tableView)
-        handler.cacheRowHeights = true
+        handler.cacheRowHeights = false
         handler.delegate = self
         tableViewHandler = handler
     }
@@ -325,6 +408,8 @@ private extension NotificationsViewController {
         }
 
         WPStyleGuide.Notifications.configureSegmentedControl(filtersSegmentedControl)
+
+        filtersSegmentedControl.selectedSegmentIndex = restorableSelectedSegmentIndex
     }
 }
 
@@ -342,6 +427,11 @@ private extension NotificationsViewController {
     func startListeningToAccountNotifications() {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(defaultAccountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+    }
+
+    func startListeningToTimeChangeNotifications() {
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(significantTimeChange), name: .UIApplicationSignificantTimeChange, object: nil)
     }
 
     func stopListeningToNotifications() {
@@ -378,6 +468,15 @@ private extension NotificationsViewController {
         resetApplicationBadge()
         updateLastSeenTime()
     }
+
+    @objc func significantTimeChange(_ note: Foundation.Notification) {
+        needsReloadResults = true
+        if UIApplication.shared.applicationState == .active
+            && isViewLoaded == true
+            && view.window != nil {
+            reloadResultsControllerIfNeeded()
+        }
+    }
 }
 
 
@@ -409,6 +508,19 @@ extension NotificationsViewController {
     func showDetailsForNotification(_ note: Notification) {
         DDLogSwift.logInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
+        prepareToShowDetailsForNotification(note)
+
+        // Display Details
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
+            let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+            showDetailViewController(readerViewController, sender: nil)
+            return
+        }
+
+        performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+    }
+
+    fileprivate func prepareToShowDetailsForNotification(_ note: Notification) {
         // Track
         let properties = [Stats.noteTypeKey: note.type ?? Stats.noteTypeUnknown]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
@@ -423,15 +535,6 @@ extension NotificationsViewController {
             let mediator = NotificationSyncMediator()
             mediator?.markAsRead(note)
         }
-
-        // Display Details
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
-            let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-            navigationController?.pushFullscreenViewController(readerViewController, animated: true)
-            return
-        }
-
-        performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
     }
 
     /// Will display an Undelete button on top of a given notification.
@@ -550,9 +653,9 @@ private extension NotificationsViewController {
         fetchRequest.predicate = predicateForFetchRequest()
 
         /// Refetch + Reload
-        tableViewHandler.clearCachedRowHeights()
         _ = try? tableViewHandler.resultsController.performFetch()
-        tableView.reloadData()
+
+        reloadTableViewPreservingSelection()
 
         // Empty State?
         showNoResultsViewIfNeeded()
@@ -573,9 +676,26 @@ private extension NotificationsViewController {
             DDLogSwift.logError("Error refreshing Notification Row \(error)")
         }
     }
+
+    func selectRowForNotification(_ notification: Notification?, animated: Bool = true, scrollPosition: UITableViewScrollPosition = .none) {
+        guard let notification = notification else { return }
+
+        selectedNotification = notification
+
+        if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification) {
+            tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
+        }
+    }
+
+    func reloadTableViewPreservingSelection() {
+        tableView.reloadData()
+
+        // Show the current selection if our split view isn't collapsed
+        if !splitViewControllerIsHorizontallyCompact {
+            selectRowForNotification(selectedNotification, animated: false, scrollPosition: .none)
+        }
+    }
 }
-
-
 
 // MARK: - UIRefreshControl Methods
 //
@@ -607,21 +727,37 @@ extension NotificationsViewController {
 //
 extension NotificationsViewController {
     func segmentedControlDidChange(_ sender: UISegmentedControl) {
+        selectedNotification = nil
+
+        updateUnreadNotificationsForSegmentedControlChange()
+
+        reloadResultsController()
+
+        selectFirstNotificationIfAppropriate()
+    }
+
+    func selectFirstNotificationIfAppropriate() {
+        // If we don't currently have a selected notification and there is a notification
+        // in the list, then select it.
+        if !splitViewControllerIsHorizontallyCompact && selectedNotification == nil {
+            if let firstNotification = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
+                let indexPath = tableViewHandler.resultsController.indexPath(forObject: firstNotification) {
+                selectRowForNotification(firstNotification, animated: false, scrollPosition: .none)
+                self.tableView(tableView, didSelectRowAt: indexPath)
+            } else {
+                // If there's no notification to select, we should wipe out
+                // any detail view controller that may be present.
+                showDetailViewController(UIViewController(), sender: nil)
+            }
+        }
+    }
+
+    func updateUnreadNotificationsForSegmentedControlChange() {
         if Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) == .unread {
             refreshUnreadNotifications(reloadingResultsController: false)
         } else {
             clearUnreadNotifications()
         }
-
-        reloadResultsController()
-
-        // It's a long way, to the top (if you wanna rock'n roll!)
-        guard tableViewHandler.resultsController.fetchedObjects?.count != 0 else {
-            return
-        }
-
-        let path = IndexPath(row: 0, section: 0)
-        tableView.scrollToRow(at: path, at: .bottom, animated: true)
     }
 }
 
@@ -738,6 +874,12 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 
         // Update NoResults View
         showNoResultsViewIfNeeded()
+
+        if let selectedNotification = selectedNotification {
+            selectRowForNotification(selectedNotification, animated: false, scrollPosition: .none)
+        } else {
+            selectFirstNotificationIfAppropriate()
+        }
     }
 }
 
@@ -850,6 +992,8 @@ private extension NotificationsViewController {
 //
 private extension NotificationsViewController {
     func showNoResultsViewIfNeeded() {
+        updateSplitViewAppearanceForNoResultsView()
+
         // Remove + Show Filters, if needed
         guard shouldDisplayNoResultsView == true else {
             noResultsView.removeFromSuperview()
@@ -860,6 +1004,10 @@ private extension NotificationsViewController {
         // Attach the view
         if noResultsView.superview == nil {
             tableView.addSubview(withFadeAnimation: noResultsView)
+
+            noResultsView.translatesAutoresizingMaskIntoConstraints = false
+            tableView.pinSubviewAtCenter(noResultsView)
+            noResultsView.layoutIfNeeded()
         }
 
         // Refresh its properties: The user may have signed into WordPress.com
@@ -870,6 +1018,19 @@ private extension NotificationsViewController {
 
         // Hide the filter header if we're showing the Jetpack prompt
         hideFiltersSegmentedControlIfApplicable()
+    }
+
+    func updateSplitViewAppearanceForNoResultsView() {
+        if let splitViewController = splitViewController as? WPSplitViewController {
+            let columnWidth: WPSplitViewControllerPrimaryColumnWidth = shouldDisplayFullscreenNoResultsView ? .full : .default
+            if splitViewController.wpPrimaryColumnWidth != columnWidth {
+                splitViewController.wpPrimaryColumnWidth = columnWidth
+            }
+
+            if columnWidth == .default {
+                splitViewController.dimDetailViewController(shouldDimDetailViewController)
+            }
+        }
     }
 
     var noResultsTitleText: String {
@@ -908,6 +1069,18 @@ private extension NotificationsViewController {
 
     var shouldDisplayNoResultsView: Bool {
         return tableViewHandler.resultsController.fetchedObjects?.count == 0
+    }
+
+    var shouldDisplayFullscreenNoResultsView: Bool {
+        let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
+
+        return shouldDisplayNoResultsView && (shouldDisplayJetpackMessage || currentFilter == .none)
+    }
+
+    var shouldDimDetailViewController: Bool {
+        let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
+
+        return shouldDisplayNoResultsView && !shouldDisplayJetpackMessage && currentFilter != .none
     }
 }
 
@@ -1056,6 +1229,7 @@ private extension NotificationsViewController {
             let helper = CoreDataHelper<Notification>(context: mainContext)
             helper.deleteAllObjects()
             try mainContext.save()
+            tableView.reloadData()
         } catch {
             DDLogSwift.logError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
@@ -1068,16 +1242,44 @@ private extension NotificationsViewController {
     func resetApplicationBadge() {
         UIApplication.shared.applicationIconBadgeNumber = 0
     }
-
-    func selectRowForNotification(note: Notification) {
-        guard let targetIndexPath = tableViewHandler.resultsController.indexPath(forObject: note) else {
-            return
-        }
-        tableView.selectRow(at: targetIndexPath, animated: false, scrollPosition: .middle)
-    }
 }
 
+// MARK: - WPSplitViewControllerDetailProvider
+//
+extension NotificationsViewController: WPSplitViewControllerDetailProvider {
+    func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
+        guard let note = selectedNotification ?? fetchFirstNotification() else {
+            return nil
+        }
 
+        selectedNotification = note
+
+        prepareToShowDetailsForNotification(note)
+
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
+            return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+        }
+
+        if let detailsViewController = storyboard?.instantiateViewController(withIdentifier: "NotificationDetailsViewController") as? NotificationDetailsViewController {
+            configureDetailsViewController(detailsViewController, withNote: note)
+            return detailsViewController
+        }
+
+        return nil
+    }
+
+    private func fetchFirstNotification() -> Notification? {
+        let context = managedObjectContext()
+        let fetchRequest = self.fetchRequest()
+        fetchRequest.fetchLimit = 1
+
+        if let results = try? context.fetch(fetchRequest) as? [Notification] {
+            return results?.first
+        }
+
+        return nil
+    }
+}
 
 // MARK: - ABXPromptViewDelegate Methods
 //
@@ -1087,7 +1289,7 @@ extension NotificationsViewController: ABXPromptViewDelegate {
         AppRatingUtility.shared.ratedCurrentVersion()
         hideRatingView()
 
-        UIApplication.shared.openURL(Ratings.reviewURL)
+        UIApplication.shared.open(Ratings.reviewURL)
     }
 
     func appbotPromptForFeedback() {
