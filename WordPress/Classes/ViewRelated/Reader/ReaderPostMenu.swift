@@ -86,41 +86,7 @@ open class ReaderPostMenu {
 
 
     fileprivate class func toggleFollowingForPost(_ post: ReaderPost) {
-        let generator = UINotificationFeedbackGenerator()
-        generator.prepare()
-
-        var successMessage: String!
-        var errorMessage: String!
-        var errorTitle: String!
-        if post.isFollowing {
-            successMessage = NSLocalizedString("Unfollowed site", comment: "Short confirmation that unfollowing a site was successful")
-            errorTitle = NSLocalizedString("Problem Unfollowing Site", comment: "Title of a prompt")
-            errorMessage = NSLocalizedString("There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem.")
-        } else {
-            successMessage = NSLocalizedString("Followed site", comment: "Short confirmation that following a site was successful")
-            errorTitle = NSLocalizedString("Problem Following Site", comment: "Title of a prompt")
-            errorMessage = NSLocalizedString("There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem following a site and instructions on how to notify us of the problem.")
-
-            generator.notificationOccurred(.success)
-        }
-
-        SVProgressHUD.show()
-
-        let postService = ReaderPostService(managedObjectContext: post.managedObjectContext!)
-        postService.toggleFollowing(for: post, success: { () in
-            SVProgressHUD.showSuccess(withStatus: successMessage)
-            }, failure: { (error: Error?) in
-                SVProgressHUD.dismiss()
-
-                generator.notificationOccurred(.error)
-
-                let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
-                let alertController = UIAlertController(title: errorTitle,
-                    message: errorMessage,
-                    preferredStyle: .alert)
-                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-                alertController.presentFromRootViewController()
-        })
+        ReaderHelpers.toggleFollowingForPost(post)
     }
 
 

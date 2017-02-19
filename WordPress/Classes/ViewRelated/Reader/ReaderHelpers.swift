@@ -1,5 +1,6 @@
 import Foundation
 import WordPressComAnalytics
+import SVProgressHUD
 
 /// A collection of helper methods used by the Reader.
 ///
@@ -219,4 +220,56 @@ import WordPressComAnalytics
     open class func isLoggedIn() -> Bool {
         return AccountHelper.isDotcomAvailable()
     }
+
+
+    // MARK: Post Action Helpers
+
+    /// Toggle's following stats for the specified post.
+    ///
+    /// - Parameters
+    ///     - post: A ReaderPost instance. The post *must* already belong to a 
+    /// NSManagedObject context, else nothing is done.
+    open class func toggleFollowingForPost(_ post: ReaderPost) {
+        guard let managedObjectContext = post.managedObjectContext else {
+            return
+        }
+
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+
+        var successMessage: String
+        var errorMessage: String
+        var errorTitle: String
+        if post.isFollowing {
+            successMessage = NSLocalizedString("Unfollowed site", comment: "Short confirmation that unfollowing a site was successful")
+            errorTitle = NSLocalizedString("Problem Unfollowing Site", comment: "Title of a prompt")
+            errorMessage = NSLocalizedString("There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem.")
+        } else {
+            successMessage = NSLocalizedString("Followed site", comment: "Short confirmation that unfollowing a site was successful")
+            errorTitle = NSLocalizedString("Problem Following Site", comment: "Title of a prompt")
+            errorMessage = NSLocalizedString("There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem following a site and instructions on how to notify us of the problem.")
+        }
+
+        SVProgressHUD.show()
+
+        let postService = ReaderPostService(managedObjectContext: managedObjectContext)
+        postService.toggleFollowing(for: post,
+                                    success: {
+                                        SVProgressHUD.showSuccess(withStatus: successMessage)
+                                        generator.notificationOccurred(.success)
+                                    },
+                                    failure: { (error: Error?) in
+                                        SVProgressHUD.dismiss()
+                                        generator.notificationOccurred(.error)
+
+                                        let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
+                                        let alertController = UIAlertController(title: errorTitle,
+                                                                                message: errorMessage,
+                                                                                preferredStyle: .alert)
+                                        alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+                                        alertController.presentFromRootViewController()
+                                    })
+
+    }
+
 }
