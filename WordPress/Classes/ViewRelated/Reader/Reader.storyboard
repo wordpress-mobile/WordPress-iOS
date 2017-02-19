@@ -638,7 +638,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="345" height="300"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="CaP-Js-Bfx">
-                                        <rect key="frame" x="0.0" y="0.0" width="345" height="47"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="345" height="37"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VKf-La-zGo">
                                                 <rect key="frame" x="0.0" y="0.0" width="345" height="1"/>
@@ -648,18 +648,18 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MORE IN SITE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UOZ-a8-rsU">
-                                                <rect key="frame" x="0.0" y="17" width="345" height="30"/>
+                                                <rect key="frame" x="0.0" y="17" width="345" height="20"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="kLQ-hy-82P"/>
+                                                    <constraint firstAttribute="height" constant="20" id="kLQ-hy-82P"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" red="0.52941176469999995" green="0.65098039220000004" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="iWe-88-Zql">
-                                        <rect key="frame" x="0.0" y="63" width="345" height="47"/>
+                                        <rect key="frame" x="0.0" y="53" width="345" height="37"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eh1-Hn-3Y5">
                                                 <rect key="frame" x="0.0" y="0.0" width="345" height="1"/>
@@ -669,18 +669,18 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MORE ON WPCOM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DqU-Qf-LhN">
-                                                <rect key="frame" x="0.0" y="17" width="345" height="30"/>
+                                                <rect key="frame" x="0.0" y="17" width="345" height="20"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="JXn-XM-OV2"/>
+                                                    <constraint firstAttribute="height" constant="20" id="JXn-XM-OV2"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" red="0.52941176470588236" green="0.65098039215686276" blue="0.73725490196078436" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d3Y-ea-8mA">
-                                        <rect key="frame" x="0.0" y="126" width="345" height="174"/>
+                                        <rect key="frame" x="0.0" y="106" width="345" height="194"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
