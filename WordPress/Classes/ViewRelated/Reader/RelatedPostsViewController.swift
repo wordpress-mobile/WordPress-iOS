@@ -152,8 +152,17 @@ class RelatedPostsViewController: UIViewController {
 
     // Actions
 
-    func handleCardTapped() {
-        // TODO:
+    func handleCardTapped(sender: UITapGestureRecognizer) {
+        guard let card = sender.view as? ReaderCard else {
+            return
+        }
+
+        guard let post = card.readerPost else {
+            return
+        }
+
+        let controller = ReaderDetailViewController.controllerWithPost(post)
+        navigationController?.pushViewController(controller, animated: true)
     }
 
 
