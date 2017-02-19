@@ -88,7 +88,7 @@ public class ReaderCard: UIView {
     open var enableLoggedInFeatures = true
     open weak var delegate: ReaderCardDelegate?
 
-    open weak var readerPost: ReaderPost? {
+    open var readerPost: ReaderPost? {
         didSet {
             configureCard()
         }
