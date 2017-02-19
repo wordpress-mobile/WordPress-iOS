@@ -17,6 +17,7 @@ class RelatedPostsViewController: UIViewController {
 
     var post: ReaderPost? {
         didSet {
+            setupSiteLable()
             fetchRelatedPostsIfNeeded()
         }
     }
@@ -31,26 +32,41 @@ class RelatedPostsViewController: UIViewController {
 
     // Lifecycle Methods
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupView()
+        setupLongPressGestureRecognizer()
+        setupWPComLabel()
         configureView()
     }
 
 
     // Configuration
 
-
-    func setupView() {
-        applyStyles()
-
+    /// NOTE: Because of how the RelatedPostsViewController's view is composed in
+    /// the ReaderDetailViewController, a longpress on the view or its subviews
+    /// could trigger text selection in the WPRichContentView. To avoid this, we add
+    /// a UILongPressGestureRecognizer to catch the gestures and prevent triggering
+    /// text selection.
+    /// This could be rendered unnecessary by future changes to the
+    /// ReaderDetailViewController.
+    func setupLongPressGestureRecognizer() {
+        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(self.handleCardLongPress))
+        lpgr.cancelsTouchesInView = true
+        view.addGestureRecognizer(lpgr)
     }
 
 
-    func applyStyles() {
+    func setupSiteLable() {
+        if let post = post {
+            let siteTitle = post.blogName.uppercased()
+            siteLabel.text = NSLocalizedString("MORE IN \(siteTitle)", comment: "Capitalized title. The text '\(siteTitle)' is a placeholder for the title of the user's site.").uppercased()
+        }
+    }
 
+
+    func setupWPComLabel() {
+        wpcomLabel.text = NSLocalizedString("MORE ON WORDPRESS.COM", comment: "Capitalized title.").uppercased()
     }
 
 
@@ -69,15 +85,8 @@ class RelatedPostsViewController: UIViewController {
 
         relatedSitestackView.isHidden = posts.count == 0
 
-        let frame = CGRect(x: 0, y: 0, width: 320, height: 100)
         for post in posts {
-            let card = ReaderCard(frame: frame)
-            card.hidesActionbar = true
-            card.headerButtonIsEnabled = false
-            card.cardContentMargins = .zero
-            card.hidesFollowButton = true
-            card.readerPost = post
-
+            let card = cardForRelatedPost(relatedPost: post)
             relatedSitestackView.addArrangedSubview(card)
         }
     }
@@ -101,14 +110,8 @@ class RelatedPostsViewController: UIViewController {
 
         relatedWPComStackView.isHidden = posts.count == 0
 
-        let frame = CGRect(x: 0, y: 0, width: 320, height: 100)
         for post in posts {
-            let card = ReaderCard(frame: frame)
-            card.hidesActionbar = true
-            card.headerButtonIsEnabled = false
-            card.cardContentMargins = .zero
-            card.readerPost = post
-
+            let card = cardForRelatedPost(relatedPost: post)
             relatedWPComStackView.addArrangedSubview(card)
         }
     }
@@ -127,9 +130,37 @@ class RelatedPostsViewController: UIViewController {
     }
 
 
+    func cardForRelatedPost(relatedPost: ReaderPost) -> ReaderCard {
+        // Arbitrary starting frame
+        let frame = CGRect(x: 0, y: 0, width: 320, height: 100)
+
+        let card = ReaderCard(frame: frame)
+        card.delegate = self
+        card.hidesActionbar = true
+        card.headerButtonIsEnabled = false
+        card.cardContentMargins = .zero
+        card.hidesFollowButton = relatedPost.siteID.intValue == post?.siteID.intValue
+
+        card.readerPost = relatedPost
+
+        let tgr = UITapGestureRecognizer(target: self, action: #selector(self.handleCardTapped))
+        card.addGestureRecognizer(tgr)
+
+        return card
+    }
+
+
+    // Actions
+
+    func handleCardTapped() {
+        // TODO:
+    }
+
+
+    func handleCardLongPress() {}
+
 
     // Fetching
-
 
     func fetchRelatedPostsIfNeeded() {
         guard let post = post else {
@@ -151,5 +182,34 @@ class RelatedPostsViewController: UIViewController {
         })
 
     }
+
+}
+
+
+extension RelatedPostsViewController: ReaderCardDelegate {
+
+    func readerCard(_ card: ReaderCard, followActionForPost post: ReaderPost) {
+        // TODO:
+    }
+
+    func readerCardImageRequestAuthToken() -> String? {
+        return nil
+    }
+
+    // No ops
+
+    func readerCard(_ card: ReaderCard, headerActionForPost post: ReaderPost) {}
+
+    func readerCard(_ card: ReaderCard, commentActionForPost post: ReaderPost) {}
+
+    func readerCard(_ card: ReaderCard, shareActionForPost post: ReaderPost, fromView sender: UIView) {}
+
+    func readerCard(_ card: ReaderCard, visitActionForPost post: ReaderPost) {}
+
+    func readerCard(_ card: ReaderCard, likeActionForPost post: ReaderPost) {}
+
+    func readerCard(_ card: ReaderCard, menuActionForPost post: ReaderPost, fromView sender: UIView) {}
+
+    func readerCard(_ card: ReaderCard, attributionActionForPost post: ReaderPost) {}
 
 }
