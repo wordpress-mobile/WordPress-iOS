@@ -149,6 +149,7 @@ public class ReaderCard: UIView {
         contentView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         contentView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        layoutIfNeeded()
 
         // This view only exists to help IB with filling in the bottom space of
         // the cell that is later autosized according to the content's intrinsicContentSize.
