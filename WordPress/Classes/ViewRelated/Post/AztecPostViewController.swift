@@ -39,6 +39,20 @@ class AztecPostViewController: UIViewController {
     }()
 
 
+    /// Aztec's Text Placeholder
+    ///
+    fileprivate(set) lazy var placeholderLabel: UILabel = {
+        let label = UILabel()
+        label.text = NSLocalizedString("Share your story here...", comment: "Aztec's Text Placeholder")
+        label.textColor = Colors.placeholder
+        label.font = Fonts.regular
+        label.isUserInteractionEnabled = false
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        return label
+    }()
+
+
     /// Raw HTML Editor
     ///
     fileprivate(set) lazy var htmlTextView: UITextView = {
@@ -365,7 +379,14 @@ class AztecPostViewController: UIViewController {
             htmlTextView.leftAnchor.constraint(equalTo: richTextView.leftAnchor),
             htmlTextView.rightAnchor.constraint(equalTo: richTextView.rightAnchor),
             htmlTextView.topAnchor.constraint(equalTo: richTextView.topAnchor),
-            htmlTextView.bottomAnchor.constraint(equalTo: richTextView.bottomAnchor),
+            htmlTextView.bottomAnchor.constraint(equalTo: richTextView.bottomAnchor)
+            ])
+
+        NSLayoutConstraint.activate([
+            placeholderLabel.leftAnchor.constraint(equalTo: richTextView.leftAnchor, constant: Constants.placeholderPadding.left),
+            placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: Constants.placeholderPadding.right),
+            placeholderLabel.topAnchor.constraint(equalTo: richTextView.topAnchor, constant: Constants.placeholderPadding.top),
+            placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
 
         NSLayoutConstraint.activate([
@@ -404,6 +425,7 @@ class AztecPostViewController: UIViewController {
     func configureSubviews() {
         view.addSubview(titleTextField)
         view.addSubview(separatorView)
+        view.addSubview(placeholderLabel)
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
         mediaProgressView.isHidden = true
@@ -1690,6 +1712,7 @@ extension AztecPostViewController {
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
+        static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
     }
 
     struct MoreSheetAlert {
