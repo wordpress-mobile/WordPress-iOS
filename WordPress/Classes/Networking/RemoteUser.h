@@ -9,5 +9,6 @@
 @property (nonatomic, strong) NSNumber *primaryBlogID;
 @property (nonatomic, strong) NSString *avatarURL;
 @property (nonatomic, strong) NSDate *dateCreated;
+@property (nonatomic, assign) BOOL emailVerified;
 
 @end
