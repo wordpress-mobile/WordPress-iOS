@@ -20,6 +20,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
 @dynamic uuid;
 @dynamic dateCreated;
 @dynamic email;
+@dynamic emailVerified;
 @dynamic displayName;
 @dynamic userID;
 @dynamic avatarURL;
@@ -117,6 +118,16 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
                                                                   selector:@selector(localizedCaseInsensitiveCompare:)];
 
     return [visibleBlogs sortedArrayUsingDescriptors:@[descriptor]];
+}
+
+- (NSString *)verificationStatus {
+    if (!self.emailVerified) {
+        return @"unknown";
+    } else if ([self.emailVerified boolValue]) {
+        return @"verified";
+    } else {
+        return @"unverified";
+    }
 }
 
 #pragma mark - API Helpers
