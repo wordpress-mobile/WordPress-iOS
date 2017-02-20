@@ -12,6 +12,7 @@ static NSString * const UserDictionaryDisplaynameKey = @"display_name";
 static NSString * const UserDictionaryPrimaryBlogKey = @"primary_blog";
 static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 static NSString * const UserDictionaryDateKey = @"date";
+static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
 
 @interface AccountServiceRemoteREST ()
 
@@ -187,6 +188,7 @@ static NSString * const UserDictionaryDateKey = @"date";
     remoteUser.primaryBlogID = [dictionary numberForKey:UserDictionaryPrimaryBlogKey];
     remoteUser.avatarURL = [dictionary stringForKey:UserDictionaryAvatarURLKey];
     remoteUser.dateCreated = [NSDate dateWithISO8601String:[dictionary stringForKey:UserDictionaryDateKey]];
+    remoteUser.emailVerified = [[dictionary numberForKey:UserDictionaryEmailVerifiedKey] boolValue];
     
     return remoteUser;
 }
