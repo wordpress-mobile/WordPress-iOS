@@ -862,6 +862,7 @@ extension AztecPostViewController : UITextViewDelegate {
 
     func textViewDidChange(_ textView: UITextView) {
         mapUIContentToPostAndSave()
+        refreshPlaceholderVisibility()
     }
 }
 
@@ -896,18 +897,31 @@ extension AztecPostViewController {
         view.endEditing(true)
 
         htmlTextView.text = richTextView.getHTML()
-        htmlTextView.isHidden = false
-        richTextView.isHidden = true
         htmlTextView.becomeFirstResponder()
+
+        refreshEditorVisibility()
+        refreshPlaceholderVisibility()
     }
 
     fileprivate func switchToRichText() {
         view.endEditing(true)
 
         richTextView.setHTML(htmlTextView.text)
-        richTextView.isHidden = false
-        htmlTextView.isHidden = true
         richTextView.becomeFirstResponder()
+
+        refreshEditorVisibility()
+        refreshPlaceholderVisibility()
+    }
+
+    func refreshEditorVisibility() {
+        let isRichEnabled = mode == .richText
+
+        htmlTextView.isHidden = isRichEnabled
+        richTextView.isHidden = !isRichEnabled
+    }
+
+    func refreshPlaceholderVisibility() {
+        placeholderLabel.isHidden = richTextView.isHidden || !richTextView.text.isEmpty
     }
 }
 
