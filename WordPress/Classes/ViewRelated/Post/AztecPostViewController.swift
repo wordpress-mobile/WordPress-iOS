@@ -19,7 +19,7 @@ class AztecPostViewController: UIViewController {
     /// Aztec's Awesomeness
     ///
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
-        let tv = Aztec.TextView(defaultFont: Assets.defaultRegularFont, defaultMissingImage: Assets.defaultMissingImage)
+        let tv = Aztec.TextView(defaultFont: Fonts.regular, defaultMissingImage: Assets.defaultMissingImage)
 
         let toolbar = self.createToolbar(htmlMode: false)
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
@@ -63,7 +63,7 @@ class AztecPostViewController: UIViewController {
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
                                                       attributes: [NSForegroundColorAttributeName: WPStyleGuide.grey()])
         tf.delegate = self
-        tf.font = WPFontManager.merriweatherBoldFont(ofSize: 24.0)
+        tf.font = Fonts.title
         tf.returnKeyType = .next
         tf.textColor = UIColor.darkText
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -376,7 +376,7 @@ class AztecPostViewController: UIViewController {
 
     private func configureDefaultProperties(for textView: UITextView, using formatBar: Aztec.FormatBar, accessibilityLabel: String) {
         textView.accessibilityLabel = accessibilityLabel
-        textView.font = Assets.defaultRegularFont
+        textView.font = Fonts.regular
         textView.inputAccessoryView = formatBar
         textView.keyboardDismissMode = .interactive
         textView.textColor = UIColor.darkText
@@ -449,7 +449,7 @@ class AztecPostViewController: UIViewController {
             pickerTitle = blogName
         }
 
-        let titleText = NSAttributedString(string: pickerTitle, attributes: Constants.blogPickerAttributes)
+        let titleText = NSAttributedString(string: pickerTitle, attributes: [NSFontAttributeName: Fonts.blogPicker])
         let shouldEnable = !isSingleSiteMode
 
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
@@ -1680,8 +1680,6 @@ extension AztecPostViewController {
     struct Assets {
         static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
         static let closeButtonRegularImage  = UIImage(named: "icon-posts-editor-chevron")
-        static let defaultRegularFont       = WPFontManager.merriweatherRegularFont(ofSize: 16)
-        static let defaultSemiBoldFont      = WPFontManager.systemSemiBoldFont(ofSize: 16)
         static let defaultMissingImage      = Gridicon.iconOfType(.image)
     }
 
@@ -1689,7 +1687,6 @@ extension AztecPostViewController {
         static let defaultMargin            = CGFloat(20)
         static let separatorButtonWidth     = CGFloat(-12)
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
-        static let blogPickerAttributes     = [NSFontAttributeName: Assets.defaultSemiBoldFont]
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
     }
@@ -1700,6 +1697,14 @@ extension AztecPostViewController {
         static let previewTitle             = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
         static let optionsTitle             = NSLocalizedString("Options", comment: "Displays the Post's Options")
         static let cancelTitle              = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
+    }
+
+
+    struct Fonts {
+        static let regular                  = WPFontManager.merriweatherRegularFont(ofSize: 16)
+        static let semiBold                 = WPFontManager.systemSemiBoldFont(ofSize: 16)
+        static let title                    = WPFontManager.merriweatherBoldFont(ofSize: 24.0)
+        static let blogPicker               = Fonts.semiBold
     }
 
     struct Restoration {
