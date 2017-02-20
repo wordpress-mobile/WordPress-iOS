@@ -54,6 +54,7 @@ class AztecPostViewController: UIViewController {
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         toolbar.formatter = self
         tv.isHidden = true
+        tv.delegate = self
 
         return tv
     }()
@@ -1256,7 +1257,11 @@ fileprivate extension AztecPostViewController {
     fileprivate func mapUIContentToPostAndSave() {
         post.postTitle = titleTextField.text
         // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
-        post.content = richTextView.getHTML()
+        if richTextView.isHidden {
+            post.content = htmlTextView.text
+        } else {
+            post.content = richTextView.getHTML()
+        }
 
         ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
