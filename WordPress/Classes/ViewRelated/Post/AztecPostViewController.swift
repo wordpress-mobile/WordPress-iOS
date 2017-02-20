@@ -26,6 +26,7 @@ class AztecPostViewController: UIViewController {
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         tv.delegate = self
         tv.mediaDelegate = self
+        tv.backgroundColor = Colors.aztecBackground
         toolbar.formatter = self
 
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
@@ -61,7 +62,7 @@ class AztecPostViewController: UIViewController {
 
         tf.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
-                                                      attributes: [NSForegroundColorAttributeName: WPStyleGuide.grey()])
+                                                      attributes: [NSForegroundColorAttributeName: Colors.title])
         tf.delegate = self
         tf.font = Fonts.title
         tf.returnKeyType = .next
@@ -83,7 +84,7 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) lazy var separatorView: UIView = {
         let v = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 1))
 
-        v.backgroundColor = WPStyleGuide.greyLighten30()
+        v.backgroundColor = Colors.separator
         v.translatesAutoresizingMaskIntoConstraints = false
 
         return v
@@ -210,9 +211,9 @@ class AztecPostViewController: UIViewController {
     ///
     fileprivate lazy var mediaProgressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
-        progressView.backgroundColor = WPStyleGuide.wordPressBlue()
-        progressView.progressTintColor = UIColor.white
-        progressView.trackTintColor = WPStyleGuide.wordPressBlue()
+        progressView.backgroundColor = Colors.progressBackground
+        progressView.progressTintColor = Colors.progressTint
+        progressView.trackTintColor = Colors.progressTrack
         progressView.translatesAutoresizingMaskIntoConstraints = false
         return progressView
     }()
@@ -1699,6 +1700,15 @@ extension AztecPostViewController {
         static let cancelTitle              = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
     }
 
+    struct Colors {
+        static let aztecBackground          = Colors.aztecBackground
+        static let title                    = WPStyleGuide.grey()
+        static let separator                = WPStyleGuide.greyLighten30()
+        static let placeholder              = WPStyleGuide.grey()
+        static let progressBackground       = WPStyleGuide.wordPressBlue()
+        static let progressTint             = UIColor.white
+        static let progressTrack            = WPStyleGuide.wordPressBlue()
+    }
 
     struct Fonts {
         static let regular                  = WPFontManager.merriweatherRegularFont(ofSize: 16)
