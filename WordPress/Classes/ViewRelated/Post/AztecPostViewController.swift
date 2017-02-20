@@ -7,6 +7,7 @@ import AFNetworking
 import WPMediaPicker
 import SVProgressHUD
 
+
 // MARK: - Aztec's Native Editor!
 //
 class AztecPostViewController: UIViewController {
@@ -558,6 +559,7 @@ extension AztecPostViewController {
 
 
 // MARK: - Actions
+//
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
         handlePublishButtonTapped(secondaryPublishTapped: false)
@@ -698,6 +700,7 @@ extension AztecPostViewController {
 
 
 // MARK: - Private Helpers
+//
 private extension AztecPostViewController {
 
     func displayBlogSelector() {
@@ -790,8 +793,8 @@ private extension AztecPostViewController {
 }
 
 
-
 // MARK: - PostEditorStateContextDelegate & support methods
+//
 extension AztecPostViewController: PostEditorStateContextDelegate {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(AbstractPost.status) {
@@ -851,6 +854,7 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
 
 
 // MARK: - UITextViewDelegate methods
+//
 extension AztecPostViewController : UITextViewDelegate {
     func textViewDidChangeSelection(_ textView: UITextView) {
         updateFormatBar()
@@ -863,6 +867,7 @@ extension AztecPostViewController : UITextViewDelegate {
 
 
 // MARK: - UITextFieldDelegate methods
+//
 extension AztecPostViewController : UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         mapUIContentToPostAndSave()
@@ -871,6 +876,7 @@ extension AztecPostViewController : UITextFieldDelegate {
 
 
 // MARK: - HTML Mode Switch methods
+//
 extension AztecPostViewController {
     enum EditionMode {
         case richText
@@ -905,7 +911,9 @@ extension AztecPostViewController {
     }
 }
 
+
 // MARK: - FormatBarDelegate Conformance
+//
 extension AztecPostViewController : Aztec.FormatBarDelegate {
 
     func handleActionForIdentifier(_ identifier: FormattingIdentifier) {
@@ -1160,12 +1168,16 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
 
 // MARK: - UINavigationControllerDelegate Conformance
+//
 extension AztecPostViewController: UINavigationControllerDelegate {
 
 }
 
+
 // MARK: - Cancel/Dismiss/Persistence Logic
+//
 fileprivate extension AztecPostViewController {
+
     // TODO: Rip this out and put it into the PostService
     func createRevisionOfPost() {
         guard let context = post.managedObjectContext else {
@@ -1289,6 +1301,7 @@ fileprivate extension AztecPostViewController {
 
 
 // MARK: - Computed Properties
+//
 private extension AztecPostViewController {
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
@@ -1306,6 +1319,7 @@ private extension AztecPostViewController {
 
 
 // MARK: - Media Support
+//
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
         mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
@@ -1509,14 +1523,19 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 }
 
-extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 
+// AztecAttachmentViewController Delegate Conformance
+//
+extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 
     func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: TextAttachment) {
         richTextView.update(attachment: changedAttachment, alignment: changedAttachment.alignment, size: changedAttachment.size, url: changedAttachment.url!)
     }
 }
 
+
+// MARK: - TextViewMedia Delegate Conformance
+//
 extension AztecPostViewController: TextViewMediaDelegate {
 
     func textView(_ textView: TextView, imageAtUrl url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) -> UIImage {
@@ -1574,6 +1593,9 @@ extension AztecPostViewController: TextViewMediaDelegate {
     }
 }
 
+
+// MARK: - MediaPickerViewController Delegate Conformance
+//
 extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
@@ -1604,6 +1626,9 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 }
 
+
+// MARK: - Gesture Recognizer Delegate Conformance
+//
 extension AztecPostViewController: UIGestureRecognizerDelegate {
 
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -1698,6 +1723,7 @@ extension AztecPostViewController: UIViewControllerRestoration {
 
 
 // MARK: - Constants
+//
 extension AztecPostViewController {
 
     struct Assets {
@@ -1769,6 +1795,9 @@ extension AztecPostViewController {
     }
 }
 
+
+// MARK: - Media Progress Coordinator Delegate
+//
 protocol MediaProgressCoordinatorDelegate: class {
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float)
@@ -1776,6 +1805,9 @@ protocol MediaProgressCoordinatorDelegate: class {
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator)
 }
 
+
+// MARK: - Media Progress Coordinator
+//
 class MediaProgressCoordinator: NSObject {
 
     enum ProgressMediaKeys: String {
