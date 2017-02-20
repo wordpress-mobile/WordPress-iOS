@@ -1750,7 +1750,7 @@ extension AztecPostViewController {
     }
 
     struct Colors {
-        static let aztecBackground          = Colors.aztecBackground
+        static let aztecBackground          = UIColor.clear
         static let title                    = WPStyleGuide.grey()
         static let separator                = WPStyleGuide.greyLighten30()
         static let placeholder              = WPStyleGuide.grey()
