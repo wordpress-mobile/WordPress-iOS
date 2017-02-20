@@ -4,7 +4,9 @@ This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
 ## WordPress56
-- @elibud 2011-02-02
+- @koke 2017-02-10
+- `Account` added `emailVerified` property.
+- @elibud 2017-02-02
 - `Post` added optional `disabledPublicizeConnections` transformable property.
 - `Post` added optional `publicizeMessage` and `publicizeMessageID` string properties.
 
