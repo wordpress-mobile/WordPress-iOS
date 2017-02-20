@@ -601,10 +601,7 @@ extension AztecPostViewController {
     private func handlePublishButtonTapped(secondaryPublishTapped: Bool) {
         // Cancel publishing if media is currently being uploaded
         if mediaProgressCoordinator.isRunning {
-            let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
-            alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
-            present(alertController, animated: true, completion: nil)
-
+            displayMediaIsUploadingAlert()
             return
         }
 
@@ -766,6 +763,12 @@ private extension AztecPostViewController {
         let previewController = PostPreviewViewController(post: post)
         previewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(previewController, animated: true)
+    }
+
+    func displayMediaIsUploadingAlert() {
+        let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
+        present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -1082,6 +1085,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func toggleEditingMode() {
+        if mediaProgressCoordinator.isRunning {
+            displayMediaIsUploadingAlert()
+            return
+        }
         mode.toggle()
     }
 
