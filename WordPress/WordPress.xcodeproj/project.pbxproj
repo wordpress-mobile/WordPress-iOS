@@ -699,6 +699,7 @@
 		E19A10CA1B010AA0006192B0 /* WPURLRequestTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E19A10C91B010AA0006192B0 /* WPURLRequestTest.m */; };
 		E19B17AE1E5C6944007517C6 /* BasePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19B17AD1E5C6944007517C6 /* BasePost.swift */; };
 		E19B17B01E5C69A5007517C6 /* NSManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19B17AF1E5C69A5007517C6 /* NSManagedObject.swift */; };
+		E19B17B21E5C8F36007517C6 /* AbstractPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19B17B11E5C8F36007517C6 /* AbstractPost.swift */; };
 		E19DF741141F7BDD000002F3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E19DF740141F7BDD000002F3 /* libz.dylib */; };
 		E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A03EE117422DCE0085D192 /* BlogToAccount.m */; };
 		E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A03F47174283E00085D192 /* BlogToJetpackAccount.m */; };
@@ -2069,6 +2070,7 @@
 		E19A10C91B010AA0006192B0 /* WPURLRequestTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPURLRequestTest.m; sourceTree = "<group>"; };
 		E19B17AD1E5C6944007517C6 /* BasePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePost.swift; sourceTree = "<group>"; };
 		E19B17AF1E5C69A5007517C6 /* NSManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObject.swift; sourceTree = "<group>"; };
+		E19B17B11E5C8F36007517C6 /* AbstractPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractPost.swift; sourceTree = "<group>"; };
 		E19BF8F913CC69E7004753FE /* WordPress 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 3.xcdatamodel"; sourceTree = "<group>"; };
 		E19DF740141F7BDD000002F3 /* libz.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		E1A03EE017422DCD0085D192 /* BlogToAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogToAccount.h; sourceTree = "<group>"; };
@@ -2879,6 +2881,7 @@
 				B5176CBF1CDCE14F0083CF2D /* People Management */,
 				5D42A3D6175E7452005CFF05 /* AbstractPost.h */,
 				5D42A3D7175E7452005CFF05 /* AbstractPost.m */,
+				E19B17B11E5C8F36007517C6 /* AbstractPost.swift */,
 				5D42A3D8175E7452005CFF05 /* BasePost.h */,
 				5D42A3D9175E7452005CFF05 /* BasePost.m */,
 				E19B17AD1E5C6944007517C6 /* BasePost.swift */,
@@ -6467,6 +6470,7 @@
 				FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */,
 				B52D29A51B66BEB70010BD3D /* RemoteNotificationSettings.swift in Sources */,
 				5DF7F7741B22337C003A05C8 /* WordPress-30-31.xcmappingmodel in Sources */,
+				E19B17B21E5C8F36007517C6 /* AbstractPost.swift in Sources */,
 				5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */,
 				E1C9AA511C10419200732665 /* Math.swift in Sources */,
 				FF3DD6BE19F2B6B3003A52CB /* RemoteMedia.m in Sources */,
