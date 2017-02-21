@@ -220,12 +220,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Table View Handling
 
     func sectionNameKeyPath() -> String {
-        switch sortField() {
-        case .dateCreated:
-            return NSStringFromSelector(#selector(Page.sectionIdentifierWithDateCreated))
-        case .dateModified:
-            return NSStringFromSelector(#selector(Page.sectionIdentifierWithDateModified))
-        }
+        let sortField = filterSettings.currentPostListFilter().sortField
+        return Page.sectionIdentifier(dateKeyPath: sortField.keyPath)
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
