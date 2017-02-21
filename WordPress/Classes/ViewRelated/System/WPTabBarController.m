@@ -464,6 +464,12 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     }
 }
 
+- (void)switchMySitesTabToAddNewSite
+{
+    [self showTabForIndex:WPTabMySites];
+    [self.blogListViewController presentInterfaceForAddingNewSite];
+}
+
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
 {
     [self switchMySitesTabToBlogDetailsForBlog:blog];
