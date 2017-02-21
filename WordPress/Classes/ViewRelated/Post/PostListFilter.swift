@@ -25,6 +25,29 @@ import Foundation
         self.title = title
     }
 
+    var sortField: AbstractPost.SortField {
+        switch filterType {
+        case .draft:
+            return .dateModified
+        default:
+            return .dateCreated
+        }
+    }
+
+    var sortAscending: Bool {
+        switch filterType {
+        case .scheduled:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var sortDescriptors: [NSSortDescriptor] {
+        let dateDescriptor = NSSortDescriptor(key: sortField.keyPath, ascending: sortAscending)
+        return [dateDescriptor]
+    }
+
     class func postListFilters() -> [PostListFilter] {
         return [publishedFilter(), draftFilter(), scheduledFilter(), trashedFilter()]
     }
