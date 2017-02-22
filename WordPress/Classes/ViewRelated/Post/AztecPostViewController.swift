@@ -581,7 +581,7 @@ extension AztecPostViewController {
 
         // Button: Save Draft/Update Draft
         if post.hasLocalChanges() {
-            if post.hasRemote() {
+            if !post.hasRemote() {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
                     self.post.status = PostStatusDraft
