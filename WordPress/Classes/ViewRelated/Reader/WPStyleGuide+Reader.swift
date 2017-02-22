@@ -329,10 +329,10 @@ extension WPStyleGuide {
 
     public struct Cards {
         public static let defaultLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 6.0 : 3.0
-        public static let titleFontSize: CGFloat = WPDeviceIdentification.isiPad() ? 28.0 : 18.0
-        public static let titleLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 4.0 : 2.0
-        public static let contentFontSize: CGFloat = 16.0
-        public static let contentLineSpacing: CGFloat = 6.5
+        public static let titleFontSize: CGFloat = WPDeviceIdentification.isiPad() ? 24.0 : 18.0
+        public static let titleLineSpacing: CGFloat = WPDeviceIdentification.isiPad() ? 0.0 : 0.0
+        public static let contentFontSize: CGFloat = 15.0
+        public static let contentLineSpacing: CGFloat = 4
         public static let buttonFontSize: CGFloat = 14.0
         public static let subtextFontSize: CGFloat = 12.0
         public static let loadMoreButtonFontSize: CGFloat = 15.0
@@ -342,8 +342,8 @@ extension WPStyleGuide {
     }
 
     public struct Detail {
-        public static let titleFontSize: CGFloat = WPDeviceIdentification.isiPad() ? 36.0 : 28.0
-        public static let titleLineHeight: CGFloat = WPDeviceIdentification.isiPad() ? 45.0 : 35.0
+        public static let titleFontSize: CGFloat = WPDeviceIdentification.isiPad() ? 36.0 : 26.0
+        public static let titleLineHeight: CGFloat = WPDeviceIdentification.isiPad() ? 46.0 : 34.0
         public static let contentFontSize: CGFloat = 16.0
         public static let contentLineHeight: CGFloat = 27.0
     }
