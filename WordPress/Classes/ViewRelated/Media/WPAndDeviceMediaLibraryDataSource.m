@@ -102,8 +102,10 @@
         }
     }];
     id<NSObject> secondKey = [self.mediaLibraryDataSource registerChangeObserverBlock:^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray<id<WPMediaMove>> *moved) {
-        if (callback) {
-            callback(incrementalChanges, removed, inserted, changed, moved);
+        if (weakSelf.currentDataSource == weakSelf.mediaLibraryDataSource) {
+            if (callback) {
+                callback(incrementalChanges, removed, inserted, changed, moved);
+            }
         }
     }];
     
