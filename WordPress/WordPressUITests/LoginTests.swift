@@ -36,6 +36,8 @@ class LoginTests: XCTestCase {
 
         app.buttons["Log In"].tap()
 
+        // TODO: this will be broken now as this text has been removed from the error.
+        // however, since all UI tests are currently broken, this is staying as-is for now.
         self.waitForElementToAppear(app.staticTexts["Sorry, we can't log you in."])
 
         app.buttons["OK"].tap()
