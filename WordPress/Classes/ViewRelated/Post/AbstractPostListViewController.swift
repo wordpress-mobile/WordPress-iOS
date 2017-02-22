@@ -378,10 +378,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        let sortDescriptorLocal = NSSortDescriptor(key: "metaIsLocal", ascending: false)
-        let sortDescriptorImmediately = NSSortDescriptor(key: "metaPublishImmediately", ascending: false)
-        let sortDescriptorDate = dateSortDescriptor()
-        return [sortDescriptorLocal, sortDescriptorImmediately, sortDescriptorDate]
+        return filterSettings.currentPostListFilter().sortDescriptors
     }
 
     func updateAndPerformFetchRequest() {
@@ -717,28 +714,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
     }
 
-    // MARK: - Sorting
-
-    enum SortField: String {
-        case dateCreated = "date_created_gmt"
-        case dateModified = "dateModified"
-    }
-
-    func sortField() -> SortField {
-        if filterSettings.currentPostListFilter().filterType == .draft {
-            return .dateModified
-        } else {
-            return .dateCreated
-        }
-    }
-
-    func dateSortDescriptor() -> NSSortDescriptor {
-        let field = sortField()
-        // Ascending only for scheduled posts/pages.
-        let ascending = filterSettings.currentPostListFilter().filterType == .scheduled
-
-        return NSSortDescriptor(key: field.rawValue, ascending: ascending)
-    }
 
     // MARK: - Searching
 
