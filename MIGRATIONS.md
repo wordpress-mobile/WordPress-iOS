@@ -3,18 +3,14 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 57
-- @jleandroperez 2017-02-21
-- `BasePost` removed `mt_text_more` property
-
-## WordPress 56
+## WordPress56
 - @koke 2017-02-10
 - `Account` added `emailVerified` property.
 - @elibud 2017-02-02
 - `Post` added optional `disabledPublicizeConnections` transformable property.
 - `Post` added optional `publicizeMessage` and `publicizeMessageID` string properties.
 
-## WordPress 55
+## WordPress55
 - @aerych 2016-12-21
 - `ReaderPost` renamed `preserveForRestoration` to "inUse"
 - `ReaderAbstractTopic` renamed `preserveForRestoration` to "inUse"
