@@ -28,11 +28,6 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
             refreshSeparators()
         }
     }
-    var isRepliedComment: Bool = false {
-        didSet {
-            refreshSeparators()
-        }
-    }
     var name: String? {
         set {
             titleLabel.text  = newValue
@@ -93,11 +88,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
         separatorsView.leftColor = Style.blockUnapprovedSideColor
 
         // Bottom Separator
-        var bottomInsets = separatorUnapprovedInsets
-        if isApproved {
-            bottomInsets = isRepliedComment ? separatorRepliedInsets : separatorApprovedInsets
-        }
-
+        let bottomInsets = isApproved ? readableSeparatorInsets : separatorUnapprovedInsets
         separatorsView.bottomVisible = true
         separatorsView.bottomInsets = bottomInsets
         separatorsView.bottomColor = Style.blockSeparatorColorForComment(isApproved: isApproved)
@@ -152,9 +143,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
     }
 
     // MARK: - Private Constants
-    fileprivate let separatorApprovedInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
     fileprivate let separatorUnapprovedInsets = UIEdgeInsets.zero
-    fileprivate let separatorRepliedInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
 
     // MARK: - IBOutlets
     @IBOutlet fileprivate weak var actionsView: UIView!
