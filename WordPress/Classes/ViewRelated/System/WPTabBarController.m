@@ -25,6 +25,7 @@ static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListSplitViewRestorationID = @"WPBlogListSplitViewRestorationID";
 static NSString * const WPReaderSplitViewRestorationID = @"WPReaderSplitViewRestorationID";
 static NSString * const WPMeSplitViewRestorationID = @"WPMeSplitViewRestorationID";
+static NSString * const WPNotificationsSplitViewRestorationID = @"WPNotificationsSplitViewRestorationID";
 
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
@@ -68,6 +69,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) WPSplitViewController *blogListSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *readerSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *meSplitViewController;
+@property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
 
 @property (nonatomic, strong) UIView *notificationBadgeIconView;
 
@@ -113,7 +115,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                    self.readerSplitViewController,
                                    self.newPostViewController,
                                    self.meSplitViewController,
-                                   self.notificationsNavigationController]];
+                                   self.notificationsSplitViewController]];
 
         [self setSelectedViewController:self.blogListSplitViewController];
 
@@ -370,6 +372,22 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return _meSplitViewController;
 }
 
+- (UISplitViewController *)notificationsSplitViewController
+{
+    if (!_notificationsSplitViewController) {
+        _notificationsSplitViewController = [WPSplitViewController new];
+        _notificationsSplitViewController.restorationIdentifier = WPNotificationsSplitViewRestorationID;
+        _notificationsSplitViewController.fullscreenDisplayEnabled = NO;
+        _notificationsSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthDefault;
+
+        [_notificationsSplitViewController setInitialPrimaryViewController:self.notificationsNavigationController];
+
+        _notificationsSplitViewController.tabBarItem = self.notificationsNavigationController.tabBarItem;
+    }
+
+    return _notificationsSplitViewController;
+}
+
 - (void)reloadSplitViewControllers
 {
     _blogListNavigationController = nil;
@@ -378,12 +396,15 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _readerMenuViewController = nil;
     _readerSplitViewController = nil;
     _meSplitViewController = nil;
+    _notificationsNavigationController = nil;
+    _notificationsSplitViewController = nil;
 
     [self setViewControllers:@[self.blogListSplitViewController,
                                self.readerSplitViewController,
                                self.newPostViewController,
                                self.meSplitViewController,
-                               self.notificationsNavigationController]];
+                               self.notificationsSplitViewController]];
+
     // Reset the selectedIndex to the default MySites tab.
     self.selectedIndex = WPTabMySites;
 }

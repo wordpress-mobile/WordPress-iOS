@@ -888,7 +888,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (void)validateLoginCredentials
 {
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"")];
 
     NSURL *xmlRpcURL = [NSURL URLWithString:self.blog.xmlrpc];
     WordPressOrgXMLRPCApi *api = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlRpcURL userAgent:[WPUserAgent wordPressUserAgent]];

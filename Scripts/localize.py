@@ -120,29 +120,37 @@ def merge(merged_fname, old_fname, new_fname):
 
 STRINGS_FILE = 'Localizable.strings'
 
-def localize(path):
+def localize(path, language, include_pods):
     if "Scripts" in path:
         print "Must run script from the root folder"
         quit()
 
     os.chdir(path)
-    resources_path = os.path.join(path, 'Resources')
-    language = os.path.join(resources_path, 'en.lproj')
+    language = os.path.join(path, language)
 
     original = merged = language + os.path.sep + STRINGS_FILE
     old = original + '.old'
     new = original + '.new'
 
+    if include_pods:
+        find_cmd = 'find . ../Pods/WordPress* ../Pods/WPMediaPicker -name "*.m" -o -name "*.swift" | grep -v Vendor'
+    else:
+        find_cmd = 'find . -name "*.m" -o -name "*.swift" | grep -v Vendor'
+    filelist = os.popen(find_cmd).read().replace("\n", " ")
+
     if os.path.isfile(original):
         os.rename(original, old)
-        os.system('genstrings -q -o "%s" `find . ../Pods/WordPress* ../Pods/WPMediaPicker -name "*.m" -o -name "*.swift" | grep -v Vendor`' % language)
+        os.system('genstrings -q -o "%s" %s' % (language, filelist))
         os.rename(original, new)
         merge(merged, old, new)
         os.remove(new)
         os.remove(old)
     else:
-        os.system('genstrings -q -o "%s" `find . -name "*.m" -o -name "*.swift"` | grep -v Vendor' % language)
+        os.system('genstrings -q -o "%s" %s' % (language, filelist))
 
 if __name__ == '__main__':
-    localize(os.path.join(os.getcwd(), 'WordPress'))
+    basedir = os.getcwd()
+    localize(os.path.join(basedir, 'WordPress'), 'Resources/en.lproj', True)
+    localize(os.path.join(basedir, 'WordPress', 'WordPressTodayWidget'), 'Base.lproj', False)
+    localize(os.path.join(basedir, 'WordPress', 'WordPressShareExtension'), 'Base.lproj', False)
 

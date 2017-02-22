@@ -29,10 +29,16 @@ class AztecPostViewController: UIViewController {
         toolbar.formatter = self
 
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
-        recognizer.cancelsTouchesInView = false
+        recognizer.cancelsTouchesInView = true
+        recognizer.delaysTouchesBegan = true
+        recognizer.delaysTouchesEnded = true
         recognizer.delegate = self
-
         tv.addGestureRecognizer(recognizer)
+        for gesture in tv.gestureRecognizers ?? [] {
+            if let otherTapGesture = gesture as? UITapGestureRecognizer, otherTapGesture != recognizer {
+                otherTapGesture.require(toFail: recognizer)
+            }
+        }
 
         return tv
     }()
@@ -44,7 +50,7 @@ class AztecPostViewController: UIViewController {
         let tv = UITextView()
 
         let toolbar = self.createToolbar(htmlMode: true)
-        let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
+        let accessibilityLabel = NSLocalizedString("HTML", comment: "Accessibility label for HTML button on formatting toolbar.")
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         toolbar.formatter = self
         tv.isHidden = true
@@ -56,12 +62,12 @@ class AztecPostViewController: UIViewController {
     /// Title's TextField
     ///
     fileprivate(set) lazy var titleTextField: UITextField = {
-        let placeholderText = NSLocalizedString("Post title", comment: "Placeholder for the post title.")
+        let placeholderText = NSLocalizedString("Title", comment: "Placeholder for the post title.")
         let tf = UITextField()
 
         tf.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
-                                                      attributes: [NSForegroundColorAttributeName: WPStyleGuide.greyLighten30()])
+                                                      attributes: [NSForegroundColorAttributeName: WPStyleGuide.grey()])
         tf.delegate = self
         tf.font = WPFontManager.notoBoldFont(ofSize: 24.0)
         tf.returnKeyType = .next
@@ -167,6 +173,7 @@ class AztecPostViewController: UIViewController {
         }
     }
 
+
     /// Post being currently edited
     ///
     fileprivate(set) var post: AbstractPost {
@@ -196,6 +203,8 @@ class AztecPostViewController: UIViewController {
     }()
 
 
+    /// Media Progress Coordinator
+    ///
     fileprivate lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
@@ -203,6 +212,8 @@ class AztecPostViewController: UIViewController {
     }()
 
 
+    /// Media Progress View
+    ///
     fileprivate lazy var mediaProgressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.backgroundColor = WPStyleGuide.wordPressBlue()
@@ -212,17 +223,26 @@ class AztecPostViewController: UIViewController {
         return progressView
     }()
 
+
+    /// Selected Text Attachment
+    ///
     fileprivate var currentSelectedAttachment: TextAttachment?
+
+
+    /// Last Interface Element that was a First Responder
+    ///
+    fileprivate var lastFirstResponder: UIView?
+
 
     /// Maintainer of state for editor - like for post button
     ///
     fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
-        var originalPostStatus: PostStatus? = nil
+        var originalPostStatus: BasePost.Status? = nil
 
         if let originalPost = self.post.original,
             let postStatus = originalPost.status,
             originalPost.hasRemote() {
-            originalPostStatus = PostStatus(rawValue: postStatus)
+            originalPostStatus = postStatus
         }
 
         // TODO: Determine if user can actually publish to site or not
@@ -230,6 +250,7 @@ class AztecPostViewController: UIViewController {
 
         return context
     }()
+
 
 
     // MARK: - Lifecycle Methods
@@ -283,11 +304,14 @@ class AztecPostViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // We can only configure the dismiss button, when we know the way this VC will be presented
         configureDismissButton()
-
-        // Wire Notification Listeners!
         startListeningToNotifications()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        restoreFirstResponder()
     }
 
 
@@ -295,6 +319,7 @@ class AztecPostViewController: UIViewController {
         super.viewWillDisappear(animated)
 
         stopListeningToNotifications()
+        rememberFirstResponder()
     }
 
 
@@ -310,6 +335,7 @@ class AztecPostViewController: UIViewController {
         //    [self.titleToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
 
     }
+
 
     // MARK: - Configuration Methods
 
@@ -401,6 +427,15 @@ class AztecPostViewController: UIViewController {
         notificationCenter.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
 
+    func rememberFirstResponder() {
+        lastFirstResponder = view.findFirstResponder()
+    }
+
+    func restoreFirstResponder() {
+        let nextFirstResponder = lastFirstResponder ?? titleTextField
+        nextFirstResponder.becomeFirstResponder()
+    }
+
     func refreshInterface() {
         reloadBlogPickerButton()
         reloadEditorContents()
@@ -484,6 +519,27 @@ class AztecPostViewController: UIViewController {
 }
 
 
+// MARK: - SDK Workarounds!
+//
+extension AztecPostViewController {
+
+    /// Note:
+    /// When presenting an UIAlertController using a navigationBarButton as a source, the entire navigationBar
+    /// gets set as a passthru view, allowing invalid scenarios, such as: pressing the Dismiss Button, while there's
+    /// an ActionSheet onscreen.
+    ///
+    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.present(viewControllerToPresent, animated: flag) {
+            if let alert = viewControllerToPresent as? UIAlertController, alert.preferredStyle == .actionSheet {
+                alert.popoverPresentationController?.passthroughViews = nil
+            }
+
+            completion?()
+        }
+    }
+}
+
+
 // MARK: - Actions
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
@@ -493,9 +549,9 @@ extension AztecPostViewController {
     @IBAction func secondaryPublishButtonTapped() {
         let publishPostClosure = {
             if self.postEditorStateContext.secondaryPublishButtonAction == .save {
-                self.post.status = PostStatusDraft
+                self.post.status = .draft
             } else if self.postEditorStateContext.secondaryPublishButtonAction == .publish {
-                self.post.status = PostStatusPublish
+                self.post.status = .publish
             }
 
             self.handlePublishButtonTapped(secondaryPublishTapped: true)
@@ -527,10 +583,10 @@ extension AztecPostViewController {
             if post.hasRemote() {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
-                    self.post.status = PostStatusDraft
+                    self.post.status = .draft
                     self.handlePublishButtonTapped(secondaryPublishTapped: false)
                 }
-            } else if post.status == PostStatusDraft {
+            } else if post.status == .draft {
                 // The post was already a draft
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
                     self.handlePublishButtonTapped(secondaryPublishTapped: false)
@@ -565,8 +621,8 @@ extension AztecPostViewController {
             present(alertController, animated: true, completion: nil)
             return
         }
-
-        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText, maskType: .clear)
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
         postEditorStateContext.updated(isBeingPublished: true)
 
         // Finally, publish the post.
@@ -574,16 +630,19 @@ extension AztecPostViewController {
             self.postEditorStateContext.updated(isBeingPublished: false)
             SVProgressHUD.dismiss()
 
+            let generator = UINotificationFeedbackGenerator()
+            generator.prepare()
+
             if let error = error {
                 DDLogSwift.logError("Error publishing post: \(error.localizedDescription)")
 
                 SVProgressHUD.showError(withStatus: self.postEditorStateContext.publishErrorText)
-                WPNotificationFeedbackGenerator.notificationOccurred(.error)
+                generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
                 // TODO: Determine if this is necessary; if it is then ensure state machine is updated
                 self.post = uploadedPost
 
-                WPNotificationFeedbackGenerator.notificationOccurred(.success)
+                generator.notificationOccurred(.success)
             }
 
             // Don't dismiss - make draft now in secondary publish
@@ -685,7 +744,6 @@ private extension AztecPostViewController {
         alert.addCancelActionWithTitle(MoreSheetAlert.cancelTitle)
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
-        view.endEditing(true)
         present(alert, animated: true, completion: nil)
     }
 
@@ -719,9 +777,9 @@ private extension AztecPostViewController {
 // MARK: - PostEditorStateContextDelegate & support methods
 extension AztecPostViewController: PostEditorStateContextDelegate {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(AbstractPost.status) {
+        if keyPath == BasePost.statusKeyPath {
             if let status = post.status {
-                postEditorStateContext.updated(postStatus: PostStatus(rawValue: status) ?? .draft)
+                postEditorStateContext.updated(postStatus: status)
             }
             return
         } else if keyPath == #keyPath(AbstractPost.dateCreated) {
@@ -762,13 +820,13 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
     }
 
     internal func addObservers(toPost: AbstractPost) {
-        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.status), options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: AbstractPost.statusKeyPath, options: [], context: nil)
         toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated), options: [], context: nil)
         toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.content), options: [], context: nil)
     }
 
     internal func removeObservers(fromPost: AbstractPost) {
-        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.status))
+        fromPost.removeObserver(self, forKeyPath: AbstractPost.statusKeyPath)
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated))
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
     }
@@ -1153,10 +1211,6 @@ fileprivate extension AztecPostViewController {
     }
 
     func stopEditing() {
-        if titleTextField.isFirstResponder {
-            titleTextField.resignFirstResponder()
-        }
-
         view.endEditing(true)
     }
 
@@ -1539,6 +1593,21 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
         return true
     }
 
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        let locationInTextView = gestureRecognizer.location(in: richTextView)
+        // check if we have an attachment in the position we tapped
+        guard richTextView.attachmentAtPoint(locationInTextView) != nil else {
+            // if we have a current selected attachment marked lets unmark it
+            if let selectedAttachment = currentSelectedAttachment {
+                selectedAttachment.message = nil
+                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+                currentSelectedAttachment = nil
+            }
+            return false
+        }
+        return true
+    }
+
     func richTextViewWasPressed(_ recognizer: UIGestureRecognizer) {
         guard recognizer.state == .recognized else {
             return
@@ -1554,8 +1623,6 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
             }
             return
         }
-        // move the selection to the position of the attachment
-        richTextView.moveSelectionToPoint(locationInTextView)
 
         //check if it's the current selected attachment or an failed upload
         if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {

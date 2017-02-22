@@ -18,6 +18,7 @@
 @property (nonatomic, strong)   NSDate      *dateCreated;
 @property (nonatomic, strong)   NSString    *email;
 @property (nonatomic, strong)   NSString    *displayName;
+@property (nonatomic, strong)   NSNumber    *emailVerified;
 @property (nonatomic, strong)   NSSet<Blog *>       *blogs;
 @property (nonatomic, strong)   NSSet<Blog *>       *jetpackBlogs;
 @property (nonatomic, readonly) NSArray<Blog *>     *visibleBlogs;
@@ -38,6 +39,11 @@
  A WordPressRestComApi object if the account is a WordPress.com account. Otherwise, it returns `nil`
  */
 @property (nonatomic, readonly) WordPressComRestApi *wordPressComRestApi;
+
+/**
+ A string with the email verification status. Can be "verified", "unverified", or "unknown".
+ */
+- (NSString *)verificationStatus;
 
 @end
 
