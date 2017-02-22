@@ -259,7 +259,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
 
-        if page.remoteStatus != AbstractPostRemoteStatusPushing && page.status != PostStatusTrash {
+        if page.remoteStatus != AbstractPostRemoteStatusPushing && page.status != .trash {
             editPage(page)
         }
     }
@@ -402,7 +402,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
         let previousStatus = apost.status
-        apost.status = PostStatusDraft
+        apost.status = .draft
 
         let contextManager = ContextManager.sharedInstance()
         let postService = PostService(managedObjectContext: contextManager.mainContext)
