@@ -130,7 +130,7 @@
 
 + (NSDictionary *)postCardSnippetAttributes
 {
-    CGFloat fontSize = [UIDevice isPad] ? 16.0 : 14.0;
+    CGFloat fontSize = [UIDevice isPad] ? 16.0 : 15.0;
     CGFloat lineHeight = [UIDevice isPad] ? 26.0 : 22.0;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
