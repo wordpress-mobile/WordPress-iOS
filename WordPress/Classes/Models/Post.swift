@@ -143,7 +143,7 @@ class Post: AbstractPost {
     // MARK: - Sharing
 
     func canEditPublicizeSettings() -> Bool {
-        return !self.hasRemote() || self.status != PostStatusPublish
+        return !self.hasRemote() || self.status != .publish
     }
 
     // MARK: - PublicizeConnections
@@ -265,7 +265,7 @@ class Post: AbstractPost {
     override func statusForDisplay() -> String? {
         var statusString: String?
 
-        if status != PostStatusPublish && status != PostStatusDraft {
+        if status != .publish && status != .draft {
             statusString = statusTitle as String?
         }
 

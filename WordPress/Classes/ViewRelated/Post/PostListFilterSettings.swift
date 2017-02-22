@@ -33,12 +33,12 @@ class PostListFilterSettings: NSObject {
         return allPostListFilters!
     }
 
-    func filterThatDisplaysPostsWithStatus(_ postStatus: String) -> PostListFilter {
+    func filterThatDisplaysPostsWithStatus(_ postStatus: BasePost.Status) -> PostListFilter {
         let index = indexOfFilterThatDisplaysPostsWithStatus(postStatus)
         return availablePostListFilters()[index]
     }
 
-    func indexOfFilterThatDisplaysPostsWithStatus(_ postStatus: String) -> Int {
+    func indexOfFilterThatDisplaysPostsWithStatus(_ postStatus: BasePost.Status) -> Int {
         var index = 0
         var found = false
 
@@ -68,7 +68,7 @@ class PostListFilterSettings: NSObject {
         }
     }
 
-    func setFilterWithPostStatus(_ status: String) {
+    func setFilterWithPostStatus(_ status: BasePost.Status) {
         let index = indexOfFilterThatDisplaysPostsWithStatus(status)
         self.setCurrentFilterIndex(index)
 
