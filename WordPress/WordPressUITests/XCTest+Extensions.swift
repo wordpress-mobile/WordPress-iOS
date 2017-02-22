@@ -46,6 +46,11 @@ extension XCTestCase {
         }
     }
 
+    private func isIpad(app: XCUIApplication) -> Bool {
+        return app.windows.element(boundBy: 0).horizontalSizeClass == .regular && app.windows.element(boundBy: 0).verticalSizeClass == .regular
+    }
+
+
     // Need to add attempt to sign out of self-hosted as well
     public func logoutIfNeeded() {
         let app = XCUIApplication()
@@ -92,14 +97,25 @@ extension XCTestCase {
     public func logoutSelfHosted() {
         let app = XCUIApplication()
 
+        let removeButton = app.tables.cells[ elementStringIDs.removeSiteButton ]
+        let mySitesTabButton = app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ]
+        let siteNameField = app.tables.staticTexts[ WordPressTestCredentials.selfHostedSiteName ]
+        let settingsButton = app.tables.cells[ elementStringIDs.settingsButton ]
+
         // Tap the My Sites button twice to be sure that we're on the All Sites list
-        app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ].tap()
-        app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ].tap()
+        mySitesTabButton.tap()
+        mySitesTabButton.tap()
 
-        app.tables.staticTexts[ WordPressTestCredentials.selfHostedSiteName ].tap()
+        siteNameField.tap()
+        settingsButton.tap()
 
-        app.tables.cells[ elementStringIDs.settingsButton ].tap()
-        app.tables.cells[ elementStringIDs.removeSiteButton ].tap()
-        app.sheets.buttons.element(boundBy: 0).tap()
+        waitForElementToAppear(element: removeButton)
+        removeButton.tap()
+
+        if ( isIpad(app: app) ) {
+            app.alerts.buttons.element(boundBy: 1).tap()
+        } else {
+            app.sheets.buttons.element(boundBy: 0).tap()
+        }
     }
 }
