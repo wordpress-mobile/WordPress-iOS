@@ -410,7 +410,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     // Ignore taps on the post tab and instead show the modal.
-    if ([blogService blogCountVisibleForAllAccounts] == 0) {
+    if ([blogService blogCountForAllAccounts] == 0) {
         [self switchMySitesTabToAddNewSite];
     } else {
         [self showPostTabAnimated:true toMedia:false];
