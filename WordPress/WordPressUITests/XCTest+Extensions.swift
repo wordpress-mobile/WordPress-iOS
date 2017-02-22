@@ -1,61 +1,106 @@
 import XCTest
 
+public struct elementStringIDs {
+    // General
+    static var mainNavigationBar = "Main Navigation"
+    static var mainNavigationMeButton = "meTabButton"
+    static var mainNavigationMySitesButton = "mySitesTabButton"
+
+    // Login page
+    static var loginUsernameField = "usernameField"
+    static var loginPasswordField = "passwordField"
+    static var loginNextButton = "nextButton"
+    static var loginSubmitButton = "submitButton"
+    static var addSelfHostedButton = "addSelfHostedButton"
+    static var selfHostedURLField = "selfHostedURL"
+
+    // Signup page
+    static var nuxUsernameField = "nuxUsernameField"
+
+    // My Sites page
+    static var settingsButton = "BlogDetailsSettingsCell"
+
+    // Site Settings page
+    static var removeSiteButton = "removeSiteButton"
+
+    // Me tab
+    static var disconnectFromWPcomButton = "disconnectFromWPcomButton"
+}
+
 extension XCTestCase {
 
      public func waitForElementToAppear(element: XCUIElement,
-                                        file: String = #file, line: UInt = #line) {
+                                        file: String = #file, line: UInt = #line, timeout: Int? = nil) {
         let existsPredicate = NSPredicate(format: "exists == true")
-        expectationForPredicate(existsPredicate,
-                                evaluatedWithObject: element, handler: nil)
+        expectation(for: existsPredicate,
+                    evaluatedWith: element, handler: nil)
 
-        waitForExpectationsWithTimeout(5) { (error) -> Void in
+        let timeoutValue = timeout ?? 5
+
+        waitForExpectations(timeout: TimeInterval(timeoutValue)) { (error) -> Void in
             if (error != nil) {
-                let message = "Failed to find \(element) after 5 seconds."
-                self.recordFailureWithDescription(message,
+                let message = "Failed to find \(element) after \(timeoutValue) seconds."
+                self.recordFailure(withDescription: message,
                                                   inFile: file, atLine: line, expected: true)
             }
         }
     }
 
+    // Need to add attempt to sign out of self-hosted as well
     public func logoutIfNeeded() {
         let app = XCUIApplication()
-        if !app.textFields["Username / Email"].exists && !app.textFields["Username"].exists {
-            app.tabBars["Main Navigation"].buttons["Me"].tap()
-            app.tables.elementBoundByIndex(0).swipeUp()
-            app.tables.cells.staticTexts["Disconnect from WordPress.com"].tap()
-            app.alerts.buttons["Disconnect"].tap()
+        if !app.textFields[ elementStringIDs.loginUsernameField ].exists && !app.textFields[ elementStringIDs.nuxUsernameField ].exists {
+            app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMeButton ].tap()
+            app.tables.element(boundBy: 0).swipeUp()
+            app.tables.cells[ elementStringIDs.disconnectFromWPcomButton ].tap()
+            app.alerts.buttons.element(boundBy: 1).tap()
             //Give some time to everything get proper saved.
             sleep(2)
         }
     }
 
-    public func login() {
+    public func simpleLogin(username: String, password: String) {
         let app = XCUIApplication()
-        let usernameEmailTextField =  app.textFields["Username / Email"]
-        usernameEmailTextField.tap()
-        usernameEmailTextField.typeText(WordPressTestCredentials.oneStepUser)
 
-        let passwordSecureTextField = app.secureTextFields["Password"]
+        let emailOrUsernameTextField = app.textFields[ elementStringIDs.loginUsernameField ]
+        emailOrUsernameTextField.tap()
+        emailOrUsernameTextField.typeText( username )
+
+        let nextButton = app.buttons[ elementStringIDs.loginNextButton ]
+        if ( nextButton.exists ) {
+            nextButton.tap()
+        }
+
+        let passwordSecureTextField = app.secureTextFields[ elementStringIDs.loginPasswordField ]
         passwordSecureTextField.tap()
-        passwordSecureTextField.typeText(WordPressTestCredentials.oneStepPassword)
-
-        app.buttons["Log In"].tap()
-
-        self.waitForElementToAppear(app.tabBars["Main Navigation"])
+        passwordSecureTextField.typeText( password )
+        app.buttons[ elementStringIDs.loginSubmitButton ].tap()
     }
 
-    public func loginOther() {
+    public func loginSelfHosted(username: String, password: String, url: String) {
         let app = XCUIApplication()
-        let usernameEmailTextField =  app.textFields["Username / Email"]
-        usernameEmailTextField.tap()
-        usernameEmailTextField.typeText(WordPressTestCredentials.twoStepUser)
 
-        let passwordSecureTextField = app.secureTextFields["Password"]
-        passwordSecureTextField.tap()
-        passwordSecureTextField.typeText(WordPressTestCredentials.twoStepPassword)
+        app.buttons[ elementStringIDs.addSelfHostedButton ].tap()
 
-        app.buttons["Log In"].tap()
+        let selfHostedURLField = app.textFields[ elementStringIDs.selfHostedURLField ]
+        selfHostedURLField.tap()
+        selfHostedURLField.typeText( url )
 
-        self.waitForElementToAppear(app.tabBars["Main Navigation"])
+        simpleLogin( username: username, password: password )
+    }
+
+    public func logoutSelfHosted() {
+        let app = XCUIApplication()
+
+        // Tap the My Sites button twice to be sure that we're on the All Sites list
+        app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ].tap()
+        app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ].tap()
+
+        // Assuming we only have one site
+        app.tables.cells.element(boundBy: 0).tap()
+
+        app.tables.cells[ elementStringIDs.settingsButton ].tap()
+        app.tables.cells[ elementStringIDs.removeSiteButton ].tap()
+        app.sheets.buttons.element(boundBy: 0).tap()
     }
 }
