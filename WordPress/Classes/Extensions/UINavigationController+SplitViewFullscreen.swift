@@ -18,6 +18,12 @@ extension UINavigationController {
             return
         }
 
+        if let splitViewController = splitViewController as? WPSplitViewController,
+            splitViewController.fullscreenDisplayEnabled == false {
+            pushViewController(viewController, animated: animated)
+            return
+        }
+
         let performTransition = { (animated: Bool) in
             if !self.splitViewControllerIsHorizontallyCompact {
                 self.navigationBar.fadeOutNavigationItems(animated: animated)

@@ -454,16 +454,6 @@ int ddLogLevel = DDLogLevelInfo;
     [[PushNotificationsManager sharedInstance] handleNotification:userInfo completionHandler:completionHandler];
 }
 
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier
-                                        forRemoteNotification:(NSDictionary *)remoteNotification
-                                             withResponseInfo:(NSDictionary *)responseInfo
-                                            completionHandler:(void (^)())completionHandler
-{
-    NSString *responseText = responseInfo[UIUserNotificationActionResponseTypedTextKey];
-    [[InteractiveNotificationsManager sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification responseText:responseText];
-    completionHandler();
-}
-
 #pragma mark - Custom methods
 
 - (BOOL)isLoggedIn
@@ -725,8 +715,11 @@ int ddLogLevel = DDLogLevelInfo;
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
     NSString *currentLanguage = [languages objectAtIndex:0];
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSArray *blogs = [blogService blogsForAllAccounts];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *account = [accountService defaultWordPressComAccount];
     
     DDLogInfo(@"===========================================================================");
     DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle bundleForClass:[self class]] detailedVersionNumber]);
@@ -743,6 +736,11 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
     DDLogInfo(@"APN token: %@", [[PushNotificationsManager sharedInstance] deviceToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
+    NSString *verificationTag = @"";
+    if (account.verificationStatus) {
+        verificationTag = [NSString stringWithFormat:@" (%@)", account.verificationStatus];
+    }
+    DDLogInfo(@"wp.com account: %@ (ID: %@)%@", account.username, account.userID, verificationTag);
     
     if (blogs.count > 0) {
         DDLogInfo(@"All blogs on device:");

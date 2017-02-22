@@ -378,10 +378,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        let sortDescriptorLocal = NSSortDescriptor(key: "metaIsLocal", ascending: false)
-        let sortDescriptorImmediately = NSSortDescriptor(key: "metaPublishImmediately", ascending: false)
-        let sortDescriptorDate = dateSortDescriptor()
-        return [sortDescriptorLocal, sortDescriptorImmediately, sortDescriptorDate]
+        return filterSettings.currentPostListFilter().sortDescriptors
     }
 
     func updateAndPerformFetchRequest() {
@@ -589,7 +586,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let postService = PostService(managedObjectContext: managedObjectContext())
 
         let options = PostServiceSyncOptions()
-        options.statuses = filter.statuses
+        options.statuses = filter.statuses.strings
         options.authorID = author
         options.number = numberOfPostsPerSync() as NSNumber!
         options.purgesLocalSync = true
@@ -642,7 +639,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let postService = PostService(managedObjectContext: managedObjectContext())
 
         let options = PostServiceSyncOptions()
-        options.statuses = filter.statuses
+        options.statuses = filter.statuses.strings
         options.authorID = author
         options.number = numberOfPostsPerSync() as NSNumber!
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber!
@@ -717,28 +714,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
     }
 
-    // MARK: - Sorting
-
-    enum SortField: String {
-        case dateCreated = "date_created_gmt"
-        case dateModified = "dateModified"
-    }
-
-    func sortField() -> SortField {
-        if filterSettings.currentPostListFilter().filterType == .draft {
-            return .dateModified
-        } else {
-            return .dateCreated
-        }
-    }
-
-    func dateSortDescriptor() -> NSSortDescriptor {
-        let field = sortField()
-        // Ascending only for scheduled posts/pages.
-        let ascending = filterSettings.currentPostListFilter().filterType == .scheduled
-
-        return NSSortDescriptor(key: field.rawValue, ascending: ascending)
-    }
 
     // MARK: - Searching
 
@@ -798,7 +773,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
         let postService = PostService(managedObjectContext: managedObjectContext())
         let options = PostServiceSyncOptions()
-        options.statuses = filter.statuses
+        options.statuses = filter.statuses.strings
         options.authorID = author
         options.number = 20
         options.purgesLocalSync = false
@@ -821,7 +796,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func publishPost(_ apost: AbstractPost) {
         WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
 
-        apost.status = PostStatusPublish
+        apost.status = .publish
         if let date = apost.dateCreated, date == (Date() as NSDate).laterDate(date) {
             apost.dateCreated = Date()
         }
@@ -983,7 +958,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         updateAndPerformFetchRequestRefreshingResults()
     }
 
-    func updateFilterWithPostStatus(_ status: String) {
+    func updateFilterWithPostStatus(_ status: BasePost.Status) {
         filterSettings.setFilterWithPostStatus(status)
         refreshAndReload()
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
