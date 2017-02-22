@@ -13,10 +13,21 @@ import Foundation
     var filterType: Status
     var oldestPostDate: Date?
     var predicateForFetchRequest: NSPredicate
-    var statuses: [String]
+    var statuses: [BasePost.Status]
     var title: String
 
-    init(title: String, filterType: Status, predicate: NSPredicate, statuses: [String]) {
+    /// For Obj-C compatibility only
+    @objc(statuses)
+    var statusesStrings: [String] {
+        get {
+            return statuses.strings
+        }
+        set {
+            statuses = newValue.flatMap({ BasePost.Status(rawValue: $0) })
+        }
+    }
+
+    init(title: String, filterType: Status, predicate: NSPredicate, statuses: [BasePost.Status]) {
         hasMore = true
 
         self.filterType = filterType
@@ -54,8 +65,8 @@ import Foundation
 
     class func publishedFilter() -> PostListFilter {
         let filterType: Status = .published
-        let predicate = NSPredicate(format: "status IN %@", [PostStatusPublish, PostStatusPrivate])
-        let statuses = [PostStatusPublish, PostStatusPrivate]
+        let statuses: [BasePost.Status] = [.publish, .publishPrivate]
+        let predicate = NSPredicate(format: "status IN %@", statuses.strings)
         let title = NSLocalizedString("Published", comment: "Title of the published filter. This filter shows a list of posts that the user has published.")
 
         return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
@@ -63,8 +74,9 @@ import Foundation
 
     class func draftFilter() -> PostListFilter {
         let filterType: Status = .draft
-        let predicate = NSPredicate(format: "NOT status IN %@", [PostStatusPublish, PostStatusPrivate, PostStatusScheduled, PostStatusTrash])
-        let statuses = [PostStatusDraft, PostStatusPending]
+        let statuses: [BasePost.Status] = [.draft, .pending]
+        let statusesExcluded: [BasePost.Status] = [.publish, .publishPrivate, .scheduled, .trash]
+        let predicate = NSPredicate(format: "NOT status IN %@", statusesExcluded.strings)
         let title = NSLocalizedString("Draft", comment: "Title of the draft filter.  This filter shows a list of draft posts.")
 
         return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
@@ -72,8 +84,8 @@ import Foundation
 
     class func scheduledFilter() -> PostListFilter {
         let filterType: Status = .scheduled
-        let predicate = NSPredicate(format: "status = %@", PostStatusScheduled)
-        let statuses = [PostStatusScheduled]
+        let statuses: [BasePost.Status] = [.scheduled]
+        let predicate = NSPredicate(format: "status IN %@", statuses.strings)
         let title = NSLocalizedString("Scheduled", comment: "Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date.")
 
         return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
@@ -81,8 +93,8 @@ import Foundation
 
     class func trashedFilter() -> PostListFilter {
         let filterType: Status = .trashed
-        let predicate = NSPredicate(format: "status = %@", PostStatusTrash)
-        let statuses = [PostStatusTrash]
+        let statuses: [BasePost.Status] = [.trash]
+        let predicate = NSPredicate(format: "status IN %@", statuses.strings)
         let title = NSLocalizedString("Trashed", comment: "Title of the trashed filter. This filter shows posts that have been moved to the trash bin.")
 
         return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)

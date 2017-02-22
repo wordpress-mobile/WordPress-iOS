@@ -260,52 +260,52 @@ class PostTests: XCTestCase {
     func testThatStatusForDisplayWorksForOriginalPost() {
         let post = newTestPost()
 
-        post.status = PostStatusDraft
+        post.status = .draft
         XCTAssertNil(post.statusForDisplay())
 
-        post.status = PostStatusPending
-        XCTAssertEqual(post.statusForDisplay(), Post.title(forStatus: PostStatusPending))
+        post.status = .pending
+        XCTAssertEqual(post.statusForDisplay(), Post.title(for: .pending))
 
-        post.status = PostStatusPrivate
-        XCTAssertEqual(post.statusForDisplay(), Post.title(forStatus: PostStatusPrivate))
+        post.status = .publishPrivate
+        XCTAssertEqual(post.statusForDisplay(), Post.title(for: .publishPrivate))
 
-        post.status = PostStatusPublish
+        post.status = .publish
         XCTAssertNil(post.statusForDisplay())
 
-        post.status = PostStatusScheduled
-        XCTAssertEqual(post.statusForDisplay(), Post.title(forStatus: PostStatusScheduled))
+        post.status = .scheduled
+        XCTAssertEqual(post.statusForDisplay(), Post.title(for: .scheduled))
 
-        post.status = PostStatusTrash
-        XCTAssertEqual(post.statusForDisplay(), Post.title(forStatus: PostStatusTrash))
+        post.status = .trash
+        XCTAssertEqual(post.statusForDisplay(), Post.title(for: .trash))
 
-        post.status = PostStatusDeleted
-        XCTAssertEqual(post.statusForDisplay(), Post.title(forStatus: PostStatusDeleted))
+        post.status = .deleted
+        XCTAssertEqual(post.statusForDisplay(), Post.title(for: .deleted))
     }
 
     func testThatStatusForDisplayWorksForRevisionPost() {
         let original = newTestPost()
         let revision = original.createRevision()
 
-        revision.status = PostStatusDraft
+        revision.status = .draft
         XCTAssertEqual(revision.statusForDisplay(), "Local")
 
-        revision.status = PostStatusPending
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(forStatus: PostStatusPending)), Local")
+        revision.status = .pending
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(for: .pending)), Local")
 
-        revision.status = PostStatusPrivate
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(forStatus: PostStatusPrivate)), Local")
+        revision.status = .publishPrivate
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(for: .publishPrivate)), Local")
 
-        revision.status = PostStatusPublish
+        revision.status = .publish
         XCTAssertEqual(revision.statusForDisplay(), "Local")
 
-        revision.status = PostStatusScheduled
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(forStatus: PostStatusScheduled)), Local")
+        revision.status = .scheduled
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(for: .scheduled)), Local")
 
-        revision.status = PostStatusTrash
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(forStatus: PostStatusTrash)), Local")
+        revision.status = .trash
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(for: .trash)), Local")
 
-        revision.status = PostStatusDeleted
-        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(forStatus: PostStatusDeleted)), Local")
+        revision.status = .deleted
+        XCTAssertEqual(revision.statusForDisplay(), "\(Post.title(for: .deleted)), Local")
     }
 
     func testThatHasLocalChangesWorks() {
@@ -377,16 +377,16 @@ class PostTests: XCTestCase {
     func testThatCanEditPublicizeSettingsWorks() {
         let post = newTestPost()
 
-        post.status = PostStatusPublish
+        post.status = .publish
         XCTAssertTrue(post.canEditPublicizeSettings())
 
         post.postID = 2905
         XCTAssertFalse(post.canEditPublicizeSettings())
 
-        post.status = PostStatusScheduled
+        post.status = .scheduled
         XCTAssertTrue(post.canEditPublicizeSettings())
 
-        post.status = PostStatusDraft
+        post.status = .draft
         XCTAssertTrue(post.canEditPublicizeSettings())
     }
 }
