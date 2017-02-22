@@ -220,12 +220,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Table View Handling
 
     func sectionNameKeyPath() -> String {
-        switch sortField() {
-        case .dateCreated:
-            return NSStringFromSelector(#selector(Page.sectionIdentifierWithDateCreated))
-        case .dateModified:
-            return NSStringFromSelector(#selector(Page.sectionIdentifierWithDateModified))
-        }
+        let sortField = filterSettings.currentPostListFilter().sortField
+        return Page.sectionIdentifier(dateKeyPath: sortField.keyPath)
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -263,7 +259,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
 
-        if page.remoteStatus != AbstractPostRemoteStatusPushing && page.status != PostStatusTrash {
+        if page.remoteStatus != AbstractPostRemoteStatusPushing && page.status != .trash {
             editPage(page)
         }
     }
@@ -406,7 +402,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
         let previousStatus = apost.status
-        apost.status = PostStatusDraft
+        apost.status = .draft
 
         let contextManager = ContextManager.sharedInstance()
         let postService = PostService(managedObjectContext: contextManager.mainContext)
