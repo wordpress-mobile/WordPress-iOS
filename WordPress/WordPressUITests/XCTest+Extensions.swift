@@ -96,8 +96,7 @@ extension XCTestCase {
         app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ].tap()
         app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ].tap()
 
-        // Assuming we only have one site
-        app.tables.cells.element(boundBy: 0).tap()
+        app.tables.staticTexts[ WordPressTestCredentials.selfHostedSiteName ].tap()
 
         app.tables.cells[ elementStringIDs.settingsButton ].tap()
         app.tables.cells[ elementStringIDs.removeSiteButton ].tap()
