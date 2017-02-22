@@ -378,13 +378,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
-        let sortDescriptorLocal = NSSortDescriptor(key: "metaIsLocal", ascending: false)
-        let sortDescriptorImmediately = NSSortDescriptor(key: "metaPublishImmediately", ascending: false)
-        let sortDescriptorDate = dateSortDescriptor()
-        if filterSettings.currentPostListFilter().filterType == .draft {
-            return [sortDescriptorLocal, sortDescriptorDate]
-        }
-        return [sortDescriptorLocal, sortDescriptorImmediately, sortDescriptorDate]
+        return filterSettings.currentPostListFilter().sortDescriptors
     }
 
     func updateAndPerformFetchRequest() {
