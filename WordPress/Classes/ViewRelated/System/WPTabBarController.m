@@ -428,7 +428,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)showPostTab
 {
-    [self showPostTabAnimated:true toMedia:false];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    // Ignore taps on the post tab and instead show the modal.
+    if ([blogService blogCountForAllAccounts] == 0) {
+        [self switchMySitesTabToAddNewSite];
+    } else {
+        [self showPostTabAnimated:true toMedia:false];
+    }
 }
 
 - (void)showMeTab
@@ -483,6 +490,12 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
         [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionPosts];
     }
+}
+
+- (void)switchMySitesTabToAddNewSite
+{
+    [self showTabForIndex:WPTabMySites];
+    [self.blogListViewController presentInterfaceForAddingNewSite];
 }
 
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
@@ -554,15 +567,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     NSUInteger newIndex = [tabBarController.viewControllers indexOfObject:viewController];
 
     if (newIndex == WPTabNewPost) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-        // Ignore taps on the post tab and instead show the modal.
-        if ([blogService blogCountVisibleForAllAccounts] == 0) {
-            [[WordPressAppDelegate sharedInstance] showWelcomeScreenAnimated:YES thenEditor:YES];
-        } else {
-            [self showPostTab];
-        }
+        [self showPostTab];
         return NO;
     }
 
