@@ -271,6 +271,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         relatedPostsController = segue.destination as? RelatedPostsViewController
+        if let relatedView = relatedPostsController?.view {
+            textFooterStackView.addArrangedSubview(relatedView)
+        }
     }
 
 

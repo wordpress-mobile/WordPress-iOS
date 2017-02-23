@@ -72,12 +72,32 @@ public class ReaderCard: UIView {
     }()
 
 
+    var cardContentMargins: UIEdgeInsets {
+        get {
+            return cardStackView.layoutMargins
+        }
+        set {
+            cardStackView.layoutMargins = newValue
+        }
+    }
+
+
+    override public var preservesSuperviewLayoutMargins: Bool {
+        didSet {
+            // We want subviews to respect this setting
+            contentView.preservesSuperviewLayoutMargins = preservesSuperviewLayoutMargins
+            cardStackView.preservesSuperviewLayoutMargins = preservesSuperviewLayoutMargins
+        }
+    }
+
+
     // MARK: - Public Accessors
+
     open var hidesFollowButton = false
     open var enableLoggedInFeatures = true
     open weak var delegate: ReaderCardDelegate?
 
-    open weak var readerPost: ReaderPost? {
+    open var readerPost: ReaderPost? {
         didSet {
             configureCard()
         }
@@ -97,6 +117,16 @@ public class ReaderCard: UIView {
                     headerAuthorLabel.textColor = WPStyleGuide.readerCardBlogNameLabelDisabledTextColor()
                 }
             }
+        }
+    }
+
+
+    open var hidesActionbar: Bool {
+        get {
+            return actionStackView.isHidden
+        }
+        set {
+            actionStackView.isHidden = newValue
         }
     }
 
@@ -128,6 +158,7 @@ public class ReaderCard: UIView {
         contentView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         contentView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        layoutIfNeeded()
 
         // This view only exists to help IB with filling in the bottom space of
         // the cell that is later autosized according to the content's intrinsicContentSize.

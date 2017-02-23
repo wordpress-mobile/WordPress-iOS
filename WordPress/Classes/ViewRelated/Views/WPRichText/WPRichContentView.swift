@@ -86,10 +86,12 @@ class WPRichContentView: UITextView {
             bottomMarginAttachment.bounds = bounds
 
             if textStorage.length > 1 {
-                let rng = NSRange(location: textStorage.length - 2, length: 1)
-                layoutManager.invalidateLayout(forCharacterRange: rng, actualCharacterRange: nil)
-                layoutManager.ensureLayout(forCharacterRange: rng)
-                attachmentManager.layoutAttachmentViews()
+                // NOTE: `ranges(forAttachment:)` is part of an Aztec extension on NSAttibutedString
+                if let rng = textStorage.ranges(forAttachment: bottomMarginAttachment).first {
+                    layoutManager.invalidateLayout(forCharacterRange: rng, actualCharacterRange: nil)
+                    layoutManager.ensureLayout(forCharacterRange: rng)
+                    attachmentManager.layoutAttachmentViews()
+                }
             }
         }
     }
