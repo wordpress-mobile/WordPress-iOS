@@ -1299,6 +1299,7 @@ private extension AztecPostViewController {
 
 // MARK: - Media Support
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
+
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
         mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
         mediaProgressView.progress = progress
@@ -1364,8 +1365,11 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         }
     }
 
-    fileprivate func addUIImageMediaAsset(_ image: UIImage) {
-        let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: image)
+    fileprivate func saveToMedia(attachment: TextAttachment) {
+        guard let image = attachment.image else {
+            return
+        }
+        mediaProgressCoordinator.track(numberOfItems: 1)
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: image, withMediaID:"CopyPasteImage" , forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
             DispatchQueue.main.async {
@@ -1570,8 +1574,8 @@ extension AztecPostViewController: TextViewMediaDelegate {
         return Gridicon.iconOfType(.image)
     }
 
-    func textView(_ textView: TextView, urlForImage image: UIImage) -> URL {
-        self.addUIImageMediaAsset(image)
+    func textView(_ textView: TextView, urlForAttachment attachment: TextAttachment) -> URL {
+        saveToMedia(attachment: attachment)
         return URL(string:"placeholder://")!
     }
 
