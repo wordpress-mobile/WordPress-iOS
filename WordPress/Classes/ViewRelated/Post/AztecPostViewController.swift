@@ -1364,6 +1364,27 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         }
     }
 
+    fileprivate func addUIImageMediaAsset(_ image: UIImage) {
+        let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: image)
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        mediaService.createMedia(with: image, withMediaID:"CopyPasteImage" , forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
+            DispatchQueue.main.async {
+                self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: thumbnailURL)
+            }
+        }, completion: { [weak self](media, error) in
+            guard let strongSelf = self else {
+                return
+            }
+            guard let media = media, error == nil else {
+                DispatchQueue.main.async {
+                    strongSelf.handleError(error as? NSError, onAttachment: attachment)
+                }
+                return
+            }
+            strongSelf.upload(media: media, mediaID: attachment.identifier)
+        })
+    }
+
     private func upload(media: Media, mediaID: String) {
         guard let attachment = richTextView.attachment(withId: mediaID) else {
             return
@@ -1550,8 +1571,8 @@ extension AztecPostViewController: TextViewMediaDelegate {
     }
 
     func textView(_ textView: TextView, urlForImage image: UIImage) -> URL {
-        //TODO: add support for saving images that result from a copy/paste to the editor, this should save locally to file, and import to the media library.
-        return URL(string:"")!
+        self.addUIImageMediaAsset(image)
+        return URL(string:"placeholder://")!
     }
 
     func cancelAllPendingMediaRequests() {
