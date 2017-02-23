@@ -460,7 +460,7 @@ int ddLogLevel = DDLogLevelInfo;
                                             completionHandler:(void (^)())completionHandler
 {
     NSString *responseText = responseInfo[UIUserNotificationActionResponseTypedTextKey];
-    [[InteractiveNotificationsManager sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification responseText:responseText];
+    [[InteractiveNotificationsManager sharedInstance] handleActionWith:identifier userInfo:remoteNotification responseText:responseText];
     completionHandler();
 }
 
