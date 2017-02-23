@@ -70,7 +70,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
     func testCreateMediaError() {
 
-        let response = ["error": ["some error"]]
+        let response = ["errors": ["some error"]]
         let media = mockRemoteMedia()
         var progress: Progress? = nil
         var errorDescription = ""
@@ -78,7 +78,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
             errorDescription = ($0?.localizedDescription)!
         })
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
-        XCTAssertEqual(errorDescription, response["error"]![0])
+        XCTAssertEqual(errorDescription, response["errors"]![0])
     }
 
     func testUpdateMediaPath() {
