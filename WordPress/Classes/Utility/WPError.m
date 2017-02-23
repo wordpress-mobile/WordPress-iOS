@@ -149,37 +149,39 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
 
 + (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport fromSource:(NSString *)sourceTag okPressedBlock:(void (^)(UIAlertController *))okBlock
 {
-    if ([WPError internalInstance].alertShowing) {
-        return;
-    }
-    [WPError internalInstance].alertShowing = YES;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([WPError internalInstance].alertShowing) {
+            return;
+        }
+        [WPError internalInstance].alertShowing = YES;
 
-    DDLogInfo(@"Showing alert with title: %@ and message %@", title, message);
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
-                                                                             message:[message stringByStrippingHTML]
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
+        DDLogInfo(@"Showing alert with title: %@ and message %@", title, message);
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:[message stringByStrippingHTML]
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
 
-    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                     style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                                                         if (okBlock) {
-                                                             okBlock(alertController);
-                                                         }
-                                                         [WPError internalInstance].alertShowing = NO;
-                                                     }];
-    [alertController addAction:action];
-    if (showSupport) {
-        NSString *supportText = NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.");
-        UIAlertAction *action = [UIAlertAction actionWithTitle:supportText
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction * _Nonnull action) {
-                                                           SupportViewController *supportVC = [SupportViewController new];
-                                                           supportVC.sourceTag = sourceTag;
-                                                           [supportVC showFromTabBar];
-                                                           [WPError internalInstance].alertShowing = NO;
-                                                       }];
+        UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                         style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                                             if (okBlock) {
+                                                                 okBlock(alertController);
+                                                             }
+                                                             [WPError internalInstance].alertShowing = NO;
+                                                         }];
         [alertController addAction:action];
-    }
-    [alertController presentFromRootViewController];
+        if (showSupport) {
+            NSString *supportText = NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.");
+            UIAlertAction *action = [UIAlertAction actionWithTitle:supportText
+                                                             style:UIAlertActionStyleCancel
+                                                           handler:^(UIAlertAction * _Nonnull action) {
+                                                               SupportViewController *supportVC = [SupportViewController new];
+                                                               supportVC.sourceTag = sourceTag;
+                                                               [supportVC showFromTabBar];
+                                                               [WPError internalInstance].alertShowing = NO;
+                                                           }];
+            [alertController addAction:action];
+        }
+        [alertController presentFromRootViewController];
+    });
 }
 
 @end
