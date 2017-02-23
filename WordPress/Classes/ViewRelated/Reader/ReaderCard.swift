@@ -82,6 +82,15 @@ public class ReaderCard: UIView {
     }
 
 
+    override public var preservesSuperviewLayoutMargins: Bool {
+        didSet {
+            // We want subviews to respect this setting
+            contentView.preservesSuperviewLayoutMargins = preservesSuperviewLayoutMargins
+            cardStackView.preservesSuperviewLayoutMargins = preservesSuperviewLayoutMargins
+        }
+    }
+
+
     // MARK: - Public Accessors
 
     open var hidesFollowButton = false

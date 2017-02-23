@@ -152,6 +152,7 @@ class RelatedPostsViewController: UIViewController {
         card.hidesActionbar = true
         card.headerButtonIsEnabled = false
         card.cardContentMargins = .zero
+        card.preservesSuperviewLayoutMargins = false
         card.hidesFollowButton = relatedPost.siteID.intValue == post?.siteID.intValue
 
         card.readerPost = relatedPost
