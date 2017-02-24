@@ -1368,7 +1368,7 @@ import WordPressComAnalytics
 
 
     func handleContextDidSaveNotification(_ notification: Foundation.Notification) {
-        displayContext.mergeChanges(fromContextDidSave: notification)
+        ContextManager.sharedInstance().mergeChanges(displayContext, fromContextDidSave: notification)
     }
 
 
