@@ -372,6 +372,12 @@ static NSInteger HideSearchMinSites = 3;
 
 #pragma mark - Public methods
 
+- (void)presentInterfaceForAddingNewSite
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self addSite];
+}
+
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
 {
     // Ensure our list of sites is up to date
