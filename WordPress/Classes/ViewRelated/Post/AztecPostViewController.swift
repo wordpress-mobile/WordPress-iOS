@@ -54,6 +54,7 @@ class AztecPostViewController: UIViewController {
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         toolbar.formatter = self
         tv.isHidden = true
+        tv.delegate = self
 
         return tv
     }()
@@ -580,7 +581,7 @@ extension AztecPostViewController {
 
         // Button: Save Draft/Update Draft
         if post.hasLocalChanges() {
-            if post.hasRemote() {
+            if !post.hasRemote() {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
                     self.post.status = .draft
@@ -601,10 +602,7 @@ extension AztecPostViewController {
     private func handlePublishButtonTapped(secondaryPublishTapped: Bool) {
         // Cancel publishing if media is currently being uploaded
         if mediaProgressCoordinator.isRunning {
-            let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
-            alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
-            present(alertController, animated: true, completion: nil)
-
+            displayMediaIsUploadingAlert()
             return
         }
 
@@ -769,6 +767,12 @@ private extension AztecPostViewController {
         let previewController = PostPreviewViewController(post: post)
         previewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(previewController, animated: true)
+    }
+
+    func displayMediaIsUploadingAlert() {
+        let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
+        present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -1085,6 +1089,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func toggleEditingMode() {
+        if mediaProgressCoordinator.isRunning {
+            displayMediaIsUploadingAlert()
+            return
+        }
         mode.toggle()
     }
 
@@ -1252,7 +1260,11 @@ fileprivate extension AztecPostViewController {
     fileprivate func mapUIContentToPostAndSave() {
         post.postTitle = titleTextField.text
         // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
-        post.content = richTextView.getHTML()
+        if richTextView.isHidden {
+            post.content = htmlTextView.text
+        } else {
+            post.content = richTextView.getHTML()
+        }
 
         ContextManager.sharedInstance().save(post.managedObjectContext!)
     }

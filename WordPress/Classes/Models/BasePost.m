@@ -21,7 +21,6 @@ static const NSUInteger PostDerivedSummaryLength = 150;
 @dynamic remoteStatusNumber;
 @dynamic permaLink;
 @dynamic mt_excerpt;
-@dynamic mt_text_more;
 @dynamic wp_slug;
 @dynamic post_thumbnail;
 @dynamic pathForDisplayImage;

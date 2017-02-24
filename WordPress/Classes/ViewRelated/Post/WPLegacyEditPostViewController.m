@@ -555,16 +555,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     [self setupNavbar];
     self.titleText = self.post.postTitle;
+    self.bodyText = self.post.content ?: @"";
 
-    if (self.post.content == nil || [self.post.content isEmpty]) {
-        self.bodyText = @"";
-    } else {
-        if ((self.post.mt_text_more != nil) && ([self.post.mt_text_more length] > 0)) {
-            self.bodyText = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.post.content, self.post.mt_text_more];
-        } else {
-            self.bodyText = self.post.content;
-        }
-    }
     [self refreshButtons];
 }
 
@@ -779,9 +771,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.post.postTitle = self.titleText;
 
     self.post.content = self.bodyText;
-    if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound) {
-        self.post.mt_text_more = @"";
-    }
 
     if ( self.post.original.password != nil ) { //original post was password protected
         if ( self.post.password == nil || [self.post.password isEqualToString:@""] ) { //removed the password
