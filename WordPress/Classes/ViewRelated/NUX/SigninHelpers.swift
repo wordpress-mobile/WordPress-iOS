@@ -77,8 +77,7 @@ import Mixpanel
     class func showSigninForWPComFixingAuthToken() {
         let controller = signinForWPComFixingAuthToken(nil)
         let presenter = UIApplication.shared.keyWindow?.rootViewController
-        let navController = NUXNavigationController(rootViewController: controller)
-        presenter?.present(navController, animated: true, completion: nil)
+        presenter?.present(controller, animated: true, completion: nil)
 
         trackOpenedLogin()
     }
