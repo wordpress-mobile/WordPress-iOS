@@ -214,9 +214,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topic.inUse = NO;
     }
 
-    [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 }
 
 - (void)deleteAllTopics
