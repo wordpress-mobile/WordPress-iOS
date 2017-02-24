@@ -299,11 +299,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     
     // Setup the Account
     account.defaultBlog = defaultBlog;
-    
-    // DefaultBlog should be flagged as Last Used
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService flagBlogAsLastUsed:account.defaultBlog];
 }
 
 - (void)setupAppExtensionsWithDefaultAccount
