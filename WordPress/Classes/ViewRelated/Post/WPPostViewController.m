@@ -299,14 +299,13 @@ EditImageDetailsViewControllerDelegate
 - (void)customizeAppearance
 {
     [super customizeAppearance];
-    [WPFontManager merriweatherBoldFontOfSize:16.0];
-    [WPFontManager merriweatherBoldItalicFontOfSize:16.0];
-    [WPFontManager merriweatherItalicFontOfSize:16.0];
-    [WPFontManager merriweatherLightFontOfSize:16.0];
-    [WPFontManager merriweatherRegularFontOfSize:16.0];
+    [WPFontManager notoBoldFontOfSize:16.0];
+    [WPFontManager notoBoldItalicFontOfSize:16.0];
+    [WPFontManager notoItalicFontOfSize:16.0];
+    [WPFontManager notoRegularFontOfSize:16.0];
 
     self.placeholderColor = [WPStyleGuide grey];
-    self.editorView.sourceViewTitleField.font = [WPFontManager merriweatherBoldFontOfSize:24.0];
+    self.editorView.sourceViewTitleField.font = [WPFontManager notoBoldFontOfSize:24.0];
     self.editorView.sourceContentDividerView.backgroundColor = [WPStyleGuide greyLighten30];
     [self.toolbarView setBorderColor:[WPStyleGuide greyLighten10]];
     [self.toolbarView setItemTintColor: [WPStyleGuide greyLighten10]];
@@ -1053,16 +1052,7 @@ EditImageDetailsViewControllerDelegate
 - (void)refreshUIForCurrentPost
 {
     self.titleText = self.post.postTitle;
-    
-    if(self.post.content == nil || [self.post.content isEmpty]) {
-        self.bodyText = @"";
-    } else {
-        if ((self.post.mt_text_more != nil) && ([self.post.mt_text_more length] > 0)) {
-			self.bodyText = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.post.content, self.post.mt_text_more];
-        } else {
-			self.bodyText = self.post.content;
-        }
-    }
+    self.bodyText = self.post.content ?: @"";
     
     [self refreshNavigationBarButtons:YES];
 }
@@ -1575,8 +1565,6 @@ EditImageDetailsViewControllerDelegate
     self.post.postTitle = self.titleText;
     
     self.post.content = self.bodyText;
-    if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
-        self.post.mt_text_more = @"";
     
     if ( self.post.original.password != nil ) { //original post was password protected
         if ( self.post.password == nil || [self.post.password isEqualToString:@""] ) { //removed the password
