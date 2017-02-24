@@ -15,6 +15,7 @@
         <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="emailVerified" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="username" attributeType="String" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
@@ -50,9 +51,6 @@
             <userInfo/>
         </attribute>
         <attribute name="mt_excerpt" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="mt_text_more" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
         <attribute name="password" optional="YES" attributeType="String">
@@ -626,9 +624,9 @@
     </entity>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="225"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
-        <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
+        <element name="BasePost" positionX="0" positionY="0" width="128" height="285"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="645"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="570"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>

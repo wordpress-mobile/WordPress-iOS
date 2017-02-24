@@ -275,6 +275,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     account.avatarURL = userDetails.avatarURL;
     account.displayName = userDetails.displayName;
     account.dateCreated = userDetails.dateCreated;
+    account.emailVerified = @(userDetails.emailVerified);
     if (userDetails.primaryBlogID) {
         [self configurePrimaryBlogWithID:userDetails.primaryBlogID account:account];
     }

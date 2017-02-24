@@ -8,10 +8,10 @@ use_frameworks!
 platform :ios, '10.0'
 
 abstract_target 'WordPress_Base' do
-  pod 'WordPress-iOS-Shared', '0.7.2'
+  pod 'WordPress-iOS-Shared', '0.8.0'
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
-  pod 'WordPressCom-Stats-iOS', '0.8.1'
+  pod 'WordPressCom-Stats-iOS', '0.9.0'
 
   target 'WordPress' do
     # ---------------------
@@ -49,9 +49,9 @@ abstract_target 'WordPress_Base' do
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '0.11.1'
-    pod 'WordPress-iOS-Editor', '1.8.1'
+    pod 'WordPress-iOS-Editor', '1.9.0'
     pod 'WordPressCom-Analytics-iOS', '0.1.22'
-    pod 'WordPress-Aztec-iOS', '0.5a2'
+    pod 'WordPress-Aztec-iOS', '0.5a4'
     pod 'wpxmlrpc', '~> 0.8'
 
     target :WordPressTest do

@@ -1,17 +1,5 @@
 import Foundation
 
-// Taken from AbstractPost.m - this should get a better home than here
-///
-enum PostStatus: String {
-    case draft = "draft"
-    case pending = "pending"
-    case publishPrivate = "private"
-    case publish = "publish"
-    case scheduled = "future"
-    case trash = "trash"
-    case deleted = "deleted" // Returned by wpcom REST API when a post is permanently deleted.
-}
-
 /// The various states of the editor interface and all associated UI values
 ///
 /// None of the associated values should be (nor can be) accessed directly by the UI, only through the `PostEditorStateContext` instance.
@@ -103,7 +91,7 @@ fileprivate protocol PostEditorActionState {
     var action: PostEditorAction { get }
 
     // Actions that change state
-    func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState
+    func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState
 }
 
@@ -128,7 +116,7 @@ public class PostEditorStateContext {
         }
     }
 
-    fileprivate var originalPostStatus: PostStatus?
+    fileprivate var originalPostStatus: BasePost.Status?
     fileprivate var userCanPublish: Bool
     private weak var delegate: PostEditorStateContextDelegate?
 
@@ -156,7 +144,7 @@ public class PostEditorStateContext {
     ///   - originalPostStatus: If the post was already published (saved to the server) what is the status
     ///   - userCanPublish: Does the user have permission to publish posts or merely create drafts
     ///   - delegate: Delegate for listening to change in state for the editor
-    init(originalPostStatus: PostStatus? = nil, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
+    init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
         self.originalPostStatus = originalPostStatus
         self.userCanPublish = userCanPublish
         self.delegate = delegate
@@ -176,7 +164,7 @@ public class PostEditorStateContext {
 
     /// Call when the post status has changed due to a remote operation
     ///
-    func updated(postStatus: PostStatus) {
+    func updated(postStatus: BasePost.Status) {
         let updatedState = editorState.updated(postStatus: postStatus, context: self)
         guard type(of: editorState) != type(of: updatedState) else {
             return
@@ -274,7 +262,7 @@ fileprivate class PostEditorStatePublish: PostEditorActionState {
         return .publish
     }
 
-    func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState {
+    func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
         switch postStatus {
         case .draft where context.originalPostStatus == .publish:
             // If switching to a draft the post should show Update
@@ -304,7 +292,7 @@ fileprivate class PostEditorStateSave: PostEditorActionState {
         return .save
     }
 
-    func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState {
+    func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
         switch postStatus {
         case .publish:
             // If a draft is published, it should show Update
@@ -331,7 +319,7 @@ fileprivate class PostEditorStateSchedule: PostEditorActionState {
         return .schedule
     }
 
-    func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState {
+    func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
         switch postStatus {
         case .scheduled:
             // When a post is scheduled, button should transition to Update
@@ -358,7 +346,7 @@ fileprivate class PostEditorStateSubmitForReview: PostEditorActionState {
         return .submitForReview
     }
 
-    func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState {
+    func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
         return self
     }
 
@@ -374,7 +362,7 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
         return .update
     }
 
-    func updated(postStatus: PostStatus, context: PostEditorStateContext) -> PostEditorActionState {
+    func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
         return self
     }
 

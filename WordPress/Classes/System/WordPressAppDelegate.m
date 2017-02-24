@@ -404,11 +404,11 @@ int ddLogLevel = DDLogLevelInfo;
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
 
-    // WORKAROUND: Preload the Merriweather regular font to ensure it is not overridden
-    // by any of the Merriweather varients.  Size is arbitrary.
+    // WORKAROUND: Preload the Noto regular font to ensure it is not overridden
+    // by any of the Noto varients.  Size is arbitrary.
     // See: https://github.com/wordpress-mobile/WordPress-Shared-iOS/issues/79
     // Remove this when #79 is resolved.
-    [WPFontManager merriweatherRegularFontOfSize:16.0];
+    [WPFontManager notoRegularFontOfSize:16.0];
 
     [self customizeAppearance];
 
@@ -715,8 +715,11 @@ int ddLogLevel = DDLogLevelInfo;
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
     NSString *currentLanguage = [languages objectAtIndex:0];
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSArray *blogs = [blogService blogsForAllAccounts];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *account = [accountService defaultWordPressComAccount];
     
     DDLogInfo(@"===========================================================================");
     DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle bundleForClass:[self class]] detailedVersionNumber]);
@@ -733,6 +736,11 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
     DDLogInfo(@"APN token: %@", [[PushNotificationsManager sharedInstance] deviceToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
+    NSString *verificationTag = @"";
+    if (account.verificationStatus) {
+        verificationTag = [NSString stringWithFormat:@" (%@)", account.verificationStatus];
+    }
+    DDLogInfo(@"wp.com account: %@ (ID: %@)%@", account.username, account.userID, verificationTag);
     
     if (blogs.count > 0) {
         DDLogInfo(@"All blogs on device:");
