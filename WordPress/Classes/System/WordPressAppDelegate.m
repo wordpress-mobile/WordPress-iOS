@@ -404,11 +404,11 @@ int ddLogLevel = DDLogLevelInfo;
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
 
-    // WORKAROUND: Preload the Merriweather regular font to ensure it is not overridden
-    // by any of the Merriweather varients.  Size is arbitrary.
+    // WORKAROUND: Preload the Noto regular font to ensure it is not overridden
+    // by any of the Noto varients.  Size is arbitrary.
     // See: https://github.com/wordpress-mobile/WordPress-Shared-iOS/issues/79
     // Remove this when #79 is resolved.
-    [WPFontManager merriweatherRegularFontOfSize:16.0];
+    [WPFontManager notoRegularFontOfSize:16.0];
 
     [self customizeAppearance];
 

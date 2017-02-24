@@ -70,7 +70,7 @@ class AztecPostViewController: UIViewController {
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
                                                       attributes: [NSForegroundColorAttributeName: WPStyleGuide.grey()])
         tf.delegate = self
-        tf.font = WPFontManager.merriweatherBoldFont(ofSize: 24.0)
+        tf.font = WPFontManager.notoBoldFont(ofSize: 24.0)
         tf.returnKeyType = .next
         tf.textColor = UIColor.darkText
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -284,7 +284,7 @@ class AztecPostViewController: UIViewController {
         super.viewDidLoad()
 
         // TODO: Fix the warnings triggered by this one!
-        WPFontManager.loadMerriweatherFontFamily()
+        WPFontManager.loadNotoFontFamily()
 
         // New Post Revision!
         createRevisionOfPost()
@@ -1711,7 +1711,7 @@ extension AztecPostViewController {
     struct Assets {
         static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
         static let closeButtonRegularImage  = UIImage(named: "icon-posts-editor-chevron")
-        static let defaultRegularFont       = WPFontManager.merriweatherRegularFont(ofSize: 16)
+        static let defaultRegularFont       = WPFontManager.notoRegularFont(ofSize: 16)
         static let defaultSemiBoldFont      = WPFontManager.systemSemiBoldFont(ofSize: 16)
         static let defaultMissingImage      = Gridicon.iconOfType(.image)
     }
