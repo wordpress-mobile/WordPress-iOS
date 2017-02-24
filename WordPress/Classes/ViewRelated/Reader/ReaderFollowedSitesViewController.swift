@@ -201,18 +201,21 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             return
         }
 
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
         service.followSite(by: url, success: { [weak self] in
             let success = NSLocalizedString("Followed", comment: "User followed a site.")
             SVProgressHUD.showSuccess(withStatus: success)
-            WPNotificationFeedbackGenerator.notificationOccurred(.success)
+            generator.notificationOccurred(.success)
             self?.syncSites()
             self?.refreshPostsForFollowedTopic()
 
         }, failure: { [weak self] (error) in
             DDLogSwift.logError("Could not follow site: \(error)")
 
-            WPNotificationFeedbackGenerator.notificationOccurred(.error)
+            generator.notificationOccurred(.error)
 
             let title = NSLocalizedString("Could not Follow Site", comment: "Title of a prompt.")
             let description = error?.localizedDescription

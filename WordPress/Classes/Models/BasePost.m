@@ -17,12 +17,10 @@ static const NSUInteger PostDerivedSummaryLength = 150;
 @dynamic date_created_gmt;
 @dynamic postID;
 @dynamic postTitle;
-@dynamic status;
 @dynamic password;
 @dynamic remoteStatusNumber;
 @dynamic permaLink;
 @dynamic mt_excerpt;
-@dynamic mt_text_more;
 @dynamic wp_slug;
 @dynamic post_thumbnail;
 @dynamic pathForDisplayImage;
@@ -100,7 +98,7 @@ static const NSUInteger PostDerivedSummaryLength = 150;
 
 - (NSString *)statusForDisplay
 {
-    return self.status;
+    return [self valueForKey:@"status"];
 }
 
 @end

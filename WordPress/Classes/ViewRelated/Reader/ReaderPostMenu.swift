@@ -86,6 +86,9 @@ open class ReaderPostMenu {
 
 
     fileprivate class func toggleFollowingForPost(_ post: ReaderPost) {
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+
         var successMessage: String!
         var errorMessage: String!
         var errorTitle: String!
@@ -98,7 +101,7 @@ open class ReaderPostMenu {
             errorTitle = NSLocalizedString("Problem Following Site", comment: "Title of a prompt")
             errorMessage = NSLocalizedString("There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem following a site and instructions on how to notify us of the problem.")
 
-            WPNotificationFeedbackGenerator.notificationOccurred(.success)
+            generator.notificationOccurred(.success)
         }
 
         SVProgressHUD.show()
@@ -109,7 +112,7 @@ open class ReaderPostMenu {
             }, failure: { (error: Error?) in
                 SVProgressHUD.dismiss()
 
-                WPNotificationFeedbackGenerator.notificationOccurred(.error)
+                generator.notificationOccurred(.error)
 
                 let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
                 let alertController = UIAlertController(title: errorTitle,
