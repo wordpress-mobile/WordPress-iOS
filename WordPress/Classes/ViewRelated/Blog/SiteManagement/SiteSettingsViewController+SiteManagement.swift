@@ -87,7 +87,10 @@ public extension SiteSettingsViewController {
 
                 if purchases.isEmpty {
                     WPAppAnalytics.track(.siteSettingsDeleteSiteAccessed, with: strongSelf.blog)
-                    strongSelf.present(strongSelf.confirmDeleteController(), animated: true, completion: nil)
+                    let deleteSiteController = DeleteSiteViewController(blog: strongSelf.blog)
+                    strongSelf.navigationController?.pushViewController(deleteSiteController, animated: true)
+                    //let navigationController = UINavigationController(rootViewController: deleteSiteController)
+                    //strongSelf.present(navigationController, animated: true, completion: nil)
                 } else {
                     WPAppAnalytics.track(.siteSettingsDeleteSitePurchasesShown, with: strongSelf.blog)
                     strongSelf.present(strongSelf.warnPurchasesController(), animated: true, completion: nil)
@@ -107,32 +110,34 @@ public extension SiteSettingsViewController {
             })
     }
 
-    /// Creates confirmation alert for Delete Site
-    ///
-    /// - Returns: UIAlertController
-    ///
-    fileprivate func confirmDeleteController() -> UIAlertController {
-        let confirmTitle = NSLocalizedString("Confirm Delete Site", comment: "Title of Delete Site confirmation alert")
-        let messageFormat = NSLocalizedString("Please type in \n\n%@\n\n in the field below to confirm. Your site will then be gone forever.", comment: "Message of Delete Site confirmation alert; substitution is site's host")
-        let message = String(format: messageFormat, blog.displayURL!)
-        let alertController = UIAlertController(title: confirmTitle, message: message, preferredStyle: .alert)
+// TODO: Wack this...
 
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
-        alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-
-        let deleteTitle = NSLocalizedString("Delete this site", comment: "Delete Site confirmation action title")
-        let deleteAction = UIAlertAction(title: deleteTitle, style: .destructive, handler: { action in
-            self.deleteSiteConfirmed()
-        })
-        deleteAction.isEnabled = false
-        alertController.addAction(deleteAction)
-
-        alertController.addTextField(configurationHandler: { textField in
-            textField.addTarget(self, action: #selector(SiteSettingsViewController.alertTextFieldDidChange(_:)), for: .editingChanged)
-        })
-
-        return alertController
-    }
+//    /// Creates confirmation alert for Delete Site
+//    ///
+//    /// - Returns: UIAlertController
+//    ///
+//    fileprivate func confirmDeleteController() -> UIAlertController {
+//        let confirmTitle = NSLocalizedString("Confirm Delete Site", comment: "Title of Delete Site confirmation alert")
+//        let messageFormat = NSLocalizedString("Please type in \n\n%@\n\n in the field below to confirm. Your site will then be gone forever.", comment: "Message of Delete Site confirmation alert; substitution is site's host")
+//        let message = String(format: messageFormat, blog.displayURL!)
+//        let alertController = UIAlertController(title: confirmTitle, message: message, preferredStyle: .alert)
+//
+//        let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+//        alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+//
+//        let deleteTitle = NSLocalizedString("Delete this site", comment: "Delete Site confirmation action title")
+//        let deleteAction = UIAlertAction(title: deleteTitle, style: .destructive, handler: { action in
+//            self.deleteSiteConfirmed()
+//        })
+//        deleteAction.isEnabled = false
+//        alertController.addAction(deleteAction)
+//
+//        alertController.addTextField(configurationHandler: { textField in
+//            textField.addTarget(self, action: #selector(SiteSettingsViewController.alertTextFieldDidChange(_:)), for: .editingChanged)
+//        })
+//
+//        return alertController
+//    }
 
     /// Verifies site address as password for Delete Site
     ///
