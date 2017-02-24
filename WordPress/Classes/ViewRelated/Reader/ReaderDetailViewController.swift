@@ -931,7 +931,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         if !post.isLiked {
-            WPNotificationFeedbackGenerator.notificationOccurred(.success)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
         }
 
         let service = ReaderPostService(managedObjectContext: post.managedObjectContext!)

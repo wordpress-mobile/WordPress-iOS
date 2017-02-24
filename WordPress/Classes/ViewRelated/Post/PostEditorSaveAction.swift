@@ -19,7 +19,7 @@ extension WPPostViewController {
             let originalStatus = post.original?.status, status != originalStatus || !post.hasRemote() {
             if (post.isScheduled()) {
                 return .schedule
-            } else if (status == PostStatusPublish) {
+            } else if (status == .publish) {
                 return .post
             } else {
                 return .save

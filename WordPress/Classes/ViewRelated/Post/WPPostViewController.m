@@ -299,14 +299,13 @@ EditImageDetailsViewControllerDelegate
 - (void)customizeAppearance
 {
     [super customizeAppearance];
-    [WPFontManager merriweatherBoldFontOfSize:16.0];
-    [WPFontManager merriweatherBoldItalicFontOfSize:16.0];
-    [WPFontManager merriweatherItalicFontOfSize:16.0];
-    [WPFontManager merriweatherLightFontOfSize:16.0];
-    [WPFontManager merriweatherRegularFontOfSize:16.0];
+    [WPFontManager notoBoldFontOfSize:16.0];
+    [WPFontManager notoBoldItalicFontOfSize:16.0];
+    [WPFontManager notoItalicFontOfSize:16.0];
+    [WPFontManager notoRegularFontOfSize:16.0];
 
     self.placeholderColor = [WPStyleGuide grey];
-    self.editorView.sourceViewTitleField.font = [WPFontManager merriweatherBoldFontOfSize:24.0];
+    self.editorView.sourceViewTitleField.font = [WPFontManager notoBoldFontOfSize:24.0];
     self.editorView.sourceContentDividerView.backgroundColor = [WPStyleGuide greyLighten30];
     [self.toolbarView setBorderColor:[WPStyleGuide greyLighten10]];
     [self.toolbarView setItemTintColor: [WPStyleGuide greyLighten10]];
@@ -1053,16 +1052,7 @@ EditImageDetailsViewControllerDelegate
 - (void)refreshUIForCurrentPost
 {
     self.titleText = self.post.postTitle;
-    
-    if(self.post.content == nil || [self.post.content isEmpty]) {
-        self.bodyText = @"";
-    } else {
-        if ((self.post.mt_text_more != nil) && ([self.post.mt_text_more length] > 0)) {
-			self.bodyText = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.post.content, self.post.mt_text_more];
-        } else {
-			self.bodyText = self.post.content;
-        }
-    }
+    self.bodyText = self.post.content ?: @"";
     
     [self refreshNavigationBarButtons:YES];
 }
@@ -1430,72 +1420,98 @@ EditImageDetailsViewControllerDelegate
         [self showFailedMediaRemovalAlertAndDismissEditorOnSave:shouldDismiss];
         return;
     }
+    __weak __typeof__(self) weakSelf = self;
+    __block NSString *postTitle = self.post.postTitle;
+    __block PostEditorSaveAction currentSaveAction = self.currentSaveAction;
+
+    void (^stopEditingAndDismiss)() = ^{
+        __typeof__(self) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        if (shouldDismiss) {
+            [strongSelf stopEditing];
+            [strongSelf.view endEditing:YES];
+            [strongSelf didSaveNewPost];
+            [strongSelf dismissEditView:YES];
+        } else {
+            [strongSelf startEditing];
+        }
+    };
 
     DDLogMethod();
 
     // Make sure that we are saving the latest content on the editor.
     [self autosaveContent];
 
-    void (^stopEditingAndDismiss)() = ^{
-        if (shouldDismiss) {
-            [self stopEditing];
-            [self.view endEditing:YES];
-            [self didSaveNewPost];
-            [self dismissEditView:YES];
-        } else {
-            [self startEditing];
-        }
-    };
-
-    __block NSString *postTitle = self.post.postTitle;
-    __block NSString *postStatus = self.post.status;
-    __block BOOL postIsScheduled = self.post.isScheduled;
-
     NSString *hudText;
-    if (postIsScheduled) {
-        hudText = NSLocalizedString(@"Scheduling...", @"Text displayed in HUD while a post is being scheduled to be published.");
-    } else if ([postStatus isEqualToString:@"publish"]){
-        hudText = NSLocalizedString(@"Publishing...", @"Text displayed in HUD while a post is being published.");
-    } else {
-        hudText = NSLocalizedString(@"Saving...", @"Text displayed in HUD while a post is being saved as a draft.");
+    switch (currentSaveAction) {
+        case PostEditorSaveActionSchedule:
+            hudText = NSLocalizedString(@"Scheduling...", @"Text displayed in HUD while a post is being scheduled to be published.");
+            break;
+        case PostEditorSaveActionUpdate:
+            hudText = NSLocalizedString(@"Updating...", @"Text displayed in HUD while a published or draft post is being updated.");
+            break;
+        case PostEditorSaveActionPost:
+            hudText = NSLocalizedString(@"Publishing...", @"Text displayed in HUD while a post is being published.");
+            break;
+        default:
+            hudText = NSLocalizedString(@"Saving...", @"Text displayed in HUD while a post is being saved as a draft.");
+            break;
     }
-    [SVProgressHUD showWithStatus:hudText maskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showWithStatus:hudText];
+
+    UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
+    [generator prepare];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService uploadPost:self.post
                     success:^(AbstractPost *post) {
-                        self.post = post;
-
                         DDLogInfo(@"post uploaded: %@", postTitle);
-                        NSString *hudText;
-
-                        if (postIsScheduled) {
-                            hudText = NSLocalizedString(@"Scheduled!", @"Text displayed in HUD after a post was successfully scheduled to be published.");
-                        } else if ([postStatus isEqualToString:@"publish"]){
-                            hudText = NSLocalizedString(@"Published!", @"Text displayed in HUD after a post was successfully published.");
-                        } else {
-                            hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
+                        __typeof__(self) strongSelf = weakSelf;
+                        if (!strongSelf) {
+                            return;
                         }
+                        strongSelf.post = post;
 
-                        [SVProgressHUD dismiss];
-                        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeSuccess];
-
+                        switch (currentSaveAction) {
+                            case PostEditorSaveActionSave: {
+                                NSString *hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
+                                [SVProgressHUD showSuccessWithStatus:hudText];
+                                break;
+                            }
+                            case PostEditorSaveActionUpdate: {
+                                NSString *hudText = NSLocalizedString(@"Updated!", @"Text displayed in HUD after a post was successfully updated.");
+                                [SVProgressHUD showSuccessWithStatus:hudText];
+                                break;
+                            }
+                            default:
+                                [SVProgressHUD dismiss];
+                                break;
+                        }                        
+                        [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
                         stopEditingAndDismiss();
                     } failure:^(NSError *error) {
                         DDLogError(@"post failed: %@", [error localizedDescription]);
                         NSString *hudText;
-                        if (postIsScheduled) {
-                            hudText = NSLocalizedString(@"Error occurred\nduring scheduling", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
-                        } else if ([postStatus isEqualToString:@"publish"]){
-                            hudText = NSLocalizedString(@"Error occurred\nduring publishing", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
-                        } else {
-                            hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
+                        switch (currentSaveAction) {
+                            case PostEditorSaveActionSchedule:
+                                hudText = NSLocalizedString(@"Error occurred\nduring scheduling", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
+                                break;
+                            case PostEditorSaveActionUpdate:
+                                hudText = NSLocalizedString(@"Error occurred\nduring updating", @"Text displayed in HUD after attempting to update a post and an error occurred.");
+                                break;
+                            case PostEditorSaveActionPost:
+                                hudText = NSLocalizedString(@"Error occurred\nduring publishing", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
+                                break;
+                            default:
+                                hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
+                                break;
                         }
-
                         [SVProgressHUD showErrorWithStatus:hudText];
-                        [WPNotificationFeedbackGenerator notificationOccurred:WPNotificationFeedbackTypeError];
-
+                        [generator notificationOccurred:UINotificationFeedbackTypeError];
                         stopEditingAndDismiss();
                     }];
 }
@@ -1549,8 +1565,6 @@ EditImageDetailsViewControllerDelegate
     self.post.postTitle = self.titleText;
     
     self.post.content = self.bodyText;
-    if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
-        self.post.mt_text_more = @"";
     
     if ( self.post.original.password != nil ) { //original post was password protected
         if ( self.post.password == nil || [self.post.password isEqualToString:@""] ) { //removed the password

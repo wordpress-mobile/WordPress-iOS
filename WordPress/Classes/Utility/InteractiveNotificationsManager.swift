@@ -33,11 +33,9 @@ final public class InteractiveNotificationsManager: NSObject {
             return
         }
 
-        if #available(iOS 10.0, *) {
-            let notificationCenter = UNUserNotificationCenter.current()
-            notificationCenter.delegate = self
-            notificationCenter.setNotificationCategories(supportedNotificationCategories())
-        }
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.delegate = self
+        notificationCenter.setNotificationCategories(supportedNotificationCategories())
     }
 
     /// Requests authorization to interact with the user when notifications arrive.
@@ -50,13 +48,8 @@ final public class InteractiveNotificationsManager: NSObject {
             return
         }
 
-        if #available(iOS 10.0, *) {
-            let notificationCenter = UNUserNotificationCenter.current()
-            notificationCenter.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { _ in })
-        } else {
-            let settings = UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: supportedNotificationCategories())
-            sharedApplication.registerUserNotificationSettings(settings)
-        }
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { _ in })
     }
 
     /// Handle an action taken from a remote notification
@@ -82,11 +75,9 @@ final public class InteractiveNotificationsManager: NSObject {
             return
         }
 
-        if #available(iOS 10.0, *) {
-            if identifier == UNNotificationDefaultActionIdentifier {
-                showDetailsWithNoteID(noteId)
-                return
-            }
+        if identifier == UNNotificationDefaultActionIdentifier {
+            showDetailsWithNoteID(noteId)
+            return
         }
 
         guard let action = NoteActionDefinition(rawValue: identifier) else {
@@ -186,23 +177,8 @@ final public class InteractiveNotificationsManager: NSObject {
     ///
     /// - Returns: A set of *UNNotificationCategory* instances.
     ///
-    @available(iOS 10.0, *)
     private func supportedNotificationCategories() -> Set<UNNotificationCategory> {
         let categories: [UNNotificationCategory] = NoteCategoryDefinition.allDefinitions.map({ $0.notificationCategory() })
-        return Set(categories)
-    }
-
-
-
-
-    /// Returns a collection of *UIUserNotificationCategory* instances, for each one of the
-    /// supported NoteCategoryDefinition enum case's.
-    ///
-    /// - Returns: A set of *UIUserNotificationCategory* instances.
-    /// - Note: This method is only used for iOS 9 compatibility
-    ///
-    fileprivate func supportedNotificationCategories() -> Set<UIUserNotificationCategory> {
-        let categories: [UIUserNotificationCategory] = NoteCategoryDefinition.allDefinitions.map({ $0.notificationCategory() })
         return Set(categories)
     }
 
@@ -235,21 +211,12 @@ final public class InteractiveNotificationsManager: NSObject {
             return rawValue
         }
 
-        @available(iOS 10.0, *)
         func notificationCategory() -> UNNotificationCategory {
             return UNNotificationCategory(
                 identifier: identifier,
                 actions: actions.map({ $0.notificationAction() }),
                 intentIdentifiers: [],
                 options: [])
-        }
-
-        // iOS 9 compatibility
-        func notificationCategory() -> UIUserNotificationCategory {
-            let category = UIMutableUserNotificationCategory()
-            category.identifier = identifier
-            category.setActions(actions.map({ $0.notificationAction() }), for: .default)
-            return category
         }
 
         static var allDefinitions = [CommentApprove, CommentLike, CommentReply, CommentReplyWithLike]
@@ -291,7 +258,6 @@ final public class InteractiveNotificationsManager: NSObject {
             return false
         }
 
-        @available(iOS 10.0, *)
         var notificationActionOptions: UNNotificationActionOptions {
             var options = UNNotificationActionOptions()
             if requiresAuthentication {
@@ -306,7 +272,6 @@ final public class InteractiveNotificationsManager: NSObject {
             return options
         }
 
-        @available(iOS 10.0, *)
         func notificationAction() -> UNNotificationAction {
             switch self {
             case .CommentReply:
@@ -320,27 +285,11 @@ final public class InteractiveNotificationsManager: NSObject {
             }
         }
 
-
-        // iOS 9 compatibility
-        func notificationAction() -> UIUserNotificationAction {
-            let action = UIMutableUserNotificationAction()
-            action.identifier = identifier
-            action.title = description
-            action.activationMode = requiresForeground ? .foreground : .background
-            action.isDestructive = destructive
-            action.isAuthenticationRequired = requiresAuthentication
-            if self == NoteActionDefinition.CommentReply {
-                action.behavior = .textInput
-            }
-            return action
-        }
-
         static var allDefinitions = [CommentApprove, CommentLike, CommentReply]
     }
 }
 
 
-@available(iOS 10.0, *)
 extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
     public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let responseText = (response as? UNTextInputNotificationResponse)?.userText

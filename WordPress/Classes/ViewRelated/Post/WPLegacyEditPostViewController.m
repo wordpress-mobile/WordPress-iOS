@@ -174,7 +174,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)customizeAppearance
 {
     [super customizeAppearance];
-    [self setTitleFont:[WPFontManager merriweatherBoldFontOfSize:24.0]];
+    [self setTitleFont:[WPFontManager notoBoldFontOfSize:24.0]];
     [self setTitleColor:[WPStyleGuide darkGrey]];
     [self setBodyFont:[UIFont fontWithName: @"Menlo-Regular" size:14.0f]];
     [self setBodyColor:[WPStyleGuide darkGrey]];
@@ -555,16 +555,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     [self setupNavbar];
     self.titleText = self.post.postTitle;
+    self.bodyText = self.post.content ?: @"";
 
-    if (self.post.content == nil || [self.post.content isEmpty]) {
-        self.bodyText = @"";
-    } else {
-        if ((self.post.mt_text_more != nil) && ([self.post.mt_text_more length] > 0)) {
-            self.bodyText = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.post.content, self.post.mt_text_more];
-        } else {
-            self.bodyText = self.post.content;
-        }
-    }
     [self refreshButtons];
 }
 
@@ -662,36 +654,51 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)savePost:(BOOL)upload
 {
+    __weak __typeof__(self) weakSelf = self;
+    __block NSString *postStatus = self.post.status;
+    __block NSString *postOriginalStatus = self.post.original.status;
+    __block BOOL postIsScheduled = self.post.isScheduled;
+
+    void (^stopEditingAndDismiss)() = ^{
+        __typeof__(self) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        [strongSelf stopEditing];
+        [strongSelf.view endEditing:YES];
+        [strongSelf didSaveNewPost];
+        [strongSelf dismissEditView:YES];
+    };
+
     DDLogMethod();
     [self logSavePostStats];
 
-    void (^stopEditingAndDismiss)() = ^{
-            [self stopEditing];
-            [self.view endEditing:YES];
-            [self didSaveNewPost];
-            [self dismissEditView:YES];
-    };
-
-    __block NSString *postStatus = self.post.status;
-    __block BOOL postIsScheduled = self.post.isScheduled;
-
     NSString *hudText;
-    if (postIsScheduled) {
-        hudText = NSLocalizedString(@"Scheduling...", @"Text displayed in HUD while a post is being scheduled to be published.");
-    } else if ([postStatus isEqualToString:@"publish"]){
-        hudText = NSLocalizedString(@"Publishing...", @"Text displayed in HUD while a post is being published.");
+    if (![postStatus isEqualToString:postOriginalStatus]) {
+        if (postIsScheduled) {
+            hudText = NSLocalizedString(@"Scheduling...", @"Text displayed in HUD while a post is being scheduled to be published.");
+        } else if ([postStatus isEqualToString:PostStatusPublish]) {
+            hudText = NSLocalizedString(@"Publishing...", @"Text displayed in HUD while a post is being published.");
+        } else {
+            hudText = NSLocalizedString(@"Saving...", @"Text displayed in HUD while a post is being saved as a draft.");
+        }
     } else {
-        hudText = NSLocalizedString(@"Saving...", @"Text displayed in HUD while a post is being saved as a draft.");
+        hudText = NSLocalizedString(@"Updating...", @"Text displayed in HUD while a published or draft post is being updated.");
     }
-    [SVProgressHUD showWithStatus:hudText maskType:SVProgressHUDMaskTypeClear];
 
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showWithStatus:hudText];
     if (upload) {
         NSString *postTitle = self.post.original.postTitle;
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
         [postService uploadPost:(Post *)self.post
                         success:^(AbstractPost *post){
-                            self.post = post;
+                            __typeof__(self) strongSelf = weakSelf;
+                            if (!strongSelf) {
+                                return;
+                            }
+                            strongSelf.post = post;
                             DDLogInfo(@"post uploaded: %@", postTitle);
 
                             [SVProgressHUD dismiss];
@@ -701,14 +708,17 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                             DDLogError(@"post failed: %@", [error localizedDescription]);
 
                             NSString *hudText;
-                            if (postIsScheduled) {
-                                hudText = NSLocalizedString(@"Error occurred\nduring scheduling", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
-                            } else if ([postStatus isEqualToString:@"publish"]){
-                                hudText = NSLocalizedString(@"Error occurred\nduring publishing", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
+                            if (![postStatus isEqualToString:postOriginalStatus]) {
+                                if (postIsScheduled) {
+                                    hudText = NSLocalizedString(@"Error occurred\nduring scheduling", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
+                                } else if ([postStatus isEqualToString:PostStatusPublish]) {
+                                    hudText = NSLocalizedString(@"Error occurred\nduring publishing", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
+                                } else {
+                                    hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
+                                }
                             } else {
-                                hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring updating", @"Text displayed in HUD after attempting to update a post and an error occurred.");
                             }
-
                             [SVProgressHUD showErrorWithStatus:hudText];
                             stopEditingAndDismiss();
                         }];
@@ -761,9 +771,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.post.postTitle = self.titleText;
 
     self.post.content = self.bodyText;
-    if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound) {
-        self.post.mt_text_more = @"";
-    }
 
     if ( self.post.original.password != nil ) { //original post was password protected
         if ( self.post.password == nil || [self.post.password isEqualToString:@""] ) { //removed the password

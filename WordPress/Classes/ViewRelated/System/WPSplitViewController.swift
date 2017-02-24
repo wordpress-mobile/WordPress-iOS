@@ -25,6 +25,9 @@ class WPSplitViewController: UISplitViewController {
     /// primary navigation stack.
     var collapseMode: WPSplitViewControllerCollapseMode = .Automatic
 
+    /// Set to false to disable fullscreen display mode
+    var fullscreenDisplayEnabled = true
+
     var wpPrimaryColumnWidth: WPSplitViewControllerPrimaryColumnWidth = .default {
         didSet {
             updateSplitViewForPrimaryColumnWidth()
@@ -214,7 +217,7 @@ class WPSplitViewController: UISplitViewController {
     fileprivate let dimmingViewAlpha: CGFloat = 0.5
     fileprivate let dimmingViewAnimationDuration: TimeInterval = 0.3
 
-    fileprivate func dimDetailViewController(_ dimmed: Bool) {
+    func dimDetailViewController(_ dimmed: Bool) {
         if dimmed {
             if dimmingView.superview == nil {
                 view.addSubview(dimmingView)
@@ -347,6 +350,8 @@ class WPSplitViewController: UISplitViewController {
     ///
     /// - Parameter hidden: If `true`, hide the primary view controller.
     func setPrimaryViewControllerHidden(_ hidden: Bool, animated: Bool = true) {
+        guard fullscreenDisplayEnabled else { return }
+
         let updateDisplayMode = {
             self.preferredDisplayMode = (hidden) ? .primaryHidden : .allVisible
         }
@@ -367,9 +372,15 @@ class WPSplitViewController: UISplitViewController {
         let popOrScrollToTop = { (navigationController: UINavigationController) in
             if navigationController.viewControllers.count > 1 {
                 navigationController.popToRootViewController(animated: animated)
+
+                // Ensure navigation bars are visible – otherwise if we popped
+                // back from e.g. a Reader Detail screen which had hidden its
+                // bars, they'd stay hidden.
+                navigationController.setNavigationBarHidden(false, animated: animated)
             } else {
                 navigationController.scrollContentToTopAnimated(animated)
             }
+
         }
 
         if let primaryNavigationController = viewControllers.first as? UINavigationController {
@@ -503,7 +514,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
             // interactive pop transition, we need to check whether the gesture
             // gets cancelled so that we can undim the detail view if necessary.
             // (i.e. the user begins a back swipe but doesn't go through with it)
-            coordinator.notifyWhenInteractionEnds({ [weak self] context in
+            coordinator.notifyWhenInteractionChanges({ [weak self] context in
                 if context.initiallyInteractive && context.isCancelled {
                     self?.dimDetailViewController(false)
                 }
@@ -526,7 +537,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
         // If we're currently in fullscreen mode, and there are no view controllers
         // left in the navigation stack that prefer to be fullscreen, then
         // animate back to a standard split view.
-        if isCurrentlyFullscreen && !hasFullscreenViewControllersInStack {
+        if fullscreenDisplayEnabled && isCurrentlyFullscreen && !hasFullscreenViewControllersInStack {
             let performTransition = { (animated: Bool) in
                 self.setPrimaryViewControllerHidden(false, animated: animated)
 
@@ -561,6 +572,8 @@ extension WPSplitViewController: UINavigationControllerDelegate {
     }
 
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard fullscreenDisplayEnabled else { return nil }
+
         var stack = navigationController.viewControllers
         if operation == .push {
             // During a push, the new VC has already been added to the stack
@@ -618,6 +631,7 @@ extension WPSplitViewController: UIGestureRecognizerDelegate {
         // Same check but for the detail view controller
         if let detailNavigationController = viewControllers.last as? UINavigationController,
             gestureIsValidInNavigationController(detailNavigationController) && !isCollapsed {
+            guard fullscreenDisplayEnabled else { return true }
 
             // Don't allow the back gesture if we're switching back from
             // fullscreen to split view

@@ -152,11 +152,18 @@ class NotificationDetailsViewController: UIViewController {
         keyboardManager.stopListeningToKeyboardNotifications()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        refreshInterface()
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { context in
+            self.refreshInterfaceIfNeeded()
+        }, completion: nil)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        refreshNavigationBar()
+    }
 
     fileprivate func refreshInterfaceIfNeeded() {
         guard isViewLoaded else {
@@ -176,6 +183,29 @@ class NotificationDetailsViewController: UIViewController {
 
     fileprivate func refreshNavigationBar() {
         title = note.title
+
+        if splitViewControllerIsHorizontallyCompact {
+            enableNavigationRightBarButtonItems()
+        } else {
+            navigationItem.rightBarButtonItems = nil
+        }
+    }
+
+    fileprivate func enableNavigationRightBarButtonItems() {
+
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/6662#issue-207316186
+        let buttonSize = CGFloat(24)
+        let buttonSpacing = CGFloat(12)
+
+        let width = buttonSize + buttonSpacing + buttonSize
+        let height = buttonSize
+        let buttons = UIStackView(arrangedSubviews: [nextNavigationButton, previousNavigationButton])
+        buttons.axis = .horizontal
+        buttons.spacing = buttonSpacing
+        buttons.frame = CGRect(x: 0, y: 0, width: width, height: height)
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttons)
+
         previousNavigationButton.isEnabled = shouldEnablePreviousButton
         nextNavigationButton.isEnabled = shouldEnableNextButton
     }
@@ -287,6 +317,8 @@ extension NotificationDetailsViewController {
                                          target: nil,
                                          action: nil)
 
+        navigationItem.backBarButtonItem = backButton
+
         let next = UIButton(type: .custom)
         next.setImage(Gridicon.iconOfType(.arrowUp), for: .normal)
         next.addTarget(self, action: #selector(nextNotificationWasPressed), for: .touchUpInside)
@@ -295,22 +327,10 @@ extension NotificationDetailsViewController {
         previous.setImage(Gridicon.iconOfType(.arrowDown), for: .normal)
         previous.addTarget(self, action: #selector(previousNotificationWasPressed), for: .touchUpInside)
 
-        // https://github.com/wordpress-mobile/WordPress-iOS/issues/6662#issue-207316186
-        let buttonSize = CGFloat(24)
-        let buttonSpacing = CGFloat(12)
-
-        let width = buttonSize + buttonSpacing + buttonSize
-        let height = buttonSize
-        let buttons = UIStackView(arrangedSubviews: [next, previous])
-        buttons.axis = .horizontal
-        buttons.spacing = buttonSpacing
-        buttons.frame = CGRect(x: 0, y: 0, width: width, height: height)
-
-        navigationItem.backBarButtonItem = backButton
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttons)
-
         previousNavigationButton = previous
         nextNavigationButton = next
+
+        enableNavigationRightBarButtonItems()
     }
 
     func setupMainView() {
@@ -604,7 +624,6 @@ private extension NotificationDetailsViewController {
         cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
         cell.attributedCommentText  = text.trimNewlines()
         cell.isApproved             = commentBlock.isCommentApproved
-        cell.isRepliedComment       = note.isRepliedComment
 
         // Setup: Callbacks
         cell.onDetailsClick = { [weak self] sender in
@@ -641,7 +660,7 @@ private extension NotificationDetailsViewController {
         // Setup: Properties
         // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
         //
-        cell.isReplyEnabled     = !hasHorizontallyCompactView() && commentBlock.isActionOn(.Reply)
+        cell.isReplyEnabled     = !shouldAttachReplyView && commentBlock.isActionOn(.Reply)
         cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
         cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
         cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
@@ -959,11 +978,8 @@ private extension NotificationDetailsViewController {
     }
 
     var maxMediaEmbedWidth: CGFloat {
-        let textPadding = NoteBlockTextTableViewCell.defaultLabelPadding
-        let portraitWidth = hasHorizontallyCompactView() ? view.bounds.width : WPTableViewFixedWidth
-        let maxWidth = portraitWidth - (textPadding.left + textPadding.right)
-
-        return maxWidth
+        let readableWidth = ceil(tableView.readableContentGuide.layoutFrame.size.width)
+        return readableWidth > 0 ? readableWidth : view.frame.size.width
     }
 }
 
@@ -973,7 +989,7 @@ private extension NotificationDetailsViewController {
 //
 private extension NotificationDetailsViewController {
     func followSiteWithBlock(_ block: NotificationBlock) {
-        WPNotificationFeedbackGenerator.notificationOccurred(.success)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
 
         actionsService.followSiteWithBlock(block)
         WPAppAnalytics.track(.notificationsSiteFollowAction, withBlogID: block.metaSiteID)
@@ -985,7 +1001,7 @@ private extension NotificationDetailsViewController {
     }
 
     func likeCommentWithBlock(_ block: NotificationBlock) {
-        WPNotificationFeedbackGenerator.notificationOccurred(.success)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
 
         actionsService.likeCommentWithBlock(block)
         WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: block.metaSiteID)
@@ -1046,11 +1062,13 @@ private extension NotificationDetailsViewController {
     }
 
     func replyCommentWithBlock(_ block: NotificationBlock, content: String) {
-        WPNotificationFeedbackGenerator.notificationOccurred(.success)
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        generator.notificationOccurred(.success)
 
         actionsService.replyCommentWithBlock(block, content: content, completion: { success in
             guard success else {
-                WPNotificationFeedbackGenerator.notificationOccurred(.error)
+                generator.notificationOccurred(.error)
                 self.displayReplyErrorWithBlock(block, content: content)
                 return
             }
@@ -1061,11 +1079,13 @@ private extension NotificationDetailsViewController {
     }
 
     func updateCommentWithBlock(_ block: NotificationBlock, content: String) {
-        WPNotificationFeedbackGenerator.notificationOccurred(.success)
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        generator.notificationOccurred(.success)
 
         actionsService.updateCommentWithBlock(block, content: content, completion: { success in
             guard success == false else {
-            WPNotificationFeedbackGenerator.notificationOccurred(.error)
+            generator.notificationOccurred(.error)
                 return
             }
             self.displayCommentUpdateErrorWithBlock(block, content: content)
