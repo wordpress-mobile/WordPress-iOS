@@ -70,7 +70,7 @@ class AztecPostViewController: UIViewController {
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
                                                       attributes: [NSForegroundColorAttributeName: WPStyleGuide.grey()])
         tf.delegate = self
-        tf.font = WPFontManager.merriweatherBoldFont(ofSize: 24.0)
+        tf.font = WPFontManager.notoBoldFont(ofSize: 24.0)
         tf.returnKeyType = .next
         tf.textColor = UIColor.darkText
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -238,12 +238,12 @@ class AztecPostViewController: UIViewController {
     /// Maintainer of state for editor - like for post button
     ///
     fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
-        var originalPostStatus: PostStatus? = nil
+        var originalPostStatus: BasePost.Status? = nil
 
         if let originalPost = self.post.original,
             let postStatus = originalPost.status,
             originalPost.hasRemote() {
-            originalPostStatus = PostStatus(rawValue: postStatus)
+            originalPostStatus = postStatus
         }
 
         // TODO: Determine if user can actually publish to site or not
@@ -284,7 +284,7 @@ class AztecPostViewController: UIViewController {
         super.viewDidLoad()
 
         // TODO: Fix the warnings triggered by this one!
-        WPFontManager.loadMerriweatherFontFamily()
+        WPFontManager.loadNotoFontFamily()
 
         // New Post Revision!
         createRevisionOfPost()
@@ -550,9 +550,9 @@ extension AztecPostViewController {
     @IBAction func secondaryPublishButtonTapped() {
         let publishPostClosure = {
             if self.postEditorStateContext.secondaryPublishButtonAction == .save {
-                self.post.status = PostStatusDraft
+                self.post.status = .draft
             } else if self.postEditorStateContext.secondaryPublishButtonAction == .publish {
-                self.post.status = PostStatusPublish
+                self.post.status = .publish
             }
 
             self.handlePublishButtonTapped(secondaryPublishTapped: true)
@@ -584,10 +584,10 @@ extension AztecPostViewController {
             if !post.hasRemote() {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
-                    self.post.status = PostStatusDraft
+                    self.post.status = .draft
                     self.handlePublishButtonTapped(secondaryPublishTapped: false)
                 }
-            } else if post.status == PostStatusDraft {
+            } else if post.status == .draft {
                 // The post was already a draft
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
                     self.handlePublishButtonTapped(secondaryPublishTapped: false)
@@ -619,8 +619,8 @@ extension AztecPostViewController {
             present(alertController, animated: true, completion: nil)
             return
         }
-
-        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText, maskType: .clear)
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
         postEditorStateContext.updated(isBeingPublished: true)
 
         // Finally, publish the post.
@@ -628,16 +628,19 @@ extension AztecPostViewController {
             self.postEditorStateContext.updated(isBeingPublished: false)
             SVProgressHUD.dismiss()
 
+            let generator = UINotificationFeedbackGenerator()
+            generator.prepare()
+
             if let error = error {
                 DDLogSwift.logError("Error publishing post: \(error.localizedDescription)")
 
                 SVProgressHUD.showError(withStatus: self.postEditorStateContext.publishErrorText)
-                WPNotificationFeedbackGenerator.notificationOccurred(.error)
+                generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
                 // TODO: Determine if this is necessary; if it is then ensure state machine is updated
                 self.post = uploadedPost
 
-                WPNotificationFeedbackGenerator.notificationOccurred(.success)
+                generator.notificationOccurred(.success)
             }
 
             // Don't dismiss - make draft now in secondary publish
@@ -778,9 +781,9 @@ private extension AztecPostViewController {
 // MARK: - PostEditorStateContextDelegate & support methods
 extension AztecPostViewController: PostEditorStateContextDelegate {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(AbstractPost.status) {
+        if keyPath == BasePost.statusKeyPath {
             if let status = post.status {
-                postEditorStateContext.updated(postStatus: PostStatus(rawValue: status) ?? .draft)
+                postEditorStateContext.updated(postStatus: status)
             }
             return
         } else if keyPath == #keyPath(AbstractPost.dateCreated) {
@@ -821,13 +824,13 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
     }
 
     internal func addObservers(toPost: AbstractPost) {
-        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.status), options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: AbstractPost.statusKeyPath, options: [], context: nil)
         toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated), options: [], context: nil)
         toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.content), options: [], context: nil)
     }
 
     internal func removeObservers(fromPost: AbstractPost) {
-        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.status))
+        fromPost.removeObserver(self, forKeyPath: AbstractPost.statusKeyPath)
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated))
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
     }
@@ -1733,7 +1736,7 @@ extension AztecPostViewController {
     struct Assets {
         static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
         static let closeButtonRegularImage  = UIImage(named: "icon-posts-editor-chevron")
-        static let defaultRegularFont       = WPFontManager.merriweatherRegularFont(ofSize: 16)
+        static let defaultRegularFont       = WPFontManager.notoRegularFont(ofSize: 16)
         static let defaultSemiBoldFont      = WPFontManager.systemSemiBoldFont(ofSize: 16)
         static let defaultMissingImage      = Gridicon.iconOfType(.image)
     }

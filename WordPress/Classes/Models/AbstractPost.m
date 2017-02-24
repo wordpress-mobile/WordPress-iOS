@@ -463,7 +463,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 
 - (NSString *)authorNameForDisplay
 {
-    return self.author;
+    return [NSString makePlainText:self.author];
 }
 
 - (NSURL *)avatarURLForDisplay
@@ -473,7 +473,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 
 - (NSString *)blogNameForDisplay
 {
-    return self.blog.settings.name;
+    return [NSString makePlainText:self.blog.settings.name];
 }
 
 - (NSURL *)blogURL
