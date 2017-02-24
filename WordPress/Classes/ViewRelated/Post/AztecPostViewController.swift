@@ -1302,6 +1302,7 @@ private extension AztecPostViewController {
 
 // MARK: - Media Support
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
+
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
         mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
         mediaProgressView.progress = progress
@@ -1365,6 +1366,30 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
             upload(media: media, mediaID: attachment.identifier)
         }
+    }
+
+    fileprivate func saveToMedia(attachment: TextAttachment) {
+        guard let image = attachment.image else {
+            return
+        }
+        mediaProgressCoordinator.track(numberOfItems: 1)
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        mediaService.createMedia(with: image, withMediaID:"CopyPasteImage" , forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
+            DispatchQueue.main.async {
+                self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: thumbnailURL)
+            }
+        }, completion: { [weak self](media, error) in
+            guard let strongSelf = self else {
+                return
+            }
+            guard let media = media, error == nil else {
+                DispatchQueue.main.async {
+                    strongSelf.handleError(error as? NSError, onAttachment: attachment)
+                }
+                return
+            }
+            strongSelf.upload(media: media, mediaID: attachment.identifier)
+        })
     }
 
     private func upload(media: Media, mediaID: String) {
@@ -1552,9 +1577,9 @@ extension AztecPostViewController: TextViewMediaDelegate {
         return Gridicon.iconOfType(.image)
     }
 
-    func textView(_ textView: TextView, urlForImage image: UIImage) -> URL {
-        //TODO: add support for saving images that result from a copy/paste to the editor, this should save locally to file, and import to the media library.
-        return URL(string:"")!
+    func textView(_ textView: TextView, urlForAttachment attachment: TextAttachment) -> URL {
+        saveToMedia(attachment: attachment)
+        return URL(string:"placeholder://")!
     }
 
     func cancelAllPendingMediaRequests() {
