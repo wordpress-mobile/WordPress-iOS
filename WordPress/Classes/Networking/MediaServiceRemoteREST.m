@@ -131,7 +131,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                                                      fileParts:@[filePart]
                                                        success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
         NSDictionary *response = (NSDictionary *)responseObject;
-        NSArray * errorList = response[@"error"];
+        NSArray * errorList = response[@"errors"];
         NSArray * mediaList = response[@"media"];
         if (mediaList.count > 0){
             RemoteMedia * remoteMedia = [self remoteMediaFromJSONDictionary:mediaList[0]];
