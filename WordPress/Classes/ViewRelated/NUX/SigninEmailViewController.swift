@@ -204,8 +204,8 @@ import WordPressShared
     ///
     func fetchSharedWebCredentialsIfAvailable() {
         didRequestSafariSharedCredentials = true
-        SigninHelpers.requestSharedWebCredentials { [unowned self] (found, username, password) in
-            self.handleFetchedWebCredentials(found, username: username, password: password)
+        SigninHelpers.requestSharedWebCredentials { [weak self] (found, username, password) in
+            self?.handleFetchedWebCredentials(found, username: username, password: password)
         }
     }
 
@@ -346,9 +346,9 @@ import WordPressShared
     func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
-        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
-            self.emailTextField.text = loginFields.username
-            self.signinWithUsernamePassword(true)
+        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
+            self?.emailTextField.text = loginFields.username
+            self?.signinWithUsernamePassword(true)
         }
     }
 
