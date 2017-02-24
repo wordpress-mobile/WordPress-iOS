@@ -152,11 +152,18 @@ class NotificationDetailsViewController: UIViewController {
         keyboardManager.stopListeningToKeyboardNotifications()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        refreshInterface()
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { context in
+            self.refreshInterfaceIfNeeded()
+        }, completion: nil)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        refreshNavigationBar()
+    }
 
     fileprivate func refreshInterfaceIfNeeded() {
         guard isViewLoaded else {
@@ -176,6 +183,29 @@ class NotificationDetailsViewController: UIViewController {
 
     fileprivate func refreshNavigationBar() {
         title = note.title
+
+        if splitViewControllerIsHorizontallyCompact {
+            enableNavigationRightBarButtonItems()
+        } else {
+            navigationItem.rightBarButtonItems = nil
+        }
+    }
+
+    fileprivate func enableNavigationRightBarButtonItems() {
+
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/6662#issue-207316186
+        let buttonSize = CGFloat(24)
+        let buttonSpacing = CGFloat(12)
+
+        let width = buttonSize + buttonSpacing + buttonSize
+        let height = buttonSize
+        let buttons = UIStackView(arrangedSubviews: [nextNavigationButton, previousNavigationButton])
+        buttons.axis = .horizontal
+        buttons.spacing = buttonSpacing
+        buttons.frame = CGRect(x: 0, y: 0, width: width, height: height)
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttons)
+
         previousNavigationButton.isEnabled = shouldEnablePreviousButton
         nextNavigationButton.isEnabled = shouldEnableNextButton
     }
@@ -287,6 +317,8 @@ extension NotificationDetailsViewController {
                                          target: nil,
                                          action: nil)
 
+        navigationItem.backBarButtonItem = backButton
+
         let next = UIButton(type: .custom)
         next.setImage(Gridicon.iconOfType(.arrowUp), for: .normal)
         next.addTarget(self, action: #selector(nextNotificationWasPressed), for: .touchUpInside)
@@ -295,22 +327,10 @@ extension NotificationDetailsViewController {
         previous.setImage(Gridicon.iconOfType(.arrowDown), for: .normal)
         previous.addTarget(self, action: #selector(previousNotificationWasPressed), for: .touchUpInside)
 
-        // https://github.com/wordpress-mobile/WordPress-iOS/issues/6662#issue-207316186
-        let buttonSize = CGFloat(24)
-        let buttonSpacing = CGFloat(12)
-
-        let width = buttonSize + buttonSpacing + buttonSize
-        let height = buttonSize
-        let buttons = UIStackView(arrangedSubviews: [next, previous])
-        buttons.axis = .horizontal
-        buttons.spacing = buttonSpacing
-        buttons.frame = CGRect(x: 0, y: 0, width: width, height: height)
-
-        navigationItem.backBarButtonItem = backButton
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttons)
-
         previousNavigationButton = previous
         nextNavigationButton = next
+
+        enableNavigationRightBarButtonItems()
     }
 
     func setupMainView() {
@@ -604,7 +624,6 @@ private extension NotificationDetailsViewController {
         cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
         cell.attributedCommentText  = text.trimNewlines()
         cell.isApproved             = commentBlock.isCommentApproved
-        cell.isRepliedComment       = note.isRepliedComment
 
         // Setup: Callbacks
         cell.onDetailsClick = { [weak self] sender in
@@ -959,11 +978,8 @@ private extension NotificationDetailsViewController {
     }
 
     var maxMediaEmbedWidth: CGFloat {
-        let textPadding = NoteBlockTextTableViewCell.defaultLabelPadding
-        let portraitWidth = hasHorizontallyCompactView() ? view.bounds.width : WPTableViewFixedWidth
-        let maxWidth = portraitWidth - (textPadding.left + textPadding.right)
-
-        return maxWidth
+        let readableWidth = ceil(tableView.readableContentGuide.layoutFrame.size.width)
+        return readableWidth > 0 ? readableWidth : view.frame.size.width
     }
 }
 
