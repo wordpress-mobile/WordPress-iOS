@@ -18,7 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSString * password;
 @property (nonatomic, strong, nullable) NSString * permaLink;
 @property (nonatomic, strong, nullable) NSString * mt_excerpt;
-@property (nonatomic, strong, nullable) NSString * mt_text_more;
 @property (nonatomic, strong, nullable) NSString * wp_slug;
 @property (nonatomic, strong, nullable) NSNumber * remoteStatusNumber;
 @property (nonatomic, strong, nullable) NSNumber * post_thumbnail;
