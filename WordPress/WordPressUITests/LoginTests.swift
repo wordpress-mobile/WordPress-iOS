@@ -39,7 +39,7 @@ class LoginTests: XCTestCase {
     func testSelfHostedLoginWithoutJetPack() {
         loginSelfHosted(username: WordPressTestCredentials.selfHostedUser, password: WordPressTestCredentials.selfHostedPassword, url: WordPressTestCredentials.selfHostedSiteURL)
 
-        waitForElementToAppear(element: app.tabBars[ elementStringIDs.mainNavigationBar ])
+        waitForElementToAppear(element: app.tabBars[ elementStringIDs.mainNavigationBar ], timeout: 10)
 
         logoutSelfHosted()
     }
