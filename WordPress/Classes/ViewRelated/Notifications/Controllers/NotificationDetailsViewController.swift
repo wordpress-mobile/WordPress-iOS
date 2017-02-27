@@ -152,9 +152,11 @@ class NotificationDetailsViewController: UIViewController {
         keyboardManager.stopListeningToKeyboardNotifications()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        refreshInterfaceIfNeeded()
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { context in
+            self.refreshInterfaceIfNeeded()
+        }, completion: nil)
     }
 
     override func viewDidLayoutSubviews() {
@@ -622,7 +624,6 @@ private extension NotificationDetailsViewController {
         cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
         cell.attributedCommentText  = text.trimNewlines()
         cell.isApproved             = commentBlock.isCommentApproved
-        cell.isRepliedComment       = note.isRepliedComment
 
         // Setup: Callbacks
         cell.onDetailsClick = { [weak self] sender in
@@ -977,7 +978,7 @@ private extension NotificationDetailsViewController {
     }
 
     var maxMediaEmbedWidth: CGFloat {
-        let readableWidth = view.readableContentGuide.layoutFrame.size.width
+        let readableWidth = ceil(tableView.readableContentGuide.layoutFrame.size.width)
         return readableWidth > 0 ? readableWidth : view.frame.size.width
     }
 }

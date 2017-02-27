@@ -54,6 +54,7 @@ class AztecPostViewController: UIViewController {
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         toolbar.formatter = self
         tv.isHidden = true
+        tv.delegate = self
 
         return tv
     }()
@@ -69,7 +70,7 @@ class AztecPostViewController: UIViewController {
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
                                                       attributes: [NSForegroundColorAttributeName: WPStyleGuide.grey()])
         tf.delegate = self
-        tf.font = WPFontManager.merriweatherBoldFont(ofSize: 24.0)
+        tf.font = WPFontManager.notoBoldFont(ofSize: 24.0)
         tf.returnKeyType = .next
         tf.textColor = UIColor.darkText
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -237,12 +238,12 @@ class AztecPostViewController: UIViewController {
     /// Maintainer of state for editor - like for post button
     ///
     fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
-        var originalPostStatus: PostStatus? = nil
+        var originalPostStatus: BasePost.Status? = nil
 
         if let originalPost = self.post.original,
             let postStatus = originalPost.status,
             originalPost.hasRemote() {
-            originalPostStatus = PostStatus(rawValue: postStatus)
+            originalPostStatus = postStatus
         }
 
         // TODO: Determine if user can actually publish to site or not
@@ -283,7 +284,7 @@ class AztecPostViewController: UIViewController {
         super.viewDidLoad()
 
         // TODO: Fix the warnings triggered by this one!
-        WPFontManager.loadMerriweatherFontFamily()
+        WPFontManager.loadNotoFontFamily()
 
         // New Post Revision!
         createRevisionOfPost()
@@ -549,9 +550,9 @@ extension AztecPostViewController {
     @IBAction func secondaryPublishButtonTapped() {
         let publishPostClosure = {
             if self.postEditorStateContext.secondaryPublishButtonAction == .save {
-                self.post.status = PostStatusDraft
+                self.post.status = .draft
             } else if self.postEditorStateContext.secondaryPublishButtonAction == .publish {
-                self.post.status = PostStatusPublish
+                self.post.status = .publish
             }
 
             self.handlePublishButtonTapped(secondaryPublishTapped: true)
@@ -580,13 +581,13 @@ extension AztecPostViewController {
 
         // Button: Save Draft/Update Draft
         if post.hasLocalChanges() {
-            if post.hasRemote() {
+            if !post.hasRemote() {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
-                    self.post.status = PostStatusDraft
+                    self.post.status = .draft
                     self.handlePublishButtonTapped(secondaryPublishTapped: false)
                 }
-            } else if post.status == PostStatusDraft {
+            } else if post.status == .draft {
                 // The post was already a draft
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
                     self.handlePublishButtonTapped(secondaryPublishTapped: false)
@@ -601,10 +602,7 @@ extension AztecPostViewController {
     private func handlePublishButtonTapped(secondaryPublishTapped: Bool) {
         // Cancel publishing if media is currently being uploaded
         if mediaProgressCoordinator.isRunning {
-            let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
-            alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
-            present(alertController, animated: true, completion: nil)
-
+            displayMediaIsUploadingAlert()
             return
         }
 
@@ -770,6 +768,12 @@ private extension AztecPostViewController {
         previewController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(previewController, animated: true)
     }
+
+    func displayMediaIsUploadingAlert() {
+        let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 
@@ -777,9 +781,9 @@ private extension AztecPostViewController {
 // MARK: - PostEditorStateContextDelegate & support methods
 extension AztecPostViewController: PostEditorStateContextDelegate {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(AbstractPost.status) {
+        if keyPath == BasePost.statusKeyPath {
             if let status = post.status {
-                postEditorStateContext.updated(postStatus: PostStatus(rawValue: status) ?? .draft)
+                postEditorStateContext.updated(postStatus: status)
             }
             return
         } else if keyPath == #keyPath(AbstractPost.dateCreated) {
@@ -820,13 +824,13 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
     }
 
     internal func addObservers(toPost: AbstractPost) {
-        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.status), options: [], context: nil)
+        toPost.addObserver(self, forKeyPath: AbstractPost.statusKeyPath, options: [], context: nil)
         toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated), options: [], context: nil)
         toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.content), options: [], context: nil)
     }
 
     internal func removeObservers(fromPost: AbstractPost) {
-        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.status))
+        fromPost.removeObserver(self, forKeyPath: AbstractPost.statusKeyPath)
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.dateCreated))
         fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.content))
     }
@@ -1085,6 +1089,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func toggleEditingMode() {
+        if mediaProgressCoordinator.isRunning {
+            displayMediaIsUploadingAlert()
+            return
+        }
         mode.toggle()
     }
 
@@ -1252,7 +1260,11 @@ fileprivate extension AztecPostViewController {
     fileprivate func mapUIContentToPostAndSave() {
         post.postTitle = titleTextField.text
         // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
-        post.content = richTextView.getHTML()
+        if richTextView.isHidden {
+            post.content = htmlTextView.text
+        } else {
+            post.content = richTextView.getHTML()
+        }
 
         ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
@@ -1290,6 +1302,7 @@ private extension AztecPostViewController {
 
 // MARK: - Media Support
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
+
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
         mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
         mediaProgressView.progress = progress
@@ -1353,6 +1366,30 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
             upload(media: media, mediaID: attachment.identifier)
         }
+    }
+
+    fileprivate func saveToMedia(attachment: TextAttachment) {
+        guard let image = attachment.image else {
+            return
+        }
+        mediaProgressCoordinator.track(numberOfItems: 1)
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        mediaService.createMedia(with: image, withMediaID:"CopyPasteImage" , forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
+            DispatchQueue.main.async {
+                self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: thumbnailURL)
+            }
+        }, completion: { [weak self](media, error) in
+            guard let strongSelf = self else {
+                return
+            }
+            guard let media = media, error == nil else {
+                DispatchQueue.main.async {
+                    strongSelf.handleError(error as? NSError, onAttachment: attachment)
+                }
+                return
+            }
+            strongSelf.upload(media: media, mediaID: attachment.identifier)
+        })
     }
 
     private func upload(media: Media, mediaID: String) {
@@ -1540,9 +1577,9 @@ extension AztecPostViewController: TextViewMediaDelegate {
         return Gridicon.iconOfType(.image)
     }
 
-    func textView(_ textView: TextView, urlForImage image: UIImage) -> URL {
-        //TODO: add support for saving images that result from a copy/paste to the editor, this should save locally to file, and import to the media library.
-        return URL(string:"")!
+    func textView(_ textView: TextView, urlForAttachment attachment: TextAttachment) -> URL {
+        saveToMedia(attachment: attachment)
+        return URL(string:"placeholder://")!
     }
 
     func cancelAllPendingMediaRequests() {
@@ -1699,7 +1736,7 @@ extension AztecPostViewController {
     struct Assets {
         static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
         static let closeButtonRegularImage  = UIImage(named: "icon-posts-editor-chevron")
-        static let defaultRegularFont       = WPFontManager.merriweatherRegularFont(ofSize: 16)
+        static let defaultRegularFont       = WPFontManager.notoRegularFont(ofSize: 16)
         static let defaultSemiBoldFont      = WPFontManager.systemSemiBoldFont(ofSize: 16)
         static let defaultMissingImage      = Gridicon.iconOfType(.image)
     }
