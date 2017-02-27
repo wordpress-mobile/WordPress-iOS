@@ -11,7 +11,6 @@ class SigninErrorViewController: UIViewController {
     typealias SigninErrorCallback = (() -> Void)
 
     @IBOutlet weak var icon: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var primaryButton: UIButton!
     @IBOutlet weak var secondaryButton: UIButton!
@@ -59,7 +58,6 @@ class SigninErrorViewController: UIViewController {
     func configureView(_ message: String, firstButtonText: String?, firstButtonCallback: SigninErrorCallback?, secondButtonText: String?, secondButtonCallback: @escaping SigninErrorCallback, accessibilityIdentifier: String?) {
         assert(!message.isEmpty)
 
-        titleLabel.text = NSLocalizedString("Sorry, we can't log you in.", comment: "")
         descriptionLabel.text = message
         primaryButton.setTitle(NSLocalizedString("OK", comment: ""), for: UIControlState())
         secondaryButton.setTitle(NSLocalizedString("Need Help?", comment: ""), for: UIControlState())
@@ -98,7 +96,7 @@ class SigninErrorViewController: UIViewController {
         controller.definesPresentationContext = true
         controller.present(self, animated: false, completion: {
             if (UIAccessibilityIsVoiceOverRunning()) {
-                UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.titleLabel)
+                UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.descriptionLabel)
             }
         })
     }

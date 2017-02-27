@@ -327,7 +327,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        if post.status == PostStatusTrash {
+        if post.status == .trash {
             // No editing posts that are trashed.
             return
         }
@@ -494,7 +494,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
-        if (post.status == PostStatusTrash) {
+        if (post.status == .trash) {
 
             let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
             let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
