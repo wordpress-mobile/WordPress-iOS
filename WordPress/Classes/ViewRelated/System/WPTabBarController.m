@@ -430,7 +430,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (void)showPostTab
 {
-    [self showPostTabAnimated:true toMedia:false];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    // Ignore taps on the post tab and instead show the modal.
+    if ([blogService blogCountForAllAccounts] == 0) {
+        [self switchMySitesTabToAddNewSite];
+    } else {
+        [self showPostTabAnimated:true toMedia:false];
+    }
 }
 
 - (void)showMeTab
@@ -449,11 +456,18 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         [self dismissViewControllerAnimated:NO completion:nil];
     }
 
-    EditPostViewController* editor = [EditPostViewController new];
+    Blog *blog = [self currentlyVisibleBlog];
+    if (blog == nil) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        blog = [blogService lastUsedOrFirstBlog];
+    }
+
+    EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog];
     editor.modalPresentationStyle = UIModalPresentationFullScreen;
     editor.showImmediately = !animated;
     editor.openWithMediaPicker = openToMedia;
-    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:editor.blog];
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:blog];
     [self presentViewController:editor animated:NO completion:nil];
     return;
 }
@@ -485,6 +499,12 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
         [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionPosts];
     }
+}
+
+- (void)switchMySitesTabToAddNewSite
+{
+    [self showTabForIndex:WPTabMySites];
+    [self.blogListViewController presentInterfaceForAddingNewSite];
 }
 
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
@@ -549,6 +569,18 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return currentlySelectedScreen;
 }
 
+- (Blog *)currentlyVisibleBlog
+{
+    if (self.selectedIndex != WPTabMySites) {
+        return nil;
+    }
+
+    BlogDetailsViewController *blogDetailsController = (BlogDetailsViewController *)[[self.blogListNavigationController.viewControllers wp_filter:^BOOL(id obj) {
+        return [obj isKindOfClass:[BlogDetailsViewController class]];
+    }] firstObject];
+    return blogDetailsController.blog;
+}
+
 #pragma mark - UITabBarControllerDelegate methods
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
@@ -556,15 +588,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     NSUInteger newIndex = [tabBarController.viewControllers indexOfObject:viewController];
 
     if (newIndex == WPTabNewPost) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-        // Ignore taps on the post tab and instead show the modal.
-        if ([blogService blogCountVisibleForAllAccounts] == 0) {
-            [[WordPressAppDelegate sharedInstance] showWelcomeScreenAnimated:YES thenEditor:YES];
-        } else {
-            [self showPostTab];
-        }
+        [self showPostTab];
         return NO;
     }
 
