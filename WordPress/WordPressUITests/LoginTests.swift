@@ -46,7 +46,7 @@ class LoginTests: XCTestCase {
 
     func testCreateAccount() {
         let username = "\(WordPressTestCredentials.oneStepUser)\(arc4random())"
-        let email = username + WordPressTestCredentials.nuxEmailSuffix
+        let email = WordPressTestCredentials.nuxEmailPrefix + username + WordPressTestCredentials.nuxEmailSuffix
 
         createAccount(email: email, username: username, password: WordPressTestCredentials.oneStepPassword)
         waitForElementToAppear(element: app.tabBars[ elementStringIDs.mainNavigationBar ], timeout: 20)

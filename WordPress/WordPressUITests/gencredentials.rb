@@ -8,7 +8,7 @@ static let #{name}Password = "#{password}"
 EOF
 end
 
-def print_class(one_step_user, one_step_password, two_step_user, two_step_password, self_hosted_user, self_hosted_password, self_hosted_site_url, self_hosted_site_name, nux_email_suffix)
+def print_class(one_step_user, one_step_password, two_step_user, two_step_password, self_hosted_user, self_hosted_password, self_hosted_site_url, self_hosted_site_name, nux_email_prefix, nux_email_suffix)
   print <<-EOF
 public class WordPressTestCredentials {
 EOF
@@ -19,6 +19,7 @@ EOF
 static let selfHostedSiteURL = "#{self_hosted_site_url}"
 static let selfHostedSiteName = "#{self_hosted_site_name}"
 static let nuxEmailSuffix = "#{nux_email_suffix}"
+static let nuxEmailPrefix = "#{nux_email_prefix}"
 
 }
 EOF
@@ -45,6 +46,7 @@ self_hosted_password = nil
 self_hosted_site_url = nil
 self_hosted_site_name = nil
 nux_email_suffix = nil
+nux_email_prefix = nil
 File.open(path) do |f|
   f.each_line do |l|
     (k,v) = l.split("=")
@@ -65,11 +67,13 @@ File.open(path) do |f|
     elsif k == "selfHostedSiteName"
       self_hosted_site_name = v.chomp
     elsif k == "nuxEmailSuffix"
-      nux_email_suffix = v.chomp
+    nux_email_suffix = v.chomp
+    elsif k == "nuxEmailPrefix"
+    nux_email_prefix = v.chomp
     else
       $stderr.puts "warning: Unknown key #{k}"
     end
   end
 end
 
-print_class(one_step_user, one_step_password, two_step_user, two_step_password, self_hosted_user, self_hosted_password, self_hosted_site_url, self_hosted_site_name, nux_email_suffix)
+print_class(one_step_user, one_step_password, two_step_user, two_step_password, self_hosted_user, self_hosted_password, self_hosted_site_url, self_hosted_site_name, nux_email_prefix, nux_email_suffix)
