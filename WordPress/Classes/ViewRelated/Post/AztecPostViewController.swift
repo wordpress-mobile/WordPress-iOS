@@ -904,7 +904,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func switchToHTML() {
-        view.endEditing(true)
+        stopEditing()
 
         htmlTextView.text = richTextView.getHTML()
         htmlTextView.becomeFirstResponder()
@@ -914,7 +914,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func switchToRichText() {
-        view.endEditing(true)
+        stopEditing()
 
         richTextView.setHTML(htmlTextView.text)
         richTextView.becomeFirstResponder()
@@ -1293,6 +1293,8 @@ fileprivate extension AztecPostViewController {
     }
 
     func dismissOrPopView(didSave: Bool) {
+        stopEditing()
+
         if let onClose = onClose {
             onClose(didSave)
         } else if isModal() {
