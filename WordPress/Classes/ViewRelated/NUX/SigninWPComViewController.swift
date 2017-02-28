@@ -112,11 +112,14 @@ import WordPressShared
     ///
     func localizeControls() {
         usernameField.placeholder = NSLocalizedString("Email or username", comment: "Username placeholder")
+        usernameField.accessibilityIdentifier = "Email or username"
         passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
+        passwordField.accessibilityIdentifier = "Password"
 
         let submitButtonTitle = NSLocalizedString("Log In", comment: "Title of a button. The text should be uppercase.").localizedUppercase
         submitButton.setTitle(submitButtonTitle, for: UIControlState())
         submitButton.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton.accessibilityIdentifier = "Log In Button"
 
         let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
         forgotPasswordButton.setTitle(forgotPasswordTitle, for: UIControlState())
