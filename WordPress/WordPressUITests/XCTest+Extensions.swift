@@ -13,9 +13,14 @@ public struct elementStringIDs {
     static var loginSubmitButton = "submitButton"
     static var addSelfHostedButton = "addSelfHostedButton"
     static var selfHostedURLField = "selfHostedURL"
+    static var createSiteButton = "createSiteButton"
 
     // Signup page
     static var nuxUsernameField = "nuxUsernameField"
+    static var nuxEmailField = "nuxEmailField"
+    static var nuxPasswordField = "nuxPasswordField"
+    static var nuxUrlField = "nuxUrlField"
+    static var nuxCreateAccountButton = "nuxCreateAccountButton"
 
     // My Sites page
     static var settingsButton = "BlogDetailsSettingsCell"
@@ -25,6 +30,25 @@ public struct elementStringIDs {
 
     // Me tab
     static var disconnectFromWPcomButton = "disconnectFromWPcomButton"
+}
+
+extension XCUIElement {
+    /**
+     Removes any current text in the field before typing in the new value
+     - Parameter text: the text to enter into the field
+     */
+    func clearAndEnterText(text: String) -> Void {
+        let app = XCUIApplication()
+
+        if (self.value as! String).characters.count > 0 {
+            self.press(forDuration: 1.2)
+            app.menuItems["Select All"].tap()
+        } else {
+            self.tap()
+        }
+
+        self.typeText(text)
+    }
 }
 
 extension XCTestCase {
@@ -117,5 +141,35 @@ extension XCTestCase {
         } else {
             app.sheets.buttons.element(boundBy: 0).tap()
         }
+    }
+
+    public func createAccount(email: String, username: String, password: String, url: String? = nil) {
+        let app = XCUIApplication()
+        let createSiteFromLoginScreenButton = app.buttons[ elementStringIDs.createSiteButton ]
+        let emailField = app.textFields[ elementStringIDs.nuxEmailField ]
+        let usernameField = app.textFields[ elementStringIDs.nuxUsernameField ]
+        let passwordField = app.secureTextFields[ elementStringIDs.nuxPasswordField ]
+        let urlField = app.textFields[ elementStringIDs.nuxUrlField ]
+        let createAccountButton = app.buttons[ elementStringIDs.nuxCreateAccountButton ]
+
+        if createSiteFromLoginScreenButton.exists {
+            createSiteFromLoginScreenButton.tap()
+        }
+
+        waitForElementToAppear(element: emailField)
+
+        emailField.tap()
+        emailField.clearAndEnterText(text: email)
+        usernameField.tap()
+        usernameField.clearAndEnterText(text: username)
+        passwordField.tap()
+        passwordField.clearAndEnterText(text: password)
+
+        if ( url != nil ) {
+            urlField.tap()
+            urlField.clearAndEnterText(text: url!)
+        }
+
+        createAccountButton.tap()
     }
 }
