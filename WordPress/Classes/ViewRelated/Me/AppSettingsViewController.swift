@@ -71,13 +71,15 @@ class AppSettingsViewController: UITableViewController {
         let mediaSizeRow = TextRow(title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
                                    value: mediaSizeString)
 
-        let mediaClearCacheRow = DestructiveButtonRow(title: NSLocalizedString("Clear Media Cache", comment: "Label for button that clears all media cache."),
-                                                      action: { row in
-                                                        MediaService.cleanMediaCacheFolder()
-                                                        SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Media Cache cleared", comment: "Label for message that confirms clearing of media cache."))
-                                                        self.handler.viewModel = self.tableViewModel()
-                                                        self.tableView.reloadData()
-        })
+        let mediaClearCacheRow = DestructiveButtonRow(
+            title: NSLocalizedString("Clear Media Cache", comment: "Label for button that clears all media cache."),
+            action: { row in
+                MediaService.cleanMediaCacheFolder()
+                SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Media Cache cleared", comment: "Label for message that confirms clearing of media cache."))
+                self.handler.viewModel = self.tableViewModel()
+                self.tableView.reloadData()
+            },
+            accessibilityIdentifier: "mediaClearCacheButton")
 
         let editorSettings = EditorSettings()
         let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
