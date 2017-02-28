@@ -108,10 +108,12 @@ import WordPressShared
     ///
     func localizeControls() {
         emailTextField.placeholder = NSLocalizedString("Email or username", comment: "Placeholder for a textfield. The user may enter their email address or their username.")
+        emailTextField.accessibilityIdentifier = "Email or username"
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be uppercase.").localizedUppercase
         submitButton.setTitle(submitButtonTitle, for: UIControlState())
         submitButton.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton.accessibilityIdentifier = "Next Button"
 
         let safariButtonTitle = NSLocalizedString("Log in with Safari saved password", comment: "`Safari saved password` is the name of the iOS feature for saving a password for the Safari browser to use later.")
         safariPasswordButton.setTitle(safariButtonTitle, for: UIControlState())
@@ -204,8 +206,8 @@ import WordPressShared
     ///
     func fetchSharedWebCredentialsIfAvailable() {
         didRequestSafariSharedCredentials = true
-        SigninHelpers.requestSharedWebCredentials { [unowned self] (found, username, password) in
-            self.handleFetchedWebCredentials(found, username: username, password: password)
+        SigninHelpers.requestSharedWebCredentials { [weak self] (found, username, password) in
+            self?.handleFetchedWebCredentials(found, username: username, password: password)
         }
     }
 
@@ -346,9 +348,9 @@ import WordPressShared
     func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
-        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
-            self.emailTextField.text = loginFields.username
-            self.signinWithUsernamePassword(true)
+        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
+            self?.emailTextField.text = loginFields.username
+            self?.signinWithUsernamePassword(true)
         }
     }
 
