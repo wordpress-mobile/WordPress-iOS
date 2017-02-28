@@ -136,9 +136,11 @@ struct DestructiveButtonRow: ImmuTableRow {
 
     let title: String
     let action: ImmuTableAction?
+    let accessibilityIdentifier: String
 
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
+        cell.accessibilityIdentifier = accessibilityIdentifier
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.lineBreakMode = .byWordWrapping
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
