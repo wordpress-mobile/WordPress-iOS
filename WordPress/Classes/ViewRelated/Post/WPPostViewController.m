@@ -1089,6 +1089,7 @@ EditImageDetailsViewControllerDelegate
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+    button.accessibilityIdentifier = @"Cancel";
     button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close editor and cancel changes or insertion of post");
     _cancelChevronButton = button;
     return _cancelChevronButton;
@@ -1110,6 +1111,7 @@ EditImageDetailsViewControllerDelegate
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     _cancelXButton = button;
+    button.accessibilityIdentifier = @"Cancel";
     button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close edior and cancel changes or insertion of post");
 	return _cancelXButton;
 }
