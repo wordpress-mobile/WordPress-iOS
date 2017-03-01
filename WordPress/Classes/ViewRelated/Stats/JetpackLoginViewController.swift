@@ -385,7 +385,10 @@ class JetpackLoginViewController: UIViewController {
 
     fileprivate func handleSignInError(_ error: Error) {
         let error = error as NSError
-        WPError.showNetworkingAlertWithError(error)
+        var userInfo = error.userInfo
+        userInfo[WPErrorSupportSourceKey] = SupportSourceTag.jetpackLogin
+        let errorWithSource = NSError(domain: error.domain, code: error.code, userInfo: userInfo)
+        WPError.showNetworkingAlertWithError(errorWithSource)
         updateControls()
     }
 
