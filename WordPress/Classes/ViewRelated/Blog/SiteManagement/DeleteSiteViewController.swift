@@ -39,9 +39,7 @@ open class DeleteSiteViewController: UITableViewController {
 
         let actionCell = WPTableViewCellDefault(style: .value1, reuseIdentifier: nil)
         actionCell.textLabel?.text = deleteTitle
-        WPStyleGuide.configureTableViewActionCell(actionCell)
-        actionCell.textLabel?.textAlignment = .center
-        actionCell.textLabel?.textColor = .red
+        WPStyleGuide.configureTableViewDestructiveActionCell(actionCell)
 
         return actionCell
     }()
