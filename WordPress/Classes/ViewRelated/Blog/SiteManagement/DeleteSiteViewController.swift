@@ -8,7 +8,7 @@ open class DeleteSiteViewController: UITableViewController {
 
     // MARK: - Properties
 
-    fileprivate var blog: Blog!
+    fileprivate let blog: Blog
 
     // MARK: - Properties: table content
 
@@ -48,13 +48,13 @@ open class DeleteSiteViewController: UITableViewController {
 
     // MARK: - Initializer
 
-    /// Preferred initializer for DeleteSiteViewController
-    ///
-    /// - Parameter blog: The Blog currently at the site
-    ///
-    convenience init(blog: Blog) {
-        self.init(style: .grouped)
+    init(blog: Blog) {
         self.blog = blog
+        super.init(style: .grouped)
+    }
+
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - View Lifecycle
