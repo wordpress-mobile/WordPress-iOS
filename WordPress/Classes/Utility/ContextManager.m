@@ -195,9 +195,10 @@ static ContextManager *_override;
         // Based on old solution referenced here: http://www.mlsite.net/blog/?p=518
         NSSet* updates = [notification.userInfo objectForKey:NSUpdatedObjectsKey];
         for (NSManagedObject *object in updates) {
-            if ([object isFault]) {
+            NSManagedObject *objectInContext = [context existingObjectWithID:object.objectID error:nil];
+            if ([objectInContext isFault]) {
                 // Force a fault-in of the object's key-values
-                [[context objectWithID:[object objectID]] willAccessValueForKey:nil];
+                [objectInContext willAccessValueForKey:nil];
             }
         }
         // Continue with the merge
