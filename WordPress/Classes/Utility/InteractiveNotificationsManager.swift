@@ -56,32 +56,26 @@ final public class InteractiveNotificationsManager: NSObject {
     ///
     /// - Parameters:
     ///     - identifier: The identifier of the action
-    ///     - remoteNotification: the notification object
+    ///     - userInfo: The notification's Payload
     ///
-    public func handleActionWithIdentifier(_ identifier: String, remoteNotification: NSDictionary, responseText: String?) {
-        guard AccountHelper.isDotcomAvailable() else {
-            return
-        }
-
-        guard let noteId = remoteNotification.object(forKey: "note_id") as? NSNumber else {
-            return
-        }
-
-        guard let siteID = remoteNotification.object(forKey: "blog_id") as? NSNumber else {
-            return
-        }
-
-        guard let commentID = remoteNotification.object(forKey: "comment_id") as? NSNumber else {
-            return
+    /// - Returns: True on success
+    ///
+    @discardableResult
+    public func handleAction(with identifier: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+        guard AccountHelper.isDotcomAvailable(),
+            let noteId = userInfo.object(forKey: "note_id") as? NSNumber,
+            let siteID = userInfo.object(forKey: "blog_id") as? NSNumber,
+            let commentID = userInfo.object(forKey: "comment_id") as? NSNumber else {
+            return false
         }
 
         if identifier == UNNotificationDefaultActionIdentifier {
             showDetailsWithNoteID(noteId)
-            return
+            return true
         }
 
         guard let action = NoteActionDefinition(rawValue: identifier) else {
-            return
+            return false
         }
 
         switch action {
@@ -96,6 +90,8 @@ final public class InteractiveNotificationsManager: NSObject {
                 DDLogSwift.logError("Tried to reply to a comment notification with no text")
             }
         }
+
+        return true
     }
 
 
@@ -291,9 +287,33 @@ final public class InteractiveNotificationsManager: NSObject {
 
 
 extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
-    public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let responseText = (response as? UNTextInputNotificationResponse)?.userText
-        handleActionWithIdentifier(response.actionIdentifier, remoteNotification: response.notification.request.content.userInfo as NSDictionary, responseText: responseText)
-        completionHandler()
+
+    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                       didReceive response: UNNotificationResponse,
+                                       withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo as NSDictionary
+        let textInputResponse = response as? UNTextInputNotificationResponse
+
+        if handleAction(with: response.actionIdentifier, userInfo: userInfo, responseText: textInputResponse?.userText) {
+            completionHandler()
+            return
+        }
+
+        // TODO:
+        // =====
+        // Refactor both PushNotificationsManager + InteractiveNotificationsManager:
+        //
+        //  -   InteractiveNotificationsManager should no longer be a singleton. Perhaps we could convert it into a struct.
+        //      Plus int should probably be renamed into something more meaningful (and match the new framework's naming)
+        //  -   New `NotificationsManager` class:
+        //      -   Would inherit `PushNotificationsManager.handleNotification`
+        //      -   Would deal with UserNotifications.framework
+        //      -   Would use InteractiveNotificationsManager!
+        //  -   Nuke `PushNotificationsManager`
+        //
+        //
+        PushNotificationsManager.sharedInstance.handleNotification(userInfo) { _ in
+            completionHandler()
+        }
     }
 }

@@ -164,7 +164,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         let logOut = DestructiveButtonRow(
             title: NSLocalizedString("Disconnect from WordPress.com", comment: "Label for disconnecting from WordPress.com account"),
-            action: confirmLogout())
+            action: confirmLogout(),
+            accessibilityIdentifier: "disconnectFromWPcomButton")
 
         let wordPressComAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
 

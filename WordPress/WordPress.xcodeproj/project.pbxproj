@@ -740,7 +740,6 @@
 		E1C3C8551CE4684800D5DB36 /* EmailTypoCheckerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C3C8541CE4684800D5DB36 /* EmailTypoCheckerTests.swift */; };
 		E1C5457E1C6B962D001CEB0E /* MediaSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C5457D1C6B962D001CEB0E /* MediaSettings.swift */; };
 		E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C5457F1C6C79BB001CEB0E /* MediaSettingsTests.swift */; };
-		E1C5B2111E54C28C00052319 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1C5B2131E54C28C00052319 /* Localizable.strings */; };
 		E1C9AA511C10419200732665 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA501C10419200732665 /* Math.swift */; };
 		E1C9AA561C10427100732665 /* MathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA551C10427100732665 /* MathTest.swift */; };
 		E1CFC1571E0AC8FF001DF9E9 /* Pattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFC1561E0AC8FF001DF9E9 /* Pattern.swift */; };
@@ -3024,17 +3023,17 @@
 			children = (
 				591CFB051B28A960009E61B3 /* AccountServiceRemoteRESTTests.m */,
 				591CFB081B28AC8C009E61B3 /* BlogServiceRemoteRESTTests.m */,
-				FA9E74471C50382D00C6B1D2 /* SiteManagementServiceRemoteTests.swift */,
-				B5BC259F1CFCB91800F7D8B9 /* PeopleRemoteTests.swift */,
+				261FF32B1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift */,
 				0859DCFC1CB8488400EB4069 /* MenusServiceRemoteTests.m */,
 				B532ACD01DC3ABF600FFFA57 /* NotificationSyncServiceRemoteTests.swift */,
+				B5BC259F1CFCB91800F7D8B9 /* PeopleRemoteTests.swift */,
 				59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */,
+				26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */,
 				59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */,
+				FA9E74471C50382D00C6B1D2 /* SiteManagementServiceRemoteTests.swift */,
 				08A2AD741CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m */,
 				598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */,
 				FF34EEA81CF473F600F8B38D /* WordPressComServiceRemoteRestTests.swift */,
-				26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */,
-				261FF32B1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift */,
 			);
 			name = "Remote Services";
 			sourceTree = "<group>";
@@ -4645,24 +4644,24 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				FF7C89A11E3A1029000472A8 /* MediaPicker */,
-				E6A216911DCE851000E7DF73 /* WPRichText */,
-				FF9839A71CD3960600E85258 /* WordPressAPI */,
-				BEA0E4821BD8353B000AEE81 /* System */,
-				E1C9AA541C1041E600732665 /* Extensions */,
-				59B48B601B99E0B0008EBB84 /* TestUtilities */,
 				B5AEEC7F1ACAD099008BF2A4 /* Categories */,
 				B5AEEC731ACACF3B008BF2A4 /* Core Data */,
+				E1C9AA541C1041E600732665 /* Extensions */,
+				FF7C89A11E3A1029000472A8 /* MediaPicker */,
 				5D7A577D1AFBFD7C0097C028 /* Models */,
 				85F8E1991B017A8E000859BB /* Networking */,
+				B5416CF81C17542900006DD8 /* Notifications */,
 				85D239BD1AE5A6EE0074768D /* NUX */,
 				59ECF8791CB705EB00E68F25 /* Posts */,
 				E6B9B8AB1B94EA710001B92F /* Reader */,
-				B5416CF81C17542900006DD8 /* Notifications */,
 				B5AEEC7E1ACAD088008BF2A4 /* Services */,
+				BEA0E4821BD8353B000AEE81 /* System */,
+				59B48B601B99E0B0008EBB84 /* TestUtilities */,
 				852416D01A12ED2D0030700C /* Utility */,
 				B5AEEC801ACAD0A5008BF2A4 /* ViewControllers */,
 				BE20F5E11B2F738E0020694C /* ViewRelated */,
+				FF9839A71CD3960600E85258 /* WordPressAPI */,
+				E6A216911DCE851000E7DF73 /* WPRichText */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -5293,6 +5292,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FF27169A1CAAC87B0006E2D4 /* Build configuration list for PBXNativeTarget "WordPressUITests" */;
 			buildPhases = (
+				928885381E5E057F001F9637 /* Reset Simulator */,
+				928885371E5CE0B2001F9637 /* Generate Credentials */,
 				FF27168B1CAAC87A0006E2D4 /* Sources */,
 				FF27168C1CAAC87A0006E2D4 /* Frameworks */,
 				FF27168D1CAAC87A0006E2D4 /* Resources */,
@@ -5337,8 +5338,8 @@
 					};
 					8511CFB51C607A7000B7CEED = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 99KV9Z6BKV;
-						LastSwiftMigration = 0800;
+						DevelopmentTeam = PZYM8XX95Q;
+						LastSwiftMigration = 0820;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
 					932225A61C7CE50300443B02 = {
@@ -5498,7 +5499,6 @@
 				85ED988817DFA00000090D0B /* Images.xcassets in Resources */,
 				E149771A1C0DCB6F0057CD60 /* MediaSizeSliderCell.xib in Resources */,
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
-				E1C5B2111E54C28C00052319 /* Localizable.strings in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
 				E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */,
@@ -5772,6 +5772,34 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		928885371E5CE0B2001F9637 /* Generate Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Credentials";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ruby $PROJECT_DIR/WordPressUITests/gencredentials.rb > /tmp/WordPress.build/WordPressTestCredentials.swift";
+		};
+		928885381E5E057F001F9637 /* Reset Simulator */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Reset Simulator";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/bin/xcrun simctl uninstall booted org.wordpress";
 		};
 		931B86C51CC1517200A5CA2B /* Delete Frameworks folder (temporary fix for CocoaPods) */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -7122,7 +7150,7 @@
 				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 			};
@@ -7166,7 +7194,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 			};
@@ -7210,7 +7238,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 			};
@@ -7255,7 +7283,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = WordPress;
 				USES_XCTRUNNER = YES;
 			};
