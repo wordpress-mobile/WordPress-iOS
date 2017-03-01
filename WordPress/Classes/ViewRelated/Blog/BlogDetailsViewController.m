@@ -23,6 +23,7 @@
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
+static NSString *const BlogDetailsSettingsCellIdentifier = @"BlogDetailsSettingsCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
@@ -209,6 +210,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
+    [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsSettingsCellIdentifier];
 
     self.clearsSelectionOnViewWillAppear = NO;
 
@@ -490,11 +492,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Settings", @"Noun. Title. Links to the blog's Settings screen.")
-                                                    image:[Gridicon iconOfType:GridiconTypeCog]
-                                                 callback:^{
-                                                     [weakSelf showSettings];
-                                                 }]];
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Settings", @"Noun. Title. Links to the blog's Settings screen.")
+                                                     identifier:BlogDetailsSettingsCellIdentifier
+                                                          image:[Gridicon iconOfType:GridiconTypeCog]
+                                                       callback:^{
+                                                           [weakSelf showSettings];
+                                                       }];
+
+    [rows addObject:row];
 
     NSString *title = NSLocalizedString(@"Configure", @"Section title for the configure table section in the blog details screen");
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
@@ -543,6 +548,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     cell.textLabel.text = row.title;
+    cell.accessibilityIdentifier = row.identifier;
     cell.detailTextLabel.text = row.detail;
     cell.imageView.image = row.image;
     if (row.accessoryView) {

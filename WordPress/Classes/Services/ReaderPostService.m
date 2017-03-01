@@ -411,9 +411,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         post.inUse = NO;
     }
 
-    [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 }
 
 - (void)setFollowing:(BOOL)following forPostsFromSiteWithID:(NSNumber *)siteID andURL:(NSString *)siteURL
