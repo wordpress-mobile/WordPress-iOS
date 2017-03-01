@@ -83,10 +83,9 @@ import WordPressShared
             restorableSelectedIndexPath = defaultIndexPath
         }
 
-        unflagInUseContent()
         setupRefreshControl()
         setupAccountChangeNotificationObserver()
-        setupApplicationDidLaunchNotificationObserver()
+        setupApplicationWillTerminateNotificationObserver()
     }
 
 
@@ -140,9 +139,10 @@ import WordPressShared
     }
 
 
-    func setupApplicationDidLaunchNotificationObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).handleApplicationDidLaunch), name: NSNotification.Name.UIApplicationDidFinishLaunching, object: nil)
+    func setupApplicationWillTerminateNotificationObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).handleApplicationWillTerminate), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
     }
+
 
     func setupAccountChangeNotificationObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).handleAccountChanged), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
@@ -188,12 +188,15 @@ import WordPressShared
     // MARK: - Instance Methods
 
 
-    /// Handle the UIApplicationDidFinishLaunching notification.
+    /// Handle the UIApplicationWillTerminate notification.
     //
-    func handleApplicationDidLaunch(_ notification: Foundation.Notification) {
+    func handleApplicationWillTerminate(_ notification: Foundation.Notification) {
+        // Its important to clean up stale content before unflagging, otherwise
+        // content we want to preserve for state restoration might also be
+        // deleted.
         cleanupStaleContent(removeAllTopics: false)
+        unflagInUseContent()
     }
-
 
     /// When logged out return the nav stack to the menu
     ///

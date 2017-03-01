@@ -148,16 +148,19 @@ class WPRichTextFormatter {
             // Note that the marker is not guarenteed to have the exact same paragraph style as the quoted text it marks.
             // To compensate, we make our index match the first character of the quote text rather than the marker itself.
             let index = match.range.location + match.range.length + 1
-            var effectiveRange = NSRange()
-            let pStyle = attrString.attribute(NSParagraphStyleAttributeName, at: index, effectiveRange: &effectiveRange) as? NSParagraphStyle ?? NSParagraphStyle.default
+            // Ensure our index is valid. An empty blockquote at the end
+            // of the string could yield an out of bounds index.
+            if index < attrString.length {
+                var effectiveRange = NSRange()
+                let pStyle = attrString.attribute(NSParagraphStyleAttributeName, at: index, effectiveRange: &effectiveRange) as? NSParagraphStyle ?? NSParagraphStyle.default
 
-            let mParaStyle = NSMutableParagraphStyle()
-            mParaStyle.setParagraphStyle(pStyle)
-            mParaStyle.headIndent = blockquoteIndentation
-            mParaStyle.firstLineHeadIndent = blockquoteIndentation
+                let mParaStyle = NSMutableParagraphStyle()
+                mParaStyle.setParagraphStyle(pStyle)
+                mParaStyle.headIndent = blockquoteIndentation
+                mParaStyle.firstLineHeadIndent = blockquoteIndentation
 
-            attrString.addAttribute(NSParagraphStyleAttributeName, value: mParaStyle, range: effectiveRange)
-
+                attrString.addAttribute(NSParagraphStyleAttributeName, value: mParaStyle, range: effectiveRange)
+            }
             // Delete the marker
             attrString.deleteCharacters(in: match.range)
         }

@@ -319,7 +319,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     _removeSiteCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     [WPStyleGuide configureTableViewDestructiveActionCell:_removeSiteCell];
     _removeSiteCell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
-    
+    _removeSiteCell.accessibilityIdentifier = @"removeSiteButton";
+
     return _removeSiteCell;
 }
 
