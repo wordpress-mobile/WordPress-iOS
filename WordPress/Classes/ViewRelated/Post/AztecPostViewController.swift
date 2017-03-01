@@ -943,26 +943,28 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     func handleActionForIdentifier(_ identifier: FormattingIdentifier) {
 
         switch identifier {
-            case .bold:
-                toggleBold()
-            case .italic:
-                toggleItalic()
-            case .underline:
-                toggleUnderline()
-            case .strikethrough:
-                toggleStrikethrough()
-            case .blockquote:
-                toggleBlockquote()
-            case .unorderedlist:
-                toggleUnorderedList()
-            case .orderedlist:
-                toggleOrderedList()
-            case .link:
-                toggleLink()
-            case .media:
-                showImagePicker()
-            case .sourcecode:
-                toggleEditingMode()
+        case .bold:
+            toggleBold()
+        case .italic:
+            toggleItalic()
+        case .underline:
+            toggleUnderline()
+        case .strikethrough:
+            toggleStrikethrough()
+        case .blockquote:
+            toggleBlockquote()
+        case .unorderedlist:
+            toggleUnorderedList()
+        case .orderedlist:
+            toggleOrderedList()
+        case .link:
+            toggleLink()
+        case .media:
+            showImagePicker()
+        case .sourcecode:
+            toggleEditingMode()
+        case .header:
+            return
         }
         updateFormatBar()
     }
