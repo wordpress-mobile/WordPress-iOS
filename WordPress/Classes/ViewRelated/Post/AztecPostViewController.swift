@@ -963,7 +963,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             showImagePicker()
         case .sourcecode:
             toggleEditingMode()
-        default:
+        case .header:
             return
         }
         updateFormatBar()
