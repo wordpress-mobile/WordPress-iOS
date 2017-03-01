@@ -128,6 +128,10 @@ open class DeleteSiteViewController: UITableViewController {
             return
         }
 
+        guard deleteAction.style == .destructive else {
+            return
+        }
+
         let prompt = blog.displayURL?.lowercased.trim()
         let password = sender.text?.lowercased().trim()
         deleteAction.isEnabled = prompt == password
