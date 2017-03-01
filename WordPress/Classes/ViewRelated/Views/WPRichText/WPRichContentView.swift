@@ -227,7 +227,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
 
         attachment.maxSize = CGSize(width: width, height: height)
 
-        if let url = URL(string: attachment.src.stringByDecodingXMLCharacters()), attachment.tagName == "iframe" {
+        if attachment.tagName == "iframe", let url = URL(string: attachment.src.stringByDecodingXMLCharacters()) {
             embed.loadContentURL(url)
         } else {
             let html = attachment.html ?? ""
