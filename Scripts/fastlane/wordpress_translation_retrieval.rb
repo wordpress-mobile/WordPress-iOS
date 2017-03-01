@@ -9,19 +9,19 @@ class WordPressTranslationRetrieval
     'es-ES' => 'es',
     'en-GB' => 'en-gb',
     'fr-FR' => 'fr',
-    'it-IT' => 'it',
-    'ja-JP' => 'ja',
-    'sv-SE' => 'sv',
+    'it' => 'it',
+    'ja' => 'ja',
+    'sv' => 'sv',
     'pt-BR' => 'pt-br',
-    'nl-NL' => 'nl',
+    'nl' => 'nl',
     'de-DE' => 'de',
-    'id-ID' => 'id',
-    'ko-KR' => 'ko',
-    'ru-RU' => 'ru',
-    'cmn-Hant' => 'zh-tw',
-    'th-TH' => 'th',
-    'cmn-Hans' => 'zh-cn',
-    'tr-TR' => 'tr',
+    'id' => 'id',
+    'ko' => 'ko',
+    'ru' => 'ru',
+    'zh-Hant' => 'zh-tw',
+    'th' => 'th',
+    'zh-Hans' => 'zh-cn',
+    'tr' => 'tr',
   }
 
   class << self
@@ -50,7 +50,7 @@ class WordPressTranslationRetrieval
       url = "https://translate.wordpress.org/projects/apps/ios/release-notes/#{glotpress_language_code}/default/export-translations?format=po"
       system "curl -so temp.po #{url}"
       file_contents = File.readlines("temp.po")
-      system "rm temp.po"
+      # system "rm temp.po"
 
       file_contents
     end
@@ -74,7 +74,7 @@ end
 # Uncomment below and run the script from the command line to test
 # WordPressTranslationRetrieval::LANGS.each do |deliver_language_code, glotpress_language_code|
 #   puts "Version text for #{deliver_language_code}"
-#   puts WordPressTranslationRetrieval.get_version_text(deliver_language_code, "v4.8-whats-new")
+#   puts WordPressTranslationRetrieval.get_version_text(deliver_language_code, "v7.0-whats-new")
 #   puts "\n"
 # end
 
