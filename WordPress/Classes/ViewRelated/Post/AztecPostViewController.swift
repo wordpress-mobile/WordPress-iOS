@@ -569,10 +569,10 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
-        handlePublishButtonTapped(secondaryPublishTapped: false)
+        handlePublishButtonTapped(shouldDismissEditorWhenDone: true)
     }
 
-    @IBAction func secondaryPublishButtonTapped() {
+    @IBAction func secondaryPublishButtonTapped(shouldDismissEditorWhenDone: Bool = true) {
         let publishPostClosure = {
             if self.postEditorStateContext.secondaryPublishButtonAction == .save {
                 self.post.status = .draft
@@ -580,7 +580,7 @@ extension AztecPostViewController {
                 self.post.status = .publish
             }
 
-            self.handlePublishButtonTapped(secondaryPublishTapped: true)
+            self.handlePublishButtonTapped(shouldDismissEditorWhenDone: shouldDismissEditorWhenDone)
         }
 
         if presentedViewController != nil {
@@ -610,12 +610,12 @@ extension AztecPostViewController {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
                     self.post.status = .draft
-                    self.handlePublishButtonTapped(secondaryPublishTapped: false)
+                    self.handlePublishButtonTapped(shouldDismissEditorWhenDone: true)
                 }
             } else if post.status == .draft {
                 // The post was already a draft
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
-                    self.handlePublishButtonTapped(secondaryPublishTapped: false)
+                    self.handlePublishButtonTapped(shouldDismissEditorWhenDone: true)
                 }
             }
         }
@@ -624,7 +624,7 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func handlePublishButtonTapped(secondaryPublishTapped: Bool) {
+    private func handlePublishButtonTapped(shouldDismissEditorWhenDone: Bool) {
         // Cancel publishing if media is currently being uploaded
         if mediaProgressCoordinator.isRunning {
             displayMediaIsUploadingAlert()
@@ -637,7 +637,7 @@ extension AztecPostViewController {
             alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
                 self.removeFailedMedia()
                 // Failed media is removed, try again.
-                self.handlePublishButtonTapped(secondaryPublishTapped: secondaryPublishTapped)
+                self.handlePublishButtonTapped(shouldDismissEditorWhenDone: shouldDismissEditorWhenDone)
             }
 
             alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
@@ -668,17 +668,10 @@ extension AztecPostViewController {
                 generator.notificationOccurred(.success)
             }
 
-            // Don't dismiss - make draft now in secondary publish
-            let shouldDismissWindow: Bool
-            if self.postEditorStateContext.secondaryPublishButtonAction == .save,
-                secondaryPublishTapped {
-                shouldDismissWindow = false
-            } else {
-                shouldDismissWindow = true
-            }
-
-            if shouldDismissWindow {
+            if shouldDismissEditorWhenDone {
                 self.dismissOrPopView(didSave: true)
+            } else {
+                self.createRevisionOfPost()
             }
         }
     }
