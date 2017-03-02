@@ -198,6 +198,7 @@ class AztecPostViewController: UIViewController {
             removeObservers(fromPost: oldValue)
             addObservers(toPost: post)
 
+            postEditorStateContext = nil
             refreshInterface()
         }
     }
@@ -253,7 +254,7 @@ class AztecPostViewController: UIViewController {
 
     /// Maintainer of state for editor - like for post button
     ///
-    fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
+    fileprivate lazy var postEditorStateContext: PostEditorStateContext! = {
         var originalPostStatus: BasePost.Status? = nil
 
         if let originalPost = self.post.original,
