@@ -745,8 +745,9 @@ private extension AztecPostViewController {
 
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-            alert.addActionWithTitle(buttonTitle, style: .destructive) { _ in
-                self.secondaryPublishButtonTapped()
+            let shouldDismissEditorWhenDone = postEditorStateContext.secondaryPublishButtonAction == .publish
+            alert.addActionWithTitle(buttonTitle, style: shouldDismissEditorWhenDone ? .destructive : .default ) { _ in
+                self.secondaryPublishButtonTapped(shouldDismissEditorWhenDone: shouldDismissEditorWhenDone)
             }
         }
 
