@@ -33,7 +33,7 @@ import WordPressShared
 
     override var sourceTag: SupportSourceTag {
         get {
-            return .generalLogin
+            return .wpComLogin
         }
     }
 
