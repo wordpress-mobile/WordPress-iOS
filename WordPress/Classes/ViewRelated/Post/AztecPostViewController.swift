@@ -570,10 +570,10 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
-        handlePublishButtonTapped(shouldDismissEditorWhenDone: true)
+        publishPost(dismissWhenDone: true)
     }
 
-    @IBAction func secondaryPublishButtonTapped(shouldDismissEditorWhenDone: Bool = true) {
+    @IBAction func secondaryPublishButtonTapped(dismissWhenDone: Bool = true) {
         let publishPostClosure = {
             if self.postEditorStateContext.secondaryPublishButtonAction == .save {
                 self.post.status = .draft
@@ -581,7 +581,7 @@ extension AztecPostViewController {
                 self.post.status = .publish
             }
 
-            self.handlePublishButtonTapped(shouldDismissEditorWhenDone: shouldDismissEditorWhenDone)
+            self.publishPost(dismissWhenDone: dismissWhenDone)
         }
 
         if presentedViewController != nil {
@@ -611,12 +611,12 @@ extension AztecPostViewController {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
                     self.post.status = .draft
-                    self.handlePublishButtonTapped(shouldDismissEditorWhenDone: true)
+                    self.publishPost(dismissWhenDone: true)
                 }
             } else if post.status == .draft {
                 // The post was already a draft
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
-                    self.handlePublishButtonTapped(shouldDismissEditorWhenDone: true)
+                    self.publishPost(dismissWhenDone: true)
                 }
             }
         }
@@ -625,7 +625,7 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func handlePublishButtonTapped(shouldDismissEditorWhenDone: Bool) {
+    private func publishPost(dismissWhenDone: Bool) {
         // Cancel publishing if media is currently being uploaded
         if mediaProgressCoordinator.isRunning {
             displayMediaIsUploadingAlert()
@@ -638,7 +638,7 @@ extension AztecPostViewController {
             alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
                 self.removeFailedMedia()
                 // Failed media is removed, try again.
-                self.handlePublishButtonTapped(shouldDismissEditorWhenDone: shouldDismissEditorWhenDone)
+                self.publishPost(dismissWhenDone: dismissWhenDone)
             }
 
             alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
@@ -669,7 +669,7 @@ extension AztecPostViewController {
                 generator.notificationOccurred(.success)
             }
 
-            if shouldDismissEditorWhenDone {
+            if dismissWhenDone {
                 self.dismissOrPopView(didSave: true)
             } else {
                 self.createRevisionOfPost()
@@ -746,9 +746,9 @@ private extension AztecPostViewController {
 
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-            let shouldDismissEditorWhenDone = postEditorStateContext.secondaryPublishButtonAction == .publish
-            alert.addActionWithTitle(buttonTitle, style: shouldDismissEditorWhenDone ? .destructive : .default ) { _ in
-                self.secondaryPublishButtonTapped(shouldDismissEditorWhenDone: shouldDismissEditorWhenDone)
+            let dismissWhenDone = postEditorStateContext.secondaryPublishButtonAction == .publish
+            alert.addActionWithTitle(buttonTitle, style: dismissWhenDone ? .destructive : .default ) { _ in
+                self.secondaryPublishButtonTapped(dismissWhenDone: dismissWhenDone)
             }
         }
 
