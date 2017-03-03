@@ -236,8 +236,11 @@ public class PostEditorStateContext {
         return editorState.action.isPostPostShown
     }
 
-    // TODO: Replace with a method to bring label and such back for secondary publish button
     var isSecondaryPublishButtonShown: Bool {
+        guard hasContent else {
+            return false
+        }
+
         return editorState.action.secondaryPublishAction != nil
     }
 
