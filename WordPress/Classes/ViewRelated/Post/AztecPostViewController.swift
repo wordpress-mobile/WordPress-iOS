@@ -466,6 +466,7 @@ class AztecPostViewController: UIViewController {
         reloadBlogPickerButton()
         reloadEditorContents()
         resizeBlogPickerButton()
+        reloadPublishButton()
     }
 
     func reloadEditorContents() {
@@ -487,6 +488,11 @@ class AztecPostViewController: UIViewController {
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
         blogPickerButton.buttonMode = shouldEnable ? .multipleSite : .singleSite
         blogPickerButton.isEnabled = shouldEnable
+    }
+
+    func reloadPublishButton() {
+        publishButton.title = postEditorStateContext.publishButtonText
+        publishButton.isEnabled = postEditorStateContext.isPublishButtonEnabled
     }
 
     func resizeBlogPickerButton() {
@@ -570,7 +576,7 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
-        publishPost(dismissWhenDone: true)
+        publishTapped(dismissWhenDone: true)
     }
 
     @IBAction func secondaryPublishButtonTapped(dismissWhenDone: Bool = true) {
@@ -581,7 +587,7 @@ extension AztecPostViewController {
                 self.post.status = .publish
             }
 
-            self.publishPost(dismissWhenDone: dismissWhenDone)
+            self.publishTapped(dismissWhenDone: dismissWhenDone)
         }
 
         if presentedViewController != nil {
@@ -611,12 +617,12 @@ extension AztecPostViewController {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
                     self.post.status = .draft
-                    self.publishPost(dismissWhenDone: true)
+                    self.publishTapped(dismissWhenDone: true)
                 }
             } else if post.status == .draft {
                 // The post was already a draft
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
-                    self.publishPost(dismissWhenDone: true)
+                    self.publishTapped(dismissWhenDone: true)
                 }
             }
         }
@@ -625,7 +631,7 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func publishPost(dismissWhenDone: Bool) {
+    private func publishTapped(dismissWhenDone: Bool) {
         // Cancel publishing if media is currently being uploaded
         if mediaProgressCoordinator.isRunning {
             displayMediaIsUploadingAlert()
@@ -638,7 +644,7 @@ extension AztecPostViewController {
             alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
                 self.removeFailedMedia()
                 // Failed media is removed, try again.
-                self.publishPost(dismissWhenDone: dismissWhenDone)
+                self.publishTapped(dismissWhenDone: dismissWhenDone)
             }
 
             alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
@@ -837,11 +843,11 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
     }
 
     internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
-        publishButton.title = context.publishButtonText
+        reloadPublishButton()
     }
 
     internal func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool) {
-        publishButton.isEnabled = context.isPublishButtonEnabled
+        reloadPublishButton()
     }
 
     internal func addObservers(toPost: AbstractPost) {
