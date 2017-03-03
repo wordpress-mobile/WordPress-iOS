@@ -172,6 +172,15 @@ extension PostEditorStateTests {
     }
 }
 
+extension PostEditorStateTests {
+    func testPublishSecondaryDisabledNoContent() {
+        context = PostEditorStateContext(originalPostStatus: nil, userCanPublish: true, delegate: self)
+        context.updated(hasContent: false)
+
+        XCTAssertFalse(context.isSecondaryPublishButtonShown, "should return false if post has no content")
+    }
+}
+
 extension PostEditorStateTests: PostEditorStateContextDelegate {
     func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
 
