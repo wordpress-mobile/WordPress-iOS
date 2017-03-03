@@ -76,6 +76,13 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
                 failure:(PostServiceSyncFailure)failure;
 
 /**
+ Determine if a recent cache is available
+ 
+ @param blog The blog that may have cached posts.
+ */
++ (BOOL)shouldRefreshCacheFor:(Blog *)blog;
+
+/**
  Syncs local changes on a post back to the server.
 
  @param post The post or page to upload
