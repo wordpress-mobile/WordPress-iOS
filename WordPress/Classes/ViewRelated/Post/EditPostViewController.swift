@@ -78,7 +78,7 @@ class EditPostViewController: UIViewController {
 
         // show postpost, which will be transparent
         view.isOpaque = false
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = .clear
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -144,8 +144,14 @@ class EditPostViewController: UIViewController {
             strongSelf.closeEditor(changesSaved)
         }
 
+        // Neutralize iOS's Restoration:
+        // We'll relaunch the editor on our own, on viewDidAppear. Why: Because we need to set up the callbacks!
+        // This effectively prevents double editor instantiation!
+        //
+        postViewController.restorationClass = nil
+        postViewController.restorationIdentifier = nil
+
         let navController = UINavigationController(rootViewController: postViewController)
-        navController.restorationIdentifier = AztecPostViewController.Restoration.navigationIdentifier
         navController.modalPresentationStyle = .fullScreen
 
         return navController
@@ -165,9 +171,14 @@ class EditPostViewController: UIViewController {
             strongSelf.closeEditor(changesSaved)
         }
 
+        // Neutralize iOS's Restoration:
+        // We'll relaunch the editor on our own, on viewDidAppear. Why: Because we need to set up the callbacks!
+        // This effectively prevents double editor instantiation!
+        //
+        postViewController?.restorationClass = nil
+        postViewController?.restorationIdentifier = nil
+
         let navController = UINavigationController(rootViewController: postViewController!)
-        navController.restorationIdentifier = WPEditorNavigationRestorationID
-        navController.restorationClass = WPPostViewController.self
         navController.isToolbarHidden = false // Fixes incorrect toolbar animation.
         navController.modalPresentationStyle = .fullScreen
 
