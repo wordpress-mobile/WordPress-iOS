@@ -1737,10 +1737,8 @@ EditImageDetailsViewControllerDelegate
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         if (media.mediaType == MediaTypeImage) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
             [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueId mediaId:[media.mediaID stringValue]];
         } else if (media.mediaType == MediaTypeVideo) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withBlog:self.post.blog];
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
                                       forRemoteVideo:media.remoteURL
                                         remotePoster:media.posterImageURL
@@ -1856,6 +1854,11 @@ EditImageDetailsViewControllerDelegate
                                   [strongSelf uploadMedia:media trackingId:mediaUniqueID];
                                   }];
                               }];
+    if (asset.mediaType == PHAssetMediaTypeImage) {
+        [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
+    } else if (asset.mediaType == PHAssetMediaTypeVideo) {
+        [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withBlog:self.post.blog];
+    }
 }
 
 - (void)addSiteMediaAsset:(Media *)media
@@ -1873,8 +1876,10 @@ EditImageDetailsViewControllerDelegate
         [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
     } else {
         if ([media mediaType] == MediaTypeImage) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
             [self.editorView insertLocalImage:media.absoluteLocalURL uniqueId:mediaUniqueID];
         } else if ([media mediaType] == MediaTypeVideo) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withBlog:self.post.blog];
             [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:media.posterImageURL];
         }
         [self uploadMedia:media trackingId:mediaUniqueID];
