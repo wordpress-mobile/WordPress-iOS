@@ -181,7 +181,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (= 0.5a5)
   - WordPress-iOS-Editor (= 1.9.0)
   - WordPress-iOS-Shared (= 0.8.0)
-  - WordPressCom-Analytics-iOS (= 0.1.22)
+  - WordPressCom-Analytics-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git`, branch `add/media-missing-resized-photo-stats`)
   - WordPressCom-Stats-iOS (= 0.9.0)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.11.1)
@@ -197,6 +197,9 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPressCom-Analytics-iOS:
+    :branch: add/media-missing-resized-photo-stats
+    :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -211,6 +214,9 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPressCom-Analytics-iOS:
+    :commit: d9500db133d2f95397f9f7eec16295926919a1a8
+    :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -255,6 +261,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: f5b1c20a25abc9ed710747f7019dbf43f03caa4f
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: bf98c40c4017d6124229fa0872f80569f87c5368
+PODFILE CHECKSUM: 58ec3daf922b244384893d478f720b457f622809
 
 COCOAPODS: 1.1.1
