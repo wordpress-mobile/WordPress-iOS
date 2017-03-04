@@ -977,6 +977,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             createMediaProgress.completedUnitCount++;
             [self uploadMedia:media trackingId:imageUniqueId];
         }];
+        if (asset.mediaType == PHAssetMediaTypeImage) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
+        } else if (asset.mediaType == PHAssetMediaTypeVideo) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withBlog:self.post.blog];
+        }
     }
 }
 
@@ -1008,10 +1013,20 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     NSString *mediaUniqueID = [self uniqueIdForMedia];
     if ([media.mediaID intValue] != 0) {
+        if ([media mediaType] == MediaTypeImage) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaWPMediaLibrary withBlog:self.post.blog];
+        } else if ([media mediaType] == MediaTypeVideo) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary withBlog:self.post.blog];
+        }
         [self trackMediaWithId:mediaUniqueID usingProgress:[NSProgress progressWithTotalUnitCount:1]];
         [self insertMedia:media];
         [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
     } else {
+        if ([media mediaType] == MediaTypeImage) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
+        } else if ([media mediaType] == MediaTypeVideo) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withBlog:self.post.blog];
+        }
         [self uploadMedia:media trackingId:mediaUniqueID];
     }
 }
@@ -1024,7 +1039,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)insertMedia:(Media *)media
 {
-    [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
     NSString *prefix = @"<br /><br />";
 
     if (self.post.content == nil || [self.post.content isEqualToString:@""]) {
