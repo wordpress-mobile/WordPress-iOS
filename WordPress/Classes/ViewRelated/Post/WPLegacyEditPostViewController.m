@@ -994,6 +994,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self insertMedia:media];
         [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
     } failure:^(NSError *error) {
+        [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withBlog:self.post.blog];
         [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
         if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
             DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
