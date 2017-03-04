@@ -2042,7 +2042,7 @@ EditImageDetailsViewControllerDelegate
                             }];
     
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
-
+    [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
 }
 
 
