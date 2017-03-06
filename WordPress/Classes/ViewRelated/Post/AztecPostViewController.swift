@@ -832,6 +832,8 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         return !titleIsEmpty && !contentIsEmpty
     }
 
+    private var editorHasChanges: Bool {
+        return post.hasUnsavedChanges()
     }
 
     internal func editorContentWasUpdated() {
