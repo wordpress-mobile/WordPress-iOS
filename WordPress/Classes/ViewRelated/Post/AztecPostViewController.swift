@@ -85,7 +85,6 @@ class AztecPostViewController: UIViewController {
         tf.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
                                                       attributes: [NSForegroundColorAttributeName: Colors.title])
-        tf.delegate = self
         tf.font = Fonts.title
         tf.returnKeyType = .next
         tf.textColor = UIColor.darkText
@@ -826,24 +825,18 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         }
     }
 
-
-        super.observeValue(forKeyPath: keyPath,
-                           of: object,
-                           change: change,
-                           context: context)
-    }
-
-    internal func titleTextFieldDidChange(textField: UITextField) {
-        postEditorStateContext.updated(hasContent: editorHasContent)
-    }
-
-    // TODO: We should be tracking hasContent and isDirty separately for enabling button in the state context
     private var editorHasContent: Bool {
-        let contentCharacterCount = post.content?.characters.count ?? 0
-        // Title isn't updated on post until editing is done - this looks at realtime changes
-        let titleCharacterCount = titleTextField.text?.characters.count ?? 0
+        let titleIsEmpty = post.postTitle?.isEmpty ?? true
+        let contentIsEmpty = post.content?.isEmpty ?? true
 
-        return contentCharacterCount + titleCharacterCount > 0
+        return !titleIsEmpty && !contentIsEmpty
+    }
+
+    }
+
+    internal func editorContentWasUpdated() {
+        postEditorStateContext.updated(hasContent: editorHasContent)
+        postEditorStateContext.updated(hasChanges: editorHasChanges)
     }
 
     internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
@@ -884,9 +877,10 @@ extension AztecPostViewController : UITextViewDelegate {
 
 // MARK: - UITextFieldDelegate methods
 //
-extension AztecPostViewController : UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
+extension AztecPostViewController {
+    func titleTextFieldDidChange(_ textField: UITextField) {
         mapUIContentToPostAndSave()
+        editorContentWasUpdated()
     }
 }
 
