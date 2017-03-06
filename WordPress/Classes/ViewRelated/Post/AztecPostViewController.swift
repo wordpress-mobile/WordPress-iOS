@@ -1367,7 +1367,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 attachment.progress = nil
             } else {
                 attachment.progress = progress.fractionCompleted
-                attachment.progressColor = WPStyleGuide.wordPressBlue()
+                attachment.progressColor = WPStyleGuide.mediumBlue()
             }
             richTextView.refreshLayoutFor(attachment: attachment)
         }
@@ -1483,6 +1483,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
         let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
+        attachment.overlayImage = Gridicon.iconOfType(.refresh)
         richTextView.refreshLayoutFor(attachment: attachment)
     }
 
@@ -1505,7 +1506,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                            handler: { (action) in
                                             if attachment == self.currentSelectedAttachment {
                                                 self.currentSelectedAttachment = nil
-                                                attachment.message = nil
+                                                attachment.clearAllOverlays()
                                                 self.richTextView.refreshLayoutFor(attachment: attachment)
                                             }
         })
@@ -1533,7 +1534,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                     //retry upload
                                                     if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
-                                                        attachment.message = nil
+                                                        attachment.clearAllOverlays()
                                                         attachment.progress = 0
                                                         self.richTextView.refreshLayoutFor(attachment: attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
@@ -1700,7 +1701,7 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
         guard richTextView.attachmentAtPoint(locationInTextView) != nil else {
             // if we have a current selected attachment marked lets unmark it
             if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.message = nil
+                selectedAttachment.clearAllOverlays()
                 richTextView.refreshLayoutFor(attachment: selectedAttachment)
                 currentSelectedAttachment = nil
             }
@@ -1718,7 +1719,7 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
         guard let attachment = richTextView.attachmentAtPoint(locationInTextView) else {
             // if we have a current selected attachment marked lets unmark it
             if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.message = nil
+                selectedAttachment.clearAllOverlays()
                 richTextView.refreshLayoutFor(attachment: selectedAttachment)
                 currentSelectedAttachment = nil
             }
@@ -1732,12 +1733,13 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
         } else {
             // if it's a new attachment tapped let's unmark the previous one
             if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.message = nil
+                selectedAttachment.clearAllOverlays()
                 richTextView.refreshLayoutFor(attachment: selectedAttachment)
             }
             // and mark the newly tapped attachment
             let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a image on the post/page editor.")
             attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+            attachment.overlayImage = Gridicon.iconOfType(.pencil)
             richTextView.refreshLayoutFor(attachment: attachment)
             currentSelectedAttachment = attachment
         }
