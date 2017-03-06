@@ -1228,11 +1228,9 @@ fileprivate extension AztecPostViewController {
 
     // TODO: Rip this and put it into PostService, as well
     func recreatePostRevision(in blog: Blog) {
-        let blogService = BlogService(managedObjectContext: mainContext)
         let postService = PostService(managedObjectContext: mainContext)
         let newPost = postService.createDraftPost(for: blog)
 
-        blogService.flagBlog(asLastUsed: blog)
 
         //  TODO: Strip Media!
         //  NSString *content = oldPost.content;
@@ -1254,9 +1252,15 @@ fileprivate extension AztecPostViewController {
         discardChanges()
         post = newPost
         createRevisionOfPost()
+        markBlogAsLastUsed(blog)
 
         // TODO: Add this snippet, if needed, once we've relocated this helper to PostService
         //[self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
+    }
+
+    func markBlogAsLastUsed(_ blog: Blog) {
+        let blogService = BlogService(managedObjectContext: mainContext)
+        blogService.flagBlog(asLastUsed: blog)
     }
 
     func cancelEditing() {
