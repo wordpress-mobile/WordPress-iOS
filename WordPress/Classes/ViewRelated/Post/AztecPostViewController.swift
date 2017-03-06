@@ -1228,9 +1228,9 @@ fileprivate extension AztecPostViewController {
 
     // TODO: Rip this and put it into PostService, as well
     func recreatePostRevision(in blog: Blog) {
+        let shouldCreatePage = post is Page
         let postService = PostService(managedObjectContext: mainContext)
-        let newPost = postService.createDraftPost(for: blog)
-
+        let newPost = shouldCreatePage ? postService.createDraftPage(for: blog) : postService.createDraftPost(for: blog)
 
         //  TODO: Strip Media!
         //  NSString *content = oldPost.content;
@@ -1245,8 +1245,8 @@ fileprivate extension AztecPostViewController {
         newPost.dateCreated = post.dateCreated
         newPost.dateModified = post.dateModified
 
-        if let source = post as? Post {
-            newPost.tags = source.tags
+        if let source = post as? Post, let target = newPost as? Post {
+            target.tags = source.tags
         }
 
         discardChanges()
