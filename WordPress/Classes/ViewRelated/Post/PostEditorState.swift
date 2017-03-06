@@ -126,6 +126,12 @@ public class PostEditorStateContext {
         }
     }
 
+    fileprivate var hasChanges = false {
+        didSet {
+            updatePublishActionAllowed()
+        }
+    }
+
     fileprivate var isBeingPublished = false {
         didSet {
             updatePublishActionAllowed()
@@ -185,10 +191,16 @@ public class PostEditorStateContext {
         editorState = updatedState
     }
 
-    /// Call whenever the post content is changed - title or content body
+    /// Call whenever the post content is not empty - title or content body
     ///
     func updated(hasContent: Bool) {
         self.hasContent = hasContent
+    }
+
+    /// Call whenever the post content was updated - title or content body
+    ///
+    func updated(hasChanges: Bool) {
+        self.hasChanges = hasChanges
     }
 
     /// Call when the post is being published or has finished
@@ -263,9 +275,10 @@ public class PostEditorStateContext {
         return editorState.action.secondaryPublishAction?.secondaryPublishActionLabel
     }
 
-    // TODO: Add isDirty to the state context for enabling/disabling the button
+    /// Indicates whether the Publish Action should be allowed, or not
+    ///
     private func updatePublishActionAllowed() {
-        publishActionAllowed = hasContent && !isBeingPublished && !isUploadingMedia
+        publishActionAllowed = hasContent && hasChanges && !isBeingPublished && !isUploadingMedia
     }
 }
 
