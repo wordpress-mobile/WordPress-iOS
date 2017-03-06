@@ -144,6 +144,7 @@ public class PostEditorStateContext {
     ///   - originalPostStatus: If the post was already published (saved to the server) what is the status
     ///   - userCanPublish: Does the user have permission to publish posts or merely create drafts
     ///   - delegate: Delegate for listening to change in state for the editor
+    ///
     init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
         self.originalPostStatus = originalPostStatus
         self.userCanPublish = userCanPublish
@@ -196,6 +197,8 @@ public class PostEditorStateContext {
         self.isBeingPublished = isBeingPublished
     }
 
+    /// Call whenever a Media Upload OP is started / stopped
+    ///
     func update(isUploadingMedia: Bool) {
         self.isUploadingMedia = isUploadingMedia
     }
@@ -226,6 +229,8 @@ public class PostEditorStateContext {
         return editorState.action.publishingActionLabel
     }
 
+    /// Returns the Error Text for the current active action
+    ///
     var publishErrorText: String {
         return editorState.action.publishingErrorLabel
     }
@@ -236,6 +241,8 @@ public class PostEditorStateContext {
         return editorState.action.isPostPostShown
     }
 
+    /// Returns whether the secondary publish button should be displayed, or not
+    ///
     var isSecondaryPublishButtonShown: Bool {
         guard hasContent else {
             return false
@@ -244,10 +251,14 @@ public class PostEditorStateContext {
         return editorState.action.secondaryPublishAction != nil
     }
 
+    /// Returns the secondary publish action
+    ///
     var secondaryPublishButtonAction: PostEditorAction? {
         return editorState.action.secondaryPublishAction
     }
 
+    /// Returns the secondary publish button text
+    ///
     var secondaryPublishButtonText: String? {
         return editorState.action.secondaryPublishAction?.secondaryPublishActionLabel
     }
