@@ -434,6 +434,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      [weakSelf showPageList];
                                                  }]];
 
+    if ([Feature enabled:FeatureFlagMediaLibrary]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
+                                                        image:[Gridicon iconOfType:GridiconTypeImageMultiple]
+                                                     callback:^{
+                                                         [weakSelf showMediaLibrary];
+                                                     }]];
+    }
+
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
                                                           image:[Gridicon iconOfType:GridiconTypeComment]
                                                        callback:^{
@@ -728,6 +736,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showPageList
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPages withBlog:self.blog];
+    PageListViewController *controller = [PageListViewController controllerWithBlog:self.blog];
+    [self showDetailViewController:controller sender:self];
+}
+
+- (void)showMediaLibrary
+{
+    [WPAppAnalytics track:WPAnalyticsStatOpenedMediaLibrary withBlog:self.blog];
     PageListViewController *controller = [PageListViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
