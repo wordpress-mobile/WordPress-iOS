@@ -807,19 +807,24 @@ private extension AztecPostViewController {
 //
 extension AztecPostViewController: PostEditorStateContextDelegate {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == BasePost.statusKeyPath {
+        guard let keyPath = keyPath else {
+            return
+        }
+
+        switch keyPath {
+        case BasePost.statusKeyPath:
             if let status = post.status {
                 postEditorStateContext.updated(postStatus: status)
             }
-            return
-        } else if keyPath == #keyPath(AbstractPost.dateCreated) {
+        case #keyPath(AbstractPost.dateCreated):
             let dateCreated = post.dateCreated ?? Date()
             postEditorStateContext.updated(publishDate: dateCreated)
-            return
-        } else if keyPath == #keyPath(AbstractPost.content) {
-            postEditorStateContext.updated(hasContent: editorHasContent)
-            return
+        case #keyPath(AbstractPost.content):
+            editorContentWasUpdated()
+        default:
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
+    }
 
 
         super.observeValue(forKeyPath: keyPath,
