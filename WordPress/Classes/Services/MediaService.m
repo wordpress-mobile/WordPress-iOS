@@ -97,6 +97,18 @@
 
     NSInteger maxImageSize = [mediaSettings imageSizeForUpload];
     CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
+
+    void(^trackResizedPhotoError)() = nil;
+    if (mediaType == MediaTypeImage && maxImageSize > 0) {
+        // Only tracking resized photo if the user selected a max size that's not the -1 value for "Original"
+        NSDictionary *properties = @{@"resize_width": @(maxImageSize)};
+        [WPAppAnalytics track:WPAnalyticsStatEditorResizedPhoto withProperties:properties withBlog:post.blog];
+        trackResizedPhotoError = ^() {
+            [self.managedObjectContext performBlock:^{
+                [WPAppAnalytics track:WPAnalyticsStatEditorResizedPhotoError withProperties:properties withBlog:post.blog];
+            }];
+        };
+    }
     
     NSURL *mediaURL = [self urlForMediaWithFilename:mediaName andExtension:extension];
     NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
@@ -142,15 +154,21 @@
                                                         asset:asset
                                                    completion:completion];
                                  } errorHandler:^(NSError *error) {
-                                       if (completion){
-                                           completion(nil, error);
-                                       }
+                                     if (completion){
+                                         completion(nil, error);
+                                     }
+                                     if (trackResizedPhotoError) {
+                                         trackResizedPhotoError();
+                                     }
                                    }];
                          }
                      }
                        errorHandler:^(NSError *error) {
                            if (completion){
                                completion(nil, error);
+                           }
+                           if (trackResizedPhotoError) {
+                               trackResizedPhotoError();
                            }
                        }];
     }];
