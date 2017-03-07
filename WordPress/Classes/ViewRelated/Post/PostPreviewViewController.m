@@ -191,13 +191,25 @@
     }
 }
 
+#pragma mark - Loading
+
+- (void)startLoading
+{
+    self.loadingView.hidden = NO;
+}
+
+- (void)stopLoading
+{
+    self.loadingView.hidden = YES;
+}
+
 #pragma mark -
 #pragma mark Webkit View Delegate Methods
 
 - (void)refreshWebView
 {
     BOOL edited = [self.apost hasLocalChanges];
-    self.loadingView.hidden = NO;
+    [self startLoading];
 
     if (edited) {
         [self showSimplePreview];
@@ -209,7 +221,7 @@
 - (void)webViewDidFinishLoad:(UIWebView *)awebView
 {
     DDLogMethod();
-    self.loadingView.hidden = YES;
+    [self stopLoading];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -224,7 +236,7 @@
         return;
     }
 
-    self.loadingView.hidden = YES;
+    [self stopLoading];
     NSString *errorMessage = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>",
                               NSLocalizedString(@"There has been an error while trying to reach your site.", nil),
                               NSLocalizedString(@"A simple preview is shown below.", @"")];
