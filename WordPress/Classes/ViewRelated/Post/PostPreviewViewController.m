@@ -9,10 +9,10 @@
 #import "WordPress-Swift.h"
 
 @import Gridicons;
+@import SVProgressHUD;
 @interface PostPreviewViewController ()
 
 @property (nonatomic, strong) UIWebView *webView;
-@property (nonatomic, strong) UIView *loadingView;
 @property (nonatomic, strong) NSMutableData *receivedData;
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
@@ -53,7 +53,6 @@
     
     [super viewDidLoad];
     [self setupWebView];
-    [self setupLoadingView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -87,36 +86,6 @@
         self.webView.delegate = self;
     }
     [self.view addSubview:self.webView];
-}
-
-- (void)setupLoadingView
-{
-    if (!self.loadingView) {
-
-        CGRect frame = self.view.frame;
-        CGFloat sides = 100.0f;
-        CGFloat x = (frame.size.width - sides) / 2.0f;
-        CGFloat y = (frame.size.height - sides) / 2.0f;
-
-        self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(x, y, sides, sides)];
-        self.loadingView.layer.cornerRadius = 10.0f;
-        self.loadingView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
-        self.loadingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
-        UIViewAutoresizingFlexibleBottomMargin |
-        UIViewAutoresizingFlexibleTopMargin |
-        UIViewAutoresizingFlexibleRightMargin;
-
-        UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        [activityView startAnimating];
-
-        frame = activityView.frame;
-        frame.origin.x = (sides - frame.size.width) / 2.0f;
-        frame.origin.y = (sides - frame.size.height) / 2.0f;
-        activityView.frame = frame;
-        [self.loadingView addSubview:activityView];
-    }
-
-    [self.view addSubview:self.loadingView];
 }
 
 - (void)showSimplePreviewWithMessage:(NSString *)message
@@ -195,12 +164,12 @@
 
 - (void)startLoading
 {
-    self.loadingView.hidden = NO;
+    [SVProgressHUD show];
 }
 
 - (void)stopLoading
 {
-    self.loadingView.hidden = YES;
+    [SVProgressHUD dismiss];
 }
 
 #pragma mark -
