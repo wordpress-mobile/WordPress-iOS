@@ -830,7 +830,7 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         let titleIsEmpty = post.postTitle?.isEmpty ?? true
         let contentIsEmpty = post.content?.isEmpty ?? true
 
-        return !titleIsEmpty && !contentIsEmpty
+        return !titleIsEmpty || !contentIsEmpty
     }
 
     private var editorHasChanges: Bool {
