@@ -85,7 +85,6 @@ class AztecPostViewController: UIViewController {
         tf.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
                                                       attributes: [NSForegroundColorAttributeName: Colors.title])
-        tf.delegate = self
         tf.font = Fonts.title
         tf.returnKeyType = .next
         tf.textColor = UIColor.darkText
@@ -808,38 +807,39 @@ private extension AztecPostViewController {
 //
 extension AztecPostViewController: PostEditorStateContextDelegate {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == BasePost.statusKeyPath {
-            if let status = post.status {
-                postEditorStateContext.updated(postStatus: status)
-            }
-            return
-        } else if keyPath == #keyPath(AbstractPost.dateCreated) {
-            let dateCreated = post.dateCreated ?? Date()
-            postEditorStateContext.updated(publishDate: dateCreated)
-            return
-        } else if keyPath == #keyPath(AbstractPost.content) {
-            postEditorStateContext.updated(hasContent: editorHasContent)
+        guard let keyPath = keyPath else {
             return
         }
 
-
-        super.observeValue(forKeyPath: keyPath,
-                           of: object,
-                           change: change,
-                           context: context)
+        switch keyPath {
+        case BasePost.statusKeyPath:
+            if let status = post.status {
+                postEditorStateContext.updated(postStatus: status)
+            }
+        case #keyPath(AbstractPost.dateCreated):
+            let dateCreated = post.dateCreated ?? Date()
+            postEditorStateContext.updated(publishDate: dateCreated)
+        case #keyPath(AbstractPost.content):
+            editorContentWasUpdated()
+        default:
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
     }
 
-    internal func titleTextFieldDidChange(textField: UITextField) {
-        postEditorStateContext.updated(hasContent: editorHasContent)
-    }
-
-    // TODO: We should be tracking hasContent and isDirty separately for enabling button in the state context
     private var editorHasContent: Bool {
-        let contentCharacterCount = post.content?.characters.count ?? 0
-        // Title isn't updated on post until editing is done - this looks at realtime changes
-        let titleCharacterCount = titleTextField.text?.characters.count ?? 0
+        let titleIsEmpty = post.postTitle?.isEmpty ?? true
+        let contentIsEmpty = post.content?.isEmpty ?? true
 
-        return contentCharacterCount + titleCharacterCount > 0
+        return !titleIsEmpty && !contentIsEmpty
+    }
+
+    private var editorHasChanges: Bool {
+        return post.hasUnsavedChanges()
+    }
+
+    internal func editorContentWasUpdated() {
+        postEditorStateContext.updated(hasContent: editorHasContent)
+        postEditorStateContext.updated(hasChanges: editorHasChanges)
     }
 
     internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
@@ -880,9 +880,10 @@ extension AztecPostViewController : UITextViewDelegate {
 
 // MARK: - UITextFieldDelegate methods
 //
-extension AztecPostViewController : UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
+extension AztecPostViewController {
+    func titleTextFieldDidChange(_ textField: UITextField) {
         mapUIContentToPostAndSave()
+        editorContentWasUpdated()
     }
 }
 
@@ -1229,11 +1230,9 @@ fileprivate extension AztecPostViewController {
 
     // TODO: Rip this and put it into PostService, as well
     func recreatePostRevision(in blog: Blog) {
-        let blogService = BlogService(managedObjectContext: mainContext)
+        let shouldCreatePage = post is Page
         let postService = PostService(managedObjectContext: mainContext)
-        let newPost = postService.createDraftPost(for: blog)
-
-        blogService.flagBlog(asLastUsed: blog)
+        let newPost = shouldCreatePage ? postService.createDraftPage(for: blog) : postService.createDraftPost(for: blog)
 
         //  TODO: Strip Media!
         //  NSString *content = oldPost.content;
@@ -1248,16 +1247,22 @@ fileprivate extension AztecPostViewController {
         newPost.dateCreated = post.dateCreated
         newPost.dateModified = post.dateModified
 
-        if let source = post as? Post {
-            newPost.tags = source.tags
+        if let source = post as? Post, let target = newPost as? Post {
+            target.tags = source.tags
         }
 
         discardChanges()
         post = newPost
         createRevisionOfPost()
+        markBlogAsLastUsed(blog)
 
         // TODO: Add this snippet, if needed, once we've relocated this helper to PostService
         //[self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
+    }
+
+    func markBlogAsLastUsed(_ blog: Blog) {
+        let blogService = BlogService(managedObjectContext: mainContext)
+        blogService.flagBlog(asLastUsed: blog)
     }
 
     func cancelEditing() {
