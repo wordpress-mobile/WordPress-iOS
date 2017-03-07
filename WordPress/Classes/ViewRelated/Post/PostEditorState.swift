@@ -266,12 +266,20 @@ public class PostEditorStateContext {
     /// Returns the secondary publish action
     ///
     var secondaryPublishButtonAction: PostEditorAction? {
+        guard isSecondaryPublishButtonShown else {
+            return nil
+        }
+
         return editorState.action.secondaryPublishAction
     }
 
     /// Returns the secondary publish button text
     ///
     var secondaryPublishButtonText: String? {
+        guard isSecondaryPublishButtonShown else {
+            return nil
+        }
+
         return editorState.action.secondaryPublishAction?.secondaryPublishActionLabel
     }
 
