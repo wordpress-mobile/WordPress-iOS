@@ -18,7 +18,6 @@ public extension WPAppAnalytics {
             properties[MediaProperties.durationSeconds] = media.length
         }
         properties[MediaProperties.bytes] = media.filesize.intValue * 1024
-        print("media properties \(properties)")
         return properties
     }
 
