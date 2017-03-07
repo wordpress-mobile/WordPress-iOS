@@ -10,13 +10,14 @@
 
 @import Gridicons;
 @import SVProgressHUD;
-@interface PostPreviewViewController ()
+@interface PostPreviewViewController () <PostPreviewGeneratorDelegate>
 
 @property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) NSMutableData *receivedData;
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *doneBarButtonItem;
+@property (nonatomic, strong) PostPreviewGenerator *generator;
 
 @end
 
@@ -36,6 +37,8 @@
     self = [super init];
     if (self) {
         self.apost = aPost;
+        self.generator = [[PostPreviewGenerator alloc] initWithPost:aPost];
+        self.generator.delegate = self;
         self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
     }
     return self;
@@ -88,78 +91,6 @@
     [self.view addSubview:self.webView];
 }
 
-- (void)showSimplePreviewWithMessage:(NSString *)message
-{
-    DDLogMethod();
-    FakePreviewBuilder *builder = [[FakePreviewBuilder alloc] initWithApost:self.apost message:message];
-    NSString *previewPageHTML = [builder build];
-    previewPageHTML = [builder build];
-    [self.webView loadHTMLString:previewPageHTML baseURL:nil];
-}
-
-- (void)showSimplePreview
-{
-    [self showSimplePreviewWithMessage:nil];
-}
-
-- (void)showRealPreview
-{
-    BOOL needsLogin = NO;
-    NSString *status = self.apost.status;
-
-    if ([status isEqualToString:PostStatusDraft]) {
-        needsLogin = YES;
-    } else if ([status isEqualToString:PostStatusPrivate]) {
-        needsLogin = YES;
-    } else if ([status isEqualToString:PostStatusPending]) {
-        needsLogin = YES;
-    } else if ([self.apost.blog isPrivate]) {
-        needsLogin = YES; // Private blog
-    } else if ([self.apost isScheduled]) {
-        needsLogin = YES; // Scheduled post
-    }
-
-    NSString *link = self.apost.permaLink;
-
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
-
-    if (appDelegate.connectionAvailable == NO) {
-        [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
-    } else if (link == nil) {
-        [self showSimplePreview];
-    } else {
-        if (needsLogin) {
-            NSURL *loginURL = [NSURL URLWithString:self.apost.blog.loginUrl];
-            NSURL *redirectURL = [NSURL URLWithString:link];
-            NSString *username = self.apost.blog.usernameForSite;
-            NSString *token, *password;
-            if ([self.apost.blog supports:BlogFeatureOAuth2Login]) {
-                password = nil;
-                token = self.apost.blog.authToken;
-            } else {
-                password = self.apost.blog.password;
-                token = nil;
-            }
-
-            if (username.length > 0 && (password.length > 0 || token.length > 0)) {
-                NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
-                                                                          redirectURL:redirectURL
-                                                                             username:username
-                                                                             password:password
-                                                                          bearerToken:token
-                                                                            userAgent:nil];
-                [self.webView loadRequest:request];
-                DDLogInfo(@"Showing real preview (login) for %@", link);
-            } else {
-                [self showSimplePreview];
-            }
-        } else {
-            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
-            DDLogInfo(@"Showing real preview for %@", link);
-        }
-    }
-}
-
 #pragma mark - Loading
 
 - (void)startLoading
@@ -177,14 +108,7 @@
 
 - (void)refreshWebView
 {
-    BOOL edited = [self.apost hasLocalChanges];
-    [self startLoading];
-
-    if (edited) {
-        [self showSimplePreview];
-    } else {
-        [self showRealPreview];
-    }
+    [self.generator generate];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)awebView
@@ -206,11 +130,7 @@
     }
 
     [self stopLoading];
-    NSString *errorMessage = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>",
-                              NSLocalizedString(@"There has been an error while trying to reach your site.", nil),
-                              NSLocalizedString(@"A simple preview is shown below.", @"")];
-
-    [self showSimplePreviewWithMessage:errorMessage];
+    [self.generator previewRequestFailedWithError:error];
 }
 
 - (BOOL)webView:(UIWebView *)awebView
@@ -231,6 +151,17 @@
         return NO;
     }
     return YES;
+}
+
+#pragma mark - PostPreviewGeneratorDelegate
+
+- (void)preview:(PostPreviewGenerator *)generator loadHTML:(NSString *)html {
+    [self.webView loadHTMLString:html baseURL:nil];
+}
+
+- (void)preview:(PostPreviewGenerator *)generator attemptRequest:(NSURLRequest *)request {
+    [self startLoading];
+    [self.webView loadRequest:request];
 }
 
 #pragma mark - Custom UI elements
