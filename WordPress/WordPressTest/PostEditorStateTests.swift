@@ -141,12 +141,22 @@ extension PostEditorStateTests {
 
 
 
-    func testPublishEnabledHasContentNotPublishing() {
+    func testPublishEnabledHasContentAndChangesNotPublishing() {
         context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, delegate: self)
         context.updated(hasContent: true)
+        context.updated(hasChanges: true)
         context.updated(isBeingPublished: false)
 
         XCTAssertTrue(context.isPublishButtonEnabled, "should return true if form is not publishing and post is not empty")
+    }
+
+    func testPublishDisabledHasContentAndNoChangesNotPublishing() {
+        context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, delegate: self)
+        context.updated(hasContent: true)
+        context.updated(hasChanges: false)
+        context.updated(isBeingPublished: false)
+
+        XCTAssertFalse(context.isPublishButtonEnabled, "should return true if form is not publishing and post is not empty")
     }
 
     // Missing test: should return false if form is not publishing and post is not empty, but user is not verified
