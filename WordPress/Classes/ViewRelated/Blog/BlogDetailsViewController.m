@@ -743,7 +743,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showMediaLibrary
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedMediaLibrary withBlog:self.blog];
-    PageListViewController *controller = [PageListViewController controllerWithBlog:self.blog];
+    MediaLibraryViewController *controller = [[MediaLibraryViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
 
