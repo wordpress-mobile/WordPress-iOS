@@ -119,72 +119,12 @@
     [self.view addSubview:self.loadingView];
 }
 
-- (Post *)post
-{
-    if ([self.apost isKindOfClass:[Post class]]) {
-        return (Post *)self.apost;
-    }
-
-    return nil;
-}
-
-- (NSString *)buildSimplePreview
-{
-    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-    NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
-    NSString *str = [NSString stringWithContentsOfFile:fpath encoding:NSUTF8StringEncoding error:nil];
-
-    if ([str length]) {
-
-        //Title
-        NSString *title = self.apost.postTitle;
-        title = (title == nil || ([title length] == 0) ? NSLocalizedString(@"(no title)", @"") : title);
-        str = [str stringByReplacingOccurrencesOfString:@"!$title$!" withString:title];
-
-        //Content
-        NSString *desc = self.apost.content;
-        if (!desc) {
-            desc = [NSString stringWithFormat:@"<h1>%@</h1>", NSLocalizedString(@"No Description available for this Post", @"")];
-        } else {
-            desc = [self stringReplacingNewlinesWithBR:desc];
-        }
-        desc = [NSString stringWithFormat:@"<p>%@</p><br />", desc];
-        str = [str stringByReplacingOccurrencesOfString:@"!$text$!" withString:desc];
-
-        //Tags
-        NSString *tags = self.post.tags;
-        tags = (tags == nil ? @"" : tags);
-        tags = [NSString stringWithFormat:NSLocalizedString(@"Tags: %@", @""), tags];
-        str = [str stringByReplacingOccurrencesOfString:@"!$mt_keywords$!" withString:tags];
-
-        //Categories [selObjects count]
-        NSArray *categories = [self.post.categories allObjects];
-        NSString *catStr = @"";
-        NSUInteger i = 0, count = [categories count];
-        for (i = 0; i < count; i++) {
-            PostCategory *category = [categories objectAtIndex:i];
-            catStr = [catStr stringByAppendingString:category.categoryName];
-            if (i < count-1) {
-                catStr = [catStr stringByAppendingString:@", "];
-            }
-        }
-        catStr = [NSString stringWithFormat:NSLocalizedString(@"Categories: %@", @""), catStr];
-        str = [str stringByReplacingOccurrencesOfString:@"!$categories$!" withString:catStr];
-
-    } else {
-        str = @"";
-    }
-
-    return str;
-}
-
 - (void)showSimplePreviewWithMessage:(NSString *)message
 {
     DDLogMethod();
-    NSString *previewPageHTML = [self buildSimplePreview];
-    if (message) {
-        previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:[NSString stringWithFormat:@"<div class=\"page\"><p>%@</p>", message]];
-    }
+    FakePreviewBuilder *builder = [[FakePreviewBuilder alloc] initWithApost:self.apost message:message];
+    NSString *previewPageHTML = [builder build];
+    previewPageHTML = [builder build];
     [self.webView loadHTMLString:previewPageHTML baseURL:nil];
 }
 
@@ -359,14 +299,6 @@
     } else{
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
-}
-
-#pragma mark -
-
-- (NSString *)stringReplacingNewlinesWithBR:(NSString *)surString
-{
-    NSArray *comps = [surString componentsSeparatedByString:@"\n"];
-    return [comps componentsJoinedByString:@"<br>"];
 }
 
 @end
