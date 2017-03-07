@@ -975,13 +975,17 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 return;
             }
             createMediaProgress.completedUnitCount++;
+            if (media.mediaType == WPMediaTypeImage) {
+                [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
+                       withProperties:[WPAppAnalytics propertiesFor:media]
+                             withBlog:self.post.blog];
+            } else if (media.mediaType == WPMediaTypeVideo) {
+                [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
+                       withProperties:[WPAppAnalytics propertiesFor:media]
+                             withBlog:self.post.blog];
+            }
             [self uploadMedia:media trackingId:imageUniqueId];
         }];
-        if (asset.mediaType == PHAssetMediaTypeImage) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
-        } else if (asset.mediaType == PHAssetMediaTypeVideo) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withBlog:self.post.blog];
-        }
     }
 }
 
@@ -1023,10 +1027,14 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self insertMedia:media];
         [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
     } else {
-        if ([media mediaType] == MediaTypeImage) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
-        } else if ([media mediaType] == MediaTypeVideo) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withBlog:self.post.blog];
+        if (media.mediaType == WPMediaTypeImage) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
+                   withProperties:[WPAppAnalytics propertiesFor:media]
+                         withBlog:self.post.blog];
+        } else if (media.mediaType == WPMediaTypeVideo) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
+                   withProperties:[WPAppAnalytics propertiesFor:media]
+                         withBlog:self.post.blog];
         }
         [self uploadMedia:media trackingId:mediaUniqueID];
     }
