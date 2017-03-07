@@ -61,7 +61,7 @@
      ];
 }
 
-- (void)createMediaWith:(id<ExportableAsset>)asset
+- (void)createMediaWith:(id<ExportableAsset, NSObject>)asset
         forPostObjectID:(NSManagedObjectID *)postObjectID
               mediaName:(NSString *)mediaName
       thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
@@ -120,6 +120,7 @@
                                         mediaThumbnailURL:mediaThumbnailURL
                                                 mediaType:mediaType
                                                 mediaSize:resultingSize
+                                                    asset:asset
                                                completion:completion];
                              } errorHandler:^(NSError * _Nonnull error) {
                                  if (completion){
@@ -138,9 +139,9 @@
                                             mediaThumbnailURL:mediaThumbnailURL
                                                     mediaType:mediaType
                                                     mediaSize:resultingSize
+                                                        asset:asset
                                                    completion:completion];
-                                 }
-                                   errorHandler:^(NSError *error) {
+                                 } errorHandler:^(NSError *error) {
                                        if (completion){
                                            completion(nil, error);
                                        }
@@ -160,6 +161,7 @@
           mediaThumbnailURL:(NSURL *)mediaThumbnailURL
                   mediaType:(MediaType)mediaType
                   mediaSize:(CGSize)mediaSize
+                      asset:(id <ExportableAsset, NSObject>)asset
                  completion:(void (^)(Media *media, NSError *error))completion
 {
  
@@ -179,6 +181,10 @@
         media.width = @(mediaSize.width);
         media.height = @(mediaSize.height);
         media.mediaType = mediaType;
+        if (mediaType == WPMediaTypeVideo && [asset isKindOfClass:[PHAsset class]]) {
+            PHAsset *originalAsset = (PHAsset *)asset;
+            media.length = @(originalAsset.duration);
+        }
         //make sure that we only return when object is properly created and saved
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
             if (completion) {
