@@ -50,8 +50,7 @@ abstract_target 'WordPress_Base' do
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '0.12'
     pod 'WordPress-iOS-Editor', '1.9.0'
-#   pod 'WordPressCom-Analytics-iOS', '0.1.22'
-    pod 'WordPressCom-Analytics-iOS', :git => 'https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git', :branch => 'add/media-missing-resized-photo-stats'
+    pod 'WordPressCom-Analytics-iOS', '0.1.23'
     pod 'WordPress-Aztec-iOS', '0.5a5'
     pod 'wpxmlrpc', '~> 0.8'
 
