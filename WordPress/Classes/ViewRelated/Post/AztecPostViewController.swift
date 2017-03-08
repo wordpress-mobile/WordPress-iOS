@@ -315,6 +315,8 @@ class AztecPostViewController: UIViewController {
 
         // Setup Autolayout
         view.setNeedsUpdateConstraints()
+
+        configureMediaAppearance()
     }
 
 
@@ -1358,6 +1360,12 @@ private extension AztecPostViewController {
 //
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
+    func configureMediaAppearance() {
+        TextAttachment.appearance.progressBackgroundColor = Colors.mediaProgressBarBackground
+        TextAttachment.appearance.progressColor = Colors.mediaProgressBarTrack
+        TextAttachment.appearance.overlayColor = Colors.mediaProgressOverlay
+    }
+
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
         mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
         mediaProgressView.progress = progress
@@ -1369,7 +1377,6 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 attachment.progress = nil
             } else {
                 attachment.progress = progress.fractionCompleted
-                attachment.progressColor = WPStyleGuide.mediumBlue()
             }
             richTextView.refreshLayoutFor(attachment: attachment)
         }
@@ -1833,6 +1840,9 @@ extension AztecPostViewController {
         static let progressBackground       = WPStyleGuide.wordPressBlue()
         static let progressTint             = UIColor.white
         static let progressTrack            = WPStyleGuide.wordPressBlue()
+        static let mediaProgressOverlay = UIColor(white: 1, alpha: 0.6)
+        static let mediaProgressBarBackground = WPStyleGuide.lightGrey()
+        static let mediaProgressBarTrack = WPStyleGuide.wordPressBlue()
     }
 
     struct Fonts {
