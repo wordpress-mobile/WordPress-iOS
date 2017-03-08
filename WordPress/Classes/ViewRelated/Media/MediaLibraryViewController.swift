@@ -1,11 +1,16 @@
 import UIKit
+import WordPressShared
 import WPMediaPicker
 
+/// Displays the user's media library in a grid
+///
 class MediaLibraryViewController: UIViewController {
     let blog: Blog
 
     private let pickerViewController: WPMediaPickerViewController
     private let pickerDataSource: MediaLibraryPickerDataSource
+
+    // MARK: - Initializers
 
     init(blog: Blog) {
         self.blog = blog
@@ -30,11 +35,12 @@ class MediaLibraryViewController: UIViewController {
         pickerViewController.dataSource = pickerDataSource
     }
 
+    // MARK: - View Loading
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("Media", comment: "")
-        navigationItem.backBarButtonItem?.title = ""
+        title = NSLocalizedString("Media", comment: "Title for Media Library section of the app.")
 
         addMediaPickerAsChildViewController()
     }
@@ -48,8 +54,30 @@ class MediaLibraryViewController: UIViewController {
     }
 }
 
+// MARK: - WPMediaPickerViewControllerDelegate
+
 extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
 
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor asset: WPMediaAsset) -> UIViewController? {
+        return mediaItemViewController(for: asset)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
+        if let viewController = mediaItemViewController(for: asset) {
+            navigationController?.pushViewController(viewController, animated: true)
+        }
+
+        return false
+    }
+
+    private func mediaItemViewController(for asset: WPMediaAsset) -> UIViewController? {
+        guard let asset = asset as? Media else {
+            return nil
+        }
+
+        return MediaItemViewController(media: asset)
     }
 }
