@@ -151,6 +151,36 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
           }];
 }
 
+- (void)isUsernameAvailable:(NSString *)username success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
+{
+    NSString *path = @"https://public-api.wordpress.com/is-available/username";
+    [self.wordPressComRestApi GET:path
+                       parameters:@{ @"q": username, @"format": @"json"}
+                          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                              if (!success) {
+                                  return;
+                              }
+
+                              // If the username is not available (has already been used)
+                              // the endpoint will reply with a 200 status code and an JSON
+                              // object describing an error.
+                              // The error is that the queried username is not available,
+                              // which is our failure case. Test the error response for the
+                              // "taken" reason to confirm the email address exists.
+                              BOOL available = NO;
+                              if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                                  NSDictionary *dict = (NSDictionary *)responseObject;
+                                  available = [[dict numberForKey:@"available"] boolValue];
+                              }
+                              success(available);
+
+                          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                              if (failure) {
+                                  failure(error);
+                              }
+                          }];
+}
+
 - (void)requestWPComAuthLinkForEmail:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     NSAssert([email length] > 0, @"Needs an email address.");

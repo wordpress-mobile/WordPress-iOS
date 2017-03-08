@@ -49,6 +49,17 @@
                  failure:(void (^)(NSError *error))failure;
 
 /**
+ *  @brief      Query to see if a username is available. Used in the auth link signup flow.
+ *
+ *  @param username
+ *  @param success
+ *  @param failure
+ */
+- (void)isUsernameAvailable:(NSString *)username
+                 success:(void (^)(BOOL available))success
+                 failure:(void (^)(NSError *error))failure;
+
+/**
 *  @brief      Request an authentication link be sent to the email address provided.
 *
 *  @param email
