@@ -436,7 +436,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([Feature enabled:FeatureFlagMediaLibrary]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
-                                                        image:[Gridicon iconOfType:GridiconTypeImageMultiple]
+                                                        image:[Gridicon iconOfType:GridiconTypeImage]
                                                      callback:^{
                                                          [weakSelf showMediaLibrary];
                                                      }]];
