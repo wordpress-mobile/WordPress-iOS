@@ -286,10 +286,21 @@ import WordPressShared
             return
         }
 
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+
         guard emailOrUsername.isValidEmail() else {
             // A username was entered, not an email address.
             // Proceed to the next form:
-            if !SigninHelpers.isUsernameReserved(emailOrUsername) {
+            if SigninHelpers.isWPComDomain(emailOrUsername) {
+                let username = emailOrUsername.removingSuffix("wordpress.com")
+                service.isUsernameAvailable(username, success: { (available: Bool) in
+                    // if the name is available, that means it can't be used to login
+                    // show error
+                }, failure: { (error: Error) in
+                    self.loginFields.username = username
+                    self.signinWithUsernamePassword()
+                })
+            } else if !SigninHelpers.isUsernameReserved(emailOrUsername) {
                 signinWithUsernamePassword()
 
             } else if restrictSigninToWPCom {
@@ -309,7 +320,6 @@ import WordPressShared
 
         configureViewLoading(true)
 
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.isEmailAvailable(emailOrUsername,
             success: { [weak self] (available: Bool) in
                 self?.configureViewLoading(false)

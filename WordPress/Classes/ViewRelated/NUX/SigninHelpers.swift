@@ -219,6 +219,13 @@ import Mixpanel
         return ["admin", "administrator", "invite", "main", "root", "web", "www"].contains(name) || name.contains("wordpress")
     }
 
+    /// Checks if the provided username is a wordpress.com domain
+    ///
+    /// - Parameter username: the username to test
+    /// - Returns: true if the username is a wordpress.com domain
+    class func isWPComDomain(_ username: String) -> Bool {
+        return username.hasSuffix("wordpress.com")
+    }
 
     /// Checks whether credentials have been populated.
     /// Note: that loginFields.emailAddress is not checked. Use loginFields.username instead.
