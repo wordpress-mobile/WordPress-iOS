@@ -117,6 +117,7 @@ public class PostEditorStateContext {
     }
 
     fileprivate var originalPostStatus: BasePost.Status?
+    fileprivate var currentPostStatus: BasePost.Status?
     fileprivate var userCanPublish: Bool
     private weak var delegate: PostEditorStateContextDelegate?
 
@@ -153,6 +154,7 @@ public class PostEditorStateContext {
     ///
     init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
         self.originalPostStatus = originalPostStatus
+        self.currentPostStatus = originalPostStatus
         self.userCanPublish = userCanPublish
         self.delegate = delegate
 
@@ -172,6 +174,7 @@ public class PostEditorStateContext {
     /// Call when the post status has changed due to a remote operation
     ///
     func updated(postStatus: BasePost.Status) {
+        currentPostStatus = postStatus
         let updatedState = editorState.updated(postStatus: postStatus, context: self)
         guard type(of: editorState) != type(of: updatedState) else {
             return
@@ -257,6 +260,11 @@ public class PostEditorStateContext {
     ///
     var isSecondaryPublishButtonShown: Bool {
         guard hasContent else {
+            return false
+        }
+
+        // Don't show Publish Now for an already published post with the update button as primary
+        guard !(currentPostStatus == .publish && editorState.action == .update) else {
             return false
         }
 
