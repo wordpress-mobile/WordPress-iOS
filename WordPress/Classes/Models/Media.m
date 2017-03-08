@@ -53,6 +53,36 @@
     }
 }
 
+- (NSString *)fileExtension
+{
+    NSString *extension = [self.filename pathExtension];
+    if (extension.length) {
+        return extension;
+    }
+    extension = [self.localURL pathExtension];
+    if (extension.length) {
+        return extension;
+    }
+    extension = [self.remoteURL pathExtension];
+    return extension;
+}
+
+- (NSString *)mimeType
+{
+    NSString *unknown = @"application/octet-stream";
+    NSString *extension = [self fileExtension];
+    if (!extension.length) {
+        return unknown;
+    }
+    NSString *UTI = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)extension, NULL);
+    NSString *mimeType = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)UTI, kUTTagClassMIMEType);
+    if (!mimeType) {
+        return unknown;
+    } else {
+        return mimeType;
+    }
+}
+
 - (MediaType)mediaType
 {
     if ([self.mediaTypeString isEqualToString:@"image"]) {
