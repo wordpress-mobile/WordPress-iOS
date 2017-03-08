@@ -64,9 +64,6 @@
         return extension;
     }
     extension = [self.remoteURL pathExtension];
-    if (extension.length) {
-        return extension;
-    }
     return extension;
 }
 
