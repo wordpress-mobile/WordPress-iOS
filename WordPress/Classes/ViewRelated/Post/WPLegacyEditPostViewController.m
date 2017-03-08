@@ -377,7 +377,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)showMediaPicker
 {
-    WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
+    WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] init];
     picker.delegate = self;
     if (!self.mediaLibraryDataSource) {
         self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
