@@ -398,7 +398,13 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
     }
 
     func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
-        return self
+        switch postStatus {
+        case .publish:
+            // If a draft is published immediately, change state to Publish
+            return PostEditorStatePublish()
+        default:
+            return self
+        }
     }
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
