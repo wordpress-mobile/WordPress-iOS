@@ -61,7 +61,7 @@
      ];
 }
 
-- (void)createMediaWith:(id<ExportableAsset, NSObject>)asset
+- (void)createMediaWith:(id<ExportableAsset>)asset
         forPostObjectID:(NSManagedObjectID *)postObjectID
               mediaName:(NSString *)mediaName
       thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
@@ -179,7 +179,7 @@
           mediaThumbnailURL:(NSURL *)mediaThumbnailURL
                   mediaType:(MediaType)mediaType
                   mediaSize:(CGSize)mediaSize
-                      asset:(id <ExportableAsset, NSObject>)asset
+                      asset:(id <ExportableAsset>)asset
                  completion:(void (^)(Media *media, NSError *error))completion
 {
  

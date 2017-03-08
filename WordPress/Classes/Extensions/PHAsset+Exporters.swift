@@ -6,7 +6,7 @@ import AVFoundation
 typealias SuccessHandler = (_ resultingSize: CGSize) -> ()
 typealias ErrorHandler = (_ error: NSError) -> ()
 
-@objc protocol ExportableAsset {
+@objc protocol ExportableAsset: NSObjectProtocol {
     /// Exports an asset to a file URL with the desired targetSize and removing geolocation if requested.
     /// The targetSize is the maximum resolution permited, the resultSize will normally be a lower value that
     /// maitains the aspect ratio of the asset.
