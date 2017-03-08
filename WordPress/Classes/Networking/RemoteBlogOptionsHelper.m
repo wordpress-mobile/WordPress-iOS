@@ -26,6 +26,7 @@
                                           @"timezone",
                                           @"gmt_offset",
                                           @"allowed_file_types",
+                                          @"frame_nonce"
                                           ];
 
         for (NSString *key in optionsDirectMapKeys) {
