@@ -266,12 +266,20 @@ public class PostEditorStateContext {
     /// Returns the secondary publish action
     ///
     var secondaryPublishButtonAction: PostEditorAction? {
+        guard isSecondaryPublishButtonShown else {
+            return nil
+        }
+
         return editorState.action.secondaryPublishAction
     }
 
     /// Returns the secondary publish button text
     ///
     var secondaryPublishButtonText: String? {
+        guard isSecondaryPublishButtonShown else {
+            return nil
+        }
+
         return editorState.action.secondaryPublishAction?.secondaryPublishActionLabel
     }
 
@@ -390,7 +398,13 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
     }
 
     func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
-        return self
+        switch postStatus {
+        case .publish:
+            // If a draft is published immediately, change state to Publish
+            return PostEditorStatePublish()
+        default:
+            return self
+        }
     }
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
