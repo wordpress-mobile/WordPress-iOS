@@ -106,6 +106,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)obtainPermanentIDForObject:(NSManagedObject *)managedObject;
 
 /**
+ Merge changes for a given context with a fault-protection, on the context's queue.
+
+ @param context a NSManagedObject context instance
+ @return notification NSNotification from a NSManagedObjectContextDidSaveNotification.
+ */
+- (void)mergeChanges:(NSManagedObjectContext *)context fromContextDidSaveNotification:(NSNotification *)notification;
+
+/**
   Verify if the Core Data model migration failed.
  
   @return YES if there were any errors during the migration: the PSC instance is mapping to a fresh database.
