@@ -189,6 +189,21 @@ extension PostEditorStateTests {
 
         XCTAssertFalse(context.isSecondaryPublishButtonShown, "should return false if post has no content")
     }
+
+    func testPublishSecondaryAlreadyPublishedPosts() {
+        context = PostEditorStateContext(originalPostStatus: .publish, userCanPublish: true, delegate: self)
+        context.updated(hasContent: true)
+
+        XCTAssertEqual(PostEditorAction.update, context.action)
+        XCTAssertFalse(context.isSecondaryPublishButtonShown, "should return false for already published posts")
+    }
+
+    func testPublishSecondaryAlreadyDraftedPosts() {
+        context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, delegate: self)
+        context.updated(hasContent: true)
+
+        XCTAssertTrue(context.isSecondaryPublishButtonShown, "should return true for existing drafts (publish now)")
+    }
 }
 
 extension PostEditorStateTests: PostEditorStateContextDelegate {
