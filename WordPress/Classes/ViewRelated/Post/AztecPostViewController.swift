@@ -329,6 +329,9 @@ class AztecPostViewController: UIViewController {
         super.viewDidAppear(animated)
 
         restoreFirstResponder()
+
+        // Handles refreshing controls with state context after options screen is dismissed
+        editorContentWasUpdated()
     }
 
 
@@ -815,10 +818,12 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         case BasePost.statusKeyPath:
             if let status = post.status {
                 postEditorStateContext.updated(postStatus: status)
+                editorContentWasUpdated()
             }
         case #keyPath(AbstractPost.dateCreated):
             let dateCreated = post.dateCreated ?? Date()
             postEditorStateContext.updated(publishDate: dateCreated)
+            editorContentWasUpdated()
         case #keyPath(AbstractPost.content):
             editorContentWasUpdated()
         default:
