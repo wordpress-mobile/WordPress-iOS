@@ -1,6 +1,9 @@
 import Foundation
 
 public class RecentSitesService: NSObject {
+    // We use the site's URL to identify a site
+    public typealias SiteIdentifierType = String
+
     // MARK: - Internal variables
     private let database: KeyValueDatabase
     private let databaseKey = "RecentSites"
@@ -18,11 +21,11 @@ public class RecentSitesService: NSObject {
 
     // MARK: - Public accessors
 
-    public var recentSites: [Int] {
-        return database.object(forKey: databaseKey) as? [Int] ?? []
+    public var recentSites: [SiteIdentifierType] {
+        return database.object(forKey: databaseKey) as? [SiteIdentifierType] ?? []
     }
 
-    public func touch(site: Int) {
+    public func touch(site: SiteIdentifierType) {
         var recent = [site]
         for recentSite in recentSites
             where recentSite != site
