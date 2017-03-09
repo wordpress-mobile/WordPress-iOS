@@ -611,6 +611,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     remotePost.password = post.password;
     remotePost.type = @"post";
     remotePost.authorAvatarURL = post.authorAvatarURL;
+    remotePost.excerpt = post.mt_excerpt;
 
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
@@ -623,7 +624,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         remotePost.tags = [postPost.tags componentsSeparatedByString:@","];
         remotePost.categories = [self remoteCategoriesForPost:postPost];
         remotePost.metadata = [self remoteMetadataForPost:postPost];
-        remotePost.excerpt = post.mt_excerpt;
     }
 
     remotePost.isFeaturedImageChanged = post.isFeaturedImageChanged;

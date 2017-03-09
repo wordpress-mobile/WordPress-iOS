@@ -802,7 +802,7 @@ EditImageDetailsViewControllerDelegate
 - (void)showMediaPickerAnimated:(BOOL)animated
 {
     self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
-    WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
+    WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] init];
     picker.dataSource = self.mediaLibraryDataSource;
     picker.showMostRecentFirst = YES;
     picker.delegate = self;
@@ -1737,10 +1737,8 @@ EditImageDetailsViewControllerDelegate
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         if (media.mediaType == MediaTypeImage) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
             [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueId mediaId:[media.mediaID stringValue]];
         } else if (media.mediaType == MediaTypeVideo) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withBlog:self.post.blog];
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
                                       forRemoteVideo:media.remoteURL
                                         remotePoster:media.posterImageURL
@@ -1839,21 +1837,30 @@ EditImageDetailsViewControllerDelegate
                        }
                               completion:^(Media *media, NSError *error){
                                   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                                  __typeof__(self) strongSelf = weakSelf;
-                                  if (!strongSelf) {
-                                      return;
-                                  }
-                                  createMediaProgress.completedUnitCount++;
-                                  if (error || !media || !media.absoluteLocalURL) {
-                                      [strongSelf.editorView removeImage:mediaUniqueID];
-                                      [strongSelf.editorView removeVideo:mediaUniqueID];
-                                      [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
-                                      [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
-                                                                                    @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
-                                                          message:error.localizedDescription];
-                                      return;
-                                  }
-                                  [strongSelf uploadMedia:media trackingId:mediaUniqueID];
+                                      __typeof__(self) strongSelf = weakSelf;
+                                      if (!strongSelf) {
+                                          return;
+                                      }
+                                      createMediaProgress.completedUnitCount++;
+                                      if (error || !media || !media.absoluteLocalURL) {
+                                          [strongSelf.editorView removeImage:mediaUniqueID];
+                                          [strongSelf.editorView removeVideo:mediaUniqueID];
+                                          [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
+                                          [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
+                                                                                        @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
+                                                              message:error.localizedDescription];
+                                          return;
+                                      }
+                                      if (media.mediaType == MediaTypeImage) {
+                                          [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
+                                                 withProperties:[WPAppAnalytics propertiesFor:media]
+                                                       withBlog:self.post.blog];
+                                      } else if (media.mediaType == MediaTypeVideo) {
+                                          [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
+                                                 withProperties:[WPAppAnalytics propertiesFor:media]
+                                                       withBlog:self.post.blog];
+                                      }
+                                      [strongSelf uploadMedia:media trackingId:mediaUniqueID];
                                   }];
                               }];
 }
@@ -1864,17 +1871,25 @@ EditImageDetailsViewControllerDelegate
     if ([media.mediaID intValue] != 0) {
         [self trackMediaWithId:mediaUniqueID usingProgress:[NSProgress progressWithTotalUnitCount:1]];
         if ([media mediaType] == MediaTypeImage) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaWPMediaLibrary withBlog:self.post.blog];
             [self.editorView insertLocalImage:media.remoteURL uniqueId:mediaUniqueID];
             [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueID mediaId:[media.mediaID stringValue]];
         } else if ([media mediaType] == MediaTypeVideo) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary withBlog:self.post.blog];
             [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media absoluteThumbnailLocalURL]];
             [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:media.posterImageURL videoPress:media.videopressGUID];
         }
         [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
     } else {
         if ([media mediaType] == MediaTypeImage) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
+                   withProperties:[WPAppAnalytics propertiesFor:media]
+                         withBlog:self.post.blog];
             [self.editorView insertLocalImage:media.absoluteLocalURL uniqueId:mediaUniqueID];
         } else if ([media mediaType] == MediaTypeVideo) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
+                   withProperties:[WPAppAnalytics propertiesFor:media]
+                         withBlog:self.post.blog];
             [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:media.posterImageURL];
         }
         [self uploadMedia:media trackingId:mediaUniqueID];
@@ -2035,7 +2050,7 @@ EditImageDetailsViewControllerDelegate
                             }];
     
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
-
+    [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
 }
 
 
