@@ -141,16 +141,16 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     }];
 }
 
-- (void)isUsernameAvailable:(NSString *)username success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
+- (void)checkUsernameAvailability:(NSString *)username taken:(void (^)())taken available:(void (^)())available;
 {
     id<AccountServiceRemote> remote = [self remoteForAnonymous];
-    [remote isUsernameAvailable:username success:^(BOOL available) {
-        if (success) {
-            success(available);
+    [remote checkUsernameAvailability:username taken:^{
+        if (taken) {
+            taken();
         }
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
+    } available:^() {
+        if (available) {
+            available();
         }
     }];
 }

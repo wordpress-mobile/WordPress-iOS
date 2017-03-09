@@ -59,7 +59,7 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  @param success
  @param failure
  */
-- (void)isUsernameAvailable:(NSString *)username success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure;
+- (void)checkUsernameAvailability:(NSString *)username taken:(void (^)())taken available:(void (^)())available;
 
 
 /**
