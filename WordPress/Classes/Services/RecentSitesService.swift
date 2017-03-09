@@ -2,9 +2,9 @@ import Foundation
 
 /// Keep track of recently used sites
 ///
-public class RecentSitesService: NSObject {
+class RecentSitesService: NSObject {
     // We use the site's URL to identify a site
-    public typealias SiteIdentifierType = String
+    typealias SiteIdentifierType = String
 
     // MARK: - Internal variables
     private let database: KeyValueDatabase
@@ -13,7 +13,7 @@ public class RecentSitesService: NSObject {
 
     /// The maximum number of recent sites (read only)
     ///
-    public let maxSiteCount = 3
+    let maxSiteCount = 3
 
     // MARK: - Initialization
 
@@ -21,7 +21,7 @@ public class RecentSitesService: NSObject {
     ///
     /// This initializer was meant for testing. You probably want to use the convenience `init()` that uses the standard UserDefaults as the database.
     ///
-    public init(database: KeyValueDatabase) {
+    init(database: KeyValueDatabase) {
         self.database = database
         super.init()
     }
@@ -36,7 +36,7 @@ public class RecentSitesService: NSObject {
 
     /// Returns a list of recently used sites
     ///
-    public var recentSites: [SiteIdentifierType] {
+    var recentSites: [SiteIdentifierType] {
         if let sites = database.object(forKey: databaseKey) as? [SiteIdentifierType] {
             return sites
         }
@@ -55,7 +55,7 @@ public class RecentSitesService: NSObject {
     /// Marks a site identifier as recently used. We currently use URL as the identifier.
     ///
     @objc(touchBlogWithIdentifier:)
-    public func touch(site: SiteIdentifierType) {
+    func touch(site: SiteIdentifierType) {
         var recent = [site]
         for recentSite in recentSites
             where recentSite != site
@@ -68,7 +68,7 @@ public class RecentSitesService: NSObject {
     /// Marks a Blog as recently used.
     ///
     @objc(touchBlog:)
-    public func touch(blog: Blog) {
+    func touch(blog: Blog) {
         guard let url = blog.url else {
             assertionFailure("Tried to mark as used a Blog without URL")
             return
