@@ -606,7 +606,7 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)configureCrashlytics
 {
-#if defined(INTERNAL_BUILD) || defined(DEBUG)
+#if defined(DEBUG)
     return;
 #endif
 
