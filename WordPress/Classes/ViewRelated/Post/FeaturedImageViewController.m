@@ -5,6 +5,9 @@
 
 @interface FeaturedImageViewController ()
 
+@property (nonatomic, strong) NSURL *url;
+@property (nonatomic, strong) UIImage *image;
+
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
 @property (nonatomic, strong) UIBarButtonItem *removeButton;
 @property (nonatomic, strong) AbstractPost *post;
