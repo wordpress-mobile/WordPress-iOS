@@ -292,7 +292,7 @@ import WordPressShared
             // A username was entered, not an email address.
             // Proceed to the next form:
             if SigninHelpers.isWPComDomain(emailOrUsername) {
-                let username = emailOrUsername.removingSuffix(".wordpress.com")
+                let username = SigninHelpers.extractUsername(from: emailOrUsername)
                 configureViewLoading(true)
 
                 service.checkUsernameAvailability(username, taken: { [weak self] in
