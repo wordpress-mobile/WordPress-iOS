@@ -45,6 +45,7 @@
 #import "LoginFields.h"
 
 #import "Media.h"
+#import "MediaLibraryPickerDataSource.h"
 #import "MediaService.h"
 #import "MeHeaderView.h"
 #import "MixpanelTweaks.h"
