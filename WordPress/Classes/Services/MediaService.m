@@ -338,7 +338,7 @@
                 } else if (failure && failedOperations == totalOperations.unsignedIntegerValue) {
                     NSError *error = [NSError errorWithDomain:WordPressComRestApiErrorDomain
                                                          code:WordPressComRestApiErrorUnknown
-                                                     userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"An error occurred when attempting to attach remote media to the post.", @"Error recorded when all of the media associated with a post fail to be attached to the post on the server.")}];
+                                                     userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"An error occurred when attempting to attach uploaded media to the post.", @"Error recorded when all of the media associated with a post fail to be attached to the post on the server.")}];
                     failure(error);
                 }
             }
@@ -367,7 +367,7 @@
                 errorMessage = NSLocalizedString(@"Your site does not support this media file format.", @"Message to show to user when media upload failed because server doesn't support media type");
             } break;
             case 401:{
-                errorMessage = NSLocalizedString(@"Your site is out of space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");                
+                errorMessage = NSLocalizedString(@"Your site is out of storage space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");
             } break;
         }
         userInfo[NSLocalizedDescriptionKey] = errorMessage;
