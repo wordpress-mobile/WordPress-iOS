@@ -353,7 +353,6 @@
             individualOperationCompletion(false);
         }];
     }
-
 }
 
 - (NSError *)translateMediaUploadError:(NSError *)error {
@@ -374,6 +373,32 @@
         newError = [[NSError alloc] initWithDomain:WPXMLRPCFaultErrorDomain code:errorCode userInfo:userInfo];
     }
     return newError;
+}
+
+- (void)deleteMedia:(nonnull Media *)media
+            success:(nullable void (^)())success
+            failure:(nullable void (^)(NSError * _Nonnull error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
+    RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
+    NSManagedObjectID *mediaObjectID = media.objectID;
+
+    void (^successBlock)() = ^() {
+        [self.managedObjectContext performBlock:^{
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+            [self.managedObjectContext deleteObject:mediaInContext];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext
+                                     withCompletionBlock:^{
+                                         if (success) {
+                                             success();
+                                         }
+                                     }];
+        }];
+    };
+    
+    [remote deleteMedia:remoteMedia
+                success:successBlock
+                failure:failure];
 }
 
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
@@ -586,6 +611,14 @@
         }
         WPImageSource *imageSource = [WPImageSource sharedSource];
         void (^successBlock)(UIImage *) = ^(UIImage *image) {
+            // Check the media hasn't been deleted whilst we were loading.
+            if (!media || media.isDeleted) {
+                if (success) {
+                    success(nil);
+                }
+                return;
+            }
+
             [self.managedObjectContext performBlock:^{
                 NSURL *fileURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:media.filename]
                                                   andExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]];
