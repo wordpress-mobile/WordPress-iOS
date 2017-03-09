@@ -67,6 +67,28 @@ class SigninHelperTests: XCTestCase {
         XCTAssert(SigninHelpers.validateFieldsPopulatedForSignin(loginFields), "should validate self-hosted with username, password, and site.")
     }
 
+    func testExtractUsernameFrom() {
+        let plainUsername = "auser"
+        XCTAssertEqual(plainUsername, SigninHelpers.extractUsername(from: plainUsername))
+
+        let nonWPComSite = "asite.mycompany.com"
+        XCTAssertEqual(nonWPComSite, SigninHelpers.extractUsername(from: nonWPComSite))
+
+        let wpComSite = "testuser.wordpress.com"
+        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from:wpComSite))
+    }
+
+    func testIsWPComDomain() {
+        let plainUsername = "auser"
+        XCTAssertFalse(SigninHelpers.isWPComDomain(plainUsername))
+
+        let nonWPComSite = "asite.mycompany.com"
+        XCTAssertFalse(SigninHelpers.isWPComDomain(nonWPComSite))
+
+        let wpComSite = "testuser.wordpress.com"
+        XCTAssert(SigninHelpers.isWPComDomain(wpComSite))
+    }
+
 
     func testValidateSiteForSignin() {
         let loginFields = LoginFields()

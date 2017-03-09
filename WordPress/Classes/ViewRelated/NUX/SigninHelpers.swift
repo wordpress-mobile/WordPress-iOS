@@ -7,6 +7,7 @@ import Mixpanel
 ///
 @objc class SigninHelpers: NSObject {
     fileprivate static let AuthenticationEmailKey = "AuthenticationEmailKey"
+    fileprivate static let WPComSuffix = ".wordpress.com"
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
 
@@ -224,7 +225,12 @@ import Mixpanel
     /// - Parameter username: the username to test
     /// - Returns: true if the username is a wordpress.com domain
     class func isWPComDomain(_ username: String) -> Bool {
-        return username.hasSuffix("wordpress.com")
+        return username.hasSuffix(WPComSuffix)
+    }
+
+    /// Extracts the username from a wordpress.com domain
+    class func extractUsername(from hostname: String) -> String {
+        return hostname.removingSuffix(WPComSuffix)
     }
 
     /// Checks whether credentials have been populated.
