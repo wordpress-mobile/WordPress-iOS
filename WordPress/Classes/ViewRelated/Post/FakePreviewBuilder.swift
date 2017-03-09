@@ -41,7 +41,7 @@ class FakePreviewBuilder: NSObject {
 
 private extension FakePreviewBuilder {
     var previewTitle: String {
-        return title?.nonEmptyString() ?? NSLocalizedString("(no title", comment: "")
+        return title?.nonEmptyString() ?? NSLocalizedString("(no title)", comment: "")
     }
 
     var previewContent: String {
