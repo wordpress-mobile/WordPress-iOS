@@ -611,9 +611,9 @@ EditImageDetailsViewControllerDelegate
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
         
         if (blog) {
-            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+            RecentSitesService *recentSites = [RecentSitesService new];
+            [recentSites touchBlog:blog];
 
-            [blogService flagBlogAsLastUsed:blog];
             AbstractPost *newPost = [self createNewDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
             
