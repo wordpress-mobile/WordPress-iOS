@@ -1,4 +1,6 @@
 import UIKit
+import Gridicons
+import SVProgressHUD
 import WordPressShared
 import WPMediaPicker
 
@@ -42,7 +44,20 @@ class MediaLibraryViewController: UIViewController {
 
         title = NSLocalizedString("Media", comment: "Title for Media Library section of the app.")
 
+        updateNavigationItem()
+
         addMediaPickerAsChildViewController()
+    }
+
+    private func updateNavigationItem() {
+        if isEditing {
+            navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: true)
+            navigationItem.setRightBarButton(UIBarButtonItem(image: Gridicon.iconOfType(.trash), style: .plain, target: self, action: #selector(trashTapped)), animated: true)
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        } else {
+            navigationItem.setLeftBarButton(nil, animated: true)
+            navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
+        }
     }
 
     private func addMediaPickerAsChildViewController() {
@@ -51,6 +66,73 @@ class MediaLibraryViewController: UIViewController {
         view.addSubview(pickerViewController.view)
         addChildViewController(pickerViewController)
         pickerViewController.didMove(toParentViewController: self)
+    }
+
+    @objc private func editTapped() {
+        isEditing = !isEditing
+
+        pickerViewController.allowMultipleSelection = isEditing
+
+        pickerViewController.clearSelectedAssets(true)
+    }
+
+    @objc private func trashTapped() {
+        let alertController = UIAlertController(title: nil,
+                                                message: NSLocalizedString("Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items."), preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+        alertController.addDestructiveActionWithTitle(NSLocalizedString("Delete", comment: "Title for button that permanently deletes a group of media items (photos / videos)"), handler: { action in
+            self.deleteSelectedItems()
+        })
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    private func deleteSelectedItems() {
+        guard pickerViewController.selectedAssets.count > 0 else { return }
+        guard let assets = pickerViewController.selectedAssets.copy() as? [Media] else { return }
+
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
+
+        let updateProgress = { (index: Int) in
+            let progress = Float(index) / Float(assets.count)
+            SVProgressHUD.showProgress(progress, status: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
+        }
+
+        // Show the progress HUD before we kick things off
+        updateProgress(0)
+
+        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let group = DispatchGroup()
+
+        var success = true
+        // Delete each item and update our progress as we go
+        for (index, asset) in assets.enumerated() {
+            group.enter()
+            service.delete(asset, success: {
+                updateProgress(index)
+                group.leave()
+            }, failure: { error in
+                success = false
+                updateProgress(index)
+                group.leave()
+            })
+        }
+
+        group.notify(queue: DispatchQueue.main) { [weak self] in
+            if success {
+                SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
+                self?.isEditing = false
+            } else {
+                SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items."))
+            }
+        }
+    }
+
+    override var isEditing: Bool {
+        didSet {
+            updateNavigationItem()
+        }
     }
 }
 
@@ -66,6 +148,8 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
+        if isEditing { return true }
+
         if let viewController = mediaItemViewController(for: asset) {
             navigationController?.pushViewController(viewController, animated: true)
         }
@@ -73,7 +157,21 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         return false
     }
 
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didSelect asset: WPMediaAsset) {
+        if isEditing {
+            navigationItem.rightBarButtonItem?.isEnabled = true
+        }
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
+        if isEditing && picker.selectedAssets.count == 0 {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
+    }
+
     private func mediaItemViewController(for asset: WPMediaAsset) -> UIViewController? {
+        if isEditing { return nil }
+
         guard let asset = asset as? Media else {
             return nil
         }
