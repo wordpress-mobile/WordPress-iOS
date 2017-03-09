@@ -93,6 +93,17 @@
                     failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
+ Deletes the Media object on the server. Note the Media is deleted, not trashed.
+
+ @param media object to delete.
+ @param success a block that will be invoked when the media deletion finished with success
+ @param failure a block that will be invoked when there is an error.
+ */
+- (void)deleteMedia:(nonnull Media *)media
+            success:(nullable void (^)())success
+            failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
+/**
  Find the media object in the local database.
  
  @param mediaID
