@@ -50,14 +50,15 @@
 
 /**
  *  @brief      Query to see if a username is available. Used in the auth link signup flow.
+ *  @note       This is an unversioned endpoint. Success will mean, generally, that the username already exists.
  *
  *  @param username
- *  @param success
- *  @param failure
+ *  @param taken
+ *  @param available
  */
-- (void)isUsernameAvailable:(NSString *)username
-                 success:(void (^)(BOOL available))success
-                 failure:(void (^)(NSError *error))failure;
+- (void)checkUsernameAvailability:(NSString *)username
+                 taken:(void (^)())taken
+                 available:(void (^)())available;
 
 /**
 *  @brief      Request an authentication link be sent to the email address provided.
