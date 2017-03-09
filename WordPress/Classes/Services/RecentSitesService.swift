@@ -1,5 +1,7 @@
 import Foundation
 
+/// Keep track of recently used sites
+///
 public class RecentSitesService: NSObject {
     // We use the site's URL to identify a site
     public typealias SiteIdentifierType = String
@@ -8,20 +10,32 @@ public class RecentSitesService: NSObject {
     private let database: KeyValueDatabase
     private let databaseKey = "RecentSites"
     private let legacyLastUsedBlogKey = "LastUsedBlogURLDefaultsKey"
+
+    /// The maximum number of recent sites (read only)
+    ///
     public let maxSiteCount = 3
 
     // MARK: - Initialization
+
+    /// Initialize the service with the given database
+    ///
+    /// This initializer was meant for testing. You probably want to use the convenience `init()` that uses the standard UserDefaults as the database.
+    ///
     public init(database: KeyValueDatabase) {
         self.database = database
         super.init()
     }
 
+    /// Initialize the service using the standard UserDefaults as the database.
+    ///
     convenience override init() {
         self.init(database: UserDefaults() as KeyValueDatabase)
     }
 
     // MARK: - Public accessors
 
+    /// Returns a list of recently used sites
+    ///
     public var recentSites: [SiteIdentifierType] {
         if let sites = database.object(forKey: databaseKey) as? [SiteIdentifierType] {
             return sites
@@ -38,6 +52,8 @@ public class RecentSitesService: NSObject {
         return initializedSites
     }
 
+    /// Marks a site identifier as recently used. We currently use URL as the identifier.
+    ///
     @objc(touchBlogWithIdentifier:)
     public func touch(site: SiteIdentifierType) {
         var recent = [site]
@@ -49,6 +65,8 @@ public class RecentSitesService: NSObject {
         database.set(recent, forKey: databaseKey)
     }
 
+    /// Marks a Blog as recently used.
+    ///
     @objc(touchBlog:)
     public func touch(blog: Blog) {
         guard let url = blog.url else {
