@@ -7,6 +7,7 @@ public class RecentSitesService: NSObject {
     // MARK: - Internal variables
     private let database: KeyValueDatabase
     private let databaseKey = "RecentSites"
+    private let legacyLastUsedBlogKey = "LastUsedBlogURLDefaultsKey"
     public let maxSiteCount = 3
 
     // MARK: - Initialization
@@ -22,7 +23,19 @@ public class RecentSitesService: NSObject {
     // MARK: - Public accessors
 
     public var recentSites: [SiteIdentifierType] {
-        return database.object(forKey: databaseKey) as? [SiteIdentifierType] ?? []
+        if let sites = database.object(forKey: databaseKey) as? [SiteIdentifierType] {
+            return sites
+        }
+
+        let initializedSites: [SiteIdentifierType]
+        // Migrate previously flagged last blog
+        if let lastUsedBlog = database.object(forKey: legacyLastUsedBlogKey) as? SiteIdentifierType {
+            initializedSites = [lastUsedBlog]
+        } else {
+            initializedSites = []
+        }
+        database.set(initializedSites, forKey: databaseKey)
+        return initializedSites
     }
 
     public func touch(site: SiteIdentifierType) {
