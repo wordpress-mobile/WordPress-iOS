@@ -1260,8 +1260,7 @@ fileprivate extension AztecPostViewController {
     }
 
     func markBlogAsLastUsed(_ blog: Blog) {
-        let blogService = BlogService(managedObjectContext: mainContext)
-        blogService.flagBlog(asLastUsed: blog)
+        RecentSitesService().touch(blog: blog)
     }
 
     func cancelEditing() {

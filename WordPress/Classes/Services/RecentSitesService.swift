@@ -38,6 +38,7 @@ public class RecentSitesService: NSObject {
         return initializedSites
     }
 
+    @objc(touchBlogWithIdentifier:)
     public func touch(site: SiteIdentifierType) {
         var recent = [site]
         for recentSite in recentSites
@@ -46,5 +47,14 @@ public class RecentSitesService: NSObject {
                     recent.append(recentSite)
         }
         database.set(recent, forKey: databaseKey)
+    }
+
+    @objc(touchBlog:)
+    public func touch(blog: Blog) {
+        guard let url = blog.url else {
+            assertionFailure("Tried to mark as used a Blog without URL")
+            return
+        }
+        touch(site: url)
     }
 }
