@@ -1,5 +1,5 @@
 import XCTest
-import WordPress
+@testable import WordPress
 
 class RecentSitesServiceTests: XCTestCase {
     func testEmptyByDefault() {
