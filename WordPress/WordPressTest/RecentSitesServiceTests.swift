@@ -24,6 +24,13 @@ class RecentSitesServiceTests: XCTestCase {
         XCTAssertEqual(service.recentSites, ["site1", "site2"])
     }
 
+    func testMigratesLastBlogUsed() {
+        let database = EphemeralKeyValueDatabase()
+        database.set("site1", forKey: "LastUsedBlogURLDefaultsKey")
+        let service = RecentSitesService(database: database)
+        XCTAssertEqual(service.recentSites, ["site1"])
+    }
+
     private func newService() -> RecentSitesService {
         return RecentSitesService(database: EphemeralKeyValueDatabase())
     }
