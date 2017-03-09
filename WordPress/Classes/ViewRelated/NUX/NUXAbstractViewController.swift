@@ -153,6 +153,18 @@ class NUXAbstractViewController: UIViewController {
         controller.displayError(error, loginFields: loginFields, delegate: self, sourceTag: sourceTag)
     }
 
+    /// Displays an error message in an overlay
+    ///
+    /// - Parameters:
+    ///     - message: The message to display
+    ///
+    func displayErrorMessage(_ message: String) {
+        let presentingController = navigationController ?? self
+        let controller = SigninErrorViewController.controller()
+        controller.delegate = self
+        controller.presentFromController(presentingController)
+        controller.displayGenericErrorMessage(message, sourceTag: sourceTag)
+    }
 
     /// It is assumed that NUX view controllers are always presented modally.
     ///

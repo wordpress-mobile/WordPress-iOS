@@ -292,13 +292,22 @@ import WordPressShared
             // A username was entered, not an email address.
             // Proceed to the next form:
             if SigninHelpers.isWPComDomain(emailOrUsername) {
-                let username = emailOrUsername.removingSuffix("wordpress.com")
-                service.isUsernameAvailable(username, success: { (available: Bool) in
-                    // if the name is available, that means it can't be used to login
-                    // show error
-                }, failure: { (error: Error) in
-                    self.loginFields.username = username
-                    self.signinWithUsernamePassword()
+                let username = emailOrUsername.removingSuffix(".wordpress.com")
+                configureViewLoading(true)
+
+                service.checkUsernameAvailability(username, taken: { [weak self] in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    strongSelf.configureViewLoading(false)
+                    strongSelf.loginFields.username = username
+                    strongSelf.signinWithUsernamePassword()
+                }, available: { [weak self] in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    strongSelf.configureViewLoading(false)
+                    strongSelf.displayErrorMessage(NSLocalizedString("Please enter a valid username or email address", comment: "A short prompt asking the user to properly fill out all login fields."))
                 })
             } else if !SigninHelpers.isUsernameReserved(emailOrUsername) {
                 signinWithUsernamePassword()
