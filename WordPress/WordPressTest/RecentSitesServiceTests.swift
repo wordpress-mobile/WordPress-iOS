@@ -9,19 +9,19 @@ class RecentSitesServiceTests: XCTestCase {
 
     func testRecentSitesLimited() {
         let service = newService()
-        service.touch(site: 123)
-        service.touch(site: 234)
-        service.touch(site: 345)
-        service.touch(site: 456)
-        XCTAssertEqual(service.recentSites, [456, 345, 234])
+        service.touch(site: "site1")
+        service.touch(site: "site2")
+        service.touch(site: "site3")
+        service.touch(site: "site4")
+        XCTAssertEqual(service.recentSites, ["site4", "site3", "site2"])
     }
 
     func testDoesNotDuplicate() {
         let service = newService()
-        service.touch(site: 123)
-        service.touch(site: 234)
-        service.touch(site: 123)
-        XCTAssertEqual(service.recentSites, [123, 234])
+        service.touch(site: "site1")
+        service.touch(site: "site2")
+        service.touch(site: "site1")
+        XCTAssertEqual(service.recentSites, ["site1", "site2"])
     }
 
     private func newService() -> RecentSitesService {
