@@ -93,7 +93,7 @@
                     failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
- Deletes the Media object on the server. Note the Media is deleted, not trashed.
+ Deletes the Media object from the server. Note the Media is deleted, not trashed.
 
  @param media object to delete.
  @param success a block that will be invoked when the media deletion finished with success
@@ -102,6 +102,19 @@
 - (void)deleteMedia:(nonnull Media *)media
             success:(nullable void (^)())success
             failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
+/**
+ Deletes multiple Media object from the server. Note the Media objects are deleted, not trashed.
+
+ @param mediaObjects An array of media objects to delete.
+ @param progress a block that will be invoked after each media item is deleted successfully
+ @param success a block that will be invoked when the media deletion finished with success
+ @param failure a block that will be invoked when there is an error.
+ */
+- (void)deleteMultipleMedia:(nonnull NSArray<Media *> *)mediaObjects
+                    progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
+                    success:(nullable void (^)())success
+                    failure:(nullable void (^)())failure;
 
 /**
  Find the media object in the local database.
