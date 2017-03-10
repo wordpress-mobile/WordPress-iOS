@@ -117,10 +117,17 @@ public class PostEditorStateContext {
     }
 
     fileprivate var originalPostStatus: BasePost.Status?
+    fileprivate var currentPostStatus: BasePost.Status?
     fileprivate var userCanPublish: Bool
     private weak var delegate: PostEditorStateContextDelegate?
 
     fileprivate var hasContent = false {
+        didSet {
+            updatePublishActionAllowed()
+        }
+    }
+
+    fileprivate var hasChanges = false {
         didSet {
             updatePublishActionAllowed()
         }
@@ -144,8 +151,10 @@ public class PostEditorStateContext {
     ///   - originalPostStatus: If the post was already published (saved to the server) what is the status
     ///   - userCanPublish: Does the user have permission to publish posts or merely create drafts
     ///   - delegate: Delegate for listening to change in state for the editor
+    ///
     init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
         self.originalPostStatus = originalPostStatus
+        self.currentPostStatus = originalPostStatus
         self.userCanPublish = userCanPublish
         self.delegate = delegate
 
@@ -165,6 +174,7 @@ public class PostEditorStateContext {
     /// Call when the post status has changed due to a remote operation
     ///
     func updated(postStatus: BasePost.Status) {
+        currentPostStatus = postStatus
         let updatedState = editorState.updated(postStatus: postStatus, context: self)
         guard type(of: editorState) != type(of: updatedState) else {
             return
@@ -184,10 +194,16 @@ public class PostEditorStateContext {
         editorState = updatedState
     }
 
-    /// Call whenever the post content is changed - title or content body
+    /// Call whenever the post content is not empty - title or content body
     ///
     func updated(hasContent: Bool) {
         self.hasContent = hasContent
+    }
+
+    /// Call whenever the post content was updated - title or content body
+    ///
+    func updated(hasChanges: Bool) {
+        self.hasChanges = hasChanges
     }
 
     /// Call when the post is being published or has finished
@@ -196,6 +212,8 @@ public class PostEditorStateContext {
         self.isBeingPublished = isBeingPublished
     }
 
+    /// Call whenever a Media Upload OP is started / stopped
+    ///
     func update(isUploadingMedia: Bool) {
         self.isUploadingMedia = isUploadingMedia
     }
@@ -226,6 +244,8 @@ public class PostEditorStateContext {
         return editorState.action.publishingActionLabel
     }
 
+    /// Returns the Error Text for the current active action
+    ///
     var publishErrorText: String {
         return editorState.action.publishingErrorLabel
     }
@@ -236,22 +256,45 @@ public class PostEditorStateContext {
         return editorState.action.isPostPostShown
     }
 
-    // TODO: Replace with a method to bring label and such back for secondary publish button
+    /// Returns whether the secondary publish button should be displayed, or not
+    ///
     var isSecondaryPublishButtonShown: Bool {
+        guard hasContent else {
+            return false
+        }
+
+        // Don't show Publish Now for an already published post with the update button as primary
+        guard !(currentPostStatus == .publish && editorState.action == .update) else {
+            return false
+        }
+
         return editorState.action.secondaryPublishAction != nil
     }
 
+    /// Returns the secondary publish action
+    ///
     var secondaryPublishButtonAction: PostEditorAction? {
+        guard isSecondaryPublishButtonShown else {
+            return nil
+        }
+
         return editorState.action.secondaryPublishAction
     }
 
+    /// Returns the secondary publish button text
+    ///
     var secondaryPublishButtonText: String? {
+        guard isSecondaryPublishButtonShown else {
+            return nil
+        }
+
         return editorState.action.secondaryPublishAction?.secondaryPublishActionLabel
     }
 
-    // TODO: Add isDirty to the state context for enabling/disabling the button
+    /// Indicates whether the Publish Action should be allowed, or not
+    ///
     private func updatePublishActionAllowed() {
-        publishActionAllowed = hasContent && !isBeingPublished && !isUploadingMedia
+        publishActionAllowed = hasContent && hasChanges && !isBeingPublished && !isUploadingMedia
     }
 }
 
@@ -363,7 +406,13 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
     }
 
     func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
-        return self
+        switch postStatus {
+        case .publish:
+            // If a draft is published immediately, change state to Publish
+            return PostEditorStatePublish()
+        default:
+            return self
+        }
     }
 
     func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
