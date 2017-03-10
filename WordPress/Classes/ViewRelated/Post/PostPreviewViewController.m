@@ -9,14 +9,15 @@
 #import "WordPress-Swift.h"
 
 @import Gridicons;
-@interface PostPreviewViewController ()
+@import SVProgressHUD;
+@interface PostPreviewViewController () <PostPreviewGeneratorDelegate>
 
 @property (nonatomic, strong) UIWebView *webView;
-@property (nonatomic, strong) UIView *loadingView;
 @property (nonatomic, strong) NSMutableData *receivedData;
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *doneBarButtonItem;
+@property (nonatomic, strong) PostPreviewGenerator *generator;
 
 @end
 
@@ -36,6 +37,8 @@
     self = [super init];
     if (self) {
         self.apost = aPost;
+        self.generator = [[PostPreviewGenerator alloc] initWithPost:aPost];
+        self.generator.delegate = self;
         self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
     }
     return self;
@@ -53,7 +56,6 @@
     
     [super viewDidLoad];
     [self setupWebView];
-    [self setupLoadingView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -89,166 +91,16 @@
     [self.view addSubview:self.webView];
 }
 
-- (void)setupLoadingView
+#pragma mark - Loading
+
+- (void)startLoading
 {
-    if (!self.loadingView) {
-
-        CGRect frame = self.view.frame;
-        CGFloat sides = 100.0f;
-        CGFloat x = (frame.size.width - sides) / 2.0f;
-        CGFloat y = (frame.size.height - sides) / 2.0f;
-
-        self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(x, y, sides, sides)];
-        self.loadingView.layer.cornerRadius = 10.0f;
-        self.loadingView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
-        self.loadingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
-        UIViewAutoresizingFlexibleBottomMargin |
-        UIViewAutoresizingFlexibleTopMargin |
-        UIViewAutoresizingFlexibleRightMargin;
-
-        UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        [activityView startAnimating];
-
-        frame = activityView.frame;
-        frame.origin.x = (sides - frame.size.width) / 2.0f;
-        frame.origin.y = (sides - frame.size.height) / 2.0f;
-        activityView.frame = frame;
-        [self.loadingView addSubview:activityView];
-    }
-
-    [self.view addSubview:self.loadingView];
+    [SVProgressHUD show];
 }
 
-- (Post *)post
+- (void)stopLoading
 {
-    if ([self.apost isKindOfClass:[Post class]]) {
-        return (Post *)self.apost;
-    }
-
-    return nil;
-}
-
-- (NSString *)buildSimplePreview
-{
-    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-    NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
-    NSString *str = [NSString stringWithContentsOfFile:fpath encoding:NSUTF8StringEncoding error:nil];
-
-    if ([str length]) {
-
-        //Title
-        NSString *title = self.apost.postTitle;
-        title = (title == nil || ([title length] == 0) ? NSLocalizedString(@"(no title)", @"") : title);
-        str = [str stringByReplacingOccurrencesOfString:@"!$title$!" withString:title];
-
-        //Content
-        NSString *desc = self.apost.content;
-        if (!desc) {
-            desc = [NSString stringWithFormat:@"<h1>%@</h1>", NSLocalizedString(@"No Description available for this Post", @"")];
-        } else {
-            desc = [self stringReplacingNewlinesWithBR:desc];
-        }
-        desc = [NSString stringWithFormat:@"<p>%@</p><br />", desc];
-        str = [str stringByReplacingOccurrencesOfString:@"!$text$!" withString:desc];
-
-        //Tags
-        NSString *tags = self.post.tags;
-        tags = (tags == nil ? @"" : tags);
-        tags = [NSString stringWithFormat:NSLocalizedString(@"Tags: %@", @""), tags];
-        str = [str stringByReplacingOccurrencesOfString:@"!$mt_keywords$!" withString:tags];
-
-        //Categories [selObjects count]
-        NSArray *categories = [self.post.categories allObjects];
-        NSString *catStr = @"";
-        NSUInteger i = 0, count = [categories count];
-        for (i = 0; i < count; i++) {
-            PostCategory *category = [categories objectAtIndex:i];
-            catStr = [catStr stringByAppendingString:category.categoryName];
-            if (i < count-1) {
-                catStr = [catStr stringByAppendingString:@", "];
-            }
-        }
-        catStr = [NSString stringWithFormat:NSLocalizedString(@"Categories: %@", @""), catStr];
-        str = [str stringByReplacingOccurrencesOfString:@"!$categories$!" withString:catStr];
-
-    } else {
-        str = @"";
-    }
-
-    return str;
-}
-
-- (void)showSimplePreviewWithMessage:(NSString *)message
-{
-    DDLogMethod();
-    NSString *previewPageHTML = [self buildSimplePreview];
-    if (message) {
-        previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:[NSString stringWithFormat:@"<div class=\"page\"><p>%@</p>", message]];
-    }
-    [self.webView loadHTMLString:previewPageHTML baseURL:nil];
-}
-
-- (void)showSimplePreview
-{
-    [self showSimplePreviewWithMessage:nil];
-}
-
-- (void)showRealPreview
-{
-    BOOL needsLogin = NO;
-    NSString *status = self.apost.status;
-
-    if ([status isEqualToString:PostStatusDraft]) {
-        needsLogin = YES;
-    } else if ([status isEqualToString:PostStatusPrivate]) {
-        needsLogin = YES;
-    } else if ([status isEqualToString:PostStatusPending]) {
-        needsLogin = YES;
-    } else if ([self.apost.blog isPrivate]) {
-        needsLogin = YES; // Private blog
-    } else if ([self.apost isScheduled]) {
-        needsLogin = YES; // Scheduled post
-    }
-
-    NSString *link = self.apost.permaLink;
-
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
-
-    if (appDelegate.connectionAvailable == NO) {
-        [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
-    } else if (link == nil) {
-        [self showSimplePreview];
-    } else {
-        if (needsLogin) {
-            NSURL *loginURL = [NSURL URLWithString:self.apost.blog.loginUrl];
-            NSURL *redirectURL = [NSURL URLWithString:link];
-            NSString *username = self.apost.blog.usernameForSite;
-            NSString *token, *password;
-            if ([self.apost.blog supports:BlogFeatureOAuth2Login]) {
-                password = nil;
-                token = self.apost.blog.authToken;
-            } else {
-                password = self.apost.blog.password;
-                token = nil;
-            }
-
-            if (username.length > 0 && (password.length > 0 || token.length > 0)) {
-                NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
-                                                                          redirectURL:redirectURL
-                                                                             username:username
-                                                                             password:password
-                                                                          bearerToken:token
-                                                                            userAgent:nil];
-                [self.webView loadRequest:request];
-                DDLogInfo(@"Showing real preview (login) for %@", link);
-            } else {
-                [self showSimplePreview];
-            }
-        } else {
-            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
-            DDLogInfo(@"Showing real preview for %@", link);
-        }
-    }
+    [SVProgressHUD dismiss];
 }
 
 #pragma mark -
@@ -256,20 +108,13 @@
 
 - (void)refreshWebView
 {
-    BOOL edited = [self.apost hasLocalChanges];
-    self.loadingView.hidden = NO;
-
-    if (edited) {
-        [self showSimplePreview];
-    } else {
-        [self showRealPreview];
-    }
+    [self.generator generate];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)awebView
 {
     DDLogMethod();
-    self.loadingView.hidden = YES;
+    [self stopLoading];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -284,12 +129,8 @@
         return;
     }
 
-    self.loadingView.hidden = YES;
-    NSString *errorMessage = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>",
-                              NSLocalizedString(@"There has been an error while trying to reach your site.", nil),
-                              NSLocalizedString(@"A simple preview is shown below.", @"")];
-
-    [self showSimplePreviewWithMessage:errorMessage];
+    [self stopLoading];
+    [self.generator previewRequestFailedWithError:error];
 }
 
 - (BOOL)webView:(UIWebView *)awebView
@@ -310,6 +151,17 @@
         return NO;
     }
     return YES;
+}
+
+#pragma mark - PostPreviewGeneratorDelegate
+
+- (void)preview:(PostPreviewGenerator *)generator loadHTML:(NSString *)html {
+    [self.webView loadHTMLString:html baseURL:nil];
+}
+
+- (void)preview:(PostPreviewGenerator *)generator attemptRequest:(NSURLRequest *)request {
+    [self startLoading];
+    [self.webView loadRequest:request];
 }
 
 #pragma mark - Custom UI elements
@@ -359,14 +211,6 @@
     } else{
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
-}
-
-#pragma mark -
-
-- (NSString *)stringReplacingNewlinesWithBR:(NSString *)surString
-{
-    NSArray *comps = [surString componentsSeparatedByString:@"\n"];
-    return [comps componentsJoinedByString:@"<br>"];
 }
 
 @end
