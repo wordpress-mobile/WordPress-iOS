@@ -52,7 +52,6 @@ private struct SearchingDataSourceMapper: BlogListDataSourceMapper {
 }
 
 class BlogListDataSource: NSObject {
-
     override init() {
         super.init()
         // We can't decide if we're using recent sites until the results controller
@@ -83,6 +82,30 @@ class BlogListDataSource: NSObject {
     var searchQuery: String = "" {
         didSet {
             updateMode()
+        }
+    }
+
+    var selecting: Bool = false {
+        didSet {
+            if selecting != oldValue {
+                dataChanged?()
+            }
+        }
+    }
+
+    var selectedBlogId: NSManagedObjectID? = nil {
+        didSet {
+            if selectedBlogId != oldValue {
+                dataChanged?()
+            }
+        }
+    }
+
+    var account: WPAccount? = nil {
+        didSet {
+            if account != oldValue {
+                dataChanged?()
+            }
         }
     }
 
@@ -214,7 +237,13 @@ private extension BlogListDataSource {
     }
 
     var allBlogs: [Blog] {
-        return resultsController.fetchedObjects ?? []
+        guard let blogs = resultsController.fetchedObjects else {
+            return []
+        }
+        guard let account = account else {
+            return blogs
+        }
+        return blogs.filter({ $0.account == account })
     }
 }
 
@@ -251,7 +280,15 @@ extension BlogListDataSource: UITableViewDataSource {
             cell.textLabel?.text = displayURL
             cell.detailTextLabel?.text = nil
         }
-        cell.accessoryType = .disclosureIndicator
+        if selecting {
+            if selectedBlogId == blog.objectID {
+                cell.accessoryType = .checkmark
+            } else {
+                cell.accessoryType = .none
+            }
+        } else {
+            cell.accessoryType = .disclosureIndicator
+        }
         cell.selectionStyle = tableView.isEditing ? .none : .blue
         cell.imageView?.layer.borderColor = UIColor.white.cgColor
         cell.imageView?.layer.borderWidth = 1.5
