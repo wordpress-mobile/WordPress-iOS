@@ -151,23 +151,37 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
           }];
 }
 
-- (void)checkUsernameAvailability:(NSString *)username
-                            taken:(void (^)())taken
-                        available:(void (^)())available;
+- (void)isUsernameAvailable:(NSString *)username
+                    success:(void (^)(BOOL available))success
+                    failure:(void (^)(NSError *error))failure
 {
     NSString *path = @"https://public-api.wordpress.com/is-available/username";
     [self.wordPressComRestApi GET:path
                        parameters:@{ @"q": username, @"format": @"json"}
                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-                              if (taken) {
-                                  taken();
+                              if (!success) {
+                                  return;
                               }
+
+                              // currently the endpoint will not respond with available=false
+                              // but it could one day, and this should still work in that case
+                              BOOL available = NO;
+                              if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                                  NSDictionary *dict = (NSDictionary *)responseObject;
+                                  available = [[dict numberForKey:@"available"] boolValue];
+                              }
+                              success(available);
                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                               // If the username is not available (has already been used)
-                              // the endpoint will reply with a 200 status code and an JSON
-                              // object describing an error.
-                              if (available) {
-                                  available();
+                              // the endpoint will reply with a 200 status code but describe
+                              // an error. This causes a JSON error, which we can test for here.
+                              if (httpResponse.statusCode == 200 && [error.description containsString:@"JSON"])
+                              {
+                                  if (success) {
+                                      success(true);
+                                  }
+                              } else if (failure) {
+                                  failure(error);
                               }
                           }];
 }
