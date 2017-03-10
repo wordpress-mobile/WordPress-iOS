@@ -292,22 +292,35 @@ import WordPressShared
             // A username was entered, not an email address.
             // Proceed to the next form:
             if SigninHelpers.isWPComDomain(emailOrUsername) {
+
+                func showFailureError() {
+                    weak var weakSelf = self
+                    guard let strongSelf = weakSelf else {
+                        return
+                    }
+                    strongSelf.displayErrorMessage(NSLocalizedString("Please enter a valid username or email address", comment: "A short prompt asking the user to properly fill out all login fields."))
+                }
+
                 let username = SigninHelpers.extractUsername(from: emailOrUsername)
                 configureViewLoading(true)
 
-                service.checkUsernameAvailability(username, taken: { [weak self] in
-                    guard let strongSelf = self else {
-                        return
-                    }
-                    strongSelf.configureViewLoading(false)
-                    strongSelf.loginFields.username = username
-                    strongSelf.signinWithUsernamePassword()
-                }, available: { [weak self] in
-                    guard let strongSelf = self else {
-                        return
-                    }
-                    strongSelf.configureViewLoading(false)
-                    strongSelf.displayErrorMessage(NSLocalizedString("Please enter a valid username or email address", comment: "A short prompt asking the user to properly fill out all login fields."))
+                service.isUsernameAvailable(username, success: { [weak self] (available: Bool) in
+                        guard let strongSelf = self else {
+                            return
+                        }
+                        strongSelf.configureViewLoading(false)
+                        if (available) {
+                            // can't login with a username that doesn't exist
+                            showFailureError()
+                        } else {
+                            strongSelf.loginFields.username = username
+                            strongSelf.signinWithUsernamePassword()
+                        }
+                    }, failure: { [weak self] (error: Error) in
+                        showFailureError()
+                        if let strongSelf = self {
+                            strongSelf.configureViewLoading(false)
+                        }
                 })
             } else if !SigninHelpers.isUsernameReserved(emailOrUsername) {
                 signinWithUsernamePassword()
