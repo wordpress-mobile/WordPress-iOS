@@ -29,14 +29,11 @@ static NSInteger HideSearchMinSites = 3;
 @interface BlogListViewController () <UIViewControllerRestoration,
                                         UIDataSourceModelAssociation,
                                         UITableViewDelegate,
-                                        UITableViewDataSource,
-                                        NSFetchedResultsControllerDelegate,
                                         UISearchResultsUpdating,
                                         UISearchControllerDelegate,
                                         WPNoResultsViewDelegate,
                                         WPSplitViewControllerDetailProvider>
 
-@property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
@@ -46,9 +43,11 @@ static NSInteger HideSearchMinSites = 3;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
 
 @property (nonatomic, strong) BlogDetailsViewController *blogDetailsViewController;
+@property (nonatomic, strong) BlogListDataSource *dataSource;
 
 @property (nonatomic) NSDate *firstHide;
 @property (nonatomic) NSInteger hideCount;
+@property (nonatomic) BOOL visible;
 
 @end
 
@@ -70,9 +69,24 @@ static NSInteger HideSearchMinSites = 3;
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
+        [self configureDataSource];
         [self configureNavigationBar];
     }
     return self;
+}
+
+- (void)configureDataSource
+{
+    self.dataSource = [BlogListDataSource new];
+    __weak __typeof(self) weakSelf = self;
+    self.dataSource.visibilityChanged = ^(Blog *blog, BOOL visible) {
+        [weakSelf setVisible:visible forBlog:blog];
+    };
+    self.dataSource.dataChanged = ^{
+        if (weakSelf.visible) {
+            [weakSelf dataChanged];
+        }
+    };
 }
 
 - (void)configureNavigationBar
@@ -101,7 +115,7 @@ static NSInteger HideSearchMinSites = 3;
     }
 
     // Preserve objectID
-    NSManagedObject *managedObject = [self.resultsController objectAtIndexPath:indexPath];
+    NSManagedObject *managedObject = [self.dataSource blogAtIndexPath:indexPath];
     return [[managedObject.objectID URIRepresentation] absoluteString];
 }
 
@@ -119,12 +133,12 @@ static NSInteger HideSearchMinSites = 3;
     }
 
     NSError *error = nil;
-    NSManagedObject *managedObject = [context existingObjectWithID:objectID error:&error];
-    if (error || !managedObject) {
+    Blog *blog = (Blog *)[context existingObjectWithID:objectID error:&error];
+    if (error || !blog) {
         return nil;
     }
 
-    NSIndexPath *indexPath = [self.resultsController indexPathForObject:managedObject];
+    NSIndexPath *indexPath = [self.dataSource indexPathForBlog:blog];
 
     return indexPath;
 }
@@ -154,8 +168,7 @@ static NSInteger HideSearchMinSites = 3;
     [super viewWillAppear:animated];
     [self registerForKeyboardNotifications];
 
-    self.resultsController.delegate = self;
-    [self.resultsController performFetch:nil];
+    self.visible = YES;
     [self.tableView reloadData];
     [self updateEditButton];
     [self updateSearchVisibility];
@@ -172,7 +185,7 @@ static NSInteger HideSearchMinSites = 3;
     self.searchController.active = NO;
     [super viewWillDisappear:animated];
     [self unregisterForKeyboardNotifications];
-    self.resultsController.delegate = nil;
+    self.visible = NO;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -190,10 +203,6 @@ static NSInteger HideSearchMinSites = 3;
     }];
 }
 
-- (NSUInteger)numSites
-{
-    return [[self.resultsController fetchedObjects] count];
-}
 
 - (void)updateEditButton
 {
@@ -220,7 +229,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)maybeShowNUX
 {
-    if ([self numSites] > 0) {
+    if ([self countForAllBlogs] > 0) {
         return;
     }
     if (![self defaultWordPressComAccount]) {
@@ -292,19 +301,19 @@ static NSInteger HideSearchMinSites = 3;
 - (void)validateBlogDetailsViewController
 {
     // Nil out our blog details VC reference if the blog no longer exists
-    if (self.blogDetailsViewController && ![self.resultsController.fetchedObjects containsObject:self.blogDetailsViewController.blog]) {
+    if (self.blogDetailsViewController && ![self.dataSource indexPathForBlog:self.blogDetailsViewController.blog]) {
         self.blogDetailsViewController = nil;
     }
 }
 
 - (NSUInteger)countForAllBlogs
 {
-    return [self countForPredicate:[self fetchRequestPredicateForAllBlogs]];
+    return self.dataSource.allBlogsCount;
 }
 
 - (NSUInteger)countForVisibleBlogs
 {
-    return [self countForPredicate:[self fetchRequestPredicateForVisibleBlogs]];
+    return self.dataSource.visibleBlogsCount;
 }
 
 - (NSUInteger)countForPredicate:(NSPredicate *)predicate
@@ -380,10 +389,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
 {
-    // Ensure our list of sites is up to date
-    [self.resultsController performFetch:nil];
-    
-    return [self numSites] == 1;
+    return self.dataSource.displayedBlogsCount == 1;
 }
 
 - (void)bypassBlogListViewController
@@ -405,9 +411,8 @@ static NSInteger HideSearchMinSites = 3;
         [self.tableView deselectSelectedRowWithAnimation:YES];
     } else {
         if (self.selectedBlog) {
-            NSInteger blogIndex = [self.resultsController.fetchedObjects indexOfObject:self.selectedBlog];
-            if (blogIndex != NSNotFound) {
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:blogIndex inSection:0];
+            NSIndexPath *indexPath = [self.dataSource indexPathForBlog:self.selectedBlog];
+            if (indexPath) {
                 [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
             }
         }
@@ -424,7 +429,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)configureTableView
 {
     self.tableView.delegate = self;
-    self.tableView.dataSource = self;
+    self.tableView.dataSource = self.dataSource;
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
@@ -577,10 +582,8 @@ static NSInteger HideSearchMinSites = 3;
     Blog *blog = notification.userInfo[NewWPComBlogCreatedNotificationBlogUserInfoKey];
 
     if (blog) {
-        NSUInteger index = [self.resultsController.fetchedObjects indexOfObject:blog];
-
-        if (index != NSNotFound) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+        NSIndexPath *indexPath = [self.dataSource indexPathForBlog:blog];
+        if (indexPath) {
             [self.tableView flashRowAtIndexPath:indexPath
                                  scrollPosition:UITableViewScrollPositionMiddle
                                      completion:^{
@@ -592,36 +595,11 @@ static NSInteger HideSearchMinSites = 3;
     }
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return self.resultsController.sections.count;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    id<NSFetchedResultsSectionInfo> sectionInfo;
-    NSInteger numberOfRows = 0;
-    if ([self.resultsController sections].count > section) {
-        sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-        numberOfRows = sectionInfo.numberOfObjects;
-    }
-
-    return numberOfRows;
-}
+#pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     cell.backgroundColor = [UIColor whiteColor];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
-    [self configureCell:cell atIndexPath:indexPath];
-
-    return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -644,62 +622,31 @@ static NSInteger HideSearchMinSites = 3;
     return NO;
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    [self configureBlogCell:(WPBlogTableViewCell *)cell atIndexPath:indexPath];
-    [WPStyleGuide configureTableViewBlogCell:cell];
-}
-
-- (void)configureBlogCell:(WPBlogTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-    NSString *name = blog.settings.name;
-
-    if (name.length != 0) {
-        cell.textLabel.text = name;
-        cell.detailTextLabel.text = [blog displayURL];
-    } else {
-        cell.textLabel.text = [blog displayURL];
-        cell.detailTextLabel.text = @"";
-    }
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.selectionStyle = self.tableView.isEditing ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleBlue;
-    cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-    cell.imageView.layer.borderWidth = 1.5;
-
-    [cell.imageView setImageWithSiteIcon:blog.icon];
-    
-    cell.visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", name];
-    cell.visibilitySwitch.on = blog.visible;
-    
-    __weak __typeof(self) weakSelf = self;
-    cell.visibilitySwitchToggled = ^(WPBlogTableViewCell *cell) {
-        [weakSelf setVisible:cell.visibilitySwitch.on forBlogAtIndexPath:indexPath];
-    };
-
-    // Make textLabel light gray if blog is not-visible
-    if (!blog.visible) {
-        [cell.textLabel setTextColor:[WPStyleGuide readGrey]];
-    }
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    // If we have more than one section, show a 2px separator unless the section has a title.
+    NSString *sectionTitle = nil;
+    if ([tableView.dataSource respondsToSelector:@selector(tableView:titleForHeaderInSection:)]) {
+        sectionTitle = [tableView.dataSource tableView:tableView titleForHeaderInSection:section];
+    }
+    if (section > 0 && [sectionTitle length] == 0) {
+        return 2;
+    }
     return UITableViewAutomaticDimension;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
     if (self.tableView.isEditing) {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         UISwitch *visibleSwitch = (UISwitch *)cell.accessoryView;
         if (visibleSwitch && [visibleSwitch isKindOfClass:[UISwitch class]]) {
             visibleSwitch.on = !visibleSwitch.on;
-            [self setVisible:visibleSwitch.on forBlogAtIndexPath:indexPath];
+            [self setVisible:visibleSwitch.on forBlog:blog];
         }
         return;
     } else {
-        Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
         blog.visible = YES;
 
         RecentSitesService *recentSites = [RecentSitesService new];
@@ -738,8 +685,14 @@ static NSInteger HideSearchMinSites = 3;
 
 # pragma mark - UISearchController delegate methods
 
+- (void)willPresentSearchController:(UISearchController *)searchController
+{
+    self.dataSource.searching = YES;
+}
+
 - (void)willDismissSearchController:(UISearchController *)searchController
 {
+    self.dataSource.searching = NO;
     self.searchController.searchBar.text = nil;
 }
 
@@ -752,7 +705,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
-    [self updateFetchRequest];
+    self.dataSource.searchQuery = searchController.searchBar.text;
 }
 
 # pragma mark - Navigation Bar
@@ -761,6 +714,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     [super setEditing:editing animated:animated];
     [self.tableView setEditing:editing animated:animated];
+    self.dataSource.editing = editing;
     [self toggleRightBarButtonItems:!editing];
 
     if (editing) {
@@ -775,26 +729,6 @@ static NSInteger HideSearchMinSites = 3;
     else {
         self.tableView.tableHeaderView = self.searchController.searchBar;
         [self updateViewsForCurrentSiteCount];
-    }
-
-    // Animate view to editing mode
-    __block UIView *snapshot;
-    if (animated) {
-        snapshot = [self.view snapshotViewAfterScreenUpdates:NO];
-        snapshot.frame = [self.view convertRect:self.view.frame fromView:self.view.superview];
-        [self.view addSubview:snapshot];
-    }
-
-    // Update results controller to show hidden blogs
-    [self updateFetchRequest];
-
-    if (animated) {
-        [UIView animateWithDuration:0.2 animations:^{
-            snapshot.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [snapshot removeFromSuperview];
-            snapshot = nil;
-        }];
     }
 }
 
@@ -863,10 +797,9 @@ static NSInteger HideSearchMinSites = 3;
     [SigninHelpers showSigninForSelfHostedSite:self];
 }
 
-- (void)setVisible:(BOOL)visible forBlogAtIndexPath:(NSIndexPath *)indexPath
+- (void)setVisible:(BOOL)visible forBlog:(Blog *)blog
 {
-    Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-    if(!visible && [self.tableView numberOfRowsInSection:indexPath.section] > HideAllMinSites) {
+    if(!visible && [self countForAllBlogs] > HideAllMinSites) {
         if (self.hideCount == 0) {
             self.firstHide = [NSDate date];
         }
@@ -890,15 +823,9 @@ static NSInteger HideSearchMinSites = 3;
                                                                  handler:^(UIAlertAction *action){
                                                                      NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
                                                                      [context performBlock:^{
-                                                                         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-                                                                         NSArray *blogs = [blogService blogsWithPredicate:[self fetchRequestPredicateForHideableBlogs]];
-                                                                         
-                                                                         if(blogs == nil) {
-                                                                             return;
-                                                                         }
-                                                                         
                                                                          AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                                                                         [accountService setVisibility:visible forBlogs:blogs];
+                                                                         WPAccount *account = [accountService defaultWordPressComAccount];
+                                                                         [accountService setVisibility:visible forBlogs:[account.blogs allObjects]];
                                                                          [[ContextManager sharedInstance] saveDerivedContext:context];
                                                                      }];
                                                                  }];
@@ -911,120 +838,9 @@ static NSInteger HideSearchMinSites = 3;
     [accountService setVisibility:visible forBlogs:@[blog]];
 }
 
+#pragma mark - Data Listener
 
-#pragma mark - NSFetchedResultsController
-
-- (NSFetchedResultsController *)resultsController
-{
-    if (_resultsController) {
-        return _resultsController;
-    }
-
-    // NSFetchRequest's NSSortDescriptor(s) are required to hit actual Core Data properties, and cannot
-    // be calculated. For that reason, we can't hit the same getter as above.
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
-    
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:self.defaultBlogAccountIdKeyPath
-                                                                   ascending:NO
-                                                                    selector:@selector(compare:)],
-                                     
-                                     [NSSortDescriptor sortDescriptorWithKey:self.siteNameKeyPath
-                                                                   ascending:YES
-                                                                    selector:@selector(localizedCaseInsensitiveCompare:)]];
-    fetchRequest.predicate = [self fetchRequestPredicate];
-
-    _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                             managedObjectContext:context
-                                                               sectionNameKeyPath:nil
-                                                                        cacheName:nil];
-    _resultsController.delegate = self;
-
-    NSError *error = nil;
-    if (![_resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
-        _resultsController = nil;
-    }
-    
-    return _resultsController;
-}
-
-- (NSString *)entityName
-{
-    return NSStringFromClass([Blog class]);
-}
-
-- (NSString *)defaultBlogAccountIdKeyPath
-{
-    return @"accountForDefaultBlog.userID";
-}
-
-- (NSString *)siteNameKeyPath
-{
-    return @"settings.name";
-}
-
-- (NSPredicate *)fetchRequestPredicate
-{
-    if ([self.tableView isEditing]) {
-        return [self fetchRequestPredicateForHideableBlogs];
-    } else if ([self.searchController isActive]) {
-        return [self fetchRequestPredicateForSearch];
-    }
-
-    return [self fetchRequestPredicateForVisibleBlogs];
-}
-
-- (NSPredicate *)fetchRequestPredicateForSearch
-{
-    NSString *searchText = self.searchController.searchBar.text;
-    if ([searchText isEmpty]) {
-         // Don't filter – show all sites
-        return [self fetchRequestPredicateForAllBlogs];
-    }
-    
-    return [NSPredicate predicateWithFormat:@"( settings.name contains[cd] %@ ) OR ( url contains[cd] %@)", searchText, searchText];
-}
-
-- (NSPredicate *)fetchRequestPredicateForHideableBlogs
-{
-    /*
-     -[Blog supports:BlogFeatureVisibility] should match this, but the logic needs
-     to be duplicated because core data can't take block predicates.
-     */
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    return [NSPredicate predicateWithFormat:@"account != NULL AND account = %@", defaultAccount];
-}
-
-- (NSPredicate *)fetchRequestPredicateForVisibleBlogs
-{
-    return [NSPredicate predicateWithFormat:@"visible = YES"];
-}
-
-- (NSPredicate *)fetchRequestPredicateForAllBlogs
-{
-    return [NSPredicate predicateWithValue:YES];
-}
-
-- (void)updateFetchRequest
-{
-    self.resultsController.fetchRequest.predicate = [self fetchRequestPredicate];
-
-    NSError *error = nil;
-    if (![self.resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
-    }
-
-    [self.tableView reloadData];
-}
-
-
-#pragma mark - NSFetchedResultsControllerDelegate
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+- (void)dataChanged
 {
     [self.tableView reloadData];
     [self updateEditButton];
@@ -1055,7 +871,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
 {
-    if ([self numSites] == 0 || !self.blogDetailsViewController) {
+    if (self.dataSource.displayedBlogsCount == 0 || !self.blogDetailsViewController) {
         UIViewController *emptyViewController = [UIViewController new];
         [WPStyleGuide configureColorsForView:emptyViewController.view andTableView:nil];
         return emptyViewController;
