@@ -301,6 +301,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEditorEnabledNewVersion:
             eventName = @"editor_enabled_new_version";
             break;
+        case WPAnalyticsStatEditorResizedPhoto:
+            eventName = @"editor_resized_photo";
+            break;
+        case WPAnalyticsStatEditorResizedPhotoError:
+            eventName = @"editor_resized_photo_error";
+            break;
         case WPAnalyticsStatEditorSavedDraft:
             eventName = @"editor_draft_saved";
             break;
