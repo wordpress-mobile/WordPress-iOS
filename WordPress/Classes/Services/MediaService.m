@@ -401,6 +401,49 @@
                 failure:failure];
 }
 
+- (void)deleteMultipleMedia:(nonnull NSArray<Media *> *)mediaObjects
+                   progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
+                    success:(nullable void (^)())success
+                    failure:(nullable void (^)())failure
+{
+    if (mediaObjects.count == 0) {
+        if (success) {
+            success();
+        }
+        return;
+    }
+
+    NSProgress *currentProgress = [NSProgress progressWithTotalUnitCount:mediaObjects.count];
+
+    dispatch_group_t group = dispatch_group_create();
+
+    [mediaObjects enumerateObjectsUsingBlock:^(Media *media, NSUInteger idx, BOOL *stop) {
+        dispatch_group_enter(group);
+        [self deleteMedia:media success:^{
+            currentProgress.completedUnitCount++;
+            if (progress) {
+                progress(currentProgress);
+            }
+            dispatch_group_leave(group);
+        } failure:^(NSError *error) {
+            dispatch_group_leave(group);
+        }];
+    }];
+
+    // After all the operations have succeeded (or failed)
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        if (currentProgress.completedUnitCount >= currentProgress.totalUnitCount) {
+            if (success) {
+                success();
+            }
+        } else {
+            if (failure) {
+                failure();
+            }
+        }
+    });
+}
+
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
             withSuccess:(void (^)(Media *media))success
                 failure:(void (^)(NSError *error))failure
