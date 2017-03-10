@@ -53,12 +53,12 @@
  *  @note       This is an unversioned endpoint. Success will mean, generally, that the username already exists.
  *
  *  @param username
- *  @param taken
- *  @param available
+ *  @param success
+ *  @param failure
  */
-- (void)checkUsernameAvailability:(NSString *)username
-                 taken:(void (^)())taken
-                 available:(void (^)())available;
+- (void)isUsernameAvailable:(NSString *)username
+                    success:(void (^)(BOOL available))success
+                    failure:(void (^)(NSError *error))failure;
 
 /**
 *  @brief      Request an authentication link be sent to the email address provided.
