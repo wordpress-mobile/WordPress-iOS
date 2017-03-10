@@ -606,6 +606,7 @@
 		E11450DF1C4E47E600A6BD0F /* NoticeAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11450DE1C4E47E600A6BD0F /* NoticeAnimator.swift */; };
 		E114D79A153D85A800984182 /* WPError.m in Sources */ = {isa = PBXBuildFile; fileRef = E114D799153D85A800984182 /* WPError.m */; };
 		E11DA4931E03E03F00CF07A8 /* Pinghub.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11DA4921E03E03F00CF07A8 /* Pinghub.swift */; };
+		E11E775A1E72932F0072AD40 /* BlogListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11E77591E72932F0072AD40 /* BlogListDataSource.swift */; };
 		E1209FA41BB4978B00D69778 /* PeopleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1209FA31BB4978B00D69778 /* PeopleService.swift */; };
 		E120D90E1B09D8C300FB9A6E /* JetpackState.m in Sources */ = {isa = PBXBuildFile; fileRef = E120D90D1B09D8C300FB9A6E /* JetpackState.m */; };
 		E1249B4319408C910035E895 /* RemoteComment.m in Sources */ = {isa = PBXBuildFile; fileRef = E1249B4219408C910035E895 /* RemoteComment.m */; };
@@ -1925,6 +1926,7 @@
 		E114D799153D85A800984182 /* WPError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPError.m; sourceTree = "<group>"; };
 		E115F2D116776A2900CCF00D /* WordPress 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 8.xcdatamodel"; sourceTree = "<group>"; };
 		E11DA4921E03E03F00CF07A8 /* Pinghub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pinghub.swift; sourceTree = "<group>"; };
+		E11E77591E72932F0072AD40 /* BlogListDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogListDataSource.swift; sourceTree = "<group>"; };
 		E1209FA31BB4978B00D69778 /* PeopleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleService.swift; sourceTree = "<group>"; };
 		E120D90C1B09D8C300FB9A6E /* JetpackState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackState.h; sourceTree = "<group>"; };
 		E120D90D1B09D8C300FB9A6E /* JetpackState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackState.m; sourceTree = "<group>"; };
@@ -3858,6 +3860,7 @@
 				462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */,
 				BE13B3E41B2B58D800A4211D /* BlogListViewController.h */,
 				BE13B3E51B2B58D800A4211D /* BlogListViewController.m */,
+				E11E77591E72932F0072AD40 /* BlogListDataSource.swift */,
 				5D8D53ED19250412003C8859 /* BlogSelectorViewController.h */,
 				5D8D53EE19250412003C8859 /* BlogSelectorViewController.m */,
 				FF8DDCDD1B5DB1C10098826F /* SettingTableViewCell.h */,
@@ -6088,6 +6091,7 @@
 				B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */,
 				E6C09B3E1BF0FDEB003074CB /* ReaderCrossPostMeta.swift in Sources */,
 				B500A4841D5B8D5E00FC8A96 /* NotificationMedia.swift in Sources */,
+				E11E775A1E72932F0072AD40 /* BlogListDataSource.swift in Sources */,
 				E1A2A3F41CB504D400EAF51E /* PlansFeaturesRemote.swift in Sources */,
 				E149D65119349E69006A843D /* MediaServiceRemoteXMLRPC.m in Sources */,
 				E6ED09091D46AD29003283C4 /* ReaderFollowedSitesStreamHeader.swift in Sources */,
