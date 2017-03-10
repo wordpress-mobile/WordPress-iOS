@@ -225,12 +225,16 @@ import Mixpanel
     /// - Parameter username: the username to test
     /// - Returns: true if the username is a wordpress.com domain
     class func isWPComDomain(_ username: String) -> Bool {
-        return username.hasSuffix(WPComSuffix)
+        return username.contains(WPComSuffix)
     }
 
     /// Extracts the username from a wordpress.com domain
     class func extractUsername(from hostname: String) -> String {
-        return hostname.removingSuffix(WPComSuffix)
+        var host = hostname
+        if let hostParsed = URL(string: hostname)?.host {
+            host = hostParsed
+        }
+        return host.components(separatedBy: WPComSuffix).first ?? host
     }
 
     /// Checks whether credentials have been populated.
