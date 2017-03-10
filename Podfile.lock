@@ -29,7 +29,7 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.2.0):
     - CocoaLumberjack/Default
-  - Crashlytics (3.8.3):
+  - Crashlytics (3.8.4):
     - Fabric (~> 1.6.3)
   - Expecta (1.0.5)
   - Fabric (1.6.11)
@@ -129,7 +129,7 @@ PODS:
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-AppbotX (1.0.6)
-  - WordPress-Aztec-iOS (0.5a4):
+  - WordPress-Aztec-iOS (0.5a5):
     - Gridicons (= 0.4)
   - WordPress-iOS-Editor (1.9.0):
     - CocoaLumberjack (~> 2.2.0)
@@ -137,7 +137,7 @@ PODS:
     - WordPressCom-Analytics-iOS (~> 0.1.0)
   - WordPress-iOS-Shared (0.8.0):
     - CocoaLumberjack (~> 2.2.0)
-  - WordPressCom-Analytics-iOS (0.1.22)
+  - WordPressCom-Analytics-iOS (0.1.23)
   - WordPressCom-Stats-iOS (0.9.0):
     - AFNetworking (~> 3.1.0)
     - CocoaLumberjack (~> 2.2.0)
@@ -146,7 +146,7 @@ PODS:
     - WordPressCom-Analytics-iOS (~> 0.1.4)
   - WordPressComKit (0.0.6):
     - Alamofire (= 4.0.1)
-  - WPMediaPicker (0.11.1)
+  - WPMediaPicker (0.12)
   - wpxmlrpc (0.8.2)
 
 DEPENDENCIES:
@@ -178,13 +178,13 @@ DEPENDENCIES:
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, commit `00465cb36bb99bae11ecb84286cf37e7e0b05077`)
+  - WordPress-Aztec-iOS (= 0.5a5)
   - WordPress-iOS-Editor (= 1.9.0)
   - WordPress-iOS-Shared (= 0.8.0)
-  - WordPressCom-Analytics-iOS (= 0.1.22)
+  - WordPressCom-Analytics-iOS (= 0.1.23)
   - WordPressCom-Stats-iOS (= 0.9.0)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
-  - WPMediaPicker (= 0.11.1)
+  - WPMediaPicker (= 0.12)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -197,9 +197,6 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPress-Aztec-iOS:
-    :commit: 00465cb36bb99bae11ecb84286cf37e7e0b05077
-    :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -214,9 +211,6 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPress-Aztec-iOS:
-    :commit: 00465cb36bb99bae11ecb84286cf37e7e0b05077
-    :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -228,7 +222,7 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: 4903e125d88e564c68dedbb66c53a97740e89336
   BuddyBuildSDK: 2b2d35a61ad7fd3645beb2d48bc5123efd869918
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
-  Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
+  Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
@@ -252,15 +246,15 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
-  WordPress-Aztec-iOS: af5f5eb608cf0d0013a158491f46182db7e08371
+  WordPress-Aztec-iOS: 579a8b2258671b57113ea7a97e4b9b05b197b71e
   WordPress-iOS-Editor: 69c5d1e83aaa6e5ab6c80e067f1858de8dab4017
   WordPress-iOS-Shared: 4d073fb8efa96f3c902d1e1ac2557bb720f416d7
-  WordPressCom-Analytics-iOS: 66b890823ffd54aee871fbba3ed0278d4ae1aa0a
+  WordPressCom-Analytics-iOS: a0ff71080216968f0986baa1240d17d39998e9f0
   WordPressCom-Stats-iOS: cf78f0dd05ba586fd7b3c01b6cdcd5ca12e032ea
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
-  WPMediaPicker: f5b1c20a25abc9ed710747f7019dbf43f03caa4f
+  WPMediaPicker: d4ce8e9db98b60ab44e7154151dbad135f8e7ff6
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 6115cf3c6cd22d0ab8057cebc8ff565dea89eb7c
+PODFILE CHECKSUM: 6c6c1e90b56f59f642123e37e4406989b352b59e
 
 COCOAPODS: 1.1.1

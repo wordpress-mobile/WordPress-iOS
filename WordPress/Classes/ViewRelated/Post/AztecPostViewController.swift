@@ -85,7 +85,6 @@ class AztecPostViewController: UIViewController {
         tf.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
                                                       attributes: [NSForegroundColorAttributeName: Colors.title])
-        tf.delegate = self
         tf.font = Fonts.title
         tf.returnKeyType = .next
         tf.textColor = UIColor.darkText
@@ -198,6 +197,7 @@ class AztecPostViewController: UIViewController {
             removeObservers(fromPost: oldValue)
             addObservers(toPost: post)
 
+            postEditorStateContext = nil
             refreshInterface()
         }
     }
@@ -253,7 +253,7 @@ class AztecPostViewController: UIViewController {
 
     /// Maintainer of state for editor - like for post button
     ///
-    fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
+    fileprivate lazy var postEditorStateContext: PostEditorStateContext! = {
         var originalPostStatus: BasePost.Status? = nil
 
         if let originalPost = self.post.original,
@@ -331,6 +331,9 @@ class AztecPostViewController: UIViewController {
         super.viewDidAppear(animated)
 
         restoreFirstResponder()
+
+        // Handles refreshing controls with state context after options screen is dismissed
+        editorContentWasUpdated()
     }
 
 
@@ -467,6 +470,7 @@ class AztecPostViewController: UIViewController {
         reloadBlogPickerButton()
         reloadEditorContents()
         resizeBlogPickerButton()
+        reloadPublishButton()
     }
 
     func reloadEditorContents() {
@@ -488,6 +492,11 @@ class AztecPostViewController: UIViewController {
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
         blogPickerButton.buttonMode = shouldEnable ? .multipleSite : .singleSite
         blogPickerButton.isEnabled = shouldEnable
+    }
+
+    func reloadPublishButton() {
+        publishButton.title = postEditorStateContext.publishButtonText
+        publishButton.isEnabled = postEditorStateContext.isPublishButtonEnabled
     }
 
     func resizeBlogPickerButton() {
@@ -571,10 +580,10 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
-        handlePublishButtonTapped(secondaryPublishTapped: false)
+        publishTapped(dismissWhenDone: true)
     }
 
-    @IBAction func secondaryPublishButtonTapped() {
+    @IBAction func secondaryPublishButtonTapped(dismissWhenDone: Bool = true) {
         let publishPostClosure = {
             if self.postEditorStateContext.secondaryPublishButtonAction == .save {
                 self.post.status = .draft
@@ -582,7 +591,7 @@ extension AztecPostViewController {
                 self.post.status = .publish
             }
 
-            self.handlePublishButtonTapped(secondaryPublishTapped: true)
+            self.publishTapped(dismissWhenDone: dismissWhenDone)
         }
 
         if presentedViewController != nil {
@@ -612,12 +621,12 @@ extension AztecPostViewController {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
                     self.post.status = .draft
-                    self.handlePublishButtonTapped(secondaryPublishTapped: false)
+                    self.publishTapped(dismissWhenDone: true)
                 }
             } else if post.status == .draft {
                 // The post was already a draft
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
-                    self.handlePublishButtonTapped(secondaryPublishTapped: false)
+                    self.publishTapped(dismissWhenDone: true)
                 }
             }
         }
@@ -626,7 +635,7 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func handlePublishButtonTapped(secondaryPublishTapped: Bool) {
+    private func publishTapped(dismissWhenDone: Bool) {
         // Cancel publishing if media is currently being uploaded
         if mediaProgressCoordinator.isRunning {
             displayMediaIsUploadingAlert()
@@ -639,7 +648,7 @@ extension AztecPostViewController {
             alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
                 self.removeFailedMedia()
                 // Failed media is removed, try again.
-                self.handlePublishButtonTapped(secondaryPublishTapped: secondaryPublishTapped)
+                self.publishTapped(dismissWhenDone: dismissWhenDone)
             }
 
             alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
@@ -670,17 +679,10 @@ extension AztecPostViewController {
                 generator.notificationOccurred(.success)
             }
 
-            // Don't dismiss - make draft now in secondary publish
-            let shouldDismissWindow: Bool
-            if self.postEditorStateContext.secondaryPublishButtonAction == .save,
-                secondaryPublishTapped {
-                shouldDismissWindow = false
-            } else {
-                shouldDismissWindow = true
-            }
-
-            if shouldDismissWindow {
+            if dismissWhenDone {
                 self.dismissOrPopView(didSave: true)
+            } else {
+                self.createRevisionOfPost()
             }
         }
     }
@@ -754,8 +756,9 @@ private extension AztecPostViewController {
 
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-            alert.addActionWithTitle(buttonTitle, style: .destructive) { _ in
-                self.secondaryPublishButtonTapped()
+            let dismissWhenDone = postEditorStateContext.secondaryPublishButtonAction == .publish
+            alert.addActionWithTitle(buttonTitle, style: dismissWhenDone ? .destructive : .default ) { _ in
+                self.secondaryPublishButtonTapped(dismissWhenDone: dismissWhenDone)
             }
         }
 
@@ -809,46 +812,49 @@ private extension AztecPostViewController {
 //
 extension AztecPostViewController: PostEditorStateContextDelegate {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == BasePost.statusKeyPath {
-            if let status = post.status {
-                postEditorStateContext.updated(postStatus: status)
-            }
-            return
-        } else if keyPath == #keyPath(AbstractPost.dateCreated) {
-            let dateCreated = post.dateCreated ?? Date()
-            postEditorStateContext.updated(publishDate: dateCreated)
-            return
-        } else if keyPath == #keyPath(AbstractPost.content) {
-            postEditorStateContext.updated(hasContent: editorHasContent)
+        guard let keyPath = keyPath else {
             return
         }
 
-
-        super.observeValue(forKeyPath: keyPath,
-                           of: object,
-                           change: change,
-                           context: context)
+        switch keyPath {
+        case BasePost.statusKeyPath:
+            if let status = post.status {
+                postEditorStateContext.updated(postStatus: status)
+                editorContentWasUpdated()
+            }
+        case #keyPath(AbstractPost.dateCreated):
+            let dateCreated = post.dateCreated ?? Date()
+            postEditorStateContext.updated(publishDate: dateCreated)
+            editorContentWasUpdated()
+        case #keyPath(AbstractPost.content):
+            editorContentWasUpdated()
+        default:
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
     }
 
-    internal func titleTextFieldDidChange(textField: UITextField) {
-        postEditorStateContext.updated(hasContent: editorHasContent)
-    }
-
-    // TODO: We should be tracking hasContent and isDirty separately for enabling button in the state context
     private var editorHasContent: Bool {
-        let contentCharacterCount = post.content?.characters.count ?? 0
-        // Title isn't updated on post until editing is done - this looks at realtime changes
-        let titleCharacterCount = titleTextField.text?.characters.count ?? 0
+        let titleIsEmpty = post.postTitle?.isEmpty ?? true
+        let contentIsEmpty = post.content?.isEmpty ?? true
 
-        return contentCharacterCount + titleCharacterCount > 0
+        return !titleIsEmpty || !contentIsEmpty
+    }
+
+    private var editorHasChanges: Bool {
+        return post.hasUnsavedChanges()
+    }
+
+    internal func editorContentWasUpdated() {
+        postEditorStateContext.updated(hasContent: editorHasContent)
+        postEditorStateContext.updated(hasChanges: editorHasChanges)
     }
 
     internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
-        publishButton.title = context.publishButtonText
+        reloadPublishButton()
     }
 
     internal func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool) {
-        publishButton.isEnabled = context.isPublishButtonEnabled
+        reloadPublishButton()
     }
 
     internal func addObservers(toPost: AbstractPost) {
@@ -881,9 +887,10 @@ extension AztecPostViewController : UITextViewDelegate {
 
 // MARK: - UITextFieldDelegate methods
 //
-extension AztecPostViewController : UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
+extension AztecPostViewController {
+    func titleTextFieldDidChange(_ textField: UITextField) {
         mapUIContentToPostAndSave()
+        editorContentWasUpdated()
     }
 }
 
@@ -1127,7 +1134,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
     func showImagePicker() {
 
-        let picker = WPMediaPickerViewController()
+        let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
         picker.showMostRecentFirst = true
         picker.filter = WPMediaType.image
@@ -1230,11 +1237,9 @@ fileprivate extension AztecPostViewController {
 
     // TODO: Rip this and put it into PostService, as well
     func recreatePostRevision(in blog: Blog) {
-        let blogService = BlogService(managedObjectContext: mainContext)
+        let shouldCreatePage = post is Page
         let postService = PostService(managedObjectContext: mainContext)
-        let newPost = postService.createDraftPost(for: blog)
-
-        blogService.flagBlog(asLastUsed: blog)
+        let newPost = shouldCreatePage ? postService.createDraftPage(for: blog) : postService.createDraftPost(for: blog)
 
         //  TODO: Strip Media!
         //  NSString *content = oldPost.content;
@@ -1249,16 +1254,21 @@ fileprivate extension AztecPostViewController {
         newPost.dateCreated = post.dateCreated
         newPost.dateModified = post.dateModified
 
-        if let source = post as? Post {
-            newPost.tags = source.tags
+        if let source = post as? Post, let target = newPost as? Post {
+            target.tags = source.tags
         }
 
         discardChanges()
         post = newPost
         createRevisionOfPost()
+        markBlogAsLastUsed(blog)
 
         // TODO: Add this snippet, if needed, once we've relocated this helper to PostService
         //[self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
+    }
+
+    func markBlogAsLastUsed(_ blog: Blog) {
+        RecentSitesService().touch(blog: blog)
     }
 
     func cancelEditing() {
