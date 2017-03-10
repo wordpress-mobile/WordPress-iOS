@@ -20,6 +20,8 @@ static NSString * const TaxonomyRESTNumberParameter = @"number";
 static NSString * const TaxonomyRESTOffsetParameter = @"offset";
 static NSString * const TaxonomyRESTPageParameter = @"page";
 
+static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
+
 @implementation TaxonomyServiceRemoteREST
 
 #pragma mark - categories
@@ -50,7 +52,7 @@ static NSString * const TaxonomyRESTPageParameter = @"page";
                          failure:(nullable void (^)(NSError *))failure
 {
     [self getTaxonomyWithType:TaxonomyRESTCategoryIdentifier
-                   parameters:nil
+                   parameters:@{TaxonomyRESTNumberParameter: @(TaxonomyRESTNumberMaxValue)}
                       success:^(NSDictionary *responseObject) {
                           success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:TaxonomyRESTCategoryIdentifier]]);
                       } failure:failure];
