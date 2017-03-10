@@ -78,7 +78,7 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
                 present(activityController, animated: true, completion: nil)
         } else {
             let alertController = UIAlertController(title: nil, message: NSLocalizedString("Unable to get URL for media item.", comment: "Error message displayed when we were unable to copy the URL for an item in the user's media library."), preferredStyle: .alert)
-            alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: ""))
+            alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to share media."))
             present(alertController, animated: true, completion: nil)
         }
     }
@@ -295,7 +295,7 @@ struct MediaImageRow: ImmuTableRow {
     private func show(_ error: Error) {
         let alertController = UIAlertController(title: nil, message: NSLocalizedString("There was a problem loading the media item.",
                                                                                        comment: "Error message displayed when the Media Library is unable to load a full sized preview of an item."), preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: ""))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to load media ite,."))
         alertController.presentFromRootViewController()
     }
 
