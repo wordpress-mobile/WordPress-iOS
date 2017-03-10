@@ -28,7 +28,7 @@ import Foundation
     }
 
     init(title: String, filterType: Status, predicate: NSPredicate, statuses: [BasePost.Status]) {
-        hasMore = true
+        hasMore = false
 
         self.filterType = filterType
         predicateForFetchRequest = predicate
