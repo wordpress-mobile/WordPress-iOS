@@ -47,7 +47,7 @@
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
 #endif
     
-#if !defined(INTERNAL_BUILD) && !defined(DEBUG)
+#ifndef DEBUG
     [DDLog addLogger:[WPCrashlyticsLogger sharedInstance]];
 #endif
     
