@@ -141,6 +141,7 @@
 #import "WPWebViewController.h"
 #import "WPTabBarController.h"
 #import "WPWalkthroughTextField.h"
+#import "WPURLRequest.h"
 #import "WPUserAgent.h"
 #import "WordPressComServiceRemote.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
