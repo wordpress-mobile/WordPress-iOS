@@ -29,7 +29,7 @@ class MediaLibraryViewController: UIViewController {
     private func configurePickerViewController() {
         pickerViewController.mediaPickerDelegate = self
         pickerViewController.allowCaptureOfMedia = false
-        pickerViewController.filter = .all
+        pickerViewController.filter = .videoOrImage
         pickerViewController.allowMultipleSelection = false
         pickerViewController.showMostRecentFirst = true
         pickerViewController.dataSource = pickerDataSource
