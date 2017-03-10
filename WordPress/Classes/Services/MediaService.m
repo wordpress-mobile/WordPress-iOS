@@ -302,7 +302,7 @@
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
-                failure([self customMediaUploadError:error remote:remote]);
+                failure(error);
             }
         }];
     };
