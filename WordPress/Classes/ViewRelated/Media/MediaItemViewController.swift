@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 import WordPressShared
 
 /// Displays an image preview and metadata for a single Media asset.
@@ -26,6 +27,7 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
         ImmuTable.registerRows([TextRow.self, EditableTextRow.self, MediaImageRow.self],
                                tableView: tableView)
         setupViewModel()
+        setupNavigationItem()
     }
 
     private func setupViewModel() {
@@ -50,12 +52,34 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
             ])
     }
 
+    private func setupNavigationItem() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(shareTapped(_:)))
+    }
+
     private func presentImageViewControllerForMedia() {
         if let controller = WPImageViewController(media: self.media) {
             controller.modalTransitionStyle = .crossDissolve
             controller.modalPresentationStyle = .fullScreen
 
             self.present(controller, animated: true, completion: nil)
+        }
+    }
+
+    // MARK: - Actions
+
+    @objc private func shareTapped(_ sender: UIBarButtonItem) {
+        if let url = URL(string: media.remoteURL) {
+            let activityController = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
+                activityController.modalPresentationStyle = .popover
+                activityController.popoverPresentationController?.barButtonItem = sender
+                present(activityController, animated: true, completion: nil)
+        } else {
+            let alertController = UIAlertController(title: nil, message: NSLocalizedString("Unable to get URL for media item.", comment: "Error message displayed when we were unable to copy the URL for an item in the user's media library."), preferredStyle: .alert)
+            alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to share media."))
+            present(alertController, animated: true, completion: nil)
         }
     }
 }
@@ -271,7 +295,7 @@ struct MediaImageRow: ImmuTableRow {
     private func show(_ error: Error) {
         let alertController = UIAlertController(title: nil, message: NSLocalizedString("There was a problem loading the media item.",
                                                                                        comment: "Error message displayed when the Media Library is unable to load a full sized preview of an item."), preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: ""))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to load media ite,."))
         alertController.presentFromRootViewController()
     }
 
