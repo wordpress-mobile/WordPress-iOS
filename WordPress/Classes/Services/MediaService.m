@@ -379,16 +379,16 @@
                 case NSURLErrorUnknown:
                     // Unknown error, encourage the user to try again
                     // Note: if support requests show up with this error message we can rule out known NSURLError codes
-                    customErrorMessage = NSLocalizedString(@"Media upload failed, an unknown error occurred, please try again.", @"Error message shown when a media upload fails for unknown reason and the user should try again.");
+                    customErrorMessage = NSLocalizedString(@"An unknown error occurred. Please try again.", @"Error message shown when a media upload fails for unknown reason and the user should try again.");
                     break;
                 case NSURLErrorNetworkConnectionLost:
                 case NSURLErrorNotConnectedToInternet:
                     // Clear lack of device internet connection, notify the user
-                    customErrorMessage = NSLocalizedString(@"Media upload failed, internet connection appears to be offline.", @"Error message shown when a media upload fails because the user isn't connected to the internet.");
+                    customErrorMessage = NSLocalizedString(@"The internet connection appears to be offline.", @"Error message shown when a media upload fails because the user isn't connected to the internet.");
                     break;
                 default:
                     // Default NSURL error messaging, probably server-side, encourage user to try again
-                    customErrorMessage = NSLocalizedString(@"Media upload failed, please try again in a moment.", @"Error message shown when a media upload fails for a general network issue and the user should try again in a moment.");
+                    customErrorMessage = NSLocalizedString(@"Something went wrong. Please try again.", @"Error message shown when a media upload fails for a general network issue and the user should try again in a moment.");
                     break;
             }
         }
