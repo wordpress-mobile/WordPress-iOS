@@ -657,7 +657,7 @@
             // Check the media hasn't been deleted whilst we were loading.
             if (!media || media.isDeleted) {
                 if (success) {
-                    success(nil);
+                    success([UIImage new]);
                 }
                 return;
             }
