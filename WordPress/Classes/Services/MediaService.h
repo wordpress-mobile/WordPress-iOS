@@ -104,7 +104,7 @@
             failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
- Deletes multiple Media object from the server. Note the Media objects are deleted, not trashed.
+ Deletes multiple Media objects from the server. Note the Media objects are deleted, not trashed.
 
  @param mediaObjects An array of media objects to delete.
  @param progress a block that will be invoked after each media item is deleted successfully
