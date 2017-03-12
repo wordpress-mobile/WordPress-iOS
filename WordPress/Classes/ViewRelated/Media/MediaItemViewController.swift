@@ -7,16 +7,23 @@ import WordPressShared
 ///
 class MediaItemViewController: UITableViewController, ImmuTablePresenter {
     let media: Media
+    weak var dataSource: MediaLibraryPickerDataSource? = nil
+
     var viewModel: ImmuTable!
 
-    init(media: Media) {
+    init(media: Media, dataSource: MediaLibraryPickerDataSource) {
         self.media = media
+        self.dataSource = dataSource
 
         super.init(style: .grouped)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        unregisterChangeObserver()
     }
 
     override func viewDidLoad() {
@@ -29,6 +36,8 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
                                tableView: tableView)
         setupViewModel()
         setupNavigationItem()
+
+        registerChangeObserver()
     }
 
     private func setupViewModel() {
@@ -73,6 +82,30 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
             controller.modalPresentationStyle = .fullScreen
 
             self.present(controller, animated: true, completion: nil)
+        }
+    }
+
+    // MARK: - Media Library Change Observer
+
+    private var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
+
+    private func registerChangeObserver() {
+        assert(mediaLibraryChangeObserverKey == nil)
+
+        // Listen out for changes to the media library – if the media item we're
+        // displaying gets deleted, we'll pop ourselves off the stack.
+        if let dataSource = dataSource {
+            mediaLibraryChangeObserverKey = dataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
+                if let isDeleted = self?.media.isDeleted, isDeleted == true {
+                    _ = self?.navigationController?.popViewController(animated: true)
+                }
+            })
+        }
+    }
+
+    private func unregisterChangeObserver() {
+        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
+            dataSource?.unregisterChangeObserver(mediaLibraryChangeObserverKey)
         }
     }
 
