@@ -77,10 +77,18 @@ class MediaLibraryViewController: UIViewController {
     }
 
     @objc private func trashTapped() {
+        let message: String
+        if pickerViewController.selectedAssets.count == 1 {
+            message = NSLocalizedString("Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso.")
+        } else {
+            message = NSLocalizedString("Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items.")
+        }
+
         let alertController = UIAlertController(title: nil,
-                                                message: NSLocalizedString("Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items."), preferredStyle: .alert)
+                                                message: message,
+                                                preferredStyle: .alert)
         alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
-        alertController.addDestructiveActionWithTitle(NSLocalizedString("Delete", comment: "Title for button that permanently deletes a group of media items (photos / videos)"), handler: { action in
+        alertController.addDestructiveActionWithTitle(NSLocalizedString("Delete", comment: "Title for button that permanently deletes one or more media items (photos / videos)"), handler: { action in
             self.deleteSelectedItems()
         })
 
