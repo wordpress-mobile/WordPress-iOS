@@ -9,8 +9,8 @@ import WPMediaPicker
 class MediaLibraryViewController: UIViewController {
     let blog: Blog
 
-    private let pickerViewController: WPMediaPickerViewController
-    private let pickerDataSource: MediaLibraryPickerDataSource
+    fileprivate let pickerViewController: WPMediaPickerViewController
+    fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
     // MARK: - Initializers
 
@@ -168,6 +168,6 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
             return nil
         }
 
-        return MediaItemViewController(media: asset)
+        return MediaItemViewController(media: asset, dataSource: pickerDataSource)
     }
 }
