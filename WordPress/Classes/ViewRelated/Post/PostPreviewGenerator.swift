@@ -18,15 +18,17 @@ class PostPreviewGenerator: NSObject {
     func generate() {
         guard let url = post.permaLink.flatMap(URL.init(string:)),
             !post.hasLocalChanges() else {
-                return showFakePreview()
+                showFakePreview()
+                return
         }
 
         guard WordPressAppDelegate.sharedInstance().connectionAvailable else {
-            return showFakePreview(message:
+            showFakePreview(message:
                 NSLocalizedString("The internet connection appears to be offline.", comment: "") +
                     " " +
                 NSLocalizedString("A simple preview is shown below.", comment: "")
             )
+            return
         }
 
         attemptPreview(url: url)
@@ -94,7 +96,8 @@ private extension PostPreviewGenerator {
     func attemptNonceAuthenticatedRequest(url: URL) {
         guard let nonce = post.blog.getOptionValue("frame_nonce") as? String,
             let authenticatedUrl = addNonce(nonce, to: url) else {
-                return showFakePreview()
+                showFakePreview()
+                return
         }
         let request = URLRequest(url: authenticatedUrl)
         delegate?.preview(self, attemptRequest: request)
@@ -104,18 +107,21 @@ private extension PostPreviewGenerator {
         let blog = post.blog
         guard let loginURL = URL(string: blog.loginUrl()),
             let username = blog.usernameForSite?.nonEmptyString() else {
-                return showFakePreview()
+                showFakePreview()
+                return
         }
 
         let request: URLRequest
         if blog.supports(.oAuth2Login) {
             guard let token = blog.authToken?.nonEmptyString() else {
-                return showFakePreview()
+                showFakePreview()
+                return
             }
             request = WPURLRequest.requestForAuthentication(with: loginURL, redirectURL: url, username: username, password: nil, bearerToken: token, userAgent: nil)
         } else {
             guard let password = blog.password?.nonEmptyString() else {
-                return showFakePreview()
+                showFakePreview()
+                return
             }
             request = WPURLRequest.requestForAuthentication(with: loginURL, redirectURL: url, username: username, password: password, bearerToken: nil, userAgent: nil)
         }
