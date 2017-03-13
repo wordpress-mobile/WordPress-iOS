@@ -242,16 +242,41 @@ open class NotificationActionsService: LocalCoreDataService {
             completion?(false)
         })
     }
+}
 
 
 
-    // MARK: - Private Helpers
+// MARK: - Private Helpers
+//
+private extension NotificationActionsService {
 
-    fileprivate var commentService: CommentService {
+    /// Sync's a NotificationBlock container Notification. We need to manually do this to force Backend's Note
+    /// document regeneration. This is performed because retrieving `[NoteID, Hash]` might, in fact, return an 
+    /// outdated hash (ie. after a Like OP).
+    ///
+    /// - Parameter block: child NotificationBlock object of the Notification-to-be-refreshed.
+    ///
+    func forceSyncParentNotification(with block: NotificationBlock) {
+        guard let notificationID = block.notificationID, let mediator = NotificationSyncMediator() else {
+            return
+        }
+
+        DDLogSwift.logInfo("Res-ync'ing Notification \(notificationID)")
+        mediator.syncNote(with: notificationID)
+    }
+}
+
+
+
+// MARK: - Computed Properties
+//
+private extension NotificationActionsService {
+
+    var commentService: CommentService {
         return CommentService(managedObjectContext: managedObjectContext)
     }
 
-    fileprivate var siteService: ReaderSiteService {
+    var siteService: ReaderSiteService {
         return ReaderSiteService(managedObjectContext: managedObjectContext)
     }
 }
