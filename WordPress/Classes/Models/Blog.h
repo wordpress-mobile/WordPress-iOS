@@ -47,7 +47,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Does the blog support different paid plans?
     BlogFeaturePlans,
     /// Does the blog support custom domains?
-    BlogFeatureDomains
+    BlogFeatureDomains,
+    /// Does the blog support frame-nonce to authenticate previews?
+    BlogFeatureNoncePreviews
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
