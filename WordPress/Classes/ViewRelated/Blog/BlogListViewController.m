@@ -699,11 +699,11 @@ static NSInteger HideSearchMinSites = 3;
         }
         return;
     } else {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
         blog.visible = YES;
-        [blogService flagBlogAsLastUsed:blog];
+
+        RecentSitesService *recentSites = [RecentSitesService new];
+        [recentSites touchBlog:blog];
 
         self.selectedBlog = blog;
     }
