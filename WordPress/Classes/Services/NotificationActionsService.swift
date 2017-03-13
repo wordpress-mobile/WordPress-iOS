@@ -4,6 +4,7 @@ import Foundation
 /// This service encapsulates all of the Actions that can be performed with a NotificationBlock
 ///
 open class NotificationActionsService: LocalCoreDataService {
+
     /// Follows a Site referenced by a given NotificationBlock.
     ///
     /// - Parameter block: The Notification's Site Block
@@ -17,7 +18,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         siteService.followSite(withID: siteID, success: {
             DDLogSwift.logInfo("Successfully followed site \(siteID)")
+            self.forceSyncParentNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to follow site: \(error)")
             block.removeOverrideValueForAction(.Follow)
@@ -41,7 +44,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         siteService.unfollowSite(withID: siteID, success: {
             DDLogSwift.logInfo("Successfully unfollowed site \(siteID)")
+            self.forceSyncParentNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to unfollow site: \(error)")
             block.removeOverrideValueForAction(.Follow)
@@ -66,7 +71,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
             DDLogSwift.logInfo("Successfully replied to comment \(siteID).\(commentID)")
+            self.forceSyncParentNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to reply comment: \(error)")
             completion?(false)
@@ -92,7 +99,9 @@ open class NotificationActionsService: LocalCoreDataService {
         // Hit the backend
         commentService.updateComment(withID: commentID, siteID: siteID, content: content, success: {
             DDLogSwift.logInfo("Successfully updated to comment \(siteID).\(commentID)")
+            self.forceSyncParentNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to update comment: \(error)")
             completion?(false)
@@ -119,7 +128,9 @@ open class NotificationActionsService: LocalCoreDataService {
         // Proceed toggling the Like field
         commentService.likeComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully liked comment \(siteID).\(commentID)")
+            self.forceSyncParentNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to like comment: \(error)")
             block.removeOverrideValueForAction(.Like)
@@ -143,7 +154,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.unlikeComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully unliked comment \(siteID).\(commentID)")
+            self.forceSyncParentNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to unlike comment: \(error)")
             block.removeOverrideValueForAction(.Like)
@@ -167,7 +180,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.approveComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully approved comment \(siteID).\(commentID)")
+            self.forceSyncParentNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to moderate comment: \(error)")
             block.removeOverrideValueForAction(.Approve)
@@ -191,7 +206,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.unapproveComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully unapproved comment \(siteID).\(commentID)")
+            self.forceSyncParentNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to moderate comment: \(error)")
             block.removeOverrideValueForAction(.Approve)
@@ -216,6 +233,7 @@ open class NotificationActionsService: LocalCoreDataService {
         commentService.spamComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully spammed comment \(siteID).\(commentID)")
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to mark comment as spam: \(error)")
             completion?(false)
@@ -237,6 +255,7 @@ open class NotificationActionsService: LocalCoreDataService {
         commentService.deleteComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully deleted comment \(siteID).\(commentID)")
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to delete comment: \(error)")
             completion?(false)
