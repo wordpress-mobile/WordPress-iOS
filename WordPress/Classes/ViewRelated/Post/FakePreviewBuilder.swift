@@ -41,7 +41,7 @@ class FakePreviewBuilder: NSObject {
 
 private extension FakePreviewBuilder {
     var previewTitle: String {
-        return title?.nonEmptyString() ?? NSLocalizedString("(no title", comment: "")
+        return title?.nonEmptyString() ?? NSLocalizedString("(no title)", comment: "")
     }
 
     var previewContent: String {
@@ -55,7 +55,7 @@ private extension FakePreviewBuilder {
 
     var previewTags: String {
         let tagsLabel = NSLocalizedString("Tags: %@", comment: "")
-        return String(format: tagsLabel, tags.joined(separator: ","))
+        return String(format: tagsLabel, tags.joined(separator: ", "))
     }
 
     var previewCategories: String {
@@ -74,8 +74,13 @@ extension FakePreviewBuilder {
         let tags: [String]
         let categories: [String]
         if let post = apost as? Post {
-            tags = post.tags?.components(separatedBy: ",") ?? []
-            categories = post.categories?.map({ $0.categoryName }) ?? []
+            tags = post.tags?
+                .components(separatedBy: ",")
+                .map({ $0.trim() })
+                ?? []
+            categories = post.categories?
+                .map({ $0.categoryName })
+                ?? []
         } else {
             tags = []
             categories = []
