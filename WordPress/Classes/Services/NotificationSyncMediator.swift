@@ -130,12 +130,12 @@ class NotificationSyncMediator {
     ///     - noteId: Notification ID of the note to be downloaded.
     ///     - completion: Closure to be executed on completion.
     ///
-    func syncNote(with noteId: String, completion: @escaping ((Error?, Notification?) -> Void)) {
+    func syncNote(with noteId: String, completion: ((Error?, Notification?) -> Void)?) {
         assert(Thread.isMainThread)
 
         remote.loadNotes(noteIds: [noteId]) { error, remoteNotes in
             guard let remoteNotes = remoteNotes else {
-                completion(error, nil)
+                completion?(error, nil)
                 return
             }
 
@@ -144,7 +144,7 @@ class NotificationSyncMediator {
                 let predicate = NSPredicate(format: "(notificationId == %@)", noteId)
                 let note = helper.firstObject(matchingPredicate: predicate)
 
-                completion(nil, note)
+                completion?(nil, note)
             }
         }
     }
