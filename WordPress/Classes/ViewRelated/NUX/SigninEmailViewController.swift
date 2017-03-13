@@ -306,7 +306,7 @@ import WordPressShared
                                     } else {
                                         self?.requestLink()
                                     }
-            },
+                                 },
                                  failure: { [weak self] (error: Error) in
                                     DDLogSwift.logError(error.localizedDescription)
                                     guard let strongSelf = self else {
@@ -336,9 +336,8 @@ import WordPressShared
     }
 
     private func signinWithWPComDomain(_ domain: String) {
-        func showFailureError() {
-            weak var weakSelf = self
-            guard let strongSelf = weakSelf else {
+        let showFailureError = { [weak self] in
+            guard let strongSelf = self else {
                 return
             }
             strongSelf.displayErrorMessage(NSLocalizedString("Please enter a valid username or email address", comment: "A short prompt asking the user to properly fill out all login fields."))

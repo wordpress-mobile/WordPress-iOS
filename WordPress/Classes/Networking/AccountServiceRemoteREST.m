@@ -175,8 +175,7 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                               // If the username is not available (has already been used)
                               // the endpoint will reply with a 200 status code but describe
                               // an error. This causes a JSON error, which we can test for here.
-                              if (httpResponse.statusCode == 200 && [error.description containsString:@"JSON"])
-                              {
+                              if (httpResponse.statusCode == 200 && [error.description containsString:@"JSON"]) {
                                   if (success) {
                                       success(true);
                                   }
