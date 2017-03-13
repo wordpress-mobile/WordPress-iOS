@@ -45,7 +45,7 @@ class PostPreviewGenerator: NSObject {
 // MARK: - Authentication
 
 private extension PostPreviewGenerator {
-    func attemptPreview(url: URL) -> Void {
+    func attemptPreview(url: URL) {
         switch authenticationRequired {
         case .nonce:
             attemptNonceAuthenticatedRequest(url: url)
