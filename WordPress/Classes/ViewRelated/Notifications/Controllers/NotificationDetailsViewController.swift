@@ -1085,9 +1085,10 @@ private extension NotificationDetailsViewController {
 
         actionsService.updateCommentWithBlock(block, content: content, completion: { success in
             guard success == false else {
-            generator.notificationOccurred(.error)
                 return
             }
+
+            generator.notificationOccurred(.error)
             self.displayCommentUpdateErrorWithBlock(block, content: content)
         })
     }
