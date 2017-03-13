@@ -28,6 +28,10 @@ class MediaLibraryViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    deinit {
+        unregisterChangeObserver()
+    }
+
     private func configurePickerViewController() {
         pickerViewController.mediaPickerDelegate = self
         pickerViewController.allowCaptureOfMedia = false
@@ -44,12 +48,14 @@ class MediaLibraryViewController: UIViewController {
 
         title = NSLocalizedString("Media", comment: "Title for Media Library section of the app.")
 
-        updateNavigationItem()
+        updateNavigationItemButtonsForEditingState()
 
         addMediaPickerAsChildViewController()
+
+        registerChangeObserver()
     }
 
-    private func updateNavigationItem() {
+    private func updateNavigationItemButtonsForEditingState() {
         if isEditing {
             navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: true)
             navigationItem.setRightBarButton(UIBarButtonItem(image: Gridicon.iconOfType(.trash), style: .plain, target: self, action: #selector(trashTapped)), animated: true)
@@ -123,7 +129,24 @@ class MediaLibraryViewController: UIViewController {
 
     override var isEditing: Bool {
         didSet {
-            updateNavigationItem()
+            updateNavigationItemButtonsForEditingState()
+        }
+    }
+
+    // MARK: - Media Library Change Observer
+
+    private var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
+
+    private func registerChangeObserver() {
+        assert(mediaLibraryChangeObserverKey == nil)
+        mediaLibraryChangeObserverKey = pickerDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
+            self?.updateNavigationItemButtonsForCurrentAssetSelection()
+        })
+    }
+
+    private func unregisterChangeObserver() {
+        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
+            pickerDataSource.unregisterChangeObserver(mediaLibraryChangeObserverKey)
         }
     }
 }
@@ -150,14 +173,22 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didSelect asset: WPMediaAsset) {
-        if isEditing {
-            navigationItem.rightBarButtonItem?.isEnabled = true
-        }
+        updateNavigationItemButtonsForCurrentAssetSelection()
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
-        if isEditing && picker.selectedAssets.count == 0 {
-            navigationItem.rightBarButtonItem?.isEnabled = false
+        updateNavigationItemButtonsForCurrentAssetSelection()
+    }
+
+    func updateNavigationItemButtonsForCurrentAssetSelection() {
+        if isEditing {
+            // Check that our selected items haven't been deleted – we're notified
+            // of changes to the data source before the collection view has
+            // updated its selected assets.
+            guard let assets = (pickerViewController.selectedAssets.copy() as? [Media]) else { return }
+            let existingAssets = assets.filter({ !$0.isDeleted })
+
+            navigationItem.rightBarButtonItem?.isEnabled = (existingAssets.count > 0)
         }
     }
 
