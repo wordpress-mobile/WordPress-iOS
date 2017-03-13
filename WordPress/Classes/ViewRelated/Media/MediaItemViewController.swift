@@ -315,7 +315,6 @@ struct MediaImageRow: ImmuTableRow {
 
         if let cell = cell as? ImageTableViewCell {
             setAspectRatioFor(cell)
-            addPlaceholderImageFor(cell)
             loadImageFor(cell)
         }
     }
@@ -345,17 +344,22 @@ struct MediaImageRow: ImmuTableRow {
     }
 
     private func loadImageFor(_ cell: ImageTableViewCell) {
-        cell.isLoading = true
-        media.image(with: .zero,
-                    completionHandler: { image, error in
-                        DispatchQueue.main.async {
-                            if let error = error, image == nil {
-                                self.show(error)
-                            } else if let image = image {
-                                self.animateImageChange(image: image, for: cell)
+        if !cell.isLoading && cell.customImageView.image == nil {
+            addPlaceholderImageFor(cell)
+
+            cell.isLoading = true
+            media.image(with: .zero,
+                        completionHandler: { image, error in
+                            DispatchQueue.main.async {
+                                if let error = error, image == nil {
+                                    cell.isLoading = false
+                                    self.show(error)
+                                } else if let image = image {
+                                    self.animateImageChange(image: image, for: cell)
+                                }
                             }
-                        }
-        })
+            })
+        }
     }
 
     private func show(_ error: Error) {
