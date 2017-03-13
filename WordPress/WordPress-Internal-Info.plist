@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -19,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>7.1.0.20170306</string>
+	<string>7.1.0.20170310</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -41,12 +39,27 @@
 			<array>
 				<string>wordpress-oauth-v2</string>
 				<string>${WPCOM_SCHEME}</string>
-				<string>pocketapp12013</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>7.1.0.20170306</string>
+	<string>7.1.0.20170310</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>FABRIC_API_KEY</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>org-appextension-feature-password-management</string>
@@ -79,6 +92,8 @@
 	<array>
 		<string>Noticons.ttf</string>
 	</array>
+	<key>UIApplicationShortcutWidget</key>
+	<string>org.wordpress.internal.WordPressTodayWidget</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

@@ -197,6 +197,7 @@ class AztecPostViewController: UIViewController {
             removeObservers(fromPost: oldValue)
             addObservers(toPost: post)
 
+            postEditorStateContext = nil
             refreshInterface()
         }
     }
@@ -252,7 +253,7 @@ class AztecPostViewController: UIViewController {
 
     /// Maintainer of state for editor - like for post button
     ///
-    fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
+    fileprivate lazy var postEditorStateContext: PostEditorStateContext! = {
         var originalPostStatus: BasePost.Status? = nil
 
         if let originalPost = self.post.original,
@@ -314,6 +315,8 @@ class AztecPostViewController: UIViewController {
 
         // Setup Autolayout
         view.setNeedsUpdateConstraints()
+
+        configureMediaAppearance()
     }
 
 
@@ -328,6 +331,9 @@ class AztecPostViewController: UIViewController {
         super.viewDidAppear(animated)
 
         restoreFirstResponder()
+
+        // Handles refreshing controls with state context after options screen is dismissed
+        editorContentWasUpdated()
     }
 
 
@@ -464,6 +470,7 @@ class AztecPostViewController: UIViewController {
         reloadBlogPickerButton()
         reloadEditorContents()
         resizeBlogPickerButton()
+        reloadPublishButton()
     }
 
     func reloadEditorContents() {
@@ -485,6 +492,11 @@ class AztecPostViewController: UIViewController {
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
         blogPickerButton.buttonMode = shouldEnable ? .multipleSite : .singleSite
         blogPickerButton.isEnabled = shouldEnable
+    }
+
+    func reloadPublishButton() {
+        publishButton.title = postEditorStateContext.publishButtonText
+        publishButton.isEnabled = postEditorStateContext.isPublishButtonEnabled
     }
 
     func resizeBlogPickerButton() {
@@ -568,10 +580,10 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
-        handlePublishButtonTapped(secondaryPublishTapped: false)
+        publishTapped(dismissWhenDone: true)
     }
 
-    @IBAction func secondaryPublishButtonTapped() {
+    @IBAction func secondaryPublishButtonTapped(dismissWhenDone: Bool = true) {
         let publishPostClosure = {
             if self.postEditorStateContext.secondaryPublishButtonAction == .save {
                 self.post.status = .draft
@@ -579,7 +591,7 @@ extension AztecPostViewController {
                 self.post.status = .publish
             }
 
-            self.handlePublishButtonTapped(secondaryPublishTapped: true)
+            self.publishTapped(dismissWhenDone: dismissWhenDone)
         }
 
         if presentedViewController != nil {
@@ -609,12 +621,12 @@ extension AztecPostViewController {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
                     self.post.status = .draft
-                    self.handlePublishButtonTapped(secondaryPublishTapped: false)
+                    self.publishTapped(dismissWhenDone: true)
                 }
             } else if post.status == .draft {
                 // The post was already a draft
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
-                    self.handlePublishButtonTapped(secondaryPublishTapped: false)
+                    self.publishTapped(dismissWhenDone: true)
                 }
             }
         }
@@ -623,7 +635,7 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func handlePublishButtonTapped(secondaryPublishTapped: Bool) {
+    private func publishTapped(dismissWhenDone: Bool) {
         // Cancel publishing if media is currently being uploaded
         if mediaProgressCoordinator.isRunning {
             displayMediaIsUploadingAlert()
@@ -636,7 +648,7 @@ extension AztecPostViewController {
             alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
                 self.removeFailedMedia()
                 // Failed media is removed, try again.
-                self.handlePublishButtonTapped(secondaryPublishTapped: secondaryPublishTapped)
+                self.publishTapped(dismissWhenDone: dismissWhenDone)
             }
 
             alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
@@ -667,17 +679,10 @@ extension AztecPostViewController {
                 generator.notificationOccurred(.success)
             }
 
-            // Don't dismiss - make draft now in secondary publish
-            let shouldDismissWindow: Bool
-            if self.postEditorStateContext.secondaryPublishButtonAction == .save,
-                secondaryPublishTapped {
-                shouldDismissWindow = false
-            } else {
-                shouldDismissWindow = true
-            }
-
-            if shouldDismissWindow {
+            if dismissWhenDone {
                 self.dismissOrPopView(didSave: true)
+            } else {
+                self.createRevisionOfPost()
             }
         }
     }
@@ -751,8 +756,9 @@ private extension AztecPostViewController {
 
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-            alert.addActionWithTitle(buttonTitle, style: .destructive) { _ in
-                self.secondaryPublishButtonTapped()
+            let dismissWhenDone = postEditorStateContext.secondaryPublishButtonAction == .publish
+            alert.addActionWithTitle(buttonTitle, style: dismissWhenDone ? .destructive : .default ) { _ in
+                self.secondaryPublishButtonTapped(dismissWhenDone: dismissWhenDone)
             }
         }
 
@@ -814,10 +820,12 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         case BasePost.statusKeyPath:
             if let status = post.status {
                 postEditorStateContext.updated(postStatus: status)
+                editorContentWasUpdated()
             }
         case #keyPath(AbstractPost.dateCreated):
             let dateCreated = post.dateCreated ?? Date()
             postEditorStateContext.updated(publishDate: dateCreated)
+            editorContentWasUpdated()
         case #keyPath(AbstractPost.content):
             editorContentWasUpdated()
         default:
@@ -829,7 +837,7 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
         let titleIsEmpty = post.postTitle?.isEmpty ?? true
         let contentIsEmpty = post.content?.isEmpty ?? true
 
-        return !titleIsEmpty && !contentIsEmpty
+        return !titleIsEmpty || !contentIsEmpty
     }
 
     private var editorHasChanges: Bool {
@@ -842,11 +850,11 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
     }
 
     internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
-        publishButton.title = context.publishButtonText
+        reloadPublishButton()
     }
 
     internal func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool) {
-        publishButton.isEnabled = context.isPublishButtonEnabled
+        reloadPublishButton()
     }
 
     internal func addObservers(toPost: AbstractPost) {
@@ -1260,8 +1268,7 @@ fileprivate extension AztecPostViewController {
     }
 
     func markBlogAsLastUsed(_ blog: Blog) {
-        let blogService = BlogService(managedObjectContext: mainContext)
-        blogService.flagBlog(asLastUsed: blog)
+        RecentSitesService().touch(blog: blog)
     }
 
     func cancelEditing() {
@@ -1363,6 +1370,12 @@ private extension AztecPostViewController {
 //
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
+    func configureMediaAppearance() {
+        TextAttachment.appearance.progressBackgroundColor = Colors.mediaProgressBarBackground
+        TextAttachment.appearance.progressColor = Colors.mediaProgressBarTrack
+        TextAttachment.appearance.overlayColor = Colors.mediaProgressOverlay
+    }
+
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
         mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
         mediaProgressView.progress = progress
@@ -1374,7 +1387,6 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 attachment.progress = nil
             } else {
                 attachment.progress = progress.fractionCompleted
-                attachment.progressColor = WPStyleGuide.wordPressBlue()
             }
             richTextView.refreshLayoutFor(attachment: attachment)
         }
@@ -1490,6 +1502,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
         let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
+        attachment.overlayImage = Gridicon.iconOfType(.refresh)
         richTextView.refreshLayoutFor(attachment: attachment)
     }
 
@@ -1512,7 +1525,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                            handler: { (action) in
                                             if attachment == self.currentSelectedAttachment {
                                                 self.currentSelectedAttachment = nil
-                                                attachment.message = nil
+                                                attachment.clearAllOverlays()
                                                 self.richTextView.refreshLayoutFor(attachment: attachment)
                                             }
         })
@@ -1540,7 +1553,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                     //retry upload
                                                     if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
-                                                        attachment.message = nil
+                                                        attachment.clearAllOverlays()
                                                         attachment.progress = 0
                                                         self.richTextView.refreshLayoutFor(attachment: attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
@@ -1707,7 +1720,7 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
         guard richTextView.attachmentAtPoint(locationInTextView) != nil else {
             // if we have a current selected attachment marked lets unmark it
             if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.message = nil
+                selectedAttachment.clearAllOverlays()
                 richTextView.refreshLayoutFor(attachment: selectedAttachment)
                 currentSelectedAttachment = nil
             }
@@ -1725,7 +1738,7 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
         guard let attachment = richTextView.attachmentAtPoint(locationInTextView) else {
             // if we have a current selected attachment marked lets unmark it
             if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.message = nil
+                selectedAttachment.clearAllOverlays()
                 richTextView.refreshLayoutFor(attachment: selectedAttachment)
                 currentSelectedAttachment = nil
             }
@@ -1739,12 +1752,13 @@ extension AztecPostViewController: UIGestureRecognizerDelegate {
         } else {
             // if it's a new attachment tapped let's unmark the previous one
             if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.message = nil
+                selectedAttachment.clearAllOverlays()
                 richTextView.refreshLayoutFor(attachment: selectedAttachment)
             }
             // and mark the newly tapped attachment
             let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a image on the post/page editor.")
             attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+            attachment.overlayImage = Gridicon.iconOfType(.pencil)
             richTextView.refreshLayoutFor(attachment: attachment)
             currentSelectedAttachment = attachment
         }
@@ -1836,6 +1850,9 @@ extension AztecPostViewController {
         static let progressBackground       = WPStyleGuide.wordPressBlue()
         static let progressTint             = UIColor.white
         static let progressTrack            = WPStyleGuide.wordPressBlue()
+        static let mediaProgressOverlay = UIColor(white: 1, alpha: 0.6)
+        static let mediaProgressBarBackground = WPStyleGuide.lightGrey()
+        static let mediaProgressBarTrack = WPStyleGuide.wordPressBlue()
     }
 
     struct Fonts {
