@@ -257,7 +257,7 @@
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
-                failure([self translateMediaUploadError:error]);
+                failure([self customMediaUploadError:error remote:remote]);
             }
         }];
     };
@@ -302,7 +302,7 @@
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
-                failure([self translateMediaUploadError:error]);
+                failure(error);
             }
         }];
     };
@@ -338,7 +338,7 @@
                 } else if (failure && failedOperations == totalOperations.unsignedIntegerValue) {
                     NSError *error = [NSError errorWithDomain:WordPressComRestApiErrorDomain
                                                          code:WordPressComRestApiErrorUnknown
-                                                     userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"An error occurred when attempting to attach remote media to the post.", @"Error recorded when all of the media associated with a post fail to be attached to the post on the server.")}];
+                                                     userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"An error occurred when attempting to attach uploaded media to the post.", @"Error recorded when all of the media associated with a post fail to be attached to the post on the server.")}];
                     failure(error);
                 }
             }
@@ -356,24 +356,49 @@
 
 }
 
-- (NSError *)translateMediaUploadError:(NSError *)error {
-    NSError *newError = error;
-    if (error.domain == WPXMLRPCFaultErrorDomain) {
-        NSString *errorMessage = [error localizedDescription];
-        NSInteger errorCode = error.code;
-        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
-        switch (error.code) {
-            case 500:{
-                errorMessage = NSLocalizedString(@"Your site does not support this media file format.", @"Message to show to user when media upload failed because server doesn't support media type");
-            } break;
-            case 401:{
-                errorMessage = NSLocalizedString(@"Your site is out of space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");                
-            } break;
+- (NSError *)customMediaUploadError:(NSError *)error remote:(id <MediaServiceRemote>)remote {
+    NSString *customErrorMessage = nil;
+    if ([remote isKindOfClass:[MediaServiceRemoteXMLRPC class]]) {
+        // For self-hosted sites we should generally pass on the raw system/network error message.
+        // Which should help debug issues with a self-hosted site.
+        if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain]) {
+            switch (error.code) {
+                case 500:{
+                    customErrorMessage = NSLocalizedString(@"Your site does not support this media file format.", @"Message to show to user when media upload failed because server doesn't support media type");
+                } break;
+                case 401:{
+                    customErrorMessage = NSLocalizedString(@"Your site is out of storage space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");
+                } break;
+            }
         }
-        userInfo[NSLocalizedDescriptionKey] = errorMessage;
-        newError = [[NSError alloc] initWithDomain:WPXMLRPCFaultErrorDomain code:errorCode userInfo:userInfo];
+    } else if ([remote isKindOfClass:[MediaServiceRemoteREST class]]) {
+        // For WPCom/Jetpack sites and NSURLErrors we should use a more general error message to encourage a user to try again,
+        // rather than raw NSURLError messaging.
+        if ([error.domain isEqualToString:NSURLErrorDomain]) {
+            switch (error.code) {
+                case NSURLErrorUnknown:
+                    // Unknown error, encourage the user to try again
+                    // Note: if support requests show up with this error message we can rule out known NSURLError codes
+                    customErrorMessage = NSLocalizedString(@"An unknown error occurred. Please try again.", @"Error message shown when a media upload fails for unknown reason and the user should try again.");
+                    break;
+                case NSURLErrorNetworkConnectionLost:
+                case NSURLErrorNotConnectedToInternet:
+                    // Clear lack of device internet connection, notify the user
+                    customErrorMessage = NSLocalizedString(@"The internet connection appears to be offline.", @"Error message shown when a media upload fails because the user isn't connected to the internet.");
+                    break;
+                default:
+                    // Default NSURL error messaging, probably server-side, encourage user to try again
+                    customErrorMessage = NSLocalizedString(@"Something went wrong. Please try again.", @"Error message shown when a media upload fails for a general network issue and the user should try again in a moment.");
+                    break;
+            }
+        }
     }
-    return newError;
+    if (customErrorMessage) {
+        NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
+        userInfo[NSLocalizedDescriptionKey] = customErrorMessage;
+        error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+    }
+    return error;
 }
 
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
