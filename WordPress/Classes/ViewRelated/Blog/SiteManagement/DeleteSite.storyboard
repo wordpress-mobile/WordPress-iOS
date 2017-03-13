@@ -310,8 +310,19 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="deleteSiteLabel" destination="TDh-gc-S6J" id="Oho-g8-gZI"/>
+                        <outlet property="sectionThreeBody" destination="r5O-oO-teR" id="QI6-ly-kD4"/>
+                        <outlet property="sectionTwoColumnOneItem" destination="KxO-Is-bhY" id="sFW-4A-a2R"/>
+                        <outlet property="sectionTwoColumnOneItem2" destination="peC-dR-nRG" id="dEe-g8-jPS"/>
+                        <outlet property="sectionTwoColumnOneItem3" destination="N4f-Sa-CVH" id="R73-xI-BHM"/>
+                        <outlet property="sectionTwoColumnTwoItem" destination="FcP-ti-s9r" id="uTl-W9-QGq"/>
+                        <outlet property="sectionTwoColumnTwoItem2" destination="760-77-2gC" id="Qsb-Ks-iM2"/>
+                        <outlet property="sectionTwoColumnTwoItem3" destination="q3t-nv-OBS" id="rTT-Zo-Atb"/>
+                        <outlet property="sectionTwoHeader" destination="H1F-I1-RAC" id="eIa-WJ-Kjl"/>
                         <outlet property="siteTitleLabel" destination="zek-ps-BJg" id="vXd-1w-uMF"/>
                         <outlet property="siteTitleSubText" destination="BMU-vV-rVN" id="j8a-nl-cDU"/>
+                        <outlet property="supportButton" destination="FPb-zC-vf4" id="4Kc-R2-rcy"/>
+                        <outlet property="trashImage" destination="RHm-8e-yVu" id="E0D-Wl-yKN"/>
                         <outlet property="warningImage" destination="iSi-Am-Phf" id="g3O-OC-3kf"/>
                     </connections>
                 </tableViewController>
