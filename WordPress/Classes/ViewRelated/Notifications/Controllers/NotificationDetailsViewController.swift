@@ -1013,6 +1013,8 @@ private extension NotificationDetailsViewController {
     }
 
     func approveCommentWithBlock(_ block: NotificationBlock) {
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+
         actionsService.approveCommentWithBlock(block)
         WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: block.metaSiteID)
     }
