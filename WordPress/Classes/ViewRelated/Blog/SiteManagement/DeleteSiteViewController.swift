@@ -13,7 +13,19 @@ open class DeleteSiteViewController: UITableViewController {
     @IBOutlet weak var warningImage: UIImageView!
     @IBOutlet weak var siteTitleLabel: UILabel!
     @IBOutlet weak var siteTitleSubText: UILabel!
-
+    @IBOutlet weak var sectionTwoHeader: UILabel!
+    @IBOutlet weak var sectionTwoColumnOneItem: UILabel!
+    @IBOutlet weak var sectionTwoColumnTwoItem: UILabel!
+    @IBOutlet weak var sectionTwoColumnOneItem2: UILabel!
+    @IBOutlet weak var sectionTwoColumnTwoItem2: UILabel!
+    @IBOutlet weak var sectionTwoColumnOneItem3: UILabel!
+    @IBOutlet weak var sectionTwoColumnTwoItem3: UILabel!
+    @IBOutlet weak var sectionThreeBody: UILabel!
+    @IBOutlet weak var supportButton: UIButton!
+    @IBOutlet weak var trashImage: UIImageView!
+    @IBOutlet weak var deleteSiteLabel: UILabel!
+    
+    
 //    // MARK: - Properties: table content
 //
 //    let headerView: TableViewHeaderDetailView = {
