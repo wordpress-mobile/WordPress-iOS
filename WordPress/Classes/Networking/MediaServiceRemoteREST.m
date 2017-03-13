@@ -199,9 +199,20 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
     [self.wordPressComRestApi POST:requestUrl
                         parameters:nil
-                           success:^(id responseObject, NSHTTPURLResponse *response) {
-                               if (success) {
-                                   success();
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               NSDictionary *response = (NSDictionary *)responseObject;
+                               NSString *status = [response stringForKey:@"status"];
+                               if ([status isEqualToString:@"deleted"]) {
+                                   if (success) {
+                                       success();
+                                   }
+                               } else {
+                                   if (failure) {
+                                       NSError *error = [NSError errorWithDomain:WordPressComRestApiErrorDomain
+                                                                            code:WordPressComRestApiErrorUnknown
+                                                                        userInfo:nil];
+                                       failure(error);
+                                   }
                                }
                            } failure:^(NSError *error, NSHTTPURLResponse *response) {
                                if (failure) {
