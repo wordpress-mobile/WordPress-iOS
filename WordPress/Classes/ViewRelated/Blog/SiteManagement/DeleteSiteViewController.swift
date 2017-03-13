@@ -1,6 +1,7 @@
 import UIKit
 import SVProgressHUD
 import WordPressShared
+import Gridicons
 
 /// DeleteSiteViewController allows user delete their site.
 ///
@@ -10,22 +11,20 @@ open class DeleteSiteViewController: UITableViewController {
 
     var blog: Blog!
 
-    @IBOutlet weak var warningImage: UIImageView!
-    @IBOutlet weak var siteTitleLabel: UILabel!
-    @IBOutlet weak var siteTitleSubText: UILabel!
-    @IBOutlet weak var sectionTwoHeader: UILabel!
-    @IBOutlet weak var sectionTwoColumnOneItem: UILabel!
-    @IBOutlet weak var sectionTwoColumnTwoItem: UILabel!
-    @IBOutlet weak var sectionTwoColumnOneItem2: UILabel!
-    @IBOutlet weak var sectionTwoColumnTwoItem2: UILabel!
-    @IBOutlet weak var sectionTwoColumnOneItem3: UILabel!
-    @IBOutlet weak var sectionTwoColumnTwoItem3: UILabel!
-    @IBOutlet weak var sectionThreeBody: UILabel!
-    @IBOutlet weak var supportButton: UIButton!
-    @IBOutlet weak var trashImage: UIImageView!
-    @IBOutlet weak var deleteSiteLabel: UILabel!
-    
-    
+    @IBOutlet fileprivate weak var warningImage: UIImageView!
+    @IBOutlet fileprivate weak var siteTitleLabel: UILabel!
+    @IBOutlet fileprivate weak var siteTitleSubText: UILabel!
+    @IBOutlet fileprivate weak var sectionTwoHeader: UILabel!
+    @IBOutlet fileprivate weak var sectionTwoColumnOneItem: UILabel!
+    @IBOutlet fileprivate weak var sectionTwoColumnTwoItem: UILabel!
+    @IBOutlet fileprivate weak var sectionTwoColumnOneItem2: UILabel!
+    @IBOutlet fileprivate weak var sectionTwoColumnTwoItem2: UILabel!
+    @IBOutlet fileprivate weak var sectionTwoColumnOneItem3: UILabel!
+    @IBOutlet fileprivate weak var sectionTwoColumnTwoItem3: UILabel!
+    @IBOutlet fileprivate weak var sectionThreeBody: UILabel!
+    @IBOutlet fileprivate weak var supportButton: UIButton!
+    @IBOutlet fileprivate weak var deleteSiteButton: UIButton!
+
 //    // MARK: - Properties: table content
 //
 //    let headerView: TableViewHeaderDetailView = {
@@ -88,17 +87,54 @@ open class DeleteSiteViewController: UITableViewController {
     override open func viewDidLoad() {
         assert(blog != nil)
         super.viewDidLoad()
+        setupControls()
+    }
+
+    // MARK: - Configuration
+
+    /// One time setup of the form textfields and buttons
+    ///
+    fileprivate func setupControls() {
+        let warningIcon = Gridicon.iconOfType(.notice, withSize: CGSize(width: 48, height: 48)).withRenderingMode(.alwaysTemplate)
+        let trashIcon = Gridicon.iconOfType(.trash, withSize: CGSize(width: 20, height: 20)).withRenderingMode(.alwaysTemplate)
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+
+        warningImage.image = warningIcon
+        warningImage.tintColor = WPStyleGuide.warningYellow()
+        siteTitleLabel.textColor = WPStyleGuide.darkGrey()
+        siteTitleLabel.text = blog.displayURL as String?
+        siteTitleSubText.textColor = WPStyleGuide.darkGrey()
+        siteTitleSubText.text = NSLocalizedString("will be unavailable in the future",
+                                                  comment: "Second part of delete screen title stating [the site] will be unavailable in the future.")
+
+        sectionTwoHeader.textColor = WPStyleGuide.grey()
+        sectionTwoColumnOneItem.textColor = WPStyleGuide.darkGrey()
+        sectionTwoColumnTwoItem.textColor = WPStyleGuide.darkGrey()
+        sectionTwoColumnOneItem2.textColor = WPStyleGuide.darkGrey()
+        sectionTwoColumnTwoItem2.textColor = WPStyleGuide.darkGrey()
+        sectionTwoColumnOneItem3.textColor = WPStyleGuide.darkGrey()
+        sectionTwoColumnTwoItem3.textColor = WPStyleGuide.darkGrey()
+
+        sectionThreeBody.textColor = WPStyleGuide.darkGrey()
+        sectionThreeBody.text = NSLocalizedString("This action can not be undone. Deleting the site will remove all content, contributors, " +
+                                                  "domains, and upgrades from the site.\n\nIf you're unsure about what will be deleted or need " +
+                                                  "any help, not to worry, our support team is here to answer any questions you may have.",
+                                                  comment: "Main text body for the delete screen functionality.")
+        supportButton.tintColor = WPStyleGuide.wordPressBlue()
+
+        deleteSiteButton.setTitle(NSLocalizedString("Delete Site", comment: "Button label for deleting the current site"), for: .normal)
+        deleteSiteButton.tintColor = WPStyleGuide.errorRed()
+        deleteSiteButton.setImage(trashIcon, for: .normal)
     }
 
     // MARK: - Actions
 
-    fileprivate func deleteSite() {
+    @IBAction func deleteSite(_ sender: Any) {
         tableView.deselectSelectedRowWithAnimation(true)
         present(confirmDeleteController(), animated: true, completion: nil)
     }
 
-    fileprivate func contactSupport() {
+    @IBAction func contactSupport(_ sender: Any) {
         tableView.deselectSelectedRowWithAnimation(true)
 
         WPAppAnalytics.track(.siteSettingsStartOverContactSupportClicked, with: blog)
@@ -239,41 +275,3 @@ open class DeleteSiteViewController: UITableViewController {
         return [HelpshiftSupportCustomMetadataKey: options]
     }
 }
-
-//// MARK: - UITableViewDelegate
-//
-//extension DeleteSiteViewController {
-//    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        switch indexPath.row {
-//        case 0:
-//            return contactSupport()
-//        default:
-//            return deleteSite()
-//        }
-//    }
-//
-//    override open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        return headerView
-//    }
-//}
-//
-//// MARK: - UITableViewDataSource
-//
-//extension DeleteSiteViewController {
-//    override open func numberOfSections(in tableView: UITableView) -> Int {
-//        return 1
-//    }
-//
-//    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return 2
-//    }
-//
-//    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        switch indexPath.row {
-//        case 0:
-//            return contactCell
-//        default:
-//            return deleteCell
-//        }
-//    }
-//}
