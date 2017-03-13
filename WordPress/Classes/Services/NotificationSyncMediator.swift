@@ -130,7 +130,7 @@ class NotificationSyncMediator {
     ///     - noteId: Notification ID of the note to be downloaded.
     ///     - completion: Closure to be executed on completion.
     ///
-    func syncNote(with noteId: String, completion: ((Error?, Notification?) -> Void)?) {
+    func syncNote(with noteId: String, completion: ((Error?, Notification?) -> Void)? = nil) {
         assert(Thread.isMainThread)
 
         remote.loadNotes(noteIds: [noteId]) { error, remoteNotes in
