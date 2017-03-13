@@ -190,7 +190,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
                 }
 
                 let connections: Array = responseDict.array(forKey: ConnectionDictionaryKeys.connections)
-                let publicizeConnections: [RemotePublicizeConnection] = connections.map { (dict) -> RemotePublicizeConnection in
+                let publicizeConnections: [RemotePublicizeConnection] = connections.flatMap { (dict) -> RemotePublicizeConnection? in
                     let conn = self.remotePublicizeConnectionFromDictionary(dict as! NSDictionary)
                     return conn
                 }
@@ -233,12 +233,11 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
                         return
                     }
 
-                    guard let responseDict = responseObject as? NSDictionary else {
+                    guard let responseDict = responseObject as? NSDictionary,
+                        let conn = self.remotePublicizeConnectionFromDictionary(responseDict) else {
                         failure?(self.errorForUnexpectedResponse(httpResponse))
                         return
                     }
-
-                    let conn = self.remotePublicizeConnectionFromDictionary(responseDict)
 
                     onSuccess(conn)
                 },
@@ -279,12 +278,11 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
                         return
                     }
 
-                    guard let responseDict = responseObject as? NSDictionary else {
+                    guard let responseDict = responseObject as? NSDictionary,
+                        let conn = self.remotePublicizeConnectionFromDictionary(responseDict) else {
                         failure?(self.errorForUnexpectedResponse(httpResponse))
                         return
                     }
-
-                    let conn = self.remotePublicizeConnectionFromDictionary(responseDict)
 
                     onSuccess(conn)
                 },
@@ -321,12 +319,11 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
                         return
                     }
 
-                    guard let responseDict = responseObject as? NSDictionary else {
+                    guard let responseDict = responseObject as? NSDictionary,
+                        let conn = self.remotePublicizeConnectionFromDictionary(responseDict) else {
                         failure?(self.errorForUnexpectedResponse(httpResponse))
                         return
                     }
-
-                    let conn = self.remotePublicizeConnectionFromDictionary(responseDict)
 
                     onSuccess(conn)
                 },
@@ -365,8 +362,12 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: A `RemotePublicizeConnection` object.
     ///
-    fileprivate func remotePublicizeConnectionFromDictionary(_ dict: NSDictionary) -> RemotePublicizeConnection {
+    fileprivate func remotePublicizeConnectionFromDictionary(_ dict: NSDictionary) -> RemotePublicizeConnection? {
         let conn = RemotePublicizeConnection()
+
+        if dict.number(forKey: ConnectionDictionaryKeys.ID) == nil {
+            return nil
+        }
 
         conn.connectionID = dict.number(forKey: ConnectionDictionaryKeys.ID) ?? conn.connectionID
         conn.dateExpires = DateUtils.date(fromISOString: dict.string(forKey: ConnectionDictionaryKeys.expires))
