@@ -281,7 +281,8 @@
         NSManagedObjectID *assetID = [[[ContextManager sharedInstance] persistentStoreCoordinator] managedObjectIDForURIRepresentation:assetURL];
         media = (Media *)[mainContext objectWithID:assetID];
     }];
-    return media;
+
+    return (!media.isDeleted) ? media : nil;
 }
 
 #pragma mark - NSFetchedResultsController helpers
