@@ -1,4 +1,6 @@
 import UIKit
+import Gridicons
+import SVProgressHUD
 import WordPressShared
 import WPMediaPicker
 
@@ -7,8 +9,8 @@ import WPMediaPicker
 class MediaLibraryViewController: UIViewController {
     let blog: Blog
 
-    private let pickerViewController: WPMediaPickerViewController
-    private let pickerDataSource: MediaLibraryPickerDataSource
+    fileprivate let pickerViewController: WPMediaPickerViewController
+    fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
     // MARK: - Initializers
 
@@ -24,6 +26,10 @@ class MediaLibraryViewController: UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        unregisterChangeObserver()
     }
 
     private func configurePickerViewController() {
@@ -42,7 +48,22 @@ class MediaLibraryViewController: UIViewController {
 
         title = NSLocalizedString("Media", comment: "Title for Media Library section of the app.")
 
+        updateNavigationItemButtonsForEditingState()
+
         addMediaPickerAsChildViewController()
+
+        registerChangeObserver()
+    }
+
+    private func updateNavigationItemButtonsForEditingState() {
+        if isEditing {
+            navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: true)
+            navigationItem.setRightBarButton(UIBarButtonItem(image: Gridicon.iconOfType(.trash), style: .plain, target: self, action: #selector(trashTapped)), animated: true)
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        } else {
+            navigationItem.setLeftBarButton(nil, animated: true)
+            navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
+        }
     }
 
     private func addMediaPickerAsChildViewController() {
@@ -51,6 +72,82 @@ class MediaLibraryViewController: UIViewController {
         view.addSubview(pickerViewController.view)
         addChildViewController(pickerViewController)
         pickerViewController.didMove(toParentViewController: self)
+    }
+
+    @objc private func editTapped() {
+        isEditing = !isEditing
+
+        pickerViewController.allowMultipleSelection = isEditing
+
+        pickerViewController.clearSelectedAssets(true)
+    }
+
+    @objc private func trashTapped() {
+        let message: String
+        if pickerViewController.selectedAssets.count == 1 {
+            message = NSLocalizedString("Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso.")
+        } else {
+            message = NSLocalizedString("Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items.")
+        }
+
+        let alertController = UIAlertController(title: nil,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+        alertController.addDestructiveActionWithTitle(NSLocalizedString("Delete", comment: "Title for button that permanently deletes one or more media items (photos / videos)"), handler: { action in
+            self.deleteSelectedItems()
+        })
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    private func deleteSelectedItems() {
+        guard pickerViewController.selectedAssets.count > 0 else { return }
+        guard let assets = pickerViewController.selectedAssets.copy() as? [Media] else { return }
+
+        let updateProgress = { (progress: Progress?) in
+            let fractionCompleted = progress?.fractionCompleted ?? 0
+            SVProgressHUD.showProgress(Float(fractionCompleted), status: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
+        }
+
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
+
+        // Initialize the progress HUD before we start
+        updateProgress(nil)
+
+        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.deleteMultipleMedia(assets,
+                                    progress: updateProgress,
+                                    success: { [weak self] in
+                                        SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
+                                        self?.isEditing = false
+        }, failure: { error in
+            SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items."))
+        })
+    }
+
+    override var isEditing: Bool {
+        didSet {
+            updateNavigationItemButtonsForEditingState()
+        }
+    }
+
+    // MARK: - Media Library Change Observer
+
+    private var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
+
+    private func registerChangeObserver() {
+        assert(mediaLibraryChangeObserverKey == nil)
+        mediaLibraryChangeObserverKey = pickerDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
+            self?.updateNavigationItemButtonsForCurrentAssetSelection()
+        })
+    }
+
+    private func unregisterChangeObserver() {
+        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
+            pickerDataSource.unregisterChangeObserver(mediaLibraryChangeObserverKey)
+        }
     }
 }
 
@@ -66,6 +163,8 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
+        if isEditing { return true }
+
         if let viewController = mediaItemViewController(for: asset) {
             navigationController?.pushViewController(viewController, animated: true)
         }
@@ -73,11 +172,33 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         return false
     }
 
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didSelect asset: WPMediaAsset) {
+        updateNavigationItemButtonsForCurrentAssetSelection()
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
+        updateNavigationItemButtonsForCurrentAssetSelection()
+    }
+
+    func updateNavigationItemButtonsForCurrentAssetSelection() {
+        if isEditing {
+            // Check that our selected items haven't been deleted – we're notified
+            // of changes to the data source before the collection view has
+            // updated its selected assets.
+            guard let assets = (pickerViewController.selectedAssets.copy() as? [Media]) else { return }
+            let existingAssets = assets.filter({ !$0.isDeleted })
+
+            navigationItem.rightBarButtonItem?.isEnabled = (existingAssets.count > 0)
+        }
+    }
+
     private func mediaItemViewController(for asset: WPMediaAsset) -> UIViewController? {
+        if isEditing { return nil }
+
         guard let asset = asset as? Media else {
             return nil
         }
 
-        return MediaItemViewController(media: asset)
+        return MediaItemViewController(media: asset, dataSource: pickerDataSource)
     }
 }

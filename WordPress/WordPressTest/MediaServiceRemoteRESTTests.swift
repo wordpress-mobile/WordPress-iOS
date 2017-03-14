@@ -102,6 +102,14 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         XCTAssertEqual(media.mediaID, remoteMedia?.mediaID)
     }
 
+    func testDeleteMediaPath() {
+        let media = mockRemoteMedia()
+        let expectedPath = "v1.1/sites/\(siteID)/media/\(media.mediaID!)/delete"
+        mediaServiceRemote.delete(media, success: nil, failure: nil)
+        XCTAssertTrue(mockRemoteApi.postMethodCalled, "Wrong method, expected POST got \(mockRemoteApi.methodCalled())")
+        XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
+    }
+
     func testGetMediaLibraryPath() {
 
         let expectedPath = "v1.1/sites/\(siteID)/media"
