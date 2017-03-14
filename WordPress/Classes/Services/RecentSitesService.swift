@@ -34,9 +34,15 @@ class RecentSitesService: NSObject {
 
     // MARK: - Public accessors
 
-    /// Returns a list of recently used sites
+    /// Returns a list of recently used sites, up to maxSiteCount.
     ///
     var recentSites: [SiteIdentifierType] {
+        return Array(allRecentSites.prefix(maxSiteCount))
+    }
+
+    /// Returns a list of all the recently used sites.
+    ///
+    var allRecentSites: [SiteIdentifierType] {
         if let sites = database.object(forKey: databaseKey) as? [SiteIdentifierType] {
             return sites
         }
@@ -58,8 +64,7 @@ class RecentSitesService: NSObject {
     func touch(site: SiteIdentifierType) {
         var recent = [site]
         for recentSite in recentSites
-            where recentSite != site
-                && recent.count < maxSiteCount {
+            where recentSite != site {
                     recent.append(recentSite)
         }
         database.set(recent, forKey: databaseKey)

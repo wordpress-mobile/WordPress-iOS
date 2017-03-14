@@ -9,11 +9,13 @@ private protocol BlogListDataSourceMapper {
 
 private struct BrowsingWithRecentDataSourceMapper: BlogListDataSourceMapper {
     func map(_ data: [Blog]) -> [[Blog]] {
-        let recentSiteUrls = RecentSitesService().recentSites
+        let service = RecentSitesService()
+        let recentSiteUrls = service.allRecentSites
         let visible = data.filter({ $0.visible })
-        let recent = recentSiteUrls.flatMap({ url in
+        let allRecent = recentSiteUrls.flatMap({ url in
             return visible.first(where: { $0.url == url })
         })
+        let recent = Array(allRecent.prefix(service.maxSiteCount))
         let other = visible.filter({ blog in
             return !recent.contains(blog)
         })
