@@ -64,7 +64,7 @@ class BlogListDataSource: NSObject {
 
     // MARK: - Configuration
 
-    let recentSitesMinCount = 4
+    let recentSitesMinCount = 11
 
     // MARK: - Inputs
 
