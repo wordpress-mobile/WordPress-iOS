@@ -275,7 +275,6 @@ import WordPressShared
         navigationController?.pushViewController(controller, animated: true)
     }
 
-
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
@@ -286,49 +285,88 @@ import WordPressShared
             return
         }
 
-        guard emailOrUsername.isValidEmail() else {
-            // A username was entered, not an email address.
-            // Proceed to the next form:
-            if !SigninHelpers.isUsernameReserved(emailOrUsername) {
-                signinWithUsernamePassword()
+        if emailOrUsername.isValidEmail() {
+            validate(email: emailOrUsername)
+        } else {
+            validate(username: emailOrUsername)
+        }
+    }
 
-            } else if restrictSigninToWPCom {
-                // When restricted, show a prompt then let the user enter a new username.
-                SigninHelpers.promptForWPComReservedUsername(emailOrUsername, callback: {
-                    self.loginFields.username = ""
-                    self.emailTextField.text = ""
-                    self.emailTextField.becomeFirstResponder()
-                })
+    private func validate(email: String) {
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        configureViewLoading(true)
 
-            } else {
-                // Switch to the signin flow when not restricted.
-                signinToSelfHostedSite()
+        service.isEmailAvailable(email,
+                                 success: { [weak self] (available: Bool) in
+                                    self?.configureViewLoading(false)
+                                    if (available) {
+                                        // No matching email address found so treat this as a
+                                        // self-hosted sign in.
+                                        self?.signinToSelfHostedSite()
+                                    } else {
+                                        self?.requestLink()
+                                    }
+                                 },
+                                 failure: { [weak self] (error: Error) in
+                                    DDLogSwift.logError(error.localizedDescription)
+                                    guard let strongSelf = self else {
+                                        return
+                                    }
+                                    strongSelf.configureViewLoading(false)
+                                    strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
+        })
+    }
+
+    private func validate(username: String) {
+        if SigninHelpers.isWPComDomain(username) {
+            signinWithWPComDomain(username)
+        } else if !SigninHelpers.isUsernameReserved(username) {
+            signinWithUsernamePassword()
+        } else if restrictSigninToWPCom {
+            // When restricted, show a prompt then let the user enter a new username.
+            SigninHelpers.promptForWPComReservedUsername(username, callback: {
+                self.loginFields.username = ""
+                self.emailTextField.text = ""
+                self.emailTextField.becomeFirstResponder()
+            })
+        } else {
+            // Switch to the signin flow when not restricted.
+            signinToSelfHostedSite()
+        }
+    }
+
+    private func signinWithWPComDomain(_ domain: String) {
+        let showFailureError = { [weak self] in
+            guard let strongSelf = self else {
+                return
             }
-            return
+            strongSelf.displayErrorMessage(NSLocalizedString("Please enter a valid username or email address", comment: "A short prompt asking the user to properly fill out all login fields."))
         }
 
+        let username = SigninHelpers.extractUsername(from: domain)
         configureViewLoading(true)
 
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.isEmailAvailable(emailOrUsername,
-            success: { [weak self] (available: Bool) in
-                self?.configureViewLoading(false)
-                if (available) {
-                    // No matching email address found so treat this as a
-                    // self-hosted sign in.
-                    self?.signinToSelfHostedSite()
-                } else {
-                    self?.requestLink()
-                }
+        service.isUsernameAvailable(username,
+                                    success: { [weak self] (available: Bool) in
+                                        guard let strongSelf = self else {
+                                            return
+                                        }
+                                        strongSelf.configureViewLoading(false)
+                                        if (available) {
+                                            // can't login with a username that doesn't exist
+                                            showFailureError()
+                                        } else {
+                                            strongSelf.loginFields.username = username
+                                            strongSelf.signinWithUsernamePassword()
+                                        }
             },
-            failure: { [weak self] (error: Error) in
-                DDLogSwift.logError(error.localizedDescription)
-                guard let strongSelf = self else {
-                    return
-                }
-                strongSelf.configureViewLoading(false)
-                strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
-            })
+                                    failure: { [weak self] (error: Error) in
+                                        showFailureError()
+                                        if let strongSelf = self {
+                                            strongSelf.configureViewLoading(false)
+                                        }
+        })
     }
 
 
