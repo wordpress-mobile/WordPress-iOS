@@ -541,7 +541,7 @@
     
     // Check if asset being used is a video, if not this method fails
     if (self.assetType != MediaTypeVideo) {
-        NSString *errorMessage = NSLocalizedString(@"Media selected is not a video.", @"Error message when user tries to preview an image media like a video");
+        NSString *errorMessage = NSLocalizedString(@"Selected media is not a video.", @"Error message when user tries to preview an image media like a video");
         completionHandler(nil, [self errorWithMessage:errorMessage]);
         return 0;
     }
@@ -555,7 +555,7 @@
     }
 
     if (!url) {
-        NSString *errorMessage = NSLocalizedString(@"Media selected is not available.", @"Error message when user tries a non longer existent video media object.");
+        NSString *errorMessage = NSLocalizedString(@"Selected media is unavailable.", @"Error message when user tries a no longer existent video media object.");
         completionHandler(nil, [self errorWithMessage:errorMessage]);
         return 0;
     }
@@ -563,7 +563,7 @@
     // Let see if can create an asset with this url
     AVURLAsset *asset = [AVURLAsset assetWithURL:url];
     if (!asset) {
-        NSString *errorMessage = NSLocalizedString(@"Media selected is not available.", @"Error message when user tries a non longer existent video media object.");
+        NSString *errorMessage = NSLocalizedString(@"Selected media is unavailable.", @"Error message when user tries a no longer existent video media object.");
         completionHandler(nil, [self errorWithMessage:errorMessage]);
         return 0;
     }
