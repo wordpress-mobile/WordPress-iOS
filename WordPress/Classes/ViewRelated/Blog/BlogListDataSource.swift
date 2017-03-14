@@ -270,7 +270,7 @@ extension BlogListDataSource: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let blog = self.blog(at: indexPath)
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "BlogCell") as? WPBlogTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: WPBlogTableViewCell.reuseIdentifier()) as? WPBlogTableViewCell else {
             fatalError("Failed to get a blog cell")
         }
         let displayURL = blog.displayURL as? String ?? ""

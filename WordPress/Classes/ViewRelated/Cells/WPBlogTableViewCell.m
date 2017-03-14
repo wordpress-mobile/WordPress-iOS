@@ -32,4 +32,12 @@
     }
 }
 
++ (NSString *)reuseIdentifier {
+    return @"BlogCell";
+}
+
++ (CGFloat)cellHeight {
+    return 74.0;
+}
+
 @end
