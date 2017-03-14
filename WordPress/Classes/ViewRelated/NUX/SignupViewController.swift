@@ -261,21 +261,6 @@ import WordPressShared
         return username
     }
 
-
-    /// Displays an error message in an overlay
-    ///
-    /// - Parameters:
-    ///     - message: The message to display
-    ///
-    func displayErrorMessage(_ message: String) {
-        let presentingController = navigationController ?? self
-        let controller = SigninErrorViewController.controller()
-        controller.delegate = self
-        controller.presentFromController(presentingController)
-        controller.displayGenericErrorMessage(message, sourceTag: sourceTag)
-    }
-
-
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
