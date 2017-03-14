@@ -166,6 +166,34 @@
     }
 }
 
+- (void)deleteMedia:(RemoteMedia *)media
+            success:(void (^)())success
+            failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([media.mediaID longLongValue] > 0);
+
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:media.mediaID];
+    [self.api callMethod:@"wp.deleteFile"
+              parameters:parameters
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                     BOOL deleted = [responseObject boolValue];
+                     if (deleted) {
+                         if (success) {
+                             success();
+                         }
+                     } else {
+                         if (failure) {
+                             NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:nil];
+                             failure(error);
+                         }
+                     }
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)remoteMediaFromXMLRPCArray:(NSArray *)xmlrpcArray

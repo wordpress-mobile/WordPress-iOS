@@ -1,21 +1,29 @@
 import UIKit
 import Gridicons
+import SVProgressHUD
 import WordPressShared
 
 /// Displays an image preview and metadata for a single Media asset.
 ///
 class MediaItemViewController: UITableViewController, ImmuTablePresenter {
     let media: Media
+    weak var dataSource: MediaLibraryPickerDataSource? = nil
+
     var viewModel: ImmuTable!
 
-    init(media: Media) {
+    init(media: Media, dataSource: MediaLibraryPickerDataSource) {
         self.media = media
+        self.dataSource = dataSource
 
         super.init(style: .grouped)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        unregisterChangeObserver()
     }
 
     override func viewDidLoad() {
@@ -28,6 +36,8 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
                                tableView: tableView)
         setupViewModel()
         setupNavigationItem()
+
+        registerChangeObserver()
     }
 
     private func setupViewModel() {
@@ -53,10 +63,17 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
     }
 
     private func setupNavigationItem() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(shareTapped(_:)))
+        let shareItem = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
+                                        style: .plain,
+                                        target: self,
+                                        action: #selector(shareTapped(_:)))
+
+        let trashItem = UIBarButtonItem(image: Gridicon.iconOfType(.trash),
+                                        style: .plain,
+                                        target: self,
+                                        action: #selector(trashTapped(_:)))
+
+        navigationItem.rightBarButtonItems = [ shareItem, trashItem ]
     }
 
     private func presentImageViewControllerForMedia() {
@@ -65,6 +82,30 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
             controller.modalPresentationStyle = .fullScreen
 
             self.present(controller, animated: true, completion: nil)
+        }
+    }
+
+    // MARK: - Media Library Change Observer
+
+    private var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
+
+    private func registerChangeObserver() {
+        assert(mediaLibraryChangeObserverKey == nil)
+
+        // Listen out for changes to the media library – if the media item we're
+        // displaying gets deleted, we'll pop ourselves off the stack.
+        if let dataSource = dataSource {
+            mediaLibraryChangeObserverKey = dataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
+                if let isDeleted = self?.media.isDeleted, isDeleted == true {
+                    _ = self?.navigationController?.popViewController(animated: true)
+                }
+            })
+        }
+    }
+
+    private func unregisterChangeObserver() {
+        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
+            dataSource?.unregisterChangeObserver(mediaLibraryChangeObserverKey)
         }
     }
 
@@ -81,6 +122,31 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
             alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to share media."))
             present(alertController, animated: true, completion: nil)
         }
+    }
+
+    @objc private func trashTapped(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: nil,
+                                                message: NSLocalizedString("Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso."), preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+        alertController.addDestructiveActionWithTitle(NSLocalizedString("Delete", comment: "Title for button that permanently deletes a media item (photo / video)"), handler: { action in
+            self.deleteMediaItem()
+        })
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    private func deleteMediaItem() {
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
+
+        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.delete(media, success: {
+            SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
+            _ = self.navigationController?.popViewController(animated: true)
+        }, failure: { error in
+            SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete media item.", comment: "Text displayed in HUD if there was an error attempting to delete a media item."))
+        })
     }
 }
 
