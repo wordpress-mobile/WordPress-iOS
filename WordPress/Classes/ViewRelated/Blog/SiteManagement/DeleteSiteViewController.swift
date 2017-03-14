@@ -25,51 +25,6 @@ open class DeleteSiteViewController: UITableViewController {
     @IBOutlet fileprivate weak var supportButton: UIButton!
     @IBOutlet fileprivate weak var deleteSiteButton: UIButton!
 
-//    // MARK: - Properties: table content
-//
-//    let headerView: TableViewHeaderDetailView = {
-//        let header = NSLocalizedString("Delete Site", comment: "Heading for instructions on Delete Site settings page")
-//        let detail = NSLocalizedString("This action can not be undone. Deleting the site will remove all content, " +
-//                                       "contributors, domains, and upgrades from the site.\n\n" +
-//                                       "It you're unsure about what will be deleted or need any help, not to worry, " +
-//                                       "our support team is here to answer any questions you may have.",
-//                                       comment: "Detailed instructions on Delete Site settings page")
-//
-//       return TableViewHeaderDetailView(title: header, detail: detail)
-//    }()
-//
-//    let contactCell: UITableViewCell = {
-//        let contactTitle = NSLocalizedString("Contact Support", comment: "Button title for contacting support on Delete Site settings page")
-//
-//        let actionCell = WPTableViewCellDefault(style: .value1, reuseIdentifier: nil)
-//        actionCell.textLabel?.text = contactTitle
-//        WPStyleGuide.configureTableViewActionCell(actionCell)
-//        actionCell.textLabel?.textAlignment = .center
-//
-//        return actionCell
-//    }()
-//
-//    let deleteCell: UITableViewCell = {
-//        let deleteTitle = NSLocalizedString("Delete Site", comment: "Button title to delete your site on the Delete Site settings page")
-//
-//        let actionCell = WPTableViewCellDefault(style: .value1, reuseIdentifier: nil)
-//        actionCell.textLabel?.text = deleteTitle
-//        WPStyleGuide.configureTableViewDestructiveActionCell(actionCell)
-//
-//        return actionCell
-//    }()
-
-    // MARK: - Initializer
-
-//    init(blog: Blog) {
-//        self.blog = blog
-//        super.init(style: .grouped)
-//    }
-//
-//    required public init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-
     // MARK: - View Lifecycle
 
 //    override open func viewDidLoad() {
@@ -87,6 +42,10 @@ open class DeleteSiteViewController: UITableViewController {
     override open func viewDidLoad() {
         assert(blog != nil)
         super.viewDidLoad()
+        title = NSLocalizedString("Delete Site", comment: "Title of settings page for deleting a site")
+        tableView.cellLayoutMarginsFollowReadableWidth = true
+        tableView.rowHeight = UITableViewAutomaticDimension
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
         setupControls()
     }
 
@@ -97,7 +56,6 @@ open class DeleteSiteViewController: UITableViewController {
     fileprivate func setupControls() {
         let warningIcon = Gridicon.iconOfType(.notice, withSize: CGSize(width: 48, height: 48)).withRenderingMode(.alwaysTemplate)
         let trashIcon = Gridicon.iconOfType(.trash, withSize: CGSize(width: 20, height: 20)).withRenderingMode(.alwaysTemplate)
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
         warningImage.image = warningIcon
         warningImage.tintColor = WPStyleGuide.warningYellow()
