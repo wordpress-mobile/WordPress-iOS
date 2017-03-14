@@ -21,7 +21,7 @@ class AppRatingUtility: NSObject {
     /// Don't prompt for reviews for internal builds
     /// http://stackoverflow.com/questions/27297435/detect-if-ios-app-is-downloaded-from-apples-testflight
     ///
-    private let isInternalBuild = { () -> Bool in
+    var isInternalBuild: Bool = {
         guard let path = Bundle.main.appStoreReceiptURL?.path else {
             return false
         }
