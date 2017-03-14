@@ -187,6 +187,40 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
            }];
 }
 
+- (void)deleteMedia:(RemoteMedia *)media
+            success:(void (^)())success
+            failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([media isKindOfClass:[RemoteMedia class]]);
+
+    NSString *path = [NSString stringWithFormat:@"sites/%@/media/%@/delete", self.siteID, media.mediaID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:nil
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               NSDictionary *response = (NSDictionary *)responseObject;
+                               NSString *status = [response stringForKey:@"status"];
+                               if ([status isEqualToString:@"deleted"]) {
+                                   if (success) {
+                                       success();
+                                   }
+                               } else {
+                                   if (failure) {
+                                       NSError *error = [NSError errorWithDomain:WordPressComRestApiErrorDomain
+                                                                            code:WordPressComRestApiErrorUnknown
+                                                                        userInfo:nil];
+                                       failure(error);
+                                   }
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *response) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
+}
+
 - (NSArray *)remoteMediaFromJSONArray:(NSArray *)jsonMedia
 {
     return [jsonMedia wp_map:^id(NSDictionary *json) {
