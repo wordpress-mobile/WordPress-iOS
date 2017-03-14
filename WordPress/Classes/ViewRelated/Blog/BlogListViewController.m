@@ -227,7 +227,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)maybeShowNUX
 {
-    if ([self countForAllBlogs] > 0) {
+    if (self.dataSource.allBlogsCount > 0) {
         return;
     }
     if (![self defaultWordPressComAccount]) {
@@ -238,8 +238,8 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)updateViewsForCurrentSiteCount
 {
-    NSUInteger count = [self countForAllBlogs];
-    NSUInteger visibleSitesCount = [self countForVisibleBlogs];
+    NSUInteger count = self.dataSource.allBlogsCount;
+    NSUInteger visibleSitesCount = self.dataSource.visibleBlogsCount;
 
     // If the user has sites, but they're all hidden...
     if (count > 0 && visibleSitesCount == 0 && !self.isEditing) {
@@ -269,7 +269,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)showNoResultsViewForAllSitesHidden
 {
-    NSUInteger count = [self countForAllBlogs];
+    NSUInteger count = self.dataSource.allBlogsCount;
 
     if (count == 1) {
         self.noResultsView.titleText = NSLocalizedString(@"You have 1 hidden WordPress site.", "Message informing the user that all of their sites are currently hidden (singular)");
@@ -302,30 +302,6 @@ static NSInteger HideSearchMinSites = 3;
     if (self.blogDetailsViewController && ![self.dataSource indexPathForBlog:self.blogDetailsViewController.blog]) {
         self.blogDetailsViewController = nil;
     }
-}
-
-- (NSUInteger)countForAllBlogs
-{
-    return self.dataSource.allBlogsCount;
-}
-
-- (NSUInteger)countForVisibleBlogs
-{
-    return self.dataSource.visibleBlogsCount;
-}
-
-- (NSUInteger)countForPredicate:(NSPredicate *)predicate
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:BlogEntityName];
-    request.predicate = predicate;
-
-    NSUInteger count = [context countForFetchRequest:request error:nil];
-    if (count == NSNotFound) {
-        count = 0;
-    }
-
-    return count;
 }
 
 - (void)syncBlogs
@@ -797,7 +773,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setVisible:(BOOL)visible forBlog:(Blog *)blog
 {
-    if(!visible && [self countForAllBlogs] > HideAllMinSites) {
+    if(!visible && self.dataSource.allBlogsCount > HideAllMinSites) {
         if (self.hideCount == 0) {
             self.firstHide = [NSDate date];
         }
@@ -851,7 +827,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
-    if ([self countForAllBlogs] == 0) {
+    if (self.dataSource.allBlogsCount == 0) {
         UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
         addSiteAlertController.popoverPresentationController.sourceView = self.view;
         addSiteAlertController.popoverPresentationController.sourceRect = [self.view convertRect:noResultsView.button.frame
@@ -860,7 +836,7 @@ static NSInteger HideSearchMinSites = 3;
 
         [self presentViewController:addSiteAlertController animated:YES completion:nil];
         self.addSiteAlertController = addSiteAlertController;
-    } else if ([self countForVisibleBlogs] == 0) {
+    } else if (self.dataSource.visibleBlogsCount == 0) {
         [self setEditing:YES animated:YES];
     }
 }
