@@ -3,13 +3,12 @@ import Foundation
 import UIKit
 import WordPressShared
 
-private typealias Table = [[Blog]]
 private protocol BlogListDataSourceMapper {
-    func map(_ data: [Blog]) -> Table
+    func map(_ data: [Blog]) -> [[Blog]]
 }
 
 private struct BrowsingWithRecentDataSourceMapper: BlogListDataSourceMapper {
-    func map(_ data: [Blog]) -> Table {
+    func map(_ data: [Blog]) -> [[Blog]] {
         let recentSiteUrls = RecentSitesService().recentSites
         let visible = data.filter({ $0.visible })
         let recent = recentSiteUrls.flatMap({ url in
@@ -23,13 +22,13 @@ private struct BrowsingWithRecentDataSourceMapper: BlogListDataSourceMapper {
 }
 
 private struct BrowsingDataSourceMapper: BlogListDataSourceMapper {
-    func map(_ data: [Blog]) -> Table {
+    func map(_ data: [Blog]) -> [[Blog]] {
         return [data.filter({ $0.visible })]
     }
 }
 
 private struct EditingDataSourceMapper: BlogListDataSourceMapper {
-    func map(_ data: [Blog]) -> Table {
+    func map(_ data: [Blog]) -> [[Blog]] {
         return [data.filter({ blog in
             blog.supports(.visibility)
         })]
@@ -39,7 +38,7 @@ private struct EditingDataSourceMapper: BlogListDataSourceMapper {
 private struct SearchingDataSourceMapper: BlogListDataSourceMapper {
     let query: String
 
-    func map(_ data: [Blog]) -> Table {
+    func map(_ data: [Blog]) -> [[Blog]] {
         guard let query = query.nonEmptyString() else {
             return [data]
         }
@@ -117,12 +116,12 @@ class BlogListDataSource: NSObject {
 
     @objc(blogAtIndexPath:)
     func blog(at indexPath: IndexPath) -> Blog {
-        return table[indexPath.section][indexPath.row]
+        return sections[indexPath.section][indexPath.row]
     }
 
     @objc(indexPathForBlog:)
     func indexPath(for blog: Blog) -> IndexPath? {
-        for (sectionIndex, section) in table.enumerated() {
+        for (sectionIndex, section) in sections.enumerated() {
             for (rowIndex, row) in section.enumerated() {
                 if row == blog {
                     return IndexPath(row: rowIndex, section: sectionIndex)
@@ -137,7 +136,7 @@ class BlogListDataSource: NSObject {
     }
 
     var displayedBlogsCount: Int {
-        return table.reduce(0, { result, section in
+        return sections.reduce(0, { result, section in
             result + section.count
         })
     }
@@ -232,7 +231,7 @@ private extension BlogListDataSource {
 // MARK: - Data
 
 private extension BlogListDataSource {
-    var table: Table {
+    var sections: [[Blog]] {
         return mode.mapper.map(allBlogs)
     }
 
@@ -260,11 +259,11 @@ extension BlogListDataSource: NSFetchedResultsControllerDelegate {
 
 extension BlogListDataSource: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return table.count
+        return sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return table[section].count
+        return sections[section].count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
