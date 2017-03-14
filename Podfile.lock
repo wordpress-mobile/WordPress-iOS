@@ -34,41 +34,41 @@ PODS:
   - Expecta (1.0.5)
   - Fabric (1.6.11)
   - FLAnimatedImage (1.0.12)
-  - FormatterKit (1.8.1):
-    - FormatterKit/AddressFormatter (= 1.8.1)
-    - FormatterKit/ArrayFormatter (= 1.8.1)
-    - FormatterKit/ColorFormatter (= 1.8.1)
-    - FormatterKit/LocationFormatter (= 1.8.1)
-    - FormatterKit/NameFormatter (= 1.8.1)
-    - FormatterKit/OrdinalNumberFormatter (= 1.8.1)
-    - FormatterKit/Resources (= 1.8.1)
-    - FormatterKit/TimeIntervalFormatter (= 1.8.1)
-    - FormatterKit/UnitOfInformationFormatter (= 1.8.1)
-    - FormatterKit/URLRequestFormatter (= 1.8.1)
-  - FormatterKit/AddressFormatter (1.8.1):
+  - FormatterKit (1.8.2):
+    - FormatterKit/AddressFormatter (= 1.8.2)
+    - FormatterKit/ArrayFormatter (= 1.8.2)
+    - FormatterKit/ColorFormatter (= 1.8.2)
+    - FormatterKit/LocationFormatter (= 1.8.2)
+    - FormatterKit/NameFormatter (= 1.8.2)
+    - FormatterKit/OrdinalNumberFormatter (= 1.8.2)
+    - FormatterKit/Resources (= 1.8.2)
+    - FormatterKit/TimeIntervalFormatter (= 1.8.2)
+    - FormatterKit/UnitOfInformationFormatter (= 1.8.2)
+    - FormatterKit/URLRequestFormatter (= 1.8.2)
+  - FormatterKit/AddressFormatter (1.8.2):
     - FormatterKit/Resources
-  - FormatterKit/ArrayFormatter (1.8.1):
+  - FormatterKit/ArrayFormatter (1.8.2):
     - FormatterKit/Resources
-  - FormatterKit/ColorFormatter (1.8.1):
+  - FormatterKit/ColorFormatter (1.8.2):
     - FormatterKit/Resources
-  - FormatterKit/LocationFormatter (1.8.1):
+  - FormatterKit/LocationFormatter (1.8.2):
     - FormatterKit/Resources
-  - FormatterKit/NameFormatter (1.8.1):
+  - FormatterKit/NameFormatter (1.8.2):
     - FormatterKit/Resources
-  - FormatterKit/OrdinalNumberFormatter (1.8.1):
+  - FormatterKit/OrdinalNumberFormatter (1.8.2):
     - FormatterKit/Resources
-  - FormatterKit/Resources (1.8.1)
-  - FormatterKit/TimeIntervalFormatter (1.8.1):
+  - FormatterKit/Resources (1.8.2)
+  - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
-  - FormatterKit/UnitOfInformationFormatter (1.8.1):
+  - FormatterKit/UnitOfInformationFormatter (1.8.2):
     - FormatterKit/Resources
-  - FormatterKit/URLRequestFormatter (1.8.1):
+  - FormatterKit/URLRequestFormatter (1.8.2):
     - FormatterKit/Resources
   - Gridicons (0.4)
   - Helpshift (5.9.3)
-  - HockeySDK (4.1.3):
-    - HockeySDK/DefaultLib (= 4.1.3)
-  - HockeySDK/DefaultLib (4.1.3)
+  - HockeySDK (4.1.4):
+    - HockeySDK/DefaultLib (= 4.1.4)
+  - HockeySDK/DefaultLib (4.1.4)
   - Lookback (1.4.1):
     - PDKTZipArchive
   - MGSwipeTableCell (1.5.6)
@@ -146,7 +146,7 @@ PODS:
     - WordPressCom-Analytics-iOS (~> 0.1.4)
   - WordPressComKit (0.0.6):
     - Alamofire (= 4.0.1)
-  - WPMediaPicker (0.12)
+  - WPMediaPicker (0.13)
   - wpxmlrpc (0.8.2)
 
 DEPENDENCIES:
@@ -184,7 +184,7 @@ DEPENDENCIES:
   - WordPressCom-Analytics-iOS (= 0.1.23)
   - WordPressCom-Stats-iOS (= 0.9.0)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
-  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, branch `media-picker-additions`)
+  - WPMediaPicker (= 0.13)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -203,9 +203,6 @@ EXTERNAL SOURCES:
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
-  WPMediaPicker:
-    :branch: media-picker-additions
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -223,9 +220,6 @@ CHECKOUT OPTIONS:
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
-  WPMediaPicker:
-    :commit: ebce520e5418472ab85d7080b20946cb410ba9c5
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 00d6f4caae77c19ba33045b8569fbeb9689f0d1d
@@ -238,10 +232,10 @@ SPEC CHECKSUMS:
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  FormatterKit: 11ad17b983200629246a5a466f6f1bfa2df823cb
+  FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gridicons: 66be278835b8b98ad009c2902a3d57b8da81702e
   Helpshift: fa42856075d2e77ce4243d667ffa91ab5bb725fe
-  HockeySDK: 7dd8d7f5a4d71b7a5eebb320c8515cb22e99221b
+  HockeySDK: 78a3f8bb9100277b531defc56c970369a3ca267a
   Lookback: 37c23f97894612f6eccc215440c8f990fbb5a607
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   Mixpanel: 80d2ca9bb38ae91c1044d738e80fe448377ac89f
@@ -264,9 +258,9 @@ SPEC CHECKSUMS:
   WordPressCom-Analytics-iOS: a0ff71080216968f0986baa1240d17d39998e9f0
   WordPressCom-Stats-iOS: cf78f0dd05ba586fd7b3c01b6cdcd5ca12e032ea
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
-  WPMediaPicker: d4ce8e9db98b60ab44e7154151dbad135f8e7ff6
+  WPMediaPicker: 5f39880ac799dbbf41a99f73567a95ab5297dc93
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: cf4119bb7c18b9f9b705b060fcfdebb5f376bd08
+PODFILE CHECKSUM: feae31325a73886cd65e1d8d9d38591a39f42e29
 
 COCOAPODS: 1.1.1
