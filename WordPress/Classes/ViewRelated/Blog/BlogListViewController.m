@@ -17,9 +17,7 @@
 #import "WPGUIConstants.h"
 #import "CreateNewBlogViewController.h"
 
-static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
-static CGFloat const BLVCSiteRowHeight = 74.0;
 
 static NSInteger HideAllMinSites = 10;
 static NSInteger HideAllSitesThreshold = 6;
@@ -430,7 +428,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     self.tableView.delegate = self;
     self.tableView.dataSource = self.dataSource;
-    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:[WPBlogTableViewCell reuseIdentifier]];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
 
@@ -680,7 +678,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return BLVCSiteRowHeight;
+    return [WPBlogTableViewCell cellHeight];
 }
 
 # pragma mark - UISearchController delegate methods

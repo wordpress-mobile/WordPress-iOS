@@ -8,9 +8,6 @@
 #import "AccountService.h"
 #import "WordPress-Swift.h"
 
-static NSString *const BlogCellIdentifier = @"BlogCell";
-static CGFloat BlogCellRowHeight = 74.0;
-
 @interface BlogSelectorViewController () <UISearchControllerDelegate, UISearchResultsUpdating>
 
 @property (nonatomic, strong) NSNumber                      *selectedObjectDotcomID;
@@ -118,7 +115,7 @@ static CGFloat BlogCellRowHeight = 74.0;
     // TableView
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:[WPBlogTableViewCell reuseIdentifier]];
     self.tableView.dataSource = self.dataSource;
     [self.tableView reloadData];
 
@@ -351,7 +348,7 @@ static CGFloat BlogCellRowHeight = 74.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return BlogCellRowHeight;
+    return [WPBlogTableViewCell cellHeight];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
