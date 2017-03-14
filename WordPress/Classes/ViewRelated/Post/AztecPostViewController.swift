@@ -610,11 +610,6 @@ extension AztecPostViewController {
         // Button: Keep editing
         alertController.addCancelActionWithTitle(NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post."))
 
-        // Button: Discard
-        alertController.addDestructiveActionWithTitle(NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
-            self.discardChangesAndUpdateGUI()
-        }
-
         // Button: Save Draft/Update Draft
         if post.hasLocalChanges() {
             if !post.hasRemote() {
@@ -629,6 +624,11 @@ extension AztecPostViewController {
                     self.publishTapped(dismissWhenDone: true)
                 }
             }
+        }
+
+        // Button: Discard
+        alertController.addDestructiveActionWithTitle(NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
+            self.discardChangesAndUpdateGUI()
         }
 
         alertController.popoverPresentationController?.barButtonItem = closeBarButtonItem
