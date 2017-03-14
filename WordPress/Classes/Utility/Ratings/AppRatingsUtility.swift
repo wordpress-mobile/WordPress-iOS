@@ -18,6 +18,16 @@ class AppRatingUtility: NSObject {
     ///
     var appReviewUrl: URL = Constants.defaultAppReviewURL
 
+    /// Don't prompt for reviews for internal builds
+    /// http://stackoverflow.com/questions/27297435/detect-if-ios-app-is-downloaded-from-apples-testflight
+    ///
+    private let isInternalBuild = { () -> Bool in
+        guard let path = Bundle.main.appStoreReceiptURL?.path else {
+            return false
+        }
+        return path.contains("sandboxReceipt")
+    }()
+
     private let defaults: UserDefaults
     private var sections = [String: Section]()
     private var allPromptingDisabled = false
@@ -164,7 +174,9 @@ class AppRatingUtility: NSObject {
     /// global basis have been shut off.
     ///
     func shouldPromptForAppReview() -> Bool {
-        if shouldSkipRatingForCurrentVersion() || allPromptingDisabled {
+        if shouldSkipRatingForCurrentVersion()
+            || isInternalBuild
+            || allPromptingDisabled {
             return false
         }
 
@@ -188,8 +200,10 @@ class AppRatingUtility: NSObject {
             return false
         }
 
-        if shouldSkipRatingForCurrentVersion() || allPromptingDisabled ||
-            !section.enabled {
+        if shouldSkipRatingForCurrentVersion()
+            || isInternalBuild
+            || allPromptingDisabled
+            || !section.enabled {
             return false
         }
 
