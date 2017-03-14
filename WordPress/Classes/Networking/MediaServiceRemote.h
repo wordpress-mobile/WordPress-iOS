@@ -26,6 +26,17 @@
             failure:(void (^)(NSError *error))failure;
 
 /**
+ *  Delete media from the server. Note the media is deleted, not trashed.
+ *
+ *  @param media   the media object to delete
+ *  @param success a block to be executed when the request finishes with success.
+ *  @param failure a block to be executed when the request fails.
+ */
+- (void)deleteMedia:(RemoteMedia *)media
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure;
+
+/**
  *  Get Media items from blog using the options parameter.
  *
  *  @param success a block to be executed when the request finishes with success.

@@ -353,7 +353,6 @@
             individualOperationCompletion(false);
         }];
     }
-
 }
 
 - (NSError *)customMediaUploadError:(NSError *)error remote:(id <MediaServiceRemote>)remote {
@@ -399,6 +398,75 @@
         error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
     }
     return error;
+}
+
+- (void)deleteMedia:(nonnull Media *)media
+            success:(nullable void (^)())success
+            failure:(nullable void (^)(NSError * _Nonnull error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
+    RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
+    NSManagedObjectID *mediaObjectID = media.objectID;
+
+    void (^successBlock)() = ^() {
+        [self.managedObjectContext performBlock:^{
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+            [self.managedObjectContext deleteObject:mediaInContext];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext
+                                     withCompletionBlock:^{
+                                         if (success) {
+                                             success();
+                                         }
+                                     }];
+        }];
+    };
+    
+    [remote deleteMedia:remoteMedia
+                success:successBlock
+                failure:failure];
+}
+
+- (void)deleteMultipleMedia:(nonnull NSArray<Media *> *)mediaObjects
+                   progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
+                    success:(nullable void (^)())success
+                    failure:(nullable void (^)())failure
+{
+    if (mediaObjects.count == 0) {
+        if (success) {
+            success();
+        }
+        return;
+    }
+
+    NSProgress *currentProgress = [NSProgress progressWithTotalUnitCount:mediaObjects.count];
+
+    dispatch_group_t group = dispatch_group_create();
+
+    [mediaObjects enumerateObjectsUsingBlock:^(Media *media, NSUInteger idx, BOOL *stop) {
+        dispatch_group_enter(group);
+        [self deleteMedia:media success:^{
+            currentProgress.completedUnitCount++;
+            if (progress) {
+                progress(currentProgress);
+            }
+            dispatch_group_leave(group);
+        } failure:^(NSError *error) {
+            dispatch_group_leave(group);
+        }];
+    }];
+
+    // After all the operations have succeeded (or failed)
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        if (currentProgress.completedUnitCount >= currentProgress.totalUnitCount) {
+            if (success) {
+                success();
+            }
+        } else {
+            if (failure) {
+                failure();
+            }
+        }
+    });
 }
 
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
@@ -611,6 +679,14 @@
         }
         WPImageSource *imageSource = [WPImageSource sharedSource];
         void (^successBlock)(UIImage *) = ^(UIImage *image) {
+            // Check the media hasn't been deleted whilst we were loading.
+            if (!media || media.isDeleted) {
+                if (success) {
+                    success([UIImage new]);
+                }
+                return;
+            }
+
             [self.managedObjectContext performBlock:^{
                 NSURL *fileURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:media.filename]
                                                   andExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]];
