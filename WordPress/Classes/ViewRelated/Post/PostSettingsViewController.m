@@ -1171,6 +1171,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     vc.onValueChanged = ^(NSString *value) {
         if (value.length) {
             self.post.publicizeMessage = value;
+        } else {
+            self.post.publicizeMessage = nil;
         }
         [self.tableView reloadData];
     };
