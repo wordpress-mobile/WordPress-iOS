@@ -43,7 +43,7 @@
     
     // Sets up the CocoaLumberjack logging; debug output to console and file
 #ifdef DEBUG
-    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
 #endif
     
 #ifndef DEBUG
