@@ -458,6 +458,10 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
             return [self isHostedAtWPcom] && [self supportsSiteManagementServices];
         case BlogFeatureNoncePreviews:
             return [self supportsRestApi] && ![self isHostedAtWPcom];
+        case BlogFeatureMediaMetadataEditing:
+            return [self supportsRestApi] && [self isAdmin];
+        case BlogFeatureMediaDeletion:
+            return [self isAdmin];
     }
 }
 

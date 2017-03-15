@@ -12,6 +12,8 @@ class MediaLibraryViewController: UIViewController {
     fileprivate let pickerViewController: WPMediaPickerViewController
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
+    fileprivate var selectedAsset: Media? = nil
+
     // MARK: - Initializers
 
     init(blog: Blog) {
@@ -55,6 +57,12 @@ class MediaLibraryViewController: UIViewController {
         registerChangeObserver()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        selectedAsset = nil
+    }
+
     private func updateNavigationItemButtonsForEditingState() {
         if isEditing {
             navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: true)
@@ -62,7 +70,11 @@ class MediaLibraryViewController: UIViewController {
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
             navigationItem.setLeftBarButton(nil, animated: true)
-            navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
+            if blog.supports(.mediaDeletion) {
+                navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
+            } else {
+                navigationItem.setRightBarButton(nil, animated: true)
+            }
         }
     }
 
@@ -140,7 +152,18 @@ class MediaLibraryViewController: UIViewController {
     private func registerChangeObserver() {
         assert(mediaLibraryChangeObserverKey == nil)
         mediaLibraryChangeObserverKey = pickerDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
-            self?.updateNavigationItemButtonsForCurrentAssetSelection()
+            guard let strongSelf = self else { return }
+
+            strongSelf.updateNavigationItemButtonsForCurrentAssetSelection()
+
+            // If we're presenting an item and it's been deleted, pop the
+            // detail view off the stack
+            if let navigationController = strongSelf.navigationController,
+                navigationController.topViewController != strongSelf,
+                let asset = strongSelf.selectedAsset,
+                asset.isDeleted {
+                _ = strongSelf.navigationController?.popToViewController(strongSelf, animated: true)
+            }
         })
     }
 
@@ -198,6 +221,8 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         guard let asset = asset as? Media else {
             return nil
         }
+
+        selectedAsset = asset
 
         return MediaItemViewController(media: asset, dataSource: pickerDataSource)
     }
