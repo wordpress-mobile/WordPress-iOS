@@ -1,14 +1,12 @@
 import UIKit
 import WordPressShared
 
-// TODO: Make Language a top level type?
-typealias Language = WordPressComLanguageDatabase.Language
-
 protocol LanguageSelectorDelegate: class {
-    func languageSelector(_ selector: LanguageSelectorViewController, didSelectLanguage: Language)
+    func languageSelector(_ selector: LanguageSelectorViewController, didSelect languageId: Int)
 }
 
 class LanguageSelectorViewController: UITableViewController, UISearchResultsUpdating {
+    fileprivate typealias Language = WordPressComLanguageDatabase.Language
     weak var delegate: LanguageSelectorDelegate?
 
     private let selectedLanguage: Language?
@@ -23,8 +21,8 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    init(selected language: Language?) {
-        self.selectedLanguage = language
+    init(selected languageId: Int?) {
+        self.selectedLanguage = languageId.flatMap(database.find(id:))
         super.init(style: .grouped)
         searchController.searchResultsUpdater = self
     }
@@ -96,14 +94,14 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
                 return
             }
             strongSelf.searchController.isActive = false
-            strongSelf.delegate?.languageSelector(strongSelf, didSelectLanguage: language)
+            strongSelf.delegate?.languageSelector(strongSelf, didSelect: language.id)
         }
     }
 }
 
-struct LanguageSelectorRow: ImmuTableRow {
+private struct LanguageSelectorRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellSubtitle.self)
-    let language: Language
+    let language: LanguageSelectorViewController.Language
     let selected: Bool
     let action: ImmuTableAction?
 

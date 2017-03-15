@@ -87,17 +87,16 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
 
     fileprivate func pressedLanguageRow() {
         let selectedLanguageId = blog.settings?.languageID.intValue
-        let selectedLanguage = selectedLanguageId.flatMap(languageDatabase.find(id:))
-        let selector = LanguageSelectorViewController(selected: selectedLanguage)
+        let selector = LanguageSelectorViewController(selected: selectedLanguageId)
         selector.delegate = self
         selector.title = NSLocalizedString("Site Language", comment: "Title for the Language Picker View")
         navigationController?.pushViewController(selector, animated: true)
     }
 
 
-    func languageSelector(_ selector: LanguageSelectorViewController, didSelectLanguage language: Language) {
+    func languageSelector(_ selector: LanguageSelectorViewController, didSelect languageId: Int) {
         _ = navigationController?.popToViewController(self, animated: true)
-        onChange?(language.id as NSNumber)
+        onChange?(languageId as NSNumber)
     }
 
 
