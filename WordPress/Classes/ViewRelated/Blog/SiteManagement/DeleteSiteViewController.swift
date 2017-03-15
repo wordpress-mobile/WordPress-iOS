@@ -105,7 +105,11 @@ open class DeleteSiteViewController: UITableViewController {
         combinedAttributedString.append(attributedText2)
         sectionThreeBody.attributedText = combinedAttributedString
 
-        supportButton.tintColor = WPStyleGuide.wordPressBlue()
+        let contactButtonAttributes = [ NSFontAttributeName: UIFont.systemFont(ofSize: 17.0),
+                                        NSForegroundColorAttributeName: WPStyleGuide.wordPressBlue(),
+                                        NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue as AnyObject]
+        supportButton.setAttributedTitle(NSAttributedString(string: NSLocalizedString("Contact Support", comment: "Button label for contacting support"), attributes: contactButtonAttributes),
+                                         for: .normal)
     }
 
     /// One time setup of fourth section (delete button)
