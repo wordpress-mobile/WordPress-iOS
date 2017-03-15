@@ -5,15 +5,23 @@ import WordPressShared
 
 /// Displays an image preview and metadata for a single Media asset.
 ///
-class MediaItemViewController: UITableViewController, ImmuTablePresenter {
+class MediaItemViewController: UITableViewController {
     let media: Media
+
     weak var dataSource: MediaLibraryPickerDataSource? = nil
 
-    var viewModel: ImmuTable!
+    fileprivate var viewModel: ImmuTable!
+    fileprivate var mediaMetadata: MediaMetadata {
+        didSet {
+            updateNavigationItem()
+        }
+    }
 
     init(media: Media, dataSource: MediaLibraryPickerDataSource) {
         self.media = media
         self.dataSource = dataSource
+
+        self.mediaMetadata = MediaMetadata(media: media)
 
         super.init(style: .grouped)
     }
@@ -22,25 +30,23 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        unregisterChangeObserver()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        title = media.title
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows([TextRow.self, EditableTextRow.self, MediaImageRow.self],
                                tableView: tableView)
-        setupViewModel()
-        setupNavigationItem()
 
-        registerChangeObserver()
+        updateViewModel()
+        updateNavigationItem()
+        updateTitle()
     }
 
-    private func setupViewModel() {
+    private func updateTitle() {
+        title = mediaMetadata.title
+    }
+
+    private func updateViewModel() {
         let presenter = MediaMetadataPresenter(media: media)
 
         viewModel = ImmuTable(sections: [
@@ -49,9 +55,9 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
                     self?.presentImageViewControllerForMedia()
                 }) ]),
             ImmuTableSection(headerText: nil, rows: [
-                EditableTextRow(title: NSLocalizedString("Title", comment: "Noun. Label for the title of a media asset (image / video)"), value: media.title, action: nil),
-                EditableTextRow(title: NSLocalizedString("Caption", comment: "Noun. Label for the caption for a media asset (image / video)"), value: media.caption, action: nil),
-                EditableTextRow(title: NSLocalizedString("Description", comment: "Label for the description for a media asset (image / video)"), value: media.desc, action: nil)
+                editableRowIfSupported(title: NSLocalizedString("Title", comment: "Noun. Label for the title of a media asset (image / video)"), value: mediaMetadata.title, action: editTitle()),
+                editableRowIfSupported(title: NSLocalizedString("Caption", comment: "Noun. Label for the caption for a media asset (image / video)"), value: mediaMetadata.caption, action: editCaption()),
+                editableRowIfSupported(title: NSLocalizedString("Description", comment: "Label for the description for a media asset (image / video)"), value: mediaMetadata.desc, action: editDescription())
                 ], footerText: nil),
             ImmuTableSection(headerText: NSLocalizedString("Metadata", comment: "Title of section containing image / video metadata such as size and file type"), rows: [
                 TextRow(title: NSLocalizedString("File name", comment: "Label for the file name for a media asset (image / video)"), value: media.filename),
@@ -62,18 +68,41 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
             ])
     }
 
-    private func setupNavigationItem() {
-        let shareItem = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
-                                        style: .plain,
-                                        target: self,
-                                        action: #selector(shareTapped(_:)))
+    private func editableRowIfSupported(title: String, value: String, action: @escaping ((ImmuTableRow) -> ())) -> ImmuTableRow {
+        if media.blog.supports(BlogFeature.mediaMetadataEditing) {
+            return EditableTextRow(title: title, value: value, action: action)
+        } else {
+            return TextRow(title: title, value: value)
+        }
+    }
 
-        let trashItem = UIBarButtonItem(image: Gridicon.iconOfType(.trash),
-                                        style: .plain,
-                                        target: self,
-                                        action: #selector(trashTapped(_:)))
+    private func reloadViewModel() {
+        updateViewModel()
+        tableView.reloadData()
+    }
 
-        navigationItem.rightBarButtonItems = [ shareItem, trashItem ]
+    private func updateNavigationItem() {
+        if mediaMetadata.matches(media) {
+            navigationItem.leftBarButtonItem = nil
+            let shareItem = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(shareTapped(_:)))
+
+            let trashItem = UIBarButtonItem(image: Gridicon.iconOfType(.trash),
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(trashTapped(_:)))
+
+            if media.blog.supports(.mediaDeletion) {
+                navigationItem.rightBarButtonItems = [ shareItem, trashItem ]
+            } else {
+                navigationItem.rightBarButtonItems = [ shareItem ]
+            }
+        } else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTapped))
+            navigationItem.rightBarButtonItems = [ UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped)) ]
+        }
     }
 
     private func presentImageViewControllerForMedia() {
@@ -82,30 +111,6 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
             controller.modalPresentationStyle = .fullScreen
 
             self.present(controller, animated: true, completion: nil)
-        }
-    }
-
-    // MARK: - Media Library Change Observer
-
-    private var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
-
-    private func registerChangeObserver() {
-        assert(mediaLibraryChangeObserverKey == nil)
-
-        // Listen out for changes to the media library – if the media item we're
-        // displaying gets deleted, we'll pop ourselves off the stack.
-        if let dataSource = dataSource {
-            mediaLibraryChangeObserverKey = dataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
-                if let isDeleted = self?.media.isDeleted, isDeleted == true {
-                    _ = self?.navigationController?.popViewController(animated: true)
-                }
-            })
-        }
-    }
-
-    private func unregisterChangeObserver() {
-        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
-            dataSource?.unregisterChangeObserver(mediaLibraryChangeObserverKey)
         }
     }
 
@@ -147,6 +152,74 @@ class MediaItemViewController: UITableViewController, ImmuTablePresenter {
         }, failure: { error in
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete media item.", comment: "Text displayed in HUD if there was an error attempting to delete a media item."))
         })
+    }
+
+    @objc private func cancelTapped() {
+        mediaMetadata = MediaMetadata(media: media)
+        reloadViewModel()
+        updateTitle()
+    }
+
+    @objc private func saveTapped() {
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Saving...", comment: "Text displayed in HUD while a media item's metadata (title, etc) is being saved."))
+
+        mediaMetadata.update(media)
+
+        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.update(media, success: {
+            SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Saved!", comment: "Text displayed in HUD when a media item's metadata (title, etc) is saved successfully."))
+            self.updateNavigationItem()
+        }, failure: { error in
+            SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to save media item.", comment: "Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved."))
+            self.updateNavigationItem()
+        })
+    }
+
+    private func editTitle() -> ((ImmuTableRow) -> ()) {
+        return { row in
+            let editableRow = row as! EditableTextRow
+            self.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image title", comment: "Hint for image title on image settings."),
+                                        onValueChanged: { value in
+                self.title = value
+                self.mediaMetadata.title = value
+                self.reloadViewModel()
+            })
+        }
+    }
+
+    private func editCaption() -> ((ImmuTableRow) -> ()) {
+        return { row in
+            let editableRow = row as! EditableTextRow
+            self.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Caption", comment: "Hint for image caption on image settings."),
+                                        onValueChanged: { value in
+                self.mediaMetadata.caption = value
+                self.reloadViewModel()
+            })
+        }
+    }
+
+    private func editDescription() -> ((ImmuTableRow) -> ()) {
+        return { row in
+            let editableRow = row as! EditableTextRow
+            self.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Description", comment: "Hint for image description on image settings."),
+                                        onValueChanged: { value in
+                self.mediaMetadata.desc  = value
+                self.reloadViewModel()
+            })
+        }
+    }
+
+    private func pushSettingsController(for row: EditableTextRow, hint: String? = nil, onValueChanged: @escaping SettingsTextChanged) {
+        let title = row.title
+        let value = row.value
+        let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
+
+        controller.title = title
+        controller.onValueChanged = onValueChanged
+
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
 
@@ -315,7 +388,6 @@ struct MediaImageRow: ImmuTableRow {
 
         if let cell = cell as? ImageTableViewCell {
             setAspectRatioFor(cell)
-            addPlaceholderImageFor(cell)
             loadImageFor(cell)
         }
     }
@@ -345,17 +417,22 @@ struct MediaImageRow: ImmuTableRow {
     }
 
     private func loadImageFor(_ cell: ImageTableViewCell) {
-        cell.isLoading = true
-        media.image(with: .zero,
-                    completionHandler: { image, error in
-                        DispatchQueue.main.async {
-                            if let error = error, image == nil {
-                                self.show(error)
-                            } else if let image = image {
-                                self.animateImageChange(image: image, for: cell)
+        if !cell.isLoading && cell.customImageView.image == nil {
+            addPlaceholderImageFor(cell)
+
+            cell.isLoading = true
+            media.image(with: .zero,
+                        completionHandler: { image, error in
+                            DispatchQueue.main.async {
+                                if let error = error, image == nil {
+                                    cell.isLoading = false
+                                    self.show(error)
+                                } else if let image = image {
+                                    self.animateImageChange(image: image, for: cell)
+                                }
                             }
-                        }
-        })
+            })
+        }
     }
 
     private func show(_ error: Error) {
@@ -390,5 +467,35 @@ private struct MediaMetadataPresenter {
     /// A String containing the uppercased file extension of the asset (.JPG, .PNG, etc)
     var fileType: String {
         return (media.filename as NSString).pathExtension.uppercased()
+    }
+}
+
+/// Used to store media metadata and provide the ability to undo changes to
+/// the MediaItemViewController's media property.
+private struct MediaMetadata {
+    var title: String
+    var caption: String
+    var desc: String
+
+    init(media: Media) {
+        title = media.title ?? ""
+        caption = media.caption ?? ""
+        desc = media.desc ?? ""
+    }
+
+    /// - returns: True if this metadata's fields match those
+    /// of the specified Media object.
+    func matches(_ media: Media) -> Bool {
+        return title == media.title
+            && caption == media.caption
+            && desc == media.desc
+    }
+
+    /// Update the metadata fields of the specified Media object
+    /// to match this metadata's fields.
+    func update(_ media: Media) {
+        media.title = title
+        media.caption = caption
+        media.desc = desc
     }
 }
