@@ -121,7 +121,8 @@ open class DeleteSiteViewController: UITableViewController {
         deleteSiteButton.setImage(trashIcon, for: .normal)
     }
 
-    /// One time setup of fourth section (delete button)
+    /// Helper function that trims the provided string, prefixes a unicode bullet,
+    /// and sets the proper case.
     ///
     fileprivate func styleListItem(_ listItem: String) -> String {
         return "\u{2022} " + listItem.trim().capitalized
