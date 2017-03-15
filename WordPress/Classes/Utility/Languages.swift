@@ -54,7 +54,7 @@ class WordPressComLanguageDatabase: NSObject {
 
     /// Returns the Language with a given Language Identifier
     ///
-    /// - Parameter languageId: The Identifier of the language.
+    /// - Parameter id: The Identifier of the language.
     ///
     /// - Returns: The language with the matching Identifier, or nil, in case it wasn't found.
     ///
