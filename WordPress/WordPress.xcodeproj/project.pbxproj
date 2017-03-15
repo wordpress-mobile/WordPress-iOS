@@ -5344,7 +5344,7 @@
 					};
 					8511CFB51C607A7000B7CEED = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 99KV9Z6BKV;
+						DevelopmentTeam = PZYM8XX95Q;
 						LastSwiftMigration = 0820;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
