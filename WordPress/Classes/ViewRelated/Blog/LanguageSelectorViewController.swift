@@ -1,31 +1,35 @@
 import UIKit
 import WordPressShared
 
+/// Defines the methods implemented by the LanguageSelectorViewController delegate
+///
 protocol LanguageSelectorDelegate: class {
+
+    /// Called when the user tapped on a language.
+    ///
     func languageSelector(_ selector: LanguageSelectorViewController, didSelect languageId: Int)
 }
 
+
+/// Displays a searchable list of languages supported by WordPress.com, letting the user select one.
+///
 class LanguageSelectorViewController: UITableViewController, UISearchResultsUpdating {
-    fileprivate typealias Language = WordPressComLanguageDatabase.Language
+
+    // MARK: - Public interface
+
+    /// The receiver’s delegate.
+    ///
     weak var delegate: LanguageSelectorDelegate?
 
-    private let selectedLanguage: Language?
-    private let searchController: UISearchController = {
-        let controller = UISearchController(searchResultsController: nil)
-        controller.obscuresBackgroundDuringPresentation = false
-        return controller
-    }()
-
-    private let database = WordPressComLanguageDatabase()
-    private lazy var handler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
-    }()
-
+    /// Initializes the language selector, optionally with a selected language.
+    ///
     init(selected languageId: Int?) {
         self.selectedLanguage = languageId.flatMap(database.find(id:))
         super.init(style: .grouped)
         searchController.searchResultsUpdater = self
     }
+
+    // MARK: - UIViewController
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -44,7 +48,19 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
         searchController.isActive = false
     }
 
-    func updateViewModel() {
+    // MARK: - Search Results Updating
+
+    func updateSearchResults(for searchController: UISearchController) {
+        updateViewModel()
+    }
+
+    // MARK: - Model
+
+    private lazy var handler: ImmuTableViewHandler = {
+        return ImmuTableViewHandler(takeOver: self)
+    }()
+
+    private func updateViewModel() {
         if searchController.isActive {
             handler.viewModel = modelForSearch(query: searchController.searchBar.text?.nonEmptyString())
         } else {
@@ -52,12 +68,12 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
         }
     }
 
-    func modelForSearch(query: String?) -> ImmuTable {
+    private func modelForSearch(query: String?) -> ImmuTable {
         let filtered: [Language]
         if let query = query {
             filtered = database.all.filter({ (language) -> Bool in
                 return language.name.localizedCaseInsensitiveContains(query)
-                || language.description.localizedCaseInsensitiveContains(query)
+                    || language.description.localizedCaseInsensitiveContains(query)
             })
         } else {
             filtered = database.all
@@ -67,7 +83,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
             ])
     }
 
-    func modelForBrowsing() -> ImmuTable {
+    private func modelForBrowsing() -> ImmuTable {
         return ImmuTable(sections: [
             ImmuTableSection(
                 headerText: NSLocalizedString("Popular languages", comment: "Section title for Popular Languages"),
@@ -76,10 +92,6 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
                 headerText: NSLocalizedString("All languages", comment: "Section title for All Languages"),
                 rows: database.all.map(model(language:)))
             ])
-    }
-
-    func updateSearchResults(for searchController: UISearchController) {
-        updateViewModel()
     }
 
     private func model(language: Language) -> ImmuTableRow {
@@ -97,6 +109,21 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
             strongSelf.delegate?.languageSelector(strongSelf, didSelect: language.id)
         }
     }
+
+    // MARK: - Private properties
+
+    fileprivate typealias Language = WordPressComLanguageDatabase.Language
+
+    private let selectedLanguage: Language?
+
+    private let searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: nil)
+        controller.obscuresBackgroundDuringPresentation = false
+        return controller
+    }()
+
+    private let database = WordPressComLanguageDatabase()
+
 }
 
 private struct LanguageSelectorRow: ImmuTableRow {
