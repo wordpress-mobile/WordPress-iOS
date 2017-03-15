@@ -70,7 +70,11 @@ class MediaLibraryViewController: UIViewController {
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
             navigationItem.setLeftBarButton(nil, animated: true)
-            navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
+            if blog.supports(.mediaDeletion) {
+                navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
+            } else {
+                navigationItem.setRightBarButton(nil, animated: true)
+            }
         }
     }
 
