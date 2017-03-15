@@ -39,6 +39,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
         super.viewDidLoad()
         ImmuTable.registerRows([LanguageSelectorRow.self], tableView: tableView)
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureSearchBar(searchController.searchBar)
         tableView.tableHeaderView = searchController.searchBar
         updateViewModel()
     }
