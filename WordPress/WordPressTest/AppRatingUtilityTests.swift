@@ -7,13 +7,13 @@ class AppRatingUtilityTests: XCTestCase {
 
 
     override func setUp() {
+        Build._overrideCurrent = .appStore
         let appDomain: String? = Bundle.main.bundleIdentifier
         UserDefaults.standard.removePersistentDomain(forName: appDomain!)
         self.defaults = UserDefaults()
         self.utility = AppRatingUtility(defaults: self.defaults)
         self.utility.setVersion("1.0")
         self.utility.systemWideSignificantEventCountRequiredForPrompt = 1
-        self.utility.isInternalBuild = false
         super.setUp()
     }
 
@@ -256,16 +256,6 @@ class AppRatingUtilityTests: XCTestCase {
         self.waitForExpectations(timeout: 5.0, handler: nil)
 
         // We should disable the check when the remote check indicates notifications is disabled
-        XCTAssertFalse(self.utility.shouldPromptForAppReview(section: "notifications"))
-    }
-
-    func testAppReviewNotPromptedForInternalBuilds() {
-        self.utility.isInternalBuild = true
-        self.utility.systemWideSignificantEventCountRequiredForPrompt = 1
-        self.utility.incrementSignificantEvent()
-        XCTAssertFalse(self.utility.shouldPromptForAppReview())
-
-        self.utility.register(section: "notifications", significantEventCount: 2)
         XCTAssertFalse(self.utility.shouldPromptForAppReview(section: "notifications"))
     }
 
