@@ -5,7 +5,7 @@ import WordPressShared
 /// This class will display the Blog's Language setting, and will allow the user to pick a new value.
 /// Upon selection, WordPress.com backend will get hit, and the new value will be persisted.
 ///
-open class LanguageViewController: UITableViewController {
+open class LanguageViewController: UITableViewController, LanguageSelectorDelegate {
     /// Callback to be executed whenever the Blog's selected language changes.
     ///
     var onChange: ((NSNumber) -> Void)?
@@ -86,32 +86,19 @@ open class LanguageViewController: UITableViewController {
     }
 
     fileprivate func pressedLanguageRow() {
-        // Setup Properties
-        let headers = [
-            NSLocalizedString("Popular languages", comment: "Section title for Popular Languages"),
-            NSLocalizedString("All languages", comment: "Section title for All Languages")
-        ]
-
-        let languages   = languageDatabase.grouped
-        let titles      = languages.map { $0.map { $0.name } }
-        let subtitles   = languages.map { $0.map { $0.description } }
-        let values      = languages.map { $0.map { $0.id } } as [[NSObject]]
-
-        // Setup ListPickerViewController
-        let listViewController = SettingsListPickerViewController(headers: headers, titles: titles, subtitles: subtitles, values: values)
-        listViewController.title = NSLocalizedString("Site Language", comment: "Title for the Language Picker View")
-        listViewController.selectedValue = blog.settings!.languageID
-        listViewController.onChange = { [weak self] (selected: AnyObject) in
-            guard let newLanguageID = selected as? NSNumber else {
-                return
-            }
-
-            self?.onChange?(newLanguageID)
-        }
-
-        navigationController?.pushViewController(listViewController, animated: true)
+        let selectedLanguageId = blog.settings?.languageID.intValue
+        let selectedLanguage = selectedLanguageId.flatMap(languageDatabase.find(id:))
+        let selector = LanguageSelectorViewController(selected: selectedLanguage)
+        selector.delegate = self
+        selector.title = NSLocalizedString("Site Language", comment: "Title for the Language Picker View")
+        navigationController?.pushViewController(selector, animated: true)
     }
 
+
+    func languageSelector(_ selector: LanguageSelectorViewController, didSelectLanguage language: Language) {
+        _ = navigationController?.popToViewController(self, animated: true)
+        onChange?(language.id as NSNumber)
+    }
 
 
     // MARK: - Private Constants
