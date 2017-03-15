@@ -94,7 +94,11 @@ class MediaItemViewController: UITableViewController {
                                             target: self,
                                             action: #selector(trashTapped(_:)))
 
-            navigationItem.rightBarButtonItems = [ shareItem, trashItem ]
+            if media.blog.supports(.mediaDeletion) {
+                navigationItem.rightBarButtonItems = [ shareItem, trashItem ]
+            } else {
+                navigationItem.rightBarButtonItems = [ shareItem ]
+            }
         } else {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTapped))
             navigationItem.rightBarButtonItems = [ UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped)) ]

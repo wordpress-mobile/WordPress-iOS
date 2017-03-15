@@ -51,7 +51,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Does the blog support frame-nonce to authenticate previews?
     BlogFeatureNoncePreviews,
     /// Does the blog support editing media metadata?
-    BlogFeatureMediaMetadataEditing
+    BlogFeatureMediaMetadataEditing,
+    /// Does the blog support deleting media?
+    BlogFeatureMediaDeletion
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
