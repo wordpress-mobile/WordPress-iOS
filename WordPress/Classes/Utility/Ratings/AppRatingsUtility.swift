@@ -19,13 +19,9 @@ class AppRatingUtility: NSObject {
     var appReviewUrl: URL = Constants.defaultAppReviewURL
 
     /// Don't prompt for reviews for internal builds
-    /// http://stackoverflow.com/questions/27297435/detect-if-ios-app-is-downloaded-from-apples-testflight
     ///
-    var isInternalBuild: Bool = {
-        guard let path = Bundle.main.appStoreReceiptURL?.path else {
-            return false
-        }
-        return path.contains("sandboxReceipt")
+    private var isInternalBuild: Bool = {
+        return build(.internal)
     }()
 
     private let defaults: UserDefaults
