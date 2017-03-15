@@ -1217,49 +1217,40 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     // MARK: - Toolbar creation
 
     func createToolbar(htmlMode: Bool) -> Aztec.FormatBar {
-        let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let items = [
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage).withRenderingMode(.alwaysTemplate), identifier: .media),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold).withRenderingMode(.alwaysTemplate), identifier: .bold),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic).withRenderingMode(.alwaysTemplate), identifier: .italic),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline).withRenderingMode(.alwaysTemplate), identifier: .underline),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough).withRenderingMode(.alwaysTemplate), identifier: .strikethrough),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote).withRenderingMode(.alwaysTemplate), identifier: .blockquote),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered).withRenderingMode(.alwaysTemplate), identifier: .unorderedlist),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered).withRenderingMode(.alwaysTemplate), identifier: .orderedlist),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link).withRenderingMode(.alwaysTemplate), identifier: .link),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.code).withRenderingMode(.alwaysTemplate), identifier: .sourcecode),
-            flex,
-            ]
+        let scrollableItems = [
+            FormatBarItem(image: Gridicon.iconOfType(.addImage), identifier: .media),
+            FormatBarItem(image: Gridicon.iconOfType(.heading), identifier: .header),
+            FormatBarItem(image: Gridicon.iconOfType(.bold), identifier: .bold),
+            FormatBarItem(image: Gridicon.iconOfType(.italic), identifier: .italic),
+            FormatBarItem(image: Gridicon.iconOfType(.underline), identifier: .underline),
+            FormatBarItem(image: Gridicon.iconOfType(.strikethrough), identifier: .strikethrough),
+            FormatBarItem(image: Gridicon.iconOfType(.quote), identifier: .blockquote),
+            FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: .unorderedlist),
+            FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: .orderedlist),
+            FormatBarItem(image: Gridicon.iconOfType(.link), identifier: .link),
+        ]
+
+        let fixedItems = [
+            FormatBarItem(image: Gridicon.iconOfType(.code), identifier: .sourcecode)
+        ]
 
         let toolbar = Aztec.FormatBar()
 
         if htmlMode {
-            for item in items {
-                item.isEnabled = false
-                if let sourceItem = item as? FormatBarItem, sourceItem.identifier == .sourcecode {
-                    item.isEnabled = true
-                }
+            let merged = scrollableItems + fixedItems
+            for item in merged {
+                item.isEnabled = item.identifier == .sourcecode
             }
         }
 
-        toolbar.items = items
-        toolbar.barTintColor = UIColor(fromHex: 0xF9FBFC, alpha: 1)
+        toolbar.scrollableItems = scrollableItems
+        toolbar.fixedItems = fixedItems
         toolbar.tintColor = WPStyleGuide.greyLighten10()
-        toolbar.highlightedTintColor = UIColor.blue
-        toolbar.selectedTintColor = UIColor.darkGray
-        toolbar.disabledTintColor = UIColor.lightGray
-        toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
+        toolbar.topBorderColor = WPStyleGuide.greyLighten10()
+        toolbar.highlightedTintColor = .blue
+        toolbar.selectedTintColor = .darkGray
+        toolbar.disabledTintColor = .lightGray
+        toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0)
         toolbar.formatter = self
 
         return toolbar
