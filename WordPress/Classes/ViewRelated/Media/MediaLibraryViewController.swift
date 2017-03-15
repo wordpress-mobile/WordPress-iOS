@@ -12,6 +12,8 @@ class MediaLibraryViewController: UIViewController {
     fileprivate let pickerViewController: WPMediaPickerViewController
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
+    fileprivate var selectedAsset: Media? = nil
+
     // MARK: - Initializers
 
     init(blog: Blog) {
@@ -53,6 +55,12 @@ class MediaLibraryViewController: UIViewController {
         addMediaPickerAsChildViewController()
 
         registerChangeObserver()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        selectedAsset = nil
     }
 
     private func updateNavigationItemButtonsForEditingState() {
@@ -140,7 +148,18 @@ class MediaLibraryViewController: UIViewController {
     private func registerChangeObserver() {
         assert(mediaLibraryChangeObserverKey == nil)
         mediaLibraryChangeObserverKey = pickerDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
-            self?.updateNavigationItemButtonsForCurrentAssetSelection()
+            guard let strongSelf = self else { return }
+
+            strongSelf.updateNavigationItemButtonsForCurrentAssetSelection()
+
+            // If we're presenting an item and it's been deleted, pop the
+            // detail view off the stack
+            if let navigationController = strongSelf.navigationController,
+                navigationController.topViewController != strongSelf,
+                let asset = strongSelf.selectedAsset,
+                asset.isDeleted {
+                _ = strongSelf.navigationController?.popToViewController(strongSelf, animated: true)
+            }
         })
     }
 
@@ -198,6 +217,8 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         guard let asset = asset as? Media else {
             return nil
         }
+
+        selectedAsset = asset
 
         return MediaItemViewController(media: asset, dataSource: pickerDataSource)
     }
