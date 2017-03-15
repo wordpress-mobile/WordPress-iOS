@@ -1261,14 +1261,10 @@ fileprivate extension AztecPostViewController {
         discardChanges()
         post = newPost
         createRevisionOfPost()
-        markBlogAsLastUsed(blog)
+        RecentSitesService().touch(blog: blog)
 
         // TODO: Add this snippet, if needed, once we've relocated this helper to PostService
         //[self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
-    }
-
-    func markBlogAsLastUsed(_ blog: Blog) {
-        RecentSitesService().touch(blog: blog)
     }
 
     func cancelEditing() {
