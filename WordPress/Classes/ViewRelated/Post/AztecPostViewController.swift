@@ -269,6 +269,11 @@ class AztecPostViewController: UIViewController {
     }()
 
 
+    /// Available Header Types
+    ///
+    fileprivate let headers: [HeaderFormatter.HeaderType] = [.none, .h1, .h2, .h3, .h4, .h5, .h6]
+
+
 
     // MARK: - Lifecycle Methods
 
@@ -972,8 +977,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             showImagePicker()
         case .sourcecode:
             toggleEditingMode()
-        case .header:
-            return
+        case .header, .header1, .header2, .header3, .header4, .header5, .header6:
+            toggleHeader()
         }
         updateFormatBar()
     }
@@ -1150,6 +1155,62 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             return
         }
         mode.toggle()
+    }
+
+    func toggleHeader() {
+        // check if we already showing a custom view.
+        if richTextView.inputView != nil {
+            changeRichTextInputView(to: nil)
+            return
+        }
+
+        let headerOptions = headers.map { (headerType) -> NSAttributedString in
+            NSAttributedString(string: headerType.description, attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize)])
+        }
+
+        let headerPicker = OptionsTableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 200), options: headerOptions)
+        headerPicker.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        headerPicker.onSelect = { selected in
+            self.richTextView.toggleHeader(self.headers[selected], range: self.richTextView.selectedRange)
+            self.changeRichTextInputView(to: nil)
+        }
+        if let selectedHeader = headers.index(of: headerLevelForSelectedText()) {
+            headerPicker.selectRow(at: IndexPath(row: selectedHeader, section: 0), animated: false, scrollPosition: .top)
+        }
+        changeRichTextInputView(to: headerPicker)
+    }
+
+    func changeRichTextInputView(to: UIView?) {
+        guard richTextView.inputView != to else {
+            return
+        }
+
+        richTextView.resignFirstResponder()
+        richTextView.inputView = to
+        richTextView.becomeFirstResponder()
+    }
+
+    func headerLevelForSelectedText() -> HeaderFormatter.HeaderType {
+        var identifiers = [FormattingIdentifier]()
+        if (richTextView.selectedRange.length > 0) {
+            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+        } else {
+            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+        }
+        let mapping: [FormattingIdentifier: HeaderFormatter.HeaderType] = [
+            .header1: .h1,
+            .header2: .h2,
+            .header3: .h3,
+            .header4: .h4,
+            .header5: .h5,
+            .header6: .h6,
+        ]
+        for (key,value) in mapping {
+            if identifiers.contains(key) {
+                return value
+            }
+        }
+        return .none
     }
 
 
