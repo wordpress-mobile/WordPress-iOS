@@ -141,14 +141,17 @@ static CGFloat const SettingsMinHeight = 41.0f;
 {
     CGSize size = [self.textView sizeThatFits:CGSizeMake(self.textView.frame.size.width, CGFLOAT_MAX)];
     CGFloat height = size.height;
-    CGFloat halfCurrentFontLineHeight = self.textView.font.lineHeight * 0.5f;
+    CGFloat targetHeight = MAX(height, SettingsMinHeight) + SettingsTextPadding.dy;
+    targetHeight = roundf(targetHeight);
 
-    if (fabs(self.tableView.rowHeight - height) > MAX(halfCurrentFontLineHeight, SettingsMinHeight))
+    if (self.tableView.rowHeight == targetHeight)
     {
-        [self.tableView beginUpdates];
-        self.tableView.rowHeight = MAX(height, SettingsMinHeight) + SettingsTextPadding.dy;
-        [self.tableView endUpdates];
+        return;
     }
+
+    [self.tableView beginUpdates];
+    self.tableView.rowHeight = targetHeight;
+    [self.tableView endUpdates];
 }
 
 @end
