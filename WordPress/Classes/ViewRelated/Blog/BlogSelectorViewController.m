@@ -8,18 +8,16 @@
 #import "AccountService.h"
 #import "WordPress-Swift.h"
 
-static NSString *const BlogCellIdentifier = @"BlogCell";
-static CGFloat BlogCellRowHeight = 74.0;
+@interface BlogSelectorViewController () <UISearchControllerDelegate, UISearchResultsUpdating>
 
-@interface BlogSelectorViewController () <NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating>
-
-@property (nonatomic, strong) NSFetchedResultsController    *resultsController;
 @property (nonatomic, strong) NSNumber                      *selectedObjectDotcomID;
 @property (nonatomic, strong) NSManagedObjectID             *selectedObjectID;
 @property (nonatomic,   copy) BlogSelectorSuccessHandler    successHandler;
 @property (nonatomic,   copy) BlogSelectorDismissHandler    dismissHandler;
 @property (nonatomic, strong) UISearchController            *searchController;
+@property (nonatomic, strong) BlogListDataSource            *dataSource;
 
+@property (nonatomic) BOOL visible;
 @end
 
 @implementation BlogSelectorViewController
@@ -41,6 +39,7 @@ static CGFloat BlogCellRowHeight = 74.0;
         _dismissHandler = dismissHandler;
         _displaysCancelButton = YES;
         _displaysNavigationBarWhenSearching = YES;
+        [self configureDataSource];
     }
 
     return self;
@@ -65,6 +64,35 @@ static CGFloat BlogCellRowHeight = 74.0;
                                dismissHandler:dismissHandler];
 }
 
+- (void)configureDataSource
+{
+    self.dataSource = [BlogListDataSource new];
+    self.dataSource.selecting = YES;
+    self.dataSource.selectedBlogId = self.selectedObjectID;
+    __weak __typeof(self) weakSelf = self;
+    self.dataSource.dataChanged = ^{
+        if (weakSelf.visible) {
+            [weakSelf dataChanged];
+        }
+    };
+}
+
+- (BOOL)displaysOnlyDefaultAccountSites {
+    return (self.dataSource.account != nil);
+}
+
+- (void)setDisplaysOnlyDefaultAccountSites:(BOOL)onlyDefault
+{
+    if (onlyDefault) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        self.dataSource.account = defaultAccount;
+    } else {
+        self.dataSource.account = nil;
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -84,14 +112,11 @@ static CGFloat BlogCellRowHeight = 74.0;
         self.navigationItem.leftBarButtonItem = cancelButtonItem;
     }
     
-    // NSFetchedResultsController
-    self.resultsController.delegate = self;
-    [self.resultsController performFetch:nil];
-    
     // TableView
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:[WPBlogTableViewCell reuseIdentifier]];
+    self.tableView.dataSource = self.dataSource;
     [self.tableView reloadData];
 
     self.tableView.tableFooterView = [UIView new];
@@ -106,8 +131,10 @@ static CGFloat BlogCellRowHeight = 74.0;
     [self.navigationController setNavigationBarHidden:NO animated:animated];
 
     [self registerForKeyboardNotifications];
+    [self.tableView reloadData];
     [self syncBlogs];
     [self scrollToSelectedObjectID];
+    self.visible = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -116,7 +143,7 @@ static CGFloat BlogCellRowHeight = 74.0;
 
     [self unregisterForKeyboardNotifications];
 
-    self.resultsController.delegate = nil;
+    self.visible = NO;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -235,9 +262,10 @@ static CGFloat BlogCellRowHeight = 74.0;
     if (self.selectedObjectID == nil) {
         return;
     }
-    
-    NSManagedObject *obj = [self.resultsController.managedObjectContext objectWithID:self.selectedObjectID];
-    NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    Blog *blog = (Blog *)[context objectWithID:self.selectedObjectID];
+    NSIndexPath *indexPath = [self.dataSource indexPathForBlog:blog];
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 }
 
@@ -267,9 +295,9 @@ static CGFloat BlogCellRowHeight = 74.0;
 }
 
 
-#pragma mark - NSFetchedResultsControllerDelegate
+#pragma mark - Data Listener
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+- (void)dataChanged
 {
     [self.tableView reloadData];
 }
@@ -288,85 +316,21 @@ static CGFloat BlogCellRowHeight = 74.0;
     }
 }
 
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return [self.resultsController sections].count;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    NSArray *sections = self.resultsController.sections;
-    if (sections.count == 0) {
-        return 0;
-    }
-    
-    id <NSFetchedResultsSectionInfo> sectionInfo = sections[section];
-    return sectionInfo.numberOfObjects;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
-
-    [WPStyleGuide configureTableViewBlogCell:cell];
-    [self configureCell:cell atIndexPath:indexPath];
-
-    return cell;
-}
-
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    cell.textLabel.textAlignment = NSTextAlignmentNatural;
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.accessoryView = nil;
-
-    Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-    NSString *name = blog.settings.name;
-    
-    if (name.length != 0) {
-        cell.textLabel.text = name;
-        cell.detailTextLabel.text = blog.url;
-    } else {
-        cell.textLabel.text = blog.url;
-    }
-
-    [cell.imageView setImageWithSiteIcon:blog.icon];
-
-    cell.accessoryType = blog.objectID == self.selectedObjectID ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-}
+#pragma mark - UITableView Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    NSIndexPath *previousIndexPath;
-    if (self.selectedObjectID) {
-        for (Blog *blog in self.resultsController.fetchedObjects) {
-            if (blog.objectID == self.selectedObjectID) {
-                previousIndexPath = [self.resultsController indexPathForObject:blog];
-                break;
-            }
-        }
-
-        if (previousIndexPath && [previousIndexPath compare:indexPath] == NSOrderedSame) {
-            // User tapped the already selected item. Treat this as a cancel event
-            // so the picker can be dismissed without changes.
-            [self cancelButtonTapped:nil];
-            return;
-        }
+    Blog *selectedBlog = [self.dataSource blogAtIndexPath:indexPath];
+    if (selectedBlog.objectID == self.selectedObjectID) {
+        // User tapped the already selected item. Treat this as a cancel event
+        // so the picker can be dismissed without changes.
+        [self cancelButtonTapped:nil];
+        return;
     }
-
-    Blog *selectedBlog = [self.resultsController objectAtIndexPath:indexPath];
     self.selectedObjectID = selectedBlog.objectID;
-    [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-
-    if (previousIndexPath) {
-        [tableView reloadRowsAtIndexPaths:@[previousIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }
+    self.dataSource.selectedBlogId = selectedBlog.objectID;
 
     // Fire off the selection after a short delay to let animations complete for selection/deselection
     if (self.successHandler) {
@@ -384,143 +348,37 @@ static CGFloat BlogCellRowHeight = 74.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return BlogCellRowHeight;
+    return [WPBlogTableViewCell cellHeight];
 }
 
-#pragma mark - NSFetchedResultsController
-
-- (NSFetchedResultsController *)resultsController
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (_resultsController) {
-        return _resultsController;
+    // If we have more than one section, show a 2px separator unless the section has a title.
+    NSString *sectionTitle = nil;
+    if ([tableView.dataSource respondsToSelector:@selector(tableView:titleForHeaderInSection:)]) {
+        sectionTitle = [tableView.dataSource tableView:tableView titleForHeaderInSection:section];
     }
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
-    request.sortDescriptors = _displaysPrimaryBlogOnTop ? self.sortDescriptorsWithAccountKeyPath : self.sortDescriptors;
-    request.predicate = [self fetchRequestPredicate];
-
-    _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                             managedObjectContext:context
-                                                               sectionNameKeyPath:nil
-                                                                        cacheName:nil];
-    _resultsController.delegate = self;
-
-    NSError *error = nil;
-    if (![_resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
-        _resultsController = nil;
+    if (section > 0 && [sectionTitle length] == 0) {
+        return 2;
     }
-    
-    return _resultsController;
-}
-
-- (NSString *)entityName
-{
-    return NSStringFromClass([Blog class]);
-}
-
-- (NSString *)defaultBlogAccountIdKeyPath
-{
-    return @"accountForDefaultBlog.userID";
-}
-
-- (NSString *)siteNameKeyPath
-{
-    return @"settings.name";
-}
-
-
-- (NSPredicate *)fetchRequestPredicate
-{
-    NSPredicate *predicate;
-
-    if ([self.searchController isActive]) {
-        predicate = [self fetchRequestPredicateForSearch];
-    } else {
-        predicate = [self fetchRequestPredicateForVisibleBlogs];
-    }
-
-    if (!self.displaysOnlyDefaultAccountSites) {
-        return predicate;
-    } else {
-        NSPredicate *accountPredicate = [self fetchRequestPredicateForDotComBlogs];
-        return [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, accountPredicate]];
-    }
-}
-
-- (NSPredicate *)fetchRequestPredicateForSearch
-{
-    NSString *searchText = self.searchController.searchBar.text;
-    if ([searchText isEmpty]) {
-        // Don't filter – show all sites
-        return [self fetchRequestPredicateForAllBlogs];
-    }
-
-    return [NSPredicate predicateWithFormat:@"( settings.name contains[cd] %@ ) OR ( url contains[cd] %@)", searchText, searchText];
-}
-
-- (NSPredicate *)fetchRequestPredicateForVisibleBlogs
-{
-    NSPredicate *visiblePredicate = [NSPredicate predicateWithFormat:@"visible = YES"];
-
-    if (self.selectedObjectID) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        NSManagedObject *currentBlog = [context existingObjectWithID:self.selectedObjectID error:nil];
-        if (currentBlog) {
-            NSPredicate *currentBlogPredicate = [NSPredicate predicateWithFormat:@"self = %@", currentBlog];
-            visiblePredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[visiblePredicate, currentBlogPredicate]];
-        }
-    }
-
-    return visiblePredicate;
-}
-
-- (NSPredicate *)fetchRequestPredicateForDotComBlogs
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    NSPredicate *accountPredicate = [NSPredicate predicateWithFormat:@"account == %@ OR jetpackAccount == %@", defaultAccount, defaultAccount];
-    return accountPredicate;
-}
-
-- (NSPredicate *)fetchRequestPredicateForAllBlogs
-{
-    return [NSPredicate predicateWithValue:YES];
-}
-
-- (NSArray *)sortDescriptors
-{
-    return @[[NSSortDescriptor sortDescriptorWithKey:self.siteNameKeyPath
-                                           ascending:YES
-                                            selector:@selector(localizedCaseInsensitiveCompare:)]];
-}
-
-- (NSArray *)sortDescriptorsWithAccountKeyPath
-{
-    NSMutableArray *descriptors = [@[[NSSortDescriptor sortDescriptorWithKey:self.defaultBlogAccountIdKeyPath
-                                                                   ascending:NO
-                                                                    selector:@selector(compare:)]]
-                                   mutableCopy];
-    
-    [descriptors addObjectsFromArray:self.sortDescriptors];
-    return descriptors;
+    return UITableViewAutomaticDimension;
 }
 
 #pragma mark - UISearchController
 
+- (void)willPresentSearchController:(UISearchController *)searchController
+{
+    self.dataSource.searching = YES;
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController
+{
+    self.dataSource.searching = NO;
+}
+
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
-    self.resultsController.fetchRequest.predicate = [self fetchRequestPredicate];
-
-    NSError *error = nil;
-    if (![self.resultsController performFetch:&error]) {
-        DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
-    }
-
-    [self.tableView reloadData];
+    self.dataSource.searchQuery = searchController.searchBar.text;
 }
 
 // Improves the appearance of the arrow when displayed in a popover, by matching

@@ -296,7 +296,7 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
             let context = ContextManager.sharedInstance().mainContext
             let service = BlogService(managedObjectContext: context)
             if let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) {
-                service.flagBlog(asLastUsed: blog)
+                RecentSitesService().touch(blog: blog)
             }
 
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)

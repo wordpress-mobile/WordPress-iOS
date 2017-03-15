@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 @interface WPURLRequest : NSURLRequest
 
 
@@ -11,7 +12,7 @@
  @return a `NSURLRequest` instance for the specified URL, with a given UserAgent set.
  */
 
-+ (NSURLRequest *)requestWithURL:(NSURL *)url userAgent:(NSString *)userAgent;
++ (NSURLRequest *)requestWithURL:(NSURL *)url userAgent:(nullable NSString *)userAgent;
 
 
 /**
@@ -28,8 +29,9 @@
 + (NSURLRequest *)requestForAuthenticationWithURL:(NSURL *)loginUrl
                                       redirectURL:(NSURL *)redirectURL
                                          username:(NSString *)username
-                                         password:(NSString *)password
-                                      bearerToken:(NSString *)bearerToken
-                                        userAgent:(NSString *)userAgent;
+                                         password:(nullable NSString *)password
+                                      bearerToken:(nullable NSString *)bearerToken
+                                        userAgent:(nullable NSString *)userAgent;
 
 @end
+NS_ASSUME_NONNULL_END

@@ -611,9 +611,9 @@ EditImageDetailsViewControllerDelegate
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
         
         if (blog) {
-            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+            RecentSitesService *recentSites = [RecentSitesService new];
+            [recentSites touchBlog:blog];
 
-            [blogService flagBlogAsLastUsed:blog];
             AbstractPost *newPost = [self createNewDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
             
@@ -840,11 +840,6 @@ EditImageDetailsViewControllerDelegate
                                 handler:^(UIAlertAction * action) {
         [self actionSheetKeepEditingButtonPressed];
     }];
-    [alertController addActionWithTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                  style:UIAlertActionStyleDestructive
-                                handler:^(UIAlertAction * action) {
-        [self actionSheetDiscardButtonPressed];
-    }];
     
     if ([self.post hasLocalChanges]) {
         if (![self.post hasRemote]) {
@@ -864,6 +859,12 @@ EditImageDetailsViewControllerDelegate
         }
     }
     
+    [alertController addActionWithTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                  style:UIAlertActionStyleDestructive
+                                handler:^(UIAlertAction * action) {
+                                    [self actionSheetDiscardButtonPressed];
+                                }];
+
     alertController.popoverPresentationController.barButtonItem = self.currentCancelButton;
     [self presentViewController:alertController animated:YES completion:nil];
 }
