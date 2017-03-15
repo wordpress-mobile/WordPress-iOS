@@ -30,18 +30,12 @@ class MediaItemViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        unregisterChangeObserver()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows([TextRow.self, EditableTextRow.self, MediaImageRow.self],
                                tableView: tableView)
-
-        registerChangeObserver()
 
         updateViewModel()
         updateNavigationItem()
@@ -105,30 +99,6 @@ class MediaItemViewController: UITableViewController {
             controller.modalPresentationStyle = .fullScreen
 
             self.present(controller, animated: true, completion: nil)
-        }
-    }
-
-    // MARK: - Media Library Change Observer
-
-    private var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
-
-    private func registerChangeObserver() {
-        assert(mediaLibraryChangeObserverKey == nil)
-
-        // Listen out for changes to the media library – if the media item we're
-        // displaying gets deleted, we'll pop ourselves off the stack.
-        if let dataSource = dataSource {
-            mediaLibraryChangeObserverKey = dataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
-                if let isDeleted = self?.media.isDeleted, isDeleted == true {
-                    _ = self?.navigationController?.popViewController(animated: true)
-                }
-            })
-        }
-    }
-
-    private func unregisterChangeObserver() {
-        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
-            dataSource?.unregisterChangeObserver(mediaLibraryChangeObserverKey)
         }
     }
 
