@@ -38,6 +38,8 @@ static CGFloat const SettingsMinHeight = 41.0f;
 {
     [self.textView becomeFirstResponder];
     [super viewDidAppear:animated];
+
+    [self adjustCellSize];
 }
 
 - (void)viewDidLoad
@@ -45,14 +47,6 @@ static CGFloat const SettingsMinHeight = 41.0f;
     [super viewDidLoad];
     self.tableView.allowsSelection = NO;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self adjustCellSize];
-    });
 }
 
 - (UITableViewCell *)textViewCell
@@ -140,8 +134,9 @@ static CGFloat const SettingsMinHeight = 41.0f;
 {
     CGSize size = [self.textView sizeThatFits:CGSizeMake(self.textView.frame.size.width, CGFLOAT_MAX)];
     CGFloat height = size.height;
+    CGFloat halfCurrentFontLineHeight = self.textView.font.lineHeight * 0.5f;
 
-    if (fabs(self.tableView.rowHeight - height) > (self.textView.font.lineHeight * 0.5f))
+    if (fabs(self.tableView.rowHeight - height) > MAX(halfCurrentFontLineHeight, SettingsMinHeight))
     {
         [self.tableView beginUpdates];
         self.tableView.rowHeight = MAX(height, SettingsMinHeight) + SettingsTextPadding.dy;
