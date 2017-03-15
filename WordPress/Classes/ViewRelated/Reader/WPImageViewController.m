@@ -9,6 +9,10 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 @interface WPImageViewController ()<UIScrollViewDelegate, FlingableViewHandlerDelegate>
 
+@property (nonatomic, strong) NSURL *url;
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) Media *media;
+
 @property (nonatomic, assign) BOOL isLoadingImage;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
@@ -30,7 +34,12 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 - (instancetype)initWithURL:(NSURL *)url
 {
-    return [self initWithImage:nil andURL: url];
+    return [self initWithImage:nil andURL:url];
+}
+
+- (instancetype)initWithMedia:(Media *)media
+{
+    return [self initWithImage:nil andMedia:media];
 }
 
 - (instancetype)initWithImage:(UIImage *)image andURL:(NSURL *)url
@@ -41,6 +50,27 @@ static CGFloat const MinimumZoomScale = 0.1;
         _url = url;
     }
     return self;
+}
+
+- (instancetype)initWithImage:(UIImage *)image andMedia:(Media *)media
+{
+    self = [super init];
+    if (self) {
+        _image = [image copy];
+        _media = media;
+    }
+    return self;
+}
+
+- (void)setIsLoadingImage:(BOOL)isLoadingImage
+{
+    _isLoadingImage = isLoadingImage;
+
+    if (isLoadingImage) {
+        [self.activityIndicatorView startAnimating];
+    } else {
+        [self.activityIndicatorView stopAnimating];
+    }
 }
 
 - (void)viewDidLoad
@@ -92,35 +122,57 @@ static CGFloat const MinimumZoomScale = 0.1;
     }
 
     if (self.image != nil) {
-        self.imageView.image = self.image;
-        [self.imageView sizeToFit];
-        self.scrollView.contentSize = self.imageView.image.size;
-        [self centerImage];
-
+        [self updateImageView];
     } else if (self.url) {
-        self.isLoadingImage = YES;
-        [self.activityIndicatorView startAnimating];
-        __weak __typeof__(self) weakSelf = self;
-        [_imageView setImageWithURLRequest:[NSURLRequest requestWithURL:self.url]
-                         placeholderImage:self.image
-                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                      __typeof__(self) strongSelf = weakSelf;
-                                      if (!strongSelf) {
-                                          return;
-                                      }
-                                      [strongSelf.activityIndicatorView stopAnimating];
-                                      strongSelf.imageView.image = image;
-                                      [strongSelf.imageView sizeToFit];
-                                      strongSelf.scrollView.contentSize = strongSelf.imageView.image.size;
-                                      [strongSelf centerImage];
-                                      strongSelf.isLoadingImage = NO;
-                                  } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                      DDLogError(@"Error loading image: %@", error);
-                                      __typeof__(self) strongSelf = weakSelf;
-                                      [strongSelf.activityIndicatorView stopAnimating];
-                                      strongSelf.isLoadingImage = NO;
-                                  }];
+        [self loadImageFromURL];
+    } else if (self.media) {
+        [self loadImageFromMedia];
     }
+}
+
+- (void)updateImageView
+{
+    self.imageView.image = self.image;
+    [self.imageView sizeToFit];
+    self.scrollView.contentSize = self.imageView.image.size;
+    [self centerImage];
+}
+
+- (void)loadImageFromURL
+{
+    self.isLoadingImage = YES;
+
+    __weak __typeof__(self) weakSelf = self;
+    [_imageView setImageWithURLRequest:[NSURLRequest requestWithURL:self.url]
+                      placeholderImage:self.image
+                               success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                   weakSelf.image = image;
+                                   [weakSelf updateImageView];
+                                   weakSelf.isLoadingImage = NO;
+                               } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                   DDLogError(@"Error loading image: %@", error);
+                                   weakSelf.isLoadingImage = NO;
+                               }];
+}
+
+- (void)loadImageFromMedia
+{
+    self.isLoadingImage = YES;
+
+    __weak __typeof__(self) weakSelf = self;
+    self.imageView.image = self.image;
+    [self.media imageWithSize:CGSizeZero completionHandler:^(UIImage *result, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error) {
+                DDLogError(@"Error loading image: %@", error);
+                weakSelf.isLoadingImage = NO;
+            } else {
+                weakSelf.image = result;
+                [weakSelf updateImageView];
+                weakSelf.isLoadingImage = NO;
+            }
+        });
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated

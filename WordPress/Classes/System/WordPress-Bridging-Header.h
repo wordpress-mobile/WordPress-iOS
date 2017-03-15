@@ -45,6 +45,7 @@
 #import "LoginFields.h"
 
 #import "Media.h"
+#import "MediaLibraryPickerDataSource.h"
 #import "MediaService.h"
 #import "MeHeaderView.h"
 #import "MixpanelTweaks.h"
@@ -140,6 +141,7 @@
 #import "WPWebViewController.h"
 #import "WPTabBarController.h"
 #import "WPWalkthroughTextField.h"
+#import "WPURLRequest.h"
 #import "WPUserAgent.h"
 #import "WordPressComServiceRemote.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
