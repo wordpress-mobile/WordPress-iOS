@@ -53,6 +53,18 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure;
 
 /**
+ Query to check if a username is available. Used in the signup flow.
+ 
+ @param email
+ @param success
+ @param failure
+ */
+- (void)isUsernameAvailable:(NSString *)username
+                    success:(void (^)(BOOL available))success
+                    failure:(void (^)(NSError *error))failure;
+
+
+/**
  Requets a one-time authentication link sent to an existing account associated with the
  specified email address.
 
