@@ -55,9 +55,9 @@ class MediaItemViewController: UITableViewController {
                     self?.presentImageViewControllerForMedia()
                 }) ]),
             ImmuTableSection(headerText: nil, rows: [
-                EditableTextRow(title: NSLocalizedString("Title", comment: "Noun. Label for the title of a media asset (image / video)"), value: mediaMetadata.title, action: editTitle()),
-                EditableTextRow(title: NSLocalizedString("Caption", comment: "Noun. Label for the caption for a media asset (image / video)"), value: mediaMetadata.caption, action: editCaption()),
-                EditableTextRow(title: NSLocalizedString("Description", comment: "Label for the description for a media asset (image / video)"), value: mediaMetadata.desc, action: editDescription())
+                editableRowIfSupported(title: NSLocalizedString("Title", comment: "Noun. Label for the title of a media asset (image / video)"), value: mediaMetadata.title, action: editTitle()),
+                editableRowIfSupported(title: NSLocalizedString("Caption", comment: "Noun. Label for the caption for a media asset (image / video)"), value: mediaMetadata.caption, action: editCaption()),
+                editableRowIfSupported(title: NSLocalizedString("Description", comment: "Label for the description for a media asset (image / video)"), value: mediaMetadata.desc, action: editDescription())
                 ], footerText: nil),
             ImmuTableSection(headerText: NSLocalizedString("Metadata", comment: "Title of section containing image / video metadata such as size and file type"), rows: [
                 TextRow(title: NSLocalizedString("File name", comment: "Label for the file name for a media asset (image / video)"), value: media.filename),
@@ -66,6 +66,14 @@ class MediaItemViewController: UITableViewController {
                 TextRow(title: NSLocalizedString("Uploaded", comment: "Label for the date a media asset (image / video) was uploaded"), value: media.creationDate.mediumString())
                 ], footerText: nil)
             ])
+    }
+
+    private func editableRowIfSupported(title: String, value: String, action: @escaping ((ImmuTableRow) -> ())) -> ImmuTableRow {
+        if media.blog.supports(BlogFeature.mediaMetadataEditing) {
+            return EditableTextRow(title: title, value: value, action: action)
+        } else {
+            return TextRow(title: title, value: value)
+        }
     }
 
     private func reloadViewModel() {
