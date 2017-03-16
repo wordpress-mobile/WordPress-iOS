@@ -19,39 +19,49 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 
 @interface Media :  NSManagedObject
 
-@property (nonatomic, strong) NSNumber * mediaID;
-@property (nonatomic, strong) NSString * mediaTypeString;
-@property (nonatomic, assign) MediaType mediaType;
-@property (nonatomic, strong) NSString * remoteURL;
-@property (nonatomic, strong) NSString * localURL;
-@property (nonatomic, strong) NSString * shortcode;
-@property (nonatomic, strong) NSNumber * length;
-@property (nonatomic, strong) NSString * title;
-@property (nonatomic, strong) NSString * filename;
-@property (nonatomic, strong) NSNumber * filesize;
-@property (nonatomic, strong) NSNumber * width;
-@property (nonatomic, strong) NSNumber * height;
-@property (nonatomic, strong) NSDate * creationDate;
+// Managed properties
+
+@property (nonatomic, strong) NSString *caption;
+@property (nonatomic, strong) NSDate *creationDate;
+@property (nonatomic, strong) NSString *desc;
+@property (nonatomic, strong) NSString *filename;
+@property (nonatomic, strong) NSNumber *filesize;
+@property (nonatomic, strong) NSNumber *height;
+@property (nonatomic, strong) NSNumber *length;
+@property (nonatomic, strong) NSString *localThumbnailURL;
+@property (nonatomic, strong) NSString *localURL;
+@property (nonatomic, strong) NSNumber *mediaID;
+@property (nonatomic, strong) NSString *mediaTypeString;
+@property (nonatomic, strong) NSNumber *postID;
+@property (nonatomic, strong) NSNumber *remoteStatusNumber;
+@property (nonatomic, strong) NSString *remoteThumbnailURL;
+@property (nonatomic, strong) NSString *remoteURL;
+@property (nonatomic, strong) NSString *shortcode;
+@property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *videopressGUID;
-@property (nonatomic, weak, readonly) NSString * html;
-@property (nonatomic, strong) NSNumber * remoteStatusNumber;
-@property (nonatomic, assign) MediaRemoteStatus remoteStatus;
-@property (nonatomic, strong) NSString * caption;
-@property (nonatomic, strong) NSString * desc;
-@property (nonatomic, strong) Blog * blog;
+@property (nonatomic, strong) NSNumber *width;
+
+// Relationships
+
+@property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSSet *posts;
+
+// Helper properties
+
+@property (nonatomic, assign) MediaType mediaType;
+@property (nonatomic, weak, readonly) NSString *html;
+@property (nonatomic, assign) MediaRemoteStatus remoteStatus;
 @property (nonatomic, assign, readonly) BOOL unattached;
 @property (nonatomic, assign, readonly) BOOL featured;
 @property (nonatomic, strong) NSString *absoluteLocalURL;
-@property (nonatomic, strong) NSString *remoteThumbnailURL;
-@property (nonatomic, strong) NSString *localThumbnailURL;
 @property (nonatomic, strong) NSString *absoluteThumbnailLocalURL;
 @property (nonatomic, strong, readonly) NSString *posterImageURL;
-@property (nonatomic, strong) NSNumber *postID;
 
+// Helper methods
+
++ (NSString *)stringFromMediaType:(MediaType)mediaType;
 
 - (void)mediaTypeFromUrl:(NSString *)ext;
-+ (NSString *)stringFromMediaType:(MediaType)mediaType;
 - (NSString *)fileExtension;
 - (NSString *)mimeType;
 
