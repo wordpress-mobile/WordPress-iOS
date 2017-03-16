@@ -3,11 +3,11 @@
 #import "AbstractPost.h"
 
 typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
-    MediaRemoteStatusSync,    // Post synced
-    MediaRemoteStatusFailed,      // Upload failed
-    MediaRemoteStatusLocal,       // Only local version
-    MediaRemoteStatusPushing,       // Uploading post
-    MediaRemoteStatusProcessing, // Intermediate status before uploading
+    MediaRemoteStatusSync,          /* Post synced. */
+    MediaRemoteStatusFailed,        /* Upload failed. */
+    MediaRemoteStatusLocal,         /* Only local version. */
+    MediaRemoteStatusPushing,       /* Uploading post. */
+    MediaRemoteStatusProcessing,    /* Intermediate status before uploading. */
 };
 
 typedef NS_ENUM(NSUInteger, MediaType) {
