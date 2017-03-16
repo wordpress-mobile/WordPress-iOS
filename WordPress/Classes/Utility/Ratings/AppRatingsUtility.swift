@@ -22,10 +22,15 @@ class AppRatingUtility: NSObject {
     private var sections = [String: Section]()
     private var promptingDisabledRemote = false
     /// Don't prompt for reviews for internal builds
+    /// http://stackoverflow.com/questions/26081543/how-to-tell-at-runtime-whether-an-ios-app-is-running-through-a-testflight-beta-i?noredirect=1&lq=1
     ///
     private var promptingDisabledLocal: Bool = {
-        return build(.internal)
+        guard let path = Bundle.main.appStoreReceiptURL?.path else {
+            return false
+        }
+        return path.contains("sandboxReceipt")
     }()
+
     private var promptingDisabled: Bool {
         return promptingDisabledRemote || promptingDisabledLocal
     }
