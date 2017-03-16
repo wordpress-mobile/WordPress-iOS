@@ -18,15 +18,17 @@ class AppRatingUtility: NSObject {
     ///
     var appReviewUrl: URL = Constants.defaultAppReviewURL
 
-    /// Don't prompt for reviews for internal builds
-    ///
-    private var isInternalBuild: Bool = {
-        return build(.internal)
-    }()
-
     private let defaults: UserDefaults
     private var sections = [String: Section]()
-    private var allPromptingDisabled = false
+    private var promptingDisabledRemote = false
+    /// Don't prompt for reviews for internal builds
+    ///
+    private var promptingDisabledLocal: Bool = {
+        return build(.internal)
+    }()
+    private var promptingDisabled: Bool {
+        return promptingDisabledRemote || promptingDisabledLocal
+    }
 
     static let shared = AppRatingUtility(defaults: UserDefaults.standard)
 
@@ -79,7 +81,7 @@ class AppRatingUtility: NSObject {
                     return
             }
 
-            this.allPromptingDisabled = (response["all-disabled"] as? NSString)?.boolValue ?? false
+            this.promptingDisabledRemote = (response["all-disabled"] as? NSString)?.boolValue ?? false
             for section in this.sections.keys {
                 let key = "\(section)-disabled"
                 let disabled = (response[key] as? NSString)?.boolValue ?? false
@@ -171,8 +173,7 @@ class AppRatingUtility: NSObject {
     ///
     func shouldPromptForAppReview() -> Bool {
         if shouldSkipRatingForCurrentVersion()
-            || isInternalBuild
-            || allPromptingDisabled {
+            || promptingDisabled {
             return false
         }
 
@@ -197,8 +198,7 @@ class AppRatingUtility: NSObject {
         }
 
         if shouldSkipRatingForCurrentVersion()
-            || isInternalBuild
-            || allPromptingDisabled
+            || promptingDisabled
             || !section.enabled {
             return false
         }
@@ -245,7 +245,7 @@ class AppRatingUtility: NSObject {
     }
 
     private func resetReviewPromptDisabledStatus() {
-        allPromptingDisabled = false
+        promptingDisabledRemote = false
         for key in sections.keys {
             sections[key]?.enabled = true
         }
@@ -302,8 +302,16 @@ class AppRatingUtility: NSObject {
                 state[cleanKey] = defaults.object(forKey: key)
         }
         state["SystemWideSignificantEventCountRequiredForPrompt"] = systemWideSignificantEventCountRequiredForPrompt
-        state["AllPromptingDisabled"] = allPromptingDisabled
+        state["PromptingDisabledRemote"] = promptingDisabledRemote
+        state["PromptingDisabledLocal"] = promptingDisabledLocal
         return "<AppRatingUtility state: \(state), sections: \(sections)>"
+    }
+
+    // MARK: - Testing
+    // Overrides promptingDisabledLocal. For testing purposes only.
+    //
+    func _overridePromptingDisabledLocal(_ disabled: Bool) {
+        promptingDisabledLocal = disabled
     }
 
     // MARK: - Subtypes
