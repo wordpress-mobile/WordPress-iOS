@@ -262,7 +262,7 @@
         }];
     };
     
-    [remote createMedia:remoteMedia
+    [remote uploadMedia:remoteMedia
                progress:progress
                 success:successBlock
                 failure:failureBlock];
