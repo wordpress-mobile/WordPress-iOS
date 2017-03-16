@@ -14,6 +14,25 @@ class MediaLibraryViewController: UIViewController {
 
     fileprivate var selectedAsset: Media? = nil
 
+    lazy fileprivate var searchBarContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    lazy fileprivate var searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: nil)
+        controller.searchResultsUpdater = self
+        controller.hidesNavigationBarDuringPresentation = true
+        controller.dimsBackgroundDuringPresentation = false
+
+        WPStyleGuide.configureSearchBar(controller.searchBar)
+        controller.searchBar.delegate = self
+        controller.searchBar.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        return controller
+    }()
+
     // MARK: - Initializers
 
     init(blog: Blog) {
@@ -50,9 +69,14 @@ class MediaLibraryViewController: UIViewController {
 
         title = NSLocalizedString("Media", comment: "Title for Media Library section of the app.")
 
+        definesPresentationContext = true
+        automaticallyAdjustsScrollViewInsets = false
+
         updateNavigationItemButtonsForEditingState()
 
         addMediaPickerAsChildViewController()
+        addSearchBarContainer()
+        addSearchBar()
 
         registerChangeObserver()
     }
@@ -61,6 +85,14 @@ class MediaLibraryViewController: UIViewController {
         super.viewDidAppear(animated)
 
         selectedAsset = nil
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        if searchController.isActive {
+            searchController.isActive = false
+        }
     }
 
     private func updateNavigationItemButtonsForEditingState() {
@@ -80,11 +112,48 @@ class MediaLibraryViewController: UIViewController {
 
     private func addMediaPickerAsChildViewController() {
         pickerViewController.willMove(toParentViewController: self)
-        pickerViewController.view.bounds = view.bounds
         view.addSubview(pickerViewController.view)
+        pickerViewController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            pickerViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            pickerViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            pickerViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+
         addChildViewController(pickerViewController)
         pickerViewController.didMove(toParentViewController: self)
     }
+
+    private func addSearchBarContainer() {
+        view.addSubview(searchBarContainer)
+
+        NSLayoutConstraint.activate([
+            searchBarContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            searchBarContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            searchBarContainer.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+            searchBarContainer.bottomAnchor.constraint(equalTo: pickerViewController.view.topAnchor)
+        ])
+
+        let searchBarHeight = searchController.searchBar.bounds.height
+
+        let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: searchBarHeight)
+        heightConstraint.priority = UILayoutPriorityDefaultLow
+        heightConstraint.isActive = true
+
+        let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: searchBarHeight)
+        expandedHeightConstraint.priority = UILayoutPriorityRequired
+        expandedHeightConstraint.isActive = true
+    }
+
+    private func addSearchBar() {
+        searchBarContainer.layoutIfNeeded()
+
+        searchBarContainer.addSubview(searchController.searchBar)
+        searchController.searchBar.sizeToFit()
+    }
+
+    // MARK: - Actions
 
     @objc private func editTapped() {
         isEditing = !isEditing
@@ -171,6 +240,13 @@ class MediaLibraryViewController: UIViewController {
         if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
             pickerDataSource.unregisterChangeObserver(mediaLibraryChangeObserverKey)
         }
+    }
+}
+
+extension MediaLibraryViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        pickerDataSource.searchQuery = searchController.searchBar.text
+        pickerViewController.collectionView?.reloadData()
     }
 }
 
