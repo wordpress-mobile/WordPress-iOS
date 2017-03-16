@@ -43,7 +43,6 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, strong) NSNumber * filesize;
 @property (nonatomic, strong) NSNumber * width;
 @property (nonatomic, strong) NSNumber * height;
-@property (nonatomic, strong) NSString * orientation DEPRECATED_ATTRIBUTE;
 @property (nonatomic, strong) NSDate * creationDate;
 @property (nonatomic, strong) NSString *videopressGUID;
 @property (nonatomic, weak, readonly) NSString * html;
