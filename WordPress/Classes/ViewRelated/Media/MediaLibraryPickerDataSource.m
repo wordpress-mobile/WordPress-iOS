@@ -308,6 +308,23 @@
             @[predicate, mediaPredicate]];
 }
 
+- (NSPredicate *)predicateForSearchQuery
+{
+    if (self.searchQuery && [self.searchQuery length] > 0) {
+        return [NSPredicate predicateWithFormat:@"(title CONTAINS[cd] %@) OR (caption CONTAINS[cd] %@) OR (desc CONTAINS[cd] %@)", self.searchQuery, self.searchQuery, self.searchQuery];
+    }
+
+    return nil;
+}
+
+- (void)setSearchQuery:(NSString *)searchQuery
+{
+    _searchQuery = [searchQuery copy];
+
+    _fetchController = nil;
+    [self.fetchController performFetch:nil];
+}
+
 - (NSFetchedResultsController *)fetchController
 {
     if (_fetchController) {
@@ -317,7 +334,15 @@
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     NSString *entityName = NSStringFromClass([Media class]);
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    fetchRequest.predicate = [[self class] predicateForFilter:self.filter blog:self.blog];
+
+    NSPredicate *filterPredicate = [[self class] predicateForFilter:self.filter blog:self.blog];
+    NSPredicate *searchPredicate = [self predicateForSearchQuery];
+    if (searchPredicate) {
+        fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[filterPredicate, searchPredicate]];
+    } else {
+        fetchRequest.predicate = filterPredicate;
+    }
+
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering];
     fetchRequest.sortDescriptors = @[sortDescriptor];
 

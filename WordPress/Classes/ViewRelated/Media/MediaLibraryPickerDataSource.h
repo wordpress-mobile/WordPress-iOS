@@ -27,4 +27,9 @@
 
 - (instancetype)initWithPost:(AbstractPost *)post;
 
+/// If a search query is set, the media assets fetched by the data source
+/// will be filtered to only those whose name, caption, or description
+/// contain the search query.
+@property (nonatomic, copy) NSString *searchQuery;
+
 @end
