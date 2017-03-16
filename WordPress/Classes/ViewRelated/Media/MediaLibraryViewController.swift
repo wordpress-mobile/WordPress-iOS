@@ -33,6 +33,8 @@ class MediaLibraryViewController: UIViewController {
         return controller
     }()
 
+    var searchQuery: String? = nil
+
     // MARK: - Initializers
 
     init(blog: Blog) {
@@ -81,6 +83,15 @@ class MediaLibraryViewController: UIViewController {
         registerChangeObserver()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if let searchQuery = searchQuery,
+            !searchQuery.isEmpty {
+            searchController.searchBar.text = searchQuery
+        }
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -91,6 +102,7 @@ class MediaLibraryViewController: UIViewController {
         super.viewWillDisappear(animated)
 
         if searchController.isActive {
+            searchQuery = searchController.searchBar.text
             searchController.isActive = false
         }
     }
@@ -243,9 +255,25 @@ class MediaLibraryViewController: UIViewController {
     }
 }
 
+// MARK: - UISearchResultsUpdating
+
 extension MediaLibraryViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         pickerDataSource.searchQuery = searchController.searchBar.text
+        pickerViewController.collectionView?.reloadData()
+    }
+
+    func didDismissSearchController(_ searchController: UISearchController) {
+        clearSearch()
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        clearSearch()
+    }
+
+    func clearSearch() {
+        searchQuery = nil
+        pickerDataSource.searchQuery = nil
         pickerViewController.collectionView?.reloadData()
     }
 }
