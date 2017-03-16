@@ -222,10 +222,37 @@ private extension PersonViewController {
         }
 
         let service = PeopleService(blog: blog, context: context)
-        service?.deleteUser(user)
+        service?.deleteUser(user, failure: {[weak self] (error: Error?) -> () in
+            guard let strongSelf = self, let error = error as? NSError else {
+                return
+            }
+            guard let personWithError = strongSelf.person else {
+                return
+            }
+
+            strongSelf.handleRemoveUserError(error, userName: "@" + personWithError.username)
+        })
         _ = navigationController?.popViewController(animated: true)
 
         WPAnalytics.track(.personRemoved)
+    }
+
+    func handleRemoveUserError(_ error: NSError, userName: String) {
+        // The error code will be "forbidden" per:
+        // https://developer.wordpress.com/docs/api/1.1/post/sites/%24site/users/%24user_ID/delete/
+        guard let errorCode = error.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String,
+            errorCode.localizedCaseInsensitiveContains("forbidden") else {
+            let errorWithSource = NSError(domain: error.domain, code: error.code, userInfo: error.userInfo)
+            WPError.showNetworkingAlertWithError(errorWithSource)
+            return
+        }
+
+        let errorTitleFormat = NSLocalizedString("Error removing %@", comment: "Title of error dialog when removing a site owner fails.")
+        let errorTitleText = String(format: errorTitleFormat, userName)
+        let errorMessage = NSLocalizedString("The user you are trying to remove is the owner of this site. " +
+                                             "Please contact support for assistance.",
+                                             comment: "Error message shown when user attempts to remove the site owner.")
+        WPError.showAlert(withTitle: errorTitleText, message: errorMessage, withSupportButton: true)
     }
 
     func updateUserRole(_ newRole: Role) {
