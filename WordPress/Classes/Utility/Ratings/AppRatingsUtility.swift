@@ -20,7 +20,20 @@ class AppRatingUtility: NSObject {
 
     private let defaults: UserDefaults
     private var sections = [String: Section]()
-    private var allPromptingDisabled = false
+    private var promptingDisabledRemote = false
+    /// Don't prompt for reviews for internal builds
+    /// http://stackoverflow.com/questions/26081543/how-to-tell-at-runtime-whether-an-ios-app-is-running-through-a-testflight-beta-i?noredirect=1&lq=1
+    ///
+    private var promptingDisabledLocal: Bool = {
+        guard let path = Bundle.main.appStoreReceiptURL?.path else {
+            return false
+        }
+        return path.contains("sandboxReceipt")
+    }()
+
+    private var promptingDisabled: Bool {
+        return promptingDisabledRemote || promptingDisabledLocal
+    }
 
     static let shared = AppRatingUtility(defaults: UserDefaults.standard)
 
@@ -73,7 +86,7 @@ class AppRatingUtility: NSObject {
                     return
             }
 
-            this.allPromptingDisabled = (response["all-disabled"] as? NSString)?.boolValue ?? false
+            this.promptingDisabledRemote = (response["all-disabled"] as? NSString)?.boolValue ?? false
             for section in this.sections.keys {
                 let key = "\(section)-disabled"
                 let disabled = (response[key] as? NSString)?.boolValue ?? false
@@ -164,7 +177,8 @@ class AppRatingUtility: NSObject {
     /// global basis have been shut off.
     ///
     func shouldPromptForAppReview() -> Bool {
-        if shouldSkipRatingForCurrentVersion() || allPromptingDisabled {
+        if shouldSkipRatingForCurrentVersion()
+            || promptingDisabled {
             return false
         }
 
@@ -188,8 +202,9 @@ class AppRatingUtility: NSObject {
             return false
         }
 
-        if shouldSkipRatingForCurrentVersion() || allPromptingDisabled ||
-            !section.enabled {
+        if shouldSkipRatingForCurrentVersion()
+            || promptingDisabled
+            || !section.enabled {
             return false
         }
 
@@ -235,7 +250,7 @@ class AppRatingUtility: NSObject {
     }
 
     private func resetReviewPromptDisabledStatus() {
-        allPromptingDisabled = false
+        promptingDisabledRemote = false
         for key in sections.keys {
             sections[key]?.enabled = true
         }
@@ -292,8 +307,16 @@ class AppRatingUtility: NSObject {
                 state[cleanKey] = defaults.object(forKey: key)
         }
         state["SystemWideSignificantEventCountRequiredForPrompt"] = systemWideSignificantEventCountRequiredForPrompt
-        state["AllPromptingDisabled"] = allPromptingDisabled
+        state["PromptingDisabledRemote"] = promptingDisabledRemote
+        state["PromptingDisabledLocal"] = promptingDisabledLocal
         return "<AppRatingUtility state: \(state), sections: \(sections)>"
+    }
+
+    // MARK: - Testing
+    // Overrides promptingDisabledLocal. For testing purposes only.
+    //
+    func _overridePromptingDisabledLocal(_ disabled: Bool) {
+        promptingDisabledLocal = disabled
     }
 
     // MARK: - Subtypes
