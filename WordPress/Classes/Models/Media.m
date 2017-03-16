@@ -92,9 +92,6 @@
         return MediaTypePowerpoint;
     } else if ([self.mediaTypeString isEqualToString:@"document"]) {
         return MediaTypeDocument;
-    } else if ([self.mediaTypeString isEqualToString:@"featured"]) {
-        // this is for object that where still storing the old value.
-        return MediaTypeImage;
     }
     return MediaTypeDocument;
 }
