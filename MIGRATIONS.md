@@ -6,6 +6,7 @@ data model as well as any custom migrations.
 ## WordPress 57
 - @kurzee 2017-03-16
 - `Media` removed `orientation` property.
+- `Media` removed `progress` property.
 
 ## WordPress 56
 - @jleandroperez 2017-02-22
