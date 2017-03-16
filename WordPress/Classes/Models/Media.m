@@ -1,4 +1,5 @@
 #import "Media.h"
+#import "ContextManager.h"
 
 @implementation Media
 
@@ -180,15 +181,13 @@
 {
     [self.managedObjectContext performBlockAndWait:^{
         [self.managedObjectContext deleteObject:self];
-        [self.managedObjectContext save:nil];
+        [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
     }];
 }
 
 - (void)save
 {
-    [self.managedObjectContext performBlock:^{
-        [self.managedObjectContext save:nil];
-    }];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (BOOL)unattached
