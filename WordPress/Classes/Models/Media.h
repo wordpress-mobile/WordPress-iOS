@@ -17,18 +17,6 @@ typedef NS_ENUM(NSUInteger, MediaType) {
     MediaTypePowerpoint
 };
 
-typedef NS_ENUM(NSUInteger, MediaResize) {
-    MediaResizeSmall,
-    MediaResizeMedium,
-    MediaResizeLarge,
-    MediaResizeOriginal
-};
-
-typedef NS_ENUM(NSUInteger, MediaOrientation) {
-    MediaOrientationPortrait,
-    MediaOrientationLandscape
-};
-
 @interface Media :  NSManagedObject
 
 @property (nonatomic, strong) NSNumber * mediaID;
