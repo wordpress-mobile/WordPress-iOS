@@ -967,6 +967,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             toggleEditingMode()
         case .header, .header1, .header2, .header3, .header4, .header5, .header6:
             toggleHeader()
+        case .horizontalruler:
+            insertHorizontalRuler()
         }
         updateFormatBar()
     }
@@ -1168,6 +1170,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         changeRichTextInputView(to: headerPicker)
     }
 
+    func insertHorizontalRuler() {
+        richTextView.replaceWithHorizontalRuler(at: richTextView.selectedRange)
+    }
+
     func changeRichTextInputView(to: UIView?) {
         guard richTextView.inputView != to else {
             return
@@ -1216,6 +1222,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: .unorderedlist),
             FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: .orderedlist),
             FormatBarItem(image: Gridicon.iconOfType(.link), identifier: .link),
+            FormatBarItem(image: Gridicon.iconOfType(.minusSmall), identifier: .horizontalruler)
         ]
 
         let fixedItems = [
