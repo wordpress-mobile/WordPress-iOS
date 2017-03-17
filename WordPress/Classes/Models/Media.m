@@ -25,31 +25,27 @@
 @dynamic remoteThumbnailURL;
 @dynamic postID;
 
-- (void)mediaTypeFromUrl:(NSString *)ext
+#pragma mark - class methods
+
++ (NSString *)stringFromMediaType:(MediaType)mediaType
 {
-    CFStringRef fileExt = (__bridge CFStringRef)ext;
-    CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExt, nil);
-    CFStringRef ppt = (__bridge CFStringRef)@"public.presentation";
-
-    if (UTTypeConformsTo(fileUTI, kUTTypeImage)) {
-        self.mediaTypeString = @"image";
-    } else if (UTTypeConformsTo(fileUTI, kUTTypeVideo)) {
-        self.mediaTypeString = @"video";
-    } else if (UTTypeConformsTo(fileUTI, kUTTypeMovie)) {
-        self.mediaTypeString = @"video";
-    } else if (UTTypeConformsTo(fileUTI, kUTTypeMPEG4)) {
-        self.mediaTypeString = @"video";
-    } else if (UTTypeConformsTo(fileUTI, ppt)) {
-        self.mediaTypeString = @"powerpoint";
-    } else {
-        self.mediaTypeString = @"document";
-    }
-
-    if (fileUTI) {
-        CFRelease(fileUTI);
-        fileUTI = nil;
+    switch (mediaType) {
+        case MediaTypeImage:
+            return @"image";
+            break;
+        case MediaTypeVideo:
+            return @"video";
+            break;
+        case MediaTypePowerpoint:
+            return @"powerpoint";
+            break;
+        case MediaTypeDocument:
+            return @"document";
+            break;
     }
 }
+
+#pragma mark - instance methods
 
 - (NSString *)fileExtension
 {
@@ -72,8 +68,8 @@
     if (!extension.length) {
         return unknown;
     }
-    NSString *UTI = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)extension, NULL);
-    NSString *mimeType = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)UTI, kUTTagClassMIMEType);
+    NSString *fileUTI = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)extension, NULL);
+    NSString *mimeType = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)fileUTI, kUTTagClassMIMEType);
     if (!mimeType) {
         return unknown;
     } else {
@@ -83,13 +79,13 @@
 
 - (MediaType)mediaType
 {
-    if ([self.mediaTypeString isEqualToString:@"image"]) {
+    if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeImage]]) {
         return MediaTypeImage;
-    } else if ([self.mediaTypeString isEqualToString:@"video"]) {
+    } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeVideo]]) {
         return MediaTypeVideo;
-    } else if ([self.mediaTypeString isEqualToString:@"powerpoint"]) {
+    } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypePowerpoint]]) {
         return MediaTypePowerpoint;
-    } else if ([self.mediaTypeString isEqualToString:@"document"]) {
+    } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeDocument]]) {
         return MediaTypeDocument;
     }
     return MediaTypeDocument;
@@ -100,22 +96,30 @@
     self.mediaTypeString = [[self class] stringFromMediaType:mediaType];    
 }
 
-+ (NSString *)stringFromMediaType:(MediaType)mediaType
+- (void)setMediaTypeForExtension:(NSString *)extension
 {
-    switch (mediaType) {
-        case MediaTypeImage:
-            return @"image";
-            break;
-        case MediaTypeVideo:
-            return @"video";
-            break;
-        case MediaTypePowerpoint:
-            return @"powerpoint";
-            break;
-        case MediaTypeDocument:
-            return @"document";
-            break;
+    CFStringRef fileExt = (__bridge CFStringRef)extension;
+    CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExt, nil);
+    CFStringRef ppt = (__bridge CFStringRef)@"public.presentation";
+    MediaType type;
+    if (UTTypeConformsTo(fileUTI, kUTTypeImage)) {
+        type = MediaTypeImage;
+    } else if (UTTypeConformsTo(fileUTI, kUTTypeVideo)) {
+        type = MediaTypeVideo;
+    } else if (UTTypeConformsTo(fileUTI, kUTTypeMovie)) {
+        type = MediaTypeVideo;
+    } else if (UTTypeConformsTo(fileUTI, kUTTypeMPEG4)) {
+        type = MediaTypeVideo;
+    } else if (UTTypeConformsTo(fileUTI, ppt)) {
+        type = MediaTypePowerpoint;
+    } else {
+        type = MediaTypeDocument;
     }
+    if (fileUTI) {
+        CFRelease(fileUTI);
+        fileUTI = nil;
+    }
+    self.mediaType = type;
 }
 
 #pragma mark -

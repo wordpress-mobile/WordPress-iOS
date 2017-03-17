@@ -904,7 +904,7 @@ static NSString * const MediaDirectory = @"Media";
         media.creationDate = remoteMedia.date;
     }
     media.filename = remoteMedia.file;
-    [media mediaTypeFromUrl:[remoteMedia extension]];
+    [media setMediaTypeForExtension:remoteMedia.extension];
     media.title = remoteMedia.title;
     media.caption = remoteMedia.caption;
     media.desc = remoteMedia.descriptionText;

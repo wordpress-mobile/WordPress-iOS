@@ -59,9 +59,9 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 
 + (NSString *)stringFromMediaType:(MediaType)mediaType;
 
-- (void)mediaTypeFromUrl:(NSString *)ext;
 - (nullable NSString *)fileExtension;
 - (nullable NSString *)mimeType;
+- (void)setMediaTypeForExtension:(NSString *)extension;
 
 - (void)remove;
 - (void)save;
