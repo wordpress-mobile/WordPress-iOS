@@ -1418,8 +1418,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 
     fileprivate func addSiteMediaAsset(_ media: Media) {
-        if media.mediaID.intValue != 0 {
-            guard let remoteURL = URL(string: media.remoteURL) else {
+        if media.mediaID?.intValue != 0 {
+            guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
             let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
@@ -1467,7 +1467,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         var uploadProgress: Progress?
         mediaService.uploadMedia(media, progress: &uploadProgress, success: {[weak self]() in
-            guard let strongSelf = self, let remoteURL = URL(string:media.remoteURL) else {
+            guard let strongSelf = self, let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
             DispatchQueue.main.async {
