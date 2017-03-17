@@ -226,9 +226,9 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 + (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error {
     NSDictionary *properties = @{
-                                 @"error_code" : [@(error.code) stringValue],
+                                 @"error_code": [@(error.code) stringValue],
                                  @"error_domain": error.domain,
-                                 @"error_description" : error.description
+                                 @"error_description": error.description
     };
     [self track:stat withProperties: properties];
 }
