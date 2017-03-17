@@ -282,6 +282,17 @@ int ddLogLevel = DDLogLevelInfo;
 
                 return YES;
             }
+        } else if ([[url host] isEqualToString:@"editor"]) {
+            NSDictionary* params = [[url query] dictionaryFromQueryString];
+
+            if (params.count > 0) {
+                BOOL available = [[params objectForKey:@"available"] boolValue];
+                BOOL enabled = [[params objectForKey:@"enabled"] boolValue];
+
+                EditorSettings *editorSettings = [EditorSettings new];
+                editorSettings.nativeEditorAvailable = available;
+                editorSettings.nativeEditorEnabled = enabled;
+            }
         }
     }
 
