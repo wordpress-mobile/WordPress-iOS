@@ -25,7 +25,7 @@
 @dynamic remoteThumbnailURL;
 @dynamic postID;
 
-#pragma mark - class methods
+#pragma mark -
 
 + (NSString *)stringFromMediaType:(MediaType)mediaType
 {
@@ -45,7 +45,7 @@
     }
 }
 
-#pragma mark - instance methods
+#pragma mark -
 
 - (NSString *)fileExtension
 {
@@ -76,6 +76,8 @@
         return mimeType;
     }
 }
+
+#pragma mark - Media Types
 
 - (MediaType)mediaType
 {
@@ -122,7 +124,7 @@
     self.mediaType = type;
 }
 
-#pragma mark -
+#pragma mark - Remote Status
 
 - (MediaRemoteStatus)remoteStatus
 {
@@ -134,9 +136,9 @@
     [self setRemoteStatusNumber:[NSNumber numberWithInt:aStatus]];
 }
 
-+ (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus
+- (NSString *)remoteStatusText
 {
-    switch ([remoteStatus intValue]) {
+    switch ([self.remoteStatusNumber intValue]) {
         case MediaRemoteStatusPushing:
             return NSLocalizedString(@"Uploading", @"");
         case MediaRemoteStatusFailed:
@@ -148,38 +150,7 @@
     }
 }
 
-- (NSString *)remoteStatusText
-{
-    return [Media titleForRemoteStatus:self.remoteStatusNumber];
-}
-
-- (void)prepareForDeletion
-{
-    NSError *error = nil;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:self.absoluteLocalURL] &&
-        ![fileManager removeItemAtPath:self.absoluteLocalURL error:&error]) {
-        DDLogInfo(@"Error removing media files:%@", error);
-    }
-    if ([fileManager fileExistsAtPath:self.absoluteThumbnailLocalURL] &&
-        ![fileManager removeItemAtPath:self.absoluteThumbnailLocalURL error:&error]) {
-        DDLogInfo(@"Error removing media files:%@", error);
-    }
-    [super prepareForDeletion];
-}
-
-- (void)remove
-{
-    [self.managedObjectContext performBlockAndWait:^{
-        [self.managedObjectContext deleteObject:self];
-        [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
-    }];
-}
-
-- (void)save
-{
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
+#pragma mark - Absolute URLs
 
 - (NSString *)absoluteThumbnailLocalURL;
 {
@@ -221,6 +192,36 @@
     NSString *documentsDirectory = [paths firstObject];
     NSString *localPath =  [absoluteLocalURL stringByReplacingOccurrencesOfString:documentsDirectory withString:@""];
     self.localURL = localPath;
+}
+
+#pragma mark - CoreData Helpers
+
+- (void)prepareForDeletion
+{
+    NSError *error = nil;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:self.absoluteLocalURL] &&
+        ![fileManager removeItemAtPath:self.absoluteLocalURL error:&error]) {
+        DDLogInfo(@"Error removing media files:%@", error);
+    }
+    if ([fileManager fileExistsAtPath:self.absoluteThumbnailLocalURL] &&
+        ![fileManager removeItemAtPath:self.absoluteThumbnailLocalURL error:&error]) {
+        DDLogInfo(@"Error removing media files:%@", error);
+    }
+    [super prepareForDeletion];
+}
+
+- (void)remove
+{
+    [self.managedObjectContext performBlockAndWait:^{
+        [self.managedObjectContext deleteObject:self];
+        [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+    }];
+}
+
+- (void)save
+{
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 @end
