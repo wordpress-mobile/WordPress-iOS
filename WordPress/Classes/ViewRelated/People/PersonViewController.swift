@@ -335,7 +335,9 @@ private extension PersonViewController {
     }
 
     func refreshGravatarImage() {
-        gravatarImageView.downloadImage(person.avatarURL, placeholderImage: gravatarPlaceholderImage)
+        let gravatar = person.avatarURL.flatMap { Gravatar($0) }
+        let placeholder = UIImage(named: "gravatar")!
+        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholder, animate: false)
     }
 
     func refreshFullNameLabel() {
