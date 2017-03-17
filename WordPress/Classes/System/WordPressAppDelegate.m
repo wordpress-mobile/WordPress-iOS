@@ -283,6 +283,7 @@ int ddLogLevel = DDLogLevelInfo;
                 return YES;
             }
         } else if ([[url host] isEqualToString:@"editor"]) {
+            // Example: wordpress://editor?available=1&enabled=0
             NSDictionary* params = [[url query] dictionaryFromQueryString];
 
             if (params.count > 0) {
