@@ -51,11 +51,9 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 // Helper properties
 
 @property (nonatomic, assign) MediaType mediaType;
-@property (nonatomic, weak, readonly) NSString *html;
 @property (nonatomic, assign) MediaRemoteStatus remoteStatus;
 @property (nonatomic, strong, nullable) NSString *absoluteLocalURL;
 @property (nonatomic, strong, nullable) NSString *absoluteThumbnailLocalURL;
-@property (nonatomic, strong, readonly, nullable) NSString *posterImageURL;
 
 // Helper methods
 
