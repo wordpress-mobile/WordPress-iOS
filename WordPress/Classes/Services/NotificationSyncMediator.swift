@@ -212,6 +212,24 @@ class NotificationSyncMediator {
             self.contextManager.saveDerivedContext(derivedContext)
         }
     }
+
+    /// Invalidates the local cache for the notification with the specified ID.
+    ///
+    func invalidateCacheForNotification(with noteID: String) {
+        let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
+        let helper = CoreDataHelper<Notification>(context: derivedContext)
+        let predicate = NSPredicate(format: "(notificationId == %@)", noteID)
+
+        derivedContext.perform {
+            guard let notification = helper.firstObject(matchingPredicate: predicate) else {
+                return
+            }
+
+            notification.notificationHash = nil
+
+            self.contextManager.saveDerivedContext(derivedContext)
+        }
+    }
 }
 
 
