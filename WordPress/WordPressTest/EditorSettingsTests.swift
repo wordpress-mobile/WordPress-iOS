@@ -4,11 +4,6 @@ import XCTest
 class EditorSettingsTests: XCTestCase {
     override func setUp() {
         super.setUp()
-
-        let userDefaults = UserDefaults.standard
-        userDefaults.removeObject(forKey: "kUserDefaultsNativeEditorAvailable")
-        userDefaults.removeObject(forKey: "kUserDefaultsNativeEditorEnabled")
-        userDefaults.synchronize()
     }
 
     override func tearDown() {
