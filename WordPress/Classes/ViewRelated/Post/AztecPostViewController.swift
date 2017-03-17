@@ -30,18 +30,6 @@ class AztecPostViewController: UIViewController {
         tv.backgroundColor = Colors.aztecBackground
         toolbar.formatter = self
 
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
-        recognizer.cancelsTouchesInView = true
-        recognizer.delaysTouchesBegan = true
-        recognizer.delaysTouchesEnded = true
-        recognizer.delegate = self
-        tv.addGestureRecognizer(recognizer)
-        for gesture in tv.gestureRecognizers ?? [] {
-            if let otherTapGesture = gesture as? UITapGestureRecognizer, otherTapGesture != recognizer {
-                otherTapGesture.require(toFail: recognizer)
-            }
-        }
-
         return tv
     }()
 
@@ -267,6 +255,11 @@ class AztecPostViewController: UIViewController {
 
         return context
     }()
+
+
+    /// Available Header Types
+    ///
+    fileprivate let headers: [HeaderFormatter.HeaderType] = [.none, .h1, .h2, .h3, .h4, .h5, .h6]
 
 
 
@@ -972,8 +965,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             showImagePicker()
         case .sourcecode:
             toggleEditingMode()
-        case .header:
-            return
+        case .header, .header1, .header2, .header3, .header4, .header5, .header6:
+            toggleHeader()
+        case .horizontalruler:
+            insertHorizontalRuler()
         }
         updateFormatBar()
     }
@@ -1152,53 +1147,105 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         mode.toggle()
     }
 
+    func toggleHeader() {
+        // check if we already showing a custom view.
+        if richTextView.inputView != nil {
+            changeRichTextInputView(to: nil)
+            return
+        }
+
+        let headerOptions = headers.map { (headerType) -> NSAttributedString in
+            NSAttributedString(string: headerType.description, attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize)])
+        }
+
+        let headerPicker = OptionsTableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 200), options: headerOptions)
+        headerPicker.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        headerPicker.onSelect = { selected in
+            self.richTextView.toggleHeader(self.headers[selected], range: self.richTextView.selectedRange)
+            self.changeRichTextInputView(to: nil)
+        }
+        if let selectedHeader = headers.index(of: headerLevelForSelectedText()) {
+            headerPicker.selectRow(at: IndexPath(row: selectedHeader, section: 0), animated: false, scrollPosition: .top)
+        }
+        changeRichTextInputView(to: headerPicker)
+    }
+
+    func insertHorizontalRuler() {
+        richTextView.replaceWithHorizontalRuler(at: richTextView.selectedRange)
+    }
+
+    func changeRichTextInputView(to: UIView?) {
+        guard richTextView.inputView != to else {
+            return
+        }
+
+        richTextView.resignFirstResponder()
+        richTextView.inputView = to
+        richTextView.becomeFirstResponder()
+    }
+
+    func headerLevelForSelectedText() -> HeaderFormatter.HeaderType {
+        var identifiers = [FormattingIdentifier]()
+        if (richTextView.selectedRange.length > 0) {
+            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+        } else {
+            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+        }
+        let mapping: [FormattingIdentifier: HeaderFormatter.HeaderType] = [
+            .header1: .h1,
+            .header2: .h2,
+            .header3: .h3,
+            .header4: .h4,
+            .header5: .h5,
+            .header6: .h6,
+        ]
+        for (key,value) in mapping {
+            if identifiers.contains(key) {
+                return value
+            }
+        }
+        return .none
+    }
+
 
     // MARK: - Toolbar creation
 
     func createToolbar(htmlMode: Bool) -> Aztec.FormatBar {
-        let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let items = [
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage).withRenderingMode(.alwaysTemplate), identifier: .media),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold).withRenderingMode(.alwaysTemplate), identifier: .bold),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic).withRenderingMode(.alwaysTemplate), identifier: .italic),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline).withRenderingMode(.alwaysTemplate), identifier: .underline),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough).withRenderingMode(.alwaysTemplate), identifier: .strikethrough),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote).withRenderingMode(.alwaysTemplate), identifier: .blockquote),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered).withRenderingMode(.alwaysTemplate), identifier: .unorderedlist),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered).withRenderingMode(.alwaysTemplate), identifier: .orderedlist),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link).withRenderingMode(.alwaysTemplate), identifier: .link),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.code).withRenderingMode(.alwaysTemplate), identifier: .sourcecode),
-            flex,
-            ]
+        let scrollableItems = [
+            FormatBarItem(image: Gridicon.iconOfType(.addImage), identifier: .media),
+            FormatBarItem(image: Gridicon.iconOfType(.heading), identifier: .header),
+            FormatBarItem(image: Gridicon.iconOfType(.bold), identifier: .bold),
+            FormatBarItem(image: Gridicon.iconOfType(.italic), identifier: .italic),
+            FormatBarItem(image: Gridicon.iconOfType(.underline), identifier: .underline),
+            FormatBarItem(image: Gridicon.iconOfType(.strikethrough), identifier: .strikethrough),
+            FormatBarItem(image: Gridicon.iconOfType(.quote), identifier: .blockquote),
+            FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: .unorderedlist),
+            FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: .orderedlist),
+            FormatBarItem(image: Gridicon.iconOfType(.link), identifier: .link),
+            FormatBarItem(image: Gridicon.iconOfType(.minusSmall), identifier: .horizontalruler)
+        ]
+
+        let fixedItems = [
+            FormatBarItem(image: Gridicon.iconOfType(.code), identifier: .sourcecode)
+        ]
 
         let toolbar = Aztec.FormatBar()
 
         if htmlMode {
-            for item in items {
-                item.isEnabled = false
-                if let sourceItem = item as? FormatBarItem, sourceItem.identifier == .sourcecode {
-                    item.isEnabled = true
-                }
+            let merged = scrollableItems + fixedItems
+            for item in merged {
+                item.isEnabled = item.identifier == .sourcecode
             }
         }
 
-        toolbar.items = items
-        toolbar.barTintColor = UIColor(fromHex: 0xF9FBFC, alpha: 1)
+        toolbar.scrollableItems = scrollableItems
+        toolbar.fixedItems = fixedItems
         toolbar.tintColor = WPStyleGuide.greyLighten10()
-        toolbar.highlightedTintColor = UIColor.blue
-        toolbar.selectedTintColor = UIColor.darkGray
-        toolbar.disabledTintColor = UIColor.lightGray
-        toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
+        toolbar.topBorderColor = WPStyleGuide.greyLighten10()
+        toolbar.highlightedTintColor = .blue
+        toolbar.selectedTintColor = .darkGray
+        toolbar.disabledTintColor = .lightGray
+        toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0)
         toolbar.formatter = self
 
         return toolbar
@@ -1613,6 +1660,35 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 //
 extension AztecPostViewController: TextViewMediaDelegate {
 
+    public func textView(_ textView: TextView, selectedAttachment attachment: TextAttachment, atPosition position: CGPoint) {
+        if  !richTextView.isFirstResponder {
+            richTextView.becomeFirstResponder()
+        }
+        //check if it's the current selected attachment or an failed upload
+        if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
+            //if it's the same attachment has before let's display the options
+            displayActions(forAttachment: attachment, position: position)
+        } else {
+            // if it's a new attachment tapped let's unmark the previous one
+            if let selectedAttachment = currentSelectedAttachment {
+                selectedAttachment.clearAllOverlays()
+                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+            }
+            // and mark the newly tapped attachment
+            let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a image on the post/page editor.")
+            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+            attachment.overlayImage = Gridicon.iconOfType(.pencil)
+            richTextView.refreshLayoutFor(attachment: attachment)
+            currentSelectedAttachment = attachment
+        }
+    }
+
+    public func textView(_ textView: TextView, deselectedAttachment attachment: TextAttachment, atPosition position: CGPoint) {
+        attachment.clearAllOverlays()
+        richTextView.refreshLayoutFor(attachment: attachment)
+        currentSelectedAttachment = nil
+    }
+
     func textView(_ textView: TextView, imageAtUrl url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) -> UIImage {
         var requestURL = url
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
@@ -1700,67 +1776,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     }
 }
-
-
-// MARK: - Gesture Recognizer Delegate Conformance
-//
-extension AztecPostViewController: UIGestureRecognizerDelegate {
-
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        let locationInTextView = gestureRecognizer.location(in: richTextView)
-        // check if we have an attachment in the position we tapped
-        guard richTextView.attachmentAtPoint(locationInTextView) != nil else {
-            // if we have a current selected attachment marked lets unmark it
-            if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.clearAllOverlays()
-                richTextView.refreshLayoutFor(attachment: selectedAttachment)
-                currentSelectedAttachment = nil
-            }
-            return false
-        }
-        return true
-    }
-
-    func richTextViewWasPressed(_ recognizer: UIGestureRecognizer) {
-        guard recognizer.state == .recognized else {
-            return
-        }
-        let locationInTextView = recognizer.location(in: richTextView)
-        // check if we have an attachment in the position we tapped
-        guard let attachment = richTextView.attachmentAtPoint(locationInTextView) else {
-            // if we have a current selected attachment marked lets unmark it
-            if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.clearAllOverlays()
-                richTextView.refreshLayoutFor(attachment: selectedAttachment)
-                currentSelectedAttachment = nil
-            }
-            return
-        }
-
-        //check if it's the current selected attachment or an failed upload
-        if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
-            //if it's the same attachment has before let's display the options
-            displayActions(forAttachment: attachment, position: locationInTextView)
-        } else {
-            // if it's a new attachment tapped let's unmark the previous one
-            if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.clearAllOverlays()
-                richTextView.refreshLayoutFor(attachment: selectedAttachment)
-            }
-            // and mark the newly tapped attachment
-            let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a image on the post/page editor.")
-            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
-            attachment.overlayImage = Gridicon.iconOfType(.pencil)
-            richTextView.refreshLayoutFor(attachment: attachment)
-            currentSelectedAttachment = attachment
-        }
-    }
-}
-
 
 // MARK: - State Restoration
 //
