@@ -25,8 +25,6 @@
 @dynamic remoteThumbnailURL;
 @dynamic postID;
 
-@synthesize unattached;
-
 - (void)mediaTypeFromUrl:(NSString *)ext
 {
     CFStringRef fileExt = (__bridge CFStringRef)ext;
@@ -120,17 +118,6 @@
     }
 }
 
-- (BOOL)featured
-{
-    for (AbstractPost *post in self.posts) {
-        if ([post.post_thumbnail isEqualToNumber:self.mediaID]){
-            return YES;
-        }
-    }
-    return NO;
-}
-
-
 #pragma mark -
 
 - (MediaRemoteStatus)remoteStatus
@@ -188,11 +175,6 @@
 - (void)save
 {
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
-
-- (BOOL)unattached
-{
-    return self.posts.count == 0;
 }
 
 - (NSString *)html
