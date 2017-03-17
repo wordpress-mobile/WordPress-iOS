@@ -18,7 +18,7 @@ open class NotificationActionsService: LocalCoreDataService {
 
         siteService.followSite(withID: siteID, success: {
             DDLogSwift.logInfo("Successfully followed site \(siteID)")
-            self.forceSyncParentNotification(with: block)
+            self.invalidateCacheForNotification(with: block)
             completion?(true)
 
         }, failure: { error in
@@ -44,7 +44,7 @@ open class NotificationActionsService: LocalCoreDataService {
 
         siteService.unfollowSite(withID: siteID, success: {
             DDLogSwift.logInfo("Successfully unfollowed site \(siteID)")
-            self.forceSyncParentNotification(with: block)
+            self.invalidateCacheForNotification(with: block)
             completion?(true)
 
         }, failure: { error in
@@ -71,7 +71,7 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
             DDLogSwift.logInfo("Successfully replied to comment \(siteID).\(commentID)")
-            self.forceSyncParentNotification(with: block)
+            self.invalidateCacheForNotification(with: block)
             completion?(true)
 
         }, failure: { error in
@@ -99,7 +99,7 @@ open class NotificationActionsService: LocalCoreDataService {
         // Hit the backend
         commentService.updateComment(withID: commentID, siteID: siteID, content: content, success: {
             DDLogSwift.logInfo("Successfully updated to comment \(siteID).\(commentID)")
-            self.forceSyncParentNotification(with: block)
+            self.invalidateCacheForNotification(with: block)
             completion?(true)
 
         }, failure: { error in
@@ -128,7 +128,7 @@ open class NotificationActionsService: LocalCoreDataService {
         // Proceed toggling the Like field
         commentService.likeComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully liked comment \(siteID).\(commentID)")
-            self.forceSyncParentNotification(with: block)
+            self.invalidateCacheForNotification(with: block)
             completion?(true)
 
         }, failure: { error in
@@ -154,7 +154,7 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.unlikeComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully unliked comment \(siteID).\(commentID)")
-            self.forceSyncParentNotification(with: block)
+            self.invalidateCacheForNotification(with: block)
             completion?(true)
 
         }, failure: { error in
@@ -180,7 +180,7 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.approveComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully approved comment \(siteID).\(commentID)")
-            self.forceSyncParentNotification(with: block)
+            self.invalidateCacheForNotification(with: block)
             completion?(true)
 
         }, failure: { error in
@@ -206,7 +206,7 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.unapproveComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully unapproved comment \(siteID).\(commentID)")
-            self.forceSyncParentNotification(with: block)
+            self.invalidateCacheForNotification(with: block)
             completion?(true)
 
         }, failure: { error in
@@ -269,19 +269,20 @@ open class NotificationActionsService: LocalCoreDataService {
 //
 private extension NotificationActionsService {
 
-    /// Sync's a NotificationBlock container Notification. We need to manually do this to force Backend's Note
-    /// document regeneration. This is performed because retrieving `[NoteID, Hash]` might, in fact, return an 
-    /// outdated hash (ie. after a Like OP).
+    /// Invalidates the Local Cache for a given Notification. This will effectively cause the notification to
+    /// be re-downloaded from the remote endpoint.
+    ///
+    /// Required due to a beautiful backend bug. Details here: https://github.com/wordpress-mobile/WordPress-iOS/pull/6871
     ///
     /// - Parameter block: child NotificationBlock object of the Notification-to-be-refreshed.
     ///
-    func forceSyncParentNotification(with block: NotificationBlock) {
+    func invalidateCacheForNotification(with block: NotificationBlock) {
         guard let notificationID = block.notificationID, let mediator = NotificationSyncMediator() else {
             return
         }
 
-        DDLogSwift.logInfo("Res-ync'ing Notification \(notificationID)")
-        mediator.syncNote(with: notificationID)
+        DDLogSwift.logInfo("Invalidating cache for Notification with ID: \(notificationID)")
+        mediator.invalidateCacheForNotification(with: notificationID)
     }
 }
 
