@@ -29,6 +29,7 @@
 #import "PostPreviewViewController.h"
 #import "AbstractPost.h"
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "Media+HTML.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
