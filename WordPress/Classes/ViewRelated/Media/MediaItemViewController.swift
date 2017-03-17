@@ -60,8 +60,8 @@ class MediaItemViewController: UITableViewController {
                 editableRowIfSupported(title: NSLocalizedString("Description", comment: "Label for the description for a media asset (image / video)"), value: mediaMetadata.desc, action: editDescription())
                 ], footerText: nil),
             ImmuTableSection(headerText: NSLocalizedString("Metadata", comment: "Title of section containing image / video metadata such as size and file type"), rows: [
-                TextRow(title: NSLocalizedString("File name", comment: "Label for the file name for a media asset (image / video)"), value: media.filename),
-                TextRow(title: NSLocalizedString("File type", comment: "Label for the file type (.JPG, .PNG, etc) for a media asset (image / video)"), value: presenter.fileType),
+                TextRow(title: NSLocalizedString("File name", comment: "Label for the file name for a media asset (image / video)"), value: media.filename ?? ""),
+                TextRow(title: NSLocalizedString("File type", comment: "Label for the file type (.JPG, .PNG, etc) for a media asset (image / video)"), value: presenter.fileType ?? ""),
                 TextRow(title: NSLocalizedString("Dimensions", comment: "Label for the dimensions in pixels for a media asset (image / video)"), value: presenter.dimensions),
                 TextRow(title: NSLocalizedString("Uploaded", comment: "Label for the date a media asset (image / video) was uploaded"), value: media.creationDate.mediumString())
                 ], footerText: nil)
@@ -117,7 +117,7 @@ class MediaItemViewController: UITableViewController {
     // MARK: - Actions
 
     @objc private func shareTapped(_ sender: UIBarButtonItem) {
-        if let url = URL(string: media.remoteURL) {
+        if let remoteURLStr = media.remoteURL, let url = URL(string: remoteURLStr) {
             let activityController = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
                 activityController.modalPresentationStyle = .popover
                 activityController.popoverPresentationController?.barButtonItem = sender
@@ -399,11 +399,10 @@ struct MediaImageRow: ImmuTableRow {
     }
 
     private func setAspectRatioFor(_ cell: ImageTableViewCell) {
-        let width = CGFloat(media.width.floatValue)
-        let height = CGFloat(media.height.floatValue)
-        if (width > 0) {
-            cell.targetAspectRatio = height / width
+        guard let width = media.width, let height = media.height, width.floatValue > 0 else {
+            return
         }
+        cell.targetAspectRatio = CGFloat(height.floatValue) / CGFloat(width.floatValue)
     }
 
     private func addPlaceholderImageFor(_ cell: ImageTableViewCell) {
@@ -465,8 +464,11 @@ private struct MediaMetadataPresenter {
     }
 
     /// A String containing the uppercased file extension of the asset (.JPG, .PNG, etc)
-    var fileType: String {
-        return (media.filename as NSString).pathExtension.uppercased()
+    var fileType: String? {
+        guard let filename = media.filename else {
+            return nil
+        }
+        return (filename as NSString).pathExtension.uppercased()
     }
 }
 
