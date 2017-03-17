@@ -30,18 +30,6 @@ class AztecPostViewController: UIViewController {
         tv.backgroundColor = Colors.aztecBackground
         toolbar.formatter = self
 
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
-        recognizer.cancelsTouchesInView = true
-        recognizer.delaysTouchesBegan = true
-        recognizer.delaysTouchesEnded = true
-        recognizer.delegate = self
-        tv.addGestureRecognizer(recognizer)
-        for gesture in tv.gestureRecognizers ?? [] {
-            if let otherTapGesture = gesture as? UITapGestureRecognizer, otherTapGesture != recognizer {
-                otherTapGesture.require(toFail: recognizer)
-            }
-        }
-
         return tv
     }()
 
@@ -1665,6 +1653,35 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 //
 extension AztecPostViewController: TextViewMediaDelegate {
 
+    public func textView(_ textView: TextView, selectedAttachment attachment: TextAttachment, atPosition position: CGPoint) {
+        if  !richTextView.isFirstResponder {
+            richTextView.becomeFirstResponder()
+        }
+        //check if it's the current selected attachment or an failed upload
+        if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
+            //if it's the same attachment has before let's display the options
+            displayActions(forAttachment: attachment, position: position)
+        } else {
+            // if it's a new attachment tapped let's unmark the previous one
+            if let selectedAttachment = currentSelectedAttachment {
+                selectedAttachment.clearAllOverlays()
+                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+            }
+            // and mark the newly tapped attachment
+            let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a image on the post/page editor.")
+            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+            attachment.overlayImage = Gridicon.iconOfType(.pencil)
+            richTextView.refreshLayoutFor(attachment: attachment)
+            currentSelectedAttachment = attachment
+        }
+    }
+
+    public func textView(_ textView: TextView, deselectedAttachment attachment: TextAttachment, atPosition position: CGPoint) {
+        attachment.clearAllOverlays()
+        richTextView.refreshLayoutFor(attachment: attachment)
+        currentSelectedAttachment = nil
+    }
+
     func textView(_ textView: TextView, imageAtUrl url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) -> UIImage {
         var requestURL = url
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
@@ -1752,67 +1769,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     }
 }
-
-
-// MARK: - Gesture Recognizer Delegate Conformance
-//
-extension AztecPostViewController: UIGestureRecognizerDelegate {
-
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        let locationInTextView = gestureRecognizer.location(in: richTextView)
-        // check if we have an attachment in the position we tapped
-        guard richTextView.attachmentAtPoint(locationInTextView) != nil else {
-            // if we have a current selected attachment marked lets unmark it
-            if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.clearAllOverlays()
-                richTextView.refreshLayoutFor(attachment: selectedAttachment)
-                currentSelectedAttachment = nil
-            }
-            return false
-        }
-        return true
-    }
-
-    func richTextViewWasPressed(_ recognizer: UIGestureRecognizer) {
-        guard recognizer.state == .recognized else {
-            return
-        }
-        let locationInTextView = recognizer.location(in: richTextView)
-        // check if we have an attachment in the position we tapped
-        guard let attachment = richTextView.attachmentAtPoint(locationInTextView) else {
-            // if we have a current selected attachment marked lets unmark it
-            if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.clearAllOverlays()
-                richTextView.refreshLayoutFor(attachment: selectedAttachment)
-                currentSelectedAttachment = nil
-            }
-            return
-        }
-
-        //check if it's the current selected attachment or an failed upload
-        if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
-            //if it's the same attachment has before let's display the options
-            displayActions(forAttachment: attachment, position: locationInTextView)
-        } else {
-            // if it's a new attachment tapped let's unmark the previous one
-            if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.clearAllOverlays()
-                richTextView.refreshLayoutFor(attachment: selectedAttachment)
-            }
-            // and mark the newly tapped attachment
-            let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a image on the post/page editor.")
-            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
-            attachment.overlayImage = Gridicon.iconOfType(.pencil)
-            richTextView.refreshLayoutFor(attachment: attachment)
-            currentSelectedAttachment = attachment
-        }
-    }
-}
-
 
 // MARK: - State Restoration
 //
