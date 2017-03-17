@@ -62,6 +62,7 @@
 
 #import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
+#import "PageSettingsViewController.h"
 #import "PhotonImageURLHelper.h"
 #import "PostContentProvider.h"
 #import "PostCardTableViewCell.h"
