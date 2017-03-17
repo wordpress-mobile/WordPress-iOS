@@ -51,8 +51,6 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, assign) MediaType mediaType;
 @property (nonatomic, weak, readonly) NSString *html;
 @property (nonatomic, assign) MediaRemoteStatus remoteStatus;
-@property (nonatomic, assign, readonly) BOOL unattached;
-@property (nonatomic, assign, readonly) BOOL featured;
 @property (nonatomic, strong) NSString *absoluteLocalURL;
 @property (nonatomic, strong) NSString *absoluteThumbnailLocalURL;
 @property (nonatomic, strong, readonly) NSString *posterImageURL;
