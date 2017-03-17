@@ -36,6 +36,7 @@
 		00F2E3FA166EEFBE00D0527C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3653158F2D4500419A93 /* UIKit.framework */; };
 		00F2E3FB166EEFE100D0527C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3651158F2D3F00419A93 /* QuartzCore.framework */; };
 		0807CB721CE670A800CDBDAC /* WPContentSearchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0807CB711CE670A800CDBDAC /* WPContentSearchHelper.swift */; };
+		080AAA691E7C63C3004DCD11 /* Media+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 080AAA681E7C63C3004DCD11 /* Media+HTML.m */; };
 		080C44A91CE14A9F00B3A02F /* MenuDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 080C449E1CE14A9F00B3A02F /* MenuDetailsViewController.m */; };
 		08216FAA1CDBF95100304BA7 /* MenuItemEditing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08216FA71CDBF95100304BA7 /* MenuItemEditing.storyboard */; };
 		08216FAB1CDBF95100304BA7 /* MenuItemEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08216FA91CDBF95100304BA7 /* MenuItemEditingViewController.m */; };
@@ -1044,6 +1045,8 @@
 
 /* Begin PBXFileReference section */
 		0807CB711CE670A800CDBDAC /* WPContentSearchHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPContentSearchHelper.swift; sourceTree = "<group>"; };
+		080AAA671E7C63C3004DCD11 /* Media+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Media+HTML.h"; sourceTree = "<group>"; };
+		080AAA681E7C63C3004DCD11 /* Media+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Media+HTML.m"; sourceTree = "<group>"; };
 		080C449D1CE14A9F00B3A02F /* MenuDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuDetailsViewController.h; sourceTree = "<group>"; };
 		080C449E1CE14A9F00B3A02F /* MenuDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDetailsViewController.m; sourceTree = "<group>"; };
 		08216FA71CDBF95100304BA7 /* MenuItemEditing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MenuItemEditing.storyboard; sourceTree = "<group>"; };
@@ -4589,6 +4592,8 @@
 				F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */,
 				B5416CFF1C17693B00006DD8 /* UIApplication+Helpers.h */,
 				B5416D001C17693B00006DD8 /* UIApplication+Helpers.m */,
+				080AAA671E7C63C3004DCD11 /* Media+HTML.h */,
+				080AAA681E7C63C3004DCD11 /* Media+HTML.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -6122,6 +6127,7 @@
 				B5F641B31E37C36700B7819F /* AdaptiveNavigationController.swift in Sources */,
 				5DF6571B1AE6ACAC00AAA8D7 /* DisplayableImageHelper.m in Sources */,
 				E166FA1D1BB0658600374B5B /* Person.swift in Sources */,
+				080AAA691E7C63C3004DCD11 /* Media+HTML.m in Sources */,
 				E60646801CB3133000A3073F /* SigninEditingState.swift in Sources */,
 				59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */,
 				313692791A5D6F7900EBE645 /* HelpshiftUtils.m in Sources */,
