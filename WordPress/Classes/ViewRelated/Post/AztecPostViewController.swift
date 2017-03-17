@@ -789,7 +789,12 @@ private extension AztecPostViewController {
     }
 
     func displayPostOptions() {
-        let settingsViewController = PostSettingsViewController(post: post)
+        let settingsViewController: PostSettingsViewController
+        if post is Page {
+            settingsViewController = PageSettingsViewController(post: post)
+        } else {
+            settingsViewController = PostSettingsViewController(post: post)
+        }
         settingsViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
