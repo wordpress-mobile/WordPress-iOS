@@ -828,25 +828,6 @@ static NSString * const MediaDirectory = @"Media";
     return thumbnailPath;
 }
 
-- (NSString *)mimeTypeForFilename:(NSString *)filename
-{
-    if (!filename || ![filename pathExtension]) {
-        return @"application/octet-stream";
-    }
-    // Get the UTI from the file's extension:
-    CFStringRef pathExtension = (__bridge_retained CFStringRef)[filename pathExtension];
-    CFStringRef type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
-    CFRelease(pathExtension);
-
-    // The UTI can be converted to a mime type:
-    NSString *mimeType = (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType);
-    if (type != NULL) {
-        CFRelease(type);
-    }
-
-    return mimeType;
-}
-
 - (id<MediaServiceRemote>)remoteForBlog:(Blog *)blog
 {
     id <MediaServiceRemote> remote;
@@ -924,14 +905,14 @@ static NSString * const MediaDirectory = @"Media";
     remoteMedia.url = [NSURL URLWithString:media.remoteURL];
     remoteMedia.date = media.creationDate;
     remoteMedia.file = media.filename;
-    remoteMedia.extension = [media.filename pathExtension] ? :@"unknown";
+    remoteMedia.extension = [media fileExtension] ?: @"unknown";
     remoteMedia.title = media.title;
     remoteMedia.caption = media.caption;
     remoteMedia.descriptionText = media.desc;
     remoteMedia.height = media.height;
     remoteMedia.width = media.width;
     remoteMedia.localURL = media.absoluteLocalURL;
-    remoteMedia.mimeType = [self mimeTypeForFilename:media.absoluteLocalURL];
+    remoteMedia.mimeType = [media mimeType];
 	remoteMedia.videopressGUID = media.videopressGUID;
     remoteMedia.remoteThumbnailURL = media.remoteThumbnailURL;
     remoteMedia.postID = media.postID;
