@@ -164,6 +164,10 @@ class AztecPostViewController: UIViewController {
     }()
 
 
+    /// Boolean indicating whether if the FormatBar was animated, or not
+    ///
+    fileprivate var formatBarAnimatedPeek = false
+
     /// Active Editor's Mode
     ///
     fileprivate(set) var mode = EditionMode.richText {
@@ -439,15 +443,17 @@ class AztecPostViewController: UIViewController {
     }
 
     func startListeningToNotifications() {
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidShow), name: .UIKeyboardDidShow, object: nil)
     }
 
     func stopListeningToNotifications() {
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        notificationCenter.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        let nc = NotificationCenter.default
+        nc.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        nc.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        nc.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
     }
 
     func rememberFirstResponder() {
@@ -526,6 +532,16 @@ class AztecPostViewController: UIViewController {
         }
 
         refreshInsets(forKeyboardFrame: keyboardFrame)
+    }
+
+    func keyboardDidShow(_ notification: Notification) {
+        guard richTextView.isFirstResponder, !formatBarAnimatedPeek else {
+            return
+        }
+
+        let formatBar = richTextView.inputAccessoryView as? FormatBar
+        formatBar?.animateSlightPeekWhenOverflows()
+        formatBarAnimatedPeek = true
     }
 
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
