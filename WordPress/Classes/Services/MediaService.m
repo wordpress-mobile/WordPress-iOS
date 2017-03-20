@@ -214,8 +214,8 @@
 
 - (void)uploadMedia:(Media *)media
            progress:(NSProgress **)progress
-           success:(void (^)())success
-           failure:(void (^)(NSError *error))failure
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
     RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
@@ -312,9 +312,9 @@
                 failure:failureBlock];
 }
 
-- (void)updateMultipleMedia:(NSArray<Media *> *)mediaObjects
-             overallSuccess:(void (^)())overallSuccess
-                    failure:(void (^)(NSError *error))failure
+- (void)updateMedia:(NSArray<Media *> *)mediaObjects
+     overallSuccess:(void (^)())overallSuccess
+            failure:(void (^)(NSError *error))failure
 {
     if (mediaObjects.count == 0) {
         if (overallSuccess) {
@@ -426,10 +426,10 @@
                 failure:failure];
 }
 
-- (void)deleteMultipleMedia:(nonnull NSArray<Media *> *)mediaObjects
-                   progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
-                    success:(nullable void (^)())success
-                    failure:(nullable void (^)())failure
+- (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
+           progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
+            success:(nullable void (^)())success
+            failure:(nullable void (^)())failure
 {
     if (mediaObjects.count == 0) {
         if (success) {

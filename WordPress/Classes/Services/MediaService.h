@@ -88,9 +88,9 @@
  @param mediaObjects An array of media objects to update
  @param success
  */
-- (void)updateMultipleMedia:(nonnull NSArray<Media *> *)mediaObjects
-             overallSuccess:(nullable void (^)())overallSuccess
-                    failure:(nullable void (^)(NSError * _Nonnull error))failure;
+- (void)updateMedia:(nonnull NSArray<Media *> *)mediaObjects
+     overallSuccess:(nullable void (^)())overallSuccess
+            failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
  Deletes the Media object from the server. Note the Media is deleted, not trashed.
@@ -111,10 +111,10 @@
  @param success a block that will be invoked when the media deletion finished with success
  @param failure a block that will be invoked when there is an error.
  */
-- (void)deleteMultipleMedia:(nonnull NSArray<Media *> *)mediaObjects
-                    progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
-                    success:(nullable void (^)())success
-                    failure:(nullable void (^)())failure;
+- (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
+           progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
+            success:(nullable void (^)())success
+            failure:(nullable void (^)())failure;
 
 /**
  Find the media object in the local database.
