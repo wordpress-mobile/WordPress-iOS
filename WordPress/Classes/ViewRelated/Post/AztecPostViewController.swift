@@ -126,6 +126,7 @@ class AztecPostViewController: UIViewController {
         return pickerItem
     }()
 
+
     /// Publish Button
     fileprivate(set) lazy var publishButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: self.postEditorStateContext.publishButtonText, style: WPStyleGuide.barButtonStyleForDone(), target: self, action: #selector(publishButtonTapped(sender:)))
@@ -133,6 +134,7 @@ class AztecPostViewController: UIViewController {
 
         return button
     }()
+
 
     /// NavigationBar's More Button
     ///
@@ -344,11 +346,6 @@ class AztecPostViewController: UIViewController {
         coordinator.animate(alongsideTransition: { _ in
             self.resizeBlogPickerButton()
         })
-
-        // TODO: Update toolbars
-        //    [self.editorToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
-        //    [self.titleToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
-
     }
 
 
@@ -1293,13 +1290,7 @@ fileprivate extension AztecPostViewController {
         let postService = PostService(managedObjectContext: mainContext)
         let newPost = shouldCreatePage ? postService.createDraftPage(for: blog) : postService.createDraftPost(for: blog)
 
-        //  TODO: Strip Media!
-        //  NSString *content = oldPost.content;
-        //  for (Media *media in oldPost.media) {
-        //      content = [self removeMedia:media fromString:content];
-        //  }
-
-        newPost.content = post.content
+        newPost.content = contentByStrippingMediaAttachments()
         newPost.postTitle = post.postTitle
         newPost.password = post.password
         newPost.status = post.status
@@ -1368,6 +1359,21 @@ fileprivate extension AztecPostViewController {
 
     func shouldRemoveOnDismiss(post: AbstractPost) -> Bool {
         return post.isRevision() && post.hasLocalChanges() || post.hasNeverAttemptedToUpload()
+    }
+
+    func contentByStrippingMediaAttachments() -> String {
+        if mode == .html {
+            richTextView.setHTML(htmlTextView.text)
+        }
+
+        richTextView.removeTextAttachments()
+        let strippedHTML = richTextView.getHTML()
+
+        if mode == .html {
+            richTextView.setHTML(strippedHTML)
+        }
+
+        return strippedHTML
     }
 
     fileprivate func mapUIContentToPostAndSave() {
