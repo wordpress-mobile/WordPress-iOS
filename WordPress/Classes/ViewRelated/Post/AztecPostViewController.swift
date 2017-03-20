@@ -2049,7 +2049,7 @@ class MediaProgressCoordinator: NSObject {
         }
 
         if mediaUploading.isEmpty {
-            return progress.totalUnitCount != progress.completedUnitCount
+            return progress.completedUnitCount < progress.totalUnitCount
         }
 
         for progress in mediaUploading.values {
@@ -2086,6 +2086,8 @@ class MediaProgressCoordinator: NSObject {
         for mediaID in pendingUploadIds {
             cancelAndStopTrack(of: mediaID)
         }
+
+        mediaUploadingProgress?.cancel()
     }
 
     var failedMediaIDs: [String] {
