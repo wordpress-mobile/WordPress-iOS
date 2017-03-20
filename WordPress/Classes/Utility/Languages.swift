@@ -49,13 +49,17 @@ class WordPressComLanguageDatabase: NSObject {
     /// - Returns: A string containing the language name, or an empty string, in case it wasn't found.
     ///
     func nameForLanguageWithId(_ languageId: Int) -> String {
-        for language in all {
-            if language.id == languageId {
-                return language.name
-            }
-        }
+        return find(id: languageId)?.name ?? ""
+    }
 
-        return String()
+    /// Returns the Language with a given Language Identifier
+    ///
+    /// - Parameter id: The Identifier of the language.
+    ///
+    /// - Returns: The language with the matching Identifier, or nil, in case it wasn't found.
+    ///
+    func find(id: Int) -> Language? {
+        return all.first(where: { $0.id == id })
     }
 
     /// Returns the current device language as the corresponding WordPress.com language ID.
@@ -110,7 +114,7 @@ class WordPressComLanguageDatabase: NSObject {
 
     /// Represents a Language supported by WordPress.com
     ///
-    class Language {
+    class Language: Equatable {
         /// Language Unique Identifier
         ///
         let id: Int
@@ -155,6 +159,10 @@ class WordPressComLanguageDatabase: NSObject {
             return array.flatMap {
                 return Language(dict: $0)
             }
+        }
+
+        static func == (lhs: Language, rhs: Language) -> Bool {
+            return lhs.id == rhs.id
         }
     }
 
