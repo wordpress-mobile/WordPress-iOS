@@ -50,7 +50,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         var progress: Progress? = nil
         let expectedPath = "v1.1/sites/\(siteID)/media/new"
         let media = mockRemoteMedia()
-        mediaServiceRemote.createMedia(media, progress: &progress, success: nil, failure: nil)
+        mediaServiceRemote.uploadMedia(media, progress: &progress, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Wrong method, expected POST got \(mockRemoteApi.methodCalled())")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
     }
@@ -61,7 +61,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let media = mockRemoteMedia()
         var progress: Progress? = nil
         var remoteMedia: RemoteMedia? = nil
-        mediaServiceRemote.createMedia(media, progress: &progress, success: {
+        mediaServiceRemote.uploadMedia(media, progress: &progress, success: {
             remoteMedia = $0
             }, failure: nil)
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
@@ -74,7 +74,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let media = mockRemoteMedia()
         var progress: Progress? = nil
         var errorDescription = ""
-        mediaServiceRemote.createMedia(media, progress: &progress, success: nil, failure: {
+        mediaServiceRemote.uploadMedia(media, progress: &progress, success: nil, failure: {
             errorDescription = ($0?.localizedDescription)!
         })
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())

@@ -37,6 +37,7 @@
 #import "MediaLibraryPickerDataSource.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPAppAnalytics.h"
+#import "Media+HTML.h"
 
 @import Gridicons;
 
@@ -1742,7 +1743,7 @@ EditImageDetailsViewControllerDelegate
         } else if (media.mediaType == MediaTypeVideo) {
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
                                       forRemoteVideo:media.remoteURL
-                                        remotePoster:media.posterImageURL
+                                        remotePoster:media.posterAttributeImageURL
                                           videoPress:media.videopressGUID];
         }
     } failure:^(NSError *error) {
@@ -1878,7 +1879,7 @@ EditImageDetailsViewControllerDelegate
         } else if ([media mediaType] == MediaTypeVideo) {
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary withBlog:self.post.blog];
             [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media absoluteThumbnailLocalURL]];
-            [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:media.posterImageURL videoPress:media.videopressGUID];
+            [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:media.posterAttributeImageURL videoPress:media.videopressGUID];
         }
         [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
     } else {
@@ -1891,7 +1892,7 @@ EditImageDetailsViewControllerDelegate
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
                    withProperties:[WPAppAnalytics propertiesFor:media]
                          withBlog:self.post.blog];
-            [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:media.posterImageURL];
+            [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:media.posterAttributeImageURL];
         }
         [self uploadMedia:media trackingId:mediaUniqueID];
     }
