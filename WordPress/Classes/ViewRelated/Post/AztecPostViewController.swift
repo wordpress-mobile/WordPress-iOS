@@ -1336,6 +1336,7 @@ fileprivate extension AztecPostViewController {
             post.remove()
         }
 
+        mediaProgressCoordinator.cancelAllPendingUploads()
         ContextManager.sharedInstance().save(context)
     }
 
@@ -2077,6 +2078,14 @@ class MediaProgressCoordinator: NSObject {
         }
         finishOneItem()
         mediaUploading.removeValue(forKey: mediaID)
+    }
+
+    func cancelAllPendingUploads() {
+        let pendingUploadIds = mediaUploading.keys
+
+        for mediaID in pendingUploadIds {
+            cancelAndStopTrack(of: mediaID)
+        }
     }
 
     var failedMediaIDs: [String] {
