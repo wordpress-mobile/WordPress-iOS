@@ -108,7 +108,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
           }];
 }
 
-- (void)createMedia:(RemoteMedia *)media
+- (void)uploadMedia:(RemoteMedia *)media
            progress:(NSProgress **)progress
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
