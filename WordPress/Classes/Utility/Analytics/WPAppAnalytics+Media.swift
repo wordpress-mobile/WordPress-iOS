@@ -12,12 +12,16 @@ public extension WPAppAnalytics {
             properties[MediaProperties.fileExtension] = fileExtension
         }
         if media.mediaType == .image {
-            let megaPixels = round((media.width.floatValue * media.height.floatValue) / 1000000)
-            properties[MediaProperties.megapixels] = Int(megaPixels)
+            if let width = media.width, let height = media.height {
+                let megaPixels = round((width.floatValue * height.floatValue) / 1000000)
+                properties[MediaProperties.megapixels] = Int(megaPixels)
+            }
         } else if media.mediaType == .video {
             properties[MediaProperties.durationSeconds] = media.length
         }
-        properties[MediaProperties.bytes] = media.filesize.intValue * 1024
+        if let filesize = media.filesize {
+            properties[MediaProperties.bytes] = filesize.intValue * 1024
+        }
         return properties
     }
 
