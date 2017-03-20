@@ -222,7 +222,9 @@ private extension PersonViewController {
         }
 
         let service = PeopleService(blog: blog, context: context)
-        service?.deleteUser(user, failure: {[weak self] (error: Error?) -> () in
+        service?.deleteUser(user, success: {
+            WPAnalytics.track(.personRemoved)
+        }, failure: {[weak self] (error: Error?) -> () in
             guard let strongSelf = self, let error = error as? NSError else {
                 return
             }
@@ -233,8 +235,6 @@ private extension PersonViewController {
             strongSelf.handleRemoveUserError(error, userName: "@" + personWithError.username)
         })
         _ = navigationController?.popViewController(animated: true)
-
-        WPAnalytics.track(.personRemoved)
     }
 
     func handleRemoveUserError(_ error: NSError, userName: String) {
