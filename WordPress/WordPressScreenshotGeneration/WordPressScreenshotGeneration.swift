@@ -38,7 +38,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         }
 
         // Login
-        let username = "thenomadicwordsmith"
+        let username = ""
 
         let usernameEmailTextField =  app.textFields["Email or username"]
         usernameEmailTextField.tap()
@@ -48,7 +48,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         let passwordSecureTextField = app.secureTextFields["Password"]
         passwordSecureTextField.tap()
-        passwordSecureTextField.typeText("$dtZg2xmh%7FNQSFQJ!u^T!qc*B8")
+        passwordSecureTextField.typeText("")
 
         app.buttons["Log In Button"].tap()
 
