@@ -190,7 +190,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 }
 
                 MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                [mediaService updateMultipleMedia:mediaToUpdate overallSuccess:^{
+                [mediaService updateMedia:mediaToUpdate overallSuccess:^{
                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
                     if (success) {
