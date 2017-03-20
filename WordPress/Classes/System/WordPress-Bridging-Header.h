@@ -1,5 +1,10 @@
+// Disable warnings about deprecated UILocalNotification in Helpshift
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #import <Helpshift/HelpshiftCore.h>
 #import <Helpshift/HelpshiftSupport.h>
+#pragma clang diagnostic pop
+
 #import <Mixpanel/Mixpanel.h>
 #import "SFHFKeychainUtils.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
