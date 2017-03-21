@@ -531,13 +531,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     if (!self.blog.isHostedAtWPcom) {
         return YES;
-    } else {
-        NSDate *hideWPAdminDate = [NSDate dateWithISO8601String:HideWPAdminDate];
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-        return [defaultAccount.dateCreated compare:hideWPAdminDate] == NSOrderedAscending;
     }
+    NSDate *hideWPAdminDate = [NSDate dateWithISO8601String:HideWPAdminDate];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    return [defaultAccount.dateCreated compare:hideWPAdminDate] == NSOrderedAscending;
 }
 
 #pragma mark - Configuration
