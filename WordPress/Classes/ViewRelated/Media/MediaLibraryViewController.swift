@@ -259,8 +259,10 @@ class MediaLibraryViewController: UIViewController {
 
 extension MediaLibraryViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
-        pickerDataSource.searchQuery = searchController.searchBar.text
-        pickerViewController.collectionView?.reloadData()
+        if searchController.isActive {
+            pickerDataSource.searchQuery = searchController.searchBar.text
+            pickerViewController.collectionView?.reloadData()
+        }
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
