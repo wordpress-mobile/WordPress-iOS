@@ -208,6 +208,9 @@ class NotificationDetailsViewController: UIViewController {
 
         previousNavigationButton.isEnabled = shouldEnablePreviousButton
         nextNavigationButton.isEnabled = shouldEnableNextButton
+
+        previousNavigationButton.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
+        nextNavigationButton.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
     }
 }
 
