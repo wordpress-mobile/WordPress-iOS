@@ -26,7 +26,7 @@ NSString *const BlavatarDefault = @"blavatar-default";
 
 - (void)setImageWithSiteIcon:(NSString *)siteIcon placeholderImage:(UIImage *)placeholderImage
 {
-    if ([self isPhotonURL:siteIcon]) {
+    if ([self isPhotonURL:siteIcon] || [self isWordPressComFilesURL:siteIcon]) {
         [self setImageWithURL:[self siteIconURLForSiteIconUrl:siteIcon] placeholderImage:placeholderImage];
     } else if ([self isBlavatarURL:siteIcon]) {
         [self setImageWithURL:[self blavatarURLForBlavatarURL:siteIcon] placeholderImage:placeholderImage];
@@ -87,6 +87,11 @@ NSString *const BlavatarDefault = @"blavatar-default";
 - (BOOL)isPhotonURL:(NSString *)path
 {
     return [path rangeOfString:@".wp.com"].location != NSNotFound;
+}
+
+- (BOOL)isWordPressComFilesURL:(NSString *)path
+{
+    return [path containsString:@".files.wordpress.com"];
 }
 
 - (BOOL)isBlavatarURL:(NSString *)path
