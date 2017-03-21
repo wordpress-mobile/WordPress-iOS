@@ -88,7 +88,13 @@ class MediaLibraryViewController: UIViewController {
 
         if let searchQuery = searchQuery,
             !searchQuery.isEmpty {
-            searchController.searchBar.text = searchQuery
+
+            // If we deleted the last asset, then clear the search
+            if pickerDataSource.numberOfAssets() == 0 {
+                clearSearch()
+            } else {
+                searchController.searchBar.text = searchQuery
+            }
         }
     }
 
@@ -98,8 +104,8 @@ class MediaLibraryViewController: UIViewController {
         selectedAsset = nil
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
 
         if searchController.isActive {
             searchQuery = searchController.searchBar.text
