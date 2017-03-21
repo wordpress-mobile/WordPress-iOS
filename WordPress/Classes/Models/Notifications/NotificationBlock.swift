@@ -139,6 +139,12 @@ extension NotificationBlock {
         return metaTitles?[MetaKeys.Home] as? String
     }
 
+    /// Parent Notification ID
+    ///
+    var notificationID: String? {
+        return parent?.notificationId
+    }
+
     /// Returns the Meta ID's collection, if any.
     ///
     fileprivate var metaIds: [String: AnyObject]? {
