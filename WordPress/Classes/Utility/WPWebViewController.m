@@ -355,6 +355,18 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         return NO;
     }
     
+    // To handle WhatsApp and Telegraph shares
+    // Even though the documentation says that canOpenURL will only return YES for
+    // URLs configured on the plist under LSApplicationQueriesSchemes if we don't filter
+    // out http requests it also returns YES for those
+    if (![request.URL.scheme hasPrefix:@"http"]
+        && [[UIApplication sharedApplication] canOpenURL:request.URL]) {
+        [[UIApplication sharedApplication] openURL:request.URL
+                                           options:nil
+                                 completionHandler:nil];
+        return NO;
+    }
+
     //  Note:
     //  UIWebView callbacks will get hit for every frame that gets loaded. As a workaround, we'll consider
     //  we're in a "loading" state just for the Top Level request.
