@@ -130,12 +130,12 @@ class NotificationSyncMediator {
     ///     - noteId: Notification ID of the note to be downloaded.
     ///     - completion: Closure to be executed on completion.
     ///
-    func syncNote(with noteId: String, completion: @escaping ((Error?, Notification?) -> Void)) {
+    func syncNote(with noteId: String, completion: ((Error?, Notification?) -> Void)? = nil) {
         assert(Thread.isMainThread)
 
         remote.loadNotes(noteIds: [noteId]) { error, remoteNotes in
             guard let remoteNotes = remoteNotes else {
-                completion(error, nil)
+                completion?(error, nil)
                 return
             }
 
@@ -144,7 +144,7 @@ class NotificationSyncMediator {
                 let predicate = NSPredicate(format: "(notificationId == %@)", noteId)
                 let note = helper.firstObject(matchingPredicate: predicate)
 
-                completion(nil, note)
+                completion?(nil, note)
             }
         }
     }
@@ -208,6 +208,24 @@ class NotificationSyncMediator {
             for orphan in helper.allObjects(matchingPredicate: predicate) {
                 helper.deleteObject(orphan)
             }
+
+            self.contextManager.saveDerivedContext(derivedContext)
+        }
+    }
+
+    /// Invalidates the local cache for the notification with the specified ID.
+    ///
+    func invalidateCacheForNotification(with noteID: String) {
+        let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
+        let helper = CoreDataHelper<Notification>(context: derivedContext)
+        let predicate = NSPredicate(format: "(notificationId == %@)", noteID)
+
+        derivedContext.perform {
+            guard let notification = helper.firstObject(matchingPredicate: predicate) else {
+                return
+            }
+
+            notification.notificationHash = nil
 
             self.contextManager.saveDerivedContext(derivedContext)
         }
