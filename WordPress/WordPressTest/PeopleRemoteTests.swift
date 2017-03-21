@@ -6,12 +6,14 @@ import OHHTTPStubs
 class PeopleServiceTests: XCTestCase {
     // MARK: - Constants
 
-    let validationSuccessMockFilename   = "people-validate-invitation-success.json"
-    let validationFailureMockFilename   = "people-validate-invitation-failure.json"
-    let sendSuccessMockFilename         = "people-send-invitation-success.json"
-    let sendFailureMockFilename         = "people-send-invitation-failure.json"
-    let contentTypeJson                 = "application/json"
-    let timeout                         = TimeInterval(1000)
+    let validationSuccessMockFilename       = "people-validate-invitation-success.json"
+    let validationFailureMockFilename       = "people-validate-invitation-failure.json"
+    let sendSuccessMockFilename             = "people-send-invitation-success.json"
+    let sendFailureMockFilename             = "people-send-invitation-failure.json"
+    let deleteFollowerFailureMockFilename   = "people-delete-follower-failure.json"
+    let deleteFollowerSuccessMockFilename   = "people-delete-follower-success.json"
+    let contentTypeJson                     = "application/json"
+    let timeout                             = TimeInterval(1000)
 
     // MARK: - Properties
 
@@ -36,12 +38,12 @@ class PeopleServiceTests: XCTestCase {
 
     // MARK: - Helpers
 
-    fileprivate func stubRemoteResponse(_ endpoint: String, filename: String) {
+    fileprivate func stubRemoteResponse(_ endpoint: String, filename: String, status: Int32 = 200) {
         stub(condition: { request in
             return request.url?.absoluteString.range(of: endpoint) != nil
         }) { _ in
             let stubPath = OHPathForFile(filename, type(of: self))
-            return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: self.contentTypeJson as AnyObject])
+            return fixture(filePath: stubPath!, status: status, headers: ["Content-Type" as NSObject: self.contentTypeJson as AnyObject])
         }
     }
 
@@ -95,6 +97,38 @@ class PeopleServiceTests: XCTestCase {
 
         stubRemoteResponse("invites/new", filename: sendSuccessMockFilename)
         remote.sendInvitation(321, usernameOrEmail: "someValidUser", role: .Follower, message: "", success: {
+            expect.fulfill()
+        }, failure: { error in
+            XCTAssert(false, "This callback shouldn't get called")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteFollowerWithInvalidUserFails() {
+        let expect = expectation(description: "Delete Follower")
+        let followerID = 123
+        let siteID = 321
+
+        stubRemoteResponse("sites/\(siteID)/followers/\(followerID)/delete", filename: deleteFollowerFailureMockFilename, status: 404)
+        remote.deleteFollower(siteID, userID: followerID, success: {
+            XCTAssert(false, "This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteFollowerWithValidUserSucceeds() {
+        let expect = expectation(description: "Delete Follower")
+        let followerID = 123
+        let siteID = 321
+
+        stubRemoteResponse("sites/\(siteID)/followers/\(followerID)/delete", filename: deleteFollowerSuccessMockFilename)
+        remote.deleteFollower(siteID, userID: followerID, success: {
             expect.fulfill()
         }, failure: { error in
             XCTAssert(false, "This callback shouldn't get called")
