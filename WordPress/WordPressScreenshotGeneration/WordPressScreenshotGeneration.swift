@@ -15,7 +15,12 @@ class WordPressScreenshotGeneration: XCTestCase {
         setupSnapshot(app)
         app.launch()
 
+        let isPad = UIDevice.current.userInterfaceIdiom == .pad
+        if isPad {
         XCUIDevice().orientation = UIDeviceOrientation.landscapeLeft
+        } else {
+            XCUIDevice().orientation = UIDeviceOrientation.portrait
+        }
 
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
@@ -71,8 +76,6 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Get "Post" screenshot
 
         // Tap on the first post to bring up the editor
-//        app.otherElements.element(boundBy: 9).tap()
-//        app.tables["PostsTable"].cells.element(boundBy: 0).tap()
         app.tables["PostsTable"].tap()
 
         // Give the title field the focus
@@ -87,8 +90,11 @@ class WordPressScreenshotGeneration: XCTestCase {
         }
 
         // Get "Stats" screenshot
-//        app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
-        app.tables.element(boundBy: 0).cells.element(boundBy: 0).tap()
+        // Tap the back button if on an iPhone screen
+        if app.navigationBars.element(boundBy: 0).identifier == "Posts" {
+            app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
+        }
+        app.tables["Blog Details Table"].cells.element(boundBy: 0).tap()
         sleep(1)
         snapshot("5-Stats")
     }
