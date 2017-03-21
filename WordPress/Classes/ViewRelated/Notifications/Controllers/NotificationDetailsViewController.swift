@@ -1013,6 +1013,8 @@ private extension NotificationDetailsViewController {
     }
 
     func approveCommentWithBlock(_ block: NotificationBlock) {
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+
         actionsService.approveCommentWithBlock(block)
         WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: block.metaSiteID)
     }
@@ -1085,9 +1087,10 @@ private extension NotificationDetailsViewController {
 
         actionsService.updateCommentWithBlock(block, content: content, completion: { success in
             guard success == false else {
-            generator.notificationOccurred(.error)
                 return
             }
+
+            generator.notificationOccurred(.error)
             self.displayCommentUpdateErrorWithBlock(block, content: content)
         })
     }
