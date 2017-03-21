@@ -157,28 +157,24 @@ struct PeopleService {
     /// Deletes a given Follower.
     ///
     /// - Parameters:
-    ///     - user: The follower that should be deleted
+    ///     - person: The follower that should be deleted
     ///     - success: Closure to be executed in case of success.
     ///     - failure: Closure to be executed on error
     ///
-    func deleteFollower(_ user: User, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
-        guard let managedPerson = managedPersonFromPerson(user) else {
+    func deleteFollower(_ person: Person, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
+        guard let managedPerson = managedPersonFromPerson(person) else {
             return
         }
 
         // Hit the Backend
-        remote.deleteFollower(siteID, userID: user.ID, success: {
+        remote.deleteFollower(siteID, userID: person.ID, success: {
+            // Nuke the entity
+            self.context.delete(managedPerson)
             success?()
         }, failure: { error in
-            DDLogSwift.logError("### Error while deleting follower \(user.ID) from blog \(self.siteID): \(error)")
-
-            // Revert the deletion
-            self.createManagedPerson(user)
+            DDLogSwift.logError("### Error while deleting follower \(person.ID) from blog \(self.siteID): \(error)")
             failure?(error)
         })
-
-        // Pre-emptively nuke the entity
-        context.delete(managedPerson)
     }
 
     /// Retrieves the collection of Roles, available for a given site
