@@ -319,10 +319,12 @@
 
 - (void)setSearchQuery:(NSString *)searchQuery
 {
-    _searchQuery = [searchQuery copy];
+    if (!_searchQuery || ![_searchQuery isEqualToString:searchQuery]) {
+        _searchQuery = [searchQuery copy];
 
-    _fetchController = nil;
-    [self.fetchController performFetch:nil];
+        _fetchController = nil;
+        [self.fetchController performFetch:nil];
+    }
 }
 
 - (NSFetchedResultsController *)fetchController
