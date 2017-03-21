@@ -92,10 +92,14 @@ static NSString * const PathForAttachmentD = @"http://www.example.com/exampleD.p
 
 - (void)testSearchPostContentForImageToDisplay
 {
-    NSString *imageSrc= [DisplayableImageHelper searchPostContentForImageToDisplay:@"Img200 <img width=\"100\" src=\"http://photo.com/200.jpg\" /> Img300<img width=\"300\" src=\"http://photo.com/300.jpg\" /> Img100<img width=\"100\" src=\"http://photo.com/100.jpg\" />"];
-
+    NSString *imageSrc= [DisplayableImageHelper searchPostContentForImageToDisplay:@"Img200 <img width=\"200\" src=\"http://photo.com/200.jpg\" /> Img300<img width=\"300\" src=\"http://photo.com/300.jpg\" /> Img100<img width=\"100\" src=\"http://photo.com/100.jpg\" />"];
     XCTAssertTrue([imageSrc isEqualToString:@"http://photo.com/300.jpg"], @"It should find the 300.jpg");
-}
 
+    imageSrc= [DisplayableImageHelper searchPostContentForImageToDisplay:@"Img200 <img width=\"200\" src=\"http://photo.com/200.jpg\" /> Img300<img src=\"http://photo.com/300.jpg\" /> Img100<img width=\"100\" src=\"http://photo.com/100.jpg\" />"];
+    XCTAssertTrue([imageSrc isEqualToString:@"http://photo.com/200.jpg"], @"It should find the 200.jpg");
+
+    imageSrc= [DisplayableImageHelper searchPostContentForImageToDisplay:@"Img200 <img src=\"http://photo.com/200.jpg\" /> Img300<img src=\"http://photo.com/300.jpg\" /> Img100<img src=\"http://photo.com/100.jpg\" />"];
+    XCTAssertTrue([imageSrc length] == 0, @"It shouldn't find an image since none have a width");
+}
 
 @end
