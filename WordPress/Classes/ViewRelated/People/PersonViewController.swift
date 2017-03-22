@@ -294,14 +294,14 @@ private extension PersonViewController {
     }
 
     func deleteFollower() {
-        guard let person = person, isFollower else {
+        guard let follower = follower, isFollower else {
             DDLogSwift.logError("Error: Only Followers can be deleted here")
             assertionFailure()
             return
         }
 
         let service = PeopleService(blog: blog, context: context)
-        service?.deleteFollower(person, failure: {[weak self] (error: Error?) -> () in
+        service?.deleteFollower(follower, failure: {[weak self] (error: Error?) -> () in
             guard let strongSelf = self, let error = error as? NSError else {
                 return
             }
@@ -312,14 +312,14 @@ private extension PersonViewController {
     }
 
     func deleteViewer() {
-        guard let person = person, isViewer else {
+        guard let viewer = viewer, isViewer else {
             DDLogSwift.logError("Error: Only Viewers can be deleted here")
             assertionFailure()
             return
         }
 
         let service = PeopleService(blog: blog, context: context)
-        service?.deleteViewer(person, success: {
+        service?.deleteViewer(viewer, success: {
             WPAnalytics.track(.personRemoved)
         }, failure: {[weak self] (error: Error?) -> () in
             guard let strongSelf = self, let error = error as? NSError else {
@@ -539,15 +539,23 @@ private extension PersonViewController {
         return user != nil
     }
 
+    var user: User? {
+        return person as? User
+    }
+
     var isFollower: Bool {
-        return person.role == Role.Follower
+        return follower != nil
+    }
+
+    var follower: Follower? {
+        return person as? Follower
     }
 
     var isViewer: Bool {
-        return person.role == Role.Viewer
+        return viewer != nil
     }
 
-    var user: User? {
-        return person as? User
+    var viewer: Viewer? {
+        return person as? Viewer
     }
 }

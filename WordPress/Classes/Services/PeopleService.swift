@@ -161,20 +161,25 @@ struct PeopleService {
     ///     - success: Closure to be executed in case of success.
     ///     - failure: Closure to be executed on error
     ///
-    func deleteFollower(_ person: Person, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
+    func deleteFollower(_ person: Follower, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
         guard let managedPerson = managedPersonFromPerson(person) else {
             return
         }
 
         // Hit the Backend
         remote.deleteFollower(siteID, userID: person.ID, success: {
-            // Nuke the entity
-            self.context.delete(managedPerson)
             success?()
         }, failure: { error in
             DDLogSwift.logError("### Error while deleting follower \(person.ID) from blog \(self.siteID): \(error)")
+
+            // Revert the deletion
+            self.createManagedPerson(person)
+
             failure?(error)
         })
+
+        // Pre-emptively nuke the entity
+        context.delete(managedPerson)
     }
 
     /// Deletes a given Viewer.
@@ -184,20 +189,25 @@ struct PeopleService {
     ///     - success: Closure to be executed in case of success.
     ///     - failure: Closure to be executed on error
     ///
-    func deleteViewer(_ person: Person, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
+    func deleteViewer(_ person: Viewer, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
         guard let managedPerson = managedPersonFromPerson(person) else {
             return
         }
 
         // Hit the Backend
         remote.deleteViewer(siteID, userID: person.ID, success: {
-            // Nuke the entity
-            self.context.delete(managedPerson)
             success?()
         }, failure: { error in
             DDLogSwift.logError("### Error while deleting viewer \(person.ID) from blog \(self.siteID): \(error)")
+
+            // Revert the deletion
+            self.createManagedPerson(person)
+
             failure?(error)
         })
+
+        // Pre-emptively nuke the entity
+        context.delete(managedPerson)
     }
 
     /// Retrieves the collection of Roles, available for a given site
