@@ -12,6 +12,8 @@ class PeopleServiceTests: XCTestCase {
     let sendFailureMockFilename             = "people-send-invitation-failure.json"
     let deleteFollowerFailureMockFilename   = "people-delete-follower-failure.json"
     let deleteFollowerSuccessMockFilename   = "people-delete-follower-success.json"
+    let deleteViewerFailureMockFilename     = "people-delete-viewer-failure.json"
+    let deleteViewerSuccessMockFilename     = "people-delete-viewer-success.json"
     let contentTypeJson                     = "application/json"
     let timeout                             = TimeInterval(1000)
 
@@ -129,6 +131,38 @@ class PeopleServiceTests: XCTestCase {
 
         stubRemoteResponse("sites/\(siteID)/followers/\(followerID)/delete", filename: deleteFollowerSuccessMockFilename)
         remote.deleteFollower(siteID, userID: followerID, success: {
+            expect.fulfill()
+        }, failure: { error in
+            XCTAssert(false, "This callback shouldn't get called")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteViewerWithInvalidUserFails() {
+        let expect = expectation(description: "Delete Viewer")
+        let viewerID = 123
+        let siteID = 321
+
+        stubRemoteResponse("sites/\(siteID)/viewers/\(viewerID)/delete", filename: deleteViewerFailureMockFilename, status: 404)
+        remote.deleteViewer(siteID, userID: viewerID, success: {
+            XCTAssert(false, "This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteViewerWithValidUserSucceeds() {
+        let expect = expectation(description: "Delete Viewer")
+        let viewerID = 123
+        let siteID = 321
+
+        stubRemoteResponse("sites/\(siteID)/viewers/\(viewerID)/delete", filename: deleteViewerSuccessMockFilename)
+        remote.deleteViewer(siteID, userID: viewerID, success: {
             expect.fulfill()
         }, failure: { error in
             XCTAssert(false, "This callback shouldn't get called")
