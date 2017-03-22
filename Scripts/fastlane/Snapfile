@@ -3,13 +3,11 @@
 
 # A list of devices you want to take the screenshots from
 devices([
- # "iPhone 7",
-  # "iPhone 7 Plus",
-#  "iPhone 5",
+  "iPhone 7 Plus",
   "iPad Pro (12.9-inch)"
 ])
 
-languages("fr-FR es-ES en-US en-CA en-AU it-IT ja-JP sv-SE pt-BR nl-NL de-DE id-ID ko-KR ru-RU cmn-Hans th-TH cmn-Hant tr-TR en-GB".split(" "))
+languages("da-DK de-DE en-AU en-CA en-GB en-US es-ES fr-FR id-ID it-IT ja-JP ko-KR nb-NO nl-NL pt-BR pt-PT ru-RU sv-SE th-TH tr-TR zh-Hans zh-Hant".split(" "))
 
 # Where should the resulting screenshots be stored?
 output_directory "./screenshots"
