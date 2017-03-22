@@ -14,7 +14,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) PublicizeConnection *publicizeConnection;
-@property (nonatomic, strong) PublicizeService *publicizeService;
 @property (nonatomic, strong) SharingAuthorizationHelper *helper;
 @end
 
@@ -27,18 +26,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (instancetype)initWithBlog:(Blog *)blog
          publicizeConnection:(PublicizeConnection *)connection
-            publicizeService:(PublicizeService *)service
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSParameterAssert([connection isKindOfClass:[PublicizeConnection class]]);
-    NSParameterAssert([service isKindOfClass:[PublicizeService class]]);
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         _blog = blog;
         _publicizeConnection = connection;
-        _publicizeService = service;
-        _helper = [[SharingAuthorizationHelper alloc] initWithViewController:self blog:blog publicizeService:service];
-        _helper.delegate = self;
     }
     return self;
 }
@@ -94,7 +88,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
     if (section == 1 && [self.publicizeConnection isBroken]) {
         NSString *title = NSLocalizedString(@"There is an issue connecting to %@. Reconnect to continue publicizing.", @"Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name.");
-        return [NSString stringWithFormat:title, self.publicizeService.label];
+        return [NSString stringWithFormat:title, self.publicizeConnection.label];
     }
     return nil;
 }
@@ -180,7 +174,37 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         return;
     }
 
-    [self.helper reconnectPublicizeConnection:self.publicizeConnection];
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    self.helper = [self authorizationHelper];
+
+    __weak __typeof(self) weakSelf = self;
+    void (^attemptReconnect)() = ^{
+        weakSelf.helper = [self authorizationHelper];
+        [weakSelf.helper reconnectPublicizeConnection:weakSelf.publicizeConnection];
+    };
+    if (self.helper == nil) {
+        [sharingService syncPublicizeServicesForBlog:self.blog
+                                             success:attemptReconnect
+                                             failure:^(NSError * _Nullable error) {
+                                                 [WPError showNetworkingAlertWithError:error];
+                                             }];
+    } else {
+        attemptReconnect();
+    }
+}
+
+- (SharingAuthorizationHelper *)authorizationHelper
+{
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    PublicizeService *publicizeService = [sharingService findPublicizeServiceNamed:self.publicizeConnection.service];
+    if (!publicizeService) {
+        return nil;
+    }
+    SharingAuthorizationHelper *helper = [[SharingAuthorizationHelper alloc] initWithViewController:self
+                                                                        blog:self.blog
+                                                            publicizeService:publicizeService];
+    helper.delegate = self;
+    return helper;
 }
 
 - (void)disconnectPublicizeConnection
@@ -203,7 +227,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
 
     NSString *message = NSLocalizedString(@"Disconnecting this account means published posts will no longer be automatically shared to %@", @"Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service.");
-    message = [NSString stringWithFormat:message, self.publicizeService.label];
+    message = [NSString stringWithFormat:message, self.publicizeConnection.label];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
