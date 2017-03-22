@@ -204,6 +204,7 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
         })
     }
 
+
     /// Deletes or removes a Follower from a site.
     ///
     /// - Parameters:
@@ -225,6 +226,30 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
             failure?(error)
         })
     }
+
+
+    /// Deletes or removes a User from a site.
+    ///
+    /// - Parameters:
+    ///     - siteID: The ID of the site associated.
+    ///     - userID: The ID of the viewer to be deleted.
+    ///     - success: Optional closure to be executed on success
+    ///     - failure: Optional closure to be executed on error.
+    ///
+    func deleteViewer(_ siteID: Int,
+                      userID: Int,
+                      success: ((Void) -> Void)? = nil,
+                      failure: ((Error) -> Void)? = nil) {
+        let endpoint = "sites/\(siteID)/viewers/\(userID)/delete"
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+
+        wordPressComRestApi.POST(path!, parameters: nil, success: { (responseObject, httpResponse) in
+            success?()
+        }, failure: { (error, httpResponse) in
+            failure?(error)
+        })
+    }
+
 
     /// Retrieves all of the Available Roles, for a given SiteID.
     ///
