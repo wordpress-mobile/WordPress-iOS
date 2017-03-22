@@ -1151,18 +1151,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     if (indexPath.row < self.publicizeConnections.count) {
         PublicizeConnection *connection = self.publicizeConnections[indexPath.row];
         if (connection.isBroken) {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:context];
-            PublicizeService *publicizeService = [sharingService findPublicizeServiceNamed:connection.service];
-            if (!publicizeService) {
-                return;
-            }
             SharingDetailViewController *controller = [[SharingDetailViewController alloc] initWithBlog:self.post.blog
-                                                                                    publicizeConnection:connection
-                                                                                       publicizeService:publicizeService];
-            if (!controller) {
-                return;
-            }
+                                                                                    publicizeConnection:connection];
             [self.navigationController pushViewController:controller animated:YES];
         } else {
             UISwitch *cellSwitch = (UISwitch *)cell.accessoryView;
