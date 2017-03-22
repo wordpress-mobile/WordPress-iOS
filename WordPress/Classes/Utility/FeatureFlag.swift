@@ -14,7 +14,7 @@ enum FeatureFlag: Int {
         case .mediaLibrary:
             return build(.debug)
         case .nativeEditor:
-            // At the moment this is only active in debug mode
+            // At the moment this is only visible by default in non-app store builds
             if build(.alpha, .debug, .internal) {
                 return true
             }
