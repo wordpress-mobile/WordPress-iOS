@@ -69,6 +69,7 @@
 		0859DCF81CB847F700EB4069 /* RemoteMenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0859DCF51CB847F700EB4069 /* RemoteMenuLocation.m */; };
 		0859DCFB1CB8482200EB4069 /* MenusServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 0859DCFA1CB8482200EB4069 /* MenusServiceRemote.m */; };
 		0859DCFD1CB8488400EB4069 /* MenusServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0859DCFC1CB8488400EB4069 /* MenusServiceRemoteTests.m */; };
+		086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C4D0F1E81F9240011D960 /* Media+Blog.swift */; };
 		086E1FE01BBB35D2002D86CA /* MenusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086E1FDF1BBB35D2002D86CA /* MenusViewController.m */; };
 		088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B89881DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift */; };
 		08A2AD751CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A2AD741CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m */; };
@@ -1110,6 +1111,7 @@
 		0859DCF91CB8482200EB4069 /* MenusServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusServiceRemote.h; sourceTree = "<group>"; };
 		0859DCFA1CB8482200EB4069 /* MenusServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemote.m; sourceTree = "<group>"; };
 		0859DCFC1CB8488400EB4069 /* MenusServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemoteTests.m; sourceTree = "<group>"; };
+		086C4D0F1E81F9240011D960 /* Media+Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Media+Blog.swift"; sourceTree = "<group>"; };
 		086E1FDE1BBB35D2002D86CA /* MenusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusViewController.h; sourceTree = "<group>"; };
 		086E1FDF1BBB35D2002D86CA /* MenusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusViewController.m; sourceTree = "<group>"; };
 		088B89881DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostCardContentLabel.swift; sourceTree = "<group>"; };
@@ -2628,6 +2630,14 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		086C4D0C1E81F7920011D960 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				086C4D0F1E81F9240011D960 /* Media+Blog.swift */,
+			);
+			name = Media;
+			sourceTree = "<group>";
+		};
 		089F087F1CE25D30009909F2 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -4097,6 +4107,7 @@
 		B587796C19B799D800E57C5A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				086C4D0C1E81F7920011D960 /* Media */,
 				B587798319B799EB00E57C5A /* Notifications */,
 				B5B84CDA1D9985190058A8FF /* CGAffineTransform+Helpers.swift */,
 				FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */,
@@ -6036,6 +6047,7 @@
 				5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */,
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				ACC156CC0E10E67600D6E1A0 /* WPPostViewController.m in Sources */,
+				086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */,
 				08216FCB1CDBF96000304BA7 /* MenuItemEditingHeaderView.m in Sources */,
 				1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */,
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
