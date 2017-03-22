@@ -235,8 +235,7 @@ private extension PersonViewController {
             messageFirstLine = NSLocalizedString( "If removed, this follower will stop receiving notifications about this site, unless they re-follow.",
                                                   comment: "First line of remove follower warning")
         case .Viewer:
-            // TODO: Update this text
-            messageFirstLine = NSLocalizedString( "If removed, this viewer will stop receiving notifications about this site, unless they re-follow.",
+            messageFirstLine = NSLocalizedString( "If you remove this viewer, he or she will not be able to visit this site.",
                                                   comment: "First line of remove viewer warning")
         }
 
@@ -263,7 +262,7 @@ private extension PersonViewController {
             case .Follower:
                 strongSelf.deleteFollower()
             case .Viewer:
-                // TODO: Remove viewer logic
+                strongSelf.deleteViewer()
                 return
             }
         }
@@ -273,7 +272,7 @@ private extension PersonViewController {
 
     func deleteUser() {
         guard let user = user else {
-            DDLogSwift.logError("Error: Only Users can be deleted")
+            DDLogSwift.logError("Error: Only Users can be deleted here")
             assertionFailure()
             return
         }
@@ -296,7 +295,7 @@ private extension PersonViewController {
 
     func deleteFollower() {
         guard let person = person, isFollower else {
-            DDLogSwift.logError("Error: Only Followers can be deleted")
+            DDLogSwift.logError("Error: Only Followers can be deleted here")
             assertionFailure()
             return
         }
@@ -307,7 +306,27 @@ private extension PersonViewController {
                 return
             }
 
-            strongSelf.handleRemoveFollowerError(error)
+            strongSelf.handleRemoveViewerOrFollowerError(error)
+        })
+        _ = navigationController?.popViewController(animated: true)
+    }
+
+    func deleteViewer() {
+        guard let person = person, isViewer else {
+            DDLogSwift.logError("Error: Only Viewers can be deleted here")
+            assertionFailure()
+            return
+        }
+
+        let service = PeopleService(blog: blog, context: context)
+        service?.deleteViewer(person, success: {
+            WPAnalytics.track(.personRemoved)
+        }, failure: {[weak self] (error: Error?) -> () in
+            guard let strongSelf = self, let error = error as? NSError else {
+                return
+            }
+
+            strongSelf.handleRemoveViewerOrFollowerError(error)
         })
         _ = navigationController?.popViewController(animated: true)
     }
@@ -330,7 +349,7 @@ private extension PersonViewController {
         WPError.showAlert(withTitle: errorTitleText, message: errorMessage, withSupportButton: true)
     }
 
-    func handleRemoveFollowerError(_ error: NSError) {
+    func handleRemoveViewerOrFollowerError(_ error: NSError) {
         let errorWithSource = NSError(domain: error.domain, code: error.code, userInfo: error.userInfo)
         WPError.showNetworkingAlertWithError(errorWithSource)
     }
