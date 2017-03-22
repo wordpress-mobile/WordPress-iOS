@@ -91,7 +91,7 @@ class AppSettingsViewController: UITableViewController {
         )
         editorRows.append(visualEditor)
 
-        if FeatureFlag.nativeEditor.enabled && editorSettings.visualEditorEnabled {
+        if editorSettings.nativeEditorAvailable && editorSettings.visualEditorEnabled {
             let nativeEditor = SwitchRow(
                 title: NSLocalizedString("Native Editor", comment: "Option to enable the native visual editor"),
                 value: editorSettings.nativeEditorEnabled,
