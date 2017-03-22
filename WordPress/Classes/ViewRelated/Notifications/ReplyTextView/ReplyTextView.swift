@@ -295,8 +295,8 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Constants
-    fileprivate let textViewMaxHeight = CGFloat(88)   // Fits 3 lines onscreen
-    fileprivate let textViewMinHeight = CGFloat(48)
+    fileprivate let textViewMaxHeight = CGFloat(86)   // Fits 3 lines onscreen
+    fileprivate let textViewMinHeight = CGFloat(50)
 
     // MARK: - Private Properties
     fileprivate var bundle: NSArray?
