@@ -177,6 +177,29 @@ struct PeopleService {
         })
     }
 
+    /// Deletes a given Viewer.
+    ///
+    /// - Parameters:
+    ///     - person: The follower that should be deleted
+    ///     - success: Closure to be executed in case of success.
+    ///     - failure: Closure to be executed on error
+    ///
+    func deleteViewer(_ person: Person, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
+        guard let managedPerson = managedPersonFromPerson(person) else {
+            return
+        }
+
+        // Hit the Backend
+        remote.deleteViewer(siteID, userID: person.ID, success: {
+            // Nuke the entity
+            self.context.delete(managedPerson)
+            success?()
+        }, failure: { error in
+            DDLogSwift.logError("### Error while deleting viewer \(person.ID) from blog \(self.siteID): \(error)")
+            failure?(error)
+        })
+    }
+
     /// Retrieves the collection of Roles, available for a given site
     ///
     /// - Parameters:
