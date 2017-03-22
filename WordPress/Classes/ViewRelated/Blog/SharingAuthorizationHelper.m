@@ -195,7 +195,8 @@
                 [self.delegate sharingAuthorizationHelper:self keyringFetchFailedForService:self.publicizeService];
                 return;
             }
-            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"No keychain connections found", @"Message to show when Keyring connection synchronization succeeded but no matching connections were found.")];
+            NSString *status = [NSString stringWithFormat:NSLocalizedString(@"No connections found for %@", @"Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter"), self.publicizeService.label];
+            [SVProgressHUD showErrorWithStatus:status];
             return;
         }
 
@@ -207,7 +208,8 @@
             return;
         }
 
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Keychain connection fetch failed", @"Message to show when Keyring connection synchronization failed")];
+        NSString *status = [NSString stringWithFormat:NSLocalizedString(@"We had trouble loading connections for %@", @"Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter"), self.publicizeService.label];
+        [SVProgressHUD showErrorWithStatus:status];
     }];
 }
 
