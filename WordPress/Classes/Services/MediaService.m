@@ -185,7 +185,7 @@
  
     [self.managedObjectContext performBlock:^{
         AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
-        Media *media = [self newMediaForPost:post];
+        Media *media = [Media insertedWithPost:post];
         media.postID = post.postID;
         media.filename = [mediaURL lastPathComponent];
         media.absoluteLocalURL = [mediaURL path];
@@ -484,7 +484,7 @@
            }
            Media *media = [self findMediaWithID:remoteMedia.mediaID inBlog:blog];
            if (!media) {
-               media = [self newMediaForBlog:blog];
+               media = [Media insertedWithBlog:blog];
            }
            [self updateMedia:media withRemoteMedia:remoteMedia];
            if (success){
@@ -753,32 +753,6 @@
 
 #pragma mark - Private
 
-#pragma mark - Media Creation
-
-- (Media *)newMedia
-{
-    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:self.managedObjectContext];
-    media.creationDate = [NSDate date];
-    media.mediaID = @0;
-    // We only support images for now, so let's set the default here
-    media.mediaType = MediaTypeImage;
-    return media;
-}
-
-- (Media *)newMediaForBlog:(Blog *)blog
-{
-    Media *media = [self newMedia];
-    media.blog = blog;
-    return media;
-}
-
-- (Media *)newMediaForPost:(AbstractPost *)post
-{
-    Media *media = [self newMediaForBlog:post.blog];
-    [media addPostsObject:post];
-    return media;
-}
-
 #pragma mark - Media helpers
 
 - (NSString *)extensionForUTI:(NSString *)UTI {
@@ -853,7 +827,7 @@ static NSString * const MediaDirectory = @"Media";
         @autoreleasepool {
             Media *local = [self findMediaWithID:remote.mediaID inBlog:blog];
             if (!local) {
-                local = [self newMediaForBlog:blog];
+                local = [Media insertedWithBlog:blog];
                 local.remoteStatus = MediaRemoteStatusSync;
             }
             [self updateMedia:local withRemoteMedia:remote];
