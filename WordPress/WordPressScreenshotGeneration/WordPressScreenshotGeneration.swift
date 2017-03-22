@@ -17,7 +17,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         let isPad = UIDevice.current.userInterfaceIdiom == .pad
         if isPad {
-        XCUIDevice().orientation = UIDeviceOrientation.landscapeLeft
+            XCUIDevice().orientation = UIDeviceOrientation.landscapeLeft
         } else {
             XCUIDevice().orientation = UIDeviceOrientation.portrait
         }
@@ -37,13 +37,13 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Logout first if needed
         if !usernameFieldExists {
-            app.tabBars["Main Navigation"].buttons["Me"].tap()
+            app.tabBars["Main Navigation"].buttons["meTabButton"].tap()
             app.tables.element(boundBy: 0).cells.element(boundBy: 5).tap() // Tap disconnect
             app.alerts.element(boundBy: 0).buttons.element(boundBy: 1).tap() // Tap disconnect
         }
 
         // Login
-        let username = ""
+        let username = "thenomadicwordsmith"
 
         let usernameEmailTextField =  app.textFields["Email or username"]
         usernameEmailTextField.tap()
@@ -53,22 +53,22 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         let passwordSecureTextField = app.secureTextFields["Password"]
         passwordSecureTextField.tap()
-        passwordSecureTextField.typeText("")
+        passwordSecureTextField.typeText("hFJhXH9yTNNUayeJdajwgw")
 
         app.buttons["Log In Button"].tap()
 
         // Get Reader Screenshot
-        app.tabBars["Main Navigation"].buttons["Reader"].tap(withNumberOfTaps: 2, numberOfTouches: 2)
+        app.tabBars["Main Navigation"].buttons["readerTabButton"].tap(withNumberOfTaps: 2, numberOfTouches: 2)
         app.tables.staticTexts["Discover"].tap()
         sleep(5)
         snapshot("1-Reader")
 
         // Get Notifications screenshot
-        app.tabBars["Main Navigation"].buttons["Notifications"].tap()
+        app.tabBars["Main Navigation"].buttons["notificationsTabButton"].tap()
         snapshot("2-Notifications")
 
         // Get "Posts" screenshot
-        app.tabBars["Main Navigation"].buttons["My Sites"].tap()
+        app.tabBars["Main Navigation"].buttons["mySitesTabButton"].tap()
         app.tables.cells.element(boundBy: 4).tap() // tap Blog Posts
         sleep(2)
         snapshot("3-BlogPosts")
@@ -91,7 +91,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get "Stats" screenshot
         // Tap the back button if on an iPhone screen
-        if app.navigationBars.element(boundBy: 0).identifier == "Posts" {
+        if app.tables["PostsTable"].exists {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
         }
         app.tables["Blog Details Table"].cells.element(boundBy: 0).tap()
