@@ -12,6 +12,8 @@ class MediaLibraryViewController: UIViewController {
     fileprivate let pickerViewController: WPMediaPickerViewController
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
+    fileprivate var noResultsView: WPNoResultsView? = nil
+
     fileprivate var selectedAsset: Media? = nil
 
     lazy fileprivate var searchBarContainer: UIView = {
@@ -32,6 +34,9 @@ class MediaLibraryViewController: UIViewController {
 
         return controller
     }()
+
+    private var searchBarHeightConstraints: [NSLayoutConstraint] = []
+    private let defaultSearchBarHeight: CGFloat = 44.0
 
     var searchQuery: String? = nil
 
@@ -78,9 +83,12 @@ class MediaLibraryViewController: UIViewController {
 
         addMediaPickerAsChildViewController()
         addSearchBarContainer()
-        addSearchBar()
+        addNoResultsView()
 
         registerChangeObserver()
+
+        updateNoResultsView(for: pickerDataSource.totalAssetCount)
+        updateSearchBar(for: pickerDataSource.totalAssetCount)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -153,22 +161,50 @@ class MediaLibraryViewController: UIViewController {
             searchBarContainer.bottomAnchor.constraint(equalTo: pickerViewController.view.topAnchor)
         ])
 
-        let searchBarHeight = searchController.searchBar.bounds.height
-
-        let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: searchBarHeight)
+        let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: defaultSearchBarHeight)
         heightConstraint.priority = UILayoutPriorityDefaultLow
         heightConstraint.isActive = true
 
-        let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: searchBarHeight)
+        let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: defaultSearchBarHeight)
         expandedHeightConstraint.priority = UILayoutPriorityRequired
         expandedHeightConstraint.isActive = true
-    }
 
-    private func addSearchBar() {
+        searchBarHeightConstraints = [ heightConstraint, expandedHeightConstraint ]
+
         searchBarContainer.layoutIfNeeded()
-
         searchBarContainer.addSubview(searchController.searchBar)
         searchController.searchBar.sizeToFit()
+    }
+
+    private func updateSearchBar(for assetCount: Int) {
+        guard !searchController.isActive else { return }
+
+        let shouldShowBar = assetCount > 0
+
+        searchBarHeightConstraints.forEach({ $0.constant = (shouldShowBar) ? defaultSearchBarHeight : 0 })
+        searchBarContainer.layoutIfNeeded()
+        searchController.searchBar.isHidden = !shouldShowBar
+    }
+
+    private func addNoResultsView() {
+        guard let noResultsView = WPNoResultsView(title: NSLocalizedString("You don't have any media.", comment: "Title displayed when the user doesn't have any media in their media library. Should match Calypso."),
+                                               message: NSLocalizedString("Would you like to upload something?", comment: "Prompt displayed when the user has an empty media library. Should match Calypso."),
+                                               accessoryView: UIImageView(image: UIImage(named: "media-no-results")),
+                                               buttonTitle: NSLocalizedString("Upload Media", comment: "Title for button displayed when the user has an empty media library")) else { return }
+
+        noResultsView.translatesAutoresizingMaskIntoConstraints = false
+
+        pickerViewController.collectionView?.addSubview(noResultsView)
+        pickerViewController.collectionView?.pinSubviewAtCenter(noResultsView)
+        noResultsView.layoutIfNeeded()
+
+        noResultsView.delegate = self
+
+        self.noResultsView = noResultsView
+    }
+
+    private func updateNoResultsView(for assetCount: Int) {
+        noResultsView?.isHidden = (assetCount > 0)
     }
 
     // MARK: - Actions
@@ -251,6 +287,9 @@ class MediaLibraryViewController: UIViewController {
                 asset.isDeleted {
                 _ = strongSelf.navigationController?.popToViewController(strongSelf, animated: true)
             }
+
+            self?.updateNoResultsView(for: strongSelf.pickerDataSource.totalAssetCount)
+            self?.updateSearchBar(for: strongSelf.pickerDataSource.totalAssetCount)
         })
     }
 
@@ -258,6 +297,14 @@ class MediaLibraryViewController: UIViewController {
         if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
             pickerDataSource.unregisterChangeObserver(mediaLibraryChangeObserverKey)
         }
+    }
+}
+
+// MARK: - WPNoResultsViewDelegate
+
+extension MediaLibraryViewController: WPNoResultsViewDelegate {
+    func didTap(_ noResultsView: WPNoResultsView!) {
+        // TODO: Present upload UI
     }
 }
 
