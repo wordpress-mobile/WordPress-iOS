@@ -91,7 +91,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get "Stats" screenshot
         // Tap the back button if on an iPhone screen
-        if app.tables["PostsTable"].exists {
+        if UIDevice.current.userInterfaceIdiom == .phone {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
         }
         app.tables["Blog Details Table"].cells.element(boundBy: 0).tap()
