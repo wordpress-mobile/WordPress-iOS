@@ -205,7 +205,18 @@
              @"content": [NSString stringWithFormat:@"Sample text %@ sample text", uri]
              };
     imagePath = [remoteService featuredImageFromPostDictionary:dict];
-    XCTAssertTrue([uri isEqualToString:imagePath], @"Failed to retrieve the uri from attachments.");
+    XCTAssertTrue(imagePath.length == 0, @"No image should be retrieved from the attachments");
+
+    dict = @{
+             @"attachments": @{@"111": @{@"mime_type": @"image/jpg", @"width":@(2048), @"URL":uri}},
+             @"content": [NSString stringWithFormat:@"<p>Another one of those untitled posts</p>"
+                          "<p><img data-attachment-id=\"1\" data-permalink=\"%@\""
+                          "data-orig-file=\"%@\" data-orig-size=\"750,1334\""
+                          "src=\"%@\" width=\"750\" height=\"1334\"</p>",
+                          uri, uri, uri]
+             };
+    imagePath = [remoteService featuredImageFromPostDictionary:dict];
+    XCTAssertTrue([uri isEqualToString:imagePath], @"Failed to retrieve the image uri from the post content.");
 
     dict = [self editorialDictionaryWithKey:@"image" value:uri];
     imagePath = [remoteService featuredImageFromPostDictionary:dict];

@@ -3,25 +3,28 @@ require 'rubygems'
 class WordPressTranslationRetrieval
 
   LANGS = {
-    'en-US' => 'en-gb', # Technically this is a hack, but I don't think we can get the original english translations from Glotpress
-    'en-CA' => 'en-gb',
+    'da' => 'da',
+    'de-DE' => 'de',
     'en-AU' => 'en-au',
-    'es-ES' => 'es',
+    'en-CA' => 'en-ca',
     'en-GB' => 'en-gb',
+    'en-US' => 'en', # Technically this is a hack, but I don't think we can get the original english translations from Glotpress
+    'es-ES' => 'es',
     'fr-FR' => 'fr',
+    'id' => 'id',
     'it' => 'it',
     'ja' => 'ja',
-    'sv' => 'sv',
-    'pt-BR' => 'pt-br',
-    'nl' => 'nl',
-    'de-DE' => 'de',
-    'id' => 'id',
     'ko' => 'ko',
+    'nl-NL' => 'nl',
+    'no' => 'nb',
+    'pt-BR' => 'pt-br',
+    'pt-PT' => 'pt',
     'ru' => 'ru',
-    'zh-Hant' => 'zh-tw',
+    'sv' => 'sv',
     'th' => 'th',
-    'zh-Hans' => 'zh-cn',
     'tr' => 'tr',
+    'zh-Hans' => 'zh-cn',
+    'zh-Hant' => 'zh-tw',
   }
 
   class << self
@@ -47,10 +50,16 @@ class WordPressTranslationRetrieval
     end
 
     def retrieve_file_contents_from_glotpress(glotpress_language_code)
-      url = "https://translate.wordpress.org/projects/apps/ios/release-notes/#{glotpress_language_code}/default/export-translations?format=po"
-      system "curl -so temp.po #{url}"
-      file_contents = File.readlines("temp.po")
-      # system "rm temp.po"
+      if glotpress_language_code == 'en'
+        url = "../../WordPress/Resources/AppStoreStrings.po"
+        file_contents = File.readlines(url)
+      else
+        url = "https://translate.wordpress.org/projects/apps/ios/release-notes/#{glotpress_language_code}/default/export-translations?format=po"
+        system "curl -so temp.po #{url}"
+        file_contents = File.readlines("temp.po")
+        system "rm temp.po"
+      end
+      
 
       file_contents
     end
@@ -74,7 +83,7 @@ end
 # Uncomment below and run the script from the command line to test
 # WordPressTranslationRetrieval::LANGS.each do |deliver_language_code, glotpress_language_code|
 #   puts "Version text for #{deliver_language_code}"
-#   puts WordPressTranslationRetrieval.get_version_text(deliver_language_code, "v7.0-whats-new")
+#   puts WordPressTranslationRetrieval.get_version_text(deliver_language_code, "v7.2-whats-new")
 #   puts "\n"
 # end
 
