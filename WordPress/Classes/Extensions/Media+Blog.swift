@@ -26,4 +26,13 @@ extension Media {
         media.addPostsObject(post)
         return media
     }
+
+    /// Returns an existing Media object that matches the mediaID if it exists, or nil.
+    ///
+    class func existingMediaWith(mediaID: NSNumber, inBlog blog: Blog) -> Media? {
+        guard let blogMedia = blog.media as? Set<Media> else {
+            return nil
+        }
+        return blogMedia.first(where: ({ $0.mediaID == mediaID }))
+    }
 }

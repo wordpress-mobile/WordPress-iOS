@@ -500,7 +500,7 @@
            if (!blog) {
                return;
            }
-           Media *media = [self findMediaWithID:remoteMedia.mediaID inBlog:blog];
+           Media *media = [Media existingMediaWithMediaID:remoteMedia.mediaID inBlog:blog];
            if (!media) {
                media = [Media insertedWithBlog:blog];
            }
@@ -518,12 +518,6 @@
         }
 
     }];
-}
-
-- (Media *)findMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog
-{
-    NSSet *media = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID = %@", mediaID]];
-    return [media anyObject];
 }
 
 - (void)getMediaURLFromVideoPressID:(NSString *)videoPressID
@@ -761,7 +755,7 @@
     NSMutableSet *mediaToKeep = [NSMutableSet set];
     for (RemoteMedia *remote in media) {
         @autoreleasepool {
-            Media *local = [self findMediaWithID:remote.mediaID inBlog:blog];
+            Media *local = [Media existingMediaWithMediaID:remote.mediaID inBlog:blog];
             if (!local) {
                 local = [Media insertedWithBlog:blog];
                 local.remoteStatus = MediaRemoteStatusSync;
