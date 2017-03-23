@@ -109,10 +109,28 @@
             }];
         };
     }
-    
-    NSURL *mediaURL = [self urlForMediaWithFilename:mediaName andExtension:extension];
-    NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
-                                                andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
+
+    error = nil;
+    NSURL *mediaURL = [MediaService localMediaURLWith:mediaName
+                                        fileExtension:extension
+                                                error:&error];
+    if (error) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+    error = nil;
+    NSURL *mediaThumbnailURL = [MediaService localMediaURLWith:[MediaService mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
+                                                 fileExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]
+                                                         error:&error];
+    if (error) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+
     CGFloat imageMaxDimension = MAX([UIScreen mainScreen].nativeBounds.size.width, [UIScreen mainScreen].nativeBounds.size.height);
     CGSize thumbnailSize = CGSizeMake(imageMaxDimension, imageMaxDimension);
 
@@ -688,8 +706,16 @@
             }
 
             [self.managedObjectContext performBlock:^{
-                NSURL *fileURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:media.filename]
-                                                  andExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]];
+                NSError *error = nil;
+                NSURL *fileURL = [MediaService localMediaURLWith:[MediaService mediaFilenameAppendingThumbnail:media.filename]
+                                                   fileExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]
+                                                           error:&error];
+                if (error) {
+                    if (failure) {
+                        failure(error);
+                    }
+                    return;
+                }
                 if (CGSizeEqualToSize(size, mediaOriginalSize)) {
                     media.absoluteLocalURL = [fileURL path];
                 } else {
@@ -757,49 +783,6 @@
 
 - (NSString *)extensionForUTI:(NSString *)UTI {
     return (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)UTI, kUTTagClassFilenameExtension);
-}
-
-static NSString * const MediaDirectory = @"Media";
-
-+ (NSURL *)urlForMediaDirectory
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL * documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
-    NSURL * mediaURL = [documentsURL URLByAppendingPathComponent:MediaDirectory isDirectory:YES];
-    NSError *error;
-    if (![mediaURL checkResourceIsReachableAndReturnError:&error]) {
-        if (![fileManager createDirectoryAtURL:mediaURL withIntermediateDirectories:YES attributes:nil error:&error]){
-            DDLogError(@"%@", [error localizedDescription]);
-            return nil;
-        }
-        [mediaURL setResourceValue:@(NO) forKey:NSURLIsExcludedFromBackupKey error:nil];
-    }
-    
-    return mediaURL;
-}
-
-- (NSURL *)urlForMediaWithFilename:(NSString *)filename andExtension:(NSString *)extension
-{
-    NSURL *mediaDirectoryURL = [[self class] urlForMediaDirectory];
-    NSString *basename = [[filename stringByDeletingPathExtension] lowercaseString];
-    NSURL *resultURL = [mediaDirectoryURL URLByAppendingPathComponent:basename];
-    resultURL = [resultURL URLByAppendingPathExtension:extension];
-    NSUInteger index = 1;
-    while ([resultURL checkResourceIsReachableAndReturnError:nil]) {
-        NSString *alternativeFilename = [NSString stringWithFormat:@"%@-%d.%@", basename, index, extension];
-        resultURL = [mediaDirectoryURL URLByAppendingPathComponent:alternativeFilename];
-        index++;
-    }
-    return resultURL;
-}
-
-- (NSString *)pathForThumbnailOfFile:(NSString *)filename
-{
-    NSString *extension = [filename pathExtension];
-    NSString *fileWithoutExtension = [filename stringByDeletingPathExtension];
-    NSString *thumbnailPath = [fileWithoutExtension stringByAppendingString:@"-thumbnail"];
-    thumbnailPath = [thumbnailPath stringByAppendingPathExtension:extension];
-    return thumbnailPath;
 }
 
 - (id<MediaServiceRemote>)remoteForBlog:(Blog *)blog
@@ -942,11 +925,15 @@ static NSString * const MediaDirectory = @"Media";
 
         // Search for media extension files within the Media Folder
         NSSet *mediaExtensions = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", @"mov", @"avi", @"mp4", nil];
-
-        NSArray *contentsOfDir = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[self urlForMediaDirectory]
+        error = nil;
+        NSArray *contentsOfDir = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[self localMediaDirectoryAndReturnError:&error]
                                                                includingPropertiesForKeys:nil
                                                                                   options:NSDirectoryEnumerationSkipsHiddenFiles
                                                                                     error:nil];
+        if (error) {
+            DDLogError(@"Error cleaning up tmp files while accessing Media directory: %@", error.localizedDescription);
+            return;
+        }
 
         for (NSURL *currentURL in contentsOfDir) {
             NSString *filepath = [[currentURL URLByResolvingSymlinksInPath] path];
@@ -1010,7 +997,11 @@ static NSString * const MediaDirectory = @"Media";
             }
         }
 
-        [self cleanFolderURL:[self urlForMediaDirectory] exceptFiles:pathsToKeep];
+        error = nil;
+        [self cleanFolderURL:[self localMediaDirectoryAndReturnError:&error] exceptFiles:pathsToKeep];
+        if (error) {
+            DDLogError(@"Error cleaning up tmp files while accessing Media directory: %@", error.localizedDescription);
+        }
     }];
 }
 

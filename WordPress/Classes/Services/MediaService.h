@@ -176,13 +176,6 @@
 #pragma mark - Media cleanup
 
 /**
- Returns the url for for the media cache directory
-
- @return an url for the media cache directory.
- */
-+ (nonnull NSURL *)urlForMediaDirectory;
-
-/**
  *  @brief      Removes all unused media files from the media directories
  *  
  *  @discussion This method looks for any media files that stored inside the media folder that aren't
