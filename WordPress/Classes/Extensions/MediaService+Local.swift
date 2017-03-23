@@ -32,7 +32,7 @@ extension MediaService {
         url.appendPathExtension(fileExtension)
         // Increment the filename as needed to ensure we're not
         // providing a URL for an existing file of the same name.
-        return url.incrementedFilename()
+        return url.incrementalFilename()
     }
 
     /// Returns a string appended with the thumbnail naming convention for local Media files.
