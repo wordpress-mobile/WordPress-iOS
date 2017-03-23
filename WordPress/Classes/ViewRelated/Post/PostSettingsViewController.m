@@ -11,6 +11,7 @@
 #import "PostGeolocationCell.h"
 #import "PostGeolocationViewController.h"
 #import "SettingsSelectionViewController.h"
+#import "SharingDetailViewController.h"
 #import "PublishDatePickerView.h"
 #import "WPTextFieldTableViewCell.h"
 #import "WordPressAppDelegate.h"
@@ -1149,7 +1150,11 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     if (indexPath.row < self.publicizeConnections.count) {
         PublicizeConnection *connection = self.publicizeConnections[indexPath.row];
-        if (!connection.isBroken) {
+        if (connection.isBroken) {
+            SharingDetailViewController *controller = [[SharingDetailViewController alloc] initWithBlog:self.post.blog
+                                                                                    publicizeConnection:connection];
+            [self.navigationController pushViewController:controller animated:YES];
+        } else {
             UISwitch *cellSwitch = (UISwitch *)cell.accessoryView;
             [cellSwitch setOn:!cellSwitch.on animated:YES];
             if (cellSwitch.on) {
