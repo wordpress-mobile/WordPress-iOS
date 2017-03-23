@@ -16,6 +16,7 @@ class MediaLibraryViewController: UIViewController {
 
     fileprivate var selectedAsset: Media? = nil
 
+    private let defaultSearchBarHeight: CGFloat = 44.0
     lazy fileprivate var searchBarContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -35,8 +36,13 @@ class MediaLibraryViewController: UIViewController {
         return controller
     }()
 
-    private var searchBarHeightConstraints: [NSLayoutConstraint] = []
-    private let defaultSearchBarHeight: CGFloat = 44.0
+    fileprivate let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 0
+        return stackView
+    }()
 
     var searchQuery: String? = nil
 
@@ -79,6 +85,7 @@ class MediaLibraryViewController: UIViewController {
         definesPresentationContext = true
         automaticallyAdjustsScrollViewInsets = false
 
+        addStackView()
         addMediaPickerAsChildViewController()
         addSearchBarContainer()
         addNoResultsView()
@@ -118,15 +125,25 @@ class MediaLibraryViewController: UIViewController {
         }
     }
 
+    private func addStackView() {
+        view.addSubview(stackView)
+
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            topLayoutGuide.bottomAnchor.constraint(equalTo: stackView.topAnchor),
+            bottomLayoutGuide.topAnchor.constraint(equalTo: stackView.bottomAnchor)
+        ])
+    }
+
     private func addMediaPickerAsChildViewController() {
         pickerViewController.willMove(toParentViewController: self)
-        view.addSubview(pickerViewController.view)
+        stackView.addArrangedSubview(pickerViewController.view)
         pickerViewController.view.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             pickerViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            pickerViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            pickerViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            pickerViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
 
         addChildViewController(pickerViewController)
@@ -134,13 +151,11 @@ class MediaLibraryViewController: UIViewController {
     }
 
     private func addSearchBarContainer() {
-        view.addSubview(searchBarContainer)
+        stackView.insertArrangedSubview(searchBarContainer, at: 0)
 
         NSLayoutConstraint.activate([
             searchBarContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             searchBarContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            searchBarContainer.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
-            searchBarContainer.bottomAnchor.constraint(equalTo: pickerViewController.view.topAnchor)
         ])
 
         let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: defaultSearchBarHeight)
@@ -150,8 +165,6 @@ class MediaLibraryViewController: UIViewController {
         let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: defaultSearchBarHeight)
         expandedHeightConstraint.priority = UILayoutPriorityRequired
         expandedHeightConstraint.isActive = true
-
-        searchBarHeightConstraints = [ heightConstraint, expandedHeightConstraint ]
 
         searchBarContainer.layoutIfNeeded()
         searchBarContainer.addSubview(searchController.searchBar)
@@ -207,9 +220,15 @@ class MediaLibraryViewController: UIViewController {
 
         let shouldShowBar = assetCount > 0
 
-        searchBarHeightConstraints.forEach({ $0.constant = (shouldShowBar) ? defaultSearchBarHeight : 0 })
-        searchBarContainer.layoutIfNeeded()
-        searchController.searchBar.isHidden = !shouldShowBar
+        if shouldShowBar {
+            if searchBarContainer.superview != stackView {
+                stackView.insertArrangedSubview(searchBarContainer, at: 0)
+            }
+        } else {
+            if searchBarContainer.superview == stackView {
+                searchBarContainer.removeFromSuperview()
+            }
+        }
     }
 
     // MARK: - Actions
@@ -336,6 +355,7 @@ extension MediaLibraryViewController: UISearchResultsUpdating, UISearchControlle
 
     func clearSearch() {
         searchQuery = nil
+        searchController.searchBar.text = nil
         pickerDataSource.searchQuery = nil
         pickerViewController.collectionView?.reloadData()
     }
