@@ -1,4 +1,5 @@
 import Foundation
+import ImageIO
 
 /// Encapsulates Media functions relative to the local Media directory.
 ///
@@ -41,5 +42,37 @@ extension MediaService {
         let pathExtension = filename.pathExtension
         filename = filename.deletingPathExtension.appending("-thumbnail") as NSString
         return filename.appendingPathExtension(pathExtension)!
+    }
+
+    /// Returns the size of a Media image located at the path, or zero if it doesn't exist.
+    ///
+    /// Note: once we drop ObjC, this should be an optional that would return nil instead of zero.
+    class func imageSizeForMediaAt(path: String?) -> CGSize {
+        let fileManager = FileManager.default
+        var isDirectory: ObjCBool = false
+        guard let path = path, fileManager.fileExists(atPath: path, isDirectory: &isDirectory) == true, isDirectory.boolValue == false else {
+            return CGSize.zero
+        }
+        let url = URL(fileURLWithPath: path, isDirectory: false)
+        guard let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil) else {
+            return CGSize.zero
+        }
+        guard let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as? Dictionary<String, AnyObject> else {
+            return CGSize.zero
+        }
+        var width = CGFloat(0), height = CGFloat(0)
+        if let widthProperty = imageProperties[kCGImagePropertyPixelWidth as String] as? CGFloat {
+            width = widthProperty
+        }
+        if let heightProperty = imageProperties[kCGImagePropertyPixelHeight as String] as? CGFloat {
+            height = heightProperty
+        }
+        // Check the image source's orientation orientation and flip the size if required
+        if let orientation = imageProperties[kCGImagePropertyOrientation as String] as? Int, orientation > 4 {
+            let tmpWidth = width
+            width = height
+            height = tmpWidth
+        }
+        return CGSize(width: width, height: height)
     }
 }

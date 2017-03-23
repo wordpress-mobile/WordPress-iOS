@@ -18,7 +18,6 @@ class MediaServiceTests: XCTestCase {
             let pathExtension = "jpg"
             let expected = "\(basename).\(pathExtension)"
             var url = try MediaService.localMediaURL(with: basename, fileExtension: pathExtension)
-            NSLog("url: \(url)")
             XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url have unexpected filename or extension: \(url)")
             url = try MediaService.localMediaURL(with: expected, fileExtension: pathExtension)
             XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url have unexpected filename or extension: \(url)")
@@ -36,5 +35,11 @@ class MediaServiceTests: XCTestCase {
         XCTAssertTrue(thumbnail == "\(basename)-thumbnail.\(pathExtension)", "Error: appending media thumbnail to filename returned unexpected result.")
         thumbnail = MediaService.mediaFilenameAppendingThumbnail(basename)
         XCTAssertTrue(thumbnail == "\(basename)-thumbnail", "Error: appending media thumbnail to filename returned unexpected result.")
+    }
+
+    func testThatSizeForMediaImageAtPathWorks() {
+        let mediaPath = OHPathForFile("test-image.jpg", type(of: self))
+        let size = MediaService.imageSizeForMediaAt(path: mediaPath)
+        XCTAssertTrue(size == CGSize(width: 1024, height: 680), "Unexpected size return when testing imageSizeForMediaAtPath.")
     }
 }
