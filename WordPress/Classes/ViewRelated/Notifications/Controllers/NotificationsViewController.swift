@@ -1035,24 +1035,47 @@ private extension NotificationsViewController {
 
     var noResultsTitleText: String {
         guard shouldDisplayJetpackMessage == false else {
-            return NSLocalizedString("Connect to Jetpack", comment: "Notifications title displayed when a self-hosted user is not connected to Jetpack")
+            return NSLocalizedString("Connect to Jetpack",
+                                     comment: "Notifications title displayed when a self-hosted user is not connected to Jetpack")
+        }
+
+        let titleMap: [Filter: String] = [
+            .none: NSLocalizedString("No notifications yet.",
+                                     comment: "Displayed in the Notifications Tab as a title, when there are no notifications"),
+            .unread: NSLocalizedString("You're all caught up!",
+                                       comment: "Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title"),
+            .comment: NSLocalizedString("No comments yet.",
+                                        comment: "Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications"),
+            .follow: NSLocalizedString("No followers to report yet.",
+                                       comment: "Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications"),
+            .like: NSLocalizedString("No likes to show yet.",
+                                     comment: "Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications")
+        ]
+
+        let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
+        return titleMap[filter] ?? String()
+    }
+
+    var noResultsMessageText: String? {
+        guard shouldDisplayJetpackMessage == false else {
+            return NSLocalizedString("Jetpack supercharges your self-hosted WordPress site.", comment: "Notifications message displayed when a self-hosted user is not connected to Jetpack")
         }
 
         let messageMap: [Filter: String] = [
-            .none: NSLocalizedString("No notifications yet", comment: "Displayed in the Notifications Tab, when there are no notifications"),
-            .unread: NSLocalizedString("No unread notifications", comment: "Displayed in the Notifications Tab, when the Unread Filter shows no notifications"),
-            .comment: NSLocalizedString("No comments notifications", comment: "Displayed in the Notifications Tab, when the Comments Filter shows no notifications"),
-            .follow: NSLocalizedString("No new followers notifications", comment: "Displayed in the Notifications Tab, when the Follow Filter shows no notifications"),
-            .like: NSLocalizedString("No like notifications", comment: "Displayed in the Notifications Tab, when the Likes Filter shows no notifications")
+            .none: NSLocalizedString("Get active! Comment on posts from blogs you follow.",
+                                     comment: "Displayed in the Notifications Tab as a message, when there are no notifications"),
+            .unread: NSLocalizedString("Reignite the conversation: write a new post.",
+                                       comment: "Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications"),
+            .comment: NSLocalizedString("Join a conversation: comment on posts from blogs you follow.",
+                                        comment: "Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications"),
+            .follow: NSLocalizedString("Get noticed: comment on posts you've read.",
+                                       comment: "Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications"),
+            .like: NSLocalizedString("Get noticed: comment on posts you've read.",
+                                     comment: "Displayed in the Notifications Tab as a message, when the Likes Filter shows no notifications")
         ]
 
         let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
         return messageMap[filter] ?? String()
-    }
-
-    var noResultsMessageText: String? {
-        let jetpackMessage = NSLocalizedString("Jetpack supercharges your self-hosted WordPress site.", comment: "Notifications message displayed when a self-hosted user is not connected to Jetpack")
-        return shouldDisplayJetpackMessage ? jetpackMessage : nil
     }
 
     var noResultsAccessoryView: UIView? {
@@ -1060,7 +1083,25 @@ private extension NotificationsViewController {
     }
 
     var noResultsButtonText: String? {
-        return shouldDisplayJetpackMessage ? NSLocalizedString("Learn more", comment: "") : nil
+        guard shouldDisplayJetpackMessage == false else {
+            return NSLocalizedString("Learn more", comment: "")
+        }
+
+        let buttonTitleMap: [Filter: String] = [
+            .none: NSLocalizedString("VIEW READER",
+                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications"),
+            .unread: NSLocalizedString("NEW POST",
+                                       comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications"),
+            .comment: NSLocalizedString("VIEW READER",
+                                        comment: "Displayed in the Notifications Tab as a button title, when there are no notifications"),
+            .follow: NSLocalizedString("VIEW READER",
+                                       comment: "Displayed in the Notifications Tab as a button title, when there are no notifications"),
+            .like: NSLocalizedString("VIEW READER",
+                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
+        ]
+
+        let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
+        return buttonTitleMap[filter] ?? String()
     }
 
     var shouldDisplayJetpackMessage: Bool {
@@ -1089,16 +1130,33 @@ private extension NotificationsViewController {
 //
 extension NotificationsViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView) {
-        guard let targetURL = URL(string: WPJetpackInformationURL) else {
-            fatalError()
+        guard shouldDisplayJetpackMessage == false else {
+            guard let targetURL = URL(string: WPJetpackInformationURL) else {
+                fatalError()
+            }
+
+            let webViewController = WPWebViewController(url: targetURL)
+            let navController = UINavigationController(rootViewController: webViewController!)
+            present(navController, animated: true, completion: nil)
+
+            let properties = [Stats.sourceKey: Stats.sourceValue]
+            WPAnalytics.track(.selectedLearnMoreInConnectToJetpackScreen, withProperties: properties)
+            return
         }
-
-        let webViewController = WPWebViewController(url: targetURL)
-        let navController = UINavigationController(rootViewController: webViewController!)
-        present(navController, animated: true, completion: nil)
-
-        let properties = [Stats.sourceKey: Stats.sourceValue]
-        WPAnalytics.track(.selectedLearnMoreInConnectToJetpackScreen, withProperties: properties)
+        if let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) {
+            let properties = [Stats.sourceKey: Stats.sourceValue]
+            switch filter {
+            case .none,
+                 .comment,
+                 .follow,
+                 .like:
+                WPAnalytics.track(.notificationsTappedViewReader, withProperties: properties)
+                WPTabBarController.sharedInstance().showReaderTab()
+            case .unread:
+                WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
+                WPTabBarController.sharedInstance().showPostTab()
+            }
+        }
     }
 }
 
