@@ -584,53 +584,6 @@
     return _queueForResizeMediaOperations;
 }
 
-- (CGSize)sizeOfMediaFileAtPath:(NSString *)pathForFile {
-    if (pathForFile == nil || ![[NSFileManager defaultManager] fileExistsAtPath:pathForFile isDirectory:nil]) {
-        return CGSizeZero;
-    }
-    NSURL *imageFileURL = [NSURL fileURLWithPath:pathForFile];
-    CGImageSourceRef imageSource = CGImageSourceCreateWithURL((CFURLRef)imageFileURL, NULL);
-    if (imageSource == NULL) {
-        // Error loading image
-        return CGSizeZero;
-    }
-
-    CGFloat width = 0.0f, height = 0.0f;
-    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, NULL);
-
-    CFRelease(imageSource);
-
-    if (imageProperties == NULL) {
-        return CGSizeZero;
-    }
-
-    CFNumberRef widthNum  = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth);
-    if (widthNum != NULL) {
-        CFNumberGetValue(widthNum, kCFNumberCGFloatType, &width);
-    }
-
-    CFNumberRef heightNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight);
-    if (heightNum != NULL) {
-        CFNumberGetValue(heightNum, kCFNumberCGFloatType, &height);
-    }
-
-    // Check orientation and flip size if required
-    CFNumberRef orientationNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyOrientation);
-    if (orientationNum != NULL) {
-        int orientation;
-        CFNumberGetValue(orientationNum, kCFNumberIntType, &orientation);
-        if (orientation > 4) {
-            CGFloat temp = width;
-            width = height;
-            height = temp;
-        }
-    }
-    
-    CFRelease(imageProperties);
-
-    return CGSizeMake(width, height);
-}
-
 - (void)imageForMedia:(Media *)mediaInRandomContext
                  size:(CGSize)requestSize
               success:(void (^)(UIImage *image))success
@@ -651,14 +604,14 @@
         CGSize availableSize = CGSizeZero;
         if (media.mediaType == MediaTypeImage) {
             pathForFile = media.absoluteThumbnailLocalURL;
-            availableSize = [self sizeOfMediaFileAtPath:pathForFile];
+            availableSize = [MediaService imageSizeForMediaAtPath:pathForFile];
             if (size.height > availableSize.height && size.width > availableSize.width) {
                 pathForFile = media.absoluteLocalURL;
-                availableSize = [self sizeOfMediaFileAtPath:pathForFile];
+                availableSize = [MediaService imageSizeForMediaAtPath:pathForFile];
             }
         } else if (media.mediaType == MediaTypeVideo) {
             pathForFile = media.absoluteThumbnailLocalURL;
-            availableSize = [self sizeOfMediaFileAtPath:pathForFile];
+            availableSize = [MediaService imageSizeForMediaAtPath:pathForFile];
         }
 
         // check if the available local image is equal or larger than the requested size
