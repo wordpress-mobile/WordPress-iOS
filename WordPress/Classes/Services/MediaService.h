@@ -117,16 +117,6 @@
             failure:(nullable void (^)())failure;
 
 /**
- Find the media object in the local database.
- 
- @param mediaID
- @param blog
- 
- @return the Media object with the mediaID that belongs to the blog. Nil if not found.
- */
-- (nullable Media *)findMediaWithID:(nonnull NSNumber *)mediaID inBlog:(nonnull Blog *)blog;
-
-/**
  *  Obtains the  video url and poster image url for the video with the videoPressID
  *
  *  @param videoPressID ID of video in VideoPress
