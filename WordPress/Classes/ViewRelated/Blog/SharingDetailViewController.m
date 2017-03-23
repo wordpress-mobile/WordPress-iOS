@@ -14,15 +14,9 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) PublicizeConnection *publicizeConnection;
-@property (nonatomic, strong) SharingAuthorizationHelper *helper;
 @end
 
 @implementation SharingDetailViewController
-
-- (void)dealloc
-{
-    self.helper.delegate = nil;
-}
 
 - (instancetype)initWithBlog:(Blog *)blog
          publicizeConnection:(PublicizeConnection *)connection
@@ -175,25 +169,23 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
 
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    self.helper = [self authorizationHelper];
 
     __weak __typeof(self) weakSelf = self;
-    void (^attemptReconnect)() = ^{
-        weakSelf.helper = [self authorizationHelper];
-        [weakSelf.helper reconnectPublicizeConnection:weakSelf.publicizeConnection];
-    };
-    if (self.helper == nil) {
+    SharingAuthorizationHelper *helper = [self helper];
+    if (helper == nil) {
         [sharingService syncPublicizeServicesForBlog:self.blog
-                                             success:attemptReconnect
+                                             success:^{
+                                                 [[weakSelf helper] reconnectPublicizeConnection:weakSelf.publicizeConnection];
+                                             }
                                              failure:^(NSError * _Nullable error) {
                                                  [WPError showNetworkingAlertWithError:error];
                                              }];
     } else {
-        attemptReconnect();
+        [helper reconnectPublicizeConnection:weakSelf.publicizeConnection];
     }
 }
 
-- (SharingAuthorizationHelper *)authorizationHelper
+- (SharingAuthorizationHelper *)helper
 {
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     PublicizeService *publicizeService = [sharingService findPublicizeServiceNamed:self.publicizeConnection.service];
@@ -201,8 +193,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         return nil;
     }
     SharingAuthorizationHelper *helper = [[SharingAuthorizationHelper alloc] initWithViewController:self
-                                                                        blog:self.blog
-                                                            publicizeService:publicizeService];
+                                                                                               blog:self.blog
+                                                                                   publicizeService:publicizeService];
     helper.delegate = self;
     return helper;
 }
