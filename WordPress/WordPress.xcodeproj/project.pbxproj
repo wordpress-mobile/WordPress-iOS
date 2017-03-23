@@ -285,6 +285,11 @@
 		740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */; };
 		742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */; };
 		746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 746A6F561E71C691003B67E3 /* DeleteSite.storyboard */; };
+		740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */; };
+		740CAE7C1E816FC700D0E892 /* people-delete-follower-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 740CAE7A1E816FC700D0E892 /* people-delete-follower-failure.json */; };
+		740CAE7D1E816FC700D0E892 /* people-delete-follower-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 740CAE7B1E816FC700D0E892 /* people-delete-follower-success.json */; };
+		743BF32A1E82CE0700192E40 /* people-delete-viewer-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 743BF3291E82CE0700192E40 /* people-delete-viewer-failure.json */; };
+		743BF32C1E82CEB600192E40 /* people-delete-viewer-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 743BF32B1E82CEB600192E40 /* people-delete-viewer-success.json */; };
 		7470840F1E269669002CA726 /* JetpackLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7470840D1E269669002CA726 /* JetpackLoginViewController.swift */; };
 		747084101E269669002CA726 /* JetpackLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7470840E1E269669002CA726 /* JetpackLoginViewController.xib */; };
 		74BB6F1A19AE7B9400FB7829 /* WPLegacyEditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */; };
@@ -1464,6 +1469,10 @@
 		7059CD200F332B6500A0660B /* WPCategoryTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WPCategoryTree.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		740BD8331A0D4C3600F04D18 /* WPUploadStatusButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUploadStatusButton.h; sourceTree = "<group>"; };
 		740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUploadStatusButton.m; sourceTree = "<group>"; };
+		740CAE7A1E816FC700D0E892 /* people-delete-follower-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "people-delete-follower-failure.json"; path = "WordPressTest/people-delete-follower-failure.json"; sourceTree = SOURCE_ROOT; };
+		740CAE7B1E816FC700D0E892 /* people-delete-follower-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "people-delete-follower-success.json"; path = "WordPressTest/people-delete-follower-success.json"; sourceTree = SOURCE_ROOT; };
+		743BF3291E82CE0700192E40 /* people-delete-viewer-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "people-delete-viewer-failure.json"; path = "WordPressTest/people-delete-viewer-failure.json"; sourceTree = SOURCE_ROOT; };
+		743BF32B1E82CEB600192E40 /* people-delete-viewer-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "people-delete-viewer-success.json"; path = "WordPressTest/people-delete-viewer-success.json"; sourceTree = SOURCE_ROOT; };
 		742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteViewController.swift; sourceTree = "<group>"; };
 		746A6F561E71C691003B67E3 /* DeleteSite.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeleteSite.storyboard; sourceTree = "<group>"; };
 		7470840D1E269669002CA726 /* JetpackLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackLoginViewController.swift; sourceTree = "<group>"; };
@@ -4894,6 +4903,10 @@
 				B5BC25A71CFCBEFF00F7D8B9 /* people-validate-invitation-failure.json */,
 				B5BC25A51CFCBDB600F7D8B9 /* people-send-invitation-success.json */,
 				B5BC25A31CFCBA6A00F7D8B9 /* people-send-invitation-failure.json */,
+				740CAE7A1E816FC700D0E892 /* people-delete-follower-failure.json */,
+				740CAE7B1E816FC700D0E892 /* people-delete-follower-success.json */,
+				743BF3291E82CE0700192E40 /* people-delete-viewer-failure.json */,
+				743BF32B1E82CEB600192E40 /* people-delete-viewer-success.json */,
 				932C6CB21D521DFA006E4A62 /* gallery-reader-post-public.json */,
 				932AB00A1D526C1400BE486D /* gallery-reader-post-private.json */,
 			);
@@ -5585,6 +5598,7 @@
 				FF9839AB1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json in Resources */,
 				B5EA71301DC293F30083032A /* notifications-mark-as-read.json in Resources */,
 				B5EA71361DC294730083032A /* notifications-load-hash.json in Resources */,
+				743BF32A1E82CE0700192E40 /* people-delete-viewer-failure.json in Resources */,
 				E15027621E03E51500B847E3 /* notes-action-push.json in Resources */,
 				B5BC25A21CFCBA5400F7D8B9 /* people-validate-invitation-success.json in Resources */,
 				B5A6BB8C1BF4DF38002F6A96 /* rest-site-settings.json in Resources */,
@@ -5602,11 +5616,13 @@
 				B5BC25A61CFCBDB600F7D8B9 /* people-send-invitation-success.json in Resources */,
 				B5AEEC7A1ACACFDA008BF2A4 /* notifications-like.json in Resources */,
 				932C6CB31D521DFA006E4A62 /* gallery-reader-post-public.json in Resources */,
+				740CAE7C1E816FC700D0E892 /* people-delete-follower-failure.json in Resources */,
 				FFB8DC9F1CE320C700D4D1B7 /* WordPressComRestApiFailUnauthorized.json in Resources */,
 				E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */,
 				FAFB84061BBF3638000BBA8E /* get-multiple-themes-v1.2.json in Resources */,
 				1702BBE91CF357BB00766A33 /* domain-service-all-domain-types.json in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
+				740CAE7D1E816FC700D0E892 /* people-delete-follower-success.json in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
 				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,
 				FF7C89A51E3A103A000472A8 /* test-video.mp4 in Resources */,
@@ -5617,6 +5633,7 @@
 				FFB8DC9C1CE320C700D4D1B7 /* WordPressComRestApiFailInvalidInput.json in Resources */,
 				B5BC25A41CFCBA6A00F7D8B9 /* people-send-invitation-failure.json in Resources */,
 				B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */,
+				743BF32C1E82CEB600192E40 /* people-delete-viewer-success.json in Resources */,
 				E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */,
 				FF9839AF1CD3FBCA00E85258 /* WordPressOAuthClientNeed2FAFail.json in Resources */,
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,

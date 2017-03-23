@@ -7,6 +7,36 @@ import WordPressComAnalytics
 ///
 final class PersonViewController: UITableViewController {
 
+    /// PersonViewController operation modes
+    ///
+    enum ScreenMode: String {
+        case User      = "user"
+        case Follower  = "follower"
+        case Viewer    = "viewer"
+
+        var title: String {
+            switch self {
+            case .User:
+                return NSLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
+            case .Follower:
+                return NSLocalizedString("Blog's Follower", comment: "Blog's Follower Profile. Displayed when the name is empty!")
+            case .Viewer:
+                return NSLocalizedString("Blog's Viewer", comment: "Blog's Viewer Profile. Displayed when the name is empty!")
+            }
+        }
+
+        var name: String {
+            switch self {
+            case .User:
+                return NSLocalizedString("user", comment: "Noun. Describes a site's user.")
+            case .Follower:
+                return NSLocalizedString("follower", comment: "Noun. Describes a site's follower.")
+            case .Viewer:
+                return NSLocalizedString("viewer", comment: "Noun. Describes a site's viewer.")
+            }
+        }
+    }
+
     // MARK: - Public Properties
 
     /// Blog to which the Person belongs
@@ -24,6 +54,10 @@ final class PersonViewController: UITableViewController {
             refreshInterfaceIfNeeded()
         }
     }
+
+    /// Mode: User / Follower / Viewer
+    ///
+    var screenMode: ScreenMode = .User
 
     /// Gravatar Image
     ///
@@ -105,7 +139,7 @@ final class PersonViewController: UITableViewController {
 
         super.viewDidLoad()
 
-        title = person.fullName.nonEmptyString() ?? NSLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
+        title = person.fullName.nonEmptyString() ?? screenMode.title
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
@@ -190,15 +224,25 @@ private extension PersonViewController {
         let titleText = String(format: titleFormat, person.username)
 
         let name = person.firstName?.nonEmptyString() ?? person.username
-        let messageFirstLine = NSLocalizedString(
-            "If you remove " + name + ", that user will no longer be able to access this site, " +
-            "but any content that was created by " + name + " will remain on the site.",
-            comment: "Remove User Warning")
 
-        let messageSecondLine = NSLocalizedString("Would you still like to remove this user?",
-            comment: "Remove User Confirmation")
+        var messageFirstLine: String
+        switch screenMode {
+        case .User:
+            messageFirstLine = NSLocalizedString( "If you remove " + name + ", that user will no longer be able to access this site, " +
+                                                  "but any content that was created by " + name + " will remain on the site.",
+                                                  comment: "First line of remove user warning")
+        case .Follower:
+            messageFirstLine = NSLocalizedString( "If removed, this follower will stop receiving notifications about this site, unless they re-follow.",
+                                                  comment: "First line of remove follower warning")
+        case .Viewer:
+            messageFirstLine = NSLocalizedString( "If you remove this viewer, he or she will not be able to visit this site.",
+                                                  comment: "First line of remove viewer warning")
+        }
 
-        let message = messageFirstLine + "\n\n" + messageSecondLine
+        let messageSecondLineFormat = NSLocalizedString("Would you still like to remove this %@?", comment: "Second line of Remove user/follower/viewer confirmation. ")
+        let messageSecondLineText = String(format: messageSecondLineFormat, screenMode.name)
+
+        let message = messageFirstLine + "\n\n" + messageSecondLineText
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Action")
         let removeTitle = NSLocalizedString("Remove", comment: "Remove Action")
@@ -208,7 +252,19 @@ private extension PersonViewController {
         alert.addCancelActionWithTitle(cancelTitle)
 
         alert.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
-            self?.deleteUser()
+            guard let strongSelf = self else {
+                return
+            }
+
+            switch strongSelf.screenMode {
+            case .User:
+                strongSelf.deleteUser()
+            case .Follower:
+                strongSelf.deleteFollower()
+            case .Viewer:
+                strongSelf.deleteViewer()
+                return
+            }
         }
 
         alert.presentFromRootViewController()
@@ -216,7 +272,7 @@ private extension PersonViewController {
 
     func deleteUser() {
         guard let user = user else {
-            DDLogSwift.logError("Error: Only Users can be deleted")
+            DDLogSwift.logError("Error: Only Users can be deleted here")
             assertionFailure()
             return
         }
@@ -237,6 +293,44 @@ private extension PersonViewController {
         _ = navigationController?.popViewController(animated: true)
     }
 
+    func deleteFollower() {
+        guard let follower = follower, isFollower else {
+            DDLogSwift.logError("Error: Only Followers can be deleted here")
+            assertionFailure()
+            return
+        }
+
+        let service = PeopleService(blog: blog, context: context)
+        service?.deleteFollower(follower, failure: {[weak self] (error: Error?) -> () in
+            guard let strongSelf = self, let error = error as? NSError else {
+                return
+            }
+
+            strongSelf.handleRemoveViewerOrFollowerError(error)
+        })
+        _ = navigationController?.popViewController(animated: true)
+    }
+
+    func deleteViewer() {
+        guard let viewer = viewer, isViewer else {
+            DDLogSwift.logError("Error: Only Viewers can be deleted here")
+            assertionFailure()
+            return
+        }
+
+        let service = PeopleService(blog: blog, context: context)
+        service?.deleteViewer(viewer, success: {
+            WPAnalytics.track(.personRemoved)
+        }, failure: {[weak self] (error: Error?) -> () in
+            guard let strongSelf = self, let error = error as? NSError else {
+                return
+            }
+
+            strongSelf.handleRemoveViewerOrFollowerError(error)
+        })
+        _ = navigationController?.popViewController(animated: true)
+    }
+
     func handleRemoveUserError(_ error: NSError, userName: String) {
         // The error code will be "forbidden" per:
         // https://developer.wordpress.com/docs/api/1.1/post/sites/%24site/users/%24user_ID/delete/
@@ -253,6 +347,11 @@ private extension PersonViewController {
                                              "Please contact support for assistance.",
                                              comment: "Error message shown when user attempts to remove the site owner.")
         WPError.showAlert(withTitle: errorTitleText, message: errorMessage, withSupportButton: true)
+    }
+
+    func handleRemoveViewerOrFollowerError(_ error: NSError) {
+        let errorWithSource = NSError(domain: error.domain, code: error.code, userInfo: error.userInfo)
+        WPError.showNetworkingAlertWithError(errorWithSource)
     }
 
     func updateUserRole(_ newRole: Role) {
@@ -425,11 +524,15 @@ private extension PersonViewController {
     }
 
     var isRemoveEnabled: Bool {
-        // Notes:
-        //  -   YES, ListUsers. Brought from Calypso's code
-        //  -   Followers, for now, cannot be deleted.
-        //
-        return blog.isUserCapableOf(.ListUsers) && isMyself == false && isUser == true
+        switch screenMode {
+        case .User:
+            // YES, ListUsers. Brought from Calypso's code
+            return blog.isUserCapableOf(.ListUsers) && isMyself == false && isUser == true
+        case .Follower:
+            return isFollower == true
+        case .Viewer:
+            return isViewer == true
+        }
     }
 
     var isUser: Bool {
@@ -438,5 +541,21 @@ private extension PersonViewController {
 
     var user: User? {
         return person as? User
+    }
+
+    var isFollower: Bool {
+        return follower != nil
+    }
+
+    var follower: Follower? {
+        return person as? Follower
+    }
+
+    var isViewer: Bool {
+        return viewer != nil
+    }
+
+    var viewer: Viewer? {
+        return person as? Viewer
     }
 }
