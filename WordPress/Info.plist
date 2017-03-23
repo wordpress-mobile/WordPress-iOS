@@ -35,7 +35,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>7.2.0.0</string>
+	<string>7.2.0.1</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -56,6 +56,8 @@
 	<array>
 		<string>org-appextension-feature-password-management</string>
 		<string>twitter</string>
+		<string>whatsapp</string>
+		<string>tg</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

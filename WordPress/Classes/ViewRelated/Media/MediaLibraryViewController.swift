@@ -12,6 +12,29 @@ class MediaLibraryViewController: UIViewController {
     fileprivate let pickerViewController: WPMediaPickerViewController
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
+    fileprivate var selectedAsset: Media? = nil
+
+    lazy fileprivate var searchBarContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    lazy fileprivate var searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: nil)
+        controller.searchResultsUpdater = self
+        controller.hidesNavigationBarDuringPresentation = true
+        controller.dimsBackgroundDuringPresentation = false
+
+        WPStyleGuide.configureSearchBar(controller.searchBar)
+        controller.searchBar.delegate = self
+        controller.searchBar.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        return controller
+    }()
+
+    var searchQuery: String? = nil
+
     // MARK: - Initializers
 
     init(blog: Blog) {
@@ -48,11 +71,46 @@ class MediaLibraryViewController: UIViewController {
 
         title = NSLocalizedString("Media", comment: "Title for Media Library section of the app.")
 
+        definesPresentationContext = true
+        automaticallyAdjustsScrollViewInsets = false
+
         updateNavigationItemButtonsForEditingState()
 
         addMediaPickerAsChildViewController()
+        addSearchBarContainer()
+        addSearchBar()
 
         registerChangeObserver()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if let searchQuery = searchQuery,
+            !searchQuery.isEmpty {
+
+            // If we deleted the last asset, then clear the search
+            if pickerDataSource.numberOfAssets() == 0 {
+                clearSearch()
+            } else {
+                searchController.searchBar.text = searchQuery
+            }
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        selectedAsset = nil
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        if searchController.isActive {
+            searchQuery = searchController.searchBar.text
+            searchController.isActive = false
+        }
     }
 
     private func updateNavigationItemButtonsForEditingState() {
@@ -62,17 +120,58 @@ class MediaLibraryViewController: UIViewController {
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
             navigationItem.setLeftBarButton(nil, animated: true)
-            navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
+            if blog.supports(.mediaDeletion) {
+                navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
+            } else {
+                navigationItem.setRightBarButton(nil, animated: true)
+            }
         }
     }
 
     private func addMediaPickerAsChildViewController() {
         pickerViewController.willMove(toParentViewController: self)
-        pickerViewController.view.bounds = view.bounds
         view.addSubview(pickerViewController.view)
+        pickerViewController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            pickerViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            pickerViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            pickerViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+
         addChildViewController(pickerViewController)
         pickerViewController.didMove(toParentViewController: self)
     }
+
+    private func addSearchBarContainer() {
+        view.addSubview(searchBarContainer)
+
+        NSLayoutConstraint.activate([
+            searchBarContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            searchBarContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            searchBarContainer.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+            searchBarContainer.bottomAnchor.constraint(equalTo: pickerViewController.view.topAnchor)
+        ])
+
+        let searchBarHeight = searchController.searchBar.bounds.height
+
+        let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: searchBarHeight)
+        heightConstraint.priority = UILayoutPriorityDefaultLow
+        heightConstraint.isActive = true
+
+        let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: searchBarHeight)
+        expandedHeightConstraint.priority = UILayoutPriorityRequired
+        expandedHeightConstraint.isActive = true
+    }
+
+    private func addSearchBar() {
+        searchBarContainer.layoutIfNeeded()
+
+        searchBarContainer.addSubview(searchController.searchBar)
+        searchController.searchBar.sizeToFit()
+    }
+
+    // MARK: - Actions
 
     @objc private func editTapped() {
         isEditing = !isEditing
@@ -140,7 +239,18 @@ class MediaLibraryViewController: UIViewController {
     private func registerChangeObserver() {
         assert(mediaLibraryChangeObserverKey == nil)
         mediaLibraryChangeObserverKey = pickerDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
-            self?.updateNavigationItemButtonsForCurrentAssetSelection()
+            guard let strongSelf = self else { return }
+
+            strongSelf.updateNavigationItemButtonsForCurrentAssetSelection()
+
+            // If we're presenting an item and it's been deleted, pop the
+            // detail view off the stack
+            if let navigationController = strongSelf.navigationController,
+                navigationController.topViewController != strongSelf,
+                let asset = strongSelf.selectedAsset,
+                asset.isDeleted {
+                _ = strongSelf.navigationController?.popToViewController(strongSelf, animated: true)
+            }
         })
     }
 
@@ -148,6 +258,31 @@ class MediaLibraryViewController: UIViewController {
         if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
             pickerDataSource.unregisterChangeObserver(mediaLibraryChangeObserverKey)
         }
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+
+extension MediaLibraryViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        if searchController.isActive {
+            pickerDataSource.searchQuery = searchController.searchBar.text
+            pickerViewController.collectionView?.reloadData()
+        }
+    }
+
+    func didDismissSearchController(_ searchController: UISearchController) {
+        clearSearch()
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        clearSearch()
+    }
+
+    func clearSearch() {
+        searchQuery = nil
+        pickerDataSource.searchQuery = nil
+        pickerViewController.collectionView?.reloadData()
     }
 }
 
@@ -198,6 +333,8 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         guard let asset = asset as? Media else {
             return nil
         }
+
+        selectedAsset = asset
 
         return MediaItemViewController(media: asset, dataSource: pickerDataSource)
     }
