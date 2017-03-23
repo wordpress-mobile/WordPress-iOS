@@ -1,4 +1,3 @@
-load "wordpress_translation_retrieval.rb"
 #
 # For more information about each property, visit the GitHub documentation: https://github.com/krausefx/deliver
 # Everything next to a # is a comment and will be ignored
@@ -16,30 +15,14 @@ screenshots_path "./screenshots/"
 app_identifier "org.wordpress"
 
 # Make sure to update these keys for a new version
-app_version "7.0"
-glotpress_whats_new_key = "v7.0-whats-new"
+app_version "7.2"
 
-release_notes({
-    "en-US" => WordPressTranslationRetrieval.get_version_text("en-US", glotpress_whats_new_key),
-    "en-CA" => WordPressTranslationRetrieval.get_version_text("en-CA", glotpress_whats_new_key),
-    "en-AU" => WordPressTranslationRetrieval.get_version_text("en-AU", glotpress_whats_new_key),
-    "es-ES" => WordPressTranslationRetrieval.get_version_text("es-ES", glotpress_whats_new_key),
-    "fr-FR" => WordPressTranslationRetrieval.get_version_text("fr-FR", glotpress_whats_new_key),
-    "it" => WordPressTranslationRetrieval.get_version_text("it", glotpress_whats_new_key),
-    "ja" => WordPressTranslationRetrieval.get_version_text("ja", glotpress_whats_new_key),
-    "sv" => WordPressTranslationRetrieval.get_version_text("sv", glotpress_whats_new_key),
-    "pt-BR" => WordPressTranslationRetrieval.get_version_text("pt-BR", glotpress_whats_new_key),
-    "nl" => WordPressTranslationRetrieval.get_version_text("nl", glotpress_whats_new_key),
-    "de-DE" => WordPressTranslationRetrieval.get_version_text("de-DE", glotpress_whats_new_key),
-    "id" => WordPressTranslationRetrieval.get_version_text("id", glotpress_whats_new_key),
-    "ko" => WordPressTranslationRetrieval.get_version_text("ko", glotpress_whats_new_key),
-    "ru" => WordPressTranslationRetrieval.get_version_text("ru", glotpress_whats_new_key),
-    "zh-Hans" => WordPressTranslationRetrieval.get_version_text("zh-Hans", glotpress_whats_new_key),
-    "th" => WordPressTranslationRetrieval.get_version_text("th", glotpress_whats_new_key),
-    "zh-Hant" => WordPressTranslationRetrieval.get_version_text("zh-Hant", glotpress_whats_new_key),
-    "tr" => WordPressTranslationRetrieval.get_version_text("tr", glotpress_whats_new_key),
-    "en-GB" => WordPressTranslationRetrieval.get_version_text("en-GB", glotpress_whats_new_key),
+privacy_url({
+  'default' => 'https://automattic.com/privacy/',
 })
+
+skip_binary_upload true
+overwrite_screenshots true
 
 # version '1.2' # you can pass this if you want to verify the version number with the ipa file
 
