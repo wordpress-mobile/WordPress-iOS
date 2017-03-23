@@ -7,6 +7,17 @@ import Gridicons
 ///
 open class DeleteSiteViewController: UITableViewController {
 
+    /// A convenience method for obtaining an instance of this controller from a storyboard.
+    ///
+    /// - Parameter blog: A Blog instance.
+    ///
+    class func controller(_ blog: Blog) -> DeleteSiteViewController {
+        let storyboard = UIStoryboard(name: "DeleteSite", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "DeleteSiteViewController") as! DeleteSiteViewController
+        controller.blog = blog
+        return controller
+    }
+
     // MARK: - Properties
 
     var blog: Blog!
@@ -25,7 +36,6 @@ open class DeleteSiteViewController: UITableViewController {
     @IBOutlet fileprivate weak var sectionThreeBody: UILabel!
     @IBOutlet fileprivate weak var supportButton: UIButton!
     @IBOutlet fileprivate weak var deleteSiteButton: UIButton!
-
 
     // MARK: - View Lifecycle
 
