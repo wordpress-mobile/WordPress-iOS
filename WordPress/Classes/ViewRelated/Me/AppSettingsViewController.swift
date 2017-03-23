@@ -61,7 +61,7 @@ class AppSettingsViewController: UITableViewController {
 
         var mediaSizeString = NSLocalizedString("Unknown", comment: "Label for size of media when it's not possible to calculate it.")
         let fileManager = FileManager()
-        if let mediaSize = try? fileManager.allocatedSizeOf(directoryURL: MediaService.urlForMediaDirectory()) {
+        if let mediaSize = try? fileManager.allocatedSizeOf(directoryURL: MediaService.localMediaDirectory()) {
             if mediaSize == 0 {
                 mediaSizeString = NSLocalizedString("Empty", comment: "Label for size of media when the cache is empty.")
             } else {
