@@ -88,9 +88,7 @@ public extension SiteSettingsViewController {
 
                 if purchases.isEmpty {
                     WPAppAnalytics.track(.siteSettingsDeleteSiteAccessed, with: strongSelf.blog)
-                    let deleteSiteVC = UIStoryboard(name: "DeleteSite", bundle: nil).instantiateViewController(withIdentifier: "DeleteSiteViewController") as! DeleteSiteViewController
-                    deleteSiteVC.blog = strongSelf.blog
-                    strongSelf.navigationController?.pushViewController(deleteSiteVC, animated: true)
+                    strongSelf.navigationController?.pushViewController(DeleteSiteViewController.controller(strongSelf.blog), animated: true)
                 } else {
                     WPAppAnalytics.track(.siteSettingsDeleteSitePurchasesShown, with: strongSelf.blog)
                     strongSelf.present(strongSelf.warnPurchasesController(), animated: true, completion: nil)
