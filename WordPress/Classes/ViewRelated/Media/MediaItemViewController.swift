@@ -310,33 +310,33 @@ open class ImageTableViewCell: WPTableViewCell {
     }
 
     private func setupImageView() {
-        addSubview(customImageView)
+        contentView.addSubview(customImageView)
         customImageView.translatesAutoresizingMaskIntoConstraints = false
         customImageView.contentMode = .scaleAspectFit
 
         NSLayoutConstraint.activate([
-            customImageView.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
-            customImageView.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor),
-            customImageView.topAnchor.constraint(equalTo: topAnchor),
-            customImageView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            customImageView.leadingAnchor.constraint(equalTo: contentView.readableContentGuide.leadingAnchor),
+            customImageView.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
+            customImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            customImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
             ])
 
         customImageView.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
     }
 
     private func setupLoadingViews() {
-        addSubview(activityMaskView)
+        contentView.addSubview(activityMaskView)
         activityMaskView.translatesAutoresizingMaskIntoConstraints = false
         activityMaskView.backgroundColor = .black
         activityMaskView.alpha = 0.5
 
-        addSubview(activityIndicator)
+        contentView.addSubview(activityIndicator)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator.hidesWhenStopped = true
 
         NSLayoutConstraint.activate([
-            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
             activityMaskView.leadingAnchor.constraint(equalTo: customImageView.leadingAnchor),
             activityMaskView.trailingAnchor.constraint(equalTo: customImageView.trailingAnchor),
