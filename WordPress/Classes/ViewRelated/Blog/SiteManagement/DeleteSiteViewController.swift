@@ -15,6 +15,7 @@ open class DeleteSiteViewController: UITableViewController {
     @IBOutlet fileprivate weak var siteTitleLabel: UILabel!
     @IBOutlet fileprivate weak var siteTitleSubText: UILabel!
     @IBOutlet fileprivate weak var sectionTwoHeader: UILabel!
+    @IBOutlet fileprivate var      sectionTwoColumnItems: [UILabel]!
     @IBOutlet fileprivate weak var sectionTwoColumnOneItem: UILabel!
     @IBOutlet fileprivate weak var sectionTwoColumnTwoItem: UILabel!
     @IBOutlet fileprivate weak var sectionTwoColumnOneItem2: UILabel!
@@ -24,6 +25,7 @@ open class DeleteSiteViewController: UITableViewController {
     @IBOutlet fileprivate weak var sectionThreeBody: UILabel!
     @IBOutlet fileprivate weak var supportButton: UIButton!
     @IBOutlet fileprivate weak var deleteSiteButton: UIButton!
+
 
     // MARK: - View Lifecycle
 
@@ -35,51 +37,53 @@ open class DeleteSiteViewController: UITableViewController {
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.rowHeight = UITableViewAutomaticDimension
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
-        setupSectionOne()
-        setupSectionTwo()
-        setupSectionThree()
-        setupSectionFour()
+        setupHeaderSection()
+        setupListSection()
+        setupMainBodySection()
+        setupDeleteButton()
     }
 
     // MARK: - Configuration
 
     /// One time setup of section one (header)
     ///
-    fileprivate func setupSectionOne() {
-        let warningIcon = Gridicon.iconOfType(.notice, withSize: CGSize(width: 48.0, height: 48.0)).withRenderingMode(.alwaysTemplate)
+    fileprivate func setupHeaderSection() {
+        let warningIcon = Gridicon.iconOfType(.notice, withSize: CGSize(width: 48.0, height: 48.0))
 
         warningImage.image = warningIcon
         warningImage.tintColor = WPStyleGuide.warningYellow()
         siteTitleLabel.textColor = WPStyleGuide.darkGrey()
         siteTitleLabel.text = blog.displayURL as String?
         siteTitleSubText.textColor = WPStyleGuide.darkGrey()
-        siteTitleSubText.text = NSLocalizedString("will be unavailable in the future",
+        siteTitleSubText.text = NSLocalizedString("will be unavailable in the future.",
                                                   comment: "Second part of delete screen title stating [the site] will be unavailable in the future.")
     }
 
     /// One time setup of second section (list)
     ///
-    fileprivate func setupSectionTwo() {
+    fileprivate func setupListSection() {
         sectionTwoHeader.textColor = WPStyleGuide.grey()
+        sectionTwoColumnItems.forEach({ $0.textColor = WPStyleGuide.darkGrey() })
+
         sectionTwoHeader.text = NSLocalizedString("these items will be deleted:",
                                                   comment: "Header of delete screen section listing things that will be deleted.").uppercased()
-        sectionTwoColumnOneItem.textColor = WPStyleGuide.darkGrey()
+
         sectionTwoColumnOneItem.text = styleListItem(NSLocalizedString("posts", comment: "Item 1 of delete screen section listing things that will be deleted."))
-        sectionTwoColumnTwoItem.textColor = WPStyleGuide.darkGrey()
+
         sectionTwoColumnTwoItem.text = styleListItem(NSLocalizedString("users & authors", comment: "Item 2 of delete screen section listing things that will be deleted."))
-        sectionTwoColumnOneItem2.textColor = WPStyleGuide.darkGrey()
+
         sectionTwoColumnOneItem2.text = styleListItem(NSLocalizedString("pages", comment: "Item 3 of delete screen section listing things that will be deleted."))
-        sectionTwoColumnTwoItem2.textColor = WPStyleGuide.darkGrey()
+
         sectionTwoColumnTwoItem2.text = styleListItem(NSLocalizedString("domains", comment: "Item 4 of delete screen section listing things that will be deleted."))
-        sectionTwoColumnOneItem3.textColor = WPStyleGuide.darkGrey()
+
         sectionTwoColumnOneItem3.text = styleListItem(NSLocalizedString("media", comment: "Item 5 of delete screen section listing things that will be deleted."))
-        sectionTwoColumnTwoItem3.textColor = WPStyleGuide.darkGrey()
+
         sectionTwoColumnTwoItem3.text = styleListItem(NSLocalizedString("purchased upgrades", comment: "Item 6 of delete screen section listing things that will be deleted."))
     }
 
     /// One time setup of third section (main body)
     ///
-    fileprivate func setupSectionThree() {
+    fileprivate func setupMainBodySection() {
         let paragraph1 = NSLocalizedString("This action <b>can not</b> be undone. Deleting the site will remove all " +
                                            "content, contributors, domains, and upgrades from the site.",
                                             comment: "Paragraph 1 of 2 of main text body for the delete screen. NOTE: it is important " +
@@ -91,7 +95,7 @@ open class DeleteSiteViewController: UITableViewController {
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
-        let attributes = [ NSFontAttributeName: UIFont.systemFont(ofSize: 17.0),
+        let attributes = [ NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body),
                            NSForegroundColorAttributeName: WPStyleGuide.darkGrey(),
                            NSParagraphStyleAttributeName: paragraphStyle ]
         let htmlAttributes: StyledHTMLAttributes = [ .BodyAttribute: attributes]
@@ -105,7 +109,7 @@ open class DeleteSiteViewController: UITableViewController {
         combinedAttributedString.append(attributedText2)
         sectionThreeBody.attributedText = combinedAttributedString
 
-        let contactButtonAttributes = [ NSFontAttributeName: UIFont.systemFont(ofSize: 17.0),
+        let contactButtonAttributes = [ NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body),
                                         NSForegroundColorAttributeName: WPStyleGuide.wordPressBlue(),
                                         NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue as AnyObject]
         supportButton.setAttributedTitle(NSAttributedString(string: NSLocalizedString("Contact Support", comment: "Button label for contacting support"), attributes: contactButtonAttributes),
@@ -114,8 +118,8 @@ open class DeleteSiteViewController: UITableViewController {
 
     /// One time setup of fourth section (delete button)
     ///
-    fileprivate func setupSectionFour() {
-        let trashIcon = Gridicon.iconOfType(.trash, withSize: CGSize(width: 20.0, height: 20.0)).withRenderingMode(.alwaysTemplate)
+    fileprivate func setupDeleteButton() {
+        let trashIcon = Gridicon.iconOfType(.trash)
         deleteSiteButton.setTitle(NSLocalizedString("Delete Site", comment: "Button label for deleting the current site"), for: .normal)
         deleteSiteButton.tintColor = WPStyleGuide.errorRed()
         deleteSiteButton.setImage(trashIcon, for: .normal)
