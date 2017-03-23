@@ -4,7 +4,7 @@
 #import "WPAccount.h"
 #import "Blog.h"
 
-@interface PrivateSiteURLProtocolSession: NSObject <NSURLSessionDelegate>
+@interface PrivateSiteURLProtocolSession: NSObject <NSURLSessionDelegate, NSURLSessionTaskDelegate>
 
 + (instancetype) sharedInstance;
 - (NSURLSessionTask *)createSessionTaskForRequest:(NSURLRequest *)request forProtocol:(NSURLProtocol *)protocol;
@@ -230,6 +230,19 @@ didReceiveResponse:(NSURLResponse *)response
 
     [client URLProtocol:protocol didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageAllowed];
     completionHandler(NSURLSessionResponseAllow);
+}
+
+- (void)URLSession:(NSURLSession *)session
+              task:(NSURLSessionTask *)task
+willPerformHTTPRedirection:(NSHTTPURLResponse *)response
+        newRequest:(NSURLRequest *)request
+ completionHandler:(void (^)(NSURLRequest * _Nullable))completionHandler
+{
+    NSURLProtocol *protocol = self.taskToProtocolMapping[task];
+    id<NSURLProtocolClient> client = protocol.client;
+
+    [client URLProtocol:protocol wasRedirectedToRequest:request redirectResponse:response];
+    completionHandler(nil);
 }
 
 @end
