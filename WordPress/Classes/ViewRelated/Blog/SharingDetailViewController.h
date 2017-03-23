@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
 
 @class Blog;
-@class PublicizeService;
 @class PublicizeConnection;
 
 /**
@@ -14,12 +13,10 @@
  *
  *  @param  blog        the blog from where to read the information from
  *  @param  connection  the relevant publicize connection
- *  @param  service     the relevant publicize service
  *
  *  @return New instance of SharingDetailViewController
  */
 - (instancetype)initWithBlog:(Blog *)blog
-         publicizeConnection:(PublicizeConnection *)connection
-            publicizeService:(PublicizeService *)publicizeService;
+         publicizeConnection:(PublicizeConnection *)connection;
 
 @end
