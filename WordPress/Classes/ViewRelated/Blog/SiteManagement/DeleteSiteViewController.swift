@@ -78,17 +78,29 @@ open class DeleteSiteViewController: UITableViewController {
         sectionTwoHeader.text = NSLocalizedString("these items will be deleted:",
                                                   comment: "Header of delete screen section listing things that will be deleted.").uppercased()
 
-        sectionTwoColumnOneItem.text = styleListItem(NSLocalizedString("posts", comment: "Item 1 of delete screen section listing things that will be deleted."))
+        sectionTwoColumnOneItem.text = NSLocalizedString("\u{2022} Posts",
+                                                         comment: "Item 1 of delete screen section listing things that will be deleted. " +
+                                                         "Note: the '\u{2022}' is a unicode bullet point and should be moved to the opposite side (if needed) for LTR languages.")
 
-        sectionTwoColumnTwoItem.text = styleListItem(NSLocalizedString("users & authors", comment: "Item 2 of delete screen section listing things that will be deleted."))
+        sectionTwoColumnTwoItem.text = NSLocalizedString("\u{2022} Users & Authors",
+                                                         comment: "Item 2 of delete screen section listing things that will be deleted. " +
+                                                         "Note: the '\u{2022}' is a unicode bullet point and should be moved to the opposite side (if needed) for LTR languages.")
 
-        sectionTwoColumnOneItem2.text = styleListItem(NSLocalizedString("pages", comment: "Item 3 of delete screen section listing things that will be deleted."))
+        sectionTwoColumnOneItem2.text = NSLocalizedString("\u{2022} Pages",
+                                                          comment: "Item 3 of delete screen section listing things that will be deleted. " +
+                                                          "Note: the '\u{2022}' is a unicode bullet point and should be moved to the opposite side (if needed) for LTR languages.")
 
-        sectionTwoColumnTwoItem2.text = styleListItem(NSLocalizedString("domains", comment: "Item 4 of delete screen section listing things that will be deleted."))
+        sectionTwoColumnTwoItem2.text = NSLocalizedString("\u{2022} Domains",
+                                                          comment: "Item 4 of delete screen section listing things that will be deleted. " +
+                                                          "Note: the '\u{2022}' is a unicode bullet point and should be moved to the opposite side (if needed) for LTR languages.")
 
-        sectionTwoColumnOneItem3.text = styleListItem(NSLocalizedString("media", comment: "Item 5 of delete screen section listing things that will be deleted."))
+        sectionTwoColumnOneItem3.text = NSLocalizedString("\u{2022} Media",
+                                                          comment: "Item 5 of delete screen section listing things that will be deleted. " +
+                                                          "Note: the '\u{2022}' is a unicode bullet point and should be moved to the opposite side (if needed) for LTR languages.")
 
-        sectionTwoColumnTwoItem3.text = styleListItem(NSLocalizedString("purchased upgrades", comment: "Item 6 of delete screen section listing things that will be deleted."))
+        sectionTwoColumnTwoItem3.text = NSLocalizedString("\u{2022} Purchased Upgrades",
+                                                          comment: "Item 6 of delete screen section listing things that will be deleted. " +
+                                                          "Note: the '\u{2022}' is a unicode bullet point and should be moved to the opposite side (if needed) for LTR languages.")
     }
 
     /// One time setup of third section (main body)
@@ -134,14 +146,6 @@ open class DeleteSiteViewController: UITableViewController {
         deleteSiteButton.tintColor = WPStyleGuide.errorRed()
         deleteSiteButton.setImage(trashIcon, for: .normal)
     }
-
-    /// Helper function that trims the provided string, prefixes a unicode bullet,
-    /// and sets the proper case.
-    ///
-    fileprivate func styleListItem(_ listItem: String) -> String {
-        return "\u{2022} " + listItem.trim().capitalized
-    }
-
 
     // MARK: - Actions
 
