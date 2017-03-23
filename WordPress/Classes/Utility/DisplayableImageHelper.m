@@ -81,8 +81,6 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     // Find all the image tags in the content passed.
     NSArray *matches = [regex matchesInString:content options:0 range:NSMakeRange(0, [content length])];
 
-    NSString *firstImageWithNoSize;
-    NSInteger currentMaxWidth = FeaturedImageMinimumWidth;
     for (NSTextCheckingResult *match in matches) {
         NSString *tag = [content substringWithRange:match.range];
         NSString *src = [self extractSrcFromImgTag:tag];
@@ -101,16 +99,10 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
 
         // Check the tag for a good width
         NSInteger width = MAX([self widthFromElementAttribute:tag], [self widthFromQueryString:src]);
-        if (width > currentMaxWidth) {
+        if (width > FeaturedImageMinimumWidth) {
             imageSrc = src;
-            currentMaxWidth = width;
-        } else if (!firstImageWithNoSize && width == 0) {
-            firstImageWithNoSize = src;
+            break;
         }
-    }
-
-    if ([imageSrc length] == 0 && firstImageWithNoSize) {
-        imageSrc = firstImageWithNoSize;
     }
 
     return imageSrc;

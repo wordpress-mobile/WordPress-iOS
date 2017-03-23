@@ -11,6 +11,7 @@
 #import "PostGeolocationCell.h"
 #import "PostGeolocationViewController.h"
 #import "SettingsSelectionViewController.h"
+#import "SharingDetailViewController.h"
 #import "PublishDatePickerView.h"
 #import "WPTextFieldTableViewCell.h"
 #import "WordPressAppDelegate.h"
@@ -581,6 +582,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         [self showFeaturedImageSelector];
     } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
         [self showFeaturedImageSelector];
+    } else if (cell.tag == PostSettingsRowShareConnection) {
+        [self toggleShareConnectionForIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareMessage) {
         [self showEditShareMessageController];
     } else if (cell.tag == PostSettingsRowGeolocation) {
@@ -795,12 +798,13 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             cell.accessoryView = [WPStyleGuide sharingCellWarningAccessoryImageView];
         } else {
             UISwitch *switchAccessory = [[UISwitch alloc] initWithFrame:CGRectZero];
-            switchAccessory.tag = indexPath.row;
-            [switchAccessory addTarget:self action:@selector(handleShareConnectionCellSwitchChanged:) forControlEvents:UIControlEventValueChanged];
+            // This interaction is handled at a cell level
+            switchAccessory.userInteractionEnabled = NO;
             switchAccessory.on = ![self.post publicizeConnectionDisabledForKeyringID:connection.keyringConnectionID];
             switchAccessory.enabled = canEditSharing;
             cell.accessoryView = switchAccessory;
         }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.tag = PostSettingsRowShareConnection;
         cell.accessibilityIdentifier = [NSString stringWithFormat:@"%@ %@", connection.service, connection.externalDisplay];
     } else {
@@ -814,20 +818,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     }
     cell.userInteractionEnabled = canEditSharing;
     return cell;
-}
-
-- (void)handleShareConnectionCellSwitchChanged:(id)sender
-{
-    UISwitch *aSwitch = (UISwitch *)sender;
-
-    if (aSwitch.tag < self.publicizeConnections.count) {
-        PublicizeConnection *connection = self.publicizeConnections[aSwitch.tag];
-        if (aSwitch.on) {
-            [self.post enablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
-        } else {
-            [self.post disablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
-        }
-    }
 }
 
 - (PostGeolocationCell *)postGeoLocationCell {
@@ -1155,6 +1145,27 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [alertController presentFromRootViewController];
 }
 
+- (void)toggleShareConnectionForIndexPath:(NSIndexPath *) indexPath
+{
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    if (indexPath.row < self.publicizeConnections.count) {
+        PublicizeConnection *connection = self.publicizeConnections[indexPath.row];
+        if (connection.isBroken) {
+            SharingDetailViewController *controller = [[SharingDetailViewController alloc] initWithBlog:self.post.blog
+                                                                                    publicizeConnection:connection];
+            [self.navigationController pushViewController:controller animated:YES];
+        } else {
+            UISwitch *cellSwitch = (UISwitch *)cell.accessoryView;
+            [cellSwitch setOn:!cellSwitch.on animated:YES];
+            if (cellSwitch.on) {
+                [self.post enablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
+            } else {
+                [self.post disablePublicizeConnectionWithKeyringID:connection.keyringConnectionID];
+            }
+        }
+    }
+}
+
 - (void)showEditShareMessageController
 {
     SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:self.post.publicizeMessage
@@ -1165,6 +1176,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     vc.onValueChanged = ^(NSString *value) {
         if (value.length) {
             self.post.publicizeMessage = value;
+        } else {
+            self.post.publicizeMessage = nil;
         }
         [self.tableView reloadData];
     };
