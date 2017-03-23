@@ -354,6 +354,7 @@ open class ImageTableViewCell: WPTableViewCell {
             }
 
             aspectRatioConstraint = customImageView.heightAnchor.constraint(equalTo: customImageView.widthAnchor, multiplier: newValue, constant: 1.0)
+            aspectRatioConstraint?.priority = UILayoutPriorityDefaultHigh
             aspectRatioConstraint?.isActive = true
         }
         get {
