@@ -67,12 +67,6 @@ extension MediaService {
         if let heightProperty = imageProperties[kCGImagePropertyPixelHeight as String] as? CGFloat {
             height = heightProperty
         }
-        // Check the image source's orientation orientation and flip the size if required
-        if let orientation = imageProperties[kCGImagePropertyOrientation as String] as? Int, orientation > 4 {
-            let tmpWidth = width
-            width = height
-            height = tmpWidth
-        }
         return CGSize(width: width, height: height)
     }
 }
