@@ -427,6 +427,10 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.onSpamClick = ^(UIButton *sender){
         [weakSelf spamComment];
     };
+
+    cell.onEditClick = ^(UIButton *sender) {
+        [weakSelf editComment];
+    };
 }
 
 

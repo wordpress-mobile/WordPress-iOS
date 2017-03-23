@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 57
+- @kurzee 2017-03-16
+- `Media` removed `orientation` property.
+- `Media` removed `progress` property.
+
 ## WordPress 56
 - @jleandroperez 2017-02-22
 - `BasePost` removed `mt_text_more` property
