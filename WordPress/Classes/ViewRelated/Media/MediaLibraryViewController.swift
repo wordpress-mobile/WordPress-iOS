@@ -79,16 +79,13 @@ class MediaLibraryViewController: UIViewController {
         definesPresentationContext = true
         automaticallyAdjustsScrollViewInsets = false
 
-        updateNavigationItemButtonsForEditingState()
-
         addMediaPickerAsChildViewController()
         addSearchBarContainer()
         addNoResultsView()
 
         registerChangeObserver()
 
-        updateNoResultsView(for: pickerDataSource.totalAssetCount)
-        updateSearchBar(for: pickerDataSource.totalAssetCount)
+        updateViewState(for: pickerDataSource.totalAssetCount)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -118,21 +115,6 @@ class MediaLibraryViewController: UIViewController {
         if searchController.isActive {
             searchQuery = searchController.searchBar.text
             searchController.isActive = false
-        }
-    }
-
-    private func updateNavigationItemButtonsForEditingState() {
-        if isEditing {
-            navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: true)
-            navigationItem.setRightBarButton(UIBarButtonItem(image: Gridicon.iconOfType(.trash), style: .plain, target: self, action: #selector(trashTapped)), animated: true)
-            navigationItem.rightBarButtonItem?.isEnabled = false
-        } else {
-            navigationItem.setLeftBarButton(nil, animated: true)
-            if blog.supports(.mediaDeletion) {
-                navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
-            } else {
-                navigationItem.setRightBarButton(nil, animated: true)
-            }
         }
     }
 
@@ -176,16 +158,6 @@ class MediaLibraryViewController: UIViewController {
         searchController.searchBar.sizeToFit()
     }
 
-    private func updateSearchBar(for assetCount: Int) {
-        guard !searchController.isActive else { return }
-
-        let shouldShowBar = assetCount > 0
-
-        searchBarHeightConstraints.forEach({ $0.constant = (shouldShowBar) ? defaultSearchBarHeight : 0 })
-        searchBarContainer.layoutIfNeeded()
-        searchController.searchBar.isHidden = !shouldShowBar
-    }
-
     private func addNoResultsView() {
         guard let noResultsView = WPNoResultsView(title: NSLocalizedString("You don't have any media.", comment: "Title displayed when the user doesn't have any media in their media library. Should match Calypso."),
                                                message: NSLocalizedString("Would you like to upload something?", comment: "Prompt displayed when the user has an empty media library. Should match Calypso."),
@@ -203,8 +175,41 @@ class MediaLibraryViewController: UIViewController {
         self.noResultsView = noResultsView
     }
 
+    // MARK: - Update view state
+
+    private func updateViewState(for assetCount: Int) {
+        updateNavigationItemButtons(for: assetCount)
+        updateNoResultsView(for: assetCount)
+        updateSearchBar(for: assetCount)
+    }
+
+    private func updateNavigationItemButtons(for assetCount: Int) {
+        if isEditing {
+            navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: true)
+            navigationItem.setRightBarButton(UIBarButtonItem(image: Gridicon.iconOfType(.trash), style: .plain, target: self, action: #selector(trashTapped)), animated: true)
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        } else {
+            navigationItem.setLeftBarButton(nil, animated: true)
+            if blog.supports(.mediaDeletion) && assetCount > 0 {
+                navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
+            } else {
+                navigationItem.setRightBarButton(nil, animated: true)
+            }
+        }
+    }
+
     private func updateNoResultsView(for assetCount: Int) {
         noResultsView?.isHidden = (assetCount > 0)
+    }
+
+    private func updateSearchBar(for assetCount: Int) {
+        guard !searchController.isActive else { return }
+
+        let shouldShowBar = assetCount > 0
+
+        searchBarHeightConstraints.forEach({ $0.constant = (shouldShowBar) ? defaultSearchBarHeight : 0 })
+        searchBarContainer.layoutIfNeeded()
+        searchController.searchBar.isHidden = !shouldShowBar
     }
 
     // MARK: - Actions
@@ -264,7 +269,7 @@ class MediaLibraryViewController: UIViewController {
 
     override var isEditing: Bool {
         didSet {
-            updateNavigationItemButtonsForEditingState()
+            updateNavigationItemButtons(for: pickerDataSource.totalAssetCount)
         }
     }
 
@@ -277,7 +282,13 @@ class MediaLibraryViewController: UIViewController {
         mediaLibraryChangeObserverKey = pickerDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
             guard let strongSelf = self else { return }
 
-            strongSelf.updateNavigationItemButtonsForCurrentAssetSelection()
+            strongSelf.updateViewState(for: strongSelf.pickerDataSource.totalAssetCount)
+
+            if strongSelf.pickerDataSource.totalAssetCount > 0 {
+                strongSelf.updateNavigationItemButtonsForCurrentAssetSelection()
+            } else {
+                strongSelf.isEditing = false
+            }
 
             // If we're presenting an item and it's been deleted, pop the
             // detail view off the stack
@@ -287,9 +298,6 @@ class MediaLibraryViewController: UIViewController {
                 asset.isDeleted {
                 _ = strongSelf.navigationController?.popToViewController(strongSelf, animated: true)
             }
-
-            self?.updateNoResultsView(for: strongSelf.pickerDataSource.totalAssetCount)
-            self?.updateSearchBar(for: strongSelf.pickerDataSource.totalAssetCount)
         })
     }
 
