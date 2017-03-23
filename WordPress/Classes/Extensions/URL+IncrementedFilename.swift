@@ -6,12 +6,13 @@ extension URL {
     ///
     /// Previously seen in MediaService.m within urlForMediaWithFilename:andExtension:
     ///
-    func incrementedFilename() throws -> URL {
+    func incrementedFilename() -> URL {
         var url = self
         let pathExtension = url.pathExtension
         let filename = url.deletingPathExtension().lastPathComponent
         var index = 1
-        while try url.checkResourceIsReachable() {
+        let fileManager = FileManager.default
+        while fileManager.fileExists(atPath: url.path) {
             let incrementedName = "\(filename)-\(index)"
             url.deleteLastPathComponent()
             url.appendPathComponent(incrementedName, isDirectory: false)

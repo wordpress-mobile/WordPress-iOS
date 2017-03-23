@@ -12,8 +12,8 @@ extension MediaService {
         let fileManager = FileManager.default
         let documents = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         var media = documents.appendingPathComponent(mediaDirectoryName, isDirectory: true)
-        let available = try media.checkResourceIsReachable()
-        if available == false {
+        var isDirectory: ObjCBool = true
+        if fileManager.fileExists(atPath: media.path, isDirectory: &isDirectory) == false, isDirectory.boolValue == false {
             try fileManager.createDirectory(at: media, withIntermediateDirectories: true, attributes: nil)
             var resourceValues = URLResourceValues()
             resourceValues.isExcludedFromBackup = false
@@ -31,7 +31,7 @@ extension MediaService {
         url.appendPathExtension(fileExtension)
         // Increment the filename as needed to ensure we're not
         // providing a URL for an existing file of the same name.
-        return try url.incrementedFilename()
+        return url.incrementedFilename()
     }
 
     /// Returns a string appended with the thumbnail naming convention for local Media files.
