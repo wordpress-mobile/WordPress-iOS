@@ -64,3 +64,5 @@ WordPress/InfoPlist.h
 
 # Dependencies
 /vendor/
+Scripts/fastlane/metadata
+Scripts/fastlane/Preview.html
