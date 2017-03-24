@@ -318,7 +318,7 @@ class MediaLibraryViewController: UIViewController {
         mediaLibraryChangeObserverKey = pickerDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
             guard let strongSelf = self else { return }
 
-            strongSelf.updateViewState(for: strongSelf.pickerDataSource.totalAssetCount)
+            strongSelf.updateViewState(for: strongSelf.pickerDataSource.numberOfAssets())
 
             if strongSelf.pickerDataSource.totalAssetCount > 0 {
                 strongSelf.updateNavigationItemButtonsForCurrentAssetSelection()
