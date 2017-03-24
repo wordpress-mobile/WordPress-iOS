@@ -282,7 +282,6 @@
 		5DFA7EC71AF814E40072023B /* PageListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFA7EC51AF814E40072023B /* PageListTableViewCell.m */; };
 		5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DFA7EC61AF814E40072023B /* PageListTableViewCell.xib */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
-		740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */; };
 		742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */; };
 		746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 746A6F561E71C691003B67E3 /* DeleteSite.storyboard */; };
 		740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */; };
