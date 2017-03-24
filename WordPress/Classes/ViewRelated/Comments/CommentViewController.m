@@ -137,16 +137,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [self.view addSubview:self.replyTextView];
 }
 
-- (void)attachEditActionButton
-{
-    UIBarButtonItem *editBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"Verb, start editing")
-                                                                      style:UIBarButtonItemStylePlain
-                                                                     target:self
-                                                                     action:@selector(editComment)];
-    
-    self.navigationItem.rightBarButtonItem = editBarButton;
-}
-
 - (void)setupAutolayoutConstraints
 {
     NSMutableDictionary *views = [@{@"tableView": self.tableView} mutableCopy];
@@ -209,7 +199,6 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     [super viewDidLoad];
 
-    [self attachEditActionButton];
     [self fetchPostIfNecessary];
     [self reloadData];
 }
