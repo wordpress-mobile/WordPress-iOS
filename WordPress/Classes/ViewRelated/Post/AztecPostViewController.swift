@@ -683,6 +683,8 @@ extension AztecPostViewController {
                 self.post = uploadedPost
 
                 generator.notificationOccurred(.success)
+
+                // TODO: Analytics for saving WPAnalyticsStatEditorSavedDraft, WPAnalyticsStatEditorQuickSavedDraft, etc
             }
 
             if dismissWhenDone {
@@ -1345,6 +1347,8 @@ fileprivate extension AztecPostViewController {
             return
         }
 
+        // TODO: Track WPAnalyticsStatEditorDiscardedChanges
+
         post = originalPost
         post.deleteRevision()
 
@@ -1364,6 +1368,8 @@ fileprivate extension AztecPostViewController {
 
     func dismissOrPopView(didSave: Bool) {
         stopEditing()
+
+        // TODO: Track WPAnalyticsStatEditorClosed
 
         if let onClose = onClose {
             onClose(didSave)
@@ -1488,6 +1494,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 }
                 return
             }
+
+            // TODO: Analytics WPAnalyticsStatEditorAddedPhotoViaLocalLibrary, WPAnalyticsStatEditorAddedVideoViaLocalLibrary
             strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
     }
@@ -1497,6 +1505,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
+            // TODO: Track analytics WPAnalyticsStatEditorAddedPhotoViaWPMediaLibrary WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary
             let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
             self.mediaProgressCoordinator.finishOneItem()
         } else {
@@ -1507,6 +1516,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             }
             let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
 
+            // TODO: Track analytics WPAnalyticsStatEditorAddedPhotoViaLocalLibrary WPAnalyticsStatEditorAddedVideoViaLocalLibrary
             upload(media: media, mediaID: attachment.identifier)
         }
     }
@@ -1531,6 +1541,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 }
                 return
             }
+
+            // TODO Analytics track WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
             strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
     }
@@ -1552,6 +1564,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 guard let strongSelf = self else {
                     return
                 }
+
+                // TODO: Track analytics WPAnalyticsStatEditorUploadMediaFailed
                 DispatchQueue.main.async {
                     strongSelf.handleError(error as NSError, onAttachment: attachment)
                 }
@@ -1624,6 +1638,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                     //retry upload
                                                     if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
+                                                        // TODO Track Analytics WPAnalyticsStatEditorUploadMediaRetried
                                                         attachment.clearAllOverlays()
                                                         attachment.progress = 0
                                                         self.richTextView.refreshLayoutFor(attachment: attachment)
@@ -1650,7 +1665,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 
     func displayDetails(forAttachment attachment: TextAttachment) {
-
+        // TODO Analytics track WPAnalyticsStatEditorEditedImage
         let controller = AztecAttachmentViewController()
         controller.delegate = self
         controller.attachment = attachment
