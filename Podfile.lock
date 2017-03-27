@@ -178,7 +178,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, tag `0.5a7.1`)
+  - WordPress-Aztec-iOS (= 0.5a7.1)
   - WordPress-iOS-Editor (= 1.9.0)
   - WordPress-iOS-Shared (= 0.8.0)
   - WordPressCom-Analytics-iOS (= 0.1.23)
@@ -197,9 +197,6 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPress-Aztec-iOS:
-    :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
-    :tag: 0.5a7.1
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -214,9 +211,6 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPress-Aztec-iOS:
-    :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
-    :tag: 0.5a7.1
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -252,7 +246,7 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
-  WordPress-Aztec-iOS: c065584b0127462466af89f4dd47e4a072bd7110
+  WordPress-Aztec-iOS: 90054eaca784b2e29819fc3130ac37edd4688732
   WordPress-iOS-Editor: 69c5d1e83aaa6e5ab6c80e067f1858de8dab4017
   WordPress-iOS-Shared: 4d073fb8efa96f3c902d1e1ac2557bb720f416d7
   WordPressCom-Analytics-iOS: a0ff71080216968f0986baa1240d17d39998e9f0
@@ -261,6 +255,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 5f39880ac799dbbf41a99f73567a95ab5297dc93
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
-PODFILE CHECKSUM: 1e7b15857980ee955c8da81a64ae8349221001ef
+PODFILE CHECKSUM: acd25e487f321ed1a506bdae34a67e044ca39ba2
 
 COCOAPODS: 1.1.1
