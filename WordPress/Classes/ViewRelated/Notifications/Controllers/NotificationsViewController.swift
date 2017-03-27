@@ -1081,15 +1081,15 @@ private extension NotificationsViewController {
 
         let buttonTitleMap: [Filter: String] = [
             .none: NSLocalizedString("View Reader",
-                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications").uppercased(with: Locale.current),
+                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications"),
             .unread: NSLocalizedString("New Post",
-                                       comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications").uppercased(with: Locale.current),
+                                       comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications"),
             .comment: NSLocalizedString("View Reader",
-                                        comment: "Displayed in the Notifications Tab as a button title, when there are no notifications").uppercased(with: Locale.current),
+                                        comment: "Displayed in the Notifications Tab as a button title, when there are no notifications"),
             .follow: NSLocalizedString("View Reader",
-                                       comment: "Displayed in the Notifications Tab as a button title, when there are no notifications").uppercased(with: Locale.current),
+                                       comment: "Displayed in the Notifications Tab as a button title, when there are no notifications"),
             .like: NSLocalizedString("View Reader",
-                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications").uppercased(with: Locale.current)
+                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
         ]
 
         let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
