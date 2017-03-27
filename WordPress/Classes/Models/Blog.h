@@ -177,6 +177,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (BOOL)supports:(BlogFeature)feature;
 - (BOOL)supportsPublicize;
 - (BOOL)supportsShareButtons;
+- (BOOL)hasPaidPlan;
 
 /**
  *  Returnst the text description for a post format code
