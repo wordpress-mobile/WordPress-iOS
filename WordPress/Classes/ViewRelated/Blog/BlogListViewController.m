@@ -263,7 +263,7 @@ static NSInteger HideSearchMinSites = 3;
     if (!self.noResultsView.hidden) {
         self.noResultsView.titleText = NSLocalizedString(@"You don't have any WordPress sites yet.", @"Title shown when the user has no sites.");
         self.noResultsView.messageText = NSLocalizedString(@"Would you like to start one?", @"Prompt asking user whether they'd like to create a new site if they don't already have one.");
-        self.noResultsView.buttonTitle = NSLocalizedString(@"Create Site", nil);
+        self.noResultsView.buttonTitle = [NSLocalizedString(@"Create Site", nil) uppercaseStringWithLocale:[NSLocale currentLocale]];
     }
 }
 

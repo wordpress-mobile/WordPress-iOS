@@ -1079,16 +1079,16 @@ private extension NotificationsViewController {
         }
 
         let buttonTitleMap: [Filter: String] = [
-            .none: NSLocalizedString("VIEW READER",
-                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications"),
-            .unread: NSLocalizedString("NEW POST",
-                                       comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications"),
-            .comment: NSLocalizedString("VIEW READER",
-                                        comment: "Displayed in the Notifications Tab as a button title, when there are no notifications"),
-            .follow: NSLocalizedString("VIEW READER",
-                                       comment: "Displayed in the Notifications Tab as a button title, when there are no notifications"),
-            .like: NSLocalizedString("VIEW READER",
-                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
+            .none: NSLocalizedString("View Reader",
+                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications").uppercased(with: Locale.current),
+            .unread: NSLocalizedString("New Post",
+                                       comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications").uppercased(with: Locale.current),
+            .comment: NSLocalizedString("View Reader",
+                                        comment: "Displayed in the Notifications Tab as a button title, when there are no notifications").uppercased(with: Locale.current),
+            .follow: NSLocalizedString("View Reader",
+                                       comment: "Displayed in the Notifications Tab as a button title, when there are no notifications").uppercased(with: Locale.current),
+            .like: NSLocalizedString("View Reader",
+                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications").uppercased(with: Locale.current)
         ]
 
         let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
