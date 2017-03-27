@@ -508,6 +508,11 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     }
 }
 
+- (BOOL)hasPaidPlan
+{
+    return self.planID && self.planID.integerValue != 1;
+}
+
 - (BOOL)supportsPushNotifications
 {
     return [self accountIsDefaultAccount];
