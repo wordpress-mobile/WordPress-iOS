@@ -1757,7 +1757,11 @@ EditImageDetailsViewControllerDelegate
             [media remove];
         } else {
             DDLogError(@"Failed Media Upload: %@", error.localizedDescription);
-            [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withBlog:self.post.blog];
+            [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed
+                   withProperties:@{ @"error_condition": @"WPPostViewController uploadMedia:trackingID:",
+                                     @"error_details": [NSString stringWithFormat:@"Uploading %@ (%@). Error: %@", media.filename, media.filesize, error.localizedDescription] }
+                         withBlog:self.post.blog];
+
             [self dismissAssociatedAlertControllerIfVisible:mediaUniqueId];
             if (media.mediaType == MediaTypeImage) {
                 [self.editorView markImage:mediaUniqueId
@@ -1769,10 +1773,16 @@ EditImageDetailsViewControllerDelegate
             [self setError:error inProgressOfMediaWithId:mediaUniqueId];
         }
     }];
-    [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressMediaID];
-    [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
-    [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
-    [self.mediaGlobalProgress addChild:uploadProgress withPendingUnitCount:1];
+
+    // The service won't initialize `uploadProgress` if something goes wrong
+    // during serialization, and we'll get a crash if we attempt to add a nil
+    // child to mediaGlobalProgress.
+    if (uploadProgress) {
+        [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressMediaID];
+        [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
+        [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
+        [self.mediaGlobalProgress addChild:uploadProgress withPendingUnitCount:1];
+    }
 }
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
