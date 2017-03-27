@@ -51,7 +51,7 @@ abstract_target 'WordPress_Base' do
     pod 'WPMediaPicker', '0.13'
     pod 'WordPress-iOS-Editor', '1.9.0'
     pod 'WordPressCom-Analytics-iOS', '0.1.23'
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :tag => '0.5a7.1'
+    pod 'WordPress-Aztec-iOS', '0.5a7.1'
     pod 'wpxmlrpc', '~> 0.8'
 
     target :WordPressTest do
