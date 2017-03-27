@@ -27,6 +27,7 @@ class AztecPostViewController: UIViewController {
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         tv.delegate = self
         tv.mediaDelegate = self
+        tv.commentsDelegate = self
         tv.backgroundColor = Colors.aztecBackground
         toolbar.formatter = self
 
@@ -987,6 +988,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             toggleHeader()
         case .horizontalruler:
             insertHorizontalRuler()
+        case .more:
+            insertMore()
         }
         updateFormatBar()
     }
@@ -1189,7 +1192,11 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func insertHorizontalRuler() {
-        richTextView.replaceWithHorizontalRuler(at: richTextView.selectedRange)
+        richTextView.replaceRangeWithHorizontalRuler(richTextView.selectedRange)
+    }
+
+    func insertMore() {
+        richTextView.replaceRangeWithCommentAttachment(richTextView.selectedRange, text: Constants.moreAttachmentText)
     }
 
     func changeRichTextInputView(to: UIView?) {
@@ -1240,7 +1247,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: .unorderedlist),
             FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: .orderedlist),
             FormatBarItem(image: Gridicon.iconOfType(.link), identifier: .link),
-            FormatBarItem(image: Gridicon.iconOfType(.minusSmall), identifier: .horizontalruler)
+            FormatBarItem(image: Gridicon.iconOfType(.minusSmall), identifier: .horizontalruler),
+            FormatBarItem(image: Gridicon.iconOfType(.readMore), identifier: .more)
         ]
 
         let fixedItems = [
@@ -1684,6 +1692,36 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 }
 
 
+// MARK: - TextView Comments Delegate Conformance
+//
+extension AztecPostViewController: TextViewCommentsDelegate {
+
+    func textView(_ textView: TextView, imageForComment attachment: CommentAttachment, with size: CGSize) -> UIImage? {
+        if let render = MoreAttachmentRenderer(attachment: attachment) {
+            return render.textView(textView, imageForComment: attachment, with: size)
+        }
+
+        if let render = CommentAttachmentRenderer(font: Fonts.regular) {
+            return render.textView(textView, imageForComment: attachment, with: size)
+        }
+
+        return nil
+    }
+
+    func textView(_ textView: TextView, boundsForComment attachment: CommentAttachment, with lineFragment: CGRect) -> CGRect {
+        if let render = MoreAttachmentRenderer(attachment: attachment) {
+            return render.textView(textView, boundsForComment: attachment, with: lineFragment)
+        }
+
+        if let render = CommentAttachmentRenderer(font: Fonts.regular) {
+            return render.textView(textView, boundsForComment: attachment, with: lineFragment)
+        }
+
+        return .zero
+    }
+}
+
+
 // MARK: - TextViewMedia Delegate Conformance
 //
 extension AztecPostViewController: TextViewMediaDelegate {
@@ -1870,6 +1908,7 @@ extension AztecPostViewController {
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
+        static let moreAttachmentText       = "more"
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
     }
 
