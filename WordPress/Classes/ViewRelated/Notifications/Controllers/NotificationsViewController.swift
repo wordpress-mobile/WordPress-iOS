@@ -313,9 +313,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
         detailsViewController.onSelectedNoteChange = { note in
             self.selectRowForNotification(note)
-            if !note.read {
-                NotificationSyncMediator()?.markAsRead(note)
-            }
         }
     }
 }
@@ -528,12 +525,6 @@ extension NotificationsViewController {
         // Failsafe: Don't push nested!
         if navigationController?.visibleViewController != self {
             _ = navigationController?.popViewController(animated: false)
-        }
-
-        // Mark as Read
-        if note.read == false {
-            let mediator = NotificationSyncMediator()
-            mediator?.markAsRead(note)
         }
     }
 

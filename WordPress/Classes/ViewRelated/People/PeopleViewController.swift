@@ -179,6 +179,14 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
             personViewController.context = context
             personViewController.blog = blog
             personViewController.person = personAtIndexPath(selectedIndexPath)
+            switch filter {
+            case .Followers:
+                personViewController.screenMode = .Follower
+            case .Users:
+                personViewController.screenMode = .User
+            case .Viewers:
+                personViewController.screenMode = .Viewer
+            }
 
         } else if let navController = segue.destination as? UINavigationController,
             let inviteViewController = navController.topViewController as? InvitePersonViewController {
