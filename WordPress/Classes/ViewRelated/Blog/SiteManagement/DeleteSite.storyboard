@@ -151,18 +151,18 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="top" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" rowHeight="235" id="HNw-3J-5iO">
-                                        <rect key="frame" x="0.0" y="198" width="320" height="235"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="top" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" rowHeight="265" id="HNw-3J-5iO">
+                                        <rect key="frame" x="0.0" y="198" width="320" height="265"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="HNw-3J-5iO" id="8rN-Pf-TUc">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="235"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="265"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="WoP-XE-O9y">
-                                                    <rect key="frame" x="15" y="11" width="290" height="213"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" axis="vertical" distribution="fillProportionally" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="WoP-XE-O9y">
+                                                    <rect key="frame" x="15" y="11" width="290" height="243"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r5O-oO-teR">
-                                                            <rect key="frame" x="0.0" y="0.0" width="290" height="180"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r5O-oO-teR">
+                                                            <rect key="frame" x="0.0" y="0.0" width="290" height="197"/>
                                                             <attributedString key="attributedText">
                                                                 <fragment>
                                                                     <string key="content">This action can not be undone. Deleting the site will remove all content, contributors, domains, and upgrades from the site.
@@ -183,13 +183,13 @@
                                                             </attributedString>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FPb-zC-vf4">
-                                                            <rect key="frame" x="0.0" y="180" width="290" height="33"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FPb-zC-vf4">
+                                                            <rect key="frame" x="0.0" y="203" width="290" height="40"/>
                                                             <state key="normal">
                                                                 <attributedString key="attributedTitle">
                                                                     <fragment content="Contact Support">
                                                                         <attributes>
-                                                                            <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
+                                                                            <font key="NSFont" size="20" name=".SFNSText"/>
                                                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                             <integer key="NSUnderline" value="1"/>
                                                                         </attributes>
@@ -213,7 +213,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" id="ppe-IO-Pij">
-                                        <rect key="frame" x="0.0" y="433" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="463" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="ppe-IO-Pij" id="JAd-hU-JNQ">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
