@@ -1757,7 +1757,11 @@ EditImageDetailsViewControllerDelegate
             [media remove];
         } else {
             DDLogError(@"Failed Media Upload: %@", error.localizedDescription);
-            [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withBlog:self.post.blog];
+            [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed
+                   withProperties:@{ @"error_condition": @"WPPostViewController uploadMedia:trackingID:",
+                                     @"error_details": [NSString stringWithFormat:@"Uploading %@ (%@). Error: %@", media.filename, media.filesize, error.localizedDescription] }
+                         withBlog:self.post.blog];
+
             [self dismissAssociatedAlertControllerIfVisible:mediaUniqueId];
             if (media.mediaType == MediaTypeImage) {
                 [self.editorView markImage:mediaUniqueId
