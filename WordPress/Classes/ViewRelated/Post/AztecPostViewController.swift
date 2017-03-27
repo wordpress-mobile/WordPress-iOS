@@ -1701,7 +1701,7 @@ extension AztecPostViewController: TextViewCommentsDelegate {
             return render.textView(textView, imageForComment: attachment, with: size)
         }
 
-        if let render = CommentAttachmentRenderer(font: Constants.defaultContentFont) {
+        if let render = CommentAttachmentRenderer(font: Fonts.regular) {
             return render.textView(textView, imageForComment: attachment, with: size)
         }
 
@@ -1713,10 +1713,10 @@ extension AztecPostViewController: TextViewCommentsDelegate {
             return render.textView(textView, boundsForComment: attachment, with: lineFragment)
         }
 
-        if let render = CommentAttachmentRenderer(font: Constants.defaultContentFont) {
+        if let render = CommentAttachmentRenderer(font: Fonts.regular) {
             return render.textView(textView, boundsForComment: attachment, with: lineFragment)
         }
-        
+
         return .zero
     }
 }
