@@ -1769,10 +1769,16 @@ EditImageDetailsViewControllerDelegate
             [self setError:error inProgressOfMediaWithId:mediaUniqueId];
         }
     }];
-    [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressMediaID];
-    [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
-    [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
-    [self.mediaGlobalProgress addChild:uploadProgress withPendingUnitCount:1];
+
+    // The service won't initialize `uploadProgress` if something goes wrong
+    // during serialization, and we'll get a crash if we attempt to add a nil
+    // child to mediaGlobalProgress.
+    if (uploadProgress) {
+        [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressMediaID];
+        [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
+        [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
+        [self.mediaGlobalProgress addChild:uploadProgress withPendingUnitCount:1];
+    }
 }
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
