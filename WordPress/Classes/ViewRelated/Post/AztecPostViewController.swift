@@ -1189,7 +1189,9 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func insertHorizontalRuler() {
-        richTextView.replaceWithHorizontalRuler(at: richTextView.selectedRange)
+        richTextView.replaceRangeWithHorizontalRuler(richTextView.selectedRange)
+    }
+
     }
 
     func changeRichTextInputView(to: UIView?) {
