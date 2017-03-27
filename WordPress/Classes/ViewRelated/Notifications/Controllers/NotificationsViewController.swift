@@ -1049,7 +1049,8 @@ private extension NotificationsViewController {
 
     var noResultsMessageText: String? {
         guard shouldDisplayJetpackMessage == false else {
-            return NSLocalizedString("Jetpack supercharges your self-hosted WordPress site.", comment: "Notifications message displayed when a self-hosted user is not connected to Jetpack")
+            return NSLocalizedString("Jetpack supercharges your self-hosted WordPress site.",
+                                     comment: "Notifications message displayed when a self-hosted user is not connected to Jetpack")
         }
 
         let messageMap: [Filter: String] = [
