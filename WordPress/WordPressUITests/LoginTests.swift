@@ -46,18 +46,9 @@ class LoginTests: XCTestCase {
 
     func testCreateAccount() {
         let username = "\(WordPressTestCredentials.oneStepUser)\(arc4random())"
-        app.buttons["Create Account"].tap()
+        let email = WordPressTestCredentials.nuxEmailPrefix + username + WordPressTestCredentials.nuxEmailSuffix
 
-        let emailAddressField = app.textFields["Email Address"]
-        emailAddressField.tap()
-        emailAddressField.typeText("\(username)@gmail.com")
-
-        let usernameField = app.textFields["Username"]
-        usernameField.tap()
-        usernameField.typeText(username)
-
-        let passwordField = app.secureTextFields["Password"]
-        passwordField.tap()
-        passwordField.typeText(WordPressTestCredentials.oneStepPassword)
+        createAccount(email: email, username: username, password: WordPressTestCredentials.oneStepPassword)
+        waitForElementToAppear(element: app.tabBars[ elementStringIDs.mainNavigationBar ], timeout: 20)
     }
 }
