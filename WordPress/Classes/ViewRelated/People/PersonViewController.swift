@@ -281,7 +281,7 @@ private extension PersonViewController {
         service?.deleteUser(user, success: {
             WPAnalytics.track(.personRemoved)
         }, failure: {[weak self] (error: Error?) -> () in
-            guard let strongSelf = self, let error = error as? NSError else {
+            guard let strongSelf = self, let error = error as NSError? else {
                 return
             }
             guard let personWithError = strongSelf.person else {
@@ -302,7 +302,7 @@ private extension PersonViewController {
 
         let service = PeopleService(blog: blog, context: context)
         service?.deleteFollower(follower, failure: {[weak self] (error: Error?) -> () in
-            guard let strongSelf = self, let error = error as? NSError else {
+            guard let strongSelf = self, let error = error as NSError? else {
                 return
             }
 
@@ -322,7 +322,7 @@ private extension PersonViewController {
         service?.deleteViewer(viewer, success: {
             WPAnalytics.track(.personRemoved)
         }, failure: {[weak self] (error: Error?) -> () in
-            guard let strongSelf = self, let error = error as? NSError else {
+            guard let strongSelf = self, let error = error as NSError? else {
                 return
             }
 

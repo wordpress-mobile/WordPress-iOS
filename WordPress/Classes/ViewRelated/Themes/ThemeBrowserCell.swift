@@ -176,10 +176,10 @@ open class ThemeBrowserCell: UICollectionViewCell {
             success: { [weak self] (image: UIImage) in
                 self?.showScreenshot()
         }, failure: { [weak self] (error: Error?) in
-                if let error = error as? NSError, error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
+                if let error = error as NSError?, error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
                     return
                 }
-                DDLogSwift.logError("Error loading theme screenshot: \(error?.localizedDescription)")
+                DDLogSwift.logError("Error loading theme screenshot: \(String(describing: error?.localizedDescription))")
                 self?.showPlaceholder()
         })
     }

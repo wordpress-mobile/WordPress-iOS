@@ -1484,7 +1484,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             }
             guard let media = media, error == nil else {
                 DispatchQueue.main.async {
-                    strongSelf.handleError(error as? NSError, onAttachment: attachment)
+                    strongSelf.handleError(error as NSError?, onAttachment: attachment)
                 }
                 return
             }
@@ -1527,7 +1527,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             }
             guard let media = media, error == nil else {
                 DispatchQueue.main.async {
-                    strongSelf.handleError(error as? NSError, onAttachment: attachment)
+                    strongSelf.handleError(error as NSError?, onAttachment: attachment)
                 }
                 return
             }
@@ -1986,7 +1986,7 @@ class MediaProgressCoordinator: NSObject {
             delegate?.mediaProgressCoordinatorDidStartUploading(self)
         }
 
-        self.mediaUploadingProgress?.totalUnitCount += count
+        self.mediaUploadingProgress?.totalUnitCount += Int64(count)
     }
 
     func track(progress: Progress, ofObject object: Any, withMediaID mediaID: String) {
