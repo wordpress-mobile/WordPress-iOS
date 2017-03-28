@@ -7,13 +7,18 @@ public struct elementStringIDs {
     static var mainNavigationMySitesButton = "mySitesTabButton"
 
     // Login page
-    static var loginUsernameField = "usernameField"
-    static var loginPasswordField = "passwordField"
-    static var loginNextButton = "nextButton"
-    static var loginSubmitButton = "submitButton"
+    static var loginUsernameField = "Email or username"
+    static var loginPasswordField = "Password"
+    static var loginNextButton = "Next Button"
+    static var loginSubmitButton = "Log In Button"
     static var addSelfHostedButton = "addSelfHostedButton"
     static var selfHostedURLField = "selfHostedURL"
     static var createSiteButton = "createSiteButton"
+
+    // Add site login page
+    static var addSiteLoginUsernameField = "usernameField"
+    static var addSiteLoginPasswordField = "passwordField"
+    static var addSiteSubmitButton = "submitButton"
 
     // Signup page
     static var nuxUsernameField = "nuxUsernameField"
@@ -106,6 +111,23 @@ extension XCTestCase {
         app.buttons[ elementStringIDs.loginSubmitButton ].tap()
     }
 
+    public func addSiteLogin(username: String, password: String) {
+        let app = XCUIApplication()
+        let emailOrUsernameTextField = app.textFields[ elementStringIDs.addSiteLoginUsernameField ]
+        emailOrUsernameTextField.tap()
+        emailOrUsernameTextField.typeText( username )
+
+        let nextButton = app.buttons[ elementStringIDs.loginNextButton ]
+        if ( nextButton.exists ) {
+            nextButton.tap()
+        }
+
+        let passwordSecureTextField = app.secureTextFields[ elementStringIDs.addSiteLoginPasswordField ]
+        passwordSecureTextField.tap()
+        passwordSecureTextField.typeText( password )
+        app.buttons[ elementStringIDs.addSiteSubmitButton ].tap()
+    }
+
     public func loginSelfHosted(username: String, password: String, url: String) {
         let app = XCUIApplication()
 
@@ -115,7 +137,7 @@ extension XCTestCase {
         selfHostedURLField.tap()
         selfHostedURLField.typeText( url )
 
-        simpleLogin( username: username, password: password )
+        addSiteLogin( username: username, password: password )
     }
 
     public func logoutSelfHosted() {
