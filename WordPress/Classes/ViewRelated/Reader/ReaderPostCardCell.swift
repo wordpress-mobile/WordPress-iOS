@@ -459,10 +459,12 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         if superview?.frame.width < 480 {
             // remove title text
-            likeActionButton.setTitle(likeTitle, for: UIControlState())
-            commentActionButton.setTitle(commentTitle, for: UIControlState())
-            shareButton.setTitle("", for: UIControlState())
-            followButton.setTitle("", for: UIControlState())
+            let likeTitle = likeCount > 0 ?  String(likeCount) : ""
+            let commentTitle = commentCount > 0 ? String(commentCount) : ""
+            likeActionButton.setTitle(likeTitle, for: .normal)
+            commentActionButton.setTitle(commentTitle, for: .normal)
+            shareButton.setTitle("", for: .normal)
+            followButton.setTitle("", for: .normal)
             followButton.setTitle("", for: .selected)
             followButton.setTitle("", for: .highlighted)
 
@@ -476,11 +478,11 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             let followTitle = WPStyleGuide.followStringForDisplay(false)
             let followingTitle = WPStyleGuide.followStringForDisplay(true)
 
-            likeActionButton.setTitle(likeTitle, for: UIControlState())
-            commentActionButton.setTitle(commentTitle, for: UIControlState())
-            shareButton.setTitle(shareTitle, for: UIControlState())
+            likeActionButton.setTitle(likeTitle, for: .normal)
+            commentActionButton.setTitle(commentTitle, for: .normal)
+            shareButton.setTitle(shareTitle, for: .normal)
 
-            followButton.setTitle(followTitle, for: UIControlState())
+            followButton.setTitle(followTitle, for: .normal)
             followButton.setTitle(followingTitle, for: .selected)
             followButton.setTitle(followingTitle, for: .highlighted)
 
