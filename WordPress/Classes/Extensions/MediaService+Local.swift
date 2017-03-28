@@ -21,7 +21,7 @@ extension MediaService {
         if fileManager.fileExists(atPath: media.path, isDirectory: &isDirectory) == false || isDirectory.boolValue == false {
             try fileManager.createDirectory(at: media, withIntermediateDirectories: true, attributes: nil)
             var resourceValues = URLResourceValues()
-            resourceValues.isExcludedFromBackup = false
+            resourceValues.isExcludedFromBackup = true
             try media.setResourceValues(resourceValues)
         }
         return media
