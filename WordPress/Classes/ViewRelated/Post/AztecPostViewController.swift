@@ -30,18 +30,6 @@ class AztecPostViewController: UIViewController {
         tv.backgroundColor = Colors.aztecBackground
         toolbar.formatter = self
 
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(richTextViewWasPressed))
-        recognizer.cancelsTouchesInView = true
-        recognizer.delaysTouchesBegan = true
-        recognizer.delaysTouchesEnded = true
-        recognizer.delegate = self
-        tv.addGestureRecognizer(recognizer)
-        for gesture in tv.gestureRecognizers ?? [] {
-            if let otherTapGesture = gesture as? UITapGestureRecognizer, otherTapGesture != recognizer {
-                otherTapGesture.require(toFail: recognizer)
-            }
-        }
-
         return tv
     }()
 
@@ -85,7 +73,6 @@ class AztecPostViewController: UIViewController {
         tf.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
         tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
                                                       attributes: [NSForegroundColorAttributeName: Colors.title])
-        tf.delegate = self
         tf.font = Fonts.title
         tf.returnKeyType = .next
         tf.textColor = UIColor.darkText
@@ -198,6 +185,7 @@ class AztecPostViewController: UIViewController {
             removeObservers(fromPost: oldValue)
             addObservers(toPost: post)
 
+            postEditorStateContext = nil
             refreshInterface()
         }
     }
@@ -253,7 +241,7 @@ class AztecPostViewController: UIViewController {
 
     /// Maintainer of state for editor - like for post button
     ///
-    fileprivate(set) lazy var postEditorStateContext: PostEditorStateContext = {
+    fileprivate lazy var postEditorStateContext: PostEditorStateContext! = {
         var originalPostStatus: BasePost.Status? = nil
 
         if let originalPost = self.post.original,
@@ -267,6 +255,11 @@ class AztecPostViewController: UIViewController {
 
         return context
     }()
+
+
+    /// Available Header Types
+    ///
+    fileprivate let headers: [HeaderFormatter.HeaderType] = [.none, .h1, .h2, .h3, .h4, .h5, .h6]
 
 
 
@@ -315,6 +308,8 @@ class AztecPostViewController: UIViewController {
 
         // Setup Autolayout
         view.setNeedsUpdateConstraints()
+
+        configureMediaAppearance()
     }
 
 
@@ -329,6 +324,9 @@ class AztecPostViewController: UIViewController {
         super.viewDidAppear(animated)
 
         restoreFirstResponder()
+
+        // Handles refreshing controls with state context after options screen is dismissed
+        editorContentWasUpdated()
     }
 
 
@@ -465,6 +463,7 @@ class AztecPostViewController: UIViewController {
         reloadBlogPickerButton()
         reloadEditorContents()
         resizeBlogPickerButton()
+        reloadPublishButton()
     }
 
     func reloadEditorContents() {
@@ -486,6 +485,11 @@ class AztecPostViewController: UIViewController {
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
         blogPickerButton.buttonMode = shouldEnable ? .multipleSite : .singleSite
         blogPickerButton.isEnabled = shouldEnable
+    }
+
+    func reloadPublishButton() {
+        publishButton.title = postEditorStateContext.publishButtonText
+        publishButton.isEnabled = postEditorStateContext.isPublishButtonEnabled
     }
 
     func resizeBlogPickerButton() {
@@ -569,10 +573,10 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
-        handlePublishButtonTapped(secondaryPublishTapped: false)
+        publishTapped(dismissWhenDone: true)
     }
 
-    @IBAction func secondaryPublishButtonTapped() {
+    @IBAction func secondaryPublishButtonTapped(dismissWhenDone: Bool = true) {
         let publishPostClosure = {
             if self.postEditorStateContext.secondaryPublishButtonAction == .save {
                 self.post.status = .draft
@@ -580,7 +584,7 @@ extension AztecPostViewController {
                 self.post.status = .publish
             }
 
-            self.handlePublishButtonTapped(secondaryPublishTapped: true)
+            self.publishTapped(dismissWhenDone: dismissWhenDone)
         }
 
         if presentedViewController != nil {
@@ -610,12 +614,12 @@ extension AztecPostViewController {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
                     self.post.status = .draft
-                    self.handlePublishButtonTapped(secondaryPublishTapped: false)
+                    self.publishTapped(dismissWhenDone: true)
                 }
             } else if post.status == .draft {
                 // The post was already a draft
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
-                    self.handlePublishButtonTapped(secondaryPublishTapped: false)
+                    self.publishTapped(dismissWhenDone: true)
                 }
             }
         }
@@ -624,7 +628,7 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func handlePublishButtonTapped(secondaryPublishTapped: Bool) {
+    private func publishTapped(dismissWhenDone: Bool) {
         // Cancel publishing if media is currently being uploaded
         if mediaProgressCoordinator.isRunning {
             displayMediaIsUploadingAlert()
@@ -637,7 +641,7 @@ extension AztecPostViewController {
             alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
                 self.removeFailedMedia()
                 // Failed media is removed, try again.
-                self.handlePublishButtonTapped(secondaryPublishTapped: secondaryPublishTapped)
+                self.publishTapped(dismissWhenDone: dismissWhenDone)
             }
 
             alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
@@ -668,17 +672,10 @@ extension AztecPostViewController {
                 generator.notificationOccurred(.success)
             }
 
-            // Don't dismiss - make draft now in secondary publish
-            let shouldDismissWindow: Bool
-            if self.postEditorStateContext.secondaryPublishButtonAction == .save,
-                secondaryPublishTapped {
-                shouldDismissWindow = false
-            } else {
-                shouldDismissWindow = true
-            }
-
-            if shouldDismissWindow {
+            if dismissWhenDone {
                 self.dismissOrPopView(didSave: true)
+            } else {
+                self.createRevisionOfPost()
             }
         }
     }
@@ -752,8 +749,9 @@ private extension AztecPostViewController {
 
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-            alert.addActionWithTitle(buttonTitle, style: .destructive) { _ in
-                self.secondaryPublishButtonTapped()
+            let dismissWhenDone = postEditorStateContext.secondaryPublishButtonAction == .publish
+            alert.addActionWithTitle(buttonTitle, style: dismissWhenDone ? .destructive : .default ) { _ in
+                self.secondaryPublishButtonTapped(dismissWhenDone: dismissWhenDone)
             }
         }
 
@@ -807,46 +805,49 @@ private extension AztecPostViewController {
 //
 extension AztecPostViewController: PostEditorStateContextDelegate {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == BasePost.statusKeyPath {
-            if let status = post.status {
-                postEditorStateContext.updated(postStatus: status)
-            }
-            return
-        } else if keyPath == #keyPath(AbstractPost.dateCreated) {
-            let dateCreated = post.dateCreated ?? Date()
-            postEditorStateContext.updated(publishDate: dateCreated)
-            return
-        } else if keyPath == #keyPath(AbstractPost.content) {
-            postEditorStateContext.updated(hasContent: editorHasContent)
+        guard let keyPath = keyPath else {
             return
         }
 
-
-        super.observeValue(forKeyPath: keyPath,
-                           of: object,
-                           change: change,
-                           context: context)
+        switch keyPath {
+        case BasePost.statusKeyPath:
+            if let status = post.status {
+                postEditorStateContext.updated(postStatus: status)
+                editorContentWasUpdated()
+            }
+        case #keyPath(AbstractPost.dateCreated):
+            let dateCreated = post.dateCreated ?? Date()
+            postEditorStateContext.updated(publishDate: dateCreated)
+            editorContentWasUpdated()
+        case #keyPath(AbstractPost.content):
+            editorContentWasUpdated()
+        default:
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
     }
 
-    internal func titleTextFieldDidChange(textField: UITextField) {
-        postEditorStateContext.updated(hasContent: editorHasContent)
-    }
-
-    // TODO: We should be tracking hasContent and isDirty separately for enabling button in the state context
     private var editorHasContent: Bool {
-        let contentCharacterCount = post.content?.characters.count ?? 0
-        // Title isn't updated on post until editing is done - this looks at realtime changes
-        let titleCharacterCount = titleTextField.text?.characters.count ?? 0
+        let titleIsEmpty = post.postTitle?.isEmpty ?? true
+        let contentIsEmpty = post.content?.isEmpty ?? true
 
-        return contentCharacterCount + titleCharacterCount > 0
+        return !titleIsEmpty || !contentIsEmpty
+    }
+
+    private var editorHasChanges: Bool {
+        return post.hasUnsavedChanges()
+    }
+
+    internal func editorContentWasUpdated() {
+        postEditorStateContext.updated(hasContent: editorHasContent)
+        postEditorStateContext.updated(hasChanges: editorHasChanges)
     }
 
     internal func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
-        publishButton.title = context.publishButtonText
+        reloadPublishButton()
     }
 
     internal func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool) {
-        publishButton.isEnabled = context.isPublishButtonEnabled
+        reloadPublishButton()
     }
 
     internal func addObservers(toPost: AbstractPost) {
@@ -879,9 +880,10 @@ extension AztecPostViewController : UITextViewDelegate {
 
 // MARK: - UITextFieldDelegate methods
 //
-extension AztecPostViewController : UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
+extension AztecPostViewController {
+    func titleTextFieldDidChange(_ textField: UITextField) {
         mapUIContentToPostAndSave()
+        editorContentWasUpdated()
     }
 }
 
@@ -963,8 +965,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             showImagePicker()
         case .sourcecode:
             toggleEditingMode()
-        case .header:
-            return
+        case .header, .header1, .header2, .header3, .header4, .header5, .header6:
+            toggleHeader()
+        case .horizontalruler:
+            insertHorizontalRuler()
         }
         updateFormatBar()
     }
@@ -1125,7 +1129,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
     func showImagePicker() {
 
-        let picker = WPMediaPickerViewController()
+        let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
         picker.showMostRecentFirst = true
         picker.filter = WPMediaType.image
@@ -1143,53 +1147,105 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         mode.toggle()
     }
 
+    func toggleHeader() {
+        // check if we already showing a custom view.
+        if richTextView.inputView != nil {
+            changeRichTextInputView(to: nil)
+            return
+        }
+
+        let headerOptions = headers.map { (headerType) -> NSAttributedString in
+            NSAttributedString(string: headerType.description, attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize)])
+        }
+
+        let headerPicker = OptionsTableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 200), options: headerOptions)
+        headerPicker.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        headerPicker.onSelect = { selected in
+            self.richTextView.toggleHeader(self.headers[selected], range: self.richTextView.selectedRange)
+            self.changeRichTextInputView(to: nil)
+        }
+        if let selectedHeader = headers.index(of: headerLevelForSelectedText()) {
+            headerPicker.selectRow(at: IndexPath(row: selectedHeader, section: 0), animated: false, scrollPosition: .top)
+        }
+        changeRichTextInputView(to: headerPicker)
+    }
+
+    func insertHorizontalRuler() {
+        richTextView.replaceWithHorizontalRuler(at: richTextView.selectedRange)
+    }
+
+    func changeRichTextInputView(to: UIView?) {
+        guard richTextView.inputView != to else {
+            return
+        }
+
+        richTextView.resignFirstResponder()
+        richTextView.inputView = to
+        richTextView.becomeFirstResponder()
+    }
+
+    func headerLevelForSelectedText() -> HeaderFormatter.HeaderType {
+        var identifiers = [FormattingIdentifier]()
+        if (richTextView.selectedRange.length > 0) {
+            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+        } else {
+            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+        }
+        let mapping: [FormattingIdentifier: HeaderFormatter.HeaderType] = [
+            .header1: .h1,
+            .header2: .h2,
+            .header3: .h3,
+            .header4: .h4,
+            .header5: .h5,
+            .header6: .h6,
+        ]
+        for (key,value) in mapping {
+            if identifiers.contains(key) {
+                return value
+            }
+        }
+        return .none
+    }
+
 
     // MARK: - Toolbar creation
 
     func createToolbar(htmlMode: Bool) -> Aztec.FormatBar {
-        let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let items = [
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.addImage).withRenderingMode(.alwaysTemplate), identifier: .media),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.bold).withRenderingMode(.alwaysTemplate), identifier: .bold),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.italic).withRenderingMode(.alwaysTemplate), identifier: .italic),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.underline).withRenderingMode(.alwaysTemplate), identifier: .underline),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.strikethrough).withRenderingMode(.alwaysTemplate), identifier: .strikethrough),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.quote).withRenderingMode(.alwaysTemplate), identifier: .blockquote),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listUnordered).withRenderingMode(.alwaysTemplate), identifier: .unorderedlist),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.listOrdered).withRenderingMode(.alwaysTemplate), identifier: .orderedlist),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.link).withRenderingMode(.alwaysTemplate), identifier: .link),
-            flex,
-            Aztec.FormatBarItem(image: Gridicon.iconOfType(.code).withRenderingMode(.alwaysTemplate), identifier: .sourcecode),
-            flex,
-            ]
+        let scrollableItems = [
+            FormatBarItem(image: Gridicon.iconOfType(.addImage), identifier: .media),
+            FormatBarItem(image: Gridicon.iconOfType(.heading), identifier: .header),
+            FormatBarItem(image: Gridicon.iconOfType(.bold), identifier: .bold),
+            FormatBarItem(image: Gridicon.iconOfType(.italic), identifier: .italic),
+            FormatBarItem(image: Gridicon.iconOfType(.underline), identifier: .underline),
+            FormatBarItem(image: Gridicon.iconOfType(.strikethrough), identifier: .strikethrough),
+            FormatBarItem(image: Gridicon.iconOfType(.quote), identifier: .blockquote),
+            FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: .unorderedlist),
+            FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: .orderedlist),
+            FormatBarItem(image: Gridicon.iconOfType(.link), identifier: .link),
+            FormatBarItem(image: Gridicon.iconOfType(.minusSmall), identifier: .horizontalruler)
+        ]
+
+        let fixedItems = [
+            FormatBarItem(image: Gridicon.iconOfType(.code), identifier: .sourcecode)
+        ]
 
         let toolbar = Aztec.FormatBar()
 
         if htmlMode {
-            for item in items {
-                item.isEnabled = false
-                if let sourceItem = item as? FormatBarItem, sourceItem.identifier == .sourcecode {
-                    item.isEnabled = true
-                }
+            let merged = scrollableItems + fixedItems
+            for item in merged {
+                item.isEnabled = item.identifier == .sourcecode
             }
         }
 
-        toolbar.items = items
-        toolbar.barTintColor = UIColor(fromHex: 0xF9FBFC, alpha: 1)
+        toolbar.scrollableItems = scrollableItems
+        toolbar.fixedItems = fixedItems
         toolbar.tintColor = WPStyleGuide.greyLighten10()
-        toolbar.highlightedTintColor = UIColor.blue
-        toolbar.selectedTintColor = UIColor.darkGray
-        toolbar.disabledTintColor = UIColor.lightGray
-        toolbar.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44.0)
+        toolbar.topBorderColor = WPStyleGuide.greyLighten10()
+        toolbar.highlightedTintColor = .blue
+        toolbar.selectedTintColor = .darkGray
+        toolbar.disabledTintColor = .lightGray
+        toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0)
         toolbar.formatter = self
 
         return toolbar
@@ -1228,11 +1284,9 @@ fileprivate extension AztecPostViewController {
 
     // TODO: Rip this and put it into PostService, as well
     func recreatePostRevision(in blog: Blog) {
-        let blogService = BlogService(managedObjectContext: mainContext)
+        let shouldCreatePage = post is Page
         let postService = PostService(managedObjectContext: mainContext)
-        let newPost = postService.createDraftPost(for: blog)
-
-        blogService.flagBlog(asLastUsed: blog)
+        let newPost = shouldCreatePage ? postService.createDraftPage(for: blog) : postService.createDraftPost(for: blog)
 
         //  TODO: Strip Media!
         //  NSString *content = oldPost.content;
@@ -1247,16 +1301,21 @@ fileprivate extension AztecPostViewController {
         newPost.dateCreated = post.dateCreated
         newPost.dateModified = post.dateModified
 
-        if let source = post as? Post {
-            newPost.tags = source.tags
+        if let source = post as? Post, let target = newPost as? Post {
+            target.tags = source.tags
         }
 
         discardChanges()
         post = newPost
         createRevisionOfPost()
+        markBlogAsLastUsed(blog)
 
         // TODO: Add this snippet, if needed, once we've relocated this helper to PostService
         //[self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
+    }
+
+    func markBlogAsLastUsed(_ blog: Blog) {
+        RecentSitesService().touch(blog: blog)
     }
 
     func cancelEditing() {
@@ -1358,6 +1417,12 @@ private extension AztecPostViewController {
 //
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
+    func configureMediaAppearance() {
+        TextAttachment.appearance.progressBackgroundColor = Colors.mediaProgressBarBackground
+        TextAttachment.appearance.progressColor = Colors.mediaProgressBarTrack
+        TextAttachment.appearance.overlayColor = Colors.mediaProgressOverlay
+    }
+
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
         mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
         mediaProgressView.progress = progress
@@ -1369,7 +1434,6 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 attachment.progress = nil
             } else {
                 attachment.progress = progress.fractionCompleted
-                attachment.progressColor = WPStyleGuide.wordPressBlue()
             }
             richTextView.refreshLayoutFor(attachment: attachment)
         }
@@ -1485,6 +1549,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
         let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
+        attachment.overlayImage = Gridicon.iconOfType(.refresh)
         richTextView.refreshLayoutFor(attachment: attachment)
     }
 
@@ -1507,7 +1572,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                            handler: { (action) in
                                             if attachment == self.currentSelectedAttachment {
                                                 self.currentSelectedAttachment = nil
-                                                attachment.message = nil
+                                                attachment.clearAllOverlays()
                                                 self.richTextView.refreshLayoutFor(attachment: attachment)
                                             }
         })
@@ -1535,7 +1600,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                     //retry upload
                                                     if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
-                                                        attachment.message = nil
+                                                        attachment.clearAllOverlays()
                                                         attachment.progress = 0
                                                         self.richTextView.refreshLayoutFor(attachment: attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
@@ -1598,6 +1663,35 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 // MARK: - TextViewMedia Delegate Conformance
 //
 extension AztecPostViewController: TextViewMediaDelegate {
+
+    public func textView(_ textView: TextView, selectedAttachment attachment: TextAttachment, atPosition position: CGPoint) {
+        if  !richTextView.isFirstResponder {
+            richTextView.becomeFirstResponder()
+        }
+        //check if it's the current selected attachment or an failed upload
+        if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
+            //if it's the same attachment has before let's display the options
+            displayActions(forAttachment: attachment, position: position)
+        } else {
+            // if it's a new attachment tapped let's unmark the previous one
+            if let selectedAttachment = currentSelectedAttachment {
+                selectedAttachment.clearAllOverlays()
+                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+            }
+            // and mark the newly tapped attachment
+            let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a image on the post/page editor.")
+            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+            attachment.overlayImage = Gridicon.iconOfType(.pencil)
+            richTextView.refreshLayoutFor(attachment: attachment)
+            currentSelectedAttachment = attachment
+        }
+    }
+
+    public func textView(_ textView: TextView, deselectedAttachment attachment: TextAttachment, atPosition position: CGPoint) {
+        attachment.clearAllOverlays()
+        richTextView.refreshLayoutFor(attachment: attachment)
+        currentSelectedAttachment = nil
+    }
 
     func textView(_ textView: TextView, imageAtUrl url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) -> UIImage {
         var requestURL = url
@@ -1687,66 +1781,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 }
 
-
-// MARK: - Gesture Recognizer Delegate Conformance
-//
-extension AztecPostViewController: UIGestureRecognizerDelegate {
-
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        let locationInTextView = gestureRecognizer.location(in: richTextView)
-        // check if we have an attachment in the position we tapped
-        guard richTextView.attachmentAtPoint(locationInTextView) != nil else {
-            // if we have a current selected attachment marked lets unmark it
-            if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.message = nil
-                richTextView.refreshLayoutFor(attachment: selectedAttachment)
-                currentSelectedAttachment = nil
-            }
-            return false
-        }
-        return true
-    }
-
-    func richTextViewWasPressed(_ recognizer: UIGestureRecognizer) {
-        guard recognizer.state == .recognized else {
-            return
-        }
-        let locationInTextView = recognizer.location(in: richTextView)
-        // check if we have an attachment in the position we tapped
-        guard let attachment = richTextView.attachmentAtPoint(locationInTextView) else {
-            // if we have a current selected attachment marked lets unmark it
-            if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.message = nil
-                richTextView.refreshLayoutFor(attachment: selectedAttachment)
-                currentSelectedAttachment = nil
-            }
-            return
-        }
-
-        //check if it's the current selected attachment or an failed upload
-        if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
-            //if it's the same attachment has before let's display the options
-            displayActions(forAttachment: attachment, position: locationInTextView)
-        } else {
-            // if it's a new attachment tapped let's unmark the previous one
-            if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.message = nil
-                richTextView.refreshLayoutFor(attachment: selectedAttachment)
-            }
-            // and mark the newly tapped attachment
-            let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a image on the post/page editor.")
-            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
-            richTextView.refreshLayoutFor(attachment: attachment)
-            currentSelectedAttachment = attachment
-        }
-    }
-}
-
-
 // MARK: - State Restoration
 //
 extension AztecPostViewController: UIViewControllerRestoration {
@@ -1831,6 +1865,9 @@ extension AztecPostViewController {
         static let progressBackground       = WPStyleGuide.wordPressBlue()
         static let progressTint             = UIColor.white
         static let progressTrack            = WPStyleGuide.wordPressBlue()
+        static let mediaProgressOverlay = UIColor(white: 1, alpha: 0.6)
+        static let mediaProgressBarBackground = WPStyleGuide.lightGrey()
+        static let mediaProgressBarTrack = WPStyleGuide.wordPressBlue()
     }
 
     struct Fonts {

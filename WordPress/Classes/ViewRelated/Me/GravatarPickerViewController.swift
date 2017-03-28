@@ -12,6 +12,8 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
 
     // MARK: - Private Properties
 
+    fileprivate var mediaPickerViewController: WPNavigationMediaPickerViewController!
+
     fileprivate lazy var mediaPickerAssetDataSource: WPPHAssetDataSource? = {
         let collectionsFetchResult = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumSelfPortraits, options: nil)
         guard let assetCollection = collectionsFetchResult.firstObject else { return nil }
@@ -53,7 +55,7 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
 
             // Proceed Cropping
             let imageCropViewController = self.newImageCropViewController(rawGravatar)
-            picker.show(after: imageCropViewController)
+            self.mediaPickerViewController.show(after: imageCropViewController)
         }
     }
 
@@ -74,12 +76,14 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
         view.addSubview(pickerViewController.view)
         addChildViewController(pickerViewController)
         pickerViewController.didMove(toParentViewController: self)
+
+        mediaPickerViewController = pickerViewController
     }
 
     // Returns a new WPMediaPickerViewController instance.
     //
-    fileprivate func newMediaPickerViewController() -> WPMediaPickerViewController {
-        let pickerViewController = WPMediaPickerViewController()
+    fileprivate func newMediaPickerViewController() -> WPNavigationMediaPickerViewController {
+        let pickerViewController = WPNavigationMediaPickerViewController()
         pickerViewController.delegate = self
         pickerViewController.showMostRecentFirst = true
         pickerViewController.allowMultipleSelection = false

@@ -23,8 +23,6 @@
 #import "PostType.h"
 #import "RemoteBlogOptionsHelper.h"
 
-NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
-NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
 NSString *const WPComGetFeatures = @"wpcom.getFeatures";
 NSString *const VideopressEnabled = @"videopress_enabled";
 NSString *const WordPressMinimumVersion = @"4.0";
@@ -37,17 +35,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID == %@", blogID];
     return [self blogWithPredicate:predicate];
-}
-
-- (void)flagBlogAsLastUsed:(Blog *)blog
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:blog.url
-                 forKey:LastUsedBlogURLDefaultsKey];
-    [defaults synchronize];
-    
-    WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
-    [shortcutCreator createShortcutsIf3DTouchAvailable:YES];
 }
 
 - (Blog *)lastUsedOrFirstBlog
@@ -86,33 +73,14 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (Blog *)lastUsedBlog
 {
     // Try to get the last used blog, if there is one.
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *url = [defaults stringForKey:LastUsedBlogURLDefaultsKey];
-    if (!url) {
-        // Check for the old key and migrate the value if it exists.
-        // TODO: We can probably discard this in the 4.2 release.
-        NSString *oldKey = EditPostViewControllerLastUsedBlogURLOldKey;
-        url = [defaults stringForKey:oldKey];
-        if (url) {
-            [defaults setObject:url
-                         forKey:LastUsedBlogURLDefaultsKey];
-            [defaults removeObjectForKey:oldKey];
-            [defaults synchronize];
-        }
-    }
-
+    RecentSitesService *recentSitesService = [RecentSitesService new];
+    NSString *url = [[recentSitesService recentSites] firstObject];
     if (!url) {
         return nil;
     }
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
     Blog *blog = [self blogWithPredicate:predicate];
-
-    if (!blog) {
-        // Blog might have been removed from the app. Clear the key.
-        [defaults removeObjectForKey:LastUsedBlogURLDefaultsKey];
-        [defaults synchronize];
-    }
 
     return blog;
 }

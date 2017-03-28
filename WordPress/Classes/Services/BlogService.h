@@ -18,11 +18,6 @@ extern NSString *const WordPressMinimumVersion;
 - (nullable Blog *)blogByBlogId:(NSNumber *)blogID;
 
 /**
- Stores the blog's URL in NSUserDefaults, for later retrieval
- */
-- (void)flagBlogAsLastUsed:(Blog *)blog;
-
-/**
  Returns the blog currently flagged as the one last used, or the primary blog,
  or the first blog in an alphanumerically sorted list, whichever is found first.
  */

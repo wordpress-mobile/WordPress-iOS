@@ -282,6 +282,18 @@ int ddLogLevel = DDLogLevelInfo;
 
                 return YES;
             }
+        } else if ([[url host] isEqualToString:@"editor"]) {
+            // Example: wordpress://editor?available=1&enabled=0
+            NSDictionary* params = [[url query] dictionaryFromQueryString];
+
+            if (params.count > 0) {
+                BOOL available = [[params objectForKey:@"available"] boolValue];
+                BOOL enabled = [[params objectForKey:@"enabled"] boolValue];
+
+                EditorSettings *editorSettings = [EditorSettings new];
+                editorSettings.nativeEditorAvailable = available;
+                editorSettings.nativeEditorEnabled = enabled;
+            }
         }
     }
 
@@ -564,7 +576,7 @@ int ddLogLevel = DDLogLevelInfo;
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0]} forState:UIControlStateNormal];
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0]} forState:UIControlStateDisabled];
     [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setBackgroundColor:[WPStyleGuide greyLighten30]];
-    [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaCollectionViewController class] ]] setBackgroundColor:[WPStyleGuide lightGrey]];
+    [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setBackgroundColor:[WPStyleGuide lightGrey]];
 
     [[WPLegacyEditorFormatToolbar appearance] setBarTintColor:[UIColor colorWithHexString:@"F9FBFC"]];
     [[WPLegacyEditorFormatToolbar appearance] setTintColor:[WPStyleGuide greyLighten10]];
