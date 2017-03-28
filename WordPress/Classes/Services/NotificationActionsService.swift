@@ -22,7 +22,7 @@ open class NotificationActionsService: LocalCoreDataService {
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to follow site: \(error)")
+            DDLogSwift.logError("Error while trying to follow site: \(String(describing: error))")
             block.removeOverrideValueForAction(.Follow)
             completion?(false)
         })
@@ -48,7 +48,7 @@ open class NotificationActionsService: LocalCoreDataService {
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to unfollow site: \(error)")
+            DDLogSwift.logError("Error while trying to unfollow site: \(String(describing: error))")
             block.removeOverrideValueForAction(.Follow)
             completion?(false)
         })
@@ -75,7 +75,7 @@ open class NotificationActionsService: LocalCoreDataService {
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to reply comment: \(error)")
+            DDLogSwift.logError("Error while trying to reply comment: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -103,7 +103,7 @@ open class NotificationActionsService: LocalCoreDataService {
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to update comment: \(error)")
+            DDLogSwift.logError("Error while trying to update comment: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -132,7 +132,7 @@ open class NotificationActionsService: LocalCoreDataService {
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to like comment: \(error)")
+            DDLogSwift.logError("Error while trying to like comment: \(String(describing: error))")
             block.removeOverrideValueForAction(.Like)
             completion?(false)
         })
@@ -158,7 +158,7 @@ open class NotificationActionsService: LocalCoreDataService {
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to unlike comment: \(error)")
+            DDLogSwift.logError("Error while trying to unlike comment: \(String(describing: error))")
             block.removeOverrideValueForAction(.Like)
             completion?(false)
         })
@@ -184,7 +184,7 @@ open class NotificationActionsService: LocalCoreDataService {
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to moderate comment: \(error)")
+            DDLogSwift.logError("Error while trying to moderate comment: \(String(describing: error))")
             block.removeOverrideValueForAction(.Approve)
             completion?(false)
         })
@@ -210,7 +210,7 @@ open class NotificationActionsService: LocalCoreDataService {
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to moderate comment: \(error)")
+            DDLogSwift.logError("Error while trying to moderate comment: \(String(describing: error))")
             block.removeOverrideValueForAction(.Approve)
             completion?(false)
         })
@@ -236,7 +236,7 @@ open class NotificationActionsService: LocalCoreDataService {
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to mark comment as spam: \(error)")
+            DDLogSwift.logError("Error while trying to mark comment as spam: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -259,7 +259,7 @@ open class NotificationActionsService: LocalCoreDataService {
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to delete comment: \(error)")
+            DDLogSwift.logError("Error while trying to delete comment: \(String(describing: error))")
             completion?(false)
         })
     }

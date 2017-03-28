@@ -138,11 +138,11 @@ open class Tracks {
 
         // MARK: - NSURLSessionDelegate
         @objc func URLSession(_ session: Foundation.URLSession, task: URLSessionTask, didCompleteWithError error: NSError?) {
-            print("<> Tracker.didCompleteWithError: \(error)")
+            print("<> Tracker.didCompleteWithError: \(String(describing: error))")
         }
 
         @objc func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-            print("<> Tracker.didBecomeInvalidWithError: \(error)")
+            print("<> Tracker.didBecomeInvalidWithError: \(String(describing: error))")
         }
 
         @objc func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {

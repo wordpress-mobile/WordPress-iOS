@@ -41,11 +41,11 @@ extension SigninWPComSyncHandler {
                 self?.handleSyncSuccess(requiredMultifactor)
 
                 }, failure: { [weak self] (error: Error?) in
-                    self?.handleSyncFailure(error as? NSError)
+                    self?.handleSyncFailure(error as NSError?)
                 })
 
             }, failure: { [weak self] (error: Error?) in
-                self?.handleSyncFailure(error as? NSError)
+                self?.handleSyncFailure(error as NSError?)
             })
     }
 
@@ -83,7 +83,7 @@ extension SigninWPComSyncHandler {
         // Make a note of the error and just dismiss the vc. There might be some
         // wonkiness due to missing data (blogs, account info) but this will eventually
         // resync.
-        DDLogSwift.logError("Error while syncing wpcom account and/or blog details after authentiating. \(error)")
+        DDLogSwift.logError("Error while syncing wpcom account and/or blog details after authentiating. \(String(describing: error))")
         dismiss()
     }
 
