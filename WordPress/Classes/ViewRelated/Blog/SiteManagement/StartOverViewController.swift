@@ -1,9 +1,10 @@
 import UIKit
+import MessageUI
 import WordPressShared
 
  /// StartOverViewController allows user to trigger help session to remove site content.
  ///
-open class StartOverViewController: UITableViewController {
+open class StartOverViewController: UITableViewController, MFMailComposeViewControllerDelegate {
     // MARK: - Properties: must be set by creator
 
     /// The blog whose content we want to remove
@@ -85,35 +86,76 @@ open class StartOverViewController: UITableViewController {
         tableView.deselectSelectedRowWithAnimation(true)
 
         WPAppAnalytics.track(.siteSettingsStartOverContactSupportClicked, with: blog)
-        if HelpshiftUtils.isHelpshiftEnabled() {
-            setupHelpshift(blog.account!)
-
-            let metadata = helpshiftMetadata(blog)
-            HelpshiftSupport.showConversation(self, withOptions: metadata)
+        if MFMailComposeViewController.canSendMail() {
+            showAppleMailComposer()
+        } else if let googleMailURL = googleMailURL(),
+                UIApplication.shared.canOpenURL(googleMailURL) {
+            showGoogleMailComposerForURL(googleMailURL)
         } else {
-            if let contact = URL(string: "https://support.wordpress.com/contact/") {
-                UIApplication.shared.open(contact)
-            }
+            showAlertToSendEmail()
         }
     }
 
-    fileprivate func setupHelpshift(_ account: WPAccount) {
-        let user = account.userID.stringValue
-        HelpshiftSupport.setUserIdentifier(user)
+    // Mark - Email handling
 
-        let name = account.username
-        let email = account.email
-        HelpshiftCore.setName(name, andEmail: email)
+    func mailRecipient() -> String {
+        return "help@wordpress.com"
     }
 
-    fileprivate func helpshiftMetadata(_ blog: Blog) -> [AnyHashable: Any] {
-        let tags = blog.account.map({ HelpshiftUtils.planTags(for: $0) }) ?? []
-        let options: [String: AnyObject] = [
-            "Source": "Start Over" as AnyObject,
-            "Blog": blog.logDescription() as AnyObject,
-            HelpshiftSupportTagsKey: tags as AnyObject
-            ]
+    func mailSubject() -> String {
+        guard let siteUrl = self.blog.url else {
+            return "Start over"
+        }
+        return "Start over with site \(siteUrl)"
 
-        return [HelpshiftSupportCustomMetadataKey: options]
+    }
+
+    func mailBody() -> String {
+        guard let siteUrl = self.blog.url else {
+            return "I want to start over"
+        }
+        return "I want to start over with the site \(siteUrl)"
+    }
+
+    func showAppleMailComposer() {
+        let mailComposeController = MFMailComposeViewController()
+        mailComposeController.mailComposeDelegate = self
+        mailComposeController.setToRecipients([mailRecipient()])
+        mailComposeController.setSubject(mailSubject())
+        mailComposeController.setMessageBody(mailBody(), isHTML: false)
+        self.present(mailComposeController, animated: true, completion: nil)
+    }
+
+    func showGoogleMailComposerForURL(_ url: URL ) {
+        UIApplication.shared.open(url)
+    }
+
+    func googleMailURL() -> URL? {
+        let googleMailString = "googlegmail:///co?to=\(mailRecipient())"
+                               + "&subject=\(mailSubject())&body=\(mailBody())"
+        return URL(string: googleMailString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)
+    }
+
+    func showAlertToSendEmail() {
+        let title = NSLocalizedString("Contact us at \(mailRecipient())",
+                                      comment: "Alert title for contact us alert, placeholder for help email address.")
+        let message = NSLocalizedString("\nPlease send us an email to have your content cleared out.",
+                                        comment: "Message to ask the user to send us an email to clear their content.")
+        let alertController =  UIAlertController(title: title,
+                                                 message: message,
+                                                 preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addCancelActionWithTitle(NSLocalizedString("OK",
+                                                 comment: "Button title. An acknowledgement of the message displayed in a prompt."))
+        alertController.presentFromRootViewController()
+    }
+
+
+    // MARK: - MFMailComposeViewControllerDelegate Method
+
+    public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+        if let _ = error {
+            showAlertToSendEmail()
+        }
     }
 }

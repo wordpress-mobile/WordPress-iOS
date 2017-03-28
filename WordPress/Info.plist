@@ -58,6 +58,7 @@
 		<string>twitter</string>
 		<string>whatsapp</string>
 		<string>tg</string>
+		<string>googlegmail</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

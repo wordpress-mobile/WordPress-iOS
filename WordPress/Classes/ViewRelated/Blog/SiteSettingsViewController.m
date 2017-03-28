@@ -59,6 +59,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionAdvanced,
 };
 
+static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/empty-site/";
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, PostCategoriesViewControllerDelegate>
 
@@ -790,8 +791,15 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     NSParameterAssert([blog supportsSiteManagementServices]);
 
     [WPAppAnalytics track:WPAnalyticsStatSiteSettingsStartOverAccessed withBlog:self.blog];
-    StartOverViewController *viewController = [[StartOverViewController alloc] initWithBlog:blog];
-    [self.navigationController pushViewController:viewController animated:YES];
+    if (self.blog.hasPaidPlan) {
+        StartOverViewController *viewController = [[StartOverViewController alloc] initWithBlog:blog];
+        [self.navigationController pushViewController:viewController animated:YES];
+    } else {
+        NSURL *targetURL = [NSURL URLWithString:EmptySiteSupportURL];
+        WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+        [self presentViewController:navController animated:YES completion:nil];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectInAdvancedSectionRow:(NSInteger)row
