@@ -282,6 +282,8 @@
 		5DFA7EC71AF814E40072023B /* PageListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFA7EC51AF814E40072023B /* PageListTableViewCell.m */; };
 		5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DFA7EC61AF814E40072023B /* PageListTableViewCell.xib */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
+		742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */; };
+		746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 746A6F561E71C691003B67E3 /* DeleteSite.storyboard */; };
 		740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */; };
 		740CAE7C1E816FC700D0E892 /* people-delete-follower-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 740CAE7A1E816FC700D0E892 /* people-delete-follower-failure.json */; };
 		740CAE7D1E816FC700D0E892 /* people-delete-follower-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 740CAE7B1E816FC700D0E892 /* people-delete-follower-success.json */; };
@@ -1470,6 +1472,8 @@
 		740CAE7B1E816FC700D0E892 /* people-delete-follower-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "people-delete-follower-success.json"; path = "WordPressTest/people-delete-follower-success.json"; sourceTree = SOURCE_ROOT; };
 		743BF3291E82CE0700192E40 /* people-delete-viewer-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "people-delete-viewer-failure.json"; path = "WordPressTest/people-delete-viewer-failure.json"; sourceTree = SOURCE_ROOT; };
 		743BF32B1E82CEB600192E40 /* people-delete-viewer-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "people-delete-viewer-success.json"; path = "WordPressTest/people-delete-viewer-success.json"; sourceTree = SOURCE_ROOT; };
+		742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteViewController.swift; sourceTree = "<group>"; };
+		746A6F561E71C691003B67E3 /* DeleteSite.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeleteSite.storyboard; sourceTree = "<group>"; };
 		7470840D1E269669002CA726 /* JetpackLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackLoginViewController.swift; sourceTree = "<group>"; };
 		7470840E1E269669002CA726 /* JetpackLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackLoginViewController.xib; sourceTree = "<group>"; };
 		74BB6F1819AE7B9400FB7829 /* WPLegacyEditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPageViewController.h; sourceTree = "<group>"; };
@@ -5166,6 +5170,8 @@
 			children = (
 				FAFF153C1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift */,
 				FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */,
+				742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */,
+				746A6F561E71C691003B67E3 /* DeleteSite.storyboard */,
 				FA5C740E1C599BA7000B528C /* TableViewHeaderDetailView.swift */,
 			);
 			path = SiteManagement;
@@ -5503,6 +5509,7 @@
 				E6B42CBF1D9DA6270043E228 /* Noticons.ttf in Resources */,
 				B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */,
 				B5F995A01B59708C00AB0B3E /* NotificationSettingsViewController.xib in Resources */,
+				746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */,
 				430693741DD25F31009398A2 /* PostPost.storyboard in Resources */,
 				5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */,
 				B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */,
@@ -6284,6 +6291,7 @@
 				B55F1AA81C10936600FD04D4 /* BlogSettings+Discussion.swift in Sources */,
 				B529069A1DB929D3007121F3 /* NotificationSyncServiceRemote.swift in Sources */,
 				B57AF5FA1ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift in Sources */,
+				742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */,
 				85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */,
 				E19B17B01E5C69A5007517C6 /* NSManagedObject.swift in Sources */,
 				E15644EF1CE0E53B00D96E64 /* PlanListViewModel.swift in Sources */,
