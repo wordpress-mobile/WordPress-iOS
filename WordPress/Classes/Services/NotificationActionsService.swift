@@ -232,6 +232,7 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.spamComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully spammed comment \(siteID).\(commentID)")
+            self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
         }, failure: { error in
@@ -254,6 +255,7 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.deleteComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully deleted comment \(siteID).\(commentID)")
+            self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
         }, failure: { error in

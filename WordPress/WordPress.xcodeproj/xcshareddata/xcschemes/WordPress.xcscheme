@@ -49,9 +49,6 @@
             </BuildableReference>
             <SkippedTests>
                <Test
-                  Identifier = "LoginTests/testCreateAccount()">
-               </Test>
-               <Test
                   Identifier = "MainNavigationTests">
                </Test>
             </SkippedTests>

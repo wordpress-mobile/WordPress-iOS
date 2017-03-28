@@ -1,3 +1,5 @@
+#!/usr/bin/env swift
+
 import Foundation
 
 let glotPressWhatsNewKey = "v7.2-whats-new"
@@ -77,7 +79,8 @@ func downloadTranslation(languageCode: String, folderName: String) {
                     return
             }
 
-            let originalLanguage = key.substring(from: index)
+            var originalLanguage = key.substring(from: index)
+            originalLanguage.remove(at: originalLanguage.startIndex)
             let translation = languageCode == "en-us" ? originalLanguage : firstValue
             
             switch keyFirstPart {
