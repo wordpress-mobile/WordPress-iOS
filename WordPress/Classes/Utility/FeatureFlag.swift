@@ -2,6 +2,7 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int {
+    case mediaLibrary
     case nativeEditor
     case exampleFeature
 
@@ -10,8 +11,10 @@ enum FeatureFlag: Int {
         switch self {
         case .exampleFeature:
             return true
+        case .mediaLibrary:
+            return build(.debug)
         case .nativeEditor:
-            // At the moment this is only active in debug mode
+            // At the moment this is only visible by default in non-app store builds
             if build(.alpha, .debug, .internal) {
                 return true
             }

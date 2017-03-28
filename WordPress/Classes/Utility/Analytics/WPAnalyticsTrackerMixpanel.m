@@ -629,6 +629,14 @@ NSString *const SessionCount = @"session_count";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_edited_image"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_edited_image"];
             break;
+        case WPAnalyticsStatEditorResizedPhoto:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Photo Resized"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_photo_resized"];
+            break;
+        case WPAnalyticsStatEditorResizedPhotoError:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Photo Resized Error"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_photo_resized_error"];
+            break;
         case WPAnalyticsStatEditorToggledOn:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Toggled New Editor On"];
             [instructions setPeopleProperty:@"enabled_new_editor" toValue:@(YES)];
