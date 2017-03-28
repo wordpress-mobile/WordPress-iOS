@@ -6,7 +6,7 @@ import WordPressShared
 import AFNetworking
 import WPMediaPicker
 import SVProgressHUD
-
+import WordPressComAnalytics
 
 // MARK: - Aztec's Native Editor!
 //
@@ -586,6 +586,8 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
+        trackPostSave(stat: postEditorStateContext.publishActionAnalyticsStat)
+
         publishTapped(dismissWhenDone: true)
     }
 
@@ -595,6 +597,10 @@ extension AztecPostViewController {
                 self.post.status = .draft
             } else if self.postEditorStateContext.secondaryPublishButtonAction == .publish {
                 self.post.status = .publish
+            }
+
+            if let stat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat {
+                self.trackPostSave(stat: stat)
             }
 
             self.publishTapped(dismissWhenDone: dismissWhenDone)
@@ -622,11 +628,13 @@ extension AztecPostViewController {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
                     self.post.status = .draft
+                    self.trackPostSave(stat: self.postEditorStateContext.publishActionAnalyticsStat)
                     self.publishTapped(dismissWhenDone: true)
                 }
             } else if post.status == .draft {
                 // The post was already a draft
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
+                    self.trackPostSave(stat: self.postEditorStateContext.publishActionAnalyticsStat)
                     self.publishTapped(dismissWhenDone: true)
                 }
             }
@@ -654,6 +662,7 @@ extension AztecPostViewController {
             alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
                 self.removeFailedMedia()
                 // Failed media is removed, try again.
+                // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
                 self.publishTapped(dismissWhenDone: dismissWhenDone)
             }
 
@@ -679,12 +688,9 @@ extension AztecPostViewController {
                 SVProgressHUD.showError(withStatus: self.postEditorStateContext.publishErrorText)
                 generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
-                // TODO: Determine if this is necessary; if it is then ensure state machine is updated
                 self.post = uploadedPost
 
                 generator.notificationOccurred(.success)
-
-                // TODO: Analytics for saving WPAnalyticsStatEditorSavedDraft, WPAnalyticsStatEditorQuickSavedDraft, etc
             }
 
             if dismissWhenDone {
@@ -711,6 +717,29 @@ extension AztecPostViewController {
 
     @IBAction func moreWasPressed() {
         displayMoreSheet()
+    }
+
+    private func trackPostSave(stat: WPAnalyticsStat) {
+        guard stat != .editorSavedDraft && stat != .editorQuickSavedDraft else {
+            WPAppAnalytics.track(stat, with:post.blog)
+            return
+        }
+
+        let originalWordCount = post.original?.content?.wordCount() ?? 0
+        let wordCount = post.content?.wordCount() ?? 0
+        var properties: [String: Any] = ["word_count": wordCount]
+        if post.hasRemote() {
+            properties["word_diff_count"] = originalWordCount
+        }
+
+        if stat == .editorPublishedPost {
+            properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = post.hasCategories
+            properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = post.hasPhoto
+            properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = post.hasTags
+            properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = post.hasVideo
+        }
+
+        WPAppAnalytics.track(stat, withProperties: properties, with: post.blog)
     }
 }
 
@@ -1347,7 +1376,7 @@ fileprivate extension AztecPostViewController {
             return
         }
 
-        // TODO: Track WPAnalyticsStatEditorDiscardedChanges
+        WPAppAnalytics.track(.editorDiscardedChanges, with: post.blog)
 
         post = originalPost
         post.deleteRevision()
@@ -1369,7 +1398,7 @@ fileprivate extension AztecPostViewController {
     func dismissOrPopView(didSave: Bool) {
         stopEditing()
 
-        // TODO: Track WPAnalyticsStatEditorClosed
+        WPAppAnalytics.track(.editorClosed, with: post.blog)
 
         if let onClose = onClose {
             onClose(didSave)
@@ -1495,7 +1524,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 return
             }
 
-            // TODO: Analytics WPAnalyticsStatEditorAddedPhotoViaLocalLibrary, WPAnalyticsStatEditorAddedVideoViaLocalLibrary
+            if media.mediaType == .image {
+                WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            } else if media.mediaType == .video {
+                WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            }
+
             strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
     }
@@ -1505,7 +1539,6 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
-            // TODO: Track analytics WPAnalyticsStatEditorAddedPhotoViaWPMediaLibrary WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary
             let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
             self.mediaProgressCoordinator.finishOneItem()
         } else {
@@ -1516,7 +1549,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             }
             let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
 
-            // TODO: Track analytics WPAnalyticsStatEditorAddedPhotoViaLocalLibrary WPAnalyticsStatEditorAddedVideoViaLocalLibrary
+            if media.mediaType == .image {
+                WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post.blog)
+            } else if media.mediaType == .video {
+                WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post.blog)
+            }
+
             upload(media: media, mediaID: attachment.identifier)
         }
     }
@@ -1542,7 +1580,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 return
             }
 
-            // TODO Analytics track WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
+            if media.mediaType == .image {
+                WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            } else if media.mediaType == .video {
+                WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            }
+
             strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
     }
@@ -1565,7 +1608,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                     return
                 }
 
-                // TODO: Track analytics WPAnalyticsStatEditorUploadMediaFailed
+                WPAppAnalytics.track(.editorUploadMediaFailed, with: strongSelf.post.blog)
+
                 DispatchQueue.main.async {
                     strongSelf.handleError(error as NSError, onAttachment: attachment)
                 }
@@ -1638,11 +1682,13 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                     //retry upload
                                                     if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
-                                                        // TODO Track Analytics WPAnalyticsStatEditorUploadMediaRetried
                                                         attachment.clearAllOverlays()
                                                         attachment.progress = 0
                                                         self.richTextView.refreshLayoutFor(attachment: attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
+
+                                                        WPAppAnalytics.track(.editorUploadMediaRetried, with: self.post.blog)
+
                                                         self.upload(media: media, mediaID: mediaID)
                                                     }
                 })
@@ -1665,13 +1711,14 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 
     func displayDetails(forAttachment attachment: TextAttachment) {
-        // TODO Analytics track WPAnalyticsStatEditorEditedImage
         let controller = AztecAttachmentViewController()
         controller.delegate = self
         controller.attachment = attachment
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
+
+        WPAppAnalytics.track(.editorEditedImage, with: post.blog)
     }
 
     var mediaMessageAttributes: [String: Any] {
