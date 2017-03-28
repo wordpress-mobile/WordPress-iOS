@@ -454,13 +454,11 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             return
         }
 
-        let likeCount = provider.likeCount().intValue
-        let commentCount = provider.commentCount().intValue
+        let likeCount = provider.likeCount()?.intValue ?? 0
+        let commentCount = provider.commentCount()?.intValue ?? 0
 
         if superview?.frame.width < 480 {
             // remove title text
-            let likeTitle = likeCount > 0 ?  provider.likeCount().stringValue : ""
-            let commentTitle = commentCount > 0 ? provider.commentCount().stringValue : ""
             likeActionButton.setTitle(likeTitle, for: UIControlState())
             commentActionButton.setTitle(commentTitle, for: UIControlState())
             shareButton.setTitle("", for: UIControlState())
