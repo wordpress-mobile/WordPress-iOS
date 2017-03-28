@@ -203,7 +203,7 @@
  
     [self.managedObjectContext performBlock:^{
         AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
-        Media *media = [Media insertedWithPost:post];
+        Media *media = [Media makeMediaWithPost:post];
         media.postID = post.postID;
         media.filename = [mediaURL lastPathComponent];
         media.absoluteLocalURL = [mediaURL path];
@@ -502,7 +502,7 @@
            }
            Media *media = [Media existingMediaWithMediaID:remoteMedia.mediaID inBlog:blog];
            if (!media) {
-               media = [Media insertedWithBlog:blog];
+               media = [Media makeMediaWithBlog:blog];
            }
            [self updateMedia:media withRemoteMedia:remoteMedia];
            if (success){
@@ -757,7 +757,7 @@
         @autoreleasepool {
             Media *local = [Media existingMediaWithMediaID:remote.mediaID inBlog:blog];
             if (!local) {
-                local = [Media insertedWithBlog:blog];
+                local = [Media makeMediaWithBlog:blog];
                 local.remoteStatus = MediaRemoteStatusSync;
             }
             [self updateMedia:local withRemoteMedia:remote];
