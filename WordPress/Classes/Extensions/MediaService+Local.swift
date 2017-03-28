@@ -13,8 +13,12 @@ extension MediaService {
         let fileManager = FileManager.default
         let documents = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         var media = documents.appendingPathComponent(mediaDirectoryName, isDirectory: true)
-        var isDirectory: ObjCBool = true
-        if fileManager.fileExists(atPath: media.path, isDirectory: &isDirectory) == false, isDirectory.boolValue == false {
+
+        // Check whether or not the file path exists for the Media directory.
+        // If the filepath does not exist, or if the filepath does exist but it is not a directory, try creating the directory.
+        // Note: This way, if unexpectedly a file exists but it is not a dir, an error will throw when trying to create the dir.
+        var isDirectory: ObjCBool = false
+        if fileManager.fileExists(atPath: media.path, isDirectory: &isDirectory) == false || isDirectory.boolValue == false {
             try fileManager.createDirectory(at: media, withIntermediateDirectories: true, attributes: nil)
             var resourceValues = URLResourceValues()
             resourceValues.isExcludedFromBackup = false
