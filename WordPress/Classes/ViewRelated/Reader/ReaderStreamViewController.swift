@@ -1321,6 +1321,11 @@ import WordPressComAnalytics
             return
         }
 
+        // To help avoid potential crash: https://github.com/wordpress-mobile/WordPress-iOS/issues/6757
+        guard !post.isDeleted else {
+            return
+        }
+
         let postCell = cell as! ReaderPostCardCell
 
         postCell.delegate = self
