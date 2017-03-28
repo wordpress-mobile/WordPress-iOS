@@ -118,7 +118,7 @@ open class DeleteSiteViewController: UITableViewController {
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
-        let attributes = [ NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body),
+        let attributes = [ NSFontAttributeName: UIFont.systemFont(ofSize: 17.0),
                            NSForegroundColorAttributeName: WPStyleGuide.darkGrey(),
                            NSParagraphStyleAttributeName: paragraphStyle ]
         let htmlAttributes: StyledHTMLAttributes = [ .BodyAttribute: attributes]
@@ -132,7 +132,7 @@ open class DeleteSiteViewController: UITableViewController {
         combinedAttributedString.append(attributedText2)
         sectionThreeBody.attributedText = combinedAttributedString
 
-        let contactButtonAttributes = [ NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body),
+        let contactButtonAttributes = [ NSFontAttributeName: UIFont.systemFont(ofSize: 17.0),
                                         NSForegroundColorAttributeName: WPStyleGuide.wordPressBlue(),
                                         NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue as AnyObject]
         supportButton.setAttributedTitle(NSAttributedString(string: NSLocalizedString("Contact Support", comment: "Button label for contacting support"), attributes: contactButtonAttributes),
