@@ -74,7 +74,7 @@ class AppSettingsViewController: UITableViewController {
         let mediaClearCacheRow = DestructiveButtonRow(
             title: NSLocalizedString("Clear Media Cache", comment: "Label for button that clears all media cache."),
             action: { row in
-                MediaService.cleanMediaCacheFolder()
+                MediaService.cleanLocalMediaDirectory(onCompletion: nil, onError: nil)
                 SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Media Cache cleared", comment: "Label for message that confirms clearing of media cache."))
                 self.handler.viewModel = self.tableViewModel()
                 self.tableView.reloadData()
