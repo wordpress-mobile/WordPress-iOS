@@ -645,7 +645,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tapOffKeyboardGesture.enabled = NO;
     self.indexPathForCommentRepliedTo = nil;
     [self.tableView deselectSelectedRowWithAnimation:YES];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
     [self.replyTextView resignFirstResponder];
+#pragma clang diagnostic pop
     [self refreshReplyTextViewPlaceholder];
 }
 
@@ -942,7 +945,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     // if a row is already selected don't allow selection of another
     if (self.replyTextView.isFirstResponder) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
         [self.replyTextView resignFirstResponder];
+#pragma clang diagnostic pop
         return;
     }
 
@@ -950,7 +956,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         return;
     }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
     [self.replyTextView becomeFirstResponder];
+#pragma clang diagnostic pop
 
     self.indexPathForCommentRepliedTo = [self.tableViewHandler.resultsController indexPathForObject:comment];
     [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
