@@ -48,4 +48,17 @@ class MediaServiceTests: XCTestCase {
         size = MediaService.imageSizeForMediaAt(path: mediaPath)
         XCTAssertTrue(size == CGSize(width: 1024, height: 680), "Unexpected size returned when testing an image with an exif orientation of 5 via imageSizeForMediaAtPath.")
     }
+
+    func testThatCleaningLocalMediaDirectoryWorks() {
+        let expect = self.expectation(description: "cleaned media directory")
+        MediaService.cleanLocalMediaDirectory(onCompletion: {
+            // Ideally we would verify that the local media directory was indeed cleaned.
+            // However, for now we're just looking to make sure there aren't any errors being thrown with the implementation.
+            expect.fulfill()
+        }) { (error) in
+            expect.fulfill()
+            XCTFail("Failed cleaning local media directory with error: \(error.localizedDescription)")
+        }
+        self.waitForExpectations(timeout: 2.0, handler: nil)
+    }
 }
