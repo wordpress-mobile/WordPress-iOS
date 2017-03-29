@@ -16,7 +16,7 @@ extension Int {
         let sign = self / abs(self)
         let divisor = Int(divisor)
         let half = divisor / 2
-        return self + sign * (half - (abs(self) + half) % divisor)
+        return self + sign * (half - (abs(self) as Int + half) % divisor)
     }
 }
 
