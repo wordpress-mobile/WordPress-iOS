@@ -149,7 +149,7 @@ extension TodayViewController: NCWidgetProviding {
             }
             completionHandler(NCUpdateResult.newData)
             }, failureHandler: { error in
-                WPDDLogWrapper.logError("\(error)")
+                WPDDLogWrapper.logError("\(String(describing: error))")
 
                 if let error = error as? URLError, error.code == URLError.badServerResponse {
                     self.isConfigured = false

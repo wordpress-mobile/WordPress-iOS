@@ -145,7 +145,7 @@ class StoreCoordinator<S: Store> {
 
         var userInfo: [String: AnyObject] = [StoreKitCoordinator.NotificationProductIdentifierKey: productID as AnyObject]
 
-        if let error = transaction.error as? NSError {
+        if let error = transaction.error as NSError? {
             if error.code != SKError.paymentCancelled.rawValue {
                 userInfo[NSUnderlyingErrorKey] = error as AnyObject?
             }
