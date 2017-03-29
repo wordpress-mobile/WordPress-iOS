@@ -217,7 +217,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
         guard !(decoder?.isFault())!,
             let responseXML = decoder?.object() else {
                 let decoderError = decoder?.error()
-                throw convertError(decoderError as! NSError, data: data)
+                throw convertError(decoderError! as NSError, data: data)
         }
 
         return responseXML as AnyObject

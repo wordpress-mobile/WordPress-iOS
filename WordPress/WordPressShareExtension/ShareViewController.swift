@@ -255,7 +255,7 @@ private extension ShareViewController {
         service.createPost(siteID: siteID, status: status, title: subject, body: body, attachedImageJPEGData: attachedImageData, requestEqueued: {
             requestEqueued()
         }, completion: { (post, error) in
-            print("Post \(post) Error \(error)")
+            print("Post \(String(describing: post)) Error \(String(describing: error))")
         })
     }
 }

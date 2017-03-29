@@ -1200,8 +1200,12 @@ import WordPressComAnalytics
             }
 
             let failureBlock = { (error: Error?) in
+                guard let error = error as NSError? else {
+                    return
+                }
+
                 DispatchQueue.main.async {
-                    failure?(error as! NSError)
+                    failure?(error as NSError)
                 }
             }
 
@@ -1245,8 +1249,12 @@ import WordPressComAnalytics
             }
 
             let failureBlock = { (error: Error?) in
+                guard let error = error else {
+                    return
+                }
+
                 DispatchQueue.main.async(execute: {
-                    failure?(error as! NSError)
+                    failure?(error as NSError)
                 })
             }
 
