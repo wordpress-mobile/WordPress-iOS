@@ -399,6 +399,10 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
                                                         failure(error);
                                                     });
                                                 }
+                                            if (userInteraction) {
+                                                NSString *title = NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.");
+                                                [WPError showNetworkingAlertWithError:error title:title];
+                                            }
                                     }];
     }];
 }
