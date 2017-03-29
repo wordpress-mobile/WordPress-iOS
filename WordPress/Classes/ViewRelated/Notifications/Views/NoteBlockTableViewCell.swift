@@ -43,6 +43,20 @@ class NoteBlockTableViewCell: WPTableViewCell {
         return classNameWithoutNamespaces()
     }
 
+    /// Performs the action when an internet connection is available
+    /// If no internet connection is available an error message is displayed
+    ///
+    func onAvailableInternetConnectionDo(action: () -> Void) {
+        let appDelegate = WordPressAppDelegate.sharedInstance()
+        guard appDelegate!.connectionAvailable else {
+            let title = NSLocalizedString("Error", comment: "Title of error prompt.")
+            let message = NSLocalizedString("The Internet connection appears to be offline",
+                                            comment: "Message of error prompt shown when a user tries to perform an action without an internet connection.")
+            WPError.showAlert(withTitle: title, message: message)
+            return
+        }
+        action()
+    }
 
     // MARK: - View Methods
     override func awakeFromNib() {
