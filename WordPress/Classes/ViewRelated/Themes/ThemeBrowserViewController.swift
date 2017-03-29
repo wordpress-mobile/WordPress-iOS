@@ -339,7 +339,7 @@ public protocol ThemePresenter: class {
                 }
             },
             failure: { (error) in
-                DDLogSwift.logError("Error updating active theme: \(error?.localizedDescription)")
+                DDLogSwift.logError("Error updating active theme: \(String(describing: error?.localizedDescription))")
         })
     }
 
@@ -372,9 +372,10 @@ public protocol ThemePresenter: class {
                 }
             },
             failure: { (error) in
-                DDLogSwift.logError("Error syncing themes: \(error?.localizedDescription)")
-                if let failure = failure {
-                    failure(error as! NSError)
+                DDLogSwift.logError("Error syncing themes: \(String(describing: error?.localizedDescription))")
+                if let failure = failure,
+                    let error = error {
+                    failure(error as NSError)
                 }
             })
     }
@@ -680,7 +681,7 @@ public protocol ThemePresenter: class {
                 alertController.presentFromRootViewController()
             },
             failure: { (error) in
-                DDLogSwift.logError("Error activating theme \(theme.themeId): \(error?.localizedDescription)")
+                DDLogSwift.logError("Error activating theme \(theme.themeId): \(String(describing: error?.localizedDescription))")
 
                 let errorTitle = NSLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")

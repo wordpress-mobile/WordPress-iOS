@@ -55,7 +55,7 @@
 #import "MeHeaderView.h"
 #import "MixpanelTweaks.h"
 
-#import "NavbarTitleDropdownButton.h"
+#import "NavBarTitleDropdownButton.h"
 #import "NSString+Helpers.h"
 #import "NSAttributedString+Util.h"
 #import "NSBundle+VersionNumberHelper.h"

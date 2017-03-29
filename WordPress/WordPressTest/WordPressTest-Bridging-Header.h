@@ -22,3 +22,4 @@
 #import "MediaLibraryPickerDataSource.h"
 #import "Media.h"
 #import "MediaService.h"
+#import "WordPress-Bridging-Header.h"
