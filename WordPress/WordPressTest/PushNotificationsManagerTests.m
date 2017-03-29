@@ -79,6 +79,7 @@
     [[mockManager reject] handleHelpshiftNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
     [[mockManager reject] handleInactiveNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
     [[mockManager reject] handleBackgroundNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
+#pragma clang diagnostic pop
     
     [mockManager handleNotification:userInfo completionHandler:nil];
     OCMVerify(mockManager);
