@@ -699,7 +699,7 @@ extension NotificationsViewController {
 
         let start = Date()
 
-        mediator.sync { _ in
+        mediator.sync { (error, _) in
 
             let delta = max(Syncing.minimumPullToRefreshDelay + start.timeIntervalSinceNow, 0)
             let delay = DispatchTime.now() + Double(Int64(delta * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
@@ -707,6 +707,10 @@ extension NotificationsViewController {
             DispatchQueue.main.asyncAfter(deadline: delay) { _ in
                 self.refreshControl?.endRefreshing()
                 self.clearUnreadNotifications()
+            }
+
+            if let error = error {
+                WPError.showNetworkingAlertWithError(error, title: NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails."))
             }
         }
     }
