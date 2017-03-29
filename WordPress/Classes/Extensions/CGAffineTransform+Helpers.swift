@@ -8,7 +8,7 @@ extension CGAffineTransform {
     /// parameters.
     ///
     static func makeRotation(_ angle: CGFloat, scale: CGFloat) -> CGAffineTransform {
-        let angle   = angle * CGFloat(Double.pi) / 180.0
+        let angle   = angle * CGFloat.pi / 180.0
         let rotate  = CGAffineTransform(rotationAngle: angle)
         let scale   = CGAffineTransform(scaleX: scale, y: scale)
 

@@ -713,7 +713,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
             // Configure starting state
             imageView.alpha = 0.0
-            let angle = CGFloat((-270.0 * .pi) / 180.0)
+            let angle = (-270.0 * CGFloat.pi) / 180.0
             let rotate = CGAffineTransform(rotationAngle: angle)
             let scale = CGAffineTransform(scaleX: 3.0, y: 3.0)
             imageView.transform = rotate.concatenating(scale)
@@ -721,7 +721,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             // Perform the animations
             UIView.animate(withDuration: animationDuration,
                 animations: { () in
-                    let angle = CGFloat((1.0 * .pi) / 180.0)
+                    let angle = (1.0 * CGFloat.pi) / 180.0
                     let rotate = CGAffineTransform(rotationAngle: angle)
                     let scale = CGAffineTransform(scaleX: 0.75, y: 0.75)
                     imageView.transform = rotate.concatenating(scale)
@@ -743,7 +743,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
             UIView .animate(withDuration: animationDuration,
                 animations: { () -> Void in
-                    let angle = CGFloat((120.0 * .pi) / 180.0)
+                    let angle = (120.0 * CGFloat.pi) / 180.0
                     let rotate = CGAffineTransform(rotationAngle: angle)
                     let scale = CGAffineTransform(scaleX: 3.0, y: 3.0)
                     imageView.transform = rotate.concatenating(scale)
