@@ -153,8 +153,8 @@ import WordPressShared.WPStyleGuide
         // We can't reply without an internet connection
         let appDelegate = WordPressAppDelegate.sharedInstance()
         guard appDelegate!.connectionAvailable else {
-            let title = NSLocalizedString("Error", comment: "Title of error prompt.")
-            let message = NSLocalizedString("The Internet connection appears to be offline",
+            let title = NSLocalizedString("No Connection", comment: "Title of error prompt when no internet connection is available.")
+            let message = NSLocalizedString("The Internet connection appears to be offline.",
                                             comment: "Message of error prompt shown when a user tries to perform an action without an internet connection.")
             WPError.showAlert(withTitle: title, message: message)
             textView.resignFirstResponder()
