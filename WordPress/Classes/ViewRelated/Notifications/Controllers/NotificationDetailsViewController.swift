@@ -62,7 +62,7 @@ class NotificationDetailsViewController: UIViewController {
 
     /// Keyboard Manager: Aids in the Interactive Dismiss Gesture
     ///
-    fileprivate var keyboardManager: KeyboardDismissHelper? = nil
+    fileprivate var keyboardManager: KeyboardDismissHelper?
 
     /// Cached values used for returning the estimated row heights of autosizing cells.
     ///
