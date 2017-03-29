@@ -171,7 +171,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     [super viewWillDisappear:animated];
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
     [self.replyTextView resignFirstResponder];
+#pragma clang diagnostic pop
     [self.keyboardManager stopListeningToKeyboardNotifications];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
@@ -188,7 +191,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
         // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
         if (selectedIndexPath) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
             [self.replyTextView becomeFirstResponder];
+#pragma clang diagnostic pop
             [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
         [self refreshNoResultsView];
@@ -639,7 +645,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     self.tapOffKeyboardGesture.enabled = NO;
     self.indexPathForCommentRepliedTo = nil;
     [self.tableView deselectSelectedRowWithAnimation:YES];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
     [self.replyTextView resignFirstResponder];
+#pragma clang diagnostic pop
     [self refreshReplyTextViewPlaceholder];
 }
 
@@ -936,7 +945,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     // if a row is already selected don't allow selection of another
     if (self.replyTextView.isFirstResponder) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
         [self.replyTextView resignFirstResponder];
+#pragma clang diagnostic pop
         return;
     }
 
@@ -944,7 +956,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         return;
     }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
     [self.replyTextView becomeFirstResponder];
+#pragma clang diagnostic pop
 
     self.indexPathForCommentRepliedTo = [self.tableViewHandler.resultsController indexPathForObject:comment];
     [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
