@@ -73,4 +73,54 @@ extension MediaService {
         }
         return CGSize(width: width, height: height)
     }
+
+    class func cleanLocalMediaDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
+        let context = ContextManager.sharedInstance().newDerivedContext()
+        context.perform {
+            let fetch = NSFetchRequest<NSDictionary>(entityName: Media.classNameWithoutNamespaces())
+            fetch.predicate = NSPredicate.init(format: "remoteURL == NULL", argumentArray: nil)
+            fetch.resultType = NSFetchRequestResultType.dictionaryResultType
+            let localURLProperty = #selector(getter: Media.localURL).description
+            let localThumbnailURLProperty = #selector(getter: Media.localThumbnailURL).description
+            fetch.propertiesToFetch = [localURLProperty,
+                                       localThumbnailURLProperty]
+            do {
+                let fileManager = FileManager.default
+                let mediaToKeep = try context.fetch(fetch)
+                var mediaPathsToKeep: Set<URL> = []
+                let documents = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+                for dictionary in mediaToKeep {
+                    if let localPath = dictionary[localURLProperty] as? String {
+                        mediaPathsToKeep.insert(documents.appendingPathComponent(localPath))
+                    }
+                    if let localThumbnailPath = dictionary[localThumbnailURLProperty] as? String {
+                        mediaPathsToKeep.insert(documents.appendingPathComponent(localThumbnailPath))
+                    }
+                }
+                try cleanLocalMediaDirectory(exceptFiles: mediaPathsToKeep)
+                onCompletion?()
+            } catch {
+                DDLogSwift.logError("Error while attempting to clean local media: \(error.localizedDescription)")
+                onError?(error)
+            }
+        }
+    }
+
+    private class func cleanLocalMediaDirectory(exceptFiles: Set<URL>) throws {
+        let fileManager = FileManager.default
+        let contents = try fileManager.contentsOfDirectory(at: try localMediaDirectory(),
+                                                           includingPropertiesForKeys: nil,
+                                                           options: .skipsHiddenFiles)
+        let unused = contents.filter({ !exceptFiles.contains($0.resolvingSymlinksInPath()) })
+        for url in unused {
+            if fileManager.fileExists(atPath: url.path) {
+                do {
+                    try fileManager.removeItem(at: url)
+                    DDLogSwift.logDebug("Removed media file at path while cleaning: \(url.path)")
+                } catch {
+                    DDLogSwift.logError("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
+                }
+            }
+        }
+    }
 }
