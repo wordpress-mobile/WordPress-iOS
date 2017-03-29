@@ -28,7 +28,7 @@ class MediaServiceTests: XCTestCase {
         }
     }
 
-    func testThatMediaTumbnailFilenameWorks() {
+    func testThatMediaThumbnailFilenameWorks() {
         let basename = "media-service-test-sample"
         let pathExtension = "jpg"
         var thumbnail = MediaService.mediaFilenameAppendingThumbnail("\(basename).\(pathExtension)")
