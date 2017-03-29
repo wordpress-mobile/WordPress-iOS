@@ -232,37 +232,49 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
 
     // MARK: - IBActions
     @IBAction func replyWasPressed(_ sender: AnyObject) {
-        onReplyClick?(sender)
+        onAvailableInternetConnectionDo {
+            onReplyClick?(sender)
+        }
     }
 
     @IBAction func likeWasPressed(_ sender: AnyObject) {
-        let onClick = isLikeOn ? onUnlikeClick : onLikeClick
-        isLikeOn = !isLikeOn
+        onAvailableInternetConnectionDo {
+            let onClick = isLikeOn ? onUnlikeClick : onLikeClick
+            isLikeOn = !isLikeOn
 
-        animateLikeButton(btnLike) {
-            onClick?(sender)
+            animateLikeButton(btnLike) {
+                onClick?(sender)
+            }
         }
     }
 
     @IBAction func approveWasPressed(_ sender: AnyObject) {
-        let onClick = isApproveOn ? onUnapproveClick : onApproveClick
-        isApproveOn = !isApproveOn
+        onAvailableInternetConnectionDo {
+            let onClick = isApproveOn ? onUnapproveClick : onApproveClick
+            isApproveOn = !isApproveOn
 
-        animateApproveButton(btnApprove) {
-            onClick?(sender)
+            animateApproveButton(btnApprove) {
+                onClick?(sender)
+            }
         }
     }
 
     @IBAction func trashWasPressed(_ sender: AnyObject) {
-        onTrashClick?(sender)
+        onAvailableInternetConnectionDo {
+            onTrashClick?(sender)
+        }
     }
 
     @IBAction func spamWasPressed(_ sender: AnyObject) {
-        onSpamClick?(sender)
+        onAvailableInternetConnectionDo {
+            onSpamClick?(sender)
+        }
     }
 
     @IBAction func editWasPressed(_ sender: AnyObject) {
-        onEditClick?(sender)
+        onAvailableInternetConnectionDo {
+            onEditClick?(sender)
+        }
     }
 }
 

@@ -75,10 +75,12 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
 
     // MARK: - IBActions
     @IBAction func followWasPressed(_ sender: AnyObject) {
-        if let listener = isFollowOn ? onUnfollowClick : onFollowClick {
-            listener()
+        onAvailableInternetConnectionDo {
+            if let listener = isFollowOn ? onUnfollowClick : onFollowClick {
+                listener()
+            }
+            isFollowOn = !isFollowOn
         }
-        isFollowOn = !isFollowOn
     }
 
     // MARK: - Private
