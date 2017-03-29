@@ -174,6 +174,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
     [self.replyTextView resignFirstResponder];
+#pragma clang diagnostic pop
     [self.keyboardManager stopListeningToKeyboardNotifications];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
@@ -191,7 +192,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
         if (selectedIndexPath) {
 #pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-result"[self.replyTextView becomeFirstResponder];
+#pragma clang diagnostic ignored "-Wunused-result"
+            [self.replyTextView becomeFirstResponder];
+#pragma clang diagnostic pop
             [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
         [self refreshNoResultsView];
