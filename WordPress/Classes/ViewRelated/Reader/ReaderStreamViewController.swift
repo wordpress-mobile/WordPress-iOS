@@ -1200,7 +1200,7 @@ import WordPressComAnalytics
             }
 
             let failureBlock = { (error: Error?) in
-                guard let error = error else {
+                guard let error = error as NSError? else {
                     return
                 }
 
