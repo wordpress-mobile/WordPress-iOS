@@ -58,11 +58,11 @@ extension MediaService {
             return CGSize.zero
         }
         let url = URL(fileURLWithPath: path, isDirectory: false)
-        guard let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil) else {
-            return CGSize.zero
-        }
-        guard let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as? Dictionary<String, AnyObject> else {
-            return CGSize.zero
+        guard
+            let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil),
+            let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as? Dictionary<String, AnyObject>
+            else {
+                return CGSize.zero
         }
         var width = CGFloat(0), height = CGFloat(0)
         if let widthProperty = imageProperties[kCGImagePropertyPixelWidth as String] as? CGFloat {
