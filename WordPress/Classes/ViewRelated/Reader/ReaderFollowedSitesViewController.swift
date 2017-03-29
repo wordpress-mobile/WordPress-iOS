@@ -156,7 +156,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             self?.configureNoResultsView()
             self?.refreshControl.endRefreshing()
         }, failure: { [weak self] (error) in
-            DDLogSwift.logError("Could not sync sites: \(error)")
+            DDLogSwift.logError("Could not sync sites: \(String(describing: error))")
             self?.isSyncing = false
             self?.configureNoResultsView()
             self?.refreshControl.endRefreshing()
@@ -186,7 +186,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             self?.syncSites()
             self?.refreshFollowedPosts()
         }, failure: { [weak self] (error) in
-            DDLogSwift.logError("Could not unfollow site: \(error)")
+            DDLogSwift.logError("Could not unfollow site: \(String(describing: error))")
             let title = NSLocalizedString("Could not Unfollow Site", comment: "Title of a prompt.")
             let description = error?.localizedDescription
             self?.promptWithTitle(title, message: description!)
@@ -213,7 +213,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             self?.refreshPostsForFollowedTopic()
 
         }, failure: { [weak self] (error) in
-            DDLogSwift.logError("Could not follow site: \(error)")
+            DDLogSwift.logError("Could not follow site: \(String(describing: error))")
 
             generator.notificationOccurred(.error)
 
