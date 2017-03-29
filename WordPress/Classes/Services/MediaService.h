@@ -174,9 +174,4 @@
  */
 + (void)cleanUnusedMediaFilesFromMediaCacheFolder;
 
-/**
- Cleans all files that have a remote copy from the media cache folder.
- */
-+ (void)cleanMediaCacheFolder;
-
 @end
