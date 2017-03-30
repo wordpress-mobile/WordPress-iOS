@@ -81,8 +81,7 @@ class ShareViewController: SLComposeServiceViewController {
         setupBearerToken()
 
         // Load TextView + PreviewImage
-        loadTextContent()
-        loadMediaContent()
+        loadContent()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -104,10 +103,13 @@ class ShareViewController: SLComposeServiceViewController {
         // Even when the oAuth Token is nil, it's possible the default site hasn't been retrieved yet.
         // Let's disable Post, until the user picks a valid site.
         //
-        let containsMedia = extensionContext?.containsMediaAttachment() ?? false
+        var validContent = false
+        if let extensionContext = extensionContext {
+            validContent = ShareExtractor(extensionContext: extensionContext).validContent
+        }
         let containsText = contentText.isEmpty == false
 
-        return selectedSiteID != nil && (containsText || containsMedia)
+        return selectedSiteID != nil && (containsText || validContent)
     }
 
     override func didSelectCancel() {
@@ -212,34 +214,39 @@ private extension ShareViewController {
         RequestRouter.bearerToken = bearerToken
     }
 
-    func loadTextContent() {
-        extensionContext?.loadWebsiteUrl { url in
-            // Text + New Line + Source
-            var payload = self.contentText ?? String()
-            if let sourceURL = url?.absoluteString, url?.isFileURL == false {
-                payload += payload.isEmpty ? String() : "\n\n"
-                payload += sourceURL
-            }
-
-            self.textView.text = payload
+    func loadContent() {
+        guard let extensionContext = extensionContext else {
+            return
+        }
+        ShareExtractor(extensionContext: extensionContext)
+            .loadShare { [weak self] share in
+                switch share {
+                case .text(let text):
+                    self?.textView.text = text
+                case .image(let image):
+                    self?.imageLoaded(image: image)
+                }
         }
     }
 
-    func loadMediaContent() {
-        extensionContext?.loadMediaImage { image in
-            guard let mediaImage = image else {
-                return
-            }
-
-            // Load the View
-            let mediaView = MediaView()
-            mediaView.resizeIfNeededAndDisplay(mediaImage)
-
-            // References please
-            self.mediaImage = mediaImage
-            self.mediaView = mediaView
-            self.reloadConfigurationItems()
+    func textLoaded(text: String) {
+        var content = ""
+        if let contentText = contentText {
+            content.append("\(contentText)\n\n")
         }
+        content.append(text)
+        textView.text = content
+    }
+
+    func imageLoaded(image: UIImage) {
+        // Load the View
+        let mediaView = MediaView()
+        mediaView.resizeIfNeededAndDisplay(image)
+
+        // References please
+        self.mediaImage = image
+        self.mediaView = mediaView
+        self.reloadConfigurationItems()
     }
 }
 
