@@ -164,30 +164,3 @@ struct SwitchRow: ImmuTableRow {
         cell.onChange = onChange
     }
 }
-
-struct MediaSizeRow: ImmuTableRow {
-    typealias CellType = MediaSizeSliderCell
-
-    static let cell: ImmuTableCell = {
-        let nib = UINib(nibName: "MediaSizeSliderCell", bundle: Bundle(for: CellType.self))
-        return ImmuTableCell.nib(nib, CellType.self)
-    }()
-    static let customHeight: Float? = CellType.height
-
-    let title: String
-    let value: Int
-    let onChange: (Int) -> Void
-
-    let action: ImmuTableAction? = nil
-
-    func configureCell(_ cell: UITableViewCell) {
-        let cell = cell as! CellType
-
-        cell.title = title
-        cell.value = value
-        cell.onChange = onChange
-        cell.selectionStyle = .none
-
-        (cell.minValue, cell.maxValue) = MediaSettings().allowedImageSizeRange
-    }
-}
