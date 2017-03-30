@@ -74,6 +74,18 @@ extension MediaService {
         return CGSize(width: width, height: height)
     }
 
+    /// Calculates the allocated size of the Media directory, in bytes, or nil if an error was thrown.
+    ///
+    class func calculateSizeOfLocalMediaDirectory(onCompletion: @escaping (Int64?) -> ()) {
+        DispatchQueue.global(qos: .default).async {
+            let fileManager = FileManager.default
+            let allocatedSize = try? fileManager.allocatedSizeOf(directoryURL: localMediaDirectory())
+            DispatchQueue.main.async {
+                onCompletion(allocatedSize)
+            }
+        }
+    }
+
     class func cleanLocalMediaDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
         let context = ContextManager.sharedInstance().newDerivedContext()
         context.perform {
