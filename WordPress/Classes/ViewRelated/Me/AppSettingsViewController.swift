@@ -29,7 +29,7 @@ class AppSettingsViewController: UITableViewController {
         ImmuTable.registerRows([
             DestructiveButtonRow.self,
             TextRow.self,
-            MediaSizeRow.self,
+            MediaSizingRow.self,
             SwitchRow.self,
             NavigationItemRow.self
             ], tableView: self.tableView)
@@ -53,7 +53,7 @@ class AppSettingsViewController: UITableViewController {
 
     func tableViewModel() -> ImmuTable {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
-        let mediaSizeRow = MediaSizeRow(
+        let mediaSizingRow = MediaSizingRow(
             title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
             value: Int(MediaSettings().maxImageSizeSetting),
             onChange: mediaSizeChanged())
@@ -108,7 +108,7 @@ class AppSettingsViewController: UITableViewController {
             ImmuTableSection(
                 headerText: mediaHeader,
                 rows: [
-                    mediaSizeRow,
+                    mediaSizingRow,
                     mediaRemoveLocation,
                     mediaCacheRow,
                     mediaClearCacheRow
@@ -235,5 +235,32 @@ class AppSettingsViewController: UITableViewController {
 
             self.tableView.deselectSelectedRowWithAnimation(true)
         }
+    }
+}
+
+fileprivate struct MediaSizingRow: ImmuTableRow {
+    typealias CellType = MediaSizeSliderCell
+
+    static let cell: ImmuTableCell = {
+        let nib = UINib(nibName: "MediaSizeSliderCell", bundle: Bundle(for: CellType.self))
+        return ImmuTableCell.nib(nib, CellType.self)
+    }()
+    static let customHeight: Float? = CellType.height
+
+    let title: String
+    let value: Int
+    let onChange: (Int) -> Void
+
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+        let cell = cell as! CellType
+
+        cell.title = title
+        cell.value = value
+        cell.onChange = onChange
+        cell.selectionStyle = .none
+
+        (cell.minValue, cell.maxValue) = MediaSettings().allowedImageSizeRange
     }
 }
