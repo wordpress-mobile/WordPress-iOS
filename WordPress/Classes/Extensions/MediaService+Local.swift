@@ -98,10 +98,18 @@ extension MediaService {
                     }
                 }
                 try cleanLocalMediaDirectory(exceptFiles: mediaPathsToKeep)
-                onCompletion?()
+                if let onCompletion = onCompletion {
+                    DispatchQueue.main.async {
+                        onCompletion()
+                    }
+                }
             } catch {
                 DDLogSwift.logError("Error while attempting to clean local media: \(error.localizedDescription)")
-                onError?(error)
+                if let onError = onError {
+                    DispatchQueue.main.async {
+                        onError(error)
+                    }
+                }
             }
         }
     }
