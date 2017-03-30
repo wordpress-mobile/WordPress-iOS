@@ -91,7 +91,7 @@ extension MediaService {
         context.perform {
             let fetch = NSFetchRequest<NSDictionary>(entityName: Media.classNameWithoutNamespaces())
             fetch.predicate = NSPredicate.init(format: "remoteURL == NULL", argumentArray: nil)
-            fetch.resultType = NSFetchRequestResultType.dictionaryResultType
+            fetch.resultType = .dictionaryResultType
             let localURLProperty = #selector(getter: Media.localURL).description
             let localThumbnailURLProperty = #selector(getter: Media.localThumbnailURL).description
             fetch.propertiesToFetch = [localURLProperty,
