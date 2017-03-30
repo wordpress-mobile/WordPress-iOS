@@ -441,8 +441,8 @@ class JetpackLoginViewController: UIViewController {
         WPAppAnalytics.track(.selectedInstallJetpack)
         let targetURL = blog.adminUrl(withPath: jetpackInstallRelativePath)
         displayWebView(url: targetURL,
-                            username: blog.usernameForSite!,
-                            password: blog.password!,
+                            username: blog.usernameForSite,
+                            password: blog.password,
                             wpLoginURL: URL(string: blog.loginUrl()))
     }
 
