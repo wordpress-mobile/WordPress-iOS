@@ -7,6 +7,7 @@ import SVProgressHUD
 class AppSettingsViewController: UITableViewController {
 
     fileprivate var handler: ImmuTableViewHandler!
+
     // MARK: - Initialization
 
     override init(style: UITableViewStyle) {
@@ -34,21 +35,25 @@ class AppSettingsViewController: UITableViewController {
             ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
-        handler.viewModel = tableViewModel()
+        reloadViewModel()
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.handler.viewModel = self.tableViewModel()
+        updateMediaCacheSize()
     }
 
     // MARK: - Model mapping
 
+    fileprivate func reloadViewModel() {
+        handler.viewModel = tableViewModel()
+    }
+
     func tableViewModel() -> ImmuTable {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
-        let uploadSize = MediaSizeRow(
+        let mediaSizeRow = MediaSizeRow(
             title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
             value: Int(MediaSettings().maxImageSizeSetting),
             onChange: mediaSizeChanged())
@@ -59,25 +64,13 @@ class AppSettingsViewController: UITableViewController {
             onChange: mediaRemoveLocationChanged()
         )
 
-        var mediaSizeString = NSLocalizedString("Unknown", comment: "Label for size of media when it's not possible to calculate it.")
-        let fileManager = FileManager()
-        if let mediaSize = try? fileManager.allocatedSizeOf(directoryURL: MediaService.localMediaDirectory()) {
-            if mediaSize == 0 {
-                mediaSizeString = NSLocalizedString("Empty", comment: "Label for size of media when the cache is empty.")
-            } else {
-                mediaSizeString = ByteCountFormatter.string(fromByteCount: mediaSize, countStyle: ByteCountFormatter.CountStyle.file)
-            }
-        }
-        let mediaSizeRow = TextRow(title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
-                                   value: mediaSizeString)
+        let mediaCacheRow = TextRow(title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
+                                    value: mediaCacheRowDescription)
 
         let mediaClearCacheRow = DestructiveButtonRow(
             title: NSLocalizedString("Clear Media Cache", comment: "Label for button that clears all media cache."),
             action: { row in
-                MediaService.cleanLocalMediaDirectory(onCompletion: nil, onError: nil)
-                SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Media Cache cleared", comment: "Label for message that confirms clearing of media cache."))
-                self.handler.viewModel = self.tableViewModel()
-                self.tableView.reloadData()
+                self.clearMediaCache()
             },
             accessibilityIdentifier: "mediaClearCacheButton")
 
@@ -115,9 +108,9 @@ class AppSettingsViewController: UITableViewController {
             ImmuTableSection(
                 headerText: mediaHeader,
                 rows: [
-                    uploadSize,
-                    mediaRemoveLocation,
                     mediaSizeRow,
+                    mediaRemoveLocation,
+                    mediaCacheRow,
                     mediaClearCacheRow
                 ],
                 footerText: nil),
@@ -135,6 +128,61 @@ class AppSettingsViewController: UITableViewController {
             ])
     }
 
+    // MARK: - Media cache methods
+
+    fileprivate enum MediaCacheSettingsStatus {
+        case calculatingSize
+        case clearingCache
+        case unknown
+        case empty
+    }
+
+    fileprivate var mediaCacheRowDescription = "" {
+        didSet {
+            self.reloadViewModel()
+        }
+    }
+
+    fileprivate func setMediaCacheRowDescription(allocatedSize: Int64?) {
+        guard let allocatedSize = allocatedSize else {
+            setMediaCacheRowDescription(status: .unknown)
+            return
+        }
+        if allocatedSize == 0 {
+            setMediaCacheRowDescription(status: .empty)
+            return
+        }
+        mediaCacheRowDescription = ByteCountFormatter.string(fromByteCount: allocatedSize, countStyle: ByteCountFormatter.CountStyle.file)
+    }
+
+    fileprivate func setMediaCacheRowDescription(status: MediaCacheSettingsStatus) {
+        switch status {
+        case .clearingCache:
+            mediaCacheRowDescription = NSLocalizedString("Clearing...", comment: "Label for size of media while it's busy being cleared.")
+        case .calculatingSize:
+            mediaCacheRowDescription = NSLocalizedString("Calculating...", comment: "Label for size of media while it's busy being cleared.")
+        case .unknown:
+            mediaCacheRowDescription = NSLocalizedString("Unknown", comment: "Label for size of media when it's not possible to calculate it.")
+        case .empty:
+            mediaCacheRowDescription = NSLocalizedString("Empty", comment: "Label for size of media when the cache is empty.")
+        }
+    }
+
+    fileprivate func updateMediaCacheSize() {
+        self.setMediaCacheRowDescription(status: .calculatingSize)
+        MediaService.calculateSizeOfLocalMediaDirectory { [weak self] (allocatedSize) in
+            self?.setMediaCacheRowDescription(allocatedSize: allocatedSize)
+        }
+    }
+
+    fileprivate func clearMediaCache() {
+        setMediaCacheRowDescription(status: .clearingCache)
+        MediaService.cleanLocalMediaDirectory(onCompletion: { [weak self] in
+            self?.updateMediaCacheSize()
+            }, onError: { [weak self] (error) in
+                self?.updateMediaCacheSize()
+        })
+    }
 
     // MARK: - Actions
 
@@ -159,7 +207,7 @@ class AppSettingsViewController: UITableViewController {
                 WPAnalytics.track(.editorToggledOff)
             }
             EditorSettings().visualEditorEnabled = enabled
-            self.handler.viewModel = self.tableViewModel()
+            self.reloadViewModel()
         }
     }
 
