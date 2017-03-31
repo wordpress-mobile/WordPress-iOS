@@ -16,6 +16,7 @@ class AztecPostViewController: UIViewController {
     ///
     var onClose: ((_ changesSaved: Bool) -> ())?
 
+    var isOpenedDirectlyForPhotoPost: Bool = false
 
     /// Aztec's Awesomeness
     ///
@@ -316,6 +317,10 @@ class AztecPostViewController: UIViewController {
         view.setNeedsUpdateConstraints()
 
         configureMediaAppearance()
+
+        if isOpenedDirectlyForPhotoPost {
+            showImagePicker(animated: false)
+        }
     }
 
 
@@ -1145,7 +1150,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         insertAction.isEnabled = !urlFieldText.isEmpty
     }
 
-    func showImagePicker() {
+    func showImagePicker(animated: Bool = true) {
 
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
@@ -1154,7 +1159,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
 
-        present(picker, animated: true, completion: nil)
+        present(picker, animated: animated, completion: nil)
     }
 
     func toggleEditingMode() {
