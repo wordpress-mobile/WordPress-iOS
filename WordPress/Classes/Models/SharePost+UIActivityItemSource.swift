@@ -8,12 +8,10 @@ extension SharePost: UIActivityItemSource {
 
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType) -> Any? {
         switch activityType {
-        case UIActivityType.mail:
-            return url
         case SharePost.activityType:
             return data
         default:
-            return content
+            return url
         }
     }
 
@@ -23,15 +21,13 @@ extension SharePost: UIActivityItemSource {
 
     func activityViewController(_ activityViewController: UIActivityViewController, dataTypeIdentifierForActivityType activityType: UIActivityType?) -> String {
         guard let activityType = activityType else {
-            return kUTTypePlainText as String
+            return kUTTypeURL as String
         }
         switch activityType {
-        case UIActivityType.mail:
-            return kUTTypeURL as String
         case SharePost.activityType:
             return SharePost.typeIdentifier
         default:
-            return kUTTypePlainText as String
+            return kUTTypeURL as String
         }
     }
 }
