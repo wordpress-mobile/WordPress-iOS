@@ -129,6 +129,7 @@ class EditPostViewController: UIViewController {
 
     fileprivate func editPostInNativeVisualEditor() -> UIViewController {
         let postViewController = AztecPostViewController(post: postToEdit())
+        postViewController.isOpenedDirectlyForPhotoPost = openWithMediaPicker
         postViewController.onClose = { [weak self] (changesSaved) in
             guard let strongSelf = self else {
                 postViewController.dismiss(animated: true) {}
