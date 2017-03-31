@@ -51,6 +51,7 @@ struct ShareExtractor {
 private extension ShareExtractor {
     var supportedExtractors: [ExtensionContentExtractor] {
         return [
+            PropertyListExtractor(),
             URLExtractor(),
             ImageExtractor()
         ]
@@ -121,5 +122,36 @@ private struct ImageExtractor: TypeBasedExtensionContentExtractor {
         }
 
         return loadedImage.map(ExtractedShare.image)
+    }
+}
+
+private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
+    typealias Payload = [String: Any]
+    let acceptedType = kUTTypePropertyList as String
+    func convert(payload: [String : Any]) -> ExtractedShare? {
+        guard let results = payload[NSExtensionJavaScriptPreprocessingResultsKey] as? [String: Any] else {
+            return nil
+        }
+        let selectedText = string(in: results, forKey: "selection")
+        let title = string(in: results, forKey: "title")
+        let url = string(in: results, forKey: "url")
+        var content = ""
+
+        let excerpt = selectedText ?? title
+        if let excerpt = excerpt {
+            content.append("\(excerpt)\n\n")
+        }
+        if let url = url {
+            content.append(url)
+        }
+        return .text(content)
+    }
+
+    func string(in dictionary: [String: Any], forKey key: String) -> String? {
+        guard let value = dictionary[key] as? String,
+            !value.isEmpty else {
+            return nil
+        }
+        return value
     }
 }
