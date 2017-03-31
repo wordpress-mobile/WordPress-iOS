@@ -45,7 +45,7 @@
     return self;
 }
 
-- (instancetype)initWithSelectedBlogDotComID:(NSNumber *)dotComID
+- (instancetype)initWithSelectedBlogDotComID:(nullable NSNumber *)dotComID
                               successHandler:(BlogSelectorSuccessDotComHandler)successHandler
                               dismissHandler:(BlogSelectorDismissHandler)dismissHandler
 {
