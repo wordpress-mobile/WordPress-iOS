@@ -484,6 +484,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNotificationsSettingsUpdated:
             eventName = @"notification_settings_updated";
             break;
+        case WPAnalyticsStatNotificationsTappedNewPost:
+            eventName = @"notification_tapped_new_post";
+            break;
+        case WPAnalyticsStatNotificationsTappedViewReader:
+            eventName = @"notification_tapped_view_reader";
+            break;
         case WPAnalyticsStatOnePasswordFailed:
             eventName = @"one_password_failed";
             break;
