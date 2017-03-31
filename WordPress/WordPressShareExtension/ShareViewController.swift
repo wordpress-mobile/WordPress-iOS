@@ -79,9 +79,6 @@ class ShareViewController: SLComposeServiceViewController {
 
         // Initialization
         setupBearerToken()
-
-        // Load TextView + PreviewImage
-        loadContent()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -91,6 +88,11 @@ class ShareViewController: SLComposeServiceViewController {
         dismissIfNeeded()
     }
 
+
+    override func beginRequest(with context: NSExtensionContext) {
+        super.beginRequest(with: context)
+        loadContent(extensionContext: context)
+    }
 
 
     // MARK: - SLComposeService Overriden Methods
@@ -214,10 +216,7 @@ private extension ShareViewController {
         RequestRouter.bearerToken = bearerToken
     }
 
-    func loadContent() {
-        guard let extensionContext = extensionContext else {
-            return
-        }
+    func loadContent(extensionContext: NSExtensionContext) {
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
                 switch share {
