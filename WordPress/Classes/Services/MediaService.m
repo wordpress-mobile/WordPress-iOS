@@ -111,9 +111,9 @@
     }
 
     error = nil;
-    NSURL *mediaURL = [MediaService localMediaURLWith:mediaName
-                                        fileExtension:extension
-                                                error:&error];
+    NSURL *mediaURL = [MediaService makeLocalMediaURLWith:mediaName
+                                            fileExtension:extension
+                                                    error:&error];
     if (error) {
         if (completion) {
             completion(nil, error);
@@ -121,9 +121,9 @@
         return;
     }
     error = nil;
-    NSURL *mediaThumbnailURL = [MediaService localMediaURLWith:[MediaService mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
-                                                 fileExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]
-                                                         error:&error];
+    NSURL *mediaThumbnailURL = [MediaService makeLocalMediaURLWith:[MediaService mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
+                                                     fileExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]
+                                                             error:&error];
     if (error) {
         if (completion) {
             completion(nil, error);
@@ -654,9 +654,9 @@
 
             [self.managedObjectContext performBlock:^{
                 NSError *error = nil;
-                NSURL *fileURL = [MediaService localMediaURLWith:[MediaService mediaFilenameAppendingThumbnail:media.filename]
-                                                   fileExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]
-                                                           error:&error];
+                NSURL *fileURL = [MediaService makeLocalMediaURLWith:[MediaService mediaFilenameAppendingThumbnail:media.filename]
+                                                       fileExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]
+                                                               error:&error];
                 if (error) {
                     if (failure) {
                         failure(error);
