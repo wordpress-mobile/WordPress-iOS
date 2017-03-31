@@ -436,6 +436,8 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Configure Extensions
     [self setupWordPressExtensions];
+
+    [self create3DTouchShortcutItems];
     
     self.window.rootViewController = [WPTabBarController sharedInstance];
 }
