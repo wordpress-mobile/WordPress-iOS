@@ -52,7 +52,7 @@ abstract_target 'WordPress_Base' do
     pod 'WordPress-iOS-Editor', '1.9.0'
     pod 'WordPressCom-Analytics-iOS', '0.1.23'
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git', :tag => '0.5a7'
-    pod 'wpxmlrpc', '~> 0.8'
+    pod 'wpxmlrpc', :git => 'https://github.com/wordpress-mobile/wpxmlrpc.git', :commit => '3e34d24ddcfe93eb15e337c08573781b59ae1125'
 
     target :WordPressTest do
       inherit! :search_paths
