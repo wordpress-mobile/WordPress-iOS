@@ -163,15 +163,4 @@
 - (NSInteger)getMediaLibraryCountForBlog:(nonnull Blog *)blog
                            forMediaTypes:(nonnull NSSet *)mediaTypes;
 
-#pragma mark - Media cleanup
-
-/**
- *  @brief      Removes all unused media files from the media directories
- *  
- *  @discussion This method looks for any media files that stored inside the media folder that aren't
- * linked to any valid media object and remove them. These files can show up because of the app being killed
- * while a media object was being created or when a CoreData migration fails and the database is recreated.
- */
-+ (void)cleanUnusedMediaFilesFromMediaCacheFolder;
-
 @end

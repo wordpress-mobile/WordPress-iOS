@@ -177,7 +177,7 @@ class AppSettingsViewController: UITableViewController {
 
     fileprivate func clearMediaCache() {
         setMediaCacheRowDescription(status: .clearingCache)
-        MediaService.cleanLocalMediaDirectory(onCompletion: { [weak self] in
+        MediaService.clearLocalMediaDirectoryCache(onCompletion: { [weak self] in
             self?.updateMediaCacheSize()
             }, onError: { [weak self] (error) in
                 self?.updateMediaCacheSize()
