@@ -7,6 +7,8 @@ extension MediaService {
 
     fileprivate static let mediaDirectoryName = "Media"
 
+    // MARK: - Class methods
+
     /// Returns filesystem URL for the local Media directory.
     ///
     class func localMediaDirectory() throws -> URL {
@@ -50,7 +52,8 @@ extension MediaService {
 
     /// Returns the size of a Media image located at the path, or zero if it doesn't exist.
     ///
-    /// Note: once we drop ObjC, this should be an optional that would return nil instead of zero.
+    /// - Note: once we drop ObjC, this should be an optional that would return nil instead of zero.
+    ///
     class func imageSizeForMediaAt(path: String?) -> CGSize {
         let fileManager = FileManager.default
         var isDirectory: ObjCBool = false
@@ -86,30 +89,53 @@ extension MediaService {
         }
     }
 
-    class func cleanLocalMediaDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
+    /// Clear the locala Media directory of any files that are no longer in use by any managed Media objects.
+    ///
+    /// - Note: These files can show up because of the app being killed while a media object
+    ///   was being created or when a CoreData migration fails and the database is recreated.
+    ///
+    class func clearUnusedFilesFromLocalMediaDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
+        purgeLocalMediaFiles(exceptMedia: NSPredicate.init(format: "blog != NULL", argumentArray: nil),
+                             onCompletion: onCompletion,
+                             onError: onError)
+    }
+
+    /// Clear the local Media directory of any cached media files that have are otherwise available remotely.
+    ///
+    class func clearLocalMediaDirectoryCache(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
+        purgeLocalMediaFiles(exceptMedia: NSPredicate.init(format: "remoteURL == NULL", argumentArray: nil),
+                             onCompletion: onCompletion,
+                             onError: onError)
+    }
+
+    // MARK: - Private
+
+    /// Removes any local Media files, except any Media matching the predicate.
+    ///
+    fileprivate class func purgeLocalMediaFiles(exceptMedia predicate: NSPredicate, onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
         let context = ContextManager.sharedInstance().newDerivedContext()
         context.perform {
             let fetch = NSFetchRequest<NSDictionary>(entityName: Media.classNameWithoutNamespaces())
-            fetch.predicate = NSPredicate.init(format: "remoteURL == NULL", argumentArray: nil)
+            fetch.predicate = predicate
             fetch.resultType = .dictionaryResultType
             let localURLProperty = #selector(getter: Media.localURL).description
             let localThumbnailURLProperty = #selector(getter: Media.localThumbnailURL).description
             fetch.propertiesToFetch = [localURLProperty,
                                        localThumbnailURLProperty]
             do {
-                let fileManager = FileManager.default
                 let mediaToKeep = try context.fetch(fetch)
-                var mediaPathsToKeep: Set<URL> = []
-                let documents = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+                var filesToKeep: Set<String> = []
                 for dictionary in mediaToKeep {
-                    if let localPath = dictionary[localURLProperty] as? String {
-                        mediaPathsToKeep.insert(documents.appendingPathComponent(localPath))
+                    if let localPath = dictionary[localURLProperty] as? String,
+                        let localURL = URL(string: localPath) {
+                        filesToKeep.insert(localURL.lastPathComponent)
                     }
-                    if let localThumbnailPath = dictionary[localThumbnailURLProperty] as? String {
-                        mediaPathsToKeep.insert(documents.appendingPathComponent(localThumbnailPath))
+                    if let localThumbnailPath = dictionary[localThumbnailURLProperty] as? String,
+                        let localThumbnailURL = URL(string: localThumbnailPath) {
+                        filesToKeep.insert(localThumbnailURL.lastPathComponent)
                     }
                 }
-                try cleanLocalMediaDirectory(exceptFiles: mediaPathsToKeep)
+                try purgeLocalMediaDirectory(exceptFiles: filesToKeep)
                 if let onCompletion = onCompletion {
                     DispatchQueue.main.async {
                         onCompletion()
@@ -126,17 +152,22 @@ extension MediaService {
         }
     }
 
-    private class func cleanLocalMediaDirectory(exceptFiles: Set<URL>) throws {
+
+    /// Removes files in the Media directory, except any files found in the set.
+    ///
+    fileprivate class func purgeLocalMediaDirectory(exceptFiles: Set<String>) throws {
         let fileManager = FileManager.default
         let contents = try fileManager.contentsOfDirectory(at: try localMediaDirectory(),
                                                            includingPropertiesForKeys: nil,
                                                            options: .skipsHiddenFiles)
-        let unused = contents.filter({ !exceptFiles.contains($0.resolvingSymlinksInPath()) })
-        for url in unused {
+        for url in contents {
+            if exceptFiles.contains(url.lastPathComponent) {
+                continue
+            }
             if fileManager.fileExists(atPath: url.path) {
                 do {
                     try fileManager.removeItem(at: url)
-                    DDLogSwift.logDebug("Removed media file at path while cleaning: \(url.path)")
+                    DDLogSwift.logInfo("Media: removed file while cleaning: \(url.lastPathComponent)")
                 } catch {
                     DDLogSwift.logError("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
                 }
