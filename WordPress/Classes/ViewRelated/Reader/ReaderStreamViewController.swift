@@ -976,6 +976,13 @@ import WordPressComAnalytics
     func handleRefresh(_ sender: UIRefreshControl) {
         if !canSync() {
             cleanupAfterSync()
+            if !connectionAvailable() {
+                _ = DispatchDelayedAction(delay: .seconds(1)) {
+                    let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+                    let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
+                    WPError.showAlert(withTitle: title, message: message)
+                }
+            }
             return
         }
         syncHelper.syncContentWithUserInteraction(true)
@@ -1031,10 +1038,12 @@ import WordPressComAnalytics
 
 
     func canSync() -> Bool {
-        let appDelegate = WordPressAppDelegate.sharedInstance()
-        return (readerTopic != nil) && appDelegate!.connectionAvailable
+        return (readerTopic != nil) && connectionAvailable()
     }
 
+    func connectionAvailable() -> Bool {
+        return WordPressAppDelegate.sharedInstance()!.connectionAvailable
+    }
 
     func canLoadMore() -> Bool {
         let fetchedObjects = tableViewHandler.resultsController.fetchedObjects ?? []
