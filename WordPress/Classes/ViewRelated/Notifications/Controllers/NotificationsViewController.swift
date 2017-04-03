@@ -892,7 +892,9 @@ private extension NotificationsViewController {
 
         return [
             MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"), backgroundColor: WPStyleGuide.greyDarken20(), callback: { _ in
-                NotificationSyncMediator()?.markAsRead(note)
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    NotificationSyncMediator()?.markAsRead(note)
+                }
                 return true
             })
         ]
@@ -908,13 +910,15 @@ private extension NotificationsViewController {
         // Comments: Trash
         if block.isActionEnabled(.Trash) {
             let trashButton = MGSwipeButton(title: NSLocalizedString("Trash", comment: "Trashes a comment"), backgroundColor: WPStyleGuide.errorRed(), callback: { [weak self] _ in
-                let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
-                    self?.actionsService.deleteCommentWithBlock(block) { success in
-                        onCompletion(success)
-                    }
-                })
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
+                        self?.actionsService.deleteCommentWithBlock(block) { success in
+                            onCompletion(success)
+                        }
+                    })
 
-                self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                    self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                }
                 return true
             })
             rightButtons.append(trashButton)
@@ -929,7 +933,9 @@ private extension NotificationsViewController {
             let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
 
             let unapproveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.grey(), callback: { [weak self] _ in
-                self?.actionsService.unapproveCommentWithBlock(block)
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    self?.actionsService.unapproveCommentWithBlock(block)
+                }
                 return true
             })
 
@@ -940,7 +946,9 @@ private extension NotificationsViewController {
             let title = NSLocalizedString("Approve", comment: "Approves a Comment")
 
             let approveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue(), callback: { [weak self] _ in
-                self?.actionsService.approveCommentWithBlock(block)
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    self?.actionsService.approveCommentWithBlock(block)
+                }
                 return true
             })
 
