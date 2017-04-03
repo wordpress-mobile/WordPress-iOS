@@ -17,11 +17,11 @@ class MediaServiceTests: XCTestCase {
             let basename = "media-service-test-sample"
             let pathExtension = "jpg"
             let expected = "\(basename).\(pathExtension)"
-            var url = try MediaService.localMediaURL(with: basename, fileExtension: pathExtension)
+            var url = try MediaService.makeLocalMediaURL(with: basename, fileExtension: pathExtension)
             XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url have unexpected filename or extension: \(url)")
-            url = try MediaService.localMediaURL(with: expected, fileExtension: pathExtension)
+            url = try MediaService.makeLocalMediaURL(with: expected, fileExtension: pathExtension)
             XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url have unexpected filename or extension: \(url)")
-            url = try MediaService.localMediaURL(with: basename + ".png", fileExtension: pathExtension)
+            url = try MediaService.makeLocalMediaURL(with: basename + ".png", fileExtension: pathExtension)
             XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url have unexpected filename or extension: \(url)")
         } catch {
             XCTFail("Error creating local media URL: \(error)")
