@@ -109,10 +109,28 @@
             }];
         };
     }
-    
-    NSURL *mediaURL = [self urlForMediaWithFilename:mediaName andExtension:extension];
-    NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
-                                                andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
+
+    error = nil;
+    NSURL *mediaURL = [MediaService localMediaURLWith:mediaName
+                                        fileExtension:extension
+                                                error:&error];
+    if (error) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+    error = nil;
+    NSURL *mediaThumbnailURL = [MediaService localMediaURLWith:[MediaService mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
+                                                 fileExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]
+                                                         error:&error];
+    if (error) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+
     CGFloat imageMaxDimension = MAX([UIScreen mainScreen].nativeBounds.size.width, [UIScreen mainScreen].nativeBounds.size.height);
     CGSize thumbnailSize = CGSizeMake(imageMaxDimension, imageMaxDimension);
 
@@ -185,7 +203,7 @@
  
     [self.managedObjectContext performBlock:^{
         AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
-        Media *media = [self newMediaForPost:post];
+        Media *media = [Media makeMediaWithPost:post];
         media.postID = post.postID;
         media.filename = [mediaURL lastPathComponent];
         media.absoluteLocalURL = [mediaURL path];
@@ -214,8 +232,8 @@
 
 - (void)uploadMedia:(Media *)media
            progress:(NSProgress **)progress
-           success:(void (^)())success
-           failure:(void (^)(NSError *error))failure
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
     RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
@@ -312,9 +330,9 @@
                 failure:failureBlock];
 }
 
-- (void)updateMultipleMedia:(NSArray<Media *> *)mediaObjects
-             overallSuccess:(void (^)())overallSuccess
-                    failure:(void (^)(NSError *error))failure
+- (void)updateMedia:(NSArray<Media *> *)mediaObjects
+     overallSuccess:(void (^)())overallSuccess
+            failure:(void (^)(NSError *error))failure
 {
     if (mediaObjects.count == 0) {
         if (overallSuccess) {
@@ -426,10 +444,10 @@
                 failure:failure];
 }
 
-- (void)deleteMultipleMedia:(nonnull NSArray<Media *> *)mediaObjects
-                   progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
-                    success:(nullable void (^)())success
-                    failure:(nullable void (^)())failure
+- (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
+           progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
+            success:(nullable void (^)())success
+            failure:(nullable void (^)())failure
 {
     if (mediaObjects.count == 0) {
         if (success) {
@@ -482,9 +500,9 @@
            if (!blog) {
                return;
            }
-           Media *media = [self findMediaWithID:remoteMedia.mediaID inBlog:blog];
+           Media *media = [Media existingMediaWithMediaID:remoteMedia.mediaID inBlog:blog];
            if (!media) {
-               media = [self newMediaForBlog:blog];
+               media = [Media makeMediaWithBlog:blog];
            }
            [self updateMedia:media withRemoteMedia:remoteMedia];
            if (success){
@@ -500,12 +518,6 @@
         }
 
     }];
-}
-
-- (Media *)findMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog
-{
-    NSSet *media = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID = %@", mediaID]];
-    return [media anyObject];
 }
 
 - (void)getMediaURLFromVideoPressID:(NSString *)videoPressID
@@ -566,53 +578,6 @@
     return _queueForResizeMediaOperations;
 }
 
-- (CGSize)sizeOfMediaFileAtPath:(NSString *)pathForFile {
-    if (pathForFile == nil || ![[NSFileManager defaultManager] fileExistsAtPath:pathForFile isDirectory:nil]) {
-        return CGSizeZero;
-    }
-    NSURL *imageFileURL = [NSURL fileURLWithPath:pathForFile];
-    CGImageSourceRef imageSource = CGImageSourceCreateWithURL((CFURLRef)imageFileURL, NULL);
-    if (imageSource == NULL) {
-        // Error loading image
-        return CGSizeZero;
-    }
-
-    CGFloat width = 0.0f, height = 0.0f;
-    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, NULL);
-
-    CFRelease(imageSource);
-
-    if (imageProperties == NULL) {
-        return CGSizeZero;
-    }
-
-    CFNumberRef widthNum  = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelWidth);
-    if (widthNum != NULL) {
-        CFNumberGetValue(widthNum, kCFNumberCGFloatType, &width);
-    }
-
-    CFNumberRef heightNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyPixelHeight);
-    if (heightNum != NULL) {
-        CFNumberGetValue(heightNum, kCFNumberCGFloatType, &height);
-    }
-
-    // Check orientation and flip size if required
-    CFNumberRef orientationNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyOrientation);
-    if (orientationNum != NULL) {
-        int orientation;
-        CFNumberGetValue(orientationNum, kCFNumberIntType, &orientation);
-        if (orientation > 4) {
-            CGFloat temp = width;
-            width = height;
-            height = temp;
-        }
-    }
-    
-    CFRelease(imageProperties);
-
-    return CGSizeMake(width, height);
-}
-
 - (void)imageForMedia:(Media *)mediaInRandomContext
                  size:(CGSize)requestSize
               success:(void (^)(UIImage *image))success
@@ -633,14 +598,14 @@
         CGSize availableSize = CGSizeZero;
         if (media.mediaType == MediaTypeImage) {
             pathForFile = media.absoluteThumbnailLocalURL;
-            availableSize = [self sizeOfMediaFileAtPath:pathForFile];
+            availableSize = [MediaService imageSizeForMediaAtPath:pathForFile];
             if (size.height > availableSize.height && size.width > availableSize.width) {
                 pathForFile = media.absoluteLocalURL;
-                availableSize = [self sizeOfMediaFileAtPath:pathForFile];
+                availableSize = [MediaService imageSizeForMediaAtPath:pathForFile];
             }
         } else if (media.mediaType == MediaTypeVideo) {
             pathForFile = media.absoluteThumbnailLocalURL;
-            availableSize = [self sizeOfMediaFileAtPath:pathForFile];
+            availableSize = [MediaService imageSizeForMediaAtPath:pathForFile];
         }
 
         // check if the available local image is equal or larger than the requested size
@@ -688,8 +653,16 @@
             }
 
             [self.managedObjectContext performBlock:^{
-                NSURL *fileURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:media.filename]
-                                                  andExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]];
+                NSError *error = nil;
+                NSURL *fileURL = [MediaService localMediaURLWith:[MediaService mediaFilenameAppendingThumbnail:media.filename]
+                                                   fileExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]
+                                                           error:&error];
+                if (error) {
+                    if (failure) {
+                        failure(error);
+                    }
+                    return;
+                }
                 if (CGSizeEqualToSize(size, mediaOriginalSize)) {
                     media.absoluteLocalURL = [fileURL path];
                 } else {
@@ -753,79 +726,10 @@
 
 #pragma mark - Private
 
-#pragma mark - Media Creation
-
-- (Media *)newMedia
-{
-    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:self.managedObjectContext];
-    media.creationDate = [NSDate date];
-    media.mediaID = @0;
-    // We only support images for now, so let's set the default here
-    media.mediaType = MediaTypeImage;
-    return media;
-}
-
-- (Media *)newMediaForBlog:(Blog *)blog
-{
-    Media *media = [self newMedia];
-    media.blog = blog;
-    return media;
-}
-
-- (Media *)newMediaForPost:(AbstractPost *)post
-{
-    Media *media = [self newMediaForBlog:post.blog];
-    [media addPostsObject:post];
-    return media;
-}
-
 #pragma mark - Media helpers
 
 - (NSString *)extensionForUTI:(NSString *)UTI {
     return (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)UTI, kUTTagClassFilenameExtension);
-}
-
-static NSString * const MediaDirectory = @"Media";
-
-+ (NSURL *)urlForMediaDirectory
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL * documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
-    NSURL * mediaURL = [documentsURL URLByAppendingPathComponent:MediaDirectory isDirectory:YES];
-    NSError *error;
-    if (![mediaURL checkResourceIsReachableAndReturnError:&error]) {
-        if (![fileManager createDirectoryAtURL:mediaURL withIntermediateDirectories:YES attributes:nil error:&error]){
-            DDLogError(@"%@", [error localizedDescription]);
-            return nil;
-        }
-        [mediaURL setResourceValue:@(NO) forKey:NSURLIsExcludedFromBackupKey error:nil];
-    }
-    
-    return mediaURL;
-}
-
-- (NSURL *)urlForMediaWithFilename:(NSString *)filename andExtension:(NSString *)extension
-{
-    NSURL *mediaDirectoryURL = [[self class] urlForMediaDirectory];
-    NSString *basename = [[filename stringByDeletingPathExtension] lowercaseString];
-    NSURL *resultURL = [mediaDirectoryURL URLByAppendingPathComponent:basename];
-    resultURL = [resultURL URLByAppendingPathExtension:extension];
-    NSUInteger index = 1;
-    while ([resultURL checkResourceIsReachableAndReturnError:nil]) {
-        NSString *alternativeFilename = [NSString stringWithFormat:@"%@-%d.%@", basename, index, extension];
-        resultURL = [mediaDirectoryURL URLByAppendingPathComponent:alternativeFilename];
-        index++;
-    }
-    return resultURL;
-}
-
-- (NSString *)pathForThumbnailOfFile:(NSString *)filename
-{
-    NSString *extension = [filename pathExtension];
-    NSString *fileWithoutExtension = [filename stringByDeletingPathExtension];
-    NSString *thumbnailPath = [fileWithoutExtension stringByAppendingString:@"-thumbnail"];
-    thumbnailPath = [thumbnailPath stringByAppendingPathExtension:extension];
-    return thumbnailPath;
 }
 
 - (id<MediaServiceRemote>)remoteForBlog:(Blog *)blog
@@ -851,9 +755,9 @@ static NSString * const MediaDirectory = @"Media";
     NSMutableSet *mediaToKeep = [NSMutableSet set];
     for (RemoteMedia *remote in media) {
         @autoreleasepool {
-            Media *local = [self findMediaWithID:remote.mediaID inBlog:blog];
+            Media *local = [Media existingMediaWithMediaID:remote.mediaID inBlog:blog];
             if (!local) {
-                local = [self newMediaForBlog:blog];
+                local = [Media makeMediaWithBlog:blog];
                 local.remoteStatus = MediaRemoteStatusSync;
             }
             [self updateMedia:local withRemoteMedia:remote];
@@ -968,11 +872,15 @@ static NSString * const MediaDirectory = @"Media";
 
         // Search for media extension files within the Media Folder
         NSSet *mediaExtensions = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", @"mov", @"avi", @"mp4", nil];
-
-        NSArray *contentsOfDir = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[self urlForMediaDirectory]
+        error = nil;
+        NSArray *contentsOfDir = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[self localMediaDirectoryAndReturnError:&error]
                                                                includingPropertiesForKeys:nil
                                                                                   options:NSDirectoryEnumerationSkipsHiddenFiles
                                                                                     error:nil];
+        if (error) {
+            DDLogError(@"Error cleaning up tmp files while accessing Media directory: %@", error.localizedDescription);
+            return;
+        }
 
         for (NSURL *currentURL in contentsOfDir) {
             NSString *filepath = [[currentURL URLByResolvingSymlinksInPath] path];
@@ -1036,7 +944,11 @@ static NSString * const MediaDirectory = @"Media";
             }
         }
 
-        [self cleanFolderURL:[self urlForMediaDirectory] exceptFiles:pathsToKeep];
+        error = nil;
+        [self cleanFolderURL:[self localMediaDirectoryAndReturnError:&error] exceptFiles:pathsToKeep];
+        if (error) {
+            DDLogError(@"Error cleaning up tmp files while accessing Media directory: %@", error.localizedDescription);
+        }
     }];
 }
 
