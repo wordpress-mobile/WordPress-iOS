@@ -189,7 +189,7 @@
         DDLogInfo(@"Error resolving Media directory: %@", error);
         return nil;
     }
-    return [mediaDirectory.absoluteString stringByAppendingPathComponent:localURLPath.lastPathComponent];
+    return [mediaDirectory URLByAppendingPathComponent:localURLPath.lastPathComponent].absoluteString;
 }
 
 #pragma mark - CoreData Helpers
