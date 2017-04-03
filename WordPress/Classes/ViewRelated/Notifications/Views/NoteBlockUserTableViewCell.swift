@@ -75,7 +75,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
 
     // MARK: - IBActions
     @IBAction func followWasPressed(_ sender: AnyObject) {
-        onAvailableInternetConnectionDo {
+        ReachabilityUtils.onAvailableInternetConnectionDo {
             if let listener = isFollowOn ? onUnfollowClick : onFollowClick {
                 listener()
             }
