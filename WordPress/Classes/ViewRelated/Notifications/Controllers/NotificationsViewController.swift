@@ -699,7 +699,7 @@ extension NotificationsViewController {
 
         let start = Date()
 
-        mediator.sync { _ in
+        mediator.sync { (error, _) in
 
             let delta = max(Syncing.minimumPullToRefreshDelay + start.timeIntervalSinceNow, 0)
             let delay = DispatchTime.now() + Double(Int64(delta * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
@@ -707,6 +707,10 @@ extension NotificationsViewController {
             DispatchQueue.main.asyncAfter(deadline: delay) { _ in
                 self.refreshControl?.endRefreshing()
                 self.clearUnreadNotifications()
+            }
+
+            if let error = error {
+                WPError.showNetworkingAlertWithError(error, title: NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails."))
             }
         }
     }
@@ -888,7 +892,9 @@ private extension NotificationsViewController {
 
         return [
             MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"), backgroundColor: WPStyleGuide.greyDarken20(), callback: { _ in
-                NotificationSyncMediator()?.markAsRead(note)
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    NotificationSyncMediator()?.markAsRead(note)
+                }
                 return true
             })
         ]
@@ -904,13 +910,15 @@ private extension NotificationsViewController {
         // Comments: Trash
         if block.isActionEnabled(.Trash) {
             let trashButton = MGSwipeButton(title: NSLocalizedString("Trash", comment: "Trashes a comment"), backgroundColor: WPStyleGuide.errorRed(), callback: { [weak self] _ in
-                let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
-                    self?.actionsService.deleteCommentWithBlock(block) { success in
-                        onCompletion(success)
-                    }
-                })
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
+                        self?.actionsService.deleteCommentWithBlock(block) { success in
+                            onCompletion(success)
+                        }
+                    })
 
-                self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                    self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                }
                 return true
             })
             rightButtons.append(trashButton)
@@ -925,7 +933,9 @@ private extension NotificationsViewController {
             let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
 
             let unapproveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.grey(), callback: { [weak self] _ in
-                self?.actionsService.unapproveCommentWithBlock(block)
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    self?.actionsService.unapproveCommentWithBlock(block)
+                }
                 return true
             })
 
@@ -936,7 +946,9 @@ private extension NotificationsViewController {
             let title = NSLocalizedString("Approve", comment: "Approves a Comment")
 
             let approveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue(), callback: { [weak self] _ in
-                self?.actionsService.approveCommentWithBlock(block)
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    self?.actionsService.approveCommentWithBlock(block)
+                }
                 return true
             })
 
