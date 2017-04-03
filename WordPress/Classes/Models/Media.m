@@ -1,5 +1,6 @@
 #import "Media.h"
 #import "ContextManager.h"
+#import "WordPress-Swift.h"
 
 @implementation Media
 
@@ -154,44 +155,41 @@
 
 - (NSString *)absoluteThumbnailLocalURL;
 {
-    if ( self.localThumbnailURL ) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths firstObject];
-        NSString *absolutePath = [NSString pathWithComponents:@[documentsDirectory, self.localThumbnailURL]];
-        return absolutePath;
-    } else {
+    if (!self.localThumbnailURL.length) {
         return nil;
     }
+    return [self absolutePathForLocalURLPath:self.localThumbnailURL];
 }
 
 - (void)setAbsoluteThumbnailLocalURL:(NSString *)absoluteLocalURL
 {
     NSParameterAssert([absoluteLocalURL isAbsolutePath]);
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *localPath =  [absoluteLocalURL stringByReplacingOccurrencesOfString:documentsDirectory withString:@""];
-    self.localThumbnailURL = localPath;
+    self.localThumbnailURL = absoluteLocalURL.lastPathComponent;
 }
 
 - (NSString *)absoluteLocalURL
 {
-    if ( self.localURL ) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths firstObject];
-        NSString *absolutePath = [NSString pathWithComponents:@[documentsDirectory, self.localURL]];
-        return absolutePath;
-    } else {
+    if (!self.localURL.length) {
         return nil;
     }
+    return [self absolutePathForLocalURLPath:self.localURL];
 }
 
 - (void)setAbsoluteLocalURL:(NSString *)absoluteLocalURL
 {
     NSParameterAssert([absoluteLocalURL isAbsolutePath]);
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths firstObject];
-    NSString *localPath =  [absoluteLocalURL stringByReplacingOccurrencesOfString:documentsDirectory withString:@""];
-    self.localURL = localPath;
+    self.localURL = absoluteLocalURL.lastPathComponent;
+}
+
+- (NSString *)absolutePathForLocalURLPath:(NSString *)localURLPath
+{
+    NSError *error;
+    NSURL *mediaDirectory = [MediaService localMediaDirectoryAndReturnError:&error];
+    if (error) {
+        DDLogInfo(@"Error resolving Media directory: %@", error);
+        return nil;
+    }
+    return [mediaDirectory.absoluteString stringByAppendingPathComponent:localURLPath.lastPathComponent];
 }
 
 #pragma mark - CoreData Helpers
