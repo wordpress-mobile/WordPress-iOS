@@ -252,7 +252,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     UITableViewRowAction *trash = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
                                                                      title:NSLocalizedString(@"Trash", @"Trashes a comment")
                                                                    handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                       [weakSelf deleteComment:comment];
+                                                                       [ReachabilityUtils onAvailableInternetConnectionDo:^{
+                                                                           [weakSelf deleteComment:comment];
+                                                                       }];
                                                                    }];
     trash.backgroundColor = [WPStyleGuide errorRed];
     [actions addObject:trash];
@@ -261,7 +263,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
         UITableViewRowAction *unapprove = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
                                                                              title:NSLocalizedString(@"Unapprove", @"Unapproves a Comment")
                                                                            handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                               [weakSelf unapproveComment:comment];
+                                                                               [ReachabilityUtils onAvailableInternetConnectionDo:^{
+                                                                                   [weakSelf unapproveComment:comment];
+                                                                               }];
                                                                            }];
         
         unapprove.backgroundColor = [WPStyleGuide grey];
@@ -270,7 +274,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
         UITableViewRowAction *approve = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
                                                                            title:NSLocalizedString(@"Approve", @"Approves a Comment")
                                                                          handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                             [weakSelf approveComment:comment];
+                                                                             [ReachabilityUtils onAvailableInternetConnectionDo:^{
+                                                                                 [weakSelf approveComment:comment];
+                                                                             }];
                                                                          }];
         
         approve.backgroundColor = [WPStyleGuide wordPressBlue];
