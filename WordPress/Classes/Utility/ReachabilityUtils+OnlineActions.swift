@@ -1,11 +1,3 @@
-//
-//  ReachabilityActionUtils.swift
-//  WordPress
-//
-//  Created by Elisa Budelli on 4/3/17.
-//  Copyright © 2017 WordPress. All rights reserved.
-//
-
 import Foundation
 
 extension ReachabilityUtils {
