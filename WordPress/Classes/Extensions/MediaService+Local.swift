@@ -102,9 +102,9 @@ extension MediaService {
                              onError: onError)
     }
 
-    /// Clear the local Media directory of any cached media files that have are otherwise available remotely.
+    /// Clear the local Media directory of any cached media files that are available remotely.
     ///
-    class func clearLocalMediaDirectoryCache(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
+    class func clearCachedFilesFromLocalMediaDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
         purgeLocalMediaFiles(exceptMedia: NSPredicate.init(format: "remoteURL == NULL", argumentArray: nil),
                              onCompletion: onCompletion,
                              onError: onError)
