@@ -163,7 +163,6 @@
 
 - (void)setAbsoluteThumbnailLocalURL:(NSString *)absoluteLocalURL
 {
-    NSParameterAssert([absoluteLocalURL isAbsolutePath]);
     self.localThumbnailURL = absoluteLocalURL.lastPathComponent;
 }
 
@@ -177,7 +176,6 @@
 
 - (void)setAbsoluteLocalURL:(NSString *)absoluteLocalURL
 {
-    NSParameterAssert([absoluteLocalURL isAbsolutePath]);
     self.localURL = absoluteLocalURL.lastPathComponent;
 }
 
