@@ -162,6 +162,7 @@ extension MediaService {
         let contents = try fileManager.contentsOfDirectory(at: try localMediaDirectory(),
                                                            includingPropertiesForKeys: nil,
                                                            options: .skipsHiddenFiles)
+        var removedCount = 0
         for url in contents {
             if exceptFiles.contains(url.lastPathComponent) {
                 continue
@@ -169,11 +170,14 @@ extension MediaService {
             if fileManager.fileExists(atPath: url.path) {
                 do {
                     try fileManager.removeItem(at: url)
-                    DDLogSwift.logInfo("Media: removed file while cleaning: \(url.lastPathComponent)")
+                    removedCount += 1
                 } catch {
                     DDLogSwift.logError("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
                 }
             }
+        }
+        if removedCount > 0 {
+            DDLogSwift.logInfo("Media: removed \(removedCount) file(s) during cleanup.")
         }
     }
 }
