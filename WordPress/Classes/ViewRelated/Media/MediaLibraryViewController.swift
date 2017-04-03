@@ -216,11 +216,11 @@ class MediaLibraryViewController: UIViewController {
         updateProgress(nil)
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.deleteMultipleMedia(assets,
-                                    progress: updateProgress,
-                                    success: { [weak self] in
-                                        SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
-                                        self?.isEditing = false
+        service.deleteMedia(assets,
+                            progress: updateProgress,
+                            success: { [weak self] in
+                                SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
+                                self?.isEditing = false
         }, failure: { error in
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items."))
         })
