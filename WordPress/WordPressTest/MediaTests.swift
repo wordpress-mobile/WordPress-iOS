@@ -29,17 +29,17 @@ class MediaTests: XCTestCase {
             let filePath = "sample.jpeg"
             var expectedAbsoluteURL = try MediaService.localMediaDirectory()
             expectedAbsoluteURL.appendPathComponent(filePath)
-            media.absoluteLocalURL = expectedAbsoluteURL.absoluteString
+            media.absoluteLocalURL = expectedAbsoluteURL
             guard
                 let localPath = media.localURL,
                 let localURL = URL(string: localPath),
-                let absoluteURLPath = media.absoluteLocalURL
+                let absoluteURL = media.absoluteLocalURL
                 else {
                     XCTFail("Error building expected absolute URL: \(expectedAbsoluteURL)")
                     return
             }
             XCTAssert(localURL.lastPathComponent == expectedAbsoluteURL.lastPathComponent, "Error: unexpected local Media URL")
-            XCTAssert(absoluteURLPath == expectedAbsoluteURL.absoluteString, "Error: unexpected absolute Media URL")
+            XCTAssert(absoluteURL == expectedAbsoluteURL, "Error: unexpected absolute Media URL")
         } catch {
             XCTFail("Error testing absolute URLs: \(error)")
         }
@@ -51,17 +51,17 @@ class MediaTests: XCTestCase {
             let filePath = "sample-thumbnail.jpeg"
             var expectedAbsoluteURL = try MediaService.localMediaDirectory()
             expectedAbsoluteURL.appendPathComponent(filePath)
-            media.absoluteThumbnailLocalURL = expectedAbsoluteURL.absoluteString
+            media.absoluteThumbnailLocalURL = expectedAbsoluteURL
             guard
                 let localPath = media.localThumbnailURL,
                 let localURL = URL(string: localPath),
-                let absoluteURLPath = media.absoluteThumbnailLocalURL
+                let absoluteURL = media.absoluteThumbnailLocalURL
                 else {
                     XCTFail("Error building expected absolute thumbnail URL: \(expectedAbsoluteURL)")
                     return
             }
             XCTAssert(localURL.lastPathComponent == expectedAbsoluteURL.lastPathComponent, "Error: unexpected local thumbnail Media URL")
-            XCTAssert(absoluteURLPath == expectedAbsoluteURL.absoluteString, "Error: unexpected absolute thumbnail Media URL")
+            XCTAssert(absoluteURL == expectedAbsoluteURL, "Error: unexpected absolute thumbnail Media URL")
         } catch {
             XCTFail("Error testing absolute thumbnail URLs: \(error)")
         }

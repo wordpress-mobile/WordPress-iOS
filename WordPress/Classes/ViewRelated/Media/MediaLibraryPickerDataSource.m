@@ -573,11 +573,9 @@
         return 0;
     }
 
-    NSURL *url = nil;
+    NSURL *url = self.absoluteLocalURL;
     // Do we have a local url, or remote url to use for the video
-    if (self.absoluteLocalURL) {
-        url = [NSURL fileURLWithPath:self.absoluteLocalURL];
-    } else if (self.remoteURL) {
+    if (!url && self.remoteURL) {
         url = [NSURL URLWithString:self.remoteURL];
     }
 
@@ -634,13 +632,12 @@
     if (self.length != nil && [self.length doubleValue] > 0) {
         return [self.length doubleValue];
     }
-    
-    if (self.absoluteLocalURL == nil ||
-        ![[NSFileManager defaultManager] fileExistsAtPath:self.absoluteLocalURL isDirectory:nil]) {
+
+    NSURL *absoluteLocalURL = self.absoluteLocalURL;
+    if (absoluteLocalURL == nil || ![[NSFileManager defaultManager] fileExistsAtPath:absoluteLocalURL.path isDirectory:nil]) {
         return 0;
     }
-    NSURL *sourceMovieURL = [NSURL fileURLWithPath:self.absoluteLocalURL];
-    AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:sourceMovieURL options:nil];
+    AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:absoluteLocalURL options:nil];
     CMTime duration = sourceAsset.duration;
     
     return CMTimeGetSeconds(duration);

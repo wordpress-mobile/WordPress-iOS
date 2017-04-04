@@ -2,7 +2,7 @@
 
 @property (nonatomic, strong) NSNumber *mediaID;
 @property (nonatomic, strong) NSURL *url;
-@property (nonatomic, strong) NSString *localURL;
+@property (nonatomic, strong) NSURL *localURL;
 @property (nonatomic, strong) NSURL *guid;
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSNumber *postID;
