@@ -37,15 +37,15 @@ class MediaServiceTests: XCTestCase {
         XCTAssertTrue(thumbnail == "\(basename)-thumbnail", "Error: appending media thumbnail to filename returned unexpected result.")
     }
 
-    func testThatSizeForMediaImageAtPathWorks() {
+    func testThatSizeForMediaImageAtFileURLWorks() {
         var mediaPath = OHPathForFile("test-image.jpg", type(of: self))
-        var size = MediaService.imageSizeForMediaAt(path: mediaPath)
+        var size = MediaService.imageSizeForMediaAt(fileURL: URL(fileURLWithPath: mediaPath!))
         XCTAssertTrue(size == CGSize(width: 1024, height: 680), "Unexpected size returned when testing imageSizeForMediaAtPath.")
 
         // Test an image in portrait orientation, example is in EXIF Orientation: 5
         mediaPath = OHPathForFile("test-image-portrait.jpg", type(of: self))
         // Check that size matches for the expected default orientation
-        size = MediaService.imageSizeForMediaAt(path: mediaPath)
+        size = MediaService.imageSizeForMediaAt(fileURL: URL(fileURLWithPath: mediaPath!))
         XCTAssertTrue(size == CGSize(width: 1024, height: 680), "Unexpected size returned when testing an image with an exif orientation of 5 via imageSizeForMediaAtPath.")
     }
 

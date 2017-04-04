@@ -52,19 +52,18 @@ extension MediaService {
         return filename.appendingPathExtension(pathExtension)!
     }
 
-    /// Returns the size of a Media image located at the path, or zero if it doesn't exist.
+    /// Returns the size of a Media image located at the file URL, or zero if it doesn't exist.
     ///
     /// - Note: once we drop ObjC, this should be an optional that would return nil instead of zero.
     ///
-    class func imageSizeForMediaAt(path: String?) -> CGSize {
+    class func imageSizeForMediaAt(fileURL: URL) -> CGSize {
         let fileManager = FileManager.default
         var isDirectory: ObjCBool = false
-        guard let path = path, fileManager.fileExists(atPath: path, isDirectory: &isDirectory) == true, isDirectory.boolValue == false else {
+        guard fileManager.fileExists(atPath: fileURL.path, isDirectory: &isDirectory) == true, isDirectory.boolValue == false else {
             return CGSize.zero
         }
-        let url = URL(fileURLWithPath: path, isDirectory: false)
         guard
-            let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil),
+            let imageSource = CGImageSourceCreateWithURL(fileURL as CFURL, nil),
             let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as? Dictionary<String, AnyObject>
             else {
                 return CGSize.zero
