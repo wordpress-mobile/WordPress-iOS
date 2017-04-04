@@ -407,10 +407,10 @@ struct MediaImageRow: ImmuTableRow {
 
     private func addPlaceholderImageFor(_ cell: ImageTableViewCell) {
         if let url = media.absoluteLocalURL,
-            let image = UIImage(contentsOfFile: url) {
+            let image = UIImage(contentsOfFile: url.path) {
             cell.customImageView.image = image
         } else if let url = media.absoluteThumbnailLocalURL,
-            let image = UIImage(contentsOfFile: url) {
+            let image = UIImage(contentsOfFile: url.path) {
             cell.customImageView.image = image
         }
     }

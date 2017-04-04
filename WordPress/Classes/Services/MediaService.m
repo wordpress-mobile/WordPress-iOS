@@ -206,8 +206,8 @@
         Media *media = [Media makeMediaWithPost:post];
         media.postID = post.postID;
         media.filename = [mediaURL lastPathComponent];
-        media.absoluteLocalURL = [mediaURL path];
-        media.absoluteThumbnailLocalURL = [mediaThumbnailURL path];
+        media.absoluteLocalURL = mediaURL;
+        media.absoluteThumbnailLocalURL = mediaThumbnailURL;
         NSNumber * fileSize;
         if ([mediaURL getResourceValue:&fileSize forKey:NSURLFileSizeKey error:nil]) {
             media.filesize = @([fileSize longLongValue] / 1024);
@@ -531,7 +531,7 @@
     NSError *error = nil;
     Media *media = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
     if (media) {
-        NSString  *posterURL = media.absoluteThumbnailLocalURL;
+        NSString *posterURL = media.absoluteThumbnailLocalURL.absoluteString;
         if (!posterURL) {
             posterURL = media.remoteThumbnailURL;
         }
@@ -597,14 +597,14 @@
         }
         CGSize availableSize = CGSizeZero;
         if (media.mediaType == MediaTypeImage) {
-            pathForFile = media.absoluteThumbnailLocalURL;
+            pathForFile = media.absoluteThumbnailLocalURL.path;
             availableSize = [MediaService imageSizeForMediaAtPath:pathForFile];
             if (size.height > availableSize.height && size.width > availableSize.width) {
-                pathForFile = media.absoluteLocalURL;
+                pathForFile = media.absoluteLocalURL.path;
                 availableSize = [MediaService imageSizeForMediaAtPath:pathForFile];
             }
         } else if (media.mediaType == MediaTypeVideo) {
-            pathForFile = media.absoluteThumbnailLocalURL;
+            pathForFile = media.absoluteThumbnailLocalURL.path;
             availableSize = [MediaService imageSizeForMediaAtPath:pathForFile];
         }
 
@@ -664,9 +664,9 @@
                     return;
                 }
                 if (CGSizeEqualToSize(size, mediaOriginalSize)) {
-                    media.absoluteLocalURL = [fileURL path];
+                    media.absoluteLocalURL = fileURL;
                 } else {
-                    media.absoluteThumbnailLocalURL = [fileURL path];
+                    media.absoluteThumbnailLocalURL = fileURL;
                 }
                 [self.managedObjectContext save:nil];
                 [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{                    
