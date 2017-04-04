@@ -153,7 +153,7 @@
 
 #pragma mark - Absolute URLs
 
-- (NSString *)absoluteThumbnailLocalURL;
+- (NSURL *)absoluteThumbnailLocalURL;
 {
     if (!self.localThumbnailURL.length) {
         return nil;
@@ -161,12 +161,12 @@
     return [self absolutePathForLocalURLPath:self.localThumbnailURL];
 }
 
-- (void)setAbsoluteThumbnailLocalURL:(NSString *)absoluteLocalURL
+- (void)setAbsoluteThumbnailLocalURL:(NSURL *)absoluteLocalURL
 {
     self.localThumbnailURL = absoluteLocalURL.lastPathComponent;
 }
 
-- (NSString *)absoluteLocalURL
+- (NSURL *)absoluteLocalURL
 {
     if (!self.localURL.length) {
         return nil;
@@ -174,12 +174,12 @@
     return [self absolutePathForLocalURLPath:self.localURL];
 }
 
-- (void)setAbsoluteLocalURL:(NSString *)absoluteLocalURL
+- (void)setAbsoluteLocalURL:(NSURL *)absoluteLocalURL
 {
     self.localURL = absoluteLocalURL.lastPathComponent;
 }
 
-- (NSString *)absolutePathForLocalURLPath:(NSString *)localURLPath
+- (NSURL *)absolutePathForLocalURLPath:(NSString *)localURLPath
 {
     NSError *error;
     NSURL *mediaDirectory = [MediaService localMediaDirectoryAndReturnError:&error];
@@ -187,7 +187,7 @@
         DDLogInfo(@"Error resolving Media directory: %@", error);
         return nil;
     }
-    return [mediaDirectory URLByAppendingPathComponent:localURLPath.lastPathComponent].absoluteString;
+    return [mediaDirectory URLByAppendingPathComponent:localURLPath.lastPathComponent];
 }
 
 #pragma mark - CoreData Helpers
@@ -196,12 +196,14 @@
 {
     NSError *error = nil;
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:self.absoluteLocalURL] &&
-        ![fileManager removeItemAtPath:self.absoluteLocalURL error:&error]) {
+    NSString *absolutePath = self.absoluteLocalURL.path;
+    if ([fileManager fileExistsAtPath:absolutePath] &&
+        ![fileManager removeItemAtPath:absolutePath error:&error]) {
         DDLogInfo(@"Error removing media files:%@", error);
     }
-    if ([fileManager fileExistsAtPath:self.absoluteThumbnailLocalURL] &&
-        ![fileManager removeItemAtPath:self.absoluteThumbnailLocalURL error:&error]) {
+    NSString *absoluteThumbnailPath = self.absoluteThumbnailLocalURL.path;
+    if ([fileManager fileExistsAtPath:absoluteThumbnailPath] &&
+        ![fileManager removeItemAtPath:absoluteThumbnailPath error:&error]) {
         DDLogInfo(@"Error removing media files:%@", error);
     }
     [super prepareForDeletion];

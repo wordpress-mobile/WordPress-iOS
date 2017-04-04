@@ -1878,7 +1878,7 @@ EditImageDetailsViewControllerDelegate
             [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueID mediaId:[media.mediaID stringValue]];
         } else if ([media mediaType] == MediaTypeVideo) {
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary withBlog:self.post.blog];
-            [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media absoluteThumbnailLocalURL]];
+            [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:media.absoluteThumbnailLocalURL.path];
             [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:media.posterAttributeImageURL videoPress:media.videopressGUID];
         }
         [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
@@ -1887,7 +1887,7 @@ EditImageDetailsViewControllerDelegate
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
                    withProperties:[WPAppAnalytics propertiesFor:media]
                          withBlog:self.post.blog];
-            [self.editorView insertLocalImage:media.absoluteLocalURL uniqueId:mediaUniqueID];
+            [self.editorView insertLocalImage:media.absoluteLocalURL.path uniqueId:mediaUniqueID];
         } else if ([media mediaType] == MediaTypeVideo) {
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
                    withProperties:[WPAppAnalytics propertiesFor:media]
