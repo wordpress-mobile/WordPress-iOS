@@ -828,6 +828,12 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatNotificationsSettingsUpdated:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Updated"];
             break;
+        case WPAnalyticsStatNotificationsTappedNewPost:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification - New Post (empty state)"];
+            break;
+        case WPAnalyticsStatNotificationsTappedViewReader:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification - View Reader (empty state)"];
+            break;
         case WPAnalyticsStatPersonRemoved:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"People Management - Removed Person"];
             break;

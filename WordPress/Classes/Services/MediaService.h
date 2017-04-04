@@ -88,9 +88,9 @@
  @param mediaObjects An array of media objects to update
  @param success
  */
-- (void)updateMultipleMedia:(nonnull NSArray<Media *> *)mediaObjects
-             overallSuccess:(nullable void (^)())overallSuccess
-                    failure:(nullable void (^)(NSError * _Nonnull error))failure;
+- (void)updateMedia:(nonnull NSArray<Media *> *)mediaObjects
+     overallSuccess:(nullable void (^)())overallSuccess
+            failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
  Deletes the Media object from the server. Note the Media is deleted, not trashed.
@@ -111,20 +111,10 @@
  @param success a block that will be invoked when the media deletion finished with success
  @param failure a block that will be invoked when there is an error.
  */
-- (void)deleteMultipleMedia:(nonnull NSArray<Media *> *)mediaObjects
-                    progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
-                    success:(nullable void (^)())success
-                    failure:(nullable void (^)())failure;
-
-/**
- Find the media object in the local database.
- 
- @param mediaID
- @param blog
- 
- @return the Media object with the mediaID that belongs to the blog. Nil if not found.
- */
-- (nullable Media *)findMediaWithID:(nonnull NSNumber *)mediaID inBlog:(nonnull Blog *)blog;
+- (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
+           progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
+            success:(nullable void (^)())success
+            failure:(nullable void (^)())failure;
 
 /**
  *  Obtains the  video url and poster image url for the video with the videoPressID
@@ -174,13 +164,6 @@
                            forMediaTypes:(nonnull NSSet *)mediaTypes;
 
 #pragma mark - Media cleanup
-
-/**
- Returns the url for for the media cache directory
-
- @return an url for the media cache directory.
- */
-+ (nonnull NSURL *)urlForMediaDirectory;
 
 /**
  *  @brief      Removes all unused media files from the media directories
