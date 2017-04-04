@@ -65,29 +65,44 @@ class AztecPostViewController: UIViewController {
     }()
 
 
-    /// Title's TextField
+    /// Title's UITextView
     ///
-    fileprivate(set) lazy var titleTextField: UITextField = {
-        let placeholderText = NSLocalizedString("Title", comment: "Placeholder for the post title.")
-        let tf = UITextField()
+    fileprivate(set) lazy var titleTextField: UITextView = {
+        let textField = UITextView()
 
-        tf.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
-        tf.attributedPlaceholder = NSAttributedString(string: placeholderText,
-                                                      attributes: [NSForegroundColorAttributeName: Colors.title])
-        tf.font = Fonts.title
-        tf.returnKeyType = .next
-        tf.textColor = UIColor.darkText
-        tf.translatesAutoresizingMaskIntoConstraints = false
+        textField.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
+        textField.delegate = self
+        textField.font = Fonts.title
+        textField.returnKeyType = .next
+        textField.textColor = UIColor.darkText
+        textField.typingAttributes = [NSForegroundColorAttributeName: UIColor.darkText, NSFontAttributeName: Fonts.title]
+        textField.translatesAutoresizingMaskIntoConstraints = false
 
-        let toolbar = self.createToolbar(htmlMode: true)
+        textField.isScrollEnabled = false
+        textField.backgroundColor = .clear
+
+        let toolbar = self.createToolbar(htmlMode: false)
         toolbar.formatter = self
-        tf.inputAccessoryView = toolbar
+        textField.inputAccessoryView = toolbar
 
-        tf.addTarget(self, action: #selector(titleTextFieldDidChange), for: [.editingChanged])
-
-        return tf
+        return textField
     }()
 
+    fileprivate(set) lazy var titlePlaceholderLabel: UILabel = {
+        let placeholderText = NSLocalizedString("Title", comment: "Placeholder for the post title.")
+        let titlePlaceholderLabel = UILabel()
+
+        titlePlaceholderLabel.attributedText = NSAttributedString(string: placeholderText,
+                                                      attributes: [NSForegroundColorAttributeName: Colors.title, NSFontAttributeName: Fonts.title])
+        titlePlaceholderLabel.sizeToFit()
+        titlePlaceholderLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        return titlePlaceholderLabel
+    }()
+
+    fileprivate var titleHeightConstraint: NSLayoutConstraint!
+    fileprivate var titleTopConstraint: NSLayoutConstraint!
+    fileprivate var textPlaceholderTopConstraint: NSLayoutConstraint!
 
     /// Separator View
     ///
@@ -358,6 +373,33 @@ class AztecPostViewController: UIViewController {
     }
 
 
+    // MARK: - Title and Title placeholder position methods
+    func updateTitlePosition() {
+        let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
+        titleTopConstraint.constant = -(referenceView.contentOffset.y+referenceView.contentInset.top)
+
+        var contentInset = referenceView.contentInset
+        contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
+        referenceView.contentInset = contentInset
+
+        textPlaceholderTopConstraint.constant = referenceView.textContainerInset.top + referenceView.contentInset.top
+    }
+
+    func updateTitleHeight() {
+        let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
+
+        let sizeThatShouldFitTheContent = titleTextField.sizeThatFits(CGSize(width:view.frame.width - ( 2 * Constants.defaultMargin), height: CGFloat.greatestFiniteMagnitude))
+        let insets = titleTextField.textContainerInset
+        titleHeightConstraint.constant = max(sizeThatShouldFitTheContent.height, titleTextField.font!.lineHeight + insets.top + insets.bottom)
+
+        textPlaceholderTopConstraint.constant = referenceView.textContainerInset.top + referenceView.contentInset.top
+
+        var contentInset = referenceView.contentInset
+        contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
+        referenceView.contentInset = contentInset
+        referenceView.setContentOffset(CGPoint(x:0, y: -contentInset.top), animated: false)
+    }
+
     // MARK: - Configuration Methods
 
     override func updateViewConstraints() {
@@ -366,24 +408,37 @@ class AztecPostViewController: UIViewController {
 
         let defaultMargin = Constants.defaultMargin
 
+        titleHeightConstraint = titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
+        titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: -richTextView.contentOffset.y)
+        textPlaceholderTopConstraint = placeholderLabel.topAnchor.constraint(equalTo: richTextView.topAnchor, constant: richTextView.textContainerInset.top + richTextView.contentInset.top)
+        updateTitleHeight()
+
         NSLayoutConstraint.activate([
             titleTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: defaultMargin),
             titleTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -defaultMargin),
-            titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: defaultMargin),
-            titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
+            titleTopConstraint,
+            titleHeightConstraint
+            ])
+
+        let insets = titleTextField.textContainerInset
+        NSLayoutConstraint.activate([
+            titlePlaceholderLabel.leftAnchor.constraint(equalTo: titleTextField.leftAnchor, constant: insets.left + titleTextField.textContainer.lineFragmentPadding),
+            titlePlaceholderLabel.rightAnchor.constraint(equalTo: titleTextField.rightAnchor, constant: -insets.right),
+            titlePlaceholderLabel.topAnchor.constraint(equalTo: titleTextField.topAnchor, constant: insets.top),
+            titlePlaceholderLabel.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
             ])
 
         NSLayoutConstraint.activate([
             separatorView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: defaultMargin),
             separatorView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -defaultMargin),
-            separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: defaultMargin),
+            separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 0),
             separatorView.heightAnchor.constraint(equalToConstant: separatorView.frame.height)
             ])
 
         NSLayoutConstraint.activate([
             richTextView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: defaultMargin),
             richTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -defaultMargin),
-            richTextView.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: defaultMargin),
+            richTextView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -defaultMargin)
             ])
 
@@ -397,7 +452,7 @@ class AztecPostViewController: UIViewController {
         NSLayoutConstraint.activate([
             placeholderLabel.leftAnchor.constraint(equalTo: richTextView.leftAnchor, constant: Constants.placeholderPadding.left),
             placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: Constants.placeholderPadding.right),
-            placeholderLabel.topAnchor.constraint(equalTo: richTextView.topAnchor, constant: Constants.placeholderPadding.top),
+            textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
 
@@ -435,11 +490,12 @@ class AztecPostViewController: UIViewController {
     }
 
     func configureSubviews() {
-        view.addSubview(titleTextField)
-        view.addSubview(separatorView)
-        view.addSubview(placeholderLabel)
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
+        view.addSubview(titleTextField)
+        view.addSubview(titlePlaceholderLabel)
+        view.addSubview(separatorView)
+        view.addSubview(placeholderLabel)
         mediaProgressView.isHidden = true
         view.addSubview(mediaProgressView)
     }
@@ -547,11 +603,16 @@ class AztecPostViewController: UIViewController {
     }
 
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
-        htmlTextView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
-        htmlTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
+        let referenceView: UIScrollView = mode == .richText ? richTextView : htmlTextView
 
-        richTextView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
-        richTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
+        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
+        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
+
+        htmlTextView.scrollIndicatorInsets = scrollInsets
+        htmlTextView.contentInset = contentInsets
+
+        richTextView.scrollIndicatorInsets = scrollInsets
+        richTextView.contentInset = contentInsets
     }
 
 
@@ -897,6 +958,14 @@ extension AztecPostViewController : UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         mapUIContentToPostAndSave()
         refreshPlaceholderVisibility()
+        if textView == titleTextField {
+            updateTitleHeight()
+            refreshPlaceholderVisibility()
+        }
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        updateTitlePosition()
     }
 }
 
@@ -957,6 +1026,7 @@ extension AztecPostViewController {
 
     func refreshPlaceholderVisibility() {
         placeholderLabel.isHidden = richTextView.isHidden || !richTextView.text.isEmpty
+        titlePlaceholderLabel.isHidden = !titleTextField.text.isEmpty
     }
 }
 
