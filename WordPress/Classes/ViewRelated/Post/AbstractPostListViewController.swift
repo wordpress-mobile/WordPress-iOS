@@ -629,8 +629,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
-
-        WPAnalytics.track(.postListLoadedMore, withProperties: propertiesForAnalytics())
         postListFooterView.showSpinner(true)
 
         let filter = filterSettings.currentPostListFilter()
