@@ -377,6 +377,8 @@ extension MediaLibraryViewController: UISearchResultsUpdating, UISearchControlle
         searchController.searchBar.text = nil
         pickerDataSource.searchQuery = nil
         pickerViewController.collectionView?.reloadData()
+
+        updateNoResultsView(for: pickerDataSource.numberOfAssets())
     }
 }
 
