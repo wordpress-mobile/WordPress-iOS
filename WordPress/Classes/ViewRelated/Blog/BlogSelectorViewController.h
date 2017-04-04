@@ -13,7 +13,7 @@ typedef void (^BlogSelectorDismissHandler)();
                               successHandler:(BlogSelectorSuccessHandler)successHandler
                               dismissHandler:(nullable BlogSelectorDismissHandler)dismissHandler;
 
-- (instancetype)initWithSelectedBlogDotComID:(NSNumber *)dotComID
+- (instancetype)initWithSelectedBlogDotComID:(nullable NSNumber *)dotComID
                               successHandler:(BlogSelectorSuccessDotComHandler)successHandler
                               dismissHandler:(nullable BlogSelectorDismissHandler)dismissHandler;
 
