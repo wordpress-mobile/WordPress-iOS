@@ -147,7 +147,7 @@ PODS:
   - WordPressComKit (0.0.6):
     - Alamofire (= 4.0.1)
   - WPMediaPicker (0.13)
-  - wpxmlrpc (0.8.2)
+  - wpxmlrpc (0.8.3)
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.1)
@@ -185,7 +185,7 @@ DEPENDENCIES:
   - WordPressCom-Stats-iOS (= 0.9.1)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.13)
-  - wpxmlrpc (~> 0.8)
+  - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
@@ -259,8 +259,8 @@ SPEC CHECKSUMS:
   WordPressCom-Stats-iOS: 872a0c2ad9b691911257459bc353f96ac804374c
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 5f39880ac799dbbf41a99f73567a95ab5297dc93
-  wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
+  wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: a39bc9fd30d533c55f7bf146f356910db08e0c00
+PODFILE CHECKSUM: 221d4db72433593bfd30386d90f13e8d48638fe6
 
 COCOAPODS: 1.1.1
