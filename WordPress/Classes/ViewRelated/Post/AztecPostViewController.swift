@@ -1232,24 +1232,34 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
 
     // MARK: - Toolbar creation
+    func makeToolbarButton(image: UIImage,
+                           identifier: FormattingIdentifier,
+                           accessibilityLabel: String,
+                           accessibilityIdentifier: String) -> FormatBarItem {
+        let button = FormatBarItem(image: image, identifier: identifier)
+        button.accessibilityLabel = accessibilityLabel
+        button.accessibilityIdentifier = accessibilityIdentifier
+        return button
+    }
 
     func createToolbar(htmlMode: Bool) -> Aztec.FormatBar {
+
         let scrollableItems = [
-            FormatBarItem(image: Gridicon.iconOfType(.addImage), identifier: .media),
-            FormatBarItem(image: Gridicon.iconOfType(.heading), identifier: .header),
-            FormatBarItem(image: Gridicon.iconOfType(.bold), identifier: .bold),
-            FormatBarItem(image: Gridicon.iconOfType(.italic), identifier: .italic),
-            FormatBarItem(image: Gridicon.iconOfType(.underline), identifier: .underline),
-            FormatBarItem(image: Gridicon.iconOfType(.strikethrough), identifier: .strikethrough),
-            FormatBarItem(image: Gridicon.iconOfType(.quote), identifier: .blockquote),
-            FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: .unorderedlist),
-            FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: .orderedlist),
-            FormatBarItem(image: Gridicon.iconOfType(.link), identifier: .link),
-            FormatBarItem(image: Gridicon.iconOfType(.minusSmall), identifier: .horizontalruler)
+            makeToolbarButton(image: Gridicon.iconOfType(.addImage), identifier: .media, accessibilityLabel: ToolBarItemsAccessibility.mediaLabel, accessibilityIdentifier: ToolBarItemsAccessibility.mediaIdentifier),
+            makeToolbarButton(image: Gridicon.iconOfType(.heading), identifier: .header, accessibilityLabel: ToolBarItemsAccessibility.headerLabel, accessibilityIdentifier: ToolBarItemsAccessibility.headerIdentifier),
+            makeToolbarButton(image: Gridicon.iconOfType(.bold), identifier: .bold, accessibilityLabel: ToolBarItemsAccessibility.boldLabel, accessibilityIdentifier: ToolBarItemsAccessibility.boldIdentifier),
+            makeToolbarButton(image: Gridicon.iconOfType(.italic), identifier: .italic, accessibilityLabel: ToolBarItemsAccessibility.italicLabel, accessibilityIdentifier: ToolBarItemsAccessibility.italicIdentifier),
+            makeToolbarButton(image: Gridicon.iconOfType(.underline), identifier: .underline, accessibilityLabel: ToolBarItemsAccessibility.underlineLabel, accessibilityIdentifier: ToolBarItemsAccessibility.underlineIdentifier),
+            makeToolbarButton(image: Gridicon.iconOfType(.strikethrough), identifier: .strikethrough, accessibilityLabel: ToolBarItemsAccessibility.strikethroughLabel, accessibilityIdentifier: ToolBarItemsAccessibility.strikethroughIdentifier),
+            makeToolbarButton(image: Gridicon.iconOfType(.quote), identifier: .blockquote, accessibilityLabel: ToolBarItemsAccessibility.blockquoteLabel, accessibilityIdentifier: ToolBarItemsAccessibility.blockquoteIdentifier),
+            makeToolbarButton(image: Gridicon.iconOfType(.listUnordered), identifier: .unorderedlist, accessibilityLabel: ToolBarItemsAccessibility.listUnorderedLabel, accessibilityIdentifier: ToolBarItemsAccessibility.listUnorderedIdentifier),
+            makeToolbarButton(image: Gridicon.iconOfType(.listOrdered), identifier: .orderedlist, accessibilityLabel: ToolBarItemsAccessibility.listOrderedLabel, accessibilityIdentifier: ToolBarItemsAccessibility.listOrderedIdentifier),
+            makeToolbarButton(image: Gridicon.iconOfType(.link), identifier: .link, accessibilityLabel: ToolBarItemsAccessibility.linkLabel, accessibilityIdentifier: ToolBarItemsAccessibility.linkIdentifier),
+            makeToolbarButton(image: Gridicon.iconOfType(.minusSmall), identifier: .horizontalruler, accessibilityLabel: ToolBarItemsAccessibility.horizontalRulerLabel, accessibilityIdentifier: ToolBarItemsAccessibility.horizontalRulerIdentifier)
         ]
 
         let fixedItems = [
-            FormatBarItem(image: Gridicon.iconOfType(.code), identifier: .sourcecode)
+            makeToolbarButton(image: Gridicon.iconOfType(.code), identifier: .sourcecode, accessibilityLabel: ToolBarItemsAccessibility.htmlCodeLabel, accessibilityIdentifier: ToolBarItemsAccessibility.htmlCodeIdentifier)
         ]
 
         let toolbar = Aztec.FormatBar()
@@ -1932,6 +1942,45 @@ extension AztecPostViewController {
         static let message = NSLocalizedString("Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", comment: "Confirms with the user if they save the post all media that failed to upload will be removed from it.")
         static let acceptTitle  = NSLocalizedString("Yes", comment: "Accept Action")
         static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
+    }
+
+    struct ToolBarItemsAccessibility {
+        static let mediaLabel = NSLocalizedString("Insert media", comment: "Accessibility label for insert media button on formatting toolbar.")
+        static let mediaIdentifier = "format_toolbar_insert_media"
+
+        static let headerLabel = NSLocalizedString("Select paragraph style", comment: "Accessibility label for selecting paragraph style button on formatting toolbar.")
+        static let headerIdentifier = "format_toolbar_select_paragraph_style"
+
+        static let boldLabel = NSLocalizedString("Bold", comment: "Accessibility label for bold button on formatting toolbar.")
+        static let boldIdentifier = "format_toolbar_toggle_bold"
+
+        static let italicLabel = NSLocalizedString("Italic", comment: "Accessibility label for italic button on formatting toolbar.")
+        static let italicIdentifier = "format_toolbar_toggle_italic"
+
+        static let underlineLabel = NSLocalizedString("Underline", comment: "Accessibility label for underline button on formatting toolbar.")
+        static let underlineIdentifier = "format_toolbar_toggle_underline"
+
+        static let strikethroughLabel = NSLocalizedString("Strike Through", comment: "Accessibility label for strikethrough button on formatting toolbar.")
+        static let strikethroughIdentifier = "format_toolbar_toggle_strikethrough"
+
+        static let blockquoteLabel = NSLocalizedString("Block Quote", comment: "Accessibility label for block quote button on formatting toolbar.")
+        static let blockquoteIdentifier = "format_toolbar_toggle_blockquote"
+
+        static let listUnorderedLabel = NSLocalizedString("Unordered List", comment: "Accessibility label for unordered list button on formatting toolbar.")
+        static let listUnorderedIdentifier = "format_toolbar_toggle_list_unordered"
+
+        static let listOrderedLabel = NSLocalizedString("Ordered List", comment: "Accessibility label for Ordered list button on formatting toolbar.")
+        static let listOrderedIdentifier = "format_toolbar_toggle_list_ordered"
+
+
+        static let linkLabel = NSLocalizedString("Insert Link", comment: "Accessibility label for insert link button on formatting toolbar.")
+        static let linkIdentifier = "format_toolbar_insert_link"
+
+        static let horizontalRulerLabel = NSLocalizedString("Insert Horizontal Ruler", comment: "Accessibility label for insert horizontal ruler button on formatting toolbar.")
+        static let horizontalRulerIdentifier = "format_toolbar_insert_horizontal_ruler"
+
+        static let htmlCodeLabel = NSLocalizedString("HTML", comment:"Accessibility label for HTML button on formatting toolbar.")
+        static let htmlCodeIdentifier = "format_toolbar_toggle_html_view"
     }
 }
 
