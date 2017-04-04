@@ -151,7 +151,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
         mutableRequest.httpMethod = "POST"
         mutableRequest.setValue("text/xml", forHTTPHeaderField: "Content-Type")
         let encoder = WPXMLRPCEncoder(method: method, andParameters: parameters)
-        mutableRequest.httpBody = try encoder?.dataEncoded()
+        mutableRequest.httpBody = try encoder.dataEncoded()
 
         return mutableRequest as URLRequest
     }
@@ -161,7 +161,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
         mutableRequest.httpMethod = "POST"
         mutableRequest.setValue("text/xml", forHTTPHeaderField: "Content-Type")
         let encoder = WPXMLRPCEncoder(method: method, andParameters: parameters)
-        try encoder?.encode(toFile: fileURL.path)
+        try encoder.encode(toFile: fileURL.path)
         var optionalFileSize: AnyObject?
         try (fileURL as NSURL).getResourceValue(&optionalFileSize, forKey: URLResourceKey.fileSizeKey)
         if let fileSize = optionalFileSize as? NSNumber {
@@ -212,12 +212,15 @@ open class WordPressOrgXMLRPCApi: NSObject {
             throw convertError(WordPressOrgXMLRPCApiError.responseSerializationFailed as NSError, data: originalData)
         }
 
-        let decoder = WPXMLRPCDecoder(data: data)
-
-        guard !(decoder?.isFault())!,
-            let responseXML = decoder?.object() else {
-                let decoderError = decoder?.error()
-                throw convertError(decoderError! as NSError, data: data)
+        guard let decoder = WPXMLRPCDecoder(data: data) else {
+            throw WordPressOrgXMLRPCApiError.responseSerializationFailed
+        }
+        guard !(decoder.isFault()), let responseXML = decoder.object() else {
+            if let decoderError = decoder.error() {
+                throw convertError(decoderError as NSError, data: data)
+            } else {
+                throw WordPressOrgXMLRPCApiError.responseSerializationFailed
+            }
         }
 
         return responseXML as AnyObject
