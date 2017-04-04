@@ -589,7 +589,7 @@
         BOOL isPrivate = media.blog.isPrivate;
 
         // search if there is a local copy of the file already
-        NSString *pathForFile;
+        NSURL *fileURL;
         CGSize mediaOriginalSize = CGSizeMake([media.width floatValue], [media.height floatValue]);
         CGSize size = requestSize;
         if (CGSizeEqualToSize(requestSize, CGSizeZero)) {
@@ -597,21 +597,21 @@
         }
         CGSize availableSize = CGSizeZero;
         if (media.mediaType == MediaTypeImage) {
-            pathForFile = media.absoluteThumbnailLocalURL.path;
-            availableSize = [MediaService imageSizeForMediaAtPath:pathForFile];
+            fileURL = media.absoluteThumbnailLocalURL;
+            availableSize = [MediaService imageSizeForMediaAtFileURL:fileURL];
             if (size.height > availableSize.height && size.width > availableSize.width) {
-                pathForFile = media.absoluteLocalURL.path;
-                availableSize = [MediaService imageSizeForMediaAtPath:pathForFile];
+                fileURL = media.absoluteLocalURL;
+                availableSize = [MediaService imageSizeForMediaAtFileURL:fileURL];
             }
         } else if (media.mediaType == MediaTypeVideo) {
-            pathForFile = media.absoluteThumbnailLocalURL.path;
-            availableSize = [MediaService imageSizeForMediaAtPath:pathForFile];
+            fileURL = media.absoluteThumbnailLocalURL;
+            availableSize = [MediaService imageSizeForMediaAtFileURL:fileURL];
         }
 
         // check if the available local image is equal or larger than the requested size
         if (availableSize.height >= size.height && availableSize.width >= size.width) {
             [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{
-                UIImage *image = [UIImage imageWithContentsOfFile:pathForFile];
+                UIImage *image = [UIImage imageWithContentsOfFile:fileURL.path];
                 if (success) {
                     if (!CGSizeEqualToSize(image.size, size)){
                         image = [image resizedImage:size interpolationQuality:kCGInterpolationMedium];
