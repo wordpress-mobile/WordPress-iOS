@@ -234,11 +234,9 @@ class MediaLibraryViewController: UIViewController {
 
         guard shouldShowNoResults else { return }
 
-        if let searchQuery = pickerDataSource.searchQuery,
-            searchQuery.characters.count > 0,
-            searchBar.isFirstResponder {
+        if hasSearchQuery {
             let text = NSLocalizedString("No media files match your search for %@", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
-            noResultsView?.titleText = String.localizedStringWithFormat(text, searchQuery)
+            noResultsView?.titleText = String.localizedStringWithFormat(text, pickerDataSource.searchQuery)
             noResultsView?.messageText = nil
             noResultsView?.buttonTitle = nil
         } else {
@@ -251,9 +249,7 @@ class MediaLibraryViewController: UIViewController {
     }
 
     private func updateSearchBar(for assetCount: Int) {
-        guard !searchBar.isFirstResponder else { return }
-
-        let shouldShowBar = assetCount > 0
+        let shouldShowBar = hasSearchQuery || assetCount > 0
 
         if shouldShowBar {
             if searchBarContainer.superview != stackView {
@@ -264,6 +260,10 @@ class MediaLibraryViewController: UIViewController {
                 searchBarContainer.removeFromSuperview()
             }
         }
+    }
+
+    private var hasSearchQuery: Bool {
+        return (pickerDataSource.searchQuery ?? "").characters.count > 0
     }
 
     // MARK: - Actions
