@@ -588,7 +588,81 @@ static NSInteger HideSearchMinSites = 3;
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return UITableViewCellEditingStyleNone;
+    if (self.tableView.isEditing) {
+        return UITableViewCellEditingStyleNone;
+    } else {
+        return UITableViewCellEditingStyleDelete;
+    }
+}
+
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
+    NSMutableArray *actions = [NSMutableArray array];
+    __typeof(self) __weak weakSelf = self;
+
+    if ([blog supports:BlogFeatureRemovable]) {
+        UITableViewRowAction *removeAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                                                title:NSLocalizedString(@"Remove", @"Removes a self hosted site from the app")
+                                                                              handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                                  [ReachabilityUtils onAvailableInternetConnectionDo:^{
+                                                                                      [weakSelf showRemoveSiteAlertForIndexPath:indexPath];
+                                                                                  }];
+                                                                              }];
+        removeAction.backgroundColor = [WPStyleGuide errorRed];
+        [actions addObject:removeAction];
+    } else {
+        UITableViewRowAction *hideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                                              title:NSLocalizedString(@"Hide", @"Hides a site from the site picker list")
+                                                                            handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                                [ReachabilityUtils onAvailableInternetConnectionDo:^{
+                                                                                    [weakSelf hideBlogAtIndexPath:indexPath];
+                                                                                }];
+                                                                            }];
+        hideAction.backgroundColor = [WPStyleGuide grey];
+        [actions addObject:hideAction];
+    }
+
+    return actions;
+}
+
+- (void)showRemoveSiteAlertForIndexPath:(NSIndexPath *)indexPath
+{
+    Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
+    NSString *blogDisplayName = blog.settings.name.length ? blog.settings.name : blog.displayURL;
+    NSString *model = [[UIDevice currentDevice] localizedModel];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to continue?\n All site data for %@ will be removed from your %@.", @"Title for the remove site confirmation alert, first %@ will be replaced with the blog url, second %@ will be replaced with iPhone/iPad/iPod Touch"), blogDisplayName, model];
+    NSString *cancelTitle = NSLocalizedString(@"Cancel", nil);
+    NSString *destructiveTitle = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
+
+    UIAlertControllerStyle alertStyle = [UIDevice isPad] ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:message
+                                                                      preferredStyle:alertStyle];
+
+    [alertController addCancelActionWithTitle:cancelTitle handler:nil];
+    [alertController addDestructiveActionWithTitle:destructiveTitle handler:^(UIAlertAction *action) {
+        [self confirmRemoveSiteForIndexPath:indexPath];
+    }];
+    [self presentViewController:alertController animated:YES completion:nil];
+    [self.tableView setEditing:NO animated:YES];
+}
+
+- (void)confirmRemoveSiteForIndexPath:(NSIndexPath *)indexPath
+{
+    Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [blogService removeBlog:blog];
+    [self.tableView reloadData];
+}
+
+- (void)hideBlogAtIndexPath:(NSIndexPath *)indexPath
+{
+    Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
+    blog.visible = NO;
+    [self setVisible:NO forBlog:blog];
+    [self.tableView setEditing:NO animated:YES];
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
@@ -686,6 +760,11 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
+    // We need to do this to dismiss actions on a cell that might have been swipped
+    // and it's in an open state before tapping the Edit button
+    if (editing && self.tableView.isEditing) {
+        [self.tableView setEditing:NO animated:NO];
+    }
     [super setEditing:editing animated:animated];
     [self.tableView setEditing:editing animated:animated];
     self.dataSource.editing = editing;
