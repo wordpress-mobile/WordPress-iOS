@@ -612,15 +612,27 @@ static NSInteger HideSearchMinSites = 3;
         removeAction.backgroundColor = [WPStyleGuide errorRed];
         [actions addObject:removeAction];
     } else {
-        UITableViewRowAction *hideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
-                                                                              title:NSLocalizedString(@"Hide", @"Hides a site from the site picker list")
-                                                                            handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                                [ReachabilityUtils onAvailableInternetConnectionDo:^{
-                                                                                    [weakSelf hideBlogAtIndexPath:indexPath];
+        if (blog.visible) {
+            UITableViewRowAction *hideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                                                  title:NSLocalizedString(@"Hide", @"Hides a site from the site picker list")
+                                                                                handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                                    [ReachabilityUtils onAvailableInternetConnectionDo:^{
+                                                                                        [weakSelf hideBlogAtIndexPath:indexPath];
+                                                                                    }];
                                                                                 }];
-                                                                            }];
-        hideAction.backgroundColor = [WPStyleGuide grey];
-        [actions addObject:hideAction];
+            hideAction.backgroundColor = [WPStyleGuide grey];
+            [actions addObject:hideAction];
+        } else {
+            UITableViewRowAction *unhideAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                                                    title:NSLocalizedString(@"Unhide", @"Unhides a site from the site picker list")
+                                                                                  handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                                      [ReachabilityUtils onAvailableInternetConnectionDo:^{
+                                                                                          [weakSelf unhideBlogAtIndexPath:indexPath];
+                                                                                      }];
+                                                                                  }];
+            unhideAction.backgroundColor = [WPStyleGuide validGreen];
+            [actions addObject:unhideAction];
+        }
     }
 
     return actions;
@@ -660,8 +672,14 @@ static NSInteger HideSearchMinSites = 3;
 - (void)hideBlogAtIndexPath:(NSIndexPath *)indexPath
 {
     Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
-    blog.visible = NO;
     [self setVisible:NO forBlog:blog];
+    [self.tableView setEditing:NO animated:YES];
+}
+
+- (void)unhideBlogAtIndexPath:(NSIndexPath *)indexPath
+{
+    Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
+    [self setVisible:YES forBlog:blog];
     [self.tableView setEditing:NO animated:YES];
 }
 
