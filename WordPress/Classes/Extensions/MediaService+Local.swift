@@ -56,7 +56,10 @@ extension MediaService {
     ///
     /// - Note: once we drop ObjC, this should be an optional that would return nil instead of zero.
     ///
-    class func imageSizeForMediaAt(fileURL: URL) -> CGSize {
+    class func imageSizeForMediaAt(fileURL: URL?) -> CGSize {
+        guard let fileURL = fileURL else {
+            return CGSize.zero
+        }
         let fileManager = FileManager.default
         var isDirectory: ObjCBool = false
         guard fileManager.fileExists(atPath: fileURL.path, isDirectory: &isDirectory) == true, isDirectory.boolValue == false else {
