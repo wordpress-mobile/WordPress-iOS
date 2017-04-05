@@ -12,8 +12,11 @@ class MediaLibraryViewController: UIViewController {
     fileprivate let pickerViewController: WPMediaPickerViewController
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
+    fileprivate var noResultsView: WPNoResultsView? = nil
+
     fileprivate var selectedAsset: Media? = nil
 
+    private let defaultSearchBarHeight: CGFloat = 44.0
     lazy fileprivate var searchBarContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -31,6 +34,14 @@ class MediaLibraryViewController: UIViewController {
         controller.searchBar.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
         return controller
+    }()
+
+    fileprivate let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 0
+        return stackView
     }()
 
     var searchQuery: String? = nil
@@ -74,13 +85,14 @@ class MediaLibraryViewController: UIViewController {
         definesPresentationContext = true
         automaticallyAdjustsScrollViewInsets = false
 
-        updateNavigationItemButtonsForEditingState()
-
+        addStackView()
         addMediaPickerAsChildViewController()
         addSearchBarContainer()
-        addSearchBar()
+        addNoResultsView()
 
         registerChangeObserver()
+
+        updateViewState(for: pickerDataSource.totalAssetCount)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -113,30 +125,25 @@ class MediaLibraryViewController: UIViewController {
         }
     }
 
-    private func updateNavigationItemButtonsForEditingState() {
-        if isEditing {
-            navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: true)
-            navigationItem.setRightBarButton(UIBarButtonItem(image: Gridicon.iconOfType(.trash), style: .plain, target: self, action: #selector(trashTapped)), animated: true)
-            navigationItem.rightBarButtonItem?.isEnabled = false
-        } else {
-            navigationItem.setLeftBarButton(nil, animated: true)
-            if blog.supports(.mediaDeletion) {
-                navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
-            } else {
-                navigationItem.setRightBarButton(nil, animated: true)
-            }
-        }
+    private func addStackView() {
+        view.addSubview(stackView)
+
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            topLayoutGuide.bottomAnchor.constraint(equalTo: stackView.topAnchor),
+            bottomLayoutGuide.topAnchor.constraint(equalTo: stackView.bottomAnchor)
+        ])
     }
 
     private func addMediaPickerAsChildViewController() {
         pickerViewController.willMove(toParentViewController: self)
-        view.addSubview(pickerViewController.view)
+        stackView.addArrangedSubview(pickerViewController.view)
         pickerViewController.view.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             pickerViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            pickerViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            pickerViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            pickerViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
 
         addChildViewController(pickerViewController)
@@ -144,31 +151,101 @@ class MediaLibraryViewController: UIViewController {
     }
 
     private func addSearchBarContainer() {
-        view.addSubview(searchBarContainer)
+        stackView.insertArrangedSubview(searchBarContainer, at: 0)
 
         NSLayoutConstraint.activate([
             searchBarContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             searchBarContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            searchBarContainer.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
-            searchBarContainer.bottomAnchor.constraint(equalTo: pickerViewController.view.topAnchor)
         ])
 
-        let searchBarHeight = searchController.searchBar.bounds.height
-
-        let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: searchBarHeight)
+        let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: defaultSearchBarHeight)
         heightConstraint.priority = UILayoutPriorityDefaultLow
         heightConstraint.isActive = true
 
-        let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: searchBarHeight)
+        let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: defaultSearchBarHeight)
         expandedHeightConstraint.priority = UILayoutPriorityRequired
         expandedHeightConstraint.isActive = true
-    }
 
-    private func addSearchBar() {
         searchBarContainer.layoutIfNeeded()
-
         searchBarContainer.addSubview(searchController.searchBar)
         searchController.searchBar.sizeToFit()
+    }
+
+    private func addNoResultsView() {
+        guard let noResultsView = WPNoResultsView(title: nil,
+                                               message: nil,
+                                               accessoryView: UIImageView(image: UIImage(named: "media-no-results")),
+                                               buttonTitle: nil) else { return }
+
+        noResultsView.translatesAutoresizingMaskIntoConstraints = false
+
+        pickerViewController.collectionView?.addSubview(noResultsView)
+        pickerViewController.collectionView?.pinSubviewAtCenter(noResultsView)
+        noResultsView.layoutIfNeeded()
+
+        noResultsView.delegate = self
+
+        self.noResultsView = noResultsView
+    }
+
+    // MARK: - Update view state
+
+    private func updateViewState(for assetCount: Int) {
+        updateNavigationItemButtons(for: assetCount)
+        updateNoResultsView(for: assetCount)
+        updateSearchBar(for: assetCount)
+    }
+
+    private func updateNavigationItemButtons(for assetCount: Int) {
+        if isEditing {
+            navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: true)
+            navigationItem.setRightBarButton(UIBarButtonItem(image: Gridicon.iconOfType(.trash), style: .plain, target: self, action: #selector(trashTapped)), animated: true)
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        } else {
+            navigationItem.setLeftBarButton(nil, animated: true)
+            if blog.supports(.mediaDeletion) && assetCount > 0 {
+                navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
+            } else {
+                navigationItem.setRightBarButton(nil, animated: true)
+            }
+        }
+    }
+
+    fileprivate func updateNoResultsView(for assetCount: Int) {
+        let shouldShowNoResults = (assetCount == 0)
+
+        noResultsView?.isHidden = !shouldShowNoResults
+
+        guard shouldShowNoResults else { return }
+
+        if let searchQuery = pickerDataSource.searchQuery,
+            searchQuery.characters.count > 0,
+            searchController.isActive {
+            let text = NSLocalizedString("No media files match your search for %@", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
+            noResultsView?.titleText = String.localizedStringWithFormat(text, searchQuery)
+            noResultsView?.messageText = nil
+            noResultsView?.buttonTitle = nil
+        } else {
+            noResultsView?.titleText = NSLocalizedString("You don't have any media.", comment: "Title displayed when the user doesn't have any media in their media library. Should match Calypso.")
+            noResultsView?.messageText = NSLocalizedString("Would you like to upload something?", comment: "Prompt displayed when the user has an empty media library. Should match Calypso.")
+            noResultsView?.buttonTitle = NSLocalizedString("Upload Media", comment: "Title for button displayed when the user has an empty media library")
+        }
+    }
+
+    private func updateSearchBar(for assetCount: Int) {
+        guard !searchController.isActive else { return }
+
+        let shouldShowBar = assetCount > 0
+
+        if shouldShowBar {
+            if searchBarContainer.superview != stackView {
+                stackView.insertArrangedSubview(searchBarContainer, at: 0)
+            }
+        } else {
+            if searchBarContainer.superview == stackView {
+                searchBarContainer.removeFromSuperview()
+            }
+        }
     }
 
     // MARK: - Actions
@@ -228,7 +305,7 @@ class MediaLibraryViewController: UIViewController {
 
     override var isEditing: Bool {
         didSet {
-            updateNavigationItemButtonsForEditingState()
+            updateNavigationItemButtons(for: pickerDataSource.totalAssetCount)
         }
     }
 
@@ -241,7 +318,13 @@ class MediaLibraryViewController: UIViewController {
         mediaLibraryChangeObserverKey = pickerDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
             guard let strongSelf = self else { return }
 
-            strongSelf.updateNavigationItemButtonsForCurrentAssetSelection()
+            strongSelf.updateViewState(for: strongSelf.pickerDataSource.numberOfAssets())
+
+            if strongSelf.pickerDataSource.totalAssetCount > 0 {
+                strongSelf.updateNavigationItemButtonsForCurrentAssetSelection()
+            } else {
+                strongSelf.isEditing = false
+            }
 
             // If we're presenting an item and it's been deleted, pop the
             // detail view off the stack
@@ -261,6 +344,14 @@ class MediaLibraryViewController: UIViewController {
     }
 }
 
+// MARK: - WPNoResultsViewDelegate
+
+extension MediaLibraryViewController: WPNoResultsViewDelegate {
+    func didTap(_ noResultsView: WPNoResultsView!) {
+        // TODO: Present upload UI
+    }
+}
+
 // MARK: - UISearchResultsUpdating
 
 extension MediaLibraryViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
@@ -268,6 +359,8 @@ extension MediaLibraryViewController: UISearchResultsUpdating, UISearchControlle
         if searchController.isActive {
             pickerDataSource.searchQuery = searchController.searchBar.text
             pickerViewController.collectionView?.reloadData()
+
+            updateNoResultsView(for: pickerDataSource.numberOfAssets())
         }
     }
 
@@ -281,8 +374,11 @@ extension MediaLibraryViewController: UISearchResultsUpdating, UISearchControlle
 
     func clearSearch() {
         searchQuery = nil
+        searchController.searchBar.text = nil
         pickerDataSource.searchQuery = nil
         pickerViewController.collectionView?.reloadData()
+
+        updateNoResultsView(for: pickerDataSource.numberOfAssets())
     }
 }
 
