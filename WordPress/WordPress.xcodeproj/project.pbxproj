@@ -5421,7 +5421,7 @@
 					};
 					FF27168E1CAAC87A0006E2D4 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = PZYM8XX95Q;
+						DevelopmentTeam = 99KV9Z6BKV;
 						LastSwiftMigration = 0800;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
