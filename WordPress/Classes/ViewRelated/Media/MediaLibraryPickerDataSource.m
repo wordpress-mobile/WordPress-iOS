@@ -358,6 +358,17 @@
     return _fetchController;
 }
 
+- (NSInteger)totalAssetCount
+{
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    NSString *entityName = NSStringFromClass([Media class]);
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    fetchRequest.predicate = [[self class] predicateForFilter:self.filter blog:self.blog];
+
+    return (NSInteger)[mainContext countForFetchRequest:fetchRequest
+                                                  error:nil];
+}
+
 #pragma mark - NSFetchedResultsControllerDelegate
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
