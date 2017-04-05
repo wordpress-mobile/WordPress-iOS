@@ -55,7 +55,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionAccount,
     SiteSettingsSectionWriting,
     SiteSettingsSectionDiscussion,
-    SiteSettingsSectionRemoveSite,
     SiteSettingsSectionAdvanced,
 };
 
@@ -79,8 +78,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
 #pragma mark - Device Section
 @property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
-#pragma mark - Removal Section
-@property (nonatomic, strong) UITableViewCell *removeSiteCell;
 #pragma mark - Advanced Section
 @property (nonatomic, strong) SettingTableViewCell *startOverCell;
 @property (nonatomic, strong) WPTableViewCell *exportContentCell;
@@ -157,10 +154,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         [sections addObject:@(SiteSettingsSectionDiscussion)];
     }
 
-    if ([self.blog supports:BlogFeatureRemovable]) {
-        [sections addObject:@(SiteSettingsSectionRemoveSite)];
-    }
-
     if ([self.blog supports:BlogFeatureSiteManagement]) {
         [sections addObject:@(SiteSettingsSectionAdvanced)];
     }
@@ -205,10 +198,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             return SiteSettingsWritingCount;
         }
         case SiteSettingsSectionDiscussion:
-        {
-            return 1;
-        }
-        case SiteSettingsSectionRemoveSite:
         {
             return 1;
         }
@@ -309,19 +298,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
                                                                  editable:YES
                                                           reuseIdentifier:nil];
     return _discussionSettingsCell;
-}
-
-- (UITableViewCell *)removeSiteCell
-{
-    if (_removeSiteCell) {
-        return _removeSiteCell;
-    }
-    _removeSiteCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    [WPStyleGuide configureTableViewDestructiveActionCell:_removeSiteCell];
-    _removeSiteCell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
-    _removeSiteCell.accessibilityIdentifier = @"removeSiteButton";
-
-    return _removeSiteCell;
 }
 
 - (void)configureDefaultCategoryCell
@@ -520,9 +496,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
         case SiteSettingsSectionDiscussion:
             return self.discussionSettingsCell;
-
-        case SiteSettingsSectionRemoveSite:
-            return self.removeSiteCell;
 
         case SiteSettingsSectionAdvanced:
             return [self tableView:tableView cellForAdvancedSettingsAtRow:indexPath.row];
@@ -831,11 +804,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             [self showDiscussionSettingsForBlog:self.blog];
             break;
 
-        case SiteSettingsSectionRemoveSite:
-            [self showRemoveSiteForBlog:self.blog];
-            [tableView deselectSelectedRowWithAnimation:YES];
-            break;
-
         case SiteSettingsSectionAdvanced:
             [self tableView:tableView didSelectInAdvancedSectionRow:indexPath.row];
             break;
@@ -1000,42 +968,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     DiscussionSettingsViewController *settings = [[DiscussionSettingsViewController alloc] initWithBlog:blog];
     [self.navigationController pushViewController:settings animated:YES];
 }
-
-
-#pragma mark - Remove Site
-
-- (void)showRemoveSiteForBlog:(Blog *)blog
-{
-    NSParameterAssert(blog);
-    
-    NSString *model = [[UIDevice currentDevice] localizedModel];
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to continue?\n All site data will be removed from your %@.", @"Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch"), model];
-    NSString *cancelTitle = NSLocalizedString(@"Cancel", nil);
-    NSString *destructiveTitle = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
-    
-    UIAlertControllerStyle alertStyle = [UIDevice isPad] ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet;
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:message
-                                                                      preferredStyle:alertStyle];
-    
-    [alertController addCancelActionWithTitle:cancelTitle handler:nil];
-    [alertController addDestructiveActionWithTitle:destructiveTitle handler:^(UIAlertAction *action) {
-        [self confirmRemoveSite:blog];
-    }];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)confirmRemoveSite:(Blog *)blog
-{
-    NSParameterAssert(blog);
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService removeBlog:blog];
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
-
 
 #pragma mark - PostCategoriesViewControllerDelegate
 
