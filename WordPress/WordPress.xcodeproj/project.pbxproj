@@ -287,13 +287,13 @@
 		5DFA7EC71AF814E40072023B /* PageListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFA7EC51AF814E40072023B /* PageListTableViewCell.m */; };
 		5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DFA7EC61AF814E40072023B /* PageListTableViewCell.xib */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
-		742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */; };
-		746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 746A6F561E71C691003B67E3 /* DeleteSite.storyboard */; };
 		740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */; };
 		740CAE7C1E816FC700D0E892 /* people-delete-follower-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 740CAE7A1E816FC700D0E892 /* people-delete-follower-failure.json */; };
 		740CAE7D1E816FC700D0E892 /* people-delete-follower-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 740CAE7B1E816FC700D0E892 /* people-delete-follower-success.json */; };
+		742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */; };
 		743BF32A1E82CE0700192E40 /* people-delete-viewer-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 743BF3291E82CE0700192E40 /* people-delete-viewer-failure.json */; };
 		743BF32C1E82CEB600192E40 /* people-delete-viewer-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 743BF32B1E82CEB600192E40 /* people-delete-viewer-success.json */; };
+		746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 746A6F561E71C691003B67E3 /* DeleteSite.storyboard */; };
 		7470840F1E269669002CA726 /* JetpackLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7470840D1E269669002CA726 /* JetpackLoginViewController.swift */; };
 		747084101E269669002CA726 /* JetpackLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7470840E1E269669002CA726 /* JetpackLoginViewController.xib */; };
 		74BB6F1A19AE7B9400FB7829 /* WPLegacyEditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */; };
@@ -904,7 +904,7 @@
 		E6ED090B1D46AFAF003283C4 /* ReaderFollowedSitesStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6ED090A1D46AFAF003283C4 /* ReaderFollowedSitesStreamHeader.xib */; };
 		E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F058011C1A122B008000F9 /* ReaderPostMenu.swift */; };
 		E6F66D421E00966000F875A5 /* UIImage+Rotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F66D411E00966000F875A5 /* UIImage+Rotation.swift */; };
-		F128C31C1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */; };
+		F128C31C1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m */; };
 		F1564E5B18946087009F8F97 /* NSStringHelpersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTests.m */; };
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
@@ -1484,9 +1484,9 @@
 		740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUploadStatusButton.m; sourceTree = "<group>"; };
 		740CAE7A1E816FC700D0E892 /* people-delete-follower-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "people-delete-follower-failure.json"; path = "WordPressTest/people-delete-follower-failure.json"; sourceTree = SOURCE_ROOT; };
 		740CAE7B1E816FC700D0E892 /* people-delete-follower-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "people-delete-follower-success.json"; path = "WordPressTest/people-delete-follower-success.json"; sourceTree = SOURCE_ROOT; };
+		742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteViewController.swift; sourceTree = "<group>"; };
 		743BF3291E82CE0700192E40 /* people-delete-viewer-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "people-delete-viewer-failure.json"; path = "WordPressTest/people-delete-viewer-failure.json"; sourceTree = SOURCE_ROOT; };
 		743BF32B1E82CEB600192E40 /* people-delete-viewer-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "people-delete-viewer-success.json"; path = "WordPressTest/people-delete-viewer-success.json"; sourceTree = SOURCE_ROOT; };
-		742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteViewController.swift; sourceTree = "<group>"; };
 		746A6F561E71C691003B67E3 /* DeleteSite.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeleteSite.storyboard; sourceTree = "<group>"; };
 		7470840D1E269669002CA726 /* JetpackLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackLoginViewController.swift; sourceTree = "<group>"; };
 		7470840E1E269669002CA726 /* JetpackLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackLoginViewController.xib; sourceTree = "<group>"; };
@@ -2385,8 +2385,8 @@
 		E6F66D411E00966000F875A5 /* UIImage+Rotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Rotation.swift"; sourceTree = "<group>"; };
 		E93DDEAC866DF55F72CFED2E /* Pods_WordPress_Base_WordPress.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPress_Base_WordPress.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFF29F7D7E56D49DC068D3EE /* Pods-WordPress_Base-WordPressTodayWidget.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress_Base-WordPressTodayWidget.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress_Base-WordPressTodayWidget/Pods-WordPress_Base-WordPressTodayWidget.release-alpha.xcconfig"; sourceTree = "<group>"; };
-		F128C31A1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPMediaPickerViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
-		F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPMediaPickerViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
+		F128C31A1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPNavigationMediaPickerViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
+		F128C31B1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPNavigationMediaPickerViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
 		F1564E5A18946087009F8F97 /* NSStringHelpersTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringHelpersTests.m; sourceTree = "<group>"; };
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
 		FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 40.xcdatamodel"; sourceTree = "<group>"; };
@@ -4630,8 +4630,8 @@
 				31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */,
 				85CE4C1E1A703CF200780DFE /* NSBundle+VersionNumberHelper.h */,
 				85CE4C1F1A703CF200780DFE /* NSBundle+VersionNumberHelper.m */,
-				F128C31A1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.h */,
-				F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */,
+				F128C31A1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.h */,
+				F128C31B1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m */,
 				B5416CFF1C17693B00006DD8 /* UIApplication+Helpers.h */,
 				B5416D001C17693B00006DD8 /* UIApplication+Helpers.m */,
 				080AAA671E7C63C3004DCD11 /* Media+HTML.h */,
@@ -6055,7 +6055,7 @@
 				594DB2951AB891A200E2E456 /* WPUserAgent.m in Sources */,
 				C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */,
 				E6805D301DCD399600168E4F /* WPRichTextEmbed.swift in Sources */,
-				F128C31C1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m in Sources */,
+				F128C31C1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m in Sources */,
 				0859DCF81CB847F700EB4069 /* RemoteMenuLocation.m in Sources */,
 				0845B8C41E8327B9001BA771 /* MediaService+Local.swift in Sources */,
 				E12E6E331C21BA170033C5D0 /* FeatureFlag.swift in Sources */,
