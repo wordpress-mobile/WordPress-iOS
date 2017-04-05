@@ -1,6 +1,6 @@
-#import "WPMediaPickerViewController+StatusBarStyle.h"
+#import "WPNavigationMediaPickerViewController+StatusBarStyle.h"
 
-@implementation WPMediaPickerViewController (StatusBarStyle)
+@implementation WPNavigationMediaPickerViewController (StatusBarStyle)
 
 #pragma mark - Status bar management
 
