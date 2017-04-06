@@ -71,6 +71,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic settings;
 @dynamic planID;
 @dynamic planTitle;
+@dynamic hasPaidPlan;
 @dynamic sharingButtons;
 @dynamic capabilities;
 
@@ -506,11 +507,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         // For Jetpack, check if the module is enabled
         return [self jetpackSharingButtonsModuleEnabled];
     }
-}
-
-- (BOOL)hasPaidPlan
-{
-    return self.planID && self.planID.integerValue != 1 && self.planID.integerValue != 2002;
 }
 
 - (BOOL)supportsPushNotifications
