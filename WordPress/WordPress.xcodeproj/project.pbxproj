@@ -60,7 +60,7 @@
 		082AB9D61C4EEA72000CA523 /* RemotePostTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9D51C4EEA72000CA523 /* RemotePostTag.m */; };
 		082AB9D91C4EEEF4000CA523 /* PostTagService.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9D81C4EEEF4000CA523 /* PostTagService.m */; };
 		082AB9DD1C4F035E000CA523 /* PostTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9DC1C4F035E000CA523 /* PostTag.m */; };
-		0845B8C41E8327B9001BA771 /* MediaService+Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C31E8327B9001BA771 /* MediaService+Local.swift */; };
+		0845B8C41E8327B9001BA771 /* MediaLibrary+Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C31E8327B9001BA771 /* MediaLibrary+Local.swift */; };
 		0845B8C61E833C56001BA771 /* URL+IncrementalFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C51E833C56001BA771 /* URL+IncrementalFilename.swift */; };
 		08472A201C727E020040769D /* PostServiceOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 08472A1F1C727E020040769D /* PostServiceOptions.m */; };
 		0857C2771CE5375F0014AE99 /* MenuItemAbstractView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0857C2701CE5375F0014AE99 /* MenuItemAbstractView.m */; };
@@ -1128,7 +1128,7 @@
 		082AB9D81C4EEEF4000CA523 /* PostTagService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTagService.m; sourceTree = "<group>"; };
 		082AB9DB1C4F035E000CA523 /* PostTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTag.h; sourceTree = "<group>"; };
 		082AB9DC1C4F035E000CA523 /* PostTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTag.m; sourceTree = "<group>"; };
-		0845B8C31E8327B9001BA771 /* MediaService+Local.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaService+Local.swift"; sourceTree = "<group>"; };
+		0845B8C31E8327B9001BA771 /* MediaLibrary+Local.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaLibrary+Local.swift"; sourceTree = "<group>"; };
 		0845B8C51E833C56001BA771 /* URL+IncrementalFilename.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+IncrementalFilename.swift"; sourceTree = "<group>"; };
 		08472A1E1C7273FA0040769D /* PostServiceOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostServiceOptions.h; sourceTree = "<group>"; };
 		08472A1F1C727E020040769D /* PostServiceOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceOptions.m; sourceTree = "<group>"; };
@@ -2718,7 +2718,7 @@
 			isa = PBXGroup;
 			children = (
 				086C4D0F1E81F9240011D960 /* Media+Blog.swift */,
-				0845B8C31E8327B9001BA771 /* MediaService+Local.swift */,
+				0845B8C31E8327B9001BA771 /* MediaLibrary+Local.swift */,
 			);
 			name = Media;
 			sourceTree = "<group>";
@@ -6183,7 +6183,7 @@
 				E6805D301DCD399600168E4F /* WPRichTextEmbed.swift in Sources */,
 				F128C31C1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m in Sources */,
 				0859DCF81CB847F700EB4069 /* RemoteMenuLocation.m in Sources */,
-				0845B8C41E8327B9001BA771 /* MediaService+Local.swift in Sources */,
+				0845B8C41E8327B9001BA771 /* MediaLibrary+Local.swift in Sources */,
 				E12E6E331C21BA170033C5D0 /* FeatureFlag.swift in Sources */,
 				E1B9128F1BB05B1D003C25B9 /* PeopleCell.swift in Sources */,
 				313AE4A019E3F20400AAFABE /* CommentViewController.m in Sources */,
