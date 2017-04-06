@@ -61,6 +61,8 @@ In order to use these details, you'll need to create a credential file in your b
 
 Then edit the ~/.wpcom_app_credentials file and change the WPCOM_APP_ID and WPCOM_APP_SECRET fields to the values you got for your app.
 
+To run the app on device or simulator, you will also need to specify a dummy value for the HELPSHIFT_API_KEY field. The value you specify here doesn't matter as long as it is non-empty.
+
 Then you can compile and run the app on a device or an emulator and login with a WordPress.com account.
 
 **Remember the only account you will be able to login in with is the one affiliated with your developer account.** 
