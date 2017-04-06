@@ -249,7 +249,6 @@
 		5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
 		5D6C4AF61B603CA3005E3C43 /* WPTableViewActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D6C4AF51B603CA3005E3C43 /* WPTableViewActivityCell.xib */; };
 		5D6C4AFF1B603CE9005E3C43 /* EditCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D6C4AFD1B603CE9005E3C43 /* EditCommentViewController.xib */; };
-		5D6C4B001B603CE9005E3C43 /* EditReplyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D6C4AFE1B603CE9005E3C43 /* EditReplyViewController.xib */; };
 		5D6C4B021B603D1F005E3C43 /* WPWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D6C4B011B603D1F005E3C43 /* WPWebViewController.xib */; };
 		5D6C4B081B603E03005E3C43 /* WPContentSyncHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C4B051B603E03005E3C43 /* WPContentSyncHelper.swift */; };
 		5D6C4B091B603E03005E3C43 /* WPTableViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C4B071B603E03005E3C43 /* WPTableViewHandler.m */; };
@@ -468,7 +467,6 @@
 		B54E1DF21A0A7BAA00807537 /* ReplyTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B54E1DEF1A0A7BAA00807537 /* ReplyTextView.xib */; };
 		B54E1DF41A0A7BBF00807537 /* NotificationMediaDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54E1DF31A0A7BBF00807537 /* NotificationMediaDownloader.swift */; };
 		B55086211CC15CCB004EADB4 /* PromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55086201CC15CCB004EADB4 /* PromptViewController.swift */; };
-		B5509A9319CA38B3006D2E49 /* EditReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5509A9219CA38B3006D2E49 /* EditReplyViewController.m */; };
 		B5552D7E1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D7D1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift */; };
 		B5552D801CD1028C00B26DF6 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D7F1CD1028C00B26DF6 /* String+Extensions.swift */; };
 		B5552D821CD1061F00B26DF6 /* StringExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5552D811CD1061F00B26DF6 /* StringExtensionsTests.swift */; };
@@ -1409,7 +1407,6 @@
 		5D69DBC3165428CA00A2D1F7 /* n.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = n.caf; path = Resources/Sounds/n.caf; sourceTree = "<group>"; };
 		5D6C4AF51B603CA3005E3C43 /* WPTableViewActivityCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPTableViewActivityCell.xib; sourceTree = "<group>"; };
 		5D6C4AFD1B603CE9005E3C43 /* EditCommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditCommentViewController.xib; sourceTree = "<group>"; };
-		5D6C4AFE1B603CE9005E3C43 /* EditReplyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditReplyViewController.xib; sourceTree = "<group>"; };
 		5D6C4B011B603D1F005E3C43 /* WPWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPWebViewController.xib; sourceTree = "<group>"; };
 		5D6C4B051B603E03005E3C43 /* WPContentSyncHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPContentSyncHelper.swift; sourceTree = "<group>"; };
 		5D6C4B061B603E03005E3C43 /* WPTableViewHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewHandler.h; sourceTree = "<group>"; };
@@ -1784,8 +1781,6 @@
 		B54E1DEF1A0A7BAA00807537 /* ReplyTextView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReplyTextView.xib; sourceTree = "<group>"; };
 		B54E1DF31A0A7BBF00807537 /* NotificationMediaDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationMediaDownloader.swift; sourceTree = "<group>"; };
 		B55086201CC15CCB004EADB4 /* PromptViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromptViewController.swift; sourceTree = "<group>"; };
-		B5509A9119CA38B3006D2E49 /* EditReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditReplyViewController.h; sourceTree = "<group>"; };
-		B5509A9219CA38B3006D2E49 /* EditReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditReplyViewController.m; sourceTree = "<group>"; };
 		B5552D7D1CD101A600B26DF6 /* NSExtensionContext+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSExtensionContext+Extensions.swift"; path = "WordPressShareExtension/NSExtensionContext+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		B5552D7F1CD1028C00B26DF6 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Extensions.swift"; path = "WordPressShareExtension/String+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		B5552D811CD1061F00B26DF6 /* StringExtensionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTests.swift; sourceTree = "<group>"; };
@@ -4111,9 +4106,6 @@
 				5D6C4AFD1B603CE9005E3C43 /* EditCommentViewController.xib */,
 				2906F80F110CDA8900169D56 /* EditCommentViewController.h */,
 				2906F810110CDA8900169D56 /* EditCommentViewController.m */,
-				5D6C4AFE1B603CE9005E3C43 /* EditReplyViewController.xib */,
-				B5509A9119CA38B3006D2E49 /* EditReplyViewController.h */,
-				B5509A9219CA38B3006D2E49 /* EditReplyViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -5584,7 +5576,6 @@
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */,
 				5D2FB2831AE98C4600F1D4ED /* RestorePostTableViewCell.xib in Resources */,
-				5D6C4B001B603CE9005E3C43 /* EditReplyViewController.xib in Resources */,
 				1724DDCC1C6121D00099D273 /* Plans.storyboard in Resources */,
 				173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */,
 				5D732F991AE84E5400CD89E7 /* PostListFooterView.xib in Resources */,
@@ -6183,7 +6174,6 @@
 				173BCE731CEB368A00AE8817 /* DomainsListViewController.swift in Sources */,
 				E1B912891BB01288003C25B9 /* PeopleViewController.swift in Sources */,
 				93C486501810442200A24725 /* SupportViewController.m in Sources */,
-				B5509A9319CA38B3006D2E49 /* EditReplyViewController.m in Sources */,
 				E6417BA61CA07E500084050A /* SigninLinkRequestViewController.swift in Sources */,
 				E6D2E1651B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift in Sources */,
 				E14B74111C7B16FD00C26E21 /* WPNoResultsView+Model.swift in Sources */,
