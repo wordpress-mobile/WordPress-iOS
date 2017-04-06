@@ -23,17 +23,15 @@ class MediaLibraryViewController: UIViewController {
         return view
     }()
 
-    lazy fileprivate var searchController: UISearchController = {
-        let controller = UISearchController(searchResultsController: nil)
-        controller.searchResultsUpdater = self
-        controller.hidesNavigationBarDuringPresentation = true
-        controller.dimsBackgroundDuringPresentation = false
+    lazy fileprivate var searchBar: UISearchBar = {
+        let bar = UISearchBar()
 
-        WPStyleGuide.configureSearchBar(controller.searchBar)
-        controller.searchBar.delegate = self
-        controller.searchBar.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        WPStyleGuide.configureSearchBar(bar)
 
-        return controller
+        bar.delegate = self
+        bar.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        return bar
     }()
 
     fileprivate let stackView: UIStackView = {
@@ -82,7 +80,6 @@ class MediaLibraryViewController: UIViewController {
 
         title = NSLocalizedString("Media", comment: "Title for Media Library section of the app.")
 
-        definesPresentationContext = true
         automaticallyAdjustsScrollViewInsets = false
 
         addStackView()
@@ -98,6 +95,8 @@ class MediaLibraryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        registerForKeyboardNotifications()
+
         if let searchQuery = searchQuery,
             !searchQuery.isEmpty {
 
@@ -105,7 +104,7 @@ class MediaLibraryViewController: UIViewController {
             if pickerDataSource.numberOfAssets() == 0 {
                 clearSearch()
             } else {
-                searchController.searchBar.text = searchQuery
+                searchBar.text = searchQuery
             }
         }
     }
@@ -119,9 +118,11 @@ class MediaLibraryViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        if searchController.isActive {
-            searchQuery = searchController.searchBar.text
-            searchController.isActive = false
+        unregisterForKeyboardNotifications()
+
+        if searchBar.isFirstResponder {
+            searchQuery = searchBar.text
+            searchBar.resignFirstResponder()
         }
     }
 
@@ -167,8 +168,8 @@ class MediaLibraryViewController: UIViewController {
         expandedHeightConstraint.isActive = true
 
         searchBarContainer.layoutIfNeeded()
-        searchBarContainer.addSubview(searchController.searchBar)
-        searchController.searchBar.sizeToFit()
+        searchBarContainer.addSubview(searchBar)
+        searchBar.sizeToFit()
     }
 
     private func addNoResultsView() {
@@ -177,15 +178,30 @@ class MediaLibraryViewController: UIViewController {
                                                accessoryView: UIImageView(image: UIImage(named: "media-no-results")),
                                                buttonTitle: nil) else { return }
 
-        noResultsView.translatesAutoresizingMaskIntoConstraints = false
-
         pickerViewController.collectionView?.addSubview(noResultsView)
-        pickerViewController.collectionView?.pinSubviewAtCenter(noResultsView)
-        noResultsView.layoutIfNeeded()
+        noResultsView.centerInSuperview()
 
         noResultsView.delegate = self
 
         self.noResultsView = noResultsView
+    }
+
+    // MARK: - Keyboard handling
+
+    private func registerForKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidChangeFrame(_:)), name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
+    }
+
+    private func unregisterForKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidChangeFrame, object: nil)
+    }
+
+    @objc private func keyboardDidChangeFrame(_ notification: Foundation.Notification) {
+        let duration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.2
+
+        UIView.animate(withDuration: duration) {
+            self.noResultsView?.centerInSuperview()
+        }
     }
 
     // MARK: - Update view state
@@ -218,11 +234,9 @@ class MediaLibraryViewController: UIViewController {
 
         guard shouldShowNoResults else { return }
 
-        if let searchQuery = pickerDataSource.searchQuery,
-            searchQuery.characters.count > 0,
-            searchController.isActive {
+        if hasSearchQuery {
             let text = NSLocalizedString("No media files match your search for %@", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
-            noResultsView?.titleText = String.localizedStringWithFormat(text, searchQuery)
+            noResultsView?.titleText = String.localizedStringWithFormat(text, pickerDataSource.searchQuery)
             noResultsView?.messageText = nil
             noResultsView?.buttonTitle = nil
         } else {
@@ -230,12 +244,12 @@ class MediaLibraryViewController: UIViewController {
             noResultsView?.messageText = NSLocalizedString("Would you like to upload something?", comment: "Prompt displayed when the user has an empty media library. Should match Calypso.")
             noResultsView?.buttonTitle = NSLocalizedString("Upload Media", comment: "Title for button displayed when the user has an empty media library")
         }
+
+        noResultsView?.sizeToFit()
     }
 
     private func updateSearchBar(for assetCount: Int) {
-        guard !searchController.isActive else { return }
-
-        let shouldShowBar = assetCount > 0
+        let shouldShowBar = hasSearchQuery || assetCount > 0
 
         if shouldShowBar {
             if searchBarContainer.superview != stackView {
@@ -246,6 +260,10 @@ class MediaLibraryViewController: UIViewController {
                 searchBarContainer.removeFromSuperview()
             }
         }
+    }
+
+    private var hasSearchQuery: Bool {
+        return (pickerDataSource.searchQuery ?? "").characters.count > 0
     }
 
     // MARK: - Actions
@@ -352,29 +370,32 @@ extension MediaLibraryViewController: WPNoResultsViewDelegate {
     }
 }
 
-// MARK: - UISearchResultsUpdating
+// MARK: - UISearchBarDelegate
 
-extension MediaLibraryViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
-    func updateSearchResults(for searchController: UISearchController) {
-        if searchController.isActive {
-            pickerDataSource.searchQuery = searchController.searchBar.text
-            pickerViewController.collectionView?.reloadData()
+extension MediaLibraryViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        pickerDataSource.searchQuery = searchText
+        pickerViewController.collectionView?.reloadData()
 
-            updateNoResultsView(for: pickerDataSource.numberOfAssets())
-        }
+        updateNoResultsView(for: pickerDataSource.numberOfAssets())
     }
 
-    func didDismissSearchController(_ searchController: UISearchController) {
-        clearSearch()
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         clearSearch()
+        searchBar.resignFirstResponder()
     }
 
     func clearSearch() {
         searchQuery = nil
-        searchController.searchBar.text = nil
+        searchBar.text = nil
         pickerDataSource.searchQuery = nil
         pickerViewController.collectionView?.reloadData()
 
