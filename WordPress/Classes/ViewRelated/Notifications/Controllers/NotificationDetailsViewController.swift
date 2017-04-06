@@ -447,7 +447,7 @@ extension NotificationDetailsViewController {
             return false
         }
 
-        return block.isActionOn(.Reply) && hasHorizontallyCompactView()
+        return block.isActionOn(.Reply)
     }
 }
 
@@ -679,7 +679,7 @@ private extension NotificationDetailsViewController {
         // Setup: Properties
         // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
         //
-        cell.isReplyEnabled     = !shouldAttachReplyView && commentBlock.isActionOn(.Reply)
+        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(.Reply)
         cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
         cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
         cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
@@ -690,7 +690,7 @@ private extension NotificationDetailsViewController {
 
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
-            self?.displayReplyEditorWithBlock(commentBlock)
+            self?.focusOnReplyTextViewWithBlock(commentBlock)
         }
 
         cell.onLikeClick = { [weak self] _ in
@@ -1120,27 +1120,8 @@ private extension NotificationDetailsViewController {
 // MARK: - Replying Comments
 //
 private extension NotificationDetailsViewController {
-    func displayReplyEditorWithBlock(_ block: NotificationBlock) {
-        guard let siteID = note.metaSiteID else {
-            return
-        }
-
-        let editViewController = EditReplyViewController.newReplyViewController(forSiteID: siteID)
-        editViewController?.onCompletion = { (hasNewContent, newContent) in
-            self.dismiss(animated: true, completion: {
-                guard hasNewContent else {
-                    return
-                }
-
-                self.replyCommentWithBlock(block, content: newContent!)
-            })
-        }
-
-        let navController = UINavigationController(rootViewController: editViewController!)
-        navController.modalPresentationStyle = .formSheet
-        navController.modalTransitionStyle = .coverVertical
-        navController.navigationBar.isTranslucent = false
-        present(navController, animated: true, completion: nil)
+    func focusOnReplyTextViewWithBlock(_ block: NotificationBlock) {
+        let _ = replyTextView.becomeFirstResponder()
     }
 
     func displayReplyErrorWithBlock(_ block: NotificationBlock, content: String) {
