@@ -1584,9 +1584,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             self.mediaProgressCoordinator.finishOneItem()
         } else {
             var tempMediaURL = URL(string:"placeholder://")!
-            if let mediaLocalPath = media.absoluteLocalURL,
-                let localURL = URL(string: mediaLocalPath) {
-                tempMediaURL = localURL
+            if let absoluteURL = media.absoluteLocalURL {
+                tempMediaURL = absoluteURL
             }
             let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
 

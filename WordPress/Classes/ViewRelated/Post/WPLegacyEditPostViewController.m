@@ -1007,7 +1007,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         }
         [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
     }];
-    UIImage * image = [UIImage imageWithContentsOfFile:media.absoluteThumbnailLocalURL];
+    UIImage * image = [UIImage imageWithContentsOfFile:media.absoluteThumbnailLocalURL.path];
     [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
     uploadProgress.kind = NSProgressKindFile;
     [uploadProgress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
