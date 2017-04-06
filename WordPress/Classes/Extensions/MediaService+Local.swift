@@ -99,7 +99,7 @@ extension MediaService {
     ///   was being created or when a CoreData migration fails and the database is recreated.
     ///
     class func clearUnusedFilesFromLocalMediaDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
-        purgeLocalMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL", argumentArray: nil),
+        purgeLocalMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL"),
                              onCompletion: onCompletion,
                              onError: onError)
     }
@@ -107,7 +107,7 @@ extension MediaService {
     /// Clear the local Media directory of any cached media files that are available remotely.
     ///
     class func clearCachedFilesFromLocalMediaDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
-        purgeLocalMediaFiles(exceptMedia: NSPredicate(format: "remoteURL == NULL", argumentArray: nil),
+        purgeLocalMediaFiles(exceptMedia: NSPredicate(format: "remoteURL == NULL"),
                              onCompletion: onCompletion,
                              onError: onError)
     }
