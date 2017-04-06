@@ -158,9 +158,9 @@ class AppSettingsViewController: UITableViewController {
     fileprivate func setMediaCacheRowDescription(status: MediaCacheSettingsStatus) {
         switch status {
         case .clearingCache:
-            mediaCacheRowDescription = NSLocalizedString("Clearing...", comment: "Label for size of media while it's busy being cleared.")
+            mediaCacheRowDescription = NSLocalizedString("Clearing...", comment: "Label for size of media while it's being cleared.")
         case .calculatingSize:
-            mediaCacheRowDescription = NSLocalizedString("Calculating...", comment: "Label for size of media while it's busy being cleared.")
+            mediaCacheRowDescription = NSLocalizedString("Calculating...", comment: "Label for size of media while it's being calculated.")
         case .unknown:
             mediaCacheRowDescription = NSLocalizedString("Unknown", comment: "Label for size of media when it's not possible to calculate it.")
         case .empty:

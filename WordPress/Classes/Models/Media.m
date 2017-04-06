@@ -158,7 +158,7 @@
     if (!self.localThumbnailURL.length) {
         return nil;
     }
-    return [self absolutePathForLocalURLPath:self.localThumbnailURL];
+    return [self absoluteURLForLocalPath:self.localThumbnailURL];
 }
 
 - (void)setAbsoluteThumbnailLocalURL:(NSURL *)absoluteLocalURL
@@ -171,7 +171,7 @@
     if (!self.localURL.length) {
         return nil;
     }
-    return [self absolutePathForLocalURLPath:self.localURL];
+    return [self absoluteURLForLocalPath:self.localURL];
 }
 
 - (void)setAbsoluteLocalURL:(NSURL *)absoluteLocalURL
@@ -179,7 +179,7 @@
     self.localURL = absoluteLocalURL.lastPathComponent;
 }
 
-- (NSURL *)absolutePathForLocalURLPath:(NSString *)localURLPath
+- (NSURL *)absoluteURLForLocalPath:(NSString *)localPath
 {
     NSError *error;
     NSURL *mediaDirectory = [MediaService localMediaDirectoryAndReturnError:&error];
@@ -187,7 +187,7 @@
         DDLogInfo(@"Error resolving Media directory: %@", error);
         return nil;
     }
-    return [mediaDirectory URLByAppendingPathComponent:localURLPath.lastPathComponent];
+    return [mediaDirectory URLByAppendingPathComponent:localPath.lastPathComponent];
 }
 
 #pragma mark - CoreData Helpers

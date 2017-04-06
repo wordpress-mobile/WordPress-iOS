@@ -93,13 +93,13 @@ extension MediaService {
         }
     }
 
-    /// Clear the locala Media directory of any files that are no longer in use by any managed Media objects.
+    /// Clear the local Media directory of any files that are no longer in use by any managed Media objects.
     ///
     /// - Note: These files can show up because of the app being killed while a media object
     ///   was being created or when a CoreData migration fails and the database is recreated.
     ///
     class func clearUnusedFilesFromLocalMediaDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
-        purgeLocalMediaFiles(exceptMedia: NSPredicate.init(format: "blog != NULL", argumentArray: nil),
+        purgeLocalMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL", argumentArray: nil),
                              onCompletion: onCompletion,
                              onError: onError)
     }
@@ -107,7 +107,7 @@ extension MediaService {
     /// Clear the local Media directory of any cached media files that are available remotely.
     ///
     class func clearCachedFilesFromLocalMediaDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
-        purgeLocalMediaFiles(exceptMedia: NSPredicate.init(format: "remoteURL == NULL", argumentArray: nil),
+        purgeLocalMediaFiles(exceptMedia: NSPredicate(format: "remoteURL == NULL", argumentArray: nil),
                              onCompletion: onCompletion,
                              onError: onError)
     }
