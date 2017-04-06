@@ -17,7 +17,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let remoteMedia = RemoteMedia()
         remoteMedia.mediaID = 1
         remoteMedia.postID = 2
-        remoteMedia.localURL = "http://www.wordpress.com"
+        remoteMedia.localURL = URL(string: "http://www.wordpress.com")
         remoteMedia.mimeType = "img/jpeg"
         remoteMedia.file = "file_name"
         return remoteMedia
