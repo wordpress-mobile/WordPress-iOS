@@ -517,15 +517,13 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 - (BOOL)accountIsDefaultAccount
 {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    return [defaultAccount isEqual:self.account];
+    return [accountService isDefaultWordPressComAccount:self.account];
 }
 
 - (BOOL)jetpackAccountIsDefaultAccount
 {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    return [defaultAccount isEqual:self.jetpackAccount];
+    return [accountService isDefaultWordPressComAccount:self.jetpackAccount];
 }
 
 - (nullable NSNumber *)siteID
