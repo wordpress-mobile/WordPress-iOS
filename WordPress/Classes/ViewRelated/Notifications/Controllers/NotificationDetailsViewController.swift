@@ -62,7 +62,7 @@ class NotificationDetailsViewController: UIViewController {
 
     /// Keyboard Manager: Aids in the Interactive Dismiss Gesture
     ///
-    fileprivate var keyboardManager: KeyboardDismissHelper!
+    fileprivate var keyboardManager: KeyboardDismissHelper?
 
     /// Cached values used for returning the estimated row heights of autosizing cells.
     ///
@@ -143,7 +143,7 @@ class NotificationDetailsViewController: UIViewController {
         super.viewWillAppear(animated)
 
         tableView.deselectSelectedRowWithAnimation(true)
-        keyboardManager.startListeningToKeyboardNotifications()
+        keyboardManager?.startListeningToKeyboardNotifications()
 
         refreshInterface()
     }
@@ -156,8 +156,10 @@ class NotificationDetailsViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         isViewVisible = false
-        keyboardManager.stopListeningToKeyboardNotifications()
+
+        keyboardManager?.stopListeningToKeyboardNotifications()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -1222,15 +1224,15 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
 //
 extension NotificationDetailsViewController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        keyboardManager.scrollViewWillBeginDragging(scrollView)
+        keyboardManager?.scrollViewWillBeginDragging(scrollView)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        keyboardManager.scrollViewDidScroll(scrollView)
+        keyboardManager?.scrollViewDidScroll(scrollView)
     }
 
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        keyboardManager.scrollViewWillEndDragging(scrollView, withVelocity: velocity)
+        keyboardManager?.scrollViewWillEndDragging(scrollView, withVelocity: velocity)
     }
 }
 
