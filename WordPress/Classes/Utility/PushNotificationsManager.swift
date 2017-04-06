@@ -118,7 +118,7 @@ final public class PushNotificationsManager: NSObject {
         let newToken = parseTokenFromAppleData(tokenData)
 
         if deviceToken != newToken {
-            DDLogSwift.logInfo("Device Token has changed! OLD Value: \(deviceToken), NEW value: \(newToken)")
+            DDLogSwift.logInfo("Device Token has changed! OLD Value: \(String(describing: deviceToken)), NEW value: \(newToken)")
         } else {
             DDLogSwift.logInfo("Device Token received in didRegisterForRemoteNotificationsWithDeviceToken: \(newToken)")
         }

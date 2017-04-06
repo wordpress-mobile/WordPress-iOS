@@ -5,7 +5,7 @@
 #import "ThemeService.h"
 #import "ThemeServiceRemote.h"
 #import "WPAccount.h"
-#import "Wordpress-Swift.h"
+#import "WordPress-Swift.h"
 
 #pragma mark - Support classes
 

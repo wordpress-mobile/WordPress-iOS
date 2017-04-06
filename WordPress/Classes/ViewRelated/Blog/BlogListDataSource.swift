@@ -105,6 +105,7 @@ class BlogListDataSource: NSObject {
     var account: WPAccount? = nil {
         didSet {
             if account != oldValue {
+                cachedSections = nil
                 dataChanged?()
             }
         }
@@ -168,10 +169,13 @@ class BlogListDataSource: NSObject {
     fileprivate var mode: Mode = .browsing {
         didSet {
             if mode != oldValue {
+                cachedSections = nil
                 dataChanged?()
             }
         }
     }
+
+    fileprivate var cachedSections: [[Blog]]?
 }
 
 // MARK: - Mode
@@ -234,7 +238,12 @@ private extension BlogListDataSource {
 
 private extension BlogListDataSource {
     var sections: [[Blog]] {
-        return mode.mapper.map(allBlogs)
+        if let sections = cachedSections {
+            return sections
+        }
+        let mappedSections = mode.mapper.map(allBlogs)
+        cachedSections = mappedSections
+        return mappedSections
     }
 
     var allBlogs: [Blog] {
@@ -252,6 +261,7 @@ private extension BlogListDataSource {
 
 extension BlogListDataSource: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        cachedSections = nil
         // TODO: only propagate if the filtered data changed
         dataChanged?()
     }
@@ -273,7 +283,7 @@ extension BlogListDataSource: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: WPBlogTableViewCell.reuseIdentifier()) as? WPBlogTableViewCell else {
             fatalError("Failed to get a blog cell")
         }
-        let displayURL = blog.displayURL as? String ?? ""
+        let displayURL = blog.displayURL as String? ?? ""
         if let name = blog.settings?.name?.nonEmptyString() {
             cell.textLabel?.text = name
             cell.detailTextLabel?.text = displayURL

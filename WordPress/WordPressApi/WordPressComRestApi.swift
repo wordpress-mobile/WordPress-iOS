@@ -273,7 +273,7 @@ open class WordPressComRestApi: NSObject {
     }
 
     override open var hashValue: Int {
-        return "\(oAuthToken),\(userAgent)".hashValue
+        return "\(String(describing: oAuthToken)),\(String(describing: userAgent))".hashValue
     }
 
     fileprivate func appendLocaleIfNeeded(_ path: String) -> String {

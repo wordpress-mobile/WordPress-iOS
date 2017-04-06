@@ -245,7 +245,7 @@ extension NSURL: ExportableAsset {
 
     var mimeType: String {
         guard let uti = typeIdentifier,
-            let mimeType = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassMIMEType)?.takeUnretainedValue() as? String
+            let mimeType = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassMIMEType)?.takeUnretainedValue() as String?
             else {
                 return "application/octet-stream"
         }

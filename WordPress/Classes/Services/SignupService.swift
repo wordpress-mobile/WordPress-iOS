@@ -342,7 +342,7 @@ open class SignupService: LocalCoreDataService {
     }
 
     func trackAccountCreationError(_ error: Error?) {
-        if let error = error as? NSError,
+        if let error = error as NSError?,
             let errorCode = error.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String {
             switch errorCode {
             case "username_exists":

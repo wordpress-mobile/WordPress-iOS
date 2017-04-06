@@ -43,6 +43,11 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (void)removeDefaultWordPressComAccount;
 
 /**
+ Returns if the given account is the default WordPress.com account.
+ */
+- (BOOL)isDefaultWordPressComAccount:(WPAccount *)account;
+
+/**
  Query to check if an email address is paired to a wpcom account. Used in the 
  magic links signup flow.
 

@@ -59,7 +59,7 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
                                                 XCTFail("This call should fail")
             }, failure: { (error) in
                 expect.fulfill()
-                let error = error as! NSError
+                let error = error! as NSError
                 XCTAssert(error.domain == String(reflecting: WordPressComRestApiError.self), "The error should a WordPressComRestApiError")
                 XCTAssert(error.code == Int(WordPressComRestApiError.tooManyRequests.rawValue), "The error code should be invalid token")
         })

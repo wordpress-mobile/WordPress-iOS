@@ -43,7 +43,6 @@ class NoteBlockTableViewCell: WPTableViewCell {
         return classNameWithoutNamespaces()
     }
 
-
     // MARK: - View Methods
     override func awakeFromNib() {
         super.awakeFromNib()

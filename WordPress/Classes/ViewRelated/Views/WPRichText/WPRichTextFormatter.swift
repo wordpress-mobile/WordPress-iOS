@@ -214,7 +214,8 @@ class WPRichTextFormatter {
             scanner.scanLocation = tagStartLocation
 
             // Process tags of interest.
-            if let tag = processorForTagName(tagName as! String) {
+            if let tagName = tagName,
+                let tag = processorForTagName(tagName as String) {
 
                 let (string, attachment) = tag.process(scanner)
                 processedString += string
@@ -353,7 +354,10 @@ class BlockquoteTagProcessor: HtmlTagProcessor {
         while !paragraphScanner.isAtEnd {
             paragraphScanner.scanUpTo("<p>", into: &tempStr)
 
-            str += tempStr as! String
+            if let tempStr = tempStr {
+                str += tempStr as String
+            }
+
             tempStr = ""
             if paragraphScanner.isAtEnd {
                 break
@@ -487,7 +491,7 @@ class AttachmentTagProcessor: HtmlTagProcessor {
 
         let regex = type(of: self).attributeRegex
 
-        let matches = regex.matches(in: tag as! String, options: .reportCompletion, range: NSRange(location: 0, length: tag!.length))
+        let matches = regex.matches(in: tag! as String, options: .reportCompletion, range: NSRange(location: 0, length: tag!.length))
         for match in matches {
             let keyRange = match.rangeAt(1)
             let valueRange = match.rangeAt(2)
