@@ -1,4 +1,4 @@
-#import "HelpShiftUtils.h"
+#import "HelpshiftUtils.h"
 
 #import <Helpshift/HelpshiftCore.h>
 #import <Helpshift/HelpshiftSupport.h>

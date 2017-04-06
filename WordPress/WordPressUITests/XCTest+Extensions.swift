@@ -7,15 +7,25 @@ public struct elementStringIDs {
     static var mainNavigationMySitesButton = "mySitesTabButton"
 
     // Login page
-    static var loginUsernameField = "usernameField"
-    static var loginPasswordField = "passwordField"
-    static var loginNextButton = "nextButton"
-    static var loginSubmitButton = "submitButton"
+    static var loginUsernameField = "Email or username"
+    static var loginPasswordField = "Password"
+    static var loginNextButton = "Next Button"
+    static var loginSubmitButton = "Log In Button"
     static var addSelfHostedButton = "addSelfHostedButton"
     static var selfHostedURLField = "selfHostedURL"
+    static var createSiteButton = "createSiteButton"
+
+    // Add site login page
+    static var addSiteLoginUsernameField = "usernameField"
+    static var addSiteLoginPasswordField = "passwordField"
+    static var addSiteSubmitButton = "submitButton"
 
     // Signup page
     static var nuxUsernameField = "nuxUsernameField"
+    static var nuxEmailField = "nuxEmailField"
+    static var nuxPasswordField = "nuxPasswordField"
+    static var nuxUrlField = "nuxUrlField"
+    static var nuxCreateAccountButton = "nuxCreateAccountButton"
 
     // My Sites page
     static var settingsButton = "BlogDetailsSettingsCell"
@@ -24,7 +34,26 @@ public struct elementStringIDs {
     static var removeSiteButton = "removeSiteButton"
 
     // Me tab
-    static var disconnectFromWPcomButton = "disconnectFromWPcomButton"
+    static var logOutFromWPcomButton = "logOutFromWPcomButton"
+}
+
+extension XCUIElement {
+    /**
+     Removes any current text in the field before typing in the new value
+     - Parameter text: the text to enter into the field
+     */
+    func clearAndEnterText(text: String) -> Void {
+        let app = XCUIApplication()
+
+        if (self.value as! String).characters.count > 0 {
+            self.press(forDuration: 1.2)
+            app.menuItems["Select All"].tap()
+        } else {
+            self.tap()
+        }
+
+        self.typeText(text)
+    }
 }
 
 extension XCTestCase {
@@ -57,7 +86,7 @@ extension XCTestCase {
         if !app.textFields[ elementStringIDs.loginUsernameField ].exists && !app.textFields[ elementStringIDs.nuxUsernameField ].exists {
             app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMeButton ].tap()
             app.tables.element(boundBy: 0).swipeUp()
-            app.tables.cells[ elementStringIDs.disconnectFromWPcomButton ].tap()
+            app.tables.cells[ elementStringIDs.logOutFromWPcomButton ].tap()
             app.alerts.buttons.element(boundBy: 1).tap()
             //Give some time to everything get proper saved.
             sleep(2)
@@ -82,6 +111,23 @@ extension XCTestCase {
         app.buttons[ elementStringIDs.loginSubmitButton ].tap()
     }
 
+    public func addSiteLogin(username: String, password: String) {
+        let app = XCUIApplication()
+        let emailOrUsernameTextField = app.textFields[ elementStringIDs.addSiteLoginUsernameField ]
+        emailOrUsernameTextField.tap()
+        emailOrUsernameTextField.typeText( username )
+
+        let nextButton = app.buttons[ elementStringIDs.loginNextButton ]
+        if ( nextButton.exists ) {
+            nextButton.tap()
+        }
+
+        let passwordSecureTextField = app.secureTextFields[ elementStringIDs.addSiteLoginPasswordField ]
+        passwordSecureTextField.tap()
+        passwordSecureTextField.typeText( password )
+        app.buttons[ elementStringIDs.addSiteSubmitButton ].tap()
+    }
+
     public func loginSelfHosted(username: String, password: String, url: String) {
         let app = XCUIApplication()
 
@@ -91,7 +137,7 @@ extension XCTestCase {
         selfHostedURLField.tap()
         selfHostedURLField.typeText( url )
 
-        simpleLogin( username: username, password: password )
+        addSiteLogin( username: username, password: password )
     }
 
     public func logoutSelfHosted() {
@@ -117,5 +163,35 @@ extension XCTestCase {
         } else {
             app.sheets.buttons.element(boundBy: 0).tap()
         }
+    }
+
+    public func createAccount(email: String, username: String, password: String, url: String? = nil) {
+        let app = XCUIApplication()
+        let createSiteFromLoginScreenButton = app.buttons[ elementStringIDs.createSiteButton ]
+        let emailField = app.textFields[ elementStringIDs.nuxEmailField ]
+        let usernameField = app.textFields[ elementStringIDs.nuxUsernameField ]
+        let passwordField = app.secureTextFields[ elementStringIDs.nuxPasswordField ]
+        let urlField = app.textFields[ elementStringIDs.nuxUrlField ]
+        let createAccountButton = app.buttons[ elementStringIDs.nuxCreateAccountButton ]
+
+        if createSiteFromLoginScreenButton.exists {
+            createSiteFromLoginScreenButton.tap()
+        }
+
+        waitForElementToAppear(element: emailField)
+
+        emailField.tap()
+        emailField.clearAndEnterText(text: email)
+        usernameField.tap()
+        usernameField.clearAndEnterText(text: username)
+        passwordField.tap()
+        passwordField.clearAndEnterText(text: password)
+
+        if ( url != nil ) {
+            urlField.tap()
+            urlField.clearAndEnterText(text: url!)
+        }
+
+        createAccountButton.tap()
     }
 }

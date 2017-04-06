@@ -113,7 +113,6 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
-    NSString *path = media.localURL;
     NSString *type = media.mimeType;
     NSString *filename = media.file;
 
@@ -124,8 +123,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     if (media.postID != nil && [media.postID compare:@(0)] == NSOrderedDescending) {
         parameters[@"attrs[0][parent_id]"] = media.postID;
     }
-    NSURL *url = [[NSURL alloc] initFileURLWithPath:path];
-    FilePart *filePart = [[FilePart alloc] initWithParameterName:@"media[]" url:url filename:filename mimeType:type];
+    FilePart *filePart = [[FilePart alloc] initWithParameterName:@"media[]" url:media.localURL filename:filename mimeType:type];
     __block NSProgress *localProgress = [self.wordPressComRestApi multipartPOST:requestUrl
                                                     parameters:parameters
                                                      fileParts:@[filePart]
