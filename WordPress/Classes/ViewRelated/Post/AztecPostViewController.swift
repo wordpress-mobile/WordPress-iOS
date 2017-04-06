@@ -733,10 +733,10 @@ extension AztecPostViewController {
         }
 
         if stat == .editorPublishedPost {
-            properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = post.hasCategories
-            properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = post.hasPhoto
-            properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = post.hasTags
-            properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = post.hasVideo
+            properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = post.hasCategories()
+            properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = post.hasPhoto()
+            properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = post.hasTags()
+            properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = post.hasVideo()
         }
 
         WPAppAnalytics.track(stat, withProperties: properties, with: post.blog)
