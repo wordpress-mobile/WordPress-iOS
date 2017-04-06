@@ -19,7 +19,7 @@
         _options = [RemoteBlogOptionsHelper mapOptionsFromResponse:json];
         _planID = [json numberForKeyPath:@"plan.product_id"];
         _planTitle = [json stringForKeyPath:@"plan.product_name_short"];
-        _hasPaidPlan = [json stringForKey:@"plan.is_free"] ? ![[json stringForKey:@"plan.is_free"] boolValue] : NO;
+        _hasPaidPlan = ![json numberForKeyPath:@"plan.is_free"].boolValue;
     }
 
     return self;
