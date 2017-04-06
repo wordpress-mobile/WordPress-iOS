@@ -69,8 +69,8 @@ class AppSettingsViewController: UITableViewController {
 
         let mediaClearCacheRow = DestructiveButtonRow(
             title: NSLocalizedString("Clear Media Cache", comment: "Label for button that clears all media cache."),
-            action: { row in
-                self.clearMediaCache()
+            action: { [weak self] row in
+                self?.clearMediaCache()
             },
             accessibilityIdentifier: "mediaClearCacheButton")
 
@@ -139,7 +139,7 @@ class AppSettingsViewController: UITableViewController {
 
     fileprivate var mediaCacheRowDescription = "" {
         didSet {
-            self.reloadViewModel()
+            reloadViewModel()
         }
     }
 
@@ -169,7 +169,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     fileprivate func updateMediaCacheSize() {
-        self.setMediaCacheRowDescription(status: .calculatingSize)
+        setMediaCacheRowDescription(status: .calculatingSize)
         MediaService.calculateSizeOfLocalMediaDirectory { [weak self] (allocatedSize) in
             self?.setMediaCacheRowDescription(allocatedSize: allocatedSize)
         }
@@ -200,14 +200,14 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func visualEditorChanged() -> (Bool) -> Void {
-        return { enabled in
+        return { [weak self] enabled in
             if enabled {
                 WPAnalytics.track(.editorToggledOn)
             } else {
                 WPAnalytics.track(.editorToggledOff)
             }
             EditorSettings().visualEditorEnabled = enabled
-            self.reloadViewModel()
+            self?.reloadViewModel()
         }
     }
 
@@ -218,14 +218,14 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func pushAbout() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [weak self] row in
             let controller = AboutViewController()
-            self.navigationController?.pushViewController(controller, animated: true)
+            self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
     func openApplicationSettings() -> ImmuTableAction {
-        return { row in
+        return { [weak self] row in
             if let targetURL = URL(string: UIApplicationOpenSettingsURLString) {
                 UIApplication.shared.open(targetURL)
 
@@ -233,7 +233,7 @@ class AppSettingsViewController: UITableViewController {
                 assertionFailure("Couldn't unwrap Settings URL")
             }
 
-            self.tableView.deselectSelectedRowWithAnimation(true)
+            self?.tableView.deselectSelectedRowWithAnimation(true)
         }
     }
 }
