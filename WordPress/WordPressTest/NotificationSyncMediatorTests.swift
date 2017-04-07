@@ -58,8 +58,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
-        let helper = CoreDataHelper<WordPress.Notification>(context: self.manager.mainContext)
-        XCTAssert(helper.countObjects() == 0)
+        XCTAssert(manager.mainContext.countObjects(of: Notification.self) == 0)
 
         // CoreData Expectations
         manager.testExpectation = expectation(description: "Context save expectation")
@@ -70,7 +69,7 @@ class NotificationSyncMediatorTests: XCTestCase {
 
         // Sync!
         mediator.sync { _ in
-            XCTAssert(helper.countObjects() == 1)
+            XCTAssert(self.manager.mainContext.countObjects(of: Notification.self) == 1)
             expect.fulfill()
         }
 
@@ -87,8 +86,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
-        let helper = CoreDataHelper<WordPress.Notification>(context: manager.mainContext)
-        XCTAssert(helper.countObjects() == 0)
+        XCTAssert(manager.mainContext.countObjects(of: Notification.self) == 0)
 
         // Shutdown Expectation Warnings. Please
         manager.requiresTestExpectation = false
@@ -110,7 +108,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         let expect = expectation(description: "Async!")
 
         group.notify(queue: DispatchQueue.main, execute: {
-            XCTAssert(helper.countObjects() == 1)
+            XCTAssert(self.manager.mainContext.countObjects(of: Notification.self) == 1)
             expect.fulfill()
         })
 
@@ -127,8 +125,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         OHHTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubPath)
 
         // Make sure the collection is empty, to begin with
-        let helper = CoreDataHelper<WordPress.Notification>(context: self.manager.mainContext)
-        XCTAssert(helper.countObjects() == 0)
+        XCTAssert(manager.mainContext.countObjects(of: Notification.self) == 0)
 
         // CoreData Expectations
         manager.testExpectation = expectation(description: "Context save expectation")
