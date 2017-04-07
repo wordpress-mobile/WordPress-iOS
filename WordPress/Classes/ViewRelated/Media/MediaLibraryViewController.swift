@@ -7,6 +7,8 @@ import WPMediaPicker
 /// Displays the user's media library in a grid
 ///
 class MediaLibraryViewController: UIViewController {
+    fileprivate static let restorationIdentifier = "MediaLibraryViewController"
+
     let blog: Blog
 
     fileprivate let pickerViewController: WPMediaPickerViewController
@@ -52,6 +54,9 @@ class MediaLibraryViewController: UIViewController {
         self.pickerDataSource = MediaLibraryPickerDataSource(blog: blog)
 
         super.init(nibName: nil, bundle: nil)
+
+        super.restorationIdentifier = MediaLibraryViewController.restorationIdentifier
+        restorationClass = MediaLibraryViewController.self
 
         configurePickerViewController()
     }
@@ -454,5 +459,38 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         selectedAsset = asset
 
         return MediaItemViewController(media: asset, dataSource: pickerDataSource)
+    }
+}
+
+// MARK: - State restoration
+
+extension MediaLibraryViewController: UIViewControllerRestoration {
+    enum EncodingKey {
+        static let blogURL = "blogURL"
+    }
+
+    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+        guard let identifier = identifierComponents.last as? String,
+            identifier == MediaLibraryViewController.restorationIdentifier else {
+                return nil
+        }
+
+        guard let blogURL = coder.decodeObject(forKey: EncodingKey.blogURL) as? URL else {
+            return nil
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        guard let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: blogURL),
+            let object = try? context.existingObject(with: objectID),
+            let blog = object as? Blog else {
+                return nil
+        }
+        return MediaLibraryViewController(blog: blog)
+    }
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+
+        coder.encode(blog.objectID.uriRepresentation(), forKey: EncodingKey.blogURL)
     }
 }
