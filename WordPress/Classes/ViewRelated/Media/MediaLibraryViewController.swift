@@ -458,7 +458,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
         selectedAsset = asset
 
-        return MediaItemViewController(media: asset, dataSource: pickerDataSource)
+        return MediaItemViewController(media: asset)
     }
 }
 
