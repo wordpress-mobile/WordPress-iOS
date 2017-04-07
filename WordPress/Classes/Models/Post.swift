@@ -28,7 +28,6 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 @objc(Post)
 class Post: AbstractPost {
 
-    static let entityName = "Post"
     static let typeDefaultIdentifier = "post"
 
     struct Constants {
