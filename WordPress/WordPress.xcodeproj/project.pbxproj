@@ -737,6 +737,7 @@
 		E1AB5A091E0BF31E00574B4E /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AB5A081E0BF31E00574B4E /* ArrayTests.swift */; };
 		E1AB5A3A1E0C464700574B4E /* DelayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AB5A391E0C464700574B4E /* DelayTests.swift */; };
 		E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E1AFA8C31E8E34230004A323 /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
 		E1B23B081BFB3B370006559B /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B23B071BFB3B370006559B /* MyProfileViewController.swift */; };
 		E1B289DB19F7AF7000DB0707 /* RemoteBlog.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B289DA19F7AF7000DB0707 /* RemoteBlog.m */; };
 		E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */; };
@@ -757,6 +758,7 @@
 		E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C5457F1C6C79BB001CEB0E /* MediaSettingsTests.swift */; };
 		E1C9AA511C10419200732665 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA501C10419200732665 /* Math.swift */; };
 		E1C9AA561C10427100732665 /* MathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA551C10427100732665 /* MathTest.swift */; };
+		E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */; };
 		E1CECE021E6EC7A8009C6695 /* FakePreviewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CECE011E6EC7A8009C6695 /* FakePreviewBuilder.swift */; };
 		E1CECE051E6F01CE009C6695 /* PostPreviewGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CECE041E6F01CE009C6695 /* PostPreviewGenerator.swift */; };
 		E1CFC1571E0AC8FF001DF9E9 /* Pattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CFC1561E0AC8FF001DF9E9 /* Pattern.swift */; };
@@ -2137,6 +2139,7 @@
 		E1AB5A081E0BF31E00574B4E /* ArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
 		E1AB5A391E0C464700574B4E /* DelayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayTests.swift; sourceTree = "<group>"; };
 		E1AC8CB91E54B891006FD056 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1AFA8C21E8E34230004A323 /* WordPressShare.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = WordPressShare.js; path = WordPressShareExtension/WordPressShare.js; sourceTree = SOURCE_ROOT; };
 		E1B23B071BFB3B370006559B /* MyProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
 		E1B289D919F7AF7000DB0707 /* RemoteBlog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteBlog.h; path = "Remote Objects/RemoteBlog.h"; sourceTree = "<group>"; };
 		E1B289DA19F7AF7000DB0707 /* RemoteBlog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteBlog.m; path = "Remote Objects/RemoteBlog.m"; sourceTree = "<group>"; };
@@ -2201,6 +2204,7 @@
 		E1C807471696F72E00E545A6 /* WordPress 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 9.xcdatamodel"; sourceTree = "<group>"; };
 		E1C9AA501C10419200732665 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Math.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E1C9AA551C10427100732665 /* MathTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathTest.swift; sourceTree = "<group>"; };
+		E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShareExtractor.swift; path = WordPressShareExtension/ShareExtractor.swift; sourceTree = SOURCE_ROOT; };
 		E1CECE011E6EC7A8009C6695 /* FakePreviewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakePreviewBuilder.swift; sourceTree = "<group>"; };
 		E1CECE041E6F01CE009C6695 /* PostPreviewGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPreviewGenerator.swift; sourceTree = "<group>"; };
 		E1CFC1561E0AC8FF001DF9E9 /* Pattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pattern.swift; sourceTree = "<group>"; };
@@ -3738,6 +3742,8 @@
 				B50248B01C96FF8400AFBDED /* PostStatusPickerViewController.swift */,
 				B50248B11C96FF8400AFBDED /* ShareViewController.swift */,
 				B50248B21C96FF8400AFBDED /* SitePickerViewController.swift */,
+				E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */,
+				E1AFA8C21E8E34230004A323 /* WordPressShare.js */,
 			);
 			name = WordPressShareExtension;
 			path = WordPressShare;
@@ -5603,6 +5609,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5623E901C7D060100CC29EA /* Images.xcassets in Resources */,
+				E1AFA8C31E8E34230004A323 /* WordPressShare.js in Resources */,
 				931430201E68B9C50014B6C6 /* Localizable.strings in Resources */,
 				B50248C71C96FFE800AFBDED /* MainInterface.storyboard in Resources */,
 				B51DAF041C7E4F0B007F474C /* AppImages.xcassets in Resources */,
@@ -6633,6 +6640,7 @@
 			files = (
 				B50248B41C96FF8400AFBDED /* PostStatusPickerViewController.swift in Sources */,
 				B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */,
+				E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */,
 				930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */,
 				B5FA868C1D10A4C400AB5F7E /* UIImage+Extensions.swift in Sources */,
 				B50248B71C96FF8400AFBDED /* UIImageView+Extensions.swift in Sources */,
