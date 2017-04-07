@@ -316,7 +316,7 @@ class MediaLibraryViewController: UIViewController {
         service.deleteMedia(assets,
                             progress: updateProgress,
                             success: { [weak self] in
-                                WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_photos_deleted": deletedItemsCount], with: self?.blog)
+                                WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
                                 SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
                                 self?.isEditing = false
         }, failure: { error in
