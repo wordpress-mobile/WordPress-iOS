@@ -13,7 +13,7 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 
-# Multi-paragraph text used to display in the Apple App Store.
+#. translators: Multi-paragraph text used to display in the Apple App Store.
 msgctxt "app_store_desc"
 msgid ""
 "Inspiration strikes — anytime, anywhere. Manage your WordPress blog or website on the go, from your iOS device: view your stats, moderate comments, create and edit posts and pages, and "
@@ -29,8 +29,8 @@ msgid ""
 "Need help with the app? Visit the forums at https://ios.forums.wordpress.org or tweet us @WordPressiOS.\n"
 msgstr ""
 
-# Keywords used in the App Store search engine to find the app.
-# Delimit with a comma between each keyword. Limit to 120 characters including spaces and commas.
+#. translators: Keywords used in the App Store search engine to find the app.
+#. Delimit with a comma between each keyword. Limit to 120 characters including spaces and commas.
 msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
@@ -39,23 +39,23 @@ msgctxt "v7.2-whats-new"
 msgid "We found a few gremlins living inside of the app and took care of them. We promise to never feed Wapuu after midnight again."
 msgstr ""
 
-# This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
+#. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
 msgctxt "standard-whats-new-1"
 msgid "You may not notice anything obviously different about this release, but expect a faster, more stable app. The proof is in the using!"
 msgstr ""
 
-# This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
+#. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
 msgctxt "standard-whats-new-2"
 msgid "For this release, we polished some pixels, waved a few bugs goodbye, and worked behind the scenes to make the WordPress experience smoother for our app users."
 msgstr ""
 
-# This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
+#. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
 msgctxt "standard-whats-new-3"
 msgid "No new bells and whistles, just incremental improvements to bring you a faster, more stable app. All that glitters is not gold — sometimes it's code!"
 msgstr ""
 
-# This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
-# It's in a haiku format and may be more difficult to translate; maybe come up with something equally awesome in haiku.
+#. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
+#. It's in a haiku format and may be more difficult to translate; maybe come up with something equally awesome in haiku.
 msgctxt "standard-whats-new-4"
 msgid ""
 "It may look the same,\n"
