@@ -101,29 +101,23 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
     let mailRecipient = "help@wordpress.com"
 
     var mailSubject: String {
-        get {
-            guard let displayURL = self.blog.displayURL else {
-                return "Start over"
-            }
-            return "Start over with site \(displayURL)"
+        guard let displayURL = self.blog.displayURL else {
+            return "Start over"
         }
+        return "Start over with site \(displayURL)"
     }
 
     var mailBody: String {
-        get {
-            guard let siteURL = self.blog.url else {
-                return "I want to start over"
-            }
-            return "I want to start over with the site \(siteURL)"
+        guard let siteURL = self.blog.url else {
+            return "I want to start over"
         }
+        return "I want to start over with the site \(siteURL)"
     }
 
     var googleMailURL: URL? {
-        get {
-            let googleMailString = "googlegmail:///co?to=\(mailRecipient)"
-                                   + "&subject=\(mailSubject)&body=\(mailBody)"
-            return URL(string: googleMailString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)
-        }
+        let googleMailString = "googlegmail:///co?to=\(mailRecipient)"
+            + "&subject=\(mailSubject)&body=\(mailBody)"
+        return URL(string: googleMailString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)
     }
 
     func showAppleMailComposer() {
