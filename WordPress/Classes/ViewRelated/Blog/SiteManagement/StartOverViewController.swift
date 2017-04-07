@@ -88,7 +88,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
         WPAppAnalytics.track(.siteSettingsStartOverContactSupportClicked, with: blog)
         if MFMailComposeViewController.canSendMail() {
             showAppleMailComposer()
-        } else if let googleMailURL = googleMailURL(),
+        } else if let googleMailURL = googleMailURL,
                 UIApplication.shared.canOpenURL(googleMailURL) {
             showGoogleMailComposerForURL(googleMailURL)
         } else {
@@ -98,52 +98,54 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
 
     // Mark - Email handling
 
-    func mailRecipient() -> String {
-        return "help@wordpress.com"
+    let mailRecipient = "help@wordpress.com"
+
+    var mailSubject: String {
+        get {
+            guard let displayURL = self.blog.displayURL else {
+                return "Start over"
+            }
+            return "Start over with site \(displayURL)"
+        }
     }
 
-    func mailSubject() -> String {
-        guard let siteUrl = self.blog.url else {
-            return "Start over"
+    var mailBody: String {
+        get {
+            guard let siteURL = self.blog.url else {
+                return "I want to start over"
+            }
+            return "I want to start over with the site \(siteURL)"
         }
-        return "Start over with site \(siteUrl)"
-
     }
 
-    func mailBody() -> String {
-        guard let siteUrl = self.blog.url else {
-            return "I want to start over"
+    var googleMailURL: URL? {
+        get {
+            let googleMailString = "googlegmail:///co?to=\(mailRecipient)"
+                                   + "&subject=\(mailSubject)&body=\(mailBody)"
+            return URL(string: googleMailString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)
         }
-        return "I want to start over with the site \(siteUrl)"
     }
 
     func showAppleMailComposer() {
         let mailComposeController = MFMailComposeViewController()
         mailComposeController.mailComposeDelegate = self
-        mailComposeController.setToRecipients([mailRecipient()])
-        mailComposeController.setSubject(mailSubject())
-        mailComposeController.setMessageBody(mailBody(), isHTML: false)
-        self.present(mailComposeController, animated: true, completion: nil)
+        mailComposeController.setToRecipients([mailRecipient])
+        mailComposeController.setSubject(mailSubject)
+        mailComposeController.setMessageBody(mailBody, isHTML: false)
+        present(mailComposeController, animated: true, completion: nil)
     }
 
     func showGoogleMailComposerForURL(_ url: URL ) {
         UIApplication.shared.open(url)
     }
 
-    func googleMailURL() -> URL? {
-        let googleMailString = "googlegmail:///co?to=\(mailRecipient())"
-                               + "&subject=\(mailSubject())&body=\(mailBody())"
-        return URL(string: googleMailString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)
-    }
-
     func showAlertToSendEmail() {
-        let title = NSLocalizedString("Contact us at \(mailRecipient())",
-                                      comment: "Alert title for contact us alert, placeholder for help email address.")
-        let message = NSLocalizedString("\nPlease send us an email to have your content cleared out.",
-                                        comment: "Message to ask the user to send us an email to clear their content.")
+        let title = String(format: NSLocalizedString("Contact us at %@", comment: "Alert title for contact us alert, placeholder for help email address, inserted at run time."), mailRecipient)
+        let message = NSLocalizedString("\nPlease send us an email to have your content cleared out.", comment: "Message to ask the user to send us an email to clear their content.")
+
         let alertController =  UIAlertController(title: title,
                                                  message: message,
-                                                 preferredStyle: UIAlertControllerStyle.alert)
+                                                 preferredStyle: .alert)
         alertController.addCancelActionWithTitle(NSLocalizedString("OK",
                                                  comment: "Button title. An acknowledgement of the message displayed in a prompt."))
         alertController.presentFromRootViewController()
