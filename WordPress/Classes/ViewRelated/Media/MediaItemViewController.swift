@@ -121,6 +121,11 @@ class MediaItemViewController: UITableViewController {
             let activityController = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
                 activityController.modalPresentationStyle = .popover
                 activityController.popoverPresentationController?.barButtonItem = sender
+                activityController.completionWithItemsHandler = { [weak self] _, completed, _, _ in
+                    if completed {
+                        WPAppAnalytics.track(.mediaLibrarySharedItemLink, with: self?.media.blog)
+                    }
+                }
                 present(activityController, animated: true, completion: nil)
         } else {
             let alertController = UIAlertController(title: nil, message: NSLocalizedString("Unable to get URL for media item.", comment: "Error message displayed when we were unable to copy the URL for an item in the user's media library."), preferredStyle: .alert)
@@ -146,7 +151,8 @@ class MediaItemViewController: UITableViewController {
         SVProgressHUD.show(withStatus: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.delete(media, success: {
+        service.delete(media, success: { [weak self] in
+            WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_photos_deleted": 1], with: self?.media.blog)
             SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
         }, failure: { error in
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete media item.", comment: "Text displayed in HUD if there was an error attempting to delete a media item."))
@@ -167,9 +173,10 @@ class MediaItemViewController: UITableViewController {
         mediaMetadata.update(media)
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.update(media, success: {
+        service.update(media, success: { [weak self] in
+            WPAppAnalytics.track(.mediaLibraryEditedItemMetadata, with: self?.media.blog)
             SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Saved!", comment: "Text displayed in HUD when a media item's metadata (title, etc) is saved successfully."))
-            self.updateNavigationItem()
+            self?.updateNavigationItem()
         }, failure: { error in
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to save media item.", comment: "Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved."))
             self.updateNavigationItem()
