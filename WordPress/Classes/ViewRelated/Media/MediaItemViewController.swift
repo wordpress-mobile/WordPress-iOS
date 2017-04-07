@@ -152,7 +152,7 @@ class MediaItemViewController: UITableViewController {
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.delete(media, success: { [weak self] in
-            WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_photos_deleted": 1], with: self?.media.blog)
+            WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": 1], with: self?.media.blog)
             SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
         }, failure: { error in
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete media item.", comment: "Text displayed in HUD if there was an error attempting to delete a media item."))
