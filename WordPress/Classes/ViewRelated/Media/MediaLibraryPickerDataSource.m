@@ -36,8 +36,9 @@
     self = [super init];
     if (self) {
         _mediaGroup = [[MediaLibraryGroup alloc] initWithBlog:blog];
+        __weak __typeof__(self) weakSelf = self;
         _groupObserverHandler = [_mediaGroup registerChangeObserverBlock:^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray<id<WPMediaMove>> *moved) {
-            [self notifyObserversWithIncrementalChanges:incrementalChanges removed:removed inserted:inserted changed:changed moved:moved];
+            [weakSelf notifyObserversWithIncrementalChanges:incrementalChanges removed:removed inserted:inserted changed:changed moved:moved];
         }];
         _blog = blog;
         NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
