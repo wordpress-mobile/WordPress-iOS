@@ -299,6 +299,8 @@ class MediaLibraryViewController: UIViewController {
         guard pickerViewController.selectedAssets.count > 0 else { return }
         guard let assets = pickerViewController.selectedAssets.copy() as? [Media] else { return }
 
+        let deletedItemsCount = assets.count
+
         let updateProgress = { (progress: Progress?) in
             let fractionCompleted = progress?.fractionCompleted ?? 0
             SVProgressHUD.showProgress(Float(fractionCompleted), status: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
@@ -314,6 +316,7 @@ class MediaLibraryViewController: UIViewController {
         service.deleteMedia(assets,
                             progress: updateProgress,
                             success: { [weak self] in
+                                WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
                                 SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
                                 self?.isEditing = false
         }, failure: { error in
@@ -411,6 +414,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor asset: WPMediaAsset) -> UIViewController? {
+        WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
         return mediaItemViewController(for: asset)
     }
 
@@ -418,6 +422,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         if isEditing { return true }
 
         if let viewController = mediaItemViewController(for: asset) {
+            WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
             navigationController?.pushViewController(viewController, animated: true)
         }
 
