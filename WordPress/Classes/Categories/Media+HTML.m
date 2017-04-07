@@ -66,13 +66,12 @@
     if (!self.videopressGUID) {
         return self.remoteThumbnailURL;
     }
-    NSString *posterURL = [self absoluteThumbnailLocalURL];
+    NSURL *posterURL = [self absoluteThumbnailLocalURL];
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:posterURL isDirectory:nil]) {
-        return posterURL;
+    if ([fileManager fileExistsAtPath:posterURL.path isDirectory:nil]) {
+        return posterURL.path;
     }
-    posterURL = self.remoteThumbnailURL;
-    return posterURL;
+    return self.remoteThumbnailURL;
 }
 
 @end

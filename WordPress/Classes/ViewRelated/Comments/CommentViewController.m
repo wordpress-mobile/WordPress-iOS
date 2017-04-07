@@ -7,7 +7,6 @@
 #import "BasePost.h"
 #import "SVProgressHUD.h"
 #import "EditCommentViewController.h"
-#import "EditReplyViewController.h"
 #import "PostService.h"
 #import "BlogService.h"
 #import "SuggestionsTableView.h"
@@ -97,7 +96,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }
 
     [self attachSuggestionsTableViewIfNeeded];
-    [self attachReplyViewIfNeeded];
+    [self attachReplyView];
     [self setupAutolayoutConstraints];
     [self setupKeyboardManager];
 
@@ -117,12 +116,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [self.view addSubview:self.suggestionsTableView];
 }
 
-- (void)attachReplyViewIfNeeded
+- (void)attachReplyView
 {
-    if (![self shouldAttachReplyTextView]) {
-        return;
-    }
-
     __typeof(self) __weak weakSelf = self;
 
     ReplyTextView *replyTextView = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
@@ -144,24 +139,16 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
-    if ([self shouldAttachReplyTextView]) {
-        self.bottomLayoutConstraint = [self.view.bottomAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor];
-        self.bottomLayoutConstraint.active = YES;
+    self.bottomLayoutConstraint = [self.view.bottomAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor];
+    self.bottomLayoutConstraint.active = YES;
 
-        [NSLayoutConstraint activateConstraints:@[
-            [self.tableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-            [self.replyTextView.topAnchor constraintEqualToAnchor:self.tableView.bottomAnchor],
-            [self.replyTextView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-            [self.replyTextView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-        ]];
-    }
-    else {
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView]|"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:views]];
-    }
-    
+    [NSLayoutConstraint activateConstraints:@[
+                                              [self.tableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+                                              [self.replyTextView.topAnchor constraintEqualToAnchor:self.tableView.bottomAnchor],
+                                              [self.replyTextView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+                                              [self.replyTextView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+                                              ]];
+
     if ([self shouldAttachSuggestionsTableView]) {
         // Pin the suggestions view left and right edges to the super view edges
         NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
@@ -390,7 +377,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     __weak __typeof(self) weakSelf = self;
 
     cell.onReplyClick = ^(UIButton *sender) {
-        [weakSelf editReply];
+        [weakSelf focusOnReplyTextView];
     };
 
     cell.onLikeClick = ^(UIButton *sender){
@@ -627,25 +614,12 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 #pragma mark - Replying Comments for iPad
 
-- (void)editReply
+- (void)focusOnReplyTextView
 {
-    __typeof(self) __weak weakSelf = self;
-    
-    EditReplyViewController *editViewController = [EditReplyViewController newReplyViewControllerForSiteID:self.comment.blog.dotComID];
-
-    editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
-        [self dismissViewControllerAnimated:YES completion:^{
-            if (hasNewContent) {
-                [weakSelf sendReplyWithNewContent:newContent];
-            }
-        }];
-    };
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    navController.navigationBar.translucent = NO;
-    [self presentViewController:navController animated:true completion:nil];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
+    [self.replyTextView becomeFirstResponder];
+#pragma clang diagnostic pop
 }
 
 - (void)sendReplyWithNewContent:(NSString *)content
@@ -743,16 +717,9 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 #pragma mark - Helpers
 
-- (BOOL)shouldAttachReplyTextView
-{
-    // iPad: We've got a different UI!
-    return ![UIDevice isPad];
-}
-
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    BOOL shouldShowSuggestions = [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.dotComID];
-    return self.shouldAttachReplyTextView && shouldShowSuggestions;
+    return [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.dotComID];
 }
 
 - (void)reloadData
