@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 58
+- @elibud 2017-04-06
+- `Blog` added `hasPaidPlan` boolean property. Default `NO`. Not optional.
+
 ## WordPress 57
 - @kurzee 2017-03-16
 - `Media` removed `orientation` property.

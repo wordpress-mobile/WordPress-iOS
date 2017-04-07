@@ -49,6 +49,11 @@
 @property (nonatomic, copy) NSString *planTitle;
 
 /**
+ *  @details Indicates whether the current's blog plan is paid, or not.
+ */
+@property (nonatomic, assign) BOOL hasPaidPlan;
+
+/**
  *  @details Indicates whether it's a jetpack site, or not.
  */
 @property (nonatomic, assign) BOOL jetpack;
