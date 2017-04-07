@@ -2,12 +2,6 @@ import Foundation
 
 
 
-// MARK: - ManagedObject Base Class
-//
-protocol ManagedObject {
-    static var entityName: String { get }
-}
-
 
 // MARK: - Core Data Helpers
 //
