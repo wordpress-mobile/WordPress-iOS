@@ -8,7 +8,6 @@ import WordPressShared
 class MediaItemViewController: UITableViewController {
     let media: Media
 
-    weak var dataSource: MediaLibraryPickerDataSource? = nil
 
     fileprivate var viewModel: ImmuTable!
     fileprivate var mediaMetadata: MediaMetadata {
@@ -17,9 +16,8 @@ class MediaItemViewController: UITableViewController {
         }
     }
 
-    init(media: Media, dataSource: MediaLibraryPickerDataSource) {
+    init(media: Media) {
         self.media = media
-        self.dataSource = dataSource
 
         self.mediaMetadata = MediaMetadata(media: media)
 
