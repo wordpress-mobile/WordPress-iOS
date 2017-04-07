@@ -1113,6 +1113,18 @@ NSString *const SessionCount = @"session_count";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"My Site - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_my_site"];
             break;
+        case WPAnalyticsStatMediaLibraryDeletedItems:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Media Library - Deleted items"];
+            break;
+        case WPAnalyticsStatMediaLibraryEditedItemMetadata:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Media Library - Edited item metadata"];
+            break;
+        case WPAnalyticsStatMediaLibraryPreviewedItem:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Media Library - Previewed item"];
+            break;
+        case WPAnalyticsStatMediaLibrarySharedItemLink:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Media Library - Shared item link"];
+            break;
 
         // To be implemented
         case WPAnalyticsStatAppUpgraded:
