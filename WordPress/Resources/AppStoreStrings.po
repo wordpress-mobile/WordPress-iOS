@@ -1,45 +1,64 @@
-# Translation of Release Notes & Apple Store Description in English (UK)
+# Translation of Release Notes & Apple Store Description in English (US)
 # This file is distributed under the same license as the Release Notes & Apple Store Description package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-02-06 17:52-0500\n"
+"PO-Revision-Date: 2017-04-07 07:21-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.6.7\n"
+"X-Generator: Poedit 2.0\n"
 "Project-Id-Version: Release Notes & Apple Store Description\n"
 "POT-Creation-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
 
+#. translators: Multi-paragraph text used to display in the Apple App Store.
 msgctxt "app_store_desc"
 msgid ""
-"Inspiration strikes — anytime, anywhere. Manage your WordPress blog or "
-"website on the go, from your iOS device: view your stats, moderate comments, "
-"create and edit posts and pages, and upload media. All you need is a "
-"WordPress.com blog or a self-hosted WordPress.org site running 3.6 or "
-"higher.\n"
-"With WordPress for iOS, you have the power of publishing in the palm of your "
-"hand. Draft a spontaneous haiku on the train. Snap a photo on an afternoon "
-"stroll for the week’s photo challenge at The Daily Post. Respond to your "
-"latest comments, or monitor your stats to see where today’s readers are "
-"coming from.\n"
-"Don’t forget to tag your posts published from the app with #wponthego so the "
-"community can find your masterpieces on the move.\n"
-"WordPress for iOS is an Open Source project, which means you, too, can help "
-"contribute to its development. Learn more at http://ios.wordpress.org.\n"
-"Need help with the app? Visit the forums at http://ios.forums.wordpress.org "
-"or tweet us @WordPressiOS.\n"
+"Inspiration strikes — anytime, anywhere. Manage your WordPress blog or website on the go, from your iOS device: view your stats, moderate comments, create and edit posts and pages, and "
+"upload media. All you need is a WordPress.com blog or a self-hosted WordPress.org site running 3.6 or higher.\n"
+"\n"
+"With WordPress for iOS, you have the power of publishing in the palm of your hand. Draft a spontaneous haiku on the train. Snap a photo on an afternoon stroll for the week’s photo "
+"challenge at The Daily Post. Respond to your latest comments, or monitor your stats to see where today’s readers are coming from.\n"
+"\n"
+"Don’t forget to tag your posts published from the app with #wponthego so the community can find your masterpieces on the move.\n"
+"\n"
+"WordPress for iOS is an Open Source project, which means you, too, can help contribute to its development. Learn more at https://apps.wordpress.com/contribute/.\n"
+"\n"
+"Need help with the app? Visit the forums at https://ios.forums.wordpress.org or tweet us @WordPressiOS.\n"
 msgstr ""
 
+#. translators: Keywords used in the App Store search engine to find the app.
+#. Delimit with a comma between each keyword. Limit to 120 characters including spaces and commas.
 msgctxt "app_store_keywords"
-msgid ""
-"social networking, blogging, blogs, photos, writing, geotagging, media, "
-"blog, wordpress\n"
+msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
 msgctxt "v7.2-whats-new"
+msgid "We found a few gremlins living inside of the app and took care of them. We promise to never feed Wapuu after midnight again."
+msgstr ""
+
+#. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
+msgctxt "standard-whats-new-1"
+msgid "You may not notice anything obviously different about this release, but expect a faster, more stable app. The proof is in the using!"
+msgstr ""
+
+#. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
+msgctxt "standard-whats-new-2"
+msgid "For this release, we polished some pixels, waved a few bugs goodbye, and worked behind the scenes to make the WordPress experience smoother for our app users."
+msgstr ""
+
+#. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
+msgctxt "standard-whats-new-3"
+msgid "No new bells and whistles, just incremental improvements to bring you a faster, more stable app. All that glitters is not gold — sometimes it's code!"
+msgstr ""
+
+#. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
+#. It's in a haiku format and may be more difficult to translate; maybe come up with something equally awesome in haiku.
+msgctxt "standard-whats-new-4"
 msgid ""
-"We found a few gremlins living inside of the app and took care of them. We promise to never feed Wapuu after midnight again."
+"It may look the same,\n"
+"but we shined and buffed the code.\n"
+"Small changes add up!"
 msgstr ""
