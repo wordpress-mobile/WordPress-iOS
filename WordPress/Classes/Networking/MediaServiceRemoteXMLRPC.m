@@ -109,14 +109,13 @@
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
-    NSString *path = media.localURL;
     NSString *type = media.mimeType;
     NSString *filename = media.file;
     
     NSMutableDictionary *data = [NSMutableDictionary dictionaryWithDictionary:@{
                            @"name": filename,
                            @"type": type,
-                           @"bits": [NSInputStream inputStreamWithFileAtPath:path],
+                           @"bits": [NSInputStream inputStreamWithFileAtPath:media.localURL.path],
                            }];
     if ([media.postID compare:@(0)] == NSOrderedDescending) {
         data[@"post_id"] = media.postID;

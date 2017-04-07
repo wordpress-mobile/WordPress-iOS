@@ -34,7 +34,7 @@ public struct elementStringIDs {
     static var removeSiteButton = "removeSiteButton"
 
     // Me tab
-    static var disconnectFromWPcomButton = "disconnectFromWPcomButton"
+    static var logOutFromWPcomButton = "logOutFromWPcomButton"
 }
 
 extension XCUIElement {
@@ -86,7 +86,7 @@ extension XCTestCase {
         if !app.textFields[ elementStringIDs.loginUsernameField ].exists && !app.textFields[ elementStringIDs.nuxUsernameField ].exists {
             app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMeButton ].tap()
             app.tables.element(boundBy: 0).swipeUp()
-            app.tables.cells[ elementStringIDs.disconnectFromWPcomButton ].tap()
+            app.tables.cells[ elementStringIDs.logOutFromWPcomButton ].tap()
             app.alerts.buttons.element(boundBy: 1).tap()
             //Give some time to everything get proper saved.
             sleep(2)

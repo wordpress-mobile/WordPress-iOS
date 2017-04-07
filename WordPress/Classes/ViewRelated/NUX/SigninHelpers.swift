@@ -187,7 +187,7 @@ import Mixpanel
             return ""
         }
 
-        var path = siteURL.absoluteString!.lowercased()
+        var path = siteURL.absoluteString!
         let isSiteURLSchemeEmpty = siteURL.scheme == nil || siteURL.scheme!.isEmpty
 
         if path.isWordPressComPath() {
