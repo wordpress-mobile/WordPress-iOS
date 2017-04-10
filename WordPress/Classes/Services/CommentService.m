@@ -13,6 +13,7 @@
 #import "AbstractPost.h"
 #import "NSDate+WordPressJSON.h"
 #import "WordPress-Swift.h"
+@import wpxmlrpc;
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 NSInteger const  WPNumberOfCommentsToSync = 100;
@@ -675,20 +676,46 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                             success();
                         }
                     } failure:^(NSError *error) {
-                        [self.managedObjectContext performBlock:^{
-                            // Note: The comment might have been deleted at this point
-                            Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
-                            if (commentInContext) {
-                                commentInContext.status = prevStatus;
-                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                            }
+                        // let's check if this error comes from self-hosted site and is an 500
+                        // This could be a signal that the error changed status on the server
+                        if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain]
+                            && error.code == 500) {
+                            [remote getCommentWithID:remoteComment.commentID success:^(RemoteComment *comment) {
+                                [self.managedObjectContext performBlock:^{
+                                    // Note: The comment might have been deleted at this point
+                                    Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
+                                    if (commentInContext) {
+                                        commentInContext.status = remoteComment.status;
+                                        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                    }
 
-                            if (failure) {
+                                    if (success) {
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            success();
+                                        });
+                                    }
+                                }];
+                            } failure:^(NSError *error) {
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     failure(error);
                                 });
-                            }
-                        }];
+                            }];
+                        } else {
+                            [self.managedObjectContext performBlock:^{
+                                // Note: The comment might have been deleted at this point
+                                Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
+                                if (commentInContext) {
+                                    commentInContext.status = prevStatus;
+                                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                }
+
+                                if (failure) {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        failure(error);
+                                    });
+                                }
+                            }];
+                        }
                     }];
 }
 
