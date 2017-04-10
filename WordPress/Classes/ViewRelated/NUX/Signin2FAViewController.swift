@@ -14,6 +14,7 @@ import WordPressShared
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
+    var pasteboardBeforeBackground: String? = nil
 
     lazy fileprivate var loginFacade: LoginFacade = {
         let facade = LoginFacade()
@@ -63,17 +64,40 @@ import WordPressShared
         registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(applicationBecameInactive), name: .UIApplicationWillResignActive, object: nil)
+        nc.addObserver(self, selector: #selector(applicationBecameActive), name: .UIApplicationDidBecomeActive, object: nil)
     }
 
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unregisterForKeyboardEvents()
+        NotificationCenter.default.removeObserver(self)
 
         // Multifactor codes are time sensitive, so clear the stored code if the
         // user dismisses the view. They'll need to reentered it upon return.
         loginFields.multifactorCode = ""
         verificationCodeField.text = ""
+    }
+
+    func applicationBecameInactive() {
+        pasteboardBeforeBackground = UIPasteboard.general.string
+    }
+
+    func applicationBecameActive() {
+        let emptyField = verificationCodeField.text?.isEmpty ?? true
+        guard emptyField,
+            let pasteString = UIPasteboard.general.string,
+            pasteString != pasteboardBeforeBackground else {
+                return
+        }
+        let isNumeric = pasteString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
+        guard isNumeric && pasteString.characters.count == 6 else {
+            return
+        }
+        verificationCodeField.text = pasteString
+        handleTextFieldDidChange(verificationCodeField)
     }
 
 
