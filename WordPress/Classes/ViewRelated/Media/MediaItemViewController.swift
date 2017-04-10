@@ -79,8 +79,24 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func reloadViewModel() {
+        guard !isMediaDeleted else {
+            handleDeletedMedia()
+            return
+        }
+
         updateViewModel()
         tableView.reloadData()
+    }
+
+    private var isMediaDeleted: Bool {
+        return media.isDeleted || media.managedObjectContext == nil
+    }
+
+    private func handleDeletedMedia() {
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
+        SVProgressHUD.showError(withStatus: NSLocalizedString("This media item has been deleted.", comment: "Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted."))
+        navigationController?.popViewController(animated: true)
     }
 
     private func updateNavigationItem() {
@@ -132,6 +148,11 @@ class MediaItemViewController: UITableViewController {
     }
 
     @objc private func trashTapped(_ sender: UIBarButtonItem) {
+        guard !isMediaDeleted else {
+            handleDeletedMedia()
+            return
+        }
+
         let alertController = UIAlertController(title: nil,
                                                 message: NSLocalizedString("Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso."), preferredStyle: .alert)
         alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
@@ -143,6 +164,11 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func deleteMediaItem() {
+        guard !isMediaDeleted else {
+            handleDeletedMedia()
+            return
+        }
+
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.setMinimumDismissTimeInterval(1.0)
         SVProgressHUD.show(withStatus: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
