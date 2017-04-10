@@ -681,8 +681,13 @@ private extension NotificationDetailsViewController {
         // Setup: Properties
         // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
         //
+        // Jetpack sites don't support liking comments (same as what is done on CommentVC)
+        if let blog = blogWithBlogID(note.metaSiteID), blog.supports(.commentLikes) {
+            cell.isLikeEnabled = commentBlock.isActionEnabled(.Like)
+        } else {
+            cell.isLikeEnabled = false
+        }
         cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(.Reply)
-        cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
         cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
         cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
         cell.isSpamEnabled      = commentBlock.isActionEnabled(.Spam)
