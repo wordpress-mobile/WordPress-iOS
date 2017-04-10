@@ -17,12 +17,22 @@ class MediaLibraryTests: XCTestCase {
             let basename = "media-service-test-sample"
             let pathExtension = "jpg"
             let expected = "\(basename).\(pathExtension)"
-            var url = try MediaLibrary.makeLocalMediaURL(with: basename, fileExtension: pathExtension)
-            XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url have unexpected filename or extension: \(url)")
-            url = try MediaLibrary.makeLocalMediaURL(with: expected, fileExtension: pathExtension)
-            XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url have unexpected filename or extension: \(url)")
-            url = try MediaLibrary.makeLocalMediaURL(with: basename + ".png", fileExtension: pathExtension)
-            XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url have unexpected filename or extension: \(url)")
+
+            var url = try MediaLibrary.makeLocalMediaURL(withFilename: basename, fileExtension: pathExtension)
+            XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url has unexpected basename or extension: \(url)")
+
+            url = try MediaLibrary.makeLocalMediaURL(withFilename: expected, fileExtension: pathExtension)
+            XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url has unexpected extension: \(url)")
+
+            url = try MediaLibrary.makeLocalMediaURL(withFilename: basename + ".png", fileExtension: pathExtension)
+            XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url has unexpected extension: \(url)")
+
+            url = try MediaLibrary.makeLocalMediaURL(withFilename: basename, fileExtension: nil)
+            XCTAssertTrue(url.lastPathComponent == basename, "Error: local media url has unexpected basename: \(url)")
+
+            url = try MediaLibrary.makeLocalMediaURL(withFilename: expected, fileExtension: nil)
+            XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url has unexpected filename: \(url)")
+
         } catch {
             XCTFail("Error creating local media URL: \(error)")
         }
