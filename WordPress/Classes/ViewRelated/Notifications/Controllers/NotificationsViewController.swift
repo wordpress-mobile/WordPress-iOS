@@ -514,7 +514,9 @@ extension NotificationsViewController {
             return
         }
 
-        performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+        }
     }
 
     fileprivate func prepareToShowDetailsForNotification(_ note: Notification) {
