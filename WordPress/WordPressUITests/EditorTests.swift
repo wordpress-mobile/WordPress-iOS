@@ -27,10 +27,10 @@ class EditorTests: XCTestCase {
         // Enable Aztec editor if needed
         mainNavigationTabBar = app.tabBars[ elementStringIDs.mainNavigationBar ]
         mainNavigationTabBar.buttons[ elementStringIDs.mainNavigationMeButton ].tap()
-        app.tables.staticTexts[ elementStringIDs.appSettingsButton ].tap()
-        aztecEditorToggleValue = app.tables.switches[ elementStringIDs.aztecEditorToggle ].value as! String
+        app.tables.cells[ elementStringIDs.appSettingsButton ].tap()
+        aztecEditorToggleValue = app.tables.cells[ elementStringIDs.aztecEditorToggle ].value as! String
         if ( aztecEditorToggleValue == "0" ) {
-            app.tables.switches[ elementStringIDs.aztecEditorToggle ].tap()
+            app.tables.cells[ elementStringIDs.aztecEditorToggle ].tap()
         }
 
         // Start new post

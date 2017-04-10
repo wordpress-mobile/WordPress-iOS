@@ -30,23 +30,21 @@ public struct elementStringIDs {
 
     // My Sites page
     static var settingsButton = "BlogDetailsSettingsCell"
-
-    // Site Settings page
-    static var removeSiteButton = "removeSiteButton"
+    static var removeSiteButton = "BlogDetailsRemoveSiteCell"
 
     // Me tab
-    static var appSettingsButton = "App Settings"
+    static var appSettingsButton = "appSettingsButton"
     static var logOutFromWPcomButton = "logOutFromWPcomButton"
 
     // App Settings Page
-    static var aztecEditorToggle = "Native Editor"
+    static var aztecEditorToggle = "nativeEditorToggle"
 
     // Aztec Editor
     static var aztecPostView = "WordPress.AztecPostView"
     static var editorCloseButton = "editor_close_button"
-    static var richTextField = "Rich Content"
-    static var htmlTextField = "HTML"
-    static var richTextContentLabel = "aztec_content_placeholder"
+    static var richTextField = "editor_rich_content_view"
+    static var htmlTextField = "editor_html_content_view"
+    static var richTextContentLabel = "editor_content_placeholder"
     static var editorCloseAlert = "You have unsaved changes."
     static var editorDiscardButton = "Discard"
     static var insertLinkAlertTitle = "Insert Link"
@@ -183,14 +181,13 @@ extension XCTestCase {
         let removeButton = app.tables.cells[ elementStringIDs.removeSiteButton ]
         let mySitesTabButton = app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ]
         let siteNameField = app.tables.staticTexts[ WordPressTestCredentials.selfHostedSiteName ]
-        let settingsButton = app.tables.cells[ elementStringIDs.settingsButton ]
 
         // Tap the My Sites button twice to be sure that we're on the All Sites list
         mySitesTabButton.tap()
         mySitesTabButton.tap()
 
         siteNameField.tap()
-        settingsButton.tap()
+        app.tables.element(boundBy: 0).swipeUp()
 
         waitForElementToAppear(element: removeButton)
         removeButton.tap()
