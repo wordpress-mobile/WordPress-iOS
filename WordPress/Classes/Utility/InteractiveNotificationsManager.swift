@@ -63,14 +63,14 @@ final public class InteractiveNotificationsManager: NSObject {
     @discardableResult
     public func handleAction(with identifier: String, userInfo: NSDictionary, responseText: String?) -> Bool {
         guard AccountHelper.isDotcomAvailable(),
-            let noteId = userInfo.object(forKey: "note_id") as? NSNumber,
+            let noteID = userInfo.object(forKey: "note_id") as? NSNumber,
             let siteID = userInfo.object(forKey: "blog_id") as? NSNumber,
             let commentID = userInfo.object(forKey: "comment_id") as? NSNumber else {
             return false
         }
 
         if identifier == UNNotificationDefaultActionIdentifier {
-            showDetailsWithNoteID(noteId)
+            showDetailsWithNoteID(noteID)
             return true
         }
 
@@ -80,12 +80,12 @@ final public class InteractiveNotificationsManager: NSObject {
 
         switch action {
         case .CommentApprove:
-            approveCommentWithCommentID(commentID, siteID: siteID)
+            approveCommentWithCommentID(commentID, noteID: noteID, siteID: siteID)
         case .CommentLike:
-            likeCommentWithCommentID(commentID, siteID: siteID)
+            likeCommentWithCommentID(commentID, noteID: noteID, siteID: siteID)
         case .CommentReply:
             if let responseText = responseText {
-                replyToCommentWithCommentID(commentID, siteID: siteID, content: responseText)
+                replyToCommentWithCommentID(commentID, noteID: noteID, siteID: siteID, content: responseText)
             } else {
                 DDLogSwift.logError("Tried to reply to a comment notification with no text")
             }
@@ -105,11 +105,13 @@ final public class InteractiveNotificationsManager: NSObject {
     ///     - commentID: The comment identifier
     ///     - siteID: The site identifier
     ///
-    fileprivate func likeCommentWithCommentID(_ commentID: NSNumber, siteID: NSNumber) {
+    fileprivate func likeCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
         let context = ContextManager.sharedInstance().mainContext
-        let service = CommentService(managedObjectContext: context)
+        let commentService = CommentService(managedObjectContext: context)
+        let notificationActionsService = NotificationActionsService(managedObjectContext: context)
 
-        service.likeComment(withID: commentID, siteID: siteID, success: {
+        commentService.likeComment(withID: commentID, siteID: siteID, success: {
+            notificationActionsService.forceSyncNotification(with: noteID.stringValue)
             DDLogSwift.logInfo("Liked comment from push notification")
         }, failure: { error in
             DDLogSwift.logInfo("Couldn't like comment from push notification")
@@ -123,11 +125,13 @@ final public class InteractiveNotificationsManager: NSObject {
     ///     - commentID: The comment identifier
     ///     - siteID: The site identifier
     ///
-    fileprivate func approveCommentWithCommentID(_ commentID: NSNumber, siteID: NSNumber) {
+    fileprivate func approveCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
         let context = ContextManager.sharedInstance().mainContext
-        let service = CommentService(managedObjectContext: context)
+        let commentService = CommentService(managedObjectContext: context)
+        let notificationActionsService = NotificationActionsService(managedObjectContext: context)
 
-        service.approveComment(withID: commentID, siteID: siteID, success: {
+        commentService.approveComment(withID: commentID, siteID: siteID, success: {
+            notificationActionsService.forceSyncNotification(with: noteID.stringValue)
             DDLogSwift.logInfo("Successfully moderated comment from push notification")
         }, failure: { error in
             DDLogSwift.logInfo("Couldn't moderate comment from push notification")
@@ -151,11 +155,13 @@ final public class InteractiveNotificationsManager: NSObject {
     ///     - siteID: The site identifier
     ///     - content: The text for the comment reply
     ///
-    fileprivate func replyToCommentWithCommentID(_ commentID: NSNumber, siteID: NSNumber, content: String) {
+    fileprivate func replyToCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber, content: String) {
         let context = ContextManager.sharedInstance().mainContext
-        let service = CommentService(managedObjectContext: context)
+        let commentService = CommentService(managedObjectContext: context)
+        let notificationActionsService = NotificationActionsService(managedObjectContext: context)
 
-        service.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
+        commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
+            notificationActionsService.forceSyncNotification(with: noteID.stringValue)
             DDLogSwift.logInfo("Successfully replied comment from push notification")
         }, failure: { error in
             DDLogSwift.logInfo("Couldn't reply to comment from push notification")
