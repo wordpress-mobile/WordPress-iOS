@@ -111,9 +111,9 @@
     }
 
     error = nil;
-    NSURL *mediaURL = [MediaLibrary makeLocalMediaURLWith:mediaName
-                                            fileExtension:extension
-                                                    error:&error];
+    NSURL *mediaURL = [MediaLibrary makeLocalMediaURLWithFilename:mediaName
+                                                    fileExtension:extension
+                                                            error:&error];
     if (error) {
         if (completion) {
             completion(nil, error);
@@ -121,9 +121,9 @@
         return;
     }
     error = nil;
-    NSURL *mediaThumbnailURL = [MediaLibrary makeLocalMediaURLWith:[MediaLibrary mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
-                                                     fileExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]
-                                                             error:&error];
+    NSURL *mediaThumbnailURL = [MediaLibrary makeLocalMediaURLWithFilename:[MediaLibrary mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
+                                                             fileExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]
+                                                                     error:&error];
     if (error) {
         if (completion) {
             completion(nil, error);
@@ -647,9 +647,9 @@
 
             [self.managedObjectContext performBlock:^{
                 NSError *error = nil;
-                NSURL *fileURL = [MediaLibrary makeLocalMediaURLWith:[MediaLibrary mediaFilenameAppendingThumbnail:media.filename]
-                                                       fileExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]
-                                                               error:&error];
+                NSURL *fileURL = [MediaLibrary makeLocalMediaURLWithFilename:[MediaLibrary mediaFilenameAppendingThumbnail:media.filename]
+                                                               fileExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]
+                                                                       error:&error];
                 if (error) {
                     if (failure) {
                         failure(error);

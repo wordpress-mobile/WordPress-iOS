@@ -32,11 +32,16 @@ extension MediaLibrary {
     ///
     /// - Note: if a file already exists with the same name, the file name is appended with a number
     ///   and incremented until a unique filename is found.
-    class func makeLocalMediaURL(with filename: String, fileExtension: String) throws -> URL {
+    class func makeLocalMediaURL(withFilename filename: String, fileExtension: String?) throws -> URL {
         let media = try localDirectory()
-        let basename = (filename as NSString).deletingPathExtension.lowercased()
-        var url = media.appendingPathComponent(basename, isDirectory: false)
-        url.appendPathExtension(fileExtension)
+        var url: URL
+        if let fileExtension = fileExtension {
+            let basename = (filename as NSString).deletingPathExtension.lowercased()
+            url = media.appendingPathComponent(basename, isDirectory: false)
+            url.appendPathExtension(fileExtension)
+        } else {
+            url = media.appendingPathComponent(filename, isDirectory: false)
+        }
         // Increment the filename as needed to ensure we're not
         // providing a URL for an existing file of the same name.
         return url.incrementalFilename()
