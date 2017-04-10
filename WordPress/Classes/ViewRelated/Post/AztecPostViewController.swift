@@ -30,6 +30,7 @@ class AztecPostViewController: UIViewController {
         tv.mediaDelegate = self
         tv.commentsDelegate = self
         tv.backgroundColor = Colors.aztecBackground
+        tv.accessibilityIdentifier = "editor_rich_content_view"
         toolbar.formatter = self
 
         return tv
@@ -41,7 +42,7 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) lazy var placeholderLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString("Share your story here...", comment: "Aztec's Text Placeholder")
-        label.accessibilityIdentifier = "aztec_content_placeholder"
+        label.accessibilityIdentifier = "editor_content_placeholder"
         label.textColor = Colors.placeholder
         label.font = Fonts.regular
         label.isUserInteractionEnabled = false
@@ -57,11 +58,12 @@ class AztecPostViewController: UIViewController {
         let tv = UITextView()
 
         let toolbar = self.createToolbar(htmlMode: true)
-        let accessibilityLabel = NSLocalizedString("HTML", comment: "Accessibility label for HTML button on formatting toolbar.")
+        let accessibilityLabel = NSLocalizedString("HTML", comment: "Post HTML content")
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         toolbar.formatter = self
         tv.isHidden = true
         tv.delegate = self
+        tv.accessibilityIdentifier = "editor_html_content_view"
 
         return tv
     }()
