@@ -360,6 +360,31 @@
                            }];
 }
 
+- (void)getCommentWithID:(NSNumber *)commentID
+           success:(void (^)(RemoteComment *comment))success
+           failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", self.siteID, commentID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
+    [self.wordPressComRestApi GET:requestUrl
+                        parameters:nil
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               if (success) {
+                                   NSDictionary *commentDict = (NSDictionary *)responseObject;
+                                   RemoteComment *comment = [self remoteCommentFromJSONDictionary:commentDict];
+                                   success(comment);
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
+
+}
+
+
 
 #pragma mark - Private methods
 
