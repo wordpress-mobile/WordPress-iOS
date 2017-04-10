@@ -12,7 +12,7 @@ enum FeatureFlag: Int {
         case .exampleFeature:
             return true
         case .mediaLibrary:
-            return build(.debug)
+            return build(.debug, .alpha, .internal)
         case .nativeEditor:
             // At the moment this is only visible by default in non-app store builds
             if build(.alpha, .debug, .internal) {

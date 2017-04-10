@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 
 #. translators: Keywords used in the App Store search engine to find the app.
-#. Delimit with a comma between each keyword. Limit to 120 characters including spaces and commas.
+#. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
 msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""

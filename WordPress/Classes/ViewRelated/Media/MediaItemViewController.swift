@@ -184,35 +184,35 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func editTitle() -> ((ImmuTableRow) -> ()) {
-        return { row in
+        return { [weak self] row in
             let editableRow = row as! EditableTextRow
-            self.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image title", comment: "Hint for image title on image settings."),
+            self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image title", comment: "Hint for image title on image settings."),
                                         onValueChanged: { value in
-                self.title = value
-                self.mediaMetadata.title = value
-                self.reloadViewModel()
+                self?.title = value
+                self?.mediaMetadata.title = value
+                self?.reloadViewModel()
             })
         }
     }
 
     private func editCaption() -> ((ImmuTableRow) -> ()) {
-        return { row in
+        return { [weak self] row in
             let editableRow = row as! EditableTextRow
-            self.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Caption", comment: "Hint for image caption on image settings."),
+            self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Caption", comment: "Hint for image caption on image settings."),
                                         onValueChanged: { value in
-                self.mediaMetadata.caption = value
-                self.reloadViewModel()
+                self?.mediaMetadata.caption = value
+                self?.reloadViewModel()
             })
         }
     }
 
     private func editDescription() -> ((ImmuTableRow) -> ()) {
-        return { row in
+        return { [weak self] row in
             let editableRow = row as! EditableTextRow
-            self.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Description", comment: "Hint for image description on image settings."),
+            self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Description", comment: "Hint for image description on image settings."),
                                         onValueChanged: { value in
-                self.mediaMetadata.desc  = value
-                self.reloadViewModel()
+                self?.mediaMetadata.desc  = value
+                self?.reloadViewModel()
             })
         }
     }
