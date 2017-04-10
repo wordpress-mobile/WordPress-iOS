@@ -19,7 +19,35 @@ final public class InteractiveNotificationsManager: NSObject {
         return UIApplication.shared
     }
 
+    /// Returns the Core Data main context.
+    ///
+    var context: NSManagedObjectContext {
+        return ContextManager.sharedInstance().mainContext
+    }
 
+    /// Returns a CommentService instance.
+    ///
+    var commentService: CommentService {
+        return CommentService(managedObjectContext: context)
+    }
+
+    /// Returns a NotificationActionsService instance.
+    ///
+    var notificationActionsService: NotificationActionsService {
+        return NotificationActionsService(managedObjectContext: context)
+    }
+
+    /// Returns a NotificationSyncServiceRemote instance.
+    ///
+    var notificationSyncServiceRemote: NotificationSyncServiceRemote? {
+        let accountService = AccountService(managedObjectContext: context)
+
+        guard let dotcomAPI = accountService.defaultWordPressComAccount()?.wordPressComRestApi else {
+            return nil
+        }
+
+       return NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
+    }
 
     // MARK: - Public Methods
 
@@ -95,23 +123,20 @@ final public class InteractiveNotificationsManager: NSObject {
     }
 
 
-
     // MARK: - Private Helpers
 
 
-    /// Likes a comment
+    /// Likes a comment and marks the associated notification as read
     ///
     /// - Parameters:
     ///     - commentID: The comment identifier
     ///     - siteID: The site identifier
     ///
     fileprivate func likeCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
-        let context = ContextManager.sharedInstance().mainContext
-        let commentService = CommentService(managedObjectContext: context)
-        let notificationActionsService = NotificationActionsService(managedObjectContext: context)
-
         commentService.likeComment(withID: commentID, siteID: siteID, success: {
-            notificationActionsService.forceSyncNotification(with: noteID.stringValue)
+            self.notificationSyncServiceRemote?.updateReadStatus(noteID.stringValue, read: true, completion: { _ in
+                self.notificationActionsService.forceSyncNotification(with: noteID.stringValue)
+            })
             DDLogSwift.logInfo("Liked comment from push notification")
         }, failure: { error in
             DDLogSwift.logInfo("Couldn't like comment from push notification")
@@ -119,19 +144,17 @@ final public class InteractiveNotificationsManager: NSObject {
     }
 
 
-    /// Approves a comment
+    /// Approves a comment and marks the associated notification as read
     ///
     /// - Parameters:
     ///     - commentID: The comment identifier
     ///     - siteID: The site identifier
     ///
     fileprivate func approveCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
-        let context = ContextManager.sharedInstance().mainContext
-        let commentService = CommentService(managedObjectContext: context)
-        let notificationActionsService = NotificationActionsService(managedObjectContext: context)
-
         commentService.approveComment(withID: commentID, siteID: siteID, success: {
-            notificationActionsService.forceSyncNotification(with: noteID.stringValue)
+            self.notificationSyncServiceRemote?.updateReadStatus(noteID.stringValue, read: true, completion: { _ in
+                self.notificationActionsService.forceSyncNotification(with: noteID.stringValue)
+            })
             DDLogSwift.logInfo("Successfully moderated comment from push notification")
         }, failure: { error in
             DDLogSwift.logInfo("Couldn't moderate comment from push notification")
@@ -148,7 +171,7 @@ final public class InteractiveNotificationsManager: NSObject {
     }
 
 
-    /// Replies to a comment
+    /// Replies to a comment and marks the associated notification as read
     ///
     /// - Parameters:
     ///     - commentID: The comment identifier
@@ -156,12 +179,10 @@ final public class InteractiveNotificationsManager: NSObject {
     ///     - content: The text for the comment reply
     ///
     fileprivate func replyToCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber, content: String) {
-        let context = ContextManager.sharedInstance().mainContext
-        let commentService = CommentService(managedObjectContext: context)
-        let notificationActionsService = NotificationActionsService(managedObjectContext: context)
-
         commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
-            notificationActionsService.forceSyncNotification(with: noteID.stringValue)
+            self.notificationSyncServiceRemote?.updateReadStatus(noteID.stringValue, read: true, completion: { _ in
+                self.notificationActionsService.forceSyncNotification(with: noteID.stringValue)
+            })
             DDLogSwift.logInfo("Successfully replied comment from push notification")
         }, failure: { error in
             DDLogSwift.logInfo("Couldn't reply to comment from push notification")
