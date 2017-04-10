@@ -514,6 +514,10 @@ extension NotificationsViewController {
             return
         }
 
+        // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
+        // would be missing entirely when launching the app from the background and presenting a notification.
+        // The issue seems tied to performing a `pop` in `prepareToShowDetailsForNotification` and presenting
+        // the new detail view controller at the same time. More info: https://github.com/wordpress-mobile/WordPress-iOS/issues/6976
         DispatchQueue.main.async {
             self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
         }
