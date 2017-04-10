@@ -5,6 +5,7 @@ public struct elementStringIDs {
     static var mainNavigationBar = "Main Navigation"
     static var mainNavigationMeButton = "meTabButton"
     static var mainNavigationMySitesButton = "mySitesTabButton"
+    static var mainNavigationNewPostButton = "New Post"
 
     // Login page
     static var loginUsernameField = "Email or username"
@@ -34,7 +35,43 @@ public struct elementStringIDs {
     static var removeSiteButton = "removeSiteButton"
 
     // Me tab
+    static var appSettingsButton = "App Settings"
     static var logOutFromWPcomButton = "logOutFromWPcomButton"
+
+    // App Settings Page
+    static var aztecEditorToggle = "Native Editor"
+
+    // Aztec Editor
+    static var aztecPostView = "WordPress.AztecPostView"
+    static var editorCloseButton = "editor_close_button"
+    static var richTextField = "Rich Content"
+    static var htmlTextField = "HTML"
+    static var richTextContentLabel = "aztec_content_placeholder"
+    static var editorCloseAlert = "You have unsaved changes."
+    static var editorDiscardButton = "Discard"
+    static var insertLinkAlertTitle = "Insert Link"
+    static var insertLinkButton = "Insert Link"
+
+    // Aztec Editor Toolbar
+    static var mediaButton = "format_toolbar_insert_media"
+    static var headerButton = "format_toolbar_select_paragraph_style"
+    static var boldButton = "format_toolbar_toggle_bold"
+    static var italicButton = "format_toolbar_toggle_italic"
+    static var underlineButton = "format_toolbar_toggle_underline"
+    static var strikethroughButton = "format_toolbar_toggle_strikethrough"
+    static var blockquoteButton = "format_toolbar_toggle_blockquote"
+    static var orderedlistButton = "format_toolbar_toggle_list_ordered"
+    static var unorderedlistButton = "format_toolbar_toggle_list_unordered"
+    static var linkButton = "format_toolbar_insert_link"
+    static var horizontalrulerButton = "format_toolbar_insert_horizontal_ruler"
+    static var sourcecodeButton = "format_toolbar_toggle_html_view"
+    static var moreButton = "format_toolbar_insert_more"
+    static var header1Button = "Heading 1"
+    static var header2Button = "Heading 2"
+    static var header3Button = "Heading 3"
+    static var header4Button = "Heading 4"
+    static var header5Button = "Heading 5"
+    static var header6Button = "Heading 6"
 }
 
 extension XCUIElement {
@@ -193,5 +230,15 @@ extension XCTestCase {
         }
 
         createAccountButton.tap()
+    }
+
+    public func typeAndSelectText(text: String) {
+        let app = XCUIApplication()
+        let richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.typeText(text)
+        richContentTextView.press(forDuration: 1.2)
+        app.menuItems["Select All"].tap()
     }
 }

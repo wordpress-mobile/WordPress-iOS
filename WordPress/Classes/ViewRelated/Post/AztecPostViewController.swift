@@ -41,6 +41,7 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) lazy var placeholderLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString("Share your story here...", comment: "Aztec's Text Placeholder")
+        label.accessibilityIdentifier = "aztec_content_placeholder"
         label.textColor = Colors.placeholder
         label.font = Fonts.regular
         label.isUserInteractionEnabled = false
@@ -130,6 +131,7 @@ class AztecPostViewController: UIViewController {
     ///
     fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
         let cancelItem = UIBarButtonItem(customView: self.closeButton)
+        cancelItem.accessibilityIdentifier = "editor_close_button"
         cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
         return cancelItem
     }()
