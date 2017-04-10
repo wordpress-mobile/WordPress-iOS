@@ -61,7 +61,8 @@ class AppSettingsViewController: UITableViewController {
         let mediaRemoveLocation = SwitchRow(
             title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
             value: Bool(MediaSettings().removeLocationSetting),
-            onChange: mediaRemoveLocationChanged()
+            onChange: mediaRemoveLocationChanged(),
+            accessibilityIdentifier: "removeLocationFromMediaToggle"
         )
 
         let mediaCacheRow = TextRow(title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
@@ -80,7 +81,8 @@ class AppSettingsViewController: UITableViewController {
         let visualEditor = SwitchRow(
             title: NSLocalizedString("Visual Editor", comment: "Option to enable the visual editor"),
             value: editorSettings.visualEditorEnabled,
-            onChange: visualEditorChanged()
+            onChange: visualEditorChanged(),
+            accessibilityIdentifier: "visualEditorToggle"
         )
         editorRows.append(visualEditor)
 
@@ -88,7 +90,8 @@ class AppSettingsViewController: UITableViewController {
             let nativeEditor = SwitchRow(
                 title: NSLocalizedString("Native Editor", comment: "Option to enable the native visual editor"),
                 value: editorSettings.nativeEditorEnabled,
-                onChange: nativeEditorChanged()
+                onChange: nativeEditorChanged(),
+                accessibilityIdentifier: "nativeEditorToggle"
             )
             editorRows.append(nativeEditor)
         }

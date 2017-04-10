@@ -9,9 +9,11 @@ struct NavigationItemRow: ImmuTableRow {
     let icon: UIImage?
     let action: ImmuTableAction?
     let accessoryType: UITableViewCellAccessoryType
+    let accessibilityIdentifier: String?
 
-    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCellAccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
+    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCellAccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction, accessibilityIdentifier: String? = nil) {
         self.title = title
+        self.accessibilityIdentifier = accessibilityIdentifier
         self.icon = icon
         self.accessoryType = accessoryType
         self.action = action
@@ -21,6 +23,7 @@ struct NavigationItemRow: ImmuTableRow {
         cell.textLabel?.text = title
         cell.accessoryType = accessoryType
         cell.imageView?.image = icon
+        cell.accessibilityIdentifier = accessibilityIdentifier
 
         WPStyleGuide.configureTableViewCell(cell)
     }
@@ -154,6 +157,7 @@ struct SwitchRow: ImmuTableRow {
     let value: Bool
     let action: ImmuTableAction? = nil
     let onChange: (Bool) -> Void
+    let accessibilityIdentifier: String
 
     func configureCell(_ cell: UITableViewCell) {
         let cell = cell as! SwitchTableViewCell
@@ -162,5 +166,6 @@ struct SwitchRow: ImmuTableRow {
         cell.selectionStyle = .none
         cell.on = value
         cell.onChange = onChange
+        cell.accessibilityIdentifier = accessibilityIdentifier
     }
 }

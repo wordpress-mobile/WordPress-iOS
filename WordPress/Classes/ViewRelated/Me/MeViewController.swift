@@ -143,7 +143,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             title: NSLocalizedString("App Settings", comment: "Link to App Settings section"),
             icon: Gridicon.iconOfType(.phone),
             accessoryType: accessoryType,
-            action: pushAppSettings())
+            action: pushAppSettings(),
+            accessibilityIdentifier: "appSettingsButton")
 
         let notificationSettings = NavigationItemRow(
             title: NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section"),
