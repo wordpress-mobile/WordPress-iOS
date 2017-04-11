@@ -15,6 +15,7 @@ NSString * const WPAppAnalyticsKeyPostID = @"post_id";
 NSString * const WPAppAnalyticsKeyFeedID = @"feed_id";
 NSString * const WPAppAnalyticsKeyFeedItemID = @"feed_item_id";
 NSString * const WPAppAnalyticsKeyIsJetpack = @"is_jetpack";
+NSString * const WPAppAnalyticsKeySessionCount = @"session_count";
 static NSString * const WPAppAnalyticsKeyLastVisibleScreen = @"last_visible_screen";
 static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
@@ -110,12 +111,34 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 - (void)applicationDidBecomeActive:(NSNotification*)notification
 {
+    [self incrementSessionCount];
     [self trackApplicationOpened];
 }
 
 - (void)applicationDidEnterBackground:(NSNotification*)notification
 {
     [self trackApplicationClosed];
+}
+
+#pragma mark - Session
+
++ (NSInteger)sessionCount
+{
+    return [[NSUserDefaults standardUserDefaults] integerForKey:WPAppAnalyticsKeySessionCount];
+}
+
+- (NSInteger)incrementSessionCount
+{
+    NSInteger sessionCount = [[self class] sessionCount];
+    sessionCount++;
+
+    if (sessionCount == 1) {
+        [WPAnalytics track:WPAnalyticsStatAppInstalled];
+    }
+
+    [[NSUserDefaults standardUserDefaults] setInteger:sessionCount forKey:WPAppAnalyticsKeySessionCount];
+
+    return sessionCount;
 }
 
 #pragma mark - App Tracking
