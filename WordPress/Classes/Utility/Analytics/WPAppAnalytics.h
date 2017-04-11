@@ -10,6 +10,7 @@ extern NSString * const WPAppAnalyticsKeyPostID;
 extern NSString * const WPAppAnalyticsKeyFeedID;
 extern NSString * const WPAppAnalyticsKeyFeedItemID;
 extern NSString * const WPAppAnalyticsKeyIsJetpack;
+extern NSString * const WPAppAnalyticsKeySessionCount;
 
 /**
  *  @class      WPAppAnalytics
@@ -33,6 +34,11 @@ extern NSString * const WPAppAnalyticsKeyIsJetpack;
  *  @returns    The initialized object.
  */
 - (instancetype)initWithLastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback;
+
+/**
+ *  @brief      The current session count.
+ */
++ (NSInteger)sessionCount;
 
 #pragma mark - Usage tracking
 
