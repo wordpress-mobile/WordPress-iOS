@@ -241,4 +241,31 @@ extension XCTestCase {
         richContentTextView.press(forDuration: 1.2)
         app.menuItems.element(boundBy: 1).tap()
     }
+
+    public func swipeAndSelectHeaderStyle(headerStyle: String) {
+        let app = XCUIApplication()
+
+        app.scrollViews.otherElements.buttons[ elementStringIDs.headerButton ].tap()
+        if ( isIpad(app: app) ) {
+            app.tables.element(boundBy: 2).swipeUp()
+        } else {
+            app.tables.element(boundBy: 1).swipeUp()
+        }
+        app.tables.staticTexts[ headerStyle ].tap()
+    }
+
+    public func insertLink(link: String) {
+        let app = XCUIApplication()
+
+        // Prepare link to be auto-filled in URL field
+        UIPasteboard.general.string = link
+
+        app.scrollViews.otherElements.buttons[ elementStringIDs.linkButton ].tap()
+
+        if ( isIpad(app: app) ) {
+            app.alerts.buttons.element(boundBy: 2).tap()
+        } else {
+            app.alerts.buttons.element(boundBy: 3).tap()
+        }
+    }
 }

@@ -136,11 +136,7 @@ class EditorTests: XCTestCase {
     func testSimpleFormatLink() {
         typeAndSelectText(text: "text")
 
-        // Prepare link to be auto-filled in URL field
-        UIPasteboard.general.string = "https://wordpress.com/"
-
-        app.scrollViews.otherElements.buttons[ elementStringIDs.linkButton ].tap()
-        app.alerts.buttons.element(boundBy: 3).tap()
+        insertLink(link: "https://wordpress.com/")
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
 
         htmlContentTextView = app.textViews[ elementStringIDs.htmlTextField ]
@@ -212,9 +208,7 @@ class EditorTests: XCTestCase {
     func testSimpleFormatHeadingFour() {
         typeAndSelectText(text: "text")
 
-        app.scrollViews.otherElements.buttons[ elementStringIDs.headerButton ].tap()
-        app.tables.element(boundBy: 1).swipeUp()
-        app.tables.staticTexts[ elementStringIDs.header4Button ].tap()
+        swipeAndSelectHeaderStyle(headerStyle: elementStringIDs.header4Button)
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
 
         htmlContentTextView = app.textViews[ elementStringIDs.htmlTextField ]
@@ -226,9 +220,7 @@ class EditorTests: XCTestCase {
     func testSimpleFormatHeadingFive() {
         typeAndSelectText(text: "text")
 
-        app.scrollViews.otherElements.buttons[ elementStringIDs.headerButton ].tap()
-        app.tables.element(boundBy: 1).swipeUp()
-        app.tables.staticTexts[ elementStringIDs.header5Button ].tap()
+        swipeAndSelectHeaderStyle(headerStyle: elementStringIDs.header5Button)
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
 
         htmlContentTextView = app.textViews[ elementStringIDs.htmlTextField ]
@@ -240,9 +232,7 @@ class EditorTests: XCTestCase {
     func testSimpleFormatHeadingSix() {
         typeAndSelectText(text: "text")
 
-        app.scrollViews.otherElements.buttons[ elementStringIDs.headerButton ].tap()
-        app.tables.element(boundBy: 1).swipeUp()
-        app.tables.staticTexts[ elementStringIDs.header6Button ].tap()
+        swipeAndSelectHeaderStyle(headerStyle: elementStringIDs.header6Button)
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
 
         htmlContentTextView = app.textViews[ elementStringIDs.htmlTextField ]
