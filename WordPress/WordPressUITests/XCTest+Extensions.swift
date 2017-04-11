@@ -105,16 +105,6 @@ extension XCUIElement {
         app.menuItems.element(boundBy: 1).tap()
     }
 
-    /**
- public func typeAndSelectText(text: String) {
- let app = XCUIApplication()
- let richContentTextView = app.textViews[ elementStringIDs.richTextField ]
- 
- app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
- richContentTextView.typeText(text)
- richContentTextView.press(forDuration: 1.2)
- app.menuItems.element(boundBy: 1).tap()
- }*/
 }
 
 extension XCTestCase {
