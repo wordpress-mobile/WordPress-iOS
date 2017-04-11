@@ -302,6 +302,7 @@
 		74754AF01E9D56D0009733D9 /* me-sites-bad-json-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74754AEF1E9D56D0009733D9 /* me-sites-bad-json-failure.json */; };
 		74754AF21E9D59FA009733D9 /* me-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74754AF11E9D59FA009733D9 /* me-success.json */; };
 		74754AF41E9D6171009733D9 /* me-auth-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74754AF31E9D6171009733D9 /* me-auth-failure.json */; };
+		74754AF61E9D68F5009733D9 /* me-bad-json-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74754AF51E9D68F5009733D9 /* me-bad-json-failure.json */; };
 		74BB6F1A19AE7B9400FB7829 /* WPLegacyEditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */; };
 		74D5FFD619ACDF6700389E8F /* WPLegacyEditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */; };
 		74FF45981E9C097E00C3A8B2 /* me-sites-empty-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FF45971E9C097E00C3A8B2 /* me-sites-empty-success.json */; };
@@ -1506,6 +1507,7 @@
 		74754AEF1E9D56D0009733D9 /* me-sites-bad-json-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-sites-bad-json-failure.json"; sourceTree = "<group>"; };
 		74754AF11E9D59FA009733D9 /* me-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-success.json"; sourceTree = "<group>"; };
 		74754AF31E9D6171009733D9 /* me-auth-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-auth-failure.json"; sourceTree = "<group>"; };
+		74754AF51E9D68F5009733D9 /* me-bad-json-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-bad-json-failure.json"; sourceTree = "<group>"; };
 		74BB6F1819AE7B9400FB7829 /* WPLegacyEditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPageViewController.h; sourceTree = "<group>"; };
 		74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLegacyEditPageViewController.m; sourceTree = "<group>"; };
 		74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPostViewController.h; sourceTree = "<group>"; usesTabs = 0; };
@@ -4948,6 +4950,7 @@
 				93594BD4191D2F5A0079E6B2 /* stats-batch.json */,
 				74754AF11E9D59FA009733D9 /* me-success.json */,
 				74754AF31E9D6171009733D9 /* me-auth-failure.json */,
+				74754AF51E9D68F5009733D9 /* me-bad-json-failure.json */,
 				7423795B1E9BFDA400E06B5A /* me-sites-success.json */,
 				74FF45971E9C097E00C3A8B2 /* me-sites-empty-success.json */,
 				7423795D1E9C044000E06B5A /* me-sites-auth-failure.json */,
@@ -5664,6 +5667,7 @@
 				93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */,
 				7423795C1E9BFDA400E06B5A /* me-sites-success.json in Resources */,
 				93CD939319099BE70049096E /* authtoken.json in Resources */,
+				74754AF61E9D68F5009733D9 /* me-bad-json-failure.json in Resources */,
 				E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */,
 				7423795E1E9C044000E06B5A /* me-sites-auth-failure.json in Resources */,
 				74FF45981E9C097E00C3A8B2 /* me-sites-empty-success.json in Resources */,
