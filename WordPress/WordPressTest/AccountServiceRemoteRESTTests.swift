@@ -7,12 +7,13 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
     let meEndpoint       = "me"
     let meSitesEndpoint  = "me/sites"
 
-    let getAccountDetailsSuccessMockFilename     = "me-success.json"
-    let getAccountDetailsAuthFailureMockFilename = "me-auth-failure.json"
-    let getBlogsSuccessMockFilename              = "me-sites-success.json"
-    let getBlogsEmptySuccessMockFilename         = "me-sites-empty-success.json"
-    let getBlogsAuthFailureMockFilename          = "me-sites-auth-failure.json"
-    let getBlogsBadJsonFailureMockFilename       = "me-sites-bad-json-failure.json"
+    let getAccountDetailsSuccessMockFilename        = "me-success.json"
+    let getAccountDetailsAuthFailureMockFilename    = "me-auth-failure.json"
+    let getAccountDetailsBadJsonFailureMockFilename = "me-bad-json-failure.json"
+    let getBlogsSuccessMockFilename                 = "me-sites-success.json"
+    let getBlogsEmptySuccessMockFilename            = "me-sites-empty-success.json"
+    let getBlogsAuthFailureMockFilename             = "me-sites-auth-failure.json"
+    let getBlogsBadJsonFailureMockFilename          = "me-sites-bad-json-failure.json"
 
     let username = "jimthetester"
     let token = "token"
@@ -91,6 +92,21 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
             }
             XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
             XCTAssertEqual(error.code, WordPressComRestApiError.authorizationRequired.rawValue, "The error code should be 2 - authorization_required")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testGetAccountDetailsWithBadJsonFails() {
+        let expect = expectation(description: "Get account details with invalid json failure")
+        let account: WPAccount = accountService.createOrUpdateAccount(withUsername: username, authToken: token)
+
+        stubRemoteResponse(meEndpoint, filename: getAccountDetailsBadJsonFailureMockFilename, contentType: contentTypeJson, status: 200)
+        remote.getDetailsFor(account, success: { remoteUser in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
             expect.fulfill()
         })
 
