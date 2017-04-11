@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -93,7 +94,7 @@
                     <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="WuB-h0-mSd" secondAttribute="bottom" id="W83-eQ-gaV"/>
                     <constraint firstItem="WuB-h0-mSd" firstAttribute="leading" secondItem="JUi-EY-Obv" secondAttribute="trailing" constant="13" id="Wef-tC-bRq"/>
                     <constraint firstAttribute="topMargin" secondItem="JUi-EY-Obv" secondAttribute="top" id="Zav-nr-UzA"/>
-                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="JUi-EY-Obv" secondAttribute="bottom" constant="3" id="bb5-uM-agq"/>
+                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="JUi-EY-Obv" secondAttribute="bottom" priority="999" constant="3" id="bb5-uM-agq"/>
                     <constraint firstItem="Z3U-oU-FSh" firstAttribute="centerY" secondItem="JUi-EY-Obv" secondAttribute="centerY" constant="19" id="h5p-yY-IvK"/>
                     <constraint firstAttribute="trailingMargin" secondItem="WuB-h0-mSd" secondAttribute="trailing" id="tuw-OS-5Gn"/>
                 </constraints>
