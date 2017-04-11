@@ -28,7 +28,6 @@ class AztecPostViewController: UIViewController {
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         tv.delegate = self
         tv.mediaDelegate = self
-        tv.commentsDelegate = self
         tv.backgroundColor = Colors.aztecBackground
         toolbar.formatter = self
 
@@ -326,6 +325,9 @@ class AztecPostViewController: UIViewController {
         configureView()
         configureSubviews()
 
+        // Attachment Custom Image Providers
+        registerAttachmentImageProviders()
+
         // UI elements might get their properties reset when the view is effectively loaded. Refresh it all!
         refreshInterface()
 
@@ -499,6 +501,18 @@ class AztecPostViewController: UIViewController {
         view.addSubview(placeholderLabel)
         mediaProgressView.isHidden = true
         view.addSubview(mediaProgressView)
+    }
+
+    func registerAttachmentImageProviders() {
+        let providers: [TextViewAttachmentImageProvider] = [
+            MoreAttachmentRenderer(),
+            CommentAttachmentRenderer(font: Fonts.regular),
+            HTMLAttachmentRenderer(font: Fonts.regular)
+        ]
+
+        for provider in providers {
+            richTextView.registerAttachmentImageProvider(provider)
+        }
     }
 
     func startListeningToNotifications() {
@@ -1831,36 +1845,6 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 
     func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: TextAttachment) {
         richTextView.update(attachment: changedAttachment, alignment: changedAttachment.alignment, size: changedAttachment.size, url: changedAttachment.url!)
-    }
-}
-
-
-// MARK: - TextView Comments Delegate Conformance
-//
-extension AztecPostViewController: TextViewCommentsDelegate {
-
-    func textView(_ textView: TextView, imageForComment attachment: CommentAttachment, with size: CGSize) -> UIImage? {
-        if let render = MoreAttachmentRenderer(attachment: attachment) {
-            return render.textView(textView, imageForComment: attachment, with: size)
-        }
-
-        if let render = CommentAttachmentRenderer(font: Fonts.regular) {
-            return render.textView(textView, imageForComment: attachment, with: size)
-        }
-
-        return nil
-    }
-
-    func textView(_ textView: TextView, boundsForComment attachment: CommentAttachment, with lineFragment: CGRect) -> CGRect {
-        if let render = MoreAttachmentRenderer(attachment: attachment) {
-            return render.textView(textView, boundsForComment: attachment, with: lineFragment)
-        }
-
-        if let render = CommentAttachmentRenderer(font: Fonts.regular) {
-            return render.textView(textView, boundsForComment: attachment, with: lineFragment)
-        }
-
-        return .zero
     }
 }
 
