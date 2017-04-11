@@ -131,7 +131,9 @@
                      // If the error is a 500 this could be a signal that the error changed status on the server
                      if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain]
                          && error.code == 500) {
-                         [self getCommentWithID:comment.commentID success:success failure:failure];
+                         if (success) {
+                             success(comment);
+                         }
                          return;
                      }
                      if (failure) {
