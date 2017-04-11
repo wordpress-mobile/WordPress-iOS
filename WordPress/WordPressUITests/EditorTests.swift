@@ -173,8 +173,7 @@ class EditorTests: XCTestCase {
         typeAndSelectText(text: "text")
 
         app.scrollViews.otherElements.buttons[ elementStringIDs.headerButton ].tap()
-//        app.tables.staticTexts[ elementStringIDs.header1Button ].tap()
-        app.tables.cells[ elementStringIDs.header1Button ].tap()
+        app.tables.staticTexts[ elementStringIDs.header1Button ].tap()
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
 
         htmlContentTextView = app.textViews[ elementStringIDs.htmlTextField ]
