@@ -18,11 +18,8 @@ class EditorTests: XCTestCase {
         XCUIApplication().launch()
         app = XCUIApplication()
 
-        // Logout first if needed
-        logoutIfNeeded()
-
-        simpleLogin(username: WordPressTestCredentials.oneStepUser, password: WordPressTestCredentials.oneStepPassword)
-        sleep(2)
+        // Log in first if needed
+        loginIfNeeded(username: WordPressTestCredentials.oneStepUser, password: WordPressTestCredentials.oneStepPassword)
 
         // Enable Aztec editor if needed
         mainNavigationTabBar = app.tabBars[ elementStringIDs.mainNavigationBar ]
@@ -44,13 +41,13 @@ class EditorTests: XCTestCase {
         app.navigationBars[ elementStringIDs.aztecPostView ].buttons[ elementStringIDs.editorCloseButton ].tap()
             app.sheets.buttons.element(boundBy: 1).tap()
 
-        logoutIfNeeded()
-        app.terminate()
         super.tearDown()
     }
 
     func testSimpleFormatBold() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         app.scrollViews.otherElements.buttons[ elementStringIDs.boldButton ].tap()
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
@@ -62,7 +59,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatItalic() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         app.scrollViews.otherElements.buttons[ elementStringIDs.italicButton ].tap()
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
@@ -74,7 +73,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatUnderline() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         app.scrollViews.otherElements.buttons[ elementStringIDs.underlineButton ].tap()
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
@@ -86,7 +87,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatStrikethrough() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         app.scrollViews.otherElements.buttons[ elementStringIDs.strikethroughButton ].tap()
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
@@ -98,7 +101,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatBlockquote() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         app.scrollViews.otherElements.buttons[ elementStringIDs.blockquoteButton ].tap()
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
@@ -110,7 +115,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatUnorderedList() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         app.scrollViews.otherElements.buttons[ elementStringIDs.unorderedlistButton ].tap()
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
@@ -122,7 +129,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatOrderedList() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         app.scrollViews.otherElements.buttons[ elementStringIDs.orderedlistButton ].tap()
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
@@ -134,7 +143,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatLink() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         insertLink(link: "https://wordpress.com/")
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
@@ -166,7 +177,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatHeadingOne() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         app.scrollViews.otherElements.buttons[ elementStringIDs.headerButton ].tap()
         app.tables.staticTexts[ elementStringIDs.header1Button ].tap()
@@ -179,7 +192,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatHeadingTwo() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         app.scrollViews.otherElements.buttons[ elementStringIDs.headerButton ].tap()
         app.tables.staticTexts[ elementStringIDs.header2Button ].tap()
@@ -193,7 +208,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatHeadingThree() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         app.scrollViews.otherElements.buttons[ elementStringIDs.headerButton ].tap()
         app.tables.staticTexts[ elementStringIDs.header3Button ].tap()
@@ -206,7 +223,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatHeadingFour() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         swipeAndSelectHeaderStyle(headerStyle: elementStringIDs.header4Button)
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
@@ -218,7 +237,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatHeadingFive() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         swipeAndSelectHeaderStyle(headerStyle: elementStringIDs.header5Button)
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()
@@ -230,7 +251,9 @@ class EditorTests: XCTestCase {
     }
 
     func testSimpleFormatHeadingSix() {
-        typeAndSelectText(text: "text")
+        richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+        richContentTextView.enterAndSelectText(text: "text")
 
         swipeAndSelectHeaderStyle(headerStyle: elementStringIDs.header6Button)
         app.buttons[ elementStringIDs.sourcecodeButton ].tap()

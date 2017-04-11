@@ -92,6 +92,29 @@ extension XCUIElement {
 
         self.typeText(text)
     }
+
+    /**
+     Enters text in the field and then selects all entered text
+     - Parameter text: the text to enter into the field
+    */
+    func enterAndSelectText(text: String) -> Void {
+        let app = XCUIApplication()
+
+        self.typeText(text)
+        self.press(forDuration: 1.2)
+        app.menuItems.element(boundBy: 1).tap()
+    }
+
+    /**
+ public func typeAndSelectText(text: String) {
+ let app = XCUIApplication()
+ let richContentTextView = app.textViews[ elementStringIDs.richTextField ]
+ 
+ app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
+ richContentTextView.typeText(text)
+ richContentTextView.press(forDuration: 1.2)
+ app.menuItems.element(boundBy: 1).tap()
+ }*/
 }
 
 extension XCTestCase {
@@ -127,6 +150,15 @@ extension XCTestCase {
             app.tables.cells[ elementStringIDs.logOutFromWPcomButton ].tap()
             app.alerts.buttons.element(boundBy: 1).tap()
             //Give some time to everything get proper saved.
+            sleep(2)
+        }
+    }
+
+    public func loginIfNeeded(username: String, password: String) {
+        let app = XCUIApplication()
+        if app.textFields[ elementStringIDs.loginUsernameField ].exists {
+            simpleLogin(username: username, password: password)
+            //Give time for login to finish.
             sleep(2)
         }
     }
@@ -230,16 +262,6 @@ extension XCTestCase {
         }
 
         createAccountButton.tap()
-    }
-
-    public func typeAndSelectText(text: String) {
-        let app = XCUIApplication()
-        let richContentTextView = app.textViews[ elementStringIDs.richTextField ]
-
-        app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
-        richContentTextView.typeText(text)
-        richContentTextView.press(forDuration: 1.2)
-        app.menuItems.element(boundBy: 1).tap()
     }
 
     public func swipeAndSelectHeaderStyle(headerStyle: String) {
