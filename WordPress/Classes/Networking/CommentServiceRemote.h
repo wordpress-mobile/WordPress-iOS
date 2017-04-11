@@ -48,17 +48,4 @@
              success:(void (^)())success
              failure:(void (^)(NSError *error))failure;
 
-
-/**
- Retrieves the comment information for the the specified commentID
-
- @param commentID the comment ID to fetch info from
- @param success the block to invoke if the call is successfull
- @param failure the block to invoke if the call failed
- */
-- (void)getCommentWithID:(NSNumber *)commentID
-                 success:(void (^)(RemoteComment *comment))success
-                 failure:(void (^)(NSError *error))failure;
-
-
 @end
