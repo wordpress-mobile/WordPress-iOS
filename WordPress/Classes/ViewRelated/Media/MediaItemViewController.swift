@@ -6,8 +6,6 @@ import WordPressShared
 /// Displays an image preview and metadata for a single Media asset.
 ///
 class MediaItemViewController: UITableViewController {
-    fileprivate static let restorationIdentifier = "MediaItemViewController"
-
     let media: Media
 
     fileprivate var viewModel: ImmuTable!
@@ -23,9 +21,6 @@ class MediaItemViewController: UITableViewController {
         self.mediaMetadata = MediaMetadata(media: media)
 
         super.init(style: .grouped)
-
-        super.restorationIdentifier = MediaItemViewController.restorationIdentifier
-        restorationClass = MediaItemViewController.self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -309,40 +304,6 @@ extension MediaItemViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = viewModel.rowAtIndexPath(indexPath)
         row.action?(row)
-    }
-}
-
-// MARK: - State restoration
-
-extension MediaItemViewController: UIViewControllerRestoration {
-    enum EncodingKey {
-        static let mediaURL = "mediaURL"
-    }
-
-    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last as? String,
-            identifier == MediaItemViewController.restorationIdentifier else {
-                return nil
-        }
-
-        guard let mediaURL = coder.decodeObject(forKey: EncodingKey.mediaURL) as? URL else {
-            return nil
-        }
-
-        let context = ContextManager.sharedInstance().mainContext
-        guard let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: mediaURL),
-            let object = try? context.existingObject(with: objectID),
-            let media = object as? Media else {
-                return nil
-        }
-
-        return MediaItemViewController(media: media)
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-
-        coder.encode(media.objectID.uriRepresentation(), forKey: EncodingKey.mediaURL)
     }
 }
 
