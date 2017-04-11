@@ -29,9 +29,7 @@ public struct elementStringIDs {
 
     // My Sites page
     static var settingsButton = "BlogDetailsSettingsCell"
-
-    // Site Settings page
-    static var removeSiteButton = "removeSiteButton"
+    static var removeSiteButton = "BlogDetailsRemoveSiteCell"
 
     // Me tab
     static var logOutFromWPcomButton = "logOutFromWPcomButton"
@@ -146,14 +144,13 @@ extension XCTestCase {
         let removeButton = app.tables.cells[ elementStringIDs.removeSiteButton ]
         let mySitesTabButton = app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ]
         let siteNameField = app.tables.staticTexts[ WordPressTestCredentials.selfHostedSiteName ]
-        let settingsButton = app.tables.cells[ elementStringIDs.settingsButton ]
 
         // Tap the My Sites button twice to be sure that we're on the All Sites list
         mySitesTabButton.tap()
         mySitesTabButton.tap()
 
         siteNameField.tap()
-        settingsButton.tap()
+        app.tables.element(boundBy: 0).swipeUp()
 
         waitForElementToAppear(element: removeButton)
         removeButton.tap()

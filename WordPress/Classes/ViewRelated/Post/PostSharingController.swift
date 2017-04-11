@@ -5,19 +5,9 @@ import SVProgressHUD
 
     func shareController(_ title: String?, summary: String?, link: String?) -> UIActivityViewController {
         var activityItems = [AnyObject]()
-        let postDictionary = NSMutableDictionary()
-
-        if let str = title {
-            postDictionary["title"] = str
-        }
-        if let str = summary {
-            postDictionary["summary"] = str
-        }
-
-        activityItems.append(postDictionary)
-        if let urlPath = link, let url = URL(string: urlPath) {
-            activityItems.append(url as AnyObject)
-        }
+        let url = link.flatMap(URL.init(string:))
+        let post = SharePost(title: title, summary: summary, url: url?.absoluteString)
+        activityItems.append(post)
 
         let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
         let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: activities)
