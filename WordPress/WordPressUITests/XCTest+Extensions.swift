@@ -45,10 +45,6 @@ public struct elementStringIDs {
     static var richTextField = "editor_rich_content_view"
     static var htmlTextField = "editor_html_content_view"
     static var richTextContentLabel = "editor_content_placeholder"
-    static var editorCloseAlert = "You have unsaved changes."
-    static var editorDiscardButton = "Discard"
-    static var insertLinkAlertTitle = "Insert Link"
-    static var insertLinkButton = "Insert Link"
 
     // Aztec Editor Toolbar
     static var mediaButton = "format_toolbar_insert_media"
@@ -64,6 +60,13 @@ public struct elementStringIDs {
     static var horizontalrulerButton = "format_toolbar_insert_horizontal_ruler"
     static var sourcecodeButton = "format_toolbar_toggle_html_view"
     static var moreButton = "format_toolbar_insert_more"
+    // Accessibility identifiers for header options
+    //static var header1Button = "format_toolbar_toggle_h1"
+    //static var header2Button = "format_toolbar_toggle_h2"
+    //static var header3Button = "format_toolbar_toggle_h3"
+    //static var header4Button = "format_toolbar_toggle_h4"
+    //static var header5Button = "format_toolbar_toggle_h5"
+    //static var header6Button = "format_toolbar_toggle_h6"
     static var header1Button = "Heading 1"
     static var header2Button = "Heading 2"
     static var header3Button = "Heading 3"
@@ -236,6 +239,6 @@ extension XCTestCase {
         app.staticTexts[ elementStringIDs.richTextContentLabel ].tap()
         richContentTextView.typeText(text)
         richContentTextView.press(forDuration: 1.2)
-        app.menuItems["Select All"].tap()
+        app.menuItems.element(boundBy: 1).tap()
     }
 }
