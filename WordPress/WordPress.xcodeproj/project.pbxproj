@@ -300,6 +300,8 @@
 		7470840F1E269669002CA726 /* JetpackLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7470840D1E269669002CA726 /* JetpackLoginViewController.swift */; };
 		747084101E269669002CA726 /* JetpackLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7470840E1E269669002CA726 /* JetpackLoginViewController.xib */; };
 		74754AF01E9D56D0009733D9 /* me-sites-bad-json-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74754AEF1E9D56D0009733D9 /* me-sites-bad-json-failure.json */; };
+		74754AF21E9D59FA009733D9 /* me-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74754AF11E9D59FA009733D9 /* me-success.json */; };
+		74754AF41E9D6171009733D9 /* me-auth-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74754AF31E9D6171009733D9 /* me-auth-failure.json */; };
 		74BB6F1A19AE7B9400FB7829 /* WPLegacyEditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */; };
 		74D5FFD619ACDF6700389E8F /* WPLegacyEditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */; };
 		74FF45981E9C097E00C3A8B2 /* me-sites-empty-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FF45971E9C097E00C3A8B2 /* me-sites-empty-success.json */; };
@@ -1502,6 +1504,8 @@
 		7470840D1E269669002CA726 /* JetpackLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackLoginViewController.swift; sourceTree = "<group>"; };
 		7470840E1E269669002CA726 /* JetpackLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackLoginViewController.xib; sourceTree = "<group>"; };
 		74754AEF1E9D56D0009733D9 /* me-sites-bad-json-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-sites-bad-json-failure.json"; sourceTree = "<group>"; };
+		74754AF11E9D59FA009733D9 /* me-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-success.json"; sourceTree = "<group>"; };
+		74754AF31E9D6171009733D9 /* me-auth-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-auth-failure.json"; sourceTree = "<group>"; };
 		74BB6F1819AE7B9400FB7829 /* WPLegacyEditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPageViewController.h; sourceTree = "<group>"; };
 		74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLegacyEditPageViewController.m; sourceTree = "<group>"; };
 		74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPostViewController.h; sourceTree = "<group>"; usesTabs = 0; };
@@ -4942,6 +4946,8 @@
 				E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */,
 				E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */,
 				93594BD4191D2F5A0079E6B2 /* stats-batch.json */,
+				74754AF11E9D59FA009733D9 /* me-success.json */,
+				74754AF31E9D6171009733D9 /* me-auth-failure.json */,
 				7423795B1E9BFDA400E06B5A /* me-sites-success.json */,
 				74FF45971E9C097E00C3A8B2 /* me-sites-empty-success.json */,
 				7423795D1E9C044000E06B5A /* me-sites-auth-failure.json */,
@@ -5667,6 +5673,7 @@
 				59F9C1591B9DD3D600885CC1 /* get-purchased-themes-v1.1.json in Resources */,
 				8554088A1A6F107D00DDBD79 /* app-review-prompt-global-disable.json in Resources */,
 				B5EA71321DC294150083032A /* notifications-last-seen.json in Resources */,
+				74754AF21E9D59FA009733D9 /* me-success.json in Resources */,
 				B5BC25A81CFCBEFF00F7D8B9 /* people-validate-invitation-failure.json in Resources */,
 				B5BC25A61CFCBDB600F7D8B9 /* people-send-invitation-success.json in Resources */,
 				B5AEEC7A1ACACFDA008BF2A4 /* notifications-like.json in Resources */,
@@ -5690,6 +5697,7 @@
 				B5BC25A41CFCBA6A00F7D8B9 /* people-send-invitation-failure.json in Resources */,
 				B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */,
 				743BF32C1E82CEB600192E40 /* people-delete-viewer-success.json in Resources */,
+				74754AF41E9D6171009733D9 /* me-auth-failure.json in Resources */,
 				E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */,
 				FF9839AF1CD3FBCA00E85258 /* WordPressOAuthClientNeed2FAFail.json in Resources */,
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,

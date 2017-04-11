@@ -30,7 +30,7 @@ class PeopleServiceTests: RemoteTestCase {
     var siteFollowerDeleteEndpoint: String { return "sites/\(siteID)/followers/\(followerID)/delete" }
 
 
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
 
     override func setUp() {
         super.setUp()
