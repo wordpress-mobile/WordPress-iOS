@@ -210,6 +210,11 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
                 postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
+                // If the post was not created on the server yet we convert the post to a local draft post with the current date.
+                if (postInContext.postID.intValue == -1 && postInContext.date_created_gmt == nil) {
+                    postInContext.status = PostStatusDraft;
+                    postInContext.dateModified = [NSDate date];
+                }
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
