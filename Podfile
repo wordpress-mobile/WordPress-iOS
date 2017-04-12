@@ -21,7 +21,7 @@ abstract_target 'WordPress_Base' do
     pod 'AFNetworking',	'3.1.0'
     pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'FormatterKit', '~> 1.8.1'
-    pod 'Helpshift', '~> 5.9.3'
+    pod 'Helpshift', '~> 5.10.0'
     pod 'HockeySDK', '~> 4.1.3', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'Lookback', '1.4.1', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
@@ -54,8 +54,8 @@ abstract_target 'WordPress_Base' do
     pod 'WordPress-Aztec-iOS', '0.5a8'
     pod 'wpxmlrpc', '0.8.3'
 
-    target :WordPressTest do
-      inherit! :search_paths
+    target 'WordPressTest' do
+      inherit! :complete
       pod 'OHHTTPStubs'
       pod 'OHHTTPStubs/Swift'
       pod 'OCMock', '3.1.2'
