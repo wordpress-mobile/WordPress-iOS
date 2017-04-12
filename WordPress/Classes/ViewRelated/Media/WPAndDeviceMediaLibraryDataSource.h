@@ -5,8 +5,8 @@
 @class AbstractPost;
 
 typedef NS_ENUM(NSUInteger, MediaPickerDataSourceType) {
-    MediaPickerDataSourceTypeMediaLibrary,
-    MediaPickerDataSourceTypeDevice
+    MediaPickerDataSourceTypeDevice,
+    MediaPickerDataSourceTypeMediaLibrary
 };
 
 @interface WPAndDeviceMediaLibraryDataSource : NSObject <WPMediaCollectionDataSource>
@@ -14,7 +14,11 @@ typedef NS_ENUM(NSUInteger, MediaPickerDataSourceType) {
 @property (nonatomic) MediaPickerDataSourceType dataSourceType;
 
 - (instancetype)initWithBlog:(Blog *)blog;
+- (instancetype)initWithBlog:(Blog *)blog
+              dataSourceType:(MediaPickerDataSourceType)sourceType;
 
 - (instancetype)initWithPost:(AbstractPost *)post;
+- (instancetype)initWithPost:(AbstractPost *)post
+              dataSourceType:(MediaPickerDataSourceType)sourceType;
 
 @end
