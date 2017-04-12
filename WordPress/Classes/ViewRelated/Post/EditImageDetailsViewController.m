@@ -10,18 +10,22 @@
 #import "WordPress-Swift.h"
 
 static NSString *const TextFieldCell = @"TextFieldCell";
+static NSString *const FeaturedCellIdentifier = @"FeaturedCellIdentifier";
 static NSString *const CellIdentifier = @"CellIdentifier";
 static NSString *const ThumbCellIdentifier = @"ThumbCellIdentifier";
+
 static CGFloat CellHeight = 44.0f;
 
 typedef NS_ENUM(NSUInteger, ImageDetailsSection) {
     ImageDetailsSectionThumb,
     ImageDetailsSectionDetails,
     ImageDetailsSectionDisplay,
+    ImageDetailsSectionFeatured
 };
 
 typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
     ImageDetailsRowThumb,
+    ImageDetailsRowFeatured,
     ImageDetailsRowTitle,
     ImageDetailsRowCaption,
     ImageDetailsRowAlt,
@@ -31,6 +35,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
 };
 
 @interface EditImageDetailsViewController ()<UITextFieldDelegate>
+@property (nonatomic, strong) Media *media;
 @property (nonatomic, strong) NSMutableArray *sections;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSArray *alignTitles;
@@ -43,15 +48,19 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
 @property (nonatomic, strong) SettingTableViewCell *imageAltTextCell;
 @property (nonatomic, strong) SettingTableViewCell *imageLinkCell;
 
+@property (nonatomic) BOOL setMediaAsFeaturedImage;
 @end
 
 @implementation EditImageDetailsViewController
 
-+ (instancetype)controllerForDetails:(WPImageMeta *)details forPost:(AbstractPost *)post
++ (instancetype)controllerForDetails:(WPImageMeta *)details
+                               media:(Media *)media
+                             forPost:(AbstractPost *)post
 {
     EditImageDetailsViewController *controller = [[EditImageDetailsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     controller.imageDetails = details;
     controller.post = post;
+    controller.media = media;
     return controller;
 }
 
@@ -62,6 +71,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
     self.title = NSLocalizedString(@"Edit Image", @"Title of the edit image details screen.");
 
     [self.tableView registerClass:[WPTextFieldTableViewCell class] forCellReuseIdentifier:TextFieldCell];
+    [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:FeaturedCellIdentifier];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:ThumbCellIdentifier];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 
@@ -87,6 +97,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
     self.imageCaptionCell.textValue = self.imageDetails.caption;
     self.imageAltTextCell.textValue = self.imageDetails.alt;
     self.imageLinkCell.textValue = self.imageDetails.linkURL;
+    self.setMediaAsFeaturedImage = (self.post.featuredImage == self.media);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -202,9 +213,13 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
 - (void)configureSections
 {
     self.sections = [NSMutableArray array];
-    [self.sections addObject:[NSNumber numberWithInteger:ImageDetailsSectionThumb]];
-    [self.sections addObject:[NSNumber numberWithInteger:ImageDetailsSectionDetails]];
-    [self.sections addObject:[NSNumber numberWithInteger:ImageDetailsSectionDisplay]];
+    [self.sections addObject:@(ImageDetailsSectionThumb)];
+    [self.sections addObject:@(ImageDetailsSectionDetails)];
+    [self.sections addObject:@(ImageDetailsSectionDisplay)];
+
+    if (self.media) {
+        [self.sections addObject:@(ImageDetailsSectionFeatured)];
+    }
 }
 
 
@@ -221,6 +236,8 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
     self.imageDetails.caption = self.imageCaptionCell.textValue;
     self.imageDetails.alt = self.imageAltTextCell.textValue;
     self.imageDetails.linkURL = self.imageLinkCell.textValue;
+
+    self.post.featuredImage = (self.setMediaAsFeaturedImage) ? self.media : nil;
 
     [self.delegate editImageDetailsViewController:self didFinishEditingImageDetails:self.imageDetails];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -244,17 +261,18 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
-    if (sec == ImageDetailsSectionThumb) {
-        return 1;
 
-    } else if (sec == ImageDetailsSectionDetails) {
-        return 3;
-
-    } else if (sec == ImageDetailsSectionDisplay) {
-        return 3;
+    switch (sec) {
+        case ImageDetailsSectionThumb:
+            return 1;
+        case ImageDetailsSectionFeatured:
+            return 1;
+        case ImageDetailsSectionDetails:
+            return 3;
+        case ImageDetailsSectionDisplay:
+            return 3;
+        default: return 0;
     }
-
-    return 0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -265,6 +283,8 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
 
     } else if (sec == ImageDetailsSectionDisplay) {
         return NSLocalizedString(@"Web Display Settings", @"The title of the option group for editing an image's size, alignment, etc. on the image details screen.");
+    } else if (sec == ImageDetailsSectionFeatured) {
+        return NSLocalizedString(@"Featured Image", @"The title of the option group for setting an image as a post's featured image on the image details screen.");
     }
     return nil;
 }
@@ -285,18 +305,33 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
 
     UITableViewCell *cell;
 
-    if (sec == ImageDetailsSectionThumb) {
-        // cofigure the thumb
-        cell = [self thumbCellForIndexPath:indexPath];
-    } else if (sec == ImageDetailsSectionDetails) {
-        // return a textfield cell
-        cell = [self detailCellForIndexPath:indexPath];
-    } else if (sec == ImageDetailsSectionDisplay) {
-        // display cells are textfields or normal cell
-        cell = [self displayCellForIndexPath:indexPath];
+    switch (sec) {
+        case ImageDetailsSectionThumb:
+            cell = [self thumbCellForIndexPath:indexPath];
+            break;
+        case ImageDetailsSectionFeatured:
+            cell = [self featuredCellForIndexPath:indexPath];
+            break;
+        case ImageDetailsSectionDetails:
+            cell = [self detailCellForIndexPath:indexPath];
+            break;
+        case ImageDetailsSectionDisplay:
+            cell = [self displayCellForIndexPath:indexPath];
+            break;
+        default: break;
     }
 
     return cell;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.tag == ImageDetailsSectionFeatured) {
+        return NO;
+    }
+
+    return YES;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -308,7 +343,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
     switch (cell.tag) {
         case ImageDetailsRowTitle:
             [self showEditImageTitleController];
-        break;
+            break;
         case ImageDetailsRowCaption:
             [self showEditImageCaptionController];
             break;
@@ -320,10 +355,12 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
             break;
         case ImageDetailsRowAlign:
             [self showAlignmentSelector];
-        break;
+            break;
         case ImageDetailsRowSize:
             [self showSizeSelector];
-        break;
+            break;
+        case ImageDetailsRowFeatured: break;
+        default: break;
     }
 }
 
@@ -420,6 +457,25 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
                                                 reuseIdentifier:nil];
     _imageLinkCell.tag = ImageDetailsRowLink;
     return _imageLinkCell;
+}
+
+- (UITableViewCell *)featuredCellForIndexPath:(NSIndexPath *)indexPath
+{
+    SwitchTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:FeaturedCellIdentifier forIndexPath:indexPath];
+
+    [WPStyleGuide configureTableViewCell:cell];
+
+    cell.on = self.setMediaAsFeaturedImage;
+    cell.name = NSLocalizedString(@"Set as Featured Image", @"Switch title in editor image settings, to set the image as a post's featured image.");
+
+    __weak __typeof__(self) weakSelf = self;
+    cell.onChange = ^(BOOL isOn) {
+        weakSelf.setMediaAsFeaturedImage = isOn;
+    };
+
+    cell.tag = ImageDetailsRowFeatured;
+    
+    return cell;
 }
 
 - (UITableViewCell *)detailCellForIndexPath:(NSIndexPath *)indexPath
