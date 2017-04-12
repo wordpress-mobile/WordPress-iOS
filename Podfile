@@ -21,9 +21,7 @@ abstract_target 'WordPress_Base' do
     pod 'AFNetworking',	'3.1.0'
     pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'FormatterKit', '~> 1.8.1'
-    pod 'Helpshift', '~> 5.10.0'
     pod 'HockeySDK', '~> 4.1.3', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'Lookback', '1.4.1', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
     pod 'Mixpanel', '2.9.4'
     pod 'Reachability',	'3.2'
@@ -55,7 +53,7 @@ abstract_target 'WordPress_Base' do
     pod 'wpxmlrpc', '0.8.3'
 
     target 'WordPressTest' do
-      inherit! :complete
+      inherit! :search_paths
       pod 'OHHTTPStubs'
       pod 'OHHTTPStubs/Swift'
       pod 'OCMock', '3.1.2'
