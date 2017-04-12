@@ -2,7 +2,6 @@
 #import <XCTest/XCTest.h>
 #import "RemoteTheme.h"
 #import "ThemeServiceRemote.h"
-#import "WordPress-Swift.h"
 #import "WordPressTests-Swift.h"
 
 // OCMock helper typedefs
