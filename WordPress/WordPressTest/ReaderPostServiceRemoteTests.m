@@ -9,7 +9,6 @@
 #import "RemoteReaderPost.h"
 #import <XCTest/XCTest.h>
 #import "TestContextManager.h"
-#import "WordPress-Swift.h"
 
 @interface ReaderPostServiceRemote ()
 
