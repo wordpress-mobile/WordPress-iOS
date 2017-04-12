@@ -1226,6 +1226,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] init];
     self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost];
+    self.mediaDataSource.dataSourceType = MediaPickerDataSourceTypeMediaLibrary;
     picker.dataSource = self.mediaDataSource;
     picker.filter = WPMediaTypeImage;
     picker.delegate = self;
