@@ -585,7 +585,11 @@
         return 0;
     }
 
-    NSURL *url = self.absoluteLocalURL;
+    NSURL *url = nil;
+
+    if ([self.absoluteLocalURL checkResourceIsReachableAndReturnError:nil] && [self.absoluteLocalURL isVideo]) {
+        url = self.absoluteLocalURL;
+    }
     // Do we have a local url, or remote url to use for the video
     if (!url && self.remoteURL) {
         url = [NSURL URLWithString:self.remoteURL];
