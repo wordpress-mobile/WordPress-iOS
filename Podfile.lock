@@ -65,7 +65,7 @@ PODS:
   - FormatterKit/URLRequestFormatter (1.8.2):
     - FormatterKit/Resources
   - Gridicons (0.5)
-  - Helpshift (5.9.3)
+  - Helpshift (5.10.0)
   - HockeySDK (4.1.4):
     - HockeySDK/DefaultLib (= 4.1.4)
   - HockeySDK/DefaultLib (4.1.4)
@@ -160,7 +160,7 @@ DEPENDENCIES:
   - FLAnimatedImage (~> 1.0)
   - FormatterKit (~> 1.8.1)
   - Gridicons (= 0.5)
-  - Helpshift (~> 5.9.3)
+  - Helpshift (~> 5.10.0)
   - HockeySDK (~> 4.1.3)
   - Lookback (= 1.4.1)
   - MGSwipeTableCell (~> 1.5.6)
@@ -228,7 +228,7 @@ SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gridicons: 5c5e928324fa301572ee447b25962d18e7fd7159
-  Helpshift: fa42856075d2e77ce4243d667ffa91ab5bb725fe
+  Helpshift: 3e02a73d305f4b5c5402b3fc4cb05846b35740c8
   HockeySDK: 78a3f8bb9100277b531defc56c970369a3ca267a
   Lookback: 37c23f97894612f6eccc215440c8f990fbb5a607
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
@@ -255,6 +255,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 239fef5c97d76acd3f9fb66c408be3e7deb3295e
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: f827dc18dfaab52fe76a30fe68662b41ce1f28f8
+PODFILE CHECKSUM: d57fef02d8066df258322bfe6b678970c8e7ea68
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.1
