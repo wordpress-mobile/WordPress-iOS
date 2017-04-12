@@ -405,11 +405,10 @@
 		93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E53F1E9E5A180050D489 /* libsqlite3.tbd */; };
 		93F2E5421E9E5A350050D489 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5411E9E5A350050D489 /* QuickLook.framework */; };
 		93F2E5441E9E5A570050D489 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5431E9E5A570050D489 /* CoreSpotlight.framework */; };
-		93F2E54C1E9E5C6D0050D489 /* Lookback-Resources in Resources */ = {isa = PBXBuildFile; fileRef = 93F2E54A1E9E5C6D0050D489 /* Lookback-Resources */; };
-		93F2E54D1E9E5C6D0050D489 /* Lookback.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E54B1E9E5C6D0050D489 /* Lookback.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		93F2E54F1E9E5CB70050D489 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E54E1E9E5CB70050D489 /* CoreImage.framework */; };
 		93F2E5511E9E5CCD0050D489 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5501E9E5CCD0050D489 /* CoreVideo.framework */; };
 		93F2E5531E9E5CF00050D489 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5521E9E5CF00050D489 /* VideoToolbox.framework */; };
+		93F2E5561E9E6BC80050D489 /* Lookback.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 93F2E5551E9E6BC80050D489 /* Lookback.bundle */; };
 		93FA59DD18D88C1C001446BC /* PostCategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DC18D88C1C001446BC /* PostCategoryService.m */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
@@ -1716,11 +1715,11 @@
 		93F2E5471E9E5ADD0050D489 /* HelpshiftCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelpshiftCore.h; sourceTree = "<group>"; };
 		93F2E5481E9E5ADD0050D489 /* HelpshiftInbox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelpshiftInbox.h; sourceTree = "<group>"; };
 		93F2E5491E9E5ADD0050D489 /* HelpshiftSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelpshiftSupport.h; sourceTree = "<group>"; };
-		93F2E54A1E9E5C6D0050D489 /* Lookback-Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Lookback-Resources"; sourceTree = "<group>"; };
 		93F2E54B1E9E5C6D0050D489 /* Lookback.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Lookback.framework; sourceTree = "<group>"; };
 		93F2E54E1E9E5CB70050D489 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		93F2E5501E9E5CCD0050D489 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		93F2E5521E9E5CF00050D489 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		93F2E5551E9E6BC80050D489 /* Lookback.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Lookback.bundle; sourceTree = "<group>"; };
 		93FA0F0118E451A80007903B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		93FA0F0218E451A80007903B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		93FA59DB18D88C1C001446BC /* PostCategoryService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PostCategoryService.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -2587,7 +2586,6 @@
 				E1A386C814DB05C300954CF8 /* AVFoundation.framework in Frameworks */,
 				E19DF741141F7BDD000002F3 /* libz.dylib in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
-				93F2E54D1E9E5C6D0050D489 /* Lookback.framework in Frameworks */,
 				296890780FE971DC00770264 /* Security.framework in Frameworks */,
 				83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */,
 				83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */,
@@ -3874,7 +3872,7 @@
 		93F2E5341E9E58730050D489 /* Lookback */ = {
 			isa = PBXGroup;
 			children = (
-				93F2E54A1E9E5C6D0050D489 /* Lookback-Resources */,
+				93F2E5551E9E6BC80050D489 /* Lookback.bundle */,
 				93F2E54B1E9E5C6D0050D489 /* Lookback.framework */,
 			);
 			path = Lookback;
@@ -5647,6 +5645,7 @@
 				B57273621B66CCEF000D1C4F /* AlertView.xib in Resources */,
 				5DBFC8A91A9BE07B00E00DE4 /* Posts.storyboard in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
+				93F2E5561E9E6BC80050D489 /* Lookback.bundle in Resources */,
 				5D4C89FE1AB88EF7007464B3 /* PostCardTextCell.xib in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
@@ -5683,7 +5682,6 @@
 				E149771A1C0DCB6F0057CD60 /* MediaSizeSliderCell.xib in Resources */,
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
-				93F2E54C1E9E5C6D0050D489 /* Lookback-Resources in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
 				E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */,
 				5D18FEA01AFBB17400EFEED0 /* RestorePageTableViewCell.xib in Resources */,
@@ -7541,6 +7539,8 @@
 					"-l\"iconv\"",
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
+					"-framework",
+					"\"Lookback\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ALPHA_BUILD -D INTERNAL_BUILD";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.alpha;
@@ -7965,6 +7965,8 @@
 					"-l\"iconv\"",
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
+					"-framework",
+					"\"Lookback\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D INTERNAL_BUILD";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.internal;
