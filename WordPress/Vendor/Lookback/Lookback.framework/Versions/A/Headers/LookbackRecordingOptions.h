@@ -5,9 +5,9 @@
  @header LookbackRecordingOptions.h
  
  @abstract
-    All the customizations you can do to how LookbackRecorder performs its recordings.
+ All the customizations you can do to Lookback.
  
-    Customize default options, or create a new instance and use special options only for a specific recording.
+ Customize default options, or create a new instance and use special options only for a specific recording.
 */
 
 /*! Explicit values used for the <code>timeout</code> config option. 
@@ -55,18 +55,35 @@ typedef NS_ENUM(NSInteger, LookbackAfterRecordingOption) {
 /*! Whether the user should be shown a preview image of their face at the bottom-right of the screen while recording, to make sure that they are holding their device correctly and are well-framed. */
 @property(nonatomic) BOOL showCameraPreviewWhileRecording;
 
-/*! Set a specific upper limit on screen recording framerate. Note that Lookback adapts framerate dynamically based on 
-    available CPU.
+/*! Lookback automatically sets a screen recording framerate that is suitable for your
+	device. However, if your app is very performance intense, you might want to decrease
+	the framerate at which Lookback records to free up some CPU time for your app. This
+	multiplier lets you adapt the framerate that Lookback chooses for you to something
+	more suitable for your app.
 	
-	Decreasing the framerate is the best way to fix performance problems with Lookback.
+	Default value: 1.0
+	Range: 0.1 to 1.0
 	
-	Default value: 60 (which means allowing fully dynamic framerate)
+	@see framerateLimit
+*/
+@property(nonatomic) float framerateMultiplier;
+
+/*! Set a specific upper limit on screen recording framerate. Note that Lookback adapts framerate to something suitable for the current device: setting the framerate
+	manually will override this. Set it to 0 to let Lookback manage the framerate limit.
+	
+	Decreasing the framerate is the best way to fix performance problems with Lookback. However, instead of hard-coding
+	a specific framerate, consider setting -[Lookback framerateMultiplier] instead, as this will let Lookback adapt the
+	framerate to something suitable for your device.
+	
+	Default value: Depends on hardware
 	Range: 1 to 60
+	@see framerateMultiplier
 */
 @property(nonatomic) int framerateLimit;
 
-/*! When doing a Lookback recording and LookbackLive is linked, should the recording also be live streamed to your organization? */
-@property(nonatomic) BOOL livestreamingEnabled;
+/*! Taking into account the performance of your iOS device and the framerateMultiplier, what framerate does Lookback recommend? */
+- (int)recommendedFramerateLimit;
+
 
 /*! @group Settings for recording metadata */
 #pragma mark - Settings for recording metadata
@@ -88,10 +105,6 @@ typedef NS_ENUM(NSInteger, LookbackAfterRecordingOption) {
 	*/
 @property(nonatomic) BOOL automaticallyRecordViewControllerNames;
 
-/*! The ID of the project to assign this recording to once it has uploaded. nil
-    by default, which will add the recording to the inbox.
- */
-@property(nonatomic) NSString *projectId;
 
 /*! @group Lookback behavior related to recording */
 #pragma mark - Lookback behavior related to recording
@@ -109,7 +122,7 @@ typedef NS_ENUM(NSInteger, LookbackAfterRecordingOption) {
 	the user exists the app, or locks the screen.
 	
 	- Using 0 will stop a recording as soon as the app becomes inactive.
-	- Using NSIntegerMax will never terminate a recording when the app becomes inactive.
+	- Using DBL_MAX will never terminate a recording when the app becomes inactive.
 	- Any value in between will timeout and end the recording after the app has been inactive for
 	  the specified duration.
  */
@@ -136,7 +149,7 @@ typedef NS_ENUM(NSInteger, LookbackAfterRecordingOption) {
 
     @example <pre>
         // Automatically put a recording's URL on the user's pasteboard when recording ends and upload starts.
-		[LookbackRecorder sharedRecorder].options.onStartedUpload = ^(NSURL *destinationURL, NSDate *sessionStartedAt) {
+		[Lookback sharedLookback].options.onStartedUpload = ^(NSURL *destinationURL, NSDate *sessionStartedAt) {
 			if(fabs([sessionStartedAt timeIntervalSinceNow]) < 60*60) // Only if it's for an experience we just recorded
 				NSLog(@"Session URL %@ now in clipboard", destinationURL);
 				[UIPasteboard generalPasteboard].URL = destinationURL;
@@ -189,11 +202,6 @@ typedef NS_ENUM(NSInteger, LookbackAfterRecordingOption) {
 @property(nonatomic) BOOL captureClicks;
 
 #endif
-
-#pragma mark - Deprecated
-
-@property(nonatomic) float framerateMultiplier DEPRECATED_MSG_ATTRIBUTE("Framerate is automatic now. See @framerateLimit");
-- (int)recommendedFramerateLimit DEPRECATED_MSG_ATTRIBUTE("Framerate is automatic now. See @framerateLimit");
 @end
 
 /*!
@@ -203,7 +211,7 @@ typedef NS_ENUM(NSInteger, LookbackAfterRecordingOption) {
  
  @note
  These are automatically saved to NSUserDefaults when modified. You may only use the instance 
- <code>[LookbackRecorder sharedRecorder].options</code>.
+ <code>[Lookback sharedLookback].options</code>.
  */
 @interface LookbackDefaultRecordingOptions : LookbackRecordingOptions
 @end
