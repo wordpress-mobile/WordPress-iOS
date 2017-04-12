@@ -18,7 +18,7 @@
 	For compatibility with old code using Lookback under the miscapitalized or
 	misprefixed names.
  */
-#define LookBack LookbackRecorder
+#define LookBack Lookback
 #define GFAutomaticallyLogViewAppearance LookbackAutomaticallyLogViewAppearance
 #define GFCameraEnabledSettingsKey LookbackCameraEnabledSettingsKey
 #define GFAudioEnabledSettingsKey LookbackAudioEnabledSettingsKey
@@ -70,13 +70,3 @@ static NSString *const LookbackExperienceStartedAtUserInfoKey = @"com.thirdcog.l
 static NSString *const LookbackFinishedUploadingNotificationName = @"io.lookback.notification.finishedUploading";
 static NSString *const LookbackExperienceNameUserInfoKey = @"io.lookback.notification.name";
 
-/// Lookback was renamed to LookbackRecorder to differentiate it from LookbackParticipate.
-@interface Lookback : LookbackRecorder /*DEPRECATED_ATTRIBUTE*/
-
-@end
-
-@interface LookbackRecorder (Deprecated)
-+ (instancetype)sharedLookback /*DEPRECATED_MSG_ATTRIBUTE("Use .sharedRecorder instead")*/;
-@end
-
-#define Lookback_Weak (NSClassFromString(@"LookbackRecorder"))
