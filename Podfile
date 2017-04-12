@@ -49,7 +49,7 @@ abstract_target 'WordPress_Base' do
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '0.15'
-    pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => 'be1b9c2ed6ad894ab4bc334d1c37e0c37417470e'
+    pod 'WordPress-iOS-Editor', '1.9.1'
     pod 'WordPressCom-Analytics-iOS', '0.1.25'
     pod 'WordPress-Aztec-iOS', '0.5a8'
     pod 'wpxmlrpc', '0.8.3'
