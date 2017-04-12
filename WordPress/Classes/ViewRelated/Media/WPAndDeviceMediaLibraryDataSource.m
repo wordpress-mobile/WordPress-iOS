@@ -17,6 +17,7 @@
     if (self) {
         _mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithBlog:blog];
         _deviceLibraryDataSource = [[WPPHAssetDataSource alloc] init];
+
         _currentDataSource = _deviceLibraryDataSource;
         _observers = [[NSMutableDictionary alloc] init];
     }
@@ -29,10 +30,29 @@
     if (self) {
         _mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithPost:post];
         _deviceLibraryDataSource = [[WPPHAssetDataSource alloc] init];
+
         _currentDataSource = _deviceLibraryDataSource;
         _observers = [[NSMutableDictionary alloc] init];
     }
     return self;
+}
+
+- (MediaPickerDataSourceType)dataSourceType
+{
+    return (_currentDataSource == _deviceLibraryDataSource) ? MediaPickerDataSourceTypeDevice : MediaPickerDataSourceTypeMediaLibrary;
+}
+
+- (void)setDataSourceType:(MediaPickerDataSourceType)dataSourceType
+{
+    switch (dataSourceType) {
+        case MediaPickerDataSourceTypeDevice:
+            _currentDataSource = _deviceLibraryDataSource;
+            break;
+        case MediaPickerDataSourceTypeMediaLibrary:
+            _currentDataSource = _mediaLibraryDataSource;
+        default:
+            break;
+    }
 }
 
 - (NSInteger)numberOfGroups
