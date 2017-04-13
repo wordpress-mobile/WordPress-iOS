@@ -3,7 +3,6 @@
 #import "Blog.h"
 #import "ContextManager.h"
 #import "MenusServiceRemote.h"
-#import "WordPress-Swift.h"
 #import "RemoteMenu.h"
 
 @interface MenusServicRemoteTests : XCTestCase
