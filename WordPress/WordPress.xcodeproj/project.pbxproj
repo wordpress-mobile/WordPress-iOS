@@ -162,6 +162,7 @@
 		37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EAAF4C1A11799A006D6306 /* CircularImageView.swift */; };
 		430693741DD25F31009398A2 /* PostPost.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 430693731DD25F31009398A2 /* PostPost.storyboard */; };
 		437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437542E21DD4E19E00D6B727 /* EditPostViewController.swift */; };
+		43A85B311E9E815B00FA990B /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43A85B301E9E815B00FA990B /* Login.storyboard */; };
 		43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */; };
 		43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D54D121DCAA070007F575F /* PostPostViewController.swift */; };
 		45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */; };
@@ -1273,6 +1274,7 @@
 		37EAAF4C1A11799A006D6306 /* CircularImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularImageView.swift; sourceTree = "<group>"; };
 		430693731DD25F31009398A2 /* PostPost.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PostPost.storyboard; sourceTree = "<group>"; };
 		437542E21DD4E19E00D6B727 /* EditPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostViewController.swift; sourceTree = "<group>"; };
+		43A85B301E9E815B00FA990B /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListFilterSettings.swift; sourceTree = "<group>"; };
 		43D54D121DCAA070007F575F /* PostPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPostViewController.swift; sourceTree = "<group>"; };
 		440DD23961C9AF67A28C02E4 /* Pods-WordPressTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig"; sourceTree = "<group>"; };
@@ -3490,6 +3492,7 @@
 		850D22B21729EE8600EC6A16 /* NUX */ = {
 			isa = PBXGroup;
 			children = (
+				43A85B301E9E815B00FA990B /* Login.storyboard */,
 				E6417BA91CA07F4E0084050A /* Signin.storyboard */,
 				E6417B961CA07B060084050A /* Controllers */,
 				E6C448581CB09E1F00458157 /* Protocols */,
@@ -5556,6 +5559,7 @@
 				B5DCD0C41C6932FA00C9B431 /* Languages.json in Resources */,
 				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
 				A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */,
+				43A85B311E9E815B00FA990B /* Login.storyboard in Resources */,
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
 				B57273621B66CCEF000D1C4F /* AlertView.xib in Resources */,
 				5DBFC8A91A9BE07B00E00DE4 /* Posts.storyboard in Resources */,
