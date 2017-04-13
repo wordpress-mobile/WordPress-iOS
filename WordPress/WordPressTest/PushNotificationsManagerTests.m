@@ -1,6 +1,5 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-#import "WordPress-Swift.h"
 
 
 @interface PushNotificationsManagerTests : XCTestCase
