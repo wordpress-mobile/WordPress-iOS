@@ -62,7 +62,7 @@
  @param failure a block to be executed if the video is not found on VideoPress.
  */
 -(void)getVideoURLFromVideoPressID:(NSString *)videoPressID
-                           success:(void (^)(NSURL *))success
+                           success:(void (^)(NSURL *videoURL, NSURL *posterURL))success
                            failure:(void (^)(NSError *))failure;
 
 

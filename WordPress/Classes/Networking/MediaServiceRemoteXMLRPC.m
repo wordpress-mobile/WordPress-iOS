@@ -194,10 +194,10 @@
 }
 
 -(void)getVideoURLFromVideoPressID:(NSString *)videoPressID
-                           success:(void (^)(NSURL *))success
+                           success:(void (^)(NSURL *videoURL, NSURL *posterURL))success
                            failure:(void (^)(NSError *))failure
 {
-    //HACK: Sergio Estevao: 2017-04-12 this option doens't exist on XML-RPC so we will always fail the request
+    //Sergio Estevao: 2017-04-12 this option doens't exist on XML-RPC so we will always fail the request
     if (failure) {
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                              code:NSURLErrorUnsupportedURL
