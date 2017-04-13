@@ -26,7 +26,6 @@ import Mixpanel
         return controller
     }
 
-
     // Helper used by the app delegate
     class func showSigninFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
         let controller = createControllerForSigninFlow(showsEditor: thenEditor)
