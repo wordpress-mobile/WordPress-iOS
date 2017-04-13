@@ -145,7 +145,7 @@
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="handleSelfHostedButtonTapped:" destination="fwZ-QE-5et" eventType="touchUpInside" id="4IZ-FX-3q3"/>
+                                            <segue destination="SZS-o3-1P7" kind="presentation" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="m8Z-DI-9y4"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PCj-nt-T9Y">
@@ -991,11 +991,30 @@
                     </view>
                     <connections>
                         <outlet property="statusLabel" destination="Bnl-db-peA" id="ekO-Re-yc4"/>
+                        <segue destination="Mwz-tq-5A8" kind="show" id="7ky-IR-Xbv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N85-VU-x1x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3059" y="268"/>
+        </scene>
+        <!--Post Login View Controller-->
+        <scene sceneID="mq7-wS-hIR">
+            <objects>
+                <viewController id="Mwz-tq-5A8" customClass="PostLoginViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Vw0-RX-ERM"/>
+                        <viewControllerLayoutGuide type="bottom" id="pCc-dg-bxb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gJB-TV-Tpp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="S0K-oR-yFr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4284" y="550"/>
         </scene>
         <!--Signin Error View Controller-->
         <scene sceneID="zKv-KR-qqw">
