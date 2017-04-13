@@ -216,10 +216,6 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
     [self.sections addObject:@(ImageDetailsSectionThumb)];
     [self.sections addObject:@(ImageDetailsSectionDetails)];
     [self.sections addObject:@(ImageDetailsSectionDisplay)];
-
-    if (self.media && self.media.assetType == WPMediaTypeImage) {
-        [self.sections addObject:@(ImageDetailsSectionFeatured)];
-    }
 }
 
 
