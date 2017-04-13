@@ -1502,16 +1502,16 @@ EditImageDetailsViewControllerDelegate
                         NSString *hudText;
                         switch (currentSaveAction) {
                             case PostEditorSaveActionSchedule:
-                                hudText = NSLocalizedString(@"Error occurred\nduring scheduling", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring scheduling. Your changes where saved on the device.", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
                                 break;
                             case PostEditorSaveActionUpdate:
-                                hudText = NSLocalizedString(@"Error occurred\nduring updating", @"Text displayed in HUD after attempting to update a post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring updating. Your changes where saved on the device", @"Text displayed in HUD after attempting to update a post and an error occurred.");
                                 break;
                             case PostEditorSaveActionPost:
-                                hudText = NSLocalizedString(@"Error occurred\nduring publishing", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring publishing. Your changes where saved on the device", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
                                 break;
                             default:
-                                hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring saving. Your changes where saved on the device.", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
                                 break;
                         }
                         [SVProgressHUD showErrorWithStatus:hudText];
@@ -2073,7 +2073,7 @@ EditImageDetailsViewControllerDelegate
 {
     // Note: imageId is an editor specified data attribute, not the image's ID attribute.
     if (imageId.length == 0) {
-        [self displayImageDetailsForMeta:imageMeta];
+        [self displayImageDetailsForMeta:imageMeta url:url];
     } else {
         [self promptForActionForTappedMedia:imageId url:url];
     }
@@ -2110,9 +2110,16 @@ EditImageDetailsViewControllerDelegate
 }
 
 - (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
+                               url:(NSURL *)url
 {
     [WPAppAnalytics track:WPAnalyticsStatEditorEditedImage withBlog:self.post.blog];
-    EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta forPost:self.post];
+
+    Media *media = [Media existingMediaWithRemoteURL:[url absoluteString]
+                                              inBlog:self.post.blog];
+
+    EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta
+                                                                                                media:media
+                                                                                              forPost:self.post];
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
