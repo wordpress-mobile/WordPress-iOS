@@ -36,6 +36,15 @@ import Mixpanel
         trackOpenedLogin()
     }
 
+    class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        if let controller = storyboard.instantiateInitialViewController() {
+            let navController = NUXNavigationController(rootViewController: controller)
+            presenter.present(navController, animated: animated, completion: nil)
+        }
+        trackOpenedLogin()
+    }
+
 
     // Helper used by the MeViewController
     class func showSigninForJustWPComFromPresenter(_ presenter: UIViewController) {
