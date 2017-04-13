@@ -1,7 +1,7 @@
 #import "HelpshiftUtils.h"
 
-#import <Helpshift/HelpshiftCore.h>
-#import <Helpshift/HelpshiftSupport.h>
+#import "HelpshiftCore.h"
+#import "HelpshiftSupport.h"
 #import <Mixpanel/MPTweakInline.h>
 
 #import "AccountService.h"
