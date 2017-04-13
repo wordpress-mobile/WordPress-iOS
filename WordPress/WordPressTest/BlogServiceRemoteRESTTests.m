@@ -4,7 +4,7 @@
 #import <XCTest/XCTest.h>
 #import "Blog.h"
 #import "BlogServiceRemoteREST.h"
-#import "WordPressTests-Swift.h"
+#import "WordPressTest-Swift.h"
 
 static NSTimeInterval const TestExpectationTimeout = 5;
 
