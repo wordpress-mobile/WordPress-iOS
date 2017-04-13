@@ -263,15 +263,6 @@ open class NotificationActionsService: LocalCoreDataService {
             completion?(false)
         })
     }
-
-    /// Invalidates the cache and force syncs a notification
-    ///
-    /// - Parameter noteId: The Notificacion's ID
-    ///
-    func forceSyncNotification(with noteID: String) {
-        invalidateCacheAndForceSyncNotification(with: noteID)
-    }
-
 }
 
 
@@ -280,31 +271,19 @@ open class NotificationActionsService: LocalCoreDataService {
 //
 private extension NotificationActionsService {
 
-    /// Invalidates the cache and force syncs a notification
+    /// Invalidates the Local Cache for a given Notification, and re-downloaded from the remote endpoint.
+    /// We're doing *both actions* so that in the eventual case of "Broken REST Request", the notification's hash won't match
+    /// with the remote value, and the note will be redownloaded upon Sync.
+    ///
+    /// Required due to a beautiful backend bug. Details here: https://github.com/wordpress-mobile/WordPress-iOS/pull/6871
     ///
     /// - Parameter block: child NotificationBlock object of the Notification-to-be-refreshed.
     ///
     func invalidateCacheAndForceSyncNotification(with block: NotificationBlock) {
-        guard let notificationID = block.notificationID else {
+        guard let notificationID = block.notificationID, let mediator = NotificationSyncMediator() else {
             return
         }
-        invalidateCacheAndForceSyncNotification(with: notificationID)
-    }
 
-    /// Invalidates the Local Cache for a given Notification, and re-downloads it from the remote endpoint.
-    /// We're doing *both actions* so that in the eventual case of "Broken REST Request", 
-    /// the notification's hash won't match with the remote value, and the note will be redownloaded 
-    /// upon Sync.
-    ///
-    /// Required due to a beautiful backend bug. 
-    /// Details here: https://github.com/wordpress-mobile/WordPress-iOS/pull/6871
-    ///
-    /// - Parameter noteId: The Notificacion's ID
-    ///
-    func invalidateCacheAndForceSyncNotification(with notificationID: String) {
-        guard let mediator = NotificationSyncMediator() else {
-            return
-        }
         DDLogSwift.logInfo("Invalidating Cache and Force Sync'ing Notification with ID: \(notificationID)")
         mediator.invalidateCacheForNotification(with: notificationID)
         mediator.syncNote(with: notificationID)
