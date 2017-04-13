@@ -15,10 +15,10 @@ typedef NS_ENUM(NSUInteger, MediaPickerDataSourceType) {
 
 - (instancetype)initWithBlog:(Blog *)blog;
 - (instancetype)initWithBlog:(Blog *)blog
-              dataSourceType:(MediaPickerDataSourceType)sourceType;
+       initialDataSourceType:(MediaPickerDataSourceType)sourceType;
 
 - (instancetype)initWithPost:(AbstractPost *)post;
 - (instancetype)initWithPost:(AbstractPost *)post
-              dataSourceType:(MediaPickerDataSourceType)sourceType;
+       initialDataSourceType:(MediaPickerDataSourceType)sourceType;
 
 @end
