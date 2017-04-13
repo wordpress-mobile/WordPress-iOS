@@ -37,16 +37,10 @@ final public class InteractiveNotificationsManager: NSObject {
         return NotificationActionsService(managedObjectContext: context)
     }
 
-    /// Returns a NotificationSyncServiceRemote instance.
+    /// Returns a NotificationSyncMediator instance.
     ///
-    var notificationSyncServiceRemote: NotificationSyncServiceRemote? {
-        let accountService = AccountService(managedObjectContext: context)
-
-        guard let dotcomAPI = accountService.defaultWordPressComAccount()?.wordPressComRestApi else {
-            return nil
-        }
-
-       return NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
+    var notificationSyncMediator: NotificationSyncMediator? {
+       return NotificationSyncMediator.init()
     }
 
     // MARK: - Public Methods
@@ -134,9 +128,7 @@ final public class InteractiveNotificationsManager: NSObject {
     ///
     fileprivate func likeCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
         commentService.likeComment(withID: commentID, siteID: siteID, success: {
-            self.notificationSyncServiceRemote?.updateReadStatus(noteID.stringValue, read: true, completion: { _ in
-                self.notificationActionsService.forceSyncNotification(with: noteID.stringValue)
-            })
+            self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
             DDLogSwift.logInfo("Liked comment from push notification")
         }, failure: { error in
             DDLogSwift.logInfo("Couldn't like comment from push notification")
@@ -152,9 +144,7 @@ final public class InteractiveNotificationsManager: NSObject {
     ///
     fileprivate func approveCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
         commentService.approveComment(withID: commentID, siteID: siteID, success: {
-            self.notificationSyncServiceRemote?.updateReadStatus(noteID.stringValue, read: true, completion: { _ in
-                self.notificationActionsService.forceSyncNotification(with: noteID.stringValue)
-            })
+            self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
             DDLogSwift.logInfo("Successfully moderated comment from push notification")
         }, failure: { error in
             DDLogSwift.logInfo("Couldn't moderate comment from push notification")
@@ -180,9 +170,7 @@ final public class InteractiveNotificationsManager: NSObject {
     ///
     fileprivate func replyToCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber, content: String) {
         commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
-            self.notificationSyncServiceRemote?.updateReadStatus(noteID.stringValue, read: true, completion: { _ in
-                self.notificationActionsService.forceSyncNotification(with: noteID.stringValue)
-            })
+            self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
             DDLogSwift.logInfo("Successfully replied comment from push notification")
         }, failure: { error in
             DDLogSwift.logInfo("Couldn't reply to comment from push notification")

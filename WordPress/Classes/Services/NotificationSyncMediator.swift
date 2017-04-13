@@ -175,6 +175,23 @@ class NotificationSyncMediator {
         updateReadStatus(true, forNoteWithObjectID: notification.objectID)
     }
 
+    /// Invalidates the cache for a notification, marks it as read and syncs it.
+    ///
+    /// - Parameters:
+    ///     - noteID: The notification id to mark as read.
+    ///     - completion: Callback to be executed on completion.
+    ///
+    func markAsReadAndSync(_ noteID: String, completion: ((Error?) -> Void)? = nil) {
+        invalidateCacheForNotification(with: noteID)
+        remote.updateReadStatus(noteID, read: true) { error in
+            if let error = error {
+                DDLogSwift.logError("Error marking note as read: \(error)")
+            }
+            self.syncNote(with: noteID) { _ in
+                completion?(error)
+            }
+        }
+    }
 
     /// Updates the Backend's Last Seen Timestamp. Used to calculate the Badge Count!
     ///
