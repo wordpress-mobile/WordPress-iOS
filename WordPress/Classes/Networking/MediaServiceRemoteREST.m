@@ -220,7 +220,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 }
 
 -(void)getVideoURLFromVideoPressID:(NSString *)videoPressID
-                           success:(void (^)(NSURL *))success
+                           success:(void (^)(NSURL *videoURL, NSURL *posterURL))success
                            failure:(void (^)(NSError *))failure
 {
     NSString *path = [NSString stringWithFormat:@"videos/%@", videoPressID];
@@ -232,10 +232,12 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                                NSDictionary *response = (NSDictionary *)responseObject;
                                NSString *urlString = [response stringForKey:@"original"];
-                               NSURL *url = [NSURL URLWithString:urlString];
-                               if (url) {
+                               NSString *posterURLString = [response stringForKey:@"poster"];
+                               NSURL *videoURL = [NSURL URLWithString:urlString];
+                               NSURL *posterURL = [NSURL URLWithString:posterURLString];
+                               if (videoURL) {
                                    if (success) {
-                                       success(url);
+                                       success(videoURL, posterURL);
                                    }
                                } else {
                                    if (failure) {
