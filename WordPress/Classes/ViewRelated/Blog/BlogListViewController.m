@@ -148,10 +148,10 @@ static NSInteger HideSearchMinSites = 3;
     [self configureStackView];
 
     [self configureSearchBar];
-    [self.stackView insertArrangedSubview:self.searchBar atIndex:0];
+    [self.stackView addArrangedSubview:self.searchBar];
 
     [self configureTableView];
-    [self.stackView insertArrangedSubview:self.tableView atIndex:1];
+    [self.stackView addArrangedSubview:self.tableView];
 
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
@@ -409,13 +409,7 @@ static NSInteger HideSearchMinSites = 3;
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.spacing = 0;
     [self.view addSubview:stackView];
-
-    [NSLayoutConstraint activateConstraints:@[
-                                              [stackView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-                                              [stackView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
-                                              [stackView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-                                              [stackView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
-                                              ]];
+    [self.view pinSubviewToAllEdges:stackView];
     _stackView = stackView;
 }
 
@@ -738,13 +732,19 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    self.dataSource.searching = YES;
     self.dataSource.searchQuery = searchText;
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
+    self.dataSource.searching = YES;
     [searchBar setShowsCancelButton:YES animated:YES];
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    self.dataSource.searching = NO;
+    [searchBar setShowsCancelButton:NO animated:YES];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
