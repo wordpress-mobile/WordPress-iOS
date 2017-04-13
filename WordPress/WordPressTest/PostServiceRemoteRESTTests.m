@@ -5,7 +5,6 @@
 #import "PostServiceRemoteREST.h"
 #import "RemotePost.h"
 #import "TestContextManager.h"
-#import "WordPress-Swift.h"
 
 @interface PostServiceRemoteRESTTests : XCTestCase
 @end
