@@ -6,7 +6,6 @@
 #import "TaxonomyServiceRemoteREST.h"
 #import "RemoteTaxonomyPaging.h"
 #import "RemotePostCategory.h"
-#import "WordPress-Swift.h"
 
 @interface PostCategoryServiceForStubbing : PostCategoryService
 

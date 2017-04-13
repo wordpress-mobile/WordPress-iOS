@@ -65,12 +65,9 @@ PODS:
   - FormatterKit/URLRequestFormatter (1.8.2):
     - FormatterKit/Resources
   - Gridicons (0.5)
-  - Helpshift (5.9.3)
   - HockeySDK (4.1.4):
     - HockeySDK/DefaultLib (= 4.1.4)
   - HockeySDK/DefaultLib (4.1.4)
-  - Lookback (1.4.1):
-    - PDKTZipArchive
   - MGSwipeTableCell (1.5.6)
   - Mixpanel (2.9.4):
     - Mixpanel/Mixpanel (= 2.9.4)
@@ -122,14 +119,13 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (5.2.3)
   - OHHTTPStubs/Swift (5.2.3):
     - OHHTTPStubs/Core
-  - PDKTZipArchive (0.4.1)
   - Reachability (3.2)
   - Specta (1.0.5)
   - Starscream (2.0.2)
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-AppbotX (1.0.6)
-  - WordPress-Aztec-iOS (0.5a7.1):
+  - WordPress-Aztec-iOS (0.5a8):
     - Gridicons (= 0.5)
   - WordPress-iOS-Editor (1.9.0):
     - CocoaLumberjack (~> 2.2.0)
@@ -160,9 +156,7 @@ DEPENDENCIES:
   - FLAnimatedImage (~> 1.0)
   - FormatterKit (~> 1.8.1)
   - Gridicons (= 0.5)
-  - Helpshift (~> 5.9.3)
   - HockeySDK (~> 4.1.3)
-  - Lookback (= 1.4.1)
   - MGSwipeTableCell (~> 1.5.6)
   - Mixpanel (= 2.9.4)
   - MRProgress (~> 0.7.0)
@@ -178,7 +172,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
-  - WordPress-Aztec-iOS (= 0.5a7.1)
+  - WordPress-Aztec-iOS (= 0.5a8)
   - WordPress-iOS-Editor (= 1.9.0)
   - WordPress-iOS-Shared (= 0.8.2)
   - WordPressCom-Analytics-iOS (= 0.1.25)
@@ -228,9 +222,7 @@ SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gridicons: 5c5e928324fa301572ee447b25962d18e7fd7159
-  Helpshift: fa42856075d2e77ce4243d667ffa91ab5bb725fe
   HockeySDK: 78a3f8bb9100277b531defc56c970369a3ca267a
-  Lookback: 37c23f97894612f6eccc215440c8f990fbb5a607
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   Mixpanel: 80d2ca9bb38ae91c1044d738e80fe448377ac89f
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
@@ -239,14 +231,13 @@ SPEC CHECKSUMS:
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   OHHTTPStubs: e238cd5b66d8efa51c861db45895de8fe079f4a7
-  PDKTZipArchive: 22bbab52b49f46a3adf1acf134311fd252c43feb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   Starscream: 4ee1be18da5170faafce1698225b61f9765634d5
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
-  WordPress-Aztec-iOS: 90054eaca784b2e29819fc3130ac37edd4688732
+  WordPress-Aztec-iOS: 4bf5814f53791ceac398f93358a8da08eae7ff0a
   WordPress-iOS-Editor: 69c5d1e83aaa6e5ab6c80e067f1858de8dab4017
   WordPress-iOS-Shared: 999f5bfcf5744f94ebe9cb7459a138f5990fbf3a
   WordPressCom-Analytics-iOS: ec36976259d733430ba0fc2f8a51765947d2c7ba
@@ -255,6 +246,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 239fef5c97d76acd3f9fb66c408be3e7deb3295e
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 27bca10896ce812bdf1c8ff2a87e39be8f1f41b4
+PODFILE CHECKSUM: 15a246b2b6c0e7e307b2548679354792720eaa51
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.1
