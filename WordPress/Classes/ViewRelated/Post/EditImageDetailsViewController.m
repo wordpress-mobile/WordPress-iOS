@@ -260,9 +260,9 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
+    NSInteger imageDetailsSection = [[self.sections objectAtIndex:section] integerValue];
 
-    switch (sec) {
+    switch (imageDetailsSection) {
         case ImageDetailsSectionThumb:
             return 1;
         case ImageDetailsSectionFeatured:
@@ -277,16 +277,17 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
-    if (sec == ImageDetailsSectionDetails) {
-        return NSLocalizedString(@"Details", @"The title of the option group for editing an image's title, caption, etc. on the image details screen.");
+    NSInteger imageDetailsSection = [[self.sections objectAtIndex:section] integerValue];
 
-    } else if (sec == ImageDetailsSectionDisplay) {
-        return NSLocalizedString(@"Web Display Settings", @"The title of the option group for editing an image's size, alignment, etc. on the image details screen.");
-    } else if (sec == ImageDetailsSectionFeatured) {
-        return NSLocalizedString(@"Featured Image", @"The title of the option group for setting an image as a post's featured image on the image details screen.");
+    switch (imageDetailsSection) {
+        case ImageDetailsSectionDetails:
+            return NSLocalizedString(@"Details", @"The title of the option group for editing an image's title, caption, etc. on the image details screen.");
+        case ImageDetailsSectionDisplay:
+            return NSLocalizedString(@"Web Display Settings", @"The title of the option group for editing an image's size, alignment, etc. on the image details screen.");
+        case ImageDetailsSectionFeatured:
+            return NSLocalizedString(@"Featured Image", @"The title of the option group for setting an image as a post's featured image on the image details screen.");
+        default: return nil;
     }
-    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
@@ -301,11 +302,11 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger sec = [[self.sections objectAtIndex:indexPath.section] integerValue];
+    NSInteger imageDetailsSection = [[self.sections objectAtIndex:indexPath.section] integerValue];
 
     UITableViewCell *cell;
 
-    switch (sec) {
+    switch (imageDetailsSection) {
         case ImageDetailsSectionThumb:
             cell = [self thumbCellForIndexPath:indexPath];
             break;
