@@ -624,7 +624,8 @@
 
         // No Image available so let's download it
         NSURL *remoteURL = nil;
-        if (media.mediaType == MediaTypeVideo) {
+        BOOL mediaIsVideo = media.mediaType == MediaTypeVideo;
+        if (mediaIsVideo) {
             remoteURL = [NSURL URLWithString:media.remoteThumbnailURL];
         } else if (media.mediaType == MediaTypeImage) {
             NSString *remote = media.remoteURL;
@@ -663,7 +664,7 @@
                     }
                     return;
                 }
-                if (CGSizeEqualToSize(size, mediaOriginalSize)) {
+                if (CGSizeEqualToSize(size, mediaOriginalSize) && !mediaIsVideo) {
                     media.absoluteLocalURL = fileURL;
                 } else {
                     media.absoluteThumbnailLocalURL = fileURL;
