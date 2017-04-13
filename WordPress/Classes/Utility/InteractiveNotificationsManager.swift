@@ -31,12 +31,6 @@ final public class InteractiveNotificationsManager: NSObject {
         return CommentService(managedObjectContext: context)
     }
 
-    /// Returns a NotificationActionsService instance.
-    ///
-    var notificationActionsService: NotificationActionsService {
-        return NotificationActionsService(managedObjectContext: context)
-    }
-
     /// Returns a NotificationSyncMediator instance.
     ///
     var notificationSyncMediator: NotificationSyncMediator? {
