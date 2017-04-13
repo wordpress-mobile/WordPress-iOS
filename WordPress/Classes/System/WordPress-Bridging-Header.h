@@ -1,9 +1,5 @@
-// Disable warnings about deprecated UILocalNotification in Helpshift
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-#import <Helpshift/HelpshiftCore.h>
-#import <Helpshift/HelpshiftSupport.h>
-#pragma clang diagnostic pop
+#import "HelpshiftCore.h"
+#import "HelpshiftSupport.h"
 
 #import <Mixpanel/Mixpanel.h>
 #import "SFHFKeychainUtils.h"
@@ -28,6 +24,7 @@
 #import "Confirmable.h"
 #import "Constants.h"
 #import "ContextManager.h"
+#import "ContextManager-Internals.h"
 #import "Coordinate.h"
 #import "CustomHighlightButton.h"
 
@@ -51,6 +48,7 @@
 #import "Media.h"
 #import "MediaLibraryPickerDataSource.h"
 #import "MediaService.h"
+#import "MediaServiceRemoteREST.h"
 #import "MeHeaderView.h"
 #import "MixpanelTweaks.h"
 
@@ -88,8 +86,11 @@
 #import "ReaderPostService.h"
 #import "ReaderPostServiceRemote.h"
 #import "ReaderSiteService.h"
+#import "ReaderSiteServiceRemote.h"
 #import "ReaderTopicService.h"
+#import "RemoteMedia.h"
 #import "RemoteReaderPost.h"
+#import "RemoteReaderSite.h"
 #import "RemoteReaderTopic.h"
 #import "RotationAwareNavigationViewController.h"
 
