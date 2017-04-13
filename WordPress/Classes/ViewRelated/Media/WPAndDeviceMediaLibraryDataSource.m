@@ -13,11 +13,12 @@
 
 - (instancetype)initWithBlog:(Blog *)blog
 {
-    return [self initWithBlog:blog dataSourceType:MediaPickerDataSourceTypeDevice];
+    return [self initWithBlog:blog
+        initialDataSourceType:MediaPickerDataSourceTypeDevice];
 }
 
 - (instancetype)initWithBlog:(Blog *)blog
-              dataSourceType:(MediaPickerDataSourceType)sourceType
+       initialDataSourceType:(MediaPickerDataSourceType)sourceType
 {
     self = [super init];
     if (self) {
@@ -30,11 +31,12 @@
 
 - (instancetype)initWithPost:(AbstractPost *)post
 {
-    return [self initWithPost:post dataSourceType:MediaPickerDataSourceTypeDevice];
+    return [self initWithPost:post
+        initialDataSourceType:MediaPickerDataSourceTypeDevice];
 }
 
 - (instancetype)initWithPost:(AbstractPost *)post
-              dataSourceType:(MediaPickerDataSourceType)sourceType
+       initialDataSourceType:(MediaPickerDataSourceType)sourceType
 {
     self = [super init];
     if (self) {
@@ -214,9 +216,5 @@
 {
     return [self.currentDataSource ascendingOrdering];
 }
-
-
-
-
 
 @end
