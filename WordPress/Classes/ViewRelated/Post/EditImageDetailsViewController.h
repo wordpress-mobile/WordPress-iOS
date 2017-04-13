@@ -2,6 +2,8 @@
 
 @class WPImageMeta;
 @class AbstractPost;
+@class Media;
+
 @protocol EditImageDetailsViewControllerDelegate;
 
 @interface EditImageDetailsViewController : UITableViewController
@@ -10,7 +12,9 @@
 @property (nonatomic) AbstractPost *post;
 @property (nonatomic, weak) id<EditImageDetailsViewControllerDelegate>delegate;
 
-+ (instancetype)controllerForDetails:(WPImageMeta *)details forPost:(AbstractPost *)post;
++ (instancetype)controllerForDetails:(WPImageMeta *)details
+                               media:(Media *)media
+                             forPost:(AbstractPost *)post;
 
 @end
 
