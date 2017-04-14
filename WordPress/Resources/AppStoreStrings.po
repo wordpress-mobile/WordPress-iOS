@@ -35,8 +35,11 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v7.2-whats-new"
-msgid "We found a few gremlins living inside of the app and took care of them. We promise to never feed Wapuu after midnight again."
+msgctxt "v7.4-whats-new"
+msgid ""
+msgid "📣 Sharing out from the Reader and in from other apps were both improved from your feedback. In Safari select text from the web page and share right into the WordPress app!\n"
+"🗑 Have a site in your list you want to hide? Swipe on a site in the list to hide (WordPress.com or Jetpack) or remove (self-hosted).\n"
+"🔔 Sometimes the navigation bar would magically disappear when opening a navigation. We like a good magic trick - but this one was unintentional.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
