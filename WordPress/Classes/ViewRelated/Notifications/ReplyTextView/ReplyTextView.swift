@@ -47,6 +47,7 @@ import WordPressShared.WPStyleGuide
     open var placeholder: String! {
         set {
             placeholderLabel.text = newValue ?? String()
+            textView.accessibilityLabel = placeholderLabel.text
         }
         get {
             return placeholderLabel.text
@@ -240,6 +241,7 @@ import WordPressShared.WPStyleGuide
         replyButton.titleLabel?.font = WPStyleGuide.Reply.buttonFont
         replyButton.setTitleColor(WPStyleGuide.Reply.disabledColor, for: .disabled)
         replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor, for: UIControlState())
+        replyButton.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
 
         // Background
         contentView.backgroundColor = WPStyleGuide.Reply.backgroundColor
@@ -295,8 +297,8 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Constants
-    fileprivate let textViewMaxHeight = CGFloat(88)   // Fits 3 lines onscreen
-    fileprivate let textViewMinHeight = CGFloat(48)
+    fileprivate let textViewMaxHeight = CGFloat(86)   // Fits 3 lines onscreen
+    fileprivate let textViewMinHeight = CGFloat(50)
 
     // MARK: - Private Properties
     fileprivate var bundle: NSArray?

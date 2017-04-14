@@ -27,6 +27,7 @@ class AztecPostViewController: UIViewController {
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         tv.delegate = self
         tv.mediaDelegate = self
+        tv.commentsDelegate = self
         tv.backgroundColor = Colors.aztecBackground
         toolbar.formatter = self
 
@@ -126,6 +127,7 @@ class AztecPostViewController: UIViewController {
         return pickerItem
     }()
 
+
     /// Publish Button
     fileprivate(set) lazy var publishButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: self.postEditorStateContext.publishButtonText, style: WPStyleGuide.barButtonStyleForDone(), target: self, action: #selector(publishButtonTapped(sender:)))
@@ -133,6 +135,7 @@ class AztecPostViewController: UIViewController {
 
         return button
     }()
+
 
     /// NavigationBar's More Button
     ///
@@ -163,6 +166,10 @@ class AztecPostViewController: UIViewController {
         return button
     }()
 
+
+    /// Boolean indicating whether if the FormatBar was animated, or not
+    ///
+    fileprivate var formatBarAnimatedPeek = false
 
     /// Active Editor's Mode
     ///
@@ -344,11 +351,6 @@ class AztecPostViewController: UIViewController {
         coordinator.animate(alongsideTransition: { _ in
             self.resizeBlogPickerButton()
         })
-
-        // TODO: Update toolbars
-        //    [self.editorToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
-        //    [self.titleToolbar configureForHorizontalSizeClass:newCollection.horizontalSizeClass];
-
     }
 
 
@@ -439,15 +441,17 @@ class AztecPostViewController: UIViewController {
     }
 
     func startListeningToNotifications() {
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidShow), name: .UIKeyboardDidShow, object: nil)
     }
 
     func stopListeningToNotifications() {
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        notificationCenter.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        let nc = NotificationCenter.default
+        nc.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        nc.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        nc.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
     }
 
     func rememberFirstResponder() {
@@ -528,6 +532,16 @@ class AztecPostViewController: UIViewController {
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
+    func keyboardDidShow(_ notification: Notification) {
+        guard richTextView.isFirstResponder, !formatBarAnimatedPeek else {
+            return
+        }
+
+        let formatBar = richTextView.inputAccessoryView as? FormatBar
+        formatBar?.animateSlightPeekWhenOverflows()
+        formatBarAnimatedPeek = true
+    }
+
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         htmlTextView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
         htmlTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
@@ -603,11 +617,6 @@ extension AztecPostViewController {
         // Button: Keep editing
         alertController.addCancelActionWithTitle(NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post."))
 
-        // Button: Discard
-        alertController.addDestructiveActionWithTitle(NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
-            self.discardChangesAndUpdateGUI()
-        }
-
         // Button: Save Draft/Update Draft
         if post.hasLocalChanges() {
             if !post.hasRemote() {
@@ -622,6 +631,11 @@ extension AztecPostViewController {
                     self.publishTapped(dismissWhenDone: true)
                 }
             }
+        }
+
+        // Button: Discard
+        alertController.addDestructiveActionWithTitle(NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
+            self.discardChangesAndUpdateGUI()
         }
 
         alertController.popoverPresentationController?.barButtonItem = closeBarButtonItem
@@ -782,7 +796,12 @@ private extension AztecPostViewController {
     }
 
     func displayPostOptions() {
-        let settingsViewController = PostSettingsViewController(post: post)
+        let settingsViewController: PostSettingsViewController
+        if post is Page {
+            settingsViewController = PageSettingsViewController(post: post)
+        } else {
+            settingsViewController = PostSettingsViewController(post: post)
+        }
         settingsViewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(settingsViewController, animated: true)
     }
@@ -969,6 +988,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             toggleHeader()
         case .horizontalruler:
             insertHorizontalRuler()
+        case .more:
+            insertMore()
         }
         updateFormatBar()
     }
@@ -1171,7 +1192,11 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func insertHorizontalRuler() {
-        richTextView.replaceWithHorizontalRuler(at: richTextView.selectedRange)
+        richTextView.replaceRangeWithHorizontalRuler(richTextView.selectedRange)
+    }
+
+    func insertMore() {
+        richTextView.replaceRangeWithCommentAttachment(richTextView.selectedRange, text: Constants.moreAttachmentText)
     }
 
     func changeRichTextInputView(to: UIView?) {
@@ -1222,7 +1247,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             FormatBarItem(image: Gridicon.iconOfType(.listUnordered), identifier: .unorderedlist),
             FormatBarItem(image: Gridicon.iconOfType(.listOrdered), identifier: .orderedlist),
             FormatBarItem(image: Gridicon.iconOfType(.link), identifier: .link),
-            FormatBarItem(image: Gridicon.iconOfType(.minusSmall), identifier: .horizontalruler)
+            FormatBarItem(image: Gridicon.iconOfType(.minusSmall), identifier: .horizontalruler),
+            FormatBarItem(image: Gridicon.iconOfType(.readMore), identifier: .more)
         ]
 
         let fixedItems = [
@@ -1288,13 +1314,7 @@ fileprivate extension AztecPostViewController {
         let postService = PostService(managedObjectContext: mainContext)
         let newPost = shouldCreatePage ? postService.createDraftPage(for: blog) : postService.createDraftPost(for: blog)
 
-        //  TODO: Strip Media!
-        //  NSString *content = oldPost.content;
-        //  for (Media *media in oldPost.media) {
-        //      content = [self removeMedia:media fromString:content];
-        //  }
-
-        newPost.content = post.content
+        newPost.content = contentByStrippingMediaAttachments()
         newPost.postTitle = post.postTitle
         newPost.password = post.password
         newPost.status = post.status
@@ -1308,14 +1328,10 @@ fileprivate extension AztecPostViewController {
         discardChanges()
         post = newPost
         createRevisionOfPost()
-        markBlogAsLastUsed(blog)
+        RecentSitesService().touch(blog: blog)
 
         // TODO: Add this snippet, if needed, once we've relocated this helper to PostService
         //[self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
-    }
-
-    func markBlogAsLastUsed(_ blog: Blog) {
-        RecentSitesService().touch(blog: blog)
     }
 
     func cancelEditing() {
@@ -1344,6 +1360,7 @@ fileprivate extension AztecPostViewController {
             post.remove()
         }
 
+        mediaProgressCoordinator.cancelAllPendingUploads()
         ContextManager.sharedInstance().save(context)
     }
 
@@ -1367,6 +1384,21 @@ fileprivate extension AztecPostViewController {
 
     func shouldRemoveOnDismiss(post: AbstractPost) -> Bool {
         return post.isRevision() && post.hasLocalChanges() || post.hasNeverAttemptedToUpload()
+    }
+
+    func contentByStrippingMediaAttachments() -> String {
+        if mode == .html {
+            richTextView.setHTML(htmlTextView.text)
+        }
+
+        richTextView.removeTextAttachments()
+        let strippedHTML = richTextView.getHTML()
+
+        if mode == .html {
+            richTextView.setHTML(strippedHTML)
+        }
+
+        return strippedHTML
     }
 
     fileprivate func mapUIContentToPostAndSave() {
@@ -1469,8 +1501,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 
     fileprivate func addSiteMediaAsset(_ media: Media) {
-        if media.mediaID.intValue != 0 {
-            guard let remoteURL = URL(string: media.remoteURL) else {
+        if media.mediaID?.intValue != 0 {
+            guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
             let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
@@ -1518,7 +1550,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         var uploadProgress: Progress?
         mediaService.uploadMedia(media, progress: &uploadProgress, success: {[weak self]() in
-            guard let strongSelf = self, let remoteURL = URL(string:media.remoteURL) else {
+            guard let strongSelf = self, let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
             DispatchQueue.main.async {
@@ -1656,6 +1688,36 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 
     func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: TextAttachment) {
         richTextView.update(attachment: changedAttachment, alignment: changedAttachment.alignment, size: changedAttachment.size, url: changedAttachment.url!)
+    }
+}
+
+
+// MARK: - TextView Comments Delegate Conformance
+//
+extension AztecPostViewController: TextViewCommentsDelegate {
+
+    func textView(_ textView: TextView, imageForComment attachment: CommentAttachment, with size: CGSize) -> UIImage? {
+        if let render = MoreAttachmentRenderer(attachment: attachment) {
+            return render.textView(textView, imageForComment: attachment, with: size)
+        }
+
+        if let render = CommentAttachmentRenderer(font: Fonts.regular) {
+            return render.textView(textView, imageForComment: attachment, with: size)
+        }
+
+        return nil
+    }
+
+    func textView(_ textView: TextView, boundsForComment attachment: CommentAttachment, with lineFragment: CGRect) -> CGRect {
+        if let render = MoreAttachmentRenderer(attachment: attachment) {
+            return render.textView(textView, boundsForComment: attachment, with: lineFragment)
+        }
+
+        if let render = CommentAttachmentRenderer(font: Fonts.regular) {
+            return render.textView(textView, boundsForComment: attachment, with: lineFragment)
+        }
+
+        return .zero
     }
 }
 
@@ -1846,6 +1908,7 @@ extension AztecPostViewController {
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
+        static let moreAttachmentText       = "more"
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
     }
 
@@ -2041,7 +2104,7 @@ class MediaProgressCoordinator: NSObject {
         }
 
         if mediaUploading.isEmpty {
-            return progress.totalUnitCount != progress.completedUnitCount
+            return progress.completedUnitCount < progress.totalUnitCount
         }
 
         for progress in mediaUploading.values {
@@ -2070,6 +2133,16 @@ class MediaProgressCoordinator: NSObject {
         }
         finishOneItem()
         mediaUploading.removeValue(forKey: mediaID)
+    }
+
+    func cancelAllPendingUploads() {
+        let pendingUploadIds = mediaUploading.keys
+
+        for mediaID in pendingUploadIds {
+            cancelAndStopTrack(of: mediaID)
+        }
+
+        mediaUploadingProgress?.cancel()
     }
 
     var failedMediaIDs: [String] {

@@ -130,20 +130,78 @@ struct PeopleService {
     ///
     /// - Parameters:
     ///     - user: The person that should be deleted
+    ///     - success: Closure to be executed in case of success.
     ///     - failure: Closure to be executed on error
     ///
-    func deleteUser(_ user: User, failure: ((Error) -> Void)? = nil) {
+    func deleteUser(_ user: User, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
         guard let managedPerson = managedPersonFromPerson(user) else {
             return
         }
 
         // Hit the Backend
-        remote.deleteUser(siteID, userID: user.ID, failure: { error in
-
+        remote.deleteUser(siteID, userID: user.ID, success: {
+            success?()
+        }, failure: { error in
             DDLogSwift.logError("### Error while deleting person \(user.ID) from blog \(self.siteID): \(error)")
 
             // Revert the deletion
             self.createManagedPerson(user)
+
+            failure?(error)
+        })
+
+        // Pre-emptively nuke the entity
+        context.delete(managedPerson)
+    }
+
+    /// Deletes a given Follower.
+    ///
+    /// - Parameters:
+    ///     - person: The follower that should be deleted
+    ///     - success: Closure to be executed in case of success.
+    ///     - failure: Closure to be executed on error
+    ///
+    func deleteFollower(_ person: Follower, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
+        guard let managedPerson = managedPersonFromPerson(person) else {
+            return
+        }
+
+        // Hit the Backend
+        remote.deleteFollower(siteID, userID: person.ID, success: {
+            success?()
+        }, failure: { error in
+            DDLogSwift.logError("### Error while deleting follower \(person.ID) from blog \(self.siteID): \(error)")
+
+            // Revert the deletion
+            self.createManagedPerson(person)
+
+            failure?(error)
+        })
+
+        // Pre-emptively nuke the entity
+        context.delete(managedPerson)
+    }
+
+    /// Deletes a given Viewer.
+    ///
+    /// - Parameters:
+    ///     - person: The follower that should be deleted
+    ///     - success: Closure to be executed in case of success.
+    ///     - failure: Closure to be executed on error
+    ///
+    func deleteViewer(_ person: Viewer, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
+        guard let managedPerson = managedPersonFromPerson(person) else {
+            return
+        }
+
+        // Hit the Backend
+        remote.deleteViewer(siteID, userID: person.ID, success: {
+            success?()
+        }, failure: { error in
+            DDLogSwift.logError("### Error while deleting viewer \(person.ID) from blog \(self.siteID): \(error)")
+
+            // Revert the deletion
+            self.createManagedPerson(person)
 
             failure?(error)
         })

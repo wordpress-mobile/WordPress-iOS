@@ -37,6 +37,7 @@
 #import "MediaLibraryPickerDataSource.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPAppAnalytics.h"
+#import "Media+HTML.h"
 
 @import Gridicons;
 
@@ -840,11 +841,6 @@ EditImageDetailsViewControllerDelegate
                                 handler:^(UIAlertAction * action) {
         [self actionSheetKeepEditingButtonPressed];
     }];
-    [alertController addActionWithTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                  style:UIAlertActionStyleDestructive
-                                handler:^(UIAlertAction * action) {
-        [self actionSheetDiscardButtonPressed];
-    }];
     
     if ([self.post hasLocalChanges]) {
         if (![self.post hasRemote]) {
@@ -864,6 +860,12 @@ EditImageDetailsViewControllerDelegate
         }
     }
     
+    [alertController addActionWithTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                  style:UIAlertActionStyleDestructive
+                                handler:^(UIAlertAction * action) {
+                                    [self actionSheetDiscardButtonPressed];
+                                }];
+
     alertController.popoverPresentationController.barButtonItem = self.currentCancelButton;
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -1741,7 +1743,7 @@ EditImageDetailsViewControllerDelegate
         } else if (media.mediaType == MediaTypeVideo) {
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
                                       forRemoteVideo:media.remoteURL
-                                        remotePoster:media.posterImageURL
+                                        remotePoster:media.posterAttributeImageURL
                                           videoPress:media.videopressGUID];
         }
     } failure:^(NSError *error) {
@@ -1755,7 +1757,11 @@ EditImageDetailsViewControllerDelegate
             [media remove];
         } else {
             DDLogError(@"Failed Media Upload: %@", error.localizedDescription);
-            [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withBlog:self.post.blog];
+            [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed
+                   withProperties:@{ @"error_condition": @"WPPostViewController uploadMedia:trackingID:",
+                                     @"error_details": [NSString stringWithFormat:@"Uploading %@ (%@). Error: %@", media.filename, media.filesize, error.localizedDescription] }
+                         withBlog:self.post.blog];
+
             [self dismissAssociatedAlertControllerIfVisible:mediaUniqueId];
             if (media.mediaType == MediaTypeImage) {
                 [self.editorView markImage:mediaUniqueId
@@ -1767,10 +1773,16 @@ EditImageDetailsViewControllerDelegate
             [self setError:error inProgressOfMediaWithId:mediaUniqueId];
         }
     }];
-    [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressMediaID];
-    [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
-    [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
-    [self.mediaGlobalProgress addChild:uploadProgress withPendingUnitCount:1];
+
+    // The service won't initialize `uploadProgress` if something goes wrong
+    // during serialization, and we'll get a crash if we attempt to add a nil
+    // child to mediaGlobalProgress.
+    if (uploadProgress) {
+        [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressMediaID];
+        [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
+        [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
+        [self.mediaGlobalProgress addChild:uploadProgress withPendingUnitCount:1];
+    }
 }
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
@@ -1877,7 +1889,7 @@ EditImageDetailsViewControllerDelegate
         } else if ([media mediaType] == MediaTypeVideo) {
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary withBlog:self.post.blog];
             [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media absoluteThumbnailLocalURL]];
-            [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:media.posterImageURL videoPress:media.videopressGUID];
+            [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:media.posterAttributeImageURL videoPress:media.videopressGUID];
         }
         [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
     } else {
@@ -1890,7 +1902,7 @@ EditImageDetailsViewControllerDelegate
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
                    withProperties:[WPAppAnalytics propertiesFor:media]
                          withBlog:self.post.blog];
-            [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:media.posterImageURL];
+            [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:media.posterAttributeImageURL];
         }
         [self uploadMedia:media trackingId:mediaUniqueID];
     }

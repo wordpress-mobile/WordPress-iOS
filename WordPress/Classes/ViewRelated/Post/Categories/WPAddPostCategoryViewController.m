@@ -13,7 +13,7 @@
 
 static const CGFloat HorizontalMargin = 15.0f;
 
-@interface WPAddPostCategoryViewController ()<PostCategoriesViewControllerDelegate>
+@interface WPAddPostCategoryViewController ()<PostCategoriesViewControllerDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) PostCategory *parentCategory;
 @property (nonatomic, strong) Blog *blog;
@@ -194,6 +194,7 @@ static const CGFloat HorizontalMargin = 15.0f;
     self.categoryTextField.keyboardType = UIKeyboardTypeDefault;
     self.categoryTextField.secureTextEntry = NO;
     self.categoryTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.categoryTextField.delegate = self;
 
     [_createCategoryCell.contentView addSubview:self.categoryTextField];
     

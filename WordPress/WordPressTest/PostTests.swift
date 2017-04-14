@@ -333,6 +333,9 @@ class PostTests: XCTestCase {
         revision.publicizeMessage = ""
         XCTAssertFalse(revision.hasLocalChanges())
 
+        revision.publicizeMessage = nil
+        XCTAssertFalse(revision.hasLocalChanges())
+
         revision.publicizeMessage = "Make it notorious"
         XCTAssertTrue(revision.hasLocalChanges())
 
