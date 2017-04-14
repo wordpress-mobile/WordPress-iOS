@@ -44,6 +44,7 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowShareConnection,
     PostSettingsRowShareMessage,
     PostSettingsRowGeolocation,
+    PostSettingsRowSlug,
     PostSettingsRowExcerpt
 };
 
@@ -448,7 +449,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         return 1;
 
     } else if (sec == PostSettingsSectionMoreOptions) {
-        return 1;
+        return 2;
 
     }
 
@@ -556,7 +557,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     } else if (sec == PostSettingsSectionGeolocation) {
         cell = [self configureGeolocationCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionMoreOptions) {
-        cell = [self configureExcerptCellForIndexPath:indexPath];
+        cell = [self configureMoreOptionsCellForIndexPath:indexPath];
     }
 
     return cell;
@@ -588,6 +589,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         [self showEditShareMessageController];
     } else if (cell.tag == PostSettingsRowGeolocation) {
         [self showPostGeolocationSelector];
+    } else if (cell.tag == PostSettingsRowSlug) {
+        [self showEditSlugController];
     } else if (cell.tag == PostSettingsRowExcerpt) {
         [self showEditExcerptController];
     }
@@ -865,6 +868,25 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     } else {
         return self.postGeoLocationCell;
     }
+    return cell;
+}
+
+- (UITableViewCell *)configureMoreOptionsCellForIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 0) {
+        return [self configureSlugCellForIndexPath:indexPath];
+    } else {
+        return [self configureExcerptCellForIndexPath:indexPath];
+    }
+}
+
+- (UITableViewCell *)configureSlugCellForIndexPath:(NSIndexPath *)indexPath
+{
+    WPTableViewCell *cell = [self getWPTableViewDisclosureCell];
+    cell.textLabel.text = NSLocalizedString(@"Slug", @"Label for the slug field. Should be the same as WP core.");
+    cell.detailTextLabel.text = self.apost.wp_slug;
+    cell.tag = PostSettingsRowSlug;
+    cell.accessibilityIdentifier = @"Slug";
     return cell;
 }
 
@@ -1206,6 +1228,21 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             [self showMediaPicker];
         }
     }
+}
+
+- (void)showEditSlugController
+{
+    SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:self.apost.wp_slug
+                                                                                    placeholder:nil
+                                                                                           hint:NSLocalizedString(@"The slug is the URL-friendly version of the post title.", @"Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso.")
+                                                                                     isPassword:NO];
+    vc.title = NSLocalizedString(@"Slug", @"Label for the slug field. Should be the same as WP core.");
+    vc.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    vc.onValueChanged = ^(NSString *value) {
+        self.apost.wp_slug = value;
+        [self.tableView reloadData];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showEditExcerptController
