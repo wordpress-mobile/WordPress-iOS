@@ -16,8 +16,7 @@ class PostPreviewGenerator: NSObject {
     }
 
     func generate() {
-        guard let link = post.permaLink,
-            let url = URL(string: link),
+        guard let url = post.permaLink.flatMap(URL.init(string:)),
             !post.hasLocalChanges() else {
                 showFakePreview()
                 return
@@ -32,11 +31,7 @@ class PostPreviewGenerator: NSObject {
             return
         }
 
-        if needsLogin() {
-            attemptAuthenticatedRequest(url: url)
-        } else {
-            attemptUnauthenticatedRequest(url: url)
-        }
+        attemptPreview(url: url)
     }
 
     func previewRequestFailed(error: NSError) {
@@ -48,7 +43,38 @@ class PostPreviewGenerator: NSObject {
     }
 }
 
+
+// MARK: - Authentication
+
 private extension PostPreviewGenerator {
+    func attemptPreview(url: URL) {
+        switch authenticationRequired {
+        case .nonce:
+            attemptNonceAuthenticatedRequest(url: url)
+        case .cookie:
+            attemptCookieAuthenticatedRequest(url: url)
+        case .none:
+            attemptUnauthenticatedRequest(url: url)
+        }
+    }
+
+    var authenticationRequired: Authentication {
+        guard needsLogin() else {
+            return .none
+        }
+        if post.blog.supports(.noncePreviews) {
+            return .nonce
+        } else {
+            return .cookie
+        }
+    }
+
+    enum Authentication {
+        case nonce
+        case cookie
+        case none
+    }
+
     func needsLogin() -> Bool {
         guard let status = post.status else {
             assertionFailure("A post should always have a status")
@@ -67,7 +93,17 @@ private extension PostPreviewGenerator {
         delegate?.preview(self, attemptRequest: request)
     }
 
-    func attemptAuthenticatedRequest(url: URL) {
+    func attemptNonceAuthenticatedRequest(url: URL) {
+        guard let nonce = post.blog.getOptionValue("frame_nonce") as? String,
+            let authenticatedUrl = addNonce(nonce, to: url) else {
+                showFakePreview()
+                return
+        }
+        let request = URLRequest(url: authenticatedUrl)
+        delegate?.preview(self, attemptRequest: request)
+    }
+
+    func attemptCookieAuthenticatedRequest(url: URL) {
         let blog = post.blog
         guard let loginURL = URL(string: blog.loginUrl()),
             let username = blog.usernameForSite?.nonEmptyString() else {
@@ -90,6 +126,19 @@ private extension PostPreviewGenerator {
             request = WPURLRequest.requestForAuthentication(with: loginURL, redirectURL: url, username: username, password: password, bearerToken: nil, userAgent: nil)
         }
         delegate?.preview(self, attemptRequest: request)
+    }
+}
+
+private extension PostPreviewGenerator {
+    func addNonce(_ nonce: String, to url: URL) -> URL? {
+        guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            return nil
+        }
+        var queryItems = components.queryItems ?? []
+        queryItems.append(URLQueryItem(name: "preview", value: "true"))
+        queryItems.append(URLQueryItem(name: "frame-nonce", value: nonce))
+        components.queryItems = queryItems
+        return components.url
     }
 
     func showFakePreview(message: String? = nil) {

@@ -62,7 +62,7 @@ class NotificationDetailsViewController: UIViewController {
 
     /// Keyboard Manager: Aids in the Interactive Dismiss Gesture
     ///
-    fileprivate var keyboardManager: KeyboardDismissHelper!
+    fileprivate var keyboardManager: KeyboardDismissHelper?
 
     /// Cached values used for returning the estimated row heights of autosizing cells.
     ///
@@ -88,6 +88,7 @@ class NotificationDetailsViewController: UIViewController {
                 return
             }
 
+            markReadIfNeeded()
             refreshInterface()
         }
     }
@@ -104,7 +105,7 @@ class NotificationDetailsViewController: UIViewController {
     ///
     var onSelectedNoteChange: ((Notification) -> Void)?
 
-
+    private var isViewVisible = false
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -142,14 +143,23 @@ class NotificationDetailsViewController: UIViewController {
         super.viewWillAppear(animated)
 
         tableView.deselectSelectedRowWithAnimation(true)
-        keyboardManager.startListeningToKeyboardNotifications()
+        keyboardManager?.startListeningToKeyboardNotifications()
 
         refreshInterface()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        isViewVisible = true
+        markReadIfNeeded()
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        keyboardManager.stopListeningToKeyboardNotifications()
+
+        isViewVisible = false
+
+        keyboardManager?.stopListeningToKeyboardNotifications()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -181,6 +191,14 @@ class NotificationDetailsViewController: UIViewController {
         refreshNavigationBar()
     }
 
+    fileprivate func markReadIfNeeded() {
+        guard isViewVisible, !note.read else {
+            return
+        }
+        let mediator = NotificationSyncMediator()
+        mediator?.markAsRead(note)
+    }
+
     fileprivate func refreshNavigationBar() {
         title = note.title
 
@@ -208,6 +226,9 @@ class NotificationDetailsViewController: UIViewController {
 
         previousNavigationButton.isEnabled = shouldEnablePreviousButton
         nextNavigationButton.isEnabled = shouldEnableNextButton
+
+        previousNavigationButton.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
+        nextNavigationButton.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
     }
 }
 
@@ -1013,6 +1034,8 @@ private extension NotificationDetailsViewController {
     }
 
     func approveCommentWithBlock(_ block: NotificationBlock) {
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+
         actionsService.approveCommentWithBlock(block)
         WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: block.metaSiteID)
     }
@@ -1085,9 +1108,10 @@ private extension NotificationDetailsViewController {
 
         actionsService.updateCommentWithBlock(block, content: content, completion: { success in
             guard success == false else {
-            generator.notificationOccurred(.error)
                 return
             }
+
+            generator.notificationOccurred(.error)
             self.displayCommentUpdateErrorWithBlock(block, content: content)
         })
     }
@@ -1200,15 +1224,15 @@ extension NotificationDetailsViewController: ReplyTextViewDelegate {
 //
 extension NotificationDetailsViewController: UIScrollViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        keyboardManager.scrollViewWillBeginDragging(scrollView)
+        keyboardManager?.scrollViewWillBeginDragging(scrollView)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        keyboardManager.scrollViewDidScroll(scrollView)
+        keyboardManager?.scrollViewDidScroll(scrollView)
     }
 
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        keyboardManager.scrollViewWillEndDragging(scrollView, withVelocity: velocity)
+        keyboardManager?.scrollViewWillEndDragging(scrollView, withVelocity: velocity)
     }
 }
 

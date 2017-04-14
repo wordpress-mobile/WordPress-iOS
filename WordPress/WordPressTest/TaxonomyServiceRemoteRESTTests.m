@@ -71,12 +71,16 @@
 - (void)testThatGetCategoriesWorks
 {
     NSString *url = [self GETtaxonomyURLWithType:@"categories"];
-    
+
+    BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
+        return ([parameters isKindOfClass:[NSDictionary class]] && [[parameters objectForKey:@"number"] integerValue] == 1000);
+    };
+
     WordPressComRestApi *api = self.service.wordPressComRestApi;
     OCMStub([api GET:[OCMArg isEqual:url]
-           parameters:[OCMArg isNil]
-              success:[OCMArg isNotNil]
-              failure:[OCMArg isNotNil]]);
+          parameters:[OCMArg checkWithBlock:parametersCheckBlock]
+             success:[OCMArg isNotNil]
+             failure:[OCMArg isNotNil]]);
     
     [self.service getCategoriesWithSuccess:^(NSArray<RemotePostCategory *> * _Nonnull categories) {}
                                    failure:^(NSError * _Nonnull error) {}];

@@ -32,6 +32,7 @@ NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedInde
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 CGFloat const BLogDetailGridiconAccessorySize = 17.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
+NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
 
 // NOTE: Currently "stats" acts as the calypso dashboard with a redirect to
 // stats/insights. Per @mtias, if the dashboard should change at some point the
@@ -350,15 +351,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return (cellIsNotFullyVisible) ? UITableViewScrollPositionMiddle : UITableViewScrollPositionNone;
 }
 
-- (NSString *)adminRowTitle
-{
-    if (self.blog.isHostedAtWPcom) {
-        return NSLocalizedString(@"Dashboard", @"Action title. Noun. Opens the user's WordPress.com dashboard in an external browser.");
-    } else {
-        return NSLocalizedString(@"WP Admin", @"Action title. Noun. Opens the user's WordPress Admin in an external browser.");
-    }
-}
-
 - (void)configureTableViewData
 {
     NSMutableArray *marr = [NSMutableArray array];
@@ -368,6 +360,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [marr addObject:[self personalizeSectionViewModel]];
     }
     [marr addObject:[self configurationSectionViewModel]];
+    [marr addObject:[self externalSectionViewModel]];
 
     // Assign non mutable copy.
     self.tableSections = [NSArray arrayWithArray:marr];
@@ -382,27 +375,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                  callback:^{
                                                      [weakSelf showStats];
                                                  }]];
-
-    BlogDetailsRow *viewSiteRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
-                                                                  image:[Gridicon iconOfType:GridiconTypeHouse]
-                                                               callback:^{
-                                                                   [weakSelf showViewSite];
-                                                               }];
-    viewSiteRow.showsSelectionState = NO;
-    [rows addObject:viewSiteRow];
-
-    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:[self adminRowTitle]
-                                                          image:[Gridicon iconOfType:GridiconTypeMySites]
-                                                       callback:^{
-                                                           [weakSelf showViewAdmin];
-                                                           [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
-                                                       }];
-    UIImage *image = [[Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(BLogDetailGridiconAccessorySize, BLogDetailGridiconAccessorySize)] imageFlippedForRightToLeftLayoutDirection];
-    UIImageView *accessoryView = [[UIImageView alloc] initWithImage:image];
-    accessoryView.tintColor = [WPStyleGuide cellGridiconAccessoryColor]; // Match disclosure icon color.
-    row.accessoryView = accessoryView;
-    row.showsSelectionState = NO;
-    [rows addObject:row];
 
     if ([self.blog supports:BlogFeaturePlans]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
@@ -515,6 +487,59 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
 }
 
+- (BlogDetailsSection *)externalSectionViewModel
+{
+    __weak __typeof(self) weakSelf = self;
+    NSMutableArray *rows = [NSMutableArray array];
+    BlogDetailsRow *viewSiteRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
+                                                                  image:[Gridicon iconOfType:GridiconTypeHouse]
+                                                               callback:^{
+                                                                   [weakSelf showViewSite];
+                                                               }];
+    viewSiteRow.showsSelectionState = NO;
+    [rows addObject:viewSiteRow];
+
+    if ([self shouldDisplayLinkToWPAdmin]) {
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:[self adminRowTitle]
+                                                              image:[Gridicon iconOfType:GridiconTypeMySites]
+                                                           callback:^{
+                                                               [weakSelf showViewAdmin];
+                                                               [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
+                                                           }];
+        UIImage *image = [[Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(BLogDetailGridiconAccessorySize, BLogDetailGridiconAccessorySize)] imageFlippedForRightToLeftLayoutDirection];
+        UIImageView *accessoryView = [[UIImageView alloc] initWithImage:image];
+        accessoryView.tintColor = [WPStyleGuide cellGridiconAccessoryColor]; // Match disclosure icon color.
+        row.accessoryView = accessoryView;
+        row.showsSelectionState = NO;
+        [rows addObject:row];
+    }
+
+    NSString *title = NSLocalizedString(@"External", @"Section title for the external table section in the blog details screen");
+    return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
+}
+
+- (NSString *)adminRowTitle
+{
+    if (self.blog.isHostedAtWPcom) {
+        return NSLocalizedString(@"Dashboard", @"Action title. Noun. Opens the user's WordPress.com dashboard in an external browser.");
+    } else {
+        return NSLocalizedString(@"WP Admin", @"Action title. Noun. Opens the user's WordPress Admin in an external browser.");
+    }
+}
+
+// Non .com users and .com user whose accounts were created
+// before LastWPAdminAccessDate should have access to WPAdmin
+- (BOOL)shouldDisplayLinkToWPAdmin
+{
+    if (!self.blog.isHostedAtWPcom) {
+        return YES;
+    }
+    NSDate *hideWPAdminDate = [NSDate dateWithISO8601String:HideWPAdminDate];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    return [defaultAccount.dateCreated compare:hideWPAdminDate] == NSOrderedAscending;
+}
 
 #pragma mark - Configuration
 

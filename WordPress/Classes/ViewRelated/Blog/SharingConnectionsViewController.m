@@ -80,8 +80,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)showDetailForConnection:(PublicizeConnection *)connection
 {
     SharingDetailViewController *controller = [[SharingDetailViewController alloc] initWithBlog:self.blog
-                                                                            publicizeConnection:connection
-                                                                               publicizeService:self.publicizeService];
+                                                                            publicizeConnection:connection];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

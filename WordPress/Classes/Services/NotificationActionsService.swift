@@ -4,6 +4,7 @@ import Foundation
 /// This service encapsulates all of the Actions that can be performed with a NotificationBlock
 ///
 open class NotificationActionsService: LocalCoreDataService {
+
     /// Follows a Site referenced by a given NotificationBlock.
     ///
     /// - Parameter block: The Notification's Site Block
@@ -17,7 +18,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         siteService.followSite(withID: siteID, success: {
             DDLogSwift.logInfo("Successfully followed site \(siteID)")
+            self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to follow site: \(error)")
             block.removeOverrideValueForAction(.Follow)
@@ -41,7 +44,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         siteService.unfollowSite(withID: siteID, success: {
             DDLogSwift.logInfo("Successfully unfollowed site \(siteID)")
+            self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to unfollow site: \(error)")
             block.removeOverrideValueForAction(.Follow)
@@ -66,7 +71,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
             DDLogSwift.logInfo("Successfully replied to comment \(siteID).\(commentID)")
+            self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to reply comment: \(error)")
             completion?(false)
@@ -92,7 +99,9 @@ open class NotificationActionsService: LocalCoreDataService {
         // Hit the backend
         commentService.updateComment(withID: commentID, siteID: siteID, content: content, success: {
             DDLogSwift.logInfo("Successfully updated to comment \(siteID).\(commentID)")
+            self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to update comment: \(error)")
             completion?(false)
@@ -119,7 +128,9 @@ open class NotificationActionsService: LocalCoreDataService {
         // Proceed toggling the Like field
         commentService.likeComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully liked comment \(siteID).\(commentID)")
+            self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to like comment: \(error)")
             block.removeOverrideValueForAction(.Like)
@@ -143,7 +154,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.unlikeComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully unliked comment \(siteID).\(commentID)")
+            self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to unlike comment: \(error)")
             block.removeOverrideValueForAction(.Like)
@@ -167,7 +180,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.approveComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully approved comment \(siteID).\(commentID)")
+            self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to moderate comment: \(error)")
             block.removeOverrideValueForAction(.Approve)
@@ -191,7 +206,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.unapproveComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully unapproved comment \(siteID).\(commentID)")
+            self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to moderate comment: \(error)")
             block.removeOverrideValueForAction(.Approve)
@@ -215,7 +232,9 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.spamComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully spammed comment \(siteID).\(commentID)")
+            self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to mark comment as spam: \(error)")
             completion?(false)
@@ -236,22 +255,52 @@ open class NotificationActionsService: LocalCoreDataService {
 
         commentService.deleteComment(withID: commentID, siteID: siteID, success: {
             DDLogSwift.logInfo("Successfully deleted comment \(siteID).\(commentID)")
+            self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
+
         }, failure: { error in
             DDLogSwift.logError("Error while trying to delete comment: \(error)")
             completion?(false)
         })
     }
+}
 
 
 
-    // MARK: - Private Helpers
+// MARK: - Private Helpers
+//
+private extension NotificationActionsService {
 
-    fileprivate var commentService: CommentService {
+    /// Invalidates the Local Cache for a given Notification, and re-downloaded from the remote endpoint.
+    /// We're doing *both actions* so that in the eventual case of "Broken REST Request", the notification's hash won't match
+    /// with the remote value, and the note will be redownloaded upon Sync.
+    ///
+    /// Required due to a beautiful backend bug. Details here: https://github.com/wordpress-mobile/WordPress-iOS/pull/6871
+    ///
+    /// - Parameter block: child NotificationBlock object of the Notification-to-be-refreshed.
+    ///
+    func invalidateCacheAndForceSyncNotification(with block: NotificationBlock) {
+        guard let notificationID = block.notificationID, let mediator = NotificationSyncMediator() else {
+            return
+        }
+
+        DDLogSwift.logInfo("Invalidating Cache and Force Sync'ing Notification with ID: \(notificationID)")
+        mediator.invalidateCacheForNotification(with: notificationID)
+        mediator.syncNote(with: notificationID)
+    }
+}
+
+
+
+// MARK: - Computed Properties
+//
+private extension NotificationActionsService {
+
+    var commentService: CommentService {
         return CommentService(managedObjectContext: managedObjectContext)
     }
 
-    fileprivate var siteService: ReaderSiteService {
+    var siteService: ReaderSiteService {
         return ReaderSiteService(managedObjectContext: managedObjectContext)
     }
 }
