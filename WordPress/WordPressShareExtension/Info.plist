@@ -25,13 +25,11 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>7.4.0.0</string>
+	<string>7.4.0.1</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
 		<dict>
-			<key>NSExtensionJavaScriptPreprocessingFile</key>
-			<string>WordPressShare</string>
 			<key>NSExtensionActivationRule</key>
 			<dict>
 				<key>NSExtensionActivationDictionaryVersion</key>
@@ -43,6 +41,8 @@
 				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
 				<integer>1</integer>
 			</dict>
+			<key>NSExtensionJavaScriptPreprocessingFile</key>
+			<string>WordPressShare</string>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
