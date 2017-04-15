@@ -1,3 +1,4 @@
+import AVKit
 import UIKit
 import Gridicons
 import SVProgressHUD
@@ -49,7 +50,15 @@ class MediaItemViewController: UITableViewController {
         viewModel = ImmuTable(sections: [
             ImmuTableSection(rows: [
                 MediaImageRow(media: media, action: { [weak self] row in
-                    self?.presentImageViewControllerForMedia()
+                    guard let media = self?.media else { return }
+
+                    switch media.mediaType {
+                    case .image:
+                        self?.presentImageViewControllerForMedia()
+                    case .video:
+                        self?.presentVideoViewControllerForMedia()
+                    default: break
+                    }
                 }) ]),
             ImmuTableSection(headerText: nil, rows: [
                 editableRowIfSupported(title: NSLocalizedString("Title", comment: "Noun. Label for the title of a media asset (image / video)"), value: mediaMetadata.title, action: editTitle()),
@@ -125,6 +134,33 @@ class MediaItemViewController: UITableViewController {
 
             self.present(controller, animated: true, completion: nil)
         }
+    }
+
+    private func presentVideoViewControllerForMedia() {
+        media.videoAsset { [weak self] asset, error in
+            if let asset = asset,
+                let controller = self?.videoViewControllerForAsset(asset) {
+
+                controller.modalTransitionStyle = .crossDissolve
+
+                self?.present(controller, animated: true, completion: {
+                    controller.player?.play()
+                })
+            } else if let _ = error {
+                SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to load video.", comment: "Error shown when the app fails to load a video from the user's media library."))
+            }
+        }
+    }
+
+    private func videoViewControllerForAsset(_ asset: AVAsset) -> AVPlayerViewController {
+        let controller = AVPlayerViewController()
+        let playerItem = AVPlayerItem(asset: asset)
+        let player = AVPlayer(playerItem: playerItem)
+        controller.showsPlaybackControls = true
+        controller.updatesNowPlayingInfoCenter = false
+        controller.player = player
+
+        return controller
     }
 
     // MARK: - Actions
