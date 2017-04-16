@@ -1001,12 +1001,17 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         return [AbstractPost titleForStatus:status];
     }];
 
+    NSString *postStatusTitle = @"";
+    if(self.apost.status.length) {
+        postStatusTitle = self.apost.statusTitle;
+    }
+       
     NSDictionary *statusDict = @{
                                  @"DefaultValue": [self.apost availableStatusForPublishOrScheduled],
                                  @"Title" : NSLocalizedString(@"Status", nil),
                                  @"Titles" : titles,
-                                 @"Values" : statuses,
-                                 @"CurrentValue" : self.apost.status
+                                 @"Values" : titles,
+                                 @"CurrentValue" : postStatusTitle
                                  };
     SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:statusDict];
     __weak SettingsSelectionViewController *weakVc = vc;
