@@ -21,9 +21,7 @@ abstract_target 'WordPress_Base' do
     pod 'AFNetworking',	'3.1.0'
     pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'FormatterKit', '~> 1.8.1'
-    pod 'Helpshift', '~> 5.9.3'
     pod 'HockeySDK', '~> 4.1.3', :configurations => ['Release-Internal', 'Release-Alpha']
-    pod 'Lookback', '1.4.1', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
     pod 'Mixpanel', '2.9.4'
     pod 'Reachability',	'3.2'
@@ -48,13 +46,13 @@ abstract_target 'WordPress_Base' do
     pod 'Gridicons', '0.5'
     pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
-    pod 'WPMediaPicker', '0.13'
+    pod 'WPMediaPicker', '0.15'
     pod 'WordPress-iOS-Editor', '1.9.0'
-    pod 'WordPressCom-Analytics-iOS', '0.1.24'
-    pod 'WordPress-Aztec-iOS', '0.5a7.1'
+    pod 'WordPressCom-Analytics-iOS', '0.1.25'
+    pod 'WordPress-Aztec-iOS', '0.5a8'
     pod 'wpxmlrpc', '0.8.3'
 
-    target :WordPressTest do
+    target 'WordPressTest' do
       inherit! :search_paths
       pod 'OHHTTPStubs'
       pod 'OHHTTPStubs/Swift'

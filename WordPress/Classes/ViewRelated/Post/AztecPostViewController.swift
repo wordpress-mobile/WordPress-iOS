@@ -6,7 +6,7 @@ import WordPressShared
 import AFNetworking
 import WPMediaPicker
 import SVProgressHUD
-
+import WordPressComAnalytics
 
 // MARK: - Aztec's Native Editor!
 //
@@ -28,7 +28,6 @@ class AztecPostViewController: UIViewController {
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         tv.delegate = self
         tv.mediaDelegate = self
-        tv.commentsDelegate = self
         tv.backgroundColor = Colors.aztecBackground
         toolbar.formatter = self
 
@@ -326,6 +325,9 @@ class AztecPostViewController: UIViewController {
         configureView()
         configureSubviews()
 
+        // Attachment Custom Image Providers
+        registerAttachmentImageProviders()
+
         // UI elements might get their properties reset when the view is effectively loaded. Refresh it all!
         refreshInterface()
 
@@ -501,6 +503,18 @@ class AztecPostViewController: UIViewController {
         view.addSubview(mediaProgressView)
     }
 
+    func registerAttachmentImageProviders() {
+        let providers: [TextViewAttachmentImageProvider] = [
+            MoreAttachmentRenderer(),
+            CommentAttachmentRenderer(font: Fonts.regular),
+            HTMLAttachmentRenderer(font: Fonts.regular)
+        ]
+
+        for provider in providers {
+            richTextView.registerAttachmentImageProvider(provider)
+        }
+    }
+
     func startListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
@@ -653,6 +667,8 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
+        trackPostSave(stat: postEditorStateContext.publishActionAnalyticsStat)
+
         publishTapped(dismissWhenDone: true)
     }
 
@@ -662,6 +678,10 @@ extension AztecPostViewController {
                 self.post.status = .draft
             } else if self.postEditorStateContext.secondaryPublishButtonAction == .publish {
                 self.post.status = .publish
+            }
+
+            if let stat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat {
+                self.trackPostSave(stat: stat)
             }
 
             self.publishTapped(dismissWhenDone: dismissWhenDone)
@@ -689,11 +709,13 @@ extension AztecPostViewController {
                 // The post is a local draft or an autosaved draft: Discard or Save
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
                     self.post.status = .draft
+                    self.trackPostSave(stat: self.postEditorStateContext.publishActionAnalyticsStat)
                     self.publishTapped(dismissWhenDone: true)
                 }
             } else if post.status == .draft {
                 // The post was already a draft
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
+                    self.trackPostSave(stat: self.postEditorStateContext.publishActionAnalyticsStat)
                     self.publishTapped(dismissWhenDone: true)
                 }
             }
@@ -721,6 +743,7 @@ extension AztecPostViewController {
             alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
                 self.removeFailedMedia()
                 // Failed media is removed, try again.
+                // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
                 self.publishTapped(dismissWhenDone: dismissWhenDone)
             }
 
@@ -746,7 +769,6 @@ extension AztecPostViewController {
                 SVProgressHUD.showError(withStatus: self.postEditorStateContext.publishErrorText)
                 generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
-                // TODO: Determine if this is necessary; if it is then ensure state machine is updated
                 self.post = uploadedPost
 
                 generator.notificationOccurred(.success)
@@ -776,6 +798,29 @@ extension AztecPostViewController {
 
     @IBAction func moreWasPressed() {
         displayMoreSheet()
+    }
+
+    private func trackPostSave(stat: WPAnalyticsStat) {
+        guard stat != .editorSavedDraft && stat != .editorQuickSavedDraft else {
+            WPAppAnalytics.track(stat, with:post.blog)
+            return
+        }
+
+        let originalWordCount = post.original?.content?.wordCount() ?? 0
+        let wordCount = post.content?.wordCount() ?? 0
+        var properties: [String: Any] = ["word_count": wordCount]
+        if post.hasRemote() {
+            properties["word_diff_count"] = originalWordCount
+        }
+
+        if stat == .editorPublishedPost {
+            properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = post.hasCategories()
+            properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = post.hasPhoto()
+            properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = post.hasTags()
+            properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = post.hasVideo()
+        }
+
+        WPAppAnalytics.track(stat, withProperties: properties, with: post.blog)
     }
 }
 
@@ -1435,6 +1480,8 @@ fileprivate extension AztecPostViewController {
             return
         }
 
+        WPAppAnalytics.track(.editorDiscardedChanges, with: post.blog)
+
         post = originalPost
         post.deleteRevision()
 
@@ -1454,6 +1501,8 @@ fileprivate extension AztecPostViewController {
 
     func dismissOrPopView(didSave: Bool) {
         stopEditing()
+
+        WPAppAnalytics.track(.editorClosed, with: post.blog)
 
         if let onClose = onClose {
             onClose(didSave)
@@ -1578,6 +1627,13 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 }
                 return
             }
+
+            if media.mediaType == .image {
+                WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            } else if media.mediaType == .video {
+                WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            }
+
             strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
     }
@@ -1595,6 +1651,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 tempMediaURL = absoluteURL
             }
             let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+
+            if media.mediaType == .image {
+                WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post.blog)
+            } else if media.mediaType == .video {
+                WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post.blog)
+            }
 
             upload(media: media, mediaID: attachment.identifier)
         }
@@ -1620,6 +1682,13 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 }
                 return
             }
+
+            if media.mediaType == .image {
+                WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            } else if media.mediaType == .video {
+                WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            }
+
             strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
     }
@@ -1641,6 +1710,9 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 guard let strongSelf = self else {
                     return
                 }
+
+                WPAppAnalytics.track(.editorUploadMediaFailed, with: strongSelf.post.blog)
+
                 DispatchQueue.main.async {
                     strongSelf.handleError(error as NSError, onAttachment: attachment)
                 }
@@ -1717,6 +1789,9 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                         attachment.progress = 0
                                                         self.richTextView.refreshLayoutFor(attachment: attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
+
+                                                        WPAppAnalytics.track(.editorUploadMediaRetried, with: self.post.blog)
+
                                                         self.upload(media: media, mediaID: mediaID)
                                                     }
                 })
@@ -1739,13 +1814,14 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 
     func displayDetails(forAttachment attachment: TextAttachment) {
-
         let controller = AztecAttachmentViewController()
         controller.delegate = self
         controller.attachment = attachment
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
+
+        WPAppAnalytics.track(.editorEditedImage, with: post.blog)
     }
 
     var mediaMessageAttributes: [String: Any] {
@@ -1769,36 +1845,6 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 
     func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: TextAttachment) {
         richTextView.update(attachment: changedAttachment, alignment: changedAttachment.alignment, size: changedAttachment.size, url: changedAttachment.url!)
-    }
-}
-
-
-// MARK: - TextView Comments Delegate Conformance
-//
-extension AztecPostViewController: TextViewCommentsDelegate {
-
-    func textView(_ textView: TextView, imageForComment attachment: CommentAttachment, with size: CGSize) -> UIImage? {
-        if let render = MoreAttachmentRenderer(attachment: attachment) {
-            return render.textView(textView, imageForComment: attachment, with: size)
-        }
-
-        if let render = CommentAttachmentRenderer(font: Fonts.regular) {
-            return render.textView(textView, imageForComment: attachment, with: size)
-        }
-
-        return nil
-    }
-
-    func textView(_ textView: TextView, boundsForComment attachment: CommentAttachment, with lineFragment: CGRect) -> CGRect {
-        if let render = MoreAttachmentRenderer(attachment: attachment) {
-            return render.textView(textView, boundsForComment: attachment, with: lineFragment)
-        }
-
-        if let render = CommentAttachmentRenderer(font: Fonts.regular) {
-            return render.textView(textView, boundsForComment: attachment, with: lineFragment)
-        }
-
-        return .zero
     }
 }
 
