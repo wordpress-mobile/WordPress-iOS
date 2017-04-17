@@ -65,12 +65,9 @@ PODS:
   - FormatterKit/URLRequestFormatter (1.8.2):
     - FormatterKit/Resources
   - Gridicons (0.5)
-  - Helpshift (5.9.3)
   - HockeySDK (4.1.4):
     - HockeySDK/DefaultLib (= 4.1.4)
   - HockeySDK/DefaultLib (4.1.4)
-  - Lookback (1.4.1):
-    - PDKTZipArchive
   - MGSwipeTableCell (1.5.6)
   - Mixpanel (2.9.4):
     - Mixpanel/Mixpanel (= 2.9.4)
@@ -122,7 +119,6 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (5.2.3)
   - OHHTTPStubs/Swift (5.2.3):
     - OHHTTPStubs/Core
-  - PDKTZipArchive (0.4.1)
   - Reachability (3.2)
   - Specta (1.0.5)
   - Starscream (2.0.2)
@@ -160,9 +156,7 @@ DEPENDENCIES:
   - FLAnimatedImage (~> 1.0)
   - FormatterKit (~> 1.8.1)
   - Gridicons (= 0.5)
-  - Helpshift (~> 5.9.3)
   - HockeySDK (~> 4.1.3)
-  - Lookback (= 1.4.1)
   - MGSwipeTableCell (~> 1.5.6)
   - Mixpanel (= 2.9.4)
   - MRProgress (~> 0.7.0)
@@ -228,9 +222,7 @@ SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gridicons: 5c5e928324fa301572ee447b25962d18e7fd7159
-  Helpshift: fa42856075d2e77ce4243d667ffa91ab5bb725fe
   HockeySDK: 78a3f8bb9100277b531defc56c970369a3ca267a
-  Lookback: 37c23f97894612f6eccc215440c8f990fbb5a607
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   Mixpanel: 80d2ca9bb38ae91c1044d738e80fe448377ac89f
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
@@ -239,7 +231,6 @@ SPEC CHECKSUMS:
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   OHHTTPStubs: e238cd5b66d8efa51c861db45895de8fe079f4a7
-  PDKTZipArchive: 22bbab52b49f46a3adf1acf134311fd252c43feb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   Starscream: 4ee1be18da5170faafce1698225b61f9765634d5
@@ -255,6 +246,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 239fef5c97d76acd3f9fb66c408be3e7deb3295e
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 63e7eda73fea8505073c09f7877c47c4236db683
+PODFILE CHECKSUM: ba81674b3b8f0580323cbdd51c5c2df286e877f9
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.1

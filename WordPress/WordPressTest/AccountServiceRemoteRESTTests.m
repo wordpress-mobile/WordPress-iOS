@@ -2,7 +2,6 @@
 #import <XCTest/XCTest.h>
 #import "AccountServiceRemoteREST.h"
 #import "WPAccount.h"
-#import "WordPress-Swift.h"
 
 @interface AccountServiceRemoteRESTTests : XCTestCase
 @end
