@@ -835,6 +835,11 @@ int ddLogLevel = DDLogLevelInfo;
                            selector:@selector(handleLowMemoryWarningNote:)
                                name:UIApplicationDidReceiveMemoryWarningNotification
                              object:nil];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleSignInDidFinish:)
+                               name:SigninHelpers.WPSigninDidFinishNotification
+                             object:nil];
 }
 
 - (void)handleDefaultAccountChangedNote:(NSNotification *)notification
@@ -861,6 +866,11 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)handleLowMemoryWarningNote:(NSNotification *)notification
 {
     [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
+}
+
+- (void)handleSignInDidFinish:(NSNotification *)notification
+{
+    [self create3DTouchShortcutItems];
 }
 
 
