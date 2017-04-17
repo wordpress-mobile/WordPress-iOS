@@ -45,6 +45,7 @@ WordPress.xcworkspace/*.xcuserdata
 WordPress.xcworkspace/project.xcworkspace
 WordPress.xcworkspace/xcuserdata
 WordPress.xcworkspace/xcshareddata/WordPress.xccheckout
+WordPress.xcworkspace/xcshareddata/*.xcscmblueprint
 WordPress/Entitlements.plist
 WordPress/WordPress.xcodeproj/*.mode1v3
 WordPress/WordPress.xcodeproj/*.mode2v3
