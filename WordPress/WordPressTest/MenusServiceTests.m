@@ -2,7 +2,6 @@
 #import <XCTest/XCTest.h>
 #import "MenusService.h"
 #import "Blog.h"
-#import "WordPress-Swift.h"
 #import "Menu.h"
 #import "MenuLocation.h"
 #import "MenuItem.h"

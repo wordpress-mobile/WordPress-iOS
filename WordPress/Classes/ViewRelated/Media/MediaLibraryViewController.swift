@@ -7,6 +7,8 @@ import WPMediaPicker
 /// Displays the user's media library in a grid
 ///
 class MediaLibraryViewController: UIViewController {
+    fileprivate static let restorationIdentifier = "MediaLibraryViewController"
+
     let blog: Blog
 
     fileprivate let pickerViewController: WPMediaPickerViewController
@@ -52,6 +54,9 @@ class MediaLibraryViewController: UIViewController {
         self.pickerDataSource = MediaLibraryPickerDataSource(blog: blog)
 
         super.init(nibName: nil, bundle: nil)
+
+        super.restorationIdentifier = MediaLibraryViewController.restorationIdentifier
+        restorationClass = MediaLibraryViewController.self
 
         configurePickerViewController()
     }
@@ -299,6 +304,8 @@ class MediaLibraryViewController: UIViewController {
         guard pickerViewController.selectedAssets.count > 0 else { return }
         guard let assets = pickerViewController.selectedAssets.copy() as? [Media] else { return }
 
+        let deletedItemsCount = assets.count
+
         let updateProgress = { (progress: Progress?) in
             let fractionCompleted = progress?.fractionCompleted ?? 0
             SVProgressHUD.showProgress(Float(fractionCompleted), status: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
@@ -314,6 +321,7 @@ class MediaLibraryViewController: UIViewController {
         service.deleteMedia(assets,
                             progress: updateProgress,
                             success: { [weak self] in
+                                WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
                                 SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
                                 self?.isEditing = false
         }, failure: { error in
@@ -411,6 +419,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor asset: WPMediaAsset) -> UIViewController? {
+        WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
         return mediaItemViewController(for: asset)
     }
 
@@ -418,6 +427,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         if isEditing { return true }
 
         if let viewController = mediaItemViewController(for: asset) {
+            WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
             navigationController?.pushViewController(viewController, animated: true)
         }
 
@@ -453,6 +463,39 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
         selectedAsset = asset
 
-        return MediaItemViewController(media: asset, dataSource: pickerDataSource)
+        return MediaItemViewController(media: asset)
+    }
+}
+
+// MARK: - State restoration
+
+extension MediaLibraryViewController: UIViewControllerRestoration {
+    enum EncodingKey {
+        static let blogURL = "blogURL"
+    }
+
+    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+        guard let identifier = identifierComponents.last as? String,
+            identifier == MediaLibraryViewController.restorationIdentifier else {
+                return nil
+        }
+
+        guard let blogURL = coder.decodeObject(forKey: EncodingKey.blogURL) as? URL else {
+            return nil
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        guard let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: blogURL),
+            let object = try? context.existingObject(with: objectID),
+            let blog = object as? Blog else {
+                return nil
+        }
+        return MediaLibraryViewController(blog: blog)
+    }
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
+
+        coder.encode(blog.objectID.uriRepresentation(), forKey: EncodingKey.blogURL)
     }
 }

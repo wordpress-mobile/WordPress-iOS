@@ -1,7 +1,6 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "Blog.h"
-#import "WordPress-Swift.h"
 #import "TaxonomyServiceRemoteREST.h"
 #import "RemotePostCategory.h"
 #import "RemotePostTag.h"

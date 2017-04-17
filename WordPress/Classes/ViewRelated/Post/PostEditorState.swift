@@ -1,4 +1,5 @@
 import Foundation
+import WordPressComAnalytics
 
 /// The various states of the editor interface and all associated UI values
 ///
@@ -83,6 +84,32 @@ public enum PostEditorAction {
         }
     }
 
+    fileprivate var publishActionAnalyticsStat: WPAnalyticsStat {
+        switch self {
+        case .save:
+            return .editorSavedDraft
+        case .schedule:
+            return .editorScheduledPost
+        case .publish:
+            return .editorPublishedPost
+        case .update:
+            return .editorUpdatedPost
+        case .submitForReview:
+            // TODO: When support is added for submit for review, add a new stat to support it
+            return .editorPublishedPost
+        }
+    }
+
+    fileprivate var secondaryPublishActionAnalyticsStat: WPAnalyticsStat? {
+        switch self {
+        case .save:
+            return .editorQuickSavedDraft
+        case .publish:
+            return .editorQuickPublishedPost
+        default:
+            return nil
+        }
+    }
 }
 
 /// Protocol used by all concrete states for the UI - never exposed outside of `PostEditorStateContext`
@@ -250,6 +277,11 @@ public class PostEditorStateContext {
         return editorState.action.publishingErrorLabel
     }
 
+    /// Returns the WPAnalyticsStat enum to be tracked when this post is published
+    var publishActionAnalyticsStat: WPAnalyticsStat {
+        return editorState.action.publishActionAnalyticsStat
+    }
+
     /// Should post-post be shown for the current editor when publishing has happened
     ///
     var isPostPostShown: Bool {
@@ -290,6 +322,16 @@ public class PostEditorStateContext {
 
         return editorState.action.secondaryPublishAction?.secondaryPublishActionLabel
     }
+
+    /// Returns the WPAnalyticsStat enum to be tracked when this post is published with the secondary action
+    var secondaryPublishActionAnalyticsStat: WPAnalyticsStat? {
+        guard isSecondaryPublishButtonShown else {
+            return nil
+        }
+
+        return editorState.action.secondaryPublishAction?.secondaryPublishActionAnalyticsStat
+    }
+
 
     /// Indicates whether the Publish Action should be allowed, or not
     ///

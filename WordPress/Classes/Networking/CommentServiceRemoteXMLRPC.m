@@ -1,6 +1,7 @@
 #import "CommentServiceRemoteXMLRPC.h"
 #import "RemoteComment.h"
 #import "WordPress-Swift.h"
+@import wpxmlrpc;
 
 @implementation CommentServiceRemoteXMLRPC
 
@@ -127,6 +128,14 @@
                                     success:success
                                     failure:failure];
                  } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                     // If the error is a 500 this could be a signal that the error changed status on the server
+                     if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain]
+                         && error.code == 500) {
+                         if (success) {
+                             success(comment);
+                         }
+                         return;
+                     }
                      if (failure) {
                          failure(error);
                      }
