@@ -303,8 +303,19 @@
 		74754AF21E9D59FA009733D9 /* me-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74754AF11E9D59FA009733D9 /* me-success.json */; };
 		74754AF41E9D6171009733D9 /* me-auth-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74754AF31E9D6171009733D9 /* me-auth-failure.json */; };
 		74754AF61E9D68F5009733D9 /* me-bad-json-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74754AF51E9D68F5009733D9 /* me-bad-json-failure.json */; };
+		74AFB1E31EA51E07000E1A27 /* me-sites-visibility-bad-json-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74AFB1E21EA51E07000E1A27 /* me-sites-visibility-bad-json-failure.json */; };
+		74AFB1E81EA52054000E1A27 /* is-available-email-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74AFB1E41EA52054000E1A27 /* is-available-email-failure.json */; };
+		74AFB1E91EA52054000E1A27 /* is-available-email-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74AFB1E51EA52054000E1A27 /* is-available-email-success.json */; };
+		74AFB1EA1EA52054000E1A27 /* is-available-username-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74AFB1E61EA52054000E1A27 /* is-available-username-failure.json */; };
+		74AFB1EB1EA52054000E1A27 /* is-available-username-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74AFB1E71EA52054000E1A27 /* is-available-username-success.json */; };
+		74AFB1ED1EA52709000E1A27 /* auth-send-login-email-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74AFB1EC1EA52709000E1A27 /* auth-send-login-email-success.json */; };
+		74AFB1EF1EA52756000E1A27 /* auth-send-login-email-no-user-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74AFB1EE1EA52756000E1A27 /* auth-send-login-email-no-user-failure.json */; };
+		74AFB1F11EA527CF000E1A27 /* auth-send-login-email-invalid-client-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74AFB1F01EA527CF000E1A27 /* auth-send-login-email-invalid-client-failure.json */; };
+		74AFB1F31EA52811000E1A27 /* auth-send-login-email-invalid-secret-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74AFB1F21EA52811000E1A27 /* auth-send-login-email-invalid-secret-failure.json */; };
 		74BB6F1A19AE7B9400FB7829 /* WPLegacyEditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */; };
 		74D5FFD619ACDF6700389E8F /* WPLegacyEditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */; };
+		74FEB5301EA1404D00664328 /* me-sites-visibility-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FEB52F1EA1404D00664328 /* me-sites-visibility-success.json */; };
+		74FEB5321EA1408600664328 /* me-sites-visibility-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FEB5311EA1408600664328 /* me-sites-visibility-failure.json */; };
 		74FF45981E9C097E00C3A8B2 /* me-sites-empty-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FF45971E9C097E00C3A8B2 /* me-sites-empty-success.json */; };
 		822876F11E929CFD00696BF7 /* ReachabilityUtils+OnlineActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822876F01E929CFD00696BF7 /* ReachabilityUtils+OnlineActions.swift */; };
 		82301B8F1E787420009C9C4E /* AppRatingUtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82301B8E1E787420009C9C4E /* AppRatingUtilityTests.swift */; };
@@ -1508,10 +1519,21 @@
 		74754AF11E9D59FA009733D9 /* me-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-success.json"; sourceTree = "<group>"; };
 		74754AF31E9D6171009733D9 /* me-auth-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-auth-failure.json"; sourceTree = "<group>"; };
 		74754AF51E9D68F5009733D9 /* me-bad-json-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-bad-json-failure.json"; sourceTree = "<group>"; };
+		74AFB1E21EA51E07000E1A27 /* me-sites-visibility-bad-json-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-sites-visibility-bad-json-failure.json"; sourceTree = "<group>"; };
+		74AFB1E41EA52054000E1A27 /* is-available-email-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "is-available-email-failure.json"; sourceTree = "<group>"; };
+		74AFB1E51EA52054000E1A27 /* is-available-email-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "is-available-email-success.json"; sourceTree = "<group>"; };
+		74AFB1E61EA52054000E1A27 /* is-available-username-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "is-available-username-failure.json"; sourceTree = "<group>"; };
+		74AFB1E71EA52054000E1A27 /* is-available-username-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "is-available-username-success.json"; sourceTree = "<group>"; };
+		74AFB1EC1EA52709000E1A27 /* auth-send-login-email-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "auth-send-login-email-success.json"; sourceTree = "<group>"; };
+		74AFB1EE1EA52756000E1A27 /* auth-send-login-email-no-user-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "auth-send-login-email-no-user-failure.json"; sourceTree = "<group>"; };
+		74AFB1F01EA527CF000E1A27 /* auth-send-login-email-invalid-client-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "auth-send-login-email-invalid-client-failure.json"; sourceTree = "<group>"; };
+		74AFB1F21EA52811000E1A27 /* auth-send-login-email-invalid-secret-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "auth-send-login-email-invalid-secret-failure.json"; sourceTree = "<group>"; };
 		74BB6F1819AE7B9400FB7829 /* WPLegacyEditPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPageViewController.h; sourceTree = "<group>"; };
 		74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLegacyEditPageViewController.m; sourceTree = "<group>"; };
 		74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLegacyEditPostViewController.h; sourceTree = "<group>"; usesTabs = 0; };
 		74D5FFD519ACDF6700389E8F /* WPLegacyEditPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLegacyEditPostViewController.m; sourceTree = "<group>"; usesTabs = 0; };
+		74FEB52F1EA1404D00664328 /* me-sites-visibility-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-sites-visibility-success.json"; sourceTree = "<group>"; };
+		74FEB5311EA1408600664328 /* me-sites-visibility-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-sites-visibility-failure.json"; sourceTree = "<group>"; };
 		74FF45971E9C097E00C3A8B2 /* me-sites-empty-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-sites-empty-success.json"; sourceTree = "<group>"; };
 		793B0BBD072D907224E7E207 /* Pods-WordPress_Base-WordPress.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress_Base-WordPress.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress_Base-WordPress/Pods-WordPress_Base-WordPress.release-internal.xcconfig"; sourceTree = "<group>"; };
 		82270C8E1E3FBF72005F697D /* WordPress 56.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 56.xcdatamodel"; sourceTree = "<group>"; };
@@ -3107,13 +3129,13 @@
 		59E2AAE91B20E3FB0051DC06 /* Remote Services */ = {
 			isa = PBXGroup;
 			children = (
+				742379591E981D9400E06B5A /* RemoteTestCase.swift */,
 				742379571E9802A900E06B5A /* AccountServiceRemoteRESTTests.swift */,
 				591CFB081B28AC8C009E61B3 /* BlogServiceRemoteRESTTests.m */,
 				261FF32B1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift */,
 				0859DCFC1CB8488400EB4069 /* MenusServiceRemoteTests.m */,
 				B532ACD01DC3ABF600FFFA57 /* NotificationSyncServiceRemoteTests.swift */,
 				B5BC259F1CFCB91800F7D8B9 /* PeopleRemoteTests.swift */,
-				742379591E981D9400E06B5A /* RemoteTestCase.swift */,
 				59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */,
 				26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */,
 				59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */,
@@ -4948,10 +4970,21 @@
 				E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */,
 				E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */,
 				93594BD4191D2F5A0079E6B2 /* stats-batch.json */,
+				74AFB1EC1EA52709000E1A27 /* auth-send-login-email-success.json */,
+				74AFB1EE1EA52756000E1A27 /* auth-send-login-email-no-user-failure.json */,
+				74AFB1F01EA527CF000E1A27 /* auth-send-login-email-invalid-client-failure.json */,
+				74AFB1F21EA52811000E1A27 /* auth-send-login-email-invalid-secret-failure.json */,
+				74AFB1E51EA52054000E1A27 /* is-available-email-success.json */,
+				74AFB1E41EA52054000E1A27 /* is-available-email-failure.json */,
+				74AFB1E71EA52054000E1A27 /* is-available-username-success.json */,
+				74AFB1E61EA52054000E1A27 /* is-available-username-failure.json */,
 				74754AF11E9D59FA009733D9 /* me-success.json */,
 				74754AF31E9D6171009733D9 /* me-auth-failure.json */,
 				74754AF51E9D68F5009733D9 /* me-bad-json-failure.json */,
 				7423795B1E9BFDA400E06B5A /* me-sites-success.json */,
+				74FEB52F1EA1404D00664328 /* me-sites-visibility-success.json */,
+				74FEB5311EA1408600664328 /* me-sites-visibility-failure.json */,
+				74AFB1E21EA51E07000E1A27 /* me-sites-visibility-bad-json-failure.json */,
 				74FF45971E9C097E00C3A8B2 /* me-sites-empty-success.json */,
 				7423795D1E9C044000E06B5A /* me-sites-auth-failure.json */,
 				74754AEF1E9D56D0009733D9 /* me-sites-bad-json-failure.json */,
@@ -5662,9 +5695,12 @@
 				743BF32A1E82CE0700192E40 /* people-delete-viewer-failure.json in Resources */,
 				E15027621E03E51500B847E3 /* notes-action-push.json in Resources */,
 				B5BC25A21CFCBA5400F7D8B9 /* people-validate-invitation-success.json in Resources */,
+				74AFB1E31EA51E07000E1A27 /* me-sites-visibility-bad-json-failure.json in Resources */,
 				B5A6BB8C1BF4DF38002F6A96 /* rest-site-settings.json in Resources */,
 				FFB8DCA01CE320C700D4D1B7 /* WordPressComRestApiMedia.json in Resources */,
 				93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */,
+				74AFB1EB1EA52054000E1A27 /* is-available-username-success.json in Resources */,
+				74AFB1E81EA52054000E1A27 /* is-available-email-failure.json in Resources */,
 				7423795C1E9BFDA400E06B5A /* me-sites-success.json in Resources */,
 				93CD939319099BE70049096E /* authtoken.json in Resources */,
 				74754AF61E9D68F5009733D9 /* me-bad-json-failure.json in Resources */,
@@ -5679,6 +5715,7 @@
 				B5EA71321DC294150083032A /* notifications-last-seen.json in Resources */,
 				74754AF21E9D59FA009733D9 /* me-success.json in Resources */,
 				B5BC25A81CFCBEFF00F7D8B9 /* people-validate-invitation-failure.json in Resources */,
+				74FEB5301EA1404D00664328 /* me-sites-visibility-success.json in Resources */,
 				B5BC25A61CFCBDB600F7D8B9 /* people-send-invitation-success.json in Resources */,
 				B5AEEC7A1ACACFDA008BF2A4 /* notifications-like.json in Resources */,
 				932C6CB31D521DFA006E4A62 /* gallery-reader-post-public.json in Resources */,
@@ -5688,6 +5725,7 @@
 				FAFB84061BBF3638000BBA8E /* get-multiple-themes-v1.2.json in Resources */,
 				1702BBE91CF357BB00766A33 /* domain-service-all-domain-types.json in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
+				74AFB1EF1EA52756000E1A27 /* auth-send-login-email-no-user-failure.json in Resources */,
 				740CAE7D1E816FC700D0E892 /* people-delete-follower-success.json in Resources */,
 				74754AF01E9D56D0009733D9 /* me-sites-bad-json-failure.json in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
@@ -5702,10 +5740,14 @@
 				B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */,
 				743BF32C1E82CEB600192E40 /* people-delete-viewer-success.json in Resources */,
 				74754AF41E9D6171009733D9 /* me-auth-failure.json in Resources */,
+				74FEB5321EA1408600664328 /* me-sites-visibility-failure.json in Resources */,
 				E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */,
+				74AFB1EA1EA52054000E1A27 /* is-available-username-failure.json in Resources */,
+				74AFB1ED1EA52709000E1A27 /* auth-send-login-email-success.json in Resources */,
 				FF9839AF1CD3FBCA00E85258 /* WordPressOAuthClientNeed2FAFail.json in Resources */,
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,
 				1702BBE61CF3579900766A33 /* domain-service-valid-domains.json in Resources */,
+				74AFB1F31EA52811000E1A27 /* auth-send-login-email-invalid-secret-failure.json in Resources */,
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */,
 				FFB8DC9D1CE320C700D4D1B7 /* WordPressComRestApiFailInvalidJSON.json in Resources */,
@@ -5713,6 +5755,8 @@
 				B58CE5DF1DC128CD004AA81D /* remote-notification.json in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
+				74AFB1F11EA527CF000E1A27 /* auth-send-login-email-invalid-client-failure.json in Resources */,
+				74AFB1E91EA52054000E1A27 /* is-available-email-success.json in Resources */,
 				932AB00B1D526C1400BE486D /* gallery-reader-post-private.json in Resources */,
 				E156190116DBABDE006532C4 /* xmlrpc-response-getpost.xml in Resources */,
 			);

@@ -6,6 +6,9 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
 
     let meEndpoint       = "me"
     let meSitesEndpoint  = "me/sites"
+    let emailEndpoint    = "/is-available/email"
+    let usernameEndpoint = "/is-available/username"
+    let linkEndpoint     = "auth/send-login-email"
 
     let getAccountDetailsSuccessMockFilename        = "me-success.json"
     let getAccountDetailsAuthFailureMockFilename    = "me-auth-failure.json"
@@ -14,9 +17,22 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
     let getBlogsEmptySuccessMockFilename            = "me-sites-empty-success.json"
     let getBlogsAuthFailureMockFilename             = "me-sites-auth-failure.json"
     let getBlogsBadJsonFailureMockFilename          = "me-sites-bad-json-failure.json"
+    let setSiteVisibilitySuccessMockFilename        = "me-sites-visibility-success.json"
+    let setSiteVisibilityFailureMockFilename        = "me-sites-visibility-failure.json"
+    let setSiteVisibilityBadJsonFailureMockFilename = "me-sites-visibility-bad-json-failure.json"
+    let isEmailAvailableSuccessMockFilename         = "is-available-email-success.json"
+    let isEmailAvailableFailureMockFilename         = "is-available-email-failure.json"
+    let isUsernameAvailableSuccessMockFilename      = "is-available-username-success.json"
+    let isUsernameAvailableFailureMockFilename      = "is-available-username-failure.json"
+    let requestLinkSuccessMockFilename              = "auth-send-login-email-success.json"
+    let requestLinkNoSuchUserFailureMockFilename    = "auth-send-login-email-no-user-failure.json"
+    let requestLinkInvalidClientFailureMockFilename = "auth-send-login-email-invalid-client-failure.json"
+    let requestLinkInvalidSecretFailureMockFilename = "auth-send-login-email-invalid-secret-failure.json"
 
+    let siteID   = 321
     let username = "jimthetester"
-    let token = "token"
+    let email    = "jimthetester@thetestemail.org"
+    let token    = "token"
 
     // MARK: - Properties
 
@@ -99,7 +115,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
     }
 
     func testGetAccountDetailsWithBadJsonFails() {
-        let expect = expectation(description: "Get account details with invalid json failure")
+        let expect = expectation(description: "Get account details with invalid json response failure")
         let account: WPAccount = accountService.createOrUpdateAccount(withUsername: username, authToken: token)
 
         stubRemoteResponse(meEndpoint, filename: getAccountDetailsBadJsonFailureMockFilename, contentType: contentTypeJson, status: 200)
@@ -188,13 +204,294 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
     }
 
     func testGetBlogsWithBadJsonFails() {
-        let expect = expectation(description: "Get blogs with invalid json failure")
+        let expect = expectation(description: "Get blogs with invalid json response failure")
 
         stubRemoteResponse(meSitesEndpoint, filename: getBlogsBadJsonFailureMockFilename, contentType: contentTypeJson, status: 200)
         remote.getBlogsWithSuccess({ blogs in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    // MARK: - Update Blog Visibility Tests
+
+    func testUpdateBlogVisibilitySucceeds() {
+        let expect = expectation(description: "Update blog visibility success")
+
+        stubRemoteResponse(meSitesEndpoint, filename: setSiteVisibilitySuccessMockFilename, contentType: contentTypeJson)
+        let blogsToChangeVisibility: [NSNumber: Bool] = [NSNumber(value: Int32(siteID)): true]
+        remote.updateBlogsVisibility(blogsToChangeVisibility, success: {
+            expect.fulfill()
+        }, failure: { error in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testUpdateBlogVisibilityWithUnauthorizedSiteFails() {
+        let expect = expectation(description: "Update blog visibility server error failure")
+
+        stubRemoteResponse(meSitesEndpoint, filename: setSiteVisibilityFailureMockFilename, contentType: contentTypeJson, status: 403)
+        let blogsToChangeVisibility: [NSNumber: Bool] = [NSNumber(value: Int32(siteID)): true]
+        remote.updateBlogsVisibility(blogsToChangeVisibility, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            guard let error = error as NSError? else {
+                XCTFail("The returned error could not be cast as NSError")
+                expect.fulfill()
+                return
+            }
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.authorizationRequired.rawValue, "The error code should be 2 - authorizationRequired")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testUpdateBlogVisibilityWithServerErrorFails() {
+        let expect = expectation(description: "Update blog visibility server error failure")
+
+        stubRemoteResponse(meSitesEndpoint, data: Data(), contentType: nil, status: 500)
+        let blogsToChangeVisibility: [NSNumber: Bool] = [NSNumber(value: Int32(siteID)): true]
+        remote.updateBlogsVisibility(blogsToChangeVisibility, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            guard let error = error as NSError? else {
+                XCTFail("The returned error could not be cast as NSError")
+                expect.fulfill()
+                return
+            }
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testUpdateBlogVisibilityWithBadJsonFails() {
+        let expect = expectation(description: "Update blog visibility with invalid json response failure")
+
+        stubRemoteResponse(meEndpoint, filename: setSiteVisibilityBadJsonFailureMockFilename, contentType: contentTypeJson, status: 200)
+        let blogsToChangeVisibility: [NSNumber: Bool] = [NSNumber(value: Int32(siteID)): true]
+        remote.updateBlogsVisibility(blogsToChangeVisibility, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    // MARK: - Is Email Available Tests
+
+    func testIsEmailAvailableSucceeds() {
+        let expect = expectation(description: "Email check success")
+
+        stubRemoteResponse(emailEndpoint, filename: isEmailAvailableSuccessMockFilename, contentType: contentTypeJS)
+        remote.isEmailAvailable(email, success: { isAvailable in
+            XCTAssertTrue(isAvailable)
+            expect.fulfill()
+        }, failure: { error in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testIsEmailAvailableFails() {
+        let expect = expectation(description: "Email check failure")
+
+        stubRemoteResponse(emailEndpoint, filename: isEmailAvailableFailureMockFilename, contentType: contentTypeJS)
+        remote.isEmailAvailable(email, success: { isAvailable in
+            XCTAssertFalse(isAvailable)
+            expect.fulfill()
+        }, failure: { error in
+            XCTFail("This callback shouldn't get called")
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testIsEmailAvailableWithServerErrorFails() {
+        let expect = expectation(description: "Email check server error failure")
+
+        stubRemoteResponse(emailEndpoint, data: Data(), contentType: nil, status: 500)
+        remote.isEmailAvailable(email, success: { isAvailable in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            guard let error = error as NSError? else {
+                XCTFail("The returned error could not be cast as NSError")
+                expect.fulfill()
+                return
+            }
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    // MARK: - Is Username Available Tests
+
+    func testIsUsernameAvailableSucceeds() {
+        let expect = expectation(description: "Username check success")
+
+        stubRemoteResponse(usernameEndpoint, filename: isUsernameAvailableSuccessMockFilename, contentType: contentTypeJS)
+        remote.isUsernameAvailable(username, success: { isAvailable in
+            XCTAssertTrue(isAvailable)
+            expect.fulfill()
+        }, failure: { error in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testIsUsernameAvailableFails() {
+        let expect = expectation(description: "Username check failure")
+
+        stubRemoteResponse(usernameEndpoint, filename: isUsernameAvailableFailureMockFilename, contentType: contentTypeJS)
+        remote.isUsernameAvailable(username, success: { isAvailable in
+            XCTAssertFalse(isAvailable)
+            expect.fulfill()
+        }, failure: { error in
+            XCTFail("This callback shouldn't get called")
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testIsUsernameAvailableWithServerErrorFails() {
+        let expect = expectation(description: "Username check server error failure")
+
+        stubRemoteResponse(usernameEndpoint, data: Data(), contentType: nil, status: 500)
+        remote.isUsernameAvailable(username, success: { isAvailable in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            guard let error = error as NSError? else {
+                XCTFail("The returned error could not be cast as NSError")
+                expect.fulfill()
+                return
+            }
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    // MARK: - Request WPCom Auth Link For Email Tests
+
+    func testRequestWPComAuthLinkSucceeds() {
+        let expect = expectation(description: "Request WPCom Auth Link success")
+
+        stubRemoteResponse(linkEndpoint, filename: requestLinkSuccessMockFilename, contentType: contentTypeJson)
+        remote.requestWPComAuthLink(forEmail: email, success: {
+            expect.fulfill()
+        }, failure: { error in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testRequestWPComAuthLinkWithBadEmailAddressFails() {
+        let expect = expectation(description: "Request WPCom Auth Link with bad email address fails")
+
+        stubRemoteResponse(linkEndpoint, filename: requestLinkNoSuchUserFailureMockFilename, contentType: contentTypeJson, status: 404)
+        remote.requestWPComAuthLink(forEmail: email, success: {
+            expect.fulfill()
+            XCTFail("This callback shouldn't get called")
+        }, failure: { error in
+            guard let error = error as NSError? else {
+                XCTFail("The returned error could not be cast as NSError")
+                expect.fulfill()
+                return
+            }
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testRequestWPComAuthLinkWithBadClientIdFails() {
+        let expect = expectation(description: "Request WPCom Auth Link with bad client ID fails")
+
+        stubRemoteResponse(linkEndpoint, filename: requestLinkInvalidClientFailureMockFilename, contentType: contentTypeJson, status: 403)
+        remote.requestWPComAuthLink(forEmail: email, success: {
+            expect.fulfill()
+            XCTFail("This callback shouldn't get called")
+        }, failure: { error in
+            guard let error = error as NSError? else {
+                XCTFail("The returned error could not be cast as NSError")
+                expect.fulfill()
+                return
+            }
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testRequestWPComAuthLinkWithBadSecretFails() {
+        let expect = expectation(description: "Request WPCom Auth Link with bad secret fails")
+
+        stubRemoteResponse(linkEndpoint, filename: requestLinkInvalidSecretFailureMockFilename, contentType: contentTypeJson, status: 403)
+        remote.requestWPComAuthLink(forEmail: email, success: {
+            expect.fulfill()
+            XCTFail("This callback shouldn't get called")
+        }, failure: { error in
+            guard let error = error as NSError? else {
+                XCTFail("The returned error could not be cast as NSError")
+                expect.fulfill()
+                return
+            }
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testRequestWPComAuthLinkWithServerErrorFails() {
+        let expect = expectation(description: "Request WPCom Auth Link with server error failure")
+
+        stubRemoteResponse(linkEndpoint, data: Data(), contentType: nil, status: 500)
+        remote.requestWPComAuthLink(forEmail: email, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            guard let error = error as NSError? else {
+                XCTFail("The returned error could not be cast as NSError")
+                expect.fulfill()
+                return
+            }
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
             expect.fulfill()
         })
 

@@ -8,6 +8,7 @@ class RemoteTestCase: XCTestCase {
     // MARK: - Constants
 
     let contentTypeJson     = "application/json"
+    let contentTypeJS       = "text/javascript;charset=utf-8"
     let contentTypeHTML     = "application/html"
     let timeout             = TimeInterval(1000)
 
