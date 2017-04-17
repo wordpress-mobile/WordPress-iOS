@@ -1,6 +1,5 @@
 #import <XCTest/XCTest.h>
 #import "NSString+Helpers.h"
-#import "WordPress-Swift.h"
 
 @interface NSString ()
 + (NSString *)emojiCharacterFromCoreEmojiFilename:(NSString *)filename;

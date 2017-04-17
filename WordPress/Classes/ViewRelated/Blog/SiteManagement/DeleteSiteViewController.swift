@@ -79,29 +79,23 @@ open class DeleteSiteViewController: UITableViewController {
         sectionTwoHeader.text = NSLocalizedString("these items will be deleted:",
                                                   comment: "Header of delete screen section listing things that will be deleted.").uppercased()
 
-        sectionTwoColumnOneItem.text = NSLocalizedString("\u{2022} Posts",
-                                                         comment: "Item 1 of delete screen section listing things that will be deleted. " +
-                                                         "Note: the '\u{2022}' is a unicode bullet point and should be moved to the opposite side (if needed) for LTR languages.")
+        sectionTwoColumnOneItem.text = NSLocalizedString("• Posts",
+                                                         comment: "Item 1 of delete screen section listing things that will be deleted.")
 
-        sectionTwoColumnTwoItem.text = NSLocalizedString("\u{2022} Users & Authors",
-                                                         comment: "Item 2 of delete screen section listing things that will be deleted. " +
-                                                         "Note: the '\u{2022}' is a unicode bullet point and should be moved to the opposite side (if needed) for LTR languages.")
+        sectionTwoColumnTwoItem.text = NSLocalizedString("• Users & Authors",
+                                                         comment: "Item 2 of delete screen section listing things that will be deleted.")
 
-        sectionTwoColumnOneItem2.text = NSLocalizedString("\u{2022} Pages",
-                                                          comment: "Item 3 of delete screen section listing things that will be deleted. " +
-                                                          "Note: the '\u{2022}' is a unicode bullet point and should be moved to the opposite side (if needed) for LTR languages.")
+        sectionTwoColumnOneItem2.text = NSLocalizedString("• Pages",
+                                                          comment: "Item 3 of delete screen section listing things that will be deleted.")
 
-        sectionTwoColumnTwoItem2.text = NSLocalizedString("\u{2022} Domains",
-                                                          comment: "Item 4 of delete screen section listing things that will be deleted. " +
-                                                          "Note: the '\u{2022}' is a unicode bullet point and should be moved to the opposite side (if needed) for LTR languages.")
+        sectionTwoColumnTwoItem2.text = NSLocalizedString("• Domains",
+                                                          comment: "Item 4 of delete screen section listing things that will be deleted.")
 
-        sectionTwoColumnOneItem3.text = NSLocalizedString("\u{2022} Media",
-                                                          comment: "Item 5 of delete screen section listing things that will be deleted. " +
-                                                          "Note: the '\u{2022}' is a unicode bullet point and should be moved to the opposite side (if needed) for LTR languages.")
+        sectionTwoColumnOneItem3.text = NSLocalizedString("• Media",
+                                                          comment: "Item 5 of delete screen section listing things that will be deleted.")
 
-        sectionTwoColumnTwoItem3.text = NSLocalizedString("\u{2022} Purchased Upgrades",
-                                                          comment: "Item 6 of delete screen section listing things that will be deleted. " +
-                                                          "Note: the '\u{2022}' is a unicode bullet point and should be moved to the opposite side (if needed) for LTR languages.")
+        sectionTwoColumnTwoItem3.text = NSLocalizedString("• Purchased Upgrades",
+                                                          comment: "Item 6 of delete screen section listing things that will be deleted.")
     }
 
     /// One time setup of third section (main body)
