@@ -34,7 +34,7 @@ final public class InteractiveNotificationsManager: NSObject {
     /// Returns a NotificationSyncMediator instance.
     ///
     var notificationSyncMediator: NotificationSyncMediator? {
-       return NotificationSyncMediator.init()
+       return NotificationSyncMediator()
     }
 
     // MARK: - Public Methods
