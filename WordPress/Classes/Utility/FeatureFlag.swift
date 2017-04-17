@@ -5,6 +5,7 @@ enum FeatureFlag: Int {
     case mediaLibrary
     case nativeEditor
     case exampleFeature
+    case newLogin
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -12,7 +13,9 @@ enum FeatureFlag: Int {
         case .exampleFeature:
             return true
         case .mediaLibrary:
-            return build(.debug)
+            return build(.debug, .alpha, .internal)
+        case .newLogin:
+            return build(.debug, .internal) // alpha can come later
         case .nativeEditor:
             // At the moment this is only visible by default in non-app store builds
             if build(.alpha, .debug, .internal) {

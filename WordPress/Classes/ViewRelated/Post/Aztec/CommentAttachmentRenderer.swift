@@ -3,6 +3,8 @@ import UIKit
 import Aztec
 
 
+// MARK: - CommentAttachmentRenderer: Renders HTML Comments!
+//
 final class CommentAttachmentRenderer {
 
     /// Comment Attachment Text
@@ -20,7 +22,7 @@ final class CommentAttachmentRenderer {
 
     /// Default Initializer
     ///
-    init?(font: UIFont) {
+    init(font: UIFont) {
         self.textFont = font
     }
 }
@@ -28,9 +30,13 @@ final class CommentAttachmentRenderer {
 
 // MARK: - TextViewCommentsDelegate Methods
 //
-extension CommentAttachmentRenderer: TextViewCommentsDelegate {
+extension CommentAttachmentRenderer: TextViewAttachmentImageProvider {
 
-    func textView(_ textView: TextView, imageForComment attachment: CommentAttachment, with size: CGSize) -> UIImage? {
+    func textView(_ textView: TextView, shouldRender attachment: NSTextAttachment) -> Bool {
+        return attachment is CommentAttachment
+    }
+
+    func textView(_ textView: TextView, imageFor attachment: NSTextAttachment, with size: CGSize) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
 
         let message = messageAttributedString()
@@ -44,7 +50,7 @@ extension CommentAttachmentRenderer: TextViewCommentsDelegate {
         return result
     }
 
-    func textView(_ textView: TextView, boundsForComment attachment: CommentAttachment, with lineFragment: CGRect) -> CGRect {
+    func textView(_ textView: TextView, boundsFor attachment: NSTextAttachment, with lineFragment: CGRect) -> CGRect {
         let message = messageAttributedString()
 
         let size = CGSize(width: lineFragment.size.width, height: lineFragment.size.height)
