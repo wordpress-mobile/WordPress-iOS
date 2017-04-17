@@ -79,5 +79,6 @@ class RecentSitesService: NSObject {
             return
         }
         touch(site: url)
+        WP3DTouchShortcutCreator().createShortcutsIf3DTouchAvailable(true)
     }
 }
