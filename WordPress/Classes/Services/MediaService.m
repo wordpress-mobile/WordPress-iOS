@@ -525,24 +525,16 @@
                             success:(void (^)(NSString *videoURL, NSString *posterURL))success
                             failure:(void (^)(NSError *error))failure
 {
-    NSString *entityName = NSStringFromClass([Media class]);
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [NSPredicate predicateWithFormat:@"videopressGUID = %@", videoPressID];
-    NSError *error = nil;
-    Media *media = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
-    if (media) {
-        NSString *posterURL = media.absoluteThumbnailLocalURL.absoluteString;
-        if (!posterURL) {
-            posterURL = media.remoteThumbnailURL;
-        }
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getVideoURLFromVideoPressID:videoPressID success:^(NSURL *videoURL, NSURL *posterURL) {
         if (success) {
-            success(media.remoteURL, posterURL);
+            success(videoURL.absoluteString, posterURL.absoluteString);
         }
-    } else {
+    } failure:^(NSError * error) {
         if (failure) {
             failure(error);
         }
-    }
+    }];
 }
 
 - (void)syncMediaLibraryForBlog:(Blog *)blog
@@ -624,7 +616,8 @@
 
         // No Image available so let's download it
         NSURL *remoteURL = nil;
-        if (media.mediaType == MediaTypeVideo) {
+        BOOL mediaIsVideo = media.mediaType == MediaTypeVideo;
+        if (mediaIsVideo) {
             remoteURL = [NSURL URLWithString:media.remoteThumbnailURL];
         } else if (media.mediaType == MediaTypeImage) {
             NSString *remote = media.remoteURL;
@@ -663,7 +656,7 @@
                     }
                     return;
                 }
-                if (CGSizeEqualToSize(size, mediaOriginalSize)) {
+                if (CGSizeEqualToSize(size, mediaOriginalSize) && !mediaIsVideo) {
                     media.absoluteLocalURL = fileURL;
                 } else {
                     media.absoluteThumbnailLocalURL = fileURL;
