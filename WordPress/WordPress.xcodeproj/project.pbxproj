@@ -363,6 +363,7 @@
 		932645A41E7C206600134988 /* EditorSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932645A31E7C206600134988 /* EditorSettingsTests.swift */; };
 		932AB00B1D526C1400BE486D /* gallery-reader-post-private.json in Resources */ = {isa = PBXBuildFile; fileRef = 932AB00A1D526C1400BE486D /* gallery-reader-post-private.json */; };
 		932C6CB31D521DFA006E4A62 /* gallery-reader-post-public.json in Resources */ = {isa = PBXBuildFile; fileRef = 932C6CB21D521DFA006E4A62 /* gallery-reader-post-public.json */; };
+		933D1F471EA64108009FB462 /* TestingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 933D1F461EA64108009FB462 /* TestingAppDelegate.m */; };
 		93414DE51E2D25AE003143A3 /* PostEditorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93414DE41E2D25AE003143A3 /* PostEditorState.swift */; };
 		934884AB19B73BA6004028D8 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */ = {isa = PBXBuildFile; fileRef = 93594BD4191D2F5A0079E6B2 /* stats-batch.json */; };
@@ -1642,6 +1643,8 @@
 		93267A6019B896CD00997EB8 /* Info-Internal.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Internal.plist"; sourceTree = "<group>"; };
 		932AB00A1D526C1400BE486D /* gallery-reader-post-private.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gallery-reader-post-private.json"; sourceTree = "<group>"; };
 		932C6CB21D521DFA006E4A62 /* gallery-reader-post-public.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "gallery-reader-post-public.json"; path = "../gallery-reader-post-public.json"; sourceTree = "<group>"; };
+		933D1F451EA64108009FB462 /* TestingAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestingAppDelegate.h; sourceTree = "<group>"; };
+		933D1F461EA64108009FB462 /* TestingAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestingAppDelegate.m; sourceTree = "<group>"; };
 		93414DE41E2D25AE003143A3 /* PostEditorState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PostEditorState.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		93460A36189D5091000E26CE /* WordPress 14.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 14.xcdatamodel"; sourceTree = "<group>"; };
 		934884AC19B78723004028D8 /* WordPressTodayWidget-Internal.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "WordPressTodayWidget-Internal.entitlements"; sourceTree = "<group>"; };
@@ -4893,6 +4896,8 @@
 				93E9050619E6F3D8005513C9 /* TestContextManager.m */,
 				E15618FB16DB8677006532C4 /* UIKitTestHelper.h */,
 				E15618FC16DB8677006532C4 /* UIKitTestHelper.m */,
+				933D1F451EA64108009FB462 /* TestingAppDelegate.h */,
+				933D1F461EA64108009FB462 /* TestingAppDelegate.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -6874,6 +6879,7 @@
 				BE1071FF1BC75FFA00906AFF /* WPStyleGuide+BlogTests.swift in Sources */,
 				1702BBE21CF319C600766A33 /* DomainsServiceTests.swift in Sources */,
 				932645A41E7C206600134988 /* EditorSettingsTests.swift in Sources */,
+				933D1F471EA64108009FB462 /* TestingAppDelegate.m in Sources */,
 				B5BC25A01CFCB91800F7D8B9 /* PeopleRemoteTests.swift in Sources */,
 				85B125411B028E34008A3D95 /* PushAuthenticationManagerTests.swift in Sources */,
 				93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */,
