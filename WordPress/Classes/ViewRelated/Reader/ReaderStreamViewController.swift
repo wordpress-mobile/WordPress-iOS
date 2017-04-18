@@ -1086,6 +1086,30 @@ import WordPressComAnalytics
         }
     }
 
+    func backgroundFetch(_ completionHandler: ((UIBackgroundFetchResult) -> Void)?) {
+        print("=========>>>>>>>>>>> backgroundFetch")
+        print("=========>>>>>>>>>>> \(String(describing: readerTopic?.title))")
+
+        let lastSeenPostID = (tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID
+
+        syncHelper.backgroundSync(success: { [weak self, weak lastSeenPostID] in
+            let newestFetchedPostID = (self?.tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID
+            print("=========>>>>>>>>>>> lastSeenPostID \(String(describing: lastSeenPostID)) newestFetchedPostID \(String(describing: newestFetchedPostID))")
+            if let lastSeenPostID = lastSeenPostID,
+                let newestFetchedPostID = newestFetchedPostID,
+                lastSeenPostID == newestFetchedPostID {
+                print("=========>>>>>>>>>>> noData")
+                completionHandler?(.noData)
+            } else {
+                self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                print("=========>>>>>>>>>>> newData")
+                completionHandler?(.newData)
+            }
+        }, failure: { (_) in
+            print("=========>>>>>>>>>>> failed")
+            completionHandler?(.failed)
+        })
+    }
 
     func syncFillingGap(_ indexPath: IndexPath) {
         if !canSync() {
