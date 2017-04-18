@@ -1222,9 +1222,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)showTagsPicker
 {
-    SettingsTextViewController *tagsPicker = [[SettingsTextViewController alloc] initWithText:self.post.tags
-                                                                                  placeholder:NSLocalizedString(@"Comma separated", @"Placeholder text for the tags field. Should be the same as WP core.")
-                                                                                         hint:nil];
+    PostTagPickerViewController *tagsPicker = [[PostTagPickerViewController alloc] initWithTags:self.post.tags];
     tagsPicker.onValueChanged = ^(NSString * _Nonnull value) {
         self.post.tags = value;
     };
