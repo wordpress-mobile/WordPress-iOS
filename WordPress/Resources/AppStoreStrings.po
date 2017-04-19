@@ -37,7 +37,7 @@ msgstr ""
 
 msgctxt "v7.4-whats-new"
 msgid ""
-msgid "📣 Sharing out from the Reader and in from other apps were both improved from your feedback. In Safari select text from the web page and share right into the WordPress app!\n"
+"📣 Sharing out from the Reader and in from other apps were both improved from your feedback. In Safari select text from the web page and share right into the WordPress app!\n"
 "🗑 Have a site in your list you want to hide? Swipe on a site in the list to hide (WordPress.com or Jetpack) or remove (self-hosted).\n"
 "🔔 Sometimes the navigation bar would magically disappear when opening a navigation. We like a good magic trick - but this one was unintentional.\n"
 msgstr ""
