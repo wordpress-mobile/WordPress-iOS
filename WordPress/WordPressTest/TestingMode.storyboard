@@ -21,15 +21,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unittest" translatesAutoresizingMaskIntoConstraints="NO" id="e1z-rj-pT8">
-                                <rect key="frame" x="37" y="183" width="300" height="300"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wapuu-dev" translatesAutoresizingMaskIntoConstraints="NO" id="e1z-rj-pT8">
+                                <rect key="frame" x="37" y="201" width="300" height="265"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="Km9-k5-w5k"/>
+                                    <constraint firstAttribute="height" constant="265" id="Km9-k5-w5k"/>
                                     <constraint firstAttribute="width" constant="300" id="rbp-zz-oRa"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Running Unit Tests" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="So5-AW-gnv">
-                                <rect key="frame" x="115" y="132" width="144" height="21"/>
+                                <rect key="frame" x="115" y="150" width="144" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -50,6 +50,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="unittest" width="400" height="400"/>
+        <image name="wapuu-dev" width="300" height="265"/>
     </resources>
 </document>
