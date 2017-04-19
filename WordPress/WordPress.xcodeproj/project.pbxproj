@@ -6021,7 +6021,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -z $BUDDYBUILD_ENABLED ]\nthen\n    echo \"Didn't detect Buddybuild - linting\"\n    rake lint\nelse\n    echo \"Detected Buddybuild – skipping lint step\"\nfi\n";
+			shellScript = "if [ -z $BUDDYBUILD_ENABLED ]\nthen\n    echo \"Didn't detect Buddybuild - linting\"\n#    rake lint\nelse\n    echo \"Detected Buddybuild – skipping lint step\"\nfi\n";
 		};
 		E1CCFB31175D62320016BD8A /* Run Fabric/Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
