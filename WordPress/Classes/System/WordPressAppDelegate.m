@@ -93,6 +93,8 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
     [WordPressAppDelegate fixKeychainAccess];
 
     // Basic networking setup
@@ -120,7 +122,6 @@ int ddLogLevel = DDLogLevelInfo;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
-    [self.window makeKeyAndVisible];
 
     [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
@@ -282,7 +283,7 @@ int ddLogLevel = DDLogLevelInfo;
 
                 return YES;
             }
-        } else if ([[url host] isEqualToString:@"editor"]) {
+        } else if ([[url host] isEqualToString:@"editor"] || [[url host] isEqualToString:@"aztec"]) {
             // Example: wordpress://editor?available=1&enabled=0
             NSDictionary* params = [[url query] dictionaryFromQueryString];
 

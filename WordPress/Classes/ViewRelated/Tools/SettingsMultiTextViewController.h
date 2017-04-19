@@ -25,6 +25,9 @@ typedef void (^SettingsMultiTextChanged)(NSString * _Nonnull);
 ///
 @property (nonatomic, assign) BOOL isPassword;
 
+/// Autocapitalization type used in the textfield, defaults to UITextAutocapitalizationTypeSentences
+@property (nonatomic, assign) UITextAutocapitalizationType autocapitalizationType;
+
 /// Block to be executed on dismiss, if the value was effectively updated.
 ///
 @property (nullable, nonatomic, copy) SettingsMultiTextChanged onValueChanged;
