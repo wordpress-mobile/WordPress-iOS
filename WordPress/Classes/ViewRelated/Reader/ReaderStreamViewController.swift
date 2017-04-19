@@ -1067,7 +1067,7 @@ import WordPressComAnalytics
             return
         }
 
-        guard WordPressAppDelegate.sharedInstance()!.runningInBackground == false else {
+        guard WordPressAppDelegate.sharedInstance().runningInBackground == false else {
             return
         }
 
