@@ -1059,6 +1059,7 @@ import WordPressComAnalytics
     /// - There must be a topic
     /// - The controller must be the active controller.
     /// - The app must have a internet connection.
+    /// - The app must be running on the foreground.
     /// - The current time must be greater than the last sync interval.
     ///
     func syncIfAppropriate() {
