@@ -4,7 +4,9 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = [UIViewController new];
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"TestingMode" bundle:[NSBundle bundleForClass:self.class]];
+    self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
 }
 
