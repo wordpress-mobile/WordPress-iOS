@@ -87,7 +87,7 @@
         }
     } else if (mediaType == MediaTypeVideo) {
         if (![post.blog isHostedAtWPcom]) {
-            assetUTI = (__bridge NSString *)kUTTypeQuickTimeMovie;
+            assetUTI = (__bridge NSString *)kUTTypeMPEG4;
             extension = [self extensionForUTI:assetUTI];
         }
     }
