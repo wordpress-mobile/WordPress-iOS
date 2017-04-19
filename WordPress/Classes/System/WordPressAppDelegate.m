@@ -475,7 +475,8 @@ int ddLogLevel = DDLogLevelInfo;
 
 #pragma mark - Background Refresh
 
-- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
+{
     WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
     ReaderMenuViewController *readerMenuVC = tabBarController.readerMenuViewController;
     if (readerMenuVC.currentReaderStream) {
@@ -483,6 +484,12 @@ int ddLogLevel = DDLogLevelInfo;
     } else {
         completionHandler(UIBackgroundFetchResultNoData);
     }
+}
+
+- (BOOL)runningInBackground
+{
+    UIApplicationState state = [UIApplication sharedApplication].applicationState;
+    return state == UIApplicationStateBackground;
 }
 
 #pragma mark - Custom methods

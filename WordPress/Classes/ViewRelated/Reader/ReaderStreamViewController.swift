@@ -1066,6 +1066,10 @@ import WordPressComAnalytics
             return
         }
 
+        guard WordPressAppDelegate.sharedInstance()!.runningInBackground == false else {
+            return
+        }
+
         guard let topic = readerTopic else {
             return
         }
@@ -1095,13 +1099,13 @@ import WordPressComAnalytics
         syncHelper.backgroundSync(success: { [weak self, weak lastSeenPostID] in
             let newestFetchedPostID = (self?.tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID
             print("=========>>>>>>>>>>> lastSeenPostID \(String(describing: lastSeenPostID)) newestFetchedPostID \(String(describing: newestFetchedPostID))")
+            self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             if let lastSeenPostID = lastSeenPostID,
                 let newestFetchedPostID = newestFetchedPostID,
                 lastSeenPostID == newestFetchedPostID {
                 print("=========>>>>>>>>>>> noData")
                 completionHandler?(.noData)
             } else {
-                self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
                 print("=========>>>>>>>>>>> newData")
                 completionHandler?(.newData)
             }
