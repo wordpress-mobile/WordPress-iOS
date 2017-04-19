@@ -75,10 +75,6 @@
 	<string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
-	<key>NSMainNibFile</key>
-	<string>MainWindow</string>
-	<key>NSMainNibFile~ipad</key>
-	<string>MainWindow-iPad</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>For your videos to have sound on them.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

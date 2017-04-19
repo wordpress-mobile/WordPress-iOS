@@ -127,7 +127,7 @@ PODS:
   - WordPress-AppbotX (1.0.6)
   - WordPress-Aztec-iOS (0.5a8):
     - Gridicons (= 0.5)
-  - WordPress-iOS-Editor (1.9.0):
+  - WordPress-iOS-Editor (1.9.1):
     - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
@@ -173,7 +173,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
   - WordPress-Aztec-iOS (= 0.5a8)
-  - WordPress-iOS-Editor (= 1.9.0)
+  - WordPress-iOS-Editor (= 1.9.1)
   - WordPress-iOS-Shared (= 0.8.2)
   - WordPressCom-Analytics-iOS (= 0.1.25)
   - WordPressCom-Stats-iOS (= 0.9.1)
@@ -238,7 +238,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
   WordPress-Aztec-iOS: 4bf5814f53791ceac398f93358a8da08eae7ff0a
-  WordPress-iOS-Editor: 69c5d1e83aaa6e5ab6c80e067f1858de8dab4017
+  WordPress-iOS-Editor: 995f47fbf745f34fb392103ec97c0edb7f062f21
   WordPress-iOS-Shared: 999f5bfcf5744f94ebe9cb7459a138f5990fbf3a
   WordPressCom-Analytics-iOS: ec36976259d733430ba0fc2f8a51765947d2c7ba
   WordPressCom-Stats-iOS: 872a0c2ad9b691911257459bc353f96ac804374c
@@ -246,6 +246,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 239fef5c97d76acd3f9fb66c408be3e7deb3295e
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 15a246b2b6c0e7e307b2548679354792720eaa51
+PODFILE CHECKSUM: ba81674b3b8f0580323cbdd51c5c2df286e877f9
 
 COCOAPODS: 1.2.1
