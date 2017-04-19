@@ -137,6 +137,7 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     }
 
     [[NSUserDefaults standardUserDefaults] setInteger:sessionCount forKey:WPAppAnalyticsKeySessionCount];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 
     return sessionCount;
 }
