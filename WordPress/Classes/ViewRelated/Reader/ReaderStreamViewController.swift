@@ -1091,7 +1091,7 @@ import WordPressComAnalytics
         }
     }
 
-    func backgroundFetch(_ completionHandler: ((UIBackgroundFetchResult) -> Void)?) {
+    func backgroundFetch(_ completionHandler: @escaping ((UIBackgroundFetchResult) -> Void)) {
         print("=========>>>>>>>>>>> backgroundFetch")
         print("=========>>>>>>>>>>> \(String(describing: readerTopic?.title))")
 
@@ -1105,14 +1105,14 @@ import WordPressComAnalytics
                 let newestFetchedPostID = newestFetchedPostID,
                 lastSeenPostID == newestFetchedPostID {
                 print("=========>>>>>>>>>>> noData")
-                completionHandler?(.noData)
+                completionHandler(.noData)
             } else {
                 print("=========>>>>>>>>>>> newData")
-                completionHandler?(.newData)
+                completionHandler(.newData)
             }
         }, failure: { (_) in
             print("=========>>>>>>>>>>> failed")
-            completionHandler?(.failed)
+            completionHandler(.failed)
         })
     }
 
