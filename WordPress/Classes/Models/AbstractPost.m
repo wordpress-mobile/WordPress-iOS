@@ -604,6 +604,12 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
         return YES;
     }
 
+    if (!([self.wp_slug length] == 0 && [original.wp_slug length] == 0)
+        && (![self.wp_slug isEqual:original.wp_slug]))
+    {
+        return YES;
+    }
+
     return NO;
 }
 
