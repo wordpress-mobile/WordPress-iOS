@@ -62,6 +62,7 @@ NSString *const SessionCount = @"session_count";
     sessionCount = [[mixpanelProxy.currentSuperProperties numberForKey:SessionCount] integerValue];
     if (sessionCount > 0) {
         [[NSUserDefaults standardUserDefaults] setInteger:sessionCount forKey:WPAppAnalyticsKeySessionCount];
+        [mixpanelProxy unregisterSuperProperty:WPAppAnalyticsKeySessionCount];
     }
 }
 
