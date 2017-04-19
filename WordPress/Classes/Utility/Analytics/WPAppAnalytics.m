@@ -8,6 +8,7 @@
 #import "ApiCredentials.h"
 #import "WordPressAppDelegate.h"
 #import "Blog.h"
+#import "AbstractPost.h"
 
 NSString * const WPAppAnalyticsDefaultsKeyUsageTracking = @"usage_tracking_enabled";
 NSString * const WPAppAnalyticsKeyBlogID = @"blog_id";
@@ -15,6 +16,7 @@ NSString * const WPAppAnalyticsKeyPostID = @"post_id";
 NSString * const WPAppAnalyticsKeyFeedID = @"feed_id";
 NSString * const WPAppAnalyticsKeyFeedItemID = @"feed_item_id";
 NSString * const WPAppAnalyticsKeyIsJetpack = @"is_jetpack";
+NSString * const WPAppAnalyticsKeyEditorSource = @"editor_source";
 static NSString * const WPAppAnalyticsKeyLastVisibleScreen = @"last_visible_screen";
 static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
@@ -192,6 +194,26 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
         [WPAppAnalytics track:stat];
     }
 }
+
++ (void)track:(WPAnalyticsStat)stat withPost:(AbstractPost *)postOrPage {
+    [WPAppAnalytics track:stat withProperties:nil withPost:postOrPage];
+}
+
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withPost:(AbstractPost *)postOrPage {
+    NSMutableDictionary *mutableProperties;
+    if (properties) {
+        mutableProperties = [NSMutableDictionary dictionaryWithDictionary:properties];
+    } else {
+        mutableProperties = [NSMutableDictionary new];
+    }
+
+    if (postOrPage.postID.integerValue > 0) {
+        mutableProperties[WPAppAnalyticsKeyPostID] = postOrPage.postID;
+    }
+
+    [WPAppAnalytics track:stat withProperties:mutableProperties withBlog:postOrPage.blog];
+}
+
 
 + (void)trackTrainTracksInteraction:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
