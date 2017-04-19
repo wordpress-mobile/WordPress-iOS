@@ -19,12 +19,15 @@ class PostTagPickerViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        onValueChanged?(tags)
+        if textView.text != tags {
+            onValueChanged?(textView.text)
+        }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        textView.delegate = self
     }
 
     // MARK: - Views
@@ -69,5 +72,16 @@ class PostTagPickerViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return textViewCell
+    }
+}
+
+// MARK: - Text View Delegate
+extension PostTagPickerViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        // Remove any space before a comma, and allow one space at most after.
+        let regexp = try! NSRegularExpression(pattern: "\\s*(,(\\s(?=\\s))?)\\s*", options: [])
+        let text = textView.text ?? ""
+        let range = NSRange(location: 0, length: (text as NSString).length)
+        textView.text = regexp.stringByReplacingMatches(in: text, options: [], range: range, withTemplate: "$1")
     }
 }
