@@ -364,6 +364,8 @@
 		932AB00B1D526C1400BE486D /* gallery-reader-post-private.json in Resources */ = {isa = PBXBuildFile; fileRef = 932AB00A1D526C1400BE486D /* gallery-reader-post-private.json */; };
 		932C6CB31D521DFA006E4A62 /* gallery-reader-post-public.json in Resources */ = {isa = PBXBuildFile; fileRef = 932C6CB21D521DFA006E4A62 /* gallery-reader-post-public.json */; };
 		933D1F471EA64108009FB462 /* TestingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 933D1F461EA64108009FB462 /* TestingAppDelegate.m */; };
+		933D1F6C1EA7A3AB009FB462 /* TestingMode.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 933D1F6B1EA7A3AB009FB462 /* TestingMode.storyboard */; };
+		933D1F6E1EA7A402009FB462 /* TestAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 933D1F6D1EA7A402009FB462 /* TestAssets.xcassets */; };
 		93414DE51E2D25AE003143A3 /* PostEditorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93414DE41E2D25AE003143A3 /* PostEditorState.swift */; };
 		934884AB19B73BA6004028D8 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */ = {isa = PBXBuildFile; fileRef = 93594BD4191D2F5A0079E6B2 /* stats-batch.json */; };
@@ -1645,6 +1647,8 @@
 		932C6CB21D521DFA006E4A62 /* gallery-reader-post-public.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "gallery-reader-post-public.json"; path = "../gallery-reader-post-public.json"; sourceTree = "<group>"; };
 		933D1F451EA64108009FB462 /* TestingAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestingAppDelegate.h; sourceTree = "<group>"; };
 		933D1F461EA64108009FB462 /* TestingAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestingAppDelegate.m; sourceTree = "<group>"; };
+		933D1F6B1EA7A3AB009FB462 /* TestingMode.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TestingMode.storyboard; sourceTree = "<group>"; };
+		933D1F6D1EA7A402009FB462 /* TestAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TestAssets.xcassets; sourceTree = "<group>"; };
 		93414DE41E2D25AE003143A3 /* PostEditorState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PostEditorState.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		93460A36189D5091000E26CE /* WordPress 14.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 14.xcdatamodel"; sourceTree = "<group>"; };
 		934884AC19B78723004028D8 /* WordPressTodayWidget-Internal.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "WordPressTodayWidget-Internal.entitlements"; sourceTree = "<group>"; };
@@ -4898,6 +4902,8 @@
 				E15618FC16DB8677006532C4 /* UIKitTestHelper.m */,
 				933D1F451EA64108009FB462 /* TestingAppDelegate.h */,
 				933D1F461EA64108009FB462 /* TestingAppDelegate.m */,
+				933D1F6B1EA7A3AB009FB462 /* TestingMode.storyboard */,
+				933D1F6D1EA7A402009FB462 /* TestAssets.xcassets */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -5732,6 +5738,7 @@
 				E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */,
 				FF9839AB1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json in Resources */,
 				B5EA71301DC293F30083032A /* notifications-mark-as-read.json in Resources */,
+				933D1F6C1EA7A3AB009FB462 /* TestingMode.storyboard in Resources */,
 				B5EA71361DC294730083032A /* notifications-load-hash.json in Resources */,
 				743BF32A1E82CE0700192E40 /* people-delete-viewer-failure.json in Resources */,
 				E15027621E03E51500B847E3 /* notes-action-push.json in Resources */,
@@ -5765,6 +5772,7 @@
 				FF34EEAB1CF480F100F8B38D /* WordPressComRestApiFailThrottled.json in Resources */,
 				B5EA71381DC294B00083032A /* notifications-load-all.json in Resources */,
 				59F9C1571B9DCE4E00885CC1 /* get-single-theme-v1.1.json in Resources */,
+				933D1F6E1EA7A402009FB462 /* TestAssets.xcassets in Resources */,
 				FFB8DC9C1CE320C700D4D1B7 /* WordPressComRestApiFailInvalidInput.json in Resources */,
 				B5BC25A41CFCBA6A00F7D8B9 /* people-send-invitation-failure.json in Resources */,
 				B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */,
