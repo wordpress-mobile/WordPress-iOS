@@ -1095,15 +1095,13 @@ import WordPressComAnalytics
         print("=========>>>>>>>>>>> backgroundFetch")
         print("=========>>>>>>>>>>> \(String(describing: readerTopic?.title))")
 
-        let lastSeenPostID = (tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID
+        let lastSeenPostID = (tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
 
         syncHelper.backgroundSync(success: { [weak self, weak lastSeenPostID] in
-            let newestFetchedPostID = (self?.tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID
+            let newestFetchedPostID = (self?.tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
             print("=========>>>>>>>>>>> lastSeenPostID \(String(describing: lastSeenPostID)) newestFetchedPostID \(String(describing: newestFetchedPostID))")
             self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            if let lastSeenPostID = lastSeenPostID,
-                let newestFetchedPostID = newestFetchedPostID,
-                lastSeenPostID == newestFetchedPostID {
+            if lastSeenPostID == newestFetchedPostID {
                 print("=========>>>>>>>>>>> noData")
                 completionHandler(.noData)
             } else {
