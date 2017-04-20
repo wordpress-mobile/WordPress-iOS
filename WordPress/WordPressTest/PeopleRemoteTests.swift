@@ -24,7 +24,7 @@ class PeopleServiceTests: RemoteTestCase {
 
     // MARK: - Properties
 
-    var remote: PeopleRemote!
+    var remote: PeopleServiceRemote!
 
     var siteViewerDeleteEndpoint: String { return "sites/\(siteID)/viewers/\(viewerID)/delete" }
     var siteFollowerDeleteEndpoint: String { return "sites/\(siteID)/followers/\(followerID)/delete" }
@@ -34,7 +34,7 @@ class PeopleServiceTests: RemoteTestCase {
 
     override func setUp() {
         super.setUp()
-        remote = PeopleRemote(wordPressComRestApi: restApi)
+        remote = PeopleServiceRemote(wordPressComRestApi: restApi)
     }
 
     // MARK: - Tests
