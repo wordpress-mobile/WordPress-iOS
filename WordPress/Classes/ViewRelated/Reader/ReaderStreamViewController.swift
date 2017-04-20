@@ -1092,24 +1092,17 @@ import WordPressComAnalytics
     }
 
     func backgroundFetch(_ completionHandler: @escaping ((UIBackgroundFetchResult) -> Void)) {
-        print("=========>>>>>>>>>>> backgroundFetch")
-        print("=========>>>>>>>>>>> \(String(describing: readerTopic?.title))")
-
         let lastSeenPostID = (tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
 
         syncHelper.backgroundSync(success: { [weak self, weak lastSeenPostID] in
             let newestFetchedPostID = (self?.tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
-            print("=========>>>>>>>>>>> lastSeenPostID \(String(describing: lastSeenPostID)) newestFetchedPostID \(String(describing: newestFetchedPostID))")
             self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             if lastSeenPostID == newestFetchedPostID {
-                print("=========>>>>>>>>>>> noData")
                 completionHandler(.noData)
             } else {
-                print("=========>>>>>>>>>>> newData")
                 completionHandler(.newData)
             }
         }, failure: { (_) in
-            print("=========>>>>>>>>>>> failed")
             completionHandler(.failed)
         })
     }
