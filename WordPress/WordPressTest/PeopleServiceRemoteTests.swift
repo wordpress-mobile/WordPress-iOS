@@ -1,6 +1,6 @@
 @testable import WordPress
 
-class PeopleServiceTests: RemoteTestCase {
+class PeopleServiceRemoteTests: RemoteTestCase {
 
     // MARK: - Constants
 
