@@ -5,7 +5,7 @@
 #import "WordPress-Swift.h"
 #import "Comment.h"
 #import "BasePost.h"
-#import "SVProgressHUD.h"
+#import "SVProgressHUD+Dismiss.h"
 #import "EditCommentViewController.h"
 #import "PostService.h"
 #import "BlogService.h"
@@ -629,7 +629,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     __typeof(self) __weak weakSelf = self;
     
     void (^successBlock)() = ^void() {
-        [SVProgressHUD showSuccessWithStatus:successMessage];
+        [SVProgressHUD showDismissableSuccessWithStatus:successMessage];
     };
     
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {

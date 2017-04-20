@@ -1097,7 +1097,7 @@ private extension NotificationDetailsViewController {
             }
 
             let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
-            SVProgressHUD.showSuccess(withStatus: message)
+            SVProgressHUD.showDismissableSuccess(withStatus: message)
         })
     }
 
