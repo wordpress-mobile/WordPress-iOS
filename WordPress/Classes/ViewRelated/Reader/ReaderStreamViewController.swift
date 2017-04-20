@@ -777,7 +777,7 @@ import WordPressComAnalytics
         let postService = ReaderPostService(managedObjectContext: managedObjectContext())
         postService.toggleFollowing(for: post,
                                             success: {
-                                                SVProgressHUD.showSuccess(withStatus: successMessage)
+                                                SVProgressHUD.showDismissableSuccess(withStatus: successMessage)
                                             },
                                             failure: { (error: Error?) in
                                                 SVProgressHUD.dismiss()

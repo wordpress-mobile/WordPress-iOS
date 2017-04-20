@@ -13,11 +13,11 @@
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
+#import "SVProgressHUD+Dismiss.h"
 #import "WordPress-Swift.h"
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "BlogServiceRemoteXMLRPC.h"
-#import <SVProgressHUD/SVProgressHUD.h>
 #import <wpxmlrpc/WPXMLRPC.h>
 
 
@@ -952,7 +952,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService updateSettingsForBlog:self.blog success:nil failure:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
+        [SVProgressHUD showDismissableErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
         DDLogError(@"Error while trying to update BlogSettings: %@", error);
     }];
 }
