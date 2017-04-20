@@ -79,7 +79,7 @@ class PostTagPickerViewController: UITableViewController {
 extension PostTagPickerViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         // Remove any space before a comma, and allow one space at most after.
-        let regexp = try! NSRegularExpression(pattern: "\\s*(,(\\s(?=\\s))?)\\s*", options: [])
+        let regexp = try! NSRegularExpression(pattern: "\\s*(,(\\s|(\\s(?=\\s)))?)\\s*", options: [])
         let text = textView.text ?? ""
         let range = NSRange(location: 0, length: (text as NSString).length)
         textView.text = regexp.stringByReplacingMatches(in: text, options: [], range: range, withTemplate: "$1")
