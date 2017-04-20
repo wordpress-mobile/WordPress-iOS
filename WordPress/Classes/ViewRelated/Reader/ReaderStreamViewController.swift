@@ -1091,6 +1091,9 @@ import WordPressComAnalytics
         }
     }
 
+    /// Used to fetch new content in response to a background refresh event.  
+    /// Not intended for use as part of a user interaction. See syncIfAppropriate instead.
+    ///
     func backgroundFetch(_ completionHandler: @escaping ((UIBackgroundFetchResult) -> Void)) {
         let lastSeenPostID = (tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
 
