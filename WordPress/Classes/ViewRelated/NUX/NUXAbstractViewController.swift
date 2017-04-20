@@ -52,6 +52,14 @@ class NUXAbstractViewController: UIViewController {
         return UIDevice.isPad() ? .all : .portrait
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? NUXAbstractViewController,
+            let source = segue.source as? NUXAbstractViewController {
+            destination.loginFields = source.loginFields
+            destination.dismissBlock = source.dismissBlock
+        }
+    }
+
 
     // MARK: Setup and Configuration
 
