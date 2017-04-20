@@ -7,11 +7,17 @@ import OHHTTPStubs
 ///
 class RemoteTestCase: XCTestCase {
 
+    /// Response content types
+    ///
+    enum ResponseContentType: String {
+        case ApplicationJSON = "application/json"
+        case JavaScript      = "text/javascript;charset=utf-8"
+        case ApplicationHTML = "application/html"
+        case NoContentType   = ""
+    }
+
     // MARK: - Constants
 
-    let contentTypeJson     = "application/json"
-    let contentTypeJS       = "text/javascript;charset=utf-8"
-    let contentTypeHTML     = "application/html"
     let timeout             = TimeInterval(1000)
 
     // MARK: - Properties
@@ -49,18 +55,18 @@ extension RemoteTestCase {
     /// - Parameters:
     ///     - endpoint: The endpoint matcher block that determines if the request will be stubbed
     ///     - filename: The name of the file to use for the response
-    ///     - contentType: Optional. The Content-Type returned in the response header
+    ///     - contentType: The Content-Type returned in the response header
     ///     - status: The status code to use for the response. Defaults to 200.
     ///
-    func stubRemoteResponse(_ endpoint: String, filename: String, contentType: String?, status: Int32 = 200) {
+    func stubRemoteResponse(_ endpoint: String, filename: String, contentType: ResponseContentType, status: Int32 = 200) {
         stub(condition: { request in
             return request.url?.absoluteString.range(of: endpoint) != nil
         }) { _ in
             let stubPath = OHPathForFile(filename, type(of: self))
             var headers: Dictionary<NSObject, AnyObject>?
 
-            if let contentType = contentType {
-                headers = ["Content-Type" as NSObject: contentType as AnyObject]
+            if contentType != .NoContentType {
+                headers = ["Content-Type" as NSObject: contentType.rawValue as AnyObject]
             }
             return fixture(filePath: stubPath!, status: status, headers: headers)
         }
@@ -71,17 +77,17 @@ extension RemoteTestCase {
     /// - Parameters:
     ///     - endpoint: The endpoint matcher block that determines if the request will be stubbed
     ///     - data: Data object to use for the response
-    ///     - contentType: Optional. The Content-Type returned in the response header
+    ///     - contentType: The Content-Type returned in the response header
     ///     - status: The status code to use for the response. Defaults to 200.
     ///
-    func stubRemoteResponse(_ endpoint: String, data: Data, contentType: String?, status: Int32 = 200) {
+    func stubRemoteResponse(_ endpoint: String, data: Data, contentType: ResponseContentType, status: Int32 = 200) {
         stub(condition: { request in
             return request.url?.absoluteString.range(of: endpoint) != nil
         }) { _ in
             var headers: Dictionary<NSObject, AnyObject>?
 
-            if let contentType = contentType {
-                headers = ["Content-Type" as NSObject: contentType as AnyObject]
+            if contentType != .NoContentType {
+                headers = ["Content-Type" as NSObject: contentType.rawValue as AnyObject]
             }
             return OHHTTPStubsResponse(data: data, statusCode: status, headers: headers)
         }
