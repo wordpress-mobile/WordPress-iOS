@@ -4,6 +4,11 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
 
     // MARK: - Constants
 
+    let siteID   = 321
+    let username = "jimthetester"
+    let email    = "jimthetester@thetestemail.org"
+    let token    = "token"
+
     let meEndpoint       = "me"
     let meSitesEndpoint  = "me/sites"
     let emailEndpoint    = "/is-available/email"
@@ -29,34 +34,31 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
     let requestLinkInvalidClientFailureMockFilename = "auth-send-login-email-invalid-client-failure.json"
     let requestLinkInvalidSecretFailureMockFilename = "auth-send-login-email-invalid-secret-failure.json"
 
-    let siteID   = 321
-    let username = "jimthetester"
-    let email    = "jimthetester@thetestemail.org"
-    let token    = "token"
-
     // MARK: - Properties
 
     var remote: AccountServiceRemoteREST!
-    var accountService: AccountService!
+    var account: WPAccount!
 
     // MARK: - Overridden Methods
 
     override func setUp() {
         super.setUp()
-        accountService = AccountService(managedObjectContext: contextManager.mainContext)
+
         remote = AccountServiceRemoteREST(wordPressComRestApi: restApi)
+        account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: contextManager.mainContext) as! WPAccount
+        account.username = username
+        account.email = email
+        account.authToken = token
     }
 
     override func tearDown() {
         super.tearDown()
-        accountService = nil
     }
 
     // MARK: - Get Account Details Tests
 
     func testGetAccountDetailsSucceeds() {
         let expect = expectation(description: "Get account details success")
-        let account: WPAccount = accountService.createOrUpdateAccount(withUsername: username, authToken: token)
 
         stubRemoteResponse(meEndpoint, filename: getAccountDetailsSuccessMockFilename, contentType: contentTypeJson)
         remote.getDetailsFor(account, success: { remoteUser in
@@ -72,7 +74,6 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
 
     func testGetAccountDetailsWithServerErrorFails() {
         let expect = expectation(description: "Get account details server error failure")
-        let account: WPAccount = accountService.createOrUpdateAccount(withUsername: username, authToken: token)
 
         stubRemoteResponse(meEndpoint, data: Data(), contentType: nil, status: 500)
         remote.getDetailsFor(account, success: { remoteUser in
@@ -94,7 +95,6 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
 
     func testGetAccountDetailsWithBadAuthFails() {
         let expect = expectation(description: "Get account details with bad auth failure")
-        let account: WPAccount = accountService.createOrUpdateAccount(withUsername: username, authToken: token)
 
         stubRemoteResponse(meEndpoint, filename: getAccountDetailsAuthFailureMockFilename, contentType: contentTypeJson, status: 403)
         remote.getDetailsFor(account, success: { remoteUser in
@@ -116,7 +116,6 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
 
     func testGetAccountDetailsWithBadJsonFails() {
         let expect = expectation(description: "Get account details with invalid json response failure")
-        let account: WPAccount = accountService.createOrUpdateAccount(withUsername: username, authToken: token)
 
         stubRemoteResponse(meEndpoint, filename: getAccountDetailsBadJsonFailureMockFilename, contentType: contentTypeJson, status: 200)
         remote.getDetailsFor(account, success: { remoteUser in
@@ -497,5 +496,4 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
 
         waitForExpectations(timeout: timeout, handler: nil)
     }
-
 }
