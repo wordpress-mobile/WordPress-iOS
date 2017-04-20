@@ -239,7 +239,7 @@ extension InvitePersonViewController {
 
         service.sendInvitation(recipient, role: role, message: message, success: {
             let success = NSLocalizedString("Invitation Sent!", comment: "The app successfully sent an invitation")
-            SVProgressHUD.showSuccess(withStatus: success)
+            SVProgressHUD.showDismissableSuccess(withStatus: success)
 
         }, failure: { error in
             self.handleSendError() {

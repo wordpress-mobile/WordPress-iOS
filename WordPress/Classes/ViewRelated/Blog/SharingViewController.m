@@ -2,7 +2,7 @@
 #import "Blog.h"
 #import "BlogService.h"
 #import "SharingConnectionsViewController.h"
-#import "SVProgressHUD.h"
+#import "SVProgressHUD+Dismiss.h"
 #import "WPTableViewCell.h"
 #import "WordPress-Swift.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
@@ -225,7 +225,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [sharingService syncPublicizeServicesForBlog:self.blog success:^{
         [weakSelf syncConnections];
     } failure:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Publicize service synchronization failed", @"Message to show when Publicize service synchronization failed")];
+        [SVProgressHUD showDismissableErrorWithStatus:NSLocalizedString(@"Publicize service synchronization failed", @"Message to show when Publicize service synchronization failed")];
         [weakSelf refreshPublicizers];
     }];
 }
@@ -237,7 +237,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [sharingService syncPublicizeConnectionsForBlog:self.blog success:^{
         [weakSelf refreshPublicizers];
     } failure:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Publicize connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
+        [SVProgressHUD showDismissableErrorWithStatus:NSLocalizedString(@"Publicize connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
         [weakSelf refreshPublicizers];
     }];
 }

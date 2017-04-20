@@ -2,7 +2,7 @@
 
 #import "Blog.h"
 #import "BlogService.h"
-#import "SVProgressHUD.h"
+#import "SVProgressHUD+Dismiss.h"
 #import "SharingAuthorizationWebViewController.h"
 #import "WordPress-Swift.h"
 
@@ -61,7 +61,7 @@
     [self dismissNavViewController];
     NSString *message = NSLocalizedString(@"%@ was reconnected.", @"Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name.");
     message = [NSString stringWithFormat:message, self.publicizeService.label];
-    [SVProgressHUD showSuccessWithStatus:message];
+    [SVProgressHUD showDismissableSuccessWithStatus:message];
 }
 
 
@@ -139,7 +139,7 @@
         return;
     }
 
-    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection failed", @"Message to show when Publicize authorization failed")];
+    [SVProgressHUD showDismissableErrorWithStatus:NSLocalizedString(@"Connection failed", @"Message to show when Publicize authorization failed")];
 }
 
 /**
@@ -156,7 +156,7 @@
         return;
     }
 
-    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection cancelled", @"Message to show when Publicize authorization is cancelled")];
+    [SVProgressHUD showDismissableErrorWithStatus:NSLocalizedString(@"Connection cancelled", @"Message to show when Publicize authorization is cancelled")];
 }
 
 
@@ -196,7 +196,7 @@
                 return;
             }
             NSString *status = [NSString stringWithFormat:NSLocalizedString(@"No connections found for %@", @"Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter"), self.publicizeService.label];
-            [SVProgressHUD showErrorWithStatus:status];
+            [SVProgressHUD showDismissableErrorWithStatus:status];
             return;
         }
 
@@ -209,7 +209,7 @@
         }
 
         NSString *status = [NSString stringWithFormat:NSLocalizedString(@"We had trouble loading connections for %@", @"Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter"), self.publicizeService.label];
-        [SVProgressHUD showErrorWithStatus:status];
+        [SVProgressHUD showDismissableErrorWithStatus:status];
     }];
 }
 
@@ -383,7 +383,7 @@
         [self.delegate sharingAuthorizationHelper:self connectionFailedForService:self.publicizeService];
         return;
     }
-    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection failed", @"Message to show when Publicize connect failed")];
+    [SVProgressHUD showDismissableErrorWithStatus:NSLocalizedString(@"Connection failed", @"Message to show when Publicize connect failed")];
 }
 
 
@@ -399,7 +399,7 @@
         [self.delegate sharingAuthorizationHelper:self connectionCancelledForService:self.publicizeService];
         return;
     }
-    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection cancelled", @"Message to show when Publicize connection is cancelled by the user.")];
+    [SVProgressHUD showDismissableErrorWithStatus:NSLocalizedString(@"Connection cancelled", @"Message to show when Publicize connection is cancelled by the user.")];
 }
 
 - (void)sharingAccountViewController:(SharingAccountViewController *)controller

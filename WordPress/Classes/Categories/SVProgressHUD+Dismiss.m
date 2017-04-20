@@ -1,0 +1,52 @@
+#import "SVProgressHUD+Dismiss.h"
+
+@implementation SVProgressHUD (Dismiss)
+
++ (void)showDismissableErrorWithStatus:(NSString*)status
+{
+    [SVProgressHUD registerForHUDNotifications];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showErrorWithStatus:status];
+}
+
++ (void)showDismissableSuccessWithStatus:(NSString*)status
+{
+    [SVProgressHUD registerForHUDNotifications];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showSuccessWithStatus:status];
+}
+
+#pragma mark - NSNotificationCenter
+
++ (void)handleHUDTappedNotification: (NSNotification *)notification
+{
+    [SVProgressHUD dismiss];
+}
+
++ (void)handleHUDDisappearedNotification: (NSNotification *)notification
+{
+    [self unregisterFromHUDNotifications];
+}
+
++ (void)registerForHUDNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleHUDTappedNotification:)
+                                                 name:SVProgressHUDDidReceiveTouchEventNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleHUDDisappearedNotification:)
+                                                 name:SVProgressHUDWillDisappearNotification object:nil];
+}
+
++ (void)unregisterFromHUDNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SVProgressHUDDidReceiveTouchEventNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SVProgressHUDWillDisappearNotification
+                                                  object:nil];
+}
+
+@end

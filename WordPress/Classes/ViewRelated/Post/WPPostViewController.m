@@ -9,7 +9,6 @@
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressComAnalytics/WPAnalytics.h>
-#import <SVProgressHUD/SVProgressHUD.h>
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "BlogSelectorViewController.h"
 #import "BlogService.h"
@@ -24,6 +23,7 @@
 #import "PostService.h"
 #import "PostSettingsViewController.h"
 #import "PrivateSiteURLProtocol.h"
+#import "SVProgressHUD+Dismiss.h"
 #import "WordPressAppDelegate.h"
 #import "WPButtonForNavigationBar.h"
 #import "WPBlogSelectorButton.h"
@@ -1483,12 +1483,12 @@ EditImageDetailsViewControllerDelegate
                         switch (currentSaveAction) {
                             case PostEditorSaveActionSave: {
                                 NSString *hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
-                                [SVProgressHUD showSuccessWithStatus:hudText];
+                                [SVProgressHUD showDismissableSuccessWithStatus:hudText];
                                 break;
                             }
                             case PostEditorSaveActionUpdate: {
                                 NSString *hudText = NSLocalizedString(@"Updated!", @"Text displayed in HUD after a post was successfully updated.");
-                                [SVProgressHUD showSuccessWithStatus:hudText];
+                                [SVProgressHUD showDismissableSuccessWithStatus:hudText];
                                 break;
                             }
                             default:

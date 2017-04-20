@@ -244,7 +244,7 @@ import WordPressShared
 
     @IBAction func handleSendVerificationButtonTapped(_ sender: UIButton) {
         let message = NSLocalizedString("SMS Sent", comment: "One Time Code has been sent via SMS")
-        SVProgressHUD.showSuccess(withStatus: message)
+        SVProgressHUD.showDismissableSuccess(withStatus: message)
 
         loginFacade.requestOneTimeCode(with: loginFields)
     }
