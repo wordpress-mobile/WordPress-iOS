@@ -45,7 +45,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
         super.setUp()
 
         remote = AccountServiceRemoteREST(wordPressComRestApi: restApi)
-        account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: contextManager.mainContext) as! WPAccount
+        account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: testContextManager.mainContext) as! WPAccount
         account.username = username
         account.email = email
         account.authToken = token
