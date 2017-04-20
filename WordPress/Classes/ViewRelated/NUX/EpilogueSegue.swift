@@ -8,53 +8,54 @@
 
 import UIKit
 
-internal var _animator: EpilogueAnimator?
-
-class EpilogueSegue: UIStoryboardSegue {
-    override init(identifier: String?, source: UIViewController, destination: UIViewController) {
-        super.init(identifier: identifier, source: source, destination: destination)
-        
-        _animator = EpilogueAnimator(presentedViewController: destination, presenting: source)
-    }
-    
-    override func perform() {
-        destination.transitioningDelegate = _animator
-        source.present(destination, animated: true) {}
-    }
+protocol EpilogueAnimation {
 }
 
-class EpilogueAnimator: UIPresentationController {
-    override init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
-        super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
-        
-        presentedViewController.modalPresentationStyle = .custom
-    }
-}
-
-extension EpilogueAnimator: UIViewControllerTransitioningDelegate {
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return self
-    }
-}
-
-extension EpilogueAnimator: UIViewControllerAnimatedTransitioning {
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.35
-    }
-    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        let containerView = transitionContext.containerView
-        guard let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from),
-              let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else {
+extension EpilogueAnimation where Self: UIStoryboardSegue {
+    func performEpilogue(completion: @escaping (Void) -> ()) {
+        guard let containerView = source.view.superview else {
             return
         }
-        containerView.addSubview(toVC.view)
-        containerView.addSubview(fromVC.view)
+        let sourceVC = source
+        let destinationVC = destination
+        let duration = 0.35
 
-        let duration = transitionDuration(using: transitionContext)
-        UIView.animate(withDuration: duration, delay: 0, options:UIViewAnimationOptions.curveEaseIn, animations: {
-            fromVC.view.center.y += fromVC.view.frame.size.height
+        destinationVC.view.frame = sourceVC.view.frame
+
+        containerView.addSubview(destinationVC.view)
+        containerView.addSubview(sourceVC.view)
+
+        UIView.animate(withDuration: duration, delay: 0, options:UIViewAnimationOptions.curveEaseInOut, animations: {
+            sourceVC.view.center.y += sourceVC.view.frame.size.height
         }) { (finished) in
-            transitionContext.completeTransition(finished)
+            completion()
         }
+    }
+}
+
+class EpilogueSegue: UIStoryboardSegue, EpilogueAnimation {
+    let duration = 0.35
+
+    override init(identifier: String?, source: UIViewController, destination: UIViewController) {
+        super.init(identifier: identifier, source: source, destination: destination)
+    }
+
+    override func perform() {
+        performEpilogue() {
+            self.destination.view.removeFromSuperview()
+            self.source.present(self.destination, animated: false) {}
+        }
+    }
+}
+
+class EpilogueUnwindSegue: UIStoryboardSegue, EpilogueAnimation {
+    let duration = 0.35
+
+    override init(identifier: String?, source: UIViewController, destination: UIViewController) {
+        super.init(identifier: identifier, source: source, destination: destination)
+    }
+
+    override func perform() {
+        performEpilogue() {}
     }
 }
