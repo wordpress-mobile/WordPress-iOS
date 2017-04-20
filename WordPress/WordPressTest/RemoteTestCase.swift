@@ -23,6 +23,7 @@ class RemoteTestCase: XCTestCase {
         super.setUp()
         contextManager = TestContextManager()
         restApi = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
+        stubAllNetworkRequestsWithNotConnectedError()
     }
 
     override func tearDown() {
@@ -58,4 +59,13 @@ class RemoteTestCase: XCTestCase {
         }
     }
 
+    func stubAllNetworkRequestsWithNotConnectedError() {
+        stub(condition: { request in
+            return true
+        }) { response in
+            XCTFail("Unexpected network request was made to: \(response.url!.absoluteString)")
+            let notConnectedError = NSError(domain:NSURLErrorDomain, code:Int(CFNetworkErrors.cfurlErrorNotConnectedToInternet.rawValue), userInfo:nil)
+            return OHHTTPStubsResponse(error:notConnectedError)
+        }
+    }
 }
