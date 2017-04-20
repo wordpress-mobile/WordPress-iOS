@@ -577,7 +577,7 @@
 		B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */; };
 		B5B68BD41C19AAED00EB59E0 /* InteractiveNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B68BD31C19AAED00EB59E0 /* InteractiveNotificationsManager.swift */; };
 		B5B84CDB1D9985190058A8FF /* CGAffineTransform+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B84CDA1D9985190058A8FF /* CGAffineTransform+Helpers.swift */; };
-		B5BC25A01CFCB91800F7D8B9 /* PeopleRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BC259F1CFCB91800F7D8B9 /* PeopleRemoteTests.swift */; };
+		B5BC25A01CFCB91800F7D8B9 /* PeopleServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BC259F1CFCB91800F7D8B9 /* PeopleServiceRemoteTests.swift */; };
 		B5BC25A21CFCBA5400F7D8B9 /* people-validate-invitation-success.json in Resources */ = {isa = PBXBuildFile; fileRef = B5BC25A11CFCBA5400F7D8B9 /* people-validate-invitation-success.json */; };
 		B5BC25A41CFCBA6A00F7D8B9 /* people-send-invitation-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = B5BC25A31CFCBA6A00F7D8B9 /* people-send-invitation-failure.json */; };
 		B5BC25A61CFCBDB600F7D8B9 /* people-send-invitation-success.json in Resources */ = {isa = PBXBuildFile; fileRef = B5BC25A51CFCBDB600F7D8B9 /* people-send-invitation-success.json */; };
@@ -1945,7 +1945,7 @@
 		B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 19.xcdatamodel"; sourceTree = "<group>"; };
 		B5B68BD31C19AAED00EB59E0 /* InteractiveNotificationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveNotificationsManager.swift; sourceTree = "<group>"; };
 		B5B84CDA1D9985190058A8FF /* CGAffineTransform+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Helpers.swift"; sourceTree = "<group>"; };
-		B5BC259F1CFCB91800F7D8B9 /* PeopleRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleRemoteTests.swift; sourceTree = "<group>"; };
+		B5BC259F1CFCB91800F7D8B9 /* PeopleServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleServiceRemoteTests.swift; sourceTree = "<group>"; };
 		B5BC25A11CFCBA5400F7D8B9 /* people-validate-invitation-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "people-validate-invitation-success.json"; sourceTree = "<group>"; };
 		B5BC25A31CFCBA6A00F7D8B9 /* people-send-invitation-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "people-send-invitation-failure.json"; sourceTree = "<group>"; };
 		B5BC25A51CFCBDB600F7D8B9 /* people-send-invitation-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "people-send-invitation-success.json"; sourceTree = "<group>"; };
@@ -3170,7 +3170,7 @@
 				261FF32B1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift */,
 				0859DCFC1CB8488400EB4069 /* MenusServiceRemoteTests.m */,
 				B532ACD01DC3ABF600FFFA57 /* NotificationSyncServiceRemoteTests.swift */,
-				B5BC259F1CFCB91800F7D8B9 /* PeopleRemoteTests.swift */,
+				B5BC259F1CFCB91800F7D8B9 /* PeopleServiceRemoteTests.swift */,
 				59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */,
 				26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */,
 				59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */,
@@ -6963,7 +6963,7 @@
 				1702BBE21CF319C600766A33 /* DomainsServiceTests.swift in Sources */,
 				932645A41E7C206600134988 /* EditorSettingsTests.swift in Sources */,
 				933D1F471EA64108009FB462 /* TestingAppDelegate.m in Sources */,
-				B5BC25A01CFCB91800F7D8B9 /* PeopleRemoteTests.swift in Sources */,
+				B5BC25A01CFCB91800F7D8B9 /* PeopleServiceRemoteTests.swift in Sources */,
 				85B125411B028E34008A3D95 /* PushAuthenticationManagerTests.swift in Sources */,
 				93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */,
 				E6374DC91C445ABF00F24720 /* SharingServiceRemoteTests.m in Sources */,
