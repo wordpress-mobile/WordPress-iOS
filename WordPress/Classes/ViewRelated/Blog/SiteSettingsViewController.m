@@ -952,7 +952,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService updateSettingsForBlog:self.blog success:nil failure:^(NSError *error) {
-        [SVProgressHUD showDismissableErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
+        [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
         DDLogError(@"Error while trying to update BlogSettings: %@", error);
     }];
 }

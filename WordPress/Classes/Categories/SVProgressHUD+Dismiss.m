@@ -2,14 +2,14 @@
 
 @implementation SVProgressHUD (Dismiss)
 
-+ (void)showDismissableErrorWithStatus:(NSString*)status
++ (void)showDismissibleErrorWithStatus:(NSString*)status
 {
     [SVProgressHUD registerForHUDNotifications];
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
     [SVProgressHUD showErrorWithStatus:status];
 }
 
-+ (void)showDismissableSuccessWithStatus:(NSString*)status
++ (void)showDismissibleSuccessWithStatus:(NSString*)status
 {
     [SVProgressHUD registerForHUDNotifications];
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
