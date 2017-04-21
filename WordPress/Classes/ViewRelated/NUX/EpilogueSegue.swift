@@ -56,6 +56,8 @@ class EpilogueUnwindSegue: UIStoryboardSegue, EpilogueAnimation {
     }
 
     override func perform() {
-        performEpilogue() {}
+        performEpilogue() {
+            self.destination.dismiss(animated: false) {}
+        }
     }
 }

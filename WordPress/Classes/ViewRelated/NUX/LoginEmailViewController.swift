@@ -9,21 +9,15 @@
 import UIKit
 
 class LoginEmailViewController: SigninEmailViewController {
-
     override func requestLink() {
         performSegue(withIdentifier: "startMagicLinkFlow", sender: self)
     }
 
-    override func signinToSelfHostedSite() {
-        performSegue(withIdentifier: "showSelfHostedLogin", sender: self)
+    override func signinWithUsernamePassword(_ immediateSignin: Bool = false) {
+        performSegue(withIdentifier: "showWPComLogin", sender: self)
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let destination = segue.destination as? LoginEpilogueViewController,
-            let source = segue.source as? NUXAbstractViewController else {
-                return
-        }
-        destination.dismissBlock = source.dismissBlock
-        destination.originalPresentingVC = navigationController?.presentingViewController
+    override func signinToSelfHostedSite() {
+        performSegue(withIdentifier: "showSelfHostedLogin", sender: self)
     }
 }
