@@ -53,8 +53,13 @@ class NUXAbstractViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? NUXAbstractViewController,
-            let source = segue.source as? NUXAbstractViewController {
+        guard let source = segue.source as? NUXAbstractViewController else {
+            return
+        }
+
+        if let destination = segue.destination as? LoginEpilogueViewController {
+            destination.dismissBlock = source.dismissBlock
+        } else if let destination = segue.destination as? NUXAbstractViewController {
             destination.loginFields = source.loginFields
             destination.dismissBlock = source.dismissBlock
         }
