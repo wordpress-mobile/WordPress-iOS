@@ -207,7 +207,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
         service.followSite(by: url, success: { [weak self] in
             let success = NSLocalizedString("Followed", comment: "User followed a site.")
-            SVProgressHUD.showDismissableSuccess(withStatus: success)
+            SVProgressHUD.showDismissibleSuccess(withStatus: success)
             generator.notificationOccurred(.success)
             self?.syncSites()
             self?.refreshPostsForFollowedTopic()
