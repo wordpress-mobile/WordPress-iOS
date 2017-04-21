@@ -1059,10 +1059,15 @@ import WordPressComAnalytics
     /// - There must be a topic
     /// - The controller must be the active controller.
     /// - The app must have a internet connection.
+    /// - The app must be running on the foreground.
     /// - The current time must be greater than the last sync interval.
     ///
     func syncIfAppropriate() {
         guard UIApplication.shared.isRunningTestSuite() == false else {
+            return
+        }
+
+        guard WordPressAppDelegate.sharedInstance().runningInBackground == false else {
             return
         }
 
@@ -1086,6 +1091,24 @@ import WordPressComAnalytics
         }
     }
 
+    /// Used to fetch new content in response to a background refresh event.  
+    /// Not intended for use as part of a user interaction. See syncIfAppropriate instead.
+    ///
+    func backgroundFetch(_ completionHandler: @escaping ((UIBackgroundFetchResult) -> Void)) {
+        let lastSeenPostID = (tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
+
+        syncHelper.backgroundSync(success: { [weak self, weak lastSeenPostID] in
+            let newestFetchedPostID = (self?.tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
+            self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            if lastSeenPostID == newestFetchedPostID {
+                completionHandler(.noData)
+            } else {
+                completionHandler(.newData)
+            }
+        }, failure: { (_) in
+            completionHandler(.failed)
+        })
+    }
 
     func syncFillingGap(_ indexPath: IndexPath) {
         if !canSync() {

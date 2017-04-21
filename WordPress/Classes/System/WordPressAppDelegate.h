@@ -17,6 +17,7 @@
 @property (nonatomic, strong, readonly) Reachability *internetReachability;
 @property (nonatomic, strong, readonly) Reachability *wpcomReachability;
 @property (nonatomic, assign, readonly) BOOL connectionAvailable;
+@property (nonatomic, assign, readonly) BOOL runningInBackground;
 @property (nonatomic, strong, readonly) WPUserAgent *userAgent;
 
 + (WordPressAppDelegate *)sharedInstance;
