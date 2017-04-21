@@ -1,16 +1,9 @@
-//
-//  EpilogueSegue.swift
-//  WordPress
-//
-//  Created by Nate Heagy on 2017-04-12.
-//  Copyright © 2017 WordPress. All rights reserved.
-//
-
 import UIKit
 
 protocol EpilogueAnimation {
 }
 
+/// Custom animation to allow presented views to appear to come from behind the presenter
 extension EpilogueAnimation where Self: UIStoryboardSegue {
     func performEpilogue(completion: @escaping (Void) -> ()) {
         guard let containerView = source.view.superview else {
@@ -33,6 +26,7 @@ extension EpilogueAnimation where Self: UIStoryboardSegue {
     }
 }
 
+/// Presenting segue version of the EpilogueAnimation
 class EpilogueSegue: UIStoryboardSegue, EpilogueAnimation {
     let duration = 0.35
 
@@ -48,6 +42,7 @@ class EpilogueSegue: UIStoryboardSegue, EpilogueAnimation {
     }
 }
 
+/// Unwinding segue version of the EpilogueAnimation
 class EpilogueUnwindSegue: UIStoryboardSegue, EpilogueAnimation {
     let duration = 0.35
 
