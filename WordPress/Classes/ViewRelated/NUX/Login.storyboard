@@ -1279,6 +1279,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
+                                    <action selector="handleUsePasswordTapped:" destination="GSd-vy-rpZ" eventType="touchUpInside" id="I1f-Mc-BbK"/>
                                     <segue destination="lmD-c6-SLs" kind="show" id="Jfl-Zm-PRR"/>
                                 </connections>
                             </button>
