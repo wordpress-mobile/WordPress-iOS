@@ -2,9 +2,9 @@ import Foundation
 
 /// Encapsulates all of the People Management WordPress.com Methods
 ///
-class PeopleRemote: ServiceRemoteWordPressComREST {
+class PeopleServiceRemote: ServiceRemoteWordPressComREST {
 
-    /// Defines the PeopleRemote possible errors.
+    /// Defines the PeopleServiceRemote possible errors.
     ///
     enum ResponseError: Error {
         case decodingFailure
@@ -366,9 +366,9 @@ class PeopleRemote: ServiceRemoteWordPressComREST {
 }
 
 
-/// Encapsulates PeopleRemote Private Methods
+/// Encapsulates PeopleServiceRemote Private Methods
 ///
-private extension PeopleRemote {
+private extension PeopleServiceRemote {
     /// Parses a dictionary containing an array of Persons, and returns an array of Person instances.
     ///
     /// - Parameters:
@@ -472,7 +472,7 @@ private extension PeopleRemote {
         return filtered.sorted()
     }
 
-    /// Parses a remote Invitation Error into a PeopleRemote.Error.
+    /// Parses a remote Invitation Error into a PeopleServiceRemote.Error.
     ///
     /// - Parameters:
     ///     - response: Raw backend dictionary

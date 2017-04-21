@@ -300,11 +300,11 @@ private extension InvitePersonViewController {
     }
 
     func handleValidationError(_ error: Error) {
-        guard let error = error as? PeopleRemote.ResponseError else {
+        guard let error = error as? PeopleServiceRemote.ResponseError else {
             return
         }
 
-        let messageMap: [PeopleRemote.ResponseError: String] = [
+        let messageMap: [PeopleServiceRemote.ResponseError: String] = [
             .invalidInputError: NSLocalizedString("The specified user cannot be found. Please, verify if it's correctly spelt.",
                                                   comment: "People: Invitation Error"),
             .userAlreadyHasRoleError: NSLocalizedString("The user already has the specified role. Please, try assigning a different role.",

@@ -1,10 +1,17 @@
-import Foundation
-import XCTest
-import OHHTTPStubs
 @testable import WordPress
 
-class PeopleServiceTests: XCTestCase {
+class PeopleServiceRemoteTests: RemoteTestCase {
+
     // MARK: - Constants
+
+    let viewerID        = 123
+    let followerID      = 987
+    let siteID          = 321
+    let validUsername   = "someValidUser"
+    let invalidUsername = "someInvalidUser"
+
+    let newInviteEndpoint       = "invites/new"
+    let validateInviteEndpoint  = "invites/validate"
 
     let validationSuccessMockFilename       = "people-validate-invitation-success.json"
     let validationFailureMockFilename       = "people-validate-invitation-failure.json"
@@ -14,49 +21,29 @@ class PeopleServiceTests: XCTestCase {
     let deleteFollowerSuccessMockFilename   = "people-delete-follower-success.json"
     let deleteViewerFailureMockFilename     = "people-delete-viewer-failure.json"
     let deleteViewerSuccessMockFilename     = "people-delete-viewer-success.json"
-    let contentTypeJson                     = "application/json"
-    let timeout                             = TimeInterval(1000)
 
     // MARK: - Properties
 
-    var restApi: WordPressComRestApi!
-    var remote: PeopleRemote!
+    var remote: PeopleServiceRemote!
+
+    var siteViewerDeleteEndpoint: String { return "sites/\(siteID)/viewers/\(viewerID)/delete" }
+    var siteFollowerDeleteEndpoint: String { return "sites/\(siteID)/followers/\(followerID)/delete" }
 
 
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
 
     override func setUp() {
         super.setUp()
-
-        restApi = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
-        remote = PeopleRemote(wordPressComRestApi: restApi)
+        remote = PeopleServiceRemote(wordPressComRestApi: restApi)
     }
-
-    override func tearDown() {
-        super.tearDown()
-        OHHTTPStubs.removeAllStubs()
-    }
-
-
-    // MARK: - Helpers
-
-    fileprivate func stubRemoteResponse(_ endpoint: String, filename: String, status: Int32 = 200) {
-        stub(condition: { request in
-            return request.url?.absoluteString.range(of: endpoint) != nil
-        }) { _ in
-            let stubPath = OHPathForFile(filename, type(of: self))
-            return fixture(filePath: stubPath!, status: status, headers: ["Content-Type" as NSObject: self.contentTypeJson as AnyObject])
-        }
-    }
-
 
     // MARK: - Tests
 
     func testValidateInvitationWithInvalidUsernameFails() {
-        let expect = expectation(description: "Send Invite")
+        let expect = expectation(description: "Validate invite failure")
 
-        stubRemoteResponse("invites/validate", filename: validationFailureMockFilename)
-        remote.validateInvitation(321, usernameOrEmail: "someInvalidUser", role: .Follower, success: {
+        stubRemoteResponse(validateInviteEndpoint, filename: validationFailureMockFilename, contentType: .ApplicationJSON)
+        remote.validateInvitation(siteID, usernameOrEmail: invalidUsername, role: .Follower, success: {
             XCTAssert(false, "This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
@@ -67,10 +54,10 @@ class PeopleServiceTests: XCTestCase {
     }
 
     func testValidateInvitationWithValidUsernameSucceeds() {
-        let expect = expectation(description: "Send Invite")
+        let expect = expectation(description: "Validate invite success")
 
-        stubRemoteResponse("invites/validate", filename: validationSuccessMockFilename)
-        remote.validateInvitation(321, usernameOrEmail: "someValidUser", role: .Follower, success: {
+        stubRemoteResponse(validateInviteEndpoint, filename: validationSuccessMockFilename, contentType: .ApplicationJSON)
+        remote.validateInvitation(siteID, usernameOrEmail: validUsername, role: .Follower, success: {
             expect.fulfill()
         }, failure: { error in
             XCTAssert(false, "This callback shouldn't get called")
@@ -81,10 +68,10 @@ class PeopleServiceTests: XCTestCase {
     }
 
     func testSendInvitationToInvalidUsernameFails() {
-        let expect = expectation(description: "Validate Invite")
+        let expect = expectation(description: "Send invite failure")
 
-        stubRemoteResponse("invites/new", filename: sendFailureMockFilename)
-        remote.sendInvitation(321, usernameOrEmail: "someInvalidUser", role: .Follower, message: "", success: {
+        stubRemoteResponse(newInviteEndpoint, filename: sendFailureMockFilename, contentType: .ApplicationJSON)
+        remote.sendInvitation(siteID, usernameOrEmail: invalidUsername, role: .Follower, message: "", success: {
             XCTAssert(false, "This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
@@ -95,10 +82,10 @@ class PeopleServiceTests: XCTestCase {
     }
 
     func testSendInvitationToValidUsernameSucceeds() {
-        let expect = expectation(description: "Validate Invite")
+        let expect = expectation(description: "Send invite success")
 
-        stubRemoteResponse("invites/new", filename: sendSuccessMockFilename)
-        remote.sendInvitation(321, usernameOrEmail: "someValidUser", role: .Follower, message: "", success: {
+        stubRemoteResponse(newInviteEndpoint, filename: sendSuccessMockFilename, contentType: .ApplicationJSON)
+        remote.sendInvitation(siteID, usernameOrEmail: validUsername, role: .Follower, message: "", success: {
             expect.fulfill()
         }, failure: { error in
             XCTAssert(false, "This callback shouldn't get called")
@@ -109,11 +96,10 @@ class PeopleServiceTests: XCTestCase {
     }
 
     func testDeleteFollowerWithInvalidUserFails() {
-        let expect = expectation(description: "Delete Follower")
-        let followerID = 123
-        let siteID = 321
+        let expect = expectation(description: "Delete follower failure")
 
-        stubRemoteResponse("sites/\(siteID)/followers/\(followerID)/delete", filename: deleteFollowerFailureMockFilename, status: 404)
+        stubRemoteResponse(siteFollowerDeleteEndpoint, filename: deleteFollowerFailureMockFilename,
+                           contentType: .ApplicationJSON, status: 404)
         remote.deleteFollower(siteID, userID: followerID, success: {
             XCTAssert(false, "This callback shouldn't get called")
             expect.fulfill()
@@ -125,11 +111,10 @@ class PeopleServiceTests: XCTestCase {
     }
 
     func testDeleteFollowerWithValidUserSucceeds() {
-        let expect = expectation(description: "Delete Follower")
-        let followerID = 123
-        let siteID = 321
+        let expect = expectation(description: "Delete follower success")
 
-        stubRemoteResponse("sites/\(siteID)/followers/\(followerID)/delete", filename: deleteFollowerSuccessMockFilename)
+        stubRemoteResponse(siteFollowerDeleteEndpoint, filename: deleteFollowerSuccessMockFilename,
+                           contentType: .ApplicationJSON)
         remote.deleteFollower(siteID, userID: followerID, success: {
             expect.fulfill()
         }, failure: { error in
@@ -141,11 +126,10 @@ class PeopleServiceTests: XCTestCase {
     }
 
     func testDeleteViewerWithInvalidUserFails() {
-        let expect = expectation(description: "Delete Viewer")
-        let viewerID = 123
-        let siteID = 321
+        let expect = expectation(description: "Delete viewer failure")
 
-        stubRemoteResponse("sites/\(siteID)/viewers/\(viewerID)/delete", filename: deleteViewerFailureMockFilename, status: 404)
+        stubRemoteResponse(siteViewerDeleteEndpoint, filename: deleteViewerFailureMockFilename,
+                           contentType: .ApplicationJSON, status: 404)
         remote.deleteViewer(siteID, userID: viewerID, success: {
             XCTAssert(false, "This callback shouldn't get called")
             expect.fulfill()
@@ -157,11 +141,10 @@ class PeopleServiceTests: XCTestCase {
     }
 
     func testDeleteViewerWithValidUserSucceeds() {
-        let expect = expectation(description: "Delete Viewer")
-        let viewerID = 123
-        let siteID = 321
+        let expect = expectation(description: "Delete viewer success")
 
-        stubRemoteResponse("sites/\(siteID)/viewers/\(viewerID)/delete", filename: deleteViewerSuccessMockFilename)
+        stubRemoteResponse(siteViewerDeleteEndpoint, filename: deleteViewerSuccessMockFilename,
+                           contentType: .ApplicationJSON)
         remote.deleteViewer(siteID, userID: viewerID, success: {
             expect.fulfill()
         }, failure: { error in
