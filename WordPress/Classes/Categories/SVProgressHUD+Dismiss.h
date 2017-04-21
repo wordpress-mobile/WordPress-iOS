@@ -2,7 +2,7 @@
 
 @interface SVProgressHUD (Dismiss)
 
-+ (void)showDismissableErrorWithStatus:(NSString*)status;
-+ (void)showDismissableSuccessWithStatus:(NSString*)status;
++ (void)showDismissibleErrorWithStatus:(NSString*)status;
++ (void)showDismissibleSuccessWithStatus:(NSString*)status;
 
 @end

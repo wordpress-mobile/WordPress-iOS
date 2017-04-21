@@ -1483,12 +1483,12 @@ EditImageDetailsViewControllerDelegate
                         switch (currentSaveAction) {
                             case PostEditorSaveActionSave: {
                                 NSString *hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
-                                [SVProgressHUD showDismissableSuccessWithStatus:hudText];
+                                [SVProgressHUD showDismissibleSuccessWithStatus:hudText];
                                 break;
                             }
                             case PostEditorSaveActionUpdate: {
                                 NSString *hudText = NSLocalizedString(@"Updated!", @"Text displayed in HUD after a post was successfully updated.");
-                                [SVProgressHUD showDismissableSuccessWithStatus:hudText];
+                                [SVProgressHUD showDismissibleSuccessWithStatus:hudText];
                                 break;
                             }
                             default:
