@@ -130,6 +130,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self setupStoreKit];
     [self setupBuddyBuild];
     [self setupPingHub];
+    [self setupBackgroundRefresh:application];
 
     return YES;
 }
@@ -196,6 +197,10 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)setupPingHub
 {
     self.pinghubManager = [PingHubManager new];
+}
+
+- (void)setupBackgroundRefresh:(UIApplication *)application {
+    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
@@ -467,6 +472,25 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogMethod();
 
     [[PushNotificationsManager sharedInstance] handleNotification:userInfo completionHandler:completionHandler];
+}
+
+#pragma mark - Background Refresh
+
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
+{
+    WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
+    ReaderMenuViewController *readerMenuVC = tabBarController.readerMenuViewController;
+    if (readerMenuVC.currentReaderStream) {
+        [readerMenuVC.currentReaderStream backgroundFetch:completionHandler];
+    } else {
+        completionHandler(UIBackgroundFetchResultNoData);
+    }
+}
+
+- (BOOL)runningInBackground
+{
+    UIApplicationState state = [UIApplication sharedApplication].applicationState;
+    return state == UIApplicationStateBackground;
 }
 
 #pragma mark - Custom methods

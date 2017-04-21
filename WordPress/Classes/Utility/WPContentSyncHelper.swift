@@ -88,6 +88,29 @@ class WPContentSyncHelper: NSObject {
         return true
     }
 
+    func backgroundSync(success: (() -> Void)?, failure: ((_ error: NSError?) -> Void)?) {
+        if isSyncing {
+            success?()
+            return
+        }
+
+        isSyncing = true
+
+        delegate?.syncHelper(self, syncContentWithUserInteraction: false, success: {
+                [weak self] (hasMore: Bool) -> Void in
+                if let weakSelf = self {
+                    weakSelf.hasMoreContent = hasMore
+                    weakSelf.syncContentEnded()
+                }
+                success?()
+            }, failure: {
+                [weak self] (error: NSError) -> Void in
+                if let weakSelf = self {
+                    weakSelf.syncContentEnded()
+                }
+                failure?(error)
+        })
+    }
 
     // MARK: - Private Methods
 
