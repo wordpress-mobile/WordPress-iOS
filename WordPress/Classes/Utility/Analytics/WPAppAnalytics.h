@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@class Blog;
+@class Blog, AbstractPost;
 
 typedef NSString*(^WPAppAnalyticsLastVisibleScreenCallback)();
 
@@ -11,6 +11,7 @@ extern NSString * const WPAppAnalyticsKeyFeedID;
 extern NSString * const WPAppAnalyticsKeyFeedItemID;
 extern NSString * const WPAppAnalyticsKeyIsJetpack;
 extern NSString * const WPAppAnalyticsKeySessionCount;
+extern NSString * const WPAppAnalyticsKeyEditorSource;
 
 /**
  *  @class      WPAppAnalytics
@@ -75,6 +76,16 @@ extern NSString * const WPAppAnalyticsKeySessionCount;
  *  @brief      Tracks stats with the blog_id when available
  */
 + (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlogID:(NSNumber*)blogID;
+
+/**
+ *  @brief      Tracks stats with the post details when available
+ */
++ (void)track:(WPAnalyticsStat)stat withPost:(AbstractPost *)postOrPage;
+
+/**
+ *  @brief      Tracks stats with the post details when available
+ */
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withPost:(AbstractPost *)postOrPage;
 
 /**
     @brief      Used only for bumping the TrainTracks interaction event. The stat's

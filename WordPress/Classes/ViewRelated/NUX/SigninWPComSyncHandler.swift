@@ -64,8 +64,8 @@ extension SigninWPComSyncHandler {
         dismiss()
 
         let properties = [
-            "multifactor": requiredMultifactor ? "1" : "0",
-            "dotcom_user": "1"
+            "multifactor": requiredMultifactor ? true.description : false.description,
+            "dotcom_user": true.description
         ]
 
         WPAppAnalytics.track(WPAnalyticsStat.signedIn, withProperties: properties)
