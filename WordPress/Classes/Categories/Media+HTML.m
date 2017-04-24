@@ -67,9 +67,11 @@
         return self.remoteThumbnailURL;
     }
     NSURL *posterURL = [self absoluteThumbnailLocalURL];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:posterURL.path isDirectory:nil]) {
-        return posterURL.path;
+    if (posterURL) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:posterURL.path isDirectory:nil]) {
+            return posterURL.path;
+        }
     }
     return self.remoteThumbnailURL;
 }

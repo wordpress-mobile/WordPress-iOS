@@ -1,6 +1,5 @@
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
-#import "WordPress-Swift.h"
 
 
 @interface PushNotificationsManagerTests : XCTestCase
@@ -88,6 +87,7 @@
 - (void)testHelpshiftNotificationIsProperlyHandled
 {
     NSDictionary *userInfo = @{ @"origin" : @"helpshift" };
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
     PushNotificationsManager *manager = [PushNotificationsManager new];
     id mockManager = OCMPartialMock(manager);
     

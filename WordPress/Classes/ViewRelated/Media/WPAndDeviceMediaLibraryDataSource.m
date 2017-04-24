@@ -13,26 +13,71 @@
 
 - (instancetype)initWithBlog:(Blog *)blog
 {
+    return [self initWithBlog:blog
+        initialDataSourceType:MediaPickerDataSourceTypeDevice];
+}
+
+- (instancetype)initWithBlog:(Blog *)blog
+       initialDataSourceType:(MediaPickerDataSourceType)sourceType
+{
     self = [super init];
     if (self) {
         _mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithBlog:blog];
-        _deviceLibraryDataSource = [[WPPHAssetDataSource alloc] init];
-        _currentDataSource = _deviceLibraryDataSource;
-        _observers = [[NSMutableDictionary alloc] init];
+
+        [self commonInitWithSourceType:sourceType];
     }
     return self;
 }
 
 - (instancetype)initWithPost:(AbstractPost *)post
 {
+    return [self initWithPost:post
+        initialDataSourceType:MediaPickerDataSourceTypeDevice];
+}
+
+- (instancetype)initWithPost:(AbstractPost *)post
+       initialDataSourceType:(MediaPickerDataSourceType)sourceType
+{
     self = [super init];
     if (self) {
         _mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithPost:post];
-        _deviceLibraryDataSource = [[WPPHAssetDataSource alloc] init];
-        _currentDataSource = _deviceLibraryDataSource;
-        _observers = [[NSMutableDictionary alloc] init];
+
+        [self commonInitWithSourceType:sourceType];
     }
     return self;
+}
+
+- (void)commonInitWithSourceType:(MediaPickerDataSourceType)sourceType
+{
+    _deviceLibraryDataSource = [[WPPHAssetDataSource alloc] init];
+
+    _observers = [[NSMutableDictionary alloc] init];
+
+    [self setDataSourceType:sourceType];
+
+    // If we're showing the media library first, ensure that we have
+    // the groups loaded for the device library so that the user can switch.
+    if (self.dataSourceType == MediaPickerDataSourceTypeMediaLibrary) {
+        [_deviceLibraryDataSource loadDataWithSuccess:nil failure:nil];
+    }
+}
+
+- (MediaPickerDataSourceType)dataSourceType
+{
+    return (_currentDataSource == _deviceLibraryDataSource) ? MediaPickerDataSourceTypeDevice : MediaPickerDataSourceTypeMediaLibrary;
+}
+
+- (void)setDataSourceType:(MediaPickerDataSourceType)dataSourceType
+{
+    switch (dataSourceType) {
+        case MediaPickerDataSourceTypeDevice:
+            _currentDataSource = _deviceLibraryDataSource;
+            break;
+        case MediaPickerDataSourceTypeMediaLibrary:
+            _currentDataSource = _mediaLibraryDataSource;
+        default:
+            break;
+    }
 }
 
 - (NSInteger)numberOfGroups
@@ -171,9 +216,5 @@
 {
     return [self.currentDataSource ascendingOrdering];
 }
-
-
-
-
 
 @end

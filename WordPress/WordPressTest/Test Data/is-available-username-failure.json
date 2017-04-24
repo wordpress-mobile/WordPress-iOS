@@ -1,0 +1,5 @@
+{
+    "error": "taken",
+    "message": "Sorry, that username already exists!",
+    "status": "error"
+}
