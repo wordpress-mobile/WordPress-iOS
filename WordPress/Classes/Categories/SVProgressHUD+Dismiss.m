@@ -2,14 +2,14 @@
 
 @implementation SVProgressHUD (Dismiss)
 
-+ (void)showDismissibleErrorWithStatus:(NSString*)status
++ (void)showDismissibleErrorWithStatus:(NSString *)status
 {
     [SVProgressHUD registerForHUDNotifications];
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
     [SVProgressHUD showErrorWithStatus:status];
 }
 
-+ (void)showDismissibleSuccessWithStatus:(NSString*)status
++ (void)showDismissibleSuccessWithStatus:(NSString *)status
 {
     [SVProgressHUD registerForHUDNotifications];
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
@@ -18,12 +18,12 @@
 
 #pragma mark - NSNotificationCenter
 
-+ (void)handleHUDTappedNotification: (NSNotification *)notification
++ (void)handleHUDTappedNotification:(NSNotification *)notification
 {
     [SVProgressHUD dismiss];
 }
 
-+ (void)handleHUDDisappearedNotification: (NSNotification *)notification
++ (void)handleHUDDisappearedNotification:(NSNotification *)notification
 {
     [self unregisterFromHUDNotifications];
 }
