@@ -30,13 +30,18 @@
 
 + (void)registerForHUDNotifications
 {
+    // Remove the observer from NSNotificationCenter to prevent having duplicate entries
+    // when the HUD is re-displayed before being dismissed
+    [self unregisterFromHUDNotifications];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleHUDTappedNotification:)
                                                  name:SVProgressHUDDidReceiveTouchEventNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleHUDDisappearedNotification:)
-                                                 name:SVProgressHUDWillDisappearNotification object:nil];
+                                                 name:SVProgressHUDWillDisappearNotification
+                                               object:nil];
 }
 
 + (void)unregisterFromHUDNotifications
