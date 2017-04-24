@@ -52,14 +52,17 @@ open class WordPressOrgXMLRPCValidator: NSObject {
     open func guessXMLRPCURLForSite(_ site: String,
                                       success: @escaping (_ xmlrpcURL: URL) -> (),
                                       failure: @escaping (_ error: NSError) -> ()) {
+        let originalXMLRPCURL: URL
         let xmlrpcURL: URL
         do {
             xmlrpcURL = try urlForXMLRPCFromURLString(site, addXMLRPC: true)
+            originalXMLRPCURL = try urlForXMLRPCFromURLString(site, addXMLRPC: false)
         } catch let error as NSError {
             DDLogSwift.logError(error.localizedDescription)
             failure(error)
             return
         }
+
         validateXMLRPCURL(xmlrpcURL, success: success, failure: { (error) in
                 DDLogSwift.logError(error.localizedDescription)
                 if error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication ||
@@ -68,12 +71,30 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                     return
                 }
                 // Try the original given url as an XML-RPC endpoint
-                let  originalXMLRPCURL = try! self.urlForXMLRPCFromURLString(site, addXMLRPC: false)
                 DDLogSwift.logError("Try the original given url as an XML-RPC endpoint: \(originalXMLRPCURL)")
                 self.validateXMLRPCURL(originalXMLRPCURL , success: success, failure: { (error) in
+                    DDLogSwift.logError(error.localizedDescription)
+                    // Fetch the original url and look for the RSD link
+                    self.guessXMLRPCURLFromHTMLURL(originalXMLRPCURL, success: success, failure: { (error) in
                         DDLogSwift.logError(error.localizedDescription)
-                        // Fetch the original url and look for the RSD link
-                        self.guessXMLRPCURLFromHTMLURL(originalXMLRPCURL, success: success, failure: failure)
+                        // See if this is a Jetpack site that's having problems.
+                        let service = JetpackService()
+                        service.checkSiteIsJetpack(originalXMLRPCURL, success: { (_, err) in
+                            // If no error was returned it means the site either wasn't
+                            // a Jetpack site, or Jetpack was connected and working
+                            // properly. If an error was returned, it means the site
+                            // was a Jetpack site, and the error is related to
+                            // Jetpack.
+                            if let err = err as NSError? {
+                                failure(err)
+                            } else {
+                                failure(error)
+                            }
+                        }, failure: { (_) in
+                            failure(error)
+                        })
+
+                    })
                 })
             })
     }
