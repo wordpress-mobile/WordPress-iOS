@@ -60,6 +60,13 @@
     });
 }
 
+- (void)unregisterSuperProperty:(NSString *)propertyName
+{
+    dispatch_async(self.superPropertiesQueue, ^{
+        [[Mixpanel sharedInstance] unregisterSuperProperty:propertyName];
+    });
+}
+
 - (void)identify:(NSString *)username
 {
     NSParameterAssert(username.length > 0);
