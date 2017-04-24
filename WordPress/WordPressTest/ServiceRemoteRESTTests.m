@@ -1,6 +1,5 @@
 #import <XCTest/XCTest.h>
 #import "ServiceRemoteWordPressComREST.h"
-#import "WordPress-Swift.h"
 
 @interface ServiceRemoteWordPressComRESTTests : XCTestCase
 @end
