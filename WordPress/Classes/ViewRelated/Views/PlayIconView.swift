@@ -5,7 +5,7 @@ import WordPressShared
 /// play button appearance in web views.
 ///
 class PlayIconView: UIView {
-    private static let defaultSize = CGSize(width: 110, height: 110)
+    private static let defaultSize = CGSize(width: 71, height: 71)
 
     private let playLayer = CAShapeLayer()
     private let visualEffectsView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
@@ -49,6 +49,7 @@ class PlayIconView: UIView {
 
     private func addEffectsView() {
         visualEffectsView.frame = bounds
+
         addSubview(visualEffectsView)
     }
 
@@ -70,8 +71,8 @@ class PlayIconView: UIView {
         let halfBoundsWidth: CGFloat = bounds.width / 2
         let halfBoundsHeight: CGFloat = bounds.height / 2
 
-        let size = CGSize(width: halfBoundsWidth - lineWidth,
-                          height: halfBoundsHeight)
+        let size = CGSize(width: halfBoundsWidth - (lineWidth + halfLineWidth),
+                          height: halfBoundsHeight - halfLineWidth)
         let halfSizeWidth: CGFloat = size.width / 2
         let halfSizeHeight: CGFloat = size.height / 2
 
@@ -89,7 +90,7 @@ class PlayIconView: UIView {
         playLayer.lineCap = kCALineCapRound
         playLayer.lineJoin = kCALineJoinRound
 
-        let centerX = halfBoundsWidth - halfSizeWidth + lineWidth
+        let centerX = halfBoundsWidth - halfSizeWidth + halfLineWidth
         let centerY = halfBoundsHeight - halfSizeWidth - lineWidth
 
         playLayer.frame = CGRect(x: centerX, y: centerY, width: size.width, height: size.height)
