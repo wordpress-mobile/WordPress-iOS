@@ -9,6 +9,7 @@ import WordPressShared
 
     static let restorationIdentifier = "ReaderMenuViewController"
     static let selectedIndexPathRestorationIdentifier = "ReaderMenuSelectedIndexPathKey"
+    static let currentReaderStreamIdentifier = "ReaderMenuCurrentStream"
 
     let defaultCellIdentifier = "DefaultCellIdentifier"
     let actionCellIdentifier = "ActionCellIdentifier"
@@ -16,6 +17,8 @@ import WordPressShared
 
     var isSyncing = false
     var didSyncTopics = false
+
+    var currentReaderStream: ReaderStreamViewController?
 
     fileprivate var defaultIndexPath: IndexPath {
         return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .followed)
@@ -46,12 +49,14 @@ import WordPressShared
 
     override func encodeRestorableState(with coder: NSCoder) {
         coder.encode(restorableSelectedIndexPath, forKey: type(of: self).selectedIndexPathRestorationIdentifier)
+        coder.encode(currentReaderStream, forKey: type(of: self).currentReaderStreamIdentifier)
 
         super.encodeRestorableState(with: coder)
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
         decodeRestorableSelectedIndexPathWithCoder(coder: coder)
+        decodeRestorableCurrentStreamWithCoder(coder: coder)
 
         super.decodeRestorableState(with: coder)
     }
@@ -59,6 +64,12 @@ import WordPressShared
     fileprivate func decodeRestorableSelectedIndexPathWithCoder(coder: NSCoder) {
         if let indexPath = coder.decodeObject(forKey: type(of: self).selectedIndexPathRestorationIdentifier) as? IndexPath {
             restorableSelectedIndexPath = indexPath
+        }
+    }
+
+    fileprivate func decodeRestorableCurrentStreamWithCoder(coder: NSCoder) {
+        if let currentStream = coder.decodeObject(forKey: type(of: self).currentReaderStreamIdentifier) as? ReaderStreamViewController {
+            currentReaderStream = currentStream
         }
     }
 
@@ -461,10 +472,12 @@ import WordPressShared
 
     fileprivate func viewControllerForMenuItem(_ menuItem: ReaderMenuItem) -> UIViewController? {
         if let topic = menuItem.topic {
-            return viewControllerForTopic(topic)
+            currentReaderStream = viewControllerForTopic(topic)
+            return currentReaderStream
         }
 
         if menuItem.type == .search {
+            currentReaderStream = nil
             return viewControllerForSearch()
         }
 
@@ -577,7 +590,7 @@ extension ReaderMenuViewController : WPSplitViewControllerDetailProvider {
         if restorableSelectedIndexPath == defaultIndexPath {
             let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             if let topic = service.topicForFollowedSites() {
-                return ReaderStreamViewController.controllerWithTopic(topic)
+                return viewControllerForTopic(topic)
             } else {
                 restorableSelectedIndexPath = IndexPath(row: 0, section: 0)
                 if let item = viewModel.menuItemAtIndexPath(restorableSelectedIndexPath!) {
