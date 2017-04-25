@@ -11,6 +11,7 @@ import WordPressComAnalytics
 // MARK: - Aztec's Native Editor!
 //
 class AztecPostViewController: UIViewController {
+    fileprivate let analyticsEditorSourceValue = "aztec"
 
     /// Closure to be executed when the editor gets closed
     ///
@@ -802,13 +803,13 @@ extension AztecPostViewController {
 
     private func trackPostSave(stat: WPAnalyticsStat) {
         guard stat != .editorSavedDraft && stat != .editorQuickSavedDraft else {
-            WPAppAnalytics.track(stat, with:post.blog)
+            WPAppAnalytics.track(stat, withProperties:[WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue], with:post.blog)
             return
         }
 
         let originalWordCount = post.original?.content?.wordCount() ?? 0
         let wordCount = post.content?.wordCount() ?? 0
-        var properties: [String: Any] = ["word_count": wordCount]
+        var properties: [String: Any] = ["word_count": wordCount, WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue]
         if post.hasRemote() {
             properties["word_diff_count"] = originalWordCount
         }
@@ -820,7 +821,7 @@ extension AztecPostViewController {
             properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = post.hasVideo()
         }
 
-        WPAppAnalytics.track(stat, withProperties: properties, with: post.blog)
+        WPAppAnalytics.track(stat, withProperties: properties, with: post)
     }
 }
 
@@ -1480,7 +1481,7 @@ fileprivate extension AztecPostViewController {
             return
         }
 
-        WPAppAnalytics.track(.editorDiscardedChanges, with: post.blog)
+        WPAppAnalytics.track(.editorDiscardedChanges, withProperties:[WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue], with: post)
 
         post = originalPost
         post.deleteRevision()
@@ -1502,7 +1503,7 @@ fileprivate extension AztecPostViewController {
     func dismissOrPopView(didSave: Bool) {
         stopEditing()
 
-        WPAppAnalytics.track(.editorClosed, with: post.blog)
+        WPAppAnalytics.track(.editorClosed, withProperties:[WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue], with: post)
 
         if let onClose = onClose {
             onClose(didSave)
@@ -1653,9 +1654,9 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
 
             if media.mediaType == .image {
-                WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post.blog)
+                WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
             } else if media.mediaType == .video {
-                WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post.blog)
+                WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
             }
 
             upload(media: media, mediaID: attachment.identifier)
@@ -1711,7 +1712,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                     return
                 }
 
-                WPAppAnalytics.track(.editorUploadMediaFailed, with: strongSelf.post.blog)
+                WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: strongSelf.analyticsEditorSourceValue], with: strongSelf.post.blog)
 
                 DispatchQueue.main.async {
                     strongSelf.handleError(error as NSError, onAttachment: attachment)
@@ -1790,7 +1791,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                         self.richTextView.refreshLayoutFor(attachment: attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
 
-                                                        WPAppAnalytics.track(.editorUploadMediaRetried, with: self.post.blog)
+                                                        WPAppAnalytics.track(.editorUploadMediaRetried, withProperties: [WPAppAnalyticsKeyEditorSource: self.analyticsEditorSourceValue], with: self.post.blog)
 
                                                         self.upload(media: media, mediaID: mediaID)
                                                     }
@@ -1821,7 +1822,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
 
-        WPAppAnalytics.track(.editorEditedImage, with: post.blog)
+        WPAppAnalytics.track(.editorEditedImage, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue], with: post)
     }
 
     var mediaMessageAttributes: [String: Any] {
