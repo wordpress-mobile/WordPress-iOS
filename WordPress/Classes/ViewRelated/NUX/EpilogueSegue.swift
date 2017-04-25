@@ -30,10 +30,6 @@ extension EpilogueAnimation where Self: UIStoryboardSegue {
 class EpilogueSegue: UIStoryboardSegue, EpilogueAnimation {
     let duration = 0.35
 
-    override init(identifier: String?, source: UIViewController, destination: UIViewController) {
-        super.init(identifier: identifier, source: source, destination: destination)
-    }
-
     override func perform() {
         performEpilogue() {
             self.destination.view.removeFromSuperview()
@@ -45,10 +41,6 @@ class EpilogueSegue: UIStoryboardSegue, EpilogueAnimation {
 /// Unwinding segue version of the EpilogueAnimation
 class EpilogueUnwindSegue: UIStoryboardSegue, EpilogueAnimation {
     let duration = 0.35
-
-    override init(identifier: String?, source: UIViewController, destination: UIViewController) {
-        super.init(identifier: identifier, source: source, destination: destination)
-    }
 
     override func perform() {
         performEpilogue() {
