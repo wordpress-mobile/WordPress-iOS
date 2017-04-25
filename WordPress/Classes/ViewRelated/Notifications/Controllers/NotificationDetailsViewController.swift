@@ -88,7 +88,6 @@ class NotificationDetailsViewController: UIViewController {
                 return
             }
 
-            markReadIfNeeded()
             refreshInterface()
         }
     }
@@ -105,7 +104,6 @@ class NotificationDetailsViewController: UIViewController {
     ///
     var onSelectedNoteChange: ((Notification) -> Void)?
 
-    private var isViewVisible = false
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -148,17 +146,8 @@ class NotificationDetailsViewController: UIViewController {
         refreshInterface()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        isViewVisible = true
-        markReadIfNeeded()
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        isViewVisible = false
-
         keyboardManager?.stopListeningToKeyboardNotifications()
     }
 
@@ -189,14 +178,6 @@ class NotificationDetailsViewController: UIViewController {
         attachSuggestionsViewIfNeeded()
         adjustLayoutConstraintsIfNeeded()
         refreshNavigationBar()
-    }
-
-    fileprivate func markReadIfNeeded() {
-        guard isViewVisible, !note.read else {
-            return
-        }
-        let mediator = NotificationSyncMediator()
-        mediator?.markAsRead(note)
     }
 
     fileprivate func refreshNavigationBar() {
