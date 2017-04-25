@@ -36,8 +36,9 @@
     self = [super init];
     if (self) {
         _mediaGroup = [[MediaLibraryGroup alloc] initWithBlog:blog];
+        __weak __typeof__(self) weakSelf = self;
         _groupObserverHandler = [_mediaGroup registerChangeObserverBlock:^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray<id<WPMediaMove>> *moved) {
-            [self notifyObserversWithIncrementalChanges:incrementalChanges removed:removed inserted:inserted changed:changed moved:moved];
+            [weakSelf notifyObserversWithIncrementalChanges:incrementalChanges removed:removed inserted:inserted changed:changed moved:moved];
         }];
         _blog = blog;
         NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
@@ -358,6 +359,17 @@
     return _fetchController;
 }
 
+- (NSInteger)totalAssetCount
+{
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    NSString *entityName = NSStringFromClass([Media class]);
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    fetchRequest.predicate = [[self class] predicateForFilter:self.filter blog:self.blog];
+
+    return (NSInteger)[mainContext countForFetchRequest:fetchRequest
+                                                  error:nil];
+}
+
 #pragma mark - NSFetchedResultsControllerDelegate
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
@@ -574,10 +586,12 @@
     }
 
     NSURL *url = nil;
+
+    if ([self.absoluteLocalURL checkResourceIsReachableAndReturnError:nil] && [self.absoluteLocalURL isVideo]) {
+        url = self.absoluteLocalURL;
+    }
     // Do we have a local url, or remote url to use for the video
-    if (self.absoluteLocalURL) {
-        url = [NSURL fileURLWithPath:self.absoluteLocalURL];
-    } else if (self.remoteURL) {
+    if (!url && self.remoteURL) {
         url = [NSURL URLWithString:self.remoteURL];
     }
 
@@ -634,13 +648,12 @@
     if (self.length != nil && [self.length doubleValue] > 0) {
         return [self.length doubleValue];
     }
-    
-    if (self.absoluteLocalURL == nil ||
-        ![[NSFileManager defaultManager] fileExistsAtPath:self.absoluteLocalURL isDirectory:nil]) {
+
+    NSURL *absoluteLocalURL = self.absoluteLocalURL;
+    if (absoluteLocalURL == nil || ![[NSFileManager defaultManager] fileExistsAtPath:absoluteLocalURL.path isDirectory:nil]) {
         return 0;
     }
-    NSURL *sourceMovieURL = [NSURL fileURLWithPath:self.absoluteLocalURL];
-    AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:sourceMovieURL options:nil];
+    AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:absoluteLocalURL options:nil];
     CMTime duration = sourceAsset.duration;
     
     return CMTimeGetSeconds(duration);

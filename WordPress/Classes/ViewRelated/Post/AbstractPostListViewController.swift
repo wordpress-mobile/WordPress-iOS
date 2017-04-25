@@ -803,7 +803,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         postService.uploadPost(apost, success: nil) { [weak self] (error: Error?) in
 
-            let error = error as? NSError
+            let error = error as NSError?
             guard let strongSelf = self else {
                 return
             }
@@ -855,7 +855,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                 return
             }
 
-            if let error = error as? NSError, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
+            if let error = error as NSError?, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
                 strongSelf.promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)
@@ -916,7 +916,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                 return
             }
 
-            if let error = error as? NSError, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
+            if let error = error as NSError?, error.code == type(of: strongSelf).HTTPErrorCodeForbidden {
                 strongSelf.promptForPassword()
             } else {
                 WPError.showXMLRPCErrorAlert(error)

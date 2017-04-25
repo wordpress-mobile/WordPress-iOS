@@ -24,6 +24,7 @@
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
 static NSString *const BlogDetailsSettingsCellIdentifier = @"BlogDetailsSettingsCell";
+static NSString *const BlogDetailsRemoveSiteCellIdentifier = @"BlogDetailsRemoveSiteCell";
 
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
@@ -51,6 +52,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) UIImageView *accessoryView;
 @property (nonatomic, strong) NSString *detail;
 @property (nonatomic) BOOL showsSelectionState;
+@property (nonatomic) BOOL forDestructiveAction;
 @property (nonatomic, copy) void (^callback)();
 
 @end
@@ -214,6 +216,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsSettingsCellIdentifier];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsRemoveSiteCellIdentifier];
 
     self.clearsSelectionOnViewWillAppear = NO;
 
@@ -361,6 +364,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     [marr addObject:[self configurationSectionViewModel]];
     [marr addObject:[self externalSectionViewModel]];
+    if ([self.blog supports:BlogFeatureRemovable]) {
+        [marr addObject:[self removeSiteSectionViewModel]];
+    }
 
     // Assign non mutable copy.
     self.tableSections = [NSArray arrayWithArray:marr];
@@ -518,6 +524,25 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
 }
 
+- (BlogDetailsSection *)removeSiteSectionViewModel
+{
+    __weak __typeof(self) weakSelf = self;
+    NSMutableArray *rows = [NSMutableArray array];
+    BlogDetailsRow *removeSiteRow = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Remove Site", @"Button to remove a site from the app")
+                                                               identifier:BlogDetailsRemoveSiteCellIdentifier
+                                                                    image:nil
+                                                                 callback:^{
+                                                                     [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
+                                                                     [weakSelf showRemoveSiteAlert];
+                                                                 }];
+    removeSiteRow.showsSelectionState = NO;
+    removeSiteRow.forDestructiveAction = YES;
+    [rows addObject:removeSiteRow];
+
+    return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
+
+}
+
 - (NSString *)adminRowTitle
 {
     if (self.blog.isHostedAtWPcom) {
@@ -596,11 +621,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
-    cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
     cell.textLabel.textAlignment = NSTextAlignmentNatural;
     cell.imageView.tintColor = [WPStyleGuide greyLighten10];
-    [WPStyleGuide configureTableViewCell:cell];
+    if (row.forDestructiveAction) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        [WPStyleGuide configureTableViewDestructiveActionCell:cell];
+    } else {
+        cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+        [WPStyleGuide configureTableViewCell:cell];
+    }
     [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
@@ -875,6 +905,35 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl] options:nil completionHandler:nil];
 }
 
+#pragma mark - Remove Site
+
+- (void)showRemoveSiteAlert
+{
+    NSString *model = [[UIDevice currentDevice] localizedModel];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to continue?\n All site data will be removed from your %@.", @"Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch"), model];
+    NSString *cancelTitle = NSLocalizedString(@"Cancel", nil);
+    NSString *destructiveTitle = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
+
+    UIAlertControllerStyle alertStyle = [UIDevice isPad] ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:message
+                                                                      preferredStyle:alertStyle];
+
+    [alertController addCancelActionWithTitle:cancelTitle handler:nil];
+    [alertController addDestructiveActionWithTitle:destructiveTitle handler:^(UIAlertAction *action) {
+        [self confirmRemoveSite];
+    }];
+
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)confirmRemoveSite
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [blogService removeBlog:self.blog];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 
 #pragma mark - Notification handlers
 

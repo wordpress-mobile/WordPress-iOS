@@ -215,7 +215,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        setBarsHidden(false)
+        setBarsHidden(false, animated: animated)
 
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
     }
@@ -294,7 +294,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 self?.textView.alpha = 1.0
                 self?.post = post
             }, failure: {[weak self] (error: Error?) in
-                DDLogSwift.logError("Error fetching post for detail: \(error?.localizedDescription)")
+                DDLogSwift.logError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
 
                 let title = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
                 WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: self?.view)
@@ -713,7 +713,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
             // Configure starting state
             imageView.alpha = 0.0
-            let angle = CGFloat((-270.0 * M_PI) / 180.0)
+            let angle = (-270.0 * CGFloat.pi) / 180.0
             let rotate = CGAffineTransform(rotationAngle: angle)
             let scale = CGAffineTransform(scaleX: 3.0, y: 3.0)
             imageView.transform = rotate.concatenating(scale)
@@ -721,7 +721,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             // Perform the animations
             UIView.animate(withDuration: animationDuration,
                 animations: { () in
-                    let angle = CGFloat((1.0 * M_PI) / 180.0)
+                    let angle = (1.0 * CGFloat.pi) / 180.0
                     let rotate = CGAffineTransform(rotationAngle: angle)
                     let scale = CGAffineTransform(scaleX: 0.75, y: 0.75)
                     imageView.transform = rotate.concatenating(scale)
@@ -743,7 +743,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
             UIView .animate(withDuration: animationDuration,
                 animations: { () -> Void in
-                    let angle = CGFloat((120.0 * M_PI) / 180.0)
+                    let angle = (120.0 * CGFloat.pi) / 180.0
                     let rotate = CGAffineTransform(rotationAngle: angle)
                     let scale = CGAffineTransform(scaleX: 3.0, y: 3.0)
                     imageView.transform = rotate.concatenating(scale)
@@ -808,17 +808,17 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
     }
 
-    func setBarsHidden(_ hidden: Bool) {
+    func setBarsHidden(_ hidden: Bool, animated: Bool = true) {
         if (navigationController?.isNavigationBarHidden == hidden) {
             return
         }
 
         if (hidden) {
             // Hides the navbar and footer view
-            navigationController?.setNavigationBarHidden(true, animated: true)
+            navigationController?.setNavigationBarHidden(true, animated: animated)
             currentPreferredStatusBarStyle = .default
             footerViewHeightConstraint.constant = 0.0
-            UIView.animate(withDuration: 0.3,
+            UIView.animate(withDuration: animated ? 0.3 : 0,
                 delay: 0.0,
                 options: [.beginFromCurrentState, .allowUserInteraction],
                 animations: {
@@ -829,10 +829,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             // Shows the navbar and footer view
             let pinToBottom = isScrollViewAtBottom()
 
-            navigationController?.setNavigationBarHidden(false, animated: true)
+            navigationController?.setNavigationBarHidden(false, animated: animated)
             currentPreferredStatusBarStyle = .lightContent
             footerViewHeightConstraint.constant = footerViewHeightConstraintConstant
-            UIView.animate(withDuration: 0.3,
+            UIView.animate(withDuration: animated ? 0.3 : 0,
                 delay: 0.0,
                 options: [.beginFromCurrentState, .allowUserInteraction],
                 animations: {

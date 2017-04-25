@@ -278,7 +278,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Failsafe: Make sure that the Notification (still) exists
-        guard let note = tableViewHandler.resultsController.object(at: indexPath) as? Notification else {
+        guard let note = tableViewHandler.resultsController.managedObject(atUnsafe: indexPath) as? Notification else {
             tableView.deselectSelectedRowWithAnimation(true)
             return
         }
@@ -514,7 +514,13 @@ extension NotificationsViewController {
             return
         }
 
-        performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+        // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
+        // would be missing entirely when launching the app from the background and presenting a notification.
+        // The issue seems tied to performing a `pop` in `prepareToShowDetailsForNotification` and presenting
+        // the new detail view controller at the same time. More info: https://github.com/wordpress-mobile/WordPress-iOS/issues/6976
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+        }
     }
 
     fileprivate func prepareToShowDetailsForNotification(_ note: Notification) {
@@ -699,7 +705,7 @@ extension NotificationsViewController {
 
         let start = Date()
 
-        mediator.sync { _ in
+        mediator.sync { (error, _) in
 
             let delta = max(Syncing.minimumPullToRefreshDelay + start.timeIntervalSinceNow, 0)
             let delay = DispatchTime.now() + Double(Int64(delta * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
@@ -707,6 +713,10 @@ extension NotificationsViewController {
             DispatchQueue.main.asyncAfter(deadline: delay) { _ in
                 self.refreshControl?.endRefreshing()
                 self.clearUnreadNotifications()
+            }
+
+            if let error = error {
+                WPError.showNetworkingAlertWithError(error, title: NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails."))
             }
         }
     }
@@ -888,7 +898,9 @@ private extension NotificationsViewController {
 
         return [
             MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"), backgroundColor: WPStyleGuide.greyDarken20(), callback: { _ in
-                NotificationSyncMediator()?.markAsRead(note)
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    NotificationSyncMediator()?.markAsRead(note)
+                }
                 return true
             })
         ]
@@ -904,13 +916,15 @@ private extension NotificationsViewController {
         // Comments: Trash
         if block.isActionEnabled(.Trash) {
             let trashButton = MGSwipeButton(title: NSLocalizedString("Trash", comment: "Trashes a comment"), backgroundColor: WPStyleGuide.errorRed(), callback: { [weak self] _ in
-                let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
-                    self?.actionsService.deleteCommentWithBlock(block) { success in
-                        onCompletion(success)
-                    }
-                })
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
+                        self?.actionsService.deleteCommentWithBlock(block) { success in
+                            onCompletion(success)
+                        }
+                    })
 
-                self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                    self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                }
                 return true
             })
             rightButtons.append(trashButton)
@@ -925,7 +939,9 @@ private extension NotificationsViewController {
             let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
 
             let unapproveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.grey(), callback: { [weak self] _ in
-                self?.actionsService.unapproveCommentWithBlock(block)
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    self?.actionsService.unapproveCommentWithBlock(block)
+                }
                 return true
             })
 
@@ -936,7 +952,9 @@ private extension NotificationsViewController {
             let title = NSLocalizedString("Approve", comment: "Approves a Comment")
 
             let approveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue(), callback: { [weak self] _ in
-                self?.actionsService.approveCommentWithBlock(block)
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    self?.actionsService.approveCommentWithBlock(block)
+                }
                 return true
             })
 
@@ -1026,32 +1044,29 @@ private extension NotificationsViewController {
 
     var noResultsTitleText: String {
         guard shouldDisplayJetpackMessage == false else {
-            return NSLocalizedString("Connect to Jetpack", comment: "Notifications title displayed when a self-hosted user is not connected to Jetpack")
+            return NSLocalizedString("Connect to Jetpack",
+                                     comment: "Notifications title displayed when a self-hosted user is not connected to Jetpack")
         }
-
-        let messageMap: [Filter: String] = [
-            .none: NSLocalizedString("No notifications yet", comment: "Displayed in the Notifications Tab, when there are no notifications"),
-            .unread: NSLocalizedString("No unread notifications", comment: "Displayed in the Notifications Tab, when the Unread Filter shows no notifications"),
-            .comment: NSLocalizedString("No comments notifications", comment: "Displayed in the Notifications Tab, when the Comments Filter shows no notifications"),
-            .follow: NSLocalizedString("No new followers notifications", comment: "Displayed in the Notifications Tab, when the Follow Filter shows no notifications"),
-            .like: NSLocalizedString("No like notifications", comment: "Displayed in the Notifications Tab, when the Likes Filter shows no notifications")
-        ]
-
-        let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
-        return messageMap[filter] ?? String()
+        return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsTitle ?? ""
     }
 
-    var noResultsMessageText: String? {
-        let jetpackMessage = NSLocalizedString("Jetpack supercharges your self-hosted WordPress site.", comment: "Notifications message displayed when a self-hosted user is not connected to Jetpack")
-        return shouldDisplayJetpackMessage ? jetpackMessage : nil
+    var noResultsMessageText: String {
+        guard shouldDisplayJetpackMessage == false else {
+            return NSLocalizedString("Jetpack supercharges your self-hosted WordPress site.",
+                                     comment: "Notifications message displayed when a self-hosted user is not connected to Jetpack")
+        }
+        return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsMessage ?? ""
     }
 
     var noResultsAccessoryView: UIView? {
         return shouldDisplayJetpackMessage ? UIImageView(image: UIImage(named: "icon-jetpack-gray")) : nil
     }
 
-    var noResultsButtonText: String? {
-        return shouldDisplayJetpackMessage ? NSLocalizedString("Learn more", comment: "") : nil
+    var noResultsButtonText: String {
+        guard shouldDisplayJetpackMessage == false else {
+            return NSLocalizedString("Learn more", comment: "")
+        }
+        return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsButtonTitle ?? ""
     }
 
     var shouldDisplayJetpackMessage: Bool {
@@ -1080,16 +1095,33 @@ private extension NotificationsViewController {
 //
 extension NotificationsViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView) {
-        guard let targetURL = URL(string: WPJetpackInformationURL) else {
-            fatalError()
+        guard shouldDisplayJetpackMessage == false else {
+            guard let targetURL = URL(string: WPJetpackInformationURL) else {
+                fatalError()
+            }
+
+            let webViewController = WPWebViewController(url: targetURL)
+            let navController = UINavigationController(rootViewController: webViewController!)
+            present(navController, animated: true, completion: nil)
+
+            let properties = [Stats.sourceKey: Stats.sourceValue]
+            WPAnalytics.track(.selectedLearnMoreInConnectToJetpackScreen, withProperties: properties)
+            return
         }
-
-        let webViewController = WPWebViewController(url: targetURL)
-        let navController = UINavigationController(rootViewController: webViewController!)
-        present(navController, animated: true, completion: nil)
-
-        let properties = [Stats.sourceKey: Stats.sourceValue]
-        WPAnalytics.track(.selectedLearnMoreInConnectToJetpackScreen, withProperties: properties)
+        if let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) {
+            let properties = [Stats.sourceKey: Stats.sourceValue]
+            switch filter {
+            case .none,
+                 .comment,
+                 .follow,
+                 .like:
+                WPAnalytics.track(.notificationsTappedViewReader, withProperties: properties)
+                WPTabBarController.sharedInstance().showReaderTab()
+            case .unread:
+                WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
+                WPTabBarController.sharedInstance().showPostTab()
+            }
+        }
     }
 }
 
@@ -1381,6 +1413,51 @@ private extension NotificationsViewController {
             case .comment:  return NSLocalizedString("Comments", comment: "Filters Comments Notifications")
             case .follow:   return NSLocalizedString("Follows", comment: "Filters Follows Notifications")
             case .like:     return NSLocalizedString("Likes", comment: "Filters Likes Notifications")
+            }
+        }
+
+        var noResultsTitle: String {
+            switch self {
+            case .none:     return NSLocalizedString("No notifications yet.",
+                                                     comment: "Displayed in the Notifications Tab as a title, when there are no notifications")
+            case .unread:   return NSLocalizedString("You're all caught up!",
+                                                     comment: "Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title")
+            case .comment:  return NSLocalizedString("No comments yet.",
+                                                     comment: "Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications")
+            case .follow:   return NSLocalizedString("No followers to report yet.",
+                                                     comment: "Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications")
+            case .like:     return NSLocalizedString("No likes to show yet.",
+                                                     comment: "Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications")
+            }
+        }
+
+        var noResultsMessage: String {
+            switch self {
+            case .none:     return NSLocalizedString("Get active! Comment on posts from blogs you follow.",
+                                                     comment: "Displayed in the Notifications Tab as a message, when there are no notifications")
+            case .unread:   return NSLocalizedString("Reignite the conversation: write a new post.",
+                                                     comment: "Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications")
+            case .comment:  return NSLocalizedString("Join a conversation: comment on posts from blogs you follow.",
+                                                     comment: "Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications")
+            case .follow:   return NSLocalizedString("Get noticed: comment on posts you've read.",
+                                                     comment: "Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications")
+            case .like:     return NSLocalizedString("Get noticed: comment on posts you've read.",
+                                                     comment: "Displayed in the Notifications Tab as a message, when the Likes Filter shows no notifications")
+            }
+        }
+
+        var noResultsButtonTitle: String {
+            switch self {
+            case .none:     return NSLocalizedString("View Reader",
+                                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
+            case .unread:   return NSLocalizedString("New Post",
+                                                     comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications")
+            case .comment:  return NSLocalizedString("View Reader",
+                                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
+            case .follow:   return NSLocalizedString("View Reader",
+                                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
+            case .like:     return NSLocalizedString("View Reader",
+                                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
             }
         }
 

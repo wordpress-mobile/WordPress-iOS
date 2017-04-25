@@ -205,12 +205,12 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (void)cacheRowHeight:(CGFloat)height forIndexPath:(NSIndexPath *)indexPath
 {
-    [self.cachedRowHeights setObject:@(height) forKey:[indexPath toString]];
+    [self.cachedRowHeights setObject:@(height) forKey:indexPath];
 }
 
 - (CGFloat)cachedRowHeightForIndexPath:(NSIndexPath *)indexPath
 {
-    return [[self.cachedRowHeights numberForKey:[indexPath toString]] floatValue];
+    return [[self.cachedRowHeights numberForKey:indexPath] floatValue];
 }
 
 - (void)refreshCachedRowHeightsForWidth:(CGFloat)width
@@ -226,7 +226,7 @@ static CGFloat const DefaultCellHeight = 44.0;
             continue;
         }
         CGFloat height = [self.delegate tableView:self.tableView heightForRowAtIndexPath:indexPath forWidth:width];
-        [cachedRowHeights setObject:@(height) forKey:[indexPath toString]];
+        [cachedRowHeights setObject:@(height) forKey:indexPath];
     }
 
     self.cachedRowHeights = cachedRowHeights;
@@ -238,16 +238,15 @@ static CGFloat const DefaultCellHeight = 44.0;
         return;
     }
 
-    NSString *nukedPathKey = indexPath.toString;
     NSMutableArray *invalidKeys = [NSMutableArray array];
 
-    for (NSString *key in [self.cachedRowHeights allKeys]) {
-        if ([key compare:nukedPathKey] == NSOrderedDescending) {
+    for (NSIndexPath *key in [self.cachedRowHeights allKeys]) {
+        if ([key compare:indexPath] == NSOrderedDescending) {
             [invalidKeys addObject:key];
         }
     }
 
-    [self.cachedRowHeights removeObjectForKey:nukedPathKey];
+    [self.cachedRowHeights removeObjectForKey:indexPath];
     [self.cachedRowHeights removeObjectsForKeys:invalidKeys];
 }
 
@@ -256,7 +255,7 @@ static CGFloat const DefaultCellHeight = 44.0;
     if (!self.cacheRowHeights) {
         return;
     }
-    [self.cachedRowHeights removeObjectForKey:indexPath.toString];
+    [self.cachedRowHeights removeObjectForKey:indexPath];
 }
 
 - (void)invalidateCachedRowHeightAtIndexPath:(NSIndexPath *)indexPath
@@ -265,8 +264,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         return;
     }
 
-    NSString *key = [indexPath toString];
-    NSNumber *height = [self.cachedRowHeights objectForKey:key];
+    NSNumber *height = [self.cachedRowHeights objectForKey:indexPath];
     if (!height) {
         return;
     }

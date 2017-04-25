@@ -1249,7 +1249,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     MediaService * mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
-    Media * media = [mediaService findMediaWithID:self.apost.post_thumbnail inBlog:self.apost.blog];
+    Media *media = [Media existingMediaWithMediaID:self.apost.post_thumbnail inBlog:self.apost.blog];
     void (^successBlock)(Media * media) = ^(Media *featuredMedia) {
         NSURL *url = [NSURL URLWithString:featuredMedia.remoteURL];
         CGFloat width = CGRectGetWidth(self.view.frame);
@@ -1350,7 +1350,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                           [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
                           DDLogError(@"Couldn't upload featured image: %@", [error localizedDescription]);
                       }];
-    [progress setUserInfoObject:[UIImage imageWithData:[NSData dataWithContentsOfFile:media.absoluteThumbnailLocalURL]] forKey:WPProgressImageThumbnailKey];
+    [progress setUserInfoObject:[UIImage imageWithData:[NSData dataWithContentsOfFile:media.absoluteThumbnailLocalURL.path]] forKey:WPProgressImageThumbnailKey];
     progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
     progress.kind = NSProgressKindFile;
     [progress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];

@@ -32,4 +32,7 @@
 /// contain the search query.
 @property (nonatomic, copy) NSString *searchQuery;
 
+/// The total asset account, ignoring the current search query if there is one.
+@property (nonatomic, readonly) NSInteger totalAssetCount;
+
 @end

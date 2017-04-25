@@ -128,6 +128,21 @@ task :build => [:dependencies] do
   xcodebuild(:build)
 end
 
+desc "Profile build #{XCODE_SCHEME}"
+task :buildprofile => [:dependencies] do
+  ENV["verbose"] = "1"
+  xcodebuild(:build, "OTHER_SWIFT_FLAGS='-Xfrontend -debug-time-compilation -Xfrontend -debug-time-expression-type-checking'")
+end
+
+task :timed_build => [:clean] do
+  require 'benchmark'
+  time = Benchmark.measure do
+    Rake::Task["build"].invoke
+  end
+  puts "CPU Time: #{time.total}"
+  puts "Wall Time: #{time.real}"
+end
+
 desc "Run test suite"
 task :test => [:dependencies] do
   xcodebuild(:build, :test)
