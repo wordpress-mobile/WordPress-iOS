@@ -93,6 +93,8 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
     [WordPressAppDelegate fixKeychainAccess];
 
     // Basic networking setup
@@ -120,7 +122,6 @@ int ddLogLevel = DDLogLevelInfo;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
-    [self.window makeKeyAndVisible];
 
     [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
@@ -129,6 +130,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self setupStoreKit];
     [self setupBuddyBuild];
     [self setupPingHub];
+    [self setupBackgroundRefresh:application];
 
     return YES;
 }
@@ -195,6 +197,10 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)setupPingHub
 {
     self.pinghubManager = [PingHubManager new];
+}
+
+- (void)setupBackgroundRefresh:(UIApplication *)application {
+    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
@@ -282,7 +288,7 @@ int ddLogLevel = DDLogLevelInfo;
 
                 return YES;
             }
-        } else if ([[url host] isEqualToString:@"editor"]) {
+        } else if ([[url host] isEqualToString:@"editor"] || [[url host] isEqualToString:@"aztec"]) {
             // Example: wordpress://editor?available=1&enabled=0
             NSDictionary* params = [[url query] dictionaryFromQueryString];
 
@@ -431,7 +437,7 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [MediaService clearUnusedFilesFromLocalMediaDirectoryOnCompletion:nil onError:nil];
+        [MediaLibrary clearUnusedFilesFromLocalDirectoryOnCompletion:nil onError:nil];
     });
     
     // Configure Extensions
@@ -466,6 +472,25 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogMethod();
 
     [[PushNotificationsManager sharedInstance] handleNotification:userInfo completionHandler:completionHandler];
+}
+
+#pragma mark - Background Refresh
+
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
+{
+    WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
+    ReaderMenuViewController *readerMenuVC = tabBarController.readerMenuViewController;
+    if (readerMenuVC.currentReaderStream) {
+        [readerMenuVC.currentReaderStream backgroundFetch:completionHandler];
+    } else {
+        completionHandler(UIBackgroundFetchResultNoData);
+    }
+}
+
+- (BOOL)runningInBackground
+{
+    UIApplicationState state = [UIApplication sharedApplication].applicationState;
+    return state == UIApplicationStateBackground;
 }
 
 #pragma mark - Custom methods
