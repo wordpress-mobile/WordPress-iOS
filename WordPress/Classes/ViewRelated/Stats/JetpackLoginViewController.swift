@@ -424,7 +424,7 @@ class JetpackLoginViewController: UIViewController {
         loginFields.username = usernameTextField.nonNilTrimmedText()
         loginFields.password = passwordTextField.nonNilTrimmedText()
         loginFacade.requestOneTimeCode(with: loginFields)
-        SVProgressHUD.showSuccess(withStatus: message)
+        SVProgressHUD.showDismissibleSuccess(withStatus: message)
     }
 
     fileprivate func completeLogin() {

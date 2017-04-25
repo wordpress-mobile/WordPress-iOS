@@ -11,7 +11,7 @@ struct PeopleService {
     /// MARK: - Private Properties
     ///
     fileprivate let context: NSManagedObjectContext
-    fileprivate let remote: PeopleRemote
+    fileprivate let remote: PeopleServiceRemote
 
 
     /// Designated Initializer.
@@ -25,7 +25,7 @@ struct PeopleService {
             return nil
         }
 
-        self.remote = PeopleRemote(wordPressComRestApi: api)
+        self.remote = PeopleServiceRemote(wordPressComRestApi: api)
         self.siteID = dotComID
         self.context = context
     }
