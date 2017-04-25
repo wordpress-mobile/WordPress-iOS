@@ -72,11 +72,14 @@
     NSDictionary *userInfo = @{ @"type" : @"badge-reset"};
     PushNotificationsManager *manager = [PushNotificationsManager new];
     id mockManager = OCMPartialMock(manager);
-    
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-result"
     [[mockManager reject] handleAuthenticationNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
     [[mockManager reject] handleHelpshiftNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
     [[mockManager reject] handleInactiveNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
     [[mockManager reject] handleBackgroundNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
+#pragma clang diagnostic pop
     
     [mockManager handleNotification:userInfo completionHandler:nil];
     OCMVerify(mockManager);

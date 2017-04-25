@@ -828,6 +828,12 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatNotificationsSettingsUpdated:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Updated"];
             break;
+        case WPAnalyticsStatNotificationsTappedNewPost:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification - New Post (empty state)"];
+            break;
+        case WPAnalyticsStatNotificationsTappedViewReader:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification - View Reader (empty state)"];
+            break;
         case WPAnalyticsStatPersonRemoved:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"People Management - Removed Person"];
             break;
@@ -1106,6 +1112,18 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatMySitesTabAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"My Site - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_my_site"];
+            break;
+        case WPAnalyticsStatMediaLibraryDeletedItems:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Media Library - Deleted items"];
+            break;
+        case WPAnalyticsStatMediaLibraryEditedItemMetadata:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Media Library - Edited item metadata"];
+            break;
+        case WPAnalyticsStatMediaLibraryPreviewedItem:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Media Library - Previewed item"];
+            break;
+        case WPAnalyticsStatMediaLibrarySharedItemLink:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Media Library - Shared item link"];
             break;
 
         // To be implemented

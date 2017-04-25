@@ -159,13 +159,13 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             action: pushHelp())
 
         let logIn = ButtonRow(
-            title: NSLocalizedString("Connect to WordPress.com", comment: "Label for connecting to WordPress.com account"),
+            title: NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account"),
             action: presentLogin())
 
         let logOut = DestructiveButtonRow(
-            title: NSLocalizedString("Disconnect from WordPress.com", comment: "Label for disconnecting from WordPress.com account"),
+            title: NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account"),
             action: confirmLogout(),
-            accessibilityIdentifier: "disconnectFromWPcomButton")
+            accessibilityIdentifier: "logOutFromWPcomButton")
 
         let wordPressComAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
 

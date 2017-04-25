@@ -5,6 +5,7 @@ import WordPressShared
 /// Implements site management services triggered from SiteSettingsViewController
 ///
 public extension SiteSettingsViewController {
+
     /// Presents confirmation alert for Export Content
     ///
     public func confirmExportContent() {
@@ -87,7 +88,7 @@ public extension SiteSettingsViewController {
 
                 if purchases.isEmpty {
                     WPAppAnalytics.track(.siteSettingsDeleteSiteAccessed, with: strongSelf.blog)
-                    strongSelf.present(strongSelf.confirmDeleteController(), animated: true, completion: nil)
+                    strongSelf.navigationController?.pushViewController(DeleteSiteViewController.controller(strongSelf.blog), animated: true)
                 } else {
                     WPAppAnalytics.track(.siteSettingsDeleteSitePurchasesShown, with: strongSelf.blog)
                     strongSelf.present(strongSelf.warnPurchasesController(), animated: true, completion: nil)
@@ -105,103 +106,6 @@ public extension SiteSettingsViewController {
 
                 alertController.presentFromRootViewController()
             })
-    }
-
-    /// Creates confirmation alert for Delete Site
-    ///
-    /// - Returns: UIAlertController
-    ///
-    fileprivate func confirmDeleteController() -> UIAlertController {
-        let confirmTitle = NSLocalizedString("Confirm Delete Site", comment: "Title of Delete Site confirmation alert")
-        let messageFormat = NSLocalizedString("Please type in \n\n%@\n\n in the field below to confirm. Your site will then be gone forever.", comment: "Message of Delete Site confirmation alert; substitution is site's host")
-        let message = String(format: messageFormat, blog.displayURL!)
-        let alertController = UIAlertController(title: confirmTitle, message: message, preferredStyle: .alert)
-
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
-        alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-
-        let deleteTitle = NSLocalizedString("Delete this site", comment: "Delete Site confirmation action title")
-        let deleteAction = UIAlertAction(title: deleteTitle, style: .destructive, handler: { action in
-            self.deleteSiteConfirmed()
-        })
-        deleteAction.isEnabled = false
-        alertController.addAction(deleteAction)
-
-        alertController.addTextField(configurationHandler: { textField in
-            textField.addTarget(self, action: #selector(SiteSettingsViewController.alertTextFieldDidChange(_:)), for: .editingChanged)
-        })
-
-        return alertController
-    }
-
-    /// Verifies site address as password for Delete Site
-    ///
-    func alertTextFieldDidChange(_ sender: UITextField) {
-        guard let deleteAction = (presentedViewController as? UIAlertController)?.actions.last else {
-            return
-        }
-
-        let prompt = blog.displayURL?.lowercased.trim()
-        let password = sender.text?.lowercased().trim()
-        deleteAction.isEnabled = prompt == password
-    }
-
-    /// Handles deletion of the blog's site and all content from WordPress.com
-    ///
-    /// - Note: This is permanent and cannot be reversed by user
-    ///
-    fileprivate func deleteSiteConfirmed() {
-        let status = NSLocalizedString("Deleting site…", comment: "Overlay message displayed while deleting site")
-        SVProgressHUD.setDefaultMaskType(.black)
-        SVProgressHUD.show(withStatus: status)
-
-        let trackedBlog = blog
-        WPAppAnalytics.track(.siteSettingsDeleteSiteRequested, with: trackedBlog)
-        let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.deleteSiteForBlog(blog,
-            success: { [weak self] in
-                WPAppAnalytics.track(.siteSettingsDeleteSiteResponseOK, with: trackedBlog)
-                let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
-                SVProgressHUD.showSuccess(withStatus: status)
-
-                self?.updateNavigationStackAfterSiteDeletion()
-
-                let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-                accountService.updateUserDetails(for: (accountService.defaultWordPressComAccount()!), success: { _ in }, failure: { _ in })
-            },
-            failure: { error in
-                DDLogSwift.logError("Error deleting site: \(error.localizedDescription)")
-                WPAppAnalytics.track(.siteSettingsDeleteSiteResponseError, with: trackedBlog)
-                SVProgressHUD.dismiss()
-
-                let errorTitle = NSLocalizedString("Delete Site Error", comment: "Title of alert when site deletion fails")
-                let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .alert)
-
-                let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
-                alertController.addDefaultActionWithTitle(okTitle, handler: nil)
-
-                alertController.presentFromRootViewController()
-            })
-    }
-
-    fileprivate func updateNavigationStackAfterSiteDeletion() {
-        if let primaryNavigationController = self.splitViewController?.viewControllers.first as? UINavigationController {
-            if let secondaryNavigationController = self.splitViewController?.viewControllers.last as? UINavigationController {
-
-                // If this view controller is in the detail pane of its splitview
-                // (i.e. its navigation controller isn't the navigation controller in the primary position in the splitview)
-                // then replace it with an empty view controller, as we just deleted its blog
-                if primaryNavigationController != secondaryNavigationController && secondaryNavigationController == self.navigationController {
-                    let emptyViewController = UIViewController()
-                    WPStyleGuide.configureColors(for: emptyViewController.view, andTableView: nil)
-
-                    self.navigationController?.viewControllers = [emptyViewController]
-                }
-            }
-
-            // Pop the primary navigation controller back to the sites list
-            primaryNavigationController.popToRootViewController(animated: true)
-        }
     }
 
     /// Creates purchase warning alert for Delete Site

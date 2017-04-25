@@ -330,7 +330,7 @@ import WordPressShared
         let failureBlock = { (error: Error?) in
             self.displayLoginMessage("")
             self.configureLoading(false)
-            if let error = error as? NSError {
+            if let error = error as NSError? {
                 self.displayError(error, sourceTag: self.sourceTag)
             }
         }
@@ -411,7 +411,7 @@ import WordPressShared
                                                     for: self,
                                                     sender: sender,
                                                     completion: { (username, password, error: Error?) in
-                                                        if let error = error as? NSError {
+                                                        if let error = error as NSError? {
                                                             if error.code != WPOnePasswordErrorCodeCancelledByUser {
                                                                 DDLogSwift.logError("Failed to use 1Password App Extension to save a new Login: \(error)")
                                                                 WPAnalytics.track(.onePasswordFailed)

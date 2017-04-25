@@ -111,7 +111,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
         // test if using a image media returns an error
         image.videoAsset(completionHandler: { (asset, error) in
             expect.fulfill()
-            guard let error = error as? NSError, asset == nil else {
+            guard let error = error as NSError?, asset == nil else {
                 XCTFail("Image should fail when asked for a video")
                 return
             }

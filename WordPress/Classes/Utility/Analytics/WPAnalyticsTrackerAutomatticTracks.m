@@ -415,6 +415,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatLowMemoryWarning:
             eventName = @"application_low_memory_warning";
             break;
+        case WPAnalyticsStatMediaLibraryDeletedItems:
+            eventName = @"media_library_deleted_items";
+            break;
+        case WPAnalyticsStatMediaLibraryEditedItemMetadata:
+            eventName = @"media_library_edited_item_metadata";
+            break;
+        case WPAnalyticsStatMediaLibraryPreviewedItem:
+            eventName = @"media_library_previewed_item";
+            break;
+        case WPAnalyticsStatMediaLibrarySharedItemLink:
+            eventName = @"media_library_shared_item_link";
+            break;
         case WPAnalyticsStatMenusAccessed:
             eventName = @"menus_accessed";
             break;
@@ -483,6 +495,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatNotificationsSettingsUpdated:
             eventName = @"notification_settings_updated";
+            break;
+        case WPAnalyticsStatNotificationsTappedNewPost:
+            eventName = @"notification_tapped_new_post";
+            break;
+        case WPAnalyticsStatNotificationsTappedViewReader:
+            eventName = @"notification_tapped_view_reader";
             break;
         case WPAnalyticsStatOnePasswordFailed:
             eventName = @"one_password_failed";
