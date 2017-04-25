@@ -145,6 +145,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         super.viewDidAppear(animated)
         showRatingViewIfApplicable()
         syncNewNotifications()
+        markSelectedNotificationAsRead()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -592,6 +593,21 @@ private extension NotificationsViewController {
 
 
 
+// MARK: - Marking as Read
+//
+private extension NotificationsViewController {
+
+    func markSelectedNotificationAsRead() {
+        guard let note = selectedNotification else {
+            return
+        }
+
+        markAsRead(note: note)
+    }
+}
+
+
+
 // MARK: - Unread notifications caching
 //
 private extension NotificationsViewController {
@@ -888,8 +904,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 
 // MARK: - Actions
 //
-
-
 private extension NotificationsViewController {
     func leadingButtons(note: Notification) -> [MGSwipeButton] {
         guard !note.read else {
