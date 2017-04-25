@@ -10,6 +10,7 @@ class RecentSitesService: NSObject {
     private let database: KeyValueDatabase
     private let databaseKey = "RecentSites"
     private let legacyLastUsedBlogKey = "LastUsedBlogURLDefaultsKey"
+    @objc static let WPTouchedBlogNotification = "WPTouchedBlogNotification"
 
     /// The maximum number of recent sites (read only)
     ///
@@ -79,6 +80,6 @@ class RecentSitesService: NSObject {
             return
         }
         touch(site: url)
-        WP3DTouchShortcutCreator().createShortcutsIf3DTouchAvailable(true)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: RecentSitesService.WPTouchedBlogNotification), object: nil)
     }
 }
