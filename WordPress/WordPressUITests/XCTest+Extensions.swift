@@ -5,6 +5,7 @@ public struct elementStringIDs {
     static var mainNavigationBar = "Main Navigation"
     static var mainNavigationMeButton = "meTabButton"
     static var mainNavigationMySitesButton = "mySitesTabButton"
+    static var mainNavigationNewPostButton = "New Post"
 
     // Login page
     static var loginUsernameField = "Email or username"
@@ -32,7 +33,46 @@ public struct elementStringIDs {
     static var removeSiteButton = "BlogDetailsRemoveSiteCell"
 
     // Me tab
+    static var appSettingsButton = "appSettingsButton"
     static var logOutFromWPcomButton = "logOutFromWPcomButton"
+
+    // App Settings Page
+    static var aztecEditorToggle = "nativeEditorToggle"
+
+    // Aztec Editor
+    static var aztecPostView = "WordPress.AztecPostView"
+    static var editorCloseButton = "editorCloseButton"
+    static var richTextField = "editorRichContentView"
+    static var htmlTextField = "editorHTMLContentView"
+    static var richTextContentLabel = "editorContentPlaceholder"
+
+    // Aztec Editor Toolbar
+    static var mediaButton = "formatToolbarInsertMedia"
+    static var headerButton = "formatToolbarSelectParagraphStyle"
+    static var boldButton = "formatToolbarToggleBold"
+    static var italicButton = "formatToolbarToggleItalic"
+    static var underlineButton = "formatToolbarToggleUnderline"
+    static var strikethroughButton = "formatToolbarToggleStrikethrough"
+    static var blockquoteButton = "formatToolbarToggleBlockquote"
+    static var orderedlistButton = "formatToolbarToggleListOrdered"
+    static var unorderedlistButton = "formatToolbarToggleListUnordered"
+    static var linkButton = "formatToolbarInsertLink"
+    static var horizontalrulerButton = "formatToolbarInsertHorizontalRuler"
+    static var sourcecodeButton = "formatToolbarToggleHtmlView"
+    static var moreButton = "formatToolbarInsertMore"
+    // Accessibility identifiers for header options
+    //static var header1Button = "formatToolbarToggleH1"
+    //static var header2Button = "formatToolbarToggleH2"
+    //static var header3Button = "formatToolbarToggleH3"
+    //static var header4Button = "formatToolbarToggleH4"
+    //static var header5Button = "formatToolbarToggleH5"
+    //static var header6Button = "formatToolbarToggleH6"
+    static var header1Button = "Heading 1"
+    static var header2Button = "Heading 2"
+    static var header3Button = "Heading 3"
+    static var header4Button = "Heading 4"
+    static var header5Button = "Heading 5"
+    static var header6Button = "Heading 6"
 }
 
 extension XCUIElement {
@@ -52,6 +92,19 @@ extension XCUIElement {
 
         self.typeText(text)
     }
+
+    /**
+     Enters text in the field and then selects all entered text
+     - Parameter text: the text to enter into the field
+    */
+    func enterAndSelectText(text: String) -> Void {
+        let app = XCUIApplication()
+
+        self.typeText(text)
+        self.press(forDuration: 1.2)
+        app.menuItems.element(boundBy: 1).tap()
+    }
+
 }
 
 extension XCTestCase {
@@ -87,6 +140,15 @@ extension XCTestCase {
             app.tables.cells[ elementStringIDs.logOutFromWPcomButton ].tap()
             app.alerts.buttons.element(boundBy: 1).tap()
             //Give some time to everything get proper saved.
+            sleep(2)
+        }
+    }
+
+    public func loginIfNeeded(username: String, password: String) {
+        let app = XCUIApplication()
+        if app.textFields[ elementStringIDs.loginUsernameField ].exists {
+            simpleLogin(username: username, password: password)
+            //Give time for login to finish.
             sleep(2)
         }
     }
@@ -190,5 +252,32 @@ extension XCTestCase {
         }
 
         createAccountButton.tap()
+    }
+
+    public func swipeAndSelectHeaderStyle(headerStyle: String) {
+        let app = XCUIApplication()
+
+        app.scrollViews.otherElements.buttons[ elementStringIDs.headerButton ].tap()
+        if ( isIpad(app: app) ) {
+            app.tables.element(boundBy: 2).swipeUp()
+        } else {
+            app.tables.element(boundBy: 1).swipeUp()
+        }
+        app.tables.staticTexts[ headerStyle ].tap()
+    }
+
+    public func insertLink(link: String) {
+        let app = XCUIApplication()
+
+        // Prepare link to be auto-filled in URL field
+        UIPasteboard.general.string = link
+
+        app.scrollViews.otherElements.buttons[ elementStringIDs.linkButton ].tap()
+
+        if ( isIpad(app: app) ) {
+            app.alerts.buttons.element(boundBy: 2).tap()
+        } else {
+            app.alerts.buttons.element(boundBy: 3).tap()
+        }
     }
 }

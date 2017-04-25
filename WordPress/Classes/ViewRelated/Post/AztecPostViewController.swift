@@ -30,6 +30,7 @@ class AztecPostViewController: UIViewController {
         tv.delegate = self
         tv.mediaDelegate = self
         tv.backgroundColor = Colors.aztecBackground
+        tv.accessibilityIdentifier = "editorRichContentView"
         toolbar.formatter = self
 
         return tv
@@ -41,6 +42,7 @@ class AztecPostViewController: UIViewController {
     fileprivate(set) lazy var placeholderLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString("Share your story here...", comment: "Aztec's Text Placeholder")
+        label.accessibilityIdentifier = "editorContentPlaceholder"
         label.textColor = Colors.placeholder
         label.font = Fonts.regular
         label.isUserInteractionEnabled = false
@@ -56,11 +58,12 @@ class AztecPostViewController: UIViewController {
         let tv = UITextView()
 
         let toolbar = self.createToolbar(htmlMode: true)
-        let accessibilityLabel = NSLocalizedString("HTML", comment: "Accessibility label for HTML button on formatting toolbar.")
+        let accessibilityLabel = NSLocalizedString("HTML", comment: "Post HTML content")
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         toolbar.formatter = self
         tv.isHidden = true
         tv.delegate = self
+        tv.accessibilityIdentifier = "editorHTMLContentView"
 
         return tv
     }()
@@ -130,6 +133,7 @@ class AztecPostViewController: UIViewController {
     ///
     fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
         let cancelItem = UIBarButtonItem(customView: self.closeButton)
+        cancelItem.accessibilityIdentifier = "editorCloseButton"
         cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
         return cancelItem
     }()
@@ -2146,43 +2150,43 @@ extension FormattingIdentifier {
     var accessibilityIdentifier: String {
         switch(self) {
         case .media:
-            return "format_toolbar_insert_media"
+            return "formatToolbarInsertMedia"
         case .header:
-            return "format_toolbar_select_paragraph_style"
+            return "formatToolbarSelectParagraphStyle"
         case .bold:
-            return "format_toolbar_toggle_bold"
+            return "formatToolbarToggleBold"
         case .italic:
-            return "format_toolbar_toggle_italic"
+            return "formatToolbarToggleItalic"
         case .underline:
-            return "format_toolbar_toggle_underline"
+            return "formatToolbarToggleUnderline"
         case .strikethrough:
-            return "format_toolbar_toggle_strikethrough"
+            return "formatToolbarToggleStrikethrough"
         case .blockquote:
-            return "format_toolbar_toggle_blockquote"
+            return "formatToolbarToggleBlockquote"
         case .orderedlist:
-            return "format_toolbar_toggle_list_ordered"
+            return "formatToolbarToggleListOrdered"
         case .unorderedlist:
-            return "format_toolbar_toggle_list_unordered"
+            return "formatToolbarToggleListUnordered"
         case .link:
-            return "format_toolbar_insert_link"
+            return "formatToolbarInsertLink"
         case .horizontalruler:
-            return "format_toolbar_insert_horizontal_ruler"
+            return "formatToolbarInsertHorizontalRuler"
         case .sourcecode:
-            return "format_toolbar_toggle_html_view"
+            return "formatToolbarToggleHtmlView"
         case .more:
-            return "format_toolbar_insert_more"
+            return "formatToolbarInsertMore"
         case .header1:
-            return "format_toolbar_toggle_h1"
+            return "formatToolbarToggleH1"
         case .header2:
-            return "format_toolbar_toggle_h2"
+            return "formatToolbarToggleH2"
         case .header3:
-            return "format_toolbar_toggle_h3"
+            return "formatToolbarToggleH3"
         case .header4:
-            return "format_toolbar_toggle_h4"
+            return "formatToolbarToggleH4"
         case .header5:
-            return "format_toolbar_toggle_h5"
+            return "formatToolbarToggleH5"
         case .header6:
-            return "format_toolbar_toggle_h6"
+            return "formatToolbarToggleH6"
         }
     }
 
