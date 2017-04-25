@@ -888,4 +888,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                  completion:nil];
 }
 
+- (IBAction)unwindOutWithSegue:(UIStoryboardSegue *)segue
+{
+    // here so that this VC is a valid unwind destination for this selector
+}
+
 @end
