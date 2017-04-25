@@ -290,7 +290,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
 
         selectedNotification = note
-
         showDetailsForNotification(note)
     }
 
@@ -508,6 +507,8 @@ extension NotificationsViewController {
 
         prepareToShowDetailsForNotification(note)
 
+        markAsRead(note: note)
+
         // Display Details
         if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
@@ -603,6 +604,14 @@ private extension NotificationsViewController {
         }
 
         markAsRead(note: note)
+    }
+
+    func markAsRead(note: Notification) {
+        guard !note.read else {
+            return
+        }
+
+        NotificationSyncMediator()?.markAsRead(note)
     }
 }
 
@@ -911,11 +920,11 @@ private extension NotificationsViewController {
         }
 
         return [
-            MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"), backgroundColor: WPStyleGuide.greyDarken20(), callback: { _ in
-                ReachabilityUtils.onAvailableInternetConnectionDo {
-                    NotificationSyncMediator()?.markAsRead(note)
-                }
-                return true
+            MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"),
+                          backgroundColor: WPStyleGuide.greyDarken20(),
+                          callback: { _ in
+                            self.markAsRead(note: note)
+                            return true
             })
         ]
     }
