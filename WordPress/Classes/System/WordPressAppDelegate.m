@@ -862,7 +862,7 @@ int ddLogLevel = DDLogLevelInfo;
                              object:nil];
     
     [notificationCenter addObserver:self
-                           selector:@selector(handleSignInDidFinish:)
+                           selector:@selector(create3DTouchShortcutItems)
                                name:SigninHelpers.WPSigninDidFinishNotification
                              object:nil];
     
