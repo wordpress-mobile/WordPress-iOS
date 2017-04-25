@@ -8,6 +8,6 @@ class LoginLinkRequestViewController: SigninLinkRequestViewController {
     override func didRequestAuthenticationLink() {
         WPAppAnalytics.track(.loginMagicLinkRequested)
         SigninHelpers.saveEmailAddressForTokenAuth(loginFields.username)
-        performSegue(withIdentifier: "showLinkMailView", sender: self)
+        performSegue(withIdentifier: .showLinkMailView, sender: self)
     }
 }
