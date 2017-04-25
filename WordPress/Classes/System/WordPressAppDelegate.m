@@ -865,6 +865,11 @@ int ddLogLevel = DDLogLevelInfo;
                            selector:@selector(handleSignInDidFinish:)
                                name:SigninHelpers.WPSigninDidFinishNotification
                              object:nil];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(create3DTouchShortcutItems)
+                               name:WPBlogUpdatedNotification
+                             object:nil];
 }
 
 - (void)handleDefaultAccountChangedNote:(NSNotification *)notification
