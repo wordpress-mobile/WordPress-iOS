@@ -164,6 +164,14 @@ class NotificationDetailsViewController: UIViewController {
         refreshNavigationBar()
     }
 
+    fileprivate func markAsReadIfNeeded() {
+        guard !note.read else {
+            return
+        }
+
+        NotificationSyncMediator()?.markAsRead(note)
+    }
+
     fileprivate func refreshInterfaceIfNeeded() {
         guard isViewLoaded else {
             return
@@ -404,7 +412,7 @@ extension NotificationDetailsViewController {
         let nc = NotificationCenter.default
         nc.addObserver(self,
                        selector: #selector(notificationWasUpdated),
-                       name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
+                       name: .NSManagedObjectContextObjectsDidChange,
                        object: note.managedObjectContext)
     }
 }
@@ -753,9 +761,10 @@ extension NotificationDetailsViewController {
         let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
         let deleted   = notification.userInfo?[NSDeletedObjectsKey]   as? Set<NSManagedObject> ?? Set()
 
-        // Reload the table, if *our* notification got updated
+        // Reload the table, if *our* notification got updated + Mark as Read since it's already onscreen!
         if updated.contains(note) || refreshed.contains(note) {
             refreshInterface()
+            markAsReadIfNeeded()
         } else {
             // Otherwise, refresh the navigation bar as the notes list might have changed
             refreshNavigationBar()
