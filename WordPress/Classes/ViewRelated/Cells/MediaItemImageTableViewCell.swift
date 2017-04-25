@@ -5,6 +5,16 @@ class MediaItemImageTableViewCell: WPTableViewCell {
     let customImageView = UIImageView()
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
     let activityMaskView = UIView()
+    let videoIconView = PlayIconView()
+
+    var isVideo: Bool {
+        set {
+            videoIconView.isHidden = !newValue
+        }
+        get {
+            return !videoIconView.isHidden
+        }
+    }
 
     // MARK: - Initializers
     public required init?(coder aDecoder: NSCoder) {
@@ -24,6 +34,7 @@ class MediaItemImageTableViewCell: WPTableViewCell {
     func commonInit() {
         setupImageView()
         setupLoadingViews()
+        setupVideoIconView()
     }
 
     private func setupImageView() {
@@ -62,6 +73,11 @@ class MediaItemImageTableViewCell: WPTableViewCell {
             ])
     }
 
+    private func setupVideoIconView() {
+        contentView.addSubview(videoIconView)
+        videoIconView.isHidden = true
+    }
+
     private var aspectRatioConstraint: NSLayoutConstraint? = nil
 
     var targetAspectRatio: CGFloat {
@@ -77,6 +93,37 @@ class MediaItemImageTableViewCell: WPTableViewCell {
         get {
             return aspectRatioConstraint?.multiplier ?? 0
         }
+    }
+
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+
+        resetBackgroundColors()
+
+        if animated {
+            UIView.animate(withDuration: 0.2) {
+                self.videoIconView.isHighlighted = highlighted
+            }
+        } else {
+            videoIconView.isHighlighted = highlighted
+        }
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        resetBackgroundColors()
+    }
+
+    private func resetBackgroundColors() {
+        customImageView.backgroundColor = .black
+        contentView.backgroundColor = .white
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        videoIconView.center = contentView.center
     }
 
     // MARK: - Loading
@@ -106,6 +153,7 @@ struct MediaImageRow: ImmuTableRow {
         if let cell = cell as? MediaItemImageTableViewCell {
             setAspectRatioFor(cell)
             loadImageFor(cell)
+            cell.isVideo = media.mediaType == .video
         }
     }
 
@@ -119,7 +167,15 @@ struct MediaImageRow: ImmuTableRow {
         guard let width = media.width, let height = media.height, width.floatValue > 0 else {
             return
         }
-        cell.targetAspectRatio = CGFloat(height.floatValue) / CGFloat(width.floatValue)
+
+        let mediaAspectRatio = CGFloat(height.floatValue) / CGFloat(width.floatValue)
+
+        // Set a maximum aspect ratio for videos
+        if media.mediaType == .video {
+            cell.targetAspectRatio = min(mediaAspectRatio, 0.75)
+        } else {
+            cell.targetAspectRatio = mediaAspectRatio
+        }
     }
 
     private func addPlaceholderImageFor(_ cell: MediaItemImageTableViewCell) {
@@ -154,7 +210,7 @@ struct MediaImageRow: ImmuTableRow {
     private func show(_ error: Error) {
         let alertController = UIAlertController(title: nil, message: NSLocalizedString("There was a problem loading the media item.",
                                                                                        comment: "Error message displayed when the Media Library is unable to load a full sized preview of an item."), preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to load media ite,."))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to load media item."))
         alertController.presentFromRootViewController()
     }
 
