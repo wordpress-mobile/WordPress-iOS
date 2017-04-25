@@ -51,9 +51,9 @@ struct ShareExtractor {
 private extension ShareExtractor {
     var supportedExtractors: [ExtensionContentExtractor] {
         return [
-            ImageExtractor(),
             SharePostExtractor(),
             PropertyListExtractor(),
+            ImageExtractor(),
             URLExtractor()
         ]
     }
