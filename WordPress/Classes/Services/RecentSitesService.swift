@@ -69,6 +69,7 @@ class RecentSitesService: NSObject {
                     recent.append(recentSite)
         }
         database.set(recent, forKey: databaseKey)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: RecentSitesService.WPTouchedBlogNotification), object: nil)
     }
 
     /// Marks a Blog as recently used.
@@ -80,6 +81,5 @@ class RecentSitesService: NSObject {
             return
         }
         touch(site: url)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: RecentSitesService.WPTouchedBlogNotification), object: nil)
     }
 }
