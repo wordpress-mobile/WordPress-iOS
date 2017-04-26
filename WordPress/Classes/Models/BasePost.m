@@ -22,6 +22,7 @@ static const NSUInteger PostDerivedSummaryLength = 150;
 @dynamic permaLink;
 @dynamic mt_excerpt;
 @dynamic wp_slug;
+@dynamic suggested_slug;
 @dynamic post_thumbnail;
 @dynamic pathForDisplayImage;
 
