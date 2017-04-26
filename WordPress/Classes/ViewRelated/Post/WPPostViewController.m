@@ -1515,7 +1515,7 @@ EditImageDetailsViewControllerDelegate
                                 hudText = NSLocalizedString(@"Error occurred\nduring saving. Your changes where saved on the device.", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
                                 break;
                         }
-                        [SVProgressHUD showErrorWithStatus:hudText];
+                        [SVProgressHUD showDismissibleErrorWithStatus:hudText];
                         [generator notificationOccurred:UINotificationFeedbackTypeError];
                         stopEditingAndDismiss();
                     }];

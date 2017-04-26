@@ -768,7 +768,7 @@ extension AztecPostViewController {
             if let error = error {
                 DDLogSwift.logError("Error publishing post: \(error.localizedDescription)")
 
-                SVProgressHUD.showError(withStatus: self.postEditorStateContext.publishErrorText)
+                SVProgressHUD.showDismissibleError(withStatus: self.postEditorStateContext.publishErrorText)
                 generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
                 self.post = uploadedPost
