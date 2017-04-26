@@ -36,10 +36,14 @@ class PeopleServiceRemoteTests: RemoteTestCase {
     let deleteUserNonMemberFailureMockFilename      = "site-users-delete-not-member-failure.json"
     let deleteUserSiteOwnerFailureMockFilename      = "site-users-delete-site-owner-failure.json"
 
-    let deleteFollowerFailureMockFilename           = "people-delete-follower-failure.json"
-    let deleteFollowerSuccessMockFilename           = "people-delete-follower-success.json"
-    let deleteViewerFailureMockFilename             = "people-delete-viewer-failure.json"
-    let deleteViewerSuccessMockFilename             = "people-delete-viewer-success.json"
+    let deleteFollowerSuccessMockFilename           = "site-followers-delete-success.json"
+    let deleteFollowerFailureMockFilename           = "site-followers-delete-failure.json"
+    let deleteFollowerAuthFailureMockFilename       = "site-followers-delete-auth-failure.json"
+    let deleteFollowerBadJsonFailureMockFilename    = "site-followers-delete-bad-json-failure.json"
+
+    let deleteViewerSuccessMockFilename             = "site-viewers-delete-success.json"
+    let deleteViewerFailureMockFilename             = "site-viewers-delete-failure.json"
+    let deleteViewerAuthFailureMockFilename         = "site-viewers-delete-auth-failure.json"
 
     // MARK: - Properties
 
@@ -53,7 +57,6 @@ class PeopleServiceRemoteTests: RemoteTestCase {
     var siteUserDeleteEndpoint: String { return "sites/\(siteID)/users/\(userID)/delete" }
     var siteViewerDeleteEndpoint: String { return "sites/\(siteID)/viewers/\(viewerID)/delete" }
     var siteFollowerDeleteEndpoint: String { return "sites/\(siteID)/followers/\(followerID)/delete" }
-
 
     // MARK: - Overridden Methods
 
@@ -163,8 +166,8 @@ class PeopleServiceRemoteTests: RemoteTestCase {
 
     // MARK: - Follower Tests
 
-    func testDeleteFollowerWithInvalidUserFails() {
-        let expect = expectation(description: "Delete follower failure")
+    func testDeleteFollowerWithInvalidFollowerFails() {
+        let expect = expectation(description: "Delete non-follower failure")
 
         stubRemoteResponse(siteFollowerDeleteEndpoint, filename: deleteFollowerFailureMockFilename,
                            contentType: .ApplicationJSON, status: 404)
@@ -172,13 +175,33 @@ class PeopleServiceRemoteTests: RemoteTestCase {
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
+            let error = error as NSError
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
             expect.fulfill()
         })
 
         waitForExpectations(timeout: timeout, handler: nil)
     }
 
-    func testDeleteFollowerWithValidUserSucceeds() {
+    func testDeleteFollowerWithBadAuthFails() {
+        let expect = expectation(description: "Delete follower with bad auth failure")
+
+        stubRemoteResponse(siteFollowerDeleteEndpoint, filename: deleteFollowerAuthFailureMockFilename, contentType: .ApplicationJSON, status: 403)
+        remote.deleteFollower(siteID, userID: followerID, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            let error = error as NSError
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.authorizationRequired.rawValue, "The error code should be 2 - authorization_required")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteFollowerWithValidFollowerSucceeds() {
         let expect = expectation(description: "Delete follower success")
 
         stubRemoteResponse(siteFollowerDeleteEndpoint, filename: deleteFollowerSuccessMockFilename,
@@ -187,6 +210,37 @@ class PeopleServiceRemoteTests: RemoteTestCase {
             expect.fulfill()
         }, failure: { error in
             XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteFollowerWithServerErrorFails() {
+        let expect = expectation(description: "Delete follower with server error failure")
+
+        stubRemoteResponse(siteFollowerDeleteEndpoint, data: Data(), contentType: .NoContentType, status: 500)
+        remote.deleteFollower(siteID, userID: followerID, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            let error = error as NSError
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteFollowerWithBadJsonFails() {
+        let expect = expectation(description: "Delete follower with invalid json response failure")
+
+        stubRemoteResponse(siteFollowerDeleteEndpoint, filename: deleteFollowerBadJsonFailureMockFilename, contentType: .ApplicationJSON, status: 200)
+        remote.deleteFollower(siteID, userID: followerID, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
             expect.fulfill()
         })
 
