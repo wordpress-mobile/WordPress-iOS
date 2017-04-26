@@ -49,7 +49,7 @@ abstract_target 'WordPress_Base' do
     pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS', :branch => 'feature/document-type-collectionview-cell'
     pod 'WordPress-iOS-Editor', '1.9.1'
     pod 'WordPressCom-Analytics-iOS', '0.1.25'
-    pod 'WordPress-Aztec-iOS', '0.5a8'
+    pod 'WordPress-Aztec-iOS', '1.0.0-beta.1'
     pod 'wpxmlrpc', '0.8.3'
 
     target 'WordPressTest' do
