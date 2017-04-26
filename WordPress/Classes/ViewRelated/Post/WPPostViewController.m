@@ -9,7 +9,6 @@
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressComAnalytics/WPAnalytics.h>
-#import <SVProgressHUD/SVProgressHUD.h>
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "BlogSelectorViewController.h"
 #import "BlogService.h"
@@ -24,6 +23,7 @@
 #import "PostService.h"
 #import "PostSettingsViewController.h"
 #import "PrivateSiteURLProtocol.h"
+#import "SVProgressHUD+Dismiss.h"
 #import "WordPressAppDelegate.h"
 #import "WPButtonForNavigationBar.h"
 #import "WPBlogSelectorButton.h"
@@ -53,6 +53,7 @@ static NSString* const WPProgressMediaError = @"WPProgressMediaError";
 NSString* const WPPostViewControllerOptionOpenMediaPicker = @"WPPostViewControllerMediaPicker";
 NSString* const WPPostViewControllerOptionNotAnimated = @"WPPostViewControllerNotAnimated";
 
+NSString* const WPAppAnalyticsEditorSourceValueHybrid = @"hybrid";
 
 // Secret URL config parameters
 NSString *const kWPEditorConfigURLParamAvailable = @"available";
@@ -1325,7 +1326,7 @@ EditImageDetailsViewControllerDelegate
     NSAssert([context isKindOfClass:[NSManagedObjectContext class]],
              @"The object should be related to a managed object context here.");
     
-    [WPAppAnalytics track:WPAnalyticsStatEditorDiscardedChanges withBlog:self.post.blog];
+    [WPAppAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid} withPost:self.post];
     self.post = self.post.original;
     [self.post deleteRevision];
     
@@ -1356,7 +1357,7 @@ EditImageDetailsViewControllerDelegate
 - (void)dismissEditViewAnimated:(BOOL)animated
                    changesSaved:(BOOL)changesSaved
 {
-    [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
+    [WPAppAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid} withPost:self.post];
     [self removePostObserver];
 
     if (self.onClose) {
@@ -1483,12 +1484,12 @@ EditImageDetailsViewControllerDelegate
                         switch (currentSaveAction) {
                             case PostEditorSaveActionSave: {
                                 NSString *hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
-                                [SVProgressHUD showSuccessWithStatus:hudText];
+                                [SVProgressHUD showDismissibleSuccessWithStatus:hudText];
                                 break;
                             }
                             case PostEditorSaveActionUpdate: {
                                 NSString *hudText = NSLocalizedString(@"Updated!", @"Text displayed in HUD after a post was successfully updated.");
-                                [SVProgressHUD showSuccessWithStatus:hudText];
+                                [SVProgressHUD showDismissibleSuccessWithStatus:hudText];
                                 break;
                             }
                             default:
@@ -1502,16 +1503,16 @@ EditImageDetailsViewControllerDelegate
                         NSString *hudText;
                         switch (currentSaveAction) {
                             case PostEditorSaveActionSchedule:
-                                hudText = NSLocalizedString(@"Error occurred\nduring scheduling", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring scheduling. Your changes where saved on the device.", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
                                 break;
                             case PostEditorSaveActionUpdate:
-                                hudText = NSLocalizedString(@"Error occurred\nduring updating", @"Text displayed in HUD after attempting to update a post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring updating. Your changes where saved on the device", @"Text displayed in HUD after attempting to update a post and an error occurred.");
                                 break;
                             case PostEditorSaveActionPost:
-                                hudText = NSLocalizedString(@"Error occurred\nduring publishing", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring publishing. Your changes where saved on the device", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
                                 break;
                             default:
-                                hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring saving. Your changes where saved on the device.", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
                                 break;
                         }
                         [SVProgressHUD showErrorWithStatus:hudText];
@@ -1533,24 +1534,20 @@ EditImageDetailsViewControllerDelegate
 - (void)trackSavePostAnalyticsWithStat:(WPAnalyticsStat)stat
 {
     if (stat == WPAnalyticsStatEditorSavedDraft || stat == WPAnalyticsStatEditorQuickSavedDraft) {
-        [WPAnalytics track:stat];
+        [WPAppAnalytics track:stat withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid} withPost:self.post];
         return;
     }
 
     NSInteger originalWordCount = [self.post.original.content wordCount];
     NSInteger wordCount = [self.post.content wordCount];
     
-    NSMutableDictionary *properties = [[NSMutableDictionary alloc] initWithCapacity:2];
+    NSMutableDictionary *properties = [NSMutableDictionary new];
+    properties[WPAppAnalyticsKeyEditorSource] = WPAppAnalyticsEditorSourceValueHybrid;
     properties[@"word_count"] = @(wordCount);
     if ([self.post hasRemote]) {
         properties[@"word_diff_count"] = @(wordCount - originalWordCount);
     }
 
-    NSNumber *dotComID = [self.post blog].dotComID;
-    if (dotComID) {
-        properties[WPAppAnalyticsKeyBlogID] = dotComID;
-    }
-    
     if (stat == WPAnalyticsStatEditorPublishedPost) {
         properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
@@ -1558,7 +1555,7 @@ EditImageDetailsViewControllerDelegate
         properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = @([self.post hasVideo]);
     }
 
-    [WPAnalytics track:stat withProperties:properties];
+    [WPAppAnalytics track:stat withProperties:properties withPost:self.post];
 }
 
 /**
@@ -1759,8 +1756,9 @@ EditImageDetailsViewControllerDelegate
             DDLogError(@"Failed Media Upload: %@", error.localizedDescription);
             [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed
                    withProperties:@{ @"error_condition": @"WPPostViewController uploadMedia:trackingID:",
-                                     @"error_details": [NSString stringWithFormat:@"Uploading %@ (%@). Error: %@", media.filename, media.filesize, error.localizedDescription] }
-                         withBlog:self.post.blog];
+                                     @"error_details": [NSString stringWithFormat:@"Uploading %@ (%@). Error: %@", media.filename, media.filesize, error.localizedDescription],
+                                     WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid }
+                         withPost:self.post];
 
             [self dismissAssociatedAlertControllerIfVisible:mediaUniqueId];
             if (media.mediaType == MediaTypeImage) {
@@ -1787,7 +1785,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
 {
-    [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withBlog:self.post.blog];
+    [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid} withPost:self.post];
 
     NSProgress *progress = self.mediaInProgress[imageUniqueId];
     if (!progress) {
@@ -1866,11 +1864,11 @@ EditImageDetailsViewControllerDelegate
                                       if (media.mediaType == MediaTypeImage) {
                                           [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
                                                  withProperties:[WPAppAnalytics propertiesFor:media]
-                                                       withBlog:self.post.blog];
+                                                       withPost:self.post];
                                       } else if (media.mediaType == MediaTypeVideo) {
                                           [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
                                                  withProperties:[WPAppAnalytics propertiesFor:media]
-                                                       withBlog:self.post.blog];
+                                                       withPost:self.post];
                                       }
                                       [strongSelf uploadMedia:media trackingId:mediaUniqueID];
                                   }];
@@ -1883,11 +1881,11 @@ EditImageDetailsViewControllerDelegate
     if ([media.mediaID intValue] != 0) {
         [self trackMediaWithId:mediaUniqueID usingProgress:[NSProgress progressWithTotalUnitCount:1]];
         if ([media mediaType] == MediaTypeImage) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaWPMediaLibrary withBlog:self.post.blog];
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaWPMediaLibrary withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid} withPost:self.post];
             [self.editorView insertLocalImage:media.remoteURL uniqueId:mediaUniqueID];
             [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueID mediaId:[media.mediaID stringValue]];
         } else if ([media mediaType] == MediaTypeVideo) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary withBlog:self.post.blog];
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid} withPost:self.post];
             [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:media.absoluteThumbnailLocalURL.path];
             [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:media.posterAttributeImageURL videoPress:media.videopressGUID];
         }
@@ -1896,12 +1894,12 @@ EditImageDetailsViewControllerDelegate
         if ([media mediaType] == MediaTypeImage) {
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
                    withProperties:[WPAppAnalytics propertiesFor:media]
-                         withBlog:self.post.blog];
+                         withPost:self.post];
             [self.editorView insertLocalImage:media.absoluteLocalURL.path uniqueId:mediaUniqueID];
         } else if ([media mediaType] == MediaTypeVideo) {
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
                    withProperties:[WPAppAnalytics propertiesFor:media]
-                         withBlog:self.post.blog];
+                         withPost:self.post];
             [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:media.posterAttributeImageURL];
         }
         [self uploadMedia:media trackingId:mediaUniqueID];
@@ -2062,7 +2060,7 @@ EditImageDetailsViewControllerDelegate
                             }];
     
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
-    [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
+    [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid} withPost:self.post];
 }
 
 
@@ -2073,7 +2071,7 @@ EditImageDetailsViewControllerDelegate
 {
     // Note: imageId is an editor specified data attribute, not the image's ID attribute.
     if (imageId.length == 0) {
-        [self displayImageDetailsForMeta:imageMeta];
+        [self displayImageDetailsForMeta:imageMeta url:url];
     } else {
         [self promptForActionForTappedMedia:imageId url:url];
     }
@@ -2110,9 +2108,16 @@ EditImageDetailsViewControllerDelegate
 }
 
 - (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
+                               url:(NSURL *)url
 {
-    [WPAppAnalytics track:WPAnalyticsStatEditorEditedImage withBlog:self.post.blog];
-    EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta forPost:self.post];
+    [WPAppAnalytics track:WPAnalyticsStatEditorEditedImage withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid} withPost:self.post];
+
+    Media *media = [Media existingMediaWithRemoteURL:[url absoluteString]
+                                              inBlog:self.post.blog];
+
+    EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta
+                                                                                                media:media
+                                                                                              forPost:self.post];
     controller.delegate = self;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];

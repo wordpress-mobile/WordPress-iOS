@@ -45,8 +45,25 @@ NSString *const SessionCount = @"session_count";
         _aggregatedStatProperties = [[NSMutableDictionary alloc] init];
         _mixpanelProxy = mixpanelProxy;
         _context = context;
+
+        [self migrateSessionCountFromProxy: mixpanelProxy];
     }
     return self;
+}
+
+// Migrates the session count away from mixpanel super properties and into
+// Shared defaults.
+- (void)migrateSessionCountFromProxy:(MixpanelProxy *)mixpanelProxy
+{
+    NSInteger sessionCount = [WPAppAnalytics sessionCount];
+    if (sessionCount > 0) {
+        return;
+    }
+    sessionCount = [[mixpanelProxy.currentSuperProperties numberForKey:SessionCount] integerValue];
+    if (sessionCount > 0) {
+        [[NSUserDefaults standardUserDefaults] setInteger:sessionCount forKey:WPAppAnalyticsKeySessionCount];
+        [mixpanelProxy unregisterSuperProperty:WPAppAnalyticsKeySessionCount];
+    }
 }
 
 - (void)beginSession
@@ -63,7 +80,7 @@ NSString *const SessionCount = @"session_count";
         return;
     }
     
-    NSInteger sessionCount = [self sessionCount];
+    NSInteger sessionCount = [WPAppAnalytics sessionCount];
     if ([self didUserCreateAccountOnMobile]) {
         // We want to differentiate between users who created pre 4.6 and those who created after and the way we do this
         // is by checking if the editor is enabled. The editor would only be enabled for users who created an account after 4.6.
@@ -264,7 +281,7 @@ NSString *const SessionCount = @"session_count";
             // As this event increments the session count stat on the Mixpanel super properties we are forced to set it by hand otherwise
             // this property will always be one session count behind. The reason being is that by the time the updated super property is ready
             // to be applied this event will have already been processed by Mixpanel.
-            NSUInteger sessionCount = [self incrementSessionCount];
+            NSUInteger sessionCount = [WPAppAnalytics sessionCount];
             [self saveProperty:SessionCount withValue:@(sessionCount) forStat:WPAnalyticsStatApplicationOpened];
             
             break;
@@ -1190,25 +1207,6 @@ NSString *const SessionCount = @"session_count";
     }
 
     [self saveProperty:property withValue:@(newValue) forStat:stat];
-}
-
-- (NSUInteger)incrementSessionCount
-{
-    NSInteger sessionCount = [self sessionCount];
-    sessionCount++;
-    
-    if (sessionCount == 1) {
-        [WPAnalytics track:WPAnalyticsStatAppInstalled];
-    }
-
-    [self.mixpanelProxy registerSuperProperties:@{ SessionCount : @(sessionCount) }];
-    
-    return sessionCount;
-}
-
-- (NSInteger)sessionCount
-{
-    return [[self.mixpanelProxy.currentSuperProperties numberForKey:SessionCount] integerValue];
 }
 
 @end
