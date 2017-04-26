@@ -178,7 +178,7 @@ class MediaItemDocumentTableViewCell: WPTableViewCell {
             customImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
             ])
 
-        let size = MediaDocumentRow.customHeight! / 2
+        let size = CGFloat(MediaDocumentRow.customHeight! / 2)
         customImageView.image = Gridicon.iconOfType(.pages, withSize: CGSize(width: size, height: size))
     }
 }
