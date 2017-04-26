@@ -327,6 +327,7 @@
 		746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 746A6F561E71C691003B67E3 /* DeleteSite.storyboard */; };
 		7470840F1E269669002CA726 /* JetpackLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7470840D1E269669002CA726 /* JetpackLoginViewController.swift */; };
 		747084101E269669002CA726 /* JetpackLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7470840E1E269669002CA726 /* JetpackLoginViewController.xib */; };
+		747B1D7E1EB1312200BFBF8B /* site-users-update-role-bad-json-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 747B1D7D1EB1312200BFBF8B /* site-users-update-role-bad-json-failure.json */; };
 		74AB971B1EA7C23100A4CD18 /* auth-send-login-email-invalid-client-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74AB97091EA7C23100A4CD18 /* auth-send-login-email-invalid-client-failure.json */; };
 		74AB971C1EA7C23100A4CD18 /* auth-send-login-email-invalid-secret-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74AB970A1EA7C23100A4CD18 /* auth-send-login-email-invalid-secret-failure.json */; };
 		74AB971D1EA7C23100A4CD18 /* auth-send-login-email-no-user-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74AB970B1EA7C23100A4CD18 /* auth-send-login-email-no-user-failure.json */; };
@@ -1593,6 +1594,7 @@
 		746A6F561E71C691003B67E3 /* DeleteSite.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeleteSite.storyboard; sourceTree = "<group>"; };
 		7470840D1E269669002CA726 /* JetpackLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackLoginViewController.swift; sourceTree = "<group>"; };
 		7470840E1E269669002CA726 /* JetpackLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackLoginViewController.xib; sourceTree = "<group>"; };
+		747B1D7D1EB1312200BFBF8B /* site-users-update-role-bad-json-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "site-users-update-role-bad-json-failure.json"; sourceTree = "<group>"; };
 		748EBAE3FE4CD54649F88DD7 /* Pods_WordPress_Base_WordPressShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPress_Base_WordPressShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74AB97091EA7C23100A4CD18 /* auth-send-login-email-invalid-client-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "auth-send-login-email-invalid-client-failure.json"; sourceTree = "<group>"; };
 		74AB970A1EA7C23100A4CD18 /* auth-send-login-email-invalid-secret-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "auth-send-login-email-invalid-secret-failure.json"; sourceTree = "<group>"; };
@@ -5174,6 +5176,7 @@
 				745938471EAFBD050065386E /* me-settings-change-display-name-bad-json-failure.json */,
 				745938491EAFBF0C0065386E /* me-settings-change-invalid-input-failure.json */,
 				740A54321EB10DAE0073FD99 /* site-users-update-role-success.json */,
+				747B1D7D1EB1312200BFBF8B /* site-users-update-role-bad-json-failure.json */,
 				740A54341EB113850073FD99 /* site-users-update-role-unknown-user-failure.json */,
 				740A54361EB116EC0073FD99 /* site-users-update-role-unknown-site-failure.json */,
 				740A542C1EB104BE0073FD99 /* site-roles-success.json */,
@@ -5910,6 +5913,7 @@
 				745938391EAFAF990065386E /* me-settings-change-email-success.json in Resources */,
 				74AB97281EA7C23100A4CD18 /* me-sites-success.json in Resources */,
 				745938421EAFB21B0065386E /* me-settings-change-aboutme-success.json in Resources */,
+				747B1D7E1EB1312200BFBF8B /* site-users-update-role-bad-json-failure.json in Resources */,
 				93CD939319099BE70049096E /* authtoken.json in Resources */,
 				E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */,
 				855408881A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json in Resources */,

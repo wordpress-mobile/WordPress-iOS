@@ -22,6 +22,7 @@ class PeopleServiceRemoteTests: RemoteTestCase {
     let updateRoleSuccessMockFilename               = "site-users-update-role-success.json"
     let updateRoleUnknownUserFailureMockFilename    = "site-users-update-role-unknown-user-failure.json"
     let updateRoleUnknownSiteFailureMockFilename    = "site-users-update-role-unknown-site-failure.json"
+    let updateRoleBadJsonFailureMockFilename        = "site-users-update-role-bad-json-failure.json"
     let validationSuccessMockFilename               = "people-validate-invitation-success.json"
     let validationFailureMockFilename               = "people-validate-invitation-failure.json"
     let sendSuccessMockFilename                     = "people-send-invitation-success.json"
@@ -37,6 +38,8 @@ class PeopleServiceRemoteTests: RemoteTestCase {
 
     var siteRolesEndpoint: String { return "sites/\(siteID)/roles" }
     var siteUserEndpoint: String { return "sites/\(siteID)/users/\(userID)" }
+    var siteUnknownUserEndpoint: String { return "sites/\(siteID)/users/\(invalidUserID)" }
+    var unknownSiteUserEndpoint: String { return "sites/\(invalidSiteID)/users/\(userID)" }
     var siteViewerDeleteEndpoint: String { return "sites/\(siteID)/viewers/\(viewerID)/delete" }
     var siteFollowerDeleteEndpoint: String { return "sites/\(siteID)/followers/\(followerID)/delete" }
 
@@ -50,53 +53,6 @@ class PeopleServiceRemoteTests: RemoteTestCase {
 
     // MARK: - User Tests
 
-    func testUpdateUserRoleSucceeds() {
-        let expect = expectation(description: "Update user role success")
-
-        stubRemoteResponse(siteUserEndpoint, filename: updateRoleSuccessMockFilename, contentType: .ApplicationJSON)
-        let change = Role.Admin
-        remote.updateUserRole(siteID, userID: userID, newRole: change, success: { updatedPerson in
-            XCTAssertEqual(updatedPerson.role, change, "The returned user's role should be the same as the updated role.")
-            expect.fulfill()
-        }, failure: { error in
-            XCTFail("This callback shouldn't get called")
-            expect.fulfill()
-        })
-
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-
-// TODO: These guys are making calls to https://public-api.wordpress.com/rest/v1.1/sites/888/users/1111
-//
-//    func testUpdateUserRoleWithUnknownUserFails() {
-//        let expect = expectation(description: "Update role with unknown user failure")
-//
-//        stubRemoteResponse(siteUserEndpoint, filename: updateRoleUnknownUserFailureMockFilename, contentType: .ApplicationJSON, status: 404)
-//        let change = Role.Admin
-//        remote.updateUserRole(siteID, userID: invalidUserID, newRole: change, success: { updatedPerson in
-//            XCTFail("This callback shouldn't get called")
-//            expect.fulfill()
-//        }, failure: { error in
-//            expect.fulfill()
-//        })
-//
-//        waitForExpectations(timeout: timeout, handler: nil)
-//    }
-//
-//    func testUpdateUserRoleWithUnknownSiteFails() {
-//        let expect = expectation(description: "Update role with unknown site failure")
-//
-//        stubRemoteResponse(siteUserEndpoint, filename: updateRoleUnknownSiteFailureMockFilename, contentType: .ApplicationJSON, status: 403)
-//        let change = Role.Admin
-//        remote.updateUserRole(invalidSiteID, userID: userID, newRole: change, success: { updatedPerson in
-//            XCTFail("This callback shouldn't get called")
-//            expect.fulfill()
-//        }, failure: { error in
-//            expect.fulfill()
-//        })
-//
-//        waitForExpectations(timeout: timeout, handler: nil)
-//    }
 
     // MARK: - Follower Tests
 
@@ -196,6 +152,86 @@ class PeopleServiceRemoteTests: RemoteTestCase {
 
         waitForExpectations(timeout: timeout, handler: nil)
     }
+
+    func testUpdateUserRoleSucceeds() {
+        let expect = expectation(description: "Update user role success")
+
+        stubRemoteResponse(siteUserEndpoint, filename: updateRoleSuccessMockFilename, contentType: .ApplicationJSON)
+        let change = Role.Admin
+        remote.updateUserRole(siteID, userID: userID, newRole: change, success: { updatedPerson in
+            XCTAssertEqual(updatedPerson.role, change, "The returned user's role should be the same as the updated role.")
+            expect.fulfill()
+        }, failure: { error in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testUpdateUserRoleWithUnknownUserFails() {
+        let expect = expectation(description: "Update role with unknown user failure")
+
+        stubRemoteResponse(siteUnknownUserEndpoint, filename: updateRoleUnknownUserFailureMockFilename, contentType: .ApplicationJSON, status: 404)
+        let change = Role.Admin
+        remote.updateUserRole(siteID, userID: invalidUserID, newRole: change, success: { updatedPerson in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testUpdateUserRoleWithUnknownSiteFails() {
+        let expect = expectation(description: "Update role with unknown site failure")
+
+        stubRemoteResponse(unknownSiteUserEndpoint, filename: updateRoleUnknownSiteFailureMockFilename, contentType: .ApplicationJSON, status: 403)
+        let change = Role.Admin
+        remote.updateUserRole(invalidSiteID, userID: userID, newRole: change, success: { updatedPerson in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testUpdateUserRoleWithServerErrorFails() {
+        let expect = expectation(description: "Update role with server error failure")
+
+        stubRemoteResponse(siteUserEndpoint, data: Data(), contentType: .NoContentType, status: 500)
+        let change = Role.Admin
+        remote.updateUserRole(siteID, userID: userID, newRole: change, success: { updatedPerson in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            let error = error as NSError
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testUpdateUserRoleWithBadJsonFails() {
+        let expect = expectation(description: "Update role with invalid json response failure")
+
+        stubRemoteResponse(siteUserEndpoint, filename: updateRoleBadJsonFailureMockFilename, contentType: .ApplicationJSON, status: 200)
+        let change = Role.Admin
+        remote.updateUserRole(siteID, userID: userID, newRole: change, success: { updatedPerson in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            expect.fulfill()
+        })
+        
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
 
     // MARK: - Viewer Tests
 
