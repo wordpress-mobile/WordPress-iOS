@@ -19,14 +19,23 @@ class PeopleServiceRemoteTests: RemoteTestCase {
     let getRolesSuccessMockFilename                 = "site-roles-success.json"
     let getRolesBadJsonFailureMockFilename          = "site-roles-bad-json-failure.json"
     let getRolesBadAuthMockFilename                 = "site-roles-auth-failure.json"
+
     let updateRoleSuccessMockFilename               = "site-users-update-role-success.json"
     let updateRoleUnknownUserFailureMockFilename    = "site-users-update-role-unknown-user-failure.json"
     let updateRoleUnknownSiteFailureMockFilename    = "site-users-update-role-unknown-site-failure.json"
     let updateRoleBadJsonFailureMockFilename        = "site-users-update-role-bad-json-failure.json"
+
     let validationSuccessMockFilename               = "people-validate-invitation-success.json"
     let validationFailureMockFilename               = "people-validate-invitation-failure.json"
     let sendSuccessMockFilename                     = "people-send-invitation-success.json"
     let sendFailureMockFilename                     = "people-send-invitation-failure.json"
+
+    let deleteUserSuccessMockFilename               = "site-users-delete-success.json"
+    let deleteUserAuthFailureMockFilename           = "site-users-delete-auth-failure.json"
+    let deleteUserBadJsonFailureMockFilename        = "site-users-delete-bad-json-failure.json"
+    let deleteUserNonMemberFailureMockFilename      = "site-users-delete-not-member-failure.json"
+    let deleteUserSiteOwnerFailureMockFilename      = "site-users-delete-site-owner-failure.json"
+
     let deleteFollowerFailureMockFilename           = "people-delete-follower-failure.json"
     let deleteFollowerSuccessMockFilename           = "people-delete-follower-success.json"
     let deleteViewerFailureMockFilename             = "people-delete-viewer-failure.json"
@@ -40,6 +49,8 @@ class PeopleServiceRemoteTests: RemoteTestCase {
     var siteUserEndpoint: String { return "sites/\(siteID)/users/\(userID)" }
     var siteUnknownUserEndpoint: String { return "sites/\(siteID)/users/\(invalidUserID)" }
     var unknownSiteUserEndpoint: String { return "sites/\(invalidSiteID)/users/\(userID)" }
+
+    var siteUserDeleteEndpoint: String { return "sites/\(siteID)/users/\(userID)/delete" }
     var siteViewerDeleteEndpoint: String { return "sites/\(siteID)/viewers/\(viewerID)/delete" }
     var siteFollowerDeleteEndpoint: String { return "sites/\(siteID)/followers/\(followerID)/delete" }
 
@@ -53,6 +64,102 @@ class PeopleServiceRemoteTests: RemoteTestCase {
 
     // MARK: - User Tests
 
+    func testDeleteUserWithBadAuthUserFails() {
+        let expect = expectation(description: "Delete user with bad auth failure")
+
+        stubRemoteResponse(siteUserDeleteEndpoint, filename: deleteUserAuthFailureMockFilename, contentType: .ApplicationJSON, status: 403)
+        remote.deleteUser(siteID, userID: userID, success: { roles in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            let error = error as NSError
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.authorizationRequired.rawValue, "The error code should be 2 - authorization_required")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteUserWithSiteOwnerFails() {
+        let expect = expectation(description: "Delete user with site owner failure")
+
+        stubRemoteResponse(siteUserDeleteEndpoint, filename: deleteUserSiteOwnerFailureMockFilename, contentType: .ApplicationJSON, status: 403)
+        remote.deleteUser(siteID, userID: userID, success: { roles in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            let error = error as NSError
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteUserWithNonMemberFails() {
+        let expect = expectation(description: "Delete user with non site member failure")
+
+        stubRemoteResponse(siteUserDeleteEndpoint, filename: deleteUserNonMemberFailureMockFilename, contentType: .ApplicationJSON, status: 400)
+        remote.deleteUser(siteID, userID: userID, success: { roles in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            let error = error as NSError
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.invalidInput.rawValue, "The error code should be 0 - invalid input")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteUserWithValidUserSucceeds() {
+        let expect = expectation(description: "Delete user success")
+
+        stubRemoteResponse(siteUserDeleteEndpoint, filename: deleteUserSuccessMockFilename,
+                           contentType: .ApplicationJSON)
+        remote.deleteUser(siteID, userID: userID, success: {
+            expect.fulfill()
+        }, failure: { error in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteUserWithServerErrorFails() {
+        let expect = expectation(description: "Delete user with server error failure")
+
+        stubRemoteResponse(siteUserDeleteEndpoint, data: Data(), contentType: .NoContentType, status: 500)
+        remote.deleteUser(siteID, userID: userID, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            let error = error as NSError
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteUserWithBadJsonFails() {
+        let expect = expectation(description: "Delete user with invalid json response failure")
+
+        stubRemoteResponse(siteUserDeleteEndpoint, filename: deleteUserBadJsonFailureMockFilename, contentType: .ApplicationJSON, status: 200)
+        remote.deleteUser(siteID, userID: userID, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
 
     // MARK: - Follower Tests
 
@@ -228,10 +335,9 @@ class PeopleServiceRemoteTests: RemoteTestCase {
         }, failure: { error in
             expect.fulfill()
         })
-        
+
         waitForExpectations(timeout: timeout, handler: nil)
     }
-
 
     // MARK: - Viewer Tests
 
