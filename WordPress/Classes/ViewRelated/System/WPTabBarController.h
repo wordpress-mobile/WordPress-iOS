@@ -48,4 +48,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID;
 - (void)updateNotificationBadgeVisibility;
 
+- (IBAction)unwindOutWithSegue:(UIStoryboardSegue *)segue;
+
 @end
