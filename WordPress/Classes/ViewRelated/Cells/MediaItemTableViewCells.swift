@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 import WordPressShared
 
 class MediaItemImageTableViewCell: WPTableViewCell {
@@ -141,6 +142,47 @@ class MediaItemImageTableViewCell: WPTableViewCell {
     }
 }
 
+class MediaItemDocumentTableViewCell: WPTableViewCell {
+    let customImageView = UIImageView()
+
+    // MARK: - Initializers
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+
+    public required override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        commonInit()
+    }
+
+    public convenience init() {
+        self.init(style: .default, reuseIdentifier: nil)
+    }
+
+    func commonInit() {
+        setupImageView()
+    }
+
+    private func setupImageView() {
+        customImageView.backgroundColor = .clear
+
+        contentView.addSubview(customImageView)
+        customImageView.translatesAutoresizingMaskIntoConstraints = false
+        customImageView.contentMode = .center
+
+        NSLayoutConstraint.activate([
+            customImageView.leadingAnchor.constraint(equalTo: contentView.readableContentGuide.leadingAnchor),
+            customImageView.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
+            customImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            customImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            ])
+
+        let size = MediaDocumentRow.customHeight! / 2
+        customImageView.image = Gridicon.iconOfType(.pages, withSize: CGSize(width: size, height: size))
+    }
+}
+
 struct MediaImageRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(MediaItemImageTableViewCell.self)
 
@@ -219,5 +261,20 @@ struct MediaImageRow: ImmuTableRow {
             cell.isLoading = false
             cell.customImageView.image = image
         }, completion: nil)
+    }
+}
+
+struct MediaDocumentRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(MediaItemDocumentTableViewCell.self)
+    static let customHeight: Float? = 96.0
+
+    let action: ImmuTableAction?
+
+    func configureCell(_ cell: UITableViewCell) {
+        WPStyleGuide.configureTableViewCell(cell)
+
+        if let cell = cell as? MediaItemDocumentTableViewCell {
+            cell.customImageView.tintColor = cell.textLabel?.textColor
+        }
     }
 }
