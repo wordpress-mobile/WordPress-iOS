@@ -178,7 +178,7 @@ DEPENDENCIES:
   - WordPressCom-Analytics-iOS (= 0.1.25)
   - WordPressCom-Stats-iOS (= 0.9.1)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
-  - WPMediaPicker (= 0.15)
+  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS`, branch `feature/document-type-collectionview-cell`)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
@@ -194,6 +194,9 @@ EXTERNAL SOURCES:
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
+  WPMediaPicker:
+    :branch: feature/document-type-collectionview-cell
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -208,6 +211,9 @@ CHECKOUT OPTIONS:
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
+  WPMediaPicker:
+    :commit: d249286b01fd7b06e2c954fff161f76d1a724e60
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS
 
 SPEC CHECKSUMS:
   1PasswordExtension: 00d6f4caae77c19ba33045b8569fbeb9689f0d1d
@@ -243,9 +249,9 @@ SPEC CHECKSUMS:
   WordPressCom-Analytics-iOS: ec36976259d733430ba0fc2f8a51765947d2c7ba
   WordPressCom-Stats-iOS: 872a0c2ad9b691911257459bc353f96ac804374c
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
-  WPMediaPicker: 239fef5c97d76acd3f9fb66c408be3e7deb3295e
+  WPMediaPicker: 794419c49a02e62726d556fa0eff45d8118158cf
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: ba81674b3b8f0580323cbdd51c5c2df286e877f9
+PODFILE CHECKSUM: 1d174daa537ef5cc361ea98d3a97de49fc860b3f
 
 COCOAPODS: 1.2.1
