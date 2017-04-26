@@ -4,10 +4,10 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "SettingTableViewCell.h"
+#import "SVProgressHud+Dismiss.h"
 #import "RelatedPostsPreviewTableViewCell.h"
 
 #import <WordPressShared/WPStyleGuide.h>
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "WordPress-Swift.h"
 
 
@@ -255,7 +255,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     [blogService updateSettingsForBlog:self.blog success:^{
         [self.tableView reloadData];
     } failure:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
+        [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
         [self.tableView reloadData];
     }];
     [self.tableView reloadData];
