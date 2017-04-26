@@ -210,6 +210,11 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
                 postInContext.remoteStatus = AbstractPostRemoteStatusFailed;
+                // If the post was not created on the server yet we convert the post to a local draft post with the current date.
+                if (!postInContext.hasRemote) {
+                    postInContext.status = PostStatusDraft;
+                    postInContext.dateModified = [NSDate date];
+                }
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
@@ -533,6 +538,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     }
     post.authorAvatarURL = remotePost.authorAvatarURL;
     post.mt_excerpt = remotePost.excerpt;
+    post.wp_slug = remotePost.slug;
 
     if (remotePost.postID != previousPostID) {
         [self updateCommentsForPost:post];
@@ -612,6 +618,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     remotePost.type = @"post";
     remotePost.authorAvatarURL = post.authorAvatarURL;
     remotePost.excerpt = post.mt_excerpt;
+    remotePost.slug = post.wp_slug;
 
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;

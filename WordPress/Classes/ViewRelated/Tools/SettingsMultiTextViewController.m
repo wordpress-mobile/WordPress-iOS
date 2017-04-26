@@ -25,6 +25,7 @@ static CGFloat const SettingsMinHeight = 41.0f;
         _placeholder = placeholder;
         _hint = hint;
         _isPassword = isPassword;
+        _autocapitalizationType = UITextAutocapitalizationTypeSentences;
     }
     return self;
 }
@@ -73,6 +74,7 @@ static CGFloat const SettingsMinHeight = 41.0f;
     textView.textColor = [WPStyleGuide darkGrey];
     textView.delegate = self;
     textView.scrollEnabled = NO;
+    textView.autocapitalizationType = self.autocapitalizationType;
 
     UIEdgeInsets textInset = textView.textContainerInset;
     textInset.left = 0.0;

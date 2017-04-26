@@ -1,7 +1,7 @@
 #import "SharingDetailViewController.h"
 #import "Blog.h"
 #import "BlogService.h"
-#import "SVProgressHUD.h"
+#import "SVProgressHUD+Dismiss.h"
 #import "SharingAuthorizationHelper.h"
 #import "UIImageView+AFNetworkingExtra.h"
 #import "WPTableViewCell.h"
@@ -156,7 +156,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
                                 success:nil
                                 failure:^(NSError *error) {
                                     DDLogError([error description]);
-                                    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Change failed", @"Message to show when Publicize globally shared setting failed")];
+                                    [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Change failed", @"Message to show when Publicize globally shared setting failed")];
                                     [weakSelf.tableView reloadData];
                                 }];
 }
@@ -204,7 +204,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [sharingService deletePublicizeConnectionForBlog:self.blog pubConn:self.publicizeConnection success:nil failure:^(NSError *error) {
         DDLogError([error description]);
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];
+        [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];
     }];
 
     // Since the service optimistically deletes the connection, go ahead and pop.
@@ -250,7 +250,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper didConnectToService:(PublicizeService *)service withPublicizeConnection:(PublicizeConnection *)keyringConnection
 {
-    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Reconnected", @"Message shwon to confirm a publicize connection has been successfully reconnected.")];
+    [SVProgressHUD showDismissibleSuccessWithStatus:NSLocalizedString(@"Reconnected", @"Message shwon to confirm a publicize connection has been successfully reconnected.")];
 }
 
 @end
