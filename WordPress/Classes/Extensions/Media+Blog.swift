@@ -35,4 +35,13 @@ extension Media {
         }
         return blogMedia.first(where: ({ $0.mediaID == mediaID }))
     }
+
+    /// Returns an existing Media object that matches the remoteURL if it exists, or nil.
+    ///
+    class func existingMediaWith(remoteURL: String, inBlog blog: Blog) -> Media? {
+        guard let blogMedia = blog.media as? Set<Media> else {
+            return nil
+        }
+        return blogMedia.first(where: ({ $0.remoteURL == remoteURL }))
+    }
 }
