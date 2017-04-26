@@ -106,6 +106,7 @@
 #import "SuggestionService.h"
 #import "SuggestionsTableView.h"
 #import "SupportViewController.h"
+#import "SVProgressHUD+Dismiss.h"
 
 #import "Theme.h"
 #import "ThemeService.h"
