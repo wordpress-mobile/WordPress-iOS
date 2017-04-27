@@ -8,6 +8,7 @@
 #import "LocationService.h"
 #import "BlogService.h"
 #import "PostService.h"
+#import "SVProgressHUD+Dismiss.h"
 #import "MediaService.h"
 #import "WPUploadStatusButton.h"
 #import "WPTabBarController.h"
@@ -28,7 +29,6 @@
 #import "PostSettingsViewController.h"
 #import "PostPreviewViewController.h"
 #import "AbstractPost.h"
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "Media+HTML.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
@@ -721,7 +721,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                             } else {
                                 hudText = NSLocalizedString(@"Error occurred\nduring updating", @"Text displayed in HUD after attempting to update a post and an error occurred.");
                             }
-                            [SVProgressHUD showErrorWithStatus:hudText];
+                            [SVProgressHUD showDismissibleErrorWithStatus:hudText];
                             stopEditingAndDismiss();
                         }];
     }
