@@ -177,9 +177,17 @@ class MediaItemDocumentTableViewCell: WPTableViewCell {
             customImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             customImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
             ])
+    }
 
-        let size = CGFloat(MediaDocumentRow.customHeight! / 2)
-        customImageView.image = Gridicon.iconOfType(.pages, withSize: CGSize(width: size, height: size))
+    func showIconForMedia(_ media: Media) {
+        let dimension = CGFloat(MediaDocumentRow.customHeight! / 2)
+        let size = CGSize(width: dimension, height: dimension)
+
+        if media.mediaType == .audio {
+            customImageView.image = Gridicon.iconOfType(.audio, withSize: size)
+        } else {
+            customImageView.image = Gridicon.iconOfType(.pages, withSize: size)
+        }
     }
 }
 
@@ -268,6 +276,7 @@ struct MediaDocumentRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(MediaItemDocumentTableViewCell.self)
     static let customHeight: Float? = 96.0
 
+    let media: Media
     let action: ImmuTableAction?
 
     func configureCell(_ cell: UITableViewCell) {
@@ -275,6 +284,7 @@ struct MediaDocumentRow: ImmuTableRow {
 
         if let cell = cell as? MediaItemDocumentTableViewCell {
             cell.customImageView.tintColor = cell.textLabel?.textColor
+            cell.showIconForMedia(media)
         }
     }
 }

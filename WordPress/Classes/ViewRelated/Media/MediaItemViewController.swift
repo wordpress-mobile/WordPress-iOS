@@ -71,8 +71,14 @@ class MediaItemViewController: UITableViewController {
                 }
             })
         default:
-            return MediaDocumentRow(action: { [weak self] _ in
-                self?.presentDocumentViewControllerForMedia()
+            return MediaDocumentRow(media: media, action: { [weak self] _ in
+                guard let media = self?.media else { return }
+
+                if media.mediaType == .audio {
+                    self?.presentVideoViewControllerForMedia()
+                } else {
+                    self?.presentDocumentViewControllerForMedia()
+                }
             })
         }
     }
