@@ -51,9 +51,10 @@ struct ShareExtractor {
 private extension ShareExtractor {
     var supportedExtractors: [ExtensionContentExtractor] {
         return [
+            SharePostExtractor(),
             PropertyListExtractor(),
-            URLExtractor(),
-            ImageExtractor()
+            ImageExtractor(),
+            URLExtractor()
         ]
     }
 
@@ -153,5 +154,16 @@ private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
             return nil
         }
         return value
+    }
+}
+
+private struct SharePostExtractor: TypeBasedExtensionContentExtractor {
+    typealias Payload = Data
+    let acceptedType = SharePost.typeIdentifier
+    func convert(payload: Data) -> ExtractedShare? {
+        guard let post = SharePost(data: payload) else {
+            return nil
+        }
+        return .text(post.content)
     }
 }

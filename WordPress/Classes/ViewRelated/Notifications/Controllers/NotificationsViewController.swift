@@ -145,6 +145,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         super.viewDidAppear(animated)
         showRatingViewIfApplicable()
         syncNewNotifications()
+        markSelectedNotificationAsRead()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -289,7 +290,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
 
         selectedNotification = note
-
         showDetailsForNotification(note)
     }
 
@@ -507,6 +507,8 @@ extension NotificationsViewController {
 
         prepareToShowDetailsForNotification(note)
 
+        markAsRead(note: note)
+
         // Display Details
         if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
@@ -514,7 +516,13 @@ extension NotificationsViewController {
             return
         }
 
-        performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+        // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
+        // would be missing entirely when launching the app from the background and presenting a notification.
+        // The issue seems tied to performing a `pop` in `prepareToShowDetailsForNotification` and presenting
+        // the new detail view controller at the same time. More info: https://github.com/wordpress-mobile/WordPress-iOS/issues/6976
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+        }
     }
 
     fileprivate func prepareToShowDetailsForNotification(_ note: Notification) {
@@ -581,6 +589,29 @@ private extension NotificationsViewController {
 
     func deletionRequestForNoteWithID(_ noteObjectID: NSManagedObjectID) -> NotificationDeletionRequest? {
         return notificationDeletionRequests[noteObjectID]
+    }
+}
+
+
+
+// MARK: - Marking as Read
+//
+private extension NotificationsViewController {
+
+    func markSelectedNotificationAsRead() {
+        guard let note = selectedNotification else {
+            return
+        }
+
+        markAsRead(note: note)
+    }
+
+    func markAsRead(note: Notification) {
+        guard !note.read else {
+            return
+        }
+
+        NotificationSyncMediator()?.markAsRead(note)
     }
 }
 
@@ -882,8 +913,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 
 // MARK: - Actions
 //
-
-
 private extension NotificationsViewController {
     func leadingButtons(note: Notification) -> [MGSwipeButton] {
         guard !note.read else {
@@ -891,11 +920,11 @@ private extension NotificationsViewController {
         }
 
         return [
-            MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"), backgroundColor: WPStyleGuide.greyDarken20(), callback: { _ in
-                ReachabilityUtils.onAvailableInternetConnectionDo {
-                    NotificationSyncMediator()?.markAsRead(note)
-                }
-                return true
+            MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"),
+                          backgroundColor: WPStyleGuide.greyDarken20(),
+                          callback: { _ in
+                            self.markAsRead(note: note)
+                            return true
             })
         ]
     }

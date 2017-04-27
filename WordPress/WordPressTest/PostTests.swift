@@ -365,6 +365,12 @@ class PostTests: XCTestCase {
 
         revision.mt_excerpt = original.mt_excerpt
         XCTAssertFalse(revision.hasLocalChanges())
+
+        revision.wp_slug = "New pretty slug"
+        XCTAssertTrue(revision.hasLocalChanges())
+
+        revision.wp_slug = original.wp_slug
+        XCTAssertFalse(revision.hasLocalChanges())
     }
 
     func testThatEnablingDisablingPublicizeConnectionsWorks() {
