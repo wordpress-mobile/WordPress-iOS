@@ -25,7 +25,13 @@
 
 + (void)handleHUDDisappearedNotification:(NSNotification *)notification
 {
-    [self unregisterFromHUDNotifications];
+    // This is tricky: because the dismiss is fired with a delay, when a HUD is displayed on
+    // top of another one we will get a disappeared notification for the first one after
+    // we have registered for notifications for the latest one displayed, and we would
+    // be removing the observer that we actually want to keep if we don't check for visibility
+    if (![SVProgressHUD isVisible]) {
+        [self unregisterFromHUDNotifications];
+    }
 }
 
 + (void)registerForHUDNotifications
