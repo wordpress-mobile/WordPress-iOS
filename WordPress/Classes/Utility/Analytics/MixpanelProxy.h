@@ -45,6 +45,11 @@
 - (void)registerSuperProperties:(NSDictionary *)superProperties;
 
 /**
+ *  Unregisters a particular super property
+ */
+- (void)unregisterSuperProperty:(NSString *)propertyName;
+
+/**
  *  Identifies the particular user with the people analytics portion of Mixpanel.
  */
 - (void)identify:(NSString *)username;

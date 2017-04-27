@@ -239,7 +239,7 @@ extension InvitePersonViewController {
 
         service.sendInvitation(recipient, role: role, message: message, success: {
             let success = NSLocalizedString("Invitation Sent!", comment: "The app successfully sent an invitation")
-            SVProgressHUD.showSuccess(withStatus: success)
+            SVProgressHUD.showDismissibleSuccess(withStatus: success)
 
         }, failure: { error in
             self.handleSendError() {
@@ -300,11 +300,11 @@ private extension InvitePersonViewController {
     }
 
     func handleValidationError(_ error: Error) {
-        guard let error = error as? PeopleRemote.ResponseError else {
+        guard let error = error as? PeopleServiceRemote.ResponseError else {
             return
         }
 
-        let messageMap: [PeopleRemote.ResponseError: String] = [
+        let messageMap: [PeopleServiceRemote.ResponseError: String] = [
             .invalidInputError: NSLocalizedString("The specified user cannot be found. Please, verify if it's correctly spelt.",
                                                   comment: "People: Invitation Error"),
             .userAlreadyHasRoleError: NSLocalizedString("The user already has the specified role. Please, try assigning a different role.",

@@ -7,7 +7,7 @@ import WordPressShared
 /// button and badge.
 /// It is assumed that NUX controllers will always be presented modally.
 ///
-class NUXAbstractViewController: UIViewController {
+class NUXAbstractViewController: UIViewController, LoginSegueHandler {
     var helpBadge: WPNUXHelpBadgeLabel!
     var helpButton: UIButton!
     var loginFields = LoginFields()
@@ -17,6 +17,16 @@ class NUXAbstractViewController: UIViewController {
     let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
+
+    enum SegueIdentifier: String {
+        case showSelfHostedLogin
+        case showWPComLogin
+        case startMagicLinkFlow
+        case showMagicLink
+        case showLinkMailView
+        case show2FA
+        case showEpilogue
+    }
 
     // MARK: - Lifecycle Methods
 
@@ -50,6 +60,19 @@ class NUXAbstractViewController: UIViewController {
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIDevice.isPad() ? .all : .portrait
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let source = segue.source as? NUXAbstractViewController else {
+            return
+        }
+
+        if let destination = segue.destination as? LoginEpilogueViewController {
+            destination.dismissBlock = source.dismissBlock
+        } else if let destination = segue.destination as? NUXAbstractViewController {
+            destination.loginFields = source.loginFields
+            destination.dismissBlock = source.dismissBlock
+        }
     }
 
 
