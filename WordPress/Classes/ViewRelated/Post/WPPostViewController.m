@@ -1503,16 +1503,16 @@ EditImageDetailsViewControllerDelegate
                         NSString *hudText;
                         switch (currentSaveAction) {
                             case PostEditorSaveActionSchedule:
-                                hudText = NSLocalizedString(@"Error occurred\nduring scheduling. Your changes where saved on the device.", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring scheduling. Your changes were saved on the device.", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
                                 break;
                             case PostEditorSaveActionUpdate:
-                                hudText = NSLocalizedString(@"Error occurred\nduring updating. Your changes where saved on the device", @"Text displayed in HUD after attempting to update a post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring updating. Your changes were saved on the device", @"Text displayed in HUD after attempting to update a post and an error occurred.");
                                 break;
                             case PostEditorSaveActionPost:
-                                hudText = NSLocalizedString(@"Error occurred\nduring publishing. Your changes where saved on the device", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring publishing. Your changes were saved on the device", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
                                 break;
                             default:
-                                hudText = NSLocalizedString(@"Error occurred\nduring saving. Your changes where saved on the device.", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
+                                hudText = NSLocalizedString(@"Error occurred\nduring saving. Your changes were saved on the device.", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
                                 break;
                         }
                         [SVProgressHUD showErrorWithStatus:hudText];
