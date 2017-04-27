@@ -36,8 +36,9 @@
     self = [super init];
     if (self) {
         _mediaGroup = [[MediaLibraryGroup alloc] initWithBlog:blog];
+        __weak __typeof__(self) weakSelf = self;
         _groupObserverHandler = [_mediaGroup registerChangeObserverBlock:^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray<id<WPMediaMove>> *moved) {
-            [self notifyObserversWithIncrementalChanges:incrementalChanges removed:removed inserted:inserted changed:changed moved:moved];
+            [weakSelf notifyObserversWithIncrementalChanges:incrementalChanges removed:removed inserted:inserted changed:changed moved:moved];
         }];
         _blog = blog;
         NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
@@ -584,7 +585,30 @@
         return 0;
     }
 
-    NSURL *url = self.absoluteLocalURL;
+    NSURL *url = nil;
+
+    if ([self.absoluteLocalURL checkResourceIsReachableAndReturnError:nil] && [self.absoluteLocalURL isVideo]) {
+        url = self.absoluteLocalURL;
+    }
+
+    if (!url && self.videopressGUID.length > 0 ){
+        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
+        [mediaService getMediaURLFromVideoPressID:self.videopressGUID inBlog:self.blog success:^(NSString *videoURL, NSString *posterURL) {
+            // Let see if can create an asset with this url
+            AVURLAsset *asset = [AVURLAsset assetWithURL:[NSURL URLWithString:videoURL]];
+            if (!asset) {
+                NSString *errorMessage = NSLocalizedString(@"Selected media is unavailable.", @"Error message when user tries a no longer existent video media object.");
+                completionHandler(nil, [self errorWithMessage:errorMessage]);
+                return;
+            }
+            
+            completionHandler(asset, nil);
+        } failure:^(NSError *error) {
+            completionHandler(nil, error);
+        }];
+        return 0;
+    }
     // Do we have a local url, or remote url to use for the video
     if (!url && self.remoteURL) {
         url = [NSURL URLWithString:self.remoteURL];

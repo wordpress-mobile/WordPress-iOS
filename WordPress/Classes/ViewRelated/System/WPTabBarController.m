@@ -408,6 +408,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                self.meSplitViewController,
                                self.notificationsSplitViewController]];
 
+    // Bring the badge view to the front, while recreating the VCs the TabBarItems are
+    // recreated too, leaving it in the back
+    [self.tabBar bringSubviewToFront:self.notificationBadgeIconView];
+
     // Reset the selectedIndex to the default MySites tab.
     self.selectedIndex = WPTabMySites;
 }
@@ -693,6 +697,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return;
     }
 
+    // When the user logs in the VCs are recreated and at the time viewDidLayoutSubviews is
+    // invoked the TabButton frames are not correct, so we need to recalculate the badge position
+    [self updateNotificationBadgeIconPosition];
     BOOL wasNotificationBadgeHidden = self.notificationBadgeIconView.hidden;
     self.notificationBadgeIconView.hidden = NO;
     tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
@@ -879,6 +886,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                                 [weakSelf updateNotificationBadgeIconPosition];
                                             }
                                  completion:nil];
+}
+
+- (IBAction)unwindOutWithSegue:(UIStoryboardSegue *)segue
+{
+    // here so that this VC is a valid unwind destination for this selector
 }
 
 @end

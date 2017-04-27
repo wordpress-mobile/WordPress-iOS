@@ -360,7 +360,6 @@
                            }];
 }
 
-
 #pragma mark - Private methods
 
 - (NSArray *)remoteCommentsFromJSONArray:(NSArray *)jsonComments

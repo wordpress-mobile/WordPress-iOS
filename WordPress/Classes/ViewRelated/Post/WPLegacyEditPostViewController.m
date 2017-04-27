@@ -8,6 +8,7 @@
 #import "LocationService.h"
 #import "BlogService.h"
 #import "PostService.h"
+#import "SVProgressHUD+Dismiss.h"
 #import "MediaService.h"
 #import "WPUploadStatusButton.h"
 #import "WPTabBarController.h"
@@ -28,11 +29,11 @@
 #import "PostSettingsViewController.h"
 #import "PostPreviewViewController.h"
 #import "AbstractPost.h"
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "Media+HTML.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
+NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 static void *ProgressObserverContext = &ProgressObserverContext;
 
 
@@ -402,7 +403,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 
     if (![self.post hasUnsavedChanges]) {
-        [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
+        [WPAppAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueLegacy} withPost:self.post];
 
         [self discardChanges];
         [self dismissEditView:NO];
@@ -420,7 +421,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                 handler:^(UIAlertAction * action) {
                                     [self discardChanges];
                                     [self dismissEditView:NO];
-                                    [WPAppAnalytics track:WPAnalyticsStatEditorDiscardedChanges withBlog:self.post.blog];
+                                    [WPAppAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueLegacy} withPost:self.post];
                                 }];
     
     if ([self.post.original.status isEqualToString:PostStatusDraft]) {
@@ -720,7 +721,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                             } else {
                                 hudText = NSLocalizedString(@"Error occurred\nduring updating", @"Text displayed in HUD after attempting to update a post and an error occurred.");
                             }
-                            [SVProgressHUD showErrorWithStatus:hudText];
+                            [SVProgressHUD showDismissibleErrorWithStatus:hudText];
                             stopEditingAndDismiss();
                         }];
     }
@@ -740,29 +741,26 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSInteger originalWordCount = [self.post.original.content wordCount];
     NSInteger wordCount = [self.post.content wordCount];
 
-    NSMutableDictionary *properties = [[NSMutableDictionary alloc] initWithCapacity:2];
+    NSMutableDictionary *properties = [NSMutableDictionary new];
+    properties[WPAppAnalyticsKeyEditorSource] = WPAppAnalyticsEditorSourceValueLegacy;
     properties[@"word_count"] = @(wordCount);
+
     if ([self.post hasRemote]) {
         properties[@"word_diff_count"] = @(wordCount - originalWordCount);
     }
 
-    NSNumber *dotComID = [self.post blog].dotComID;
-    if (dotComID) {
-        properties[WPAppAnalyticsKeyBlogID] = dotComID;
-    }
-    
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Post", nil)]) {
         properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = @([self.post hasVideo]);
-        [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
+        [WPAppAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties withPost:self.post];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
-        [WPAnalytics track:WPAnalyticsStatEditorScheduledPost withProperties:properties];
+        [WPAppAnalytics track:WPAnalyticsStatEditorScheduledPost withProperties:properties withPost:self.post];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Save", nil)]) {
-        [WPAnalytics track:WPAnalyticsStatEditorSavedDraft];
+        [WPAppAnalytics track:WPAnalyticsStatEditorSavedDraft withProperties:properties withPost:self.post];
     } else {
-        [WPAnalytics track:WPAnalyticsStatEditorUpdatedPost withProperties:properties];
+        [WPAppAnalytics track:WPAnalyticsStatEditorUpdatedPost withProperties:properties withPost:self.post];
     }
 }
 
@@ -979,11 +977,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             if (media.mediaType == WPMediaTypeImage) {
                 [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
                        withProperties:[WPAppAnalytics propertiesFor:media]
-                             withBlog:self.post.blog];
+                             withPost:self.post];
             } else if (media.mediaType == WPMediaTypeVideo) {
                 [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
                        withProperties:[WPAppAnalytics propertiesFor:media]
-                             withBlog:self.post.blog];
+                             withPost:self.post];
             }
             [self uploadMedia:media trackingId:imageUniqueId];
         }];
@@ -999,7 +997,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self insertMedia:media];
         [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
     } failure:^(NSError *error) {
-        [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withBlog:self.post.blog];
+        [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueLegacy} withPost:self.post];
         [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
         if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
             DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
@@ -1020,9 +1018,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSString *mediaUniqueID = [self uniqueIdForMedia];
     if ([media.mediaID intValue] != 0) {
         if ([media mediaType] == MediaTypeImage) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaWPMediaLibrary withBlog:self.post.blog];
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaWPMediaLibrary withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueLegacy} withPost:self.post];
         } else if ([media mediaType] == MediaTypeVideo) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary withBlog:self.post.blog];
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueLegacy} withPost:self.post];
         }
         [self trackMediaWithId:mediaUniqueID usingProgress:[NSProgress progressWithTotalUnitCount:1]];
         [self insertMedia:media];
@@ -1031,11 +1029,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         if (media.mediaType == WPMediaTypeImage) {
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
                    withProperties:[WPAppAnalytics propertiesFor:media]
-                         withBlog:self.post.blog];
+                         withPost:self.post];
         } else if (media.mediaType == WPMediaTypeVideo) {
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
                    withProperties:[WPAppAnalytics propertiesFor:media]
-                         withBlog:self.post.blog];
+                         withPost:self.post];
         }
         [self uploadMedia:media trackingId:mediaUniqueID];
     }
