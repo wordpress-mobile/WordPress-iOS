@@ -44,6 +44,7 @@ class PeopleServiceRemoteTests: RemoteTestCase {
     let deleteViewerSuccessMockFilename             = "site-viewers-delete-success.json"
     let deleteViewerFailureMockFilename             = "site-viewers-delete-failure.json"
     let deleteViewerAuthFailureMockFilename         = "site-viewers-delete-auth-failure.json"
+    let deleteViewerBadJsonFailureMockFilename      = "site-viewers-delete-bad-json.json"
 
     // MARK: - Properties
 
@@ -247,6 +248,86 @@ class PeopleServiceRemoteTests: RemoteTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
 
+    // MARK: - Viewer Tests
+
+    func testDeleteViewerWithInvalidViewerFails() {
+        let expect = expectation(description: "Delete viewer failure")
+
+        stubRemoteResponse(siteViewerDeleteEndpoint, filename: deleteViewerFailureMockFilename,
+                           contentType: .ApplicationJSON, status: 404)
+        remote.deleteViewer(siteID, userID: viewerID, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteViewerWithValidViewerSucceeds() {
+        let expect = expectation(description: "Delete viewer success")
+
+        stubRemoteResponse(siteViewerDeleteEndpoint, filename: deleteViewerSuccessMockFilename,
+                           contentType: .ApplicationJSON)
+        remote.deleteViewer(siteID, userID: viewerID, success: {
+            expect.fulfill()
+        }, failure: { error in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteViewerWithBadAuthFails() {
+        let expect = expectation(description: "Delete viewer with bad auth failure")
+
+        stubRemoteResponse(siteViewerDeleteEndpoint, filename: deleteViewerAuthFailureMockFilename, contentType: .ApplicationJSON, status: 403)
+        remote.deleteViewer(siteID, userID: viewerID, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            let error = error as NSError
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.authorizationRequired.rawValue, "The error code should be 2 - authorization_required")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteViewerWithServerErrorFails() {
+        let expect = expectation(description: "Delete viewer with server error failure")
+
+        stubRemoteResponse(siteViewerDeleteEndpoint, data: Data(), contentType: .NoContentType, status: 500)
+        remote.deleteViewer(siteID, userID: viewerID, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            let error = error as NSError
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testDeleteViewerWithBadJsonFails() {
+        let expect = expectation(description: "Delete viewer with invalid json response failure")
+
+        stubRemoteResponse(siteViewerDeleteEndpoint, filename: deleteViewerBadJsonFailureMockFilename, contentType: .ApplicationJSON, status: 200)
+        remote.deleteViewer(siteID, userID: viewerID, success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
     // MARK: - Role Tests
 
     func testGetSiteRolesSucceeds() {
@@ -387,38 +468,6 @@ class PeopleServiceRemoteTests: RemoteTestCase {
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
-            expect.fulfill()
-        })
-
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-
-    // MARK: - Viewer Tests
-
-    func testDeleteViewerWithInvalidUserFails() {
-        let expect = expectation(description: "Delete viewer failure")
-
-        stubRemoteResponse(siteViewerDeleteEndpoint, filename: deleteViewerFailureMockFilename,
-                           contentType: .ApplicationJSON, status: 404)
-        remote.deleteViewer(siteID, userID: viewerID, success: {
-            XCTFail("This callback shouldn't get called")
-            expect.fulfill()
-        }, failure: { error in
-            expect.fulfill()
-        })
-
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-
-    func testDeleteViewerWithValidUserSucceeds() {
-        let expect = expectation(description: "Delete viewer success")
-
-        stubRemoteResponse(siteViewerDeleteEndpoint, filename: deleteViewerSuccessMockFilename,
-                           contentType: .ApplicationJSON)
-        remote.deleteViewer(siteID, userID: viewerID, success: {
-            expect.fulfill()
-        }, failure: { error in
-            XCTFail("This callback shouldn't get called")
             expect.fulfill()
         })
 
