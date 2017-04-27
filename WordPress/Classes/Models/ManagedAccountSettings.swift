@@ -5,6 +5,12 @@ import CoreData
 //
 class ManagedAccountSettings: NSManagedObject {
 
+    // MARK: - NSManagedObject
+
+    override class var entityName: String {
+        return "AccountSettings"
+    }
+
     func updateWith(_ accountSettings: AccountSettings) {
         firstName = accountSettings.firstName
         lastName = accountSettings.lastName

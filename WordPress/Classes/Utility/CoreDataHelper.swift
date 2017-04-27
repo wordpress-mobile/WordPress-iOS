@@ -1,14 +1,17 @@
 import Foundation
 
 
-
+// MARK: - NSManagedObject Default entityName Helper
+//
 extension NSManagedObject {
-
     class var entityName: String {
-        return entity().name ?? classNameWithoutNamespaces()
+        return classNameWithoutNamespaces()
     }
 }
 
+
+// MARK: - NSManagedObjectContext Helpers!
+//
 extension NSManagedObjectContext {
 
     /// Returns a new FetchRequest for the associated Entity
