@@ -211,7 +211,9 @@ class NotificationDetailsViewController: UIViewController {
         buttons.spacing = buttonSpacing
         buttons.frame = CGRect(x: 0, y: 0, width: width, height: height)
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttons)
+        UIView.performWithoutAnimation {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttons)
+        }
 
         previousNavigationButton.isEnabled = shouldEnablePreviousButton
         nextNavigationButton.isEnabled = shouldEnableNextButton
