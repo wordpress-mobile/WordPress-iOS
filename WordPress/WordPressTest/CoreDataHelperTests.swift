@@ -32,7 +32,6 @@ class CoreDataHelperTests: XCTestCase {
     func testAllObjectsReturnsAllOfTheAvailableEntitiesSortedByValue() {
         insertDummyEntities(100)
 
-
         let descriptor = NSSortDescriptor(key: "value", ascending: true)
         let all = context.allObjects(ofType: DummyEntity.self, sortedBy: [descriptor])
         XCTAssert(all.count == 100)

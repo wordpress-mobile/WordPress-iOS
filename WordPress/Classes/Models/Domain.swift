@@ -43,6 +43,12 @@ extension Domain {
 
 class ManagedDomain: NSManagedObject {
 
+    // MARK: - NSManagedObject
+
+    override class var entityName: String {
+        return "Domain"
+    }
+
     struct Attributes {
         static let domainName = "domainName"
         static let isPrimary = "isPrimary"
