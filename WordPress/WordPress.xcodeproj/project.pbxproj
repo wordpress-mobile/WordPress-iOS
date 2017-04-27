@@ -309,6 +309,7 @@
 		740CAE7C1E816FC700D0E892 /* site-followers-delete-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 740CAE7A1E816FC700D0E892 /* site-followers-delete-failure.json */; };
 		740CAE7D1E816FC700D0E892 /* site-followers-delete-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 740CAE7B1E816FC700D0E892 /* site-followers-delete-success.json */; };
 		742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */; };
+		7435408D1EB231BD00BFE786 /* site-viewers-delete-bad-json.json in Resources */ = {isa = PBXBuildFile; fileRef = 7435408C1EB231BD00BFE786 /* site-viewers-delete-bad-json.json */; };
 		743BF32A1E82CE0700192E40 /* site-viewers-delete-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 743BF3291E82CE0700192E40 /* site-viewers-delete-failure.json */; };
 		743BF32C1E82CEB600192E40 /* site-viewers-delete-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 743BF32B1E82CEB600192E40 /* site-viewers-delete-success.json */; };
 		745938391EAFAF990065386E /* me-settings-change-email-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 745938371EAFAF990065386E /* me-settings-change-email-success.json */; };
@@ -1585,6 +1586,7 @@
 		740CAE7A1E816FC700D0E892 /* site-followers-delete-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "site-followers-delete-failure.json"; path = "WordPressTest/site-followers-delete-failure.json"; sourceTree = SOURCE_ROOT; };
 		740CAE7B1E816FC700D0E892 /* site-followers-delete-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "site-followers-delete-success.json"; path = "WordPressTest/site-followers-delete-success.json"; sourceTree = SOURCE_ROOT; };
 		742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteViewController.swift; sourceTree = "<group>"; };
+		7435408C1EB231BD00BFE786 /* site-viewers-delete-bad-json.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "site-viewers-delete-bad-json.json"; path = "WordPressTest/site-viewers-delete-bad-json.json"; sourceTree = SOURCE_ROOT; };
 		743BF3291E82CE0700192E40 /* site-viewers-delete-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "site-viewers-delete-failure.json"; path = "WordPressTest/site-viewers-delete-failure.json"; sourceTree = SOURCE_ROOT; };
 		743BF32B1E82CEB600192E40 /* site-viewers-delete-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "site-viewers-delete-success.json"; path = "WordPressTest/site-viewers-delete-success.json"; sourceTree = SOURCE_ROOT; };
 		745938371EAFAF990065386E /* me-settings-change-email-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-settings-change-email-success.json"; sourceTree = "<group>"; };
@@ -5211,6 +5213,7 @@
 				740A54361EB116EC0073FD99 /* site-users-update-role-unknown-site-failure.json */,
 				743BF3291E82CE0700192E40 /* site-viewers-delete-failure.json */,
 				747B1D8B1EB1516900BFBF8B /* site-viewers-delete-auth-failure.json */,
+				7435408C1EB231BD00BFE786 /* site-viewers-delete-bad-json.json */,
 				743BF32B1E82CEB600192E40 /* site-viewers-delete-success.json */,
 				855408851A6F105700DDBD79 /* app-review-prompt-all-enabled.json */,
 				855408871A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json */,
@@ -5955,6 +5958,7 @@
 				59F9C1591B9DD3D600885CC1 /* get-purchased-themes-v1.1.json in Resources */,
 				8554088A1A6F107D00DDBD79 /* app-review-prompt-global-disable.json in Resources */,
 				B5EA71321DC294150083032A /* notifications-last-seen.json in Resources */,
+				7435408D1EB231BD00BFE786 /* site-viewers-delete-bad-json.json in Resources */,
 				745938481EAFBD050065386E /* me-settings-change-display-name-bad-json-failure.json in Resources */,
 				7459383A1EAFAF990065386E /* me-settings-revert-email-success.json in Resources */,
 				B5BC25A81CFCBEFF00F7D8B9 /* people-validate-invitation-failure.json in Resources */,
