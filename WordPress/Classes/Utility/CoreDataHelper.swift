@@ -13,20 +13,20 @@ extension NSManagedObjectContext {
 
     /// Returns a new FetchRequest for the associated Entity
     ///
-    func newFetchRequest<T: NSManagedObject>(for type: T.Type) -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest(entityName: T.entityName)
+    func newFetchRequest<T: NSManagedObject>(forType type: T.Type) -> NSFetchRequest<NSFetchRequestResult> {
+        return NSFetchRequest(entityName: type.entityName)
     }
 
     /// Returns all of the entities that match with a given predicate.
     ///
     /// - Parameter predicate: Defines the conditions that any given object should meet. Optional.
     ///
-    func allObjects<T: NSManagedObject>(of type: T.Type, matching predicate: NSPredicate? = nil, sortedBy descriptors: [NSSortDescriptor]? = nil) -> [T] {
-        let request = newFetchRequest(for: type)
+    func allObjects<T: NSManagedObject>(ofType type: T.Type, matching predicate: NSPredicate? = nil, sortedBy descriptors: [NSSortDescriptor]? = nil) -> [T] {
+        let request = newFetchRequest(forType: type)
         request.predicate = predicate
         request.sortDescriptors = descriptors
 
-        return loadObjects(of: type, with: request)
+        return loadObjects(ofType: type, with: request)
     }
 
 
@@ -34,8 +34,8 @@ extension NSManagedObjectContext {
     ///
     /// - Parameter predicate: Defines the conditions that any given object should meet. Optional.
     ///
-    func countObjects<T: NSManagedObject>(of type: T.Type, matching predicate: NSPredicate? = nil) -> Int {
-        let request = newFetchRequest(for: type)
+    func countObjects<T: NSManagedObject>(ofType type: T.Type, matching predicate: NSPredicate? = nil) -> Int {
+        let request = newFetchRequest(forType: type)
         request.predicate = predicate
         request.includesSubentities = false
         request.predicate = predicate
@@ -61,12 +61,12 @@ extension NSManagedObjectContext {
 
     /// Deletes all of the NSMO instances associated to the current kind
     ///
-    func deleteAllObjects<T: NSManagedObject>(of type: T.Type) {
-        let request = newFetchRequest(for: type)
+    func deleteAllObjects<T: NSManagedObject>(ofType type: T.Type) {
+        let request = newFetchRequest(forType: type)
         request.includesPropertyValues = false
         request.includesSubentities = false
 
-        for object in loadObjects(of: type, with: request) {
+        for object in loadObjects(ofType: type, with: request) {
             delete(object)
         }
     }
@@ -75,17 +75,17 @@ extension NSManagedObjectContext {
     ///
     /// - Parameter predicate: Defines the conditions that any given object should meet.
     ///
-    func firstObject<T: NSManagedObject>(of type: T.Type, matching predicate: NSPredicate) -> T? {
-        let request = newFetchRequest(for: type)
+    func firstObject<T: NSManagedObject>(ofType type: T.Type, matching predicate: NSPredicate) -> T? {
+        let request = newFetchRequest(forType: type)
         request.predicate = predicate
         request.fetchLimit = 1
 
-        return loadObjects(of: type, with: request).first
+        return loadObjects(ofType: type, with: request).first
     }
 
     /// Inserts a new Entity. For performance reasons, this helper *DOES NOT* persists the context.
     ///
-    func insertNewObject<T: NSManagedObject>(of type: T.Type) -> T {
+    func insertNewObject<T: NSManagedObject>(ofType type: T.Type) -> T {
         return NSEntityDescription.insertNewObject(forEntityName: T.entityName, into: self) as! T
     }
 
@@ -93,7 +93,7 @@ extension NSManagedObjectContext {
     ///
     /// - Parameter objectID: Unique Identifier of the entity to retrieve, if available.
     ///
-    func loadObject<T: NSManagedObject>(of type: T.Type, with objectID: NSManagedObjectID) -> T? {
+    func loadObject<T: NSManagedObject>(ofType type: T.Type, with objectID: NSManagedObjectID) -> T? {
         var result: T?
 
         do {
@@ -107,7 +107,7 @@ extension NSManagedObjectContext {
 
     /// Loads the collection of entities that match with a given Fetch Request
     ///
-    private func loadObjects<T: NSManagedObject>(of type: T.Type, with request: NSFetchRequest<NSFetchRequestResult>) -> [T] {
+    private func loadObjects<T: NSManagedObject>(ofType type: T.Type, with request: NSFetchRequest<NSFetchRequestResult>) -> [T] {
         var objects: [T]?
 
         do {
