@@ -1,6 +1,6 @@
 import Foundation
 
-class PlanFeaturesRemote: ServiceRemoteWordPressComREST {
+class PlanFeatureServiceRemote: ServiceRemoteWordPressComREST {
 
     enum ResponseError: Error {
         case decodingFailure
@@ -119,7 +119,7 @@ class PlanFeaturesRemote: ServiceRemoteWordPressComREST {
 
 private func mapPlanFeaturesResponse(_ response: AnyObject) throws -> PlanFeatures {
     guard let json = response as? [[String: AnyObject]] else {
-        throw PlanFeaturesRemote.ResponseError.decodingFailure
+        throw PlanFeatureServiceRemote.ResponseError.decodingFailure
     }
 
     var features = [PlanID: [PlanFeature]]()
@@ -128,10 +128,10 @@ private func mapPlanFeaturesResponse(_ response: AnyObject) throws -> PlanFeatur
         guard let slug = featureDetails["product_slug"] as? String,
             let title = featureDetails["title"] as? String,
             var description = featureDetails["description"] as? String,
-            let planDetails = featureDetails["plans"] as? [String: AnyObject] else { throw PlansRemote.ResponseError.decodingFailure }
+            let planDetails = featureDetails["plans"] as? [String: AnyObject] else { throw PlanServiceRemote.ResponseError.decodingFailure }
 
         for (planID, planInfo) in planDetails {
-            guard let planID = Int(planID) else { throw PlansRemote.ResponseError.decodingFailure }
+            guard let planID = Int(planID) else { throw PlanServiceRemote.ResponseError.decodingFailure }
 
             if features[planID] == nil {
                 features[planID] = [PlanFeature]()
