@@ -43,8 +43,6 @@ class EpilogueUnwindSegue: UIStoryboardSegue, EpilogueAnimation {
     let duration = 0.35
 
     override func perform() {
-        performEpilogue() {
-            self.destination.dismiss(animated: false) {}
-        }
+        performEpilogue() {}
     }
 }
