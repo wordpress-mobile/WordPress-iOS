@@ -365,13 +365,16 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     fileprivate func remotePublicizeConnectionFromDictionary(_ dict: NSDictionary) -> RemotePublicizeConnection? {
         let conn = RemotePublicizeConnection()
 
-        if dict.number(forKey: ConnectionDictionaryKeys.ID) == nil {
+        guard let connectionID = dict.number(forKey: ConnectionDictionaryKeys.ID),
+            let expirationDateAsString = dict.string(forKey: ConnectionDictionaryKeys.expires),
+            let issueDateAsString = dict.string(forKey: ConnectionDictionaryKeys.issued)
+        else {
             return nil
         }
 
-        conn.connectionID = dict.number(forKey: ConnectionDictionaryKeys.ID) ?? conn.connectionID
-        conn.dateExpires = DateUtils.date(fromISOString: dict.string(forKey: ConnectionDictionaryKeys.expires))
-        conn.dateIssued = DateUtils.date(fromISOString: dict.string(forKey: ConnectionDictionaryKeys.issued))
+        conn.connectionID = connectionID
+        conn.dateExpires = DateUtils.date(fromISOString: expirationDateAsString)
+        conn.dateIssued = DateUtils.date(fromISOString: issueDateAsString)
         conn.externalDisplay = dict.string(forKey: ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
         conn.externalID = dict.string(forKey: ConnectionDictionaryKeys.externalID) ?? conn.externalID
         conn.externalName = dict.string(forKey: ConnectionDictionaryKeys.externalName) ?? conn.externalName
