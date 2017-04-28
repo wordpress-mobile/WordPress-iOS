@@ -1260,7 +1260,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)showTagsPicker
 {
-    PostTagPickerViewController *tagsPicker = [[PostTagPickerViewController alloc] initWithTags:self.post.tags];
+    PostTagPickerViewController *tagsPicker = [[PostTagPickerViewController alloc] initWithTags:self.post.tags blog:self.post.blog];
     tagsPicker.onValueChanged = ^(NSString * _Nonnull value) {
         self.post.tags = value;
     };
