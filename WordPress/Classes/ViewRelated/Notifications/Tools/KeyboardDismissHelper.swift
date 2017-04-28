@@ -146,8 +146,13 @@ import UIKit
             return
         }
 
+        let previousContentOffset = scrollView.contentOffset
+
         bottomLayoutConstraint.constant = newConstant
         parentView.layoutIfNeeded()
+
+        // Make sure the Scroll View's offset does not get reset!
+        scrollView.contentOffset = previousContentOffset
     }
 
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint) {
