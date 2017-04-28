@@ -363,18 +363,12 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     /// - Returns: A `RemotePublicizeConnection` object.
     ///
     fileprivate func remotePublicizeConnectionFromDictionary(_ dict: NSDictionary) -> RemotePublicizeConnection? {
-        let conn = RemotePublicizeConnection()
-
-        guard let connectionID = dict.number(forKey: ConnectionDictionaryKeys.ID),
-            let expirationDateAsString = dict.string(forKey: ConnectionDictionaryKeys.expires),
-            let issueDateAsString = dict.string(forKey: ConnectionDictionaryKeys.issued)
-        else {
+        guard let connectionID = dict.number(forKey: ConnectionDictionaryKeys.ID) else {
             return nil
         }
 
+        let conn = RemotePublicizeConnection()
         conn.connectionID = connectionID
-        conn.dateExpires = DateUtils.date(fromISOString: expirationDateAsString)
-        conn.dateIssued = DateUtils.date(fromISOString: issueDateAsString)
         conn.externalDisplay = dict.string(forKey: ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
         conn.externalID = dict.string(forKey: ConnectionDictionaryKeys.externalID) ?? conn.externalID
         conn.externalName = dict.string(forKey: ConnectionDictionaryKeys.externalName) ?? conn.externalName
@@ -387,12 +381,22 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
         conn.status = dict.string(forKey: ConnectionDictionaryKeys.status) ?? conn.status
         conn.service = dict.string(forKey: ConnectionDictionaryKeys.service) ?? conn.service
 
+        if let expirationDateAsString = dict.string(forKey: ConnectionDictionaryKeys.expires) {
+            conn.dateExpires = DateUtils.date(fromISOString: expirationDateAsString)
+        }
+
+        if let issueDateAsString = dict.string(forKey: ConnectionDictionaryKeys.issued) {
+            conn.dateIssued = DateUtils.date(fromISOString: issueDateAsString)
+        }
+
         if let sharedDictNumber = dict.number(forKey: ConnectionDictionaryKeys.shared) {
             conn.shared = sharedDictNumber.boolValue
         }
+
         if let siteIDDictNumber = dict.number(forKey: ConnectionDictionaryKeys.siteID) {
             conn.siteID = siteIDDictNumber
         }
+
         if let userIDDictNumber = dict.number(forKey: ConnectionDictionaryKeys.userID) {
             conn.userID = userIDDictNumber
         }
