@@ -1,14 +1,17 @@
 import Foundation
 import WordPressShared
 
-class PostTagPickerViewController: UITableViewController {
-    var tags: String
+class PostTagPickerViewController: UIViewController {
+    private let originalTags: String
     var onValueChanged: ((String) -> Void)?
+    let blog: Blog
 
-    init(tags: String) {
-        self.tags = tags
-        super.init(style: .grouped)
-        textView.text = tags
+    init(tags: String, blog: Blog) {
+        originalTags = tags
+        self.blog = blog
+        super.init(nibName: nil, bundle: nil)
+        textView.text = normalizeInitialTags(tags)
+        textViewDidChange(textView)
         title = NSLocalizedString("Tags", comment: "Title for the tag selector view")
     }
 
@@ -16,72 +19,335 @@ class PostTagPickerViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        if textView.text != tags {
-            onValueChanged?(textView.text)
+    fileprivate let textView = UITextView()
+    private let textViewContainer = UIView()
+    fileprivate let tableView = UITableView(frame: .zero, style: .grouped)
+    fileprivate var dataSource: PostTagPickerDataSource = LoadingDataSource() {
+        didSet {
+            tableView.dataSource = dataSource
+            tableView.reloadData()
         }
     }
+    private lazy var textContainerHeightConstraint: NSLayoutConstraint = {
+        return self.textViewContainer.heightAnchor.constraint(equalToConstant: 44)
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+
         textView.delegate = self
-    }
+        // Do any additional setup after loading the view, typically from a nib.
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: SuggestionsDataSource.cellIdentifier)
+        tableView.register(LoadingDataSource.Cell.self, forCellReuseIdentifier: LoadingDataSource.cellIdentifier)
+        tableView.register(FailureDataSource.Cell.self, forCellReuseIdentifier: FailureDataSource.cellIdentifier)
+        tableView.delegate = self
+        tableView.dataSource = dataSource
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
 
-    // MARK: - Views
-
-    let textView: UITextView = {
-        let textView = UITextView()
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.returnKeyType = .done
+        textView.autocorrectionType = .no
+        textView.autocapitalizationType = .none
         textView.font = WPStyleGuide.tableviewTextFont()
         textView.textColor = WPStyleGuide.darkGrey()
         textView.isScrollEnabled = false
 
-        var inset = textView.textContainerInset
-        inset.left = 0
-        inset.right = 0
-        textView.textContainerInset = inset
-        textView.textContainer.lineFragmentPadding = 0
-        return textView
-    }()
 
-    lazy var textViewCell: WPTableViewCell = {
-        let textView = self.textView
-        let cell = WPTableViewCell(style: .default, reuseIdentifier: nil)
-        cell.selectionStyle = .none
-        cell.contentView.addSubview(textView)
+        textViewContainer.addSubview(textView)
+        view.addSubview(textViewContainer)
+        view.addSubview(tableView)
 
-        let guide = cell.contentView.readableContentGuide
-        cell.contentView.pinSubviewToAllEdgesReadable(textView)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
 
-        return cell
-    }()
+        NSLayoutConstraint.activate([
+            textView.topAnchor.constraint(equalTo: textViewContainer.topAnchor),
+            textView.bottomAnchor.constraint(equalTo: textViewContainer.bottomAnchor),
+            textView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            textView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
 
-    // MARK: - Table View
+            textViewContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 35),
+            textContainerHeightConstraint,
+            textViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -1),
+            textViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 1),
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+            textViewContainer.bottomAnchor.constraint(equalTo: tableView.topAnchor),
+
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            ])
+        updateTextViewHeight()
+
+        view.backgroundColor = UIColor.groupTableViewBackground
+        textViewContainer.backgroundColor = UIColor.white
+        textViewContainer.layer.borderColor = UIColor.lightGray.cgColor
+        textViewContainer.layer.borderWidth = 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateSuggestions()
+        textView.becomeFirstResponder()
+        loadTags()
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return textViewCell
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        let tags = tagsInField
+            .filter({ !$0.isEmpty })
+            .joined(separator: ", ")
+        if originalTags != tags {
+            onValueChanged?(tags)
+        }
+    }
+
+    fileprivate func updateTextViewHeight() {
+        let size = textView.sizeThatFits(CGSize(width: textView.frame.width, height: CGFloat.greatestFiniteMagnitude))
+        textContainerHeightConstraint.constant = max(size.height, 44)
     }
 }
 
-// MARK: - Text View Delegate
+
+// MARK: - Tags Loading
+
+private extension PostTagPickerViewController {
+    func loadTags() {
+        dataSource = LoadingDataSource()
+        let context = ContextManager.sharedInstance().mainContext
+        let service = PostTagService(managedObjectContext: context)
+        service.getTopTags(
+            for: blog,
+            success: { [weak self] tags in
+                self?.tagsLoaded(tags: tags)
+            },
+            failure: { [weak self] error in
+                self?.tagsFailedLoading(error: error)
+            }
+        )
+    }
+
+    func tagsLoaded(tags: [String]) {
+        dataSource = SuggestionsDataSource(suggestions: tags,
+                                           selectedTags: usedTags,
+                                           searchQuery: lastTag)
+    }
+
+    func tagsFailedLoading(error: Error) {
+        DDLogSwift.logError("Error loading tags for \(String(describing: blog.url)): \(error)")
+        dataSource = FailureDataSource()
+    }
+}
+
+// MARK: - Tag tokenization
+
+private extension PostTagPickerViewController {
+    var tagsInField: [String] {
+        return textView.text
+            .components(separatedBy: ",")
+            .map({ $0.trimmingCharacters(in: .whitespaces) })
+    }
+
+    var lastTag: String {
+        return tagsInField.last ?? ""
+    }
+
+    func complete(tag: String) {
+        var tags = tagsInField
+        tags.removeLast()
+        tags.append(tag)
+        tags.append("")
+        textView.text = tags.joined(separator: ", ")
+        updateTextViewHeight()
+        updateSuggestions()
+    }
+
+    var usedTags: [String] {
+        return Array(tagsInField.dropLast())
+    }
+
+}
+
+// MARK: - Text & Input Handling
+
 extension PostTagPickerViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
+        normalizeText()
+        updateTextViewHeight()
+        updateSuggestions()
+    }
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let original = textView.text as NSString
+        if range.length == 0,
+            text == ",",
+            lastTag.isEmpty {
+            // Don't allow a second comma if the last tag is blank
+            return false
+        } else if
+            range.length == 1 && text == "", // Deleting last character
+            range.location > 0, // Not at the beginning
+            original.substring(with: NSRange(location: range.location - 1, length: 1)) == "," // Previous is a comma
+        {
+            // Delete the comma as well
+            textView.text = original.substring(to: range.location - 1)
+            return false
+        } else if range.length == 0, // Inserting
+            text == ",", // a comma
+            range.location == original.length // at the end
+        {
+            // Append a space
+            textView.text = original.replacingCharacters(in: range, with: ", ")
+            return false
+        }
+        return true
+    }
+
+    fileprivate func normalizeText() {
         // Remove any space before a comma, and allow one space at most after.
         let regexp = try! NSRegularExpression(pattern: "\\s*(,(\\s|(\\s(?=\\s)))?)\\s*", options: [])
         let text = textView.text ?? ""
         let range = NSRange(location: 0, length: (text as NSString).length)
         textView.text = regexp.stringByReplacingMatches(in: text, options: [], range: range, withTemplate: "$1")
+    }
+
+    /// Normalize tags for initial set up.
+    ///
+    /// The algorithm here differs slightly as we don't want to interpret the last tag as a partial one.
+    ///
+    fileprivate func normalizeInitialTags(_ string: String) -> String {
+        var tags = string.components(separatedBy: ",")
+            .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+            .filter({ !$0.isEmpty })
+
+        tags.append("")
+        return tags.joined(separator: ", ")
+
+    }
+
+    fileprivate func updateSuggestions() {
+        dataSource.selectedTags = usedTags
+        dataSource.searchQuery = lastTag
+        tableView.reloadData()
+    }
+}
+
+extension PostTagPickerViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        switch tableView.dataSource {
+        case is FailureDataSource:
+            loadTags()
+        case is LoadingDataSource:
+            return
+        case is SuggestionsDataSource:
+            suggestionTapped(cell: tableView.cellForRow(at: indexPath))
+        default:
+            assertionFailure("Unexpected data source")
+        }
+    }
+
+    private func suggestionTapped(cell: UITableViewCell?) {
+        guard let tag = cell?.textLabel?.text else {
+            return
+        }
+        complete(tag: tag)
+    }
+}
+
+// MARK: - Data Sources
+
+private protocol PostTagPickerDataSource: UITableViewDataSource {
+    var selectedTags: [String] { get set }
+    var searchQuery: String { get set }
+}
+
+private class LoadingDataSource: NSObject, PostTagPickerDataSource {
+    var selectedTags = [String]()
+    var searchQuery = ""
+
+    static let cellIdentifier = "Loading"
+    typealias Cell = UITableViewCell
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: LoadingDataSource.cellIdentifier, for: indexPath)
+        cell.textLabel?.text = "Loading..."
+        cell.selectionStyle = .none
+        WPStyleGuide.configureTableViewCell(cell)
+        return cell
+    }
+}
+
+private class FailureDataSource: NSObject, PostTagPickerDataSource {
+    var selectedTags = [String]()
+    var searchQuery = ""
+
+    static let cellIdentifier = "Failure"
+    typealias Cell = UITableViewCell
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: FailureDataSource.cellIdentifier, for: indexPath)
+        cell.textLabel?.text = "Couldn't load tags. Tap to retry."
+        WPStyleGuide.configureTableViewCell(cell)
+        return cell
+    }
+}
+
+private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
+    static let cellIdentifier = "Default"
+    let suggestions: [String]
+
+    init(suggestions: [String], selectedTags: [String], searchQuery: String) {
+        self.suggestions = suggestions
+        self.selectedTags = selectedTags
+        self.searchQuery = searchQuery
+        super.init()
+    }
+
+    var selectedTags: [String]
+    var searchQuery: String
+
+    var availableSuggestions: [String] {
+        return suggestions.filter({ !selectedTags.contains($0) })
+    }
+
+    var matchedSuggestions: [String] {
+        guard !searchQuery.isEmpty else {
+            return availableSuggestions
+        }
+        return availableSuggestions.filter({ $0.localizedCaseInsensitiveContains(searchQuery) })
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return matchedSuggestions.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: SuggestionsDataSource.cellIdentifier, for: indexPath)
+        cell.textLabel?.text = matchedSuggestions[indexPath.row]
+        WPStyleGuide.configureTableViewCell(cell)
+        return cell
     }
 }
