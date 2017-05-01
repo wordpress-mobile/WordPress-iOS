@@ -1,5 +1,5 @@
 PODS:
-  - 1PasswordExtension (1.8.1)
+  - 1PasswordExtension (1.8.4)
   - AFNetworking (3.1.0):
     - AFNetworking/NSURLSession (= 3.1.0)
     - AFNetworking/Reachability (= 3.1.0)
@@ -20,7 +20,7 @@ PODS:
     - CocoaLumberjack (~> 2.2.0)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
-  - BuddyBuildSDK (1.0.14)
+  - BuddyBuildSDK (1.0.15)
   - CocoaLumberjack (2.2.0):
     - CocoaLumberjack/Default (= 2.2.0)
     - CocoaLumberjack/Extensions (= 2.2.0)
@@ -69,9 +69,7 @@ PODS:
     - HockeySDK/DefaultLib (= 4.1.4)
   - HockeySDK/DefaultLib (4.1.4)
   - MGSwipeTableCell (1.5.6)
-  - Mixpanel (2.9.4):
-    - Mixpanel/Mixpanel (= 2.9.4)
-  - Mixpanel/Mixpanel (2.9.4)
+  - Mixpanel (3.1.3)
   - MRProgress (0.7.0):
     - MRProgress/ActivityIndicator (= 0.7.0)
     - MRProgress/Blur (= 0.7.0)
@@ -103,22 +101,22 @@ PODS:
   - Nimble (5.0.0)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
-  - OCMock (3.1.2)
-  - OHHTTPStubs (5.2.3):
-    - OHHTTPStubs/Default (= 5.2.3)
-  - OHHTTPStubs/Core (5.2.3)
-  - OHHTTPStubs/Default (5.2.3):
+  - OCMock (3.4)
+  - OHHTTPStubs (6.0.0):
+    - OHHTTPStubs/Default (= 6.0.0)
+  - OHHTTPStubs/Core (6.0.0)
+  - OHHTTPStubs/Default (6.0.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (5.2.3):
+  - OHHTTPStubs/JSON (6.0.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (5.2.3):
+  - OHHTTPStubs/NSURLSession (6.0.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (5.2.3)
-  - OHHTTPStubs/Swift (5.2.3):
-    - OHHTTPStubs/Core
+  - OHHTTPStubs/OHPathHelpers (6.0.0)
+  - OHHTTPStubs/Swift (6.0.0):
+    - OHHTTPStubs/Default
   - Reachability (3.2)
   - Specta (1.0.5)
   - Starscream (2.0.2)
@@ -146,7 +144,7 @@ PODS:
   - wpxmlrpc (0.8.3)
 
 DEPENDENCIES:
-  - 1PasswordExtension (= 1.8.1)
+  - 1PasswordExtension (= 1.8.4)
   - AFNetworking (= 3.1.0)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.1.2`)
   - BuddyBuildSDK (~> 1.0.14)
@@ -158,12 +156,12 @@ DEPENDENCIES:
   - Gridicons (= 0.5)
   - HockeySDK (~> 4.1.3)
   - MGSwipeTableCell (~> 1.5.6)
-  - Mixpanel (= 2.9.4)
+  - Mixpanel (= 3.1.3)
   - MRProgress (~> 0.7.0)
   - Nimble (~> 5.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
-  - OCMock (= 3.1.2)
+  - OCMock (~> 3.0)
   - OHHTTPStubs
   - OHHTTPStubs/Swift
   - Reachability (= 3.2)
@@ -210,11 +208,11 @@ CHECKOUT OPTIONS:
     :tag: 0.0.6
 
 SPEC CHECKSUMS:
-  1PasswordExtension: 00d6f4caae77c19ba33045b8569fbeb9689f0d1d
+  1PasswordExtension: e775a29310c65851e5a6cec1afc349ab4e334e47
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
   Automattic-Tracks-iOS: 4903e125d88e564c68dedbb66c53a97740e89336
-  BuddyBuildSDK: 2b2d35a61ad7fd3645beb2d48bc5123efd869918
+  BuddyBuildSDK: b3038125612b1ad389c2aa89e4787dcb75cac89a
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
@@ -224,13 +222,13 @@ SPEC CHECKSUMS:
   Gridicons: 5c5e928324fa301572ee447b25962d18e7fd7159
   HockeySDK: 78a3f8bb9100277b531defc56c970369a3ca267a
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
-  Mixpanel: 80d2ca9bb38ae91c1044d738e80fe448377ac89f
+  Mixpanel: 232acf98cecd94fbb58630ff8512a54ff8d99373
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
   Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
-  OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
-  OHHTTPStubs: e238cd5b66d8efa51c861db45895de8fe079f4a7
+  OCMock: 35ae71d6a8fcc1b59434d561d1520b9dd4f15765
+  OHHTTPStubs: 752f9b11fd810a15162d50f11c06ff94f8e012eb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   Starscream: 4ee1be18da5170faafce1698225b61f9765634d5
@@ -246,6 +244,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 239fef5c97d76acd3f9fb66c408be3e7deb3295e
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: d2c26299b8d324920dbb3bc8d5bc51526e4c1a56
+PODFILE CHECKSUM: 7d9dcb29584b2714b6ab4df5b264d8f171f7674f
 
 COCOAPODS: 1.2.1
