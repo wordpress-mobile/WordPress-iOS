@@ -17,13 +17,13 @@ abstract_target 'WordPress_Base' do
     # ---------------------
     # Third party libraries
     # ---------------------
-    pod '1PasswordExtension', '1.8.1'
+    pod '1PasswordExtension', '1.8.4'
     pod 'AFNetworking',	'3.1.0'
     pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'FormatterKit', '~> 1.8.1'
     pod 'HockeySDK', '~> 4.1.3', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
-    pod 'Mixpanel', '2.9.4'
+    pod 'Mixpanel', '3.1.3'
     pod 'Reachability',	'3.2'
     pod 'SVProgressHUD', '~>2.1.2'
     pod 'UIDeviceIdentifier', '~> 0.1'
@@ -56,7 +56,7 @@ abstract_target 'WordPress_Base' do
       inherit! :search_paths
       pod 'OHHTTPStubs'
       pod 'OHHTTPStubs/Swift'
-      pod 'OCMock', '3.1.2'
+      pod 'OCMock', '~> 3.0'
       pod 'Specta', '1.0.5'
       pod 'Expecta', '1.0.5'
       pod 'Nimble', '~> 5.0.0'
