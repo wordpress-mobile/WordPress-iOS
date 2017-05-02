@@ -1,0 +1,4 @@
+{
+    "error": "unauthorized",
+    "message": "Current user does not have required capability to delete followers."
+}
