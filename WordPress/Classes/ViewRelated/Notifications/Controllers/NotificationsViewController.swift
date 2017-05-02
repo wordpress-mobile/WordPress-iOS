@@ -145,6 +145,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         super.viewDidAppear(animated)
         showRatingViewIfApplicable()
         syncNewNotifications()
+        markSelectedNotificationAsRead()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -289,7 +290,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
 
         selectedNotification = note
-
         showDetailsForNotification(note)
     }
 
@@ -507,6 +507,8 @@ extension NotificationsViewController {
 
         prepareToShowDetailsForNotification(note)
 
+        markAsRead(note: note)
+
         // Display Details
         if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
@@ -587,6 +589,29 @@ private extension NotificationsViewController {
 
     func deletionRequestForNoteWithID(_ noteObjectID: NSManagedObjectID) -> NotificationDeletionRequest? {
         return notificationDeletionRequests[noteObjectID]
+    }
+}
+
+
+
+// MARK: - Marking as Read
+//
+private extension NotificationsViewController {
+
+    func markSelectedNotificationAsRead() {
+        guard let note = selectedNotification else {
+            return
+        }
+
+        markAsRead(note: note)
+    }
+
+    func markAsRead(note: Notification) {
+        guard !note.read else {
+            return
+        }
+
+        NotificationSyncMediator()?.markAsRead(note)
     }
 }
 
@@ -888,8 +913,6 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 
 // MARK: - Actions
 //
-
-
 private extension NotificationsViewController {
     func leadingButtons(note: Notification) -> [MGSwipeButton] {
         guard !note.read else {
@@ -897,11 +920,11 @@ private extension NotificationsViewController {
         }
 
         return [
-            MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"), backgroundColor: WPStyleGuide.greyDarken20(), callback: { _ in
-                ReachabilityUtils.onAvailableInternetConnectionDo {
-                    NotificationSyncMediator()?.markAsRead(note)
-                }
-                return true
+            MGSwipeButton(title: NSLocalizedString("Mark Read", comment: "Marks a notification as read"),
+                          backgroundColor: WPStyleGuide.greyDarken20(),
+                          callback: { _ in
+                            self.markAsRead(note: note)
+                            return true
             })
         ]
     }
