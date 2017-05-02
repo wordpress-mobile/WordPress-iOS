@@ -39,7 +39,6 @@ extension NSManagedObjectContext {
     ///
     func countObjects<T: NSManagedObject>(ofType type: T.Type, matching predicate: NSPredicate? = nil) -> Int {
         let request = newFetchRequest(forType: type)
-        request.predicate = predicate
         request.includesSubentities = false
         request.predicate = predicate
         request.resultType = .countResultType
