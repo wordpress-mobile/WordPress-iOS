@@ -424,7 +424,7 @@ import WordPressShared
                                                         }
                                                         if let password = password {
                                                             self.loginFields.password = password
-                                                            self.usernameField.text = password
+                                                            self.passwordField.text = password
                                                         }
 
                                                         WPAnalytics.track(.onePasswordSignup)
