@@ -452,8 +452,17 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 
 - (void)publishImmediately
 {
-    self.dateModified = [NSDate date];
-    [self setDateCreated:self.dateModified];
+    // If the post was modified later than it was created
+    // then this is a post that was published at some point
+    // we will not update the dateCreated
+    if (self.dateCreated &&
+        self.dateModified &&
+        [self.dateCreated compare:self.dateModified] == NSOrderedAscending) {
+        self.dateModified = [NSDate date];
+    } else {
+        self.dateModified = [NSDate date];
+        [self setDateCreated:self.dateModified];
+    }
 }
 
 - (BOOL)shouldPublishImmediately
