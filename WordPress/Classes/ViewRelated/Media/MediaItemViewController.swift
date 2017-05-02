@@ -74,9 +74,9 @@ class MediaItemViewController: UITableViewController {
             return MediaDocumentRow(media: media, action: { [weak self] _ in
                 guard let media = self?.media else { return }
 
-                if media.mediaType == .audio {
-                    self?.presentVideoViewControllerForMedia()
-                } else {
+                // We're currently not presenting previews for audio until
+                // we can resolve an auth issue. @frosty 2017-05-02
+                if media.mediaType != .audio {
                     self?.presentDocumentViewControllerForMedia()
                 }
             })
@@ -363,6 +363,15 @@ extension MediaItemViewController {
 
 // MARK: - UITableViewDelegate
 extension MediaItemViewController {
+    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        let row = viewModel.rowAtIndexPath(indexPath)
+        if row is MediaDocumentRow && media.mediaType == .audio {
+            return false
+        }
+
+        return true
+    }
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let row = viewModel.rowAtIndexPath(indexPath)
         if let customHeight = type(of: row).customHeight {
