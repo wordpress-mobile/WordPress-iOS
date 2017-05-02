@@ -680,6 +680,7 @@ extension AztecPostViewController {
                 self.post.status = .draft
             } else if self.postEditorStateContext.secondaryPublishButtonAction == .publish {
                 self.post.status = .publish
+                self.post.publishImmediately()
             }
 
             if let stat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat {
