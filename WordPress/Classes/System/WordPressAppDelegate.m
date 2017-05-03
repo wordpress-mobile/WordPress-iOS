@@ -868,7 +868,7 @@ int ddLogLevel = DDLogLevelInfo;
     
     [notificationCenter addObserver:self
                            selector:@selector(create3DTouchShortcutItems)
-                               name:RecentSitesService.WPTouchedBlogNotification
+                               name:RecentSitesService.RecentSitesChanged
                              object:nil];
     
     [notificationCenter addObserver:self
