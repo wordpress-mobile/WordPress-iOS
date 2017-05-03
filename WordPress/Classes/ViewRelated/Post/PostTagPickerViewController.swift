@@ -281,7 +281,7 @@ private class LoadingDataSource: NSObject, PostTagPickerDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LoadingDataSource.cellIdentifier, for: indexPath)
-        cell.textLabel?.text = "Loading..."
+        cell.textLabel?.text = NSLocalizedString("Loading...", comment: "Loading tags")
         cell.selectionStyle = .none
         WPStyleGuide.configureTableViewCell(cell)
         return cell
@@ -305,7 +305,7 @@ private class FailureDataSource: NSObject, PostTagPickerDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FailureDataSource.cellIdentifier, for: indexPath)
-        cell.textLabel?.text = "Couldn't load tags. Tap to retry."
+        cell.textLabel?.text = NSLocalizedString("Couldn't load tags. Tap to retry.", comment: "Error message when tag loading failed")
         WPStyleGuide.configureTableViewCell(cell)
         return cell
     }
