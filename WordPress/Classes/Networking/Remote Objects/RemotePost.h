@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSString *content;
 @property (nonatomic, strong) NSString *excerpt;
 @property (nonatomic, strong) NSString *slug;
+@property (nonatomic, strong) NSString *suggestedSlug;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSNumber *parentID;
