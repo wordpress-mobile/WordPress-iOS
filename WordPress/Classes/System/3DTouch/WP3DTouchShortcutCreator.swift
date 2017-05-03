@@ -33,6 +33,7 @@ open class WP3DTouchShortcutCreator: NSObject {
         self.shortcutsProvider = shortcutsProvider
         blogService = BlogService(managedObjectContext: mainContext)
         super.init()
+        registerForNotifications()
     }
 
     deinit {
