@@ -2,15 +2,16 @@ import Foundation
 import WordPressShared
 
 class PostTagPickerViewController: UIViewController {
-    private let originalTags: String
+    private let originalTags: [String]
     var onValueChanged: ((String) -> Void)?
     let blog: Blog
 
     init(tags: String, blog: Blog) {
-        originalTags = tags
+        originalTags = PostTagPickerViewController.extractTags(from: tags)
+
         self.blog = blog
         super.init(nibName: nil, bundle: nil)
-        textView.text = normalizeInitialTags(tags)
+        textView.text = normalizeInitialTags(tags: originalTags)
         textViewDidChange(textView)
         title = NSLocalizedString("Tags", comment: "Title for the tag selector view")
     }
@@ -96,11 +97,10 @@ class PostTagPickerViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        let tags = tagsInField
-            .filter({ !$0.isEmpty })
-            .joined(separator: ", ")
+        let tags = allTags
+
         if originalTags != tags {
-            onValueChanged?(tags)
+            onValueChanged?(tags.joined(separator: ", "))
         }
     }
 
@@ -131,8 +131,8 @@ private extension PostTagPickerViewController {
 
     func tagsLoaded(tags: [String]) {
         dataSource = SuggestionsDataSource(suggestions: tags,
-                                           selectedTags: usedTags,
-                                           searchQuery: lastTag)
+                                           selectedTags: completeTags,
+                                           searchQuery: partialTag)
     }
 
     func tagsFailedLoading(error: Error) {
@@ -143,31 +143,49 @@ private extension PostTagPickerViewController {
 
 // MARK: - Tag tokenization
 
+/*
+ There are two different "views" of the tag list:
+
+ 1. For completion purposes, everything before the last comma is a "completed"
+    tag, and will not appear again in suggestions. The text after the last comma
+    (or the whole text if there is no comma) will be interpreted as a partially
+    typed tag (parialTag) and used to filter suggestions.
+
+ 2. The above doesn't apply when it comes to reporting back the tag list, and so
+    we use `allTags` for all the tags in the text view. In this case the last
+    part of text is considered as a complete tag as well.
+
+ */
 private extension PostTagPickerViewController {
-    var tagsInField: [String] {
-        return textView.text
-            .components(separatedBy: ",")
-            .map({ $0.trimmingCharacters(in: .whitespaces) })
+    static func extractTags(from string: String) -> [String] {
+        return string.components(separatedBy: ",")
+            .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
     }
 
-    var lastTag: String {
+    var tagsInField: [String] {
+        return PostTagPickerViewController.extractTags(from: textView.text)
+    }
+
+    var partialTag: String {
         return tagsInField.last ?? ""
     }
 
+    var completeTags: [String] {
+        return Array(tagsInField.dropLast())
+    }
+
+    var allTags: [String] {
+        return tagsInField.filter({ !$0.isEmpty })
+    }
+
     func complete(tag: String) {
-        var tags = tagsInField
-        tags.removeLast()
+        var tags = completeTags
         tags.append(tag)
         tags.append("")
         textView.text = tags.joined(separator: ", ")
         updateTextViewHeight()
         updateSuggestions()
     }
-
-    var usedTags: [String] {
-        return Array(tagsInField.dropLast())
-    }
-
 }
 
 // MARK: - Text & Input Handling
@@ -183,7 +201,7 @@ extension PostTagPickerViewController: UITextViewDelegate {
         let original = textView.text as NSString
         if range.length == 0,
             text == ",",
-            lastTag.isEmpty {
+            partialTag.isEmpty {
             // Don't allow a second comma if the last tag is blank
             return false
         } else if
@@ -217,19 +235,15 @@ extension PostTagPickerViewController: UITextViewDelegate {
     ///
     /// The algorithm here differs slightly as we don't want to interpret the last tag as a partial one.
     ///
-    fileprivate func normalizeInitialTags(_ string: String) -> String {
-        var tags = string.components(separatedBy: ",")
-            .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
-            .filter({ !$0.isEmpty })
-
+    fileprivate func normalizeInitialTags(tags: [String]) -> String {
+        var tags = tags.filter({ !$0.isEmpty })
         tags.append("")
         return tags.joined(separator: ", ")
-
     }
 
     fileprivate func updateSuggestions() {
-        dataSource.selectedTags = usedTags
-        dataSource.searchQuery = lastTag
+        dataSource.selectedTags = completeTags
+        dataSource.searchQuery = partialTag
         tableView.reloadData()
     }
 }
