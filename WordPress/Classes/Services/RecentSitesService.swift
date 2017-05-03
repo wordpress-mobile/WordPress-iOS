@@ -10,7 +10,7 @@ class RecentSitesService: NSObject {
     private let database: KeyValueDatabase
     private let databaseKey = "RecentSites"
     private let legacyLastUsedBlogKey = "LastUsedBlogURLDefaultsKey"
-    @objc static let WPTouchedBlogNotification = "WPTouchedBlogNotification"
+    @objc static let RecentSitesChanged = "RecentSitesChanged"
 
     /// The maximum number of recent sites (read only)
     ///
@@ -69,7 +69,7 @@ class RecentSitesService: NSObject {
                     recent.append(recentSite)
         }
         database.set(recent, forKey: databaseKey)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: RecentSitesService.WPTouchedBlogNotification), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: RecentSitesService.RecentSitesChanged), object: nil)
     }
 
     /// Marks a Blog as recently used.
