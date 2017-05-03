@@ -884,7 +884,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     WPTableViewCell *cell = [self getWPTableViewDisclosureCell];
     cell.textLabel.text = NSLocalizedString(@"Slug", @"Label for the slug field. Should be the same as WP core.");
-    cell.detailTextLabel.text = self.apost.wp_slug;
+    cell.detailTextLabel.text = self.apost.slugForDisplay;
     cell.tag = PostSettingsRowSlug;
     cell.accessibilityIdentifier = @"Slug";
     return cell;
@@ -1232,7 +1232,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)showEditSlugController
 {
-    SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:self.apost.wp_slug
+    SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:self.apost.slugForDisplay
                                                                                     placeholder:nil
                                                                                            hint:NSLocalizedString(@"The slug is the URL-friendly version of the post title.", @"Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso.")
                                                                                      isPassword:NO];
