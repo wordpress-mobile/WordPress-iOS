@@ -5,6 +5,7 @@ class PostTagPickerViewController: UIViewController {
     private let originalTags: [String]
     var onValueChanged: ((String) -> Void)?
     let blog: Blog
+    let keyboardObserver = TableViewKeyboardObserver()
 
     init(tags: String, blog: Blog) {
         originalTags = PostTagPickerViewController.extractTags(from: tags)
@@ -85,6 +86,8 @@ class PostTagPickerViewController: UIViewController {
         textViewContainer.backgroundColor = UIColor.white
         textViewContainer.layer.borderColor = UIColor.lightGray.cgColor
         textViewContainer.layer.borderWidth = 1
+
+        keyboardObserver.tableView = tableView
     }
 
     override func viewDidAppear(_ animated: Bool) {

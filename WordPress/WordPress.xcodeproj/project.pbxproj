@@ -723,6 +723,7 @@
 		E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E15618FC16DB8677006532C4 /* UIKitTestHelper.m */; };
 		E15618FF16DBA983006532C4 /* xmlrpc-response-newpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */; };
 		E156190116DBABDE006532C4 /* xmlrpc-response-getpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */; };
+		E15632CC1EB9ECF40035A099 /* TableViewKeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15632CB1EB9ECF40035A099 /* TableViewKeyboardObserver.swift */; };
 		E15644E91CE0E47C00D96E64 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15644E81CE0E47C00D96E64 /* RoundedButton.swift */; };
 		E15644EB1CE0E4C500D96E64 /* FeatureItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15644EA1CE0E4C500D96E64 /* FeatureItemRow.swift */; };
 		E15644ED1CE0E4FE00D96E64 /* PlanListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15644EC1CE0E4FE00D96E64 /* PlanListRow.swift */; };
@@ -2176,6 +2177,7 @@
 		E15618FC16DB8677006532C4 /* UIKitTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitTestHelper.m; sourceTree = "<group>"; };
 		E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-newpost.xml"; sourceTree = "<group>"; };
 		E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-getpost.xml"; sourceTree = "<group>"; };
+		E15632CB1EB9ECF40035A099 /* TableViewKeyboardObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewKeyboardObserver.swift; sourceTree = "<group>"; };
 		E15644E81CE0E47C00D96E64 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		E15644EA1CE0E4C500D96E64 /* FeatureItemRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureItemRow.swift; sourceTree = "<group>"; };
 		E15644EC1CE0E4FE00D96E64 /* PlanListRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanListRow.swift; sourceTree = "<group>"; };
@@ -4181,6 +4183,7 @@
 				B50EED781C0E5B2400D278CA /* SettingsPickerViewController.swift */,
 				E1EEFAD91CC4CC5700126533 /* Confirmable.h */,
 				1731BCD21DDA01AF009FE3AE /* HelpshiftPresenter.swift */,
+				E15632CB1EB9ECF40035A099 /* TableViewKeyboardObserver.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -6804,6 +6807,7 @@
 				08216FC91CDBF96000304BA7 /* MenuItemCategoriesViewController.m in Sources */,
 				082635BB1CEA69280088030C /* MenuItemsViewController.m in Sources */,
 				822876F11E929CFD00696BF7 /* ReachabilityUtils+OnlineActions.swift in Sources */,
+				E15632CC1EB9ECF40035A099 /* TableViewKeyboardObserver.swift in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
 				B587797C19B799D800E57C5A /* NSParagraphStyle+Helpers.swift in Sources */,
