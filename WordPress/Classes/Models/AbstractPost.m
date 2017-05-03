@@ -457,7 +457,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     // we will not update the dateCreated
     if (self.dateCreated &&
         self.dateModified &&
-        [self.dateCreated compare:self.dateModified] == NSOrderedAscending) {
+        [self.dateCreated earlierDate:self.dateModified] == self.dateCreated) {
         self.dateModified = [NSDate date];
     } else {
         self.dateModified = [NSDate date];
