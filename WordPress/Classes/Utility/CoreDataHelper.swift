@@ -4,8 +4,26 @@ import Foundation
 // MARK: - NSManagedObject Default entityName Helper
 //
 extension NSManagedObject {
+
+    /// Returns the Entity Name, if available, as specified in the NSEntityDescription. Otherwise, will return
+    /// the subclass name.
+    ///
+    /// Note: entity().name returns nil as per iOS 10, in Unit Testing Targets. Awesome.
+    ///
     class var entityName: String {
-        return classNameWithoutNamespaces()
+        return entity().name ?? classNameWithoutNamespaces()
+    }
+
+    /// Returns a NSFetchRequest instance with it's *Entity Name* always set.
+    ///
+    /// Note: entity().name returns nil as per iOS 10, in Unit Testing Targets. Awesome.
+    ///
+    class func safeFetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+        guard entity().name == nil else {
+            return fetchRequest()
+        }
+
+        return NSFetchRequest(entityName: entityName)
     }
 }
 
@@ -14,18 +32,12 @@ extension NSManagedObject {
 //
 extension NSManagedObjectContext {
 
-    /// Returns a new FetchRequest for the associated Entity
-    ///
-    func newFetchRequest<T: NSManagedObject>(forType type: T.Type) -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest(entityName: type.entityName)
-    }
-
     /// Returns all of the entities that match with a given predicate.
     ///
     /// - Parameter predicate: Defines the conditions that any given object should meet. Optional.
     ///
     func allObjects<T: NSManagedObject>(ofType type: T.Type, matching predicate: NSPredicate? = nil, sortedBy descriptors: [NSSortDescriptor]? = nil) -> [T] {
-        let request = newFetchRequest(forType: type)
+        let request = T.safeFetchRequest()
         request.predicate = predicate
         request.sortDescriptors = descriptors
 
@@ -38,7 +50,7 @@ extension NSManagedObjectContext {
     /// - Parameter predicate: Defines the conditions that any given object should meet. Optional.
     ///
     func countObjects<T: NSManagedObject>(ofType type: T.Type, matching predicate: NSPredicate? = nil) -> Int {
-        let request = newFetchRequest(forType: type)
+        let request = T.safeFetchRequest()
         request.includesSubentities = false
         request.predicate = predicate
         request.resultType = .countResultType
@@ -64,7 +76,7 @@ extension NSManagedObjectContext {
     /// Deletes all of the NSMO instances associated to the current kind
     ///
     func deleteAllObjects<T: NSManagedObject>(ofType type: T.Type) {
-        let request = newFetchRequest(forType: type)
+        let request = T.safeFetchRequest()
         request.includesPropertyValues = false
         request.includesSubentities = false
 
@@ -78,7 +90,7 @@ extension NSManagedObjectContext {
     /// - Parameter predicate: Defines the conditions that any given object should meet.
     ///
     func firstObject<T: NSManagedObject>(ofType type: T.Type, matching predicate: NSPredicate) -> T? {
-        let request = newFetchRequest(forType: type)
+        let request = T.safeFetchRequest()
         request.predicate = predicate
         request.fetchLimit = 1
 
