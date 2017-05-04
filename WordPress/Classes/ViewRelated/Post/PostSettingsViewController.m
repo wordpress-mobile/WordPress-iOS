@@ -997,6 +997,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     }
 
     self.datePicker = [[PublishDatePickerView alloc] initWithDate:date];
+    self.datePicker.displayPublishImmediately = !self.apost.hasBeenPublished;
     self.datePicker.delegate = self;
     CGRect frame = self.datePicker.frame;
     if (IS_IPAD) {
@@ -1449,7 +1450,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     if (value == nil) {
         // Publish Immediately
-        [self.apost publish];
+        [self.apost publishImmediately];
     } else {
         // Compare via timeIntervalSinceDate to let us ignore subsecond variation.
         NSDate *startingDate = (NSDate *)self.datePicker.startingValue;
