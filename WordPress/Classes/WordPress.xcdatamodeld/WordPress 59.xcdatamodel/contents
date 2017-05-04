@@ -335,6 +335,7 @@
         <relationship name="locations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MenuLocation" inverseName="menu" inverseEntity="MenuLocation" syncable="YES"/>
     </entity>
     <entity name="MenuItem" representedClassName="MenuItem" syncable="YES">
+        <attribute name="classes" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="contentID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="itemID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -630,7 +631,7 @@
         <element name="Domain" positionX="27" positionY="153" width="128" height="105"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="360"/>
         <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
-        <element name="MenuItem" positionX="45" positionY="180" width="128" height="240"/>
+        <element name="MenuItem" positionX="45" positionY="180" width="128" height="255"/>
         <element name="MenuLocation" positionX="54" positionY="189" width="128" height="120"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="240"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
