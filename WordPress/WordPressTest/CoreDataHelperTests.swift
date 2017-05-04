@@ -23,7 +23,7 @@ class CoreDataHelperTests: XCTestCase {
     /// specialized type.
     ///
     func testNewFetchRequestReturnsNewRequestWithGenericEntityName() {
-        let request = context.newFetchRequest(forType: DummyEntity.self)
+        let request = DummyEntity.fetchRequest()
         XCTAssert(request.entityName! == DummyEntity.entityName)
     }
 
