@@ -321,7 +321,8 @@ NS_ASSUME_NONNULL_BEGIN
     item.typeLabel = remoteMenuItem.typeLabel;
     item.urlStr = remoteMenuItem.urlStr;
     item.menu = menu;
-    
+    item.classes = remoteMenuItem.classes;
+
     if (remoteMenuItem.children) {
         for (RemoteMenuItem *childRemoteItem in remoteMenuItem.children) {
             MenuItem *childItem = [self addMenuItemFromRemoteMenuItem:childRemoteItem forMenu:menu];
@@ -405,7 +406,8 @@ NS_ASSUME_NONNULL_BEGIN
     remoteItem.linkTitle = item.linkTitle;
     remoteItem.name = item.name;
     remoteItem.type = item.type;
-    
+    remoteItem.classes = item.classes;
+
     if (remoteItem.type) {
         // Override the type_family param based on the type.
         // This is a weird behavior of the API and is not documented.

@@ -23,6 +23,7 @@ NSString * const MenusRemoteKeyURL = @"url";
 NSString * const MenusRemoteKeyItems = @"items";
 NSString * const MenusRemoteKeyDeleted = @"deleted";
 NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
+NSString * const MenusRemoteKeyClasses = @"classes";
 
 @implementation MenusServiceRemote
 
@@ -282,6 +283,7 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     item.typeFamily = [dictionary stringForKey:MenusRemoteKeyTypeFamily];
     item.typeLabel = [dictionary stringForKey:MenusRemoteKeyTypeLabel];
     item.urlStr = [dictionary stringForKey:MenusRemoteKeyURL];
+    item.classes = [dictionary arrayForKey:MenusRemoteKeyClasses];
     
     NSArray *itemDicts = [dictionary arrayForKey:MenusRemoteKeyItems];
     if (itemDicts.count) {
@@ -381,6 +383,10 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     
     if (item.urlStr.length) {
         dictionary[MenusRemoteKeyURL] = item.urlStr;
+    }
+
+    if (item.classes.count) {
+        dictionary[MenusRemoteKeyClasses] = item.classes;
     }
     
     if (item.children.count) {
