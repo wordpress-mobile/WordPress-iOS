@@ -110,4 +110,26 @@ extension RemoteTestCase {
             return OHHTTPStubsResponse(error:notConnectedError)
         }
     }
+
+    /// Helper function that clears any *.json files from the local disk cache. Useful for ensuring a network
+    /// call is made instead of a cache hit.
+    ///
+    func clearDiskCache() {
+        let cacheDirectory =  FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first! as NSURL
+
+        do {
+            if let documentPath = cacheDirectory.path {
+                let fileNames = try FileManager.default.contentsOfDirectory(atPath: "\(documentPath)")
+                for fileName in fileNames {
+                    if (fileName.hasSuffix(".json")) {
+                        print("Removing \(fileName) from cache.")
+                        let filePathName = "\(documentPath)/\(fileName)"
+                        try FileManager.default.removeItem(atPath: filePathName)
+                    }
+                }
+            }
+        } catch {
+            print("Unable to clear cache: \(error)")
+        }
+    }
 }
