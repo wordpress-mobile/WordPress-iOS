@@ -1449,7 +1449,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     if (value == nil) {
         // Publish Immediately
-        [self.apost publishImmediately];
+        [self.apost publish];
     } else {
         // Compare via timeIntervalSinceDate to let us ignore subsecond variation.
         NSDate *startingDate = (NSDate *)self.datePicker.startingValue;

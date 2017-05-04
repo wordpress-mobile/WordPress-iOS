@@ -450,7 +450,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return NO;
 }
 
-- (void)publishImmediately
+- (void)publish
 {
     // If the post was modified later than it was created
     // then this is a post that was published at some point

@@ -75,7 +75,7 @@ extern NSString * const PostStatusDeleted;
 - (BOOL)hasRevision;
 
 #pragma mark - Conveniece Methods
-- (void)publishImmediately;
+- (void)publish;
 - (BOOL)shouldPublishImmediately;
 - (NSString *)authorNameForDisplay;
 - (NSString *)blavatarForDisplay;

@@ -1260,14 +1260,14 @@ EditImageDetailsViewControllerDelegate
             return [UIAlertAction actionWithTitle:NSLocalizedString(@"Publish Now", @"Title of button allowing the user to immediately publish the post they are editing.")
                                             style:UIAlertActionStyleDestructive
                                           handler:^(UIAlertAction * _Nonnull action) {
-                                              [self.post publishImmediately];
+                                              [self.post publish];
                                               [self saveAction:action];
                                           }];
         } else {
             return [UIAlertAction actionWithTitle:NSLocalizedString(@"Submit for Review", @"Title of button allowing a contributor to a site to submit the post they are editing for review.")
                                             style:UIAlertActionStyleDestructive
                                           handler:^(UIAlertAction * _Nonnull action) {
-                                              [self.post publishImmediately];
+                                              [self.post publish];
                                               [self saveAction:action];
                                           }];
         }
