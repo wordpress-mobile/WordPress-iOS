@@ -18,6 +18,12 @@ def shared_with_stats_pods
   pod 'WordPressCom-Analytics-iOS', '0.1.25'
 end
 
+def shared_test_pods
+  pod 'OHHTTPStubs'
+  pod 'OHHTTPStubs/Swift'
+  pod 'OCMock', '~> 3.0'
+end
+
 abstract_target 'WordPress_Base' do
   project 'WordPress/WordPress.xcodeproj'
 
@@ -63,9 +69,8 @@ abstract_target 'WordPress_Base' do
 
     target 'WordPressTest' do
       inherit! :search_paths
-      pod 'OHHTTPStubs'
-      pod 'OHHTTPStubs/Swift'
-      pod 'OCMock', '~> 3.0'
+      
+      shared_test_pods
       pod 'Specta', '1.0.5'
       pod 'Expecta', '1.0.5'
       pod 'Nimble', '~> 5.0.0'
@@ -87,5 +92,7 @@ target 'WordPressComStatsiOS' do
 
   target 'WordPressComStatsiOSTests' do
     inherit! :search_paths
+    
+    shared_test_pods
   end
 end
