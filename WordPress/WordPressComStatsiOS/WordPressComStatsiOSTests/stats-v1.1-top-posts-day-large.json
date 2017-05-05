@@ -1,0 +1,92 @@
+{
+    "date": "2014-11-06",
+    "days": {
+        "2014-11-06": {
+            "postviews": [
+                          {
+                          "id": 39806,
+                          "href": "http://automattic.com/home/",
+                          "date": "2011-08-30 21:47:38",
+                          "title": "Home",
+                          "views": 2420,
+                          "video_play": false
+                          },
+                          {
+                          "id": 12,
+                          "href": "http://automattic.com/work-with-us/",
+                          "date": "2005-12-20 08:18:50",
+                          "title": "Work With Us",
+                          "views": 724,
+                          "video_play": false
+                          },
+                          {
+                          "id": 13,
+                          "href": "http://automattic.com/privacy/",
+                          "date": "2006-03-24 20:26:35",
+                          "title": "Privacy Policy",
+                          "views": 683,
+                          "video_play": false
+                          },
+                          {
+                          "id": 60,
+                          "href": "http://automattic.com/about/",
+                          "date": "2005-07-23 17:27:23",
+                          "title": "About Us",
+                          "views": 350,
+                          "video_play": false
+                          },
+                          {
+                          "id": 7,
+                          "href": "http://automattic.com/contact/",
+                          "date": "2005-07-23 17:34:12",
+                          "title": "Contact Us",
+                          "views": 139,
+                          "video_play": false
+                          },
+                          {
+                          "id": 39251,
+                          "href": "http://automattic.com/work-with-us/happiness-engineer/",
+                          "date": "2011-08-25 19:35:46",
+                          "title": "Happiness Engineer",
+                          "views": 136,
+                          "video_play": false
+                          },
+                          {
+                          "id": 10,
+                          "href": "http://automattic.com/news/",
+                          "date": "2005-12-19 15:53:51",
+                          "title": "News",
+                          "views": 115,
+                          "video_play": false
+                          },
+                          {
+                          "id": 5882,
+                          "href": "http://automattic.com/wordpress-plugins/",
+                          "date": "2010-06-11 19:28:11",
+                          "title": "WordPress Plugins",
+                          "views": 114,
+                          "video_play": false
+                          },
+                          {
+                          "id": 118218,
+                          "href": "http://automattic.com/dmca-notice/",
+                          "date": "2013-05-02 00:14:00",
+                          "title": "Digital Millennium Copyright Act (DMCA) Notice",
+                          "views": 109,
+                          "video_play": false
+                          },
+                          {
+                          "id": 39254,
+                          "href": "http://automattic.com/work-with-us/growth-explorer/",
+                          "date": "2011-08-25 19:37:27",
+                          "title": "Growth Explorer",
+                          "views": 56,
+                          "video_play": false
+                          }
+                          ],
+            "other_views": 535,
+            "total_views": 5381
+        }
+    },
+    "period": "day"
+}
