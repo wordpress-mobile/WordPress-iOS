@@ -454,7 +454,8 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 // then this is a post that was published at some point
 - (BOOL)hasBeenPublished
 {
-    return [self.dateCreated earlierDate:self.dateModified] == self.dateCreated;
+    return ![self.dateCreated isEqualToDate:self.dateModified] &&
+           [self.dateCreated earlierDate:self.dateModified] == self.dateCreated;
 }
 
 - (void)publish
