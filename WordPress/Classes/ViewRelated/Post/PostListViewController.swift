@@ -449,17 +449,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let identifier = NSStringFromClass(StatsPostDetailsTableViewController.self)
         let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let statsBundle = Bundle(for: WPStatsViewController.self)
-
-        guard let path = statsBundle.path(forResource: "WordPressCom-Stats-iOS", ofType: "bundle") else {
-            let message = "The stats bundle is missing"
-
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        let bundle = Bundle(path: path)
-        let statsStoryboard = UIStoryboard(name: type(of: self).statsStoryboardName, bundle: bundle)
+        let statsStoryboard = UIStoryboard(name: type(of: self).statsStoryboardName, bundle: statsBundle)
         let viewControllerObject = statsStoryboard.instantiateViewController(withIdentifier: identifier)
 
         assert(viewControllerObject is StatsPostDetailsTableViewController)
