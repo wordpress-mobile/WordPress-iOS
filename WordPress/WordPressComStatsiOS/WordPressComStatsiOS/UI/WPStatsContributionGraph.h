@@ -30,7 +30,7 @@
 
 /**
  @description   Called when
- @returns       A NSDictionary that contains the date and number of posts on that day.
+ @param dict    A NSDictionary that contains the date and number of posts on that day.
  */
 - (void)dateTapped:(NSDictionary *)dict;
 
