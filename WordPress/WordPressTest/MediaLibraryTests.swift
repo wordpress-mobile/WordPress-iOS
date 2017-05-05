@@ -6,10 +6,53 @@ class MediaLibraryTests: XCTestCase {
     func testThatLocalMediaDirectoryIsAvailable() {
         do {
             let url = try MediaLibrary.localDirectory()
-            XCTAssertTrue(url.lastPathComponent == "Media", "Error: local media directory is not named Media, as expected.")
+            assertThatMediaDirectoryIsNamedMedia(url: url)
         } catch {
             XCTFail("Error accessing or creating local media directory: \(error)")
         }
+    }
+
+    func testThatLocalMediaDirectoryAsUploadsIsAvailable() {
+        do {
+            let url = try MediaLibrary.localDirectory(.uploads)
+            assertThatMediaDirectoryIsNamedMedia(url: url)
+            let fileManager = FileManager.default
+            // The .uploads directory should be within the system Documents directory.
+            let parentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+            XCTAssert(url.absoluteString.hasPrefix(parentDirectory.absoluteString), "Error: media uploads directory URL has unexpected path.")
+        } catch {
+            XCTFail("Error accessing or creating local media uploads directory: \(error)")
+        }
+    }
+
+    func testThatLocalMediaDirectoryAsCacheIsAvailable() {
+        do {
+            let url = try MediaLibrary.localDirectory(.cache)
+            assertThatMediaDirectoryIsNamedMedia(url: url)
+            let fileManager = FileManager.default
+            // The .cache directory should be within the system Caches directory.
+            let parentDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
+            XCTAssert(url.absoluteString.hasPrefix(parentDirectory.absoluteString), "Error: media cache directory URL has unexpected path.")
+        } catch {
+            XCTFail("Error accessing or creating local media cache directory: \(error)")
+        }
+    }
+
+    func testThatLocalMediaDirectoryAsTemporaryIsAvailable() {
+        do {
+            let url = try MediaLibrary.localDirectory(.temporary)
+            assertThatMediaDirectoryIsNamedMedia(url: url)
+            let fileManager = FileManager.default
+            // The .cache directory should be within the system Caches directory.
+            let parentDirectory = fileManager.temporaryDirectory
+            XCTAssert(url.absoluteString.hasPrefix(parentDirectory.absoluteString), "Error: media temporary directory URL has unexpected path.")
+        } catch {
+            XCTFail("Error accessing or creating local media temporary directory: \(error)")
+        }
+    }
+
+    fileprivate func assertThatMediaDirectoryIsNamedMedia(url: URL) {
+        XCTAssertTrue(url.lastPathComponent == "Media", "Error: local media directory is not named Media, as expected.")
     }
 
     func testThatLocalMediaURLWorks() {
