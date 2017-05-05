@@ -104,6 +104,10 @@
 		08F8CD2A1EBD22EF0049D0C0 /* MediaExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD291EBD22EF0049D0C0 /* MediaExporter.swift */; };
 		08F8CD2D1EBD24600049D0C0 /* MediaExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD2C1EBD245F0049D0C0 /* MediaExporterTests.swift */; };
 		08F8CD2F1EBD29440049D0C0 /* MediaImageExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD2E1EBD29440049D0C0 /* MediaImageExporter.swift */; };
+		08F8CD311EBD2A960049D0C0 /* MediaImageExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD301EBD2A960049D0C0 /* MediaImageExporterTests.swift */; };
+		08F8CD351EBD2AA80049D0C0 /* test-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 08F8CD321EBD2AA80049D0C0 /* test-gif.gif */; };
+		08F8CD361EBD2AA80049D0C0 /* test-image-device-photo-gps-portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 08F8CD331EBD2AA80049D0C0 /* test-image-device-photo-gps-portrait.jpg */; };
+		08F8CD371EBD2AA80049D0C0 /* test-image-device-photo-gps.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 08F8CD341EBD2AA80049D0C0 /* test-image-device-photo-gps.jpg */; };
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
 		1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDF1CF3034E00766A33 /* DomainsService.swift */; };
 		1702BBE21CF319C600766A33 /* DomainsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBE11CF319C600766A33 /* DomainsServiceTests.swift */; };
@@ -1277,6 +1281,10 @@
 		08F8CD291EBD22EF0049D0C0 /* MediaExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaExporter.swift; sourceTree = "<group>"; };
 		08F8CD2C1EBD245F0049D0C0 /* MediaExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaExporterTests.swift; sourceTree = "<group>"; };
 		08F8CD2E1EBD29440049D0C0 /* MediaImageExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaImageExporter.swift; sourceTree = "<group>"; };
+		08F8CD301EBD2A960049D0C0 /* MediaImageExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaImageExporterTests.swift; sourceTree = "<group>"; };
+		08F8CD321EBD2AA80049D0C0 /* test-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "test-gif.gif"; sourceTree = "<group>"; };
+		08F8CD331EBD2AA80049D0C0 /* test-image-device-photo-gps-portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "test-image-device-photo-gps-portrait.jpg"; sourceTree = "<group>"; };
+		08F8CD341EBD2AA80049D0C0 /* test-image-device-photo-gps.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "test-image-device-photo-gps.jpg"; sourceTree = "<group>"; };
 		1650D3DF55108DB4A559E02F /* Pods-WordPress_Base-WordPressShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress_Base-WordPressShareExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress_Base-WordPressShareExtension/Pods-WordPress_Base-WordPressShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeLabel.swift; sourceTree = "<group>"; };
 		1702BBDF1CF3034E00766A33 /* DomainsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsService.swift; sourceTree = "<group>"; };
@@ -2992,6 +3000,7 @@
 			isa = PBXGroup;
 			children = (
 				08F8CD2C1EBD245F0049D0C0 /* MediaExporterTests.swift */,
+				08F8CD301EBD2A960049D0C0 /* MediaImageExporterTests.swift */,
 			);
 			name = Media;
 			sourceTree = "<group>";
@@ -5215,6 +5224,9 @@
 				E1E4CE0E1774531500430844 /* misteryman.jpg */,
 				E1E4CE0517739FAB00430844 /* test-image.jpg */,
 				08DF9C431E8475530058678C /* test-image-portrait.jpg */,
+				08F8CD321EBD2AA80049D0C0 /* test-gif.gif */,
+				08F8CD331EBD2AA80049D0C0 /* test-image-device-photo-gps-portrait.jpg */,
+				08F8CD341EBD2AA80049D0C0 /* test-image-device-photo-gps.jpg */,
 				B5A6BB8B1BF4DF38002F6A96 /* rest-site-settings.json */,
 				E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */,
 				E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */,
@@ -5990,6 +6002,7 @@
 				933D1F6C1EA7A3AB009FB462 /* TestingMode.storyboard in Resources */,
 				747B1D8E1EB1541600BFBF8B /* site-followers-delete-bad-json-failure.json in Resources */,
 				742F956F1EB8D70500ED66A0 /* site-plans-failure.json in Resources */,
+				08F8CD371EBD2AA80049D0C0 /* test-image-device-photo-gps.jpg in Resources */,
 				B5EA71361DC294730083032A /* notifications-load-hash.json in Resources */,
 				743BF32A1E82CE0700192E40 /* site-viewers-delete-failure.json in Resources */,
 				74AB97271EA7C23100A4CD18 /* me-sites-empty-success.json in Resources */,
@@ -5999,6 +6012,7 @@
 				74AB97201EA7C23100A4CD18 /* is-available-email-success.json in Resources */,
 				B5A6BB8C1BF4DF38002F6A96 /* rest-site-settings.json in Resources */,
 				FFB8DCA01CE320C700D4D1B7 /* WordPressComRestApiMedia.json in Resources */,
+				08F8CD351EBD2AA80049D0C0 /* test-gif.gif in Resources */,
 				747B1D881EB14DA500BFBF8B /* site-users-delete-bad-json-failure.json in Resources */,
 				93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */,
 				745938391EAFAF990065386E /* me-settings-change-email-success.json in Resources */,
@@ -6064,6 +6078,7 @@
 				743BF32C1E82CEB600192E40 /* site-viewers-delete-success.json in Resources */,
 				746A3E911EAE51EE002724D6 /* me-settings-success.json in Resources */,
 				E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */,
+				08F8CD361EBD2AA80049D0C0 /* test-image-device-photo-gps-portrait.jpg in Resources */,
 				FF9839AF1CD3FBCA00E85258 /* WordPressOAuthClientNeed2FAFail.json in Resources */,
 				746A3E951EAE5408002724D6 /* me-settings-bad-json-failure.json in Resources */,
 				7459384A1EAFBF0C0065386E /* me-settings-change-invalid-input-failure.json in Resources */,
@@ -7210,6 +7225,7 @@
 				85B125411B028E34008A3D95 /* PushAuthenticationManagerTests.swift in Sources */,
 				93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */,
 				E6374DC91C445ABF00F24720 /* SharingServiceRemoteTests.m in Sources */,
+				08F8CD311EBD2A960049D0C0 /* MediaImageExporterTests.swift in Sources */,
 				FFB8DCA21CE320E300D4D1B7 /* WordPressComRestApiTests.swift in Sources */,
 				E1B921BC1C0ED5A3003EA3CB /* MediaSizeSliderCellTest.swift in Sources */,
 				E19A10CA1B010AA0006192B0 /* WPURLRequestTest.m in Sources */,
