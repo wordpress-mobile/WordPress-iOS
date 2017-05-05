@@ -22,19 +22,16 @@ typedef void (^StatsRemoteInsightsCompletion)(NSString *highestHour, NSString *h
  
  @param date End date of period to fetch stats for
  @param unit Period unit to run stats for
- @param summaryCompletion
- @param visitsCompletion
- @param postsCompletion
- @param referrersCompletion
- @param clicksCompletion
- @param countryCompletion
- @param videosCompletion
- @param commentsCompletion items is an array of arrays = position 0 = authors, position 1 = posts (hacky)
- @param tagsCategoriesCompletion
- @param followersDotComCompletion
- @param followersEmailCompletion
- @param publicizeCompletion
- @param failureHandler
+ @param visitsCompletion Visits completion handler
+ @param postsCompletion Posts completion handler
+ @param referrersCompletion Referrers completion handler
+ @param clicksCompletion Clicks completion handler
+ @param countryCompletion Country completion handler
+ @param videosCompletion Videos completion handler
+ @param authorsCompletion Authors completion handler
+ @param searchTermsCompletion Search Terms completion handler
+ @param progressBlock Progress of operations block
+ @param completionHandler Overall completion handler
  */
 - (void)batchFetchStatsForDate:(NSDate *)date
                           unit:(StatsPeriodUnit)unit
