@@ -1,0 +1,65 @@
+{
+    "date": "2014-11-03",
+    "days": {
+        "2014-11-01": {
+            "clicks": [
+                       {
+                       "icon": null,
+                       "url": "http://wp.com/",
+                       "name": "wp.com",
+                       "views": 3,
+                       "children": null
+                       },
+                       {
+                       "icon": null,
+                       "url": null,
+                       "name": "blog.wordpress.tv",
+                       "views": 2,
+                       "children": [
+                                    {
+                                    "url": "http://blog.wordpress.tv/2014/10/03/build-your-audience-recent-wordcamp-videos-from-experienced-content-creators/",
+                                    "name": "blog.wordpress.tv/2014/10/03/build-your-audience-recent-wordcamp-videos-from-experienced-content-creators/",
+                                    "views": 1
+                                    },
+                                    {
+                                    "url": "http://blog.wordpress.tv/2014/10/29/wordcamp-san-francisco-2014-state-of-the-word-keynote/",
+                                    "name": "blog.wordpress.tv/2014/10/29/wordcamp-san-francisco-2014-state-of-the-word-keynote/",
+                                    "views": 1
+                                    }
+                                    ]
+                       },
+                       {
+                       "icon": "https://secure.gravatar.com/blavatar/c0a70310ea07fb03e415f74916b37b35?s=48",
+                       "url": "http://vip.wordpress.com/2014/10/08/why-choose-wordpress-a-government-perspective-now-with-full-transcript/",
+                       "name": "vip.wordpress.com/2014/10/08/why-choose-wordpress-a-government-perspective-now-with-full-transcript/",
+                       "views": 1,
+                       "children": null
+                       },
+                       {
+                       "icon": null,
+                       "url": "http://en.blog.wordpress.com/2014/10/15/blogging-201-fall-2014/",
+                       "name": "en.blog.wordpress.com/2014/10/15/blogging-201-fall-2014/",
+                       "views": 1,
+                       "children": null
+                       },
+                       {
+                       "icon": "https://secure.gravatar.com/blavatar/0ec2f14c9e007ba464c230b3ddd98384?s=48",
+                       "url": "http://wordpress.org/",
+                       "name": "wordpress.org",
+                       "views": 1,
+                       "children": null
+                       },
+                       {
+                       "icon": "https://secure.gravatar.com/blavatar/2343ec78a04c6ea9d80806345d31fd78?s=48",
+                       "url": "http://www.facebook.com/",
+                       "name": "Facebook",
+                       "views": 1,
+                       "children": null
+                       }
+                       ],
+            "other_clicks": 0,
+            "total_clicks": 9
+        }
+    },
+    "period": "month"
+}
