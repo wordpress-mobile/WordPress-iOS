@@ -427,6 +427,8 @@
 		930F09171C7D110E00995926 /* ShareExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F09161C7D110E00995926 /* ShareExtensionService.swift */; };
 		930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F09161C7D110E00995926 /* ShareExtensionService.swift */; };
 		931430201E68B9C50014B6C6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1C5B2131E54C28C00052319 /* Localizable.strings */; };
+		931C065F1EBCB6E7005E6BB4 /* WordPressComStatsiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931CFFE81EBCB017005E6BB4 /* WordPressComStatsiOS.framework */; };
+		931C06641EBCB9B2005E6BB4 /* WordPressComStatsiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 931CFFE81EBCB017005E6BB4 /* WordPressComStatsiOS.framework */; };
 		931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
 		931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 930FD0A519882742000CC81D /* BlogServiceTest.m */; };
 		931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */; };
@@ -1082,6 +1084,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
 			remoteInfo = WordPress;
+		};
+		931CFFE71EBCB017005E6BB4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 931CFFE21EBCB016005E6BB4 /* WordPressComStatsiOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 931CFFC81EBCB016005E6BB4;
+			remoteInfo = WordPressComStatsiOS;
+		};
+		931CFFE91EBCB017005E6BB4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 931CFFE21EBCB016005E6BB4 /* WordPressComStatsiOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 931CFFD11EBCB016005E6BB4;
+			remoteInfo = WordPressComStatsiOSTests;
 		};
 		932225AF1C7CE50300443B02 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1777,6 +1793,7 @@
 		930C6374182BD86400976C21 /* WordPress-Internal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WordPress-Internal-Info.plist"; sourceTree = "<group>"; };
 		930F09161C7D110E00995926 /* ShareExtensionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareExtensionService.swift; sourceTree = "<group>"; };
 		930FD0A519882742000CC81D /* BlogServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceTest.m; sourceTree = "<group>"; };
+		931CFFE21EBCB016005E6BB4 /* WordPressComStatsiOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WordPressComStatsiOS.xcodeproj; path = WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj; sourceTree = "<group>"; };
 		931D26FC19EDA10D00114F17 /* ALIterativeMigrator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALIterativeMigrator.h; sourceTree = "<group>"; };
 		931D26FD19EDA10D00114F17 /* ALIterativeMigrator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALIterativeMigrator.m; sourceTree = "<group>"; };
 		931D26FF19EDAE8600114F17 /* CoreDataMigrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataMigrationTests.m; sourceTree = "<group>"; };
@@ -2708,6 +2725,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				931C065F1EBCB6E7005E6BB4 /* WordPressComStatsiOS.framework in Frameworks */,
 				93F2E5531E9E5CF00050D489 /* VideoToolbox.framework in Frameworks */,
 				93F2E5511E9E5CCD0050D489 /* CoreVideo.framework in Frameworks */,
 				93F2E54F1E9E5CB70050D489 /* CoreImage.framework in Frameworks */,
@@ -2764,6 +2782,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				931C06641EBCB9B2005E6BB4 /* WordPressComStatsiOS.framework in Frameworks */,
 				93E5283C19A7741A003A1A9C /* NotificationCenter.framework in Frameworks */,
 				DDA747B6DFA00614C976864D /* Pods_WordPress_Base_WordPressTodayWidget.framework in Frameworks */,
 			);
@@ -3015,6 +3034,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				931CFFE21EBCB016005E6BB4 /* WordPressComStatsiOS.xcodeproj */,
 				E1B34C091CCDFFCE00889709 /* Credentials */,
 				E1756E661694AA1500D9EC00 /* Derived Sources */,
 				E11F949814A3344300277D31 /* WordPressApi */,
@@ -3907,6 +3927,15 @@
 				E6374DC81C445ABF00F24720 /* SharingServiceRemoteTests.m */,
 			);
 			name = Networking;
+			sourceTree = "<group>";
+		};
+		931CFFE31EBCB016005E6BB4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				931CFFE81EBCB017005E6BB4 /* WordPressComStatsiOS.framework */,
+				931CFFEA1EBCB017005E6BB4 /* WordPressComStatsiOSTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		931D26FB19EDA0D000114F17 /* ALIterativeMigrator */ = {
@@ -5828,6 +5857,12 @@
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 931CFFE31EBCB016005E6BB4 /* Products */;
+					ProjectRef = 931CFFE21EBCB016005E6BB4 /* WordPressComStatsiOS.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* WordPress */,
@@ -5841,6 +5876,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		931CFFE81EBCB017005E6BB4 /* WordPressComStatsiOS.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = WordPressComStatsiOS.framework;
+			remoteRef = 931CFFE71EBCB017005E6BB4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		931CFFEA1EBCB017005E6BB4 /* WordPressComStatsiOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = WordPressComStatsiOSTests.xctest;
+			remoteRef = 931CFFE91EBCB017005E6BB4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
