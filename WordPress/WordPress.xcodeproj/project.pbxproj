@@ -165,6 +165,7 @@
 		430693741DD25F31009398A2 /* PostPost.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 430693731DD25F31009398A2 /* PostPost.storyboard */; };
 		433432521E9ED18900915988 /* LoginEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433432511E9ED18900915988 /* LoginEpilogueViewController.swift */; };
 		433432541E9EE0B100915988 /* EpilogueSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433432531E9EE0B100915988 /* EpilogueSegue.swift */; };
+		4346FD9B1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4346FD9A1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift */; };
 		434D96061EA92A4A00B90B89 /* Login2FAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434D96051EA92A4A00B90B89 /* Login2FAViewController.swift */; };
 		434D96081EA9565D00B90B89 /* LoginLinkAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434D96071EA9565D00B90B89 /* LoginLinkAuthViewController.swift */; };
 		434D960A1EA959BF00B90B89 /* LoginSelfHostedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434D96091EA959BF00B90B89 /* LoginSelfHostedViewController.swift */; };
@@ -177,6 +178,7 @@
 		43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */; };
 		43D2436D1EAFCE3C00D0C77B /* LoginSegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2436C1EAFCE3C00D0C77B /* LoginSegueHandler.swift */; };
 		43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D54D121DCAA070007F575F /* PostPostViewController.swift */; };
+		43FB3F411EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */; };
 		462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */; };
 		4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4645AFC41961E1FB005F7509 /* AppImages.xcassets */; };
 		5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */; };
@@ -1351,6 +1353,7 @@
 		430693731DD25F31009398A2 /* PostPost.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PostPost.storyboard; sourceTree = "<group>"; };
 		433432511E9ED18900915988 /* LoginEpilogueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueViewController.swift; sourceTree = "<group>"; };
 		433432531E9EE0B100915988 /* EpilogueSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpilogueSegue.swift; sourceTree = "<group>"; };
+		4346FD9A1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueUserInfoCell.swift; sourceTree = "<group>"; };
 		434D96051EA92A4A00B90B89 /* Login2FAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login2FAViewController.swift; sourceTree = "<group>"; };
 		434D96071EA9565D00B90B89 /* LoginLinkAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginLinkAuthViewController.swift; sourceTree = "<group>"; };
 		434D96091EA959BF00B90B89 /* LoginSelfHostedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSelfHostedViewController.swift; sourceTree = "<group>"; };
@@ -1363,6 +1366,7 @@
 		43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListFilterSettings.swift; sourceTree = "<group>"; };
 		43D2436C1EAFCE3C00D0C77B /* LoginSegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSegueHandler.swift; sourceTree = "<group>"; };
 		43D54D121DCAA070007F575F /* PostPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPostViewController.swift; sourceTree = "<group>"; };
+		43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueBlogCell.swift; sourceTree = "<group>"; };
 		462F4E0618369F0B0028D2F8 /* BlogDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogDetailsViewController.h; sourceTree = "<group>"; };
 		462F4E0718369F0B0028D2F8 /* BlogDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BlogDetailsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4645AFC41961E1FB005F7509 /* AppImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppImages.xcassets; path = Resources/AppImages.xcassets; sourceTree = "<group>"; };
@@ -5359,6 +5363,8 @@
 				434D96051EA92A4A00B90B89 /* Login2FAViewController.swift */,
 				438A80971EA5666B005D4651 /* LoginEmailViewController.swift */,
 				433432511E9ED18900915988 /* LoginEpilogueViewController.swift */,
+				4346FD9A1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift */,
+				43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */,
 				434D96071EA9565D00B90B89 /* LoginLinkAuthViewController.swift */,
 				438A80991EA56DA0005D4651 /* LoginLinkMailViewController.swift */,
 				438A809B1EA5DB88005D4651 /* LoginLinkRequestViewController.swift */,
@@ -6625,6 +6631,7 @@
 				B57AF5FA1ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift in Sources */,
 				742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */,
 				85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */,
+				43FB3F411EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift in Sources */,
 				E19B17B01E5C69A5007517C6 /* NSManagedObject.swift in Sources */,
 				E15644EF1CE0E53B00D96E64 /* PlanListViewModel.swift in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
@@ -6735,6 +6742,7 @@
 				B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */,
 				E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */,
 				E1CFC1571E0AC8FF001DF9E9 /* Pattern.swift in Sources */,
+				4346FD9B1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift in Sources */,
 				930F09171C7D110E00995926 /* ShareExtensionService.swift in Sources */,
 				E67B302A1DD2428B00F2F47B /* UIImage+Tint.swift in Sources */,
 				B58002A11E79CCAF00F124F9 /* OptionsTableView.swift in Sources */,
