@@ -5,9 +5,9 @@
       location = "group:WordPress/WordPress.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Pods/Pods.xcodeproj">
+      location = "group:WordPress/WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:WordPress/WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj">
+      location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
