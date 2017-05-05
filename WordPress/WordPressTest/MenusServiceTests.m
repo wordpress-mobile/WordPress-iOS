@@ -187,6 +187,8 @@
     OCMStub([item typeFamily]).andReturn(MenuItemTypePage);
     OCMStub([item typeLabel]).andReturn(@"Page");
     OCMStub([item urlStr]).andReturn(@"http://wordpress.com/");
+    NSArray *classes = @[@"special_class", @"extra_special_class"];
+    OCMStub([item classes]).andReturn(classes);
     OCMStub([item children]).andReturn(nil);
     OCMStub([item parent]).andReturn(nil);
     NSOrderedSet *items = [NSOrderedSet orderedSetWithObject:item];
