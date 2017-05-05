@@ -345,15 +345,6 @@ extension Notification {
 }
 
 
-// MARK: - Core Data Helper
-//
-extension Notification: ManagedObject {
-    static var entityName: String {
-        return classNameWithoutNamespaces()
-    }
-}
-
-
 // MARK: - Update Helpers
 //
 extension Notification {

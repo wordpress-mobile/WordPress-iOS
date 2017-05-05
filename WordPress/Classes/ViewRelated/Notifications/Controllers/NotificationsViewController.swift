@@ -1013,8 +1013,7 @@ private extension NotificationsViewController {
         // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
         // results, which are filtered by the active predicate!).
         //
-        let helper = CoreDataHelper<Notification>(context: mainContext)
-        return helper.countObjects() > 0
+        return mainContext.countObjects(ofType: Notification.self) > 0
     }
 }
 
@@ -1234,10 +1233,9 @@ private extension NotificationsViewController {
     }
 
     func loadNotificationWithID(_ noteId: String) -> Notification? {
-        let helper = CoreDataHelper<Notification>(context: mainContext)
         let predicate = NSPredicate(format: "(notificationId == %@)", noteId)
 
-        return helper.firstObject(matchingPredicate: predicate)
+        return mainContext.firstObject(ofType: Notification.self, matching: predicate)
     }
 
     func loadNotification(near note: Notification, withIndexDelta delta: Int) -> Notification? {
@@ -1273,8 +1271,7 @@ private extension NotificationsViewController {
     func resetNotifications() {
         do {
             selectedNotification = nil
-            let helper = CoreDataHelper<Notification>(context: mainContext)
-            helper.deleteAllObjects()
+            mainContext.deleteAllObjects(ofType: Notification.self)
             try mainContext.save()
             tableView.reloadData()
         } catch {
