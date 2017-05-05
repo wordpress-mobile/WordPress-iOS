@@ -6,6 +6,14 @@ use_frameworks!
 platform :ios, '10.0'
 workspace 'WordPress.xcworkspace'
 
+## Pods shared between stats & main target
+def shared_pods
+  pod 'AFNetworking', '3.1.0'
+  pod 'CocoaLumberjack', '~> 2.2.0'
+  pod 'NSObject-SafeExpectations', '0.0.2'
+  pod 'WordPressCom-Analytics-iOS', '0.1.25'
+end
+
 abstract_target 'WordPress_Base' do
   project 'WordPress/WordPress.xcodeproj'
 
@@ -13,13 +21,21 @@ abstract_target 'WordPress_Base' do
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
 
+  target 'WordPressComStatsiOS' do
+    project 'WordPress/WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
+
+    shared_pods
+    
+    target 'WordPressComStatsiOSTests' do
+      inherit! :search_paths
+    end
+  end
+
   target 'WordPress' do
     # ---------------------
     # Third party libraries
     # ---------------------
     pod '1PasswordExtension', '1.8.4'
-    pod 'AFNetworking',	'3.1.0'
-    pod 'CocoaLumberjack', '~> 2.2.0'
     pod 'FormatterKit', '~> 1.8.1'
     pod 'HockeySDK', '~> 4.1.3', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
@@ -42,13 +58,12 @@ abstract_target 'WordPress_Base' do
     # --------------------
     # WordPress components
     # --------------------
+    shared_pods
     pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.2'
     pod 'Gridicons', '0.5'
-    pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '0.15'
     pod 'WordPress-iOS-Editor', '1.9.1'
-    pod 'WordPressCom-Analytics-iOS', '0.1.25'
     pod 'WordPress-Aztec-iOS', '1.0.0-beta.1'
     pod 'wpxmlrpc', '0.8.3'
 
@@ -68,16 +83,4 @@ abstract_target 'WordPress_Base' do
 
   target 'WordPressTodayWidget' do
   end
-
-target 'WordPressComStatsiOS' do
-  project 'WordPress/WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
-
-  pod 'AFNetworking', '3.1.0'
-  pod 'CocoaLumberjack', '~> 2.2.0'
-  pod 'WordPress-iOS-Shared', '0.8.2'
-  pod 'NSObject-SafeExpectations', '0.0.2'
-  pod 'WordPressCom-Analytics-iOS', '0.1.25'
 end
-
-end
-
