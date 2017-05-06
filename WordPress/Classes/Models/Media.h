@@ -16,7 +16,8 @@ typedef NS_ENUM(NSUInteger, MediaType) {
     MediaTypeImage,
     MediaTypeVideo,
     MediaTypeDocument,
-    MediaTypePowerpoint
+    MediaTypePowerpoint,
+    MediaTypeAudio
 };
 
 @interface Media :  NSManagedObject
