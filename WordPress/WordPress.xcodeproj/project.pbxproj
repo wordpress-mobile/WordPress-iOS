@@ -111,7 +111,7 @@
 		1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */; };
 		1724DDCC1C6121D00099D273 /* Plans.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1724DDCB1C6121D00099D273 /* Plans.storyboard */; };
 		172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */; };
-		1730D4A31E97E3E400326B7C /* MediaItemImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730D4A21E97E3E400326B7C /* MediaItemImageTableViewCell.swift */; };
+		1730D4A31E97E3E400326B7C /* MediaItemTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */; };
 		1731BCD11DD9EFF1009FE3AE /* HelpshiftCustomConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1731BCD01DD9EFF1009FE3AE /* HelpshiftCustomConfig.plist */; };
 		1731BCD31DDA01AF009FE3AE /* HelpshiftPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1731BCD21DDA01AF009FE3AE /* HelpshiftPresenter.swift */; };
 		173BCE731CEB368A00AE8817 /* DomainsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */; };
@@ -1286,7 +1286,7 @@
 		1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
 		1724DDCB1C6121D00099D273 /* Plans.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Plans.storyboard; sourceTree = "<group>"; };
 		172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansLoadingIndicatorView.swift; sourceTree = "<group>"; };
-		1730D4A21E97E3E400326B7C /* MediaItemImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItemImageTableViewCell.swift; sourceTree = "<group>"; };
+		1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItemTableViewCells.swift; sourceTree = "<group>"; };
 		1731BCD01DD9EFF1009FE3AE /* HelpshiftCustomConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HelpshiftCustomConfig.plist; sourceTree = "<group>"; };
 		1731BCD21DDA01AF009FE3AE /* HelpshiftPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpshiftPresenter.swift; sourceTree = "<group>"; };
 		173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsListViewController.swift; sourceTree = "<group>"; };
@@ -3599,7 +3599,7 @@
 				5D6C4AF51B603CA3005E3C43 /* WPTableViewActivityCell.xib */,
 				8370D10811FA499A009D650F /* WPTableViewActivityCell.h */,
 				8370D10911FA499A009D650F /* WPTableViewActivityCell.m */,
-				1730D4A21E97E3E400326B7C /* MediaItemImageTableViewCell.swift */,
+				1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -6500,7 +6500,7 @@
 				E11E775A1E72932F0072AD40 /* BlogListDataSource.swift in Sources */,
 				B5508F221E9C13FC009596FB /* HTMLAttachmentRenderer.swift in Sources */,
 				E149D65119349E69006A843D /* MediaServiceRemoteXMLRPC.m in Sources */,
-				1730D4A31E97E3E400326B7C /* MediaItemImageTableViewCell.swift in Sources */,
+				1730D4A31E97E3E400326B7C /* MediaItemTableViewCells.swift in Sources */,
 				E6ED09091D46AD29003283C4 /* ReaderFollowedSitesStreamHeader.swift in Sources */,
 				E66969E41B9E68B200EC9C00 /* ReaderPostToReaderPost37to38.swift in Sources */,
 				08216FD01CDBF96000304BA7 /* MenuItemSourceFooterView.m in Sources */,
