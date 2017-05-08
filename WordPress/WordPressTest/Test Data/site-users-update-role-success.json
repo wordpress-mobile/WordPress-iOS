@@ -1,0 +1,14 @@
+{
+    "ID": 1111,
+    "login": "jimthetester",
+    "email": "jimthetester@thetestemail.org",
+    "name": "jimthetester",
+    "first_name": "Jim",
+    "last_name": "Tester",
+    "nice_name": "jimthetester",
+    "URL": "http:\/\/jimthetester.blog",
+    "avatar_URL": "https:\/\/2.gravatar.com\/avatar\/5c78d333444a3c12345ed8ff0e567890?s=200&amp;d=mm",
+    "profile_URL": "http:\/\/en.gravatar.com\/jimthetester",
+    "site_ID": 321,
+    "roles": ["administrator"]
+}
