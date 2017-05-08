@@ -7,14 +7,14 @@ protocol MediaExport {
     /// The resulting file URL of an export.
     ///
     var url: URL { get }
-    var fileSize: Int64? { get }
+    var fileSize: Int? { get }
 }
 
 /// Struct of an image export.
 ///
 struct MediaImageExport: MediaExport {
     let url: URL
-    let fileSize: Int64?
+    let fileSize: Int?
     let width: CGFloat?
     let height: CGFloat?
 }
@@ -23,7 +23,7 @@ struct MediaImageExport: MediaExport {
 ///
 struct MediaVideoExport: MediaExport {
     let url: URL
-    let fileSize: Int64?
+    let fileSize: Int?
     let duration: TimeInterval?
 }
 
@@ -31,7 +31,7 @@ struct MediaVideoExport: MediaExport {
 ///
 struct MediaGIFExport: MediaExport {
     let url: URL
-    let fileSize: Int64?
+    let fileSize: Int?
 }
 
 /// Generic Error protocol for detecting and type classifying known errors that occur while exporting.
