@@ -8,28 +8,39 @@ extension MediaLibrary {
 
     /// Type of the local Media directory URL in implementation.
     ///
-    enum MediaDirectoryType {
-        case uploads // Default, system Documents directory, for persisting media files for upload.
-        case cache // System Caches directory, for creating discardable media files, such as thumbnails.
-        case temporary // System temporary directory, used for unit testing or temporary media files.
+    enum MediaDirectory {
+        /// Default, system Documents directory, for persisting media files for upload.
+        case uploads
+        /// System Caches directory, for creating discardable media files, such as thumbnails.
+        case cache
+        /// System temporary directory, used for unit testing or temporary media files.
+        case temporary
+
+        /// Returns the directory URL for the directory type.
+        ///
+        var url: URL {
+            let fileManager = FileManager.default
+            // Get a parent directory, based on the type.
+            let parentDirectory: URL
+            switch self {
+            case .uploads:
+                parentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+            case .cache:
+                parentDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
+            case .temporary:
+                parentDirectory = fileManager.temporaryDirectory
+            }
+            return parentDirectory.appendingPathComponent(mediaDirectoryName, isDirectory: true)
+        }
     }
 
     // MARK: - Class methods
 
     /// Returns filesystem URL for the local Media directory.
     ///
-    class func localDirectory(_ type: MediaDirectoryType) throws -> URL {
+    class func localDirectory(_ type: MediaDirectory) throws -> URL {
         let fileManager = FileManager.default
-        // Get a parent directory, based on the type.
-        let parentDirectory: URL
-        if type == .cache {
-            parentDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
-        } else if type == .temporary {
-            parentDirectory = fileManager.temporaryDirectory
-        } else {
-            parentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-        }
-        let mediaDirectory = parentDirectory.appendingPathComponent(mediaDirectoryName, isDirectory: true)
+        let mediaDirectory = type.url
         // Check whether or not the file path exists for the Media directory.
         // If the filepath does not exist, or if the filepath does exist but it is not a directory, try creating the directory.
         // Note: This way, if unexpectedly a file exists but it is not a dir, an error will throw when trying to create the dir.
@@ -42,7 +53,7 @@ extension MediaLibrary {
 
     /// Helper method for ObjC as a default method with type.
     ///
-    class func localDirectory() throws -> URL {
+    class func localUploadsDirectory() throws -> URL {
         return try localDirectory(.uploads)
     }
 
@@ -51,7 +62,7 @@ extension MediaLibrary {
     /// - Note: if a file already exists with the same name, the file name is appended with a number
     ///   and incremented until a unique filename is found.
     ///
-    class func makeLocalMediaURL(withFilename filename: String, fileExtension: String?, type: MediaDirectoryType) throws -> URL {
+    class func makeLocalMediaURL(withFilename filename: String, fileExtension: String?, type: MediaDirectory) throws -> URL {
         let media = try localDirectory(type)
         var url: URL
         if let fileExtension = fileExtension {
@@ -115,7 +126,7 @@ extension MediaLibrary {
     class func calculateSizeOfLocalDirectory(onCompletion: @escaping (Int64?) -> ()) {
         DispatchQueue.global(qos: .default).async {
             let fileManager = FileManager.default
-            let allocatedSize = try? fileManager.allocatedSizeOf(directoryURL: localDirectory())
+            let allocatedSize = try? fileManager.allocatedSizeOf(directoryURL: localUploadsDirectory())
             DispatchQueue.main.async {
                 onCompletion(allocatedSize)
             }
@@ -188,7 +199,7 @@ extension MediaLibrary {
 
     /// Removes files in the Media directory, except any files found in the set.
     ///
-    fileprivate class func purgeLocalDirectory(exceptFiles: Set<String>, type: MediaDirectoryType) throws {
+    fileprivate class func purgeLocalDirectory(exceptFiles: Set<String>, type: MediaDirectory) throws {
         let fileManager = FileManager.default
         let contents = try fileManager.contentsOfDirectory(at: try localDirectory(type),
                                                            includingPropertiesForKeys: nil,
