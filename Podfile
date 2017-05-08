@@ -85,7 +85,7 @@ abstract_target 'WordPress_Base' do
 end
 
 target 'WordPressComStatsiOS' do
-  project 'WordPress/WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
+  project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
 
   shared_with_stats_pods
   shared_with_all_pods
