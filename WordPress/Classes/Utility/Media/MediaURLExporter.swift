@@ -7,7 +7,7 @@ class MediaURLExporter: MediaExporter {
 
     var maximumImageSize: CGFloat?
     var stripsGeoLocationIfNeeded = false
-    var mediaDirectoryType: MediaLibrary.MediaDirectoryType = .uploads
+    var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
 
     /// Enumerable type value for a URLExport, typed according to the resulting export of the file at the URL.
     ///
@@ -17,7 +17,7 @@ class MediaURLExporter: MediaExporter {
         case exportedGIF(MediaGIFExport)
     }
 
-    public enum ExportError: MediaExportError {
+    public enum URLExportError: MediaExportError {
         case invalidFileURL
         case unknownFileUTI
         case failedToInitializeVideoExportSession
@@ -45,7 +45,7 @@ class MediaURLExporter: MediaExporter {
     func exportURL(fileURL: URL, onCompletion: @escaping (URLExport) -> (), onError: @escaping (MediaExportError) -> ()) {
         do {
             guard fileURL.isFileURL else {
-                throw ExportError.invalidFileURL
+                throw URLExportError.invalidFileURL
             }
             let typeIdentifier = try typeIdentifierAtURL(fileURL) as CFString
             if UTTypeEqual(typeIdentifier, kUTTypeGIF) {
@@ -55,7 +55,7 @@ class MediaURLExporter: MediaExporter {
             } else if UTTypeConformsTo(typeIdentifier, kUTTypeImage) {
                 exportImage(atURL: fileURL, onCompletion: onCompletion, onError: onError)
             } else {
-                throw ExportError.unknownFileUTI
+                throw URLExportError.unknownFileUTI
             }
         } catch {
             onError(exporterErrorWith(error: error))
@@ -83,7 +83,7 @@ class MediaURLExporter: MediaExporter {
         do {
             let asset = AVURLAsset(url: url)
             guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough) else {
-                throw ExportError.failedToInitializeVideoExportSession
+                throw URLExportError.failedToInitializeVideoExportSession
             }
 
             let mediaURL = try MediaLibrary.makeLocalMediaURL(withFilename: url.lastPathComponent,
@@ -97,7 +97,7 @@ class MediaURLExporter: MediaExporter {
                     if let error = session.error {
                         onError(self.exporterErrorWith(error: error))
                     } else {
-                        onError(ExportError.videoExportSessionFailedWithAnUnknownError)
+                        onError(URLExportError.videoExportSessionFailedWithAnUnknownError)
                     }
                     return
                 }
@@ -131,7 +131,7 @@ class MediaURLExporter: MediaExporter {
     fileprivate func typeIdentifierAtURL(_ url: URL) throws -> String {
         let resourceValues = try url.resourceValues(forKeys: [.typeIdentifierKey])
         guard let typeIdentifier = resourceValues.typeIdentifier else {
-            throw ExportError.unknownFileUTI
+            throw URLExportError.unknownFileUTI
         }
         return typeIdentifier
     }
