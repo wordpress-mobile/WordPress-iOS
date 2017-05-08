@@ -182,7 +182,7 @@
 - (NSURL *)absoluteURLForLocalPath:(NSString *)localPath
 {
     NSError *error;
-    NSURL *mediaDirectory = [MediaLibrary localDirectoryAndReturnError:&error];
+    NSURL *mediaDirectory = [MediaLibrary localUploadsDirectoryAndReturnError:&error];
     if (error) {
         DDLogInfo(@"Error resolving Media directory: %@", error);
         return nil;
