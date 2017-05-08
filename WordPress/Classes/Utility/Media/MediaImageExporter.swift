@@ -11,7 +11,7 @@ class MediaImageExporter: MediaExporter {
 
     var maximumImageSize: CGFloat?
     var stripsGeoLocationIfNeeded = false
-    var mediaDirectoryType: MediaLibrary.MediaDirectoryType = .uploads
+    var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
 
     public enum ExportError: MediaExportError {
         case imageJPEGDataRepresentationFailed
@@ -148,20 +148,28 @@ class MediaImageExporter: MediaExporter {
         }
     }
 
-    /// Configureable struct for writing an image to a URL from a CGImageSource, via CGImageDestination, particular to the needs of a MediaImageExporter.
-    ///
-    /// - parameter url: File URL where the image should be written
-    /// - parameter sourceUTType: The UTType of the image source
-    /// - parameter lossyCompressionQuality: The Compression quality used, defaults to 1.0 or full
-    /// - parameter nullifyGPSData: Whether or not GPS data should be nullified.
-    /// - parameter maximumSize: A maximum size required for the image to be written, or nil.
+    /// Configurable struct for writing an image to a URL from a CGImageSource, via CGImageDestination, particular to the needs of a MediaImageExporter.
     ///
     fileprivate struct ImageSourceWriter {
 
+        /// File URL where the image should be written
+        ///
         var url: URL
+
+        /// The UTType of the image source
+        ///
         var sourceUTType: CFString
+
+        /// The Compression quality used, defaults to 1.0 or full
+        ///
         var lossyCompressionQuality = 1.0 as CFNumber
+
+        /// Whether or not GPS data should be nullified.
+        ///
         var nullifyGPSData = false
+
+        /// A maximum size required for the image to be written, or nil.
+        ///
         var maximumSize: CFNumber?
 
         init(url: URL, sourceUTType: CFString) {
@@ -169,7 +177,8 @@ class MediaImageExporter: MediaExporter {
             self.sourceUTType = sourceUTType
         }
 
-        // Returned result from writing an image, and any properties worth keeping track of.
+        /// Struct for returned result from writing an image, and any properties worth keeping track of.
+        ///
         struct WriteResultProperties {
             let width: CGFloat?
             let height: CGFloat?
