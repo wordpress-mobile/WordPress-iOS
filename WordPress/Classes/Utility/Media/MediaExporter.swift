@@ -97,12 +97,12 @@ extension MediaExporter {
     /// - param URL: A file URL.
     /// - returns: The size in bytes, or nil if unavailable.
     ///
-    func fileSizeAtURL(_ url: URL) -> Int64? {
+    func fileSizeAtURL(_ url: URL) -> Int? {
         guard url.isFileURL else {
             return nil
         }
-        let attributes = try? FileManager.default.attributesOfItem(atPath: url.path)
-        return attributes?[.size] as? Int64
+        let resourceValues = try? url.resourceValues(forKeys: [.fileSizeKey])
+        return resourceValues?.fileSize
     }
 
     /// The expected file extension string for a given UTType identifier.
