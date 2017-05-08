@@ -53,7 +53,7 @@ extension MediaLibrary {
 
     /// Helper method for ObjC as a default method with type.
     ///
-    class func localDirectory() throws -> URL {
+    class func localUploadsDirectory() throws -> URL {
         return try localDirectory(.uploads)
     }
 
@@ -126,7 +126,7 @@ extension MediaLibrary {
     class func calculateSizeOfLocalDirectory(onCompletion: @escaping (Int64?) -> ()) {
         DispatchQueue.global(qos: .default).async {
             let fileManager = FileManager.default
-            let allocatedSize = try? fileManager.allocatedSizeOf(directoryURL: localDirectory())
+            let allocatedSize = try? fileManager.allocatedSizeOf(directoryURL: localUploadsDirectory())
             DispatchQueue.main.async {
                 onCompletion(allocatedSize)
             }

@@ -5,7 +5,7 @@ class MediaLibraryTests: XCTestCase {
 
     func testThatLocalMediaDirectoryIsAvailable() {
         do {
-            let url = try MediaLibrary.localDirectory()
+            let url = try MediaLibrary.localUploadsDirectory()
             assertThatMediaDirectoryIsNamedMedia(url: url)
         } catch {
             XCTFail("Error accessing or creating local media directory: \(error)")
