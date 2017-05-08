@@ -376,6 +376,9 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
         // safety net. An existing post with no create date should publish immediately
         parameters[@"date"] = [[NSDate date] WordPressComJSONString];
     }
+    if (post.dateModified) {
+        parameters[@"modified"] = [post.dateModified WordPressComJSONString];
+    }
     if (post.excerpt) {
         parameters[@"excerpt"] = post.excerpt;
     }

@@ -1460,6 +1460,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             return;
         }
         self.apost.dateCreated = selectedDate;
+        self.apost.dateModified = [NSDate date];
     }
 }
 
