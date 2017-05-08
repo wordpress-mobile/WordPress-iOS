@@ -60,6 +60,8 @@ enum MediaExportSystemError: MediaExportError {
     }
 }
 
+/// Protocol of required default variables or values for a MediaExporter and passing those values between them.
+///
 protocol MediaExporter {
     /// Set a maximumImageSize for resizing images, or nil for exporting the full images.
     ///
@@ -71,17 +73,19 @@ protocol MediaExporter {
 
     /// The type of MediaDirectory to use for the export destination URL.
     ///
-    /// - Note: This would almost always be set to .uploads, but for unit testing we use .temporary.almost
+    /// - Note: This would almost always be set to .uploads, but for unit testing we use .temporary.
     ///
     var mediaDirectoryType: MediaLibrary.MediaDirectory { get set }
 }
 
+/// Extension providing generic helper implementation particular to MediaExporters.
+///
 extension MediaExporter {
 
-    /// Handles wrapping into MediaExportError type values when the encountered Error type value is unknown.
+    /// Handles wrapping into MediaExportError value types when the encountered Error value type is unknown.
     ///
-    /// - param error: Error with an unknown type value, or nil for easy conversion.
-    /// - returns: The ExporterError type value itself, or an ExportError.failedWith
+    /// - param error: Error with an unknown value type, or nil for easy conversion.
+    /// - returns: The ExporterError value type itself, or an ExportError.failedWith
     ///
     func exporterErrorWith(error: Error) -> MediaExportError {
         switch error {
