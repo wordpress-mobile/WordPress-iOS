@@ -73,7 +73,7 @@ protocol MediaExporter {
     ///
     /// - Note: This would almost always be set to .uploads, but for unit testing we use .temporary.almost
     ///
-    var mediaDirectoryType: MediaLibrary.MediaDirectoryType { get set }
+    var mediaDirectoryType: MediaLibrary.MediaDirectory { get set }
 }
 
 extension MediaExporter {
