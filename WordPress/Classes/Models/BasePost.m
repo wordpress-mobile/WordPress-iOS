@@ -22,6 +22,7 @@ static const NSUInteger PostDerivedSummaryLength = 150;
 @dynamic permaLink;
 @dynamic mt_excerpt;
 @dynamic wp_slug;
+@dynamic suggested_slug;
 @dynamic post_thumbnail;
 @dynamic pathForDisplayImage;
 
@@ -94,6 +95,14 @@ static const NSUInteger PostDerivedSummaryLength = 150;
 - (NSDate *)dateForDisplay
 {
     return [self dateCreated];
+}
+
+- (NSString *)slugForDisplay
+{
+    if (self.wp_slug.length > 0) {
+        return self.wp_slug;
+    }
+    return self.suggested_slug;
 }
 
 - (NSString *)statusForDisplay

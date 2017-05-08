@@ -579,7 +579,7 @@
     }
     
     // Check if asset being used is a video, if not this method fails
-    if (self.assetType != MediaTypeVideo) {
+    if (!(self.assetType == WPMediaTypeVideo || self.assetType == WPMediaTypeAudio)) {
         NSString *errorMessage = NSLocalizedString(@"Selected media is not a video.", @"Error message when user tries to preview an image media like a video");
         completionHandler(nil, [self errorWithMessage:errorMessage]);
         return 0;
@@ -654,6 +654,8 @@
         return WPMediaTypeImage;
     } else if (self.mediaType == MediaTypeVideo) {
         return WPMediaTypeVideo;
+    } else if (self.mediaType == MediaTypeAudio) {
+        return WPMediaTypeAudio;
     } else {
         return WPMediaTypeOther;
     }
@@ -661,7 +663,7 @@
 
 - (NSTimeInterval)duration
 {
-    if (self.mediaType != MediaTypeVideo) {
+    if (!(self.mediaType == MediaTypeVideo || self.mediaType == MediaTypeAudio)) {
         return 0;
     }
     if (self.length != nil && [self.length doubleValue] > 0) {

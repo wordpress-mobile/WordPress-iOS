@@ -51,7 +51,7 @@ NSInteger WPOnePasswordErrorCodeCancelledByUser = AppExtensionErrorCodeCancelled
                                              };
 
     NSDictionary *passwordGenerationOptions = @{
-                                                AppExtensionGeneratedPasswordMaxLengthKey: @(WPOnePasswordGeneratedMinLength),
+                                                AppExtensionGeneratedPasswordMinLengthKey: @(WPOnePasswordGeneratedMinLength),
                                                 AppExtensionGeneratedPasswordMaxLengthKey: @(WPOnePasswordGeneratedMaxLength),
                                                 };
 
