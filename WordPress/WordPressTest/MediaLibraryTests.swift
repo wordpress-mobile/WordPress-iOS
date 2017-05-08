@@ -43,7 +43,7 @@ class MediaLibraryTests: XCTestCase {
             let url = try MediaLibrary.localDirectory(.temporary)
             assertThatMediaDirectoryIsNamedMedia(url: url)
             let fileManager = FileManager.default
-            // The .cache directory should be within the system Caches directory.
+            // The .temporary directory should be within the system tmp directory.
             let parentDirectory = fileManager.temporaryDirectory
             XCTAssert(url.absoluteString.hasPrefix(parentDirectory.absoluteString), "Error: media temporary directory URL has unexpected path.")
         } catch {
