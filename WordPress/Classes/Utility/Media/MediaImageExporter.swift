@@ -136,6 +136,7 @@ class MediaImageExporter: MediaExporter {
             var writer = ImageSourceWriter(url: url, sourceUTType: type as CFString)
             if let maximumImageSize = maximumImageSize {
                 writer.maximumSize = maximumImageSize as CFNumber
+                writer.lossyCompressionQuality = 0.9 as CFNumber
             }
             writer.nullifyGPSData = stripsGeoLocationIfNeeded
             let result = try writer.writeImageSource(source)
