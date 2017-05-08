@@ -14,10 +14,6 @@ typedef NS_ENUM(NSInteger, JetpackServiceRemoteErrorCode) {
     JetpackServiceRemoteErrorNoRecordForBlog,
     // The provided username/password are invalid
     JetpackServiceRemoteErrorInvalidCredentials,
-    // Site is inaccessible
-    JetpackServiceRemoteErrorSiteInaccessable,
-    // Jetpack is disabled
-    JetpackServiceRemoteErrorJetpackDisabled,
 };
 
 @interface JetpackServiceRemote : ServiceRemoteWordPressComREST
@@ -28,8 +24,8 @@ typedef NS_ENUM(NSInteger, JetpackServiceRemoteErrorCode) {
                         success:(void (^)(NSArray *blogIDs))success
                         failure:(void (^)(NSError *error))failure;
 
-- (void)checkSiteIsJetpack:(NSURL *)siteURL
-                   success:(void (^)(BOOL isJetpack, NSError *error))success
-                   failure:(void (^)(NSError *error))failure;
+- (void)checkSiteHasJetpack:(NSURL *)siteURL
+                    success:(void (^)(BOOL hasJetpack))success
+                    failure:(void (^)(NSError *error))failure;
 
 @end
