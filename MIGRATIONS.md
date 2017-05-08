@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 59
+- @kurzee 2017-05-04
+- `MenuItem` added `classes` property.
+- @elibud 2017-04-26
+- `BasePost` added `suggested_slug` property.
+
 ## WordPress 58
 - @elibud 2017-04-06
 - `Blog` added `hasPaidPlan` boolean property. Default `NO`. Not optional.

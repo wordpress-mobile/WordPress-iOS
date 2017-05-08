@@ -53,8 +53,8 @@ private extension ShareExtractor {
         return [
             SharePostExtractor(),
             PropertyListExtractor(),
-            URLExtractor(),
-            ImageExtractor()
+            ImageExtractor(),
+            URLExtractor()
         ]
     }
 

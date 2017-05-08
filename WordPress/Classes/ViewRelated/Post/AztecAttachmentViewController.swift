@@ -5,13 +5,13 @@ import Aztec
 
 protocol AztecAttachmentViewControllerDelegate: class {
 
-    func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: TextAttachment)
+    func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: ImageAttachment)
 
 }
 
 class AztecAttachmentViewController: UITableViewController {
 
-    var attachment: TextAttachment? {
+    var attachment: ImageAttachment? {
         didSet {
             if let attachment = attachment {
                 alignment = attachment.alignment
@@ -20,8 +20,8 @@ class AztecAttachmentViewController: UITableViewController {
         }
     }
 
-    var alignment = TextAttachment.Alignment.none
-    var size = TextAttachment.Size.full
+    var alignment = ImageAttachment.Alignment.none
+    var size = ImageAttachment.Size.full
 
     fileprivate var handler: ImmuTableViewHandler!
 
@@ -97,7 +97,7 @@ class AztecAttachmentViewController: UITableViewController {
 
     func displayAlignmentSelector(row: ImmuTableRow) {
 
-        let values: [TextAttachment.Alignment] = [.left, .center, .right, .none]
+        let values: [ImageAttachment.Alignment] = [.left, .center, .right, .none]
 
         let titles = values.map { (value) in
             return value.localizedString
@@ -118,7 +118,7 @@ class AztecAttachmentViewController: UITableViewController {
         }
 
         vc.onItemSelected = { (status: Any) in
-            if let newAlignment = status as? TextAttachment.Alignment {
+            if let newAlignment = status as? ImageAttachment.Alignment {
                 self.alignment = newAlignment
             }
             vc.dismiss()
@@ -129,7 +129,7 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     func displaySizeSelector(row: ImmuTableRow) {
-        let values: [TextAttachment.Size] = [.thumbnail, .medium, .large, .full]
+        let values: [ImageAttachment.Size] = [.thumbnail, .medium, .large, .full]
 
         let titles = values.map { (value) in
             return value.localizedString
@@ -150,7 +150,7 @@ class AztecAttachmentViewController: UITableViewController {
         }
         vc.onItemSelected = { (status: Any) in
             // do interesting work here... like updating the value of image meta.
-            if let newSize = status as? TextAttachment.Size {
+            if let newSize = status as? ImageAttachment.Size {
                 self.size = newSize
             }
             vc.dismiss()
@@ -177,7 +177,7 @@ class AztecAttachmentViewController: UITableViewController {
 
 }
 
-extension TextAttachment.Alignment {
+extension ImageAttachment.Alignment {
 
     var localizedString: String {
         switch self {
@@ -189,7 +189,7 @@ extension TextAttachment.Alignment {
     }
 }
 
-extension TextAttachment.Size {
+extension ImageAttachment.Size {
 
     var localizedString: String {
         switch self {
