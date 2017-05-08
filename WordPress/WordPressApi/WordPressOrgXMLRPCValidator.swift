@@ -36,6 +36,8 @@ import Foundation
 /// WordPress XMLRPC sites.
 open class WordPressOrgXMLRPCValidator: NSObject {
 
+    open static let UserInfoHasJetpackKey = "UserInfoHasJetpackKey"
+
     override public init() {
         super.init()
     }
@@ -83,7 +85,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                             var err = error
                             if hasJetpack {
                                 var userInfo = err.userInfo
-                                userInfo["hasJetpack"] = true
+                                userInfo[WordPressOrgXMLRPCValidator.UserInfoHasJetpackKey] = true
                                 err = NSError(domain: err.domain, code: err.code, userInfo: userInfo)
                             }
                             failure(err)
