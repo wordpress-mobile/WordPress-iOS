@@ -5,16 +5,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString * const JetpackServiceErrorDomain;
-
-typedef NS_ENUM(NSInteger, JetpackError) {
-    JetpackErrorNone,
-    JetpackErrorDisabled,
-    JetpackErrorSiteInaccessible
-};
-
-
-
 @interface JetpackService : LocalCoreDataService
 
 - (void)validateAndLoginWithUsername:(NSString *)username
@@ -24,9 +14,9 @@ typedef NS_ENUM(NSInteger, JetpackError) {
                              success:(void (^)(WPAccount *account))success
                              failure:(void (^)(NSError *error))failure;
 
-- (void)checkSiteIsJetpack:(NSURL *)siteURL
-                   success:(void (^)(BOOL isJetpack, NSError * _Nullable error))success
-                   failure:(void (^)(NSError * error))failure;
+- (void)checkSiteHasJetpack:(NSURL *)siteURL
+                    success:(void (^)(BOOL hasJetpack))success
+                    failure:(void (^)(NSError * error))failure;
 
 @end
 

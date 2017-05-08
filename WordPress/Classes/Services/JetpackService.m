@@ -103,36 +103,12 @@ NSString * const JetpackServiceErrorDomain = @"JetpackServiceErrorDomain";
 }
 
 
-- (void)checkSiteIsJetpack:(NSURL *)siteURL
-                   success:(void (^)(BOOL isJetpack, NSError *error))success
-                   failure:(void (^)(NSError *error))failure
+- (void)checkSiteHasJetpack:(NSURL *)siteURL
+                    success:(void (^)(BOOL hasJetpack))success
+                    failure:(void (^)(NSError *error))failure
 {
     JetpackServiceRemote *remote = [[JetpackServiceRemote alloc] initWithWordPressComRestApi:[WordPressComRestApi anonymousApi]];
-    [remote checkSiteIsJetpack:siteURL success:^(BOOL isJetpack, NSError *error) {
-        if (!isJetpack || error == nil) {
-            success(isJetpack, nil);
-            return;
-        }
-
-        if (error.code == JetpackServiceRemoteErrorSiteInaccessable) {
-            error = [NSError errorWithDomain:JetpackServiceErrorDomain
-                                        code:JetpackErrorSiteInaccessible
-                                    userInfo:error.userInfo];
-
-            success(isJetpack, error);
-
-        } else if (error.code == JetpackServiceRemoteErrorJetpackDisabled) {
-            error = [NSError errorWithDomain:JetpackServiceErrorDomain
-                                        code:JetpackErrorDisabled
-                                    userInfo:error.userInfo];
-
-            success(isJetpack, error);
-
-        } else {
-            failure(error);
-        }
-
-    } failure:failure];
+    [remote checkSiteHasJetpack:siteURL success:success failure:failure];
 }
 
 @end

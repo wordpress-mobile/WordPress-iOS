@@ -79,21 +79,18 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                         DDLogSwift.logError(error.localizedDescription)
                         // See if this is a Jetpack site that's having problems.
                         let service = JetpackService()
-                        service.checkSiteIsJetpack(originalXMLRPCURL, success: { (_, err) in
-                            // If no error was returned it means the site either wasn't
-                            // a Jetpack site, or Jetpack was connected and working
-                            // properly. If an error was returned, it means the site
-                            // was a Jetpack site, and the error is related to
-                            // Jetpack.
-                            if let err = err as NSError? {
-                                failure(err)
-                            } else {
-                                failure(error)
+                        service.checkSiteHasJetpack(originalXMLRPCURL, success: { (hasJetpack) in
+                            var err = error
+                            if hasJetpack {
+                                var userInfo = err.userInfo
+                                userInfo["hasJetpack"] = true
+                                err = NSError(domain: err.domain, code: err.code, userInfo: userInfo)
                             }
+                            failure(err)
                         }, failure: { (_) in
+                            // Return the previous error, not an error when checking for jp.
                             failure(error)
                         })
-
                     })
                 })
             })
