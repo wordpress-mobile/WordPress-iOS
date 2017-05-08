@@ -1,6 +1,6 @@
 import Foundation
 
-class PlansRemote: ServiceRemoteWordPressComREST {
+class PlanServiceRemote: ServiceRemoteWordPressComREST {
     typealias SitePlans = (activePlan: Plan, availablePlans: [Plan])
     enum ResponseError: Error {
         case decodingFailure
@@ -37,7 +37,7 @@ class PlansRemote: ServiceRemoteWordPressComREST {
 
 private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Plan, availablePlans: [Plan]) {
     guard let json = response as? [[String: AnyObject]] else {
-        throw PlansRemote.ResponseError.decodingFailure
+        throw PlanServiceRemote.ResponseError.decodingFailure
     }
 
     let parsedResponse: (Plan?, [Plan]) = try json.reduce((nil, []), {
@@ -47,7 +47,7 @@ private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Plan
             let fullTitle = planDetails["product_name"] as? String,
             let tagline = planDetails["tagline"] as? String,
             let featureGroupsJson = planDetails["features_highlight"] as? [[String: AnyObject]] else {
-            throw PlansRemote.ResponseError.decodingFailure
+            throw PlanServiceRemote.ResponseError.decodingFailure
         }
 
         guard let icon = planDetails["icon"] as? String,
@@ -72,7 +72,7 @@ private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Plan
     })
 
     guard let activePlan = parsedResponse.0 else {
-        throw PlansRemote.ResponseError.noActivePlan
+        throw PlanServiceRemote.ResponseError.noActivePlan
     }
     let availablePlans = parsedResponse.1
     return (activePlan, availablePlans)
@@ -80,7 +80,7 @@ private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Plan
 
 private func parseFeatureGroups(_ json: [[String: AnyObject]]) throws -> [PlanFeatureGroupPlaceholder] {
     return try json.flatMap { groupJson in
-        guard let slugs = groupJson["items"] as? [String] else { throw PlansRemote.ResponseError.decodingFailure }
+        guard let slugs = groupJson["items"] as? [String] else { throw PlanServiceRemote.ResponseError.decodingFailure }
         return PlanFeatureGroupPlaceholder(title: groupJson["title"] as? String, slugs: slugs)
     }
 }
