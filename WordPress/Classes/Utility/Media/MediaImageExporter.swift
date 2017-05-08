@@ -13,7 +13,7 @@ class MediaImageExporter: MediaExporter {
     var stripsGeoLocationIfNeeded = false
     var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
 
-    public enum ExportError: MediaExportError {
+    public enum ImageExportError: MediaExportError {
         case imageJPEGDataRepresentationFailed
         case imageSourceCreationWithDataFailed
         case imageSourceCreationWithURLFailed
@@ -24,14 +24,7 @@ class MediaImageExporter: MediaExporter {
         case imageSourceDestinationWriteFailed
         var description: String {
             switch self {
-            case .imageJPEGDataRepresentationFailed,
-                 .imageSourceCreationWithDataFailed,
-                 .imageSourceCreationWithURLFailed,
-                 .imageSourceIsAnUnknownType,
-                 .imageSourceExpectedJPEGImageType,
-                 .imageSourceDestinationWithURLFailed,
-                 .imageSourceThumbnailGenerationFailed,
-                 .imageSourceDestinationWriteFailed:
+            default:
                 return NSLocalizedString("The image could not be added to the Media Library.", comment: "Message shown when an image failed to load while trying to add it to the Media library.")
             }
         }
@@ -52,7 +45,7 @@ class MediaImageExporter: MediaExporter {
     func exportImage(_ image: UIImage, fileName: String?, onCompletion: @escaping (MediaImageExport) -> (), onError: @escaping (MediaExportError) -> ()) {
         do {
             guard let data = UIImageJPEGRepresentation(image, 1.0) else {
-                throw ExportError.imageJPEGDataRepresentationFailed
+                throw ImageExportError.imageJPEGDataRepresentationFailed
             }
             exportImage(withJPEGData: data,
                         fileName: fileName,
@@ -73,13 +66,13 @@ class MediaImageExporter: MediaExporter {
         do {
             let options: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: kUTTypeJPEG]
             guard let source = CGImageSourceCreateWithData(data as CFData, options as CFDictionary) else {
-                throw ExportError.imageSourceCreationWithDataFailed
+                throw ImageExportError.imageSourceCreationWithDataFailed
             }
             guard let utType = CGImageSourceGetType(source) else {
-                throw ExportError.imageSourceIsAnUnknownType
+                throw ImageExportError.imageSourceIsAnUnknownType
             }
             guard UTTypeEqual(utType, kUTTypeJPEG) else {
-                throw ExportError.imageSourceExpectedJPEGImageType
+                throw ImageExportError.imageSourceExpectedJPEGImageType
             }
             exportImageSource(source,
                               filename: fileName,
@@ -103,10 +96,10 @@ class MediaImageExporter: MediaExporter {
         do {
             let options: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: kUTTypeJPEG]
             guard let source = CGImageSourceCreateWithURL(url as CFURL, options as CFDictionary)  else {
-                throw ExportError.imageSourceCreationWithURLFailed
+                throw ImageExportError.imageSourceCreationWithURLFailed
             }
             guard let utType = CGImageSourceGetType(source) else {
-                throw ExportError.imageSourceIsAnUnknownType
+                throw ImageExportError.imageSourceIsAnUnknownType
             }
             exportImageSource(source,
                               filename: url.deletingPathExtension().lastPathComponent,
@@ -190,7 +183,7 @@ class MediaImageExporter: MediaExporter {
         func writeImageSource(_ source: CGImageSource) throws -> WriteResultProperties {
             // Create the destination with the URL, or error
             guard let destination = CGImageDestinationCreateWithURL(url as CFURL, sourceUTType, 1, nil) else {
-                throw ExportError.imageSourceDestinationWithURLFailed
+                throw ImageExportError.imageSourceDestinationWithURLFailed
             }
 
             // Configure image properties for the image source and image destination methods
@@ -224,7 +217,7 @@ class MediaImageExporter: MediaExporter {
                                                        kCGImageSourceCreateThumbnailWithTransform: true]
                 // Create a thumbnail of the image source.
                 guard let image = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions as CFDictionary) else {
-                    throw ExportError.imageSourceThumbnailGenerationFailed
+                    throw ImageExportError.imageSourceThumbnailGenerationFailed
                 }
 
                 if nullifyGPSData == true {
@@ -257,7 +250,7 @@ class MediaImageExporter: MediaExporter {
             // Write the image to the file URL
             let written = CGImageDestinationFinalize(destination)
             guard written == true else {
-                throw ExportError.imageSourceDestinationWriteFailed
+                throw ImageExportError.imageSourceDestinationWriteFailed
             }
             // Return the result with any interesting properties.
             return WriteResultProperties(width: width,
