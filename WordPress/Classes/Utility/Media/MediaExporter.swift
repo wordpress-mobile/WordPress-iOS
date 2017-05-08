@@ -7,14 +7,14 @@ protocol MediaExport {
     /// The resulting file URL of an export.
     ///
     var url: URL { get }
-    var fileSize: Int64? { get }
+    var fileSize: Int? { get }
 }
 
 /// Struct of an image export.
 ///
 struct MediaImageExport: MediaExport {
     let url: URL
-    let fileSize: Int64?
+    let fileSize: Int?
     let width: CGFloat?
     let height: CGFloat?
 }
@@ -23,7 +23,7 @@ struct MediaImageExport: MediaExport {
 ///
 struct MediaVideoExport: MediaExport {
     let url: URL
-    let fileSize: Int64?
+    let fileSize: Int?
     let duration: TimeInterval?
 }
 
@@ -31,7 +31,7 @@ struct MediaVideoExport: MediaExport {
 ///
 struct MediaGIFExport: MediaExport {
     let url: URL
-    let fileSize: Int64?
+    let fileSize: Int?
 }
 
 /// Generic Error protocol for detecting and type classifying known errors that occur while exporting.
@@ -60,6 +60,8 @@ enum MediaExportSystemError: MediaExportError {
     }
 }
 
+/// Protocol of required default variables or values for a MediaExporter and passing those values between them.
+///
 protocol MediaExporter {
     /// Set a maximumImageSize for resizing images, or nil for exporting the full images.
     ///
@@ -71,17 +73,19 @@ protocol MediaExporter {
 
     /// The type of MediaDirectory to use for the export destination URL.
     ///
-    /// - Note: This would almost always be set to .uploads, but for unit testing we use .temporary.almost
+    /// - Note: This would almost always be set to .uploads, but for unit testing we use .temporary.
     ///
-    var mediaDirectoryType: MediaLibrary.MediaDirectoryType { get set }
+    var mediaDirectoryType: MediaLibrary.MediaDirectory { get set }
 }
 
+/// Extension providing generic helper implementation particular to MediaExporters.
+///
 extension MediaExporter {
 
-    /// Handles wrapping into MediaExportError type values when the encountered Error type value is unknown.
+    /// Handles wrapping into MediaExportError value types when the encountered Error value type is unknown.
     ///
-    /// - param error: Error with an unknown type value, or nil for easy conversion.
-    /// - returns: The ExporterError type value itself, or an ExportError.failedWith
+    /// - param error: Error with an unknown value type, or nil for easy conversion.
+    /// - returns: The ExporterError value type itself, or an ExportError.failedWith
     ///
     func exporterErrorWith(error: Error) -> MediaExportError {
         switch error {
@@ -97,12 +101,12 @@ extension MediaExporter {
     /// - param URL: A file URL.
     /// - returns: The size in bytes, or nil if unavailable.
     ///
-    func fileSizeAtURL(_ url: URL) -> Int64? {
+    func fileSizeAtURL(_ url: URL) -> Int? {
         guard url.isFileURL else {
             return nil
         }
-        let attributes = try? FileManager.default.attributesOfItem(atPath: url.path)
-        return attributes?[.size] as? Int64
+        let resourceValues = try? url.resourceValues(forKeys: [.fileSizeKey])
+        return resourceValues?.fileSize
     }
 
     /// The expected file extension string for a given UTType identifier.
