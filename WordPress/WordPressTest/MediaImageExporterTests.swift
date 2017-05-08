@@ -7,7 +7,7 @@ class MediaImageExporterTests: XCTestCase {
     // MARK: - Image export testing
 
     func testThatImageExportingByImageWorks() {
-        let image = imageForFilePath("test-image-device-photo-gps.jpg")
+        let image = imageForFileNamed("test-image-device-photo-gps.jpg")
         let expect = self.expectation(description: "image export by UIImage")
         let exporter = MediaImageExporter()
         exporter.mediaDirectoryType = .temporary
@@ -15,6 +15,7 @@ class MediaImageExporterTests: XCTestCase {
         exporter.exportImage(image,
                              fileName: nil,
                              onCompletion: { (imageExport) in
+                                self.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
                                 self.cleanUpExportedMedia(atURL: imageExport.url)
                                 expect.fulfill()
         }) { (error) in
@@ -26,6 +27,7 @@ class MediaImageExporterTests: XCTestCase {
 
     func testThatImageExportingByURLWorks() {
         let mediaPath = filePathForTestImageNamed("test-image-device-photo-gps.jpg")
+        let image = imageForFilePath(mediaPath)
         let expect = self.expectation(description: "image export by URL")
         let url = URL(fileURLWithPath: mediaPath)
         let exporter = MediaImageExporter()
@@ -33,6 +35,7 @@ class MediaImageExporterTests: XCTestCase {
         exporter.stripsGeoLocationIfNeeded = false
         exporter.exportImage(atURL: url,
                              onCompletion: { (imageExport) in
+                                self.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
                                 self.cleanUpExportedMedia(atURL: imageExport.url)
                                 expect.fulfill()
         }) { (error) in
@@ -64,7 +67,7 @@ class MediaImageExporterTests: XCTestCase {
     }
 
     func testThatImageExportingWithMaximumSizeLargerThanTheImageWorks() {
-        let image = imageForFilePath("test-image-device-photo-gps.jpg")
+        let image = imageForFileNamed("test-image-device-photo-gps.jpg")
         let expect = self.expectation(description: "image export with a maximum size larger than the image's size")
         let exporter = MediaImageExporter()
         let expectedSize = max(image.size.width, image.size.height)
@@ -172,7 +175,7 @@ class MediaImageExporterTests: XCTestCase {
     // MARK: - Image export orientation testing
 
     func testExportingAPortraitImageAndCorrectingTheOrientationWorks() {
-        let image = imageForFilePath("test-image-portrait.jpg")
+        let image = imageForFileNamed("test-image-portrait.jpg")
         if image.imageOrientation != .leftMirrored {
             XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImageOrientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
             return
@@ -195,7 +198,7 @@ class MediaImageExporterTests: XCTestCase {
     }
 
     func testExportingAPortraitImageAndCorrectingTheOrientationWhileResizingWorks() {
-        let image = imageForFilePath("test-image-portrait.jpg")
+        let image = imageForFileNamed("test-image-portrait.jpg")
         if image.imageOrientation != .leftMirrored {
             XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImageOrientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
             return
@@ -221,7 +224,7 @@ class MediaImageExporterTests: XCTestCase {
     }
 
     func testExportingAPortraitImageAndCorrectingTheOrientationWhileResizingAndStrippingGPSWorks() {
-        let image = imageForFilePath("test-image-device-photo-gps-portrait.jpg")
+        let image = imageForFileNamed("test-image-device-photo-gps-portrait.jpg")
         let expect = self.expectation(description: "image export by UIImage and correcting the orientation with resizing and stripping GPS")
         let exporter = MediaImageExporter()
         let maximumImageSize = CGFloat(200)
@@ -254,11 +257,15 @@ class MediaImageExporterTests: XCTestCase {
     }
 
     fileprivate func imageForFilePath(_ path: String) -> UIImage {
-        guard let image = UIImage(contentsOfFile: filePathForTestImageNamed(path)) else {
+        guard let image = UIImage(contentsOfFile: path) else {
             XCTFail("Error: an error occurred initializing the test image for export")
             return UIImage()
         }
         return image
+    }
+
+    fileprivate func imageForFileNamed(_ file: String) -> UIImage {
+        return imageForFilePath(filePathForTestImageNamed(file))
     }
 
     // MARK: - Export validation
