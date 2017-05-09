@@ -1,5 +1,4 @@
 import Foundation
-import MobileCoreServices
 
 /// General MediaExport protocol, and its requirements.
 ///
@@ -94,15 +93,5 @@ extension MediaExporter {
         default:
             return MediaExportSystemError.failedWith(systemError: error)
         }
-    }
-
-    /// The expected file extension string for a given UTType identifier.
-    ///
-    /// - param type: The UTType identifier
-    /// - returns: The expected file extension or nil if unknown.
-    ///
-    func fileExtensionForUTType(_ type: String) -> String? {
-        let fileExtension = UTTypeCopyPreferredTagWithClass(type as CFString, kUTTagClassFilenameExtension)?.takeRetainedValue()
-        return fileExtension as String?
     }
 }
