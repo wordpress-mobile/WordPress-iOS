@@ -609,6 +609,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"post_list_button_pressed";
             eventProperties = @{ TracksEventPropertyButtonKey : @"publish" };
             break;
+        case WPAnalyticsStatPostListScheduleAction:
+            eventName = @"post_list_button_pressed";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"schedule" };
+            break;
         case WPAnalyticsStatPostListPullToRefresh:
             eventName = @"post_list_pull_to_refresh_triggered";
             break;
