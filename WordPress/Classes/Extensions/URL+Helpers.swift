@@ -2,9 +2,7 @@ import Foundation
 
 extension URL {
 
-    /// The URLResource fileSize of the file at the URLs, if available.
-    ///
-    /// - param URL: A file URL.
+    /// The URLResource fileSize of the file at the URL, if available.
     ///
     var resourceFileSize: Int? {
         guard isFileURL else {
