@@ -35,9 +35,8 @@ class MediaExporterTests: XCTestCase {
     func testThatFileExtensionForTypeIsWorking() {
         // Testing JPEG as a simple test of the implementation.
         // Maybe expanding the test to all of our supported types would be helpful.
-        let exporter = MockMediaExporter()
         let expected = "jpeg"
-        XCTAssert(exporter.fileExtensionForUTType(kUTTypeJPEG as String) == expected, "Error: unexpected extension found when converting from UTType")
+        XCTAssert(String.fileExtensionForUTType(kUTTypeJPEG) == expected, "Error: unexpected extension found when converting from UTType")
     }
 
     func testThatURLFileSizeWorks() {
