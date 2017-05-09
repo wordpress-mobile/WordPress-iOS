@@ -13,6 +13,13 @@ extension URL {
         return values?.fileSize
     }
 
+    /// The URLResource uniform type identifier for the file at the URL, if available.
+    ///
+    var resourceTypeIdentifier: String? {
+        let values = try? resourceValues(forKeys: [.typeIdentifierKey])
+        return values?.typeIdentifier
+    }
+
     /// Returns a URL with an incremental file name, if a file already exists at the given URL.
     ///
     /// Previously seen in MediaService.m within urlForMediaWithFilename:andExtension:
