@@ -1,5 +1,19 @@
 import Foundation
 import WordPressShared
+import MobileCoreServices
+
+// MARK: - File helpers
+extension String {
+    /// The expected file extension string for a given UTType identifier string.
+    ///
+    /// - param type: The UTType identifier.
+    /// - returns: The expected file extension or nil if unknown.
+    ///
+    static func fileExtensionForUTType(_ type: CFString) -> String? {
+        let fileExtension = UTTypeCopyPreferredTagWithClass(type, kUTTagClassFilenameExtension)?.takeRetainedValue()
+        return fileExtension as String?
+    }
+}
 
 extension String {
     func stringByDecodingXMLCharacters() -> String {

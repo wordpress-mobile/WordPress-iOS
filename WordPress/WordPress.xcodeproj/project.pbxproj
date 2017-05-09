@@ -61,7 +61,7 @@
 		082AB9D91C4EEEF4000CA523 /* PostTagService.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9D81C4EEEF4000CA523 /* PostTagService.m */; };
 		082AB9DD1C4F035E000CA523 /* PostTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9DC1C4F035E000CA523 /* PostTag.m */; };
 		0845B8C41E8327B9001BA771 /* MediaLibrary+Local.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C31E8327B9001BA771 /* MediaLibrary+Local.swift */; };
-		0845B8C61E833C56001BA771 /* URL+IncrementalFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C51E833C56001BA771 /* URL+IncrementalFilename.swift */; };
+		0845B8C61E833C56001BA771 /* URL+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C51E833C56001BA771 /* URL+Helpers.swift */; };
 		08472A201C727E020040769D /* PostServiceOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 08472A1F1C727E020040769D /* PostServiceOptions.m */; };
 		0857C2771CE5375F0014AE99 /* MenuItemAbstractView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0857C2701CE5375F0014AE99 /* MenuItemAbstractView.m */; };
 		0857C2781CE5375F0014AE99 /* MenuItemInsertionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0857C2721CE5375F0014AE99 /* MenuItemInsertionView.m */; };
@@ -1209,7 +1209,7 @@
 		082AB9DB1C4F035E000CA523 /* PostTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTag.h; sourceTree = "<group>"; };
 		082AB9DC1C4F035E000CA523 /* PostTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTag.m; sourceTree = "<group>"; };
 		0845B8C31E8327B9001BA771 /* MediaLibrary+Local.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaLibrary+Local.swift"; sourceTree = "<group>"; };
-		0845B8C51E833C56001BA771 /* URL+IncrementalFilename.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+IncrementalFilename.swift"; sourceTree = "<group>"; };
+		0845B8C51E833C56001BA771 /* URL+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Helpers.swift"; sourceTree = "<group>"; };
 		08472A1E1C7273FA0040769D /* PostServiceOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostServiceOptions.h; sourceTree = "<group>"; };
 		08472A1F1C727E020040769D /* PostServiceOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceOptions.m; sourceTree = "<group>"; };
 		0857C26F1CE5375F0014AE99 /* MenuItemAbstractView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemAbstractView.h; sourceTree = "<group>"; };
@@ -4431,7 +4431,7 @@
 				B587797719B799D800E57C5A /* UIView+Helpers.swift */,
 				B580E4781AEA91000091A094 /* UIViewController+Helpers.swift */,
 				17EC9FC51DDC761D00D5BE8E /* UIWindow+Helpers.swift */,
-				0845B8C51E833C56001BA771 /* URL+IncrementalFilename.swift */,
+				0845B8C51E833C56001BA771 /* URL+Helpers.swift */,
 				E1C9AA501C10419200732665 /* Math.swift */,
 				E131F5341C2930FC00D2D975 /* String+Helpers.swift */,
 				E177807F1C97FA9500FA7E14 /* StoreKit+Debug.swift */,
@@ -6691,7 +6691,7 @@
 				E6E27D621C6144DB0063F821 /* SharingButton.swift in Sources */,
 				0859DCFB1CB8482200EB4069 /* MenusServiceRemote.m in Sources */,
 				E6374DC01C444D8B00F24720 /* PublicizeConnection.swift in Sources */,
-				0845B8C61E833C56001BA771 /* URL+IncrementalFilename.swift in Sources */,
+				0845B8C61E833C56001BA771 /* URL+Helpers.swift in Sources */,
 				E647DD051CA71C2B002E54B5 /* UITextField+TextHelper.swift in Sources */,
 				5D17F0BE1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m in Sources */,
 				E14B40FF1C58B93F005046F6 /* SettingsCommon.swift in Sources */,
