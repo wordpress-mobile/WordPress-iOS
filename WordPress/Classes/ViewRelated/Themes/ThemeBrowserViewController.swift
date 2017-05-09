@@ -656,7 +656,6 @@ public protocol ThemePresenter: class {
             return
         }
 
-        searchController.isActive = false
         _ = themeService.activate(theme,
             for: blog,
             success: { [weak self] (theme: Theme?) in

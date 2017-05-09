@@ -26,13 +26,21 @@ import Mixpanel
         return controller
     }
 
-
     // Helper used by the app delegate
     class func showSigninFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
         let controller = createControllerForSigninFlow(showsEditor: thenEditor)
         let navController = NUXNavigationController(rootViewController: controller)
         presenter.present(navController, animated: animated, completion: nil)
 
+        trackOpenedLogin()
+    }
+
+    class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        if let controller = storyboard.instantiateInitialViewController() {
+            // initial VC is NUXNavigationController
+            presenter.present(controller, animated: animated, completion: nil)
+        }
         trackOpenedLogin()
     }
 

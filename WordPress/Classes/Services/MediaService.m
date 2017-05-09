@@ -87,7 +87,7 @@
         }
     } else if (mediaType == MediaTypeVideo) {
         if (![post.blog isHostedAtWPcom]) {
-            assetUTI = (__bridge NSString *)kUTTypeQuickTimeMovie;
+            assetUTI = (__bridge NSString *)kUTTypeMPEG4;
             extension = [self extensionForUTI:assetUTI];
         }
     }
@@ -111,9 +111,9 @@
     }
 
     error = nil;
-    NSURL *mediaURL = [MediaService makeLocalMediaURLWith:mediaName
-                                            fileExtension:extension
-                                                    error:&error];
+    NSURL *mediaURL = [MediaLibrary makeLocalMediaURLWithFilename:mediaName
+                                                    fileExtension:extension
+                                                            error:&error];
     if (error) {
         if (completion) {
             completion(nil, error);
@@ -121,9 +121,9 @@
         return;
     }
     error = nil;
-    NSURL *mediaThumbnailURL = [MediaService makeLocalMediaURLWith:[MediaService mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
-                                                     fileExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]
-                                                             error:&error];
+    NSURL *mediaThumbnailURL = [MediaLibrary makeLocalMediaURLWithFilename:[MediaLibrary mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
+                                                             fileExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]
+                                                                     error:&error];
     if (error) {
         if (completion) {
             completion(nil, error);
@@ -525,24 +525,16 @@
                             success:(void (^)(NSString *videoURL, NSString *posterURL))success
                             failure:(void (^)(NSError *error))failure
 {
-    NSString *entityName = NSStringFromClass([Media class]);
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [NSPredicate predicateWithFormat:@"videopressGUID = %@", videoPressID];
-    NSError *error = nil;
-    Media *media = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
-    if (media) {
-        NSString *posterURL = media.absoluteThumbnailLocalURL.absoluteString;
-        if (!posterURL) {
-            posterURL = media.remoteThumbnailURL;
-        }
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getVideoURLFromVideoPressID:videoPressID success:^(NSURL *videoURL, NSURL *posterURL) {
         if (success) {
-            success(media.remoteURL, posterURL);
+            success(videoURL.absoluteString, posterURL.absoluteString);
         }
-    } else {
+    } failure:^(NSError * error) {
         if (failure) {
             failure(error);
         }
-    }
+    }];
 }
 
 - (void)syncMediaLibraryForBlog:(Blog *)blog
@@ -598,14 +590,14 @@
         CGSize availableSize = CGSizeZero;
         if (media.mediaType == MediaTypeImage) {
             fileURL = media.absoluteThumbnailLocalURL;
-            availableSize = [MediaService imageSizeForMediaAtFileURL:fileURL];
+            availableSize = [MediaLibrary imageSizeForMediaAtFileURL:fileURL];
             if (size.height > availableSize.height && size.width > availableSize.width) {
                 fileURL = media.absoluteLocalURL;
-                availableSize = [MediaService imageSizeForMediaAtFileURL:fileURL];
+                availableSize = [MediaLibrary imageSizeForMediaAtFileURL:fileURL];
             }
         } else if (media.mediaType == MediaTypeVideo) {
             fileURL = media.absoluteThumbnailLocalURL;
-            availableSize = [MediaService imageSizeForMediaAtFileURL:fileURL];
+            availableSize = [MediaLibrary imageSizeForMediaAtFileURL:fileURL];
         }
 
         // check if the available local image is equal or larger than the requested size
@@ -655,9 +647,9 @@
 
             [self.managedObjectContext performBlock:^{
                 NSError *error = nil;
-                NSURL *fileURL = [MediaService makeLocalMediaURLWith:[MediaService mediaFilenameAppendingThumbnail:media.filename]
-                                                       fileExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]
-                                                               error:&error];
+                NSURL *fileURL = [MediaLibrary makeLocalMediaURLWithFilename:[MediaLibrary mediaFilenameAppendingThumbnail:media.filename]
+                                                               fileExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]
+                                                                       error:&error];
                 if (error) {
                     if (failure) {
                         failure(error);
