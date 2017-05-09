@@ -23,6 +23,7 @@ class PostTagPickerViewController: UIViewController {
 
     fileprivate let textView = UITextView()
     private let textViewContainer = UIView()
+    private let shadow = ShadowView()
     fileprivate let tableView = UITableView(frame: .zero, style: .grouped)
     fileprivate var dataSource: PostTagPickerDataSource = LoadingDataSource() {
         didSet {
@@ -58,9 +59,13 @@ class PostTagPickerViewController: UIViewController {
         textViewContainer.addSubview(textView)
         view.addSubview(textViewContainer)
         view.addSubview(tableView)
+        view.addSubview(shadow)
+
+        shadow.tintColor = WPStyleGuide.greyDarken30()
 
         textView.translatesAutoresizingMaskIntoConstraints = false
         textViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        shadow.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -75,6 +80,11 @@ class PostTagPickerViewController: UIViewController {
             textViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 1),
 
             textViewContainer.bottomAnchor.constraint(equalTo: tableView.topAnchor),
+
+            shadow.topAnchor.constraint(equalTo: textViewContainer.bottomAnchor),
+            shadow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            shadow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            shadow.heightAnchor.constraint(equalToConstant: 3.5),
 
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
