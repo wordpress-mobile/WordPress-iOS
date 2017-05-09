@@ -62,7 +62,7 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
 
 /**
     Check if the specified site is a Jetpack site.  The success block
-    receives a bool indicating if the site hass Jetpack.
+    receives a bool indicating if the site has Jetpack.
  */
 - (void)checkSiteHasJetpack:(NSURL *)siteURL
                     success:(void (^)(BOOL isJetpack))success
