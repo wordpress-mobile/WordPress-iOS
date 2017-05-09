@@ -3,7 +3,7 @@ import MobileCoreServices
 
 extension URL {
 
-    /// The URLResource fileSize of the file at the URL, if available.
+    /// The URLResource fileSize of the file at the URL in bytes, if available.
     ///
     var resourceFileSize: Int? {
         guard isFileURL else {
