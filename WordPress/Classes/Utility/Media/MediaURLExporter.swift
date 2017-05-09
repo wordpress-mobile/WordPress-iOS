@@ -51,7 +51,7 @@ class MediaURLExporter: MediaExporter {
             if UTTypeEqual(typeIdentifier, kUTTypeGIF) {
                 exportGIF(atURL: fileURL, onCompletion: onCompletion, onError: onError)
             } else if UTTypeConformsTo(typeIdentifier, kUTTypeVideo) || UTTypeConformsTo(typeIdentifier, kUTTypeMovie) {
-                exportVideo(atURL: fileURL, typeIdentifier: typeIdentifier as String, onCompletion: onCompletion, onError: onError)
+                exportVideo(atURL: fileURL, typeIdentifier: typeIdentifier, onCompletion: onCompletion, onError: onError)
             } else if UTTypeConformsTo(typeIdentifier, kUTTypeImage) {
                 exportImage(atURL: fileURL, onCompletion: onCompletion, onError: onError)
             } else {
@@ -79,7 +79,7 @@ class MediaURLExporter: MediaExporter {
 
     /// Exports the known video file at the URL to a new Media URL.
     ///
-    fileprivate func exportVideo(atURL url: URL, typeIdentifier: String, onCompletion: @escaping (URLExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    fileprivate func exportVideo(atURL url: URL, typeIdentifier: CFString, onCompletion: @escaping (URLExport) -> (), onError: @escaping (MediaExportError) -> ()) {
         do {
             let asset = AVURLAsset(url: url)
             guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough) else {
@@ -87,10 +87,10 @@ class MediaURLExporter: MediaExporter {
             }
 
             let mediaURL = try MediaLibrary.makeLocalMediaURL(withFilename: url.lastPathComponent,
-                                                              fileExtension: fileExtensionForUTType(typeIdentifier),
+                                                              fileExtension: String.fileExtensionForUTType(typeIdentifier),
                                                               type: mediaDirectoryType)
             session.outputURL = mediaURL
-            session.outputFileType = typeIdentifier
+            session.outputFileType = typeIdentifier as String
             session.shouldOptimizeForNetworkUse = true
             session.exportAsynchronously {
                 guard session.status == .completed else {
@@ -102,7 +102,7 @@ class MediaURLExporter: MediaExporter {
                     return
                 }
                 onCompletion(URLExport.exportedVideo(MediaVideoExport(url: mediaURL,
-                                                                      fileSize: self.fileSizeAtURL(mediaURL),
+                                                                      fileSize: mediaURL.resourceFileSize,
                                                                       duration: nil)))
             }
         } catch {
@@ -120,7 +120,7 @@ class MediaURLExporter: MediaExporter {
                                                               type: mediaDirectoryType)
             try fileManager.copyItem(at: url, to: mediaURL)
             onCompletion(URLExport.exportedGIF(MediaGIFExport(url: mediaURL,
-                                                              fileSize: fileSizeAtURL(mediaURL))))
+                                                              fileSize: mediaURL.resourceFileSize)))
         } catch {
             onError(exporterErrorWith(error: error))
         }
