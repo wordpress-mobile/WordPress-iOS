@@ -55,7 +55,10 @@ class PostTagPickerViewController: UIViewController {
         textView.font = WPStyleGuide.tableviewTextFont()
         textView.textColor = WPStyleGuide.darkGrey()
         textView.isScrollEnabled = false
-
+        // Padding already provided by readable margins
+        // Don't add extra padding so text aligns with suggestions
+        textView.textContainer.lineFragmentPadding = 0
+        textView.textContainerInset = UIEdgeInsets(top: 11, left: 0, bottom: 11, right: 0)
 
         textViewContainer.addSubview(textView)
         view.addSubview(textViewContainer)
@@ -119,7 +122,7 @@ class PostTagPickerViewController: UIViewController {
 
     fileprivate func updateTextViewHeight() {
         let size = textView.sizeThatFits(CGSize(width: textView.frame.width, height: CGFloat.greatestFiniteMagnitude))
-        textContainerHeightConstraint.constant = max(size.height, 44)
+        textContainerHeightConstraint.constant = size.height
     }
 
     fileprivate func reloadTableData() {
