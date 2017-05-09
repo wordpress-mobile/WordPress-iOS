@@ -48,7 +48,7 @@ abstract_target 'WordPress_Base' do
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '0.16'
     pod 'WordPress-iOS-Editor', '1.9.1'
-    pod 'WordPressCom-Analytics-iOS', '0.1.25'
+    pod 'WordPressCom-Analytics-iOS', '0.1.27'
     pod 'WordPress-Aztec-iOS', '1.0.0-beta.1'
     pod 'wpxmlrpc', '0.8.3'
 
