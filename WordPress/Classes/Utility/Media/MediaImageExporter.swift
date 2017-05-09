@@ -80,7 +80,7 @@ class MediaImageExporter: MediaExporter {
             }
             exportImageSource(source,
                               filename: fileName,
-                              type: utType,
+                              type: utType as String,
                               onCompletion: onCompletion,
                               onError: onError)
         } catch {
@@ -107,7 +107,7 @@ class MediaImageExporter: MediaExporter {
             }
             exportImageSource(source,
                               filename: url.deletingPathExtension().lastPathComponent,
-                              type: utType,
+                              type: utType as String,
                               onCompletion: onCompletion,
                               onError: onError)
         } catch {
@@ -121,12 +121,12 @@ class MediaImageExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     /// - parameter onError: Called if an error was encountered during creation.
     ///
-    func exportImageSource(_ source: CGImageSource, filename: String?, type: CFString, onCompletion: @escaping (MediaImageExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    func exportImageSource(_ source: CGImageSource, filename: String?, type: String, onCompletion: @escaping (MediaImageExport) -> (), onError: @escaping (MediaExportError) -> ()) {
         do {
             let filename = filename ?? defaultImageFilename
             // Make a new URL within the local Media directory
             let url = try MediaLibrary.makeLocalMediaURL(withFilename: filename,
-                                                         fileExtension: String.fileExtensionForUTType(type),
+                                                         fileExtension: URL.fileExtensionForUTType(type),
                                                          type: mediaDirectoryType)
 
             // Check MediaSettings and configure the image writer as needed.
