@@ -9,6 +9,10 @@ class MediaImageExporter: MediaExporter {
     ///
     let defaultImageFilename = "image"
 
+    /// Default compression quality when an image is being resized.
+    ///
+    let defaultImageCompressionUponResizing = 0.9
+
     var maximumImageSize: CGFloat?
     var stripsGeoLocationIfNeeded = false
     var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
@@ -129,7 +133,7 @@ class MediaImageExporter: MediaExporter {
             var writer = ImageSourceWriter(url: url, sourceUTType: type as CFString)
             if let maximumImageSize = maximumImageSize {
                 writer.maximumSize = maximumImageSize as CFNumber
-                writer.lossyCompressionQuality = 0.9 as CFNumber
+                writer.lossyCompressionQuality = defaultImageCompressionUponResizing as CFNumber
             }
             writer.nullifyGPSData = stripsGeoLocationIfNeeded
             let result = try writer.writeImageSource(source)
