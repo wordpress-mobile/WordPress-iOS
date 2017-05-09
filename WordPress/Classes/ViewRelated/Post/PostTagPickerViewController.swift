@@ -28,7 +28,7 @@ class PostTagPickerViewController: UIViewController {
     fileprivate var dataSource: PostTagPickerDataSource = LoadingDataSource() {
         didSet {
             tableView.dataSource = dataSource
-            tableView.reloadData()
+            reloadTableData()
         }
     }
     private lazy var textContainerHeightConstraint: NSLayoutConstraint = {
@@ -48,6 +48,7 @@ class PostTagPickerViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = dataSource
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
+        reloadTableData()
 
         textView.autocorrectionType = .no
         textView.autocapitalizationType = .none
@@ -119,6 +120,11 @@ class PostTagPickerViewController: UIViewController {
     fileprivate func updateTextViewHeight() {
         let size = textView.sizeThatFits(CGSize(width: textView.frame.width, height: CGFloat.greatestFiniteMagnitude))
         textContainerHeightConstraint.constant = max(size.height, 44)
+    }
+
+    fileprivate func reloadTableData() {
+        tableView.reloadData()
+        shadow.isHidden = tableView.isEmpty
     }
 }
 
@@ -256,7 +262,7 @@ extension PostTagPickerViewController: UITextViewDelegate {
     fileprivate func updateSuggestions() {
         dataSource.selectedTags = completeTags
         dataSource.searchQuery = partialTag
-        tableView.reloadData()
+        reloadTableData()
     }
 }
 
