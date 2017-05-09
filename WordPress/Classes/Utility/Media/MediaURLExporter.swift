@@ -47,7 +47,9 @@ class MediaURLExporter: MediaExporter {
             guard fileURL.isFileURL else {
                 throw URLExportError.invalidFileURL
             }
-            let typeIdentifier = try typeIdentifierAtURL(fileURL) as CFString
+            guard let typeIdentifier = fileURL.resourceTypeIdentifier as CFString? else {
+                throw URLExportError.unknownFileUTI
+            }
             if UTTypeEqual(typeIdentifier, kUTTypeGIF) {
                 exportGIF(atURL: fileURL, onCompletion: onCompletion, onError: onError)
             } else if UTTypeConformsTo(typeIdentifier, kUTTypeVideo) || UTTypeConformsTo(typeIdentifier, kUTTypeMovie) {
@@ -124,15 +126,5 @@ class MediaURLExporter: MediaExporter {
         } catch {
             onError(exporterErrorWith(error: error))
         }
-    }
-
-    /// Resolves the uniform type identifier for the file at the URL, or throws an error if unknown.
-    ///
-    fileprivate func typeIdentifierAtURL(_ url: URL) throws -> String {
-        let resourceValues = try url.resourceValues(forKeys: [.typeIdentifierKey])
-        guard let typeIdentifier = resourceValues.typeIdentifier else {
-            throw URLExportError.unknownFileUTI
-        }
-        return typeIdentifier
     }
 }
