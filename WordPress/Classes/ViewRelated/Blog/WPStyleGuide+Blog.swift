@@ -26,7 +26,7 @@ extension WPStyleGuide {
 
         cell.detailTextLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         cell.detailTextLabel?.sizeToFit()
-        cell.detailTextLabel?.textColor = self.darkGrey() // TODO: waiting on @mattmiklic to double check this color
+        cell.detailTextLabel?.textColor = self.darkGrey()
 
         cell.imageView?.layer.borderColor = greyLighten20().cgColor
         cell.imageView?.layer.borderWidth = 1
@@ -34,8 +34,6 @@ extension WPStyleGuide {
 
         cell.backgroundColor = lightGrey()
     }
-
-    //public class func configure
 
     public class func cellGridiconAccessoryColor() -> UIColor {
         return UIColor(red: 200.0 / 255.0, green: 200.0 / 255.0, blue: 205.0 / 255.0, alpha: 1.0)
