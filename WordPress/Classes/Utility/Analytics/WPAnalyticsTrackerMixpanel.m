@@ -1165,6 +1165,21 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatPostListStatusFilterChanged:
         case WPAnalyticsStatPostListTrashAction:
         case WPAnalyticsStatPostListViewAction:
+        case WPAnalyticsStatLoginEmailFormViewed:
+        case WPAnalyticsStatLoginEmailRetryViewed:
+        case WPAnalyticsStatLoginEpilogueViewed:
+        case WPAnalyticsStatLoginForgotPasswordClicked:
+        case WPAnalyticsStatLoginMagicLinkOpenFormViewed:
+        case WPAnalyticsStatLoginMagicLinkRequestFormViewed:
+        case WPAnalyticsStatLoginPasswordFormViewed:
+        case WPAnalyticsStatLoginPasswordRetryViewed:
+        case WPAnalyticsStatLoginPrologueViewed:
+        case WPAnalyticsStatLoginTwoFactorFormViewed:
+        case WPAnalyticsStatLoginURLFormViewed:
+        case WPAnalyticsStatLoginURLHelpViewed:
+        case WPAnalyticsStatLoginURLRetryViewed:
+        case WPAnalyticsStatLoginUsernamePasswordFormViewed:
+        case WPAnalyticsStatLoginUsernamePasswordRetryViewed:
             // Unimplemented events
             break;
     }
