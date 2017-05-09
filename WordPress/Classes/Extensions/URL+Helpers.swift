@@ -1,10 +1,9 @@
 import Foundation
+import MobileCoreServices
 
 extension URL {
 
-    /// The URLResource fileSize of the file at the URLs, if available.
-    ///
-    /// - param URL: A file URL.
+    /// The URLResource fileSize of the file at the URL, if available.
     ///
     var resourceFileSize: Int? {
         guard isFileURL else {
@@ -32,5 +31,15 @@ extension URL {
             index += 1
         }
         return url
+    }
+
+    /// The expected file extension string for a given UTType identifier string.
+    ///
+    /// - param type: The UTType identifier string.
+    /// - returns: The expected file extension or nil if unknown.
+    ///
+    static func fileExtensionForUTType(_ type: String) -> String? {
+        let fileExtension = UTTypeCopyPreferredTagWithClass(type as CFString, kUTTagClassFilenameExtension)?.takeRetainedValue()
+        return fileExtension as String?
     }
 }
