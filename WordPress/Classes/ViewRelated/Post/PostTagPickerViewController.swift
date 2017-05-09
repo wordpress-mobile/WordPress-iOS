@@ -82,10 +82,9 @@ class PostTagPickerViewController: UIViewController {
             ])
         updateTextViewHeight()
 
-        view.backgroundColor = UIColor.groupTableViewBackground
         textViewContainer.backgroundColor = UIColor.white
-        textViewContainer.layer.borderColor = UIColor.lightGray.cgColor
-        textViewContainer.layer.borderWidth = 1
+        textViewContainer.layer.borderColor = WPStyleGuide.greyLighten20().cgColor
+        textViewContainer.layer.borderWidth = 0.5
 
         keyboardObserver.tableView = tableView
     }
@@ -298,9 +297,9 @@ private class LoadingDataSource: NSObject, PostTagPickerDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LoadingDataSource.cellIdentifier, for: indexPath)
+        WPStyleGuide.configureTableViewSuggestionCell(cell)
         cell.textLabel?.text = NSLocalizedString("Loading...", comment: "Loading tags")
         cell.selectionStyle = .none
-        WPStyleGuide.configureTableViewCell(cell)
         return cell
     }
 }
@@ -322,8 +321,8 @@ private class FailureDataSource: NSObject, PostTagPickerDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FailureDataSource.cellIdentifier, for: indexPath)
+        WPStyleGuide.configureTableViewSuggestionCell(cell)
         cell.textLabel?.text = NSLocalizedString("Couldn't load tags. Tap to retry.", comment: "Error message when tag loading failed")
-        WPStyleGuide.configureTableViewCell(cell)
         return cell
     }
 }
@@ -363,8 +362,18 @@ private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SuggestionsDataSource.cellIdentifier, for: indexPath)
+        WPStyleGuide.configureTableViewSuggestionCell(cell)
         cell.textLabel?.text = matchedSuggestions[indexPath.row]
-        WPStyleGuide.configureTableViewCell(cell)
         return cell
+    }
+}
+
+// MARK: - Style
+
+extension WPStyleGuide {
+    static func configureTableViewSuggestionCell(_ cell: UITableViewCell) {
+        WPStyleGuide.configureTableViewCell(cell)
+        cell.textLabel?.textColor = WPStyleGuide.greyDarken30()
+        cell.backgroundColor = WPStyleGuide.greyLighten30()
     }
 }
