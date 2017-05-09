@@ -96,19 +96,6 @@ extension MediaExporter {
         }
     }
 
-    /// Returns the size of the file at the URL, if available.
-    ///
-    /// - param URL: A file URL.
-    /// - returns: The size in bytes, or nil if unavailable.
-    ///
-    func fileSizeAtURL(_ url: URL) -> Int? {
-        guard url.isFileURL else {
-            return nil
-        }
-        let resourceValues = try? url.resourceValues(forKeys: [.fileSizeKey])
-        return resourceValues?.fileSize
-    }
-
     /// The expected file extension string for a given UTType identifier.
     ///
     /// - param type: The UTType identifier
