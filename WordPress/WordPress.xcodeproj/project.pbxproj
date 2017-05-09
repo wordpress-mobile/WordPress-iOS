@@ -819,6 +819,7 @@
 		E1A386C814DB05C300954CF8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A386C714DB05C300954CF8 /* AVFoundation.framework */; };
 		E1A386CA14DB05F700954CF8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A386C914DB05F700954CF8 /* CoreMedia.framework */; };
 		E1A386CB14DB063800954CF8 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */; };
+		E1A546681EC1D55D00E700DB /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A546671EC1D55D00E700DB /* ShadowView.swift */; };
 		E1A6DBDA19DC7D080071AC1E /* RemotePostCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A6DBD719DC7D080071AC1E /* RemotePostCategory.m */; };
 		E1A6DBDB19DC7D080071AC1E /* RemotePost.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A6DBD919DC7D080071AC1E /* RemotePost.m */; };
 		E1A6DBE119DC7D140071AC1E /* PostServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E1A6DBDE19DC7D140071AC1E /* PostServiceRemoteREST.m */; };
@@ -2316,6 +2317,7 @@
 		E1A0FAE6162F11CE0063B098 /* UIDevice+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "UIDevice+Helpers.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		E1A386C714DB05C300954CF8 /* AVFoundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E1A386C914DB05F700954CF8 /* CoreMedia.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		E1A546671EC1D55D00E700DB /* ShadowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 		E1A6DBD619DC7D080071AC1E /* RemotePostCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemotePostCategory.h; path = "Remote Objects/RemotePostCategory.h"; sourceTree = "<group>"; };
 		E1A6DBD719DC7D080071AC1E /* RemotePostCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemotePostCategory.m; path = "Remote Objects/RemotePostCategory.m"; sourceTree = "<group>"; };
 		E1A6DBD819DC7D080071AC1E /* RemotePost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemotePost.h; path = "Remote Objects/RemotePost.h"; sourceTree = "<group>"; };
@@ -2844,6 +2846,7 @@
 				591A428B1A6DC1B0003807A6 /* WPBackgroundDimmerView.m */,
 				1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */,
 				177076201EA206C000705A4A /* PlayIconView.swift */,
+				E1A546671EC1D55D00E700DB /* ShadowView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -6819,6 +6822,7 @@
 				85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */,
 				0857C27A1CE5375F0014AE99 /* MenuItemView.m in Sources */,
 				FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */,
+				E1A546681EC1D55D00E700DB /* ShadowView.swift in Sources */,
 				B5BE31C41CB825A100BDF770 /* NSURLCache+Helpers.swift in Sources */,
 				85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */,
 				B5552D831CD1062400B26DF6 /* String+Extensions.swift in Sources */,
