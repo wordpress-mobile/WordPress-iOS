@@ -229,6 +229,7 @@ extension PostTagPickerViewController: UITextViewDelegate {
         {
             // Delete the comma as well
             textView.text = original.substring(to: range.location - 1)
+            textViewDidChange(textView)
             return false
         } else if range.length == 0, // Inserting
             text == ",", // a comma
@@ -236,6 +237,7 @@ extension PostTagPickerViewController: UITextViewDelegate {
         {
             // Append a space
             textView.text = original.replacingCharacters(in: range, with: ", ")
+            textViewDidChange(textView)
             return false
         }
         return true
