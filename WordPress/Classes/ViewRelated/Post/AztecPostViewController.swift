@@ -7,10 +7,12 @@ import AFNetworking
 import WPMediaPicker
 import SVProgressHUD
 import WordPressComAnalytics
+import AVKit
 
 // MARK: - Aztec's Native Editor!
 //
 class AztecPostViewController: UIViewController {
+    fileprivate let analyticsEditorSourceValue = "aztec"
 
     /// Closure to be executed when the editor gets closed
     ///
@@ -253,7 +255,7 @@ class AztecPostViewController: UIViewController {
 
     /// Selected Text Attachment
     ///
-    fileprivate var currentSelectedAttachment: TextAttachment?
+    fileprivate var currentSelectedAttachment: ImageAttachment?
 
 
     /// Last Interface Element that was a First Responder
@@ -766,7 +768,7 @@ extension AztecPostViewController {
             if let error = error {
                 DDLogSwift.logError("Error publishing post: \(error.localizedDescription)")
 
-                SVProgressHUD.showError(withStatus: self.postEditorStateContext.publishErrorText)
+                SVProgressHUD.showDismissibleError(withStatus: self.postEditorStateContext.publishErrorText)
                 generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
                 self.post = uploadedPost
@@ -802,13 +804,13 @@ extension AztecPostViewController {
 
     private func trackPostSave(stat: WPAnalyticsStat) {
         guard stat != .editorSavedDraft && stat != .editorQuickSavedDraft else {
-            WPAppAnalytics.track(stat, with:post.blog)
+            WPAppAnalytics.track(stat, withProperties:[WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue], with:post.blog)
             return
         }
 
         let originalWordCount = post.original?.content?.wordCount() ?? 0
         let wordCount = post.content?.wordCount() ?? 0
-        var properties: [String: Any] = ["word_count": wordCount]
+        var properties: [String: Any] = ["word_count": wordCount, WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue]
         if post.hasRemote() {
             properties["word_diff_count"] = originalWordCount
         }
@@ -820,7 +822,7 @@ extension AztecPostViewController {
             properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = post.hasVideo()
         }
 
-        WPAppAnalytics.track(stat, withProperties: properties, with: post.blog)
+        WPAppAnalytics.track(stat, withProperties: properties, with: post)
     }
 }
 
@@ -1110,7 +1112,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             insertHorizontalRuler()
         case .more:
             insertMore()
+        case .p:
+            break
         }
+
         updateFormatBar()
     }
 
@@ -1480,7 +1485,7 @@ fileprivate extension AztecPostViewController {
             return
         }
 
-        WPAppAnalytics.track(.editorDiscardedChanges, with: post.blog)
+        WPAppAnalytics.track(.editorDiscardedChanges, withProperties:[WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue], with: post)
 
         post = originalPost
         post.deleteRevision()
@@ -1502,7 +1507,7 @@ fileprivate extension AztecPostViewController {
     func dismissOrPopView(didSave: Bool) {
         stopEditing()
 
-        WPAppAnalytics.track(.editorClosed, with: post.blog)
+        WPAppAnalytics.track(.editorClosed, withProperties:[WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue], with: post)
 
         if let onClose = onClose {
             onClose(didSave)
@@ -1581,9 +1586,9 @@ private extension AztecPostViewController {
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
     func configureMediaAppearance() {
-        TextAttachment.appearance.progressBackgroundColor = Colors.mediaProgressBarBackground
-        TextAttachment.appearance.progressColor = Colors.mediaProgressBarTrack
-        TextAttachment.appearance.overlayColor = Colors.mediaProgressOverlay
+        MediaAttachment.appearance.progressBackgroundColor = Colors.mediaProgressBarBackground
+        MediaAttachment.appearance.progressColor = Colors.mediaProgressBarTrack
+        MediaAttachment.appearance.overlayColor = Colors.mediaProgressOverlay
     }
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
@@ -1653,16 +1658,16 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
 
             if media.mediaType == .image {
-                WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post.blog)
+                WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
             } else if media.mediaType == .video {
-                WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post.blog)
+                WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
             }
 
             upload(media: media, mediaID: attachment.identifier)
         }
     }
 
-    fileprivate func saveToMedia(attachment: TextAttachment) {
+    fileprivate func saveToMedia(attachment: MediaAttachment) {
         guard let image = attachment.image else {
             return
         }
@@ -1670,7 +1675,9 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: image, withMediaID:"CopyPasteImage" , forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
             DispatchQueue.main.async {
-                self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: thumbnailURL)
+                if let imageAttachment = attachment as? ImageAttachment {
+                    self.richTextView.update(attachment: imageAttachment, alignment: imageAttachment.alignment, size: imageAttachment.size, url: thumbnailURL)
+                }
             }
         }, completion: { [weak self](media, error) in
             guard let strongSelf = self else {
@@ -1704,14 +1711,16 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 return
             }
             DispatchQueue.main.async {
-                strongSelf.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: remoteURL)
+                if let imageAttachment = attachment as? ImageAttachment {
+                    strongSelf.richTextView.update(attachment: imageAttachment, alignment: imageAttachment.alignment, size: imageAttachment.size, url: remoteURL)
+                }
             }
             }, failure: { [weak self](error) in
                 guard let strongSelf = self else {
                     return
                 }
 
-                WPAppAnalytics.track(.editorUploadMediaFailed, with: strongSelf.post.blog)
+                WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: strongSelf.analyticsEditorSourceValue], with: strongSelf.post.blog)
 
                 DispatchQueue.main.async {
                     strongSelf.handleError(error as NSError, onAttachment: attachment)
@@ -1722,7 +1731,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         }
     }
 
-    private func handleError(_ error: NSError?, onAttachment attachment: Aztec.TextAttachment) {
+    private func handleError(_ error: NSError?, onAttachment attachment: Aztec.MediaAttachment) {
         let message = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
 
         if let error = error {
@@ -1747,7 +1756,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 
     // TODO: Extract these strings into structs like other items
-    fileprivate func displayActions(forAttachment attachment: TextAttachment, position: CGPoint) {
+    fileprivate func displayActions(forAttachment attachment: MediaAttachment, position: CGPoint) {
         let mediaID = attachment.identifier
         let title: String = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
         var message: String?
@@ -1761,12 +1770,13 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                 self.richTextView.refreshLayoutFor(attachment: attachment)
                                             }
         })
-
-        alertController.preferredAction = alertController.addActionWithTitle(NSLocalizedString("Details", comment: "User action to edit media details."),
-                                           style: .default,
-                                           handler: { (action) in
-                                            self.displayDetails(forAttachment: attachment)
-        })
+        if let imageAttachment = attachment as? ImageAttachment {
+            alertController.preferredAction = alertController.addActionWithTitle(NSLocalizedString("Details", comment: "User action to edit media details."),
+                                               style: .default,
+                                               handler: { (action) in
+                                                self.displayDetails(forAttachment: imageAttachment)
+            })
+        }
         // Is upload still going?
         if let mediaProgress = mediaProgressCoordinator.mediaUploading[mediaID],
             mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
@@ -1790,7 +1800,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                         self.richTextView.refreshLayoutFor(attachment: attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
 
-                                                        WPAppAnalytics.track(.editorUploadMediaRetried, with: self.post.blog)
+                                                        WPAppAnalytics.track(.editorUploadMediaRetried, withProperties: [WPAppAnalyticsKeyEditorSource: self.analyticsEditorSourceValue], with: self.post.blog)
 
                                                         self.upload(media: media, mediaID: mediaID)
                                                     }
@@ -1813,7 +1823,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         })
     }
 
-    func displayDetails(forAttachment attachment: TextAttachment) {
+    func displayDetails(forAttachment attachment: ImageAttachment) {
         let controller = AztecAttachmentViewController()
         controller.delegate = self
         controller.attachment = attachment
@@ -1821,7 +1831,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
 
-        WPAppAnalytics.track(.editorEditedImage, with: post.blog)
+        WPAppAnalytics.track(.editorEditedImage, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue], with: post)
     }
 
     var mediaMessageAttributes: [String: Any] {
@@ -1843,7 +1853,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 //
 extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 
-    func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: TextAttachment) {
+    func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: ImageAttachment) {
         richTextView.update(attachment: changedAttachment, alignment: changedAttachment.alignment, size: changedAttachment.size, url: changedAttachment.url!)
     }
 }
@@ -1853,10 +1863,24 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 //
 extension AztecPostViewController: TextViewMediaDelegate {
 
-    public func textView(_ textView: TextView, selectedAttachment attachment: TextAttachment, atPosition position: CGPoint) {
+    public func textView(_ textView: TextView, selectedAttachment attachment: NSTextAttachment, atPosition position: CGPoint) {
         if  !richTextView.isFirstResponder {
             richTextView.becomeFirstResponder()
         }
+
+        if let imgAttachment = attachment as? ImageAttachment {
+            selected(textAttachment: imgAttachment, atPosition: position)
+        }
+
+        if let videoAttachment = attachment as? VideoAttachment {
+            if let imageAttachment = currentSelectedAttachment {
+                deselected(textAttachment: imageAttachment, atPosition: position)
+            }
+            selected(videoAttachment: videoAttachment, atPosition: position)
+        }
+    }
+
+    func selected(textAttachment attachment: ImageAttachment, atPosition position: CGPoint) {
         //check if it's the current selected attachment or an failed upload
         if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
             //if it's the same attachment has before let's display the options
@@ -1876,10 +1900,35 @@ extension AztecPostViewController: TextViewMediaDelegate {
         }
     }
 
-    public func textView(_ textView: TextView, deselectedAttachment attachment: TextAttachment, atPosition position: CGPoint) {
-        attachment.clearAllOverlays()
-        richTextView.refreshLayoutFor(attachment: attachment)
+    func selected(videoAttachment attachment: VideoAttachment, atPosition position: CGPoint) {
+        guard let videoURL = attachment.srcURL else {
+            return
+        }
+        displayVideoPlayer(for: videoURL)
+    }
+
+    func displayVideoPlayer(for videoURL: URL) {
+        let asset = AVURLAsset(url: videoURL)
+        let controller = AVPlayerViewController()
+        let playerItem = AVPlayerItem(asset: asset)
+        let player = AVPlayer(playerItem: playerItem)
+        controller.showsPlaybackControls = true
+        controller.player = player
+        player.play()
+        present(controller, animated:true, completion: nil)
+    }
+
+
+    public func textView(_ textView: TextView, deselectedAttachment attachment: NSTextAttachment, atPosition position: CGPoint) {
+        deselected(textAttachment: attachment, atPosition: position)
+    }
+
+    func deselected(textAttachment attachment: NSTextAttachment, atPosition position: CGPoint) {
         currentSelectedAttachment = nil
+        if let mediaAttachment = attachment as? MediaAttachment {
+            mediaAttachment.clearAllOverlays()
+            richTextView.refreshLayoutFor(attachment: mediaAttachment)
+        }
     }
 
     func textView(_ textView: TextView, imageAtUrl url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) -> UIImage {
@@ -1920,8 +1969,10 @@ extension AztecPostViewController: TextViewMediaDelegate {
         return Gridicon.iconOfType(.image)
     }
 
-    func textView(_ textView: TextView, urlForAttachment attachment: TextAttachment) -> URL {
-        saveToMedia(attachment: attachment)
+    func textView(_ textView: TextView, urlForAttachment attachment: NSTextAttachment) -> URL {
+        if let mediaAttachment = attachment as? MediaAttachment {
+            saveToMedia(attachment: mediaAttachment)
+        }
         return URL(string:"placeholder://")!
     }
 
@@ -2139,6 +2190,8 @@ extension FormattingIdentifier {
             return Gridicon.iconOfType(.heading)
         case .header6:
             return Gridicon.iconOfType(.heading)
+        case .p:
+            return Gridicon.iconOfType(.heading)
         }
     }
 
@@ -2182,6 +2235,8 @@ extension FormattingIdentifier {
             return "format_toolbar_toggle_h5"
         case .header6:
             return "format_toolbar_toggle_h6"
+        case .p:
+            return "none"
         }
     }
 
@@ -2225,6 +2280,8 @@ extension FormattingIdentifier {
             return NSLocalizedString("Header 5", comment: "Accessibility label for selecting h5 paragraph style button on the formatting toolbar.")
         case .header6:
             return NSLocalizedString("Header 6", comment: "Accessibility label for selecting h6 paragraph style button on the formatting toolbar.")
+        case .p:
+            return NSLocalizedString("Paragraph", comment: "Accessibility label for selecting the default paragraph style button on the formatting toolbar.")
         }
     }
 
