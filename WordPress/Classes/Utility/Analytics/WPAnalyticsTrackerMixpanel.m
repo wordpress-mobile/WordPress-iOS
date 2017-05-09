@@ -1157,6 +1157,7 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatPostListNoResultsButtonPressed:
         case WPAnalyticsStatPostListOpenedCellMenu:
         case WPAnalyticsStatPostListPublishAction:
+        case WPAnalyticsStatPostListScheduleAction:
         case WPAnalyticsStatPostListPullToRefresh:
         case WPAnalyticsStatPostListRestoreAction:
         case WPAnalyticsStatPostListSearchOpened:
