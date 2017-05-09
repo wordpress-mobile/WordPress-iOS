@@ -985,10 +985,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="9Sq-F3-Spn">
-                                <rect key="frame" x="178" y="324" width="20" height="20"/>
+                                <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bnl-db-peA">
-                                <rect key="frame" x="171" y="360" width="33" height="16"/>
+                                <rect key="frame" x="170.5" y="359.5" width="33" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1023,37 +1023,50 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="juu-ng-v2N">
-                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiQ-IN-bzh">
-                                        <rect key="frame" x="20" y="20" width="335" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="wlF-fo-JMp"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                        <state key="normal" title="Done" backgroundImage="new-blue-button">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="SWX-Rp-5H1" kind="unwind" identifier="unwindOutOfLogin" customClass="EpilogueUnwindSegue" customModule="WordPress" customModuleProvider="target" unwindAction="unwindOutWithSegue:" id="oPV-La-BGA"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="84" id="7RN-uE-7y4"/>
-                                    <constraint firstItem="jiQ-IN-bzh" firstAttribute="leading" secondItem="juu-ng-v2N" secondAttribute="leading" constant="20" id="AoE-4s-ic6"/>
-                                    <constraint firstAttribute="bottom" secondItem="jiQ-IN-bzh" secondAttribute="bottom" constant="20" id="HdO-cy-USX"/>
-                                    <constraint firstAttribute="trailing" secondItem="jiQ-IN-bzh" secondAttribute="trailing" constant="20" id="M2g-MV-LyH"/>
-                                </constraints>
-                            </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Onf-X6-J5w">
                                 <rect key="frame" x="0.0" y="20" width="375" height="563"/>
                                 <connections>
                                     <segue destination="0GP-rM-Hvu" kind="embed" id="taY-7m-sQh"/>
                                 </connections>
                             </containerView>
+                            <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="juu-ng-v2N">
+                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiQ-IN-bzh">
+                                        <rect key="frame" x="20" y="20" width="335" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="wlF-fo-JMp"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <state key="normal" title="Done" backgroundImage="beveled-blue-button">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="selected" backgroundImage="beveled-blue-button-down"/>
+                                        <state key="highlighted" backgroundImage="beveled-blue-button-down">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <segue destination="SWX-Rp-5H1" kind="unwind" identifier="unwindOutOfLogin" customClass="EpilogueUnwindSegue" customModule="WordPress" customModuleProvider="target" unwindAction="unwindOutWithSegue:" id="oPV-La-BGA"/>
+                                        </connections>
+                                    </button>
+                                    <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="cmz-zv-QBQ">
+                                        <rect key="frame" x="0.0" y="-10" width="375" height="10"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="10" id="P6k-Ic-btx"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="84" id="7RN-uE-7y4"/>
+                                    <constraint firstItem="jiQ-IN-bzh" firstAttribute="leading" secondItem="juu-ng-v2N" secondAttribute="leading" constant="20" id="AoE-4s-ic6"/>
+                                    <constraint firstItem="cmz-zv-QBQ" firstAttribute="leading" secondItem="juu-ng-v2N" secondAttribute="leading" id="FGD-LE-owi"/>
+                                    <constraint firstAttribute="bottom" secondItem="jiQ-IN-bzh" secondAttribute="bottom" constant="20" id="HdO-cy-USX"/>
+                                    <constraint firstAttribute="trailing" secondItem="jiQ-IN-bzh" secondAttribute="trailing" constant="20" id="M2g-MV-LyH"/>
+                                    <constraint firstAttribute="trailing" secondItem="cmz-zv-QBQ" secondAttribute="trailing" id="UCI-QQ-LRq"/>
+                                    <constraint firstItem="cmz-zv-QBQ" firstAttribute="top" secondItem="juu-ng-v2N" secondAttribute="top" constant="-10" id="szN-7w-7ie"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -1067,6 +1080,9 @@
                         </constraints>
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="shadowView" destination="cmz-zv-QBQ" id="z9D-6E-kZE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S0K-oR-yFr" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="SWX-Rp-5H1" userLabel="Exit" sceneMemberID="exit"/>
@@ -1077,7 +1093,7 @@
         <scene sceneID="YcQ-wo-pmy">
             <objects>
                 <tableViewController id="0GP-rM-Hvu" customClass="LoginEpilogueTableView" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="154" sectionHeaderHeight="28" sectionFooterHeight="28" id="TzF-S4-1lW">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="154" sectionHeaderHeight="28" sectionFooterHeight="28" id="TzF-S4-1lW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95294117647058818" green="0.96470588235294119" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
@@ -1091,7 +1107,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xKq-ni-wZB" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                            <rect key="frame" x="157" y="20" width="60" height="60"/>
+                                            <rect key="frame" x="157.5" y="20" width="60" height="60"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="60" id="Omr-X8-XDl"/>
                                                 <constraint firstAttribute="width" constant="60" id="pI0-bo-l6s"/>
@@ -1509,6 +1525,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="beveled-blue-button" width="18" height="19"/>
+        <image name="beveled-blue-button-down" width="18" height="19"/>
+        <image name="darkgrey-shadow" width="10" height="10"/>
         <image name="icon-alert" width="62" height="52"/>
         <image name="icon-email-field" width="18" height="22"/>
         <image name="icon-password-field" width="18" height="22"/>
@@ -1516,7 +1535,6 @@
         <image name="icon-username-field" width="18" height="18"/>
         <image name="icon-wp" width="50" height="52"/>
         <image name="logo-wpcom-vertical" width="152" height="106"/>
-        <image name="new-blue-button" width="20" height="12"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="07g-E6-aeG"/>
