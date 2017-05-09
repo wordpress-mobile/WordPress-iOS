@@ -45,7 +45,7 @@ class Post: AbstractPost {
     override class var entityName: String {
         return "Post"
     }
-    
+
     override func awakeFromFetch() {
         super.awakeFromFetch()
         buildContentPreview()
