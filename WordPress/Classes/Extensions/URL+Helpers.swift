@@ -2,6 +2,18 @@ import Foundation
 
 extension URL {
 
+    /// The URLResource fileSize of the file at the URLs, if available.
+    ///
+    /// - param URL: A file URL.
+    ///
+    var resourceFileSize: Int? {
+        guard isFileURL else {
+            return nil
+        }
+        let values = try? resourceValues(forKeys: [.fileSizeKey])
+        return values?.fileSize
+    }
+
     /// Returns a URL with an incremental file name, if a file already exists at the given URL.
     ///
     /// Previously seen in MediaService.m within urlForMediaWithFilename:andExtension:
