@@ -47,10 +47,10 @@
           "height" : 1
         },
         "cap-insets" : {
-          "bottom" : 20,
-          "top" : 18,
-          "right" : 18,
-          "left" : 18
+          "bottom" : 30,
+          "top" : 24,
+          "right" : 24,
+          "left" : 24
         }
       },
       "idiom" : "universal",
