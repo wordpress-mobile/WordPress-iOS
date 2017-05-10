@@ -31,9 +31,6 @@ class PostTagPickerViewController: UIViewController {
             reloadTableData()
         }
     }
-    private lazy var textContainerHeightConstraint: NSLayoutConstraint = {
-        return self.textViewContainer.heightAnchor.constraint(equalToConstant: 44)
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,12 +74,11 @@ class PostTagPickerViewController: UIViewController {
             textView.bottomAnchor.constraint(equalTo: textViewContainer.bottomAnchor),
             textView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             textView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
+            textView.heightAnchor.constraint(lessThanOrEqualToConstant: 140),
 
             textViewContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 35),
-            textContainerHeightConstraint,
             textViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -1),
             textViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 1),
-
             textViewContainer.bottomAnchor.constraint(equalTo: tableView.topAnchor),
 
             shadow.topAnchor.constraint(equalTo: textViewContainer.bottomAnchor),
@@ -94,7 +90,6 @@ class PostTagPickerViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
-        updateTextViewHeight()
 
         textViewContainer.backgroundColor = UIColor.white
         textViewContainer.layer.borderColor = WPStyleGuide.greyLighten20().cgColor
@@ -118,11 +113,6 @@ class PostTagPickerViewController: UIViewController {
         if originalTags != tags {
             onValueChanged?(tags.joined(separator: ", "))
         }
-    }
-
-    fileprivate func updateTextViewHeight() {
-        let size = textView.sizeThatFits(CGSize(width: textView.frame.width, height: CGFloat.greatestFiniteMagnitude))
-        textContainerHeightConstraint.constant = size.height
     }
 
     fileprivate func reloadTableData() {
@@ -204,7 +194,6 @@ private extension PostTagPickerViewController {
         tags.append(tag)
         tags.append("")
         textView.text = tags.joined(separator: ", ")
-        updateTextViewHeight()
         updateSuggestions()
     }
 }
@@ -214,7 +203,6 @@ private extension PostTagPickerViewController {
 extension PostTagPickerViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         normalizeText()
-        updateTextViewHeight()
         updateSuggestions()
     }
 
