@@ -306,7 +306,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 title: NSLocalizedString("Cancel", comment: ""),
                 style: .cancel,
                 handler: nil)
-            let disconnect = UIAlertAction(
+            let logOut = UIAlertAction(
                 title: NSLocalizedString("Log Out", comment: "Button for confirming logging out from WordPress.com account"),
                 style: .destructive,
                 handler: { [unowned self] _ in
@@ -314,7 +314,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             })
 
             alert.addAction(cancel)
-            alert.addAction(disconnect)
+            alert.addAction(logOut)
 
             self.present(alert, animated: true, completion: nil)
             self.tableView.deselectSelectedRowWithAnimation(true)
