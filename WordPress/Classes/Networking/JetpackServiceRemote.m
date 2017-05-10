@@ -68,8 +68,9 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
                     success:(void (^)(BOOL isJetpack))success
                     failure:(void (^)(NSError *error))failure
 {
-    NSString *siteStr = [[NSString stringWithFormat:@"%@%@", siteURL.host, siteURL.path]
-                         stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLHostAllowedCharacterSet];
+    NSString *siteStr = [NSString stringWithFormat:@"%@%@", siteURL.host, siteURL.path];
+    siteStr = [siteStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+    siteStr = [siteStr stringByReplacingOccurrencesOfString:@"/" withString:@"::"];
     NSString *scheme = siteURL.scheme ?: @"http";
 
     NSString *endpoint = [NSString stringWithFormat:@"connect/site-info/%@/%@", scheme, siteStr];
