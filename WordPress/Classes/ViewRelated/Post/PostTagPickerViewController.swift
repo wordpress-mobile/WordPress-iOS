@@ -370,7 +370,7 @@ private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
         guard !searchQuery.isEmpty else {
             return availableSuggestions
         }
-        return availableSuggestions.filter({ $0.localizedCaseInsensitiveContains(searchQuery) })
+        return availableSuggestions.filter({ $0.localizedStandardContains(searchQuery) })
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -384,8 +384,22 @@ private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SuggestionsDataSource.cellIdentifier, for: indexPath)
         WPStyleGuide.configureTableViewSuggestionCell(cell)
-        cell.textLabel?.text = matchedSuggestions[indexPath.row]
+        let match = matchedSuggestions[indexPath.row]
+        cell.textLabel?.attributedText = highlight(searchQuery, in: match)
         return cell
+    }
+
+    func highlight(_ search: String, in string: String) -> NSAttributedString {
+        let highlighted = NSMutableAttributedString(string: string)
+        let range = (string as NSString).localizedStandardRange(of: search)
+        guard range.location != NSNotFound else {
+            return highlighted
+        }
+        let font = UIFont.systemFont(ofSize: WPStyleGuide.tableviewTextFont().pointSize, weight: UIFontWeightBold)
+        highlighted.setAttributes([
+            NSFontAttributeName: font,
+            ], range: range)
+        return highlighted
     }
 }
 
