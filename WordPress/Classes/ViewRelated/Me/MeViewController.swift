@@ -298,7 +298,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     fileprivate func confirmLogout() -> ImmuTableAction {
         return { [unowned self] row in
-            let format = NSLocalizedString("Disconnecting your account will remove all of @%@’s WordPress.com data from this device.", comment: "Label for disconnecting WordPress.com account. The %@ is a placeholder for the user's screen name.")
+            let format = NSLocalizedString("Logging out will remove all of @%@’s WordPress.com data from this device.", comment: "Label for disconnecting WordPress.com account. The %@ is a placeholder for the user's screen name.")
             let title = String(format: format, self.defaultAccount()!.username)
             let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
 
@@ -307,7 +307,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 style: .cancel,
                 handler: nil)
             let disconnect = UIAlertAction(
-                title: NSLocalizedString("Disconnect", comment: "Button for confirming disconnecting WordPress.com account"),
+                title: NSLocalizedString("Log Out", comment: "Button for confirming disconnecting WordPress.com account"),
                 style: .destructive,
                 handler: { [unowned self] _ in
                 self.logOut()
