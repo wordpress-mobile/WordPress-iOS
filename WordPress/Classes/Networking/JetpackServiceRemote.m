@@ -1,6 +1,7 @@
 #import "JetpackServiceRemote.h"
 
 #import <AFNetworking/AFNetworking.h>
+#import "WordPress-Swift.h"
 
 NSString * const JetpackServiceRemoteErrorDomain = @"JetpackServiceRemoteError";
 static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.com/get-user-blogs/1.0";
@@ -58,5 +59,32 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
              }
          }];
 }
+
+/**
+    Check if the specified site is a Jetpack site.  The success block
+    receives a bool indicating if the site has Jetpack.
+ */
+- (void)checkSiteHasJetpack:(NSURL *)siteURL
+                    success:(void (^)(BOOL isJetpack))success
+                    failure:(void (^)(NSError *error))failure
+{
+    NSString *siteStr = [[NSString stringWithFormat:@"%@%@", siteURL.host, siteURL.path]
+                         stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLHostAllowedCharacterSet];
+    NSString *scheme = siteURL.scheme ?: @"http";
+
+    NSString *endpoint = [NSString stringWithFormat:@"connect/site-info/%@/%@", scheme, siteStr];
+    NSString *path = [self pathForEndpoint:endpoint withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
+    [self.wordPressComRestApi GET:path
+                       parameters:nil
+                          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                              NSDictionary *dict = (NSDictionary *)responseObject;
+                              BOOL hasJetpack = [[dict numberForKey:@"hasJetpack"] boolValue];
+                              success(hasJetpack);
+                          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                              failure(error);
+                          }];
+}
+
 
 @end
