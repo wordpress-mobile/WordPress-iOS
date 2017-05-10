@@ -7,6 +7,8 @@
 #import "WPAccount.h"
 #import "Blog.h"
 
+NSString * const JetpackServiceErrorDomain = @"JetpackServiceErrorDomain";
+
 @implementation JetpackService
 
 - (void)validateAndLoginWithUsername:(NSString *)username
@@ -98,6 +100,15 @@
         return jetpackBlogID && [accountBlogIDs containsObject:jetpackBlogID];
     }]];
     [account addJetpackBlogs:[NSSet setWithArray:blogs]];
+}
+
+
+- (void)checkSiteHasJetpack:(NSURL *)siteURL
+                    success:(void (^)(BOOL hasJetpack))success
+                    failure:(void (^)(NSError *error))failure
+{
+    JetpackServiceRemote *remote = [[JetpackServiceRemote alloc] initWithWordPressComRestApi:[WordPressComRestApi anonymousApi]];
+    [remote checkSiteHasJetpack:siteURL success:success failure:failure];
 }
 
 @end
