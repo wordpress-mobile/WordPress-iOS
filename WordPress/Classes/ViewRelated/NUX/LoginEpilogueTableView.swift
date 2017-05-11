@@ -65,15 +65,15 @@ class LoginEpilogueTableView: UITableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let sectionTitle: String
         if (section == 0) {
-            sectionTitle = "LOGGED IN AS"
+            sectionTitle = NSLocalizedString("LOGGED IN AS", comment: "Header for user info, shown after loggin in").uppercased()
         } else {
             switch blogCount {
             case .none:
                 sectionTitle = ""
             case .some(let count) where count > 1:
-                sectionTitle = "MY SITES"
+                sectionTitle = NSLocalizedString("MY SITES", comment: "Header for list of multiple sites, shown after loggin in").uppercased()
             default:
-                sectionTitle = "MY SITE"
+                sectionTitle = NSLocalizedString("MY SITES", comment: "Header for a single site, shown after loggin in").uppercased()
             }
         }
 
