@@ -68,12 +68,10 @@ class LoginEpilogueTableView: UITableViewController {
             sectionTitle = NSLocalizedString("LOGGED IN AS", comment: "Header for user info, shown after loggin in").uppercased()
         } else {
             switch blogCount {
-            case .none:
-                sectionTitle = ""
             case .some(let count) where count > 1:
                 sectionTitle = NSLocalizedString("MY SITES", comment: "Header for list of multiple sites, shown after loggin in").uppercased()
             default:
-                sectionTitle = NSLocalizedString("MY SITES", comment: "Header for a single site, shown after loggin in").uppercased()
+                sectionTitle = ""
             }
         }
 
