@@ -74,7 +74,6 @@ class PostTagPickerViewController: UIViewController {
             textView.bottomAnchor.constraint(equalTo: textViewContainer.bottomAnchor),
             textView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             textView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
-            textView.heightAnchor.constraint(lessThanOrEqualToConstant: 140),
 
             textViewContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 35),
             textViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -1),
