@@ -323,11 +323,12 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if (cell.tag == ImageDetailsSectionFeatured) {
-        return NO;
+    if (indexPath.section == ImageDetailsSectionFeatured) {
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if (cell.tag == ImageDetailsRowFeatured) {
+            return NO;
+        }
     }
-
     return YES;
 }
 
