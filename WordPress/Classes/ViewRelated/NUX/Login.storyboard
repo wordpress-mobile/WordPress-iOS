@@ -1049,7 +1049,7 @@
                                             <segue destination="SWX-Rp-5H1" kind="unwind" identifier="unwindOutOfLogin" customClass="EpilogueUnwindSegue" customModule="WordPress" customModuleProvider="target" unwindAction="unwindOutWithSegue:" id="oPV-La-BGA"/>
                                         </connections>
                                     </button>
-                                    <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="cmz-zv-QBQ">
+                                    <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="cmz-zv-QBQ">
                                         <rect key="frame" x="0.0" y="-10" width="375" height="10"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="10" id="P6k-Ic-btx"/>
@@ -1081,6 +1081,7 @@
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="buttonPanel" destination="juu-ng-v2N" id="WUF-SL-5Nq"/>
                         <outlet property="shadowView" destination="cmz-zv-QBQ" id="z9D-6E-kZE"/>
                     </connections>
                 </viewController>
