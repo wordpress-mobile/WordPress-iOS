@@ -23,7 +23,6 @@ class PostTagPickerViewController: UIViewController {
 
     fileprivate let textView = UITextView()
     private let textViewContainer = UIView()
-    private let shadow = ShadowView()
     fileprivate let tableView = UITableView(frame: .zero, style: .grouped)
     fileprivate var dataSource: PostTagPickerDataSource = LoadingDataSource() {
         didSet {
@@ -57,16 +56,12 @@ class PostTagPickerViewController: UIViewController {
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets(top: 11, left: 0, bottom: 11, right: 0)
 
+        view.addSubview(tableView)
         textViewContainer.addSubview(textView)
         view.addSubview(textViewContainer)
-        view.addSubview(tableView)
-        view.addSubview(shadow)
-
-        shadow.tintColor = WPStyleGuide.greyDarken30()
 
         textView.translatesAutoresizingMaskIntoConstraints = false
         textViewContainer.translatesAutoresizingMaskIntoConstraints = false
-        shadow.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -80,11 +75,6 @@ class PostTagPickerViewController: UIViewController {
             textViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 1),
             textViewContainer.bottomAnchor.constraint(equalTo: tableView.topAnchor),
 
-            shadow.topAnchor.constraint(equalTo: textViewContainer.bottomAnchor),
-            shadow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            shadow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            shadow.heightAnchor.constraint(equalToConstant: 3.5),
-
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -93,6 +83,11 @@ class PostTagPickerViewController: UIViewController {
         textViewContainer.backgroundColor = UIColor.white
         textViewContainer.layer.borderColor = WPStyleGuide.greyLighten20().cgColor
         textViewContainer.layer.borderWidth = 0.5
+        textViewContainer.layer.masksToBounds = false
+        textViewContainer.layer.shadowOffset = CGSize(width: 0, height: 2)
+        textViewContainer.layer.shadowRadius = 2
+        textViewContainer.layer.shadowOpacity = 0.5
+        textViewContainer.layer.shadowColor = WPStyleGuide.greyDarken30().cgColor
 
         keyboardObserver.tableView = tableView
     }
@@ -116,7 +111,7 @@ class PostTagPickerViewController: UIViewController {
 
     fileprivate func reloadTableData() {
         tableView.reloadData()
-        shadow.isHidden = tableView.isEmpty
+        textViewContainer.layer.shadowOpacity = tableView.isEmpty ? 0 : 0.5
     }
 }
 
