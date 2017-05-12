@@ -1,9 +1,46 @@
 import Foundation
-
+import AFNetworking
 
 /// This ServiceRemote encapsulates all of the interaction with the Gravatar endpoint.
 ///
 open class GravatarServiceRemote {
+    let baseGravatarURL = "https://wwww.gravatar.com/"
+
+    /// This method fetches the Gravatar profile for the specified email addres.
+    ///
+    /// - Parameters:
+    ///     - email: The email address of the gravatar profile to fetch.
+    ///     - success: A success block.
+    ///     - failure: A failure block.
+    ///
+    open func fetchProfile(_ email: String, success:@escaping ((_ profile: RemoteGravatarProfile) -> Void), failure:@escaping ((_ error: Error?) -> Void)) {
+        guard let hash = (email as NSString).md5() else {
+            assertionFailure()
+            return
+        }
+
+        let path = baseGravatarURL + hash + ".json"
+        guard let targetURL = URL(string: path) else {
+            assertionFailure()
+            return
+        }
+
+        let session = URLSession.shared
+        let task = session.dataTask(with: targetURL) { (data: Data?, response: URLResponse?, error: Error?) in
+            let errPointer: NSErrorPointer = nil
+            if let response = AFJSONResponseSerializer().responseObject(for: response, data: data, error: errPointer) as? [String: String] {
+                let profile = RemoteGravatarProfile(dict: response)
+                success(profile)
+                return
+            }
+
+            let err = errPointer?.pointee ?? error
+            failure(err)
+        }
+
+        task.resume()
+    }
+
 
     /// This method hits the Gravatar Endpoint, and uploads a new image, to be used as profile.
     ///
