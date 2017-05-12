@@ -4,17 +4,6 @@ import Foundation
 /// This ServiceRemote encapsulates all of the interaction with the Gravatar endpoint.
 ///
 open class GravatarServiceRemote {
-    /// Designated Initializer
-    ///
-    /// - Parameters:
-    ///     - accountToken: A valid WordPress.com User Token
-    ///     - accountEmail: Account Email
-    ///
-    public init(accountToken: String, accountEmail: String) {
-        self.accountToken   = accountToken
-        self.accountEmail   = accountEmail
-    }
-
 
     /// This method hits the Gravatar Endpoint, and uploads a new image, to be used as profile.
     ///
@@ -22,7 +11,7 @@ open class GravatarServiceRemote {
     ///     - image: The new Gravatar Image, to be uploaded
     ///     - completion: An optional closure to be executed on completion.
     ///
-    open func uploadImage(_ image: UIImage, completion: ((_ error: NSError?) -> ())?) {
+    open func uploadImage(_ image: UIImage, accountEmail: String, accountToken: String, completion: ((_ error: NSError?) -> ())?) {
         guard let targetURL = URL(string: UploadParameters.endpointURL) else {
             assertionFailure()
             return
@@ -49,7 +38,6 @@ open class GravatarServiceRemote {
 
         task.resume()
     }
-
 
 
     // MARK: - Private Helpers
@@ -92,11 +80,6 @@ open class GravatarServiceRemote {
         return body as Data
     }
 
-
-
-    // MARK: - Private Properties
-    fileprivate let accountEmail: String
-    fileprivate let accountToken: String
 
     // MARK: - Private Structs
     fileprivate struct UploadParameters {
