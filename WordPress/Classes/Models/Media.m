@@ -43,6 +43,9 @@
         case MediaTypeDocument:
             return @"document";
             break;
+        case MediaTypeAudio:
+            return @"audio";
+            break;
     }
 }
 
@@ -90,7 +93,10 @@
         return MediaTypePowerpoint;
     } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeDocument]]) {
         return MediaTypeDocument;
+    } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeAudio]]) {
+        return MediaTypeAudio;
     }
+
     return MediaTypeDocument;
 }
 
@@ -115,6 +121,8 @@
         type = MediaTypeVideo;
     } else if (UTTypeConformsTo(fileUTI, ppt)) {
         type = MediaTypePowerpoint;
+    } else if (UTTypeConformsTo(fileUTI, kUTTypeAudio)) {
+        type = MediaTypeAudio;
     } else {
         type = MediaTypeDocument;
     }
@@ -182,7 +190,7 @@
 - (NSURL *)absoluteURLForLocalPath:(NSString *)localPath
 {
     NSError *error;
-    NSURL *mediaDirectory = [MediaLibrary localDirectoryAndReturnError:&error];
+    NSURL *mediaDirectory = [MediaLibrary localUploadsDirectoryAndReturnError:&error];
     if (error) {
         DDLogInfo(@"Error resolving Media directory: %@", error);
         return nil;
