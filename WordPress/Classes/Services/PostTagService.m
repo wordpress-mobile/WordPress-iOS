@@ -71,6 +71,28 @@ NS_ASSUME_NONNULL_BEGIN
                       } failure:failure];
 }
 
+- (void)getTopTagsForBlog:(Blog *)blog
+                  success:(nullable void (^)(NSArray <NSString *> *tags))success
+                  failure:(nullable void (^)(NSError *error))failure
+{
+    id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    RemoteTaxonomyPaging *paging = [RemoteTaxonomyPaging new];
+    paging.orderBy = RemoteTaxonomyPagingResultsOrderingByCount;
+    paging.order = RemoteTaxonomyPagingOrderDescending;
+
+    [remote getTagsWithPaging:paging
+                      success:^(NSArray <RemotePostTag *> *remoteTags) {
+                          [self.managedObjectContext performBlock:^{
+                              NSArray *tags = [remoteTags wp_map:^NSString *(RemotePostTag *remoteTag) {
+                                  return remoteTag.name;
+                              }];
+                              if (success) {
+                                  success(tags);
+                              }
+                          }];
+                      } failure:failure];
+}
+
 - (void)searchTagsWithName:(NSString *)nameQuery
                       blog:(Blog *)blog
                    success:(nullable void (^)(NSArray <PostTag *> *tags))success
