@@ -45,7 +45,7 @@ final public class InteractiveNotificationsManager: NSObject {
     /// This method should be called once during the app initialization process.
     ///
     public func registerForUserNotifications() {
-        if sharedApplication.isRunningSimulator() || build(.alpha) {
+        if sharedApplication.isRunningSimulator() || build(.buddy) {
             return
         }
 
@@ -60,7 +60,7 @@ final public class InteractiveNotificationsManager: NSObject {
     /// Because of this, this should be called only when we know we will need to show notifications (for instance, after login).
     ///
     public func requestAuthorization() {
-        if sharedApplication.isRunningSimulator() || build(.alpha) {
+        if sharedApplication.isRunningSimulator() || build(.buddy) {
             return
         }
 

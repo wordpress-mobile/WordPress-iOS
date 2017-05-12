@@ -13,12 +13,12 @@ enum FeatureFlag: Int {
         case .exampleFeature:
             return true
         case .mediaLibrary:
-            return build(.debug, .alpha, .internal)
+            return build(.debug, .buddy, .internal)
         case .newLogin:
             return build(.debug, .alpha)
         case .nativeEditor:
             // At the moment this is only visible by default in non-app store builds
-            if build(.alpha, .debug, .internal) {
+            if build(.buddy, .debug, .internal) {
                 return true
             }
             return false
@@ -40,8 +40,8 @@ class Feature: NSObject {
 enum Build: Int {
     /// Development build, usually what you get when you run from Xcode
     case debug
-    /// Daily buiilds released internally for Automattic employees
-    case alpha
+    /// Continuous builds created by BuddyBuild for Automattic employees
+    case buddy
     /// Beta released internally for Automattic employees
     case `internal`
     /// Production build released in the app store
@@ -56,7 +56,7 @@ enum Build: Int {
         #if DEBUG
             return .debug
         #elseif ALPHA_BUILD
-            return .alpha
+            return .buddy
         #elseif INTERNAL_BUILD
             return .`internal`
         #else
