@@ -8,7 +8,7 @@ class LoginEpilogueTableView: UITableViewController {
 
     required init?(coder aDecoder: NSCoder) {
         blogDataSource = BlogListDataSource()
-        blogDataSource.loggedin = true
+        blogDataSource.loggedIn = true
         super.init(coder: aDecoder)
     }
 
