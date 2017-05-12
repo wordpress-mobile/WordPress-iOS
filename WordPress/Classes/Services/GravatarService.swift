@@ -16,14 +16,23 @@ open class GravatarService {
     ///     - success: A success block.
     ///     - failure: A failure block.
     ///
-    open func fetchProfile(_ email: String, success:(() -> Void), failure:((_ error: NSError?) -> Void)) {
+    open func fetchProfile(_ email: String, success:@escaping ((_ profile: GravatarProfile) -> Void), failure:@escaping ((_ error: NSError?) -> Void)) {
         let remote = gravatarServiceRemote()
         remote.fetchProfile(email, success: { (remoteProfile) in
+            let profile = GravatarProfile()
+            profile.profileID = remoteProfile.profileID
+            profile.hash = remoteProfile.hash
+            profile.requestHash = remoteProfile.requestHash
+            profile.profileUrl = remoteProfile.profileUrl
+            profile.preferredUsername = remoteProfile.preferredUsername
+            profile.thumbnailUrl = remoteProfile.thumbnailUrl
+            profile.name = remoteProfile.name
+            profile.displayName = remoteProfile.displayName
+            success(profile)
 
-            // TODO:
-
-        }, failure:{ (error) in
+        }, failure: { (error) in
             DDLogSwift.logError(error.debugDescription)
+            failure(error as NSError?)
         })
     }
 
