@@ -1,11 +1,3 @@
-//
-//  WordPressKit.h
-//  WordPressKit
-//
-//  Created by Aaron Douglas on 5/12/17.
-//  Copyright © 2017 Automattic Inc. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 
 //! Project version number for WordPressKit.
