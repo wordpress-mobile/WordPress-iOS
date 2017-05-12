@@ -31,7 +31,7 @@ open class GravatarService {
     ///
     open func uploadImage(_ image: UIImage, completion: ((_ error: NSError?) -> ())? = nil) {
         let remote = gravatarServiceRemoteForAccountToken(accountToken: accountToken, andAccountEmail: accountEmail)
-        remote.uploadImage(image) { (error) in
+        remote.uploadImage(image, accountEmail: accountEmail, accountToken: accountToken) { (error) in
             if let theError = error {
                 DDLogSwift.logError("GravatarService.uploadImage Error: \(theError)")
             } else {
@@ -43,7 +43,7 @@ open class GravatarService {
     }
 
     func gravatarServiceRemoteForAccountToken(accountToken: String, andAccountEmail accountEmail: String) -> GravatarServiceRemote {
-        return GravatarServiceRemote(accountToken: accountToken, accountEmail: accountEmail)
+        return GravatarServiceRemote()
     }
 
     // MARK: - Private Properties
