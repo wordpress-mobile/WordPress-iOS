@@ -564,7 +564,18 @@ NSString *const TodayCacheKey = @"Today";
         groupResult.items = items;
         groupResult.moreItemsExist = moreViewsAvailable;
         groupResult.errorWhileRetrieving = error != nil;
-        
+
+        if (statsSection == StatsSectionCountry) {
+            for (StatsItem *item in items) {
+                NSString *key = item.alternateIconValue;
+
+                if (key.length > 0) {
+                    item.iconURL = [[NSBundle statsBundle] URLForResource:key withExtension:@"png"];
+                    item.alternateIconValue = nil;
+                }
+            }
+        }
+
         cacheDictionary[@(statsSection)] = groupResult;
         
         if (groupCompletion) {
