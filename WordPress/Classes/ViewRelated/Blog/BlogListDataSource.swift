@@ -86,7 +86,7 @@ class BlogListDataSource: NSObject {
         }
     }
 
-    var loggedin: Bool = false {
+    var loggedIn: Bool = false {
         didSet {
             updateMode()
         }
@@ -192,12 +192,12 @@ private extension BlogListDataSource {
         case browsingWithRecent
         case editing
         case searching(String)
-        case loggedin
+        case loggedIn
 
         var mapper: BlogListDataSourceMapper {
             switch self {
             case .browsing,
-                 .loggedin:
+                 .loggedIn:
                 return BrowsingDataSourceMapper()
             case .browsingWithRecent:
                 return BrowsingWithRecentDataSourceMapper()
@@ -229,8 +229,8 @@ private extension BlogListDataSource {
     }
 
     func modeForCurrentState() -> Mode {
-        if loggedin {
-            return .loggedin
+        if loggedIn {
+            return .loggedIn
         }
         if editing {
             return .editing
@@ -311,7 +311,7 @@ extension BlogListDataSource: UITableViewDataSource {
             }
         } else {
             switch mode {
-            case .loggedin:
+            case .loggedIn:
                 cell.accessoryType = .none
             default:
                 cell.accessoryType = .disclosureIndicator
@@ -330,7 +330,7 @@ extension BlogListDataSource: UITableViewDataSource {
         }
 
         switch mode {
-        case .loggedin:
+        case .loggedIn:
             WPStyleGuide.configureCellForLogin(cell)
         default:
             WPStyleGuide.configureTableViewBlogCell(cell)
