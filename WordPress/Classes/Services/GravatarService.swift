@@ -9,6 +9,25 @@ import Foundation
 ///
 open class GravatarService {
 
+    /// This method fetches the Gravatar profile for the specified email address.
+    ///
+    /// - Parameters:
+    ///     - email: The email address of the gravatar profile to fetch.
+    ///     - success: A success block.
+    ///     - failure: A failure block.
+    ///
+    open func fetchProfile(_ email: String, success:(() -> Void), failure:((_ error: NSError?) -> Void)) {
+        let remote = gravatarServiceRemote()
+        remote.fetchProfile(email, success: { (remoteProfile) in
+
+            // TODO:
+
+        }, failure:{ (error) in
+            DDLogSwift.logError(error.debugDescription)
+        })
+    }
+
+
     /// This method hits the Gravatar Endpoint, and uploads a new image, to be used as profile.
     ///
     /// - Parameters:
