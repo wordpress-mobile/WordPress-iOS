@@ -10,17 +10,21 @@ class GravatarServiceTests: XCTestCase {
         let capturedAccountToken: String
         let capturedAccountEmail: String
 
-        override init(accountToken: String, accountEmail: String) {
+        init(accountToken: String, accountEmail: String) {
             capturedAccountToken = accountToken
             capturedAccountEmail = accountEmail
 
-            super.init(accountToken: accountToken, accountEmail: accountEmail)
+            super.init()
         }
 
-        override func uploadImage(_ image: UIImage, completion: ((_ error: NSError?) -> ())?) {
+        override func uploadImage(_ image: UIImage, accountEmail: String, accountToken: String, completion: ((NSError?) -> ())?) {
             if let completion = completion {
                 completion(nil)
             }
+        }
+
+        func uploadImage(_ image: UIImage, completion: ((_ error: NSError?) -> ())?) {
+            uploadImage(image, accountEmail: capturedAccountEmail, accountToken: capturedAccountToken, completion: completion)
         }
     }
 
