@@ -28,8 +28,11 @@ open class GravatarServiceRemote {
         let session = URLSession.shared
         let task = session.dataTask(with: targetURL) { (data: Data?, response: URLResponse?, error: Error?) in
             let errPointer: NSErrorPointer = nil
-            if let response = AFJSONResponseSerializer().responseObject(for: response, data: data, error: errPointer) as? [String: String] {
-                let profile = RemoteGravatarProfile(dict: response)
+            if  let response = AFJSONResponseSerializer().responseObject(for: response, data: data, error: errPointer) as? [String: Array<Any>],
+                let entry = response["entry"],
+                let profileData = entry.first as? [String: Any] {
+
+                let profile = RemoteGravatarProfile(dict: profileData)
                 success(profile)
                 return
             }

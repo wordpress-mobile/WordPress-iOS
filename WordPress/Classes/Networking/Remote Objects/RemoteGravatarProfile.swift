@@ -10,16 +10,16 @@ open class RemoteGravatarProfile {
     var name = ""
     var displayName = ""
 
-    convenience init(dict: [String: String]) {
+    convenience init(dict: [String: Any]) {
         self.init()
 
-        profileID = dict["id"] ?? ""
-        hash = dict["hash"] ?? ""
-        requestHash = dict["requestHash"] ?? ""
-        profileUrl = dict["profileUrl"] ?? ""
-        preferredUsername = dict["preferredUsername"] ?? ""
-        thumbnailUrl = dict["thumbnailUrl"] ?? ""
-        name = dict["name"] ?? ""
-        displayName = dict["displayName"] ?? ""
+        profileID = dict.valueAsString(forKey: "id") ?? ""
+        hash = dict.valueAsString(forKey: "hash") ?? ""
+        requestHash = dict.valueAsString(forKey: "requestHash") ?? ""
+        profileUrl = dict.valueAsString(forKey: "profileUrl") ?? ""
+        preferredUsername = dict.valueAsString(forKey: "preferredUsername") ?? ""
+        thumbnailUrl = dict.valueAsString(forKey: "thumbnailUrl") ?? ""
+        name = dict.valueAsString(forKey: "name") ?? ""
+        displayName = dict.valueAsString(forKey: "displayName") ?? ""
     }
 }
