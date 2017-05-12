@@ -6,7 +6,7 @@ import AFNetworking
 open class GravatarServiceRemote {
     let baseGravatarURL = "https://wwww.gravatar.com/"
 
-    /// This method fetches the Gravatar profile for the specified email addres.
+    /// This method fetches the Gravatar profile for the specified email address.
     ///
     /// - Parameters:
     ///     - email: The email address of the gravatar profile to fetch.
