@@ -16,6 +16,9 @@
 
 @implementation FeaturedImageViewController
 
+@dynamic url;
+@dynamic image;
+
 #pragma mark - Life Cycle Methods
 
 - (void)dealloc
