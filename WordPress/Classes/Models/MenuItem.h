@@ -55,6 +55,7 @@ extern NSString * const MenuItemLinkTargetBlank;
 @property (nullable, nonatomic, strong) NSString *typeFamily;
 @property (nullable, nonatomic, strong) NSString *typeLabel;
 @property (nullable, nonatomic, strong) NSString *urlStr;
+@property (nullable, nonatomic, strong) NSArray<NSString *> *classes;
 
 ///---------------------
 /// @name Relationships

@@ -1,0 +1,252 @@
+ [
+  {
+  "product_slug": "free-blog",
+  "title": "WordPress.com Site",
+  "description": "Your own space to create posts and pages with basic customization.",
+  "icon": "https:\/\/s0.wordpress.com\/i\/store\/icon-free-site.png",
+  "plans": {
+  "1": true,
+  "1009": true,
+  "1003": true,
+  "1008": true
+  }
+  },
+  {
+  "product_slug": "custom-domain",
+  "title": "Custom site address",
+  "description": "Make your site easier to find and easier to remember.",
+  "icon": "https:\/\/s0.wordpress.com\/i\/store\/icon-domain.png",
+  "not_part_of_free_trial": true,
+  "plans": {
+  "1009": true,
+  "1003": true,
+  "1008": true
+  }
+  },
+  {
+  "product_slug": "space",
+  "title": "Space",
+  "description": "",
+  "icon": "https:\/\/s0.wordpress.com\/i\/store\/icon-media-space.png",
+  "plans": {
+  "1": {
+  "title": "Media storage",
+  "description": "Upload up to 3GB of photos, videos, or music."
+  },
+  "1009": {
+  "title": "Media storage",
+  "description": "Upload up to 6GB of photos, videos, or music."
+  },
+  "1003": {
+  "title": "Expanded media storage",
+  "description": "Upload up to 13GB of photos, videos, or music."
+  },
+  "1008": {
+  "title": "Unlimited media storage",
+  "description": "You can upload unlimited photos, videos, or music."
+  }
+  }
+  },
+  {
+  "product_slug": "no-adverts\/no-adverts.php",
+  "title": "No ads",
+  "description": "WordPress.com ads will not display on your site.",
+  "icon": "https:\/\/s0.wordpress.com\/i\/store\/icon-no-ads.png",
+  "plans": {
+  "1003": true,
+  "1008": true,
+  "1009": true
+  }
+  },
+  {
+  "product_slug": "custom-design",
+  "title": "Custom fonts, colors, & CSS",
+  "description": "Change your theme's font, colors, and CSS for a unique look",
+  "icon": "https:\/\/s0.wordpress.com\/i\/store\/icon-custom-design.png",
+  "plans": {
+  "1003": true,
+  "1008": true
+  }
+  },
+  {
+  "product_slug": "videopress",
+  "title": "Video storage & hosting",
+  "description": "Upload and host videos on your site without advertising.",
+  "icon": "https:\/\/s0.wordpress.com\/i\/store\/icon-videopress.png",
+  "plans": {
+  "1003": true,
+  "1008": true
+  }
+  },
+  {
+  "product_slug": "unlimited_themes",
+  "title": "Unlimited Premium Themes",
+  "description": "",
+  "icon": "",
+  "plans": {
+  "1003": true,
+  "1008": true
+  }
+  },
+  {
+  "product_slug": "live_support",
+  "title": "Live Support",
+  "description": "",
+  "icon": "",
+  "plans": {
+  "1003": true,
+  "1008": true
+  }
+  },
+  {
+  "product_slug": "premium-themes",
+  "title": "Unlimited Premium Themes",
+  "description": "Exclusive access to our best themes. Try as many as you like.",
+  "icon": "https:\/\/s0.wordpress.com\/i\/store\/icon-themes.png",
+  "plans": {
+  "1008": true
+  }
+  },
+  {
+  "product_slug": "google-analytics",
+  "title": "Google Analytics",
+  "description": "Google Analytics is a free service that offers a complementary view of your traffic to our built-in Stats feature.",
+  "icon": "",
+  "plans": {
+  "1008": true
+  }
+  },
+  {
+  "product_slug": "akismet",
+  "title": "Spam protection",
+  "description": "Spam protection",
+  "icon": "",
+  "plans": {
+  "2002": "Akismet Basic",
+  "2000": "Akismet Plus",
+  "2001": "Akismet Unlimited",
+  "2003": "Akismet Plus",
+  "2004": "Akismet Unlimited"
+  }
+  },
+  {
+  "product_slug": "vaultpress-backups",
+  "title": "Off-site backups",
+  "description": "Off-site backups",
+  "icon": "",
+  "plans": {
+  "2000": "VaultPress Daily",
+  "2001": "VaultPress Real-time",
+  "2003": "VaultPress Daily",
+  "2004": "VaultPress Real-time"
+  }
+  },
+  {
+  "product_slug": "vaultpress-backup-archive",
+  "title": "Backup archive",
+  "description": "Backup archive",
+  "icon": "",
+  "plans": {
+  "2000": "30 days",
+  "2001": "Unlimited",
+  "2003": "30 days",
+  "2004": "Unlimited"
+  }
+  },
+  {
+  "product_slug": "vaultpress-storage-space",
+  "title": "Backup storage space",
+  "description": "Backup storage space",
+  "icon": "",
+  "plans": {
+  "2000": "Unlimited",
+  "2001": "Unlimited",
+  "2003": "Unlimited",
+  "2004": "Unlimited"
+  }
+  },
+  {
+  "product_slug": "vaultpress-automated-restores",
+  "title": "Automated Restores",
+  "description": "Automated Restores",
+  "icon": "",
+  "plans": {
+  "2000": true,
+  "2001": true,
+  "2003": true,
+  "2004": true
+  }
+  },
+  {
+  "product_slug": "vaultpress-security-scanning",
+  "title": "Malware Scanning",
+  "description": "Malware Scanning",
+  "icon": "",
+  "plans": {
+  "2001": true,
+  "2004": true
+  }
+  },
+  {
+  "product_slug": "polldaddy",
+  "title": "Polls and Ratings",
+  "description": "Polls and Ratings",
+  "icon": "",
+  "plans": {
+  "2001": "PollDaddy Pro",
+  "2004": "PollDaddy Pro"
+  }
+  },
+  {
+  "product_slug": "support",
+  "title": "Support",
+  "description": "For those times when you can't find an answer on our Support site",
+  "icon": "https:\/\/s0.wordpress.com\/i\/store\/icon-support.png",
+  "plans": {
+  "1": {
+  "title": "Community support",
+  "description": "Ask our Happiness Engineers questions in this app, or find answers in our community forum."
+  },
+  "1009": {
+  "title": "Priority support",
+  "description": "Ask our Happiness Engineers questions in this app anytime you need, or at WordPress.com\/help"
+  },
+  "1003": {
+  "title": "Priority support",
+  "description": "Ask our Happiness Engineers questions in this app anytime you need, or at WordPress.com\/help"
+  },
+  "1008": {
+  "title": "Live chat support",
+  "description": "Ask our Happiness Engineers questions in this app anytime you need, or chat with us live at WordPress.com\/help"
+  },
+  "2002": {
+  "title": "Email support",
+  "description": "The kind of support we offer for Jetpack Free."
+  },
+  "2000": {
+  "title": "Premium WordPress support",
+  "description": "The kind of support we offer for Jetpack Premium."
+  },
+  "2001": {
+  "title": "Priority security support",
+  "description": "The kind of support we offer for Jetpack Professional."
+  },
+  "2005": {
+  "title": "Premium WordPress support",
+  "description": "The kind of support we offer for Jetpack Personal."
+  },
+  "2003": {
+  "title": "Premium WordPress support",
+  "description": "The kind of support we offer for Jetpack Premium."
+  },
+  "2004": {
+  "title": "Priority security support",
+  "description": "The kind of support we offer for Jetpack Professional."
+  },
+  "2006": {
+  "title": "Premium WordPress support",
+  "description": "The kind of support we offer for Jetpack Personal."
+  }
+  }
+  }
+  ]
