@@ -90,4 +90,19 @@ extension UITableView {
     /// Default Disable Edition Action Delay
     ///
     fileprivate static let defaultDelay = TimeInterval(0.2)
+
+    /// Returns true if the table view does not have any rows
+    ///
+    public var isEmpty: Bool {
+        if numberOfSections == 0 {
+            return true
+        }
+        for section in 0..<numberOfSections {
+            if numberOfRows(inSection: section) > 0 {
+                return false
+            }
+        }
+        return true
+    }
+
 }
