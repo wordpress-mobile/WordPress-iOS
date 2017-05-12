@@ -70,6 +70,8 @@ class LoginEpilogueTableView: UITableViewController {
             switch blogCount {
             case .some(let count) where count > 1:
                 sectionTitle = NSLocalizedString("MY SITES", comment: "Header for list of multiple sites, shown after loggin in").uppercased()
+            case .some(let count) where count == 1:
+                sectionTitle = NSLocalizedString("MY SITE", comment: "Header for a single site, shown after loggin in").uppercased()
             default:
                 sectionTitle = ""
             }
