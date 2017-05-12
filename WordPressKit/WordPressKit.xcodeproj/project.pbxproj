@@ -513,6 +513,7 @@
 				9368C7911EC5EF1B0092CE8E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9368C7921EC5EF1B0092CE8E /* Build configuration list for PBXNativeTarget "WordPressKitTests" */ = {
 			isa = XCConfigurationList;
@@ -521,6 +522,7 @@
 				9368C7941EC5EF1B0092CE8E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
