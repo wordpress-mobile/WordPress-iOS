@@ -24,6 +24,13 @@ NS_ASSUME_NONNULL_BEGIN
                 failure:(nullable void (^)(NSError *error))failure;
 
 /**
+ Retrieves the most used tags for a blog.
+ */
+- (void)getTopTagsForBlog:(Blog *)blog
+                  success:(nullable void (^)(NSArray <NSString *> *tags))success
+                  failure:(nullable void (^)(NSError *error))failure;
+
+/**
  Search tags for blog matching a name or slug of the query. Case-insensitive search.
  */
 - (void)searchTagsWithName:(NSString *)nameQuery
