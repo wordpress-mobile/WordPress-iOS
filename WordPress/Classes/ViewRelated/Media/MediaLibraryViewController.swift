@@ -49,6 +49,8 @@ class MediaLibraryViewController: UIViewController {
     // MARK: - Initializers
 
     init(blog: Blog) {
+        WPMediaCollectionViewCell.appearance().placeholderTintColor = WPStyleGuide.darkGrey()
+
         self.blog = blog
         self.pickerViewController = WPMediaPickerViewController()
         self.pickerDataSource = MediaLibraryPickerDataSource(blog: blog)
@@ -72,7 +74,7 @@ class MediaLibraryViewController: UIViewController {
     private func configurePickerViewController() {
         pickerViewController.mediaPickerDelegate = self
         pickerViewController.allowCaptureOfMedia = false
-        pickerViewController.filter = .videoOrImage
+        pickerViewController.filter = .all
         pickerViewController.allowMultipleSelection = false
         pickerViewController.showMostRecentFirst = true
         pickerViewController.dataSource = pickerDataSource
