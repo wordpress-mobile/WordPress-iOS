@@ -308,6 +308,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     post.content = jsonPost[@"content"];
     post.excerpt = jsonPost[@"excerpt"];
     post.slug = jsonPost[@"slug"];
+    post.suggestedSlug = [jsonPost stringForKeyPath:@"other_URLs.suggested_slug"];
     post.status = jsonPost[@"status"];
     post.password = jsonPost[@"password"];
     if ([post.password isEmpty]) {

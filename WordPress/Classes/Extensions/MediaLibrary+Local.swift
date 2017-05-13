@@ -6,34 +6,64 @@ extension MediaLibrary {
 
     fileprivate static let mediaDirectoryName = "Media"
 
+    /// Type of the local Media directory URL in implementation.
+    ///
+    enum MediaDirectory {
+        /// Default, system Documents directory, for persisting media files for upload.
+        case uploads
+        /// System Caches directory, for creating discardable media files, such as thumbnails.
+        case cache
+        /// System temporary directory, used for unit testing or temporary media files.
+        case temporary
+
+        /// Returns the directory URL for the directory type.
+        ///
+        var url: URL {
+            let fileManager = FileManager.default
+            // Get a parent directory, based on the type.
+            let parentDirectory: URL
+            switch self {
+            case .uploads:
+                parentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+            case .cache:
+                parentDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
+            case .temporary:
+                parentDirectory = fileManager.temporaryDirectory
+            }
+            return parentDirectory.appendingPathComponent(mediaDirectoryName, isDirectory: true)
+        }
+    }
+
     // MARK: - Class methods
 
     /// Returns filesystem URL for the local Media directory.
     ///
-    class func localDirectory() throws -> URL {
+    class func localDirectory(_ type: MediaDirectory) throws -> URL {
         let fileManager = FileManager.default
-        let documents = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-        var media = documents.appendingPathComponent(mediaDirectoryName, isDirectory: true)
-
+        let mediaDirectory = type.url
         // Check whether or not the file path exists for the Media directory.
         // If the filepath does not exist, or if the filepath does exist but it is not a directory, try creating the directory.
         // Note: This way, if unexpectedly a file exists but it is not a dir, an error will throw when trying to create the dir.
         var isDirectory: ObjCBool = false
-        if fileManager.fileExists(atPath: media.path, isDirectory: &isDirectory) == false || isDirectory.boolValue == false {
-            try fileManager.createDirectory(at: media, withIntermediateDirectories: true, attributes: nil)
-            var resourceValues = URLResourceValues()
-            resourceValues.isExcludedFromBackup = true
-            try media.setResourceValues(resourceValues)
+        if fileManager.fileExists(atPath: mediaDirectory.path, isDirectory: &isDirectory) == false || isDirectory.boolValue == false {
+            try fileManager.createDirectory(at: mediaDirectory, withIntermediateDirectories: true, attributes: nil)
         }
-        return media
+        return mediaDirectory
+    }
+
+    /// Helper method for ObjC as a default method with type.
+    ///
+    class func localUploadsDirectory() throws -> URL {
+        return try localDirectory(.uploads)
     }
 
     /// Returns a unique filesystem URL for a Media filename and extension, within the local Media directory.
     ///
     /// - Note: if a file already exists with the same name, the file name is appended with a number
     ///   and incremented until a unique filename is found.
-    class func makeLocalMediaURL(withFilename filename: String, fileExtension: String?) throws -> URL {
-        let media = try localDirectory()
+    ///
+    class func makeLocalMediaURL(withFilename filename: String, fileExtension: String?, type: MediaDirectory) throws -> URL {
+        let media = try localDirectory(type)
         var url: URL
         if let fileExtension = fileExtension {
             let basename = (filename as NSString).deletingPathExtension.lowercased()
@@ -45,6 +75,12 @@ extension MediaLibrary {
         // Increment the filename as needed to ensure we're not
         // providing a URL for an existing file of the same name.
         return url.incrementalFilename()
+    }
+
+    /// Helper method for ObjC as a default method with type.
+    ///
+    class func makeLocalMediaURL(withFilename filename: String, fileExtension: String?) throws -> URL {
+        return try makeLocalMediaURL(withFilename: filename, fileExtension: fileExtension, type: .uploads)
     }
 
     /// Returns a string appended with the thumbnail naming convention for local Media files.
@@ -90,7 +126,7 @@ extension MediaLibrary {
     class func calculateSizeOfLocalDirectory(onCompletion: @escaping (Int64?) -> ()) {
         DispatchQueue.global(qos: .default).async {
             let fileManager = FileManager.default
-            let allocatedSize = try? fileManager.allocatedSizeOf(directoryURL: localDirectory())
+            let allocatedSize = try? fileManager.allocatedSizeOf(directoryURL: localUploadsDirectory())
             DispatchQueue.main.async {
                 onCompletion(allocatedSize)
             }
@@ -143,7 +179,7 @@ extension MediaLibrary {
                         filesToKeep.insert(localThumbnailURL.lastPathComponent)
                     }
                 }
-                try purgeLocalDirectory(exceptFiles: filesToKeep)
+                try purgeLocalDirectory(exceptFiles: filesToKeep, type: .uploads)
                 if let onCompletion = onCompletion {
                     DispatchQueue.main.async {
                         onCompletion()
@@ -163,9 +199,9 @@ extension MediaLibrary {
 
     /// Removes files in the Media directory, except any files found in the set.
     ///
-    fileprivate class func purgeLocalDirectory(exceptFiles: Set<String>) throws {
+    fileprivate class func purgeLocalDirectory(exceptFiles: Set<String>, type: MediaDirectory) throws {
         let fileManager = FileManager.default
-        let contents = try fileManager.contentsOfDirectory(at: try localDirectory(),
+        let contents = try fileManager.contentsOfDirectory(at: try localDirectory(type),
                                                            includingPropertiesForKeys: nil,
                                                            options: .skipsHiddenFiles)
         var removedCount = 0
