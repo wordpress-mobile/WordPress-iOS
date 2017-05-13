@@ -4,7 +4,7 @@ import AFNetworking
 /// This ServiceRemote encapsulates all of the interaction with the Gravatar endpoint.
 ///
 open class GravatarServiceRemote {
-    let baseGravatarURL = "https://wwww.gravatar.com/"
+    let baseGravatarURL = "https://www.gravatar.com/"
 
     /// This method fetches the Gravatar profile for the specified email address.
     ///
