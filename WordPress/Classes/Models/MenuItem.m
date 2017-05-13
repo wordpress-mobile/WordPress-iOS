@@ -30,6 +30,7 @@ NSString * const MenuItemDefaultLinkTitle = @"New Item";
 @dynamic menu;
 @dynamic children;
 @dynamic parent;
+@dynamic classes;
 
 + (NSString *)entityName
 {

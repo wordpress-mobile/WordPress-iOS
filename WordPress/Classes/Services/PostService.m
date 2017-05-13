@@ -539,6 +539,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.authorAvatarURL = remotePost.authorAvatarURL;
     post.mt_excerpt = remotePost.excerpt;
     post.wp_slug = remotePost.slug;
+    post.suggested_slug = remotePost.suggestedSlug;
 
     if (remotePost.postID != previousPostID) {
         [self updateCommentsForPost:post];
