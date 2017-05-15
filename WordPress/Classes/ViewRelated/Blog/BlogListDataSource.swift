@@ -86,6 +86,12 @@ class BlogListDataSource: NSObject {
         }
     }
 
+    var loggedIn: Bool = false {
+        didSet {
+            updateMode()
+        }
+    }
+
     var selecting: Bool = false {
         didSet {
             if selecting != oldValue {
@@ -186,10 +192,12 @@ private extension BlogListDataSource {
         case browsingWithRecent
         case editing
         case searching(String)
+        case loggedIn
 
         var mapper: BlogListDataSourceMapper {
             switch self {
-            case .browsing:
+            case .browsing,
+                 .loggedIn:
                 return BrowsingDataSourceMapper()
             case .browsingWithRecent:
                 return BrowsingWithRecentDataSourceMapper()
@@ -221,6 +229,9 @@ private extension BlogListDataSource {
     }
 
     func modeForCurrentState() -> Mode {
+        if loggedIn {
+            return .loggedIn
+        }
         if editing {
             return .editing
         }
@@ -291,6 +302,7 @@ extension BlogListDataSource: UITableViewDataSource {
             cell.textLabel?.text = displayURL
             cell.detailTextLabel?.text = nil
         }
+
         if selecting {
             if selectedBlogId == blog.objectID {
                 cell.accessoryType = .checkmark
@@ -298,11 +310,15 @@ extension BlogListDataSource: UITableViewDataSource {
                 cell.accessoryType = .none
             }
         } else {
-            cell.accessoryType = .disclosureIndicator
+            switch mode {
+            case .loggedIn:
+                cell.accessoryType = .none
+            default:
+                cell.accessoryType = .disclosureIndicator
+            }
         }
+
         cell.selectionStyle = tableView.isEditing ? .none : .blue
-        cell.imageView?.layer.borderColor = UIColor.white.cgColor
-        cell.imageView?.layer.borderWidth = 1.5
         cell.imageView?.setImageWithSiteIcon(blog.icon)
         cell.visibilitySwitch?.accessibilityIdentifier = String(format: "Switch-Visibility-%@", blog.settings?.name ?? "")
         cell.visibilitySwitch?.isOn = blog.visible
@@ -313,11 +329,12 @@ extension BlogListDataSource: UITableViewDataSource {
             visibilityChanged?(blog, isOn)
         }
 
-        if !blog.visible {
-            cell.textLabel?.textColor = WPStyleGuide.readGrey()
+        switch mode {
+        case .loggedIn:
+            WPStyleGuide.configureCellForLogin(cell)
+        default:
+            WPStyleGuide.configureTableViewBlogCell(cell)
         }
-
-        WPStyleGuide.configureTableViewBlogCell(cell)
 
         return cell
     }
