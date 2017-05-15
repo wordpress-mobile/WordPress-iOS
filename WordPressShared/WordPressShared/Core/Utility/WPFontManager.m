@@ -4,7 +4,6 @@
 
 @implementation WPFontManager
 
-static NSString * const SharedBundle = @"WordPress-iOS-Shared.bundle";
 static NSString * const FontTypeTTF = @"ttf";
 static NSString * const FontTypeOTF = @"otf";
 
@@ -95,8 +94,8 @@ static NSString* const NotoRegularFileName = @"NotoSerif-Regular";
 
 + (void)loadFontResourceNamed:(NSString *)name withExtension:(NSString *)extension
 {
-    NSString *resourceName = [NSString stringWithFormat:@"%@/%@", SharedBundle, name];
-    NSURL *url = [[NSBundle bundleForClass:self] URLForResource:resourceName withExtension:extension];
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSURL *url = [bundle URLForResource:name withExtension:extension];
 
     CFErrorRef error;
     if (!CTFontManagerRegisterFontsForURL((CFURLRef)url, kCTFontManagerScopeProcess, &error)) {
