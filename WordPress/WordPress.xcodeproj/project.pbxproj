@@ -909,6 +909,7 @@
 		E60646801CB3133000A3073F /* SigninEditingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E606467F1CB3133000A3073F /* SigninEditingState.swift */; };
 		E60C2ED51DE5048200488630 /* ReaderCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E60C2ED41DE5048200488630 /* ReaderCommentCell.xib */; };
 		E60C2ED71DE5075100488630 /* ReaderCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60C2ED61DE5075100488630 /* ReaderCommentCell.swift */; };
+		E60EA5701EC64F4A003E3592 /* RemoteGravatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60EA56F1EC64F4A003E3592 /* RemoteGravatarProfile.swift */; };
 		E61084BE1B9B47BA008050C5 /* ReaderAbstractTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084B91B9B47BA008050C5 /* ReaderAbstractTopic.swift */; };
 		E61084BF1B9B47BA008050C5 /* ReaderDefaultTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084BA1B9B47BA008050C5 /* ReaderDefaultTopic.swift */; };
 		E61084C01B9B47BA008050C5 /* ReaderListTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084BB1B9B47BA008050C5 /* ReaderListTopic.swift */; };
@@ -1021,6 +1022,7 @@
 		E6ED090B1D46AFAF003283C4 /* ReaderFollowedSitesStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6ED090A1D46AFAF003283C4 /* ReaderFollowedSitesStreamHeader.xib */; };
 		E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F058011C1A122B008000F9 /* ReaderPostMenu.swift */; };
 		E6F66D421E00966000F875A5 /* UIImage+Rotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F66D411E00966000F875A5 /* UIImage+Rotation.swift */; };
+		E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */; };
 		F128C31C1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m */; };
 		F1564E5B18946087009F8F97 /* NSStringHelpersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTests.m */; };
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
@@ -2496,6 +2498,7 @@
 		E606467F1CB3133000A3073F /* SigninEditingState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SigninEditingState.swift; sourceTree = "<group>"; };
 		E60C2ED41DE5048200488630 /* ReaderCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderCommentCell.xib; sourceTree = "<group>"; };
 		E60C2ED61DE5075100488630 /* ReaderCommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderCommentCell.swift; sourceTree = "<group>"; };
+		E60EA56F1EC64F4A003E3592 /* RemoteGravatarProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteGravatarProfile.swift; path = "Remote Objects/RemoteGravatarProfile.swift"; sourceTree = "<group>"; };
 		E61084B91B9B47BA008050C5 /* ReaderAbstractTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderAbstractTopic.swift; sourceTree = "<group>"; };
 		E61084BA1B9B47BA008050C5 /* ReaderDefaultTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderDefaultTopic.swift; sourceTree = "<group>"; };
 		E61084BB1B9B47BA008050C5 /* ReaderListTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderListTopic.swift; sourceTree = "<group>"; };
@@ -2624,6 +2627,7 @@
 		E6ED090A1D46AFAF003283C4 /* ReaderFollowedSitesStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderFollowedSitesStreamHeader.xib; sourceTree = "<group>"; };
 		E6F058011C1A122B008000F9 /* ReaderPostMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostMenu.swift; sourceTree = "<group>"; };
 		E6F66D411E00966000F875A5 /* UIImage+Rotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Rotation.swift"; sourceTree = "<group>"; };
+		E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarProfile.swift; sourceTree = "<group>"; };
 		E7E2F7FF374281D90CDB91E2 /* Pods-WordPress_Base-WordPressShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress_Base-WordPressShareExtension.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress_Base-WordPressShareExtension/Pods-WordPress_Base-WordPressShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		F128C31A1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPNavigationMediaPickerViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
 		F128C31B1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPNavigationMediaPickerViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
@@ -3271,6 +3275,7 @@
 				173BCE781CEB780800AE8817 /* Domain.swift */,
 				E125F1E61E8E59C800320B67 /* SharePost+UIActivityItemSource.swift */,
 				E6311C421ECA017E00122529 /* UserProfile.swift */,
+				E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -5102,6 +5107,7 @@
 				5DED0E131B42E3E400431FCD /* RemoteSourcePostAttribution.m */,
 				598F86A51B67B7A000550C9C /* RemoteTheme.h */,
 				598F86A61B67B7A000550C9C /* RemoteTheme.m */,
+				E60EA56F1EC64F4A003E3592 /* RemoteGravatarProfile.swift */,
 			);
 			name = "Remote Objects";
 			sourceTree = "<group>";
@@ -6732,6 +6738,7 @@
 				438A809C1EA5DB88005D4651 /* LoginLinkRequestViewController.swift in Sources */,
 				E14BCABB1E0BC817002E0603 /* Delay.swift in Sources */,
 				598DD1711B97985700146967 /* ThemeBrowserCell.swift in Sources */,
+				E60EA5701EC64F4A003E3592 /* RemoteGravatarProfile.swift in Sources */,
 				B5A05AD91CA48601002EC787 /* ImageCropViewController.swift in Sources */,
 				E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */,
 				B576B4881C6A22FB0027C754 /* Languages.swift in Sources */,
@@ -7105,6 +7112,7 @@
 				E1EBC36F1C118EA500F638E0 /* ImmuTable.swift in Sources */,
 				B59B18751CC7FB8D0055EB7C /* PersonViewController.swift in Sources */,
 				E1D086E2194214C600F0CC19 /* NSDate+WordPressJSON.m in Sources */,
+				E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */,
 				5D839AAB187F0D8000811F4A /* PostGeolocationCell.m in Sources */,
 				FF0CAC321E4A8A0D00C7D4F1 /* AztecAttachmentViewController.swift in Sources */,
 				5D732F971AE84E3C00CD89E7 /* PostListFooterView.m in Sources */,
