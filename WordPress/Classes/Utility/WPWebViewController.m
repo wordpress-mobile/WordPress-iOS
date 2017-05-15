@@ -9,8 +9,8 @@
 #import "WPCookie.h"
 #import "Constants.h"
 #import "WPError.h"
-#import "UIImage+Util.h"
 #import "WPStyleGuide+WebView.h"
+#import <WordPressShared/UIImage+Util.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;
