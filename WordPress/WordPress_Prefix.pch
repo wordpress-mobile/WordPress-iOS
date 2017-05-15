@@ -16,13 +16,10 @@
 	#import <CocoaLumberjack/CocoaLumberjack.h>
     #import <NSObject_SafeExpectations/NSObject+SafeExpectations.h>
     #import <WordPressComAnalytics/WPAnalytics.h>
-    #import <WordPressShared/WPStyleGuide.h>
 
 	// Project-specific
     #import "WPStyleGuide+ReadableMargins.h"
-    #import "NSString+Util.h"
     #import "WPError.h"
-    #import "UIColor+Helpers.h"
     #import "WPMapFilterReduce.h"
 
 #ifndef IS_IPAD
