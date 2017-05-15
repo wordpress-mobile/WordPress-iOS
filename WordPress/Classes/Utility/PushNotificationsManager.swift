@@ -77,7 +77,7 @@ final public class PushNotificationsManager: NSObject {
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
     func registerForRemoteNotifications() {
-        if sharedApplication.isRunningSimulator() || build(.buddy) {
+        if sharedApplication.isRunningSimulator() || build(.a8cBranchTest) {
             return
         }
 
