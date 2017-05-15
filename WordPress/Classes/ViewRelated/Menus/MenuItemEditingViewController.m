@@ -2,13 +2,13 @@
 #import "Menu.h"
 #import "MenuItem.h"
 #import "Blog.h"
-#import "WPStyleGuide.h"
 #import "MenuItemEditingHeaderView.h"
 #import "MenuItemEditingFooterView.h"
 #import "MenuItemSourceViewController.h"
 #import "MenuItemTypeViewController.h"
 #import "ContextManager.h"
 #import <WordPressShared/WPDeviceIdentification.h>
+#import <WordPressShared/WPStyleGuide.h>
 
 NSString * const MenuItemEditingTypeSelectionChangedNotification = @"MenuItemEditingTypeSelectionChangedNotification";
 

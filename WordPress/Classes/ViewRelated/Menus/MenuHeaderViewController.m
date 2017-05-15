@@ -1,11 +1,11 @@
 #import "MenuHeaderViewController.h"
 #import "MenusSelectionView.h"
 #import "Blog.h"
-#import "WPStyleGuide.h"
 #import "Menu.h"
 #import "Menu+ViewDesign.h"
 #import "MenuLocation.h"
-#import "WPFontManager.h"
+#import <WordPressShared/WPFontManager.h>
+#import <WordPressShared/WPStyleGuide.h>
 
 static CGFloat ViewExpansionAnimationDelay = 0.15;
 
