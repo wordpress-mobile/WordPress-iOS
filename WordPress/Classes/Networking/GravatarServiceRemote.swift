@@ -30,9 +30,9 @@ open class GravatarServiceRemote {
             let errPointer: NSErrorPointer = nil
             if  let response = AFJSONResponseSerializer().responseObject(for: response, data: data, error: errPointer) as? [String: Array<Any>],
                 let entry = response["entry"],
-                let profileData = entry.first as? [String: Any] {
+                let profileData = entry.first as? NSDictionary {
 
-                let profile = RemoteGravatarProfile(dict: profileData)
+                let profile = RemoteGravatarProfile(dictionary: profileData)
                 success(profile)
                 return
             }
