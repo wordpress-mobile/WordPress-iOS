@@ -1,0 +1,58 @@
+{
+  "page": 1,
+  "pages": 419,
+  "total": 2931,
+  "total_email": 2931,
+  "total_wpcom": 7926165,
+  "subscribers": [
+    {
+      "avatar": "https://2.gravatar.com/avatar/e82142697283897ad7444810e5975895?s=64&amp;d=https%3A%2F%2F2.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+      "label": "user1@example.com",
+      "url": null,
+      "follow_data": null,
+      "date_subscribed": "2014-12-16T11:24:41+00:00"
+    },
+    {
+      "avatar": "https://0.gravatar.com/avatar/c0886cabd7d010a69b49eab4b2749ae6?s=64&amp;d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+      "label": "user2@example.com",
+      "url": null,
+      "follow_data": null,
+      "date_subscribed": "2014-12-16T06:44:34+00:00"
+    },
+    {
+      "avatar": "https://0.gravatar.com/avatar/3804ce80c05eaa18d9d600f800a697b5?s=64&amp;d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+      "label": "user3@example.com",
+      "url": null,
+      "follow_data": null,
+      "date_subscribed": "2014-12-16T06:25:17+00:00"
+    },
+    {
+      "avatar": "https://2.gravatar.com/avatar/59d507351cc16802fcd0d36d03425e5b?s=64&amp;d=https%3A%2F%2F2.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+      "label": "user4@example.com",
+      "url": null,
+      "follow_data": null,
+      "date_subscribed": "2014-12-15T22:30:39+00:00"
+    },
+    {
+      "avatar": "https://2.gravatar.com/avatar/5087090dedc4fb5e802a2ee541084dc1?s=64&amp;d=https%3A%2F%2F2.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+      "label": "user5@example.com",
+      "url": null,
+      "follow_data": null,
+      "date_subscribed": "2014-12-15T22:14:37+00:00"
+    },
+    {
+      "avatar": "https://2.gravatar.com/avatar/e98a1902a1c1e947f040956916cc8fa1?s=64&amp;d=https%3A%2F%2F2.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+      "label": "user6@example.com",
+      "url": null,
+      "follow_data": null,
+      "date_subscribed": "2014-12-15T20:20:33+00:00"
+    },
+    {
+      "avatar": "https://0.gravatar.com/avatar/3b37f38b63ce4f595cc5cfbaadb10938?s=64&amp;d=https%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D64&amp;r=G",
+      "label": "user7@example.com",
+      "url": null,
+      "follow_data": null,
+      "date_subscribed": "2014-12-15T15:09:01+00:00"
+    }
+  ]
+}
