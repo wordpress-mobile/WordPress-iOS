@@ -15,7 +15,7 @@ enum FeatureFlag: Int {
         case .mediaLibrary:
             return build(.debug, .alpha, .internal)
         case .newLogin:
-            return build(.debug)
+            return build(.debug, .alpha)
         case .nativeEditor:
             // At the moment this is only visible by default in non-app store builds
             if build(.alpha, .debug, .internal) {
