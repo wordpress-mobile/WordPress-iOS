@@ -1,0 +1,127 @@
+{
+    "date": "2014-11-04",
+    "days": {
+        "2014-11-04": {
+            "groups": [
+                       {
+                       "group": "Search Engines",
+                       "name": "Search Engines",
+                       "icon": "https://wordpress.com/i/stats/search-engine.png",
+                       "total": 38,
+                       "follow_data": null,
+                       "results": [
+                                   {
+                                   "name": "Google Search",
+                                   "icon": "https://secure.gravatar.com/blavatar/6741a05f4bc6e5b65f504c4f3df388a1?s=48",
+                                   "views": 38,
+                                   "children": [
+                                                {
+                                                "name": "google.com",
+                                                "url": "http://www.google.com/",
+                                                "icon": "https://secure.gravatar.com/blavatar/ff90821feeb2b02a33a6f9fc8e5f3fcd?s=48",
+                                                "views": 10
+                                                },
+                                                {
+                                                "name": "google.com/search",
+                                                "url": "http://www.google.com/search",
+                                                "icon": null,
+                                                "views": 4
+                                                },
+                                                {
+                                                "name": "google.co.uk",
+                                                "url": "http://www.google.co.uk",
+                                                "icon": "https://secure.gravatar.com/blavatar/d5d4cf8ec8dc8fddc90b7024afa3ddb3?s=48",
+                                                "views": 3
+                                                },
+                                                {
+                                                "name": "google.de/search",
+                                                "url": "http://www.google.de/search",
+                                                "icon": null,
+                                                "views": 3
+                                                },
+                                                {
+                                                "name": "google.ru",
+                                                "url": "http://www.google.ru",
+                                                "icon": "https://secure.gravatar.com/blavatar/732835f518e918bfe36321057d1b81a2?s=48",
+                                                "views": 2
+                                                },
+                                                {
+                                                "name": "google.co.kr",
+                                                "url": "http://www.google.co.kr",
+                                                "icon": "https://secure.gravatar.com/blavatar/2ea50660dff06f17d5066c99beb0b501?s=48",
+                                                "views": 2
+                                                },
+                                                {
+                                                "name": "google.co.in/search",
+                                                "url": "http://www.google.co.in/search",
+                                                "icon": null,
+                                                "views": 1
+                                                },
+                                                {
+                                                "name": "google.com.tw",
+                                                "url": "http://www.google.com.tw",
+                                                "icon": "https://secure.gravatar.com/blavatar/44af9f272ac700832b2651b4072eabc6?s=48",
+                                                "views": 1
+                                                },
+                                                {
+                                                "name": "google.co.kr/search",
+                                                "url": "http://www.google.co.kr/search",
+                                                "icon": null,
+                                                "views": 1
+                                                },
+                                                {
+                                                "name": "google.com.ua/search",
+                                                "url": "http://www.google.com.ua/search",
+                                                "icon": null,
+                                                "views": 1
+                                                },
+                                                {
+                                                "name": "google.com.hk",
+                                                "url": "http://www.google.com.hk",
+                                                "icon": "https://secure.gravatar.com/blavatar/a735b82241adc4d21bb49558937940ac?s=48",
+                                                "views": 1
+                                                }
+                                                ]
+                                   }
+                                   ]
+                       },
+                       {
+                       "group": "make.wordpress.org",
+                       "name": "make.wordpress.org/mobile/",
+                       "url": "https://make.wordpress.org/mobile/",
+                       "icon": null,
+                       "total": 2,
+                       "follow_data": null,
+                       "results": {
+                       "views": 2
+                       }
+                       },
+                       {
+                       "group": "forums.macg.co",
+                       "name": "forums.macg.co/internet-et-reseau/mavericks-synchronisation-calendrier-google-agenda-1232966.html",
+                       "url": "http://forums.macg.co/internet-et-reseau/mavericks-synchronisation-calendrier-google-agenda-1232966.html",
+                       "icon": null,
+                       "total": 1,
+                       "follow_data": null,
+                       "results": {
+                       "views": 1
+                       }
+                       },
+                       {
+                       "group": "flipboard.com",
+                       "name": "flipboard.com/redirect?url=http%3A%2F%2Fastralbodi.es%2F2014%2F08%2F06%2Fasynchronous-unit-testing-core-data-with-xcode-6%2F",
+                       "url": "https://flipboard.com/redirect?url=http%3A%2F%2Fastralbodi.es%2F2014%2F08%2F06%2Fasynchronous-unit-testing-core-data-with-xcode-6%2F",
+                       "icon": null,
+                       "total": 1,
+                       "follow_data": null,
+                       "results": {
+                       "views": 1
+                       }
+                       }
+                       ],
+            "other_views": 0,
+            "total_views": 42
+        }
+    },
+    "period": "day"
+}
