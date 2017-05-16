@@ -9,5 +9,6 @@
 - (void)cell:(nonnull UITableViewCell *)cell handleStatsForPost:(nonnull AbstractPost *)post;
 - (void)cell:(nonnull UITableViewCell *)cell handleTrashPost:(nonnull AbstractPost *)post;
 - (void)cell:(nonnull UITableViewCell *)cell handlePublishPost:(nonnull AbstractPost *)post;
+- (void)cell:(nonnull UITableViewCell *)cell handleSchedulePost:(nonnull AbstractPost *)post;
 - (void)cell:(nonnull UITableViewCell *)cell handleRestorePost:(nonnull AbstractPost *)post;
 @end
