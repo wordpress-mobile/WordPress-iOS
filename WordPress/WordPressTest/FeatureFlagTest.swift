@@ -5,20 +5,20 @@ import XCTest
 class FeatureFlagTest: XCTestCase {
 
     func testBuild() {
-        Build.withCurrent(.debug) {
-            expect(build(.debug)).to(beTrue())
-            expect(build(.debug, .alpha)).to(beTrue())
-            expect(build(.alpha)).to(beFalse())
-            expect(build(.internal)).to(beFalse())
+        Build.withCurrent(.localDeveloper) {
+            expect(build(.localDeveloper)).to(beTrue())
+            expect(build(.localDeveloper, .a8cBranchTest)).to(beTrue())
+            expect(build(.a8cBranchTest)).to(beFalse())
+            expect(build(.a8cPrereleaseTesting)).to(beFalse())
             expect(build(.appStore)).to(beFalse())
         }
 
         Build.withCurrent(.appStore) {
-            expect(build(.debug)).to(beFalse())
-            expect(build(.alpha)).to(beFalse())
-            expect(build(.internal)).to(beFalse())
+            expect(build(.localDeveloper)).to(beFalse())
+            expect(build(.a8cBranchTest)).to(beFalse())
+            expect(build(.a8cPrereleaseTesting)).to(beFalse())
             expect(build(.appStore)).to(beTrue())
-            expect(build(.internal,.appStore)).to(beTrue())
+            expect(build(.a8cPrereleaseTesting,.appStore)).to(beTrue())
         }
     }
 
