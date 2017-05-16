@@ -275,7 +275,7 @@ class AztecPostViewController: UIViewController {
         }
 
         // TODO: Determine if user can actually publish to site or not
-        let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: true, hasFutureDate: self.post.hasFuturePublishDate(), delegate: self)
+        let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: true, publishDate: self.post.dateCreated, delegate: self)
 
         return context
     }()
