@@ -178,7 +178,7 @@ public class PostEditorStateContext {
     /// - Parameters:
     ///   - originalPostStatus: If the post was already published (saved to the server) what is the status
     ///   - userCanPublish: Does the user have permission to publish posts or merely create drafts
-    ///   - hasFutureDate: The post is scheduled to be published at a future date
+    ///   - publishDate: The post publish date
     ///   - delegate: Delegate for listening to change in state for the editor
     ///
     init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, publishDate: Date? = nil, delegate: PostEditorStateContextDelegate) {
