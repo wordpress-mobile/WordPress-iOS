@@ -28,7 +28,7 @@
         <!--Login Email View Controller-->
         <scene sceneID="w6Y-pB-a3f">
             <objects>
-                <viewController storyboardIdentifier="SigninEmailViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fwZ-QE-5et" customClass="LoginEmailViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="emailEntry" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fwZ-QE-5et" customClass="LoginEmailViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bn3-aC-RIM"/>
                         <viewControllerLayoutGuide type="bottom" id="tip-gy-Hwr"/>
@@ -430,7 +430,7 @@
         <!--Login Self Hosted View Controller-->
         <scene sceneID="b2O-iW-wfB">
             <objects>
-                <viewController storyboardIdentifier="SigninSelfHostedViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SZS-o3-1P7" customClass="LoginSelfHostedViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="selfHosted" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SZS-o3-1P7" customClass="LoginSelfHostedViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Yjk-Cc-Bxb"/>
                         <viewControllerLayoutGuide type="bottom" id="Ktl-It-Kmo"/>
@@ -1538,9 +1538,9 @@
         <image name="logo-wpcom-vertical" width="152" height="106"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="fA5-mb-vrv"/>
         <segue reference="07g-E6-aeG"/>
-        <segue reference="Jfl-Zm-PRR"/>
+        <segue reference="ySQ-EM-6JI"/>
         <segue reference="fWM-mD-lXg"/>
-        <segue reference="lIb-sw-yM7"/>
     </inferredMetricsTieBreakers>
 </document>
