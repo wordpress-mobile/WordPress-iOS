@@ -873,9 +873,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
             if let index = strongSelf.recentlyTrashedPostObjectIDs.index(of: postObjectID) {
                 strongSelf.recentlyTrashedPostObjectIDs.remove(at: index)
-
-                if let indexPath = indexPath {
-                    strongSelf.tableView.reloadRows(at: [indexPath], with: .automatic)
+                // We don't really know what happened here, why did the request fail?
+                // Maybe we could not delete the post or maybe the post was already deleted
+                // It is safer to re fetch the results than to reload that specific row
+                DispatchQueue.main.async {
+                    strongSelf.updateAndPerformFetchRequestRefreshingResults()
                 }
             }
         }
