@@ -145,7 +145,7 @@ public class PostEditorStateContext {
 
     fileprivate var originalPostStatus: BasePost.Status?
     fileprivate var currentPostStatus: BasePost.Status?
-    fileprivate var hasFutureDate: Bool
+    fileprivate var currentPublishDate: Date?
     fileprivate var userCanPublish: Bool
     private weak var delegate: PostEditorStateContextDelegate?
 
@@ -181,11 +181,11 @@ public class PostEditorStateContext {
     ///   - hasFutureDate: The post is scheduled to be published at a future date
     ///   - delegate: Delegate for listening to change in state for the editor
     ///
-    init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, hasFutureDate: Bool = false, delegate: PostEditorStateContextDelegate) {
+    init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, publishDate: Date? = nil, delegate: PostEditorStateContextDelegate) {
         self.originalPostStatus = originalPostStatus
         self.currentPostStatus = originalPostStatus
         self.userCanPublish = userCanPublish
-        self.hasFutureDate = hasFutureDate
+        self.currentPublishDate = publishDate
         self.delegate = delegate
 
         guard let originalPostStatus = originalPostStatus else {
@@ -216,6 +216,8 @@ public class PostEditorStateContext {
     /// Call when the publish date has changed (picked a future date) or nil if publish immediately selected
     ///
     func updated(publishDate: Date?) {
+        currentPublishDate = publishDate
+        
         let updatedState = editorState.updated(publishDate: publishDate, context: self)
         guard type(of: editorState) != type(of: updatedState) else {
             return
@@ -304,7 +306,7 @@ public class PostEditorStateContext {
         }
 
         // Don't show Publish Now for a draft with a future date
-        guard !(currentPostStatus == .draft && hasFutureDate) else {
+        guard !(currentPostStatus == .draft && isFutureDated(currentPublishDate)) else {
             return false
         }
 
@@ -480,22 +482,20 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
 
 /// Helper methods for all concrete PostEditorActionState classes
 ///
-fileprivate extension PostEditorActionState {
-    func isFutureDated(_ date: Date?) -> Bool {
-        guard let date = date else {
-            return false
-        }
-
-        let comparison = Calendar.current.compare(Date(), to: date, toGranularity: .minute)
-
-        return comparison == .orderedAscending
+fileprivate func isFutureDated(_ date: Date?) -> Bool {
+    guard let date = date else {
+        return false
     }
 
-    func isPastDated(_ date: Date?) -> Bool {
-        guard let date = date else {
-            return false
-        }
+    let comparison = Calendar.current.compare(Date(), to: date, toGranularity: .minute)
 
-        return date < Date()
+    return comparison == .orderedAscending
+}
+
+fileprivate func isPastDated(_ date: Date?) -> Bool {
+    guard let date = date else {
+        return false
     }
+
+    return date < Date()
 }
