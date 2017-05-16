@@ -217,7 +217,7 @@ public class PostEditorStateContext {
     ///
     func updated(publishDate: Date?) {
         currentPublishDate = publishDate
-        
+
         let updatedState = editorState.updated(publishDate: publishDate, context: self)
         guard type(of: editorState) != type(of: updatedState) else {
             return
