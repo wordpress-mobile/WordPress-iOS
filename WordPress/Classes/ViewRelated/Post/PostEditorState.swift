@@ -480,7 +480,7 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
     }
 }
 
-/// Helper methods for all concrete PostEditorActionState classes
+/// Helper methods for the entire state machine
 ///
 fileprivate func isFutureDated(_ date: Date?) -> Bool {
     guard let date = date else {
