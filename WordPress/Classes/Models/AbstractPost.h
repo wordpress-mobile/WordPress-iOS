@@ -43,6 +43,8 @@ extern NSString * const PostStatusDeleted;
 @property (nonatomic, assign) BOOL metaIsLocal;
 @property (nonatomic, assign) BOOL metaPublishImmediately;
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
+@property (nonatomic, readonly) BOOL hasBeenPublished;
+
 /**
  Used to store the post's status before its sent to the trash.
  */
@@ -75,6 +77,7 @@ extern NSString * const PostStatusDeleted;
 - (BOOL)hasRevision;
 
 #pragma mark - Conveniece Methods
+- (void)publish;
 - (void)publishImmediately;
 - (BOOL)shouldPublishImmediately;
 - (NSString *)authorNameForDisplay;
