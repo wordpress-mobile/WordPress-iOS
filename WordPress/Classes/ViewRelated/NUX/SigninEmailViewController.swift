@@ -23,7 +23,7 @@ import WordPressShared
 
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
-    var restrictSigninToWPCom = false {
+    override var restrictToWPCom: Bool {
         didSet {
             if isViewLoaded {
                 configureForWPComOnlyIfNeeded()
@@ -100,7 +100,7 @@ import WordPressShared
     ///
     ///
     func configureForWPComOnlyIfNeeded() {
-        selfHostedSigninButton.isHidden = restrictSigninToWPCom
+        selfHostedSigninButton.isHidden = restrictToWPCom
     }
 
 
@@ -251,7 +251,7 @@ import WordPressShared
     func signinWithUsernamePassword(_ immediateSignin: Bool = false) {
         let controller = SigninWPComViewController.controller(loginFields, immediateSignin: immediateSignin)
         controller.dismissBlock = dismissBlock
-        controller.restrictSigninToWPCom = restrictSigninToWPCom
+        controller.restrictToWPCom = restrictToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -271,7 +271,7 @@ import WordPressShared
     func requestLink() {
         let controller = SigninLinkRequestViewController.controller(loginFields)
         controller.dismissBlock = dismissBlock
-        controller.restrictSigninToWPCom = restrictSigninToWPCom
+        controller.restrictToWPCom = restrictToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -322,7 +322,7 @@ import WordPressShared
             signinWithWPComDomain(username)
         } else if !SigninHelpers.isUsernameReserved(username) {
             signinWithUsernamePassword()
-        } else if restrictSigninToWPCom {
+        } else if restrictToWPCom {
             // When restricted, show a prompt then let the user enter a new username.
             SigninHelpers.promptForWPComReservedUsername(username, callback: {
                 self.loginFields.username = ""
