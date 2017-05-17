@@ -219,10 +219,8 @@ private extension ShareViewController {
     func loadContent(extensionContext: NSExtensionContext) {
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
-                switch share {
-                case .text(let text):
-                    self?.textView.text = text
-                case .image(let image):
+                self?.textView.text = share.text
+                if let image = share.image {
                     self?.imageLoaded(image: image)
                 }
         }

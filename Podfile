@@ -14,7 +14,7 @@ end
 def shared_with_stats_pods
   pod 'AFNetworking', '3.1.0'  
   pod 'NSObject-SafeExpectations', '0.0.2'
-  pod 'WordPressCom-Analytics-iOS', '0.1.25'
+  pod 'WordPressCom-Analytics-iOS', '0.1.27'
 end
 
 def shared_test_pods
