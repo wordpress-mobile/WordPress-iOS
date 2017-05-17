@@ -1,11 +1,11 @@
 #import "WPError.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
-#import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
 #import "SupportViewController.h"
-#import "WordPress-Swift.h"
+#import <WordPressShared/NSString+XMLExtensions.h>
 #import <wpxmlrpc/WPXMLRPC.h>
+#import "WordPress-Swift.h"
 
 NSInteger const SupportButtonIndex = 0;
 NSString * const WordPressAppErrorDomain = @"org.wordpress.iphone";

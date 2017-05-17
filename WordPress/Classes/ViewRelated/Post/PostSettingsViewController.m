@@ -4,7 +4,6 @@
 #import "PostCategoriesViewController.h"
 #import "FeaturedImageViewController.h"
 #import "LocationService.h"
-#import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
 #import "Media.h"
 #import "PostFeaturedImageCell.h"
@@ -13,7 +12,6 @@
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "PublishDatePickerView.h"
-#import "WPTextFieldTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableImageSource.h"
@@ -25,6 +23,8 @@
 #import <Photos/Photos.h>
 #import <Reachability/Reachability.h>
 #import "WPGUIConstants.h"
+#import <WordPressShared/NSString+XMLExtensions.h>
+#import <WordPressShared/WPTextFieldTableViewCell.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;

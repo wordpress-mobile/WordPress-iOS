@@ -15,13 +15,13 @@
 #import "AccountServiceRemote.h"
 #import "AccountServiceRemoteREST.h"
 #import "RemoteBlog.h"
-#import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
 #import "RemotePostType.h"
 #import "PostType.h"
 #import "RemoteBlogOptionsHelper.h"
+#import <WordPressShared/NSString+XMLExtensions.h>
 
 NSString *const WPComGetFeatures = @"wpcom.getFeatures";
 NSString *const VideopressEnabled = @"videopress_enabled";
