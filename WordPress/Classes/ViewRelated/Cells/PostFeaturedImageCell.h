@@ -1,4 +1,4 @@
-#import "WPTableViewCell.h"
+#import <WordPressShared/WPTableViewCell.h>
 
 @interface PostFeaturedImageCell : WPTableViewCell
 

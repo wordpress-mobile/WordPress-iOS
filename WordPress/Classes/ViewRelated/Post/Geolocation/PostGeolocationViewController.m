@@ -6,7 +6,7 @@
 #import "LocationService.h"
 #import "PostAnnotation.h"
 #import "PostGeolocationView.h"
-#import "WPTableViewCell.h"
+#import <WordPressShared/WPTableViewCell.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;

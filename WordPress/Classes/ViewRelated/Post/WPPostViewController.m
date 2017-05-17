@@ -30,7 +30,6 @@
 #import "WPButtonForNavigationBar.h"
 #import "WPMediaProgressTableViewController.h"
 #import "WPProgressTableViewCell.h"
-#import "WPTableViewCell.h"
 #import "WPTabBarController.h"
 #import "WPUploadStatusButton.h"
 #import "WordPress-Swift.h"
@@ -38,6 +37,7 @@
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPAppAnalytics.h"
 #import "Media+HTML.h"
+#import <WordPressShared/WPTableViewCell.h>
 
 @import Gridicons;
 

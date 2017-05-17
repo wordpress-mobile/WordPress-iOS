@@ -1,6 +1,6 @@
 #import "WPWalkthroughTextField.h"
 #import "Constants.h"
-#import "WPNUXUtility.h"
+#import <WordPressShared/WPNUXUtility.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;
