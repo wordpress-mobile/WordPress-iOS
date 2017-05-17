@@ -22,7 +22,7 @@ open class UsersService {
         let remote = UsersServiceRemoteXMLRPC(api: api, username: username, password: password)
         remote.fetchProfile({ (remoteProfile) in
 
-            let profile = UserProfile()
+            var profile = UserProfile()
             profile.bio = remoteProfile.bio
             profile.displayName = remoteProfile.displayName
             profile.email = remoteProfile.email
