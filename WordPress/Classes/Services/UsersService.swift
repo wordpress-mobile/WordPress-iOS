@@ -1,5 +1,9 @@
 import Foundation
 
+public enum UsersServiceError: Int, Error {
+    case BlogNotSelfhosted
+}
+
 /// UserService is responsible for interacting with UserServiceRemoteXMLRPC to 
 /// fetch User and Profile related details from self-hosted blogs.  See the
 /// PeopleService for WordPress.com blogs via the REST API.
@@ -11,6 +15,7 @@ open class UsersService {
     func fetchProfile(blog: Blog, success: @escaping ((UserProfile) -> Void), failure: @escaping ((NSError?) -> Void)) {
         guard let api = blog.xmlrpcApi, let username = blog.username, let password = blog.password else {
             assertionFailure("Only self-hosted blogs are allowed.")
+            failure(UsersServiceError.BlogNotSelfhosted as NSError)
             return
         }
 
