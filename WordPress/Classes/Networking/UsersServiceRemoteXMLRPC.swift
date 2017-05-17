@@ -1,6 +1,9 @@
 import Foundation
-
 import AFNetworking
+
+public enum UsersServiceRemoteError: Int, Error {
+    case UnexpectedResponseData
+}
 
 /// UsersServiceRemoteXMLRPC handles Users related XML-RPC calls.
 /// https://codex.wordpress.org/XML-RPC_WordPress_API/Users
@@ -14,6 +17,7 @@ open class UsersServiceRemoteXMLRPC: ServiceRemoteWordPressXMLRPC {
         api.callMethod("wp.getProfile", parameters: params, success: { (responseObj, response) in
             guard let dict = responseObj as? NSDictionary else {
                 assertionFailure("A dictionary was expected but the API returned something different.")
+                failure(UsersServiceRemoteError.UnexpectedResponseData as NSError)
                 return
             }
             let profile = RemoteProfile(dictionary: dict)
