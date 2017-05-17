@@ -105,6 +105,9 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
             break;
         }
     }
+    if (imageSrc.length == 0) {
+        imageSrc = [self searchContentBySizeClassForImageToFeature:content];
+    }
 
     return imageSrc;
 }

@@ -145,6 +145,7 @@ public class PostEditorStateContext {
 
     fileprivate var originalPostStatus: BasePost.Status?
     fileprivate var currentPostStatus: BasePost.Status?
+    fileprivate var currentPublishDate: Date?
     fileprivate var userCanPublish: Bool
     private weak var delegate: PostEditorStateContextDelegate?
 
@@ -177,12 +178,14 @@ public class PostEditorStateContext {
     /// - Parameters:
     ///   - originalPostStatus: If the post was already published (saved to the server) what is the status
     ///   - userCanPublish: Does the user have permission to publish posts or merely create drafts
+    ///   - publishDate: The post publish date
     ///   - delegate: Delegate for listening to change in state for the editor
     ///
-    init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
+    init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, publishDate: Date? = nil, delegate: PostEditorStateContextDelegate) {
         self.originalPostStatus = originalPostStatus
         self.currentPostStatus = originalPostStatus
         self.userCanPublish = userCanPublish
+        self.currentPublishDate = publishDate
         self.delegate = delegate
 
         guard let originalPostStatus = originalPostStatus else {
@@ -213,6 +216,8 @@ public class PostEditorStateContext {
     /// Call when the publish date has changed (picked a future date) or nil if publish immediately selected
     ///
     func updated(publishDate: Date?) {
+        currentPublishDate = publishDate
+
         let updatedState = editorState.updated(publishDate: publishDate, context: self)
         guard type(of: editorState) != type(of: updatedState) else {
             return
@@ -295,8 +300,13 @@ public class PostEditorStateContext {
             return false
         }
 
-        // Don't show Publish Now for an already published post with the update button as primary
-        guard !(currentPostStatus == .publish && editorState.action == .update) else {
+        // Don't show Publish Now for an already published or scheduled post with the update button as primary
+        guard !((currentPostStatus == .publish || currentPostStatus == .scheduled) && editorState.action == .update) else {
+            return false
+        }
+
+        // Don't show Publish Now for a draft with a future date
+        guard !(currentPostStatus == .draft && isFutureDated(currentPublishDate)) else {
             return false
         }
 
@@ -470,24 +480,22 @@ fileprivate class PostEditorStateUpdate: PostEditorActionState {
     }
 }
 
-/// Helper methods for all concrete PostEditorActionState classes
+/// Helper methods for the entire state machine
 ///
-fileprivate extension PostEditorActionState {
-    func isFutureDated(_ date: Date?) -> Bool {
-        guard let date = date else {
-            return false
-        }
-
-        let comparison = Calendar.current.compare(Date(), to: date, toGranularity: .minute)
-
-        return comparison == .orderedAscending
+fileprivate func isFutureDated(_ date: Date?) -> Bool {
+    guard let date = date else {
+        return false
     }
 
-    func isPastDated(_ date: Date?) -> Bool {
-        guard let date = date else {
-            return false
-        }
+    let comparison = Calendar.current.compare(Date(), to: date, toGranularity: .minute)
 
-        return date < Date()
+    return comparison == .orderedAscending
+}
+
+fileprivate func isPastDated(_ date: Date?) -> Bool {
+    guard let date = date else {
+        return false
     }
+
+    return date < Date()
 }

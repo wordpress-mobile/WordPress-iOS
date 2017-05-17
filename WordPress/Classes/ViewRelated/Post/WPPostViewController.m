@@ -1257,12 +1257,17 @@ EditImageDetailsViewControllerDelegate
         // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
         // to showing Publish Now instead of Submit for Review.
         if (!self.post.blog.capabilities || [self.post.blog isPublishingPostsAllowed]) {
-            return [UIAlertAction actionWithTitle:NSLocalizedString(@"Publish Now", @"Title of button allowing the user to immediately publish the post they are editing.")
-                                            style:UIAlertActionStyleDestructive
-                                          handler:^(UIAlertAction * _Nonnull action) {
-                                              [self.post publishImmediately];
-                                              [self saveAction:action];
-                                          }];
+            if (self.post.hasFuturePublishDate) {
+                // We don't want a Publish action for a Draft scheduled for a future date
+                return nil;
+            } else {
+                return [UIAlertAction actionWithTitle:NSLocalizedString(@"Publish Now", @"Title of button allowing the user to immediately publish the post they are editing.")
+                                                style:UIAlertActionStyleDestructive
+                                              handler:^(UIAlertAction * _Nonnull action) {
+                                                  [self.post publishImmediately];
+                                                  [self saveAction:action];
+                                              }];
+            }
         } else {
             return [UIAlertAction actionWithTitle:NSLocalizedString(@"Submit for Review", @"Title of button allowing a contributor to a site to submit the post they are editing for review.")
                                             style:UIAlertActionStyleDestructive
