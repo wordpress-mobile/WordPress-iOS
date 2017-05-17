@@ -483,6 +483,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         publishPost(post)
     }
 
+    func cell(_ cell: UITableViewCell, handleSchedulePost post: AbstractPost) {
+        schedulePost(post)
+    }
+
     func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
         if (post.status == .trash) {
 
