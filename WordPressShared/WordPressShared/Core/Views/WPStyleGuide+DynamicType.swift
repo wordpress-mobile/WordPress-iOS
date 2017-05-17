@@ -1,6 +1,7 @@
 /// Extension on WPStyleGuide to use Dynamic Type fonts.
 ///
 extension WPStyleGuide {
+    static let defaultTableViewRowHeight: CGFloat = 44.0
 
     static let notoLoaded = { () -> Bool in
         WPFontManager.loadNotoFontFamily()
@@ -14,7 +15,7 @@ extension WPStyleGuide {
     ///
     public class func configureAutomaticHeightRowsForTableView(_ tableView: UITableView) {
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 44//WPTableViewDefaultRowHeight
+        tableView.estimatedRowHeight = defaultTableViewRowHeight
     }
 
     /// Configures a label with the default system font with the specified style.
