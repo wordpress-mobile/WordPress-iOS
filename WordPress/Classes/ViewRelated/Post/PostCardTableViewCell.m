@@ -13,6 +13,8 @@ static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
 typedef NS_ENUM(NSUInteger, ActionBarMode) {
     ActionBarModePublish = 1,
+    ActionBarModeScheduled,
+    ActionBarModeDraftWithFutureDate,
     ActionBarModeDraft,
     ActionBarModeTrash,
 };
@@ -400,9 +402,16 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     } else if ([status isEqualToString:PostStatusTrash]) {
         // trashed
         [self configureTrashedActionBar];
+    } else if ([status isEqualToString:PostStatusScheduled]) {
+        // scheduled
+        [self configureScheduledActionBar];
     } else {
-        // anything else (draft, pending, scheduled, something custom) treat as draft
-        [self configureDraftActionBar];
+        if (self.post.hasFuturePublishDate) {
+            [self configureDraftWithFutureDateActionBar];
+        } else {
+            // anything else (draft, something custom) treat as draft
+            [self configureDraftActionBar];
+        }
     }
     [self.actionBar reset];
 }
@@ -419,46 +428,52 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:imageInsets];
     }
 
-    __weak __typeof(self) weakSelf = self;
     NSMutableArray *items = [NSMutableArray array];
-    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Edit", @"Label for the edit post button. Tapping displays the editor.")
-                                                                 image:[UIImage imageNamed:@"icon-post-actionbar-edit"]
-                                                      highlightedImage:nil];
-    item.callback = ^{
-        [weakSelf editPostAction];
-    };
-    item.imageInsets = imageInsets;
-    [items addObject:item];
-
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"View", @"Label for the view post button. Tapping displays the post as it appears on the web.")
-                                          image:[[UIImage imageNamed:@"icon-post-actionbar-view"] imageFlippedForRightToLeftLayoutDirection]
-                               highlightedImage:nil];
-    item.callback = ^{
-        [weakSelf viewPostAction];
-    };
-    item.imageInsets = imageInsets;
-    [items addObject:item];
-
+    [items addObject:[self editActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self viewActionBarItemWithInsets:imageInsets]];
     if ([self.post supportsStats]) {
-        item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Stats", @"Label for the view stats button. Tapping displays statistics for a post.")
-                                              image:[UIImage imageNamed:@"icon-post-actionbar-stats"]
-                                   highlightedImage:nil];
-        item.callback = ^{
-            [weakSelf statsPostAction];
-        };
-        item.imageInsets = imageInsets;
-        [items addObject:item];
+        [items addObject:[self statsActionBarItemWithInsets:imageInsets]];
+    }
+    [items addObject:[self trashActionBarItemWithInsets:imageInsets]];
+    [self.actionBar setItems:items];
+}
+
+- (void)configureScheduledActionBar
+{
+    if (self.currentActionBarMode == ActionBarModeScheduled) {
+        return;
+    }
+    self.currentActionBarMode = ActionBarModeScheduled;
+
+    UIEdgeInsets imageInsets = ActionbarButtonImageInsets;
+    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionRightToLeft) {
+        imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:imageInsets];
     }
 
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Trash", @"Label for the trash post button. Tapping moves a post to the trash bin.")
-                                          image:[UIImage imageNamed:@"icon-post-actionbar-trash"]
-                               highlightedImage:nil];
-    item.callback = ^{
-        [weakSelf trashPostAction];
-    };
-    item.imageInsets = imageInsets;
-    [items addObject:item];
+    NSMutableArray *items = [NSMutableArray array];
+    [items addObject:[self editActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self previewActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self trashActionBarItemWithInsets:imageInsets]];
+    [self.actionBar setItems:items];
+}
 
+- (void)configureDraftWithFutureDateActionBar
+{
+    if (self.currentActionBarMode == ActionBarModeDraftWithFutureDate) {
+        return;
+    }
+    self.currentActionBarMode = ActionBarModeDraftWithFutureDate;
+
+    UIEdgeInsets imageInsets = ActionbarButtonImageInsets;
+    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionRightToLeft) {
+        imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:imageInsets];
+    }
+
+    NSMutableArray *items = [NSMutableArray array];
+    [items addObject:[self editActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self previewActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self scheduleActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self trashActionBarItemWithInsets:imageInsets]];
     [self.actionBar setItems:items];
 }
 
@@ -474,44 +489,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:imageInsets];
     }
 
-    __weak __typeof(self) weakSelf = self;
     NSMutableArray *items = [NSMutableArray array];
-    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Edit", @"Label for the edit post button. Tapping displays the editor.")
-                                                                 image:[UIImage imageNamed:@"icon-post-actionbar-edit"]
-                                                      highlightedImage:nil];
-    item.callback = ^{
-        [weakSelf editPostAction];
-    };
-    item.imageInsets = imageInsets;
-    [items addObject:item];
-
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Preview", @"Label for the preview post button. Tapping shows a preview of the post.")
-                                          image:[[UIImage imageNamed:@"icon-post-actionbar-view"] imageFlippedForRightToLeftLayoutDirection]
-                               highlightedImage:nil];
-    item.callback = ^{
-        [weakSelf viewPostAction];
-    };
-    item.imageInsets = imageInsets;
-    [items addObject:item];
-
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Publish", @"Label for the publish button. Tapping publishes a draft post.")
-                                          image:[UIImage imageNamed:@"icon-post-actionbar-publish"]
-                               highlightedImage:nil];
-    item.callback = ^{
-        [weakSelf publishPostAction];
-    };
-    item.imageInsets = imageInsets;
-    [items addObject:item];
-
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Trash", @"Label for the trash post button. Tapping moves a post to the trash bin.")
-                                          image:[UIImage imageNamed:@"icon-post-actionbar-trash"]
-                               highlightedImage:nil];
-    item.callback = ^{
-        [weakSelf trashPostAction];
-    };
-    item.imageInsets = imageInsets;
-    [items addObject:item];
-
+    [items addObject:[self editActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self previewActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self publishActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self trashActionBarItemWithInsets:imageInsets]];
     [self.actionBar setItems:items];
 }
 
@@ -527,29 +509,132 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:imageInsets];
     }
 
-    __weak __typeof(self) weakSelf = self;
     NSMutableArray *items = [NSMutableArray array];
-    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Restore", @"Label for restoring a trashed post.")
-                                                                 image:[UIImage imageNamed:@"icon-post-actionbar-restore"]
-                                                      highlightedImage:nil];
-    item.callback = ^{
-        [weakSelf restorePostAction];
-    };
-    item.imageInsets = imageInsets;
-    [items addObject:item];
-
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Delete", @"Label for the delete post buton. Tapping permanently deletes a post.")
-                                          image:[UIImage imageNamed:@"icon-post-actionbar-trash"]
-                               highlightedImage:nil];
-    item.callback = ^{
-        [weakSelf trashPostAction];
-    };
-    item.imageInsets = imageInsets;
-    [items addObject:item];
-
+    [items addObject:[self restoreActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self deleteActionBarItemWithInsets:imageInsets]];
     [self.actionBar setItems:items];
 }
 
+- (PostCardActionBarItem *)editActionBarItemWithInsets:(UIEdgeInsets)imageInsets
+{
+    __weak __typeof(self) weakSelf = self;
+    PostCardActionBarItem *item = [self actionBarItemWithTitle:NSLocalizedString(@"Edit", @"Label for the edit post button. Tapping displays the editor.")
+                                                         image:[UIImage imageNamed:@"icon-post-actionbar-edit"]
+                                                   imageInsets:imageInsets
+                                                   andCallback:^{
+                                                       [weakSelf editPostAction];
+                                                   }];
+    return item;
+}
+
+- (PostCardActionBarItem *)viewActionBarItemWithInsets:(UIEdgeInsets)imageInsets
+{
+    __weak __typeof(self) weakSelf = self;
+    PostCardActionBarItem *item = [self actionBarItemWithTitle:NSLocalizedString(@"View", @"Label for the view post button. Tapping displays the post as it appears on the web.")
+                                                         image:[UIImage imageNamed:@"icon-post-actionbar-view"]
+                                                   imageInsets:imageInsets
+                                                   andCallback:^{
+                                                       [weakSelf viewPostAction];
+                                                   }];
+    return item;
+}
+
+- (PostCardActionBarItem *)statsActionBarItemWithInsets:(UIEdgeInsets)imageInsets
+{
+    __weak __typeof(self) weakSelf = self;
+    PostCardActionBarItem *item = [self actionBarItemWithTitle:NSLocalizedString(@"Stats", @"Label for the view stats button. Tapping displays statistics for a post.")
+                                                         image:[UIImage imageNamed:@"icon-post-actionbar-stats"]
+                                                   imageInsets:imageInsets
+                                                   andCallback:^{
+                                                       [weakSelf statsPostAction];
+                                                   }];
+    return item;
+}
+
+- (PostCardActionBarItem *)trashActionBarItemWithInsets:(UIEdgeInsets)imageInsets
+{
+    __weak __typeof(self) weakSelf = self;
+    PostCardActionBarItem *item = [self actionBarItemWithTitle:NSLocalizedString(@"Trash", @"Label for the trash post button. Tapping moves a post to the trash bin.")
+                                                         image:[UIImage imageNamed:@"icon-post-actionbar-trash"]
+                                                   imageInsets:imageInsets
+                                                   andCallback:^{
+                                                       [weakSelf trashPostAction];
+                                                   }];
+    return item;
+}
+
+- (PostCardActionBarItem *)previewActionBarItemWithInsets:(UIEdgeInsets)imageInsets
+{
+    __weak __typeof(self) weakSelf = self;
+    PostCardActionBarItem *item = [self actionBarItemWithTitle:NSLocalizedString(@"Preview", @"Label for the preview post button. Tapping shows a preview of the post.")
+                                                         image:[UIImage imageNamed:@"icon-post-actionbar-view"]
+                                                   imageInsets:imageInsets
+                                                   andCallback:^{
+                                                       [weakSelf viewPostAction];
+                                                   }];
+    return item;
+}
+
+- (PostCardActionBarItem *)publishActionBarItemWithInsets:(UIEdgeInsets)imageInsets
+{
+    __weak __typeof(self) weakSelf = self;
+    PostCardActionBarItem *item = [self actionBarItemWithTitle:NSLocalizedString(@"Publish", @"Label for the publish button. Tapping publishes a draft post.")
+                                                         image:[UIImage imageNamed:@"icon-post-actionbar-publish"]
+                                                   imageInsets:imageInsets
+                                                   andCallback:^{
+                                                       [weakSelf publishPostAction];
+                                                   }];
+    return item;
+}
+
+- (PostCardActionBarItem *)scheduleActionBarItemWithInsets:(UIEdgeInsets)imageInsets
+{
+    __weak __typeof(self) weakSelf = self;
+    PostCardActionBarItem *item = [self actionBarItemWithTitle:NSLocalizedString(@"Schedule", @"Label for the schedule button. Tapping publishes a draft post.")
+                                                         image:[UIImage imageNamed:@"icon-post-actionbar-publish"]
+                                                   imageInsets:imageInsets
+                                                   andCallback:^{
+                                                       [weakSelf schedulePostAction];
+                                                   }];
+    return item;
+}
+
+- (PostCardActionBarItem *)restoreActionBarItemWithInsets:(UIEdgeInsets)imageInsets
+{
+    __weak __typeof(self) weakSelf = self;
+    PostCardActionBarItem *item = [self actionBarItemWithTitle:NSLocalizedString(@"Restore", @"Label for restoring a trashed post.")
+                                                         image:[UIImage imageNamed:@"icon-post-actionbar-restore"]
+                                                   imageInsets:imageInsets
+                                                   andCallback:^{
+                                                       [weakSelf restorePostAction];
+                                                   }];
+    return item;
+}
+
+- (PostCardActionBarItem *)deleteActionBarItemWithInsets:(UIEdgeInsets)imageInsets
+{
+    __weak __typeof(self) weakSelf = self;
+    PostCardActionBarItem *item = [self actionBarItemWithTitle:NSLocalizedString(@"Delete", @"Label for the delete post buton. Tapping permanently deletes a post.")
+                                                         image:[UIImage imageNamed:@"icon-post-actionbar-trash"]
+                                                   imageInsets:imageInsets
+                                                   andCallback:^{
+                                                       [weakSelf trashPostAction];
+                                                   }];
+    return item;
+}
+
+- (PostCardActionBarItem *)actionBarItemWithTitle:(NSString *)title
+                                            image:(UIImage *)image
+                                      imageInsets:(UIEdgeInsets)imageInsets
+                                      andCallback:(PostCardActionBarItemCallback)callback
+{
+    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:title
+                                                                 image:image
+                                                      highlightedImage:nil];
+    item.callback = callback;
+    item.imageInsets = imageInsets;
+    return item;
+}
 
 #pragma mark - Actions
 
@@ -571,6 +656,13 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 {
     if ([self.delegate respondsToSelector:@selector(cell:handlePublishPost:)]) {
         [self.delegate cell:self handlePublishPost:self.post];
+    }
+}
+
+- (void)schedulePostAction
+{
+    if ([self.delegate respondsToSelector:@selector(cell:handleSchedulePost:)]) {
+        [self.delegate cell:self handleSchedulePost:self.post];
     }
 }
 

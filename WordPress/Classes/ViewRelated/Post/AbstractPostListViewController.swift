@@ -798,7 +798,17 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         if let date = apost.dateCreated, date == (Date() as NSDate).laterDate(date) {
             apost.dateCreated = Date()
         }
+        uploadPost(apost)
+    }
 
+    func schedulePost(_ apost: AbstractPost) {
+        WPAnalytics.track(.postListScheduleAction, withProperties: propertiesForAnalytics())
+
+        apost.status = .scheduled
+        uploadPost(apost)
+    }
+
+    fileprivate func uploadPost(_ apost: AbstractPost) {
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         postService.uploadPost(apost, success: nil) { [weak self] (error: Error?) in
