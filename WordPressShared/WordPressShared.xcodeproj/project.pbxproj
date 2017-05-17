@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1126F23C2E306748AEF3599B /* Pods_WordPressSharedTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6872E440E02965E43A4960A /* Pods_WordPressSharedTests.framework */; };
 		194CC62575B20B55C8CDEFF6 /* Pods_WordPressShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77135294F00CA0119C1266FA /* Pods_WordPressShared.framework */; };
+		820ECCA11ECCE002004C7679 /* WPStyleGuide+DynamicType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820ECCA01ECCE002004C7679 /* WPStyleGuide+DynamicType.swift */; };
 		82706FF11ECA438500155CBF /* WPSharedLoggingPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 82706FED1ECA438500155CBF /* WPSharedLoggingPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		82706FF21ECA438500155CBF /* WPSharedLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 82706FEE1ECA438500155CBF /* WPSharedLogging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		82706FF31ECA438500155CBF /* WPSharedLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = 82706FEF1ECA438500155CBF /* WPSharedLogging.m */; };
@@ -67,6 +68,7 @@
 		632D174EAC3A551E3E604567 /* Pods-WordPressShared.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShared.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShared/Pods-WordPressShared.debug.xcconfig"; sourceTree = "<group>"; };
 		71286271E2965F417DDAA7F9 /* Pods-WordPressSharedTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressSharedTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressSharedTests/Pods-WordPressSharedTests.debug.xcconfig"; sourceTree = "<group>"; };
 		77135294F00CA0119C1266FA /* Pods_WordPressShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		820ECCA01ECCE002004C7679 /* WPStyleGuide+DynamicType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "WPStyleGuide+DynamicType.swift"; path = "WordPressShared/Core/Views/WPStyleGuide+DynamicType.swift"; sourceTree = SOURCE_ROOT; };
 		82706FED1ECA438500155CBF /* WPSharedLoggingPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPSharedLoggingPrivate.h; path = WordPressShared/Core/Logging/WPSharedLoggingPrivate.h; sourceTree = SOURCE_ROOT; };
 		82706FEE1ECA438500155CBF /* WPSharedLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPSharedLogging.h; path = WordPressShared/Core/Logging/WPSharedLogging.h; sourceTree = SOURCE_ROOT; };
 		82706FEF1ECA438500155CBF /* WPSharedLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPSharedLogging.m; path = WordPressShared/Core/Logging/WPSharedLogging.m; sourceTree = SOURCE_ROOT; };
@@ -170,6 +172,7 @@
 				827070161ECA43C100155CBF /* WPNUXUtility.m */,
 				827070131ECA43C100155CBF /* WPStyleGuide.h */,
 				827070111ECA43C100155CBF /* WPStyleGuide.m */,
+				820ECCA01ECCE002004C7679 /* WPStyleGuide+DynamicType.swift */,
 				827070171ECA43C100155CBF /* WPTableViewCell.h */,
 				827070181ECA43C100155CBF /* WPTableViewCell.m */,
 				827070191ECA43C100155CBF /* WPTextFieldTableViewCell.h */,
@@ -369,6 +372,7 @@
 				TargetAttributes = {
 					829DD13D1EC9EED200AB8C12 = {
 						CreatedOnToolsVersion = 8.3;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 					829DD1461EC9EED200AB8C12 = {
@@ -512,6 +516,7 @@
 				82706FF41ECA438500155CBF /* WPSharedLoggingPrivate.m in Sources */,
 				827070081ECA43AA00155CBF /* UIColor+Helpers.m in Sources */,
 				8270700E1ECA43AA00155CBF /* WPFontManager.m in Sources */,
+				820ECCA11ECCE002004C7679 /* WPStyleGuide+DynamicType.swift in Sources */,
 				827070241ECA43C100155CBF /* WPTextFieldTableViewCell.m in Sources */,
 				827070061ECA43AA00155CBF /* NSString+XMLExtensions.m in Sources */,
 				82706FF31ECA438500155CBF /* WPSharedLogging.m in Sources */,
@@ -590,6 +595,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 00D41E1E6DDF78853D018660 /* Pods-WordPressShared.release-internal.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -601,6 +607,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShared;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = "Release-Internal";
 		};
@@ -608,6 +615,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1D8E4A4985C91A15B0FEB284 /* Pods-WordPressSharedTests.release-internal.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = WordPressSharedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -669,6 +677,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A9D12BC8253E0DBA59BF461B /* Pods-WordPressShared.release-alpha.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -680,6 +689,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShared;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = "Release-Alpha";
 		};
@@ -687,6 +697,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 34F3C2FE120EEE96E1657C16 /* Pods-WordPressSharedTests.release-alpha.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = WordPressSharedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -800,6 +811,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 632D174EAC3A551E3E604567 /* Pods-WordPressShared.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -811,6 +823,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShared;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -818,6 +832,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DB10D1E96FC4A037F9A705FF /* Pods-WordPressShared.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -829,6 +844,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShared;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -836,6 +852,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 71286271E2965F417DDAA7F9 /* Pods-WordPressSharedTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = WordPressSharedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -851,6 +868,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33A8051F740771B55E08E7A0 /* Pods-WordPressSharedTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = WordPressSharedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
