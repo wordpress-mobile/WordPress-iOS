@@ -274,8 +274,11 @@ class AztecPostViewController: UIViewController {
             originalPostStatus = postStatus
         }
 
-        // TODO: Determine if user can actually publish to site or not
-        let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: true, publishDate: self.post.dateCreated, delegate: self)
+
+        // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
+        // to showing Publish Now instead of Submit for Review.
+        let userCanPublish = self.post.blog.capabilities != nil ? self.post.blog.isPublishingPostsAllowed() : true
+        let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: userCanPublish, publishDate: self.post.dateCreated, delegate: self)
 
         return context
     }()
