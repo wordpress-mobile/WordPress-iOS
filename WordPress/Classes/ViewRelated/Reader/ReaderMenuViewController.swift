@@ -166,6 +166,7 @@ import WordPressShared
         tableView.register(WPTableViewCell.self, forCellReuseIdentifier: actionCellIdentifier)
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRowsForTableView(tableView)
     }
 
 
