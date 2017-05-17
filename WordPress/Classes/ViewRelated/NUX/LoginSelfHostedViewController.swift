@@ -3,6 +3,8 @@ import UIKit
 class LoginSelfHostedViewController: SigninSelfHostedViewController {
     var gravatarProfile: GravatarProfile?
     var userProfile: UserProfile?
+    // let the storyboard's style stay
+    override func setupStyles() {}
 
     override func needsMultifactorCode() {
         performSegue(withIdentifier: .show2FA, sender: self)
