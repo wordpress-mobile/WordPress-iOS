@@ -1,15 +1,15 @@
 #import "MenuItemsViewController.h"
 #import "Menu.h"
 #import "MenuItem.h"
-#import "WPStyleGuide.h"
 #import "MenuItemAbstractView.h"
 #import "MenuItemView.h"
 #import "MenuItemInsertionView.h"
 #import "MenuItemsVisualOrderingView.h"
 #import "ContextManager.h"
 #import "Menu+ViewDesign.h"
-#import <WordPressShared/WPDeviceIdentification.h>
 #import "WPGUIConstants.h"
+#import <WordPressShared/WPDeviceIdentification.h>
+#import <WordPressShared/WPStyleGuide.h>
 
 static CGFloat const ItemHoriztonalDragDetectionWidthRatio = 0.05;
 static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;

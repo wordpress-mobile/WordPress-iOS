@@ -1,4 +1,5 @@
 #import "DisplayableImageHelper.h"
+#import <WordPressShared/NSString+Util.h>
 
 static const NSInteger FeaturedImageMinimumWidth = 150;
 

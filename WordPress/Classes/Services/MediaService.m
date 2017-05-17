@@ -7,12 +7,12 @@
 #import "MediaServiceRemoteREST.h"
 #import "Blog.h"
 #import "RemoteMedia.h"
-#import "WPImageSource.h"
 #import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WordPress-Swift.h"
 #import "WPXMLRPCDecoder.h"
 #import "PhotonImageURLHelper.h"
+#import <WordPressShared/WPImageSource.h>
 
 @implementation MediaService
 
