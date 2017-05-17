@@ -45,7 +45,7 @@ import WordPressComAnalytics
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        if let controller = storyboard.instantiateInitialViewController() as? NUXNavigationController {
+        if let controller = storyboard.instantiateInitialViewController() as? LoginNavigationController {
             presenter.present(controller, animated: animated, completion: nil)
         }
     }
