@@ -274,10 +274,11 @@ class AztecPostViewController: UIViewController {
             originalPostStatus = postStatus
         }
 
+
         // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
         // to showing Publish Now instead of Submit for Review.
         let userCanPublish = self.post.blog.capabilities != nil ? self.post.blog.isPublishingPostsAllowed() : true
-        let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: userCanPublish, delegate: self)
+        let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: userCanPublish, publishDate: self.post.dateCreated, delegate: self)
 
         return context
     }()
