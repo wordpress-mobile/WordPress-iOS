@@ -19,14 +19,6 @@ class LoginEpilogueTableView: UITableViewController {
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "SectionHeader")
     }
 
-    /// - Note: Copied from MeViewController which I bet @koke is happy about :P
-    fileprivate func defaultAccount() -> WPAccount? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let account = service.defaultWordPressComAccount()
-        return account
-    }
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return blogDataSource.numberOfSections(in:tableView) + 1
     }
