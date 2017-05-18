@@ -8,7 +8,7 @@ class LoginEpilogueUserInfoCell: UITableViewCell {
 
     func configure(userInfo: LoginEpilogueUserInfo) {
         usernameLabel?.text = "@\(userInfo.username)"
-        fullNameLabel?.text = userInfo.fullname
+        fullNameLabel?.text = userInfo.fullName
 
         if let gravatarUrl = userInfo.gravatarUrl,
             let url = URL(string: gravatarUrl) {
