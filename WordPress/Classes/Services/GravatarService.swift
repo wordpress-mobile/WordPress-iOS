@@ -19,7 +19,7 @@ open class GravatarService {
     open func fetchProfile(_ email: String, success:@escaping ((_ profile: GravatarProfile) -> Void), failure:@escaping ((_ error: NSError?) -> Void)) {
         let remote = gravatarServiceRemote()
         remote.fetchProfile(email, success: { (remoteProfile) in
-            let profile = GravatarProfile()
+            var profile = GravatarProfile()
             profile.profileID = remoteProfile.profileID
             profile.hash = remoteProfile.hash
             profile.requestHash = remoteProfile.requestHash
