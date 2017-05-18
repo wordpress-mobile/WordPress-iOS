@@ -476,38 +476,48 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func cell(_ cell: UITableViewCell, handleStatsFor post: AbstractPost) {
-        viewStatsForPost(post)
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            viewStatsForPost(post)
+        }
     }
 
     func cell(_ cell: UITableViewCell, handlePublishPost post: AbstractPost) {
-        publishPost(post)
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            publishPost(post)
+        }
     }
 
     func cell(_ cell: UITableViewCell, handleSchedulePost post: AbstractPost) {
-        schedulePost(post)
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            schedulePost(post)
+        }
     }
 
     func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
-        if (post.status == .trash) {
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            if (post.status == .trash) {
 
-            let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-            let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
-            let messageText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
-            let alertController = UIAlertController(title: nil, message: messageText, preferredStyle: .alert)
+                let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+                let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
+                let messageText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
+                let alertController = UIAlertController(title: nil, message: messageText, preferredStyle: .alert)
 
-            alertController.addCancelActionWithTitle(cancelText)
-            alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-                self?.deletePost(post)
+                alertController.addCancelActionWithTitle(cancelText)
+                alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
+                    self?.deletePost(post)
+                }
+                alertController.presentFromRootViewController()
+
+            } else {
+                deletePost(post)
             }
-            alertController.presentFromRootViewController()
-
-        } else {
-            deletePost(post)
         }
     }
 
     func cell(_ cell: UITableViewCell, handleRestore post: AbstractPost) {
-        restorePost(post)
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            restorePost(post)
+        }
     }
 
     // MARK: - Refreshing noResultsView
