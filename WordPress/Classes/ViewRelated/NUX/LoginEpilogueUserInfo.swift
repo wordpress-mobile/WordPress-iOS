@@ -7,4 +7,16 @@ struct LoginEpilogueUserInfo {
     var fullname = ""
     var email = ""
     var gravatarUrl: String?
+
+    init(account: WPAccount) {
+        if let name = account.username {
+            username = "@\(name)"
+        }
+        email = account.email
+        fullname = account.displayName
+    }
+
+    init() {
+    }
+
 }
