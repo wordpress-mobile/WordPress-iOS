@@ -1,25 +1,23 @@
 import Foundation
 
 open class RemoteGravatarProfile {
-    var profileID = ""
-    var hash = ""
-    var requestHash = ""
-    var profileUrl = ""
-    var preferredUsername = ""
-    var thumbnailUrl = ""
-    var name = ""
-    var displayName = ""
+    let profileID: String
+    let hash: String
+    let requestHash: String
+    let profileUrl: String
+    let preferredUsername: String
+    let thumbnailUrl: String
+    let name: String
+    let displayName: String
 
-    convenience init(dict: [String: Any]) {
-        self.init()
-
-        profileID = dict.valueAsString(forKey: "id") ?? ""
-        hash = dict.valueAsString(forKey: "hash") ?? ""
-        requestHash = dict.valueAsString(forKey: "requestHash") ?? ""
-        profileUrl = dict.valueAsString(forKey: "profileUrl") ?? ""
-        preferredUsername = dict.valueAsString(forKey: "preferredUsername") ?? ""
-        thumbnailUrl = dict.valueAsString(forKey: "thumbnailUrl") ?? ""
-        name = dict.valueAsString(forKey: "name") ?? ""
-        displayName = dict.valueAsString(forKey: "displayName") ?? ""
+    init(dictionary: NSDictionary) {
+        profileID = dictionary.string(forKey: "id") ?? ""
+        hash = dictionary.string(forKey: "hash") ?? ""
+        requestHash = dictionary.string(forKey: "requestHash") ?? ""
+        profileUrl = dictionary.string(forKey: "profileUrl") ?? ""
+        preferredUsername = dictionary.string(forKey: "preferredUsername") ?? ""
+        thumbnailUrl = dictionary.string(forKey: "thumbnailUrl") ?? ""
+        name = dictionary.string(forKey: "name") ?? ""
+        displayName = dictionary.string(forKey: "displayName") ?? ""
     }
 }

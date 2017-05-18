@@ -1,6 +1,6 @@
 import Foundation
 
-open class GravatarProfile {
+public struct GravatarProfile {
 
     var profileID = ""
     var hash = ""
