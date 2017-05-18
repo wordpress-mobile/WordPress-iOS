@@ -5,6 +5,7 @@ import WordPressShared
 class LoginEpilogueTableView: UITableViewController {
     var blogDataSource: BlogListDataSource
     var blogCount: Int?
+    var epilogueUserInfo: LoginEpilogueUserInfo?
 
     required init?(coder aDecoder: NSCoder) {
         blogDataSource = BlogListDataSource()
@@ -45,16 +46,11 @@ class LoginEpilogueTableView: UITableViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "userInfo") as? LoginEpilogueUserInfoCell else {
                 fatalError("Failed to get a user info cell")
             }
-            guard let account = defaultAccount() else {
-                return cell
+
+            if let info = epilogueUserInfo {
+                cell.configure(userInfo: info)
             }
-            if let username = account.username {
-                cell.usernameLabel?.text = "@\(username)"
-            } else {
-                cell.usernameLabel?.text = ""
-            }
-            cell.gravatarView?.downloadGravatarWithEmail(account.email, rating: .x)
-            cell.fullNameLabel?.text = account.displayName
+
             return cell
         } else {
             let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section-1)
