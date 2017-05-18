@@ -253,13 +253,42 @@ private extension ShareViewController {
 ///
 private extension ShareViewController {
     func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, attachedImageData: Data?, requestEqueued: @escaping (Void) -> ()) {
-        let configuration = URLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
-        let service = PostService(configuration: configuration)
+        if let data = attachedImageData {
+            uploadImageAttachment(data, forPostWithSubject: subject, body: body, status: status, siteID: siteID, requestEqueued: requestEqueued)
+        } else {
+            uploadPostWithSubject(subject, body: body, status: status, siteID: siteID, requestEqueued: requestEqueued)
+        }
+    }
 
-        service.createPost(siteID: siteID, status: status, title: subject, body: body, attachedImageJPEGData: attachedImageData, requestEqueued: {
+    func uploadImageAttachment(_ attachedImageData: Data, forPostWithSubject subject: String, body: String, status: String, siteID: Int, requestEqueued: @escaping (Void) -> ()) {
+        let configuration = URLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
+
+        let mediaService = MediaService(configuration: configuration)
+        mediaService.createMedia(attachedImageData, siteID: siteID) { (media, error) in
+            guard let media = media else {
+                print("Media was nil. Error \(error)")
+                return
+            }
+
+            let width = Int(media.size.width)
+            let height = Int(media.size.height)
+            let mediaID = media.mediaID
+            let src = media.remoteURL
+            let content = "<img class=\"alignnone size-full wp-image-\(mediaID)\" src=\"\(src)\" width=\"\(width)\" height=\"\(height)\" /><br><br>" + body
+
+            self.uploadPostWithSubject(subject, body: content, status: status, siteID: siteID, requestEqueued: requestEqueued)
+        }
+    }
+
+    func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, requestEqueued: @escaping (Void) -> ()) {
+        let configuration = URLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
+
+        let service = PostService(configuration: configuration)
+        service.createPost(siteID: siteID, status: status, title: subject, body: body, attachedImageJPEGData: nil, requestEqueued: {
             requestEqueued()
         }, completion: { (post, error) in
             print("Post \(String(describing: post)) Error \(String(describing: error))")
         })
     }
+
 }
