@@ -86,12 +86,14 @@ open class WordPressOrgXMLRPCApi: NSObject {
 
         // Create task
         let task = session.dataTask(with: request, completionHandler: { (data, urlResponse, error) in
-            do {
-                let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error as NSError?)
-                success(responseObject, urlResponse as? HTTPURLResponse)
-            } catch let error as NSError {
-                failure(error, urlResponse as? HTTPURLResponse)
-                return
+            DispatchQueue.main.async {
+                do {
+                    let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error as NSError?)
+                    success(responseObject, urlResponse as? HTTPURLResponse)
+                } catch let error as NSError {
+                    failure(error, urlResponse as? HTTPURLResponse)
+                    return
+                }
             }
         })
         task.resume()

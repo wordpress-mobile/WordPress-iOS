@@ -5,6 +5,7 @@ import WordPressShared
 class LoginEpilogueTableView: UITableViewController {
     var blogDataSource: BlogListDataSource
     var blogCount: Int?
+    var epilogueUserInfo: LoginEpilogueUserInfo?
 
     required init?(coder aDecoder: NSCoder) {
         blogDataSource = BlogListDataSource()
@@ -16,14 +17,6 @@ class LoginEpilogueTableView: UITableViewController {
         super.viewDidLoad()
         let headerNib = UINib(nibName: "LoginEpilogueSectionHeader", bundle: nil)
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "SectionHeader")
-    }
-
-    /// - Note: Copied from MeViewController which I bet @koke is happy about :P
-    fileprivate func defaultAccount() -> WPAccount? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        let account = service.defaultWordPressComAccount()
-        return account
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -45,16 +38,11 @@ class LoginEpilogueTableView: UITableViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "userInfo") as? LoginEpilogueUserInfoCell else {
                 fatalError("Failed to get a user info cell")
             }
-            guard let account = defaultAccount() else {
-                return cell
+
+            if let info = epilogueUserInfo {
+                cell.configure(userInfo: info)
             }
-            if let username = account.username {
-                cell.usernameLabel?.text = "@\(username)"
-            } else {
-                cell.usernameLabel?.text = ""
-            }
-            cell.gravatarView?.downloadGravatarWithEmail(account.email, rating: .x)
-            cell.fullNameLabel?.text = account.displayName
+
             return cell
         } else {
             let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section-1)
