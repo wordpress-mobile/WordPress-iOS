@@ -6,6 +6,30 @@ class LoginEpilogueViewController: UIViewController {
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
     @IBOutlet var buttonPanel: UIView?
     @IBOutlet var shadowView: UIView?
+    var tableViewController: LoginEpilogueTableView?
+    var epilogueUserInfo: LoginEpilogueUserInfo?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        if let info = epilogueUserInfo {
+            tableViewController?.epilogueUserInfo = info
+        } else {
+            // The self-hosted flow sets user info,  If no user info is set, assume
+            // a wpcom flow and try the default wp account.
+            let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            if let account = service.defaultWordPressComAccount() {
+                tableViewController?.epilogueUserInfo = LoginEpilogueUserInfo(account: account)
+            }
+        }
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if let vc = segue.destination as? LoginEpilogueTableView {
+            tableViewController = vc
+        }
+    }
 
     // @IBAction to allow to set the selector for target in the storyboard
     @IBAction func unwindOut(segue: UIStoryboardSegue) {
