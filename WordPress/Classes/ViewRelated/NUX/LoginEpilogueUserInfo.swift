@@ -4,16 +4,16 @@ import Foundation
 ///
 struct LoginEpilogueUserInfo {
     var username = ""
-    var fullname = ""
+    var fullName = ""
     var email = ""
     var gravatarUrl: String?
 
     init(account: WPAccount) {
         if let name = account.username {
-            username = "@\(name)"
+            username = name
         }
         email = account.email
-        fullname = account.displayName
+        fullName = account.displayName
     }
 
     init() {

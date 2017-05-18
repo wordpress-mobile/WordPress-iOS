@@ -54,13 +54,13 @@ class LoginSelfHostedViewController: SigninSelfHostedViewController {
         var info = LoginEpilogueUserInfo()
         if let profile = gravatarProfile {
             info.gravatarUrl = profile.thumbnailUrl
-            info.fullname = profile.displayName
+            info.fullName = profile.displayName
         }
 
         // Whatever is in user profile trumps whatever is in the gravatar profile.
         if let profile = userProfile {
             info.username = profile.username
-            info.fullname = profile.displayName
+            info.fullName = profile.displayName
             info.email = profile.email
         }
 
