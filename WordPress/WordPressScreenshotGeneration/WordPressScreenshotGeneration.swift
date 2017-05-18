@@ -69,7 +69,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get "Posts" screenshot
         app.tabBars["Main Navigation"].buttons["mySitesTabButton"].tap()
-        app.tables.cells.element(boundBy: 4).tap() // tap Blog Posts
+        app.tables.cells.element(boundBy: 2).tap() // tap Blog Posts
         sleep(2)
         snapshot("3-BlogPosts")
 
