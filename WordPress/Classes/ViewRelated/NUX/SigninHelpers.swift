@@ -28,6 +28,10 @@ import Mixpanel
 
     /// Used to present the signin flow from the app delegate
     class func showSigninFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+        if Feature.enabled(.newLogin) {
+            showLoginFromPresenter(presenter, animated: animated, thenEditor: thenEditor)
+            return
+        }
         let controller = createControllerForSigninFlow(showsEditor: thenEditor)
         let navController = NUXNavigationController(rootViewController: controller)
         presenter.present(navController, animated: animated, completion: nil)
