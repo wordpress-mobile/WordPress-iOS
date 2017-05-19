@@ -1099,10 +1099,12 @@ import WordPressComAnalytics
 
         syncHelper?.backgroundSync(success: { [weak self, weak lastSeenPostID] in
             let newestFetchedPostID = (self?.tableViewHandler?.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
-            self?.tableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             if lastSeenPostID == newestFetchedPostID {
                 completionHandler(.noData)
             } else {
+                if let numberOfRows = self?.tableView?.numberOfRows(inSection: 0), numberOfRows > 0 {
+                    self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                }
                 completionHandler(.newData)
             }
         }, failure: { (_) in
