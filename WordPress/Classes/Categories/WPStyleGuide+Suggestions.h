@@ -1,4 +1,4 @@
-#import "WPStyleGuide.h"
+#import <WordPressShared/WPStyleGuide.h>
 
 @interface WPStyleGuide (Suggestions)
 

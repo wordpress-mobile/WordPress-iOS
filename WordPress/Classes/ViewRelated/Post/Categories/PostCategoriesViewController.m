@@ -1,12 +1,12 @@
 #import "PostCategoriesViewController.h"
 #import "PostCategory.h"
-#import "NSString+XMLExtensions.h"
 #import "WordPressAppDelegate.h"
 #import "WPAddPostCategoryViewController.h"
 #import "WPCategoryTree.h"
-#import "WPTableViewCell.h"
 #import "CustomHighlightButton.h"
 #import "PostCategoryService.h"
+#import <WordPressShared/NSString+XMLExtensions.h>
+#import <WordPressShared/WPTableViewCell.h>
 
 static NSString * const CategoryCellIdentifier = @"CategoryCellIdentifier";
 static const CGFloat CategoryCellIndentation = 16.0;

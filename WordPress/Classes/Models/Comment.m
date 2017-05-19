@@ -2,8 +2,8 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "BasePost.h"
-#import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
+#import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
 
 NSString * const CommentUploadFailedNotification = @"CommentUploadFailed";
