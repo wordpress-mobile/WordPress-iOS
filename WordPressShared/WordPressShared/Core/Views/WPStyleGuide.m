@@ -67,7 +67,7 @@
 
 + (UIFont *)regularTextFont
 {
-    return [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    return [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
 }
 
 + (UIFont *)regularTextFontSemiBold
@@ -85,12 +85,12 @@
 
 + (UIFont *)tableviewTextFont
 {
-    return [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    return [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
 }
 
 + (UIFont *)tableviewSubtitleFont
 {
-    return [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    return [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
 }
 
 + (UIFont *)tableviewSectionHeaderFont
