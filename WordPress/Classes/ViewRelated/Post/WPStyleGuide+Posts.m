@@ -94,7 +94,7 @@
 + (NSDictionary *)postCardAuthorSiteAttributes
 {
     UIFont *font = [self regularFont];
-    CGFloat lineHeight = font.pointSize * 1.5;
+    CGFloat lineHeight = font.pointSize * 1.4;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
