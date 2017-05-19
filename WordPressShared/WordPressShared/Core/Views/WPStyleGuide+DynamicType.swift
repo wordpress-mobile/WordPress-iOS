@@ -177,6 +177,10 @@ extension WPStyleGuide {
     private class func customNotoFontNamed(_ fontName: String, forTextStyle style: UIFontTextStyle) -> UIFont {
         _ = notoLoaded
         let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
-        return UIFont(name: fontName, size: fontDescriptor.pointSize)!
+        guard let font = UIFont(name: fontName, size: fontDescriptor.pointSize) else {
+            // If we can't get the Noto font for some reason we will default to the system font
+            return fontForTextStyle(style)
+        }
+        return font
     }
 }
