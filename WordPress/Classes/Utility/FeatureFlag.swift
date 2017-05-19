@@ -13,12 +13,12 @@ enum FeatureFlag: Int {
         case .exampleFeature:
             return true
         case .mediaLibrary:
-            return build(.debug, .alpha, .internal)
+            return build(.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting)
         case .newLogin:
-            return build(.debug)
+            return build(.localDeveloper, .a8cBranchTest)
         case .nativeEditor:
             // At the moment this is only visible by default in non-app store builds
-            if build(.alpha, .debug, .internal) {
+            if build(.a8cBranchTest, .localDeveloper, .a8cPrereleaseTesting) {
                 return true
             }
             return false
@@ -38,12 +38,12 @@ class Feature: NSObject {
 
 /// Represents a build configuration.
 enum Build: Int {
-    /// Development build, usually what you get when you run from Xcode
-    case debug
-    /// Daily buiilds released internally for Automattic employees
-    case alpha
+    /// Development build, usually run from Xcode
+    case localDeveloper
+    /// Continuous integration builds for Automattic employees to test branches & PRs
+    case a8cBranchTest
     /// Beta released internally for Automattic employees
-    case `internal`
+    case a8cPrereleaseTesting
     /// Production build released in the app store
     case appStore
 
@@ -54,11 +54,11 @@ enum Build: Int {
         }
 
         #if DEBUG
-            return .debug
+            return .localDeveloper
         #elseif ALPHA_BUILD
-            return .alpha
+            return .a8cBranchTest
         #elseif INTERNAL_BUILD
-            return .`internal`
+            return .a8cPrereleaseTesting
         #else
             return .appStore
         #endif
@@ -72,7 +72,7 @@ enum Build: Int {
 ///
 /// Example:
 ///
-///     let enableExperimentalStuff = build(.Debug, .Internal)
+///     let enableExperimentalStuff = build(.localDeveloper, .a8cBranchTest)
 func build(_ any: Build...) -> Bool {
     return any.reduce(false, { previous, buildValue in
         previous || Build.current == buildValue
