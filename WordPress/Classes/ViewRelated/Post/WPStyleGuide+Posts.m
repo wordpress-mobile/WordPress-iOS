@@ -212,8 +212,8 @@
 + (void)applyRestorePageButtonStyle:(UIButton *)button
 {
     [WPStyleGuide configureLabel:button.titleLabel
-                    forTextStyle:UIFontTextStyleCallout
-                      withWeight:UIFontWeightSemibold];
+                       textStyle:UIFontTextStyleCallout
+                      fontWeight:UIFontWeightSemibold];
     [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
     [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
 }
@@ -233,15 +233,15 @@
 
 + (void)configureLabelForDeviceDependantStyle:(UILabel *)label {
     UIFontTextStyle textStyle = [UIDevice isPad] ? UIFontTextStyleSubheadline : UIFontTextStyleCaption1;
-    [WPStyleGuide configureLabel:label forTextStyle:textStyle];
+    [WPStyleGuide configureLabel:label textStyle:textStyle];
 }
 
 + (void)configureLabelForRegularFontStyle:(UILabel *)label {
-    [WPStyleGuide configureLabel:label forTextStyle:UIFontTextStyleSubheadline];
+    [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleSubheadline];
 }
 
 + (void)configureLabelForSmallFontStyle:(UILabel *)label {
-    [WPStyleGuide configureLabel:label forTextStyle:UIFontTextStyleCaption1];
+    [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCaption1];
 }
 
 @end
