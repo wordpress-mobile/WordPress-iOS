@@ -12,19 +12,19 @@
 		9368C7851EC5EF1B0092CE8E /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9368C77B1EC5EF1B0092CE8E /* WordPressKit.framework */; };
 		9368C78A1EC5EF1B0092CE8E /* WordPressKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7891EC5EF1B0092CE8E /* WordPressKitTests.m */; };
 		9368C78C1EC5EF1B0092CE8E /* WordPressKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C77E1EC5EF1B0092CE8E /* WordPressKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9368C7A31EC62F800092CE8E /* WPStatsServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7A11EC62F800092CE8E /* WPStatsServiceRemote.h */; };
+		9368C7A31EC62F800092CE8E /* WPStatsServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7A11EC62F800092CE8E /* WPStatsServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9368C7A41EC62F800092CE8E /* WPStatsServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7A21EC62F800092CE8E /* WPStatsServiceRemote.m */; };
-		9368C7B11EC630270092CE8E /* StatsItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7A51EC630270092CE8E /* StatsItem.h */; };
+		9368C7B11EC630270092CE8E /* StatsItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7A51EC630270092CE8E /* StatsItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9368C7B21EC630270092CE8E /* StatsItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7A61EC630270092CE8E /* StatsItem.m */; };
-		9368C7B31EC630270092CE8E /* StatsItemAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7A71EC630270092CE8E /* StatsItemAction.h */; };
+		9368C7B31EC630270092CE8E /* StatsItemAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7A71EC630270092CE8E /* StatsItemAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9368C7B41EC630270092CE8E /* StatsItemAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7A81EC630270092CE8E /* StatsItemAction.m */; };
-		9368C7B51EC630270092CE8E /* StatsStreak.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7A91EC630270092CE8E /* StatsStreak.h */; };
+		9368C7B51EC630270092CE8E /* StatsStreak.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7A91EC630270092CE8E /* StatsStreak.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9368C7B61EC630270092CE8E /* StatsStreak.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7AA1EC630270092CE8E /* StatsStreak.m */; };
-		9368C7B71EC630270092CE8E /* StatsStreakItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7AB1EC630270092CE8E /* StatsStreakItem.h */; };
+		9368C7B71EC630270092CE8E /* StatsStreakItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7AB1EC630270092CE8E /* StatsStreakItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9368C7B81EC630270092CE8E /* StatsStreakItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7AC1EC630270092CE8E /* StatsStreakItem.m */; };
-		9368C7B91EC630270092CE8E /* StatsSummary.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7AD1EC630270092CE8E /* StatsSummary.h */; };
+		9368C7B91EC630270092CE8E /* StatsSummary.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7AD1EC630270092CE8E /* StatsSummary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9368C7BA1EC630270092CE8E /* StatsSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7AE1EC630270092CE8E /* StatsSummary.m */; };
-		9368C7BB1EC630270092CE8E /* StatsVisits.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7AF1EC630270092CE8E /* StatsVisits.h */; };
+		9368C7BB1EC630270092CE8E /* StatsVisits.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7AF1EC630270092CE8E /* StatsVisits.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9368C7BC1EC630270092CE8E /* StatsVisits.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7B01EC630270092CE8E /* StatsVisits.m */; };
 		9368C7BF1EC630CE0092CE8E /* StatsStringUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7BD1EC630CE0092CE8E /* StatsStringUtilities.h */; };
 		9368C7C01EC630CE0092CE8E /* StatsStringUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7BE1EC630CE0092CE8E /* StatsStringUtilities.m */; };
@@ -124,6 +124,40 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		930F52B91ECF8A44002F921B /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				9368C7A51EC630270092CE8E /* StatsItem.h */,
+				9368C7A61EC630270092CE8E /* StatsItem.m */,
+				9368C7A71EC630270092CE8E /* StatsItemAction.h */,
+				9368C7A81EC630270092CE8E /* StatsItemAction.m */,
+				9368C7A91EC630270092CE8E /* StatsStreak.h */,
+				9368C7AA1EC630270092CE8E /* StatsStreak.m */,
+				9368C7AB1EC630270092CE8E /* StatsStreakItem.h */,
+				9368C7AC1EC630270092CE8E /* StatsStreakItem.m */,
+				9368C7AD1EC630270092CE8E /* StatsSummary.h */,
+				9368C7AE1EC630270092CE8E /* StatsSummary.m */,
+				9368C7AF1EC630270092CE8E /* StatsVisits.h */,
+				9368C7B01EC630270092CE8E /* StatsVisits.m */,
+			);
+			name = Stats;
+			sourceTree = "<group>";
+		};
+		930F52BA1ECF8A67002F921B /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				930F52BB1ECF8A78002F921B /* Stats */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		930F52BB1ECF8A78002F921B /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Stats;
+			sourceTree = "<group>";
+		};
 		9368C7711EC5EF1B0092CE8E = {
 			isa = PBXGroup;
 			children = (
@@ -158,6 +192,7 @@
 		9368C7881EC5EF1B0092CE8E /* WordPressKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				930F52BA1ECF8A67002F921B /* Tests */,
 				9368C7891EC5EF1B0092CE8E /* WordPressKitTests.m */,
 				9368C78B1EC5EF1B0092CE8E /* Info.plist */,
 			);
@@ -178,18 +213,7 @@
 		9368C79C1EC62EBD0092CE8E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				9368C7A51EC630270092CE8E /* StatsItem.h */,
-				9368C7A61EC630270092CE8E /* StatsItem.m */,
-				9368C7A71EC630270092CE8E /* StatsItemAction.h */,
-				9368C7A81EC630270092CE8E /* StatsItemAction.m */,
-				9368C7A91EC630270092CE8E /* StatsStreak.h */,
-				9368C7AA1EC630270092CE8E /* StatsStreak.m */,
-				9368C7AB1EC630270092CE8E /* StatsStreakItem.h */,
-				9368C7AC1EC630270092CE8E /* StatsStreakItem.m */,
-				9368C7AD1EC630270092CE8E /* StatsSummary.h */,
-				9368C7AE1EC630270092CE8E /* StatsSummary.m */,
-				9368C7AF1EC630270092CE8E /* StatsVisits.h */,
-				9368C7B01EC630270092CE8E /* StatsVisits.m */,
+				930F52B91ECF8A44002F921B /* Stats */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -203,13 +227,13 @@
 			files = (
 				9368C78C1EC5EF1B0092CE8E /* WordPressKit.h in Headers */,
 				9368C7B11EC630270092CE8E /* StatsItem.h in Headers */,
-				9368C7BF1EC630CE0092CE8E /* StatsStringUtilities.h in Headers */,
 				9368C7A31EC62F800092CE8E /* WPStatsServiceRemote.h in Headers */,
 				9368C7B31EC630270092CE8E /* StatsItemAction.h in Headers */,
 				9368C7BB1EC630270092CE8E /* StatsVisits.h in Headers */,
 				9368C7B51EC630270092CE8E /* StatsStreak.h in Headers */,
 				9368C7B71EC630270092CE8E /* StatsStreakItem.h in Headers */,
 				9368C7B91EC630270092CE8E /* StatsSummary.h in Headers */,
+				9368C7BF1EC630CE0092CE8E /* StatsStringUtilities.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

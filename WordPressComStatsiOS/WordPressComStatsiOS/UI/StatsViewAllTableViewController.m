@@ -1,7 +1,7 @@
 #import "StatsViewAllTableViewController.h"
 #import "StatsGroup.h"
-#import "StatsItem.h"
-#import "StatsItemAction.h"
+#import <WordPressKit/StatsItem.h>
+#import <WordPressKit/StatsItemAction.h>
 #import "StatsTwoColumnTableViewCell.h"
 #import "WPStyleGuide+Stats.h"
 #import "StatsTableSectionHeaderView.h"

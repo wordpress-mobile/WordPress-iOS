@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
-#import "StatsStreak.h"
+//#import "StatsStreak.h"
+#import <WordPressKit/StatsStreak.h>
 
 @protocol WPStatsContributionGraphDelegate <NSObject>
 

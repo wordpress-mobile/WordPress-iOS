@@ -13,17 +13,9 @@ FOUNDATION_EXPORT const unsigned char WordPressComStatsiOSVersionString[];
 #import <WordPressComStatsiOS/StatsEphemory.h>
 #import <WordPressComStatsiOS/StatsGroup.h>
 #import <WordPressComStatsiOS/StatsInsights.h>
-#import <WordPressComStatsiOS/StatsItem.h>
-#import <WordPressComStatsiOS/StatsItemAction.h>
 #import <WordPressComStatsiOS/StatsLatestPostSummary.h>
 #import <WordPressComStatsiOS/StatsSection.h>
-#import <WordPressComStatsiOS/StatsStreak.h>
-#import <WordPressComStatsiOS/StatsStreakItem.h>
-#import <WordPressComStatsiOS/StatsStringUtilities.h>
-#import <WordPressComStatsiOS/StatsSummary.h>
-#import <WordPressComStatsiOS/StatsVisits.h>
 #import <WordPressComStatsiOS/WPStatsService.h>
-#import <WordPressComStatsiOS/WPStatsServiceRemote.h>
 #import <WordPressComStatsiOS/InsightsAllTimeTableViewCell.h>
 #import <WordPressComStatsiOS/InsightsContributionGraphFooterView.h>
 #import <WordPressComStatsiOS/InsightsContributionGraphHeaderView.h>

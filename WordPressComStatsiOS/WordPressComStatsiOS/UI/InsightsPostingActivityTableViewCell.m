@@ -1,5 +1,5 @@
 #import "InsightsPostingActivityTableViewCell.h"
-#import "StatsStreakItem.h"
+#import <WordPressKit/StatsStreakItem.h>
 #import "WPStyleGuide+Stats.h"
 
 @implementation InsightsPostingActivityTableViewCell
