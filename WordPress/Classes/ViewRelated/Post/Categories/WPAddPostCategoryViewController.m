@@ -8,8 +8,9 @@
 #import "PostCategoryService.h"
 #import "ContextManager.h"
 #import "BlogService.h"
-#import "WPTableViewCell.h"
-#import "WPTextFieldTableViewCell.h"
+#import <WordPressShared/NSString+Util.h>
+#import <WordPressShared/WPTableViewCell.h>
+#import <WordPressShared/WPTextFieldTableViewCell.h>
 
 static const CGFloat HorizontalMargin = 15.0f;
 

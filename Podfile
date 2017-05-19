@@ -6,16 +6,15 @@ use_frameworks!
 platform :ios, '10.0'
 workspace 'WordPress.xcworkspace'
 
-## Pods shared between stats & main target
+## Pods shared between all the targets
 def shared_with_all_pods
-  pod 'WordPress-iOS-Shared', '0.8.2'
+  pod 'CocoaLumberjack', '~> 2.2.0'
 end
 
 def shared_with_stats_pods
-  pod 'AFNetworking', '3.1.0'
-  pod 'CocoaLumberjack', '~> 2.2.0'
+  pod 'AFNetworking', '3.1.0'  
   pod 'NSObject-SafeExpectations', '0.0.2'
-  pod 'WordPressCom-Analytics-iOS', '0.1.25'
+  pod 'WordPressCom-Analytics-iOS', '0.1.27'
 end
 
 def shared_test_pods
@@ -58,6 +57,7 @@ abstract_target 'WordPress_Base' do
     # --------------------
     # WordPress components
     # --------------------
+    shared_with_all_pods
     shared_with_stats_pods
     pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.2'
     pod 'Gridicons', '0.5'
@@ -104,6 +104,18 @@ target 'WordPressKit' do
   shared_with_all_pods
   
   target 'WordPressKitTests' do
+    inherit! :search_paths
+    
+    shared_test_pods
+  end
+end
+
+target 'WordPressShared' do
+  project 'WordPressShared/WordPressShared.xcodeproj'
+
+  shared_with_all_pods
+
+  target 'WordPressSharedTests' do
     inherit! :search_paths
     
     shared_test_pods
