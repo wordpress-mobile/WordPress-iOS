@@ -166,7 +166,10 @@ extension WPStyleGuide {
     // MARK: - Apply Card Styles
 
     public class func applyReaderCardSiteButtonStyle(_ button: UIButton) {
-        WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.buttonTextStyle)
+        guard let titleLabel = button.titleLabel else {
+            return
+        }
+        WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
         button.setTitleColor(mediumBlue(), for: UIControlState())
         button.setTitleColor(lightBlue(), for: .highlighted)
         button.setTitleColor(darkGrey(), for: .disabled)
@@ -200,7 +203,10 @@ extension WPStyleGuide {
     }
 
     public class func applyReaderCardActionButtonStyle(_ button: UIButton) {
-        WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.buttonTextStyle)
+        guard let titleLabel = button.titleLabel else {
+            return
+        }
+        WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.buttonTextStyle)
         button.setTitleColor(greyLighten10(), for: UIControlState())
         button.setTitleColor(lightBlue(), for: .highlighted)
         button.setTitleColor(jazzyOrange(), for: .selected)
@@ -294,7 +300,10 @@ extension WPStyleGuide {
 
     public class func applyGapMarkerButtonStyle(_ button: UIButton) {
         button.backgroundColor = gapMarkerButtonBackgroundColor()
-        WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.loadMoreButtonTextStyle, fontWeight: UIFontWeightSemibold)
+        guard let titleLabel = button.titleLabel else {
+            return
+        }
+        WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.loadMoreButtonTextStyle, fontWeight: UIFontWeightSemibold)
         button.setTitleColor(UIColor.white, for: UIControlState())
     }
 
