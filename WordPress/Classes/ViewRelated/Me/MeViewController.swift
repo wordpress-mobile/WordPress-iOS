@@ -332,13 +332,17 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     // MARK: - Gravatar Helpers
 
     fileprivate func uploadGravatarImage(_ newGravatar: UIImage) {
+        guard let account = defaultAccount() else {
+            return
+        }
+
         WPAppAnalytics.track(.gravatarUploaded)
 
         gravatarUploadInProgress = true
         headerView.overrideGravatarImage(newGravatar)
 
-        let service = GravatarService(context: ContextManager.sharedInstance().mainContext)
-        service?.uploadImage(newGravatar) { [weak self] error in
+        let service = GravatarService()
+        service.uploadImage(newGravatar, forAccount: account) { [weak self] error in
             DispatchQueue.main.async(execute: {
                 self?.gravatarUploadInProgress = false
                 self?.reloadViewModel()

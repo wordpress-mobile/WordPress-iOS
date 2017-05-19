@@ -9,6 +9,7 @@
 #import "StatsEphemory.h"
 #import "StatsDateUtilities.h"
 #import "StatsSection.h"
+#import "NSBundle+StatsBundleHelper.h"
 
 
 NSString *const BatchInsightsCacheKey = @"BatchInsights";

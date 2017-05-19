@@ -2,7 +2,6 @@
 #import "ContextManager.h"
 #import "Coordinate.h"
 #import "Media.h"
-#import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
 #import "LocationService.h"
@@ -25,6 +24,7 @@
 #import "WPAppAnalytics.h"
 @import Gridicons;
 #import <WordPressShared/WPStyleGuide.h>
+#import <WordPressShared/WPTableViewCell.h>
 #import <WordPressEditor/WPLegacyEditorFormatToolbar.h>
 #import "PostSettingsViewController.h"
 #import "PostPreviewViewController.h"
