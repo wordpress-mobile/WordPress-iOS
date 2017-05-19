@@ -1,7 +1,7 @@
 #import "NSString+Helpers.h"
 #import "UIImage+Resize.h"
 #import "WPAvatarSource.h"
-#import "WPImageSource.h"
+#import <WordPressShared/WPImageSource.h>
 
 static CGSize BlavatarMaxSize = {60, 60};
 static CGSize GravatarMaxSize = {92, 92};
