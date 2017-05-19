@@ -2271,6 +2271,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B9F362EF0B38B1C26652AD80 /* Pods-WordPressComStatsiOS.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -2289,6 +2290,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 88530F3C0BA5BE3F66551E1F /* Pods-WordPressComStatsiOS.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -2375,6 +2377,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 252C42D5CAE6BCB1F7EEEF54 /* Pods-WordPressComStatsiOS.release-internal.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -2450,6 +2453,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA7997CE55C245EF5CB5AE64 /* Pods-WordPressComStatsiOS.release-alpha.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
