@@ -166,20 +166,20 @@ extension WPStyleGuide {
     // MARK: - Apply Card Styles
 
     public class func applyReaderCardSiteButtonStyle(_ button: UIButton) {
-        WPStyleGuide.configureLabel(button.titleLabel!, forTextStyle: Cards.buttonTextStyle)
+        WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.buttonTextStyle)
         button.setTitleColor(mediumBlue(), for: UIControlState())
         button.setTitleColor(lightBlue(), for: .highlighted)
         button.setTitleColor(darkGrey(), for: .disabled)
     }
 
     public class func applyReaderCardBlogNameStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, forTextStyle: Cards.buttonTextStyle)
+        WPStyleGuide.configureLabel(label, textStyle: Cards.buttonTextStyle)
         label.textColor = readerCardBlogNameLabelTextColor()
         label.highlightedTextColor = lightBlue()
     }
 
     public class func applyReaderCardBylineLabelStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, forTextStyle: Cards.subtextTextStyle)
+        WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
         label.textColor = greyLighten10()
     }
 
@@ -192,7 +192,7 @@ extension WPStyleGuide {
     }
 
     public class func applyReaderCardTagButtonStyle(_ button: UIButton) {
-        WPStyleGuide.configureLabel(button.titleLabel!, forTextStyle: Cards.subtextTextStyle)
+        WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.subtextTextStyle)
         button.setTitleColor(mediumBlue(), for: UIControlState())
         button.setTitleColor(lightBlue(), for: .highlighted)
         button.titleLabel?.allowsDefaultTighteningForTruncation = false
@@ -200,7 +200,7 @@ extension WPStyleGuide {
     }
 
     public class func applyReaderCardActionButtonStyle(_ button: UIButton) {
-        WPStyleGuide.configureLabel(button.titleLabel!, forTextStyle: Cards.buttonTextStyle)
+        WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.buttonTextStyle)
         button.setTitleColor(greyLighten10(), for: UIControlState())
         button.setTitleColor(lightBlue(), for: .highlighted)
         button.setTitleColor(jazzyOrange(), for: .selected)
@@ -211,22 +211,22 @@ extension WPStyleGuide {
     // MARK: - Apply Stream Header Styles
 
     public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, forTextStyle: Cards.buttonTextStyle)
+        WPStyleGuide.configureLabel(label, textStyle: Cards.buttonTextStyle)
         label.textColor = darkGrey()
     }
 
     public class func applyReaderStreamHeaderDetailStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, forTextStyle: Cards.subtextTextStyle)
+        WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
         label.textColor = greyDarken10()
     }
 
     public class func applyReaderSiteStreamDescriptionStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabelForNotoFont(label, forTextStyle: .subheadline)
+        WPStyleGuide.configureLabelForNotoFont(label, textStyle: .subheadline)
         label.textColor = darkGrey()
     }
 
     public class func applyReaderSiteStreamCountStyle(_ label: UILabel) {
-        WPStyleGuide.configureLabel(label, forTextStyle: Cards.subtextTextStyle)
+        WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
         label.textColor = grey()
     }
 
@@ -294,7 +294,7 @@ extension WPStyleGuide {
 
     public class func applyGapMarkerButtonStyle(_ button: UIButton) {
         button.backgroundColor = gapMarkerButtonBackgroundColor()
-        WPStyleGuide.configureLabel(button.titleLabel!, forTextStyle: Cards.loadMoreButtonTextStyle, withWeight: UIFontWeightSemibold)
+        WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.loadMoreButtonTextStyle, fontWeight: UIFontWeightSemibold)
         button.setTitleColor(UIColor.white, for: UIControlState())
     }
 

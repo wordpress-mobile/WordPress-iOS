@@ -124,7 +124,7 @@ private enum ReaderCardDiscoverAttribution: Int {
         let str = String(format: pattern, blogName!)
 
         let range = (str as NSString).range(of: blogName!)
-        let font = WPStyleGuide.fontForTextStyle(WPStyleGuide.originalAttributionTextStyle(), withTraits: .traitItalic)
+        let font = WPStyleGuide.fontForTextStyle(WPStyleGuide.originalAttributionTextStyle(), symbolicTraits: .traitItalic)
         let attributes = originalAttributionParagraphAttributes as! [String: AnyObject]
         let attributedString = NSMutableAttributedString(string: str, attributes: attributes)
         attributedString.addAttribute(NSFontAttributeName, value: font, range: range)
