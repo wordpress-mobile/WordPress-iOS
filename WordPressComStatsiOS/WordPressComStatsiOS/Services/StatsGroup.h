@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "StatsItem.h"
+#import <WordPressKit/StatsItem.h>
 #import "StatsSection.h"
 
 @interface StatsGroup : NSObject

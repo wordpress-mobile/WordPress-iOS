@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "StatsSummary.h"
+#import <WordPressKit/StatsSummary.h>
 
 @interface StatsDateUtilities : NSObject
 

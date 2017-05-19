@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "WPStatsViewController.h"
-#import "StatsSummary.h"
+#import <WordPressKit/StatsSummary.h>
 #import "WPStatsService.h"
 
 @protocol WPStatsViewControllerDelegate, StatsProgressViewDelegate;
