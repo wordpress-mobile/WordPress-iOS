@@ -34,7 +34,8 @@ open class ShareExtensionService: NSObject {
         }
     }
 
-    /// Sets the Primary Site that should be pre-selected in the Share Extension.
+    /// Sets the Primary Site that should be pre-selected in the Share Extension when no Last
+    /// Used Site is present.
     ///
     /// - Parameters:
     ///     - defaultSiteID: The ID of the Primary Site.
@@ -47,6 +48,22 @@ open class ShareExtensionService: NSObject {
 
         userDefaults.set(defaultSiteID, forKey: WPShareExtensionUserDefaultsPrimarySiteID)
         userDefaults.set(defaultSiteName, forKey: WPShareExtensionUserDefaultsPrimarySiteName)
+        userDefaults.synchronize()
+    }
+
+    /// Sets the Last Used Site that should be pre-selected in the Share Extension.
+    ///
+    /// - Parameters:
+    ///     - lastUsedSiteID: The ID of the Last Used Site.
+    ///     - lastUsedSiteName: The Last Used Site's Name
+    ///
+    class func configureShareExtensionLastUsedSiteID(_ lastUsedSiteID: Int, lastUsedSiteName: String) {
+        guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
+            return
+        }
+
+        userDefaults.set(lastUsedSiteID, forKey: WPShareExtensionUserDefaultsLastUsedSiteID)
+        userDefaults.set(lastUsedSiteName, forKey: WPShareExtensionUserDefaultsLastUsedSiteName)
         userDefaults.synchronize()
     }
 
@@ -86,6 +103,8 @@ open class ShareExtensionService: NSObject {
         if let userDefaults = UserDefaults(suiteName: WPAppGroupName) {
             userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsPrimarySiteID)
             userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsPrimarySiteName)
+            userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsLastUsedSiteID)
+            userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsLastUsedSiteName)
             userDefaults.removeObject(forKey: WPShareExtensionMaximumMediaDimensionKey)
             userDefaults.synchronize()
         }
@@ -113,19 +132,25 @@ open class ShareExtensionService: NSObject {
         return oauth2Token
     }
 
-    /// Retrieves the Primary Site Details (ID + Name), if any.
+    /// Retrieves the Last Used Site Details (ID + Name) or, when that one is not present, the
+    /// Primary Site Details, if any.
     ///
-    class func retrieveShareExtensionPrimarySite() -> (siteID: Int, siteName: String)? {
+    class func retrieveShareExtensionDefaultSite() -> (siteID: Int, siteName: String)? {
         guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
             return nil
         }
 
-        guard let siteID = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteID) as? Int,
-            let siteName = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteName) as? String else {
-            return nil
+        if let siteID = userDefaults.object(forKey: WPShareExtensionUserDefaultsLastUsedSiteID) as? Int,
+            let siteName = userDefaults.object(forKey: WPShareExtensionUserDefaultsLastUsedSiteName) as? String {
+            return (siteID, siteName)
         }
 
-        return (siteID, siteName)
+        if let siteID = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteID) as? Int,
+            let siteName = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteName) as? String {
+            return (siteID, siteName)
+        }
+
+        return nil
     }
 
     /// Retrieves the Maximum Media Attachment Size
