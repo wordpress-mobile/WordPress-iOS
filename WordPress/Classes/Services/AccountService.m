@@ -8,7 +8,7 @@
 #import "AccountServiceRemoteREST.h"
 
 #import "NSString+Helpers.h"
-#import "NSString+XMLExtensions.h"
+#import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
 
 static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";

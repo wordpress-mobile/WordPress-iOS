@@ -449,17 +449,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let identifier = NSStringFromClass(StatsPostDetailsTableViewController.self)
         let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let statsBundle = Bundle(for: WPStatsViewController.self)
-
-        guard let path = statsBundle.path(forResource: "WordPressCom-Stats-iOS", ofType: "bundle") else {
-            let message = "The stats bundle is missing"
-
-            assertionFailure(message)
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - \(message)")
-            return
-        }
-
-        let bundle = Bundle(path: path)
-        let statsStoryboard = UIStoryboard(name: type(of: self).statsStoryboardName, bundle: bundle)
+        let statsStoryboard = UIStoryboard(name: type(of: self).statsStoryboardName, bundle: statsBundle)
         let viewControllerObject = statsStoryboard.instantiateViewController(withIdentifier: identifier)
 
         assert(viewControllerObject is StatsPostDetailsTableViewController)
@@ -486,34 +476,48 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func cell(_ cell: UITableViewCell, handleStatsFor post: AbstractPost) {
-        viewStatsForPost(post)
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            viewStatsForPost(post)
+        }
     }
 
     func cell(_ cell: UITableViewCell, handlePublishPost post: AbstractPost) {
-        publishPost(post)
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            publishPost(post)
+        }
+    }
+
+    func cell(_ cell: UITableViewCell, handleSchedulePost post: AbstractPost) {
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            schedulePost(post)
+        }
     }
 
     func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
-        if (post.status == .trash) {
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            if (post.status == .trash) {
 
-            let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-            let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
-            let messageText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
-            let alertController = UIAlertController(title: nil, message: messageText, preferredStyle: .alert)
+                let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+                let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
+                let messageText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
+                let alertController = UIAlertController(title: nil, message: messageText, preferredStyle: .alert)
 
-            alertController.addCancelActionWithTitle(cancelText)
-            alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-                self?.deletePost(post)
+                alertController.addCancelActionWithTitle(cancelText)
+                alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
+                    self?.deletePost(post)
+                }
+                alertController.presentFromRootViewController()
+
+            } else {
+                deletePost(post)
             }
-            alertController.presentFromRootViewController()
-
-        } else {
-            deletePost(post)
         }
     }
 
     func cell(_ cell: UITableViewCell, handleRestore post: AbstractPost) {
-        restorePost(post)
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            restorePost(post)
+        }
     }
 
     // MARK: - Refreshing noResultsView

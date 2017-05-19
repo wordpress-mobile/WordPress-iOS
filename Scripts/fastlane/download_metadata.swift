@@ -2,7 +2,7 @@
 
 import Foundation
 
-let glotPressWhatsNewKey = "standard-whats-new-1"
+let glotPressWhatsNewKey = "standard-whats-new-4"
 let glotPressDescriptionKey = "app_store_desc"
 let glotPressKeywordsKey = "app_store_keywords"
 let baseFolder = "./metadata"

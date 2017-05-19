@@ -1,4 +1,4 @@
-#import "WPTableViewCell.h"
+#import <WordPressShared/WPTableViewCell.h>
 
 /**
  The corresponding value is an UIImage instance representing the work being done

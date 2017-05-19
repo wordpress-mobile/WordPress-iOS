@@ -76,6 +76,7 @@
 #import "PostService.h"
 #import "PostServiceOptions.h"
 #import "PostSettingsViewController.h"
+#import "PostTagService.h"
 #import "PrivateSiteURLProtocol.h"
 
 #import "ReachabilityUtils.h"
@@ -95,6 +96,7 @@
 #import "RotationAwareNavigationViewController.h"
 
 #import "ServiceRemoteWordPressComREST.h"
+#import "ServiceRemoteWordPressXMLRPC.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"
