@@ -59,7 +59,8 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get Reader Screenshot
         app.tabBars["Main Navigation"].buttons["readerTabButton"].tap(withNumberOfTaps: 2, numberOfTouches: 2)
-        app.tables.staticTexts["Discover"].tap()
+        //app.tables.staticTexts["Discover"].tap()
+        app.tables.cells.element(boundBy: 1).tap() // tap Discover
         sleep(5)
         snapshot("1-Reader")
 
