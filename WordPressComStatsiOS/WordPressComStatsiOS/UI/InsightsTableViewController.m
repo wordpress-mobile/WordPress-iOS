@@ -11,13 +11,13 @@
 #import "StatsSection.h"
 #import <WordPressComAnalytics/WPAnalytics.h>
 #import "StatsTwoColumnTableViewCell.h"
-#import "StatsItemAction.h"
+#import <WordPressKit/StatsItemAction.h>
 #import "StatsViewAllTableViewController.h"
 #import "StatsPostDetailsTableViewController.h"
 #import "UIViewController+SizeClass.h"
 #import "NSBundle+StatsBundleHelper.h"
 #import <WordPressShared/WPFontManager.h>
-#import "StatsStreakItem.h"
+#import <WordPressKit/StatsStreakItem.h>
 #import "InsightsPostingActivityCollectionViewController.h"
 #import "AppExtensionUtils.h"
 

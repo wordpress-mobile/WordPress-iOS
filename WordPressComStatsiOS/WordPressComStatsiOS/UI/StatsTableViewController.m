@@ -2,8 +2,8 @@
 #import "WPStatsGraphViewController.h"
 #import "WPStatsService.h"
 #import "StatsGroup.h"
-#import "StatsItem.h"
-#import "StatsItemAction.h"
+#import <WordPressKit/StatsItem.h>
+#import <WordPressKit/StatsItemAction.h>
 #import "WPStyleGuide+Stats.h"
 #import <WordPressShared/WPImageSource.h>
 #import "StatsTableSectionHeaderView.h"

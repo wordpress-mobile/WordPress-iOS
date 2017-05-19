@@ -2,7 +2,7 @@
 #import "WPStyleGuide+Stats.h"
 #import <WordPressShared/WPFontManager.h>
 #import <objc/runtime.h>
-#import "StatsStreakItem.h"
+#import <WordPressKit/StatsStreakItem.h>
 
 static const NSInteger DefaultGradeCount = 5;
 static const CGFloat DefaultCellSize = 12.0;

@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "StatsStreak.h"
+#import <WordPressKit/StatsStreak.h>
 
 @interface InsightsPostingActivityCollectionViewController : UICollectionViewController
 

@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "StatsSummary.h"
+#import <WordPressKit/StatsSummary.h>
 #import "WPStatsService.h"
 #import "StatsSection.h"
 #import "WPStatsViewController.h"
