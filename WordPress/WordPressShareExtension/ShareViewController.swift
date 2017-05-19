@@ -22,13 +22,13 @@ class ShareViewController: SLComposeServiceViewController {
     /// Selected Site's ID
     ///
     fileprivate lazy var selectedSiteID: Int? = {
-        ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID
+        ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteID
     }()
 
     /// Selected Site's Name
     ///
     fileprivate lazy var selectedSiteName: String? = {
-        ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteName
+        ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteName
     }()
 
     /// Maximum Image Size
@@ -124,6 +124,10 @@ class ShareViewController: SLComposeServiceViewController {
             fatalError("The view should have been dismissed on viewDidAppear!")
         }
 
+        // Save the last used site
+        if let siteName = selectedSiteName {
+            ShareExtensionService.configureShareExtensionLastUsedSiteID(siteID, lastUsedSiteName: siteName)
+        }
 
         // Proceed uploading the actual post
         let (subject, body) = contentText.stringWithAnchoredLinks().splitContentTextIntoSubjectAndBody()
@@ -219,10 +223,8 @@ private extension ShareViewController {
     func loadContent(extensionContext: NSExtensionContext) {
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
-                switch share {
-                case .text(let text):
-                    self?.textView.text = text
-                case .image(let image):
+                self?.textView.text = share.text
+                if let image = share.image {
                     self?.imageLoaded(image: image)
                 }
         }
