@@ -13,7 +13,7 @@ extension WPStyleGuide {
     /// - Parameters:
     ///     - tableView: The tableView to configure.
     ///
-    public class func configureAutomaticHeightRowsForTableView(_ tableView: UITableView) {
+    public class func configureAutomaticHeightRows(for tableView: UITableView) {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = defaultTableViewRowHeight
     }
@@ -24,7 +24,7 @@ extension WPStyleGuide {
     ///     - label: The label to configure.
     ///     - style: The desired UIFontTextStyle.
     ///
-    public class func configureLabel(_ label: UILabel, forTextStyle style: UIFontTextStyle) {
+    public class func configureLabel(_ label: UILabel, textStyle style: UIFontTextStyle) {
         label.font = UIFont.preferredFont(forTextStyle: style)
         label.adjustsFontForContentSizeCategory = true
     }
@@ -36,8 +36,8 @@ extension WPStyleGuide {
     ///     - style: The desired UIFontTextStyle.
     ///     - traits: The desired UIFontDescriptorSymbolicTraits.
     ///
-    public class func configureLabel(_ label: UILabel, forTextStyle style: UIFontTextStyle, withTraits traits: UIFontDescriptorSymbolicTraits) {
-        label.font = self.fontForTextStyle(style, withTraits: traits)
+    public class func configureLabel(_ label: UILabel, textStyle style: UIFontTextStyle, symbolicTraits traits: UIFontDescriptorSymbolicTraits) {
+        label.font = self.fontForTextStyle(style, symbolicTraits: traits)
         label.adjustsFontForContentSizeCategory = true
     }
 
@@ -50,8 +50,8 @@ extension WPStyleGuide {
     ///       UIFontWeightRegular, UIFontWeightMedium, UIFontWeightSemibold, UIFontWeightBold,
     ///       UIFontWeightHeavy, UIFontWeightBlack).
     ///
-    public class func configureLabel(_ label: UILabel, forTextStyle style: UIFontTextStyle, withWeight weight: CGFloat) {
-        label.font = self.fontForTextStyle(style, withWeight: weight)
+    public class func configureLabel(_ label: UILabel, textStyle style: UIFontTextStyle, fontWeight weight: CGFloat) {
+        label.font = self.fontForTextStyle(style, fontWeight: weight)
         label.adjustsFontForContentSizeCategory = true
     }
 
@@ -61,7 +61,7 @@ extension WPStyleGuide {
     ///     - label: The label to configure.
     ///     - style: The desired UIFontTextStyle.
     ///
-    public class func configureLabelForNotoFont(_ label: UILabel, forTextStyle style: UIFontTextStyle) {
+    public class func configureLabelForNotoFont(_ label: UILabel, textStyle style: UIFontTextStyle) {
         label.font = self.notoFontForTextStyle(style)
         label.adjustsFontForContentSizeCategory = true
     }
@@ -86,7 +86,7 @@ extension WPStyleGuide {
     ///
     /// - Returns: The created font.
     ///
-    public class func fontForTextStyle(_ style: UIFontTextStyle, withTraits traits: UIFontDescriptorSymbolicTraits) -> UIFont {
+    public class func fontForTextStyle(_ style: UIFontTextStyle, symbolicTraits traits: UIFontDescriptorSymbolicTraits) -> UIFont {
         var fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
         fontDescriptor = fontDescriptor.withSymbolicTraits(traits) ?? fontDescriptor
         return UIFont(descriptor: fontDescriptor, size: CGFloat(0.0))
@@ -102,7 +102,7 @@ extension WPStyleGuide {
     ///
     /// - Returns: The created font.
     ///
-    public class func fontForTextStyle(_ style: UIFontTextStyle, withWeight weight: CGFloat) -> UIFont {
+    public class func fontForTextStyle(_ style: UIFontTextStyle, fontWeight weight: CGFloat) -> UIFont {
         var fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
         let traits = [UIFontWeightTrait: weight]
         fontDescriptor = fontDescriptor.addingAttributes([UIFontDescriptorTraitsAttribute: traits])
