@@ -13,9 +13,9 @@ enum PlanListViewModel {
                 title: NSLocalizedString("Loading Plans...", comment: "Text displayed while loading plans details"),
                 accessoryView: PlansLoadingIndicatorView()
         )
-        case .ready(_):
+        case .ready:
             return nil
-        case .error(_):
+        case .error:
             let appDelegate = WordPressAppDelegate.sharedInstance()
             if (appDelegate?.connectionAvailable)! {
                 return WPNoResultsView.Model(
@@ -72,7 +72,7 @@ enum PlanListViewModel {
 
     func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter?, planService: PlanService<StoreKitStore>?) -> ImmuTable {
         switch self {
-        case .loading, .error(_):
+        case .loading, .error:
             return ImmuTable.Empty
         case .ready(let siteID, let activePlan, let plans):
             let rows: [ImmuTableRow] = plans.map({ (plan, price) in

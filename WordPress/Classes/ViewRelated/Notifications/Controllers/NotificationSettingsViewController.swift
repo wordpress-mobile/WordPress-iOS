@@ -224,7 +224,7 @@ open class NotificationSettingsViewController: UIViewController {
         // Proceed rendering the settings
         let settings = settingsForRowAtIndexPath(indexPath)!
         switch settings.channel {
-        case .blog(_):
+        case .blog:
             cell.textLabel?.text            = settings.blog?.settings?.name ?? settings.channel.description()
             cell.detailTextLabel?.text      = settings.blog?.displayURL as String? ?? String()
             cell.accessoryType              = .disclosureIndicator
