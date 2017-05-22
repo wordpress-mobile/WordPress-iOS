@@ -204,7 +204,192 @@
     [self.managedObjectContext performBlock:^{
         AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
         Media *media = [Media makeMediaWithPost:post];
+        media.remoteStatusNumber = @(MediaRemoteStatusLocal);
         media.postID = post.postID;
+        media.filename = [mediaURL lastPathComponent];
+        media.absoluteLocalURL = mediaURL;
+        media.absoluteThumbnailLocalURL = mediaThumbnailURL;
+        NSNumber * fileSize;
+        if ([mediaURL getResourceValue:&fileSize forKey:NSURLFileSizeKey error:nil]) {
+            media.filesize = @([fileSize longLongValue] / 1024);
+        } else {
+            media.filesize = 0;
+        }
+        media.width = @(mediaSize.width);
+        media.height = @(mediaSize.height);
+        media.mediaType = mediaType;
+        if (mediaType == WPMediaTypeVideo && [asset isKindOfClass:[PHAsset class]]) {
+            PHAsset *originalAsset = (PHAsset *)asset;
+            media.length = @(originalAsset.duration);
+        }
+        //make sure that we only return when object is properly created and saved
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+            if (completion) {
+                completion(media, nil);
+            }
+        }];
+    }];
+}
+
+- (void)createMediaWithPHAsset:(PHAsset *)asset
+               forBlogObjectID:(NSManagedObjectID *)blogObjectID
+             thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                    completion:(void (^)(Media *media, NSError *error))completion
+{
+    NSString *mediaName = [asset originalFilename];
+
+    [self createMediaWith:asset
+          forBlogObjectID:blogObjectID
+                mediaName:mediaName
+        thumbnailCallback:thumbnailCallback
+               completion:completion
+     ];
+}
+
+- (void)createMediaWith:(id<ExportableAsset>)asset
+        forBlogObjectID:(NSManagedObjectID *)blogObjectID
+              mediaName:(NSString *)mediaName
+      thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+             completion:(void (^)(Media *media, NSError *error))completion
+{
+    NSError *error = nil;
+    Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
+    if (!blog) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+
+    MediaType mediaType = [asset assetMediaType];
+    NSString *assetUTI = [asset originalUTI];
+    NSString *extension = [self extensionForUTI:assetUTI];
+    if (mediaType == MediaTypeImage) {
+        NSSet *allowedFileTypes = blog.allowedFileTypes;
+        if (![allowedFileTypes containsObject:extension]) {
+            assetUTI = (__bridge NSString *)kUTTypeJPEG;
+            extension = [self extensionForUTI:assetUTI];
+        }
+    } else if (mediaType == MediaTypeVideo) {
+        if (![blog isHostedAtWPcom]) {
+            assetUTI = (__bridge NSString *)kUTTypeMPEG4;
+            extension = [self extensionForUTI:assetUTI];
+        }
+    }
+
+    MediaSettings *mediaSettings = [MediaSettings new];
+    BOOL stripGeoLocation = mediaSettings.removeLocationSetting;
+
+    NSInteger maxImageSize = [mediaSettings imageSizeForUpload];
+    CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
+
+    void(^trackResizedPhotoError)() = nil;
+    if (mediaType == MediaTypeImage && maxImageSize > 0) {
+        // Only tracking resized photo if the user selected a max size that's not the -1 value for "Original"
+        NSDictionary *properties = @{@"resize_width": @(maxImageSize)};
+        [WPAppAnalytics track:WPAnalyticsStatEditorResizedPhoto withProperties:properties withBlog:blog];
+        trackResizedPhotoError = ^() {
+            [self.managedObjectContext performBlock:^{
+                [WPAppAnalytics track:WPAnalyticsStatEditorResizedPhotoError withProperties:properties withBlog:blog];
+            }];
+        };
+    }
+
+    error = nil;
+    NSURL *mediaURL = [MediaLibrary makeLocalMediaURLWithFilename:mediaName
+                                                    fileExtension:extension
+                                                            error:&error];
+    if (error) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+    error = nil;
+    NSURL *mediaThumbnailURL = [MediaLibrary makeLocalMediaURLWithFilename:[MediaLibrary mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
+                                                             fileExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]
+                                                                     error:&error];
+    if (error) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+
+    CGFloat imageMaxDimension = MAX([UIScreen mainScreen].nativeBounds.size.width, [UIScreen mainScreen].nativeBounds.size.height);
+    CGSize thumbnailSize = CGSizeMake(imageMaxDimension, imageMaxDimension);
+
+    [[self.class queueForResizeMediaOperations] addOperationWithBlock:^{
+        [asset exportThumbnailToURL:mediaThumbnailURL
+                         targetSize:thumbnailSize
+                        synchronous:YES
+                     successHandler:^(CGSize thumbnailSize) {
+                         if (thumbnailCallback) {
+                             thumbnailCallback(mediaThumbnailURL);
+                         }
+                         if ([assetUTI isEqual:(__bridge NSString *)kUTTypeGIF]) {
+                             // export original gif
+                             [asset exportOriginalImage:mediaURL successHandler:^(CGSize resultingSize) {
+                                 [self createMediaForBlog:blogObjectID
+                                                 mediaURL:mediaURL
+                                        mediaThumbnailURL:mediaThumbnailURL
+                                                mediaType:mediaType
+                                                mediaSize:resultingSize
+                                                    asset:asset
+                                               completion:completion];
+                             } errorHandler:^(NSError * _Nonnull error) {
+                                 if (completion){
+                                     completion(nil, error);
+                                 }
+                             }];
+                         } else {
+                             [asset exportToURL:mediaURL
+                                      targetUTI:assetUTI
+                              maximumResolution:maximumResolution
+                               stripGeoLocation:stripGeoLocation
+                                    synchronous:true
+                                 successHandler:^(CGSize resultingSize) {
+                                     [self createMediaForBlog:blogObjectID
+                                                     mediaURL:mediaURL
+                                            mediaThumbnailURL:mediaThumbnailURL
+                                                    mediaType:mediaType
+                                                    mediaSize:resultingSize
+                                                        asset:asset
+                                                   completion:completion];
+                                 } errorHandler:^(NSError *error) {
+                                     if (completion){
+                                         completion(nil, error);
+                                     }
+                                     if (trackResizedPhotoError) {
+                                         trackResizedPhotoError();
+                                     }
+                                 }];
+                         }
+                     }
+                       errorHandler:^(NSError *error) {
+                           if (completion){
+                               completion(nil, error);
+                           }
+                           if (trackResizedPhotoError) {
+                               trackResizedPhotoError();
+                           }
+                       }];
+    }];
+}
+
+- (void)createMediaForBlog:(NSManagedObjectID *)blogObjectID
+                  mediaURL:(NSURL *)mediaURL
+         mediaThumbnailURL:(NSURL *)mediaThumbnailURL
+                 mediaType:(MediaType)mediaType
+                 mediaSize:(CGSize)mediaSize
+                     asset:(id <ExportableAsset>)asset
+                completion:(void (^)(Media *media, NSError *error))completion
+{
+
+    [self.managedObjectContext performBlock:^{
+        Blog *blog = (Blog *)[self.managedObjectContext objectWithID:blogObjectID];
+        Media *media = [Media makeMediaWithBlog:blog];
+        media.remoteStatusNumber = @(MediaRemoteStatusLocal);
         media.filename = [mediaURL lastPathComponent];
         media.absoluteLocalURL = mediaURL;
         media.absoluteThumbnailLocalURL = mediaThumbnailURL;
