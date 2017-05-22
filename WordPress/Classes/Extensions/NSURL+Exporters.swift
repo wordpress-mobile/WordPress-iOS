@@ -204,7 +204,7 @@ extension NSURL: ExportableAsset {
         }
     }
 
-    //MARK: - Helper methods
+    // MARK: - Helper methods
 
     var pixelSize: CGSize {
         get {

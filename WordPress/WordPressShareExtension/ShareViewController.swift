@@ -256,7 +256,7 @@ private extension ShareViewController {
 /// ShareViewController Extension: Backend Interaction
 ///
 private extension ShareViewController {
-    func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, attachedImageData: Data?, requestEqueued: @escaping (Void) -> ()) {
+    func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, attachedImageData: Data?, requestEqueued: @escaping () -> ()) {
         let configuration = URLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
         let service = PostService(configuration: configuration)
 
