@@ -11,7 +11,7 @@ import Mixpanel
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
 
-    //MARK: - Helpers for presenting the signin flow
+    // MARK: - Helpers for presenting the signin flow
 
     // Convenience factory for the signin flow's first vc
     class func createControllerForSigninFlow(showsEditor thenEditor: Bool) -> UIViewController {
