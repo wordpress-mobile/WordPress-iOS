@@ -291,6 +291,7 @@
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"blog", blog];
     NSPredicate *mediaPredicate = [NSPredicate predicateWithValue:YES];
+    NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"remoteStatusNumber", @(MediaRemoteStatusSync)];
     switch (filter) {
         case WPMediaTypeImage: {
             mediaPredicate = [NSPredicate predicateWithFormat:@"mediaTypeString == %@", [Media stringFromMediaType:MediaTypeImage]];
@@ -305,7 +306,7 @@
             break;
     };
     return [NSCompoundPredicate andPredicateWithSubpredicates:
-            @[predicate, mediaPredicate]];
+            @[predicate, mediaPredicate, statusPredicate]];
 }
 
 - (NSPredicate *)predicateForSearchQuery
