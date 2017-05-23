@@ -8,7 +8,6 @@ class SigninLinkMailViewController: NUXAbstractViewController {
     @IBOutlet var label: UILabel!
     @IBOutlet var openMailButton: NUXSubmitButton!
     @IBOutlet var usePasswordButton: UIButton!
-    var restrictSigninToWPCom = false
 
     override var sourceTag: SupportSourceTag {
         get {
@@ -82,7 +81,7 @@ class SigninLinkMailViewController: NUXAbstractViewController {
         WPAppAnalytics.track(.loginMagicLinkExited)
         let controller = SigninWPComViewController.controller(loginFields)
         controller.dismissBlock = dismissBlock
-        controller.restrictSigninToWPCom = restrictSigninToWPCom
+        controller.restrictToWPCom = restrictToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 }
