@@ -26,8 +26,12 @@ import Mixpanel
         return controller
     }
 
-    // Helper used by the app delegate
+    /// Used to present the signin flow from the app delegate
     class func showSigninFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+        if Feature.enabled(.newLogin) {
+            showLoginFromPresenter(presenter, animated: animated, thenEditor: thenEditor)
+            return
+        }
         let controller = createControllerForSigninFlow(showsEditor: thenEditor)
         let navController = NUXNavigationController(rootViewController: controller)
         presenter.present(navController, animated: animated, completion: nil)
@@ -35,20 +39,28 @@ import Mixpanel
         trackOpenedLogin()
     }
 
-    class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+    /// Used to present the new login flow from the app delegate
+    fileprivate class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+        defer {
+            trackOpenedLogin()
+        }
+
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        if let controller = storyboard.instantiateInitialViewController() {
-            // initial VC is NUXNavigationController
+        if let controller = storyboard.instantiateInitialViewController() as? NUXNavigationController {
             presenter.present(controller, animated: animated, completion: nil)
         }
-        trackOpenedLogin()
     }
 
 
-    // Helper used by the MeViewController
+    /// Used to present the wpcom-only signin flow from the app delegate
     class func showSigninForJustWPComFromPresenter(_ presenter: UIViewController) {
+        if Feature.enabled(.newLogin) {
+            showLoginForJustWPComFromPresenter(presenter)
+            return
+        }
+
         let controller = SigninEmailViewController.controller()
-        controller.restrictSigninToWPCom = true
+        controller.restrictToWPCom = true
 
         let navController = NUXNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
@@ -56,14 +68,50 @@ import Mixpanel
         trackOpenedLogin()
     }
 
+    /// Used to present the new wpcom-only login flow from the app delegate
+    fileprivate class func showLoginForJustWPComFromPresenter(_ presenter: UIViewController) {
+        defer {
+            trackOpenedLogin()
+        }
 
-    // Helper used by the BlogListViewController
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? NUXAbstractViewController else {
+            return
+        }
+        controller.restrictToWPCom = true
+
+        let navController = NUXNavigationController(rootViewController: controller)
+        presenter.present(navController, animated: true, completion: nil)
+    }
+
+
+    /// Used to present the self-hosted signin flow from BlogListViewController
     class func showSigninForSelfHostedSite(_ presenter: UIViewController) {
+        if Feature.enabled(.newLogin) {
+            showLoginForSelfHostedSite(presenter)
+            return
+        }
+
         let controller = SigninSelfHostedViewController.controller(LoginFields())
         let navController = NUXNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
 
         trackOpenedLogin()
+    }
+
+    /// Used to present the new self-hosted login flow from BlogListViewController
+    fileprivate class func showLoginForSelfHostedSite(_ presenter: UIViewController) {
+        defer {
+            trackOpenedLogin()
+        }
+
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "selfHosted") as? NUXAbstractViewController else {
+            return
+        }
+
+        let navController = NUXNavigationController(rootViewController: controller)
+        presenter.present(navController, animated: true, completion: nil)
     }
 
 
@@ -76,7 +124,7 @@ import Mixpanel
         }
 
         let controller = SigninWPComViewController.controller(loginFields)
-        controller.restrictSigninToWPCom = true
+        controller.restrictToWPCom = true
         controller.dismissBlock = onDismissed
         return NUXNavigationController(rootViewController: controller)
     }
