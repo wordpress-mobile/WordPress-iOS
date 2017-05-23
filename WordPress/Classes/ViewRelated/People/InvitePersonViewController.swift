@@ -248,7 +248,7 @@ extension InvitePersonViewController {
         })
     }
 
-    func handleSendError(_ onRetry: @escaping ((Void) -> Void)) {
+    func handleSendError(_ onRetry: @escaping (() -> Void)) {
         let message = NSLocalizedString("There has been an unexpected error while sending your Invitation", comment: "Invite Failed Message")
         let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
         let retryText = NSLocalizedString("Try Again", comment: "Retries an Action")
