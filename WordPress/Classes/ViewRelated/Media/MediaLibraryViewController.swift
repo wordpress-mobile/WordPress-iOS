@@ -287,7 +287,7 @@ class MediaLibraryViewController: UIViewController {
 
     // MARK: - Actions
 
-    @objc private func addTapped() {
+    @objc fileprivate func addTapped() {
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = WPPHAssetDataSource()
         picker.showMostRecentFirst = true
@@ -398,7 +398,7 @@ class MediaLibraryViewController: UIViewController {
 
 extension MediaLibraryViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView!) {
-        // TODO: Present upload UI
+        addTapped()
     }
 }
 
