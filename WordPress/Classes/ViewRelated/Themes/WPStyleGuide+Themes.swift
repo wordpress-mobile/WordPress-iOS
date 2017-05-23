@@ -10,19 +10,13 @@ extension WPStyleGuide {
         public static let currentThemeBackgroundColor = UIColor.white
         public static let currentThemeDividerColor = WPStyleGuide.greyLighten30()
 
-        public static var currentThemeLabelFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.caption2)
-        }
+        public static let currentThemeLabelFont = WPFontManager.systemRegularFont(ofSize: 11)
         public static let currentThemeLabelColor = WPStyleGuide.greyDarken20()
 
-        public static var currentThemeNameFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.footnote, fontWeight: UIFontWeightSemibold)
-        }
+        public static let currentThemeNameFont = WPFontManager.systemSemiBoldFont(ofSize: 14)
         public static let currentThemeNameColor = WPStyleGuide.darkGrey()
 
-        public static var currentThemeButtonFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.footnote)
-        }
+        public static let currentThemeButtonFont = WPFontManager.systemRegularFont(ofSize: 13)
         public static let currentThemeButtonColor = WPStyleGuide.darkGrey()
 
         public static func styleCurrentThemeButton(_ button: UIButton) {
@@ -35,9 +29,7 @@ extension WPStyleGuide {
         public static let searchBarBackgroundColor = WPStyleGuide.lightGrey()
         public static let searchBarBorderColor = WPStyleGuide.greyLighten20()
 
-        public static var searchTypeTitleFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.footnote, fontWeight: UIFontWeightSemibold)
-        }
+        public static let searchTypeTitleFont = WPFontManager.systemSemiBoldFont(ofSize: 14)
         public static let searchTypeTitleColor = WPStyleGuide.darkGrey()
 
         public static func styleSearchTypeButton(_ button: UIButton, title: String) {
@@ -52,12 +44,9 @@ extension WPStyleGuide {
 
         // MARK: - Cell Styles
 
-        public static var cellNameFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.footnote, fontWeight: UIFontWeightSemibold)
-        }
-        public static var cellInfoFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.caption1, fontWeight: UIFontWeightSemibold)
-        }
+        public static let cellNameFont = WPFontManager.systemSemiBoldFont(ofSize: 14)
+        public static let cellInfoFont = WPFontManager.systemSemiBoldFont(ofSize: 12)
+
         public static let placeholderColor = WPStyleGuide.greyLighten20()
 
         public static let activeCellBackgroundColor = WPStyleGuide.mediumBlue()
