@@ -13,7 +13,6 @@
 @property (nonatomic, assign) WPMediaType filter;
 @property (nonatomic, assign) BOOL ascendingOrdering;
 @property (nonatomic, strong) NSMutableDictionary *observers;
-@property (nonatomic, strong) MediaService *mediaService;
 @property (nonatomic, strong) NSFetchedResultsController *fetchController;
 @property (nonatomic, strong) id groupObserverHandler;
 #pragma mark - change trackers
@@ -41,8 +40,6 @@
             [weakSelf notifyObserversWithIncrementalChanges:incrementalChanges removed:removed inserted:inserted changed:changed moved:moved];
         }];
         _blog = blog;
-        NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
-        _mediaService = [[MediaService alloc] initWithManagedObjectContext:backgroundContext];
         _observers = [NSMutableDictionary dictionary];
 
         _mediaRemoved = [[NSMutableIndexSet alloc] init];
@@ -121,7 +118,9 @@
         }
     }
     // try to sync from the server
-    [self.mediaService syncMediaLibraryForBlog:self.blog success:^{
+    NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:backgroundContext];
+    [mediaService syncMediaLibraryForBlog:self.blog success:^{
         if (!localResultsAvailable && successBlock) {
             successBlock();
         }
