@@ -171,7 +171,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     label.adjustsFontSizeToFitWidth = NO;
     label.textAlignment = NSTextAlignmentCenter;
     [WPStyleGuide configureLabel:label
-                       textStyle:UIFontTextStyleCallout
+                       textStyle:UIFontTextStyleHeadline
                       fontWeight:UIFontWeightSemibold];
     return label;
 }
@@ -187,7 +187,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     label.adjustsFontSizeToFitWidth = NO;
     label.textAlignment = NSTextAlignmentCenter;
     [WPStyleGuide configureLabel:label
-                       textStyle:UIFontTextStyleCallout];
+                       textStyle:UIFontTextStyleHeadline];
 
     return label;
 }
