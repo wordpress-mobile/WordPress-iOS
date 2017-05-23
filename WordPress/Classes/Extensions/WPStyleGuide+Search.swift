@@ -16,7 +16,7 @@ extension WPStyleGuide {
 
     public class func configureSearchAppearance() {
         // Cancel button
-        let barButtonTitleAttributes: [String: Any] = [NSFontAttributeName: WPFontManager.systemRegularFont(ofSize: 17.0),
+        let barButtonTitleAttributes: [String: Any] = [NSFontAttributeName: WPStyleGuide.fontForTextStyle(.headline),
                            NSForegroundColorAttributeName: WPStyleGuide.darkGrey()]
 
         let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
