@@ -1,6 +1,6 @@
 /*
  *    HelpshiftSupport.h
- *    SDK Version 5.10.0
+ *    SDK Version 5.10.1
  *
  *    Get the documentation at http://www.helpshift.com/docs
  *
@@ -350,10 +350,7 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *
  */
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 + (void) handleLocalNotification:(UILocalNotification *)notification withController:(UIViewController *)viewController;
-#pragma clang diagnostic pop
 
 /** Clears Breadcrumbs list.
  *
