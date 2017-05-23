@@ -1635,7 +1635,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
     }
 
 
-    // MARK - Refresh Bookends
+    // MARK: - Refresh Bookends
 
     public func tableViewHandlerWillRefreshTableViewPreservingOffset(_ tableViewHandler: WPTableViewHandler) {
         // Reload the table view to reflect new content.

@@ -959,7 +959,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         return blog.account?.userID
     }
 
-    // MARK - Filtering
+    // MARK: - Filtering
 
     func refreshAndReload() {
         recentlyTrashedPostObjectIDs.removeAll()

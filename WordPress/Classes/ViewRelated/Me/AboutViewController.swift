@@ -168,9 +168,9 @@ open class AboutViewController: UITableViewController {
     fileprivate class Row {
         let title: String
         let details: String?
-        let handler: ((Void) -> Void)?
+        let handler: (() -> Void)?
 
-        init(title: String, details: String?, handler: ((Void) -> Void)?) {
+        init(title: String, details: String?, handler: (() -> Void)?) {
             self.title      = title
             self.details    = details
             self.handler    = handler
