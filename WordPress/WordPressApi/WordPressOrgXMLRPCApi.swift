@@ -43,7 +43,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
         session.invalidateAndCancel()
     }
 
-    //MARK: - Network requests
+    // MARK: - Network requests
     /**
      Check if username and password are valid credentials for the xmlrpc endpoint.
 
@@ -146,7 +146,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
         return createProgresForTask(task)
     }
 
-    //MARK: - Request Building
+    // MARK: - Request Building
 
     fileprivate func requestWithMethod(_ method: String, parameters: [AnyObject]?) throws -> URLRequest {
         let mutableRequest = NSMutableURLRequest(url: endpoint)
@@ -179,7 +179,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
         return fileURL
     }
 
-    //MARK: - Progress reporting
+    // MARK: - Progress reporting
 
     fileprivate func createProgresForTask(_ task: URLSessionTask) -> Progress {
         // Progress report
@@ -197,7 +197,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
         return progress
     }
 
-    //MARK: - Handling of data
+    // MARK: - Handling of data
 
     fileprivate func handleResponseWithData(_ originalData: Data?, urlResponse: URLResponse?, error: NSError?) throws -> AnyObject {
         guard let data = originalData,
