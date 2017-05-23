@@ -1,5 +1,3 @@
-//#import "Logging.h"
-//#import "NSBundle+StatsBundleHelper.h"
 #import "WPStatsServiceRemote.h"
 #import "StatsItem.h"
 #import "StatsItemAction.h"
@@ -1071,7 +1069,6 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
             StatsItem *statsItem = [StatsItem new];
             statsItem.label = countryName;
             statsItem.value = [self localizedStringForNumber:[view numberForKey:@"views"]];
-//            statsItem.iconURL = [[NSBundle statsBundle] URLForResource:key withExtension:@"png"];
             statsItem.alternateIconValue = key;
 
             [items addObject:statsItem];
