@@ -5,7 +5,7 @@ protocol EpilogueAnimation {
 
 /// Custom animation to allow presented views to appear to come from behind the presenter
 extension EpilogueAnimation where Self: UIStoryboardSegue {
-    func performEpilogue(completion: @escaping (Void) -> ()) {
+    func performEpilogue(completion: @escaping () -> ()) {
         guard let containerView = source.view.superview else {
             return
         }

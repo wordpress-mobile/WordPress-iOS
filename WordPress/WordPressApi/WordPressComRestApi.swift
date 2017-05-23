@@ -87,7 +87,7 @@ open class WordPressComRestApi: NSObject {
         sessionManager.invalidateSessionCancelingTasks(true)
     }
 
-    //MARK: - Network requests
+    // MARK: - Network requests
 
     /**
      Executes a GET request to the specified endpoint defined on URLString
