@@ -44,6 +44,12 @@ class MediaLibraryViewController: UIViewController {
         return stackView
     }()
 
+    fileprivate lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
+        let coordinator = MediaProgressCoordinator()
+        coordinator.delegate = self
+        return coordinator
+    }()
+
     var searchQuery: String? = nil
 
     // MARK: - Initializers
@@ -431,6 +437,22 @@ extension MediaLibraryViewController: UISearchBarDelegate {
 
 extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
+        // We're only interested in the upload picker
+        guard picker != pickerViewController else { return }
+
+        dismiss(animated: true, completion: nil)
+
+        guard let assets = assets as? [PHAsset],
+            assets.count > 0 else { return }
+
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
+
+        mediaProgressCoordinator.track(numberOfItems: assets.count)
+        for asset in assets {
+            makeAndUploadMediaWith(asset)
+        }
+    }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         dismiss(animated: true, completion: nil)
@@ -490,6 +512,34 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
         return MediaItemViewController(media: asset)
     }
+
+    func makeAndUploadMediaWith(_ asset: PHAsset) {
+        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.createMedia(with: asset,
+                            forBlogObjectID: blog.objectID,
+                            thumbnailCallback: nil,
+                            completion: { [weak self] media, error in
+                                guard let media = media else {
+                                    if let error = error as NSError? {
+                                        self?.mediaProgressCoordinator.attach(error: error, toMediaID: asset.identifier())
+                                    }
+                                    return
+                                }
+
+                                var uploadProgress: Progress? = nil
+                                service.uploadMedia(media, progress: &uploadProgress, success: nil, failure: { error in
+                                    if let mediaID = media.mediaID?.stringValue {
+                                        self?.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
+                                        self?.mediaProgressCoordinator.finishOneItem()
+                                    }
+                                })
+
+                                if let progress = uploadProgress,
+                                    let mediaID = media.mediaID?.stringValue {
+                                    self?.mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
+                                }
+        })
+    }
 }
 
 // MARK: - State restoration
@@ -522,5 +572,24 @@ extension MediaLibraryViewController: UIViewControllerRestoration {
         super.encodeRestorableState(with: coder)
 
         coder.encode(blog.objectID.uriRepresentation(), forKey: EncodingKey.blogURL)
+    }
+}
+
+// MARK: - Media Progress Coordinator Delegate
+
+extension MediaLibraryViewController: MediaProgressCoordinatorDelegate {
+    func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator) {}
+
+    func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
+        guard !mediaProgressCoordinator.hasFailedMedia else {
+            SVProgressHUD.showError(withStatus: NSLocalizedString("Upload failed", comment: "Text displayed in a HUD when media items have failed to upload."))
+            return
+        }
+
+        SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Uploaded!", comment: "Text displayed in a HUD when media items have been uploaded successfully."))
+    }
+
+    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
+        SVProgressHUD.showProgress(progress, status: NSLocalizedString("Uploading...", comment: "Text displayed in HUD while media items are being uploaded."))
     }
 }
