@@ -11,6 +11,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler {
     var helpBadge: WPNUXHelpBadgeLabel!
     var helpButton: UIButton!
     var loginFields = LoginFields()
+    var restrictToWPCom = false
 
     let helpButtonMarginSpacerWidth = CGFloat(-8)
     let helpBadgeSize = CGSize(width: 12, height: 10)
@@ -71,6 +72,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler {
             destination.dismissBlock = source.dismissBlock
         } else if let destination = segue.destination as? NUXAbstractViewController {
             destination.loginFields = source.loginFields
+            destination.restrictToWPCom = source.restrictToWPCom
             destination.dismissBlock = source.dismissBlock
         }
     }
