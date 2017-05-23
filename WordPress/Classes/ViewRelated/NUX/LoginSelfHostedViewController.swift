@@ -16,7 +16,7 @@ class LoginSelfHostedViewController: SigninSelfHostedViewController {
 
 
     override func finishedLogin(withUsername username: String!, password: String!, xmlrpc: String!, options: [AnyHashable: Any]!) {
-        displayLoginMessage(NSLocalizedString("", comment: ""))
+        displayLoginMessage("")
 
         BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
