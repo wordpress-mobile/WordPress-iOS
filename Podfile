@@ -36,7 +36,7 @@ abstract_target 'WordPress_Base' do
     # ---------------------
     pod '1PasswordExtension', '1.8.4'
     pod 'FormatterKit', '~> 1.8.1'
-    pod 'HockeySDK', '~> 4.1.3', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'HockeySDK', '~> 4.1.5', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
     pod 'Mixpanel', '3.1.3'
     pod 'Reachability',	'3.2'
