@@ -17,13 +17,6 @@ typedef void (^StatsAllTimeCompletion)(StatsAllTime *allTime, NSError *error);
 typedef void (^StatsLatestPostSummaryCompletion)(StatsLatestPostSummary *latestPostSummary, NSError *error);
 typedef void (^StatsStreakCompletion)(StatsStreak *streak, NSError *error);
 
-//typedef NS_ENUM(NSUInteger, StatsFollowerType) {
-//    StatsFollowerTypeDotCom,
-//    StatsFollowerTypeEmail
-//};
-//
-//@class WPStatsServiceRemote;
-
 @interface WPStatsService : NSObject
 
 @property (nonatomic, strong) WPStatsServiceRemote *remote;
