@@ -87,6 +87,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
 
         // Style!
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
 
