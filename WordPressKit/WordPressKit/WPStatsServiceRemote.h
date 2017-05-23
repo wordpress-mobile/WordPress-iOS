@@ -2,7 +2,6 @@
 #import "StatsSummary.h"
 #import "StatsVisits.h"
 #import "StatsStreak.h"
-//#import "WPStatsService.h"
 
 typedef void (^StatsRemoteSummaryCompletion)(StatsSummary *summary, NSError *error);
 typedef void (^StatsRemoteVisitsCompletion)(StatsVisits *visits, NSError *error);
