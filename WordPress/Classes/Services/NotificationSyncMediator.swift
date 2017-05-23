@@ -292,7 +292,7 @@ private extension NotificationSyncMediator {
     ///     - remoteNotes: Collection of Remote Notes
     ///     - completion: Callback to be executed on completion
     ///
-    func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: ((Void) -> Void)? = nil) {
+    func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (() -> Void)? = nil) {
         let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
 
         derivedContext.perform {
@@ -317,7 +317,7 @@ private extension NotificationSyncMediator {
     ///
     /// - Parameter remoteHashes: Collection of remoteNotifications.
     ///
-    func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: @escaping ((Void) -> Void)) {
+    func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: @escaping (() -> Void)) {
         let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
 
         derivedContext.perform {

@@ -187,7 +187,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     func deleteUser(_ siteID: Int,
                     userID: Int,
                     reassignID: Int? = nil,
-                    success: ((Void) -> Void)? = nil,
+                    success: (() -> Void)? = nil,
                     failure: ((Error) -> Void)? = nil) {
         let endpoint = "sites/\(siteID)/users/\(userID)/delete"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
@@ -215,7 +215,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///
     func deleteFollower(_ siteID: Int,
                         userID: Int,
-                        success: ((Void) -> Void)? = nil,
+                        success: (() -> Void)? = nil,
                         failure: ((Error) -> Void)? = nil) {
         let endpoint = "sites/\(siteID)/followers/\(userID)/delete"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
@@ -238,7 +238,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///
     func deleteViewer(_ siteID: Int,
                       userID: Int,
-                      success: ((Void) -> Void)? = nil,
+                      success: (() -> Void)? = nil,
                       failure: ((Error) -> Void)? = nil) {
         let endpoint = "sites/\(siteID)/viewers/\(userID)/delete"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
@@ -292,7 +292,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     func validateInvitation(_ siteID: Int,
                             usernameOrEmail: String,
                             role: Role,
-                            success: @escaping ((Void) -> Void),
+                            success: @escaping (() -> Void),
                             failure: @escaping ((Error) -> Void)) {
         let endpoint = "sites/\(siteID)/invites/validate"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
@@ -335,7 +335,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
                         usernameOrEmail: String,
                         role: Role,
                         message: String,
-                        success: @escaping ((Void) -> Void),
+                        success: @escaping (() -> Void),
                         failure: @escaping ((Error) -> Void)) {
         let endpoint = "sites/\(siteID)/invites/new"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
