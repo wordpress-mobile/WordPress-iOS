@@ -109,6 +109,7 @@ class MediaLibraryViewController: UIViewController {
         super.viewWillAppear(animated)
 
         registerForKeyboardNotifications()
+        registerForHUDNotifications()
 
         if let searchQuery = searchQuery,
             !searchQuery.isEmpty {
@@ -132,6 +133,7 @@ class MediaLibraryViewController: UIViewController {
         super.viewDidDisappear(animated)
 
         unregisterForKeyboardNotifications()
+        unregisterForHUDNotifications()
 
         if searchBar.isFirstResponder {
             searchQuery = searchBar.text
@@ -214,6 +216,23 @@ class MediaLibraryViewController: UIViewController {
 
         UIView.animate(withDuration: duration) {
             self.noResultsView?.centerInSuperview()
+        }
+    }
+
+    // MARK: - HUD handling
+
+    private func registerForHUDNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(statusHUDWasTapped(_:)), name: NSNotification.Name.SVProgressHUDDidTouchDownInside, object: nil)
+    }
+
+    private func unregisterForHUDNotifications() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.SVProgressHUDDidTouchDownInside, object: nil)
+    }
+
+    @objc private func statusHUDWasTapped(_ notification: Notification) {
+        if mediaProgressCoordinator.isRunning {
+            mediaProgressCoordinator.cancelAllPendingUploads()
+            SVProgressHUD.dismiss()
         }
     }
 
@@ -588,10 +607,20 @@ extension MediaLibraryViewController: MediaProgressCoordinatorDelegate {
             return
         }
 
+        guard let progress = mediaProgressCoordinator.mediaUploadingProgress,
+            !progress.isCancelled else {
+                return
+        }
+
         SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Uploaded!", comment: "Text displayed in a HUD when media items have been uploaded successfully."))
     }
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
-        SVProgressHUD.showProgress(progress, status: NSLocalizedString("Uploading...", comment: "Text displayed in HUD while media items are being uploaded."))
+        guard let mediaProgress = mediaProgressCoordinator.mediaUploadingProgress,
+            !mediaProgress.isCancelled else {
+                return
+        }
+
+        SVProgressHUD.showProgress(progress, status: NSLocalizedString("Uploading...\nTap to cancel", comment: "Text displayed in HUD while media items are being uploaded."))
     }
 }
