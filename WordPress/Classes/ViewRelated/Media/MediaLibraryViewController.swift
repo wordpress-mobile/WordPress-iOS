@@ -226,10 +226,14 @@ class MediaLibraryViewController: UIViewController {
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
             navigationItem.setLeftBarButton(nil, animated: true)
+
+            let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+
             if blog.supports(.mediaDeletion) && assetCount > 0 {
-                navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped)), animated: true)
+                let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped))
+                navigationItem.setRightBarButtonItems([addButton, editButton], animated: true)
             } else {
-                navigationItem.setRightBarButton(nil, animated: true)
+                navigationItem.setRightBarButtonItems([addButton], animated: true)
             }
         }
     }
@@ -274,6 +278,16 @@ class MediaLibraryViewController: UIViewController {
     }
 
     // MARK: - Actions
+
+    @objc private func addTapped() {
+        let picker = WPNavigationMediaPickerViewController()
+        picker.dataSource = WPPHAssetDataSource()
+        picker.showMostRecentFirst = true
+        picker.filter = .all
+        picker.delegate = self
+
+        present(picker, animated: true, completion: nil)
+    }
 
     @objc private func editTapped() {
         isEditing = !isEditing
@@ -418,15 +432,20 @@ extension MediaLibraryViewController: UISearchBarDelegate {
 extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
 
+    func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
+        dismiss(animated: true, completion: nil)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor asset: WPMediaAsset) -> UIViewController? {
+        guard picker == pickerViewController else { return WPAssetViewController(asset: asset) }
+
         WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
         return mediaItemViewController(for: asset)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
-        if isEditing { return true }
+        guard picker == pickerViewController else { return true }
+        guard !isEditing else { return true }
 
         if let viewController = mediaItemViewController(for: asset) {
             WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
@@ -437,10 +456,14 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didSelect asset: WPMediaAsset) {
+        guard picker == pickerViewController else { return }
+
         updateNavigationItemButtonsForCurrentAssetSelection()
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
+        guard picker == pickerViewController else { return }
+
         updateNavigationItemButtonsForCurrentAssetSelection()
     }
 

@@ -308,7 +308,7 @@
                 }
                 return;
             }
-            
+
             [self updateMedia:mediaInContext withRemoteMedia:media];
             mediaInContext.remoteStatus = MediaRemoteStatusSync;
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
