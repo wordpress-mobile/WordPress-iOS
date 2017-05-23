@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-@class Lookback, LookbackRecordingOptions;
+@class LookbackRecorder, LookbackRecordingOptions;
 
 /*! @header Lookback Settings
     Class with helpers for managing Lookback recordings.
@@ -25,14 +25,14 @@
 /*!
  *	Allow user to customize a specific options instance before you start recording with it.
  */
-+ (instancetype)settingsViewControllerForInstance:(Lookback*)lookback options:(LookbackRecordingOptions*)options;
++ (instancetype)settingsViewControllerForInstance:(LookbackRecorder*)lookback options:(LookbackRecordingOptions*)options;
 
 /*!
  *  Compatibility method for old code using the less convenient method.
  *  @deprecated
  *  @param lookback Shall only be the singleton instance [Lookback @link lookback @/link].
  */
-+ (instancetype)settingsViewControllerForInstance:(Lookback*)lookback;
++ (instancetype)settingsViewControllerForInstance:(LookbackRecorder*)lookback;
 
 /*!
 	Whether it should be possible to start/stop recording from this view.
@@ -50,7 +50,7 @@
     linking with Lookback, and you thus avoid linker errors.
 
     @example <pre>
-        [LookbackSettingsViewController_Weak settingsViewControllerForInstance:[Lookback lookback]];
+        [LookbackSettingsViewController_Weak settingsViewControllerForInstance:[LookbackRecorder sharedRecorder]];
     </pre>
 */
 #define LookbackSettingsViewController_Weak (NSClassFromString(@"LookbackSettingsViewController"))
