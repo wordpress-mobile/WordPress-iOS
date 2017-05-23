@@ -187,7 +187,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     label.adjustsFontSizeToFitWidth = NO;
     label.textAlignment = NSTextAlignmentCenter;
     [WPStyleGuide configureLabel:label
-                       textStyle:UIFontTextStyleHeadline];
+                       textStyle:UIFontTextStyleCallout];
 
     return label;
 }
