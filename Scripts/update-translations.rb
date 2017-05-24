@@ -72,6 +72,7 @@ ALL_LANGS={
   'pt-br' => 'pt-BR',   # Portuguese (Brazil)
   'ro' => 'ro',         # Romainian
   'ru' => 'ru',         # Russian
+  'sk' => 'sk',         # Slovak
   'sq' => 'sq',         # Albanian
   'sv' => 'sv',         # Swedish
   'th' => 'th',         # Thai
