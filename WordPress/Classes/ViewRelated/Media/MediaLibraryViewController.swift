@@ -476,6 +476,10 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         SVProgressHUD.show(withStatus: NSLocalizedString("Preparing...\nTap to cancel", comment: "Text displayed in HUD while preparing to upload media items."))
 
         mediaProgressCoordinator.track(numberOfItems: assets.count)
+
+        // Wait until all assets are uploaded before we update the collection view
+        pickerDataSource.isPaused = true
+
         for asset in assets {
             makeAndUploadMediaWith(asset)
         }
@@ -541,6 +545,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func makeAndUploadMediaWith(_ asset: PHAsset) {
+
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createMedia(with: asset,
                             forBlogObjectID: blog.objectID,
@@ -554,11 +559,15 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
                                 }
 
                                 var uploadProgress: Progress? = nil
-                                service.uploadMedia(media, progress: &uploadProgress, success: nil, failure: { error in
+                                service.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
+                                    self?.unpauseDataSource()
+                                }, failure: { error in
                                     if let mediaID = media.mediaID?.stringValue {
                                         self?.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
                                         self?.mediaProgressCoordinator.finishOneItem()
                                     }
+
+                                    self?.unpauseDataSource()
                                 })
 
                                 if let progress = uploadProgress,
@@ -566,6 +575,14 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
                                     self?.mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
                                 }
         })
+    }
+
+    fileprivate func unpauseDataSource() {
+        // If we've finished all uploads, restart the data source
+        if !mediaProgressCoordinator.isRunning && self.pickerDataSource.isPaused {
+            self.pickerDataSource.isPaused = false
+            self.pickerViewController.collectionView?.reloadData()
+        }
     }
 }
 
@@ -615,7 +632,7 @@ extension MediaLibraryViewController: MediaProgressCoordinatorDelegate {
 
         guard let progress = mediaProgressCoordinator.mediaUploadingProgress,
             !progress.isCancelled else {
-                return
+            return
         }
 
         SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Uploaded!", comment: "Text displayed in a HUD when media items have been uploaded successfully."))
