@@ -468,6 +468,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.setMinimumDismissTimeInterval(1.0)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Preparing...\nTap to cancel", comment: "Text displayed in HUD while preparing to upload media items."))
 
         mediaProgressCoordinator.track(numberOfItems: assets.count)
         for asset in assets {
