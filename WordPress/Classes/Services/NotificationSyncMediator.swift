@@ -149,7 +149,7 @@ class NotificationSyncMediator {
     }
 
 
-    /// Marks a Notification as Read. On error, proceeds to revert the change.
+    /// Marks a Notification as Read.
     ///
     /// - Note: This method should only be used on the main thread.
     ///
@@ -160,12 +160,20 @@ class NotificationSyncMediator {
     func markAsRead(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
         assert(Thread.isMainThread)
 
-        let original = notification.read
-
-        remote.updateReadStatus(notification.notificationId, read: true) { error in
+        let noteID = notification.notificationId
+        remote.updateReadStatus(noteID, read: true) { error in
             if let error = error {
                 DDLogSwift.logError("Error marking note as read: \(error)")
-                self.updateReadStatus(original, forNoteWithObjectID: notification.objectID)
+                // Ideally, we'd want to revert to the unread status if this
+                // fails, but if the note is visible, the UI layer will keep
+                // trying to mark this as read and fail.
+                //
+                // While not a perfect UX, the easy way out is to pretend it
+                // worked, but invalidate the cache so it can be reverted in the
+                // next successful sync.
+                //
+                // https://github.com/wordpress-mobile/WordPress-iOS/issues/7216
+                NotificationSyncMediator()?.invalidateCacheForNotification(with: noteID)
             }
 
             completion?(error)
