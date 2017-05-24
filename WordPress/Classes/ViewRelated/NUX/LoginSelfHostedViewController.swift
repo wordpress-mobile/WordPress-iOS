@@ -1,6 +1,6 @@
 import UIKit
 
-class LoginSelfHostedViewController: SigninSelfHostedViewController {
+class LoginSelfHostedViewController: SigninSelfHostedViewController, LoginViewController {
     var gravatarProfile: GravatarProfile?
     var userProfile: UserProfile?
     // let the storyboard's style stay
@@ -10,12 +10,10 @@ class LoginSelfHostedViewController: SigninSelfHostedViewController {
         performSegue(withIdentifier: .show2FA, sender: self)
     }
 
-
     override func dismiss() {
         configureViewLoading(false)
         performSegue(withIdentifier: .showEpilogue, sender: self)
     }
-
 
     override func finishedLogin(withUsername username: String!, password: String!, xmlrpc: String!, options: [AnyHashable: Any]!) {
         displayLoginMessage("")
@@ -39,7 +37,6 @@ class LoginSelfHostedViewController: SigninSelfHostedViewController {
         }
     }
 
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         // Ensure that the user info is set on the epilogue vc.
@@ -48,6 +45,10 @@ class LoginSelfHostedViewController: SigninSelfHostedViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupNavBarIcon()
+    }
 
     /// Returns an instance of LoginEpilogueUserInfo composed from
     /// a user's gravatar profile, and/or self-hosted blog profile.

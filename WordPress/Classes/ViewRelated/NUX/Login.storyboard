@@ -13,7 +13,7 @@
         <scene sceneID="1BJ-CW-C88">
             <objects>
                 <navigationController id="Ck1-vY-O11" customClass="LoginNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mKb-UO-KoA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mKb-UO-KoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -45,6 +45,7 @@
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="Fj6-gt-Ex5">
                                                 <rect key="frame" x="155.5" y="0.0" width="64" height="64"/>
+                                                <color key="tintColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="64" id="255-u8-AfS"/>
                                                     <constraint firstAttribute="width" constant="64" id="NRF-lp-C4k"/>
@@ -81,15 +82,18 @@
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OZC-xf-OAn" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="173" y="132" width="30" height="34"/>
+                                                <rect key="frame" x="170" y="132" width="36" height="34"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="wqw-xG-CxW"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <state key="normal" title="Next">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="handleSubmitButtonTapped:" destination="fwZ-QE-5et" eventType="touchUpInside" id="bLs-uJ-s0q"/>
                                                 </connections>
@@ -224,6 +228,7 @@
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="tdS-XJ-7yJ">
                                                 <rect key="frame" x="155.5" y="0.0" width="64" height="59"/>
+                                                <color key="tintColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="64" id="K9p-Sp-19U"/>
                                                     <constraint firstAttribute="height" constant="59" id="SXQ-ea-8ss"/>
@@ -232,7 +237,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Create an account on WordPress.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="onu-DI-gxe">
                                                 <rect key="frame" x="16" y="59" width="343" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="yx4-Vw-DFk">
@@ -312,14 +317,17 @@
                                                 <color key="textColor" red="0.52941176469999995" green="0.65098039220000004" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3A-gQ-xPp" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3A-gQ-xPp" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="124.5" y="287" width="125" height="34"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nuxCreateAccountButton"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="34" id="K2q-BG-LM9"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="K2q-BG-LM9"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="CREATE ACCOUNT"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="handleSubmitButtonTapped:" destination="QDy-AC-sAr" eventType="touchUpInside" id="lYE-Ow-tKz"/>
                                                 </connections>
@@ -327,7 +335,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Unf-Tr-tHZ">
                                                 <rect key="frame" x="170.5" y="337" width="33" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -366,7 +374,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h3S-D6-ec5">
                                         <rect key="frame" x="136.5" y="623" width="102" height="28"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        <state key="normal" title="Terms of Service"/>
+                                        <state key="normal" title="Terms of Service">
+                                            <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="handleTermsOfServiceButtonTapped:" destination="QDy-AC-sAr" eventType="touchUpInside" id="HuE-ok-guw"/>
                                         </connections>
@@ -399,7 +409,7 @@
                                 </variation>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="hVk-3I-w7N" secondAttribute="trailing" id="2ca-fA-mn2"/>
                             <constraint firstItem="1LT-yq-zZx" firstAttribute="top" secondItem="hVk-3I-w7N" secondAttribute="bottom" priority="900" id="WNf-nN-0iK"/>
@@ -447,6 +457,7 @@
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="j7V-eN-ivW">
                                                 <rect key="frame" x="155.5" y="0.0" width="64" height="64"/>
+                                                <color key="tintColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="64" id="eY8-96-ITv"/>
                                                     <constraint firstAttribute="width" constant="64" id="fFw-o1-gWS"/>
@@ -506,16 +517,19 @@
                                                     <constraint firstAttribute="height" constant="132" id="F1M-fZ-NLz"/>
                                                 </constraints>
                                             </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="155.5" y="220" width="63" height="34"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="submitButton"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="34" id="NKL-1C-mN4"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="NKL-1C-mN4"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="ADD SITE">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="handleSubmitButtonTapped:" destination="SZS-o3-1P7" eventType="touchUpInside" id="9a6-DP-q7L"/>
                                                 </connections>
@@ -523,7 +537,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rvr-W4-OS1">
                                                 <rect key="frame" x="171" y="270" width="33" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -556,7 +570,7 @@
                                         <rect key="frame" x="124.5" y="579" width="125" height="28"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Lost your password?">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="handleForgotPasswordButtonTapped:" destination="SZS-o3-1P7" eventType="touchUpInside" id="YFl-yy-9UR"/>
@@ -588,7 +602,7 @@
                                 </variation>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="5AW-qg-L9w" firstAttribute="leading" secondItem="HTO-Y8-god" secondAttribute="leading" id="0Jb-DD-JbH"/>
                             <constraint firstItem="Ktl-It-Kmo" firstAttribute="top" secondItem="5AW-qg-L9w" secondAttribute="bottom" priority="900" id="Cp7-kV-GwD"/>
@@ -633,6 +647,7 @@
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-wpcom-vertical" translatesAutoresizingMaskIntoConstraints="NO" id="b8y-9Y-dkU">
                                                 <rect key="frame" x="111.5" y="0.0" width="152" height="106"/>
+                                                <color key="tintColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="152" id="3Zk-24-qTP"/>
                                                     <constraint firstAttribute="height" constant="106" id="LvE-AN-pgi"/>
@@ -677,16 +692,19 @@
                                                     <constraint firstAttribute="height" constant="88" id="Wme-B3-0UH"/>
                                                 </constraints>
                                             </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-LN-sUk" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-LN-sUk" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="161.5" y="218" width="51" height="34"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="submitButton"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="34" id="H3A-PM-OJr"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="H3A-PM-OJr"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="SIGN IN">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="handleSubmitButtonTapped:" destination="lmD-c6-SLs" eventType="touchUpInside" id="hX6-w6-i2P"/>
                                                 </connections>
@@ -694,7 +712,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-I8-yWG">
                                                 <rect key="frame" x="170.5" y="268" width="33" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -730,7 +748,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="203" height="28"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <state key="normal" title="Lost your password?">
-                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="handleForgotPasswordButtonTapped:" destination="lmD-c6-SLs" eventType="touchUpInside" id="q8s-z9-VIK"/>
@@ -739,7 +757,9 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H0W-Yk-8M8">
                                                 <rect key="frame" x="0.0" y="48" width="203" height="28"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <state key="normal" title="Add a self-hosted WordPress site"/>
+                                                <state key="normal" title="Add a self-hosted WordPress site">
+                                                    <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
                                                 <connections>
                                                     <segue destination="SZS-o3-1P7" kind="show" id="7tm-qV-PVz"/>
                                                 </connections>
@@ -772,7 +792,7 @@
                                 </variation>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="7OQ-0t-1zq" secondAttribute="trailing" id="1LF-21-aUE"/>
                             <constraint firstItem="7OQ-0t-1zq" firstAttribute="leading" secondItem="tEh-Nj-xof" secondAttribute="leading" id="2v0-ee-Bno"/>
@@ -817,6 +837,7 @@
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="vv1-my-h8X">
                                                 <rect key="frame" x="155.5" y="0.0" width="64" height="64"/>
+                                                <color key="tintColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="64" id="jYQ-yO-lzJ"/>
                                                     <constraint firstAttribute="width" constant="64" id="qSS-fV-9dW"/>
@@ -851,15 +872,18 @@
                                                     <outlet property="delegate" destination="bAd-Df-IzS" id="Bgq-yf-mas"/>
                                                 </connections>
                                             </textField>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="163.5" y="132" width="47" height="34"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="34" id="eoc-KU-71N"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="eoc-KU-71N"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="VERIFY">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="handleSubmitButtonTapped:" destination="bAd-Df-IzS" eventType="touchUpInside" id="0gY-Sk-Y6W"/>
                                                 </connections>
@@ -867,7 +891,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhF-jf-Wcv">
                                                 <rect key="frame" x="170.5" y="182" width="33" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -904,7 +928,7 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Send Code">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <variation key="default">
                                             <mask key="constraints">
@@ -950,7 +974,7 @@
                                 </variation>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="hTY-xb-H5h" secondAttribute="trailing" id="23h-QU-eyB"/>
                             <constraint firstItem="hTY-xb-H5h" firstAttribute="top" secondItem="959-UQ-1Jm" secondAttribute="bottom" constant="-20" id="lqc-JK-kaQ"/>
@@ -986,15 +1010,16 @@
                         <subviews>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="9Sq-F3-Spn">
                                 <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
+                                <color key="color" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bnl-db-peA">
                                 <rect key="frame" x="170.5" y="359.5" width="33" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="9Sq-F3-Spn" firstAttribute="centerY" secondItem="r0Z-0G-9xo" secondAttribute="centerY" id="8Be-YU-NCR"/>
                             <constraint firstItem="Bnl-db-peA" firstAttribute="top" secondItem="9Sq-F3-Spn" secondAttribute="bottom" constant="16" id="Yb3-kS-EHZ"/>
@@ -1024,7 +1049,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Onf-X6-J5w">
-                                <rect key="frame" x="0.0" y="64" width="375" height="519"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="563"/>
                                 <connections>
                                     <segue destination="0GP-rM-Hvu" kind="embed" id="taY-7m-sQh"/>
                                 </connections>
@@ -1095,7 +1120,7 @@
             <objects>
                 <tableViewController id="0GP-rM-Hvu" customClass="LoginEpilogueTableView" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="154" sectionHeaderHeight="28" sectionFooterHeight="28" id="TzF-S4-1lW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95294117647058818" green="0.96470588235294119" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1344,7 +1369,7 @@
                                     <constraint firstAttribute="width" constant="320" id="cYD-Pv-crb"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -1357,7 +1382,7 @@
                                     </mask>
                                 </variation>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIy-Sm-1r0" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIy-Sm-1r0" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="151.5" y="316.5" width="72" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="GRI-y6-q3i"/>
@@ -1366,6 +1391,9 @@
                                 <state key="normal" title="SEND LINK">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleSendLinkTapped:" destination="Kvo-Y2-yhG" eventType="touchUpInside" id="YlN-8X-mwf"/>
                                 </connections>
@@ -1374,7 +1402,7 @@
                                 <rect key="frame" x="101.5" y="623" width="172" height="28"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <state key="normal" title="Enter your password instead">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="handleUsePasswordTapped:" destination="Kvo-Y2-yhG" eventType="touchUpInside" id="T8m-o8-zic"/>
@@ -1382,7 +1410,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="CmN-ir-1YK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HnR-5a-suO" secondAttribute="leading" constant="16" id="5rG-T9-D6T"/>
                             <constraint firstItem="B6x-b7-hU9" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iIy-Sm-1r0" secondAttribute="bottom" constant="16" id="GlC-hz-eb9"/>
@@ -1430,7 +1458,7 @@
                                     <constraint firstAttribute="width" constant="320" id="2JY-7V-RVK"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -1443,15 +1471,18 @@
                                     </mask>
                                 </variation>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Iy-9H-ykD" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Iy-9H-ykD" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="150" y="316.5" width="75" height="34"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="34" id="tyz-kt-Arb"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="tyz-kt-Arb"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="OPEN MAIL">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleOpenMailTapped:" destination="GSd-vy-rpZ" eventType="touchUpInside" id="aHi-O1-8ah"/>
                                 </connections>
@@ -1460,7 +1491,7 @@
                                 <rect key="frame" x="101.5" y="623" width="172" height="28"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <state key="normal" title="Enter your password instead">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="handleUsePasswordTapped:" destination="GSd-vy-rpZ" eventType="touchUpInside" id="I1f-Mc-BbK"/>
@@ -1468,7 +1499,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="pkM-xx-821" firstAttribute="centerX" secondItem="Xyo-MA-Ddd" secondAttribute="centerX" id="55m-cO-8N7"/>
                             <constraint firstItem="b0O-LO-6ax" firstAttribute="top" relation="greaterThanOrEqual" secondItem="0Iy-9H-ykD" secondAttribute="bottom" constant="16" id="Ltg-vf-Uk9"/>
@@ -1511,9 +1542,9 @@
         <image name="logo-wpcom-vertical" width="152" height="106"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="fA5-mb-vrv"/>
-        <segue reference="07g-E6-aeG"/>
         <segue reference="ySQ-EM-6JI"/>
-        <segue reference="fWM-mD-lXg"/>
+        <segue reference="qLI-qX-rkG"/>
+        <segue reference="7tm-qV-PVz"/>
+        <segue reference="lIb-sw-yM7"/>
     </inferredMetricsTieBreakers>
 </document>
