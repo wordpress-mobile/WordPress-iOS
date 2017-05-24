@@ -4,13 +4,15 @@ import WordPressShared
 extension WPStyleGuide {
     public struct AlertView {
         // MARK: - Title Styles
-        public static let titleRegularFont          = WPStyleGuide.fontForTextStyle(.callout, fontWeight: UIFontWeightLight)
+        public static let titleRegularFont          = WPStyleGuide.fontForTextStyle(.callout,
+                                                                                    fontWeight: UIFontWeightLight)
         public static let titleColor                = WPStyleGuide.grey()
 
 
         // MARK: - Detail Styles
         public static let detailsRegularFont        = WPStyleGuide.fontForTextStyle(.footnote)
-        public static let detailsBoldFont           = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: UIFontWeightSemibold)
+        public static let detailsBoldFont           = WPStyleGuide.fontForTextStyle(.footnote,
+                                                                                    fontWeight: UIFontWeightSemibold)
         public static let detailsColor              = WPStyleGuide.darkGrey()
 
         public static let detailsRegularAttributes  = [
