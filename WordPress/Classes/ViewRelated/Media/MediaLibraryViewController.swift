@@ -463,6 +463,11 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
         dismiss(animated: true, completion: nil)
 
+        guard ReachabilityUtils.isInternetReachable() else {
+            ReachabilityUtils.showAlertNoInternetConnection()
+            return
+        }
+
         guard let assets = assets as? [PHAsset],
             assets.count > 0 else { return }
 
