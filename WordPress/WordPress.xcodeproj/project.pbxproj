@@ -2316,6 +2316,9 @@
 		E157D5DF1C690A6C00F04FB9 /* ImmuTableTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImmuTableTestUtils.swift; sourceTree = "<group>"; };
 		E16273E01B2ACEB600088AF7 /* BlogToBlog32to33.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogToBlog32to33.swift; sourceTree = "<group>"; };
 		E16273E21B2AD89A00088AF7 /* MIGRATIONS.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = MIGRATIONS.md; path = ../MIGRATIONS.md; sourceTree = "<group>"; };
+		E163AF9E1ED45B100035317E /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E163AF9F1ED45B110035317E /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E163AFA01ED45B110035317E /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleCellViewModel.swift; sourceTree = "<group>"; };
 		E166FA1C1BB0658600374B5B /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		E166FA211BB1359E00374B5B /* PeopleServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleServiceRemote.swift; sourceTree = "<group>"; };
@@ -5931,6 +5934,7 @@
 				ko,
 				ar,
 				bg,
+				sk,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
@@ -7455,6 +7459,7 @@
 				E135CD891E54BDEB0021E79F /* hu */,
 				E135CD8A1E54BDED0021E79F /* id */,
 				E135CD8B1E54BDEF0021E79F /* is */,
+				E163AFA01ED45B110035317E /* sk */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -7495,6 +7500,7 @@
 				E1C5B2311E54C3CF00052319 /* en-AU */,
 				E1C5B2321E54C3D000052319 /* ko */,
 				E1C5B2331E54C3E500052319 /* en-GB */,
+				E163AF9F1ED45B110035317E /* sk */,
 			);
 			name = Localizable.strings;
 			path = WordPressShareExtension;
@@ -7536,6 +7542,7 @@
 				9371F2621E4A211900BF26A0 /* ko */,
 				9371F2651E4A213300BF26A0 /* ar */,
 				9371F2691E4A23A200BF26A0 /* bg */,
+				E163AF9E1ED45B100035317E /* sk */,
 			);
 			name = Localizable.strings;
 			path = Resources;
