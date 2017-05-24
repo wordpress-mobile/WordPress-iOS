@@ -14,20 +14,11 @@ extension WPStyleGuide {
         searchBar.returnKeyType = .done
     }
 
-    public class func configureSearchAppearance() {
+    public class func configureSearchBarAppearance() {
+        configureSearchBarTextAppearance()
         // Cancel button
-        let barButtonTitleAttributes: [String: Any] = [NSFontAttributeName: WPStyleGuide.fontForTextStyle(.headline),
-                           NSForegroundColorAttributeName: WPStyleGuide.darkGrey()]
-
         let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
         barButtonItemAppearance.tintColor = WPStyleGuide.darkGrey()
-        barButtonItemAppearance.setTitleTextAttributes(barButtonTitleAttributes, for: UIControlState())
-
-        // Text field
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = (WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.darkGrey()))
-        let placeholderText = NSLocalizedString("Search", comment: "Placeholder text for the search bar")
-        let attributedPlaceholderText = NSAttributedString(string: placeholderText, attributes: WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.grey()))
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).attributedPlaceholder = attributedPlaceholderText
 
         // We have to manually tint these images, as we want them
         // a different color from the search bar's cursor (which uses `tintColor`)
@@ -35,6 +26,19 @@ extension WPStyleGuide {
         let searchImage = UIImage(named: "icon-post-list-search")?.imageWithTintColor(WPStyleGuide.grey())
         UISearchBar.appearance().setImage(cancelImage, for:  .clear, state: UIControlState())
         UISearchBar.appearance().setImage(searchImage, for: .search, state: UIControlState())
+    }
 
+    public class func configureSearchBarTextAppearance() {
+        // Cancel button
+        let barButtonTitleAttributes: [String: Any] = [NSFontAttributeName: WPStyleGuide.fontForTextStyle(.headline),
+                                                       NSForegroundColorAttributeName: WPStyleGuide.darkGrey()]
+        let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
+        barButtonItemAppearance.setTitleTextAttributes(barButtonTitleAttributes, for: UIControlState())
+
+        // Text field
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = (WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.darkGrey()))
+        let placeholderText = NSLocalizedString("Search", comment: "Placeholder text for the search bar")
+        let attributedPlaceholderText = NSAttributedString(string: placeholderText, attributes: WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.grey()))
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).attributedPlaceholder = attributedPlaceholderText
     }
 }
