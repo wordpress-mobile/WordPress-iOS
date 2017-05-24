@@ -72,7 +72,7 @@ extension WPStyleGuide {
     }
 
     public class func readerCrossPostBoldSubtitleAttributes() -> [String: AnyObject] {
-        let font = WPStyleGuide.notoBoldFontForTextStyle(Cards.crossPostSubtitleTextStyle)
+        let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle, symbolicTraits: .traitBold)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
@@ -85,7 +85,7 @@ extension WPStyleGuide {
     }
 
     public class func readerCrossPostSubtitleAttributes() -> [String: AnyObject] {
-        let font = WPStyleGuide.notoFontForTextStyle(Cards.crossPostSubtitleTextStyle)
+        let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle)
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
