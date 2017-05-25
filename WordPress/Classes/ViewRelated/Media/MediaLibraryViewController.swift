@@ -605,9 +605,11 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
     fileprivate func unpauseDataSource() {
         // If we've finished all uploads, restart the data source
-        if !mediaProgressCoordinator.isRunning && self.pickerDataSource.isPaused {
-            self.pickerDataSource.isPaused = false
-            self.pickerViewController.collectionView?.reloadData()
+        if !mediaProgressCoordinator.isRunning && pickerDataSource.isPaused {
+            pickerDataSource.isPaused = false
+            pickerViewController.collectionView?.reloadData()
+
+            updateViewState(for: pickerDataSource.numberOfAssets())
         }
     }
 
