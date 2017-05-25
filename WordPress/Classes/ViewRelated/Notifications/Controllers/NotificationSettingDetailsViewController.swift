@@ -114,6 +114,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
         // Style!
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
     @IBAction func reloadTable() {
