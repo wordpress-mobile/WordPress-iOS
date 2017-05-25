@@ -96,6 +96,19 @@ target 'WordPressComStatsiOS' do
   end
 end
 
+target 'WordPressKit' do
+  project 'WordPressKit/WordPressKit.xcodeproj'
+  
+  shared_with_stats_pods
+  shared_with_all_pods
+  
+  target 'WordPressKitTests' do
+    inherit! :search_paths
+    
+    shared_test_pods
+  end
+end
+
 target 'WordPressShared' do
   project 'WordPressShared/WordPressShared.xcodeproj'
 
