@@ -39,12 +39,18 @@ class ReaderCommentCell: UITableViewCell {
     var comment: Comment?
 
     var showReply: Bool {
-        get {
-            if let comment = comment, let post = comment.post as? ReaderPost {
-                return post.commentsOpen && enableLoggedInFeatures
-            }
-            return false
+        if let comment = comment, let post = comment.post as? ReaderPost {
+            return post.commentsOpen && enableLoggedInFeatures
         }
+        return false
+    }
+
+    var showLike: Bool {
+        if let comment = comment, let post = comment.post as? ReaderPost,
+            let blog = blogWithBlogID(post.siteID) {
+            return blog.supports(.commentLikes)
+        }
+        return false
     }
 
     override var indentationLevel: Int {
@@ -188,17 +194,20 @@ class ReaderCommentCell: UITableViewCell {
 
         actionBar.isHidden = !enableLoggedInFeatures
         replyButton.isHidden = !showReply
+        likeButton.isHidden = !showLike
 
-        var title = NSLocalizedString("Like", comment: "Verb. Button title. Tap to like a commnet")
-        let count = comment.numberOfLikes().intValue
-        if count == 1 {
-            title = "\(count) \(title)"
-        } else if count > 1 {
-            title = NSLocalizedString("Likes", comment: "Noun. Button title.  Tap to like a comment.")
-            title = "\(count) \(title)"
+        if (!likeButton.isHidden) {
+            var title = NSLocalizedString("Like", comment: "Verb. Button title. Tap to like a commnet")
+            let count = comment.numberOfLikes().intValue
+            if count == 1 {
+                title = "\(count) \(title)"
+            } else if count > 1 {
+                title = NSLocalizedString("Likes", comment: "Noun. Button title.  Tap to like a comment.")
+                title = "\(count) \(title)"
+            }
+            likeButton.setTitle(title, for: .normal)
+            likeButton.isSelected = comment.isLiked
         }
-        likeButton.setTitle(title, for: .normal)
-        likeButton.isSelected = comment.isLiked
     }
 
 
@@ -238,4 +247,18 @@ class ReaderCommentCell: UITableViewCell {
         delegate?.cell(self, didTapLike: comment)
     }
 
+}
+
+// MARK: - Helpers
+//
+private extension ReaderCommentCell {
+    func blogWithBlogID(_ blogID: NSNumber?) -> Blog? {
+        guard let blogID = blogID else {
+            return nil
+        }
+
+        let mainContext = ContextManager.sharedInstance().mainContext
+        let service = BlogService(managedObjectContext: mainContext)
+        return service.blog(byBlogId: blogID)
+    }
 }
