@@ -1,6 +1,6 @@
 /*
  *    HelpshiftCore.h
- *    SDK Version 5.10.0
+ *    SDK Version 5.10.1
  *
  *    Get the documentation at http://www.helpshift.com/docs
  *
@@ -22,7 +22,10 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (BOOL) _handleLocalNotification:(UILocalNotification *)notification withController:(UIViewController *)viewController;
+#pragma clang diagnostic pop
 - (BOOL) _handleInteractiveRemoteNotification:(NSDictionary *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)())completionHandler;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (BOOL) _handleInteractiveLocalNotification:(UILocalNotification *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)())completionHandler;
 #pragma clang diagnostic pop
 - (BOOL) _handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler;
@@ -122,6 +125,7 @@ typedef enum HsEnableContactUs
 @property (nonatomic, assign) BOOL showSearchOnNewConversation;
 @property (nonatomic, assign) BOOL showConversationResolutionQuestion;
 @property (nonatomic, assign) BOOL enableChat;
+@property (nonatomic, assign) BOOL showConversationInfoScreen;
 @property (nonatomic, assign) HsEnableContactUs enableContactUs;
 @property (strong, nonatomic) NSString *conversationPrefillText;
 @property (strong, nonatomic) NSArray *customContactUsFlows;
@@ -256,7 +260,6 @@ typedef enum HsEnableContactUs
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 + (BOOL) handleLocalNotification:(UILocalNotification *)notification withController:(UIViewController *)viewController;
 #pragma clang diagnostic pop
-
 /**
  *  Pass along an interactive notification to the Helpshift SDK
  *
@@ -281,7 +284,6 @@ typedef enum HsEnableContactUs
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 + (BOOL) handleInteractiveLocalNotification:(UILocalNotification *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)())completionHandler;
 #pragma clang diagnostic pop
-
 /**
  *  If an app is woken up in the background in response to a background session being completed, call this API from the
  *  Application's delegate method. Helpshift SDK extensively uses background NSURLSessions for data syncing.

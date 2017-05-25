@@ -9,7 +9,6 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
     @IBOutlet var label: UILabel!
     @IBOutlet var sendLinkButton: NUXSubmitButton!
     @IBOutlet var usePasswordButton: UIButton!
-    var restrictSigninToWPCom = false
 
     override var sourceTag: SupportSourceTag {
         get {
@@ -118,7 +117,7 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
         SigninHelpers.saveEmailAddressForTokenAuth(loginFields.username)
         let controller = SigninLinkMailViewController.controller(loginFields)
         controller.dismissBlock = dismissBlock
-        controller.restrictSigninToWPCom = restrictSigninToWPCom
+        controller.restrictToWPCom = restrictToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -135,7 +134,7 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
         WPAppAnalytics.track(.loginMagicLinkExited)
         let controller = SigninWPComViewController.controller(loginFields)
         controller.dismissBlock = dismissBlock
-        controller.restrictSigninToWPCom = restrictSigninToWPCom
+        controller.restrictToWPCom = restrictToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 

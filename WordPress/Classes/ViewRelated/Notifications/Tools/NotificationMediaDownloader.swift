@@ -219,7 +219,7 @@ class NotificationMediaDownloader: NSObject {
 
 
     // MARK: - Public Aliases
-    typealias SuccessBlock          = ((Void) -> Void)
+    typealias SuccessBlock          = (() -> Void)
 
     // MARK: - Private Constants
     fileprivate let maximumRetryCount   = 3
