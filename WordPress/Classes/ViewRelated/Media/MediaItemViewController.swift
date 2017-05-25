@@ -426,7 +426,7 @@ private struct MediaMetadataPresenter {
 
     /// A String containing the uppercased file extension of the asset (.JPG, .PNG, etc)
     var fileType: String? {
-        return (media.filename() as NSString).pathExtension.uppercased()
+        return (media.filename()! as NSString).pathExtension.uppercased()
     }
 }
 

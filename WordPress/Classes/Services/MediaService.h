@@ -40,6 +40,11 @@
            thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
                   completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion;
 
+- (void)createMediaWithPHAsset:(nonnull PHAsset *)asset
+               forBlogObjectID:(nonnull NSManagedObjectID *)blogObjectID
+             thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
+                    completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion;
+
 /**
  Get the Media object from the server using the blog and the mediaID as the identifier of the resource
  

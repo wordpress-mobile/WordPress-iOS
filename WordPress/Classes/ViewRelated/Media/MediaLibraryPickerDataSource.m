@@ -66,6 +66,22 @@
     return [self initWithBlog:nil];
 }
 
+- (void)setIsPaused:(BOOL)isPaused
+{
+    if (_isPaused != isPaused) {
+        _isPaused = isPaused;
+
+        if (isPaused) {
+            _fetchController.delegate = nil;
+            _fetchController = nil;
+        } else {
+            [self.fetchController performFetch:nil];
+        }
+    }
+
+    return;
+}
+
 #pragma mark - WPMediaCollectionDataSource
 
 -(NSInteger)numberOfAssets
@@ -291,6 +307,7 @@
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"blog", blog];
     NSPredicate *mediaPredicate = [NSPredicate predicateWithValue:YES];
+    NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"remoteStatusNumber", @(MediaRemoteStatusSync)];
     switch (filter) {
         case WPMediaTypeImage: {
             mediaPredicate = [NSPredicate predicateWithFormat:@"mediaTypeString == %@", [Media stringFromMediaType:MediaTypeImage]];
@@ -305,7 +322,7 @@
             break;
     };
     return [NSCompoundPredicate andPredicateWithSubpredicates:
-            @[predicate, mediaPredicate]];
+            @[predicate, mediaPredicate, statusPredicate]];
 }
 
 - (NSPredicate *)predicateForSearchQuery
