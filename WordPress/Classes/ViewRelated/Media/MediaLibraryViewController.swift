@@ -14,6 +14,7 @@ class MediaLibraryViewController: UIViewController {
     fileprivate let pickerViewController: WPMediaPickerViewController
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
+    fileprivate var isLoading: Bool = false
     fileprivate var noResultsView: WPNoResultsView? = nil
 
     fileprivate var selectedAsset: Media? = nil
@@ -102,7 +103,11 @@ class MediaLibraryViewController: UIViewController {
 
         registerChangeObserver()
 
-        updateViewState(for: pickerDataSource.totalAssetCount)
+        if isLoading {
+            updateNoResultsForFetching()
+        } else {
+            updateViewState(for: pickerDataSource.totalAssetCount)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -238,7 +243,7 @@ class MediaLibraryViewController: UIViewController {
 
     // MARK: - Update view state
 
-    private func updateViewState(for assetCount: Int) {
+    fileprivate func updateViewState(for assetCount: Int) {
         updateNavigationItemButtons(for: assetCount)
         updateNoResultsView(for: assetCount)
         updateSearchBar(for: assetCount)
@@ -272,6 +277,8 @@ class MediaLibraryViewController: UIViewController {
 
         guard shouldShowNoResults else { return }
 
+        noResultsView?.accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
+
         if hasSearchQuery {
             let text = NSLocalizedString("No media files match your search for %@", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
             noResultsView?.titleText = String.localizedStringWithFormat(text, pickerDataSource.searchQuery)
@@ -282,6 +289,25 @@ class MediaLibraryViewController: UIViewController {
             noResultsView?.messageText = NSLocalizedString("Would you like to upload something?", comment: "Prompt displayed when the user has an empty media library. Should match Calypso.")
             noResultsView?.buttonTitle = NSLocalizedString("Upload Media", comment: "Title for button displayed when the user has an empty media library")
         }
+
+        noResultsView?.sizeToFit()
+    }
+
+    func updateNoResultsForFetching() {
+        let shouldShowNoResults = (pickerDataSource.totalAssetCount == 0)
+
+        noResultsView?.isHidden = !shouldShowNoResults
+
+        guard shouldShowNoResults else { return }
+
+        noResultsView?.titleText = NSLocalizedString("Fetching media...", comment: "Title displayed whilst fetching media from the user's media library")
+        noResultsView?.messageText = nil
+        noResultsView?.buttonTitle = nil
+
+        let animatedBox = WPAnimatedBox()
+        noResultsView?.accessoryView = animatedBox
+
+        animatedBox.animate(afterDelay: 0.1)
 
         noResultsView?.sizeToFit()
     }
@@ -583,6 +609,22 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
             self.pickerDataSource.isPaused = false
             self.pickerViewController.collectionView?.reloadData()
         }
+    }
+
+    func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
+        guard picker == pickerViewController else { return }
+
+        isLoading = true
+
+        updateNoResultsForFetching()
+    }
+
+    func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
+        guard picker == pickerViewController else { return }
+
+        isLoading = false
+
+        updateViewState(for: pickerDataSource.numberOfAssets())
     }
 }
 
