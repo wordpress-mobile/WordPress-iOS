@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "StatsTableViewController.h"
-#import "StatsSummary.h"
 #import "WPStatsService.h"
+@import WordPressKit;
 
 typedef NS_ENUM(NSInteger, StatsPeriodType)
 {
