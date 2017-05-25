@@ -53,7 +53,7 @@ class MediaAssetExporter: MediaExporter {
 
     /// Helper method encapsulating exporting either an image or video.
     ///
-    func exportData(forAsset asset: PHAsset, onCompletion: @escaping (AssetExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    func exportData(forAsset asset: PHAsset, onCompletion: @escaping (AssetExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
         if asset.mediaType == .image {
             exportImage(forAsset: asset, onCompletion: onCompletion, onError: onError)
         } else if asset.mediaType == .video {
@@ -63,7 +63,7 @@ class MediaAssetExporter: MediaExporter {
         }
     }
 
-    fileprivate func exportImage(forAsset asset: PHAsset, onCompletion: @escaping (AssetExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    fileprivate func exportImage(forAsset asset: PHAsset, onCompletion: @escaping (AssetExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
         do {
             guard asset.mediaType == .image else {
                 throw AssetExportError.expectedPHAssetImageType
@@ -97,7 +97,7 @@ class MediaAssetExporter: MediaExporter {
             }
 
             // Configure an error handler for the image request.
-            let onImageRequestError: (Error?) -> () = { (error) in
+            let onImageRequestError: (Error?) -> Void = { (error) in
                 guard let error = error else {
                     onError(AssetExportError.failedLoadingPHImageManagerRequest)
                     return
@@ -138,7 +138,7 @@ class MediaAssetExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported asset.
     /// - parameter onError: Called if an error was encountered during export.
     ///
-    fileprivate func exportVideo(forAsset asset: PHAsset, onCompletion: @escaping (AssetExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    fileprivate func exportVideo(forAsset asset: PHAsset, onCompletion: @escaping (AssetExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
         do {
             guard asset.mediaType == .video else {
                 throw AssetExportError.expectedPHAssetVideoType
@@ -153,7 +153,7 @@ class MediaAssetExporter: MediaExporter {
                                                                fileExtension: nil,
                                                                type: mediaDirectoryType)
             // Configure an error handler for the export session.
-            let onExportSessionError: (Error?) -> () = { (error) in
+            let onExportSessionError: (Error?) -> Void = { (error) in
                 guard let error = error else {
                     onError(AssetExportError.failedCreatingVideoExportSession)
                     return
@@ -161,7 +161,7 @@ class MediaAssetExporter: MediaExporter {
                 onError(self.exporterErrorWith(error: error))
             }
             // Configure a completion handler for the export session.
-            let onExportSessionCompletion: (AVAssetExportSession) -> () = { (session) in
+            let onExportSessionCompletion: (AVAssetExportSession) -> Void = { (session) in
                 // Guard that the session completed, or return an error.
                 guard session.status == .completed else {
                     if let error = session.error {
@@ -207,7 +207,7 @@ class MediaAssetExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported asset.
     /// - parameter onError: Called if an error was encountered during export.
     ///
-    fileprivate func exportGIF(forAsset asset: PHAsset, resource: PHAssetResource, onCompletion: @escaping (AssetExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    fileprivate func exportGIF(forAsset asset: PHAsset, resource: PHAssetResource, onCompletion: @escaping (AssetExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
         do {
             guard UTTypeEqual(resource.uniformTypeIdentifier as CFString, kUTTypeGIF) else {
                 throw AssetExportError.expectedPHAssetGIFType
