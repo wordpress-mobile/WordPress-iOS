@@ -1,8 +1,8 @@
 #import <UIKit/UIKit.h>
-#import <WordPressKit/StatsSummary.h>
 #import "WPStatsService.h"
 #import "StatsSection.h"
 #import "WPStatsViewController.h"
+@import WordPressKit;
 
 @interface StatsViewAllTableViewController : UITableViewController
 
