@@ -1,12 +1,11 @@
 #import "StatsViewAllTableViewController.h"
 #import "StatsGroup.h"
-#import <WordPressKit/StatsItem.h>
-#import <WordPressKit/StatsItemAction.h>
 #import "StatsTwoColumnTableViewCell.h"
 #import "WPStyleGuide+Stats.h"
 #import "StatsTableSectionHeaderView.h"
-#import <WordPressComAnalytics/WPAnalytics.h>
 #import "AppExtensionUtils.h"
+@import WordPressComAnalytics;
+@import WordPressKit;
 
 static NSString *const StatsTableSectionHeaderSimpleBorder = @"StatsTableSectionHeaderSimpleBorder";
 static NSString *const StatsTableGroupHeaderCellIdentifier = @"GroupHeader";

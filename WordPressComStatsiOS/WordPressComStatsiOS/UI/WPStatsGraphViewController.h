@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <WordPressKit/StatsSummary.h>
-#import <WordPressKit/StatsVisits.h>
+@import WordPressKit;
 
 @protocol WPStatsGraphViewControllerDelegate;
 

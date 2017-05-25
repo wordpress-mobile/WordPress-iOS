@@ -1,12 +1,9 @@
 #import <Foundation/Foundation.h>
-#import <WordPressKit/StatsSummary.h>
-#import <WordPressKit/StatsVisits.h>
 #import "StatsGroup.h"
 #import "StatsAllTime.h"
 #import "StatsInsights.h"
 #import "StatsLatestPostSummary.h"
-#import <WordPressKit/StatsStreak.h>
-#import <WordPressKit/WPStatsServiceRemote.h>
+@import WordPressKit;
 
 typedef void (^StatsSummaryCompletion)(StatsSummary *summary, NSError *error);
 typedef void (^StatsVisitsCompletion)(StatsVisits *visits, NSError *error);

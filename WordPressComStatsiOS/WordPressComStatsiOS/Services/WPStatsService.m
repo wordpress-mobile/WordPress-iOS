@@ -1,15 +1,11 @@
 #import "Logging.h"
 #import "WPStatsService.h"
-#import <WordPressKit/WPStatsServiceRemote.h>
-#import <WordPressKit/StatsItem.h>
-#import <WordPressKit/StatsItemAction.h>
 #import "StatsGroup.h"
-#import <WordPressKit/StatsVisits.h>
-#import <WordPressKit/StatsSummary.h>
 #import "StatsEphemory.h"
 #import "StatsDateUtilities.h"
 #import "StatsSection.h"
 #import "NSBundle+StatsBundleHelper.h"
+@import WordPressKit;
 
 
 NSString *const BatchInsightsCacheKey = @"BatchInsights";

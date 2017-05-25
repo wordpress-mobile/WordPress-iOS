@@ -1,8 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <XCTest/XCTest.h>
 #import "WPStatsService.h"
-#import <WordPressKit/WPStatsServiceRemote.h>
-#import <WordPressKit/StatsItem.h>
+@import WordPressKit;
 @import OCMock;
 
 @interface WPStatsServiceRemoteMock : WPStatsServiceRemote
