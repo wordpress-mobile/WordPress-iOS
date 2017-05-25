@@ -1,5 +1,3 @@
-#import "Logging.h"
-#import "NSBundle+StatsBundleHelper.h"
 #import "WPStatsServiceRemote.h"
 #import "StatsItem.h"
 #import "StatsItemAction.h"
@@ -760,7 +758,8 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
                 [array addObject:periodSummary];
                 dictionary[periodSummary.date] = periodSummary;
             } else {
-                DDLogError(@"operationForVisitsForDate resulted in nil date: raw date: %@", period[periodIndex]);
+                // TODO: Fix logging
+//                DDLogError(@"operationForVisitsForDate resulted in nil date: raw date: %@", period[periodIndex]);
                 [WPAnalytics track:WPAnalyticsStatLogSpecialCondition withProperties:@{@"error_condition" : @"WPStatsServiceRemote operationForVisitsForDate:andUnit:withCompletionHandler",
                                                                                        @"error_details" : [NSString stringWithFormat:@"Date in raw format: %@, period: %@ ", period[periodIndex], @(unit)],
                                                                                        @"blog_id" : self.siteId}];
@@ -1070,7 +1069,7 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
             StatsItem *statsItem = [StatsItem new];
             statsItem.label = countryName;
             statsItem.value = [self localizedStringForNumber:[view numberForKey:@"views"]];
-            statsItem.iconURL = [[NSBundle statsBundle] URLForResource:key withExtension:@"png"];
+            statsItem.alternateIconValue = key;
 
             [items addObject:statsItem];
         }
@@ -1893,8 +1892,9 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
     if (self.manager.operationQueue.operationCount == 0) {
         return;
     }
-    
-    DDLogVerbose(@"Canceling %@ operations...", @(self.manager.operationQueue.operationCount));
+
+    // TODO: Fix logging
+//    DDLogVerbose(@"Canceling %@ operations...", @(self.manager.operationQueue.operationCount));
     [self.manager.operationQueue cancelAllOperations];
 }
 
