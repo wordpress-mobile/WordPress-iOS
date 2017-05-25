@@ -168,10 +168,11 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide darkGrey];
-    label.font = [WPStyleGuide regularTextFontSemiBold];
     label.adjustsFontSizeToFitWidth = NO;
     label.textAlignment = NSTextAlignmentCenter;
-
+    [WPStyleGuide configureLabel:label
+                       textStyle:UIFontTextStyleHeadline
+                      fontWeight:UIFontWeightSemibold];
     return label;
 }
 
@@ -183,9 +184,10 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide grey];
-    label.font = [WPStyleGuide regularTextFont];
     label.adjustsFontSizeToFitWidth = NO;
     label.textAlignment = NSTextAlignmentCenter;
+    [WPStyleGuide configureLabel:label
+                       textStyle:UIFontTextStyleCallout];
 
     return label;
 }
