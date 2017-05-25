@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Release Notes & Apple Store Description package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-05-08 14:02-0500\n"
+"PO-Revision-Date: 2017-05-22 12:00-0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -31,6 +31,11 @@ msgstr ""
 #. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
 msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
+msgstr ""
+
+msgctxt "v7.7-whats-new"
+msgid ""
+"Tagging your posts is now cool, go ahead and try :)"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
