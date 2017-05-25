@@ -24,7 +24,7 @@ import WordPressShared
 
     var immediateSignin = false
 
-    var restrictSigninToWPCom = false {
+    override var restrictToWPCom: Bool {
         didSet {
             if isViewLoaded {
                 configureForWPComOnlyIfNeeded()
@@ -104,7 +104,7 @@ import WordPressShared
     ///
     ///
     func configureForWPComOnlyIfNeeded() {
-        selfHostedButton.isHidden = restrictSigninToWPCom
+        selfHostedButton.isHidden = restrictToWPCom
     }
 
 
@@ -234,7 +234,7 @@ import WordPressShared
     ///
     func handleReservedUsername(_ username: String) {
         // If we're restricted to wpcom, just prmopt that the name is reserved.
-        if restrictSigninToWPCom {
+        if restrictToWPCom {
             SigninHelpers.promptForWPComReservedUsername(username, callback: {
                 self.loginFields.username = ""
                 self.usernameField.text = ""
