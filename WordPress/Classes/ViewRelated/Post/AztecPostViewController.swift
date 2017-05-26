@@ -2293,7 +2293,7 @@ extension FormattingIdentifier {
 
 // MARK: - Media Progress Coordinator Delegate
 //
-protocol MediaProgressCoordinatorDelegate: class {
+@objc public protocol MediaProgressCoordinatorDelegate: class {
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float)
     func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator)
@@ -2303,7 +2303,7 @@ protocol MediaProgressCoordinatorDelegate: class {
 
 // MARK: - Media Progress Coordinator
 //
-class MediaProgressCoordinator: NSObject {
+public class MediaProgressCoordinator: NSObject {
 
     enum ProgressMediaKeys: String {
         case mediaID = "mediaID"
@@ -2311,7 +2311,7 @@ class MediaProgressCoordinator: NSObject {
         case mediaObject = "mediaObject"
     }
 
-    weak var delegate: MediaProgressCoordinatorDelegate?
+    public weak var delegate: MediaProgressCoordinatorDelegate?
 
     private(set) var mediaUploadingProgress: Progress?
 
@@ -2337,6 +2337,7 @@ class MediaProgressCoordinator: NSObject {
         if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
             self.mediaUploadingProgress = nil
+            self.mediaUploading.removeAll()
         }
 
         if self.mediaUploadingProgress == nil {
@@ -2383,7 +2384,7 @@ class MediaProgressCoordinator: NSObject {
         return object
     }
 
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard
             context == &mediaUploadingProgressObserverContext,
             keyPath == #keyPath(Progress.fractionCompleted)
@@ -2400,15 +2401,19 @@ class MediaProgressCoordinator: NSObject {
         }
     }
 
-    func refreshMediaProgress() {
+    var totalProgress: Float {
         var value = Float(0)
         if let progress = mediaUploadingProgress {
             // make sure the progress value reflects the number of upload finished 100%
             let fractionOfUploadsCompleted = Float(Float((progress.completedUnitCount + 1))/Float(progress.totalUnitCount))
             value = min(fractionOfUploadsCompleted, Float(progress.fractionCompleted))
         }
+        return value
+    }
 
-        delegate?.mediaProgressCoordinator(self, progressDidChange: value)
+    func refreshMediaProgress() {
+
+        delegate?.mediaProgressCoordinator(self, progressDidChange: totalProgress)
 
         if !isRunning {
             delegate?.mediaProgressCoordinatorDidFinishUpload(self)
