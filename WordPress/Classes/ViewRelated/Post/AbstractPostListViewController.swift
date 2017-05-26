@@ -794,10 +794,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func publishPost(_ apost: AbstractPost) {
         WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
 
+        apost.date_created_gmt = Date()
         apost.status = .publish
-        if let date = apost.dateCreated, date == (Date() as NSDate).laterDate(date) {
-            apost.dateCreated = Date()
-        }
         uploadPost(apost)
     }
 
