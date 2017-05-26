@@ -2,7 +2,6 @@
 #import "StatsSummary.h"
 #import "StatsVisits.h"
 #import "StatsStreak.h"
-#import "WPStatsService.h"
 
 typedef void (^StatsRemoteSummaryCompletion)(StatsSummary *summary, NSError *error);
 typedef void (^StatsRemoteVisitsCompletion)(StatsVisits *visits, NSError *error);
@@ -12,6 +11,11 @@ typedef void (^StatsRemotePostDetailsCompletion)(StatsVisits *visits, NSArray *m
 typedef void (^StatsRemoteAllTimeCompletion)(NSString *posts, NSNumber *postsValue, NSString *views, NSNumber *viewsValue, NSString *visitors, NSNumber *visitorsValue, NSString *bestViews, NSNumber *bestViewsValue, NSString *bestViewsOn, NSError *error);
 typedef void (^StatsRemoteLatestPostSummaryCompletion)(NSNumber *postID, NSString *postTitle, NSString *postURL, NSDate *postDate, NSString *views, NSNumber *viewsValue, NSString *likes, NSNumber *likesValue, NSString *comments, NSNumber *commentsValue, NSError *error);
 typedef void (^StatsRemoteInsightsCompletion)(NSString *highestHour, NSString *highestHourPercent, NSNumber *highestHourPercentValue, NSString *highestDayOfWeek, NSString *highestDayPercent, NSNumber *highestDayPercentValue, NSError *error);
+
+typedef NS_ENUM(NSUInteger, StatsFollowerType) {
+    StatsFollowerTypeDotCom,
+    StatsFollowerTypeEmail
+};
 
 @interface WPStatsServiceRemote : NSObject
 

@@ -1,7 +1,6 @@
 #import "BlogDetailHeaderView.h"
 #import "Blog.h"
 #import "UIImageView+Gravatar.h"
-#import <WordPressShared/WPFontManager.h>
 #import "WordPress-Swift.h"
 
 
@@ -116,8 +115,8 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide littleEddieGrey];
-    label.font = [WPFontManager systemRegularFontOfSize:16.0];
     label.adjustsFontSizeToFitWidth = NO;
+    [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCallout];
 
     [_labelsStackView addArrangedSubview:label];
 
@@ -134,8 +133,8 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide allTAllShadeGrey];
-    label.font = [WPFontManager systemItalicFontOfSize:12.0];
     label.adjustsFontSizeToFitWidth = NO;
+    [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCaption1 symbolicTraits:UIFontDescriptorTraitItalic];
 
     [_labelsStackView addArrangedSubview:label];
 

@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <XCTest/XCTest.h>
 #import "StatsGroup.h"
-#import "StatsItem.h"
+@import WordPressKit;
 
 @interface StatsGroupTests : XCTestCase
 
