@@ -224,6 +224,16 @@ extension PostTagPickerViewController: UITextViewDelegate {
             textView.text = original.replacingCharacters(in: range, with: ", ")
             textViewDidChange(textView)
             return false
+        } else if text == "\n", // return
+            range.location == original.length, // at the end
+            !partialTag.isEmpty // with some (partial) tag typed
+        {
+            textView.text = original.replacingCharacters(in: range, with: ", ")
+            textViewDidChange(textView)
+            return false
+        } else if text == "\n" // return anywhere else
+            {
+                return false
         }
         return true
     }

@@ -598,7 +598,7 @@
          XCTAssertTrue([item.label isEqualToString:@"United States"]);
          XCTAssertTrue([@"8" isEqualToString:item.value]);
          XCTAssertNil(item.itemID);
-         XCTAssertNotNil(item.iconURL);
+         XCTAssertNotNil(item.alternateIconValue);
          XCTAssertEqual(0, item.actions.count);
          XCTAssertEqual(0, item.children.count);
          

@@ -48,6 +48,7 @@ open class NotificationSettingsViewController: UIViewController {
 
         // Style!
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
 

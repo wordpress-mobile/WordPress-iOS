@@ -212,6 +212,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.view.accessibilityIdentifier = @"Blog Details Table";
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
     
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
@@ -650,11 +651,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                animated:YES
                          scrollPosition:UITableViewScrollPositionNone];
     }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return WPTableViewDefaultRowHeight;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
