@@ -103,11 +103,7 @@ class MediaLibraryViewController: UIViewController {
 
         registerChangeObserver()
 
-        if isLoading {
-            updateNoResultsForFetching()
-        } else {
-            updateViewState(for: pickerDataSource.totalAssetCount)
-        }
+        updateViewState(for: pickerDataSource.totalAssetCount)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -251,21 +247,21 @@ class MediaLibraryViewController: UIViewController {
 
     private func updateNavigationItemButtons(for assetCount: Int) {
         if isEditing {
-            navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: true)
+            navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: false)
 
             let trashButton = UIBarButtonItem(image: Gridicon.iconOfType(.trash), style: .plain, target: self, action: #selector(trashTapped))
             navigationItem.setRightBarButtonItems([trashButton], animated: true)
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
-            navigationItem.setLeftBarButton(nil, animated: true)
+            navigationItem.setLeftBarButton(nil, animated: false)
 
             let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
 
             if blog.supports(.mediaDeletion) && assetCount > 0 {
                 let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped))
-                navigationItem.setRightBarButtonItems([addButton, editButton], animated: true)
+                navigationItem.setRightBarButtonItems([addButton, editButton], animated: false)
             } else {
-                navigationItem.setRightBarButtonItems([addButton], animated: true)
+                navigationItem.setRightBarButtonItems([addButton], animated: false)
             }
         }
     }
@@ -277,14 +273,16 @@ class MediaLibraryViewController: UIViewController {
 
         guard shouldShowNoResults else { return }
 
-        noResultsView?.accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
-
-        if hasSearchQuery {
+        if isLoading {
+            updateNoResultsForFetching()
+        } else if hasSearchQuery {
+            noResultsView?.accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
             let text = NSLocalizedString("No media files match your search for %@", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
             noResultsView?.titleText = String.localizedStringWithFormat(text, pickerDataSource.searchQuery)
             noResultsView?.messageText = nil
             noResultsView?.buttonTitle = nil
         } else {
+            noResultsView?.accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
             noResultsView?.titleText = NSLocalizedString("You don't have any media.", comment: "Title displayed when the user doesn't have any media in their media library. Should match Calypso.")
             noResultsView?.messageText = NSLocalizedString("Would you like to upload something?", comment: "Prompt displayed when the user has an empty media library. Should match Calypso.")
             noResultsView?.buttonTitle = NSLocalizedString("Upload Media", comment: "Title for button displayed when the user has an empty media library")
@@ -294,12 +292,6 @@ class MediaLibraryViewController: UIViewController {
     }
 
     func updateNoResultsForFetching() {
-        let shouldShowNoResults = (pickerDataSource.totalAssetCount == 0)
-
-        noResultsView?.isHidden = !shouldShowNoResults
-
-        guard shouldShowNoResults else { return }
-
         noResultsView?.titleText = NSLocalizedString("Fetching media...", comment: "Title displayed whilst fetching media from the user's media library")
         noResultsView?.messageText = nil
         noResultsView?.buttonTitle = nil
@@ -308,8 +300,6 @@ class MediaLibraryViewController: UIViewController {
         noResultsView?.accessoryView = animatedBox
 
         animatedBox.animate(afterDelay: 0.1)
-
-        noResultsView?.sizeToFit()
     }
 
     private func updateSearchBar(for assetCount: Int) {
@@ -618,7 +608,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
         isLoading = true
 
-        updateNoResultsForFetching()
+        updateNoResultsView(for: pickerDataSource.numberOfAssets())
     }
 
     func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
