@@ -1,11 +1,9 @@
 #import <Foundation/Foundation.h>
-#import "StatsSummary.h"
-#import "StatsVisits.h"
 #import "StatsGroup.h"
 #import "StatsAllTime.h"
 #import "StatsInsights.h"
 #import "StatsLatestPostSummary.h"
-#import "StatsStreak.h"
+@import WordPressKit;
 
 typedef void (^StatsSummaryCompletion)(StatsSummary *summary, NSError *error);
 typedef void (^StatsVisitsCompletion)(StatsVisits *visits, NSError *error);
@@ -15,13 +13,6 @@ typedef void (^StatsInsightsCompletion)(StatsInsights *insights, NSError *error)
 typedef void (^StatsAllTimeCompletion)(StatsAllTime *allTime, NSError *error);
 typedef void (^StatsLatestPostSummaryCompletion)(StatsLatestPostSummary *latestPostSummary, NSError *error);
 typedef void (^StatsStreakCompletion)(StatsStreak *streak, NSError *error);
-
-typedef NS_ENUM(NSUInteger, StatsFollowerType) {
-    StatsFollowerTypeDotCom,
-    StatsFollowerTypeEmail
-};
-
-@class WPStatsServiceRemote;
 
 @interface WPStatsService : NSObject
 

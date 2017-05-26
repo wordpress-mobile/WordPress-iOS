@@ -1,7 +1,6 @@
 #import "HelpshiftCore.h"
 #import "HelpshiftSupport.h"
 
-#import <Mixpanel/Mixpanel.h>
 #import "SFHFKeychainUtils.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
@@ -50,7 +49,6 @@
 #import "MediaService.h"
 #import "MediaServiceRemoteREST.h"
 #import "MeHeaderView.h"
-#import "MixpanelTweaks.h"
 
 #import "NavBarTitleDropdownButton.h"
 #import "NSString+Helpers.h"

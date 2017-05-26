@@ -9,7 +9,7 @@ class PeopleCell: WPTableViewCell {
     @IBOutlet var superAdminRoleBadge: PeopleRoleBadgeLabel!
 
     override func awakeFromNib() {
-        displayNameLabel.font = WPFontManager.systemBoldFont(ofSize: 14)
+        WPStyleGuide.configureLabel(displayNameLabel, textStyle: .callout)
     }
 
     func bindViewModel(_ viewModel: PeopleCellViewModel) {
