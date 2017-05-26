@@ -62,6 +62,7 @@ open class AboutViewController: UITableViewController {
         tableView.contentInset      = WPTableViewContentInsets
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
     fileprivate func setupDismissButtonIfNeeded() {
