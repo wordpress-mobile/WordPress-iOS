@@ -38,7 +38,6 @@ abstract_target 'WordPress_Base' do
     pod 'FormatterKit', '~> 1.8.1'
     pod 'HockeySDK', '~> 4.1.5', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
-    pod 'Mixpanel', '3.1.3'
     pod 'Reachability',	'3.2'
     pod 'SVProgressHUD', '~>2.1.2'
     pod 'UIDeviceIdentifier', '~> 0.1'

@@ -69,7 +69,6 @@ PODS:
     - HockeySDK/DefaultLib (= 4.1.5)
   - HockeySDK/DefaultLib (4.1.5)
   - MGSwipeTableCell (1.5.6)
-  - Mixpanel (3.1.3)
   - MRProgress (0.7.0):
     - MRProgress/ActivityIndicator (= 0.7.0)
     - MRProgress/Blur (= 0.7.0)
@@ -148,7 +147,6 @@ DEPENDENCIES:
   - Gridicons (= 0.5)
   - HockeySDK (~> 4.1.5)
   - MGSwipeTableCell (~> 1.5.6)
-  - Mixpanel (= 3.1.3)
   - MRProgress (~> 0.7.0)
   - Nimble (~> 5.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
@@ -212,7 +210,6 @@ SPEC CHECKSUMS:
   Gridicons: 5c5e928324fa301572ee447b25962d18e7fd7159
   HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
-  Mixpanel: 232acf98cecd94fbb58630ff8512a54ff8d99373
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
   Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
@@ -232,6 +229,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: a61e85ce289bb99113209091698ead23f7b44f6f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 9595409f7281182d520e4d03d4be46462ccfaad5
+PODFILE CHECKSUM: 3132f09ec194aa45a2c193c26d111c8f78e7df75
 
 COCOAPODS: 1.2.1
