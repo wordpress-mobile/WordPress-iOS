@@ -51,14 +51,21 @@ class MediaAssetExporter: MediaExporter {
         }
     }
 
+    /// Default shared instance of the PHImageManager
+    ///
+    fileprivate lazy var imageManager = {
+        return PHImageManager.default()
+    }()
+
     /// Helper method encapsulating exporting either an image or video.
     ///
     func exportData(forAsset asset: PHAsset, onCompletion: @escaping (AssetExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
-        if asset.mediaType == .image {
+        switch asset.mediaType {
+        case .image:
             exportImage(forAsset: asset, onCompletion: onCompletion, onError: onError)
-        } else if asset.mediaType == .video {
+        case .video:
             exportVideo(forAsset: asset, onCompletion: onCompletion, onError: onError)
-        } else {
+        default:
             onError(AssetExportError.unsupportedPHAssetMediaType)
         }
     }
@@ -106,8 +113,7 @@ class MediaAssetExporter: MediaExporter {
             }
 
             // Request the image.
-            let manager = PHImageManager.default()
-            manager.requestImage(for: asset,
+            imageManager.requestImage(for: asset,
                                  targetSize: targetSize,
                                  contentMode: .aspectFit,
                                  options: options,
