@@ -14,6 +14,8 @@
 #import "PhotonImageURLHelper.h"
 #import <WordPressShared/WPImageSource.h>
 
+@import WordPressComAnalytics;
+
 @implementation MediaService
 
 - (void)createMediaWithURL:(NSURL *)url
@@ -286,7 +288,8 @@
             success:(void (^)())success
             failure:(void (^)(NSError *error))failure
 {
-    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
+    Blog *blog = media.blog;
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
 
     // Even though jpeg is a valid extension, use jpg instead for the widest possible
@@ -299,6 +302,8 @@
     NSManagedObjectID *mediaObjectID = media.objectID;
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
         [self.managedObjectContext performBlock:^{
+            [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadSuccessful withBlog:blog];
+
             NSError * error = nil;
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
             if (!mediaInContext){
@@ -320,6 +325,10 @@
     };
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
         [self.managedObjectContext performBlock:^{
+            if (error) {
+                [self trackUploadError:error];
+            }
+
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
             if (mediaInContext) {
                 mediaInContext.remoteStatus = MediaRemoteStatusFailed;
@@ -330,11 +339,22 @@
             }
         }];
     };
-    
+
+    [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadStarted withBlog:blog];
+
     [remote uploadMedia:remoteMedia
                progress:progress
                 success:successBlock
                 failure:failureBlock];
+}
+
+- (void)trackUploadError:(NSError *)error
+{
+    if (error.code == NSURLErrorCancelled) {
+        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadCanceled];
+    } else {
+        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed error:error];
+    }
 }
 
 - (void)updateMedia:(Media *)media
