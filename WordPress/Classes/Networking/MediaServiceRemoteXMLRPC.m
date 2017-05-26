@@ -136,7 +136,7 @@
               }              
           } else {
               localProgress.completedUnitCount=localProgress.totalUnitCount;
-              RemoteMedia * remoteMedia = [self remoteMediaFromUploadXMLRPCDictionary:response];
+              RemoteMedia * remoteMedia = [self remoteMediaFromXMLRPCDictionary:response];
               if (success){
                   success(remoteMedia);
               }
@@ -218,33 +218,28 @@
 - (RemoteMedia *)remoteMediaFromXMLRPCDictionary:(NSDictionary*)xmlRPC
 {
     RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
-    remoteMedia.url = [NSURL URLWithString:[xmlRPC stringForKey:@"link"]];
+    remoteMedia.url = [NSURL URLWithString:[xmlRPC stringForKey:@"link"]] ?: [NSURL URLWithString:[xmlRPC stringForKey:@"url"]];
     remoteMedia.title = [xmlRPC stringForKey:@"title"];
     remoteMedia.width = [xmlRPC numberForKeyPath:@"metadata.width"];
     remoteMedia.height = [xmlRPC numberForKeyPath:@"metadata.height"];
-    remoteMedia.mediaID = [xmlRPC numberForKey:@"attachment_id"];
-    remoteMedia.mimeType = [xmlRPC stringForKeyPath:@"metadata.mime_type"];
-    remoteMedia.file = [[xmlRPC objectForKeyPath:@"link"] lastPathComponent];
-    remoteMedia.date = xmlRPC[@"date_created_gmt"];
+    remoteMedia.mediaID = [xmlRPC numberForKey:@"attachment_id"] ?: [xmlRPC numberForKey:@"id"];
+    remoteMedia.mimeType = [xmlRPC stringForKeyPath:@"metadata.mime_type"] ?: [xmlRPC stringForKey:@"type"];
+    remoteMedia.file = [[xmlRPC objectForKeyPath:@"link"] lastPathComponent] ?: [[xmlRPC objectForKeyPath:@"file"] lastPathComponent];
+
+    if (xmlRPC[@"date_created_gmt"] != nil) {
+        remoteMedia.date = xmlRPC[@"date_created_gmt"];
+    }
+
     remoteMedia.caption = [xmlRPC stringForKey:@"caption"];
     remoteMedia.descriptionText = [xmlRPC stringForKey:@"description"];
     remoteMedia.extension = [remoteMedia.file pathExtension];
     remoteMedia.length = [xmlRPC numberForKeyPath:@"metadata.length"];
-    remoteMedia.postID = [xmlRPC numberForKeyPath:@"parent"];
-    return remoteMedia;
-}
 
-- (RemoteMedia *)remoteMediaFromUploadXMLRPCDictionary:(NSDictionary*)xmlRPC
-{
-    RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
-    remoteMedia.url = [NSURL URLWithString:[xmlRPC stringForKey:@"url"]];
-    remoteMedia.mediaID = [xmlRPC numberForKey:@"id"];
-    remoteMedia.file = [[xmlRPC objectForKeyPath:@"file"] lastPathComponent];
-    remoteMedia.mimeType = [xmlRPC stringForKey:@"type"];
-    remoteMedia.extension = [[[xmlRPC objectForKeyPath:@"file"] lastPathComponent] pathExtension];
-    if (xmlRPC[@"date_created_gmt"] != nil) {
-        remoteMedia.date = xmlRPC[@"date_created_gmt"];
+    NSNumber *parent = [xmlRPC numberForKeyPath:@"parent"];
+    if ([parent integerValue] > 0) {
+        remoteMedia.postID = parent;
     }
+
     return remoteMedia;
 }
 
