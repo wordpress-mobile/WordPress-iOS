@@ -2,7 +2,6 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "Blog.h"
-#import "WPAnalyticsTrackerMixpanel.h"
 #import "BlogService.h"
 #import "TodayExtensionService.h"
 #import "AccountServiceRemoteREST.h"
