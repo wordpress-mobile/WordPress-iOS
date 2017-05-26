@@ -162,7 +162,7 @@ DEPENDENCIES:
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
   - WordPress-Aztec-iOS (= 1.0.0-beta.1)
   - WordPress-iOS-Editor (= 1.9.1)
-  - WordPressCom-Analytics-iOS (= 0.1.27)
+  - WordPressCom-Analytics-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS`, branch `media-library-upload-events`)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.16)
   - wpxmlrpc (= 0.8.3)
@@ -177,6 +177,9 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPressCom-Analytics-iOS:
+    :branch: media-library-upload-events
+    :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -191,6 +194,9 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPressCom-Analytics-iOS:
+    :commit: 223e53a3a0dcdfebeb323819a556230a278170ad
+    :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -229,6 +235,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 126e4dc5aca121cf63f0a4096cc3854572d42c19
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 6e094f4ce71695be2aadcf7402d141b4706f5e44
+PODFILE CHECKSUM: 0a3e26935e6c886def9a1e904663fddf6498c5e2
 
 COCOAPODS: 1.2.1
