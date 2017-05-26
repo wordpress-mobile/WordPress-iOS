@@ -10,6 +10,7 @@
     "author" : "xcode"
   },
   "properties" : {
+    "compression-type" : "lossless",
     "template-rendering-intent" : "template"
   }
 }
