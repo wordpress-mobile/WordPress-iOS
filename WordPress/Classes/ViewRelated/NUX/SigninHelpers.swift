@@ -1,7 +1,6 @@
 import UIKit
 import NSURL_IDN
 import WordPressComAnalytics
-import Mixpanel
 
 /// A collection of helper methods for NUX.
 ///

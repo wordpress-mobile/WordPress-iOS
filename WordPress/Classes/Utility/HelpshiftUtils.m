@@ -2,7 +2,6 @@
 
 #import "HelpshiftCore.h"
 #import "HelpshiftSupport.h"
-#import <Mixpanel/MPTweakInline.h>
 
 #import "AccountService.h"
 #import "ApiCredentials.h"
@@ -15,7 +14,7 @@ NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
 NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
 NSString *const HelpshiftUnreadCountUpdatedNotification = @"HelpshiftUnreadCountUpdatedNotification";
 // This delay is required to give some time to Mixpanel to update the remote variable
-CGFloat const HelpshiftFlagCheckDelay = 10.0;
+CGFloat const HelpshiftFlagCheckDelay = 2.0;
 
 @interface HelpshiftUtils () <HelpshiftSupportDelegate>
 
@@ -72,12 +71,9 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
         [defaults synchronize];
         return;
     }
-    
-    if (MPTweakValue(@"Helpshift Enabled", YES)) {
-        [self enableHelpshift];
-    } else {
-        [self disableHelpshiftIfNotAlreadyUsed];
-    }
+
+    // TODO: Replace Mixpanel tweak to enable/disable Helpshift
+    [self enableHelpshift];
 }
 
 - (void)enableHelpshift
