@@ -427,6 +427,24 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatMediaLibrarySharedItemLink:
             eventName = @"media_library_shared_item_link";
             break;
+        case WPAnalyticsStatMediaLibraryAddedPhoto:
+            eventName = @"media_library_photo_added";
+            break;
+        case WPAnalyticsStatMediaLibraryAddedVideo:
+            eventName = @"media_library_video_added";
+            break;
+        case WPAnalyticsStatMediaServiceUploadStarted:
+            eventName = @"media_service_upload_started";
+            break;
+        case WPAnalyticsStatMediaServiceUploadFailed:
+            eventName = @"media_service_upload_failed";
+            break;
+        case WPAnalyticsStatMediaServiceUploadSuccessful:
+            eventName = @"media_service_upload_successful";
+            break;
+        case WPAnalyticsStatMediaServiceUploadCanceled:
+            eventName = @"media_service_upload_canceled";
+            break;
         case WPAnalyticsStatMenusAccessed:
             eventName = @"menus_accessed";
             break;
