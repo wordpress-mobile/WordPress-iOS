@@ -682,6 +682,7 @@ extension AztecPostViewController {
             if self.postEditorStateContext.secondaryPublishButtonAction == .save {
                 self.post.status = .draft
             } else if self.postEditorStateContext.secondaryPublishButtonAction == .publish {
+                self.post.date_created_gmt = Date()
                 self.post.status = .publish
             }
 
