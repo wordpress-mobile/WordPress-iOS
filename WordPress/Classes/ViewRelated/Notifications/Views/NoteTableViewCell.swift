@@ -202,16 +202,12 @@ class NoteTableViewCell: MGSwipeTableCell {
             noticonContainerView.backgroundColor = Style.noteBackgroundUnreadColor
         }
 
-        // Cell Background: Assign only if needed, for performance
-        let newBackgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
-        guard newBackgroundColor != backgroundColor else {
-            return
-        }
-
         // Failsafe:
         // Under unknown scenarios, `backgroundColor.didSet` is suspected of not being called. We'll make an explicit
         // call, in order to set the Text Background Colors.
         //
+        let newBackgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
+
         super.backgroundColor = newBackgroundColor
         updateTextBackgroundColor(newBackgroundColor: newBackgroundColor)
     }
