@@ -124,6 +124,9 @@ extension NSURL: ExportableAsset {
         exportSession.outputFileType = targetUTI
         exportSession.shouldOptimizeForNetworkUse = true
         exportSession.outputURL = url as URL
+        if stripGeoLocation {
+            exportSession.metadataItemFilter = AVMetadataItemFilter.forSharing()
+        }
         exportSession.exportAsynchronously(completionHandler: { () -> Void in
             guard exportSession.status == .completed else {
                 if let error = exportSession.error {
