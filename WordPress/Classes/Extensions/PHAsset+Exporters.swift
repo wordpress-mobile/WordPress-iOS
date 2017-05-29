@@ -248,6 +248,9 @@ extension PHAsset: ExportableAsset {
                     }
                     exportSession.outputFileType = targetUTI
                     exportSession.shouldOptimizeForNetworkUse = true
+                    if stripGeoLocation {
+                        exportSession.metadataItemFilter = AVMetadataItemFilter.forSharing()
+                    }
                     exportSession.outputURL = url
                     exportSession.exportAsynchronously(completionHandler: { () -> Void in
                         guard exportSession.status == .completed else {
