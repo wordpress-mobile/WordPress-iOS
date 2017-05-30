@@ -37,14 +37,7 @@ open class MediaLibrary: LocalCoreDataService {
                     onCompletion(media)
                 }
             }, onError: { (error) in
-                if let onError = onError {
-                    self.managedObjectContext.perform {
-
-                        let nerror = error.toNSError()
-                        DDLogSwift.logError("Error occurred exporting Media with a PHAsset, code: \(nerror.code), error: \(nerror)")
-                        onError(error.toNSError())
-                    }
-                }
+                self.handleExportError(error, errorHandler: onError)
             })
         }
     }
@@ -71,14 +64,7 @@ open class MediaLibrary: LocalCoreDataService {
                     onCompletion(media)
                 }
             }, onError: { (error) in
-                if let onError = onError {
-                    self.managedObjectContext.perform {
-
-                        let nerror = error.toNSError()
-                        DDLogSwift.logError("Error occurred exporting Media with a UIImage, code: \(nerror.code), error: \(nerror)")
-                        onError(error.toNSError())
-                    }
-                }
+                self.handleExportError(error, errorHandler: onError)
             })
         }
     }
@@ -105,15 +91,38 @@ open class MediaLibrary: LocalCoreDataService {
                     onCompletion(media)
                 }
             }, onError: { (error) in
-                if let onError = onError {
-                    self.managedObjectContext.perform {
-
-                        let nerror = error.toNSError()
-                        DDLogSwift.logError("Error occurred exporting Media with a UIImage, code: \(nerror.code), error: \(nerror)")
-                        onError(error.toNSError())
-                    }
-                }
+                self.handleExportError(error, errorHandler: onError)
             })
+        }
+    }
+
+    // MARK: - Helpers
+
+    /// Handle the OnError callback and logging any errors encountered.
+    ///
+    fileprivate func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
+        // Write an error logging message to help track specific sources of export errors.
+        var errorLogMessage = "Error occurred exporting Media"
+        switch error {
+        case is MediaAssetExporter.AssetExportError:
+            errorLogMessage.append(" with asset error")
+        case is MediaImageExporter.ImageExportError:
+            errorLogMessage.append(" with image error")
+        case is MediaURLExporter.URLExportError:
+            errorLogMessage.append(" with URL export error")
+        case is MediaExportSystemError:
+            errorLogMessage.append(" with system error")
+        default:
+            errorLogMessage = " with unknown error"
+        }
+        let nerror = error.toNSError()
+        DDLogSwift.logError("\(errorLogMessage), code: \(nerror.code), error: \(nerror)")
+
+        // Return the error via the context's queue, and as an NSError to ensure it carries over the right code/message.
+        if let errorHandler = errorHandler {
+            self.managedObjectContext.perform {
+                errorHandler(nerror)
+            }
         }
     }
 
