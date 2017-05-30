@@ -255,13 +255,20 @@ class MediaLibraryViewController: UIViewController {
         } else {
             navigationItem.setLeftBarButton(nil, animated: false)
 
-            let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+            var barButtonItems = [UIBarButtonItem]()
+
+            if blog.userCanUploadMedia {
+                let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+                barButtonItems.append(addButton)
+            }
 
             if blog.supports(.mediaDeletion) && assetCount > 0 {
                 let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped))
-                navigationItem.setRightBarButtonItems([addButton, editButton], animated: false)
+                barButtonItems.append(editButton)
+
+                navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
             } else {
-                navigationItem.setRightBarButtonItems([addButton], animated: false)
+                navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
             }
         }
     }
@@ -284,8 +291,11 @@ class MediaLibraryViewController: UIViewController {
         } else {
             noResultsView?.accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
             noResultsView?.titleText = NSLocalizedString("You don't have any media.", comment: "Title displayed when the user doesn't have any media in their media library. Should match Calypso.")
-            noResultsView?.messageText = NSLocalizedString("Would you like to upload something?", comment: "Prompt displayed when the user has an empty media library. Should match Calypso.")
-            noResultsView?.buttonTitle = NSLocalizedString("Upload Media", comment: "Title for button displayed when the user has an empty media library")
+
+            if blog.userCanUploadMedia {
+                noResultsView?.messageText = NSLocalizedString("Would you like to upload something?", comment: "Prompt displayed when the user has an empty media library. Should match Calypso.")
+                noResultsView?.buttonTitle = NSLocalizedString("Upload Media", comment: "Title for button displayed when the user has an empty media library")
+            }
         }
 
         noResultsView?.sizeToFit()
@@ -679,5 +689,12 @@ extension MediaLibraryViewController: MediaProgressCoordinatorDelegate {
         }
 
         SVProgressHUD.showProgress(progress, status: NSLocalizedString("Uploading...\nTap to cancel", comment: "Text displayed in HUD while media items are being uploaded."))
+    }
+}
+
+fileprivate extension Blog {
+    var userCanUploadMedia: Bool {
+        // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
+        return capabilities != nil ? isUploadingFilesAllowed() : true
     }
 }
