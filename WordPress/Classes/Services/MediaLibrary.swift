@@ -2,19 +2,27 @@ import Foundation
 
 /// Encapsulates interfacing with Media objects and their assets, whether locally on disk or remotely.
 ///
-/// - Note: Methods with escaping closures will call back via the configured managedObjectContex.performBlock
-///   method and it's corresponding thread.
+/// - Note: Methods with escaping closures will call back via the configured managedObjectContext
+///   method and its corresponding thread.
 ///
 open class MediaLibrary: LocalCoreDataService {
+
+    /// Completion handler for a created Media object.
+    ///
+    public typealias MediaCompletion = (Media) -> Void
+
+    /// Error handler.
+    ///
+    public typealias OnError = (Error) -> Void
 
     // MARK: - Instance methods
 
     /// Creates a Media object with an absoluteLocalURL for a PHAsset's data, asynchronously.
     ///
-    /// - parameter onMedia: Called if the Media was successfully created and the asset's data exported to an absoluteLocalURL.
+    /// - parameter onCompletion: Called if the Media was successfully created and the asset's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func makeMediaWith(blog: Blog, asset: PHAsset, onMedia: @escaping (Media) -> (), onError: ((Error) -> ())?) {
+    public func makeMediaWith(blog: Blog, asset: PHAsset, onCompletion: @escaping MediaCompletion, onError: OnError?) {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaAssetExporter()
@@ -26,7 +34,7 @@ open class MediaLibrary: LocalCoreDataService {
 
                     let media = Media.makeMedia(blog: blog)
                     self.configureMedia(media, withExport: assetExport)
-                    onMedia(media)
+                    onCompletion(media)
                 }
             }, onError: { (error) in
                 if let onError = onError {
@@ -45,10 +53,10 @@ open class MediaLibrary: LocalCoreDataService {
     ///
     /// The UIImage is expected to be a JPEG, PNG, or other 'normal' image.
     ///
-    /// - parameter onMedia: Called if the Media was successfully created and the image's data exported to an absoluteLocalURL.
+    /// - parameter onCompletion: Called if the Media was successfully created and the image's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func makeMediaWith(blog: Blog, image: UIImage, onMedia: @escaping (Media) -> (), onError: ((Error) -> ())?) {
+    public func makeMediaWith(blog: Blog, image: UIImage, onCompletion: @escaping MediaCompletion, onError: OnError?) {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaImageExporter()
@@ -60,7 +68,7 @@ open class MediaLibrary: LocalCoreDataService {
 
                     let media = Media.makeMedia(blog: blog)
                     self.configureMedia(media, withExport: imageExport)
-                    onMedia(media)
+                    onCompletion(media)
                 }
             }, onError: { (error) in
                 if let onError = onError {
@@ -79,10 +87,10 @@ open class MediaLibrary: LocalCoreDataService {
     ///
     /// The file URL is expected to be a JPEG, PNG, GIF, other 'normal' image, or video.
     ///
-    /// - parameter onMedia: Called if the Media was successfully created and the file's data exported to an absoluteLocalURL.
+    /// - parameter onCompletion: Called if the Media was successfully created and the file's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func makeMediaWith(blog: Blog, url: URL, onMedia: @escaping (Media) -> (), onError: ((Error) -> ())?) {
+    public func makeMediaWith(blog: Blog, url: URL, onCompletion: @escaping MediaCompletion, onError: OnError?) {
         DispatchQueue.global(qos: .default).async {
             let exporter = MediaURLExporter()
 
@@ -94,7 +102,7 @@ open class MediaLibrary: LocalCoreDataService {
 
                     let media = Media.makeMedia(blog: blog)
                     self.configureMedia(media, withExport: urlExport)
-                    onMedia(media)
+                    onCompletion(media)
                 }
             }, onError: { (error) in
                 if let onError = onError {
