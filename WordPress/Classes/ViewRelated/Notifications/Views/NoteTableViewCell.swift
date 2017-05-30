@@ -76,7 +76,10 @@ class NoteTableViewCell: MGSwipeTableCell {
     }
     override var backgroundColor: UIColor? {
         didSet {
-            updateTextBackgroundColor(newBackgroundColor: backgroundColor)
+            // Note: This is done to improve scrolling performance!
+            snippetLabel.backgroundColor = backgroundColor
+            subjectLabel.backgroundColor = backgroundColor
+            separatorsView.backgroundColor = backgroundColor
         }
     }
     var onUndelete: (() -> Void)?
@@ -202,14 +205,8 @@ class NoteTableViewCell: MGSwipeTableCell {
             noticonContainerView.backgroundColor = Style.noteBackgroundUnreadColor
         }
 
-        // Failsafe:
-        // Under unknown scenarios, `backgroundColor.didSet` is suspected of not being called. We'll make an explicit
-        // call, in order to set the Text Background Colors.
-        //
-        let newBackgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
-
-        super.backgroundColor = newBackgroundColor
-        updateTextBackgroundColor(newBackgroundColor: newBackgroundColor)
+        // Cell Background
+        backgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
     }
 
     fileprivate func refreshSelectionStyle() {
@@ -250,14 +247,6 @@ class NoteTableViewCell: MGSwipeTableCell {
         undoOverlayView.legendText = undeleteOverlayText
     }
 
-
-    // MARK: - Helpers
-
-    private func updateTextBackgroundColor(newBackgroundColor: UIColor?) {
-        snippetLabel.backgroundColor = backgroundColor
-        subjectLabel.backgroundColor = backgroundColor
-        separatorsView.backgroundColor = backgroundColor
-    }
 
 
     // MARK: - Action Handlers
