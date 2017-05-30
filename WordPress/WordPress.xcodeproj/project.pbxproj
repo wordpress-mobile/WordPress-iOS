@@ -88,6 +88,7 @@
 		08B6D6F91C8F7EF20052C52B /* RemotePostType.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B6D6F81C8F7EF20052C52B /* RemotePostType.m */; };
 		08B832421EC130D60079808D /* test-gif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 08B832411EC130D60079808D /* test-gif.gif */; };
 		08C388661ED7705E0057BE49 /* MediaAssetExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */; };
+		08C3886A1ED78EE70057BE49 /* Media+WPMediaAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C388691ED78EE70057BE49 /* Media+WPMediaAsset.m */; };
 		08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC67791C49B65A00153AD7 /* MenuItem.m */; };
 		08CC677F1C49B65A00153AD7 /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677A1C49B65A00153AD7 /* Menu.m */; };
 		08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677D1C49B65A00153AD7 /* MenuLocation.m */; };
@@ -1273,6 +1274,8 @@
 		08B6D6F81C8F7EF20052C52B /* RemotePostType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemotePostType.m; path = "Remote Objects/RemotePostType.m"; sourceTree = "<group>"; };
 		08B832411EC130D60079808D /* test-gif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "test-gif.gif"; sourceTree = "<group>"; };
 		08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAssetExporter.swift; sourceTree = "<group>"; };
+		08C388681ED78EE70057BE49 /* Media+WPMediaAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Media+WPMediaAsset.h"; sourceTree = "<group>"; };
+		08C388691ED78EE70057BE49 /* Media+WPMediaAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Media+WPMediaAsset.m"; sourceTree = "<group>"; };
 		08CC67771C49B52E00153AD7 /* WordPress 45.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 45.xcdatamodel"; sourceTree = "<group>"; };
 		08CC67781C49B65A00153AD7 /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItem.h; sourceTree = "<group>"; };
 		08CC67791C49B65A00153AD7 /* MenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItem.m; sourceTree = "<group>"; };
@@ -4954,6 +4957,8 @@
 			children = (
 				080AAA671E7C63C3004DCD11 /* Media+HTML.h */,
 				080AAA681E7C63C3004DCD11 /* Media+HTML.m */,
+				08C388681ED78EE70057BE49 /* Media+WPMediaAsset.h */,
+				08C388691ED78EE70057BE49 /* Media+WPMediaAsset.m */,
 				B55853F519630D5400FAF6C3 /* NSAttributedString+Util.h */,
 				B55853F619630D5400FAF6C3 /* NSAttributedString+Util.m */,
 				85CE4C1E1A703CF200780DFE /* NSBundle+VersionNumberHelper.h */,
@@ -6752,6 +6757,7 @@
 				E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */,
 				B587798119B799D800E57C5A /* UITableViewCell+Helpers.swift in Sources */,
 				E63BBC931C5161B800598BE8 /* KeyringConnectionExternalUser.swift in Sources */,
+				08C3886A1ED78EE70057BE49 /* Media+WPMediaAsset.m in Sources */,
 				B587798019B799D800E57C5A /* UITableView+Helpers.swift in Sources */,
 				438A80981EA5666B005D4651 /* LoginEmailViewController.swift in Sources */,
 				B587797E19B799D800E57C5A /* UIView+Animations.swift in Sources */,
