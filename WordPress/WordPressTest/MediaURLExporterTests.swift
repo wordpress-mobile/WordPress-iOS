@@ -32,7 +32,7 @@ class MediaURLExporterTests: XCTestCase {
     }
 
     func testThatURLExportingAVideoWorks() {
-        guard let mediaPath = OHPathForFile("test-video.mp4", type(of: self)) else {
+        guard let mediaPath = OHPathForFile("test-video-device-gps.m4v", type(of: self)) else {
             XCTAssert(false, "Error: failed creating a path to the test video file")
             return
         }
