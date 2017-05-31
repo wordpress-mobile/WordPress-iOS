@@ -11,6 +11,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIImageView *blavatarImageView;
+@property (nonatomic, strong) UIActivityIndicatorView *blavatarUpdateActivityIndicatorView;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
@@ -48,6 +49,11 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [self.labelsStackView setNeedsLayout];
 }
 
+- (void)udpdateIconImage:(NSString *)iconURL
+{
+    [self.blavatarImageView setImageWithSiteIcon:iconURL placeholderImage:nil];
+}
+
 #pragma mark - Subview setup
 
 - (void)setupStackView
@@ -78,6 +84,12 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
     imageView.layer.borderWidth = 1.0;
+    imageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                action:@selector(blavatarImageTapped)];
+    singleTap.numberOfTapsRequired = 1;
+    [imageView addGestureRecognizer:singleTap];
+
     [_stackView addArrangedSubview:imageView];
 
     [NSLayoutConstraint activateConstraints:@[
@@ -85,6 +97,13 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
                                               [imageView.heightAnchor constraintEqualToConstant:BlogDetailHeaderViewBlavatarSize]
                                               ]];
     _blavatarImageView = imageView;
+}
+
+
+
+-(void)blavatarImageTapped
+{
+    [self.delegate siteIconTapped];
 }
 
 - (void)setupLabelsStackView
@@ -139,6 +158,22 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [_labelsStackView addArrangedSubview:label];
 
     _subtitleLabel = label;
+}
+
+- (void)setUpdatingIcon:(BOOL)updatingIcon
+{
+    if (updatingIcon && !self.blavatarUpdateActivityIndicatorView) {
+        self.blavatarUpdateActivityIndicatorView = [[UIActivityIndicatorView alloc]init];
+        [self.blavatarImageView addSubview:self.blavatarUpdateActivityIndicatorView];
+        self.blavatarUpdateActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.blavatarImageView pinSubviewAtCenter:self.blavatarUpdateActivityIndicatorView];
+    }
+    _updatingIcon = updatingIcon;
+    if (updatingIcon) {
+        [self.blavatarUpdateActivityIndicatorView startAnimating];
+    } else {
+        [self.blavatarUpdateActivityIndicatorView stopAnimating];
+    }
 }
 
 @end
