@@ -156,6 +156,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
             failure(error);
         }
     }];
+
     *progress = localProgress;
 }
 

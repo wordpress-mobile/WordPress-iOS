@@ -587,6 +587,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
                                 var uploadProgress: Progress? = nil
                                 service.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
                                     self?.unpauseDataSource()
+                                    self?.trackUploadFor(media)
                                 }, failure: { error in
                                     if let mediaID = media.mediaID?.stringValue {
                                         self?.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
@@ -601,6 +602,22 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
                                     self?.mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
                                 }
         })
+    }
+
+    fileprivate func trackUploadFor(_ media: Media) {
+        let properties = WPAppAnalytics.properties(for: media)
+
+        switch media.mediaType {
+        case .image:
+            WPAppAnalytics.track(.mediaLibraryAddedPhoto,
+                                 withProperties: properties,
+                                 with: blog)
+        case .video:
+            WPAppAnalytics.track(.mediaLibraryAddedVideo,
+                                 withProperties: properties,
+                                 with: blog)
+        default: break
+        }
     }
 
     fileprivate func unpauseDataSource() {
