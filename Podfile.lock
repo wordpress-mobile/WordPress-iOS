@@ -68,6 +68,7 @@ PODS:
   - HockeySDK (4.1.5):
     - HockeySDK/DefaultLib (= 4.1.5)
   - HockeySDK/DefaultLib (4.1.5)
+  - lottie-ios (1.5.1)
   - MGSwipeTableCell (1.5.6)
   - MRProgress (0.7.0):
     - MRProgress/ActivityIndicator (= 0.7.0)
@@ -146,6 +147,7 @@ DEPENDENCIES:
   - FormatterKit (~> 1.8.1)
   - Gridicons (= 0.5)
   - HockeySDK (~> 4.1.5)
+  - lottie-ios
   - MGSwipeTableCell (~> 1.5.6)
   - MRProgress (~> 0.7.0)
   - Nimble (~> 7.0.0)
@@ -215,6 +217,7 @@ SPEC CHECKSUMS:
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gridicons: 5c5e928324fa301572ee447b25962d18e7fd7159
   HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
+  lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
   Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7

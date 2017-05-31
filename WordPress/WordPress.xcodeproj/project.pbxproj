@@ -183,6 +183,11 @@
 		434D96061EA92A4A00B90B89 /* Login2FAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434D96051EA92A4A00B90B89 /* Login2FAViewController.swift */; };
 		434D96081EA9565D00B90B89 /* LoginLinkAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434D96071EA9565D00B90B89 /* LoginLinkAuthViewController.swift */; };
 		434D960A1EA959BF00B90B89 /* LoginSelfHostedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434D96091EA959BF00B90B89 /* LoginSelfHostedViewController.swift */; };
+		435035971EDCAB99004ECF47 /* jetpack.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035921EDCAB99004ECF47 /* jetpack.json */; };
+		435035981EDCAB99004ECF47 /* notifications.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035931EDCAB99004ECF47 /* notifications.json */; };
+		435035991EDCAB99004ECF47 /* post.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035941EDCAB99004ECF47 /* post.json */; };
+		4350359A1EDCAB99004ECF47 /* reader.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035951EDCAB99004ECF47 /* reader.json */; };
+		4350359B1EDCAB99004ECF47 /* stats.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035961EDCAB99004ECF47 /* stats.json */; };
 		436269641ECD0726008692C7 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436269631ECD0726008692C7 /* LoginButton.swift */; };
 		436605E21ECE568800EE8882 /* LoginNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436605E11ECE568800EE8882 /* LoginNavigationController.swift */; };
 		437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437542E21DD4E19E00D6B727 /* EditPostViewController.swift */; };
@@ -1431,6 +1436,11 @@
 		434D96051EA92A4A00B90B89 /* Login2FAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login2FAViewController.swift; sourceTree = "<group>"; };
 		434D96071EA9565D00B90B89 /* LoginLinkAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginLinkAuthViewController.swift; sourceTree = "<group>"; };
 		434D96091EA959BF00B90B89 /* LoginSelfHostedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSelfHostedViewController.swift; sourceTree = "<group>"; };
+		435035921EDCAB99004ECF47 /* jetpack.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = jetpack.json; sourceTree = "<group>"; };
+		435035931EDCAB99004ECF47 /* notifications.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = notifications.json; sourceTree = "<group>"; };
+		435035941EDCAB99004ECF47 /* post.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post.json; sourceTree = "<group>"; };
+		435035951EDCAB99004ECF47 /* reader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = reader.json; sourceTree = "<group>"; };
+		435035961EDCAB99004ECF47 /* stats.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stats.json; sourceTree = "<group>"; };
 		436269631ECD0726008692C7 /* LoginButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		436605E11ECE568800EE8882 /* LoginNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginNavigationController.swift; sourceTree = "<group>"; };
 		437542E21DD4E19E00D6B727 /* EditPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostViewController.swift; sourceTree = "<group>"; };
@@ -3188,6 +3198,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				435035911EDCAB99004ECF47 /* Animations */,
 				858DE3FF172F9991000AC628 /* Fonts */,
 				CC098B8116A9EB0400450976 /* HTML */,
 				B5DCD0C21C69328E00C9B431 /* Settings */,
@@ -3380,6 +3391,18 @@
 				7470840E1E269669002CA726 /* JetpackLoginViewController.xib */,
 			);
 			path = Stats;
+			sourceTree = "<group>";
+		};
+		435035911EDCAB99004ECF47 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				435035921EDCAB99004ECF47 /* jetpack.json */,
+				435035931EDCAB99004ECF47 /* notifications.json */,
+				435035941EDCAB99004ECF47 /* post.json */,
+				435035951EDCAB99004ECF47 /* reader.json */,
+				435035961EDCAB99004ECF47 /* stats.json */,
+			);
+			path = Animations;
 			sourceTree = "<group>";
 		};
 		45C73C23113C36F50024D0D2 /* Resources-iPad */ = {
@@ -6035,7 +6058,9 @@
 				B5DCD0C41C6932FA00C9B431 /* Languages.json in Resources */,
 				A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */,
 				43A85B311E9E815B00FA990B /* Login.storyboard in Resources */,
+				4350359B1EDCAB99004ECF47 /* stats.json in Resources */,
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
+				435035981EDCAB99004ECF47 /* notifications.json in Resources */,
 				B57273621B66CCEF000D1C4F /* AlertView.xib in Resources */,
 				5DBFC8A91A9BE07B00E00DE4 /* Posts.storyboard in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
@@ -6048,6 +6073,7 @@
 				E6B42CBF1D9DA6270043E228 /* Noticons.ttf in Resources */,
 				B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */,
 				B5F995A01B59708C00AB0B3E /* NotificationSettingsViewController.xib in Resources */,
+				435035971EDCAB99004ECF47 /* jetpack.json in Resources */,
 				746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */,
 				430693741DD25F31009398A2 /* PostPost.storyboard in Resources */,
 				5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */,
@@ -6067,6 +6093,7 @@
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
 				4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */,
 				B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */,
+				4350359A1EDCAB99004ECF47 /* reader.json in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
 				E1DD4CCD1CAE41C800C3863E /* PagedViewController.xib in Resources */,
 				E6A3384E1BB0A50900371587 /* ReaderGapMarkerCell.xib in Resources */,
@@ -6097,6 +6124,7 @@
 				E6D3E84B1BEBD888002692E8 /* ReaderCrossPostCell.xib in Resources */,
 				5DFA7EC31AF7CB910072023B /* Pages.storyboard in Resources */,
 				596C03601B84F24000899EEB /* ThemeBrowser.storyboard in Resources */,
+				435035991EDCAB99004ECF47 /* post.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
