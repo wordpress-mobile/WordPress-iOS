@@ -45,6 +45,7 @@ abstract_target 'WordPress_Base' do
     pod 'BuddyBuildSDK', '~> 1.0.14', :configurations => ['Release-Alpha']
     pod 'FLAnimatedImage', '~> 1.0'
     pod 'MGSwipeTableCell', '~> 1.5.6'
+    pod 'lottie-ios'
     # Temporary until this fix is merged and released
     # https://github.com/daltoniam/Starscream/pull/294
     pod 'Starscream', :git => 'https://github.com/wordpress-mobile/Starscream', :branch => 'wordpress-ios'

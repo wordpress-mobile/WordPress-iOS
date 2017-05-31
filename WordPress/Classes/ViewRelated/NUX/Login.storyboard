@@ -21,8 +21,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lhb-JH-DQG" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="164" y="276.5" width="47" height="34"/>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lhb-JH-DQG" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="164" y="559" width="47" height="34"/>
                                 <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="utn-AU-aRl"/>
@@ -38,8 +38,8 @@
                                     <segue destination="fwZ-QE-5et" kind="show" id="ttc-1d-dkK"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5na-fB-S4z" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="95.5" y="346.5" width="184" height="34"/>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5na-fB-S4z" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="95.5" y="613" width="184" height="34"/>
                                 <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="bid-K8-ZUQ"/>
@@ -55,20 +55,34 @@
                                     <segue destination="QDy-AC-sAr" kind="show" id="qdR-qE-eWt"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="500" translatesAutoresizingMaskIntoConstraints="NO" id="bFp-NU-PpI">
+                                <rect key="frame" x="0.0" y="64" width="375" height="475"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="475" id="mt7-6s-EQH"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="5na-fB-S4z" firstAttribute="centerY" secondItem="EnO-7f-1yO" secondAttribute="centerY" constant="30" id="ftP-EL-Ve5"/>
-                            <constraint firstItem="Lhb-JH-DQG" firstAttribute="centerY" secondItem="EnO-7f-1yO" secondAttribute="centerY" constant="-40" id="jXB-Qi-JFd"/>
+                            <constraint firstItem="dPr-Tg-feW" firstAttribute="top" secondItem="5na-fB-S4z" secondAttribute="bottom" constant="20" id="S25-4P-WRq"/>
+                            <constraint firstItem="bFp-NU-PpI" firstAttribute="leading" secondItem="EnO-7f-1yO" secondAttribute="leading" id="Z3Y-E8-u3x"/>
+                            <constraint firstItem="5na-fB-S4z" firstAttribute="top" secondItem="Lhb-JH-DQG" secondAttribute="bottom" constant="20" id="bFy-2q-3E3"/>
+                            <constraint firstAttribute="trailing" secondItem="bFp-NU-PpI" secondAttribute="trailing" id="jla-GE-gSB"/>
+                            <constraint firstItem="bFp-NU-PpI" firstAttribute="top" secondItem="bfJ-T5-JnD" secondAttribute="bottom" id="mLz-0t-ZCY"/>
                             <constraint firstItem="Lhb-JH-DQG" firstAttribute="centerX" secondItem="EnO-7f-1yO" secondAttribute="centerX" id="n3r-34-8mQ"/>
+                            <constraint firstItem="Lhb-JH-DQG" firstAttribute="top" secondItem="bFp-NU-PpI" secondAttribute="bottom" constant="20" id="pti-px-eBT"/>
                             <constraint firstItem="5na-fB-S4z" firstAttribute="centerX" secondItem="EnO-7f-1yO" secondAttribute="centerX" id="roT-fB-SeA"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="42E-2e-kOq"/>
+                    <connections>
+                        <outlet property="animationHolder" destination="bFp-NU-PpI" id="ZKi-8F-c7W"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ieq-Ar-5OF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-119" y="260"/>
+            <point key="canvasLocation" x="-119.2" y="259.52023988005999"/>
         </scene>
         <!--Login Navigation Controller-->
         <scene sceneID="1BJ-CW-C88">
