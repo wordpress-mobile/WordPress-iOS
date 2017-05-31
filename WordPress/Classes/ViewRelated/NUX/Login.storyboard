@@ -74,7 +74,7 @@
         <scene sceneID="1BJ-CW-C88">
             <objects>
                 <navigationController id="Ck1-vY-O11" customClass="LoginNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mKb-UO-KoA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mKb-UO-KoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -100,51 +100,16 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JBb-dd-foh">
                                 <rect key="frame" x="0.0" y="84" width="383" height="592"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="18V-ZM-xlT">
-                                        <rect key="frame" x="0.0" y="185.5" width="383" height="84"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="320" id="ufm-Q9-nHF"/>
-                                        </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="ufm-Q9-nHF"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=regular">
-                                            <mask key="constraints">
-                                                <include reference="ufm-Q9-nHF"/>
-                                            </mask>
-                                        </variation>
-                                    </view>
-                                </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="18V-ZM-xlT" secondAttribute="trailing" id="9tR-rM-JfT"/>
-                                    <constraint firstItem="18V-ZM-xlT" firstAttribute="leading" secondItem="JBb-dd-foh" secondAttribute="leading" id="IBM-8C-blc"/>
-                                    <constraint firstItem="18V-ZM-xlT" firstAttribute="centerX" secondItem="JBb-dd-foh" secondAttribute="centerX" id="sIT-ge-7gg"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="sIT-ge-7gg"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <exclude reference="9tR-rM-JfT"/>
-                                        <exclude reference="IBM-8C-blc"/>
-                                        <include reference="sIT-ge-7gg"/>
-                                    </mask>
-                                </variation>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="245" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-pW-jTv" userLabel="Wrapper Stack View">
                                 <rect key="frame" x="0.0" y="64" width="383" height="612"/>
                                 <subviews>
-                                    <view opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ff9-jl-eKh">
-                                        <rect key="frame" x="0.0" y="0.0" width="383" height="401"/>
+                                    <view opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" placeholderIntrinsicWidth="383" placeholderIntrinsicHeight="426" translatesAutoresizingMaskIntoConstraints="NO" id="Ff9-jl-eKh">
+                                        <rect key="frame" x="0.0" y="0.0" width="383" height="426"/>
                                         <subviews>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" verticalHuggingPriority="251" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email or username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XXO-aV-keK" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="178.5" width="383" height="44"/>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email or username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XXO-aV-keK" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="191" width="383" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
                                                 <constraints>
@@ -183,11 +148,11 @@
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="oki-wA-lL1"/>
                                         </constraints>
                                     </view>
-                                    <view opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="249" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ecG-o1-wwE">
-                                        <rect key="frame" x="0.0" y="411" width="383" height="201"/>
+                                    <view opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="ecG-o1-wwE">
+                                        <rect key="frame" x="0.0" y="436" width="383" height="176"/>
                                         <subviews>
                                             <stackView contentMode="scaleToFill" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="6i6-CG-3Tg">
-                                                <rect key="frame" x="20" y="57" width="343" height="124"/>
+                                                <rect key="frame" x="20" y="32" width="343" height="124"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wGR-td-aHF">
                                                         <rect key="frame" x="0.0" y="0.0" width="307" height="124"/>
@@ -286,7 +251,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wWl-qb-1Yp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="757.60000000000002" y="259.97001499250376"/>
+            <point key="canvasLocation" x="757.5" y="259"/>
         </scene>
         <!--Signup View Controller-->
         <scene sceneID="w7c-Xj-AH8">
@@ -516,7 +481,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lhb-00-kKg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="150" y="1006"/>
+            <point key="canvasLocation" x="154" y="1165"/>
         </scene>
         <!--Login Self Hosted View Controller-->
         <scene sceneID="b2O-iW-wfB">
@@ -959,13 +924,14 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x1G-Lf-mra">
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="x1G-Lf-mra">
                                         <rect key="frame" x="20" y="568" width="343" height="44"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="309-z3-fPx">
-                                                <rect key="frame" x="0.0" y="0.0" width="296" height="44"/>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="309-z3-fPx">
+                                                <rect key="frame" x="0.0" y="0.0" width="293" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="fzI-rH-0f8"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="tFG-e2-XN2"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <state key="normal" title="Send Code">
@@ -975,9 +941,10 @@
                                                     <action selector="handleSendVerificationButtonTapped:" destination="bAd-Df-IzS" eventType="touchUpInside" id="rvK-YF-gYu"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="296" y="0.0" width="47" height="44"/>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="293" y="10" width="50" height="34"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="aiy-Qn-dDm"/>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="eoc-KU-71N"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1586,9 +1553,9 @@
         <image name="icon-wp" width="50" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0ao-yi-yZI"/>
+        <segue reference="07g-E6-aeG"/>
+        <segue reference="ySQ-EM-6JI"/>
         <segue reference="qLI-qX-rkG"/>
-        <segue reference="7tm-qV-PVz"/>
         <segue reference="lIb-sw-yM7"/>
     </inferredMetricsTieBreakers>
 </document>
