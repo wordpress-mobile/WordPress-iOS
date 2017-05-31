@@ -3,11 +3,15 @@ import WordPressShared
 
 let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 
+/// A protocol for an element that can display a UIActivityIndicatorView
+@objc protocol ActivityIndicatorButton {
+    func showActivityIndicator(_ show: Bool)
+}
+
 /// A stylized button used by NUX controllers. The button presents white text
 /// surrounded by a white border.  It also can display a `UIActivityIndicatorView`.
 ///
-@IBDesignable
-@objc class NUXSubmitButton: UIButton {
+@objc class NUXSubmitButton: UIButton, ActivityIndicatorButton {
     @IBInspectable var isPrimary: Bool = false {
         didSet {
             configureButton()

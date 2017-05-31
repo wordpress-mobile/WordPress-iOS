@@ -17,8 +17,8 @@ import WordPressShared
     @IBOutlet var createSiteButton: UIButton!
     @IBOutlet var selfHostedSigninButton: UIButton!
     @IBOutlet var safariPasswordButton: UIButton!
-    @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
-    @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
+    @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
+    @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     var onePasswordButton: UIButton!
 
     var didFindSafariSharedCredentials = false
