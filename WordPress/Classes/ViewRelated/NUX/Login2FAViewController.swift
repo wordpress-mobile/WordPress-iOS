@@ -24,12 +24,10 @@ class Login2FAViewController: Signin2FAViewController, LoginViewController {
         paragraphStyle.alignment = .left
 
         let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14),
-                                                                   //                                                                   NSForegroundColorAttributeName: UIColor.white,
             NSParagraphStyleAttributeName: paragraphStyle ]]
 
         let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
         let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
-        //        attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
 
         if let titleLabel = sendCodeButton.titleLabel {
             titleLabel.lineBreakMode = .byWordWrapping

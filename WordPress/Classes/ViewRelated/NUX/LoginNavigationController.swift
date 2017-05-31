@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-class LoginNavigationController: UINavigationController {
+class LoginNavigationController: RotationAwareNavigationViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 

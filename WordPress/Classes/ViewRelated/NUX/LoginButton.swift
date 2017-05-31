@@ -3,12 +3,13 @@ import WordPressShared
 
 /// A stylized button used by Login controllers. It also can display a `UIActivityIndicatorView`.
 @objc class LoginButton: NUXSubmitButton {
-
     // MARK: - Configuration
+    fileprivate let horizontalInset: CGFloat = 20
+    fileprivate let verticalInset: CGFloat = 12
 
-    /// Configure the appearance of the configure button.
+    /// Configure the appearance of the button.
     override func configureButton() {
-        contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
+        contentEdgeInsets = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
 
         titleLabel?.font = WPFontManager.systemSemiBoldFont(ofSize: 17.0)
 
@@ -28,7 +29,6 @@ import WordPressShared
         }
         let disabledImage = UIImage(named: "beveled-disabled-button")
         let titleColorDisabled = WPStyleGuide.greyLighten30()
-
 
         setBackgroundImage(normalImage, for: .normal)
         setBackgroundImage(highlightImage, for: .highlighted)
