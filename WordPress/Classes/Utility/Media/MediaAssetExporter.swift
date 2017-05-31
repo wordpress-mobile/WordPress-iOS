@@ -198,6 +198,9 @@ class MediaAssetExporter: MediaExporter {
                                             session.shouldOptimizeForNetworkUse = true
                                             session.outputURL = exportURL
                                             session.outputFileType = videoResource.uniformTypeIdentifier
+                                            if self.stripsGeoLocationIfNeeded {
+                                                session.metadataItemFilter = AVMetadataItemFilter.forSharing()
+                                            }
                                             // Trigger the export with the completion handler.
                                             session.exportAsynchronously {
                                                 onExportSessionCompletion(session)

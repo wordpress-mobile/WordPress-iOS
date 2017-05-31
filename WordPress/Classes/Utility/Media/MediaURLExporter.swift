@@ -94,6 +94,9 @@ class MediaURLExporter: MediaExporter {
             session.outputURL = mediaURL
             session.outputFileType = typeIdentifier as String
             session.shouldOptimizeForNetworkUse = true
+            if self.stripsGeoLocationIfNeeded {
+                session.metadataItemFilter = AVMetadataItemFilter.forSharing()
+            }
             session.exportAsynchronously {
                 guard session.status == .completed else {
                     if let error = session.error {
