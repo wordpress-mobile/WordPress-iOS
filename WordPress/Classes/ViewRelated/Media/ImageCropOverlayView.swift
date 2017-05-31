@@ -2,13 +2,15 @@ import Foundation
 import UIKit
 
 
-// Renders an "Outer Ellipse Overlay", to be used on top of the Gravatar Image
+// Renders an "Outer Ellipse or Square Overlay", to be used on top of the Image
+// Defaults to an Ellipse
 //
-class GravatarOverlayView: UIView {
+class ImageCropOverlayView: UIView {
     // MARK: - Public Properties
     var borderWidth = CGFloat(3)
     var borderColor: UIColor?
     var outerColor: UIColor?
+    var square: Bool = false
 
     // MARK: - Overriden Methods
     override func layoutSubviews() {
@@ -21,10 +23,6 @@ class GravatarOverlayView: UIView {
 
         let context = UIGraphicsGetCurrentContext()!
 
-        // Prevent Ellipse Clipping
-        let delta = borderWidth - 1.0
-        let ellipseRect = bounds.insetBy(dx: delta, dy: delta)
-
         // Setup
         context.saveGState()
         context.setLineWidth(borderWidth)
@@ -34,14 +32,22 @@ class GravatarOverlayView: UIView {
         // Outer
         outerColor?.setFill()
         context.addRect(bounds)
-        context.addEllipse(in: ellipseRect)
-        context.fillPath(using: .evenOdd)
-
+        // Prevent form clipping
+        let delta = borderWidth - 1.0
+        if square {
+            let squareRect = bounds.insetBy(dx: delta, dy: delta)
+            context.addRect(squareRect)
+            context.fillPath(using: .evenOdd)
+            context.addRect(squareRect)
+        } else {
+            let ellipseRect = bounds.insetBy(dx: delta, dy: delta)
+            context.addEllipse(in: ellipseRect)
+            context.fillPath(using: .evenOdd)
+            context.addEllipse(in: ellipseRect)
+        }
         // Border
         borderColor?.setStroke()
-        context.addEllipse(in: ellipseRect)
         context.strokePath()
-
         // Wrap Up
         context.restoreGState()
     }
