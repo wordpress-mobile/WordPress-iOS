@@ -706,7 +706,7 @@
 		B5F995A01B59708C00AB0B3E /* NotificationSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5F9959F1B59708C00AB0B3E /* NotificationSettingsViewController.xib */; };
 		B5FA22831C99F6180016CA7C /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		B5FA868C1D10A4C400AB5F7E /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA868A1D10A41600AB5F7E /* UIImage+Extensions.swift */; };
-		B5FF3BE71CAD881100C1D597 /* GravatarOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FF3BE61CAD881100C1D597 /* GravatarOverlayView.swift */; };
+		B5FF3BE71CAD881100C1D597 /* ImageCropOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FF3BE61CAD881100C1D597 /* ImageCropOverlayView.swift */; };
 		BE1071FC1BC75E7400906AFF /* WPStyleGuide+Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1071FB1BC75E7400906AFF /* WPStyleGuide+Blog.swift */; };
 		BE1071FF1BC75FFA00906AFF /* WPStyleGuide+BlogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1071FE1BC75FFA00906AFF /* WPStyleGuide+BlogTests.swift */; };
 		BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13B3E51B2B58D800A4211D /* BlogListViewController.m */; };
@@ -2146,7 +2146,7 @@
 		B5FA22821C99F6180016CA7C /* Tracks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tracks.swift; path = WordPressShareExtension/Tracks.swift; sourceTree = SOURCE_ROOT; };
 		B5FA868A1D10A41600AB5F7E /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImage+Extensions.swift"; path = "WordPressShareExtension/UIImage+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		B5FD4520199D0C9A00286FBB /* WordPress-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "WordPress-Bridging-Header.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		B5FF3BE61CAD881100C1D597 /* GravatarOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarOverlayView.swift; sourceTree = "<group>"; };
+		B5FF3BE61CAD881100C1D597 /* ImageCropOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCropOverlayView.swift; sourceTree = "<group>"; };
 		B7556D1D8CFA5CEAEAC481B9 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B79D0E32D38E5A2EE4874ABA /* Pods_WordPress_Base_WordPressShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPress_Base_WordPressShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBA30B9805788CED2FFA3E4B /* Pods-WordPressTest.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-alpha.xcconfig"; sourceTree = "<group>"; };
@@ -3566,7 +3566,7 @@
 		5DA5BF4A18E32DE2005F11F9 /* Media */ = {
 			isa = PBXGroup;
 			children = (
-				B5FF3BE61CAD881100C1D597 /* GravatarOverlayView.swift */,
+				B5FF3BE61CAD881100C1D597 /* ImageCropOverlayView.swift */,
 				B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */,
 				B5EEB19E1CA96D19004B6540 /* ImageCropViewController.xib */,
 				FF945F6E1B28242300FB8AC4 /* MediaLibraryPickerDataSource.h */,
@@ -7087,7 +7087,7 @@
 				5D1181E71B4D6DEB003F3084 /* WPStyleGuide+Reader.swift in Sources */,
 				B5508F231E9C13FC009596FB /* MoreAttachmentRenderer.swift in Sources */,
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
-				B5FF3BE71CAD881100C1D597 /* GravatarOverlayView.swift in Sources */,
+				B5FF3BE71CAD881100C1D597 /* ImageCropOverlayView.swift in Sources */,
 				85CE4C201A703CF200780DFE /* NSBundle+VersionNumberHelper.m in Sources */,
 				E6A338501BB0A70F00371587 /* ReaderGapMarkerCell.swift in Sources */,
 				E6311C431ECA017E00122529 /* UserProfile.swift in Sources */,
