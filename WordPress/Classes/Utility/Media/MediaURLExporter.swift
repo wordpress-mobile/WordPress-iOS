@@ -20,7 +20,9 @@ class MediaURLExporter: MediaExporter {
     public enum URLExportError: MediaExportError {
         case invalidFileURL
         case unknownFileUTI
+        case videoAssetWasDetectedAsNotExportable
         case failedToInitializeVideoExportSession
+        case videoExportSessionDoesNotSupportVideoOutputType
         case videoExportSessionFailedWithAnUnknownError
 
         var description: String {
@@ -28,7 +30,9 @@ class MediaURLExporter: MediaExporter {
             case .invalidFileURL,
                  .unknownFileUTI:
                 return NSLocalizedString("The media could not be added to the Media Library.", comment: "Message shown when an image or video failed to load while trying to add it to the Media library.")
-            case .failedToInitializeVideoExportSession,
+            case .videoAssetWasDetectedAsNotExportable,
+                 .failedToInitializeVideoExportSession,
+                 .videoExportSessionDoesNotSupportVideoOutputType,
                  .videoExportSessionFailedWithAnUnknownError:
                 return NSLocalizedString("The video could not be added to the Media Library.", comment: "Message shown when a video failed to load while trying to add it to the Media library.")
             }
@@ -84,6 +88,9 @@ class MediaURLExporter: MediaExporter {
     fileprivate func exportVideo(atURL url: URL, typeIdentifier: String, onCompletion: @escaping (URLExport) -> (), onError: @escaping (MediaExportError) -> ()) {
         do {
             let asset = AVURLAsset(url: url)
+            guard asset.isExportable else {
+                throw URLExportError.videoAssetWasDetectedAsNotExportable
+            }
             guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else {
                 throw URLExportError.failedToInitializeVideoExportSession
             }
@@ -91,8 +98,15 @@ class MediaURLExporter: MediaExporter {
             let mediaURL = try MediaLibrary.makeLocalMediaURL(withFilename: url.lastPathComponent,
                                                               fileExtension: URL.fileExtensionForUTType(typeIdentifier),
                                                               type: mediaDirectoryType)
+            let outputType = kUTTypeMPEG4 as String
+            let supportedTypes = session.supportedFileTypes
+            // Check that the target outputType is supported.
+            // Otherwise the session will raise an exception when setting outputFileType.
+            guard supportedTypes.contains(outputType) else {
+                throw URLExportError.videoExportSessionDoesNotSupportVideoOutputType
+            }
             session.outputURL = mediaURL
-            session.outputFileType = typeIdentifier as String
+            session.outputFileType = outputType
             session.shouldOptimizeForNetworkUse = true
             if self.stripsGeoLocationIfNeeded {
                 session.metadataItemFilter = AVMetadataItemFilter.forSharing()
