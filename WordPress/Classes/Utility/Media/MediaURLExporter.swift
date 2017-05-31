@@ -84,7 +84,7 @@ class MediaURLExporter: MediaExporter {
     fileprivate func exportVideo(atURL url: URL, typeIdentifier: String, onCompletion: @escaping (URLExport) -> (), onError: @escaping (MediaExportError) -> ()) {
         do {
             let asset = AVURLAsset(url: url)
-            guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough) else {
+            guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else {
                 throw URLExportError.failedToInitializeVideoExportSession
             }
 
