@@ -108,7 +108,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider>
+@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate>
 
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
@@ -579,6 +579,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     // Blog detail header view
     BlogDetailHeaderView *headerView = [[BlogDetailHeaderView alloc] init];
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
+    headerView.delegate = self;
     [headerWrapper addSubview:headerView];
 
     UILayoutGuide *readableGuide = headerWrapper.readableContentGuide;
@@ -589,6 +590,61 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                               [headerView.bottomAnchor constraintEqualToAnchor:headerWrapper.bottomAnchor],
                                               ]];
      self.headerView = headerView;
+}
+
+#pragma mark BlogDetailHeaderViewDelegate
+
+- (void)siteIconTapped
+{
+    if (!self.blog.isUploadingFilesAllowed) {
+        // Gracefully ignore the tap for users that can not upload files or
+        // blogs that do not have capabilities since those will not support the REST API icon update
+        return;
+    }
+
+    SiteIconPickerViewController *pickerViewController = [[SiteIconPickerViewController alloc]initWithBlog:self.blog];
+    __weak __typeof(self) weakSelf = self;
+    pickerViewController.onCompletion = ^(UIImage * image) {
+        if (image) {
+            self.headerView.updatingIcon = YES;
+            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+            [mediaService createMediaWithImage:image
+                               forBlogObjectID:self.blog.objectID
+                             thumbnailCallback:nil
+                                    completion:^(Media * _Nullable media, NSError * _Nullable error) {
+                if (error) {
+                    [self showErrorForSiteIconUpdate];
+                    return;
+                }
+                NSProgress *progress = nil;
+                [mediaService uploadMedia:media
+                                 progress:&progress
+                                  success:^{
+                    self.blog.settings.iconMediaID = media.mediaID;
+                    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+                    [blogService updateSettingsForBlog:self.blog success:^{
+                        [blogService syncBlog:self.blog
+                                      success:^{
+                            self.headerView.updatingIcon = NO;
+                            [self.headerView udpdateIconImage:self.blog.icon];
+                        } failure:nil];
+                    } failure:^(NSError *error) {
+                        [self showErrorForSiteIconUpdate];
+                    }];
+                } failure:^(NSError * _Nonnull error) {
+                    [self showErrorForSiteIconUpdate];
+                }];
+            }];
+        }
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
+    };
+    [self presentViewController:pickerViewController animated:YES completion:nil];
+}
+
+- (void)showErrorForSiteIconUpdate
+{
+    [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Icon update failed", @"Message to show when site icon update failed")];
+    self.headerView.updatingIcon = NO;
 }
 
 #pragma mark - Table view data source
