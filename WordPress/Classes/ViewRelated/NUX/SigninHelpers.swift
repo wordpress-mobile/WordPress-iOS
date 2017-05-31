@@ -45,7 +45,7 @@ import WordPressComAnalytics
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        if let controller = storyboard.instantiateInitialViewController() as? UIViewController {
+        if let controller = storyboard.instantiateInitialViewController() {
             presenter.present(controller, animated: animated, completion: nil)
         }
     }
