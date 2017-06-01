@@ -1,6 +1,10 @@
 import Foundation
 import UIKit
 
+enum ImageCropOverlayMaskShape {
+    case circle
+    case square
+}
 
 // Renders an "Outer Ellipse or Square Overlay", to be used on top of the Image
 // Defaults to an Ellipse
@@ -10,7 +14,7 @@ class ImageCropOverlayView: UIView {
     var borderWidth = CGFloat(3)
     var borderColor: UIColor?
     var outerColor: UIColor?
-    var square: Bool = false
+    var maskShape: ImageCropOverlayMaskShape = .circle
 
     // MARK: - Overriden Methods
     override func layoutSubviews() {
@@ -34,12 +38,13 @@ class ImageCropOverlayView: UIView {
         context.addRect(bounds)
         // Prevent from clipping
         let delta = borderWidth - 1.0
-        if square {
+        switch maskShape {
+        case .square:
             let squareRect = bounds.insetBy(dx: delta, dy: delta)
             context.addRect(squareRect)
             context.fillPath(using: .evenOdd)
             context.addRect(squareRect)
-        } else {
+        case .circle:
             let ellipseRect = bounds.insetBy(dx: delta, dy: delta)
             context.addEllipse(in: ellipseRect)
             context.fillPath(using: .evenOdd)
