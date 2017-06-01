@@ -596,7 +596,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)siteIconTapped
 {
-    if (!self.blog.isUploadingFilesAllowed) {
+    if (!self.blog.isAdmin || !self.blog.isUploadingFilesAllowed) {
         // Gracefully ignore the tap for users that can not upload files or
         // blogs that do not have capabilities since those will not support the REST API icon update
         return;
