@@ -12,8 +12,8 @@ import WordPressShared
     @IBOutlet weak var forgotPasswordButton: UIButton!
     @IBOutlet weak var selfHostedButton: UIButton!
     @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint!
-    @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
+    @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint?
     var onePasswordButton: UIButton!
 
     override var sourceTag: SupportSourceTag {
