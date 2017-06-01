@@ -322,7 +322,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let post = postAtIndexPath(indexPath)
 
-        if post.remoteStatus == AbstractPostRemoteStatusPushing {
+        if post.remoteStatus == .pushing {
             // Don't allow editing while pushing changes
             return
         }
