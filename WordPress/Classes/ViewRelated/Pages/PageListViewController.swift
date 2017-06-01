@@ -373,7 +373,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         navController.modalPresentationStyle = .fullScreen
 
-        present(navController, animated: true, completion: nil)
+        present(navController, animated: true, completion: { [weak self] in
+            self?.updateFilterWithPostStatus(.draft)
+        })
 
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
     }
