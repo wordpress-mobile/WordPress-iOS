@@ -320,6 +320,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func createPost() {
         let navController: UINavigationController
 
+        let filterIndex = filterSettings.currentFilterIndex()
         let editorSettings = EditorSettings()
         if editorSettings.visualEditorEnabled {
 
@@ -337,6 +338,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                         if let postStatus = postViewController.post.status {
                             self?.updateFilterWithPostStatus(postStatus)
                         }
+                    } else {
+                        self?.updateFilter(index: filterIndex)
                     }
                     navController.dismiss(animated: true, completion: nil)
                 }
@@ -351,6 +354,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                         if let postStatus = postViewController?.post.status {
                             self?.updateFilterWithPostStatus(postStatus)
                         }
+                    } else {
+                        self?.updateFilter(index: filterIndex)
                     }
                     navController.dismiss(animated: true, completion: nil)
                 }
@@ -366,6 +371,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     if let postStatus = editPostViewController?.post.status {
                         self?.updateFilterWithPostStatus(postStatus)
                     }
+                } else {
+                    self?.updateFilter(index: filterIndex)
                 }
                 navController.dismiss(animated: true, completion: nil)
             }
