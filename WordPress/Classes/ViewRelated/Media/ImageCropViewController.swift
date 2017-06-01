@@ -8,7 +8,7 @@ import UIKit
 class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Public Properties
     var onCompletion: ((UIImage) -> Void)?
-    var square: Bool = false
+    var maskShape: ImageCropOverlayMaskShape = .circle
 
     // MARK: - Public Initializers
 
@@ -45,7 +45,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
 
         // Setup: Overlay
         overlayView.borderColor = WPStyleGuide.mediumBlue()
-        overlayView.square = square
+        overlayView.maskShape = maskShape
     }
 
 
