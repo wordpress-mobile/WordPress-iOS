@@ -20,21 +20,11 @@ class MediaURLExporter: MediaExporter {
     public enum URLExportError: MediaExportError {
         case invalidFileURL
         case unknownFileUTI
-        case videoAssetWasDetectedAsNotExportable
-        case failedToInitializeVideoExportSession
-        case videoExportSessionDoesNotSupportVideoOutputType
-        case videoExportSessionFailedWithAnUnknownError
 
         var description: String {
             switch self {
-            case .invalidFileURL,
-                 .unknownFileUTI:
+            default:
                 return NSLocalizedString("The media could not be added to the Media Library.", comment: "Message shown when an image or video failed to load while trying to add it to the Media library.")
-            case .videoAssetWasDetectedAsNotExportable,
-                 .failedToInitializeVideoExportSession,
-                 .videoExportSessionDoesNotSupportVideoOutputType,
-                 .videoExportSessionFailedWithAnUnknownError:
-                return NSLocalizedString("The video could not be added to the Media Library.", comment: "Message shown when a video failed to load while trying to add it to the Media library.")
             }
         }
         func toNSError() -> NSError {
@@ -68,7 +58,7 @@ class MediaURLExporter: MediaExporter {
         }
     }
 
-    /// Exports the known image file at the URL to a new Media URL.
+    /// Exports the known image file at the URL, via MediaImageExporter.
     ///
     fileprivate func exportImage(atURL url: URL, onCompletion: @escaping (URLExport) -> (), onError: @escaping (MediaExportError) -> ()) {
         // Pass the export off to the image exporter
@@ -83,50 +73,19 @@ class MediaURLExporter: MediaExporter {
                              onError: onError)
     }
 
-    /// Exports the known video file at the URL to a new Media URL.
+    /// Exports the known video file at the URL, via MediaVideoExporter.
     ///
     fileprivate func exportVideo(atURL url: URL, typeIdentifier: String, onCompletion: @escaping (URLExport) -> (), onError: @escaping (MediaExportError) -> ()) {
-        do {
-            let asset = AVURLAsset(url: url)
-            guard asset.isExportable else {
-                throw URLExportError.videoAssetWasDetectedAsNotExportable
-            }
-            guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else {
-                throw URLExportError.failedToInitializeVideoExportSession
-            }
-
-            let mediaURL = try MediaLibrary.makeLocalMediaURL(withFilename: url.lastPathComponent,
-                                                              fileExtension: URL.fileExtensionForUTType(typeIdentifier),
-                                                              type: mediaDirectoryType)
-            let outputType = kUTTypeMPEG4 as String
-            let supportedTypes = session.supportedFileTypes
-            // Check that the target outputType is supported.
-            // Otherwise the session will raise an exception when setting outputFileType.
-            guard supportedTypes.contains(outputType) else {
-                throw URLExportError.videoExportSessionDoesNotSupportVideoOutputType
-            }
-            session.outputURL = mediaURL
-            session.outputFileType = outputType
-            session.shouldOptimizeForNetworkUse = true
-            if self.stripsGeoLocationIfNeeded {
-                session.metadataItemFilter = AVMetadataItemFilter.forSharing()
-            }
-            session.exportAsynchronously {
-                guard session.status == .completed else {
-                    if let error = session.error {
-                        onError(self.exporterErrorWith(error: error))
-                    } else {
-                        onError(URLExportError.videoExportSessionFailedWithAnUnknownError)
-                    }
-                    return
-                }
-                onCompletion(URLExport.exportedVideo(MediaVideoExport(url: mediaURL,
-                                                                      fileSize: mediaURL.resourceFileSize,
-                                                                      duration: nil)))
-            }
-        } catch {
-            onError(exporterErrorWith(error: error))
-        }
+        // Pass the export off to the video exporter.
+        let videoExporter = MediaVideoExporter()
+        videoExporter.stripsGeoLocationIfNeeded = stripsGeoLocationIfNeeded
+        videoExporter.mediaDirectoryType = mediaDirectoryType
+        videoExporter.exportFilename = url.lastPathComponent
+        videoExporter.exportVideo(atURL: url,
+                                  onCompletion: { videoExport in
+                                    onCompletion(URLExport.exportedVideo(videoExport))
+        },
+                                  onError: onError)
     }
 
     /// Exports the GIF file at the URL to a new Media URL, by simply copying the file.
