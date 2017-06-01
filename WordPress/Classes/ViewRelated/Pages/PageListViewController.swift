@@ -259,7 +259,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
 
-        if page.remoteStatus != AbstractPostRemoteStatusPushing && page.status != .trash {
+        if page.remoteStatus != .pushing && page.status != .trash {
             editPage(page)
         }
     }
