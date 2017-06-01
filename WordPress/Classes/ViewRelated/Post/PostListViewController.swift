@@ -392,7 +392,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             }
         }
         editor.modalPresentationStyle = .fullScreen
-        present(editor, animated: false, completion: nil)
+        present(editor, animated: false, completion: { [weak self] in
+            self?.updateFilterWithPostStatus(.draft)
+        })
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
     }
 
