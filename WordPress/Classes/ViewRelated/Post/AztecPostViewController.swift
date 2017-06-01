@@ -29,7 +29,7 @@ class AztecPostViewController: UIViewController {
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
         tv.delegate = self
-        tv.mediaDelegate = self
+        tv.textAttachmentDelegate = self
         tv.backgroundColor = Colors.aztecBackground
         toolbar.formatter = self
 
@@ -1607,7 +1607,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             } else {
                 attachment.progress = progress.fractionCompleted
             }
-            richTextView.refreshLayoutFor(attachment: attachment)
+            richTextView.refreshLayout(for: attachment)
         }
     }
 
@@ -1748,7 +1748,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
         attachment.overlayImage = Gridicon.iconOfType(.refresh)
-        richTextView.refreshLayoutFor(attachment: attachment)
+        richTextView.refreshLayout(for: attachment)
     }
 
     fileprivate func removeFailedMedia() {
@@ -1771,7 +1771,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                             if attachment == self.currentSelectedAttachment {
                                                 self.currentSelectedAttachment = nil
                                                 attachment.clearAllOverlays()
-                                                self.richTextView.refreshLayoutFor(attachment: attachment)
+                                                self.richTextView.refreshLayout(for: attachment)
                                             }
         })
         if let imageAttachment = attachment as? ImageAttachment {
@@ -1801,7 +1801,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
                                                         attachment.clearAllOverlays()
                                                         attachment.progress = 0
-                                                        self.richTextView.refreshLayoutFor(attachment: attachment)
+                                                        self.richTextView.refreshLayout(for: attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
 
                                                         WPAppAnalytics.track(.editorUploadMediaRetried, withProperties: [WPAppAnalyticsKeyEditorSource: self.analyticsEditorSourceValue], with: self.post.blog)
@@ -1865,9 +1865,9 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 
 // MARK: - TextViewMedia Delegate Conformance
 //
-extension AztecPostViewController: TextViewMediaDelegate {
+extension AztecPostViewController: TextViewAttachmentDelegate {
 
-    public func textView(_ textView: TextView, selectedAttachment attachment: NSTextAttachment, atPosition position: CGPoint) {
+    public func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
         if  !richTextView.isFirstResponder {
             richTextView.becomeFirstResponder()
         }
@@ -1893,13 +1893,13 @@ extension AztecPostViewController: TextViewMediaDelegate {
             // if it's a new attachment tapped let's unmark the previous one
             if let selectedAttachment = currentSelectedAttachment {
                 selectedAttachment.clearAllOverlays()
-                richTextView.refreshLayoutFor(attachment: selectedAttachment)
+                richTextView.refreshLayout(for: selectedAttachment)
             }
             // and mark the newly tapped attachment
             let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a image on the post/page editor.")
             attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
             attachment.overlayImage = Gridicon.iconOfType(.pencil)
-            richTextView.refreshLayoutFor(attachment: attachment)
+            richTextView.refreshLayout(for: attachment)
             currentSelectedAttachment = attachment
         }
     }
@@ -1923,7 +1923,7 @@ extension AztecPostViewController: TextViewMediaDelegate {
     }
 
 
-    public func textView(_ textView: TextView, deselectedAttachment attachment: NSTextAttachment, atPosition position: CGPoint) {
+    public func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) {
         deselected(textAttachment: attachment, atPosition: position)
     }
 
@@ -1931,11 +1931,11 @@ extension AztecPostViewController: TextViewMediaDelegate {
         currentSelectedAttachment = nil
         if let mediaAttachment = attachment as? MediaAttachment {
             mediaAttachment.clearAllOverlays()
-            richTextView.refreshLayoutFor(attachment: mediaAttachment)
+            richTextView.refreshLayout(for: mediaAttachment)
         }
     }
 
-    func textView(_ textView: TextView, imageAtUrl url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) -> UIImage {
+    func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) -> UIImage {
         var requestURL = url
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
         //use height zero to maintain the aspect ratio when fetching
@@ -1973,10 +1973,8 @@ extension AztecPostViewController: TextViewMediaDelegate {
         return Gridicon.iconOfType(.image)
     }
 
-    func textView(_ textView: TextView, urlForAttachment attachment: NSTextAttachment) -> URL {
-        if let mediaAttachment = attachment as? MediaAttachment {
-            saveToMedia(attachment: mediaAttachment)
-        }
+    func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL {
+        saveToMedia(attachment: imageAttachment)
         return URL(string:"placeholder://")!
     }
 
@@ -1987,8 +1985,12 @@ extension AztecPostViewController: TextViewMediaDelegate {
         }
     }
 
-    func textView(_ textView: TextView, deletedAttachmentWithID attachmentID: String) {
+    func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
         mediaProgressCoordinator.cancelAndStopTrack(of:attachmentID)
+    }
+
+    func textView(_ textView: TextView, placeholderForAttachment attachment: NSTextAttachment) -> UIImage {
+        return Gridicon.iconOfType(.attachment)
     }
 }
 
