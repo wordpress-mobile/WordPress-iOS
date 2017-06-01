@@ -99,7 +99,15 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     _blavatarImageView = imageView;
 }
 
-
+- (UIActivityIndicatorView *)blavatarUpdateActivityIndicatorView {
+    if (!_blavatarUpdateActivityIndicatorView) {
+        _blavatarUpdateActivityIndicatorView = [[UIActivityIndicatorView alloc]init];
+        _blavatarUpdateActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.blavatarImageView addSubview:_blavatarUpdateActivityIndicatorView];
+        [self.blavatarImageView pinSubviewAtCenter:_blavatarUpdateActivityIndicatorView];
+    }
+    return _blavatarUpdateActivityIndicatorView;
+}
 
 -(void)blavatarImageTapped
 {
@@ -162,12 +170,6 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
 - (void)setUpdatingIcon:(BOOL)updatingIcon
 {
-    if (updatingIcon && !self.blavatarUpdateActivityIndicatorView) {
-        self.blavatarUpdateActivityIndicatorView = [[UIActivityIndicatorView alloc]init];
-        [self.blavatarImageView addSubview:self.blavatarUpdateActivityIndicatorView];
-        self.blavatarUpdateActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.blavatarImageView pinSubviewAtCenter:self.blavatarUpdateActivityIndicatorView];
-    }
     _updatingIcon = updatingIcon;
     if (updatingIcon) {
         [self.blavatarUpdateActivityIndicatorView startAnimating];
