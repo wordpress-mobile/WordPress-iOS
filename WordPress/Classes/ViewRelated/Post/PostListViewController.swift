@@ -383,12 +383,15 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Post Actions
 
     override func createPost() {
+        let filterIndex = filterSettings.currentFilterIndex()
         let editor = EditPostViewController(blog: blog)
         editor.onClose = { [weak self] changesSaved in
             if changesSaved {
                 if let postStatus = editor.post?.status {
                     self?.updateFilterWithPostStatus(postStatus)
                 }
+            } else {
+                self?.updateFilter(index: filterIndex)
             }
         }
         editor.modalPresentationStyle = .fullScreen
