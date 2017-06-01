@@ -626,7 +626,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                         [blogService syncBlog:self.blog
                                       success:^{
                             self.headerView.updatingIcon = NO;
-                            [self.headerView udpdateIconImage:self.blog.icon];
+                            [self.headerView updateIconImage:self.blog.icon];
                         } failure:nil];
                     } failure:^(NSError *error) {
                         [self showErrorForSiteIconUpdate];

@@ -49,7 +49,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [self.labelsStackView setNeedsLayout];
 }
 
-- (void)udpdateIconImage:(NSString *)iconURL
+- (void)updateIconImage:(NSString *)iconURL
 {
     [self.blavatarImageView setImageWithSiteIcon:iconURL placeholderImage:nil];
 }

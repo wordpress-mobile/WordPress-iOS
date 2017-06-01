@@ -89,11 +89,11 @@ class SiteIconPickerViewController: UIViewController, WPMediaPickerViewControlle
     fileprivate func showLoadingMessage() {
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading...",
-                                                         comment: "Text displayed in HUD while a media item's is being laoded."))
+                                                         comment: "Text displayed in HUD while a media item's is being loaded."))
     }
 
     fileprivate func showErrorLoadingImageMessage() {
-        SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Unable to load the image, please chose a different one or try again later.",
+        SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Unable to load the image. Please choose a different one or try again later.",
                                                                          comment: "Text displayed in HUD if there was an error attempting to load a media image."))
     }
 
