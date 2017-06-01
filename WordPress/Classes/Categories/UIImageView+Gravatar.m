@@ -35,6 +35,10 @@ NSString *const BlavatarDefault = @"blavatar-default";
     }
 }
 
+- (void)setDeafultSiteIconImage
+{
+    self.image = [UIImage imageNamed:BlavatarDefault];
+}
 
 #pragma mark - Site Icon Private Methods
 
