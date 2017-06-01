@@ -1850,6 +1850,22 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                                         NSShadowAttributeName: shadow]
         return attributes
     }
+
+    func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
+        let imageSize = CGSize(width:32, height:32)
+        let placeholderImage: UIImage
+        switch attachment {
+        case _ as ImageAttachment:
+            placeholderImage = Gridicon.iconOfType(.image, withSize: imageSize)
+        case _ as VideoAttachment:
+            placeholderImage = Gridicon.iconOfType(.video, withSize: imageSize)
+        default:
+            placeholderImage = Gridicon.iconOfType(.attachment, withSize: imageSize)
+
+        }
+
+        return placeholderImage
+    }
 }
 
 
@@ -1970,7 +1986,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
             activeMediaRequests.append(receipt)
         }
 
-        return Gridicon.iconOfType(.image)
+        return placeholderImage(for: attachment)
     }
 
     func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL {
@@ -1990,7 +2006,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 
     func textView(_ textView: TextView, placeholderForAttachment attachment: NSTextAttachment) -> UIImage {
-        return Gridicon.iconOfType(.attachment)
+        return placeholderImage(for: attachment)
     }
 }
 
