@@ -32,7 +32,7 @@ class ImageCropOverlayView: UIView {
         // Outer
         outerColor?.setFill()
         context.addRect(bounds)
-        // Prevent form clipping
+        // Prevent from clipping
         let delta = borderWidth - 1.0
         if square {
             let squareRect = bounds.insetBy(dx: delta, dy: delta)

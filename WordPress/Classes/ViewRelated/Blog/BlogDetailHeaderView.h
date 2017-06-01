@@ -16,6 +16,6 @@ extern const CGFloat BlogDetailHeaderViewBlavatarSize;
 @property (nonatomic) BOOL updatingIcon;
 
 - (void)setBlog:(Blog *)blog;
-- (void)udpdateIconImage:(NSString *)iconURL;
+- (void)updateIconImage:(NSString *)iconURL;
 
 @end
