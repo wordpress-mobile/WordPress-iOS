@@ -9,6 +9,7 @@
 
 - (void)setImageWithSiteIcon:(NSString *)siteIcon;
 - (void)setImageWithSiteIcon:(NSString *)siteIcon placeholderImage:(UIImage *)placeholderImage;
+- (void)setDeafultSiteIconImage;
 
 #pragma mark - Blavatar Helpers
 

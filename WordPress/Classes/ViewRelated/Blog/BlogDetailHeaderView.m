@@ -40,7 +40,8 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
 - (void)setBlog:(Blog *)blog
 {
-    [self.blavatarImageView setImageWithSiteIcon:blog.icon];
+    _blog = blog;
+    [self refreshIconImage];
 
     // if the blog name is missing, we want to show the blog displayURL instead
     NSString *blogName = blog.settings.name;
@@ -49,9 +50,13 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [self.labelsStackView setNeedsLayout];
 }
 
-- (void)updateIconImage:(NSString *)iconURL
+- (void)refreshIconImage
 {
-    [self.blavatarImageView setImageWithSiteIcon:iconURL placeholderImage:nil];
+    if (self.blog.hasIcon) {
+        [self.blavatarImageView setImageWithSiteIcon:self.blog.icon placeholderImage:nil];
+    } else {
+        [self.blavatarImageView setDeafultSiteIconImage];
+    }
 }
 
 #pragma mark - Subview setup

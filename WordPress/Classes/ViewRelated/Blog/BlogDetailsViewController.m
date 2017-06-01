@@ -115,6 +115,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) NSArray *tableSections;
 @property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) BlogService *blogService;
+@property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
 
 /// Used to restore the tableview selection during state restoration, and
 /// also when switching between a collapsed and expanded split view controller presentation
@@ -325,6 +326,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     return _restorableSelectedIndexPath;
+}
+
+- (SiteIconPickerPresenter *)siteIconPickerPresenter
+{
+    if (!_siteIconPickerPresenter) {
+        _siteIconPickerPresenter = [[SiteIconPickerPresenter alloc]initWithPresentingViewController:self
+                                                                                               blog:self.blog];
+    }
+    return _siteIconPickerPresenter;
 }
 
 #pragma mark - Data Model setup
@@ -601,44 +611,95 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         // blogs that do not have capabilities since those will not support the REST API icon update
         return;
     }
+    [self showUpdateSiteIconAlert];
+}
 
-    SiteIconPickerViewController *pickerViewController = [[SiteIconPickerViewController alloc]initWithBlog:self.blog];
+#pragma mark Site Icon Update Management
+
+- (void)showUpdateSiteIconAlert
+{
+    UIAlertController *updateIconAlertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                       message:nil
+                                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+
+    UIAlertAction *changeSiteIcon = [UIAlertAction actionWithTitle:NSLocalizedString(@"Change Site Icon", @"Change site icon button")
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction *action) {
+                                                               [self updateSiteIcon];
+                                                            }];
+    [updateIconAlertController addAction:changeSiteIcon];
+
+    if (self.blog.hasIcon) {
+        UIAlertAction *removeSiteIcon = [UIAlertAction actionWithTitle:NSLocalizedString(@"Remove Site Icon", @"Remove site icon button")
+                                                                 style:UIAlertActionStyleDestructive
+                                                               handler:^(UIAlertAction *action) {
+                                                                   [self removeSiteIcon];
+                                                               }];
+        [updateIconAlertController addAction:removeSiteIcon];
+    }
+
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:nil];
+    [updateIconAlertController addAction:cancel];
+    [self presentViewController:updateIconAlertController animated:YES completion:nil];
+}
+
+- (void)updateSiteIcon
+{
     __weak __typeof(self) weakSelf = self;
-    pickerViewController.onCompletion = ^(UIImage * image) {
+    self.siteIconPickerPresenter.onCompletion = ^(UIImage * image) {
         if (image) {
-            self.headerView.updatingIcon = YES;
-            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            [mediaService createMediaWithImage:image
-                               forBlogObjectID:self.blog.objectID
-                             thumbnailCallback:nil
-                                    completion:^(Media * _Nullable media, NSError * _Nullable error) {
-                if (error) {
-                    [self showErrorForSiteIconUpdate];
-                    return;
-                }
-                NSProgress *progress = nil;
-                [mediaService uploadMedia:media
-                                 progress:&progress
-                                  success:^{
-                    self.blog.settings.iconMediaID = media.mediaID;
-                    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-                    [blogService updateSettingsForBlog:self.blog success:^{
-                        [blogService syncBlog:self.blog
-                                      success:^{
-                            self.headerView.updatingIcon = NO;
-                            [self.headerView updateIconImage:self.blog.icon];
-                        } failure:nil];
-                    } failure:^(NSError *error) {
-                        [self showErrorForSiteIconUpdate];
-                    }];
-                } failure:^(NSError * _Nonnull error) {
-                    [self showErrorForSiteIconUpdate];
-                }];
-            }];
+            [weakSelf siteIconImageSelected:image];
         }
-        [weakSelf dismissViewControllerAnimated:YES completion:nil];
     };
-    [self presentViewController:pickerViewController animated:YES completion:nil];
+    [self.siteIconPickerPresenter presentPicker];
+}
+
+- (void)removeSiteIcon
+{
+    self.headerView.updatingIcon = YES;
+    self.blog.settings.iconMediaID = [NSNumber numberWithInt:0];
+    [self updateBlogSettingsAndRefreshIcon];
+}
+
+- (void)siteIconImageSelected:(UIImage *)newIcon
+{
+    self.headerView.updatingIcon = YES;
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [mediaService createMediaWithImage:newIcon
+                       forBlogObjectID:self.blog.objectID
+                     thumbnailCallback:nil
+                            completion:^(Media * _Nullable media, NSError * _Nullable error){
+         if (error) {
+             [self showErrorForSiteIconUpdate];
+             return;
+         }
+         NSProgress *progress = nil;
+         [mediaService uploadMedia:media
+                          progress:&progress
+                           success:^{
+              self.blog.settings.iconMediaID = media.mediaID;
+              [self updateBlogSettingsAndRefreshIcon];
+          } failure:^(NSError * _Nonnull error) {
+              [self showErrorForSiteIconUpdate];
+          }];
+     }];
+}
+
+- (void)updateBlogSettingsAndRefreshIcon
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [blogService updateSettingsForBlog:self.blog
+                               success:^{
+        [blogService syncBlog:self.blog
+                      success:^{
+            self.headerView.updatingIcon = NO;
+            [self.headerView refreshIconImage];
+        } failure:nil];
+     } failure:^(NSError *error){
+         [self showErrorForSiteIconUpdate];
+     }];
 }
 
 - (void)showErrorForSiteIconUpdate
