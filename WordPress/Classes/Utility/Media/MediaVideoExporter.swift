@@ -12,6 +12,10 @@ class MediaVideoExporter: MediaExporter {
     var preferredExportFileType = kUTTypeMPEG4 as String
     var exportFilename: String?
 
+    /// Completion block with a MediaVideoExport.
+    ///
+    typealias OnVideoExport = (MediaVideoExport) -> Void
+
     public enum VideoExportError: MediaExportError {
         case videoAssetWasDetectedAsNotExportable
         case videoExportSessionDoesNotSupportVideoOutputType
@@ -31,7 +35,7 @@ class MediaVideoExporter: MediaExporter {
 
     /// Exports a known video at a URL asynchronously.
     ///
-    func exportVideo(atURL url: URL, onCompletion: @escaping (MediaVideoExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
+    func exportVideo(atURL url: URL, onCompletion: @escaping OnVideoExport, onError: @escaping OnExportError) {
         do {
             let asset = AVURLAsset(url: url)
             guard asset.isExportable else {
@@ -50,7 +54,7 @@ class MediaVideoExporter: MediaExporter {
 
     /// Configures an AVAssetExportSession and exports the video asynchronously.
     ///
-    func exportVideo(with session: AVAssetExportSession, onCompletion: @escaping (MediaVideoExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
+    func exportVideo(with session: AVAssetExportSession, onCompletion: @escaping OnVideoExport, onError: @escaping OnExportError) {
         do {
             var outputType = preferredExportFileType
             // Check if the exportFileType is one of the supported types for the exportSession.

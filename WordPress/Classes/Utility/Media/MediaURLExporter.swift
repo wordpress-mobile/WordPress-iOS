@@ -17,6 +17,10 @@ class MediaURLExporter: MediaExporter {
         case exportedGIF(MediaGIFExport)
     }
 
+    /// Completion block with a URLExport.
+    ///
+    typealias OnURLExport = (URLExport) -> Void
+
     public enum URLExportError: MediaExportError {
         case invalidFileURL
         case unknownFileUTI
@@ -36,7 +40,7 @@ class MediaURLExporter: MediaExporter {
     ///
     /// Expects files conforming to a video, image or GIF uniform type.
     ///
-    func exportURL(fileURL: URL, onCompletion: @escaping (URLExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    func exportURL(fileURL: URL, onCompletion: @escaping OnURLExport, onError: @escaping OnExportError) {
         do {
             guard fileURL.isFileURL else {
                 throw URLExportError.invalidFileURL
@@ -60,7 +64,7 @@ class MediaURLExporter: MediaExporter {
 
     /// Exports the known image file at the URL, via MediaImageExporter.
     ///
-    fileprivate func exportImage(atURL url: URL, onCompletion: @escaping (URLExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    fileprivate func exportImage(atURL url: URL, onCompletion: @escaping OnURLExport, onError: @escaping OnExportError) {
         // Pass the export off to the image exporter
         let exporter = MediaImageExporter()
         exporter.maximumImageSize = maximumImageSize
@@ -75,7 +79,7 @@ class MediaURLExporter: MediaExporter {
 
     /// Exports the known video file at the URL, via MediaVideoExporter.
     ///
-    fileprivate func exportVideo(atURL url: URL, typeIdentifier: String, onCompletion: @escaping (URLExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    fileprivate func exportVideo(atURL url: URL, typeIdentifier: String, onCompletion: @escaping OnURLExport, onError: @escaping OnExportError) {
         // Pass the export off to the video exporter.
         let videoExporter = MediaVideoExporter()
         videoExporter.stripsGeoLocationIfNeeded = stripsGeoLocationIfNeeded
@@ -90,7 +94,7 @@ class MediaURLExporter: MediaExporter {
 
     /// Exports the GIF file at the URL to a new Media URL, by simply copying the file.
     ///
-    fileprivate func exportGIF(atURL url: URL, onCompletion: @escaping (URLExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    fileprivate func exportGIF(atURL url: URL, onCompletion: @escaping OnURLExport, onError: @escaping OnExportError) {
         do {
             let fileManager = FileManager.default
             let mediaURL = try MediaLibrary.makeLocalMediaURL(withFilename: url.lastPathComponent,
