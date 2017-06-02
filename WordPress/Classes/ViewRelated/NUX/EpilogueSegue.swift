@@ -5,7 +5,7 @@ protocol EpilogueAnimation {
 
 /// Custom animation to allow presented views to appear to come from behind the presenter
 extension EpilogueAnimation where Self: UIStoryboardSegue {
-    func performEpilogue(completion: @escaping () -> ()) {
+    func performEpilogue(completion: @escaping () -> Void) {
         guard let containerView = source.view.superview else {
             return
         }
@@ -13,7 +13,11 @@ extension EpilogueAnimation where Self: UIStoryboardSegue {
         let destinationVC = destination
         let duration = 0.35
 
-        destinationVC.view.frame = sourceVC.view.frame
+        var frame = sourceVC.view.frame
+        // Adjust for the height of the status bar which seems to be ignored during the transition.
+        frame.origin.y += 20
+        frame.size.height -= 20
+        destinationVC.view.frame = frame
 
         containerView.addSubview(destinationVC.view)
         containerView.addSubview(sourceVC.view)
@@ -33,7 +37,8 @@ class EpilogueSegue: UIStoryboardSegue, EpilogueAnimation {
     override func perform() {
         performEpilogue() {
             self.destination.view.removeFromSuperview()
-            self.source.present(self.destination, animated: false) {}
+            let navController = self.source.navigationController
+            navController?.setViewControllers([self.destination], animated: false)
         }
     }
 }
