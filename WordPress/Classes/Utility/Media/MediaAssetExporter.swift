@@ -158,6 +158,7 @@ class MediaAssetExporter: MediaExporter {
             videoExporter.stripsGeoLocationIfNeeded = stripsGeoLocationIfNeeded
             videoExporter.mediaDirectoryType = mediaDirectoryType
             videoExporter.exportFilename = videoResource.originalFilename
+            videoExporter.preferredExportFileType = videoResource.uniformTypeIdentifier
 
             // Request an export session, which may take time to download the complete video data.
             let options = PHVideoRequestOptions()
