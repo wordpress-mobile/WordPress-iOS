@@ -7,12 +7,12 @@ NS_ASSUME_NONNULL_BEGIN
 @class Media;
 @class Comment;
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
     AbstractPostRemoteStatusPushing,    // Uploading post
     AbstractPostRemoteStatusFailed,      // Upload failed
     AbstractPostRemoteStatusLocal,       // Only local version
     AbstractPostRemoteStatusSync,       // Post uploaded
-} AbstractPostRemoteStatus;
+};
 
 extern NSString * const PostStatusDraft;
 extern NSString * const PostStatusPending;
