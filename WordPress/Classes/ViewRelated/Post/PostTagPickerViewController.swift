@@ -203,6 +203,7 @@ extension PostTagPickerViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let original = textView.text as NSString
         if range.length == 0,
+            range.location == original.length,
             text == ",",
             partialTag.isEmpty {
             // Don't allow a second comma if the last tag is blank
@@ -210,10 +211,12 @@ extension PostTagPickerViewController: UITextViewDelegate {
         } else if
             range.length == 1 && text == "", // Deleting last character
             range.location > 0, // Not at the beginning
+            range.location + range.length == original.length, // At the end
             original.substring(with: NSRange(location: range.location - 1, length: 1)) == "," // Previous is a comma
         {
             // Delete the comma as well
-            textView.text = original.substring(to: range.location - 1)
+            textView.text = original.substring(to: range.location - 1) + original.substring(from: range.location + range.length)
+            textView.selectedRange = NSRange(location: range.location - 1, length: 0)
             textViewDidChange(textView)
             return false
         } else if range.length == 0, // Inserting
