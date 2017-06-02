@@ -149,8 +149,6 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         }
         
     } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-        localProgress.totalUnitCount = 0;
-        localProgress.completedUnitCount = 0;
         DDLogDebug(@"Error uploading file: %@", [error localizedDescription]);
         if (failure) {
             failure(error);
