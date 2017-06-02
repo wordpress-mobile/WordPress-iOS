@@ -2338,7 +2338,7 @@ class MediaProgressCoordinator: NSObject {
         if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
             self.mediaUploadingProgress = nil
-            self.mediaUploading = [String: Progress]()
+            self.mediaUploading.removeAll()
         }
 
         if self.mediaUploadingProgress == nil {
