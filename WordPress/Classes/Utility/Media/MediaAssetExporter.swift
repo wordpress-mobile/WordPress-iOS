@@ -159,7 +159,7 @@ class MediaAssetExporter: MediaExporter {
             videoExporter.mediaDirectoryType = mediaDirectoryType
             videoExporter.exportFilename = videoResource.originalFilename
 
-            // Request an export session, which take time to download complete video data.
+            // Request an export session, which may take time to download the complete video data.
             let options = PHVideoRequestOptions()
             options.isNetworkAccessAllowed = true
             let manager = PHImageManager.default()

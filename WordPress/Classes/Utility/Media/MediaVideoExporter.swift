@@ -66,7 +66,7 @@ class MediaVideoExporter: MediaExporter {
             session.shouldOptimizeForNetworkUse = true
 
             // Configure metadata filter for sharing, if we need to remove location data.
-            if self.stripsGeoLocationIfNeeded {
+            if stripsGeoLocationIfNeeded {
                 session.metadataItemFilter = AVMetadataItemFilter.forSharing()
             }
             session.exportAsynchronously {
