@@ -852,18 +852,6 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
     [self setupNavbar];
 }
 
-- (void)removeAllFailedMedia
-{     
-//    NSMutableArray * keys = [NSMutableArray array];
-//    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
-//        if (progress.totalUnitCount == 0){
-//            [keys addObject:key];
-//        }
-//    }];
-//    [self.mediaInProgress removeObjectsForKeys:keys];
-    [self autosaveContent];
-}
-
 - (void)addMediaAssets:(NSArray *)assets
 {
     if (assets.count == 0) {
