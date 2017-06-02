@@ -1,0 +1,9 @@
+Gerencie seu blog ou website em WordPress de qualquer lugar, a partir do seu dispositivo iOS: veja suas estatísticas, modere os comentários, crie e edite posts e páginas, e faça upload de mídias. Tudo que você precisa é um blog no WordPress.com ou um website hospedado com WordPress.org na versão 4.0 ou superior.
+
+Com o WordPress para iOS, você tem o poder de publicar na palma da sua mão. Elabore um haiku espontâneo no trem. Tire uma foto num passeio vespertino para o desafio de fotografia semanal do The Daily Post. Responda aos seus comentários mais recentes, ou monitore suas estatísticas para ver de onde os leitores de hoje estão vindo.
+
+Não se esqueça de marcar seus posts publicados a partir do aplicativo com #wponthego (#wpnaestrada) para que a comunidade possa encontrar suas obras-primas feitas na estrada.
+
+O WordPress para iOS é um projeto Open Source, e isso significa que você também pode contribuir no seu desenvolvimento. Saiba mais em https://apps.wordpress.com/contribute/.
+
+Precisa de ajuda com o aplicativo? Visite os fóruns em https://ios.forums.wordpress.org ou pode tweetar em @WordPressiOS.
