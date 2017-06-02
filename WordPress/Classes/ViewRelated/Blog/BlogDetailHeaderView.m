@@ -10,7 +10,6 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 @interface BlogDetailHeaderView ()
 
 @property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) UIImageView *blavatarImageView;
 @property (nonatomic, strong) UIActivityIndicatorView *blavatarUpdateActivityIndicatorView;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *titleLabel;
