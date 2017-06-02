@@ -328,6 +328,9 @@ class AztecPostViewController: UIViewController {
         // TODO: Fix the warnings triggered by this one!
         WPFontManager.loadNotoFontFamily()
 
+        // Attachment Custom Image Providers
+        registerAttachmentImageProviders()
+        
         // New Post Revision!
         createRevisionOfPost()
 
@@ -335,9 +338,6 @@ class AztecPostViewController: UIViewController {
         configureNavigationBar()
         configureView()
         configureSubviews()
-
-        // Attachment Custom Image Providers
-        registerAttachmentImageProviders()
 
         // Register HTML Processors for WordPress shortcodes
         registerHTMLProcessors()
@@ -573,6 +573,7 @@ class AztecPostViewController: UIViewController {
             processedHTML = processor.process(text: processedHTML)
         }
         richTextView.setHTML(processedHTML)
+        self.processVideoPressAttachments()
     }
 
     func getHTML() -> String {
@@ -1792,6 +1793,29 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         }
     }
 
+    fileprivate func processVideoPressAttachments() {
+        richTextView.textStorage.enumerateAttachments { (attachment, range) in
+            guard let videoAttachment = attachment as? VideoAttachment,
+                let videoSrcURL = videoAttachment.srcURL,
+                videoSrcURL.scheme == VideoProcessor.videoPressScheme,
+                let videoPressID = videoSrcURL.host else
+            {
+                return
+            }
+
+            let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
+                videoAttachment.srcURL = URL(string:videoURLString)
+                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
+                    videoAttachment.posterURL = posterURL
+                }
+                self.richTextView.refreshLayout(for: videoAttachment)
+            }, failure: { (error) in
+
+            })
+        }
+    }
+
     // TODO: Extract these strings into structs like other items
     fileprivate func displayActions(forAttachment attachment: MediaAttachment, position: CGPoint) {
         let mediaID = attachment.identifier
@@ -1885,7 +1909,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
-        let imageSize = CGSize(width:32, height:32)
+        let imageSize = CGSize(width:128, height:128)
         let placeholderImage: UIImage
         switch attachment {
         case _ as ImageAttachment:
@@ -1985,25 +2009,6 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 
     func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) -> UIImage {
-        if let videoAttachment = attachment as? VideoAttachment,
-           url.scheme == "videopress",
-           let videoPressID = url.host
-        {
-
-            let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
-            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: post.blog, success: { (videoURLString, posterURLString) in
-                videoAttachment.srcURL = URL(string:videoURLString)
-                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
-                    videoAttachment.posterURL = posterURL
-                }
-                self.richTextView.refreshLayout(for: videoAttachment)
-            }, failure: { (error) in
-                failure()
-            })
-            failure()
-            return placeholderImage(for: attachment)
-        }
-
         var requestURL = url
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
         //use height zero to maintain the aspect ratio when fetching
