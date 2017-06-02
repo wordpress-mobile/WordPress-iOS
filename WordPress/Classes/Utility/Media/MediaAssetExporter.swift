@@ -163,24 +163,23 @@ class MediaAssetExporter: MediaExporter {
             // Request an export session, which may take time to download the complete video data.
             let options = PHVideoRequestOptions()
             options.isNetworkAccessAllowed = true
-            let manager = PHImageManager.default()
-            manager.requestExportSession(forVideo: asset,
-                                         options: options,
-                                         exportPreset: videoExporter.exportPreset,
-                                         resultHandler: { (session, info) -> Void in
-                                            guard let session = session else {
-                                                if let error = info?[PHImageErrorKey] as? Error {
-                                                    onError(self.exporterErrorWith(error: error))
-                                                } else {
-                                                    onError(AssetExportError.failedRequestingVideoExportSession)
+            imageManager.requestExportSession(forVideo: asset,
+                                              options: options,
+                                              exportPreset: videoExporter.exportPreset,
+                                              resultHandler: { (session, info) -> Void in
+                                                guard let session = session else {
+                                                    if let error = info?[PHImageErrorKey] as? Error {
+                                                        onError(self.exporterErrorWith(error: error))
+                                                    } else {
+                                                        onError(AssetExportError.failedRequestingVideoExportSession)
+                                                    }
+                                                    return
                                                 }
-                                                return
-                                            }
-                                            videoExporter.exportVideo(with: session,
-                                                                      onCompletion: { (videoExport) in
-                                                                        onCompletion(AssetExport.exportedVideo(videoExport))
-                                            },
-                                                                      onError: onError)
+                                                videoExporter.exportVideo(with: session,
+                                                                          onCompletion: { (videoExport) in
+                                                                            onCompletion(AssetExport.exportedVideo(videoExport))
+                                                },
+                                                                          onError: onError)
             })
         } catch {
             onError(exporterErrorWith(error: error))
