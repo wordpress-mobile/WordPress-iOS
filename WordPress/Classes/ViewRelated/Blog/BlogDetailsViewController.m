@@ -621,6 +621,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                                                        message:nil
                                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
 
+    updateIconAlertController.popoverPresentationController.sourceView = self.headerView.blavatarImageView.superview;
+    updateIconAlertController.popoverPresentationController.sourceRect = self.headerView.blavatarImageView.frame;
+    updateIconAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    
     [updateIconAlertController addDefaultActionWithTitle:NSLocalizedString(@"Change Site Icon", @"Change site icon button")
                                                  handler:^(UIAlertAction *action) {
                                                      [self updateSiteIcon];
