@@ -12,6 +12,7 @@ public struct VideoProcessor {
         if let src = shortcode.attributes.unamed.first {
             html += "src=\"videopress://\(src)\" "
             html += "data-wpvideopress=\"\(src)\" "
+            html += "poster=\"videopress://\(src)\" "
         }
         if let width = shortcode.attributes.named["w"] {
             html += "width=\(width) "
