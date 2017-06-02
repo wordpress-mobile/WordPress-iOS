@@ -3,6 +3,9 @@ import Aztec
 
 public struct VideoProcessor {
 
+    /// Shortcode processor to process videopress shortcodes to html video element
+    /// More info here: https://en.support.wordpress.com/videopress/
+    ///
     static public var videoPressPreProcessor: Processor {
         let videoPressProcessor = ShortcodeProcessor(tag:"wpvideo", replacer: { (shortcode) in
         var html = "<video "
@@ -23,6 +26,9 @@ public struct VideoProcessor {
         return videoPressProcessor
     }
 
+    /// Shortcode processor to process html video elements to videopress shortcodes
+    /// More info here: https://en.support.wordpress.com/videopress/
+    ///
     static public var videoPressPostProcessor: Processor {
         let postWordPressVideoProcessor = HTMLProcessor(tag:"video", replacer: { (shortcode) in
             guard let videoPressID = shortcode.attributes.named["data-wpvideopress"] else {
@@ -41,6 +47,9 @@ public struct VideoProcessor {
         return postWordPressVideoProcessor
     }
 
+    /// Shortcode processor to process wordpress videos shortcodes to html video element
+    /// More info here: https://codex.wordpress.org/Video_Shortcode
+    ///
     static public var wordPressVideoPreProcessor: Processor {
         let wordPressVideoProcessor = ShortcodeProcessor(tag:"video", replacer: { (shortcode) in
             var html = "<video "
@@ -56,6 +65,9 @@ public struct VideoProcessor {
         return wordPressVideoProcessor
     }
 
+    /// Shortcode processor to process html video elements to wordpress videos shortcodes
+    /// More info here: https://codex.wordpress.org/Video_Shortcode
+    ///
     static public var wordPressVideoPostProcessor: Processor {
         let postWordPressVideoProcessor = HTMLProcessor(tag:"video", replacer: { (shortcode) in
             var html = "[video "
