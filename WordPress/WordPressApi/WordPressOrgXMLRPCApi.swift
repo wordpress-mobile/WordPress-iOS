@@ -138,9 +138,6 @@ open class WordPressOrgXMLRPCApi: NSObject {
         let session = uploadSession
         var progress: Progress?
         let task = session.uploadTask(with: request, fromFile: fileURL, completionHandler: { (data, urlResponse, error) in
-            if let uploadProgress = progress {
-                uploadProgress.completedUnitCount = uploadProgress.totalUnitCount
-            }
             if session != self.session {
                 session.finishTasksAndInvalidate()
             }
@@ -150,6 +147,9 @@ open class WordPressOrgXMLRPCApi: NSObject {
                 success(responseObject, urlResponse as? HTTPURLResponse)
             } catch let error as NSError {
                 failure(error, urlResponse as? HTTPURLResponse)
+            }
+            if let uploadProgress = progress {
+                uploadProgress.completedUnitCount = uploadProgress.totalUnitCount
             }
         })
         task.resume()
