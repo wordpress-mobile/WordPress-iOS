@@ -9,7 +9,7 @@ class MediaVideoExporter: MediaExporter {
     var stripsGeoLocationIfNeeded = false
     var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
     var exportPreset = AVAssetExportPresetHighestQuality
-    var exportFileType = kUTTypeMPEG4 as String
+    var preferredExportFileType = kUTTypeMPEG4 as String
     var exportFilename: String?
 
     public enum VideoExportError: MediaExportError {
@@ -52,17 +52,26 @@ class MediaVideoExporter: MediaExporter {
     ///
     func exportVideo(with session: AVAssetExportSession, onCompletion: @escaping (MediaVideoExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
         do {
-            let supportedTypes = session.supportedFileTypes
-            // Check that the exportFileType is supported.
-            // Otherwise the session will raise an exception when setting outputFileType.
-            guard supportedTypes.contains(exportFileType) else {
-                throw VideoExportError.videoExportSessionDoesNotSupportVideoOutputType
+            var outputType = preferredExportFileType
+            // Check if the exportFileType is one of the supported types for the exportSession.
+            if session.supportedFileTypes.contains(outputType) == false {
+                /* 
+                 If it is not supported by the session, try and find one
+                 of the exporter's own supported types within the session's.
+                */
+                let availableTypes = session.supportedFileTypes.filter { supportedExportFileTypes.contains($0) }
+                guard let supportedType = availableTypes.first else {
+                    throw VideoExportError.videoExportSessionDoesNotSupportVideoOutputType
+                }
+                outputType = supportedType
             }
+
+            // Generate a URL for exported video.
             let mediaURL = try MediaLibrary.makeLocalMediaURL(withFilename: exportFilename ?? "video",
-                                                              fileExtension: URL.fileExtensionForUTType(exportFileType),
+                                                              fileExtension: URL.fileExtensionForUTType(outputType),
                                                               type: mediaDirectoryType)
             session.outputURL = mediaURL
-            session.outputFileType = exportFileType
+            session.outputFileType = outputType
             session.shouldOptimizeForNetworkUse = true
 
             // Configure metadata filter for sharing, if we need to remove location data.
@@ -85,5 +94,20 @@ class MediaVideoExporter: MediaExporter {
         } catch {
             onError(exporterErrorWith(error: error))
         }
+    }
+
+    /// Returns the supported UTType identifiers for the video exporter.
+    ///
+    /// - Note: This particular list is for the intention of uploading
+    ///   exported videos to WordPress, and what WordPress itself supports.
+    ///
+    fileprivate var supportedExportFileTypes: [String] {
+        let types = [
+            kUTTypeMPEG4,
+            kUTTypeQuickTimeMovie,
+            kUTTypeMPEG,
+            kUTTypeAVIMovie
+        ]
+        return types as [String]
     }
 }
