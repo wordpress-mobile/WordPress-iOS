@@ -102,7 +102,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
                 return
             }
         })
-        progress = createProgresForTask(task)
+        progress = createProgressForTask(task)
         task.resume()
         return progress
     }
@@ -154,7 +154,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
         })
         task.resume()
 
-        progress = createProgresForTask(task)
+        progress = createProgressForTask(task)
         return progress
     }
 
@@ -193,7 +193,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
 
     // MARK: - Progress reporting
 
-    fileprivate func createProgresForTask(_ task: URLSessionTask) -> Progress {
+    fileprivate func createProgressForTask(_ task: URLSessionTask) -> Progress {
         // Progress report
         let progress = Progress(parent: Progress.current(), userInfo: nil)
         progress.totalUnitCount = 1
