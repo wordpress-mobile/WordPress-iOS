@@ -790,6 +790,9 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
 
 - (void)itemViewSelected:(MenuItemView *)itemView
 {
+    if (self.isEditingForItemViewInsertion) {
+        [self removeItemInsertionViews:YES];
+    }
     [self.delegate itemsViewController:self selectedItemForEditing:itemView.item];
 }
 
