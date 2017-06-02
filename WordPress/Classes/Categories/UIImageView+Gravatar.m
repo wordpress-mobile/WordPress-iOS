@@ -2,6 +2,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "NSString+Helpers.h"
 #import "Constants.h"
+#import "PhotonImageURLHelper.h"
 
 
 #pragma mark - Constants
@@ -26,15 +27,18 @@ NSString *const BlavatarDefault = @"blavatar-default";
 
 - (void)setImageWithSiteIcon:(NSString *)siteIcon placeholderImage:(UIImage *)placeholderImage
 {
-    if ([self isPhotonURL:siteIcon] || [self isWordPressComFilesURL:siteIcon]) {
-        [self setImageWithURL:[self siteIconURLForSiteIconUrl:siteIcon] placeholderImage:placeholderImage];
-    } else if ([self isBlavatarURL:siteIcon]) {
-        [self setImageWithURL:[self blavatarURLForBlavatarURL:siteIcon] placeholderImage:placeholderImage];
-    } else {
-        [self setImageWithURL:[self blavatarURLForHost:siteIcon] placeholderImage:placeholderImage];
-    }
+    [self setImageWithURL:[self URLWithSiteIcon:siteIcon] placeholderImage:placeholderImage];
 }
 
+- (NSURL *)URLWithSiteIcon:(NSString *)siteIcon {
+    if ([self isPhotonURL:siteIcon] || [self isWordPressComFilesURL:siteIcon]) {
+        return [self siteIconURLForSiteIconUrl:siteIcon];
+    } else if ([self isBlavatarURL:siteIcon]) {
+        return [self blavatarURLForBlavatarURL:siteIcon];
+    } else {
+        return [self resizedURLForUrl:siteIcon];
+    }
+}
 
 #pragma mark - Site Icon Private Methods
 
@@ -46,20 +50,17 @@ NSString *const BlavatarDefault = @"blavatar-default";
     return urlComponents.URL;
 }
 
+#pragma mark - Photon Helpers
 
-#pragma mark - Blavatar Helpers
-
-- (NSURL *)blavatarURLForHost:(NSString *)host
+- (nullable NSURL *)resizedURLForUrl:(NSString *)urlString
 {
-    return [self blavatarURLForHost:host withSize:[self sizeForBlavatarDownload]];
+    CGSize size = CGSizeMake(BlavatarDefaultSize, BlavatarDefaultSize);
+    NSURL *url = [NSURL URLWithString:urlString];
+    if (!url) {
+        return nil;
+    }
+    return [PhotonImageURLHelper photonURLWithSize:size forImageURL:url];
 }
-
-- (NSURL *)blavatarURLForHost:(NSString *)host withSize:(NSInteger)size
-{
-    NSString *blavatarUrl = [NSString stringWithFormat:@"%@/%@?d=404&s=%d", WPBlavatarBaseURL, [host md5], size];
-    return [NSURL URLWithString:blavatarUrl];
-}
-
 
 #pragma mark - Blavatar Private Methods
 
@@ -74,9 +75,6 @@ NSString *const BlavatarDefault = @"blavatar-default";
 - (NSInteger)sizeForBlavatarDownload
 {
     NSInteger size = BlavatarDefaultSize;
-    if (!CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
-        size = MAX(self.bounds.size.width, self.bounds.size.height);
-    }
 
     size *= [[UIScreen mainScreen] scale];
 
