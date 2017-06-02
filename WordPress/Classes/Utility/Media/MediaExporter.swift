@@ -59,6 +59,10 @@ enum MediaExportSystemError: MediaExportError {
     }
 }
 
+/// Failure block with an ExportError.
+///
+typealias OnExportError = (MediaExportError) -> Void
+
 /// Protocol of required default variables or values for a MediaExporter and passing those values between them.
 ///
 protocol MediaExporter {
