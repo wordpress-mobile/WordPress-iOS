@@ -10,7 +10,6 @@ class SiteIconPickerPresenter: NSObject {
 
     /// MARK: - Public Properties
 
-    var presentingViewController: UIViewController
     var blog: Blog
     var onCompletion: ((UIImage?) -> Void)?
 
@@ -42,19 +41,17 @@ class SiteIconPickerPresenter: NSObject {
     /// Designated Initializer
     ///
     /// - Parameters:
-    ///     - presentingViewController: The UIViewController that will present the picker.
     ///     - blog: The current blog.
     ///
-    init(presentingViewController: UIViewController, blog: Blog) {
-        self.presentingViewController = presentingViewController
+    init(blog: Blog) {
         self.blog = blog
         super.init()
     }
 
     /// Presents a new WPMediaPickerViewController instance.
     ///
-    func presentPicker() {
-        presentingViewController.present(mediaPickerViewController, animated: true)
+    func presentPickerFrom(_ viewController: UIViewController) {
+        viewController.present(mediaPickerViewController, animated: true)
     }
 
     /// MARK: - Private Methods
@@ -79,7 +76,6 @@ class SiteIconPickerPresenter: NSObject {
             imageCropViewController.maskShape = .square
             imageCropViewController.onCompletion = { [weak self] image in
                 self?.onCompletion?(image)
-                self?.presentingViewController.dismiss(animated: true, completion: nil)
             }
             self.mediaPickerViewController.show(after: imageCropViewController)
         }
@@ -93,7 +89,6 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         onCompletion?(nil)
-        self.presentingViewController.dismiss(animated: true, completion: nil)
     }
 
     /// Retrieves the chosen image and triggers the ImageCropViewController display.
