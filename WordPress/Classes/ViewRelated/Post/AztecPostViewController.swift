@@ -330,6 +330,8 @@ class AztecPostViewController: UIViewController {
 
         // Attachment Custom Image Providers
         registerAttachmentImageProviders()
+        // Register shortcode processor for WordPress
+        registerHTMLProcessors()
         
         // New Post Revision!
         createRevisionOfPost()
@@ -340,7 +342,6 @@ class AztecPostViewController: UIViewController {
         configureSubviews()
 
         // Register HTML Processors for WordPress shortcodes
-        registerHTMLProcessors()
 
         // UI elements might get their properties reset when the view is effectively loaded. Refresh it all!
         refreshInterface()
