@@ -22,7 +22,12 @@ extension EpilogueAnimation where Self: UIStoryboardSegue {
         containerView.addSubview(destinationVC.view)
         containerView.addSubview(sourceVC.view)
 
-        UIView.animate(withDuration: duration, delay: 0, options:UIViewAnimationOptions.curveEaseInOut, animations: {
+        // Force hide the navigation bar and perform a layout pass so frames
+        // are correct before starting the animation.
+        sourceVC.navigationController?.setNavigationBarHidden(true, animated: false)
+        sourceVC.navigationController?.view.layoutIfNeeded()
+
+        UIView.animate(withDuration: duration, delay: 0, options:.curveEaseInOut, animations: {
             sourceVC.view.center.y += sourceVC.view.frame.size.height
         }) { (finished) in
             completion()
