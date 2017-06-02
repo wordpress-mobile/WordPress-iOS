@@ -84,20 +84,27 @@ open class WordPressOrgXMLRPCApi: NSObject {
             return nil
         }
 
+        var progress: Progress?
         // Create task
         let task = session.dataTask(with: request, completionHandler: { (data, urlResponse, error) in
-            DispatchQueue.main.async {
-                do {
-                    let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error as NSError?)
+            if let uploadProgress = progress {
+                uploadProgress.completedUnitCount = uploadProgress.totalUnitCount
+            }
+            do {
+                let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error as NSError?)
+                DispatchQueue.main.async {
                     success(responseObject, urlResponse as? HTTPURLResponse)
-                } catch let error as NSError {
-                    failure(error, urlResponse as? HTTPURLResponse)
-                    return
                 }
+            } catch let error as NSError {
+                DispatchQueue.main.async {
+                    failure(error, urlResponse as? HTTPURLResponse)
+                }
+                return
             }
         })
+        progress = createProgresForTask(task)
         task.resume()
-        return createProgresForTask(task)
+        return progress
     }
 
     /**
@@ -129,7 +136,11 @@ open class WordPressOrgXMLRPCApi: NSObject {
 
         // Create task
         let session = uploadSession
+        var progress: Progress?
         let task = session.uploadTask(with: request, fromFile: fileURL, completionHandler: { (data, urlResponse, error) in
+            if let uploadProgress = progress {
+                uploadProgress.completedUnitCount = uploadProgress.totalUnitCount
+            }
             if session != self.session {
                 session.finishTasksAndInvalidate()
             }
@@ -143,7 +154,8 @@ open class WordPressOrgXMLRPCApi: NSObject {
         })
         task.resume()
 
-        return createProgresForTask(task)
+        progress = createProgresForTask(task)
+        return progress
     }
 
     // MARK: - Request Building
@@ -187,7 +199,8 @@ open class WordPressOrgXMLRPCApi: NSObject {
         progress.totalUnitCount = 1
         if let contentLengthString = task.originalRequest?.allHTTPHeaderFields?["Content-Length"],
             let contentLength = Int64(contentLengthString) {
-            progress.totalUnitCount = contentLength
+            // Sergio Estevao: Add an extra 1 unit to the progress to take in account the upload response and not only the uploading of data
+            progress.totalUnitCount = contentLength + 1
         }
         progress.cancellationHandler = {
             task.cancel()
