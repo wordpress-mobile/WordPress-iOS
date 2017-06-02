@@ -682,6 +682,7 @@ extension AztecPostViewController {
             if self.postEditorStateContext.secondaryPublishButtonAction == .save {
                 self.post.status = .draft
             } else if self.postEditorStateContext.secondaryPublishButtonAction == .publish {
+                self.post.date_created_gmt = Date()
                 self.post.status = .publish
             }
 
@@ -2404,7 +2405,7 @@ public class MediaProgressCoordinator: NSObject {
     var totalProgress: Float {
         var value = Float(0)
         if let progress = mediaUploadingProgress {
-            // make sure the progress value reflects the number of upload finished 100%
+            // Sergio Estevao: make sure the progress value reflects the number of upload that actually finished 100%
             let fractionOfUploadsCompleted = Float(Float((progress.completedUnitCount + 1))/Float(progress.totalUnitCount))
             value = min(fractionOfUploadsCompleted, Float(progress.fractionCompleted))
         }

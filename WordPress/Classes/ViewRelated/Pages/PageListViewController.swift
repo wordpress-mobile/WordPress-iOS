@@ -190,7 +190,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         var predicates = [NSPredicate]()
 
         if let blog = blog {
-            let basePredicate = NSPredicate(format: "blog = %@ && original = nil", blog)
+            let basePredicate = NSPredicate(format: "blog = %@ && revision = nil", blog)
             predicates.append(basePredicate)
         }
 
@@ -322,31 +322,53 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let editorSettings = EditorSettings()
         if editorSettings.visualEditorEnabled {
-            let postViewController: UIViewController
 
             if editorSettings.nativeEditorEnabled {
                 let context = ContextManager.sharedInstance().mainContext
                 let postService = PostService(managedObjectContext: context)
                 let page = postService.createDraftPage(for: blog)
-                postViewController = AztecPostViewController(post: page)
+                let postViewController = AztecPostViewController(post: page)
 
                 navController = UINavigationController(rootViewController: postViewController)
                 navController.restorationIdentifier = AztecPostViewController.Restoration.navigationIdentifier
                 navController.restorationClass = AztecPostViewController.self
+                postViewController.onClose = { [weak self] changesSaved in
+                    if changesSaved {
+                        if let postStatus = postViewController.post.status {
+                            self?.updateFilterWithPostStatus(postStatus)
+                        }
+                    }
+                    navController.dismiss(animated: true, completion: nil)
+                }
             } else {
-                postViewController = EditPageViewController(draftFor: blog)
+                let postViewController: EditPageViewController = EditPageViewController(draftFor: blog)
 
                 navController = UINavigationController(rootViewController: postViewController)
                 navController.restorationIdentifier = WPEditorNavigationRestorationID
                 navController.restorationClass = EditPageViewController.self
+                postViewController.onClose = { [weak self] (postViewController, changesSaved) in
+                    if changesSaved {
+                        if let postStatus = postViewController?.post.status {
+                            self?.updateFilterWithPostStatus(postStatus)
+                        }
+                    }
+                    navController.dismiss(animated: true, completion: nil)
+                }
             }
-
         } else {
-            let editPostViewController = WPLegacyEditPageViewController(draftForLastUsedBlog: ())
+            let editPostViewController: WPLegacyEditPageViewController = WPLegacyEditPageViewController(draftForLastUsedBlog: ())
 
-            navController = UINavigationController(rootViewController: editPostViewController!)
+            navController = UINavigationController(rootViewController: editPostViewController)
             navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
             navController.restorationClass = WPLegacyEditPageViewController.self
+            editPostViewController.onClose = { [weak self] (editPostViewController, changesSaved) in
+                if changesSaved {
+                    if let postStatus = editPostViewController?.post.status {
+                        self?.updateFilterWithPostStatus(postStatus)
+                    }
+                }
+                navController.dismiss(animated: true, completion: nil)
+            }
         }
 
         navController.modalPresentationStyle = .fullScreen

@@ -14,6 +14,7 @@ class MediaLibraryViewController: UIViewController {
     fileprivate let pickerViewController: WPMediaPickerViewController
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
+    fileprivate var isLoading: Bool = false
     fileprivate var noResultsView: WPNoResultsView? = nil
 
     fileprivate var selectedAsset: Media? = nil
@@ -238,7 +239,7 @@ class MediaLibraryViewController: UIViewController {
 
     // MARK: - Update view state
 
-    private func updateViewState(for assetCount: Int) {
+    fileprivate func updateViewState(for assetCount: Int) {
         updateNavigationItemButtons(for: assetCount)
         updateNoResultsView(for: assetCount)
         updateSearchBar(for: assetCount)
@@ -246,21 +247,28 @@ class MediaLibraryViewController: UIViewController {
 
     private func updateNavigationItemButtons(for assetCount: Int) {
         if isEditing {
-            navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: true)
+            navigationItem.setLeftBarButton(UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(editTapped)), animated: false)
 
             let trashButton = UIBarButtonItem(image: Gridicon.iconOfType(.trash), style: .plain, target: self, action: #selector(trashTapped))
             navigationItem.setRightBarButtonItems([trashButton], animated: true)
             navigationItem.rightBarButtonItem?.isEnabled = false
         } else {
-            navigationItem.setLeftBarButton(nil, animated: true)
+            navigationItem.setLeftBarButton(nil, animated: false)
 
-            let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+            var barButtonItems = [UIBarButtonItem]()
+
+            if blog.userCanUploadMedia {
+                let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+                barButtonItems.append(addButton)
+            }
 
             if blog.supports(.mediaDeletion) && assetCount > 0 {
                 let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped))
-                navigationItem.setRightBarButtonItems([addButton, editButton], animated: true)
+                barButtonItems.append(editButton)
+
+                navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
             } else {
-                navigationItem.setRightBarButtonItems([addButton], animated: true)
+                navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
             }
         }
     }
@@ -272,18 +280,36 @@ class MediaLibraryViewController: UIViewController {
 
         guard shouldShowNoResults else { return }
 
-        if hasSearchQuery {
+        if isLoading {
+            updateNoResultsForFetching()
+        } else if hasSearchQuery {
+            noResultsView?.accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
             let text = NSLocalizedString("No media files match your search for %@", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
             noResultsView?.titleText = String.localizedStringWithFormat(text, pickerDataSource.searchQuery)
             noResultsView?.messageText = nil
             noResultsView?.buttonTitle = nil
         } else {
+            noResultsView?.accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
             noResultsView?.titleText = NSLocalizedString("You don't have any media.", comment: "Title displayed when the user doesn't have any media in their media library. Should match Calypso.")
-            noResultsView?.messageText = NSLocalizedString("Would you like to upload something?", comment: "Prompt displayed when the user has an empty media library. Should match Calypso.")
-            noResultsView?.buttonTitle = NSLocalizedString("Upload Media", comment: "Title for button displayed when the user has an empty media library")
+
+            if blog.userCanUploadMedia {
+                noResultsView?.messageText = NSLocalizedString("Would you like to upload something?", comment: "Prompt displayed when the user has an empty media library. Should match Calypso.")
+                noResultsView?.buttonTitle = NSLocalizedString("Upload Media", comment: "Title for button displayed when the user has an empty media library")
+            }
         }
 
         noResultsView?.sizeToFit()
+    }
+
+    func updateNoResultsForFetching() {
+        noResultsView?.titleText = NSLocalizedString("Fetching media...", comment: "Title displayed whilst fetching media from the user's media library")
+        noResultsView?.messageText = nil
+        noResultsView?.buttonTitle = nil
+
+        let animatedBox = WPAnimatedBox()
+        noResultsView?.accessoryView = animatedBox
+
+        animatedBox.animate(afterDelay: 0.1)
     }
 
     private func updateSearchBar(for assetCount: Int) {
@@ -561,6 +587,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
                                 var uploadProgress: Progress? = nil
                                 service.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
                                     self?.unpauseDataSource()
+                                    self?.trackUploadFor(media)
                                 }, failure: { error in
                                     if let mediaID = media.mediaID?.stringValue {
                                         self?.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
@@ -577,12 +604,46 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         })
     }
 
+    fileprivate func trackUploadFor(_ media: Media) {
+        let properties = WPAppAnalytics.properties(for: media)
+
+        switch media.mediaType {
+        case .image:
+            WPAppAnalytics.track(.mediaLibraryAddedPhoto,
+                                 withProperties: properties,
+                                 with: blog)
+        case .video:
+            WPAppAnalytics.track(.mediaLibraryAddedVideo,
+                                 withProperties: properties,
+                                 with: blog)
+        default: break
+        }
+    }
+
     fileprivate func unpauseDataSource() {
         // If we've finished all uploads, restart the data source
-        if !mediaProgressCoordinator.isRunning && self.pickerDataSource.isPaused {
-            self.pickerDataSource.isPaused = false
-            self.pickerViewController.collectionView?.reloadData()
+        if !mediaProgressCoordinator.isRunning && pickerDataSource.isPaused {
+            pickerDataSource.isPaused = false
+            pickerViewController.collectionView?.reloadData()
+
+            updateViewState(for: pickerDataSource.numberOfAssets())
         }
+    }
+
+    func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
+        guard picker == pickerViewController else { return }
+
+        isLoading = true
+
+        updateNoResultsView(for: pickerDataSource.numberOfAssets())
+    }
+
+    func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
+        guard picker == pickerViewController else { return }
+
+        isLoading = false
+
+        updateViewState(for: pickerDataSource.numberOfAssets())
     }
 }
 
@@ -645,5 +706,12 @@ extension MediaLibraryViewController: MediaProgressCoordinatorDelegate {
         }
 
         SVProgressHUD.showProgress(progress, status: NSLocalizedString("Uploading...\nTap to cancel", comment: "Text displayed in HUD while media items are being uploaded."))
+    }
+}
+
+fileprivate extension Blog {
+    var userCanUploadMedia: Bool {
+        // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
+        return capabilities != nil ? isUploadingFilesAllowed() : true
     }
 }

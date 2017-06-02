@@ -1,13 +1,10 @@
 #import <Foundation/Foundation.h>
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "Media.h"
+#import "Media+WPMediaAsset.h"
 
 @class Blog;
 @class AbstractPost;
-
-@interface Media(WPMediaAsset)<WPMediaAsset>
-
-@end
 
 @interface MediaLibraryGroup: NSObject <WPMediaGroup>
 
