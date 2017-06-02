@@ -3,6 +3,7 @@ import Aztec
 
 public struct VideoProcessor {
 
+    static public var videoPressScheme = "videopress"
     /// Shortcode processor to process videopress shortcodes to html video element
     /// More info here: https://en.support.wordpress.com/videopress/
     ///
@@ -10,9 +11,9 @@ public struct VideoProcessor {
         let videoPressProcessor = ShortcodeProcessor(tag:"wpvideo", replacer: { (shortcode) in
         var html = "<video "
         if let src = shortcode.attributes.unamed.first {
-            html += "src=\"videopress://\(src)\" "
+            html += "src=\"\(videoPressScheme)://\(src)\" "
             html += "data-wpvideopress=\"\(src)\" "
-            html += "poster=\"videopress://\(src)\" "
+            html += "poster=\"\(videoPressScheme)://\(src)\" "
         }
         if let width = shortcode.attributes.named["w"] {
             html += "width=\(width) "
