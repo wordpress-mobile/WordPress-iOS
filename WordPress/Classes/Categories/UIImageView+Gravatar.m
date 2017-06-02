@@ -35,7 +35,7 @@ NSString *const BlavatarDefault = @"blavatar-default";
     }
 }
 
-- (void)setDeafultSiteIconImage
+- (void)setDefaultSiteIconImage
 {
     self.image = [UIImage imageNamed:BlavatarDefault];
 }

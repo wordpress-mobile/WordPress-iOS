@@ -55,7 +55,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     if (self.blog.hasIcon) {
         [self.blavatarImageView setImageWithSiteIcon:self.blog.icon placeholderImage:nil];
     } else {
-        [self.blavatarImageView setDeafultSiteIconImage];
+        [self.blavatarImageView setDefaultSiteIconImage];
     }
 }
 

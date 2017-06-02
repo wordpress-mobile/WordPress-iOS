@@ -62,7 +62,7 @@ class SiteIconPickerPresenter: NSObject {
     fileprivate func showLoadingMessage() {
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading...",
-                                                         comment: "Text displayed in HUD while a media item's is being loaded."))
+                                                         comment: "Text displayed in HUD while a media item is being loaded."))
     }
 
     fileprivate func showErrorLoadingImageMessage() {
