@@ -234,11 +234,13 @@ open class WordPressComRestApi: NSObject {
         }
         let progress = Progress(totalUnitCount: 1)
         let progressUpdater = {(taskProgress: Progress) in
-            progress.totalUnitCount = taskProgress.totalUnitCount+1
+            // Sergio Estevao: Add an extra 1 unit to the progress to take in account the upload response and not only the uploading of data
+            progress.totalUnitCount = taskProgress.totalUnitCount + 1
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
         let uploadSessionManager = self.uploadSessionManager
         let task = uploadSessionManager.uploadTask(withStreamedRequest: request as URLRequest, progress: progressUpdater) { (response, result, error) in
+            progress.completedUnitCount = progress.totalUnitCount
             // if this manager was created just for uploading let's invalidated it after.
             if uploadSessionManager != self.sessionManager {
                 uploadSessionManager.invalidateSessionCancelingTasks(false)
@@ -246,7 +248,6 @@ open class WordPressComRestApi: NSObject {
             if let error = error {
                 failure(error as NSError, response as? HTTPURLResponse)
             } else {
-                progress.completedUnitCount = progress.totalUnitCount
                 guard let responseObject = result else {
                     failure(WordPressComRestApiError.unknown as NSError , response as? HTTPURLResponse)
                     return
