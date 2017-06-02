@@ -331,8 +331,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (SiteIconPickerPresenter *)siteIconPickerPresenter
 {
     if (!_siteIconPickerPresenter) {
-        _siteIconPickerPresenter = [[SiteIconPickerPresenter alloc]initWithPresentingViewController:self
-                                                                                               blog:self.blog];
+        _siteIconPickerPresenter = [[SiteIconPickerPresenter alloc]initWithBlog:self.blog];
     }
     return _siteIconPickerPresenter;
 }
@@ -622,44 +621,40 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                                                        message:nil
                                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
 
-    UIAlertAction *changeSiteIcon = [UIAlertAction actionWithTitle:NSLocalizedString(@"Change Site Icon", @"Change site icon button")
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction *action) {
-                                                               [self updateSiteIcon];
-                                                            }];
-    [updateIconAlertController addAction:changeSiteIcon];
-
+    [updateIconAlertController addDefaultActionWithTitle:NSLocalizedString(@"Change Site Icon", @"Change site icon button")
+                                                 handler:^(UIAlertAction *action) {
+                                                     [self updateSiteIcon];
+                                                 }];
     if (self.blog.hasIcon) {
-        UIAlertAction *removeSiteIcon = [UIAlertAction actionWithTitle:NSLocalizedString(@"Remove Site Icon", @"Remove site icon button")
-                                                                 style:UIAlertActionStyleDestructive
-                                                               handler:^(UIAlertAction *action) {
-                                                                   [self removeSiteIcon];
-                                                               }];
-        [updateIconAlertController addAction:removeSiteIcon];
+        [updateIconAlertController addDestructiveActionWithTitle:NSLocalizedString(@"Remove Site Icon", @"Remove site icon button")
+                                                         handler:^(UIAlertAction *action) {
+                                                             [self removeSiteIcon];
+                                                         }];
     }
+    [updateIconAlertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                handler:nil];
 
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:nil];
-    [updateIconAlertController addAction:cancel];
     [self presentViewController:updateIconAlertController animated:YES completion:nil];
 }
 
 - (void)updateSiteIcon
 {
+    self.siteIconPickerPresenter = [[SiteIconPickerPresenter alloc]initWithBlog:self.blog];
     __weak __typeof(self) weakSelf = self;
     self.siteIconPickerPresenter.onCompletion = ^(UIImage * image) {
         if (image) {
             [weakSelf siteIconImageSelected:image];
         }
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
+        weakSelf.siteIconPickerPresenter = nil;
     };
-    [self.siteIconPickerPresenter presentPicker];
+    [self.siteIconPickerPresenter presentPickerFrom:self];
 }
 
 - (void)removeSiteIcon
 {
     self.headerView.updatingIcon = YES;
-    self.blog.settings.iconMediaID = [NSNumber numberWithInt:0];
+    self.blog.settings.iconMediaID = @0;
     [self updateBlogSettingsAndRefreshIcon];
 }
 

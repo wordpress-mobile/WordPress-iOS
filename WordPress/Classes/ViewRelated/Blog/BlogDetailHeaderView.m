@@ -106,7 +106,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
 - (UIActivityIndicatorView *)blavatarUpdateActivityIndicatorView {
     if (!_blavatarUpdateActivityIndicatorView) {
-        _blavatarUpdateActivityIndicatorView = [[UIActivityIndicatorView alloc]init];
+        _blavatarUpdateActivityIndicatorView = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         _blavatarUpdateActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.blavatarImageView addSubview:_blavatarUpdateActivityIndicatorView];
         [self.blavatarImageView pinSubviewAtCenter:_blavatarUpdateActivityIndicatorView];
