@@ -288,7 +288,13 @@ class AztecPostViewController: UIViewController {
     ///
     fileprivate let headers: [HeaderFormatter.HeaderType] = [.none, .h1, .h2, .h3, .h4, .h5, .h6]
 
+    /// HTML Pre Processors
+    ///
+    fileprivate var htmlPreProcessors = [Processor]()
 
+    /// HTML Post Processors
+    ///
+    fileprivate var htmlPostProcessors = [Processor]()
 
     // MARK: - Lifecycle Methods
 
@@ -332,6 +338,9 @@ class AztecPostViewController: UIViewController {
 
         // Attachment Custom Image Providers
         registerAttachmentImageProviders()
+
+        // Register HTML Processors for WordPress shortcodes
+        registerHTMLProcessors()
 
         // UI elements might get their properties reset when the view is effectively loaded. Refresh it all!
         refreshInterface()
@@ -520,6 +529,14 @@ class AztecPostViewController: UIViewController {
         }
     }
 
+    func registerHTMLProcessors() {
+        htmlPreProcessors.append(VideoProcessor.videoPressPreProcessor)
+        htmlPreProcessors.append(VideoProcessor.wordPressVideoPreProcessor)
+
+        htmlPostProcessors.append(VideoProcessor.videoPressPostProcessor)
+        htmlPostProcessors.append(VideoProcessor.wordPressVideoPostProcessor)
+    }
+
     func startListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
@@ -550,11 +567,27 @@ class AztecPostViewController: UIViewController {
         reloadPublishButton()
     }
 
+    func setHTML(_ html: String) {
+        var processedHTML = html
+        for processor in htmlPreProcessors {
+            processedHTML = processor.process(text: processedHTML)
+        }
+        richTextView.setHTML(processedHTML)
+    }
+
+    func getHTML() -> String {
+        var processedHTML = richTextView.getHTML()
+        for processor in htmlPostProcessors {
+            processedHTML = processor.process(text: processedHTML)
+        }
+        return processedHTML
+    }
+
     func reloadEditorContents() {
         let content = post.content ?? String()
 
         titleTextField.text = post.postTitle
-        richTextView.setHTML(content)
+        setHTML(content)
     }
 
     func reloadBlogPickerButton() {
@@ -1052,7 +1085,7 @@ extension AztecPostViewController {
     fileprivate func switchToHTML() {
         stopEditing()
 
-        htmlTextView.text = richTextView.getHTML()
+        htmlTextView.text = getHTML()
         htmlTextView.becomeFirstResponder()
 
         refreshEditorVisibility()
@@ -1062,7 +1095,7 @@ extension AztecPostViewController {
     fileprivate func switchToRichText() {
         stopEditing()
 
-        richTextView.setHTML(htmlTextView.text)
+        setHTML(htmlTextView.text)
         richTextView.becomeFirstResponder()
 
         refreshEditorVisibility()
@@ -1528,14 +1561,14 @@ fileprivate extension AztecPostViewController {
 
     func contentByStrippingMediaAttachments() -> String {
         if mode == .html {
-            richTextView.setHTML(htmlTextView.text)
+            setHTML(htmlTextView.text)
         }
 
         richTextView.removeTextAttachments()
-        let strippedHTML = richTextView.getHTML()
+        let strippedHTML = getHTML()
 
         if mode == .html {
-            richTextView.setHTML(strippedHTML)
+            setHTML(strippedHTML)
         }
 
         return strippedHTML
@@ -1547,7 +1580,7 @@ fileprivate extension AztecPostViewController {
         if richTextView.isHidden {
             post.content = htmlTextView.text
         } else {
-            post.content = richTextView.getHTML()
+            post.content = getHTML()
         }
 
         ContextManager.sharedInstance().save(post.managedObjectContext!)
