@@ -128,8 +128,6 @@
                                                    success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
           NSDictionary *response = (NSDictionary *)responseObject;
           if (![response isKindOfClass:[NSDictionary class]]) {
-              localProgress.completedUnitCount=0;
-              localProgress.totalUnitCount=0;
               NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
               if (failure) {
                   failure(error);
@@ -141,9 +139,7 @@
                   success(remoteMedia);
               }
           }
-      } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-          localProgress.completedUnitCount=0;
-          localProgress.totalUnitCount=0;          
+      } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {          
           if (failure) {
               failure(error);
           }
