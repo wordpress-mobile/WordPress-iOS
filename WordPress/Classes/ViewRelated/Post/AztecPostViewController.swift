@@ -2405,9 +2405,7 @@ public class MediaProgressCoordinator: NSObject {
     var totalProgress: Float {
         var value = Float(0)
         if let progress = mediaUploadingProgress {
-            // Sergio Estevao: make sure the progress value reflects the number of upload that actually finished 100%
-            let fractionOfUploadsCompleted = Float(Float((progress.completedUnitCount + 1))/Float(progress.totalUnitCount))
-            value = min(fractionOfUploadsCompleted, Float(progress.fractionCompleted))
+            value = Float(progress.fractionCompleted)
         }
         return value
     }
