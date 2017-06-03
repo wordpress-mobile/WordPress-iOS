@@ -5,9 +5,10 @@ import MobileCoreServices
 ///
 class MediaAssetExporter: MediaExporter {
 
-    var maximumImageSize: CGFloat?
-    var stripsGeoLocationIfNeeded = false
     var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
+
+    var imageOptions: MediaImageExporter.Options?
+    var videoOptions: MediaVideoExporter.Options?
 
     /// Enumerable type value for an AssetExport, typed according to the resulting export of the asset.
     ///
@@ -51,7 +52,7 @@ class MediaAssetExporter: MediaExporter {
         func toNSError() -> NSError {
             return NSError(domain: _domain, code: _code, userInfo: [NSLocalizedDescriptionKey: String(describing: self)])
         }
-    }
+    } 
 
     /// Default shared instance of the PHImageManager
     ///
@@ -99,7 +100,7 @@ class MediaAssetExporter: MediaExporter {
 
             // Configure the targetSize for PHImageManager to resize to.
             let targetSize: CGSize
-            if let maximumImageSize = maximumImageSize {
+            if let options = self.imageOptions, let maximumImageSize = options.maximumImageSize {
                 targetSize = CGSize(width: maximumImageSize, height: maximumImageSize)
             } else {
                 targetSize = PHImageManagerMaximumSize
@@ -126,9 +127,10 @@ class MediaAssetExporter: MediaExporter {
                                     }
                                     // Hand off the image export to a shared image writer.
                                     let exporter = MediaImageExporter()
-                                    exporter.maximumImageSize = self.maximumImageSize
-                                    exporter.stripsGeoLocationIfNeeded = self.stripsGeoLocationIfNeeded
                                     exporter.mediaDirectoryType = self.mediaDirectoryType
+                                    if let options = self.imageOptions {
+                                        exporter.options = options
+                                    }
                                     exporter.exportImage(image,
                                                          fileName: resource.originalFilename,
                                                          onCompletion: { (imageExport) in
@@ -159,17 +161,22 @@ class MediaAssetExporter: MediaExporter {
 
             // Configure a video exporter to handle an export session.
             let videoExporter = MediaVideoExporter()
-            videoExporter.stripsGeoLocationIfNeeded = stripsGeoLocationIfNeeded
             videoExporter.mediaDirectoryType = mediaDirectoryType
-            videoExporter.exportFilename = videoResource.originalFilename
-            videoExporter.preferredExportFileType = videoResource.uniformTypeIdentifier
+
+            if let options = videoOptions {
+                videoExporter.options = options
+            }
+            if videoExporter.options.preferredExportFileType == nil {
+                videoExporter.options.preferredExportFileType = videoResource.uniformTypeIdentifier
+            }
+            let originalFilename = videoResource.originalFilename
 
             // Request an export session, which may take time to download the complete video data.
             let options = PHVideoRequestOptions()
             options.isNetworkAccessAllowed = true
             imageManager.requestExportSession(forVideo: asset,
                                               options: options,
-                                              exportPreset: videoExporter.exportPreset,
+                                              exportPreset: videoExporter.options.exportPreset,
                                               resultHandler: { (session, info) -> Void in
                                                 guard let session = session else {
                                                     if let error = info?[PHImageErrorKey] as? Error {
@@ -180,6 +187,7 @@ class MediaAssetExporter: MediaExporter {
                                                     return
                                                 }
                                                 videoExporter.exportVideo(with: session,
+                                                                          filename: originalFilename,
                                                                           onCompletion: { (videoExport) in
                                                                             onCompletion(AssetExport.exportedVideo(videoExport))
                                                 },
