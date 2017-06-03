@@ -5,17 +5,27 @@ import MobileCoreServices
 ///
 class MediaImageExporter: MediaExporter {
 
-    /// Default filename used when writing media images locally, which may be appended with "-1" or "-thumbnail".
-    ///
-    let defaultImageFilename = "image"
-
-    /// Default compression quality when an image is being resized.
-    ///
-    let defaultImageCompressionUponResizing = 0.9
-
-    var maximumImageSize: CGFloat?
-    var stripsGeoLocationIfNeeded = false
     var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
+
+    /// Export options.
+    ///
+    var options = Options()
+
+    /// Available options for an image export.
+    ///
+    struct Options: MediaExportingOptions {
+        /// Set a maximumImageSize for resizing images, or nil for exporting the full images.
+        ///
+        var maximumImageSize: CGFloat?
+
+        /// Default compression quality when an image is being resized.
+        ///
+        var imageCompressionQualityUponResizing = 0.9
+
+        // MARK: - MediaExporting
+
+        var stripsGeoLocationIfNeeded = false
+    }
 
     /// Completion block with a MediaImageExport.
     ///
@@ -40,6 +50,10 @@ class MediaImageExporter: MediaExporter {
             return NSError(domain: _domain, code: _code, userInfo: [NSLocalizedDescriptionKey: String(describing: self)])
         }
     }
+
+    /// Default filename used when writing media images locally, which may be appended with "-1" or "-thumbnail".
+    ///
+    fileprivate let defaultImageFilename = "image"
 
     /// Exports and writes a UIImage to a local Media URL.
     ///
@@ -135,11 +149,11 @@ class MediaImageExporter: MediaExporter {
 
             // Check MediaSettings and configure the image writer as needed.
             var writer = ImageSourceWriter(url: url, sourceUTType: type as CFString)
-            if let maximumImageSize = maximumImageSize {
+            if let maximumImageSize = options.maximumImageSize {
                 writer.maximumSize = maximumImageSize as CFNumber
-                writer.lossyCompressionQuality = defaultImageCompressionUponResizing as CFNumber
+                writer.lossyCompressionQuality = options.imageCompressionQualityUponResizing as CFNumber
             }
-            writer.nullifyGPSData = stripsGeoLocationIfNeeded
+            writer.nullifyGPSData = options.stripsGeoLocationIfNeeded
             let result = try writer.writeImageSource(source)
             onCompletion(MediaImageExport(url: url,
                                           fileSize: url.resourceFileSize,
