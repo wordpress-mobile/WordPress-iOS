@@ -2337,7 +2337,7 @@ public class MediaProgressCoordinator: NSObject {
     func track(numberOfItems count: Int) {
         if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
-            self.mediaUploadingProgress = nil            
+            self.mediaUploadingProgress = nil
         }
 
         if self.mediaUploadingProgress == nil {
