@@ -2,10 +2,21 @@
 
 extern const CGFloat BlogDetailHeaderViewBlavatarSize;
 
+@protocol BlogDetailHeaderViewDelegate
+
+- (void)siteIconTapped;
+
+@end
+
 @class Blog;
 
 @interface BlogDetailHeaderView : UIView
 
-- (void)setBlog:(Blog *)blog;
+@property (nonatomic, strong) UIImageView *blavatarImageView;
+@property (nonatomic, strong) Blog *blog;
+@property (nonatomic, weak) id<BlogDetailHeaderViewDelegate> delegate;
+@property (nonatomic) BOOL updatingIcon;
+
+- (void)refreshIconImage;
 
 @end
