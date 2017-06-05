@@ -571,6 +571,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func makeAndUploadMediaWith(_ asset: PHAsset) {
+        let assetID = asset.identifier() ?? String(mediaProgressCoordinator.mediaUploading.count)
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createMedia(with: asset,
@@ -579,7 +580,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
                             completion: { [weak self] media, error in
                                 guard let media = media else {
                                     if let error = error as NSError? {
-                                        self?.mediaProgressCoordinator.attach(error: error, toMediaID: asset.identifier())
+                                        self?.mediaProgressCoordinator.attach(error: error, toMediaID: assetID)
                                     }
                                     return
                                 }
@@ -589,17 +590,13 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
                                     self?.unpauseDataSource()
                                     self?.trackUploadFor(media)
                                 }, failure: { error in
-                                    if let mediaID = media.mediaID?.stringValue {
-                                        self?.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
-                                        self?.mediaProgressCoordinator.finishOneItem()
-                                    }
+                                    self?.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: assetID)
 
                                     self?.unpauseDataSource()
                                 })
 
-                                if let progress = uploadProgress,
-                                    let mediaID = media.mediaID?.stringValue {
-                                    self?.mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
+                                if let progress = uploadProgress {
+                                    self?.mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: assetID)
                                 }
         })
     }
@@ -688,20 +685,24 @@ extension MediaLibraryViewController: MediaProgressCoordinatorDelegate {
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         guard !mediaProgressCoordinator.hasFailedMedia else {
             SVProgressHUD.showError(withStatus: NSLocalizedString("Upload failed", comment: "Text displayed in a HUD when media items have failed to upload."))
+            mediaProgressCoordinator.stopTrackingOfAllUploads()
             return
         }
 
         guard let progress = mediaProgressCoordinator.mediaUploadingProgress,
             !progress.isCancelled else {
+            mediaProgressCoordinator.stopTrackingOfAllUploads()
             return
         }
 
+        mediaProgressCoordinator.stopTrackingOfAllUploads()
         SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Uploaded!", comment: "Text displayed in a HUD when media items have been uploaded successfully."))
     }
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
         guard let mediaProgress = mediaProgressCoordinator.mediaUploadingProgress,
-            !mediaProgress.isCancelled else {
+            !mediaProgress.isCancelled,
+            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount else {
                 return
         }
 

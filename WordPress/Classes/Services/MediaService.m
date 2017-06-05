@@ -219,6 +219,18 @@
      ];
 }
 
+- (void)createMediaWithImage:(nonnull UIImage *)image
+             forBlogObjectID:(nonnull NSManagedObjectID *)blogObjectID
+           thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
+                  completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion
+{
+    [self createMediaWith:image
+              forObjectID:blogObjectID
+                mediaName:[[NSUUID UUID] UUIDString]
+        thumbnailCallback:thumbnailCallback
+               completion:completion];
+}
+
 - (void) createMediaForObjectID:(NSManagedObjectID *)objectID
                        mediaURL:(NSURL *)mediaURL
               mediaThumbnailURL:(NSURL *)mediaThumbnailURL
