@@ -332,7 +332,6 @@ class AztecPostViewController: UIViewController {
         registerAttachmentImageProviders()
         // Register shortcode processor for WordPress
         registerHTMLProcessors()
-        
         // New Post Revision!
         createRevisionOfPost()
 
@@ -1799,8 +1798,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             guard let videoAttachment = attachment as? VideoAttachment,
                 let videoSrcURL = videoAttachment.srcURL,
                 videoSrcURL.scheme == VideoProcessor.videoPressScheme,
-                let videoPressID = videoSrcURL.host else
-            {
+                let videoPressID = videoSrcURL.host else {
                 return
             }
 
