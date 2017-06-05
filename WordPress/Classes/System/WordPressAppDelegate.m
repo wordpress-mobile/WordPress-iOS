@@ -119,7 +119,7 @@ int ddLogLevel = DDLogLevelInfo;
     // Temporary force of Aztec to "on" for all internal users
 #ifdef INTERNAL_BUILD
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *defaultsKey = @"AztecInternalForceOnVersion";
+    NSString *defaultsKey = @"AztecInternalForcedOnVersion";
     NSString *lastBuildAztecForcedOn = [defaults stringForKey:defaultsKey];
     NSString *currentVersion = [[NSBundle mainBundle] bundleVersion];
     if (![currentVersion isEqualToString:lastBuildAztecForcedOn]) {
