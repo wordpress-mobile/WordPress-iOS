@@ -10,7 +10,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 @interface BlogDetailHeaderView ()
 
 @property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) UIImageView *blavatarImageView;
+@property (nonatomic, strong) UIActivityIndicatorView *blavatarUpdateActivityIndicatorView;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
@@ -39,13 +39,23 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
 - (void)setBlog:(Blog *)blog
 {
-    [self.blavatarImageView setImageWithSiteIcon:blog.icon];
+    _blog = blog;
+    [self refreshIconImage];
 
     // if the blog name is missing, we want to show the blog displayURL instead
     NSString *blogName = blog.settings.name;
     [self.titleLabel setText:((blogName && !blogName.isEmpty) ? blogName : blog.displayURL)];
     [self.subtitleLabel setText:blog.displayURL];
     [self.labelsStackView setNeedsLayout];
+}
+
+- (void)refreshIconImage
+{
+    if (self.blog.hasIcon) {
+        [self.blavatarImageView setImageWithSiteIcon:self.blog.icon placeholderImage:nil];
+    } else {
+        [self.blavatarImageView setDefaultSiteIconImage];
+    }
 }
 
 #pragma mark - Subview setup
@@ -78,6 +88,12 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
     imageView.layer.borderWidth = 1.0;
+    imageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                action:@selector(blavatarImageTapped)];
+    singleTap.numberOfTapsRequired = 1;
+    [imageView addGestureRecognizer:singleTap];
+
     [_stackView addArrangedSubview:imageView];
 
     [NSLayoutConstraint activateConstraints:@[
@@ -85,6 +101,21 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
                                               [imageView.heightAnchor constraintEqualToConstant:BlogDetailHeaderViewBlavatarSize]
                                               ]];
     _blavatarImageView = imageView;
+}
+
+- (UIActivityIndicatorView *)blavatarUpdateActivityIndicatorView {
+    if (!_blavatarUpdateActivityIndicatorView) {
+        _blavatarUpdateActivityIndicatorView = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _blavatarUpdateActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.blavatarImageView addSubview:_blavatarUpdateActivityIndicatorView];
+        [self.blavatarImageView pinSubviewAtCenter:_blavatarUpdateActivityIndicatorView];
+    }
+    return _blavatarUpdateActivityIndicatorView;
+}
+
+-(void)blavatarImageTapped
+{
+    [self.delegate siteIconTapped];
 }
 
 - (void)setupLabelsStackView
@@ -139,6 +170,16 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [_labelsStackView addArrangedSubview:label];
 
     _subtitleLabel = label;
+}
+
+- (void)setUpdatingIcon:(BOOL)updatingIcon
+{
+    _updatingIcon = updatingIcon;
+    if (updatingIcon) {
+        [self.blavatarUpdateActivityIndicatorView startAnimating];
+    } else {
+        [self.blavatarUpdateActivityIndicatorView stopAnimating];
+    }
 }
 
 @end
