@@ -12,6 +12,7 @@
 @property (nullable, nonatomic, copy) NSString *typeFamily;
 @property (nullable, nonatomic, copy) NSString *typeLabel;
 @property (nullable, nonatomic, copy) NSString *urlStr;
+@property (nullable, nonatomic, copy) NSArray<NSString *> *classes;
 
 @property (nullable, nonatomic, strong) NSArray<RemoteMenuItem *> *children;
 @property (nullable, nonatomic, weak) RemoteMenuItem *parentItem;

@@ -1095,14 +1095,16 @@ import WordPressComAnalytics
     /// Not intended for use as part of a user interaction. See syncIfAppropriate instead.
     ///
     func backgroundFetch(_ completionHandler: @escaping ((UIBackgroundFetchResult) -> Void)) {
-        let lastSeenPostID = (tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
+        let lastSeenPostID = (tableViewHandler?.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
 
-        syncHelper.backgroundSync(success: { [weak self, weak lastSeenPostID] in
-            let newestFetchedPostID = (self?.tableViewHandler.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
-            self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        syncHelper?.backgroundSync(success: { [weak self, weak lastSeenPostID] in
+            let newestFetchedPostID = (self?.tableViewHandler?.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
             if lastSeenPostID == newestFetchedPostID {
                 completionHandler(.noData)
             } else {
+                if let numberOfRows = self?.tableView?.numberOfRows(inSection: 0), numberOfRows > 0 {
+                    self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                }
                 completionHandler(.newData)
             }
         }, failure: { (_) in

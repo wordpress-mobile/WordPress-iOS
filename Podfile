@@ -1,29 +1,44 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-project 'WordPress/WordPress.xcodeproj'
-
 inhibit_all_warnings!
 use_frameworks!
 
 platform :ios, '10.0'
+workspace 'WordPress.xcworkspace'
+
+## Pods shared between all the targets
+def shared_with_all_pods
+  pod 'CocoaLumberjack', '~> 2.2.0'
+end
+
+def shared_with_stats_pods
+  pod 'AFNetworking', '3.1.0'  
+  pod 'NSObject-SafeExpectations', '0.0.2'
+  pod 'WordPressCom-Analytics-iOS', '0.1.27'
+end
+
+def shared_test_pods
+  pod 'OHHTTPStubs'
+  pod 'OHHTTPStubs/Swift'
+  pod 'OCMock', '~> 3.0'
+end
 
 abstract_target 'WordPress_Base' do
-  pod 'WordPress-iOS-Shared', '0.8.2'
+  project 'WordPress/WordPress.xcodeproj'
+
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
-  pod 'WordPressCom-Stats-iOS', '0.9.1'
-
+  shared_with_all_pods
+  
   target 'WordPress' do
     # ---------------------
     # Third party libraries
     # ---------------------
-    pod '1PasswordExtension', '1.8.1'
-    pod 'AFNetworking',	'3.1.0'
-    pod 'CocoaLumberjack', '~> 2.2.0'
+    pod '1PasswordExtension', '1.8.4'
     pod 'FormatterKit', '~> 1.8.1'
     pod 'HockeySDK', '~> 4.1.3', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
-    pod 'Mixpanel', '2.9.4'
+    pod 'Mixpanel', '3.1.3'
     pod 'Reachability',	'3.2'
     pod 'SVProgressHUD', '~>2.1.2'
     pod 'UIDeviceIdentifier', '~> 0.1'
@@ -42,21 +57,20 @@ abstract_target 'WordPress_Base' do
     # --------------------
     # WordPress components
     # --------------------
+    shared_with_all_pods
+    shared_with_stats_pods
     pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.2'
     pod 'Gridicons', '0.5'
-    pod 'NSObject-SafeExpectations', '0.0.2'
     pod 'NSURL+IDN', '0.3'
-    pod 'WPMediaPicker', '0.15'
+    pod 'WPMediaPicker', '0.16'
     pod 'WordPress-iOS-Editor', '1.9.1'
-    pod 'WordPressCom-Analytics-iOS', '0.1.25'
     pod 'WordPress-Aztec-iOS', '1.0.0-beta.1'
     pod 'wpxmlrpc', '0.8.3'
 
     target 'WordPressTest' do
       inherit! :search_paths
-      pod 'OHHTTPStubs'
-      pod 'OHHTTPStubs/Swift'
-      pod 'OCMock', '3.1.2'
+      
+      shared_test_pods
       pod 'Specta', '1.0.5'
       pod 'Expecta', '1.0.5'
       pod 'Nimble', '~> 5.0.0'
@@ -68,5 +82,29 @@ abstract_target 'WordPress_Base' do
 
   target 'WordPressTodayWidget' do
   end
+end
 
+target 'WordPressComStatsiOS' do
+  project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
+
+  shared_with_stats_pods
+  shared_with_all_pods
+
+  target 'WordPressComStatsiOSTests' do
+    inherit! :search_paths
+    
+    shared_test_pods
+  end
+end
+
+target 'WordPressShared' do
+  project 'WordPressShared/WordPressShared.xcodeproj'
+
+  shared_with_all_pods
+
+  target 'WordPressSharedTests' do
+    inherit! :search_paths
+    
+    shared_test_pods
+  end
 end

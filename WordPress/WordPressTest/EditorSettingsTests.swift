@@ -11,7 +11,7 @@ class EditorSettingsTests: XCTestCase {
     }
 
     func testNativeEditorAvailableIsAvailableBasedOnBuild() {
-        Build._overrideCurrent = .debug
+        Build._overrideCurrent = .localDeveloper
         let editorSettings = EditorSettings(database: EphemeralKeyValueDatabase())
 
         XCTAssertTrue(editorSettings.nativeEditorAvailable)
@@ -34,7 +34,7 @@ class EditorSettingsTests: XCTestCase {
     }
 
     func testNativeEditorEnabledAvailableButDisabledByDefault() {
-        Build._overrideCurrent = .debug
+        Build._overrideCurrent = .localDeveloper
         let editorSettings = EditorSettings(database: EphemeralKeyValueDatabase())
 
         XCTAssertTrue(editorSettings.nativeEditorAvailable)

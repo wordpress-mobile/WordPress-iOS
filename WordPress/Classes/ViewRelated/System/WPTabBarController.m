@@ -13,7 +13,6 @@
 #import "WPLegacyEditPageViewController.h"
 #import "WPScrollableViewController.h"
 #import "HelpshiftUtils.h"
-#import "UIViewController+SizeClass.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
@@ -888,9 +887,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                  completion:nil];
 }
 
+// this method allows this VC to be a valid unwind destination for this selector
 - (IBAction)unwindOutWithSegue:(UIStoryboardSegue *)segue
 {
-    // here so that this VC is a valid unwind destination for this selector
+    // unwind segues don't seem to always clean themselves up 😫
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 @end

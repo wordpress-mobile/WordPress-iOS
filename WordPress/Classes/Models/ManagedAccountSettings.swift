@@ -4,7 +4,12 @@ import CoreData
 // MARK: - Reflects the user's Account Settings, as stored in Core Data.
 //
 class ManagedAccountSettings: NSManagedObject {
-    static let entityName = "AccountSettings"
+
+    // MARK: - NSManagedObject
+
+    override class var entityName: String {
+        return "AccountSettings"
+    }
 
     func updateWith(_ accountSettings: AccountSettings) {
         firstName = accountSettings.firstName

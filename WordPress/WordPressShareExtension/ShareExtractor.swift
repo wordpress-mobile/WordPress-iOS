@@ -4,11 +4,33 @@ import UIKit
 
 /// A type that represents the information we can extract from an extension context
 ///
-enum ExtractedShare {
+struct ExtractedShare {
+    let text: String
+    let image: UIImage?
+}
+
+/// A type that represents the information we can extract from an extension context
+/// attachment
+///
+enum ExtractedItem {
     /// Some text
     case text(String)
     /// An image
     case image(UIImage)
+
+    var text: String? {
+        guard case let .text(text) = self else {
+            return nil
+        }
+        return text
+    }
+
+    var image: UIImage? {
+        guard case let .image(image) = self else {
+            return nil
+        }
+        return image
+    }
 }
 
 /// Extracts valid information from an extension context.
@@ -27,10 +49,12 @@ struct ShareExtractor {
     ///   - completion: the block to be called when the extractor has obtained content.
     ///
     func loadShare(completion: @escaping (ExtractedShare) -> Void) {
-        guard let extractor = extractor else {
-            return
+        extractText { text in
+            self.extractImage { image in
+                let text = text ?? ""
+                completion(ExtractedShare(text: text, image: image))
+            }
         }
-        extractor.extract(context: extensionContext, completion: completion)
     }
 
     /// Determines if the extractor will be able to obtain valid content from
@@ -40,7 +64,7 @@ struct ShareExtractor {
     /// includes known types, but there might still be errors loading the content.
     ///
     var validContent: Bool {
-        return extractor != nil
+        return textExtractor != nil || imageExtractor != nil
     }
 
 }
@@ -49,31 +73,54 @@ struct ShareExtractor {
 // MARK: - Private
 
 private extension ShareExtractor {
-    var supportedExtractors: [ExtensionContentExtractor] {
+    var supportedTextExtractors: [ExtensionContentExtractor] {
         return [
             SharePostExtractor(),
             PropertyListExtractor(),
-            URLExtractor(),
-            ImageExtractor()
+            URLExtractor()
         ]
     }
 
-    var extractor: ExtensionContentExtractor? {
-        return supportedExtractors.first(where: { extractor in
+    var imageExtractor: ExtensionContentExtractor? {
+        return ImageExtractor()
+    }
+
+    var textExtractor: ExtensionContentExtractor? {
+        return supportedTextExtractors.first(where: { extractor in
             extractor.canHandle(context: extensionContext)
         })
+    }
+
+    func extractText(completion: @escaping (String?) -> Void) {
+        guard let textExtractor = textExtractor else {
+            completion(nil)
+            return
+        }
+        textExtractor.extract(context: extensionContext) { share in
+            completion(share?.text)
+        }
+    }
+
+    func extractImage(completion: @escaping (UIImage?) -> Void) {
+        guard let imageExtractor = imageExtractor else {
+            completion(nil)
+            return
+        }
+        imageExtractor.extract(context: extensionContext) { share in
+            completion(share?.image)
+        }
     }
 }
 
 private protocol ExtensionContentExtractor {
     func canHandle(context: NSExtensionContext) -> Bool
-    func extract(context: NSExtensionContext, completion: @escaping (ExtractedShare) -> Void)
+    func extract(context: NSExtensionContext, completion: @escaping (ExtractedItem?) -> Void)
 }
 
 private protocol TypeBasedExtensionContentExtractor: ExtensionContentExtractor {
     associatedtype Payload
     var acceptedType: String { get }
-    func convert(payload: Payload) -> ExtractedShare?
+    func convert(payload: Payload) -> ExtractedItem?
 }
 
 private extension TypeBasedExtensionContentExtractor {
@@ -81,15 +128,14 @@ private extension TypeBasedExtensionContentExtractor {
         return !context.itemProviders(ofType: acceptedType).isEmpty
     }
 
-    func extract(context: NSExtensionContext, completion: @escaping (ExtractedShare) -> Void) {
+    func extract(context: NSExtensionContext, completion: @escaping (ExtractedItem?) -> Void) {
         guard let provider = context.itemProviders(ofType: acceptedType).first else {
             return
         }
         provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, error) in
-            guard let payload = payload as? Payload,
-                let result = self.convert(payload: payload) else {
-                return
-            }
+            let payload = payload as? Payload
+            let result = payload.flatMap(self.convert(payload:))
+
             DispatchQueue.main.async {
                 completion(result)
             }
@@ -101,7 +147,10 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = URL
     let acceptedType = kUTTypeURL as String
 
-    func convert(payload: URL) -> ExtractedShare? {
+    func convert(payload: URL) -> ExtractedItem? {
+        guard !payload.isFileURL else {
+            return nil
+        }
         return .text(payload.absoluteString)
     }
 }
@@ -109,7 +158,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
 private struct ImageExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = AnyObject
     let acceptedType = kUTTypeImage as String
-    func convert(payload: AnyObject) -> ExtractedShare? {
+    func convert(payload: AnyObject) -> ExtractedItem? {
         let loadedImage: UIImage?
         switch payload {
         case let url as URL:
@@ -122,14 +171,14 @@ private struct ImageExtractor: TypeBasedExtensionContentExtractor {
             loadedImage = nil
         }
 
-        return loadedImage.map(ExtractedShare.image)
+        return loadedImage.map(ExtractedItem.image)
     }
 }
 
 private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = [String: Any]
     let acceptedType = kUTTypePropertyList as String
-    func convert(payload: [String : Any]) -> ExtractedShare? {
+    func convert(payload: [String : Any]) -> ExtractedItem? {
         guard let results = payload[NSExtensionJavaScriptPreprocessingResultsKey] as? [String: Any] else {
             return nil
         }
@@ -160,7 +209,7 @@ private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
 private struct SharePostExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = Data
     let acceptedType = SharePost.typeIdentifier
-    func convert(payload: Data) -> ExtractedShare? {
+    func convert(payload: Data) -> ExtractedItem? {
         guard let post = SharePost(data: payload) else {
             return nil
         }

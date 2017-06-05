@@ -3,10 +3,10 @@
 #import "BlogService.h"
 #import "SharingConnectionsViewController.h"
 #import "SVProgressHUD+Dismiss.h"
-#import "WPTableViewCell.h"
 #import "WordPress-Swift.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <WordPressShared/UIImage+Util.h>
+#import <WordPressShared/WPTableViewCell.h>
 
 typedef NS_ENUM(NSInteger, SharingSectionIdentifier){
     SharingPublicizeServices = 0,

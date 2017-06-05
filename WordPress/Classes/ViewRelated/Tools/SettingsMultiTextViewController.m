@@ -1,6 +1,6 @@
 #import "SettingsMultiTextViewController.h"
-#import "WPStyleGuide.h"
-#import "WPTableViewCell.h"
+#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressShared/WPTableViewCell.h>
 
 static CGVector const SettingsTextPadding = {11.0f, 3.0f};
 static CGFloat const SettingsMinHeight = 41.0f;
