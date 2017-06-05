@@ -39,8 +39,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColorsForSigninView(view)
-
+        setupStyles()
         setupBackgroundTapGestureRecognizer()
         setupCancelButtonIfNeeded()
         setupHelpButtonAndBadge()
@@ -80,6 +79,10 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler {
 
     // MARK: Setup and Configuration
 
+    /// Sets up the view's colors and style
+    open func setupStyles() {
+        WPStyleGuide.configureColorsForSigninView(view)
+    }
 
     /// Sets up a gesture recognizer to detect taps on the view, but not its content.
     ///

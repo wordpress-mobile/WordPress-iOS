@@ -11,8 +11,8 @@ import WordPressShared
     @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var forgotPasswordButton: WPNUXSecondaryButton!
-    @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
-    @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
+    @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
+    @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     var onePasswordButton: UIButton!
 
     lazy var loginFacade: LoginFacade = {

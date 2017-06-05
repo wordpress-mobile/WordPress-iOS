@@ -2404,9 +2404,7 @@ class MediaProgressCoordinator: NSObject {
     func refreshMediaProgress() {
         var value = Float(0)
         if let progress = mediaUploadingProgress {
-            // make sure the progress value reflects the number of upload finished 100%
-            let fractionOfUploadsCompleted = Float(Float((progress.completedUnitCount + 1))/Float(progress.totalUnitCount))
-            value = min(fractionOfUploadsCompleted, Float(progress.fractionCompleted))
+            value = Float(progress.fractionCompleted)
         }
 
         delegate?.mediaProgressCoordinator(self, progressDidChange: value)
@@ -2465,6 +2463,14 @@ class MediaProgressCoordinator: NSObject {
         }
 
         mediaUploadingProgress?.cancel()
+    }
+
+    func stopTrackingOfAllUploads() {
+        if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning {
+            mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
+            self.mediaUploadingProgress = nil
+        }
+        mediaUploading.removeAll()
     }
 
     var failedMediaIDs: [String] {
