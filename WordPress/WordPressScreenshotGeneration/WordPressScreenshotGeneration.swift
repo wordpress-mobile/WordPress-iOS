@@ -44,21 +44,22 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Login
         let username = ""
+        let password = ""
 
         let usernameEmailTextField =  app.textFields["Email or username"]
         usernameEmailTextField.tap()
         usernameEmailTextField.typeText(username)
         app.buttons["Next Button"].tap()
 
-
         let passwordSecureTextField = app.secureTextFields["Password"]
         passwordSecureTextField.tap()
-        passwordSecureTextField.typeText("")
+        passwordSecureTextField.typeText(password)
 
         app.buttons["Log In Button"].tap()
 
         // Get Reader Screenshot
         app.tabBars["Main Navigation"].buttons["readerTabButton"].tap(withNumberOfTaps: 2, numberOfTouches: 2)
+        sleep(2)
         //app.tables.staticTexts["Discover"].tap()
         app.tables.cells.element(boundBy: 1).tap() // tap Discover
         sleep(5)

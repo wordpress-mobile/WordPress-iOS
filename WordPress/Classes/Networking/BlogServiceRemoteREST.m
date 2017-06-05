@@ -10,6 +10,7 @@ static NSString * const RemoteBlogNameKey                                   = @"
 static NSString * const RemoteBlogTaglineKey                                = @"description";
 static NSString * const RemoteBlogPrivacyKey                                = @"blog_public";
 static NSString * const RemoteBlogLanguageKey                               = @"lang_id";
+static NSString * const RemoteBlogIconKey                                   = @"site_icon";
 
 static NSString * const RemoteBlogSettingsKey                               = @"settings";
 static NSString * const RemoteBlogDefaultCategoryKey                        = @"default_category";
@@ -278,7 +279,8 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     settings.tagline = [json stringForKey:RemoteBlogTaglineKey];
     settings.privacy = [rawSettings numberForKey:RemoteBlogPrivacyKey];
     settings.languageID = [rawSettings numberForKey:RemoteBlogLanguageKey];
-    
+    settings.iconMediaID = [rawSettings numberForKey:RemoteBlogIconKey];
+
     // Writing
     settings.defaultCategoryID = [rawSettings numberForKey:RemoteBlogDefaultCategoryKey] ?: @(RemoteBlogUncategorizedCategory);
 
@@ -336,7 +338,8 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     [parameters setValueIfNotNil:settings.tagline forKey:RemoteBlogTaglineForUpdateKey];
     [parameters setValueIfNotNil:settings.privacy forKey:RemoteBlogPrivacyKey];
     [parameters setValueIfNotNil:settings.languageID forKey:RemoteBlogLanguageKey];
-    
+    [parameters setValueIfNotNil:settings.iconMediaID forKey:RemoteBlogIconKey];
+
     [parameters setValueIfNotNil:settings.defaultCategoryID forKey:RemoteBlogDefaultCategoryKey];
     [parameters setValueIfNotNil:settings.defaultPostFormat forKey:RemoteBlogDefaultPostFormatKey];
     
