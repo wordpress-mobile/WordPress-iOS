@@ -1817,7 +1817,9 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 let imgGenerator = AVAssetImageGenerator(asset: asset)
                 imgGenerator.maximumSize = .zero
                 imgGenerator.appliesPreferredTrackTransform = true
-                imgGenerator.generateCGImagesAsynchronously(forTimes: [NSValue(time: CMTimeMake(0, 1))], completionHandler: { (time, cgImage, actualTime, result, error) in
+                let timeToCapture = NSValue(time: CMTimeMake(0, 1))
+                imgGenerator.generateCGImagesAsynchronously(forTimes: [timeToCapture],
+                                                            completionHandler: { (time, cgImage, actualTime, result, error) in
                     guard let cgImage = cgImage else {
                         return
                     }
