@@ -1074,7 +1074,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 #pragma mark - MediaProgressCoordinator
 
 - (void)mediaProgressCoordinatorDidFinishUpload:(MediaProgressCoordinator *)mediaProgressCoordinator {
-
+    [self.mediaProgressCoordinator stopTrackingOfAllUploads];
 }
 
 - (void)mediaProgressCoordinatorDidStartUploading:(MediaProgressCoordinator *)mediaProgressCoordinator {
