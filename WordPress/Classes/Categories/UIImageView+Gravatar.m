@@ -36,7 +36,7 @@ NSString *const BlavatarDefault = @"blavatar-default";
     } else if ([self isBlavatarURL:siteIcon]) {
         return [self blavatarURLForBlavatarURL:siteIcon];
     } else {
-        return [self resizedURLForUrl:siteIcon];
+        return [self URLForResizedImageURL:siteIcon];
     }
 }
 
@@ -52,7 +52,7 @@ NSString *const BlavatarDefault = @"blavatar-default";
 
 #pragma mark - Photon Helpers
 
-- (nullable NSURL *)resizedURLForUrl:(NSString *)urlString
+- (nullable NSURL *)URLForResizedImageURL:(NSString *)urlString
 {
     CGSize size = CGSizeMake(BlavatarDefaultSize, BlavatarDefaultSize);
     NSURL *url = [NSURL URLWithString:urlString];
