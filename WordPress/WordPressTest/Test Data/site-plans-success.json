@@ -1,0 +1,312 @@
+ [
+  {
+  "product_id": 1,
+  "product_name": "WordPress.com Free",
+  "prices": {
+  "USD": 0,
+  "AUD": 0,
+  "CAD": 0,
+  "EUR": 0,
+  "GBP": 0,
+  "JPY": 0,
+  "BRL": 0
+  },
+  "product_slug": "free_plan",
+  "description": "",
+  "cost": 0,
+  "bill_period": -1,
+  "product_type": "bundle",
+  "available": "yes",
+  "multi": 0,
+  "bd_slug": "wp-free-plan",
+  "bd_variation_slug": "wp-bundles",
+  "outer_slug": null,
+  "extra": null,
+  "capability": "manage_options",
+  "product_name_short": "Free",
+  "icon": "https:\/\/s0.wordpress.com\/i\/store\/plan-free.png",
+  "icon_active": "https:\/\/s0.wordpress.com\/i\/store\/plan-free-active.png",
+  "bill_period_label": "for life",
+  "price": "$0",
+  "formatted_price": "$0",
+  "raw_price": 0,
+  "tagline": "Just get started",
+  "currency_code": "USD",
+  "features_highlight": [
+                         {
+                         "items": [
+                                   "free-blog",
+                                   "space",
+                                   "support"
+                                   ]
+                         }
+                         ],
+  "formatted_original_price": "$0",
+  "raw_discount": 0,
+  "formatted_discount": "$0",
+  "current_plan": true
+  },
+  {
+  "product_id": 1009,
+  "product_name": "WordPress.com Personal",
+  "prices": {
+  "USD": 35.88,
+  "EUR": 35.88,
+  "JPY": 4320,
+  "AUD": 47.88,
+  "CAD": 47.88,
+  "GBP": 30,
+  "BRL": 119.88
+  },
+  "product_slug": "personal-bundle",
+  "description": "",
+  "cost": 35.88,
+  "bill_period": 365,
+  "product_type": "bundle",
+  "available": "yes",
+  "multi": 0,
+  "bd_slug": "wp-bundles",
+  "bd_variation_slug": "wp-personal-bundle",
+  "outer_slug": null,
+  "extra": null,
+  "capability": "manage_options",
+  "product_name_short": "Personal",
+  "icon": "https:\/\/s0.wordpress.com\/i\/store\/plan-personal.png",
+  "icon_active": "https:\/\/s0.wordpress.com\/i\/store\/plan-personal-active.png",
+  "bundle_product_ids": [
+                         21,
+                         12,
+                         50,
+                         5,
+                         6,
+                         46,
+                         54,
+                         56,
+                         57,
+                         58,
+                         59,
+                         60,
+                         61,
+                         62,
+                         63,
+                         64,
+                         65,
+                         66,
+                         67,
+                         68,
+                         72,
+                         73,
+                         74,
+                         76,
+                         75,
+                         16
+                         ],
+  "bill_period_label": "per year",
+  "price": "$35.88",
+  "formatted_price": "$35.88",
+  "raw_price": 35.88,
+  "tagline": "Get your own domain",
+  "currency_code": "USD",
+  "features_highlight": [
+                         {
+                         "items": [
+                                   "no-adverts\/no-adverts.php",
+                                   "custom-domain",
+                                   "support"
+                                   ]
+                         },
+                         {
+                         "title": "Included with all plans:",
+                         "items": [
+                                   "free-blog"
+                                   ]
+                         }
+                         ],
+  "formatted_original_price": "$0",
+  "raw_discount": 0,
+  "formatted_discount": "$0",
+  "can_start_trial": false
+  },
+  {
+  "product_id": 1003,
+  "product_name": "WordPress.com Premium",
+  "prices": {
+  "USD": 99,
+  "NZD": 139,
+  "AUD": 129,
+  "CAD": 129,
+  "JPY": 11800,
+  "EUR": 99,
+  "GBP": 85,
+  "BRL": 329
+  },
+  "product_slug": "value_bundle",
+  "description": "",
+  "cost": 99,
+  "bill_period": 365,
+  "product_type": "bundle",
+  "available": "yes",
+  "multi": 0,
+  "bd_slug": "wp-bundles",
+  "bd_variation_slug": "wp-value-bundle",
+  "outer_slug": null,
+  "extra": null,
+  "capability": "manage_options",
+  "product_name_short": "Premium",
+  "icon": "https:\/\/s0.wordpress.com\/i\/store\/plan-premium.png",
+  "icon_active": "https:\/\/s0.wordpress.com\/i\/store\/plan-premium-active.png",
+  "bundle_product_ids": [
+                         9,
+                         12,
+                         45,
+                         15,
+                         5,
+                         49,
+                         50,
+                         6,
+                         46,
+                         54,
+                         56,
+                         57,
+                         58,
+                         59,
+                         60,
+                         61,
+                         62,
+                         63,
+                         64,
+                         65,
+                         66,
+                         67,
+                         68,
+                         72,
+                         73,
+                         74,
+                         76,
+                         75,
+                         16
+                         ],
+  "bill_period_label": "per year",
+  "price": "$99",
+  "formatted_price": "$99",
+  "raw_price": 99,
+  "tagline": "Supercharge your site",
+  "currency_code": "USD",
+  "features_highlight": [
+                         {
+                         "items": [
+                                   "custom-design",
+                                   "videopress",
+                                   "support",
+                                   "space",
+                                   "custom-domain",
+                                   "no-adverts\/no-adverts.php"
+                                   ]
+                         },
+                         {
+                         "title": "Included with all plans",
+                         "items": [
+                                   "free-blog"
+                                   ]
+                         }
+                         ],
+  "formatted_original_price": "$0",
+  "raw_discount": 0,
+  "formatted_discount": "$0",
+  "can_start_trial": false
+  },
+  {
+  "product_id": 1008,
+  "product_name": "WordPress.com Business",
+  "prices": {
+  "USD": 299,
+  "NZD": 399,
+  "AUD": 399,
+  "CAD": 389,
+  "JPY": 35800,
+  "EUR": 299,
+  "GBP": 250,
+  "BRL": 999
+  },
+  "product_slug": "business-bundle",
+  "description": "",
+  "cost": 299,
+  "bill_period": 365,
+  "product_type": "bundle",
+  "available": "yes",
+  "multi": 0,
+  "bd_slug": "wp-bundles",
+  "bd_variation_slug": "wp-bundle-business",
+  "outer_slug": null,
+  "extra": null,
+  "capability": "manage_options",
+  "product_name_short": "Business",
+  "icon": "https:\/\/s0.wordpress.com\/i\/store\/plan-business.png",
+  "icon_active": "https:\/\/s0.wordpress.com\/i\/store\/plan-business-active.png",
+  "bundle_product_ids": [
+                         12,
+                         45,
+                         15,
+                         48,
+                         50,
+                         49,
+                         5,
+                         6,
+                         46,
+                         54,
+                         56,
+                         57,
+                         58,
+                         59,
+                         60,
+                         61,
+                         62,
+                         63,
+                         64,
+                         65,
+                         66,
+                         67,
+                         68,
+                         72,
+                         73,
+                         74,
+                         76,
+                         75,
+                         16
+                         ],
+  "bill_period_label": "per year",
+  "price": "$299",
+  "formatted_price": "$299",
+  "raw_price": 299,
+  "tagline": "Take it to the next level",
+  "currency_code": "USD",
+  "features_highlight": [
+                         {
+                         "items": [
+                                   "premium-themes",
+                                   "space",
+                                   "support"
+                                   ]
+                         },
+                         {
+                         "title": "Includes WordPress.com Premium features:",
+                         "items": [
+                                   "custom-design",
+                                   "videopress",
+                                   "no-adverts\/no-adverts.php",
+                                   "custom-domain"
+                                   ]
+                         },
+                         {
+                         "title": "Included with all plans:",
+                         "items": [
+                                   "free-blog"
+                                   ]
+                         }
+                         ],
+  "formatted_original_price": "$0",
+  "raw_discount": 0,
+  "formatted_discount": "$0",
+  "can_start_trial": false
+  }
+  ]

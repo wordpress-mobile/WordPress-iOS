@@ -32,7 +32,7 @@ class MediaItemViewController: UITableViewController {
         super.viewDidLoad()
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
-        ImmuTable.registerRows([TextRow.self, EditableTextRow.self, MediaImageRow.self],
+        ImmuTable.registerRows([TextRow.self, EditableTextRow.self, MediaImageRow.self, MediaDocumentRow.self],
                                tableView: tableView)
 
         updateViewModel()
@@ -45,33 +45,60 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func updateViewModel() {
-        let presenter = MediaMetadataPresenter(media: media)
-
         viewModel = ImmuTable(sections: [
-            ImmuTableSection(rows: [
-                MediaImageRow(media: media, action: { [weak self] row in
-                    guard let media = self?.media else { return }
-
-                    switch media.mediaType {
-                    case .image:
-                        self?.presentImageViewControllerForMedia()
-                    case .video:
-                        self?.presentVideoViewControllerForMedia()
-                    default: break
-                    }
-                }) ]),
+            ImmuTableSection(rows: [ headerRow ]),
             ImmuTableSection(headerText: nil, rows: [
                 editableRowIfSupported(title: NSLocalizedString("Title", comment: "Noun. Label for the title of a media asset (image / video)"), value: mediaMetadata.title, action: editTitle()),
                 editableRowIfSupported(title: NSLocalizedString("Caption", comment: "Noun. Label for the caption for a media asset (image / video)"), value: mediaMetadata.caption, action: editCaption()),
                 editableRowIfSupported(title: NSLocalizedString("Description", comment: "Label for the description for a media asset (image / video)"), value: mediaMetadata.desc, action: editDescription())
                 ], footerText: nil),
-            ImmuTableSection(headerText: NSLocalizedString("Metadata", comment: "Title of section containing image / video metadata such as size and file type"), rows: [
-                TextRow(title: NSLocalizedString("File name", comment: "Label for the file name for a media asset (image / video)"), value: media.filename ?? ""),
-                TextRow(title: NSLocalizedString("File type", comment: "Label for the file type (.JPG, .PNG, etc) for a media asset (image / video)"), value: presenter.fileType ?? ""),
-                TextRow(title: NSLocalizedString("Dimensions", comment: "Label for the dimensions in pixels for a media asset (image / video)"), value: presenter.dimensions),
-                TextRow(title: NSLocalizedString("Uploaded", comment: "Label for the date a media asset (image / video) was uploaded"), value: media.creationDate.mediumString())
-                ], footerText: nil)
+            ImmuTableSection(headerText: NSLocalizedString("Metadata", comment: "Title of section containing image / video metadata such as size and file type"), rows: metadataRows, footerText: nil)
             ])
+    }
+
+    private var headerRow: ImmuTableRow {
+        switch media.mediaType {
+        case .image, .video:
+            return MediaImageRow(media: media, action: { [weak self] row in
+                guard let media = self?.media else { return }
+
+                switch media.mediaType {
+                case .image:
+                    self?.presentImageViewControllerForMedia()
+                case .video:
+                    self?.presentVideoViewControllerForMedia()
+                default: break
+                }
+            })
+        default:
+            return MediaDocumentRow(media: media, action: { [weak self] _ in
+                guard let media = self?.media else { return }
+
+                // We're currently not presenting previews for audio until
+                // we can resolve an auth issue. @frosty 2017-05-02
+                if media.mediaType != .audio {
+                    self?.presentDocumentViewControllerForMedia()
+                }
+            })
+        }
+    }
+
+    private var metadataRows: [ImmuTableRow] {
+        let presenter = MediaMetadataPresenter(media: media)
+
+        var rows = [ImmuTableRow]()
+        rows.append(TextRow(title: NSLocalizedString("File name", comment: "Label for the file name for a media asset (image / video)"), value: media.filename() ?? ""))
+        rows.append(TextRow(title: NSLocalizedString("File type", comment: "Label for the file type (.JPG, .PNG, etc) for a media asset (image / video)"), value: presenter.fileType ?? ""))
+
+        switch media.mediaType {
+        case .image, .video:
+            rows.append(TextRow(title: NSLocalizedString("Dimensions", comment: "Label for the dimensions in pixels for a media asset (image / video)"), value: presenter.dimensions))
+        default: break
+        }
+
+        rows.append(TextRow(title: NSLocalizedString("Uploaded", comment: "Label for the date a media asset (image / video) was uploaded"), value: media.creationDate.mediumString()))
+
+        return rows
     }
 
     private func editableRowIfSupported(title: String, value: String, action: @escaping ((ImmuTableRow) -> ())) -> ImmuTableRow {
@@ -150,6 +177,28 @@ class MediaItemViewController: UITableViewController {
                 SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to load video.", comment: "Error shown when the app fails to load a video from the user's media library."))
             }
         }
+    }
+
+    private var documentInteractionController: UIDocumentInteractionController?
+    private func presentDocumentViewControllerForMedia() {
+        guard let remoteURL = media.remoteURL,
+            let url = URL(string: remoteURL) else { return }
+
+        let controller = WPWebViewController()
+        controller.authToken = media.blog.authToken
+        controller.username = media.blog.usernameForSite
+        controller.password = media.blog.password
+        controller.wpLoginURL = URL(string: media.blog.loginUrl())
+        controller.url = url
+        controller.loadViewIfNeeded()
+        controller.navigationItem.titleView = nil
+        controller.title = media.title ?? ""
+
+        if let webView = controller.view.subviews.first as? UIWebView {
+            webView.backgroundColor = .lightGray
+        }
+
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     private func videoViewControllerForAsset(_ asset: AVAsset) -> AVPlayerViewController {
@@ -314,6 +363,15 @@ extension MediaItemViewController {
 
 // MARK: - UITableViewDelegate
 extension MediaItemViewController {
+    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        let row = viewModel.rowAtIndexPath(indexPath)
+        if row is MediaDocumentRow && media.mediaType == .audio {
+            return false
+        }
+
+        return true
+    }
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let row = viewModel.rowAtIndexPath(indexPath)
         if let customHeight = type(of: row).customHeight {
@@ -327,7 +385,9 @@ extension MediaItemViewController {
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         let row = viewModel.rowAtIndexPath(indexPath)
-        if row is MediaImageRow {
+        if let customHeight = type(of: row).customHeight {
+            return CGFloat(customHeight)
+        } else if row is MediaImageRow {
             return view.readableContentGuide.layoutFrame.width
         }
 
@@ -366,10 +426,7 @@ private struct MediaMetadataPresenter {
 
     /// A String containing the uppercased file extension of the asset (.JPG, .PNG, etc)
     var fileType: String? {
-        guard let filename = media.filename else {
-            return nil
-        }
-        return (filename as NSString).pathExtension.uppercased()
+        return (media.filename() as NSString).pathExtension.uppercased()
     }
 }
 

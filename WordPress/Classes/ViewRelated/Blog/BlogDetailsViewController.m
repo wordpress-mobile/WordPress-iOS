@@ -12,11 +12,11 @@
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #import "WPGUIConstants.h"
-#import "WPTableViewCell.h"
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "MenusViewController.h"
 #import <Reachability/Reachability.h>
+#import <WordPressShared/WPTableViewCell.h>
 
 @import WordPressComStatsiOS;
 @import Gridicons;

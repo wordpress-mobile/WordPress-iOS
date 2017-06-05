@@ -27,8 +27,6 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 @objc(Post)
 class Post: AbstractPost {
-
-    static let entityName = "Post"
     static let typeDefaultIdentifier = "post"
 
     struct Constants {
@@ -43,6 +41,10 @@ class Post: AbstractPost {
     fileprivate var storedContentPreviewForDisplay = ""
 
     // MARK: - NSManagedObject
+
+    override class var entityName: String {
+        return "Post"
+    }
 
     override func awakeFromFetch() {
         super.awakeFromFetch()

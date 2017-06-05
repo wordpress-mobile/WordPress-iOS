@@ -7,11 +7,11 @@ struct PlanService<S: Store> {
     // This was going to be generic but it's causing a lot of trouble. Figure out conflicts first
 //    typealias S = StoreKitStore
     let store: S
-    let remote: PlansRemote
+    let remote: PlanServiceRemote
 
-    fileprivate let featuresRemote: PlanFeaturesRemote
+    fileprivate let featuresRemote: PlanFeatureServiceRemote
 
-    init(store: S, remote: PlansRemote, featuresRemote: PlanFeaturesRemote) {
+    init(store: S, remote: PlanServiceRemote, featuresRemote: PlanFeatureServiceRemote) {
         self.store = store
         self.remote = remote
         self.featuresRemote = featuresRemote
@@ -59,8 +59,8 @@ extension PlanService {
             return nil
         }
 
-        self.remote = PlansRemote(wordPressComRestApi: api)
-        self.featuresRemote = PlanFeaturesRemote(wordPressComRestApi: api)
+        self.remote = PlanServiceRemote(wordPressComRestApi: api)
+        self.featuresRemote = PlanFeatureServiceRemote(wordPressComRestApi: api)
     }
 }
 
@@ -90,8 +90,8 @@ extension PlanService {
             return nil
         }
 
-        let remote = PlansRemote(wordPressComRestApi: api)
-        let featuresRemote = PlanFeaturesRemote(wordPressComRestApi: api)
+        let remote = PlanServiceRemote(wordPressComRestApi: api)
+        let featuresRemote = PlanFeatureServiceRemote(wordPressComRestApi: api)
 
         self.init(store: store, remote: remote!, featuresRemote: featuresRemote!)
     }

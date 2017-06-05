@@ -28,10 +28,10 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FF27168E1CAAC87A0006E2D4"
-               BuildableName = "WordPressUITests.xctest"
-               BlueprintName = "WordPressUITests"
-               ReferencedContainer = "container:WordPress.xcodeproj">
+               BlueprintIdentifier = "829DD1461EC9EED200AB8C12"
+               BuildableName = "WordPressSharedTests.xctest"
+               BlueprintName = "WordPressSharedTests"
+               ReferencedContainer = "container:../WordPressShared/WordPressShared.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,10 +61,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FF27168E1CAAC87A0006E2D4"
-               BuildableName = "WordPressUITests.xctest"
-               BlueprintName = "WordPressUITests"
-               ReferencedContainer = "container:WordPress.xcodeproj">
+               BlueprintIdentifier = "931CFFD01EBCB016005E6BB4"
+               BuildableName = "WordPressComStatsiOSTests.xctest"
+               BlueprintName = "WordPressComStatsiOSTests"
+               ReferencedContainer = "container:../WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

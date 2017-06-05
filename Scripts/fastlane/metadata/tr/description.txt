@@ -1,0 +1,9 @@
+WordPress blogunuzu veya web sitenizi iOS cihazınızdan hareket halindeyken yönetin: İstatistikleri görüntüleyin, yorumları yönetin, sayfalar ile iletileri oluşturup düzenleyin ve karşıya medya yükleyin. İhtiyacınız olan tek şey bir WordPress.com blogu ya da 4.0 veya daha yüksek sürümde çalışan bir kendini barındıran WordPress.org sitesi.
+
+WordPress for iOS ile yayımcılığın gücünü avucunuzda tutarsınız. Trende giderken hemen o anda bir haiku yazın. The Daily Post'taki haftanın fotoğrafı yarışması için akşamüzeri gezintinizde bir fotoğraf çekin. En son yorumlarınıza cevap verin veya bugünkü okuyucuların nereden geldiklerini görmek için durumunuzu takip edin.
+
+Topluluğun şaheserlerinizi hareket halindeyken de bulabilmeleri için uygulamadan yayımlanan iletilerinizi #wponthego ile etiketlemeyi unutmayın.
+
+WordPress for iOS bir Açık Kaynak projesidir; bu, geliştirilmesine sizin de yardımcı olabileceğiniz anlamına gelir. https://apps.wordpress.com/contribute/ adresinde daha fazlasını öğrenin.
+
+Uygulamayla ilgili yardım mı gerekli? https://ios.forums.wordpress.org adresinde forumları ziyaret edin veya @WordPressiOS adresinden bize tweet atın.

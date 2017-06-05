@@ -4,7 +4,6 @@
 #import "PostCategoriesViewController.h"
 #import "FeaturedImageViewController.h"
 #import "LocationService.h"
-#import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
 #import "Media.h"
 #import "PostFeaturedImageCell.h"
@@ -13,7 +12,6 @@
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "PublishDatePickerView.h"
-#import "WPTextFieldTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableImageSource.h"
@@ -25,6 +23,8 @@
 #import <Photos/Photos.h>
 #import <Reachability/Reachability.h>
 #import "WPGUIConstants.h"
+#import <WordPressShared/NSString+XMLExtensions.h>
+#import <WordPressShared/WPTextFieldTableViewCell.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;
@@ -62,7 +62,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UIButton *passwordVisibilityButton;
-@property (nonatomic, strong) UITextField *tagsTextField;
 @property (nonatomic, strong) NSArray *visibilityList;
 @property (nonatomic, strong) NSArray *formatsList;
 @property (nonatomic, strong) WPTableImageSource *imageSource;
@@ -129,12 +128,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self setupFormatsList];
     [self setupPublicizeConnections];
 
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTagsKeyboardIfAppropriate:)];
-    gestureRecognizer.cancelsTouchesInView = NO;
-    gestureRecognizer.numberOfTapsRequired = 1;
-
-    [self.tableView addGestureRecognizer:gestureRecognizer];
-
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
 
     [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
@@ -187,7 +180,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                                 duration:(NSTimeInterval)duration
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    if ([self.passwordTextField isFirstResponder] || [self.tagsTextField isFirstResponder]) {
+    if ([self.passwordTextField isFirstResponder]) {
         self.textFieldDidHaveFocusBeforeOrientationChange = YES;
     }
 }
@@ -380,24 +373,12 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     if (textField == self.passwordTextField) {
         self.apost.password = textField.text;
-    } else if (textField == self.tagsTextField) {
-        self.post.tags = self.tagsTextField.text;
     }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
-    return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField
-        shouldChangeCharactersInRange:(NSRange)range
-        replacementString:(NSString *)string
-{
-    if (textField == self.tagsTextField) {
-        self.post.tags = [self.tagsTextField.text stringByReplacingCharactersInRange:range withString:string];
-    }
     return YES;
 }
 
@@ -571,6 +552,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
     if (cell.tag == PostSettingsRowCategories) {
         [self showCategoriesSelection];
+    } else if (cell.tag == PostSettingsRowTags) {
+        [self showTagsPicker];
     } else if (cell.tag == PostSettingsRowPublishDate && !self.datePicker) {
         [self configureAndShowDatePicker];
     } else if (cell.tag ==  PostSettingsRowStatus) {
@@ -607,11 +590,10 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (UITableViewCell *)configureTaxonomyCellForIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
+    UITableViewCell *cell = [self getWPTableViewDisclosureCell];
 
     if (indexPath.row == PostSettingsRowCategories) {
         // Categories
-        cell = [self getWPTableViewDisclosureCell];
         cell.textLabel.text = NSLocalizedString(@"Categories", @"Label for the categories field. Should be the same as WP core.");
         cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
         cell.tag = PostSettingsRowCategories;
@@ -619,17 +601,10 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
     } else if (indexPath.row == PostSettingsRowTags) {
         // Tags
-        WPTextFieldTableViewCell *textCell = [self getWPTableViewTextFieldCell];
-        textCell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
-        textCell.textField.text = self.post.tags;
-        textCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Comma separated", @"Placeholder text for the tags field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
-        textCell.textField.secureTextEntry = NO;
-        textCell.textField.clearButtonMode = UITextFieldViewModeNever;
-        textCell.textField.accessibilityIdentifier = @"Tags Value";
-        cell = textCell;
+        cell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
+        cell.detailTextLabel.text = self.post.tags;
         cell.tag = PostSettingsRowTags;
-
-        self.tagsTextField = textCell.textField;
+        cell.accessibilityIdentifier = @"Tags";
     }
 
     return cell;
@@ -691,7 +666,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     // Password
     WPTextFieldTableViewCell *textCell = [self getWPTableViewTextFieldCell];
-    textCell.textLabel.text = NSLocalizedString(@"Password", @"Label for the tags field. Should be the same as WP core.");
+    textCell.textLabel.text = NSLocalizedString(@"Password", @"Label for the password field. Should be the same as WP core.");
     textCell.textField.text = self.apost.password;
     textCell.textField.attributedPlaceholder = nil;
     textCell.textField.placeholder = NSLocalizedString(@"Enter a password", @"");
@@ -884,7 +859,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     WPTableViewCell *cell = [self getWPTableViewDisclosureCell];
     cell.textLabel.text = NSLocalizedString(@"Slug", @"Label for the slug field. Should be the same as WP core.");
-    cell.detailTextLabel.text = self.apost.wp_slug;
+    cell.detailTextLabel.text = self.apost.slugForDisplay;
     cell.tag = PostSettingsRowSlug;
     cell.accessibilityIdentifier = @"Slug";
     return cell;
@@ -1232,7 +1207,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)showEditSlugController
 {
-    SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:self.apost.wp_slug
+    SettingsMultiTextViewController *vc = [[SettingsMultiTextViewController alloc] initWithText:self.apost.slugForDisplay
                                                                                     placeholder:nil
                                                                                            hint:NSLocalizedString(@"The slug is the URL-friendly version of the post title.", @"Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso.")
                                                                                      isPassword:NO];
@@ -1282,6 +1257,15 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+
+- (void)showTagsPicker
+{
+    PostTagPickerViewController *tagsPicker = [[PostTagPickerViewController alloc] initWithTags:self.post.tags blog:self.post.blog];
+    tagsPicker.onValueChanged = ^(NSString * _Nonnull value) {
+        self.post.tags = value;
+    };
+    [self.navigationController pushViewController:tagsPicker animated:YES];
+}
 
 - (void)loadFeaturedImage:(NSIndexPath *)indexPath
 {
@@ -1422,14 +1406,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     }
 
     return NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.");
-}
-
-- (void)dismissTagsKeyboardIfAppropriate:(UITapGestureRecognizer *)gestureRecognizer
-{
-    CGPoint touchPoint = [gestureRecognizer locationInView:self.tableView];
-    if (!CGRectContainsPoint(self.tagsTextField.frame, touchPoint) && [self.tagsTextField isFirstResponder]) {
-        [self.tagsTextField resignFirstResponder];
-    }
 }
 
 #pragma mark - WPPickerView Delegate
