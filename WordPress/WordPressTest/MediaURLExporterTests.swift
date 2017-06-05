@@ -48,7 +48,9 @@ class MediaURLExporterTests: XCTestCase {
         let url = URL(fileURLWithPath: mediaPath)
         let exporter = MediaURLExporter()
         exporter.mediaDirectoryType = .temporary
-        exporter.stripsGeoLocationIfNeeded = removingGPS
+        var options = MediaVideoExporter.Options()
+        options.stripsGeoLocationIfNeeded = removingGPS
+        exporter.videoOptions = options
         weak var weakExporter = exporter
         exporter.exportURL(fileURL: url,
                            onCompletion: { (urlExport) in
@@ -108,7 +110,7 @@ class MediaURLExporterTests: XCTestCase {
                 break
             }
         }
-        if exporter.stripsGeoLocationIfNeeded {
+        if exporter.videoOptions?.stripsGeoLocationIfNeeded == true {
             XCTAssert(hasLocationData == false, "The exported video's location data was not removed as expected.")
         } else {
             XCTAssert(hasLocationData == true, "The exported video's location data was unexpectedly removed.")
