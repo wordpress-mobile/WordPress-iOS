@@ -15,7 +15,7 @@ class VideoProcessorTests: XCTestCase {
         let shortcodeProcessor = VideoProcessor.videoPressPreProcessor
         let sampleText = "Before Text[wpvideo OcobLTqC w=640 h=400 autoplay=true html5only=true] After Text"
         let parsedText = shortcodeProcessor.process(text: sampleText)
-        XCTAssertEqual(parsedText, "Before Text<video src=\"videopress://OcobLTqC\" data-wpvideopress=\"OcobLTqC\" width=640 height=400 /> After Text")
+        XCTAssertEqual(parsedText, "Before Text<video src=\"videopress://OcobLTqC\" data-wpvideopress=\"OcobLTqC\" poster=\"videopress://OcobLTqC\" width=640 height=400 /> After Text")
     }
 
     func testWordPressPreProcessor() {
