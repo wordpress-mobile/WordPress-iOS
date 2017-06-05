@@ -444,8 +444,8 @@ class AztecPostViewController: UIViewController {
             ])
 
         NSLayoutConstraint.activate([
-            richTextView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: defaultMargin),
-            richTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -defaultMargin),
+            richTextView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
+            richTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
             richTextView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -defaultMargin)
             ])
@@ -458,8 +458,8 @@ class AztecPostViewController: UIViewController {
             ])
 
         NSLayoutConstraint.activate([
-            placeholderLabel.leftAnchor.constraint(equalTo: richTextView.leftAnchor, constant: Constants.placeholderPadding.left),
-            placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: Constants.placeholderPadding.right),
+            placeholderLabel.leftAnchor.constraint(equalTo: richTextView.leftAnchor, constant: Constants.placeholderPadding.left + defaultMargin),
+            placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: Constants.placeholderPadding.right + defaultMargin),
             textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
@@ -478,6 +478,9 @@ class AztecPostViewController: UIViewController {
         textView.keyboardDismissMode = .interactive
         textView.textColor = UIColor.darkText
         textView.translatesAutoresizingMaskIntoConstraints = false
+
+        textView.textContainerInset.left = Constants.defaultMargin
+        textView.textContainerInset.right = Constants.defaultMargin
     }
 
     func configureNavigationBar() {
@@ -2404,9 +2407,7 @@ class MediaProgressCoordinator: NSObject {
     func refreshMediaProgress() {
         var value = Float(0)
         if let progress = mediaUploadingProgress {
-            // make sure the progress value reflects the number of upload finished 100%
-            let fractionOfUploadsCompleted = Float(Float((progress.completedUnitCount + 1))/Float(progress.totalUnitCount))
-            value = min(fractionOfUploadsCompleted, Float(progress.fractionCompleted))
+            value = Float(progress.fractionCompleted)
         }
 
         delegate?.mediaProgressCoordinator(self, progressDidChange: value)
@@ -2465,6 +2466,14 @@ class MediaProgressCoordinator: NSObject {
         }
 
         mediaUploadingProgress?.cancel()
+    }
+
+    func stopTrackingOfAllUploads() {
+        if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning {
+            mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
+            self.mediaUploadingProgress = nil
+        }
+        mediaUploading.removeAll()
     }
 
     var failedMediaIDs: [String] {
