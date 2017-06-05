@@ -1795,24 +1795,53 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
     fileprivate func processVideoPressAttachments() {
         richTextView.textStorage.enumerateAttachments { (attachment, range) in
-            guard let videoAttachment = attachment as? VideoAttachment,
+            if let videoAttachment = attachment as? VideoAttachment,
                 let videoSrcURL = videoAttachment.srcURL,
                 videoSrcURL.scheme == VideoProcessor.videoPressScheme,
-                let videoPressID = videoSrcURL.host else {
-                return
+                let videoPressID = videoSrcURL.host {
+
+                let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+                mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
+                    videoAttachment.srcURL = URL(string:videoURLString)
+                    if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
+                        videoAttachment.posterURL = posterURL
+                    }
+                    self.richTextView.refreshLayout(for: videoAttachment)
+                }, failure: { (error) in
+
+                })
+            } else if let videoAttachment = attachment as? VideoAttachment,
+                let videoSrcURL = videoAttachment.srcURL,
+                videoAttachment.posterURL == nil {
+                let asset = AVURLAsset(url: videoSrcURL as URL, options: nil)
+                let imgGenerator = AVAssetImageGenerator(asset: asset)
+                imgGenerator.maximumSize = .zero
+                imgGenerator.appliesPreferredTrackTransform = true
+                imgGenerator.generateCGImagesAsynchronously(forTimes: [NSValue(time: CMTimeMake(0, 1))], completionHandler: { (time, cgImage, actualTime, result, error) in
+                    guard let cgImage = cgImage else {
+                        return
+                    }
+                    let uiImage = UIImage(cgImage: cgImage)
+                    let url = self.URLForTemporaryFileWithFileExtension(".jpg")
+                    do {
+                        try uiImage.writeJPEGToURL(url)
+                        DispatchQueue.main.async {
+                            videoAttachment.posterURL = url
+                            self.richTextView.refreshLayout(for: videoAttachment)
+                        }
+                    } catch {
+
+                    }
+                })
             }
-
-            let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
-            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
-                videoAttachment.srcURL = URL(string:videoURLString)
-                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
-                    videoAttachment.posterURL = posterURL
-                }
-                self.richTextView.refreshLayout(for: videoAttachment)
-            }, failure: { (error) in
-
-            })
         }
+    }
+
+    private func URLForTemporaryFileWithFileExtension(_ fileExtension: String) -> URL {
+        assert(!fileExtension.isEmpty, "file Extension cannot be empty")
+        let fileName = "\(ProcessInfo.processInfo.globallyUniqueString)_file.\(fileExtension)"
+        let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
+        return fileURL
     }
 
     // TODO: Extract these strings into structs like other items
