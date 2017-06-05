@@ -2469,6 +2469,14 @@ public class MediaProgressCoordinator: NSObject {
         mediaUploadingProgress?.cancel()
     }
 
+    func stopTrackingOfAllUploads() {
+        if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning {
+            mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
+            self.mediaUploadingProgress = nil
+        }
+        mediaUploading.removeAll()
+    }
+
     var failedMediaIDs: [String] {
         var failedMediaIDs = [String]()
         for (key, progress) in mediaUploading {
