@@ -103,6 +103,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.mediaProgressView removeFromSuperview];
 }
 
 - (id)initWithTitle:(NSString *)title andContent:(NSString *)content andTags:(NSString *)tags andImage:(NSString *)image
@@ -169,6 +170,13 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
     self.mediaProgressCoordinator = [[MediaProgressCoordinator alloc] init];
     self.mediaProgressCoordinator.delegate = self;
     self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+    [self.mediaProgressView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.navigationController.navigationBar addSubview:self.mediaProgressView];
+    [NSLayoutConstraint activateConstraints:@[
+                                              [self.mediaProgressView.topAnchor constraintEqualToAnchor:self.navigationController.navigationBar.bottomAnchor constant:-2],
+                                              [self.mediaProgressView.widthAnchor constraintEqualToAnchor:self.navigationController.navigationBar.widthAnchor constant:0]
+                                              ]
+     ];
     self.delegate = self;
 }
 
@@ -191,26 +199,8 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
     [super viewDidAppear:animated];
     [self refreshButtons];
     // setup media progress view on navbar
-    [self.navigationController.navigationBar addSubview:self.mediaProgressView];
-    [self.mediaProgressView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
     self.mediaProgressView.hidden = !self.mediaProgressCoordinator.isRunning;
-}
-
-- (void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    [self.mediaProgressView removeFromSuperview];
-}
-
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    
-    //layout mediaProgressView 
-    CGRect frame = self.mediaProgressView.frame;
-    frame.size.width = self.view.frame.size.width;
-    frame.origin.y = self.navigationController.navigationBar.frame.size.height-frame.size.height;
-    self.mediaProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    [self.mediaProgressView setFrame:frame];
 }
 
 #pragma mark - View Setup
@@ -234,7 +224,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
-    self.mediaProgressView.hidden = !self.mediaProgressCoordinator.isRunning;
+    self.mediaProgressView.hidden = !(self.mediaProgressCoordinator.isRunning && self.isViewOnScreen);
     if (self.mediaProgressCoordinator.isRunning) {
         [self refreshMediaProgress];
         UIButton *titleButton = self.uploadStatusButton;
@@ -789,7 +779,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 - (void)refreshMediaProgress
 {
-    self.mediaProgressView.hidden = !self.mediaProgressCoordinator.isRunning;    
+    self.mediaProgressView.hidden = !(self.mediaProgressCoordinator.isRunning && self.isViewOnScreen);
     self.mediaProgressView.progress = self.mediaProgressCoordinator.totalProgress;
 }
 
