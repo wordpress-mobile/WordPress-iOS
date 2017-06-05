@@ -1067,6 +1067,9 @@
 		FF54D4641D6F3FA900A0DC4D /* EditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF54D4631D6F3FA900A0DC4D /* EditorSettings.swift */; };
 		FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */; };
 		FF75933B1BE2423800814D3B /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF75933A1BE2423800814D3B /* Photos.framework */; };
+		FF7691631EE04D1000713F4B /* ShortcodeProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7691621EE04D1000713F4B /* ShortcodeProcessor.swift */; };
+		FF7691651EE0507400713F4B /* VideoProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7691641EE0507400713F4B /* VideoProcessor.swift */; };
+		FF7691681EE06D1C00713F4B /* VideoProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7691671EE06D1C00713F4B /* VideoProcessorTests.swift */; };
 		FF76A9D21D1C58EB0080EF1F /* WordPressOrgXMLRPCValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF76A9D01D1C58EB0080EF1F /* WordPressOrgXMLRPCValidator.swift */; };
 		FF76A9D31D1C58EB0080EF1F /* WordPressRSDParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF76A9D11D1C58EB0080EF1F /* WordPressRSDParser.swift */; };
 		FF7C89A31E3A1029000472A8 /* MediaLibraryPickerDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7C89A21E3A1029000472A8 /* MediaLibraryPickerDataSourceTests.swift */; };
@@ -2700,6 +2703,9 @@
 		FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLPlacemark+Formatting.swift"; sourceTree = "<group>"; };
 		FF695E151B87662500CD6EAA /* WordPress 38.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 38.xcdatamodel"; sourceTree = "<group>"; };
 		FF75933A1BE2423800814D3B /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		FF7691621EE04D1000713F4B /* ShortcodeProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcodeProcessor.swift; sourceTree = "<group>"; };
+		FF7691641EE0507400713F4B /* VideoProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoProcessor.swift; sourceTree = "<group>"; };
+		FF7691671EE06D1C00713F4B /* VideoProcessorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VideoProcessorTests.swift; path = Aztec/VideoProcessorTests.swift; sourceTree = "<group>"; };
 		FF76A9D01D1C58EB0080EF1F /* WordPressOrgXMLRPCValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressOrgXMLRPCValidator.swift; sourceTree = "<group>"; };
 		FF76A9D11D1C58EB0080EF1F /* WordPressRSDParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressRSDParser.swift; sourceTree = "<group>"; };
 		FF7C89A21E3A1029000472A8 /* MediaLibraryPickerDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryPickerDataSourceTests.swift; sourceTree = "<group>"; };
@@ -3105,7 +3111,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				E1B34C091CCDFFCE00889709 /* Credentials */,
@@ -4683,6 +4689,8 @@
 				B5508F1E1E9C13FC009596FB /* CommentAttachmentRenderer.swift */,
 				B5508F1F1E9C13FC009596FB /* HTMLAttachmentRenderer.swift */,
 				B5508F201E9C13FC009596FB /* MoreAttachmentRenderer.swift */,
+				FF7691621EE04D1000713F4B /* ShortcodeProcessor.swift */,
+				FF7691641EE0507400713F4B /* VideoProcessor.swift */,
 			);
 			path = Aztec;
 			sourceTree = "<group>";
@@ -5055,6 +5063,7 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				FF7691661EE06CF500713F4B /* Aztec */,
 				B5AEEC7F1ACAD099008BF2A4 /* Categories */,
 				B5AEEC731ACACF3B008BF2A4 /* Core Data */,
 				E1C9AA541C1041E600732665 /* Extensions */,
@@ -5665,6 +5674,14 @@
 			path = WordPressUITests;
 			sourceTree = "<group>";
 		};
+		FF7691661EE06CF500713F4B /* Aztec */ = {
+			isa = PBXGroup;
+			children = (
+				FF7691671EE06D1C00713F4B /* VideoProcessorTests.swift */,
+			);
+			name = Aztec;
+			sourceTree = "<group>";
+		};
 		FF7C89A11E3A1029000472A8 /* MediaPicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -5939,7 +5956,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -6570,8 +6587,10 @@
 				93A379DB19FE6D3000415023 /* DDLogSwift.m in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
 				E6BDEA731CE4824300682885 /* ReaderSearchTopic.swift in Sources */,
+				FF7691631EE04D1000713F4B /* ShortcodeProcessor.swift in Sources */,
 				5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */,
 				B5772AC41C9C7A070031F97E /* GravatarService.swift in Sources */,
+				FF7691651EE0507400713F4B /* VideoProcessor.swift in Sources */,
 				5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */,
 				E66969DC1B9E55C300EC9C00 /* ReaderTopicToReaderListTopic37to38.swift in Sources */,
 				B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */,
@@ -7244,6 +7263,7 @@
 				74AB97301EA7C29600A4CD18 /* RemoteTestCase.swift in Sources */,
 				937E3AB61E3EBE1600CDA01A /* PostEditorStateTests.swift in Sources */,
 				E1E1AA8F1B7DF54B001C8645 /* WPMapFilterReduceTest.m in Sources */,
+				FF7691681EE06D1C00713F4B /* VideoProcessorTests.swift in Sources */,
 				B532ACCF1DC3AB8E00FFFA57 /* NotificationSyncMediatorTests.swift in Sources */,
 				B59D40A61DB522DF003D2D79 /* NSAttributedStringTests.swift in Sources */,
 				E1266D2F1BBEC37B00FCB6B6 /* GravatarTest.swift in Sources */,
@@ -7608,7 +7628,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
@@ -7675,7 +7695,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
@@ -7966,7 +7986,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_CONFIG = "$HOME/.wpcom_alpha_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
 				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
@@ -8398,7 +8418,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_CONFIG = "$HOME/.wpcom_internal_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
