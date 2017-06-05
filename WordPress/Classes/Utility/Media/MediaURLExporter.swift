@@ -6,7 +6,6 @@ import MobileCoreServices
 class MediaURLExporter: MediaExporter {
 
     var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
-    var stripsGeoLocationIfNeeded = false
 
     var imageOptions: MediaImageExporter.Options?
     var videoOptions: MediaVideoExporter.Options?
