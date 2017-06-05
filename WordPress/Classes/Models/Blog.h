@@ -164,6 +164,8 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (weak, readonly, nullable) NSString *hostname;
 
 @property (weak, readonly, nullable) NSString *defaultPostFormatText;
+// Used to check if the blog has an icon set up
+@property (readonly) BOOL hasIcon;
 
 #pragma mark - Blog information
 - (BOOL)isPrivate;
