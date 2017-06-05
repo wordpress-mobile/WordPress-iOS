@@ -11,9 +11,4 @@
 - (void)setImageWithSiteIcon:(NSString *)siteIcon placeholderImage:(UIImage *)placeholderImage;
 - (void)setDefaultSiteIconImage;
 
-#pragma mark - Blavatar Helpers
-
-- (NSURL *)blavatarURLForHost:(NSString *)host;
-- (NSURL *)blavatarURLForHost:(NSString *)host withSize:(NSInteger)size;
-
 @end
