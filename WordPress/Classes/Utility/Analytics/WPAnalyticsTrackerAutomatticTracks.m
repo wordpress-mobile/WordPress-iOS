@@ -409,6 +409,39 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatLoginAutoFillCredentialsUpdated:
             eventName = @"login_autofill_credentials_updated";
             break;
+        case WPAnalyticsStatLoginPrologueViewed:
+            eventName = @"login_prologue_viewed";
+            break;
+        case WPAnalyticsStatLoginEmailFormViewed:
+            eventName = @"login_email_form_viewed";
+            break;
+        case WPAnalyticsStatLoginMagicLinkOpenEmailClientViewed:
+            eventName = @"login_magic_link_open_email_client_viewed";
+            break;
+        case WPAnalyticsStatLoginMagicLinkRequestFormViewed:
+            eventName = @"login_magic_link_request_form_viewed";
+            break;
+        case WPAnalyticsStatLoginPasswordFormViewed:
+            eventName = @"login_password_form_viewed";
+            break;
+        case WPAnalyticsStatLoginURLFormViewed:
+            eventName = @"login_url_form_viewed";
+            break;
+        case WPAnalyticsStatLoginURLHelpScreenViewed:
+            eventName = @"login_url_help_screen_viewed";
+            break;
+        case WPAnalyticsStatLoginUsernamePasswordFormViewed:
+            eventName = @"login_username_password_form_viewed";
+            break;
+        case WPAnalyticsStatLoginTwoFactorFormViewed:
+            eventName = @"login_two_factor_form_viewed";
+            break;
+        case WPAnalyticsStatLoginEpilogueViewed:
+            eventName = @"login_epilogue_viewed";
+            break;
+        case WPAnalyticsStatLoginForgotPasswordClicked:
+            eventName = @"login_forgot_password_clicked";
+            break;
         case WPAnalyticsStatLogout:
             eventName = @"account_logout";
             break;
@@ -990,21 +1023,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
-        case WPAnalyticsStatLoginEmailFormViewed:
-        case WPAnalyticsStatLoginEmailRetryViewed:
-        case WPAnalyticsStatLoginEpilogueViewed:
-        case WPAnalyticsStatLoginForgotPasswordClicked:
-        case WPAnalyticsStatLoginMagicLinkOpenFormViewed:
-        case WPAnalyticsStatLoginMagicLinkRequestFormViewed:
-        case WPAnalyticsStatLoginPasswordFormViewed:
-        case WPAnalyticsStatLoginPasswordRetryViewed:
-        case WPAnalyticsStatLoginPrologueViewed:
-        case WPAnalyticsStatLoginTwoFactorFormViewed:
-        case WPAnalyticsStatLoginURLFormViewed:
-        case WPAnalyticsStatLoginURLHelpViewed:
-        case WPAnalyticsStatLoginURLRetryViewed:
-        case WPAnalyticsStatLoginUsernamePasswordFormViewed:
-        case WPAnalyticsStatLoginUsernamePasswordRetryViewed:
             return nil;
     }
 
