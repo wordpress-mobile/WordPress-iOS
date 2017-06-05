@@ -22,6 +22,9 @@ open class RemoteBlogSettings: NSObject {
     ///
     var languageID: NSNumber?
 
+    /// Stores the Blog's Icon Media ID
+    ///
+    var iconMediaID: NSNumber?
 
     // MARK: - Writing
 
