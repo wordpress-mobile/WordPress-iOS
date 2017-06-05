@@ -1808,7 +1808,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                     }
                     self.richTextView.refreshLayout(for: videoAttachment)
                 }, failure: { (error) in
-
+                    DDLogSwift.logError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
                 })
             } else if let videoAttachment = attachment as? VideoAttachment,
                 let videoSrcURL = videoAttachment.srcURL,
@@ -1830,7 +1830,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                             self.richTextView.refreshLayout(for: videoAttachment)
                         }
                     } catch {
-
+                        DDLogSwift.logError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
                     }
                 })
             }
