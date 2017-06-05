@@ -972,6 +972,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
 
+    func updateFilter(index: Int) {
+        filterSettings.setCurrentFilterIndex(index)
+        refreshAndReload()
+    }
+
     func updateFilterTitle() {
         filterButton.setAttributedTitleForTitle(filterSettings.currentPostListFilter().title)
     }

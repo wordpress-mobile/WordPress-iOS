@@ -259,7 +259,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
 
-        if page.remoteStatus != AbstractPostRemoteStatusPushing && page.status != .trash {
+        if page.remoteStatus != .pushing && page.status != .trash {
             editPage(page)
         }
     }
@@ -320,6 +320,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func createPost() {
         let navController: UINavigationController
 
+        let filterIndex = filterSettings.currentFilterIndex()
         let editorSettings = EditorSettings()
         if editorSettings.visualEditorEnabled {
 
@@ -337,6 +338,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                         if let postStatus = postViewController.post.status {
                             self?.updateFilterWithPostStatus(postStatus)
                         }
+                    } else {
+                        self?.updateFilter(index: filterIndex)
                     }
                     navController.dismiss(animated: true, completion: nil)
                 }
@@ -351,6 +354,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                         if let postStatus = postViewController?.post.status {
                             self?.updateFilterWithPostStatus(postStatus)
                         }
+                    } else {
+                        self?.updateFilter(index: filterIndex)
                     }
                     navController.dismiss(animated: true, completion: nil)
                 }
@@ -366,6 +371,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     if let postStatus = editPostViewController?.post.status {
                         self?.updateFilterWithPostStatus(postStatus)
                     }
+                } else {
+                    self?.updateFilter(index: filterIndex)
                 }
                 navController.dismiss(animated: true, completion: nil)
             }
@@ -373,7 +380,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         navController.modalPresentationStyle = .fullScreen
 
-        present(navController, animated: true, completion: nil)
+        present(navController, animated: true, completion: { [weak self] in
+            self?.updateFilterWithPostStatus(.draft)
+        })
 
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
     }
