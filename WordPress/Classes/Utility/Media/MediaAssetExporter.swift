@@ -52,7 +52,7 @@ class MediaAssetExporter: MediaExporter {
         func toNSError() -> NSError {
             return NSError(domain: _domain, code: _code, userInfo: [NSLocalizedDescriptionKey: String(describing: self)])
         }
-    } 
+    }
 
     /// Default shared instance of the PHImageManager
     ///
