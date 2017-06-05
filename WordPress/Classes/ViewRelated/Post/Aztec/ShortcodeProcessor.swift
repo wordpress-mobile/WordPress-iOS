@@ -78,7 +78,6 @@ open class ShortcodeProcessor: RegexProcessor {
             let shortcode = Shortcode(tag: tag, attributes: attributes, type: type, content: content)
             return replacer(shortcode)
         }
-        
         super.init(regex: regex, replacer: regexReplacer)
     }
 }
