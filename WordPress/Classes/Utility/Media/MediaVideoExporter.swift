@@ -82,9 +82,9 @@ class MediaVideoExporter: MediaExporter {
                 /* 
                  If it is not supported by the session, try and find one
                  of the exporter's own supported types within the session's.
+                 Ideally we return the first type, as an order of preference from supportedExportFileTypes.
                 */
-                let availableTypes = supportedExportFileTypes.filter { session.supportedFileTypes.contains($0) }
-                guard let supportedType = availableTypes.first else {
+                guard let supportedType = supportedExportFileTypes.first(where: { session.supportedFileTypes.contains($0) }) else {
                     // No supported types available, throw an error.
                     throw VideoExportError.videoExportSessionDoesNotSupportVideoOutputType
                 }
