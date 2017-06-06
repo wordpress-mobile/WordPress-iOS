@@ -631,7 +631,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)dismissEditView:(BOOL)changesSaved
 {
     if (self.onClose) {
-        self.onClose(self, changesSaved);
+        self.onClose(changesSaved);
         self.onClose = nil;
     } else{
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];

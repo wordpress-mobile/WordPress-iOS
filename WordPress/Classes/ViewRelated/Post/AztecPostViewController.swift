@@ -11,7 +11,7 @@ import AVKit
 
 // MARK: - Aztec's Native Editor!
 //
-class AztecPostViewController: UIViewController {
+class AztecPostViewController: UIViewController, PostEditor {
     fileprivate let analyticsEditorSourceValue = "aztec"
 
     /// Closure to be executed when the editor gets closed
@@ -298,7 +298,7 @@ class AztecPostViewController: UIViewController {
 
     // MARK: - Lifecycle Methods
 
-    init(post: AbstractPost) {
+    required init(post: AbstractPost) {
         self.post = post
 
         super.init(nibName: nil, bundle: nil)

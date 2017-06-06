@@ -67,4 +67,27 @@ class EditorSettings: NSObject {
             database.set(newValue, forKey: nativeEditorEnabledKey)
         }
     }
+
+    // We can't return a type that's both a PostEditor and a UIViewController, so using
+    // a configure block as a hack.
+    // In Swift 4, we'll be able to do `instantiateEditor() -> UIViewController & PostEditor`,
+    // and then let the called configure the editor.
+    func instantiateEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
+        switch (visualEditorEnabled, nativeEditorEnabled) {
+        case (true, true):
+            let vc = AztecPostViewController(post: post)
+            configure(vc, vc)
+            return vc
+        case (true, false):
+            let vc = WPPostViewController(post: post)
+            configure(vc, vc)
+            return vc
+        case (false, _):
+            let vc = WPLegacyEditPostViewController(post: post)
+            configure(vc, vc)
+            return vc
+        default:
+            fatalError()
+        }
+    }
 }
