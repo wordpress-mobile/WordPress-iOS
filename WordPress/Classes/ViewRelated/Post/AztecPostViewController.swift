@@ -1621,8 +1621,7 @@ private extension AztecPostViewController {
     }
 }
 
-
-// MARK: - Media Support
+// MARK: - MediaProgressCoordinatorDelegate
 //
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
@@ -1655,6 +1654,11 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         postEditorStateContext.update(isUploadingMedia: false)
     }
+}
+
+// MARK: - Media Support
+//
+extension AztecPostViewController {
 
     fileprivate func insertDeviceMedia(phAsset: PHAsset) {
         switch phAsset.mediaType {
@@ -2034,7 +2038,7 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 }
 
 
-// MARK: - TextViewMedia Delegate Conformance
+// MARK: - TextViewAttachmentDelegate Conformance
 //
 extension AztecPostViewController: TextViewAttachmentDelegate {
 
