@@ -2141,25 +2141,13 @@ extension AztecPostViewController: UIViewControllerRestoration {
             return nil
         }
 
-        switch lastIdentifierComponent {
-        case Restoration.navigationIdentifier:
-            return restoreNavigation(withCoder: coder)
-        default:
-            return restoreAztec(withCoder: coder)
-        }
+        return restoreAztec(withCoder: coder)
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
         super.encodeRestorableState(with: coder)
         coder.encode(post.objectID.uriRepresentation(), forKey: Restoration.postIdentifierKey)
         coder.encode(shouldRemovePostOnDismiss, forKey: Restoration.shouldRemovePostKey)
-    }
-
-    class func restoreNavigation(withCoder coder: NSCoder) -> UINavigationController? {
-        let navigationController = UINavigationController()
-        navigationController.restorationIdentifier = Restoration.navigationIdentifier
-        navigationController.restorationClass = self
-        return navigationController
     }
 
     class func restoreAztec(withCoder coder: NSCoder) -> AztecPostViewController? {
@@ -2232,7 +2220,6 @@ extension AztecPostViewController {
 
     struct Restoration {
         static let restorationIdentifier    = "AztecPostViewController"
-        static let navigationIdentifier     = "AztecPostNavigationViewController"
         static let postIdentifierKey        = AbstractPost.classNameWithoutNamespaces()
         static let shouldRemovePostKey      = "shouldRemovePostOnDismiss"
     }

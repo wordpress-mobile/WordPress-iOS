@@ -31,7 +31,6 @@
 #import "AbstractPost.h"
 #import "Media+HTML.h"
 
-NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
 NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 static void *ProgressObserverContext = &ProgressObserverContext;
@@ -66,13 +65,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     if (dontRestoreIfNewEditorIsEnabled) {
         return nil;
-    }
-
-    if ([[identifierComponents lastObject] isEqualToString:WPLegacyEditorNavigationRestorationID]) {
-        UINavigationController *navController = [[UINavigationController alloc] init];
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [self class];
-        return navController;
     }
 
     NSString *postID = [coder decodeObjectForKey:WPLegacyAbstractPostRestorationKey];
