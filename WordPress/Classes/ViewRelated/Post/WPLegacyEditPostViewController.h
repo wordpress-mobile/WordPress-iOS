@@ -11,8 +11,6 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 
 @class AbstractPost;
 
-extern NSString *const WPLegacyEditorNavigationRestorationID;
-
 @interface WPLegacyEditPostViewController : WPLegacyEditorViewController
 <UINavigationControllerDelegate, WPLegacyEditorViewControllerDelegate, UIViewControllerRestoration>
 
