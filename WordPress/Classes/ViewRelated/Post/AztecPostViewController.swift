@@ -1720,7 +1720,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 
     fileprivate func addSiteMediaAsset(_ media: Media) {
-        if media.mediaID?.intValue != 0 {
+        if media.hasRemote {
             guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
