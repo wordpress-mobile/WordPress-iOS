@@ -1656,8 +1656,21 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         postEditorStateContext.update(isUploadingMedia: false)
     }
 
-    fileprivate func addDeviceMediaAsset(_ phAsset: PHAsset) {
-        let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+    fileprivate func insertDeviceMedia(phAsset: PHAsset) {
+        switch phAsset.mediaType {
+        case .image:
+            insertDeviceImage(phAsset: phAsset)
+        case .video:
+            insertDeviceVideo(phAsset: phAsset)
+        default:
+            return
+        }
+    }
+
+    fileprivate func insertDeviceImage(phAsset: PHAsset) {
+        let attachment = richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage:
+                Assets.defaultMissingImage)
+
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
             DispatchQueue.main.async {
@@ -1674,11 +1687,33 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 return
             }
 
-            if media.mediaType == .image {
-                WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
-            } else if media.mediaType == .video {
-                WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+
+            strongSelf.upload(media: media, mediaID: attachment.identifier)
+        })
+    }
+
+    fileprivate func insertDeviceVideo(phAsset: PHAsset) {
+        let attachment = richTextView.insertVideo(atLocation: richTextView.selectedRange.location, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
+            DispatchQueue.main.async {
+                attachment.posterURL = thumbnailURL
+                self.richTextView.refreshLayout(for: attachment)
             }
+        }, completion: { [weak self](media, error) in
+            guard let strongSelf = self else {
+                return
+            }
+            guard let media = media, error == nil else {
+                DispatchQueue.main.async {
+                    strongSelf.handleError(error as NSError?, onAttachment: attachment)
+                }
+                return
+            }
+
+            WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
 
             strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
@@ -1754,6 +1789,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             DispatchQueue.main.async {
                 if let imageAttachment = attachment as? ImageAttachment {
                     strongSelf.richTextView.update(attachment: imageAttachment, alignment: imageAttachment.alignment, size: imageAttachment.size, url: remoteURL)
+                } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
+                    videoAttachment.srcURL = URL(string: videoURLString)
+                    if let videoPosterURLString = media.remoteThumbnailURL {
+                        videoAttachment.posterURL = URL(string: videoPosterURLString)
+                    }
+                    strongSelf.richTextView.refreshLayout(for: videoAttachment)
                 }
             }
             }, failure: { [weak self](error) in
@@ -2122,7 +2163,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         for asset in assets {
             switch asset {
             case let phAsset as PHAsset:
-                addDeviceMediaAsset(phAsset)
+                insertDeviceMedia(phAsset: phAsset)
             case let media as Media:
                 addSiteMediaAsset(media)
             default:
