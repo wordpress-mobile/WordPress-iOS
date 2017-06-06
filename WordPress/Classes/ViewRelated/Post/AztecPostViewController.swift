@@ -1719,26 +1719,50 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         })
     }
 
-    fileprivate func addSiteMediaAsset(_ media: Media) {
+    fileprivate func insertSiteMediaLibrary(media: Media) {
         if media.hasRemote {
-            guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
-                return
-            }
-            let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
-            self.mediaProgressCoordinator.finishOneItem()
+            insertRemoteSiteMediaLibrary(media: media)
         } else {
-            var tempMediaURL = URL(string:"placeholder://")!
-            if let absoluteURL = media.absoluteLocalURL {
-                tempMediaURL = absoluteURL
-            }
-            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+            insertLocalSiteMediaLibrary(media: media)
+        }
+    }
 
-            if media.mediaType == .image {
-                WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
-            } else if media.mediaType == .video {
-                WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+    fileprivate func insertRemoteSiteMediaLibrary(media: Media) {
+        let insertLocation = richTextView.selectedRange.location
+        guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
+            return
+        }
+        if media.mediaType == .image {
+            let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: insertLocation, placeHolderImage: Assets.defaultMissingImage)
+            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+        } else if media.mediaType == .video {
+            var posterURL: URL?
+            if let posterURLString = media.remoteThumbnailURL {
+                posterURL = URL(string: posterURLString)
             }
+            let _ = richTextView.insertVideo(atLocation: insertLocation, sourceURL: remoteURL, posterURL: posterURL, placeHolderImage: Assets.defaultMissingImage)
+            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+        }
+        self.mediaProgressCoordinator.finishOneItem()
+    }
 
+    fileprivate func insertLocalSiteMediaLibrary(media: Media) {
+        let insertLocation = richTextView.selectedRange.location
+        var tempMediaURL = URL(string:"placeholder://")!
+        if let absoluteURL = media.absoluteLocalURL {
+            tempMediaURL = absoluteURL
+        }
+        var attachment: MediaAttachment?
+        if media.mediaType == .image {
+            attachment = self.richTextView.insertImage(sourceURL:tempMediaURL, atPosition: insertLocation, placeHolderImage: Assets.defaultMissingImage)
+            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+        } else if media.mediaType == .video,
+            let remoteURLStr = media.remoteURL,
+            let remoteURL = URL(string: remoteURLStr) {
+            attachment = richTextView.insertVideo(atLocation: insertLocation, sourceURL: remoteURL, posterURL: media.absoluteThumbnailLocalURL, placeHolderImage: Assets.defaultMissingImage)
+            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+        }
+        if let attachment = attachment {
             upload(media: media, mediaID: attachment.identifier)
         }
     }
@@ -2165,7 +2189,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             case let phAsset as PHAsset:
                 insertDeviceMedia(phAsset: phAsset)
             case let media as Media:
-                addSiteMediaAsset(media)
+                insertSiteMediaLibrary(media: media)
             default:
                 continue
             }
