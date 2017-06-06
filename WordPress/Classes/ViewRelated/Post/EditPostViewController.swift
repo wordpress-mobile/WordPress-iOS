@@ -108,7 +108,7 @@ class EditPostViewController: UIViewController {
 
     fileprivate func showEditor() {
         let editorSettings = EditorSettings()
-        let editor = editorSettings.instantiateEditor(post: postToEdit()) { (editor, vc) in
+        let editor = editorSettings.instantiatePostEditor(post: postToEdit()) { (editor, vc) in
             editor.isOpenedDirectlyForPhotoPost = openWithMediaPicker
             editor.onClose = { [weak self, weak vc, weak editor] changesSaved in
                 guard let strongSelf = self else {

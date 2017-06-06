@@ -830,6 +830,7 @@
 		E183ECB116B2179B00C2EB11 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		E183ECB216B2179B00C2EB11 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F21577DFF400A6D5B5 /* Twitter.framework */; };
 		E1845F591BFF75D200B69421 /* AccountSettingsRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1845F581BFF75D200B69421 /* AccountSettingsRemote.swift */; };
+		E185042F1EE6ABD9005C234C /* Restorer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E185042E1EE6ABD9005C234C /* Restorer.swift */; };
 		E185474E1DED8D8800D875D7 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E185474D1DED8D8800D875D7 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E18EE95119349EC300B0A40C /* ReaderTopicServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = E18EE95019349EC300B0A40C /* ReaderTopicServiceRemote.m */; };
 		E1926C091C779868009F3C2C /* PlanListViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B2FF581C637AE200F6BDEA /* PlanListViewControllerTest.swift */; };
@@ -2350,6 +2351,7 @@
 		E183BD7217621D85000B0822 /* WPCookie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCookie.h; sourceTree = "<group>"; };
 		E183BD7317621D86000B0822 /* WPCookie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCookie.m; sourceTree = "<group>"; };
 		E1845F581BFF75D200B69421 /* AccountSettingsRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsRemote.swift; sourceTree = "<group>"; };
+		E185042E1EE6ABD9005C234C /* Restorer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Restorer.swift; sourceTree = "<group>"; };
 		E185474D1DED8D8800D875D7 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		E1863F9A1355E0AB0031BBC8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1874BFE161C5DBC0058BDC4 /* WordPress 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 7.xcdatamodel"; sourceTree = "<group>"; };
@@ -4392,6 +4394,7 @@
 				E1EEFAD91CC4CC5700126533 /* Confirmable.h */,
 				1731BCD21DDA01AF009FE3AE /* HelpshiftPresenter.swift */,
 				E15632CB1EB9ECF40035A099 /* TableViewKeyboardObserver.swift */,
+				E185042E1EE6ABD9005C234C /* Restorer.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -6630,6 +6633,7 @@
 				43F258AA1ED7772C0075406B /* LoginPrologueViewController.swift in Sources */,
 				082AB9D61C4EEA72000CA523 /* RemotePostTag.m in Sources */,
 				5DED0E141B42E3E400431FCD /* RemoteSourcePostAttribution.m in Sources */,
+				E185042F1EE6ABD9005C234C /* Restorer.swift in Sources */,
 				5DFA7EC71AF814E40072023B /* PageListTableViewCell.m in Sources */,
 				5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */,
 				17D2FDC21C6A468A00944265 /* PlanComparisonViewController.swift in Sources */,

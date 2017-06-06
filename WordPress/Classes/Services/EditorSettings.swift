@@ -72,7 +72,7 @@ class EditorSettings: NSObject {
     // a configure block as a hack.
     // In Swift 4, we'll be able to do `instantiateEditor() -> UIViewController & PostEditor`,
     // and then let the called configure the editor.
-    func instantiateEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
+    func instantiatePostEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
         switch (visualEditorEnabled, nativeEditorEnabled) {
         case (true, true):
             let vc = AztecPostViewController(post: post)
@@ -84,6 +84,25 @@ class EditorSettings: NSObject {
             return vc
         case (false, _):
             let vc = WPLegacyEditPostViewController(post: post)
+            configure(vc, vc)
+            return vc
+        default:
+            fatalError()
+        }
+    }
+
+    func instantiatePageEditor(page post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
+        switch (visualEditorEnabled, nativeEditorEnabled) {
+        case (true, true):
+            let vc = AztecPostViewController(post: post)
+            configure(vc, vc)
+            return vc
+        case (true, false):
+            let vc = EditPageViewController(post: post)
+            configure(vc, vc)
+            return vc
+        case (false, _):
+            let vc = WPLegacyEditPageViewController(post: post)
             configure(vc, vc)
             return vc
         default:
