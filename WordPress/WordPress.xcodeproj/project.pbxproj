@@ -762,6 +762,7 @@
 		E135965D1E7152D1006C6606 /* RecentSitesServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E135965C1E7152D1006C6606 /* RecentSitesServiceTests.swift */; };
 		E1389ADB1C59F7C200FB2466 /* PlanListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1389ADA1C59F7C200FB2466 /* PlanListViewController.swift */; };
 		E13A8C9B1C3E6EF2005BB1C1 /* ImmuTable+WordPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13A8C9A1C3E6EF2005BB1C1 /* ImmuTable+WordPress.swift */; };
+		E13ACCD41EE5672100CCE985 /* PostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13ACCD31EE5672100CCE985 /* PostEditor.swift */; };
 		E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */; };
 		E1418A0E1C592F8C003214B7 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1418A0D1C592F8C003214B7 /* Plan.swift */; };
 		E14200781C117A2E00B3B115 /* ManagedAccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14200771C117A2E00B3B115 /* ManagedAccountSettings.swift */; };
@@ -2272,6 +2273,7 @@
 		E135CD8B1E54BDEF0021E79F /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1389ADA1C59F7C200FB2466 /* PlanListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanListViewController.swift; sourceTree = "<group>"; };
 		E13A8C9A1C3E6EF2005BB1C1 /* ImmuTable+WordPress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImmuTable+WordPress.swift"; sourceTree = "<group>"; };
+		E13ACCD31EE5672100CCE985 /* PostEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostEditor.swift; sourceTree = "<group>"; };
 		E13F23C114FE84600081D9CC /* NSMutableDictionary+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+Helpers.h"; sourceTree = "<group>"; };
 		E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+Helpers.m"; sourceTree = "<group>"; };
 		E1418A0D1C592F8C003214B7 /* Plan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
@@ -4223,6 +4225,7 @@
 				5DF3DD6A1A93772D0051A229 /* Views */,
 				FF0CAC311E4A8A0D00C7D4F1 /* AztecAttachmentViewController.swift */,
 				FF06FFB71D65CB480095CDF7 /* AztecPostViewController.swift */,
+				E13ACCD31EE5672100CCE985 /* PostEditor.swift */,
 				5D8CBC451A6F47880081F4AE /* EditImageDetailsViewController.h */,
 				5D8CBC461A6F47880081F4AE /* EditImageDetailsViewController.m */,
 				437542E21DD4E19E00D6B727 /* EditPostViewController.swift */,
@@ -7130,6 +7133,7 @@
 				E6A338501BB0A70F00371587 /* ReaderGapMarkerCell.swift in Sources */,
 				E6311C431ECA017E00122529 /* UserProfile.swift in Sources */,
 				B5CABB171C0E382C0050AB9F /* PickerTableViewCell.swift in Sources */,
+				E13ACCD41EE5672100CCE985 /* PostEditor.swift in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
 				591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */,
 				E11DA4931E03E03F00CF07A8 /* Pinghub.swift in Sources */,
