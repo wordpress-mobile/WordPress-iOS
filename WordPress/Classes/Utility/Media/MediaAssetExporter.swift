@@ -5,9 +5,10 @@ import MobileCoreServices
 ///
 class MediaAssetExporter: MediaExporter {
 
-    var maximumImageSize: CGFloat?
-    var stripsGeoLocationIfNeeded = false
     var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
+
+    var imageOptions: MediaImageExporter.Options?
+    var videoOptions: MediaVideoExporter.Options?
 
     /// Enumerable type value for an AssetExport, typed according to the resulting export of the asset.
     ///
@@ -16,6 +17,10 @@ class MediaAssetExporter: MediaExporter {
         case exportedVideo(MediaVideoExport)
         case exportedGIF(MediaGIFExport)
     }
+
+    /// Completion block with an AssetExport.
+    ///
+    typealias OnAssetExport = (AssetExport) -> Void
 
     public enum AssetExportError: MediaExportError {
         case unsupportedPHAssetMediaType
@@ -57,7 +62,7 @@ class MediaAssetExporter: MediaExporter {
 
     /// Helper method encapsulating exporting either an image or video.
     ///
-    func exportData(forAsset asset: PHAsset, onCompletion: @escaping (AssetExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
+    func exportData(forAsset asset: PHAsset, onCompletion: @escaping OnAssetExport, onError: @escaping OnExportError) {
         switch asset.mediaType {
         case .image:
             exportImage(forAsset: asset, onCompletion: onCompletion, onError: onError)
@@ -68,7 +73,7 @@ class MediaAssetExporter: MediaExporter {
         }
     }
 
-    fileprivate func exportImage(forAsset asset: PHAsset, onCompletion: @escaping (AssetExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
+    fileprivate func exportImage(forAsset asset: PHAsset, onCompletion: @escaping OnAssetExport, onError: @escaping (MediaExportError) -> Void) {
         do {
             guard asset.mediaType == .image else {
                 throw AssetExportError.expectedPHAssetImageType
@@ -95,7 +100,7 @@ class MediaAssetExporter: MediaExporter {
 
             // Configure the targetSize for PHImageManager to resize to.
             let targetSize: CGSize
-            if let maximumImageSize = maximumImageSize {
+            if let options = self.imageOptions, let maximumImageSize = options.maximumImageSize {
                 targetSize = CGSize(width: maximumImageSize, height: maximumImageSize)
             } else {
                 targetSize = PHImageManagerMaximumSize
@@ -122,9 +127,10 @@ class MediaAssetExporter: MediaExporter {
                                     }
                                     // Hand off the image export to a shared image writer.
                                     let exporter = MediaImageExporter()
-                                    exporter.maximumImageSize = self.maximumImageSize
-                                    exporter.stripsGeoLocationIfNeeded = self.stripsGeoLocationIfNeeded
                                     exporter.mediaDirectoryType = self.mediaDirectoryType
+                                    if let options = self.imageOptions {
+                                        exporter.options = options
+                                    }
                                     exporter.exportImage(image,
                                                          fileName: resource.originalFilename,
                                                          onCompletion: { (imageExport) in
@@ -142,7 +148,7 @@ class MediaAssetExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported asset.
     /// - parameter onError: Called if an error was encountered during export.
     ///
-    fileprivate func exportVideo(forAsset asset: PHAsset, onCompletion: @escaping (AssetExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
+    fileprivate func exportVideo(forAsset asset: PHAsset, onCompletion: @escaping OnAssetExport, onError: @escaping OnExportError) {
         do {
             guard asset.mediaType == .video else {
                 throw AssetExportError.expectedPHAssetVideoType
@@ -155,32 +161,37 @@ class MediaAssetExporter: MediaExporter {
 
             // Configure a video exporter to handle an export session.
             let videoExporter = MediaVideoExporter()
-            videoExporter.stripsGeoLocationIfNeeded = stripsGeoLocationIfNeeded
             videoExporter.mediaDirectoryType = mediaDirectoryType
-            videoExporter.exportFilename = videoResource.originalFilename
-            videoExporter.preferredExportFileType = videoResource.uniformTypeIdentifier
+
+            if let options = videoOptions {
+                videoExporter.options = options
+            }
+            if videoExporter.options.preferredExportFileType == nil {
+                videoExporter.options.preferredExportFileType = videoResource.uniformTypeIdentifier
+            }
+            let originalFilename = videoResource.originalFilename
 
             // Request an export session, which may take time to download the complete video data.
             let options = PHVideoRequestOptions()
             options.isNetworkAccessAllowed = true
-            let manager = PHImageManager.default()
-            manager.requestExportSession(forVideo: asset,
-                                         options: options,
-                                         exportPreset: videoExporter.exportPreset,
-                                         resultHandler: { (session, info) -> Void in
-                                            guard let session = session else {
-                                                if let error = info?[PHImageErrorKey] as? Error {
-                                                    onError(self.exporterErrorWith(error: error))
-                                                } else {
-                                                    onError(AssetExportError.failedRequestingVideoExportSession)
+            imageManager.requestExportSession(forVideo: asset,
+                                              options: options,
+                                              exportPreset: videoExporter.options.exportPreset,
+                                              resultHandler: { (session, info) -> Void in
+                                                guard let session = session else {
+                                                    if let error = info?[PHImageErrorKey] as? Error {
+                                                        onError(self.exporterErrorWith(error: error))
+                                                    } else {
+                                                        onError(AssetExportError.failedRequestingVideoExportSession)
+                                                    }
+                                                    return
                                                 }
-                                                return
-                                            }
-                                            videoExporter.exportVideo(with: session,
-                                                                      onCompletion: { (videoExport) in
-                                                                        onCompletion(AssetExport.exportedVideo(videoExport))
-                                            },
-                                                                      onError: onError)
+                                                videoExporter.exportVideo(with: session,
+                                                                          filename: originalFilename,
+                                                                          onCompletion: { (videoExport) in
+                                                                            onCompletion(AssetExport.exportedVideo(videoExport))
+                                                },
+                                                                          onError: onError)
             })
         } catch {
             onError(exporterErrorWith(error: error))
@@ -192,7 +203,7 @@ class MediaAssetExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported asset.
     /// - parameter onError: Called if an error was encountered during export.
     ///
-    fileprivate func exportGIF(forAsset asset: PHAsset, resource: PHAssetResource, onCompletion: @escaping (AssetExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
+    fileprivate func exportGIF(forAsset asset: PHAsset, resource: PHAssetResource, onCompletion: @escaping OnAssetExport, onError: @escaping OnExportError) {
         do {
             guard UTTypeEqual(resource.uniformTypeIdentifier as CFString, kUTTypeGIF) else {
                 throw AssetExportError.expectedPHAssetGIFType
