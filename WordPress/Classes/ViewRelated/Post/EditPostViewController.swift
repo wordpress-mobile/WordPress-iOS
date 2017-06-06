@@ -133,7 +133,6 @@ class EditPostViewController: UIViewController {
         editor.restorationIdentifier = nil
 
         let navController = UINavigationController(rootViewController: editor)
-        navController.isToolbarHidden = false // Fixes incorrect toolbar animation.
         navController.modalPresentationStyle = .fullScreen
 
         let generator = UIImpactFeedbackGenerator(style: .medium)
