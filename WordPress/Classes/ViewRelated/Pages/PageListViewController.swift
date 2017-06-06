@@ -349,7 +349,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 navController = UINavigationController(rootViewController: postViewController)
                 navController.restorationIdentifier = WPEditorNavigationRestorationID
                 navController.restorationClass = EditPageViewController.self
-                postViewController.onClose = { [weak self] (postViewController, changesSaved) in
+                postViewController.onClose = { [weak self, weak postViewController] (changesSaved) in
                     if changesSaved {
                         if let postStatus = postViewController?.post.status {
                             self?.updateFilterWithPostStatus(postStatus)
@@ -366,7 +366,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             navController = UINavigationController(rootViewController: editPostViewController)
             navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
             navController.restorationClass = WPLegacyEditPageViewController.self
-            editPostViewController.onClose = { [weak self] (editPostViewController, changesSaved) in
+            editPostViewController.onClose = { [weak self, weak editPostViewController] (changesSaved) in
                 if changesSaved {
                     if let postStatus = editPostViewController?.post.status {
                         self?.updateFilterWithPostStatus(postStatus)
@@ -395,7 +395,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         // Legacy
         if editorSettings.visualEditorEnabled == false {
             let editPageViewController = WPLegacyEditPageViewController(post: apost)
-            let navController = UINavigationController(rootViewController: editPageViewController!)
+            let navController = UINavigationController(rootViewController: editPageViewController)
 
             navController.modalPresentationStyle = .fullScreen
             navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
@@ -420,7 +420,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         // Hybrid!
         let pageViewController = EditPageViewController(post: apost, mode: kWPPostViewControllerModePreview)
-        let navController = UINavigationController(rootViewController: pageViewController!)
+        let navController = UINavigationController(rootViewController: pageViewController)
 
         navController.modalPresentationStyle = .fullScreen
         navController.restorationIdentifier = WPEditorNavigationRestorationID

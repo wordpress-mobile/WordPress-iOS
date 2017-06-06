@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 #import <WordPressEditor/WPEditorViewController.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class AbstractPost;
 @class Blog;
 @class PostSettingsViewController;
@@ -27,8 +29,8 @@ extern NSString* const kWPEditorConfigURLParamEnabled;
 /*
  EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.
  */
-typedef void (^WPPostViewCompletionHandler)(WPPostViewController* viewController, BOOL saved);
-@property (nonatomic, copy, readwrite) WPPostViewCompletionHandler onClose;
+typedef void (^WPPostViewCompletionHandler)(BOOL saved);
+@property (nullable, nonatomic, copy, readwrite) WPPostViewCompletionHandler onClose;
 
 #pragma mark - Properties: Post
 
@@ -52,7 +54,6 @@ typedef void (^WPPostViewCompletionHandler)(WPPostViewController* viewController
 
 #pragma mark - Properties: Misc
 
-@property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
 @property (readonly) BOOL hasChanges;
 
 #pragma mark - Initializers
@@ -114,3 +115,5 @@ typedef void (^WPPostViewCompletionHandler)(WPPostViewController* viewController
 - (void)didSaveNewPost;
 
 @end
+
+NS_ASSUME_NONNULL_END

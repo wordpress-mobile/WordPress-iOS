@@ -1366,7 +1366,7 @@ EditImageDetailsViewControllerDelegate
     [self removePostObserver];
 
     if (self.onClose) {
-        self.onClose(self, changesSaved);
+        self.onClose(changesSaved);
         self.onClose = nil;
     } else if ([self isModal]) {
         [self.presentingViewController dismissViewControllerAnimated:animated completion:nil];
