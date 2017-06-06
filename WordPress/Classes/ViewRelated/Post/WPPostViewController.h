@@ -14,7 +14,6 @@ typedef enum
 }
 WPPostViewControllerMode;
 
-extern NSString* const WPEditorNavigationRestorationID;
 extern NSString* const kUserDefaultsNewEditorEnabled;
 
 extern NSString* const WPPostViewControllerOptionOpenMediaPicker;
