@@ -7,12 +7,11 @@ NS_ASSUME_NONNULL_BEGIN
 @class Blog;
 @class PostSettingsViewController;
 
-typedef enum
+typedef NS_ENUM(NSInteger, WPPostViewControllerMode)
 {
 	kWPPostViewControllerModePreview = kWPEditorViewControllerModePreview,
 	kWPPostViewControllerModeEdit = kWPEditorViewControllerModeEdit,
-}
-WPPostViewControllerMode;
+};
 
 extern NSString* const kUserDefaultsNewEditorEnabled;
 
