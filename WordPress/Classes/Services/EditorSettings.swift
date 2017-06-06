@@ -96,7 +96,7 @@ class EditorSettings: NSObject {
             configure(vc, vc)
             return vc
         case .hybrid:
-            let vc = WPPostViewController(post: post)
+            let vc = WPPostViewController(post: post, mode: .edit)
             configure(vc, vc)
             return vc
         case .legacy:
