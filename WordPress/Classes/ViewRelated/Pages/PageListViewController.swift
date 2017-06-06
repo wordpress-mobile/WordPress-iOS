@@ -318,115 +318,40 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Post Actions
 
     override func createPost() {
-        let navController: UINavigationController
+        let context = ContextManager.sharedInstance().mainContext
+        let postService = PostService(managedObjectContext: context)
+        let page = postService.createDraftPage(for: blog)
+        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
+        showEditor(page: page)
+    }
 
+    fileprivate func editPage(_ apost: AbstractPost) {
+        WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
+        showEditor(page: apost)
+    }
+
+    fileprivate func showEditor(page: AbstractPost) {
         let filterIndex = filterSettings.currentFilterIndex()
         let editorSettings = EditorSettings()
-        if editorSettings.visualEditorEnabled {
-
-            if editorSettings.nativeEditorEnabled {
-                let context = ContextManager.sharedInstance().mainContext
-                let postService = PostService(managedObjectContext: context)
-                let page = postService.createDraftPage(for: blog)
-                let postViewController = AztecPostViewController(post: page)
-
-                navController = UINavigationController(rootViewController: postViewController)
-                navController.restorationIdentifier = AztecPostViewController.Restoration.navigationIdentifier
-                navController.restorationClass = AztecPostViewController.self
-                postViewController.onClose = { [weak self] changesSaved in
-                    if changesSaved {
-                        if let postStatus = postViewController.post.status {
-                            self?.updateFilterWithPostStatus(postStatus)
-                        }
-                    } else {
-                        self?.updateFilter(index: filterIndex)
-                    }
-                    navController.dismiss(animated: true, completion: nil)
-                }
-            } else {
-                let postViewController: EditPageViewController = EditPageViewController(draftFor: blog)
-
-                navController = UINavigationController(rootViewController: postViewController)
-                navController.restorationIdentifier = WPEditorNavigationRestorationID
-                navController.restorationClass = EditPageViewController.self
-                postViewController.onClose = { [weak self, weak postViewController] (changesSaved) in
-                    if changesSaved {
-                        if let postStatus = postViewController?.post.status {
-                            self?.updateFilterWithPostStatus(postStatus)
-                        }
-                    } else {
-                        self?.updateFilter(index: filterIndex)
-                    }
-                    navController.dismiss(animated: true, completion: nil)
-                }
-            }
-        } else {
-            let editPostViewController: WPLegacyEditPageViewController = WPLegacyEditPageViewController(draftForLastUsedBlog: ())
-
-            navController = UINavigationController(rootViewController: editPostViewController)
-            navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
-            navController.restorationClass = WPLegacyEditPageViewController.self
-            editPostViewController.onClose = { [weak self, weak editPostViewController] (changesSaved) in
+        let postViewController = editorSettings.instantiatePageEditor(page: page) { (editor, vc) in
+            editor.onClose = { [weak self] changesSaved in
                 if changesSaved {
-                    if let postStatus = editPostViewController?.post.status {
+                    if let postStatus = editor.post.status {
                         self?.updateFilterWithPostStatus(postStatus)
                     }
                 } else {
                     self?.updateFilter(index: filterIndex)
                 }
-                navController.dismiss(animated: true, completion: nil)
+                vc.dismiss(animated: true, completion: nil)
             }
         }
-
+        let navController = UINavigationController(rootViewController: postViewController)
+        navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
         navController.modalPresentationStyle = .fullScreen
 
         present(navController, animated: true, completion: { [weak self] in
             self?.updateFilterWithPostStatus(.draft)
         })
-
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
-    }
-
-    fileprivate func editPage(_ apost: AbstractPost) {
-        WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
-
-        let editorSettings = EditorSettings()
-
-        // Legacy
-        if editorSettings.visualEditorEnabled == false {
-            let editPageViewController = WPLegacyEditPageViewController(post: apost)
-            let navController = UINavigationController(rootViewController: editPageViewController)
-
-            navController.modalPresentationStyle = .fullScreen
-            navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID
-            navController.restorationClass = WPLegacyEditPageViewController.self
-
-            present(navController, animated: true, completion: nil)
-            return
-        }
-
-        // Aztec
-        if editorSettings.nativeEditorEnabled {
-            let aztecViewController = AztecPostViewController(post: apost)
-            let navController = UINavigationController(rootViewController: aztecViewController)
-
-            navController.modalPresentationStyle = .fullScreen
-            navController.restorationIdentifier = AztecPostViewController.Restoration.navigationIdentifier
-            navController.restorationClass = AztecPostViewController.self
-
-            present(navController, animated: true, completion: nil)
-            return
-        }
-
-        // Hybrid!
-        let pageViewController = EditPageViewController(post: apost, mode: kWPPostViewControllerModePreview)
-        let navController = UINavigationController(rootViewController: pageViewController)
-
-        navController.modalPresentationStyle = .fullScreen
-        navController.restorationIdentifier = WPEditorNavigationRestorationID
-        navController.restorationClass = EditPageViewController.self
-
-        present(navController, animated: true, completion: nil)
     }
 
     fileprivate func draftPage(_ apost: AbstractPost) {
