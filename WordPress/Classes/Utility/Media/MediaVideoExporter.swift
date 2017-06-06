@@ -5,12 +5,35 @@ import MobileCoreServices
 ///
 class MediaVideoExporter: MediaExporter {
 
-    var maximumImageSize: CGFloat?
-    var stripsGeoLocationIfNeeded = false
     var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
-    var exportPreset = AVAssetExportPresetHighestQuality
-    var preferredExportFileType = kUTTypeMPEG4 as String
-    var exportFilename: String?
+
+    /// Export options.
+    ///
+    var options = Options()
+
+    /// Available options for a video export.
+    ///
+    struct Options: MediaExportingOptions {
+
+        /// The export preset to use when exporting a video, see AVAssetExportSession documentation.
+        ///
+        var exportPreset = AVAssetExportPresetHighestQuality
+
+        /// The preferred UTType of the output video file.
+        ///
+        /// - Note: the exporter will try to honor the type,
+        ///   if both the exporter and AVAsset support the type for exporting.
+        ///
+        var preferredExportFileType: String?
+
+        // MARK: - MediaExporting
+
+        var stripsGeoLocationIfNeeded = false
+    }
+
+    /// Completion block with a MediaVideoExport.
+    ///
+    typealias OnVideoExport = (MediaVideoExport) -> Void
 
     public enum VideoExportError: MediaExportError {
         case videoAssetWasDetectedAsNotExportable
@@ -31,7 +54,7 @@ class MediaVideoExporter: MediaExporter {
 
     /// Exports a known video at a URL asynchronously.
     ///
-    func exportVideo(atURL url: URL, onCompletion: @escaping (MediaVideoExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
+    func exportVideo(atURL url: URL, onCompletion: @escaping OnVideoExport, onError: @escaping OnExportError) {
         do {
             let asset = AVURLAsset(url: url)
             guard asset.isExportable else {
@@ -41,6 +64,7 @@ class MediaVideoExporter: MediaExporter {
                 throw VideoExportError.failedToInitializeVideoExportSession
             }
             exportVideo(with: session,
+                        filename: url.lastPathComponent,
                         onCompletion: onCompletion,
                         onError: onError)
         } catch {
@@ -50,24 +74,25 @@ class MediaVideoExporter: MediaExporter {
 
     /// Configures an AVAssetExportSession and exports the video asynchronously.
     ///
-    func exportVideo(with session: AVAssetExportSession, onCompletion: @escaping (MediaVideoExport) -> Void, onError: @escaping (MediaExportError) -> Void) {
+    func exportVideo(with session: AVAssetExportSession, filename: String?, onCompletion: @escaping OnVideoExport, onError: @escaping OnExportError) {
         do {
-            var outputType = preferredExportFileType
+            var outputType = options.preferredExportFileType ?? supportedExportFileTypes.first!
             // Check if the exportFileType is one of the supported types for the exportSession.
             if session.supportedFileTypes.contains(outputType) == false {
                 /* 
                  If it is not supported by the session, try and find one
                  of the exporter's own supported types within the session's.
+                 Ideally we return the first type, as an order of preference from supportedExportFileTypes.
                 */
-                let availableTypes = session.supportedFileTypes.filter { supportedExportFileTypes.contains($0) }
-                guard let supportedType = availableTypes.first else {
+                guard let supportedType = supportedExportFileTypes.first(where: { session.supportedFileTypes.contains($0) }) else {
+                    // No supported types available, throw an error.
                     throw VideoExportError.videoExportSessionDoesNotSupportVideoOutputType
                 }
                 outputType = supportedType
             }
 
             // Generate a URL for exported video.
-            let mediaURL = try MediaLibrary.makeLocalMediaURL(withFilename: exportFilename ?? "video",
+            let mediaURL = try MediaLibrary.makeLocalMediaURL(withFilename: filename ?? "video",
                                                               fileExtension: URL.fileExtensionForUTType(outputType),
                                                               type: mediaDirectoryType)
             session.outputURL = mediaURL
@@ -75,7 +100,7 @@ class MediaVideoExporter: MediaExporter {
             session.shouldOptimizeForNetworkUse = true
 
             // Configure metadata filter for sharing, if we need to remove location data.
-            if stripsGeoLocationIfNeeded {
+            if options.stripsGeoLocationIfNeeded {
                 session.metadataItemFilter = AVMetadataItemFilter.forSharing()
             }
             session.exportAsynchronously {
