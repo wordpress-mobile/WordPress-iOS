@@ -351,7 +351,7 @@ class AztecPostViewController: UIViewController {
         configureMediaAppearance()
 
         if isOpenedDirectlyForPhotoPost {
-            showImagePicker(animated: false)
+            presentMediaPicker(animated: false)
         }
     }
 
@@ -1144,7 +1144,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         case .link:
             toggleLink()
         case .media:
-            showImagePicker()
+            presentMediaPicker()
         case .sourcecode:
             toggleEditingMode()
         case .header, .header1, .header2, .header3, .header4, .header5, .header6:
@@ -1314,12 +1314,12 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         insertAction.isEnabled = !urlFieldText.isEmpty
     }
 
-    func showImagePicker(animated: Bool = true) {
+    func presentMediaPicker(animated: Bool = true) {
 
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
         picker.showMostRecentFirst = true
-        picker.filter = WPMediaType.image
+        picker.filter = WPMediaType.videoOrImage
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
 
