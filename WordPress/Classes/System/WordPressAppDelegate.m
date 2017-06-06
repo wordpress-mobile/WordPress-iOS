@@ -412,6 +412,12 @@ int ddLogLevel = DDLogLevelInfo;
     completionHandler([shortcutHandler handleShortcutItem:shortcutItem]);
 }
 
+- (UIViewController *)application:(UIApplication *)application viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    NSString *restoreID = [identifierComponents lastObject];
+    return [[Restorer new] viewControllerWithIdentifier:restoreID];
+}
+
 #pragma mark - Application startup
 
 - (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
