@@ -9,7 +9,6 @@
 
 #import "AccountService.h"
 #import "AccountServiceFacade.h"
-#import "AccountServiceRemoteREST.h"
 #import "ApiCredentials.h"
 
 #import "Blog.h"
@@ -93,8 +92,6 @@
 #import "RemoteReaderTopic.h"
 #import "RotationAwareNavigationViewController.h"
 
-#import "ServiceRemoteWordPressComREST.h"
-#import "ServiceRemoteWordPressXMLRPC.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"

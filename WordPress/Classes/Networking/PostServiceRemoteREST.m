@@ -3,7 +3,7 @@
 #import "DisplayableImageHelper.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
-#import "NSDate+WordPressJSON.h"
+@import WordPressKit;
 
 NSString * const PostRemoteStatusPublish = @"publish";
 NSString * const PostRemoteStatusScheduled = @"future";

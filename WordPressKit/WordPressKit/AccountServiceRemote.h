@@ -17,13 +17,11 @@
 /**
  *  @brief      Gets an account's details.
  *
- *  @param      account     The account to get the details of.  Cannot be nil.
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
-- (void)getDetailsForAccount:(WPAccount *)account
-                     success:(void (^)(RemoteUser *remoteUser))success
-                     failure:(void (^)(NSError *error))failure;
+- (void)getAccountDetailsWithSuccess:(void (^)(RemoteUser *remoteUser))success
+                             failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Updates blogs' visibility
@@ -40,9 +38,8 @@
  *  @brief      Query to see if an email address is paired with a wpcom acccount 
  *              or if it is available. Used in the auth link signup flow.
  *
- *  @param email
- *  @param success
- *  @param failure
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)isEmailAvailable:(NSString *)email
                  success:(void (^)(BOOL available))success
@@ -52,9 +49,8 @@
  *  @brief      Query to see if a username is available. Used in the auth link signup flow.
  *  @note       This is an unversioned endpoint. Success will mean, generally, that the username already exists.
  *
- *  @param username
- *  @param success
- *  @param failure
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)isUsernameAvailable:(NSString *)username
                     success:(void (^)(BOOL available))success
@@ -63,12 +59,13 @@
 /**
 *  @brief      Request an authentication link be sent to the email address provided.
 *
-*  @param email
-*  @param success
-*  @param failure
-*/
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
 - (void)requestWPComAuthLinkForEmail:(NSString *)email
+                            clientID:(NSString *)clientID
+                        clientSecret:(NSString *)clientSecret
+                         wpcomScheme:(NSString *)scheme
                              success:(void (^)())success
                              failure:(void (^)(NSError *error))failure;
-
 @end
