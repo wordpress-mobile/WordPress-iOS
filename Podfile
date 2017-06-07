@@ -72,7 +72,7 @@ abstract_target 'WordPress_Base' do
       shared_test_pods
       pod 'Specta', '1.0.5'
       pod 'Expecta', '1.0.5'
-      pod 'Nimble', '~> 5.0.0'
+      pod 'Nimble', '~> 7.0.0'
     end
   end
 
