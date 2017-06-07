@@ -1,5 +1,5 @@
 #import "ServiceRemoteWordPressXMLRPC.h"
-#import "WordPress-Swift.h"
+//#import "WordPress-Swift.h"
 
 @interface ServiceRemoteWordPressXMLRPC()
 

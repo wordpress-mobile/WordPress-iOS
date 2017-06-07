@@ -1,6 +1,8 @@
 #import "RemoteBlogOptionsHelper.h"
 #import "NSMutableDictionary+Helpers.h"
-#import "WordPress-Swift.h"
+#import <WordPressKit/WordPressKit-Swift.h>
+@import NSObject_SafeExpectations;
+@import WordPressShared;
 
 @implementation RemoteBlogOptionsHelper
 

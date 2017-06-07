@@ -9,12 +9,12 @@ workspace 'WordPress.xcworkspace'
 ## Pods shared between all the targets
 def shared_with_all_pods
   pod 'CocoaLumberjack', '~> 2.2.0'
-end
-
-def shared_with_stats_pods
-  pod 'AFNetworking', '3.1.0'  
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'WordPressCom-Analytics-iOS', '0.1.29'
+end
+
+def shared_with_networking_pods
+  pod 'AFNetworking', '3.1.0'  
 end
 
 def shared_test_pods
@@ -29,6 +29,7 @@ abstract_target 'WordPress_Base' do
   ## This pod is only being included to support the share extension ATM - https://github.com/wordpress-mobile/WordPress-iOS/issues/5081
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
   shared_with_all_pods
+  shared_with_networking_pods
   
   target 'WordPress' do
     # ---------------------
@@ -56,8 +57,6 @@ abstract_target 'WordPress_Base' do
     # --------------------
     # WordPress components
     # --------------------
-    shared_with_all_pods
-    shared_with_stats_pods
     pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.1.2'
     pod 'Gridicons', '0.5'
     pod 'NSURL+IDN', '0.3'
@@ -86,7 +85,6 @@ end
 target 'WordPressComStatsiOS' do
   project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
 
-  shared_with_stats_pods
   shared_with_all_pods
 
   target 'WordPressComStatsiOSTests' do
@@ -99,8 +97,9 @@ end
 target 'WordPressKit' do
   project 'WordPressKit/WordPressKit.xcodeproj'
   
-  shared_with_stats_pods
+  shared_with_networking_pods
   shared_with_all_pods
+  pod 'wpxmlrpc', '0.8.3'
   
   target 'WordPressKitTests' do
     inherit! :search_paths

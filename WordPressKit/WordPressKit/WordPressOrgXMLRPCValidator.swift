@@ -60,27 +60,28 @@ open class WordPressOrgXMLRPCValidator: NSObject {
             xmlrpcURL = try urlForXMLRPCFromURLString(site, addXMLRPC: true)
             originalXMLRPCURL = try urlForXMLRPCFromURLString(site, addXMLRPC: false)
         } catch let error as NSError {
-            DDLogSwift.logError(error.localizedDescription)
+            //DDLogSwift.logError(error.localizedDescription)
             failure(error)
             return
         }
 
         validateXMLRPCURL(xmlrpcURL, success: success, failure: { (error) in
-                DDLogSwift.logError(error.localizedDescription)
+                //DDLogSwift.logError(error.localizedDescription)
                 if error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication ||
                    error.domain == String(reflecting: WordPressOrgXMLRPCValidatorError.self) && error.code == WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.rawValue {
                     failure(error)
                     return
                 }
                 // Try the original given url as an XML-RPC endpoint
-                DDLogSwift.logError("Try the original given url as an XML-RPC endpoint: \(originalXMLRPCURL)")
+                //DDLogSwift.logError("Try the original given url as an XML-RPC endpoint: \(originalXMLRPCURL)")
                 self.validateXMLRPCURL(originalXMLRPCURL , success: success, failure: { (error) in
-                    DDLogSwift.logError(error.localizedDescription)
+                    //DDLogSwift.logError(error.localizedDescription)
                     // Fetch the original url and look for the RSD link
                     self.guessXMLRPCURLFromHTMLURL(originalXMLRPCURL, success: success, failure: { (error) in
-                        DDLogSwift.logError(error.localizedDescription)
+                        //DDLogSwift.logError(error.localizedDescription)
                         // See if this is a Jetpack site that's having problems.
-                        let service = JetpackService()
+                        // FIXME: Get the WordPressComApi somehow
+                        let service = JetpackServiceRemote()
                         service.checkSiteHasJetpack(originalXMLRPCURL, success: { (hasJetpack) in
                             var err = error
                             if hasJetpack {
@@ -126,7 +127,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
 
         if baseURL.lastPathComponent != "xmlrpc.php" && addXMLRPC {
             // Assume the given url is the home page and XML-RPC sits at /xmlrpc.php
-            DDLogSwift.logInfo("Assume the given url is the home page and XML-RPC sits at /xmlrpc.php")
+            //DDLogSwift.logInfo("Assume the given url is the home page and XML-RPC sits at /xmlrpc.php")
             resultURLString = "\(resultURLString)/xmlrpc.php"
         }
 
@@ -168,7 +169,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
     fileprivate func guessXMLRPCURLFromHTMLURL(_ htmlURL: URL,
                                            success: @escaping (_ xmlrpcURL: URL) -> (),
                                            failure: @escaping (_ error: NSError) -> ()) {
-        DDLogSwift.logInfo("Fetch the original url and look for the RSD link by using RegExp")
+        //DDLogSwift.logInfo("Fetch the original url and look for the RSD link by using RegExp")
         let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
         let dataTask = session.dataTask(with: htmlURL, completionHandler: { (data, response, error) in
             if let error = error {
@@ -226,7 +227,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
     fileprivate func guessXMLRPCURLFromRSD(_ rsd: String,
                                        success: @escaping (_ xmlrpcURL: URL) -> (),
                                        failure: @escaping (_ error: NSError) -> ()) {
-        DDLogSwift.logInfo("Parse the RSD document at the following URL: \(rsd)")
+        //DDLogSwift.logInfo("Parse the RSD document at the following URL: \(rsd)")
         guard let rsdURL = URL(string: rsd) else {
             failure(WordPressOrgXMLRPCValidatorError.invalid.convertToNSError())
             return
@@ -247,7 +248,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                     failure(WordPressOrgXMLRPCValidatorError.invalid.convertToNSError())
                     return
             }
-            DDLogSwift.logInfo("Bingo! We found the WordPress XML-RPC element: \(xmlrpcURL)")
+            //DDLogSwift.logInfo("Bingo! We found the WordPress XML-RPC element: \(xmlrpcURL)")
             self.validateXMLRPCURL(xmlrpcURL, success: success, failure: failure)
         })
         dataTask.resume()

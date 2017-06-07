@@ -47,6 +47,9 @@
 		827070A41ECA5A7C00155CBF /* NotoSerif-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 827070A01ECA5A7C00155CBF /* NotoSerif-Regular.ttf */; };
 		829DD1481EC9EED200AB8C12 /* WordPressShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 829DD13E1EC9EED200AB8C12 /* WordPressShared.framework */; };
 		829DD14F1EC9EED200AB8C12 /* WordPressShared.h in Headers */ = {isa = PBXBuildFile; fileRef = 829DD1411EC9EED200AB8C12 /* WordPressShared.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		93AB05FD1EE8405A00EF8764 /* LanguagesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AB05FC1EE8405A00EF8764 /* LanguagesTests.swift */; };
+		93AB05FF1EE840A100EF8764 /* Languages.json in Resources */ = {isa = PBXBuildFile; fileRef = 93AB05FE1EE840A100EF8764 /* Languages.json */; };
+		93C674F51EE83D4B00BFAF05 /* Languages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C674F41EE83D4B00BFAF05 /* Languages.swift */; };
 		9ACAAA28637A8301D3B2B558 /* Pods_WordPressShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67FBE9F72E7F331C42CE50B1 /* Pods_WordPressShared.framework */; };
 /* End PBXBuildFile section */
 
@@ -111,6 +114,9 @@
 		829DD13E1EC9EED200AB8C12 /* WordPressShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		829DD1411EC9EED200AB8C12 /* WordPressShared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressShared.h; sourceTree = "<group>"; };
 		829DD1471EC9EED200AB8C12 /* WordPressSharedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordPressSharedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		93AB05FC1EE8405A00EF8764 /* LanguagesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguagesTests.swift; sourceTree = "<group>"; };
+		93AB05FE1EE840A100EF8764 /* Languages.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Languages.json; sourceTree = "<group>"; };
+		93C674F41EE83D4B00BFAF05 /* Languages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Languages.swift; sourceTree = SOURCE_ROOT; };
 		AF9F7720A9DC8EF84522E0B7 /* Pods-WordPressShared.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShared.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShared/Pods-WordPressShared.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		B8A3B1BA3164B5F2D873B81A /* Pods-WordPressSharedTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressSharedTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressSharedTests/Pods-WordPressSharedTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FFED368655653F69B8E77C46 /* Pods_WordPressSharedTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressSharedTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -193,6 +199,7 @@
 		82706FE01ECA32D400155CBF /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				93C674F41EE83D4B00BFAF05 /* Languages.swift */,
 				82706FF61ECA43AA00155CBF /* NSString+Util.h */,
 				82706FF51ECA43AA00155CBF /* NSString+Util.m */,
 				82706FF71ECA43AA00155CBF /* NSString+XMLExtensions.h */,
@@ -223,6 +230,7 @@
 		827070851ECA4C9B00155CBF /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				93AB05FC1EE8405A00EF8764 /* LanguagesTests.swift */,
 				827070901ECA4E1D00155CBF /* UIColorHelpersTests.swift */,
 				827070911ECA4E1D00155CBF /* WPImageSourceTest.m */,
 				8270708F1ECA4E1C00155CBF /* WordPressSharedTests-Bridging-Header.h */,
@@ -233,6 +241,7 @@
 		8270709C1ECA5A7C00155CBF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				93AB05FE1EE840A100EF8764 /* Languages.json */,
 				8270709D1ECA5A7C00155CBF /* NotoSerif-Bold.ttf */,
 				8270709E1ECA5A7C00155CBF /* NotoSerif-BoldItalic.ttf */,
 				8270709F1ECA5A7C00155CBF /* NotoSerif-Italic.ttf */,
@@ -406,6 +415,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				827070A11ECA5A7C00155CBF /* NotoSerif-Bold.ttf in Resources */,
+				93AB05FF1EE840A100EF8764 /* Languages.json in Resources */,
 				827070A41ECA5A7C00155CBF /* NotoSerif-Regular.ttf in Resources */,
 				827070A21ECA5A7C00155CBF /* NotoSerif-BoldItalic.ttf in Resources */,
 				827070A31ECA5A7C00155CBF /* NotoSerif-Italic.ttf in Resources */,
@@ -507,6 +517,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				827070101ECA43AA00155CBF /* WPImageSource.m in Sources */,
+				93C674F51EE83D4B00BFAF05 /* Languages.swift in Sources */,
 				827070221ECA43C100155CBF /* WPTableViewCell.m in Sources */,
 				8270701B1ECA43C100155CBF /* WPStyleGuide.m in Sources */,
 				8270700C1ECA43AA00155CBF /* WPDeviceIdentification.m in Sources */,
@@ -530,6 +541,7 @@
 			files = (
 				827070921ECA4E1D00155CBF /* UIColorHelpersTests.swift in Sources */,
 				827070931ECA4E1D00155CBF /* WPImageSourceTest.m in Sources */,
+				93AB05FD1EE8405A00EF8764 /* LanguagesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
