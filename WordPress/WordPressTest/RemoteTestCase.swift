@@ -91,6 +91,44 @@ extension RemoteTestCase {
         }
     }
 
+    /// Helper function that creates a stub which uses an array of files for the response body. Files
+    /// are returned sequentially for each subsequent call to the stubbed endpoint. Example: if an array
+    /// of [File1, File2] is passed in, then call number #1 to the stub will return File1 and
+    /// call #2 to the stub will return File2.
+    ///
+    /// - Note: This function can be useful when testing XMLRPC because the same endpoint is used for multiple
+    ///         methods.
+    ///
+    /// - Parameters:
+    ///     - endpoint: The endpoint matcher block that determines if the request will be stubbed
+    ///     - files: An array of files to use for the responses
+    ///     - contentType: The Content-Type returned in the response header
+    ///     - status: The status code to use for the response. Defaults to 200.
+    ///
+    func stubRemoteResponse(_ endpoint: String, files: [String], contentType: ResponseContentType, status: Int32 = 200) {
+        var callCounter = 0
+        stub(condition: { request in
+            return request.url?.absoluteString.range(of: endpoint) != nil
+        }) { response in
+            guard files.indices.contains(callCounter) else {
+                // An extra call was made to this stub and no corresponding response file existed.
+                XCTFail("Unexpected network request was made to: \(response.url!.absoluteString)")
+                let notConnectedError = NSError(domain:NSURLErrorDomain, code:Int(CFNetworkErrors.cfurlErrorNotConnectedToInternet.rawValue), userInfo:nil)
+                return OHHTTPStubsResponse(error:notConnectedError)
+            }
+            
+            let stubPath = OHPathForFile(files[callCounter], type(of: self))
+            callCounter += 1
+
+            var headers: Dictionary<NSObject, AnyObject>?
+            if contentType != .NoContentType {
+                headers = ["Content-Type" as NSObject: contentType.rawValue as AnyObject]
+            }
+
+            return fixture(filePath: stubPath!, status: status, headers: headers)
+        }
+    }
+
     /// Helper function that stubs ALL endpoints so that they return a CFNetworkErrors.cfurlErrorNotConnectedToInternet
     /// error. In the response, prior to returning the error, XCTFail will also be called logging the endpoint
     /// which was called.
