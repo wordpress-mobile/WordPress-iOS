@@ -5,10 +5,10 @@ enum XMLRPCTestableConstants {
     static let xmlRpcUserName   = "username"
     static let xmlRpcPassword   = "password"
 
-    static let xmlRpcBadTypeErrorCode  = 401
-    static let xmlRpcBadAuthErrorCode  = 403
-    static let xmlRpcNotFoundErrorCode = 404
-    static let xmlRpcParseErrorCode    = -32700
+    static let xmlRpcUnauthorizedErrorCode  = 401
+    static let xmlRpcForbiddenErrorCode     = 403
+    static let xmlRpcNotFoundErrorCode      = 404
+    static let xmlRpcParseErrorCode         = -32700
 
     static let xmlRpcBadAuthFailureFilename               = "xmlrpc-bad-username-password-error.xml"
     static let xmlRpcMalformedRequestXMLFailureFilename   = "xmlrpc-malformed-request-xml-error.xml"

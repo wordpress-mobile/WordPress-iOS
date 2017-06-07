@@ -361,6 +361,10 @@
 		745938461EAFB2600065386E /* me-settings-change-display-name-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 745938451EAFB2600065386E /* me-settings-change-display-name-success.json */; };
 		745938481EAFBD050065386E /* me-settings-change-display-name-bad-json-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 745938471EAFBD050065386E /* me-settings-change-display-name-bad-json-failure.json */; };
 		7459384A1EAFBF0C0065386E /* me-settings-change-invalid-input-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 745938491EAFBF0C0065386E /* me-settings-change-invalid-input-failure.json */; };
+		7462FD461EE8BF06007E2B80 /* xmlrpc-metaweblog-editpost-success.xml in Resources */ = {isa = PBXBuildFile; fileRef = 7462FD451EE8BF06007E2B80 /* xmlrpc-metaweblog-editpost-success.xml */; };
+		7462FD481EE8C0CB007E2B80 /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 7462FD471EE8C0CB007E2B80 /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml */; };
+		7462FD4A1EE8C1B4007E2B80 /* xmlrpc-metaweblog-editpost-change-type-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 7462FD491EE8C1B4007E2B80 /* xmlrpc-metaweblog-editpost-change-type-failure.xml */; };
+		7462FD4C1EE8C5E7007E2B80 /* xmlrpc-metaweblog-editpost-change-format-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 7462FD4B1EE8C5E7007E2B80 /* xmlrpc-metaweblog-editpost-change-format-failure.xml */; };
 		746A3E8F1EAE4A03002724D6 /* AccountSettingsRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746A3E8E1EAE4A03002724D6 /* AccountSettingsRemoteTests.swift */; };
 		746A3E911EAE51EE002724D6 /* me-settings-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 746A3E901EAE51EE002724D6 /* me-settings-success.json */; };
 		746A3E931EAE5219002724D6 /* me-settings-auth-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 746A3E921EAE5219002724D6 /* me-settings-auth-failure.json */; };
@@ -1694,6 +1698,10 @@
 		745938451EAFB2600065386E /* me-settings-change-display-name-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-settings-change-display-name-success.json"; sourceTree = "<group>"; };
 		745938471EAFBD050065386E /* me-settings-change-display-name-bad-json-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-settings-change-display-name-bad-json-failure.json"; sourceTree = "<group>"; };
 		745938491EAFBF0C0065386E /* me-settings-change-invalid-input-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-settings-change-invalid-input-failure.json"; sourceTree = "<group>"; };
+		7462FD451EE8BF06007E2B80 /* xmlrpc-metaweblog-editpost-success.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-editpost-success.xml"; sourceTree = "<group>"; };
+		7462FD471EE8C0CB007E2B80 /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-editpost-bad-xml-failure.xml"; sourceTree = "<group>"; };
+		7462FD491EE8C1B4007E2B80 /* xmlrpc-metaweblog-editpost-change-type-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-editpost-change-type-failure.xml"; sourceTree = "<group>"; };
+		7462FD4B1EE8C5E7007E2B80 /* xmlrpc-metaweblog-editpost-change-format-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-editpost-change-format-failure.xml"; sourceTree = "<group>"; };
 		746A3E8E1EAE4A03002724D6 /* AccountSettingsRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsRemoteTests.swift; sourceTree = "<group>"; };
 		746A3E901EAE51EE002724D6 /* me-settings-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-settings-success.json"; sourceTree = "<group>"; };
 		746A3E921EAE5219002724D6 /* me-settings-auth-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "me-settings-auth-failure.json"; sourceTree = "<group>"; };
@@ -5403,6 +5411,10 @@
 				932AB00A1D526C1400BE486D /* gallery-reader-post-private.json */,
 				74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */,
 				74F24F631EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml */,
+				7462FD451EE8BF06007E2B80 /* xmlrpc-metaweblog-editpost-success.xml */,
+				7462FD4B1EE8C5E7007E2B80 /* xmlrpc-metaweblog-editpost-change-format-failure.xml */,
+				7462FD491EE8C1B4007E2B80 /* xmlrpc-metaweblog-editpost-change-type-failure.xml */,
+				7462FD471EE8C0CB007E2B80 /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml */,
 				743868141EE89A1500E9286A /* xmlrpc-metaweblog-newpost-success.xml */,
 				743868181EE8B66F00E9286A /* xmlrpc-metaweblog-newpost-bad-xml-failure.xml */,
 				743868161EE8B43B00E9286A /* xmlrpc-metaweblog-newpost-invalid-posttype-failure.xml */,
@@ -6126,6 +6138,7 @@
 				E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */,
 				FF9839AB1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json in Resources */,
 				B5EA71301DC293F30083032A /* notifications-mark-as-read.json in Resources */,
+				7462FD4A1EE8C1B4007E2B80 /* xmlrpc-metaweblog-editpost-change-type-failure.xml in Resources */,
 				74AB972B1EA7C23100A4CD18 /* me-sites-visibility-success.json in Resources */,
 				74AB971D1EA7C23100A4CD18 /* auth-send-login-email-no-user-failure.json in Resources */,
 				742F956A1EB8D70500ED66A0 /* plans-feature-empty-success.json in Resources */,
@@ -6210,10 +6223,12 @@
 				743868151EE89A1500E9286A /* xmlrpc-metaweblog-newpost-success.xml in Resources */,
 				74AB97211EA7C23100A4CD18 /* is-available-username-failure.json in Resources */,
 				B5BC25A41CFCBA6A00F7D8B9 /* people-send-invitation-failure.json in Resources */,
+				7462FD4C1EE8C5E7007E2B80 /* xmlrpc-metaweblog-editpost-change-format-failure.xml in Resources */,
 				74AB97291EA7C23100A4CD18 /* me-sites-visibility-bad-json-failure.json in Resources */,
 				742F956E1EB8D70500ED66A0 /* site-plans-empty-failure.json in Resources */,
 				B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */,
 				743BF32C1E82CEB600192E40 /* site-viewers-delete-success.json in Resources */,
+				7462FD461EE8BF06007E2B80 /* xmlrpc-metaweblog-editpost-success.xml in Resources */,
 				746A3E911EAE51EE002724D6 /* me-settings-success.json in Resources */,
 				E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */,
 				08F8CD361EBD2AA80049D0C0 /* test-image-device-photo-gps-portrait.jpg in Resources */,
@@ -6229,6 +6244,7 @@
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				742F95691EB8D70500ED66A0 /* plans-feature-bad-json-failure.json in Resources */,
 				74AB97231EA7C23100A4CD18 /* me-auth-failure.json in Resources */,
+				7462FD481EE8C0CB007E2B80 /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml in Resources */,
 				08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */,
 				74F24F671EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml in Resources */,
 				7459383E1EAFB0620065386E /* me-settings-change-web-address-success.json in Resources */,
