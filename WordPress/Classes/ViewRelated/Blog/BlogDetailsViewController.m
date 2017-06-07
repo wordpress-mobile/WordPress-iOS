@@ -643,9 +643,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     self.siteIconPickerPresenter = [[SiteIconPickerPresenter alloc]initWithBlog:self.blog];
     __weak __typeof(self) weakSelf = self;
-    self.siteIconPickerPresenter.onCompletion = ^(UIImage * image) {
+    self.siteIconPickerPresenter.onCompletion = ^(UIImage *image, Media *media) {
         if (image) {
             [weakSelf siteIconImageSelected:image];
+        } else if (media) {
+            [weakSelf updateBlogIconWithMedia:media];
         }
         [weakSelf dismissViewControllerAnimated:YES completion:nil];
         weakSelf.siteIconPickerPresenter = nil;
@@ -676,12 +678,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
          [mediaService uploadMedia:media
                           progress:&progress
                            success:^{
-              self.blog.settings.iconMediaID = media.mediaID;
-              [self updateBlogSettingsAndRefreshIcon];
+              [self updateBlogIconWithMedia:media];
           } failure:^(NSError * _Nonnull error) {
               [self showErrorForSiteIconUpdate];
           }];
      }];
+}
+
+- (void)updateBlogIconWithMedia:(Media *)media
+{
+    self.blog.settings.iconMediaID = media.mediaID;
+    [self updateBlogSettingsAndRefreshIcon];
 }
 
 - (void)updateBlogSettingsAndRefreshIcon
