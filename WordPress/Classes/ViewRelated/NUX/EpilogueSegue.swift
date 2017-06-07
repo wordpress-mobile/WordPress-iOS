@@ -15,8 +15,9 @@ extension EpilogueAnimation where Self: UIStoryboardSegue {
 
         var frame = sourceVC.view.frame
         // Adjust for the height of the status bar which seems to be ignored during the transition.
-        frame.origin.y += 20
-        frame.size.height -= 20
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        frame.origin.y += statusBarHeight
+        frame.size.height -= statusBarHeight
         destinationVC.view.frame = frame
 
         containerView.addSubview(destinationVC.view)
