@@ -654,7 +654,6 @@
 		B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B751ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib */; };
 		B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B771ACF073900F68370 /* NoteBlockImageTableViewCell.xib */; };
 		B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B791ACF074600F68370 /* NoteBlockUserTableViewCell.xib */; };
-		B5C7D7B81BC6B5A3008E668A /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C7D7B71BC6B5A3008E668A /* UIAlertController+Helpers.swift */; };
 		B5C9401A1DB900DC0079D4FF /* AccountHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C940191DB900DC0079D4FF /* AccountHelper.swift */; };
 		B5CABB171C0E382C0050AB9F /* PickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CABB161C0E382C0050AB9F /* PickerTableViewCell.swift */; };
 		B5CC05F61962150600975CAC /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
@@ -2063,7 +2062,6 @@
 		B5C66B751ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockCommentTableViewCell.xib; sourceTree = "<group>"; };
 		B5C66B771ACF073900F68370 /* NoteBlockImageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockImageTableViewCell.xib; sourceTree = "<group>"; };
 		B5C66B791ACF074600F68370 /* NoteBlockUserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockUserTableViewCell.xib; sourceTree = "<group>"; };
-		B5C7D7B71BC6B5A3008E668A /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Helpers.swift"; sourceTree = "<group>"; };
 		B5C940191DB900DC0079D4FF /* AccountHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountHelper.swift; sourceTree = "<group>"; };
 		B5CABB161C0E382C0050AB9F /* PickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerTableViewCell.swift; sourceTree = "<group>"; };
 		B5CC05F51962150600975CAC /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
@@ -4407,7 +4405,6 @@
 				B5BE31C31CB825A100BDF770 /* NSURLCache+Helpers.swift */,
 				FFB1FA9F1BF0EC4E0090C761 /* PHAsset+Exporters.swift */,
 				FF286C751DE70A4500383A62 /* NSURL+Exporters.swift */,
-				B5C7D7B71BC6B5A3008E668A /* UIAlertController+Helpers.swift */,
 				B587797219B799D800E57C5A /* UIDevice+Helpers.swift */,
 				E1823E6B1E42231C00C19F53 /* UIEdgeInsets.swift */,
 				FFB1FA9D1BF0EB840090C761 /* UIImage+Exporters.swift */,
@@ -6561,7 +6558,6 @@
 				834CAE9F122D56B1003DDF49 /* UIImage+Alpha.m in Sources */,
 				1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */,
 				E62AFB6A1DC8E593007484FC /* NSAttributedString+WPRichText.swift in Sources */,
-				B5C7D7B81BC6B5A3008E668A /* UIAlertController+Helpers.swift in Sources */,
 				B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
 				93414DE51E2D25AE003143A3 /* PostEditorState.swift in Sources */,
