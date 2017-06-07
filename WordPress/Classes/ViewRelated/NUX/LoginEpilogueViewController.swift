@@ -37,6 +37,7 @@ class LoginEpilogueViewController: UIViewController {
     }
 
     @IBAction func dismissEpilogue() {
+        dismissBlock?(false)
         navigationController?.dismiss(animated: true, completion: nil)
     }
 
