@@ -1744,7 +1744,11 @@ extension AztecPostViewController {
             if let posterURLString = media.remoteThumbnailURL {
                 posterURL = URL(string: posterURLString)
             }
-            let _ = richTextView.insertVideo(atLocation: insertLocation, sourceURL: remoteURL, posterURL: posterURL, placeHolderImage: Assets.defaultMissingImage)
+            let attachment = richTextView.insertVideo(atLocation: insertLocation, sourceURL: remoteURL, posterURL: posterURL, placeHolderImage: Assets.defaultMissingImage)
+            if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
+                attachment.videoPressID = videoPressGUID
+                richTextView.update(attachment: attachment)
+            }
             WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
         }
         self.mediaProgressCoordinator.finishOneItem()
@@ -1822,7 +1826,10 @@ extension AztecPostViewController {
                     if let videoPosterURLString = media.remoteThumbnailURL {
                         videoAttachment.posterURL = URL(string: videoPosterURLString)
                     }
-                    strongSelf.richTextView.refreshLayout(for: videoAttachment)
+                    if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
+                        videoAttachment.videoPressID = videoPressGUID
+                    }
+                    strongSelf.richTextView.update(attachment: videoAttachment)
                 }
             }
             }, failure: { [weak self](error) in
@@ -1868,10 +1875,10 @@ extension AztecPostViewController {
     fileprivate func processVideoPressAttachments() {
         richTextView.textStorage.enumerateAttachments { (attachment, range) in
             if let videoAttachment = attachment as? VideoAttachment,
-                let videoSrcURL = videoAttachment.srcURL,
-                videoSrcURL.scheme == VideoProcessor.videoPressScheme,
-                let videoPressID = videoSrcURL.host {
-
+               let videoSrcURL = videoAttachment.srcURL,
+               videoSrcURL.scheme == VideoProcessor.videoPressScheme,
+               let videoPressID = videoSrcURL.host {
+                // It's videoPress video so let's fetch the information for the video
                 let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
                 mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
                     videoAttachment.srcURL = URL(string:videoURLString)
@@ -2079,11 +2086,29 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         }
     }
 
-    func selected(videoAttachment attachment: VideoAttachment, atPosition position: CGPoint) {
-        guard let videoURL = attachment.srcURL else {
+    func selected(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
+        guard let videoURL = videoAttachment.srcURL else {
             return
         }
-        displayVideoPlayer(for: videoURL)
+        if let videoPressID = videoAttachment.videoPressID {
+            // It's videoPress video so let's fetch the information for the video
+            let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
+                guard let videoURL = URL(string:videoURLString) else {
+                    return
+                }
+                videoAttachment.srcURL = videoURL
+                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
+                    videoAttachment.posterURL = posterURL
+                }
+                self.richTextView.refreshLayout(for: videoAttachment)
+                self.displayVideoPlayer(for: videoURL)
+            }, failure: { (error) in
+                DDLogSwift.logError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+            })
+        } else {
+            displayVideoPlayer(for: videoURL)
+        }
     }
 
     func displayVideoPlayer(for videoURL: URL) {
@@ -2659,4 +2684,23 @@ class MediaProgressCoordinator: NSObject {
         }
         return failedMediaIDs
     }
+}
+
+extension VideoAttachment {
+
+    var videoPressID: String? {
+        get {
+            return namedAttributes[VideoProcessor.videoPressHTMLAttribute]
+        }
+
+        set {
+            if let nonNilValue = newValue {
+                namedAttributes[VideoProcessor.videoPressHTMLAttribute] = nonNilValue
+            } else {
+                namedAttributes.removeValue(forKey: VideoProcessor.videoPressHTMLAttribute)
+            }
+        }
+    }
+
+
 }
