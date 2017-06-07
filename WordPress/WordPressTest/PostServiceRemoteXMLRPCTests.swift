@@ -7,10 +7,14 @@ class PostServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
 
     let postID: NSNumber = 1
     let postTitle = "Hello world!"
+    let postContent = "Welcome to WordPress."
 
     let getPostSuccessMockFilename          = "xmlrpc-wp-getpost-success.xml"
     let getPostBadXMLFailureFilename        = "xmlrpc-wp-getpost-bad-xml-failure.xml"
     let getPostBadPostIdFailureFilename     = "xmlrpc-wp-getpost-invalid-id-failure.xml"
+    let newPostSuccessMockFilename          = "xmlrpc-metaweblog-newpost-success.xml"
+    let newPostBadResponseXMLMockFilename   = "xmlrpc-metaweblog-newpost-bad-xml-failure.xml"
+    let newPostInvalidPostTypeMockFilename  = "xmlrpc-metaweblog-newpost-invalid-posttype-failure.xml"
 
     // MARK: - Properties
 
@@ -76,7 +80,7 @@ class PostServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
     }
 
     func testGetPostWithBadAuthFails() {
-        let expect = expectation(description: "Get post with bad Auth failure")
+        let expect = expectation(description: "Get post with bad auth failure")
 
         stubRemoteResponse(XMLRPCTestableConstants.xmlRpcUrl, filename: XMLRPCTestableConstants.xmlRpcBadAuthFailureFilename, contentType: .XML)
 
@@ -102,10 +106,70 @@ class PostServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
     func testGetPostWithMalformedResponseXMLFails() {
         let expect = expectation(description: "Get posts with invalid XML response failure")
 
-        stubRemoteResponse(XMLRPCTestableConstants.xmlRpcUrl, filename: XMLRPCTestableConstants.xmlRpcMalformedXMLFailureFilename, contentType: .XML)
+        stubRemoteResponse(XMLRPCTestableConstants.xmlRpcUrl, filename: getPostBadXMLFailureFilename, contentType: .XML)
 
         if let remoteInstance = remote as? PostServiceRemote {
             remoteInstance.getPostWithID(postID, success: { post in
+                XCTFail("This callback shouldn't get called")
+                expect.fulfill()
+            }) { error in
+                expect.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    // MARK: - New Post Tests
+
+    func testNewPostSucceeds() {
+        let expect = expectation(description: "New post success")
+
+        stubRemoteResponse(XMLRPCTestableConstants.xmlRpcUrl,
+                           files: [newPostSuccessMockFilename, getPostSuccessMockFilename],
+                           contentType: .XML)
+
+        if let remoteInstance = remote as? PostServiceRemote {
+            let remotePost: RemotePost = {
+                let post = RemotePost()
+                post.postID = postID
+                post.title = postTitle
+                post.content = postContent
+                return post
+            }()
+
+            remoteInstance.createPost(remotePost, success: { post in
+                XCTAssertEqual(post?.postID, remotePost.postID, "The post ids should be equal")
+                XCTAssertEqual(post?.title, remotePost.title, "The post titles should be equal")
+                XCTAssertEqual(post?.content, remotePost.content, "The posts' content should be equal")
+                expect.fulfill()
+            }) { error in
+                XCTFail("This callback shouldn't get called")
+                expect.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testNewPostWithInvalidPostTypeFails() {
+        let expect = expectation(description: "New post with invalid posttype failure")
+
+        stubRemoteResponse(XMLRPCTestableConstants.xmlRpcUrl,
+                           filename: newPostInvalidPostTypeMockFilename,
+                           contentType: .XML)
+
+        if let remoteInstance = remote as? PostServiceRemote {
+            let remotePost: RemotePost = {
+                let post = RemotePost()
+                post.postID = postID
+                post.title = postTitle
+                post.content = postContent
+                post.type = "Bananas"
+                return post
+            }()
+
+            remoteInstance.createPost(remotePost, success: { post in
                 XCTFail("This callback shouldn't get called")
                 expect.fulfill()
             }) { error in
@@ -115,7 +179,64 @@ class PostServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
                     return
                 }
                 XCTAssertEqual(error.domain, WPXMLRPCFaultErrorDomain, "The error domain should be WPXMLRPCFaultErrorDomain")
-                XCTAssertEqual(error.code, XMLRPCTestableConstants.xmlRpcParseErrorCode, "The error code should be 403")
+                XCTAssertEqual(error.code, XMLRPCTestableConstants.xmlRpcBadTypeErrorCode, "The error code should be 401")
+                expect.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testNewPostWithMalformedResponseXMLFails() {
+        let expect = expectation(description: "New post with invalid XML response failure")
+
+        stubRemoteResponse(XMLRPCTestableConstants.xmlRpcUrl, filename: newPostBadResponseXMLMockFilename, contentType: .XML)
+
+        if let remoteInstance = remote as? PostServiceRemote {
+            let remotePost: RemotePost = {
+                let post = RemotePost()
+                post.postID = postID
+                post.title = postTitle
+                post.content = postContent
+                return post
+            }()
+
+            remoteInstance.createPost(remotePost, success: { post in
+                XCTFail("This callback shouldn't get called")
+                expect.fulfill()
+            }) { error in
+                expect.fulfill()
+            }
+        }
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testNewPostWithBadAuthFails() {
+        let expect = expectation(description: "New post with bad auth failure")
+
+        stubRemoteResponse(XMLRPCTestableConstants.xmlRpcUrl, filename: XMLRPCTestableConstants.xmlRpcBadAuthFailureFilename, contentType: .XML)
+
+        if let remoteInstance = remote as? PostServiceRemote {
+            let remotePost: RemotePost = {
+                let post = RemotePost()
+                post.postID = postID
+                post.title = postTitle
+                post.content = postContent
+                return post
+            }()
+
+            remoteInstance.createPost(remotePost, success: { post in
+                XCTFail("This callback shouldn't get called")
+                expect.fulfill()
+            }) { error in
+                guard let error = error as NSError? else {
+                    XCTFail("The returned error could not be cast as NSError")
+                    expect.fulfill()
+                    return
+                }
+                XCTAssertEqual(error.domain, WPXMLRPCFaultErrorDomain, "The error domain should be WPXMLRPCFaultErrorDomain")
+                XCTAssertEqual(error.code, XMLRPCTestableConstants.xmlRpcBadAuthErrorCode, "The error code should be 403")
                 expect.fulfill()
             }
         }
