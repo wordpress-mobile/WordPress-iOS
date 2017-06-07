@@ -97,7 +97,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.7.0)
   - MRProgress/Stopable (0.7.0):
     - MRProgress/Helper
-  - Nimble (5.0.0)
+  - Nimble (7.0.1)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.4)
@@ -148,7 +148,7 @@ DEPENDENCIES:
   - HockeySDK (~> 4.1.5)
   - MGSwipeTableCell (~> 1.5.6)
   - MRProgress (~> 0.7.0)
-  - Nimble (~> 5.0.0)
+  - Nimble (~> 7.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock (~> 3.0)
@@ -217,7 +217,7 @@ SPEC CHECKSUMS:
   HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
-  Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
+  Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 35ae71d6a8fcc1b59434d561d1520b9dd4f15765
@@ -235,6 +235,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: a61e85ce289bb99113209091698ead23f7b44f6f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: f266e7f4b28420ddfef4665b27caf591227584ec
+PODFILE CHECKSUM: 25a0fc1bca090180565444b2f46401351ac43ede
 
 COCOAPODS: 1.2.1
