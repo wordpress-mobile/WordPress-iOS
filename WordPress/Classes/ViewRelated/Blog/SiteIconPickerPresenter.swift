@@ -11,7 +11,10 @@ class SiteIconPickerPresenter: NSObject {
     /// MARK: - Public Properties
 
     var blog: Blog
-    var onCompletion: ((UIImage?) -> Void)?
+    /// Will be invoked with a newly created image OR an existing media item to set
+    /// as the site icon
+    var onCompletion: ((UIImage?, Media?) -> Void)?
+    var originalMedia: Media?
 
     /// MARK: - Private Properties
 
@@ -74,8 +77,12 @@ class SiteIconPickerPresenter: NSObject {
             SVProgressHUD.dismiss()
             let imageCropViewController = ImageCropViewController(image: image)
             imageCropViewController.maskShape = .square
-            imageCropViewController.onCompletion = { [weak self] image in
-                self?.onCompletion?(image)
+            imageCropViewController.onCompletion = { [weak self] image, modified in
+                if !modified, let media = self?.originalMedia {
+                    self?.onCompletion?(nil, media)
+                } else {
+                    self?.onCompletion?(image, nil)
+                }
             }
             self.mediaPickerViewController.show(after: imageCropViewController)
         }
@@ -88,7 +95,7 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        onCompletion?(nil)
+        onCompletion?(nil, nil)
     }
 
     /// Retrieves the chosen image and triggers the ImageCropViewController display.
@@ -102,6 +109,7 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
         switch asset {
         case let phAsset as PHAsset:
             showLoadingMessage()
+            originalMedia = nil
             phAsset.exportMaximumSizeImage { [weak self] (image, info) in
                 guard let image = image else {
                     self?.showErrorLoadingImageMessage()
@@ -111,6 +119,7 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
             }
         case let media as Media:
             showLoadingMessage()
+            originalMedia = media
             let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
             mediaService.image(for: media, size: CGSize.zero, success: { [weak self] image in
                 self?.showImageCropViewController(image)
