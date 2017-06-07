@@ -441,13 +441,13 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeaturePeople:
             return [self supportsRestApi] && self.isListingUsersAllowed;
         case BlogFeatureWPComRESTAPI:
+        case BlogFeatureCommentLikes:
         case BlogFeatureStats:
             return [self supportsRestApi];
         case BlogFeatureSharing:
             return [self supportsSharing];
         case BlogFeatureOAuth2Login:
             return [self isHostedAtWPcom];
-        case BlogFeatureCommentLikes:
         case BlogFeatureReblog:
         case BlogFeatureMentions:
         case BlogFeaturePlans:
