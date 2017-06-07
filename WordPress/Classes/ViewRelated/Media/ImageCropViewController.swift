@@ -7,7 +7,9 @@ import UIKit
 ///
 class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Public Properties
-    var onCompletion: ((UIImage) -> Void)?
+    /// Will be invoked with the cropped and scaled image and a boolean indicating
+    /// whether or not the original image was modified
+    var onCompletion: ((UIImage, Bool) -> Void)?
     var maskShape: ImageCropOverlayMaskShape = .circle
 
     // MARK: - Public Initializers
@@ -73,6 +75,14 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
                                      width: scrollView.frame.width * screenScale,
                                      height: scrollView.frame.height * screenScale)
 
+        if scrollView.contentOffset.x == 0 &&
+            scrollView.contentOffset.y == 0 &&
+            oldSize.width == clippingRect.width &&
+            oldSize.height == clippingRect.height {
+            onCompletion?(rawImage, false)
+            return
+        }
+
         // Resize
         UIGraphicsBeginImageContextWithOptions(resizeRect.size, false, screenScale)
         rawImage?.draw(in: resizeRect)
@@ -85,7 +95,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         }
 
         let clippedImage = UIImage(cgImage: clippedImageRef, scale: screenScale, orientation: .up)
-        onCompletion?(clippedImage)
+        onCompletion?(clippedImage, true)
     }
 
 
