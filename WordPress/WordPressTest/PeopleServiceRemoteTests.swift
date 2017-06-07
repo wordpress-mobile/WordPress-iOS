@@ -63,7 +63,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     override func setUp() {
         super.setUp()
-        
+
         remote = PeopleServiceRemote(wordPressComRestApi: getRestApi())
     }
 
