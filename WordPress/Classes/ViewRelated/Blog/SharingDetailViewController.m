@@ -19,6 +19,11 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 @implementation SharingDetailViewController
 
+- (void)dealloc
+{
+    self.helper.delegate = nil;
+}
+
 - (instancetype)initWithBlog:(Blog *)blog
          publicizeConnection:(PublicizeConnection *)connection
 {
