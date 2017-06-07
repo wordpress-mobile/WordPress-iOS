@@ -1,30 +1,29 @@
 import Foundation
-
-
+import NSObject_SafeExpectations
 
 /// This helper class allows us to map WordPress.com LanguageID's into human readable language strings.
 ///
-class WordPressComLanguageDatabase: NSObject {
+public class WordPressComLanguageDatabase: NSObject {
     // MARK: - Public Properties
 
     /// Languages considered 'popular'
     ///
-    let popular: [Language]
+    public let popular: [Language]
 
     /// Every supported language
     ///
-    let all: [Language]
+    public let all: [Language]
 
     /// Returns both, Popular and All languages, grouped
     ///
-    let grouped: [[Language]]
+    public let grouped: [[Language]]
 
 
     // MARK: - Public Methods
 
     /// Designated Initializer: will load the languages contained within the `Languages.json` file.
     ///
-    override init() {
+    public override init() {
         // Parse the json file
         let path = Bundle.main.path(forResource: filename, ofType: "json")
         let raw = try! Data(contentsOf: URL(fileURLWithPath: path!))
@@ -48,7 +47,7 @@ class WordPressComLanguageDatabase: NSObject {
     ///
     /// - Returns: A string containing the language name, or an empty string, in case it wasn't found.
     ///
-    func nameForLanguageWithId(_ languageId: Int) -> String {
+    public func nameForLanguageWithId(_ languageId: Int) -> String {
         return find(id: languageId)?.name ?? ""
     }
 
@@ -58,7 +57,7 @@ class WordPressComLanguageDatabase: NSObject {
     ///
     /// - Returns: The language with the matching Identifier, or nil, in case it wasn't found.
     ///
-    func find(id: Int) -> Language? {
+    public func find(id: Int) -> Language? {
         return all.first(where: { $0.id == id })
     }
 
@@ -68,7 +67,7 @@ class WordPressComLanguageDatabase: NSObject {
     /// This is a wrapper for Objective-C, Swift code should use deviceLanguage directly.
     ///
     @objc(deviceLanguageId)
-    func deviceLanguageIdNumber() -> NSNumber {
+    public func deviceLanguageIdNumber() -> NSNumber {
         return NSNumber(value: deviceLanguage.id)
     }
 
@@ -78,14 +77,14 @@ class WordPressComLanguageDatabase: NSObject {
     /// This is a wrapper for Objective-C, Swift code should use deviceLanguage directly.
     ///
     @objc(deviceLanguageSlug)
-    func deviceLanguageSlugString() -> String {
+    public func deviceLanguageSlugString() -> String {
         return deviceLanguage.slug
     }
 
     /// Returns the current device language as the corresponding WordPress.com language.
     /// If the language is not supported, it returns English.
     ///
-    var deviceLanguage: Language {
+    public var deviceLanguage: Language {
         let variants = LanguageTagVariants(string: deviceLanguageCode)
         for variant in variants {
             if let match = self.languageWithSlug(variant) {
@@ -114,22 +113,22 @@ class WordPressComLanguageDatabase: NSObject {
 
     /// Represents a Language supported by WordPress.com
     ///
-    class Language: Equatable {
+    public class Language: Equatable {
         /// Language Unique Identifier
         ///
-        let id: Int
+        public let id: Int
 
         /// Human readable Language name
         ///
-        let name: String
+        public let name: String
 
         /// Language's Slug String
         ///
-        let slug: String
+        public let slug: String
 
         /// Localized description for the current language
         ///
-        var description: String {
+        public var description: String {
             return (Locale.current as NSLocale).displayName(forKey: NSLocale.Key.identifier, value: slug) ?? name
         }
 
@@ -155,13 +154,13 @@ class WordPressComLanguageDatabase: NSObject {
 
         /// Given an array of raw languages, will return a parsed array.
         ///
-        static func fromArray(_ array: [NSDictionary]) -> [Language] {
+        public static func fromArray(_ array: [NSDictionary]) -> [Language] {
             return array.flatMap {
                 return Language(dict: $0)
             }
         }
 
-        static func == (lhs: Language, rhs: Language) -> Bool {
+        public static func == (lhs: Language, rhs: Language) -> Bool {
             return lhs.id == rhs.id
         }
     }

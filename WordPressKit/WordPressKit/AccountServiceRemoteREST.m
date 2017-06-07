@@ -1,9 +1,12 @@
 #import "AccountServiceRemoteREST.h"
 #import "RemoteBlog.h"
 #import "RemoteBlogOptionsHelper.h"
-#import "Constants.h"
-#import "WPAccount.h"
-#import "WordPress-Swift.h"
+//#import "Constants.h"
+//#import "WPAccount.h"
+//#import "WordPress-Swift.h"
+#import <WordPressKit/WordPressKit-Swift.h>
+@import NSObject_SafeExpectations;
+@import WordPressShared;
 
 static NSString * const UserDictionaryIDKey = @"ID";
 static NSString * const UserDictionaryUsernameKey = @"username";
@@ -43,16 +46,9 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
           }];
 }
 
-- (void)getDetailsForAccount:(WPAccount *)account
-                     success:(void (^)(RemoteUser *remoteUser))success
-                     failure:(void (^)(NSError *error))failure
+- (void)getAccountDetailsWithSuccess:(void (^)(RemoteUser *remoteUser))success
+                             failure:(void (^)(NSError *error))failure
 {
-    // IMPORTANT: We're adding this assertion even though the account is not used here to let the
-    // caller know this parameter needs to be set (following the documentation of the protocol).
-    // This parameter is used and required by the XMLRPC variant of this method.
-    //
-    NSParameterAssert([account isKindOfClass:[WPAccount class]]);
-    
     NSString *requestUrl = [self pathForEndpoint:@"me"
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
@@ -185,7 +181,11 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                           }];
 }
 
-- (void)requestWPComAuthLinkForEmail:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)requestWPComAuthLinkForEmail:(NSString *)email
+                            clientID:(NSString *)clientID
+                        clientSecret:(NSString *)clientSecret
+                         wpcomScheme:(NSString *)scheme
+                             success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     NSAssert([email length] > 0, @"Needs an email address.");
 
@@ -194,11 +194,11 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
 
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
                                                                                   @"email": email,
-                                                                                  @"client_id": [ApiCredentials client],
-                                                                                  @"client_secret": [ApiCredentials secret],
+                                                                                  @"client_id": clientID,
+                                                                                  @"client_secret": clientSecret,
                                                                                   }];
-    if (![@"wordpress" isEqualToString:WPComScheme]) {
-        [params setObject:WPComScheme forKey:@"scheme"];
+    if (![@"wordpress" isEqualToString:scheme]) {
+        [params setObject:scheme forKey:@"scheme"];
     }
 
     [self.wordPressComRestApi POST:path
@@ -226,7 +226,8 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
     remoteUser.displayName = [dictionary stringForKey:UserDictionaryDisplaynameKey];
     remoteUser.primaryBlogID = [dictionary numberForKey:UserDictionaryPrimaryBlogKey];
     remoteUser.avatarURL = [dictionary stringForKey:UserDictionaryAvatarURLKey];
-    remoteUser.dateCreated = [NSDate dateWithISO8601String:[dictionary stringForKey:UserDictionaryDateKey]];
+    // TODO: Import dateWithISO8601String
+    // remoteUser.dateCreated = [NSDate dateWithISO8601String:[dictionary stringForKey:UserDictionaryDateKey]];
     remoteUser.emailVerified = [[dictionary numberForKey:UserDictionaryEmailVerifiedKey] boolValue];
     
     return remoteUser;
@@ -235,9 +236,11 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
 - (NSArray *)remoteBlogsFromJSONArray:(NSArray *)jsonBlogs
 {
     NSArray *blogs = jsonBlogs;
-    return [blogs wp_map:^id(NSDictionary *jsonBlog) {
-        return [[RemoteBlog alloc] initWithJSONDictionary:jsonBlog];
-    }];
+    // TODO: Import wp_map
+//    return [blogs wp_map:^id(NSDictionary *jsonBlog) {
+//        return [[RemoteBlog alloc] initWithJSONDictionary:jsonBlog];
+//    }];
+    return blogs;
 }
 
 @end

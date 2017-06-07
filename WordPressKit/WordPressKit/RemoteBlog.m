@@ -1,5 +1,6 @@
 #import "RemoteBlog.h"
 #import "RemoteBlogOptionsHelper.h"
+@import NSObject_SafeExpectations;
 
 @implementation RemoteBlog
 
