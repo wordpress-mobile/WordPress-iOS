@@ -27,6 +27,7 @@
 		9368C7BC1EC630270092CE8E /* StatsVisits.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7B01EC630270092CE8E /* StatsVisits.m */; };
 		9368C7BF1EC630CE0092CE8E /* StatsStringUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7BD1EC630CE0092CE8E /* StatsStringUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9368C7C01EC630CE0092CE8E /* StatsStringUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7BE1EC630CE0092CE8E /* StatsStringUtilities.m */; };
+		93AB06041EE8838400EF8764 /* RemoteTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AB06031EE8838400EF8764 /* RemoteTestCase.swift */; };
 		93AC8EC41ED32FD000900F5A /* emptyarray.json in Resources */ = {isa = PBXBuildFile; fileRef = 93AC8EA51ED32FD000900F5A /* emptyarray.json */; };
 		93AC8EC51ED32FD000900F5A /* stats-batch.json in Resources */ = {isa = PBXBuildFile; fileRef = 93AC8EA61ED32FD000900F5A /* stats-batch.json */; };
 		93AC8EC61ED32FD000900F5A /* stats-v1.1-alltime.json in Resources */ = {isa = PBXBuildFile; fileRef = 93AC8EA71ED32FD000900F5A /* stats-v1.1-alltime.json */; };
@@ -94,7 +95,6 @@
 		93BD27811EE73944002BB00B /* WordPressOrgXMLRPCApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BD27791EE73944002BB00B /* WordPressOrgXMLRPCApi.swift */; };
 		93BD27821EE73944002BB00B /* WordPressOrgXMLRPCValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BD277A1EE73944002BB00B /* WordPressOrgXMLRPCValidator.swift */; };
 		93BD27831EE73944002BB00B /* WordPressRSDParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BD277B1EE73944002BB00B /* WordPressRSDParser.swift */; };
-		93BD27861EE828DA002BB00B /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BD27851EE828DA002BB00B /* UIAlertController+Helpers.swift */; };
 		93BD27921EE82B30002BB00B /* JetpackServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 93BD27901EE82B30002BB00B /* JetpackServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93BD27931EE82B30002BB00B /* JetpackServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BD27911EE82B30002BB00B /* JetpackServiceRemote.m */; };
 		93C674E41EE8334200BFAF05 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C674E31EE8334200BFAF05 /* Test.swift */; };
@@ -150,6 +150,7 @@
 		9368C7B01EC630270092CE8E /* StatsVisits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsVisits.m; sourceTree = "<group>"; };
 		9368C7BD1EC630CE0092CE8E /* StatsStringUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsStringUtilities.h; sourceTree = "<group>"; };
 		9368C7BE1EC630CE0092CE8E /* StatsStringUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsStringUtilities.m; sourceTree = "<group>"; };
+		93AB06031EE8838400EF8764 /* RemoteTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteTestCase.swift; sourceTree = "<group>"; };
 		93AC8EA51ED32FD000900F5A /* emptyarray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emptyarray.json; sourceTree = "<group>"; };
 		93AC8EA61ED32FD000900F5A /* stats-batch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "stats-batch.json"; sourceTree = "<group>"; };
 		93AC8EA71ED32FD000900F5A /* stats-v1.1-alltime.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "stats-v1.1-alltime.json"; sourceTree = "<group>"; };
@@ -218,7 +219,6 @@
 		93BD27791EE73944002BB00B /* WordPressOrgXMLRPCApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressOrgXMLRPCApi.swift; sourceTree = "<group>"; };
 		93BD277A1EE73944002BB00B /* WordPressOrgXMLRPCValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressOrgXMLRPCValidator.swift; sourceTree = "<group>"; };
 		93BD277B1EE73944002BB00B /* WordPressRSDParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressRSDParser.swift; sourceTree = "<group>"; };
-		93BD27851EE828DA002BB00B /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Helpers.swift"; sourceTree = "<group>"; };
 		93BD27901EE82B30002BB00B /* JetpackServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackServiceRemote.h; sourceTree = "<group>"; };
 		93BD27911EE82B30002BB00B /* JetpackServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackServiceRemote.m; sourceTree = "<group>"; };
 		93C674E31EE8334200BFAF05 /* Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
@@ -301,6 +301,7 @@
 		930F52BA1ECF8A67002F921B /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				93AB06031EE8838400EF8764 /* RemoteTestCase.swift */,
 				93BD273E1EE732CC002BB00B /* Accounts */,
 				930F52BB1ECF8A78002F921B /* Stats */,
 			);
@@ -469,7 +470,6 @@
 		93BD27731EE7388E002BB00B /* WordPressAPI */ = {
 			isa = PBXGroup;
 			children = (
-				93BD27851EE828DA002BB00B /* UIAlertController+Helpers.swift */,
 				93BD27741EE73944002BB00B /* HTTPAuthenticationAlertController.swift */,
 				93BD27751EE73944002BB00B /* NSDate+WordPressJSON.h */,
 				93BD27761EE73944002BB00B /* NSDate+WordPressJSON.m */,
@@ -754,7 +754,6 @@
 				93BD27801EE73944002BB00B /* WordPressComRestApi.swift in Sources */,
 				93C674E41EE8334200BFAF05 /* Test.swift in Sources */,
 				93BD277C1EE73944002BB00B /* HTTPAuthenticationAlertController.swift in Sources */,
-				93BD27861EE828DA002BB00B /* UIAlertController+Helpers.swift in Sources */,
 				93BD277E1EE73944002BB00B /* NSDate+WordPressJSON.m in Sources */,
 				9368C7B61EC630270092CE8E /* StatsStreak.m in Sources */,
 				93BD276A1EE736A8002BB00B /* RemoteUser.m in Sources */,
@@ -783,6 +782,7 @@
 				93AC8EDF1ED32FD000900F5A /* StatsStreakItemTests.m in Sources */,
 				93AC8EE01ED32FD000900F5A /* StatsStreakTests.m in Sources */,
 				93AC8EDE1ED32FD000900F5A /* StatsItemTests.m in Sources */,
+				93AB06041EE8838400EF8764 /* RemoteTestCase.swift in Sources */,
 				93BD27411EE73311002BB00B /* AccountServiceRemoteRESTTests.swift in Sources */,
 				93AC8EE11ED32FD000900F5A /* StatsStringUtilitiesTest.m in Sources */,
 				93AC8EE21ED32FD000900F5A /* WPStatsServiceRemoteTests.m in Sources */,
@@ -945,6 +945,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				HEADER_SEARCH_PATHS = (
+					"${inherited}",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = WordPressKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressKitTests;
@@ -961,6 +965,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				HEADER_SEARCH_PATHS = (
+					"${inherited}",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = WordPressKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressKitTests;
@@ -1042,6 +1050,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				HEADER_SEARCH_PATHS = (
+					"${inherited}",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = WordPressKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressKitTests;
@@ -1123,6 +1135,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				HEADER_SEARCH_PATHS = (
+					"${inherited}",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = WordPressKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressKitTests;

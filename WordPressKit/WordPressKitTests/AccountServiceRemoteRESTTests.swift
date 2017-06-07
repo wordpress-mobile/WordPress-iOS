@@ -1,4 +1,5 @@
-@testable import WordPress
+@testable import WordPressKit
+import XCTest
 
 class AccountServiceRemoteRESTTests: RemoteTestCase {
 
@@ -37,7 +38,6 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
     // MARK: - Properties
 
     var remote: AccountServiceRemoteREST!
-    var account: WPAccount!
 
     // MARK: - Overridden Methods
 
@@ -45,10 +45,6 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
         super.setUp()
 
         remote = AccountServiceRemoteREST(wordPressComRestApi: restApi)
-        account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: testContextManager.mainContext) as! WPAccount
-        account.username = username
-        account.email = email
-        account.authToken = token
     }
 
     override func tearDown() {
@@ -61,7 +57,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
         let expect = expectation(description: "Get account details success")
 
         stubRemoteResponse(meEndpoint, filename: getAccountDetailsSuccessMockFilename, contentType: .ApplicationJSON)
-        remote.getDetailsFor(account, success: { remoteUser in
+        remote.getAccountDetails(success: { remoteUser in
             XCTAssertEqual(remoteUser?.username, self.username, "The usernames should be identical")
             expect.fulfill()
         }) { error in
@@ -76,7 +72,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
         let expect = expectation(description: "Get account details server error failure")
 
         stubRemoteResponse(meEndpoint, data: Data(), contentType: .NoContentType, status: 500)
-        remote.getDetailsFor(account, success: { remoteUser in
+        remote.getAccountDetails(success: { remoteUser in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
@@ -97,7 +93,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
         let expect = expectation(description: "Get account details with bad auth failure")
 
         stubRemoteResponse(meEndpoint, filename: getAccountDetailsAuthFailureMockFilename, contentType: .ApplicationJSON, status: 403)
-        remote.getDetailsFor(account, success: { remoteUser in
+        remote.getAccountDetails(success: { remoteUser in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
@@ -118,7 +114,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
         let expect = expectation(description: "Get account details with invalid json response failure")
 
         stubRemoteResponse(meEndpoint, filename: getAccountDetailsBadJsonFailureMockFilename, contentType: .ApplicationJSON, status: 200)
-        remote.getDetailsFor(account, success: { remoteUser in
+        remote.getAccountDetails(success: { remoteUser in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
@@ -402,7 +398,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
         let expect = expectation(description: "Request WPCom Auth Link success")
 
         stubRemoteResponse(linkEndpoint, filename: requestLinkSuccessMockFilename, contentType: .ApplicationJSON)
-        remote.requestWPComAuthLink(forEmail: email, success: {
+        remote.requestWPComAuthLink(forEmail: email, clientID: "client123", clientSecret: "shhh", wpcomScheme: "wordpress", success: {
             expect.fulfill()
         }, failure: { error in
             XCTFail("This callback shouldn't get called")
@@ -416,7 +412,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
         let expect = expectation(description: "Request WPCom Auth Link with bad email address fails")
 
         stubRemoteResponse(linkEndpoint, filename: requestLinkNoSuchUserFailureMockFilename, contentType: .ApplicationJSON, status: 404)
-        remote.requestWPComAuthLink(forEmail: email, success: {
+        remote.requestWPComAuthLink(forEmail: email, clientID: "client123", clientSecret: "shhh", wpcomScheme: "wordpress", success: {
             expect.fulfill()
             XCTFail("This callback shouldn't get called")
         }, failure: { error in
@@ -437,7 +433,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
         let expect = expectation(description: "Request WPCom Auth Link with bad client ID fails")
 
         stubRemoteResponse(linkEndpoint, filename: requestLinkInvalidClientFailureMockFilename, contentType: .ApplicationJSON, status: 403)
-        remote.requestWPComAuthLink(forEmail: email, success: {
+        remote.requestWPComAuthLink(forEmail: email, clientID: "client123", clientSecret: "shhh", wpcomScheme: "wordpress", success: {
             expect.fulfill()
             XCTFail("This callback shouldn't get called")
         }, failure: { error in
@@ -458,7 +454,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
         let expect = expectation(description: "Request WPCom Auth Link with bad secret fails")
 
         stubRemoteResponse(linkEndpoint, filename: requestLinkInvalidSecretFailureMockFilename, contentType: .ApplicationJSON, status: 403)
-        remote.requestWPComAuthLink(forEmail: email, success: {
+        remote.requestWPComAuthLink(forEmail: email, clientID: "client123", clientSecret: "shhh", wpcomScheme: "wordpress", success: {
             expect.fulfill()
             XCTFail("This callback shouldn't get called")
         }, failure: { error in
@@ -480,7 +476,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
         let expect = expectation(description: "Request WPCom Auth Link with server error failure")
 
         stubRemoteResponse(linkEndpoint, data: Data(), contentType: .NoContentType, status: 500)
-        remote.requestWPComAuthLink(forEmail: email, success: {
+        remote.requestWPComAuthLink(forEmail: email, clientID: "client123", clientSecret: "shhh", wpcomScheme: "wordpress", success: {
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
