@@ -322,18 +322,18 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let postService = PostService(managedObjectContext: context)
         let page = postService.createDraftPage(for: blog)
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
-        showEditor(page: page)
+        showEditor(post: page)
     }
 
     fileprivate func editPage(_ apost: AbstractPost) {
         WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
-        showEditor(page: apost)
+        showEditor(post: apost)
     }
 
-    fileprivate func showEditor(page: AbstractPost) {
+    fileprivate func showEditor(post: AbstractPost) {
         let filterIndex = filterSettings.currentFilterIndex()
         let editorSettings = EditorSettings()
-        let postViewController = editorSettings.instantiatePageEditor(page: page) { (editor, vc) in
+        let postViewController = editorSettings.instantiatePageEditor(page: post) { (editor, vc) in
             editor.onClose = { [weak self] changesSaved in
                 if changesSaved {
                     if let postStatus = editor.post.status {
