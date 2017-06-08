@@ -1,7 +1,7 @@
 import Foundation
 
-// MARK: - Media Progress Coordinator Delegate
-//
+/// Media Progress Coordinator Delegate comunicates changes on media uploading progress.
+///
 @objc public protocol MediaProgressCoordinatorDelegate: class {
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float)
@@ -116,7 +116,7 @@ public class MediaProgressCoordinator: NSObject {
         return value
     }
 
-    func refreshMediaProgress() {
+    private func refreshMediaProgress() {
 
         delegate?.mediaProgressCoordinator(self, progressDidChange: totalProgress)
 
@@ -170,8 +170,27 @@ public class MediaProgressCoordinator: NSObject {
         if mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
             mediaProgress.cancel()
         }
-        finishOneItem()
         mediaUploading.removeValue(forKey: mediaID)
+    }
+
+    var allCancelledIDs: [String] {
+        var mediaIDs = [String]()
+        for (key, progress) in mediaUploading {
+            if progress.isCancelled {
+                mediaIDs.append(key)
+            }
+        }
+        return mediaIDs
+    }
+
+    var pendingUploadIDs: [String] {
+        var mediaIDs = [String]()
+        for (key, progress) in mediaUploading {
+            if !progress.isCancelled && progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.error.rawValue)] == nil {
+                mediaIDs.append(key)
+            }
+        }
+        return mediaIDs
     }
 
     func cancelAllPendingUploads() {
@@ -200,5 +219,15 @@ public class MediaProgressCoordinator: NSObject {
             }
         }
         return failedMediaIDs
+    }
+
+    func stopTrackingAllFailedMedia() {
+        for key in failedMediaIDs {
+            mediaUploading.removeValue(forKey: key)
+        }
+    }
+
+    func progress(forMediaID mediaID: String) -> Progress? {
+        return mediaUploading[mediaID]
     }
 }
