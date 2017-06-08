@@ -78,7 +78,7 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
     if ([_progress isCancelled]) {
         self.textLabel.text = NSLocalizedString(@"Cancelled", @"The action was cancelled");
         self.detailTextLabel.text = @"";
-    } else if (_progress.totalUnitCount == 0 && _progress.completedUnitCount == 0) {
+    } else if ((_progress.totalUnitCount == 0 && _progress.completedUnitCount == 0) || _progress.userInfo[@"mediaError"] ) {
         self.textLabel.text = NSLocalizedString(@"Failed", @"The action failed");
         self.detailTextLabel.text = @"";
     } else if (_progress.fractionCompleted >= 1) {
