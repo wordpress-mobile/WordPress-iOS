@@ -943,7 +943,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 83849D39981B62D4DDB096B9 /* Pods-WordPressKitTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"${inherited}",
@@ -963,7 +963,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4071C53430121A8D6BE41490 /* Pods-WordPressKitTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"${inherited}",
@@ -1048,7 +1048,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1F913E7B8621F43C91252462 /* Pods-WordPressKitTests.release-internal.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"${inherited}",
@@ -1133,7 +1133,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AF6C6B3D338F6E0C94E0CFEE /* Pods-WordPressKitTests.release-alpha.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"${inherited}",
