@@ -2701,6 +2701,7 @@ class MediaProgressCoordinator: NSObject {
 extension VideoAttachment {
 
     var videoPressID: String? {
+
         get {
             return namedAttributes[VideoProcessor.videoPressHTMLAttribute]
         }
@@ -2713,6 +2714,4 @@ extension VideoAttachment {
             }
         }
     }
-
-
 }
