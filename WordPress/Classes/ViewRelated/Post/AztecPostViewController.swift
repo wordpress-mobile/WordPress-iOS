@@ -2087,6 +2087,10 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 
     func selected(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
+        if mediaProgressCoordinator.error(forMediaID: videoAttachment.identifier) != nil || mediaProgressCoordinator.isMediaUploading(mediaID: videoAttachment.identifier) {
+            displayActions(forAttachment: videoAttachment, position: position)
+            return
+        }
         guard let videoURL = videoAttachment.srcURL else {
             return
         }
@@ -2614,6 +2618,14 @@ class MediaProgressCoordinator: NSObject {
         if !isRunning {
             delegate?.mediaProgressCoordinatorDidFinishUpload(self)
         }
+    }
+
+    func isMediaUploading(mediaID: String) -> Bool {
+        if let mediaProgress = mediaUploading[mediaID],
+            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
+            return true
+        }
+        return false
     }
 
     var isRunning: Bool {
