@@ -902,6 +902,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 84A8904A3D1DF9477BC14E8E /* Pods-WordPressKit.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
@@ -923,6 +924,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 36D0BE0F53FFFB4611ACCB8C /* Pods-WordPressKit.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
@@ -1028,6 +1030,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 541925499D2AD1335A44E82E /* Pods-WordPressKit.release-internal.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
@@ -1113,6 +1116,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1018491E00F3AA19EC45A982 /* Pods-WordPressKit.release-alpha.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;

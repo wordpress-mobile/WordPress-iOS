@@ -15,6 +15,7 @@ end
 
 def shared_with_networking_pods
   pod 'AFNetworking', '3.1.0'  
+  pod 'wpxmlrpc', '0.8.3'
 end
 
 def shared_test_pods
@@ -63,7 +64,6 @@ abstract_target 'WordPress_Base' do
     pod 'WPMediaPicker', '0.17'
     pod 'WordPress-iOS-Editor', '1.9.1'
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'be6802dfbfbd390086bc16b883bf1fc24be036ed'
-    pod 'wpxmlrpc', '0.8.3'
 
     target 'WordPressTest' do
       inherit! :search_paths
@@ -86,6 +86,7 @@ target 'WordPressComStatsiOS' do
   project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
 
   shared_with_all_pods
+  shared_with_networking_pods
 
   target 'WordPressComStatsiOSTests' do
     inherit! :search_paths
@@ -99,7 +100,6 @@ target 'WordPressKit' do
   
   shared_with_networking_pods
   shared_with_all_pods
-  pod 'wpxmlrpc', '0.8.3'
   
   target 'WordPressKitTests' do
     inherit! :search_paths
