@@ -4,13 +4,14 @@ import MobileCoreServices
 
 class MediaURLExporterTests: XCTestCase {
 
+    let testDeviceImageName = "test-image-device-photo-gps.jpg"
+    let testDeviceVideoName = "test-video-device-gps.m4v"
+    let testGIFName = "test-gif.gif"
+
     // MARK: - URL export testing
 
     func testThatURLExportingImageWorks() {
-        guard let mediaPath = OHPathForFile("test-image-device-photo-gps.jpg", type(of: self)) else {
-            XCTAssert(false, "Error: failed creating a path to the test image file")
-            return
-        }
+        let mediaPath = MediaImageExporterTests.filePathForTestImageNamed(testDeviceImageName)
         let expect = self.expectation(description: "image export by URL")
         let url = URL(fileURLWithPath: mediaPath)
         let exporter = MediaURLExporter()
@@ -40,7 +41,7 @@ class MediaURLExporterTests: XCTestCase {
     }
 
     fileprivate func exportTestVideo(removingGPS: Bool) {
-        guard let mediaPath = OHPathForFile("test-video-device-gps.m4v", type(of: self)) else {
+        guard let mediaPath = OHPathForFile(testDeviceVideoName, type(of: self)) else {
             XCTAssert(false, "Error: failed creating a path to the test video file")
             return
         }
@@ -70,7 +71,7 @@ class MediaURLExporterTests: XCTestCase {
     }
 
     func testThatURLExportingGIFWorks() {
-        guard let mediaPath = OHPathForFile("test-gif.gif", type(of: self)) else {
+        guard let mediaPath = OHPathForFile(testGIFName, type(of: self)) else {
             XCTAssert(false, "Error: failed creating a path to the test image file")
             return
         }
