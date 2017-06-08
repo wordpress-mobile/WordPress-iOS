@@ -20,7 +20,7 @@ PODS:
     - CocoaLumberjack (~> 2.2.0)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
-  - BuddyBuildSDK (1.0.15)
+  - BuddyBuildSDK (1.0.16)
   - CocoaLumberjack (2.2.0):
     - CocoaLumberjack/Default (= 2.2.0)
     - CocoaLumberjack/Extensions (= 2.2.0)
@@ -206,7 +206,7 @@ SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
   Automattic-Tracks-iOS: 4903e125d88e564c68dedbb66c53a97740e89336
-  BuddyBuildSDK: b3038125612b1ad389c2aa89e4787dcb75cac89a
+  BuddyBuildSDK: 2c5469eee2981a3365386e46393e97068d75e4f4
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
