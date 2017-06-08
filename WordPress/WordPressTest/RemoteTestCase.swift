@@ -116,7 +116,7 @@ extension RemoteTestCase {
                 let notConnectedError = NSError(domain:NSURLErrorDomain, code:Int(CFNetworkErrors.cfurlErrorNotConnectedToInternet.rawValue), userInfo:nil)
                 return OHHTTPStubsResponse(error:notConnectedError)
             }
-            
+
             let stubPath = OHPathForFile(files[callCounter], type(of: self))
             callCounter += 1
 

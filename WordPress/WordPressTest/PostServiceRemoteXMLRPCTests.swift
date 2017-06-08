@@ -34,7 +34,7 @@ class PostServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
 
     override func tearDown() {
         super.tearDown()
-        
+
         remote = nil
     }
 
