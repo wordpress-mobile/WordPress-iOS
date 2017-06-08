@@ -644,13 +644,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.siteIconPickerPresenter = [[SiteIconPickerPresenter alloc]initWithBlog:self.blog];
     __weak __typeof(self) weakSelf = self;
     self.siteIconPickerPresenter.onCompletion = ^(Media *media, NSError *error) {
-        if (media == nil && error == nil) {
+        if (error) {
+            [weakSelf showErrorForSiteIconUpdate];
+        } else if (media) {
+            [weakSelf updateBlogIconWithMedia:media];
+        } else {
             // If no media and no error the picker was cancelled
             [weakSelf dismissViewControllerAnimated:YES completion:nil];
-        } else if (media && error == nil) {
-            [weakSelf updateBlogIconWithMedia:media];
-        } else if (error != nil) {
-            [weakSelf showErrorForSiteIconUpdate];
         }
         weakSelf.siteIconPickerPresenter = nil;
     };
