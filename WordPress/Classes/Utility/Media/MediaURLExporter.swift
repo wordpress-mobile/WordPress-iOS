@@ -32,29 +32,51 @@ class MediaURLExporter: MediaExporter {
                 return NSLocalizedString("The media could not be added to the Media Library.", comment: "Message shown when an image or video failed to load while trying to add it to the Media library.")
             }
         }
-        }
     }
 
-    /// Exports a file of an unknown type, to a new Media URL.
+    /// Enums of expected export types.
     ///
-    /// Expects files conforming to a video, image or GIF uniform type.
+    public enum URLExportExpectation {
+        case image
+        case video
+        case gif
+    }
+
+    /// Query what the URLExporter expects to export a URL as. Throws an error if unknown or invalid.
+    ///
+    /// - Note: Expects a file conforming to a video, image or GIF uniform type.
+    ///
+    class func expectedExport(with fileURL: URL) throws -> URLExportExpectation {
+        guard fileURL.isFileURL else {
+            throw URLExportError.invalidFileURL
+        }
+        guard let typeIdentifier = fileURL.resourceTypeIdentifier as CFString? else {
+            throw URLExportError.unknownFileUTI
+        }
+        if UTTypeEqual(typeIdentifier, kUTTypeGIF) {
+            return .gif
+        } else if UTTypeConformsTo(typeIdentifier, kUTTypeVideo) || UTTypeConformsTo(typeIdentifier, kUTTypeMovie) {
+            return .video
+        } else if UTTypeConformsTo(typeIdentifier, kUTTypeImage) {
+            return .image
+        }
+        throw URLExportError.unknownFileUTI
+    }
+
+    /// Exports a file of a supported type, to a new Media URL.
+    ///
+    /// - Note: You can query the expected type via MediaURLExporter.expectedExport(with:).
     ///
     func exportURL(fileURL: URL, onCompletion: @escaping OnURLExport, onError: @escaping OnExportError) {
         do {
-            guard fileURL.isFileURL else {
-                throw URLExportError.invalidFileURL
-            }
-            guard let typeIdentifier = fileURL.resourceTypeIdentifier as CFString? else {
-                throw URLExportError.unknownFileUTI
-            }
-            if UTTypeEqual(typeIdentifier, kUTTypeGIF) {
-                exportGIF(atURL: fileURL, onCompletion: onCompletion, onError: onError)
-            } else if UTTypeConformsTo(typeIdentifier, kUTTypeVideo) || UTTypeConformsTo(typeIdentifier, kUTTypeMovie) {
-                exportVideo(atURL: fileURL, onCompletion: onCompletion, onError: onError)
-            } else if UTTypeConformsTo(typeIdentifier, kUTTypeImage) {
+            let expected = try MediaURLExporter.expectedExport(with: fileURL)
+            switch expected {
+            case .image:
                 exportImage(atURL: fileURL, onCompletion: onCompletion, onError: onError)
-            } else {
-                throw URLExportError.unknownFileUTI
+            case .video:
+                exportVideo(atURL: fileURL, onCompletion: onCompletion, onError: onError)
+            case .gif:
+                exportGIF(atURL: fileURL, onCompletion: onCompletion, onError: onError)
             }
         } catch {
             onError(exporterErrorWith(error: error))
