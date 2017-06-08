@@ -1,6 +1,6 @@
 @testable import WordPress
 
-class PlanServiceRemoteTests: RemoteTestCase {
+class PlanServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     // MARK: - Constants
 
@@ -23,11 +23,13 @@ class PlanServiceRemoteTests: RemoteTestCase {
     override func setUp() {
         super.setUp()
 
-        remote = PlanServiceRemote(wordPressComRestApi: restApi)
+        remote = PlanServiceRemote(wordPressComRestApi: getRestApi())
     }
 
     override func tearDown() {
         super.tearDown()
+
+        remote = nil
     }
 
     // MARK: - Get Plans Tests
