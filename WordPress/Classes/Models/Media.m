@@ -230,4 +230,8 @@
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
+- (BOOL)hasRemote {
+    return self.mediaID.intValue != 0;
+}
+
 @end
