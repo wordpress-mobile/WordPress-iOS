@@ -48,10 +48,6 @@ class MediaAssetExporter: MediaExporter {
                 return NSLocalizedString("The GIF could not be added to the Media Library.", comment: "Message shown when a GIF failed to load while trying to add it to the Media library.")
             }
         }
-
-        func toNSError() -> NSError {
-            return NSError(domain: _domain, code: _code, userInfo: [NSLocalizedDescriptionKey: String(describing: self)])
-        }
     }
 
     /// Default shared instance of the PHImageManager
