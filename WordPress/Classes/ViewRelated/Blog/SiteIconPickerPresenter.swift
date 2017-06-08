@@ -11,8 +11,7 @@ class SiteIconPickerPresenter: NSObject {
     /// MARK: - Public Properties
 
     var blog: Blog
-    /// Will be invoked with a newly created image OR an existing media item to set
-    /// as the site icon
+    /// Will be invoked with a Media item from the user library or an error
     var onCompletion: ((Media?, Error?) -> Void)?
     var onIconSelection: (() -> Void)?
     var originalMedia: Media?
