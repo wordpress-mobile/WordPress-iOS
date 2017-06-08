@@ -2125,7 +2125,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FFE5D45FB8D8615D8AEE5190 /* Pods-WordPressComStatsiOSTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				INFOPLIST_FILE = WordPressComStatsiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOSTests;
@@ -2137,7 +2137,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DAD0FBE1AF2C88B80F916AF9 /* Pods-WordPressComStatsiOSTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				INFOPLIST_FILE = WordPressComStatsiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOSTests;
@@ -2214,7 +2214,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6F51E5A9F8CDDCCFA36BAB14 /* Pods-WordPressComStatsiOSTests.release-internal.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				INFOPLIST_FILE = WordPressComStatsiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOSTests;
@@ -2291,7 +2291,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7D7A114314FDEBBD76CA6B7C /* Pods-WordPressComStatsiOSTests.release-alpha.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				INFOPLIST_FILE = WordPressComStatsiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOSTests;
