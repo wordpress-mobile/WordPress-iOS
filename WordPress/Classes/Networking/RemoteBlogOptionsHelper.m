@@ -13,7 +13,6 @@
         options[@"jetpack_client_id"] = [response numberForKey:@"ID"];
     }
     if ( response[@"options"] ) {
-        options[@"blog_public"] = [response valueForKeyPath:@"options.blog_public"];
         options[@"post_thumbnail"] = [response valueForKeyPath:@"options.featured_images_enabled"];
         NSArray *optionsDirectMapKeys = @[
                                           @"active_modules",
@@ -25,7 +24,8 @@
                                           @"timezone",
                                           @"gmt_offset",
                                           @"allowed_file_types",
-                                          @"frame_nonce"
+                                          @"frame_nonce",
+                                          @"blog_public"
                                           ];
 
         for (NSString *key in optionsDirectMapKeys) {
