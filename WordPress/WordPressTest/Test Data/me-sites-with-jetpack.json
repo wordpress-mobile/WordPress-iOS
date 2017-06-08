@@ -15,6 +15,7 @@
             },
             "description": "",
             "is_following": false,
+            "is_private": false,
             "jetpack": false,
             "lang": "en",
             "logo": {
@@ -99,6 +100,7 @@
             },
             "description": "Just another Koke's Sites site",
             "is_following": false,
+            "is_private": false,
             "jetpack": true,
             "lang": "en",
             "logo": {
