@@ -19,7 +19,7 @@ class MediaURLExporterTests: XCTestCase {
                            onCompletion: { (urlExport) in
                             switch urlExport {
                             case .exportedImage(let imageExport):
-                                self.cleanUpExportedMedia(atURL: imageExport.url)
+                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
                             default:
                                 XCTFail("Error: expected the URL export to result in an image export")
                             }
@@ -57,7 +57,7 @@ class MediaURLExporterTests: XCTestCase {
                             switch urlExport {
                             case .exportedVideo(let videoExport):
                                 self.validateVideoExport(videoExport, exporter: weakExporter!)
-                                self.cleanUpExportedMedia(atURL: videoExport.url)
+                                MediaExporterTests.cleanUpExportedMedia(atURL: videoExport.url)
                             default:
                                 XCTFail("Error: expected the URL export to result in a video export")
                             }
@@ -82,7 +82,7 @@ class MediaURLExporterTests: XCTestCase {
                            onCompletion: { (urlExport) in
                             switch urlExport {
                             case .exportedGIF(let gifExport):
-                                self.cleanUpExportedMedia(atURL: gifExport.url)
+                                MediaExporterTests.cleanUpExportedMedia(atURL: gifExport.url)
                             default:
                                 XCTFail("Error: expected the URL export to result in a GIF export")
                             }
@@ -114,17 +114,6 @@ class MediaURLExporterTests: XCTestCase {
             XCTAssert(hasLocationData == false, "The exported video's location data was not removed as expected.")
         } else {
             XCTAssert(hasLocationData == true, "The exported video's location data was unexpectedly removed.")
-        }
-    }
-
-    // MARK: - Media export testing cleanup
-
-    fileprivate func cleanUpExportedMedia(atURL url: URL) {
-        do {
-            let fileManager = FileManager.default
-            try fileManager.removeItem(at: url)
-        } catch {
-            XCTFail("Error: failed to clean up exported media: \(error)")
         }
     }
 }
