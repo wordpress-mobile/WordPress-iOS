@@ -46,9 +46,6 @@ class MediaImageExporter: MediaExporter {
                 return NSLocalizedString("The image could not be added to the Media Library.", comment: "Message shown when an image failed to load while trying to add it to the Media library.")
             }
         }
-        func toNSError() -> NSError {
-            return NSError(domain: _domain, code: _code, userInfo: [NSLocalizedDescriptionKey: String(describing: self)])
-        }
     }
 
     /// Default filename used when writing media images locally, which may be appended with "-1" or "-thumbnail".
