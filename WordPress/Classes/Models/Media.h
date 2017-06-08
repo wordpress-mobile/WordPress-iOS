@@ -55,7 +55,8 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, assign) MediaRemoteStatus remoteStatus;
 @property (nonatomic, strong, nullable) NSURL *absoluteLocalURL;
 @property (nonatomic, strong, nullable) NSURL *absoluteThumbnailLocalURL;
-
+/// Returns true if the media object already exists on the server
+@property (nonatomic, readonly) BOOL hasRemote;
 // Helper methods
 
 + (NSString *)stringFromMediaType:(MediaType)mediaType;
