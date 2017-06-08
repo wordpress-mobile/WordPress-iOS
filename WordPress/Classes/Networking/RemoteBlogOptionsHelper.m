@@ -9,8 +9,7 @@
 {
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     options[@"home_url"] = response[@"URL"];
-    // We'd be better off saving this as a BOOL property on Blog, but let's do what XML-RPC does for now
-    options[@"blog_public"] = [[response numberForKey:@"is_private"] boolValue] ? @"-1" : @"0";
+    options[@"blog_public"] = [response valueForKeyPath:@"options.blog_public"];
     if ([[response numberForKey:@"jetpack"] boolValue]) {
         options[@"jetpack_client_id"] = [response numberForKey:@"ID"];
     }
