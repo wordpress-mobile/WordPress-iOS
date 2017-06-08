@@ -62,11 +62,11 @@
               "url": "https:\/\/test1.files.wordpress.com\/2017\/02\/img_1111.jpg"
               },
               "visible": true,
-              "is_private": false,
               "single_user_site": false,
               "is_vip": false,
               "is_following": false,
               "options": {
+              "blog_public": 1,
               "timezone": "",
               "gmt_offset": 0,
               "videopress_enabled": false,
