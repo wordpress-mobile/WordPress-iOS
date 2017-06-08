@@ -106,6 +106,8 @@
 		08D978581CD2AF7D0054F19A /* MenuItemSourceHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D978521CD2AF7D0054F19A /* MenuItemSourceHeaderView.m */; };
 		08D978591CD2AF7D0054F19A /* MenuItemSourceTextBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D978541CD2AF7D0054F19A /* MenuItemSourceTextBar.m */; };
 		08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 08DF9C431E8475530058678C /* test-image-portrait.jpg */; };
+		08E77F451EE87FCF006F9515 /* MediaThumbnailExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E77F441EE87FCF006F9515 /* MediaThumbnailExporter.swift */; };
+		08E77F471EE9D72F006F9515 /* MediaThumbnailExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E77F461EE9D72F006F9515 /* MediaThumbnailExporterTests.swift */; };
 		08F8CD2A1EBD22EF0049D0C0 /* MediaExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD291EBD22EF0049D0C0 /* MediaExporter.swift */; };
 		08F8CD2D1EBD24600049D0C0 /* MediaExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD2C1EBD245F0049D0C0 /* MediaExporterTests.swift */; };
 		08F8CD2F1EBD29440049D0C0 /* MediaImageExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD2E1EBD29440049D0C0 /* MediaImageExporter.swift */; };
@@ -1315,6 +1317,8 @@
 		08D978541CD2AF7D0054F19A /* MenuItemSourceTextBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceTextBar.m; sourceTree = "<group>"; };
 		08DF9C431E8475530058678C /* test-image-portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "test-image-portrait.jpg"; sourceTree = "<group>"; };
 		08E5CAD31E7B3A4500FAC71B /* WordPress 57.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 57.xcdatamodel"; sourceTree = "<group>"; };
+		08E77F441EE87FCF006F9515 /* MediaThumbnailExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailExporter.swift; sourceTree = "<group>"; };
+		08E77F461EE9D72F006F9515 /* MediaThumbnailExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailExporterTests.swift; sourceTree = "<group>"; };
 		08F37EC61C7554EF0095BE8B /* PostServiceRemoteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostServiceRemoteOptions.h; sourceTree = "<group>"; };
 		08F8CD291EBD22EF0049D0C0 /* MediaExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaExporter.swift; sourceTree = "<group>"; };
 		08F8CD2C1EBD245F0049D0C0 /* MediaExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaExporterTests.swift; sourceTree = "<group>"; };
@@ -3061,6 +3065,7 @@
 				08F8CD2E1EBD29440049D0C0 /* MediaImageExporter.swift */,
 				086103951EE09C91004D7C01 /* MediaVideoExporter.swift */,
 				08F8CD381EBD2C970049D0C0 /* MediaURLExporter.swift */,
+				08E77F441EE87FCF006F9515 /* MediaThumbnailExporter.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -3071,6 +3076,7 @@
 				08F8CD2C1EBD245F0049D0C0 /* MediaExporterTests.swift */,
 				08F8CD301EBD2A960049D0C0 /* MediaImageExporterTests.swift */,
 				08F8CD3A1EBD2D020049D0C0 /* MediaURLExporterTests.swift */,
+				08E77F461EE9D72F006F9515 /* MediaThumbnailExporterTests.swift */,
 			);
 			name = Media;
 			sourceTree = "<group>";
@@ -6867,6 +6873,7 @@
 				0857C2791CE5375F0014AE99 /* MenuItemsVisualOrderingView.m in Sources */,
 				437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */,
 				595CB3761D2317D50082C7E9 /* PostListFilter.swift in Sources */,
+				08E77F451EE87FCF006F9515 /* MediaThumbnailExporter.swift in Sources */,
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				08472A201C727E020040769D /* PostServiceOptions.m in Sources */,
 				08216FD21CDBF96000304BA7 /* MenuItemSourceViewController.m in Sources */,
@@ -7301,6 +7308,7 @@
 				85F8E19B1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift in Sources */,
 				E63C89741CB99A8500649C8F /* SigninHelperTests.swift in Sources */,
 				E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */,
+				08E77F471EE9D72F006F9515 /* MediaThumbnailExporterTests.swift in Sources */,
 				59FBD5621B5684F300734466 /* ThemeServiceTests.m in Sources */,
 				742F95731EB8D77600ED66A0 /* PlanFeatureServiceRemoteTests.swift in Sources */,
 				85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */,
