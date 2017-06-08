@@ -1,6 +1,6 @@
 @testable import WordPress
 
-class AccountServiceRemoteRESTTests: RemoteTestCase {
+class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
     // MARK: - Constants
 
@@ -44,7 +44,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
     override func setUp() {
         super.setUp()
 
-        remote = AccountServiceRemoteREST(wordPressComRestApi: restApi)
+        remote = AccountServiceRemoteREST(wordPressComRestApi: getRestApi())
         account = NSEntityDescription.insertNewObject(forEntityName: "Account", into: testContextManager.mainContext) as! WPAccount
         account.username = username
         account.email = email
@@ -53,6 +53,8 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
 
     override func tearDown() {
         super.tearDown()
+
+        remote = nil
     }
 
     // MARK: - Get Account Details Tests
