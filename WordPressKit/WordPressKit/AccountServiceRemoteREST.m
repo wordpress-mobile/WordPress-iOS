@@ -1,9 +1,6 @@
 #import "AccountServiceRemoteREST.h"
 #import "RemoteBlog.h"
 #import "RemoteBlogOptionsHelper.h"
-//#import "Constants.h"
-//#import "WPAccount.h"
-//#import "WordPress-Swift.h"
 #import <WordPressKit/WordPressKit-Swift.h>
 @import NSObject_SafeExpectations;
 @import WordPressShared;
@@ -236,10 +233,9 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
 - (NSArray *)remoteBlogsFromJSONArray:(NSArray *)jsonBlogs
 {
     NSArray *blogs = jsonBlogs;
-    // TODO: Import wp_map
-//    return [blogs wp_map:^id(NSDictionary *jsonBlog) {
-//        return [[RemoteBlog alloc] initWithJSONDictionary:jsonBlog];
-//    }];
+    return [blogs wp_map:^id(NSDictionary *jsonBlog) {
+        return [[RemoteBlog alloc] initWithJSONDictionary:jsonBlog];
+    }];
     return blogs;
 }
 
