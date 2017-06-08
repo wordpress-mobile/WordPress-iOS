@@ -56,7 +56,7 @@ class MediaURLExporterTests: XCTestCase {
                            onCompletion: { (urlExport) in
                             switch urlExport {
                             case .exportedVideo(let videoExport):
-                                self.validateVideoExport(videoExport, exporter: weakExporter!)
+                                MediaURLExporterTests.validateVideoExport(videoExport, exporter: weakExporter!)
                                 MediaExporterTests.cleanUpExportedMedia(atURL: videoExport.url)
                             default:
                                 XCTFail("Error: expected the URL export to result in a video export")
@@ -96,7 +96,7 @@ class MediaURLExporterTests: XCTestCase {
 
     // MARK: - Media export validation
 
-    fileprivate func validateVideoExport(_ export: MediaVideoExport, exporter: MediaURLExporter) {
+    class func validateVideoExport(_ export: MediaVideoExport, exporter: MediaURLExporter) {
         let asset = AVAsset(url: export.url)
         XCTAssertTrue(asset.isPlayable, "Error: exported video asset is unplayble.")
 
