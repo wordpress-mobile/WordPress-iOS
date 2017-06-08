@@ -97,7 +97,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.7.0)
   - MRProgress/Stopable (0.7.0):
     - MRProgress/Helper
-  - Nimble (5.0.0)
+  - Nimble (7.0.1)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.4)
@@ -148,7 +148,7 @@ DEPENDENCIES:
   - HockeySDK (~> 4.1.5)
   - MGSwipeTableCell (~> 1.5.6)
   - MRProgress (~> 0.7.0)
-  - Nimble (~> 5.0.0)
+  - Nimble (~> 7.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock (~> 3.0)
@@ -160,7 +160,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `62e0cf81d4a80d872db73ef5640cbae4a1024f6a`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7`)
   - WordPress-iOS-Editor (= 1.9.1)
   - WordPressCom-Analytics-iOS (= 0.1.29)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
@@ -178,7 +178,7 @@ EXTERNAL SOURCES:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-Aztec-iOS:
-    :commit: 62e0cf81d4a80d872db73ef5640cbae4a1024f6a
+    :commit: 28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
@@ -195,7 +195,7 @@ CHECKOUT OPTIONS:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-Aztec-iOS:
-    :commit: 62e0cf81d4a80d872db73ef5640cbae4a1024f6a
+    :commit: 28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
@@ -217,7 +217,7 @@ SPEC CHECKSUMS:
   HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
-  Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
+  Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 35ae71d6a8fcc1b59434d561d1520b9dd4f15765
@@ -235,6 +235,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: a61e85ce289bb99113209091698ead23f7b44f6f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: e1ce4dc5c0903760c4047df2c13873d5a89a1fdc
+PODFILE CHECKSUM: df8bc08fda8f0209251509114bab35b1483b5c91
 
 COCOAPODS: 1.2.1

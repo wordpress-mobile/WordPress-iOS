@@ -146,9 +146,17 @@ class StoreCoordinator<S: Store> {
         var userInfo: [String: AnyObject] = [StoreKitCoordinator.NotificationProductIdentifierKey: productID as AnyObject]
 
         if let error = transaction.error as NSError? {
-            if error.code != SKError.paymentCancelled.rawValue {
+            // Disabled in the transition to Xcode 9
+            // SKError.Code was renamed SKErrorCode
+            // I can't make it work in both Xcode 8 and 9, and since this code
+            // isn't really being used, it's easier to comment it out
+             /*
+            if error.code != SKErrorCode.paymentCancelled.rawValue {
+             */
                 userInfo[NSUnderlyingErrorKey] = error as AnyObject?
+            /*
             }
+             */
 
             postTransactionFailedNotification(userInfo)
         } else {
