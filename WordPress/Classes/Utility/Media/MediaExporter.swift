@@ -41,6 +41,16 @@ protocol MediaExportError: Error, CustomStringConvertible {
     func toNSError() -> NSError
 }
 
+/// MediaExportError default implementation.
+///
+extension MediaExportError {
+    /// Default implementation for ensuring a MediaExportError converts to an NSError with localized string.
+    ///
+    func toNSError() -> NSError {
+        return NSError(domain: _domain, code: _code, userInfo: [NSLocalizedDescriptionKey: String(describing: self)])
+    }
+}
+
 /// Generic MediaExportError tied to a system generated Error.
 ///
 enum MediaExportSystemError: MediaExportError {

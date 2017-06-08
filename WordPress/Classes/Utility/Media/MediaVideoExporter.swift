@@ -47,9 +47,6 @@ class MediaVideoExporter: MediaExporter {
                 return NSLocalizedString("The video could not be added to the Media Library.", comment: "Message shown when a video failed to load while trying to add it to the Media library.")
             }
         }
-        func toNSError() -> NSError {
-            return NSError(domain: _domain, code: _code, userInfo: [NSLocalizedDescriptionKey: String(describing: self)])
-        }
     }
 
     /// Exports a known video at a URL asynchronously.
