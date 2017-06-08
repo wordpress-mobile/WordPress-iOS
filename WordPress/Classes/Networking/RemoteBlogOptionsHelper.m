@@ -9,11 +9,11 @@
 {
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     options[@"home_url"] = response[@"URL"];
-    options[@"blog_public"] = [response valueForKeyPath:@"options.blog_public"];
     if ([[response numberForKey:@"jetpack"] boolValue]) {
         options[@"jetpack_client_id"] = [response numberForKey:@"ID"];
     }
     if ( response[@"options"] ) {
+        options[@"blog_public"] = [response valueForKeyPath:@"options.blog_public"];
         options[@"post_thumbnail"] = [response valueForKeyPath:@"options.featured_images_enabled"];
         NSArray *optionsDirectMapKeys = @[
                                           @"active_modules",
