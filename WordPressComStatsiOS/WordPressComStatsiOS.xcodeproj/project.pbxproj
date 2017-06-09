@@ -403,6 +403,7 @@
 		9356470F1EBCFB9A00604C6C /* StatsEphemoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 935647061EBCFB9A00604C6C /* StatsEphemoryTests.m */; };
 		935647101EBCFB9A00604C6C /* StatsGroupTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 935647071EBCFB9A00604C6C /* StatsGroupTests.m */; };
 		935647161EBCFB9A00604C6C /* WPStatsServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9356470D1EBCFB9A00604C6C /* WPStatsServiceTests.m */; };
+		9356FC4C1EEB0F1200C65113 /* DynamicLibMissingFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356FC4B1EEB0F1200C65113 /* DynamicLibMissingFix.swift */; };
 		A7FFD55FFBD5C675E6106C1A /* Pods_WordPressComStatsiOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556315702D7AA7ADB7E90A69 /* Pods_WordPressComStatsiOSTests.framework */; };
 		DE4165B7C5A26815ECB44E04 /* Pods_WordPressComStatsiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0903BC69BB83BF3F36E71AB1 /* Pods_WordPressComStatsiOS.framework */; };
 /* End PBXBuildFile section */
@@ -825,6 +826,8 @@
 		935647061EBCFB9A00604C6C /* StatsEphemoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsEphemoryTests.m; sourceTree = "<group>"; };
 		935647071EBCFB9A00604C6C /* StatsGroupTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsGroupTests.m; sourceTree = "<group>"; };
 		9356470D1EBCFB9A00604C6C /* WPStatsServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPStatsServiceTests.m; sourceTree = "<group>"; };
+		9356FC4A1EEB0F1100C65113 /* WordPressComStatsiOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressComStatsiOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		9356FC4B1EEB0F1200C65113 /* DynamicLibMissingFix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicLibMissingFix.swift; sourceTree = "<group>"; };
 		A898DED5C819F08D2AEC0D01 /* Pods-WordPressComStatsiOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressComStatsiOS.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressComStatsiOS/Pods-WordPressComStatsiOS.debug.xcconfig"; sourceTree = "<group>"; };
 		DAD0FBE1AF2C88B80F916AF9 /* Pods-WordPressComStatsiOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressComStatsiOSTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressComStatsiOSTests/Pods-WordPressComStatsiOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		F88B495B1C60074FFC04D5B6 /* Pods-WordPressComStatsiOS.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressComStatsiOS.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressComStatsiOS/Pods-WordPressComStatsiOS.release-internal.xcconfig"; sourceTree = "<group>"; };
@@ -1317,6 +1320,8 @@
 				935646D01EBCFB4800604C6C /* Test Data */,
 				935646CF1EBCFB4200604C6C /* Tests */,
 				931CFFD81EBCB016005E6BB4 /* Info.plist */,
+				9356FC4B1EEB0F1200C65113 /* DynamicLibMissingFix.swift */,
+				9356FC4A1EEB0F1100C65113 /* WordPressComStatsiOSTests-Bridging-Header.h */,
 			);
 			path = WordPressComStatsiOSTests;
 			sourceTree = "<group>";
@@ -1484,6 +1489,7 @@
 					};
 					931CFFD01EBCB016005E6BB4 = {
 						CreatedOnToolsVersion = 8.3.2;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1967,6 +1973,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9356FC4C1EEB0F1200C65113 /* DynamicLibMissingFix.swift in Sources */,
 				9356470E1EBCFB9A00604C6C /* StatsDateUtilitiesTests.m in Sources */,
 				9356470F1EBCFB9A00604C6C /* StatsEphemoryTests.m in Sources */,
 				935647101EBCFB9A00604C6C /* StatsGroupTests.m in Sources */,
@@ -2126,10 +2133,14 @@
 			baseConfigurationReference = FFE5D45FB8D8615D8AEE5190 /* Pods-WordPressComStatsiOSTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = WordPressComStatsiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressComStatsiOSTests/WordPressComStatsiOSTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -2138,10 +2149,13 @@
 			baseConfigurationReference = DAD0FBE1AF2C88B80F916AF9 /* Pods-WordPressComStatsiOSTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = WordPressComStatsiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressComStatsiOSTests/WordPressComStatsiOSTests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -2215,10 +2229,13 @@
 			baseConfigurationReference = 6F51E5A9F8CDDCCFA36BAB14 /* Pods-WordPressComStatsiOSTests.release-internal.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = WordPressComStatsiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressComStatsiOSTests/WordPressComStatsiOSTests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = "Release-Internal";
 		};
@@ -2292,10 +2309,13 @@
 			baseConfigurationReference = 7D7A114314FDEBBD76CA6B7C /* Pods-WordPressComStatsiOSTests.release-alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = WordPressComStatsiOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressComStatsiOSTests/WordPressComStatsiOSTests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = "Release-Alpha";
 		};
