@@ -598,12 +598,13 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 - (void)discardChanges
 {
-    [self.post.original deleteRevision];
+    AbstractPost *original = self.post.original;
+    [original deleteRevision];
 
-    if (self.editMode == EditPostViewControllerModeNewPost) {
-        NSManagedObjectContext* context = self.post.original.managedObjectContext;
+    if (self.editMode == EditPostViewControllerModeNewPost || original.shouldRemoveOnDismiss) {
+        NSManagedObjectContext* context = original.managedObjectContext;
         
-        [self.post.original remove];
+        [original remove];
         
         [[ContextManager sharedInstance] saveContext:context];
     }

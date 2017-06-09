@@ -305,7 +305,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         self.restorationIdentifier = Restoration.restorationIdentifier
         self.restorationClass = type(of: self)
-        self.shouldRemovePostOnDismiss = shouldRemoveOnDismiss(post: post)
+        self.shouldRemovePostOnDismiss = post.shouldRemoveOnDismiss
 
         addObservers(toPost: post)
     }
@@ -1557,10 +1557,6 @@ fileprivate extension AztecPostViewController {
         } else {
             _ = navigationController?.popViewController(animated: true)
         }
-    }
-
-    func shouldRemoveOnDismiss(post: AbstractPost) -> Bool {
-        return post.isRevision() && post.hasLocalChanges() || post.hasNeverAttemptedToUpload()
     }
 
     func contentByStrippingMediaAttachments() -> String {

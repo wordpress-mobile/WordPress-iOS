@@ -225,11 +225,7 @@ EditImageDetailsViewControllerDelegate
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
         
-        if ([post isRevision]
-            && [post hasLocalChanges]
-            && post.original.postTitle.length == 0
-            && post.original.content.length == 0) {
-            
+        if (post.shouldRemoveOnDismiss) {
             _ownsPost = YES;
         }
     }
