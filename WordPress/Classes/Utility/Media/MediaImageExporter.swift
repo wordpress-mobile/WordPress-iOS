@@ -18,7 +18,7 @@ class MediaImageExporter: MediaExporter {
         ///
         var maximumImageSize: CGFloat?
 
-        /// Default compression quality when an image is being resized.
+        /// Compression quality when an image is being resized, defaulting to 0.9.
         ///
         var imageCompressionQualityUponResizing = 0.9
 
