@@ -113,7 +113,8 @@ class MediaImageExporter: MediaExporter {
     ///
     func exportImage(atURL url: URL, onCompletion: @escaping OnImageExport, onError: @escaping OnExportError) {
         do {
-            let options: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: kUTTypeJPEG]
+            let identifierHint = url.resourceTypeIdentifierFileExtension ?? kUTTypeJPEG as String
+            let options: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: identifierHint as CFString]
             guard let source = CGImageSourceCreateWithURL(url as CFURL, options as CFDictionary)  else {
                 throw ImageExportError.imageSourceCreationWithURLFailed
             }
