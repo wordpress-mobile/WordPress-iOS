@@ -52,6 +52,23 @@ private struct SearchingDataSourceMapper: BlogListDataSourceMapper {
     }
 }
 
+private struct AccountOwnedDataSourceMapper: BlogListDataSourceMapper {
+    func map(_ data: [Blog]) -> [[Blog]] {
+        return [data.filter({ blog in
+            blog.account != nil
+        })]
+    }
+}
+
+private struct MatchingBlogDataSourceMapper: BlogListDataSourceMapper {
+    let matchingBlog: Blog
+    func map(_ data: [Blog]) -> [[Blog]] {
+        return [data.filter({ blog in
+            blog == matchingBlog
+        })]
+    }
+}
+
 class BlogListDataSource: NSObject {
     override init() {
         super.init()
@@ -97,6 +114,22 @@ class BlogListDataSource: NSObject {
             if selecting != oldValue {
                 dataChanged?()
             }
+        }
+    }
+
+    var accountOwned: Bool = false {
+        didSet {
+            updateMode()
+        }
+    }
+
+    var matchingBlog: Bool {
+        return blog != nil
+    }
+
+    var blog: Blog? = nil {
+        didSet {
+            updateMode()
         }
     }
 
@@ -193,6 +226,8 @@ private extension BlogListDataSource {
         case editing
         case searching(String)
         case loggedIn
+        case matchingBlog(Blog)
+        case accountOwned
 
         var mapper: BlogListDataSourceMapper {
             switch self {
@@ -205,6 +240,11 @@ private extension BlogListDataSource {
                 return EditingDataSourceMapper()
             case .searching(let query):
                 return SearchingDataSourceMapper(query: query)
+            case .accountOwned():
+                return AccountOwnedDataSourceMapper()
+            case .matchingBlog(let blog):
+                return MatchingBlogDataSourceMapper(matchingBlog: blog)
+
             }
         }
 
@@ -212,10 +252,13 @@ private extension BlogListDataSource {
             switch (lhs, rhs) {
             case (.browsing, .browsing),
                  (.browsingWithRecent, .browsingWithRecent),
-                 (.editing, .editing):
+                 (.editing, .editing),
+                 (.accountOwned, .accountOwned):
                 return true
             case let (.searching(lquery), .searching(rquery)):
                 return lquery == rquery
+            case let (.matchingBlog(lblog), .matchingBlog(rblog)):
+                return lblog == rblog
             default:
                 return false
             }
@@ -231,6 +274,14 @@ private extension BlogListDataSource {
     func modeForCurrentState() -> Mode {
         if loggedIn {
             return .loggedIn
+        }
+        if accountOwned {
+            return .accountOwned
+        }
+        if matchingBlog {
+            if let blog = blog {
+                return .matchingBlog(blog)
+            }
         }
         if editing {
             return .editing
