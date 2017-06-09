@@ -351,7 +351,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         configureMediaAppearance()
 
         if isOpenedDirectlyForPhotoPost {
-            showImagePicker(animated: false)
+            presentMediaPicker(animated: false)
         }
     }
 
@@ -1144,7 +1144,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         case .link:
             toggleLink()
         case .media:
-            showImagePicker()
+            presentMediaPicker()
         case .sourcecode:
             toggleEditingMode()
         case .header, .header1, .header2, .header3, .header4, .header5, .header6:
@@ -1314,12 +1314,12 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         insertAction.isEnabled = !urlFieldText.isEmpty
     }
 
-    func showImagePicker(animated: Bool = true) {
+    func presentMediaPicker(animated: Bool = true) {
 
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
         picker.showMostRecentFirst = true
-        picker.filter = WPMediaType.image
+        picker.filter = WPMediaType.videoOrImage
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
 
@@ -1621,8 +1621,7 @@ private extension AztecPostViewController {
     }
 }
 
-
-// MARK: - Media Support
+// MARK: - MediaProgressCoordinatorDelegate
 //
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
@@ -1655,9 +1654,27 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         postEditorStateContext.update(isUploadingMedia: false)
     }
+}
 
-    fileprivate func addDeviceMediaAsset(_ phAsset: PHAsset) {
-        let attachment = self.richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+// MARK: - Media Support
+//
+extension AztecPostViewController {
+
+    fileprivate func insertDeviceMedia(phAsset: PHAsset) {
+        switch phAsset.mediaType {
+        case .image:
+            insertDeviceImage(phAsset: phAsset)
+        case .video:
+            insertDeviceVideo(phAsset: phAsset)
+        default:
+            return
+        }
+    }
+
+    fileprivate func insertDeviceImage(phAsset: PHAsset) {
+        let attachment = richTextView.insertImage(sourceURL: URL(string:"placeholder://")! , atPosition: self.richTextView.selectedRange.location, placeHolderImage:
+                Assets.defaultMissingImage)
+
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
             DispatchQueue.main.async {
@@ -1674,36 +1691,86 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
                 return
             }
 
-            if media.mediaType == .image {
-                WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
-            } else if media.mediaType == .video {
-                WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
-            }
+            WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
 
             strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
     }
 
-    fileprivate func addSiteMediaAsset(_ media: Media) {
-        if media.mediaID?.intValue != 0 {
-            guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
+    fileprivate func insertDeviceVideo(phAsset: PHAsset) {
+        let attachment = richTextView.insertVideo(atLocation: richTextView.selectedRange.location, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
+            DispatchQueue.main.async {
+                attachment.posterURL = thumbnailURL
+                self.richTextView.refreshLayout(for: attachment)
+            }
+        }, completion: { [weak self](media, error) in
+            guard let strongSelf = self else {
                 return
             }
-            let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
-            self.mediaProgressCoordinator.finishOneItem()
+            guard let media = media, error == nil else {
+                DispatchQueue.main.async {
+                    strongSelf.handleError(error as NSError?, onAttachment: attachment)
+                }
+                return
+            }
+
+            WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+
+            strongSelf.upload(media: media, mediaID: attachment.identifier)
+        })
+    }
+
+    fileprivate func insertSiteMediaLibrary(media: Media) {
+        if media.hasRemote {
+            insertRemoteSiteMediaLibrary(media: media)
         } else {
-            var tempMediaURL = URL(string:"placeholder://")!
-            if let absoluteURL = media.absoluteLocalURL {
-                tempMediaURL = absoluteURL
-            }
-            let attachment = self.richTextView.insertImage(sourceURL:tempMediaURL, atPosition: self.richTextView.selectedRange.location, placeHolderImage: Assets.defaultMissingImage)
+            insertLocalSiteMediaLibrary(media: media)
+        }
+    }
 
-            if media.mediaType == .image {
-                WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
-            } else if media.mediaType == .video {
-                WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+    fileprivate func insertRemoteSiteMediaLibrary(media: Media) {
+        let insertLocation = richTextView.selectedRange.location
+        guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
+            return
+        }
+        if media.mediaType == .image {
+            let _ = richTextView.insertImage(sourceURL: remoteURL, atPosition: insertLocation, placeHolderImage: Assets.defaultMissingImage)
+            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+        } else if media.mediaType == .video {
+            var posterURL: URL?
+            if let posterURLString = media.remoteThumbnailURL {
+                posterURL = URL(string: posterURLString)
             }
+            let attachment = richTextView.insertVideo(atLocation: insertLocation, sourceURL: remoteURL, posterURL: posterURL, placeHolderImage: Assets.defaultMissingImage)
+            if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
+                attachment.videoPressID = videoPressGUID
+                richTextView.update(attachment: attachment)
+            }
+            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+        }
+        self.mediaProgressCoordinator.finishOneItem()
+    }
 
+    fileprivate func insertLocalSiteMediaLibrary(media: Media) {
+        let insertLocation = richTextView.selectedRange.location
+        var tempMediaURL = URL(string:"placeholder://")!
+        if let absoluteURL = media.absoluteLocalURL {
+            tempMediaURL = absoluteURL
+        }
+        var attachment: MediaAttachment?
+        if media.mediaType == .image {
+            attachment = self.richTextView.insertImage(sourceURL:tempMediaURL, atPosition: insertLocation, placeHolderImage: Assets.defaultMissingImage)
+            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+        } else if media.mediaType == .video,
+            let remoteURLStr = media.remoteURL,
+            let remoteURL = URL(string: remoteURLStr) {
+            attachment = richTextView.insertVideo(atLocation: insertLocation, sourceURL: remoteURL, posterURL: media.absoluteThumbnailLocalURL, placeHolderImage: Assets.defaultMissingImage)
+            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+        }
+        if let attachment = attachment {
             upload(media: media, mediaID: attachment.identifier)
         }
     }
@@ -1754,6 +1821,15 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             DispatchQueue.main.async {
                 if let imageAttachment = attachment as? ImageAttachment {
                     strongSelf.richTextView.update(attachment: imageAttachment, alignment: imageAttachment.alignment, size: imageAttachment.size, url: remoteURL)
+                } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
+                    videoAttachment.srcURL = URL(string: videoURLString)
+                    if let videoPosterURLString = media.remoteThumbnailURL {
+                        videoAttachment.posterURL = URL(string: videoPosterURLString)
+                    }
+                    if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
+                        videoAttachment.videoPressID = videoPressGUID
+                    }
+                    strongSelf.richTextView.update(attachment: videoAttachment)
                 }
             }
             }, failure: { [weak self](error) in
@@ -1799,10 +1875,10 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     fileprivate func processVideoPressAttachments() {
         richTextView.textStorage.enumerateAttachments { (attachment, range) in
             if let videoAttachment = attachment as? VideoAttachment,
-                let videoSrcURL = videoAttachment.srcURL,
-                videoSrcURL.scheme == VideoProcessor.videoPressScheme,
-                let videoPressID = videoSrcURL.host {
-
+               let videoSrcURL = videoAttachment.srcURL,
+               videoSrcURL.scheme == VideoProcessor.videoPressScheme,
+               let videoPressID = videoSrcURL.host {
+                // It's videoPress video so let's fetch the information for the video
                 let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
                 mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
                     videoAttachment.srcURL = URL(string:videoURLString)
@@ -1969,7 +2045,7 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 }
 
 
-// MARK: - TextViewMedia Delegate Conformance
+// MARK: - TextViewAttachmentDelegate Conformance
 //
 extension AztecPostViewController: TextViewAttachmentDelegate {
 
@@ -2010,11 +2086,33 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         }
     }
 
-    func selected(videoAttachment attachment: VideoAttachment, atPosition position: CGPoint) {
-        guard let videoURL = attachment.srcURL else {
+    func selected(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
+        if mediaProgressCoordinator.error(forMediaID: videoAttachment.identifier) != nil || mediaProgressCoordinator.isMediaUploading(mediaID: videoAttachment.identifier) {
+            displayActions(forAttachment: videoAttachment, position: position)
             return
         }
-        displayVideoPlayer(for: videoURL)
+        guard let videoURL = videoAttachment.srcURL else {
+            return
+        }
+        if let videoPressID = videoAttachment.videoPressID {
+            // It's videoPress video so let's fetch the information for the video
+            let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
+                guard let videoURL = URL(string:videoURLString) else {
+                    return
+                }
+                videoAttachment.srcURL = videoURL
+                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
+                    videoAttachment.posterURL = posterURL
+                }
+                self.richTextView.refreshLayout(for: videoAttachment)
+                self.displayVideoPlayer(for: videoURL)
+            }, failure: { (error) in
+                DDLogSwift.logError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+            })
+        } else {
+            displayVideoPlayer(for: videoURL)
+        }
     }
 
     func displayVideoPlayer(for videoURL: URL) {
@@ -2122,9 +2220,9 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         for asset in assets {
             switch asset {
             case let phAsset as PHAsset:
-                addDeviceMediaAsset(phAsset)
+                insertDeviceMedia(phAsset: phAsset)
             case let media as Media:
-                addSiteMediaAsset(media)
+                insertSiteMediaLibrary(media: media)
             default:
                 continue
             }
@@ -2389,7 +2487,7 @@ extension FormattingIdentifier {
 
 // MARK: - Media Progress Coordinator Delegate
 //
-protocol MediaProgressCoordinatorDelegate: class {
+@objc public protocol MediaProgressCoordinatorDelegate: class {
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float)
     func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator)
@@ -2399,7 +2497,7 @@ protocol MediaProgressCoordinatorDelegate: class {
 
 // MARK: - Media Progress Coordinator
 //
-class MediaProgressCoordinator: NSObject {
+public class MediaProgressCoordinator: NSObject {
 
     enum ProgressMediaKeys: String {
         case mediaID = "mediaID"
@@ -2407,7 +2505,7 @@ class MediaProgressCoordinator: NSObject {
         case mediaObject = "mediaObject"
     }
 
-    weak var delegate: MediaProgressCoordinatorDelegate?
+    public weak var delegate: MediaProgressCoordinatorDelegate?
 
     private(set) var mediaUploadingProgress: Progress?
 
@@ -2479,7 +2577,7 @@ class MediaProgressCoordinator: NSObject {
         return object
     }
 
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard
             context == &mediaUploadingProgressObserverContext,
             keyPath == #keyPath(Progress.fractionCompleted)
@@ -2496,17 +2594,29 @@ class MediaProgressCoordinator: NSObject {
         }
     }
 
-    func refreshMediaProgress() {
+    var totalProgress: Float {
         var value = Float(0)
         if let progress = mediaUploadingProgress {
             value = Float(progress.fractionCompleted)
         }
+        return value
+    }
 
-        delegate?.mediaProgressCoordinator(self, progressDidChange: value)
+    func refreshMediaProgress() {
+
+        delegate?.mediaProgressCoordinator(self, progressDidChange: totalProgress)
 
         if !isRunning {
             delegate?.mediaProgressCoordinatorDidFinishUpload(self)
         }
+    }
+
+    func isMediaUploading(mediaID: String) -> Bool {
+        if let mediaProgress = mediaUploading[mediaID],
+            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
+            return true
+        }
+        return false
     }
 
     var isRunning: Bool {
@@ -2576,5 +2686,23 @@ class MediaProgressCoordinator: NSObject {
             }
         }
         return failedMediaIDs
+    }
+}
+
+extension VideoAttachment {
+
+    var videoPressID: String? {
+
+        get {
+            return namedAttributes[VideoProcessor.videoPressHTMLAttribute]
+        }
+
+        set {
+            if let nonNilValue = newValue {
+                namedAttributes[VideoProcessor.videoPressHTMLAttribute] = nonNilValue
+            } else {
+                namedAttributes.removeValue(forKey: VideoProcessor.videoPressHTMLAttribute)
+            }
+        }
     }
 }
