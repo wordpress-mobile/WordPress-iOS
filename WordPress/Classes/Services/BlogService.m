@@ -938,6 +938,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.tagline = remoteSettings.tagline;
     settings.privacy = remoteSettings.privacy ?: settings.privacy;
     settings.languageID = remoteSettings.languageID ?: settings.languageID;
+    settings.iconMediaID = remoteSettings.iconMediaID;
     
     // Writing
     settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;

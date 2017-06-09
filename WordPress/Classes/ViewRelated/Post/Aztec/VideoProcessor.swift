@@ -4,6 +4,7 @@ import Aztec
 public struct VideoProcessor {
 
     static public var videoPressScheme = "videopress"
+    static public var videoPressHTMLAttribute = "data-wpvideopress"
     /// Shortcode processor to process videopress shortcodes to html video element
     /// More info here: https://en.support.wordpress.com/videopress/
     ///
@@ -33,7 +34,7 @@ public struct VideoProcessor {
     ///
     static public var videoPressPostProcessor: Processor {
         let postWordPressVideoProcessor = HTMLProcessor(tag:"video", replacer: { (shortcode) in
-            guard let videoPressID = shortcode.attributes.named["data-wpvideopress"] else {
+            guard let videoPressID = shortcode.attributes.named[videoPressHTMLAttribute] else {
                 return nil
             }
             var html = "[wpvideo \(videoPressID) "
