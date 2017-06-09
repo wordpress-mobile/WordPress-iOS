@@ -67,6 +67,7 @@
               "is_vip": false,
               "is_following": false,
               "options": {
+              "blog_public": 1,
               "timezone": "",
               "gmt_offset": 0,
               "videopress_enabled": false,
