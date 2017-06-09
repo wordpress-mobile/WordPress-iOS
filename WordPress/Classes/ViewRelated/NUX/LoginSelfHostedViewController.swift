@@ -3,6 +3,8 @@ import UIKit
 class LoginSelfHostedViewController: SigninSelfHostedViewController, LoginViewController {
     var gravatarProfile: GravatarProfile?
     var userProfile: UserProfile?
+    var blog: Blog?
+
     // let the storyboard's style stay
     override func setupStyles() {}
 
@@ -30,7 +32,7 @@ class LoginSelfHostedViewController: SigninSelfHostedViewController, LoginViewCo
             }
 
             RecentSitesService().touch(blog: blog)
-
+            self?.blog = blog
             self?.fetchUserProfileInfo(blog: blog, completion: {
                 self?.dismiss()
             })
@@ -66,6 +68,8 @@ class LoginSelfHostedViewController: SigninSelfHostedViewController, LoginViewCo
             info.fullName = profile.displayName
             info.email = profile.email
         }
+
+        info.blog = blog
 
         return info
     }
