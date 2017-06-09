@@ -105,6 +105,7 @@
 		93C674EE1EE834B700BFAF05 /* RemoteBlogSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C674ED1EE834B700BFAF05 /* RemoteBlogSettings.swift */; };
 		93C674F11EE8351E00BFAF05 /* NSMutableDictionary+Helpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 93C674EF1EE8351E00BFAF05 /* NSMutableDictionary+Helpers.h */; };
 		93C674F21EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C674F01EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m */; };
+		93C882971EEB179600227A59 /* RESTTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C882961EEB179600227A59 /* RESTTestable.swift */; };
 		FAE63A9F1611DECD81F57707 /* Pods_WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D80394B0062075C00ECBC60 /* Pods_WordPressKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -229,6 +230,7 @@
 		93C674ED1EE834B700BFAF05 /* RemoteBlogSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteBlogSettings.swift; sourceTree = "<group>"; };
 		93C674EF1EE8351E00BFAF05 /* NSMutableDictionary+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+Helpers.h"; sourceTree = "<group>"; };
 		93C674F01EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+Helpers.m"; sourceTree = "<group>"; };
+		93C882961EEB179600227A59 /* RESTTestable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RESTTestable.swift; path = ../../WordPress/WordPressTest/RESTTestable.swift; sourceTree = "<group>"; };
 		AF6C6B3D338F6E0C94E0CFEE /* Pods-WordPressKitTests.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKitTests.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests.release-alpha.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -301,6 +303,7 @@
 		930F52BA1ECF8A67002F921B /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				93C882961EEB179600227A59 /* RESTTestable.swift */,
 				93AB06031EE8838400EF8764 /* RemoteTestCase.swift */,
 				93BD273E1EE732CC002BB00B /* Accounts */,
 				930F52BB1ECF8A78002F921B /* Stats */,
@@ -786,6 +789,7 @@
 				93BD27411EE73311002BB00B /* AccountServiceRemoteRESTTests.swift in Sources */,
 				93AC8EE11ED32FD000900F5A /* StatsStringUtilitiesTest.m in Sources */,
 				93AC8EE21ED32FD000900F5A /* WPStatsServiceRemoteTests.m in Sources */,
+				93C882971EEB179600227A59 /* RESTTestable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
