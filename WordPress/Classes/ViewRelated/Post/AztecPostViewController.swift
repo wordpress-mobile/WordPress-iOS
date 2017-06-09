@@ -2235,10 +2235,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 //
 extension AztecPostViewController: UIViewControllerRestoration {
     class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
-        guard let lastIdentifierComponent = identifierComponents.last as? String else {
-            return nil
-        }
-
         return restoreAztec(withCoder: coder)
     }
 
