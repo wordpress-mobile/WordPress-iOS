@@ -20,6 +20,13 @@ extension URL {
         return values?.typeIdentifier
     }
 
+    var resourceTypeIdentifierFileExtension: String? {
+        guard let type = resourceTypeIdentifier else {
+            return nil
+        }
+        return URL.fileExtensionForUTType(type)
+    }
+
     /// Returns a URL with an incremental file name, if a file already exists at the given URL.
     ///
     /// Previously seen in MediaService.m within urlForMediaWithFilename:andExtension:
