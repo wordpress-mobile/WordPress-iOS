@@ -9,6 +9,7 @@ workspace 'WordPress.xcworkspace'
 ## Pods shared between all the targets
 def shared_with_all_pods
   pod 'CocoaLumberjack', '~> 2.2.0'
+  pod 'FormatterKit', '~> 1.8.1'
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'WordPressCom-Analytics-iOS', '0.1.29'
 end
@@ -37,7 +38,6 @@ abstract_target 'WordPress_Base' do
     # Third party libraries
     # ---------------------
     pod '1PasswordExtension', '1.8.4'
-    pod 'FormatterKit', '~> 1.8.1'
     pod 'HockeySDK', '~> 4.1.5', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '~>0.7.0'
     pod 'Reachability',	'3.2'
