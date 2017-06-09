@@ -484,6 +484,15 @@
 		93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F581762410B000C966D /* ActivityLogDetailViewController.m */; };
 		93C486501810442200A24725 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93027BB71758332300483FFD /* SupportViewController.m */; };
 		93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F55176237A4000C966D /* ActivityLogViewController.m */; };
+		93C882A11EEB18D700227A59 /* html_page_with_link_to_rsd_non_standard.html in Resources */ = {isa = PBXBuildFile; fileRef = 93C882981EEB18D700227A59 /* html_page_with_link_to_rsd_non_standard.html */; };
+		93C882A21EEB18D700227A59 /* html_page_with_link_to_rsd.html in Resources */ = {isa = PBXBuildFile; fileRef = 93C882991EEB18D700227A59 /* html_page_with_link_to_rsd.html */; };
+		93C882A31EEB18D700227A59 /* plugin_redirect.html in Resources */ = {isa = PBXBuildFile; fileRef = 93C8829A1EEB18D700227A59 /* plugin_redirect.html */; };
+		93C882A41EEB18D700227A59 /* rsd.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93C8829B1EEB18D700227A59 /* rsd.xml */; };
+		93C882A51EEB18D700227A59 /* xmlrpc-response-fault.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93C8829C1EEB18D700227A59 /* xmlrpc-response-fault.xml */; };
+		93C882A61EEB18D700227A59 /* xmlrpc-response-getpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93C8829D1EEB18D700227A59 /* xmlrpc-response-getpost.xml */; };
+		93C882A71EEB18D700227A59 /* xmlrpc-response-newpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93C8829E1EEB18D700227A59 /* xmlrpc-response-newpost.xml */; };
+		93C882A81EEB18D700227A59 /* xmlrpc-response-redirect.html in Resources */ = {isa = PBXBuildFile; fileRef = 93C8829F1EEB18D700227A59 /* xmlrpc-response-redirect.html */; };
+		93C882A91EEB18D700227A59 /* xmlrpc-response-system-listmethods.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93C882A01EEB18D700227A59 /* xmlrpc-response-system-listmethods.xml */; };
 		93CD939319099BE70049096E /* authtoken.json in Resources */ = {isa = PBXBuildFile; fileRef = 93CD939219099BE70049096E /* authtoken.json */; };
 		93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */; };
 		93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93DEB88119E5BF7100F9546D /* TodayExtensionService.m */; };
@@ -778,8 +787,6 @@
 		E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */ = {isa = PBXBuildFile; fileRef = E1556CF1193F6FE900FC52EA /* CommentService.m */; };
 		E155EC721E9B7DCE009D7F63 /* PostTagPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E155EC711E9B7DCE009D7F63 /* PostTagPickerViewController.swift */; };
 		E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E15618FC16DB8677006532C4 /* UIKitTestHelper.m */; };
-		E15618FF16DBA983006532C4 /* xmlrpc-response-newpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */; };
-		E156190116DBABDE006532C4 /* xmlrpc-response-getpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */; };
 		E15632CC1EB9ECF40035A099 /* TableViewKeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15632CB1EB9ECF40035A099 /* TableViewKeyboardObserver.swift */; };
 		E15644E91CE0E47C00D96E64 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15644E81CE0E47C00D96E64 /* RoundedButton.swift */; };
 		E15644EB1CE0E4C500D96E64 /* FeatureItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15644EA1CE0E4C500D96E64 /* FeatureItemRow.swift */; };
@@ -1860,6 +1867,15 @@
 		93C2075C1CC7FFC800C94D04 /* Tracks+TodayWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tracks+TodayWidget.swift"; sourceTree = "<group>"; };
 		93C3C2561CAB031E0092F837 /* Info-Internal.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-Internal.plist"; path = "WordPressShareExtension/Info-Internal.plist"; sourceTree = SOURCE_ROOT; };
 		93C3C2581CAB032C0092F837 /* Info-Alpha.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-Alpha.plist"; path = "WordPressShareExtension/Info-Alpha.plist"; sourceTree = SOURCE_ROOT; };
+		93C882981EEB18D700227A59 /* html_page_with_link_to_rsd_non_standard.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = html_page_with_link_to_rsd_non_standard.html; sourceTree = "<group>"; };
+		93C882991EEB18D700227A59 /* html_page_with_link_to_rsd.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = html_page_with_link_to_rsd.html; sourceTree = "<group>"; };
+		93C8829A1EEB18D700227A59 /* plugin_redirect.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = plugin_redirect.html; sourceTree = "<group>"; };
+		93C8829B1EEB18D700227A59 /* rsd.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = rsd.xml; sourceTree = "<group>"; };
+		93C8829C1EEB18D700227A59 /* xmlrpc-response-fault.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-fault.xml"; sourceTree = "<group>"; };
+		93C8829D1EEB18D700227A59 /* xmlrpc-response-getpost.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-getpost.xml"; sourceTree = "<group>"; };
+		93C8829E1EEB18D700227A59 /* xmlrpc-response-newpost.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-newpost.xml"; sourceTree = "<group>"; };
+		93C8829F1EEB18D700227A59 /* xmlrpc-response-redirect.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "xmlrpc-response-redirect.html"; sourceTree = "<group>"; };
+		93C882A01EEB18D700227A59 /* xmlrpc-response-system-listmethods.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-system-listmethods.xml"; sourceTree = "<group>"; };
 		93CD939219099BE70049096E /* authtoken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = authtoken.json; sourceTree = "<group>"; };
 		93D6D6461924FDAD00A4F44A /* TaxonomyServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemote.h; sourceTree = "<group>"; };
 		93D86B931C63EC31003D8E3E /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -2277,8 +2293,6 @@
 		E155EC711E9B7DCE009D7F63 /* PostTagPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTagPickerViewController.swift; sourceTree = "<group>"; };
 		E15618FB16DB8677006532C4 /* UIKitTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKitTestHelper.h; sourceTree = "<group>"; };
 		E15618FC16DB8677006532C4 /* UIKitTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitTestHelper.m; sourceTree = "<group>"; };
-		E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-newpost.xml"; sourceTree = "<group>"; };
-		E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-getpost.xml"; sourceTree = "<group>"; };
 		E15632CB1EB9ECF40035A099 /* TableViewKeyboardObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewKeyboardObserver.swift; sourceTree = "<group>"; };
 		E15644E81CE0E47C00D96E64 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		E15644EA1CE0E4C500D96E64 /* FeatureItemRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureItemRow.swift; sourceTree = "<group>"; };
@@ -5193,6 +5207,8 @@
 				59F9C1561B9DCE4E00885CC1 /* get-single-theme-v1.1.json */,
 				E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */,
 				E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */,
+				93C882981EEB18D700227A59 /* html_page_with_link_to_rsd_non_standard.html */,
+				93C882991EEB18D700227A59 /* html_page_with_link_to_rsd.html */,
 				E1EBC3741C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib */,
 				746A3E921EAE5219002724D6 /* me-settings-auth-failure.json */,
 				746A3E941EAE5408002724D6 /* me-settings-bad-json-failure.json */,
@@ -5217,7 +5233,9 @@
 				742F95611EB8D70500ED66A0 /* plans-feature-bad-json-failure.json */,
 				742F95621EB8D70500ED66A0 /* plans-feature-empty-success.json */,
 				742F95631EB8D70500ED66A0 /* plans-feature-success.json */,
+				93C8829A1EEB18D700227A59 /* plugin_redirect.html */,
 				B5A6BB8B1BF4DF38002F6A96 /* rest-site-settings.json */,
+				93C8829B1EEB18D700227A59 /* rsd.xml */,
 				747B1D891EB1501600BFBF8B /* site-followers-delete-auth-failure.json */,
 				747B1D8D1EB1541600BFBF8B /* site-followers-delete-bad-json-failure.json */,
 				740CAE7A1E816FC700D0E892 /* site-followers-delete-failure.json */,
@@ -5261,22 +5279,20 @@
 				FF9839AE1CD3FBCA00E85258 /* WordPressOAuthClientNeed2FAFail.json */,
 				FF9839AA1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json */,
 				FF9839AC1CD3F82300E85258 /* WordPressOAuthClientWrongPasswordFail.json */,
-				FF9839AE1CD3FBCA00E85258 /* WordPressOAuthClientNeed2FAFail.json */,
-				B5BC25A11CFCBA5400F7D8B9 /* people-validate-invitation-success.json */,
-				B5BC25A71CFCBEFF00F7D8B9 /* people-validate-invitation-failure.json */,
-				B5BC25A51CFCBDB600F7D8B9 /* people-send-invitation-success.json */,
-				B5BC25A31CFCBA6A00F7D8B9 /* people-send-invitation-failure.json */,
-				932C6CB21D521DFA006E4A62 /* gallery-reader-post-public.json */,
-				932AB00A1D526C1400BE486D /* gallery-reader-post-private.json */,
 				74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */,
 				74F24F631EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml */,
-				7462FD451EE8BF06007E2B80 /* xmlrpc-metaweblog-editpost-success.xml */,
+				7462FD471EE8C0CB007E2B80 /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml */,
 				7462FD4B1EE8C5E7007E2B80 /* xmlrpc-metaweblog-editpost-change-format-failure.xml */,
 				7462FD491EE8C1B4007E2B80 /* xmlrpc-metaweblog-editpost-change-type-failure.xml */,
-				7462FD471EE8C0CB007E2B80 /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml */,
-				743868141EE89A1500E9286A /* xmlrpc-metaweblog-newpost-success.xml */,
+				7462FD451EE8BF06007E2B80 /* xmlrpc-metaweblog-editpost-success.xml */,
 				743868181EE8B66F00E9286A /* xmlrpc-metaweblog-newpost-bad-xml-failure.xml */,
 				743868161EE8B43B00E9286A /* xmlrpc-metaweblog-newpost-invalid-posttype-failure.xml */,
+				743868141EE89A1500E9286A /* xmlrpc-metaweblog-newpost-success.xml */,
+				93C8829C1EEB18D700227A59 /* xmlrpc-response-fault.xml */,
+				93C8829D1EEB18D700227A59 /* xmlrpc-response-getpost.xml */,
+				93C8829E1EEB18D700227A59 /* xmlrpc-response-newpost.xml */,
+				93C8829F1EEB18D700227A59 /* xmlrpc-response-redirect.html */,
+				93C882A01EEB18D700227A59 /* xmlrpc-response-system-listmethods.xml */,
 				74F24F641EE8729700E8BFE8 /* xmlrpc-wp-getpost-bad-xml-failure.xml */,
 				74F24F651EE8729700E8BFE8 /* xmlrpc-wp-getpost-invalid-id-failure.xml */,
 				74F24F661EE8729700E8BFE8 /* xmlrpc-wp-getpost-success.xml */,
@@ -5990,8 +6006,10 @@
 			files = (
 				E1EBC3751C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib in Resources */,
 				E15027631E03E51500B847E3 /* notes-action-unsupported.json in Resources */,
+				93C882A21EEB18D700227A59 /* html_page_with_link_to_rsd.html in Resources */,
 				E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */,
 				FF9839AB1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json in Resources */,
+				93C882A51EEB18D700227A59 /* xmlrpc-response-fault.xml in Resources */,
 				B5EA71301DC293F30083032A /* notifications-mark-as-read.json in Resources */,
 				7462FD4A1EE8C1B4007E2B80 /* xmlrpc-metaweblog-editpost-change-type-failure.xml in Resources */,
 				742F956A1EB8D70500ED66A0 /* plans-feature-empty-success.json in Resources */,
@@ -6013,6 +6031,8 @@
 				745938391EAFAF990065386E /* me-settings-change-email-success.json in Resources */,
 				745938421EAFB21B0065386E /* me-settings-change-aboutme-success.json in Resources */,
 				747B1D7E1EB1312200BFBF8B /* site-users-update-role-bad-json-failure.json in Resources */,
+				93C882A61EEB18D700227A59 /* xmlrpc-response-getpost.xml in Resources */,
+				93C882A81EEB18D700227A59 /* xmlrpc-response-redirect.html in Resources */,
 				93CD939319099BE70049096E /* authtoken.json in Resources */,
 				742F956B1EB8D70500ED66A0 /* plans-feature-success.json in Resources */,
 				E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */,
@@ -6020,6 +6040,7 @@
 				745938461EAFB2600065386E /* me-settings-change-display-name-success.json in Resources */,
 				FF9839AD1CD3F82300E85258 /* WordPressOAuthClientWrongPasswordFail.json in Resources */,
 				FFC347461CF87B1B00B07952 /* WordPressComRestApiMultipleErrors.json in Resources */,
+				93C882A11EEB18D700227A59 /* html_page_with_link_to_rsd_non_standard.html in Resources */,
 				747B1D8C1EB1516900BFBF8B /* site-viewers-delete-auth-failure.json in Resources */,
 				59F9C1591B9DD3D600885CC1 /* get-purchased-themes-v1.1.json in Resources */,
 				8554088A1A6F107D00DDBD79 /* app-review-prompt-global-disable.json in Resources */,
@@ -6045,6 +6066,7 @@
 				1702BBE91CF357BB00766A33 /* domain-service-all-domain-types.json in Resources */,
 				743868171EE8B43B00E9286A /* xmlrpc-metaweblog-newpost-invalid-posttype-failure.xml in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
+				93C882A71EEB18D700227A59 /* xmlrpc-response-newpost.xml in Resources */,
 				740CAE7D1E816FC700D0E892 /* site-followers-delete-success.json in Resources */,
 				74F24F691EE8729700E8BFE8 /* xmlrpc-wp-getpost-bad-xml-failure.xml in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
@@ -6057,6 +6079,7 @@
 				742F95701EB8D70500ED66A0 /* site-plans-success.json in Resources */,
 				B5EA71381DC294B00083032A /* notifications-load-all.json in Resources */,
 				745938441EAFB21B0065386E /* me-settings-change-lastname-success.json in Resources */,
+				93C882A31EEB18D700227A59 /* plugin_redirect.html in Resources */,
 				084D94AF1EDF842F00C385A6 /* test-video-device-gps.m4v in Resources */,
 				59F9C1571B9DCE4E00885CC1 /* get-single-theme-v1.1.json in Resources */,
 				933D1F6E1EA7A402009FB462 /* TestAssets.xcassets in Resources */,
@@ -6090,13 +6113,13 @@
 				747B1D8A1EB1501600BFBF8B /* site-followers-delete-auth-failure.json in Resources */,
 				746A3E931EAE5219002724D6 /* me-settings-auth-failure.json in Resources */,
 				FFB8DC9D1CE320C700D4D1B7 /* WordPressComRestApiFailInvalidJSON.json in Resources */,
-				E15618FF16DBA983006532C4 /* xmlrpc-response-newpost.xml in Resources */,
 				B58CE5DF1DC128CD004AA81D /* remote-notification.json in Resources */,
 				740A542F1EB1072E0073FD99 /* site-roles-bad-json-failure.json in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
+				93C882A41EEB18D700227A59 /* rsd.xml in Resources */,
 				932AB00B1D526C1400BE486D /* gallery-reader-post-private.json in Resources */,
-				E156190116DBABDE006532C4 /* xmlrpc-response-getpost.xml in Resources */,
+				93C882A91EEB18D700227A59 /* xmlrpc-response-system-listmethods.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
