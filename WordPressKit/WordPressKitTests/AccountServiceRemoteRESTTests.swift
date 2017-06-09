@@ -1,7 +1,7 @@
 @testable import WordPressKit
 import XCTest
 
-class AccountServiceRemoteRESTTests: RemoteTestCase {
+class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
     // MARK: - Constants
 
@@ -49,6 +49,8 @@ class AccountServiceRemoteRESTTests: RemoteTestCase {
 
     override func tearDown() {
         super.tearDown()
+
+        remote = nil
     }
 
     // MARK: - Get Account Details Tests
