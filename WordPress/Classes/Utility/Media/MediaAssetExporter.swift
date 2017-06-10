@@ -162,8 +162,8 @@ class MediaAssetExporter: MediaExporter {
             if let options = videoOptions {
                 videoExporter.options = options
             }
-            if videoExporter.options.preferredExportFileType == nil {
-                videoExporter.options.preferredExportFileType = videoResource.uniformTypeIdentifier
+            if videoExporter.options.preferredExportVideoType == nil {
+                videoExporter.options.preferredExportVideoType = videoResource.uniformTypeIdentifier
             }
             let originalFilename = videoResource.originalFilename
 
