@@ -244,6 +244,26 @@ class MediaImageExporterTests: XCTestCase {
         waitForExpectations(timeout: 2.0, handler: nil)
     }
 
+    func testThatImageExportingByImageAndChangingFormatsWorks() {
+        let image = MediaImageExporterTests.imageForFileNamed(testDeviceImageNameWithGPS)
+        let expect = self.expectation(description: "image export by UIImage")
+        let exporter = MediaImageExporter()
+        exporter.mediaDirectoryType = .temporary
+        exporter.options.exportImageType = kUTTypePNG as String
+        exporter.exportImage(image,
+                             fileName: nil,
+                             onCompletion: { (imageExport) in
+                                XCTAssert(UTTypeEqual(kUTTypePNG, imageExport.url.resourceTypeIdentifier! as CFString), "Unexpected image format when trying to target a PNG format from a JPEG.")
+                                MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
+                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+                                expect.fulfill()
+        }) { (error) in
+            XCTFail("Error: an error occurred testing an image export: \(error.toNSError())")
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 2.0, handler: nil)
+    }
+
     // MARK: - Helper methods
 
     class func filePathForTestImageNamed(_ file: String) -> String {
