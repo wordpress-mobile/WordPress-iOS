@@ -99,7 +99,7 @@ class MediaThumbnailExporter: MediaExporter {
         if let maximumSize = options.preferredMaximumSizeAtScale {
             exporter.options.maximumImageSize = maximumSize
         }
-        exporter.exportImage(atURL: url,
+        exporter.exportImage(atFile: url,
                              onCompletion: { (export) in
                                 self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
         },
