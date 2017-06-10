@@ -31,6 +31,12 @@ class MediaThumbnailExporter: MediaExporter {
         ///
         var scale: CGFloat = UIScreen.main.scale
 
+        /// The target image type of the exported thumbnail images.
+        ///
+        /// - Note: Passed on to the MediaImageExporter.Options.exportImageType.
+        ///
+        var thumbnailImageType = kUTTypeJPEG as String
+
         /// Computed preferred size, at scale.
         ///
         var preferredSizeAtScale: CGSize? {
@@ -66,9 +72,7 @@ class MediaThumbnailExporter: MediaExporter {
     /// The URL the exporter expects to write for the URL and configured export options.
     ///
     func expectedThumbnailURL(forFile url: URL) throws -> URL {
-        var thumbnailURL = try thumbnailURLWithOptions(for: url).deletingPathExtension()
-        thumbnailURL.appendPathExtension(URL.fileExtensionForUTType(kUTTypeJPEG as String)!)
-        return thumbnailURL
+        return try thumbnailURLWithOptions(for: url)
     }
 
     /// Export a thumbnail image for a file at the URL, with an expected type of an image or video.
@@ -99,6 +103,7 @@ class MediaThumbnailExporter: MediaExporter {
         if let maximumSize = options.preferredMaximumSizeAtScale {
             exporter.options.maximumImageSize = maximumSize
         }
+        exporter.options.exportImageType = options.thumbnailImageType
         exporter.exportImage(atFile: url,
                              onCompletion: { (export) in
                                 self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
@@ -111,11 +116,11 @@ class MediaThumbnailExporter: MediaExporter {
     fileprivate func exportVideoThumbnail(at url: URL, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
         let exporter = MediaVideoExporter()
         exporter.mediaDirectoryType = .temporary
-        var imageOptions: MediaImageExporter.Options?
+        var imageOptions = MediaImageExporter.Options()
         if let maximumSize = options.preferredMaximumSizeAtScale {
-            imageOptions = MediaImageExporter.Options()
-            imageOptions!.maximumImageSize = maximumSize
+            imageOptions.maximumImageSize = maximumSize
         }
+        imageOptions.exportImageType = options.thumbnailImageType
         exporter.exportPreviewImageForVideo(atURL: url,
                                             imageOptions: imageOptions,
                                             onCompletion: { (export) in
@@ -133,7 +138,7 @@ class MediaThumbnailExporter: MediaExporter {
         }
         // Get a new URL for the file as a thumbnail within the cache.
         return try MediaLibrary.makeLocalMediaURL(withFilename: filename,
-                                                  fileExtension: url.pathExtension,
+                                                  fileExtension: URL.fileExtensionForUTType(options.thumbnailImageType),
                                                   type: mediaDirectoryType)
     }
 
