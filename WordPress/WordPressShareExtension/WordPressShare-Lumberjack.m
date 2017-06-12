@@ -1,4 +1,4 @@
-#import <CocoaLumberjack/CocoaLumberjack.h>
+@import CocoaLumberjack;
 
 
 /// CocoaLumberjack Loglevel: Let's nuke this, whenever possible.
