@@ -74,14 +74,6 @@ class NoteTableViewCell: MGSwipeTableCell {
             return noticonLabel.text
         }
     }
-    override var backgroundColor: UIColor? {
-        didSet {
-            // Note: This is done to improve scrolling performance!
-            snippetLabel.backgroundColor = backgroundColor
-            subjectLabel.backgroundColor = backgroundColor
-            separatorsView.backgroundColor = backgroundColor
-        }
-    }
     var onUndelete: (() -> Void)?
 
 

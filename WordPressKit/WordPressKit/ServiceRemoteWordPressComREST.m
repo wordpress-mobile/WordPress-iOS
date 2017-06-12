@@ -1,5 +1,5 @@
 #import "ServiceRemoteWordPressComREST.h"
-#import "WordPress-Swift.h"
+#import <WordPressKit/WordPressKit-Swift.h>
 
 static NSString* const ServiceRemoteWordPressComRESTApiVersionStringInvalid = @"invalid_api_version";
 static NSString* const ServiceRemoteWordPressComRESTApiVersionString_1_1 = @"v1.1";
@@ -63,10 +63,10 @@ static NSString* const ServiceRemoteWordPressComRESTApiVersionString_1_3 = @"v1.
     return [NSString stringWithFormat:@"%@/%@", apiVersionString, resourceUrl];
 }
 
-+ (WordPressComRestApi *)anonymousWordPressComRestApi {
++ (WordPressComRestApi *)anonymousWordPressComRestApiWithUserAgent:(NSString *)userAgent {
 
     return [[WordPressComRestApi alloc] initWithOAuthToken:nil
-                                                 userAgent:[WPUserAgent wordPressUserAgent]
+                                                 userAgent:userAgent
             ];
 }
 

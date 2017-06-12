@@ -1,5 +1,6 @@
 import Foundation
 import AFNetworking
+import WordPressShared
 
 /**
  Error constants for the WordPress.com REST API
@@ -294,7 +295,7 @@ public final class FilePart: NSObject {
     let filename: String
     let mimeType: String
 
-    init(parameterName: String, url: URL, filename: String, mimeType: String) {
+    public init(parameterName: String, url: URL, filename: String, mimeType: String) {
         self.parameterName = parameterName
         self.url = url
         self.filename = filename
@@ -365,8 +366,8 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer {
 
 extension WordPressComRestApi {
     /// Returns an Api object without an oAuthtoken defined and with the userAgent set for the WordPress App user agent
-    class public func anonymousApi() -> WordPressComRestApi {
-        return WordPressComRestApi(oAuthToken: nil, userAgent: WPUserAgent.wordPress())
+    class public func anonymousApi(userAgent: String) -> WordPressComRestApi {
+        return WordPressComRestApi(oAuthToken: nil, userAgent: userAgent)
     }
 
     /// Append the user's preferred device locale as a query param to the URL path.
