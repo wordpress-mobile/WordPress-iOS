@@ -105,6 +105,8 @@
 		93C674F11EE8351E00BFAF05 /* NSMutableDictionary+Helpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 93C674EF1EE8351E00BFAF05 /* NSMutableDictionary+Helpers.h */; };
 		93C674F21EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C674F01EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m */; };
 		93C882971EEB179600227A59 /* RESTTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C882961EEB179600227A59 /* RESTTestable.swift */; };
+		93F08F111EEF0E9B000C2DF6 /* Logging.h in Headers */ = {isa = PBXBuildFile; fileRef = 93F08F0F1EEF0E9B000C2DF6 /* Logging.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		93F08F121EEF0E9B000C2DF6 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 93F08F101EEF0E9B000C2DF6 /* Logging.m */; };
 		FAE63A9F1611DECD81F57707 /* Pods_WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D80394B0062075C00ECBC60 /* Pods_WordPressKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -229,6 +231,8 @@
 		93C674EF1EE8351E00BFAF05 /* NSMutableDictionary+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+Helpers.h"; sourceTree = "<group>"; };
 		93C674F01EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+Helpers.m"; sourceTree = "<group>"; };
 		93C882961EEB179600227A59 /* RESTTestable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RESTTestable.swift; path = ../../WordPress/WordPressTest/RESTTestable.swift; sourceTree = "<group>"; };
+		93F08F0F1EEF0E9B000C2DF6 /* Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logging.h; sourceTree = "<group>"; };
+		93F08F101EEF0E9B000C2DF6 /* Logging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Logging.m; sourceTree = "<group>"; };
 		AF6C6B3D338F6E0C94E0CFEE /* Pods-WordPressKitTests.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKitTests.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests.release-alpha.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -345,6 +349,7 @@
 		9368C77D1EC5EF1B0092CE8E /* WordPressKit */ = {
 			isa = PBXGroup;
 			children = (
+				93F08F0E1EEF0E86000C2DF6 /* Private */,
 				9368C79C1EC62EBD0092CE8E /* Models */,
 				9368C79B1EC62EB70092CE8E /* Services */,
 				93BD27871EE829B4002BB00B /* Utility */,
@@ -491,6 +496,15 @@
 			name = Utility;
 			sourceTree = "<group>";
 		};
+		93F08F0E1EEF0E86000C2DF6 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				93F08F0F1EEF0E9B000C2DF6 /* Logging.h */,
+				93F08F101EEF0E9B000C2DF6 /* Logging.m */,
+			);
+			name = Private;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -515,6 +529,7 @@
 				9368C7B71EC630270092CE8E /* StatsStreakItem.h in Headers */,
 				93BD27921EE82B30002BB00B /* JetpackServiceRemote.h in Headers */,
 				93C674E71EE8345300BFAF05 /* RemoteBlog.h in Headers */,
+				93F08F111EEF0E9B000C2DF6 /* Logging.h in Headers */,
 				93C674EB1EE8348F00BFAF05 /* RemoteBlogOptionsHelper.h in Headers */,
 				9368C7B91EC630270092CE8E /* StatsSummary.h in Headers */,
 			);
@@ -767,6 +782,7 @@
 				93BD273D1EE73282002BB00B /* AccountServiceRemoteREST.m in Sources */,
 				93BD27811EE73944002BB00B /* WordPressOrgXMLRPCApi.swift in Sources */,
 				9368C7B21EC630270092CE8E /* StatsItem.m in Sources */,
+				93F08F121EEF0E9B000C2DF6 /* Logging.m in Sources */,
 				9368C7A41EC62F800092CE8E /* WPStatsServiceRemote.m in Sources */,
 				93BD27931EE82B30002BB00B /* JetpackServiceRemote.m in Sources */,
 				93BD27821EE73944002BB00B /* WordPressOrgXMLRPCValidator.swift in Sources */,
