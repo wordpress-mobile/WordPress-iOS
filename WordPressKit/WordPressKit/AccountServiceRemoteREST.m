@@ -223,8 +223,7 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
     remoteUser.displayName = [dictionary stringForKey:UserDictionaryDisplaynameKey];
     remoteUser.primaryBlogID = [dictionary numberForKey:UserDictionaryPrimaryBlogKey];
     remoteUser.avatarURL = [dictionary stringForKey:UserDictionaryAvatarURLKey];
-    // TODO: Import dateWithISO8601String
-    // remoteUser.dateCreated = [NSDate dateWithISO8601String:[dictionary stringForKey:UserDictionaryDateKey]];
+    remoteUser.dateCreated = [NSDate dateWithISO8601String:[dictionary stringForKey:UserDictionaryDateKey]];
     remoteUser.emailVerified = [[dictionary numberForKey:UserDictionaryEmailVerifiedKey] boolValue];
     
     return remoteUser;
