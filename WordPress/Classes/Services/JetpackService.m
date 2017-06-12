@@ -1,7 +1,7 @@
 #import "JetpackService.h"
 #import "AccountService.h"
 #import "BlogService.h"
-#import "JetpackServiceRemote.h"
+@import WordPressKit;
 #import "WordPress-Swift.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
@@ -56,7 +56,7 @@ NSString * const JetpackServiceErrorDomain = @"JetpackServiceErrorDomain";
                   success:(void (^)(WPAccount *account))success
                   failure:(void (^)(NSError *error))failure
 {
-    WordPressComOAuthClient *client = [WordPressComOAuthClient client];
+    WordPressComOAuthClient *client = [WordPressComOAuthClient clientWithClientID:ApiCredentials.client secret:ApiCredentials.secret];
     [client authenticateWithUsername:username
                             password:password
                      multifactorCode:multifactorCode
@@ -107,7 +107,7 @@ NSString * const JetpackServiceErrorDomain = @"JetpackServiceErrorDomain";
                     success:(void (^)(BOOL hasJetpack))success
                     failure:(void (^)(NSError *error))failure
 {
-    JetpackServiceRemote *remote = [[JetpackServiceRemote alloc] initWithWordPressComRestApi:[WordPressComRestApi anonymousApi]];
+    JetpackServiceRemote *remote = [[JetpackServiceRemote alloc] initWithWordPressComRestApi:[WordPressComRestApi anonymousApiWithUserAgent:WPUserAgent.wordPressUserAgent]];
     [remote checkSiteHasJetpack:siteURL success:success failure:failure];
 }
 

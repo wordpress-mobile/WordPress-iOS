@@ -163,7 +163,7 @@ open class SignupService: LocalCoreDataService {
                                   failure: @escaping SignupFailureBlock) {
 
         status(.authenticating)
-        let client = WordPressComOAuthClient.client()
+        let client = WordPressComOAuthClient.client(clientID: ApiCredentials.client(), secret: ApiCredentials.secret())
         client.authenticateWithUsername(params.username,
                                         password: params.password,
                                         multifactorCode: nil,
