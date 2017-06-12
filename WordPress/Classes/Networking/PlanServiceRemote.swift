@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 class PlanServiceRemote: ServiceRemoteWordPressComREST {
     typealias SitePlans = (activePlan: Plan, availablePlans: [Plan])
@@ -22,9 +23,9 @@ class PlanServiceRemote: ServiceRemoteWordPressComREST {
                 do {
                     try success(mapPlansResponse(response))
                 } catch {
-                    DDLogSwift.logError("Error parsing plans response for site \(siteID)")
-                    DDLogSwift.logError("\(error)")
-                    DDLogSwift.logDebug("Full response: \(response)")
+                    DDLogError("Error parsing plans response for site \(siteID)")
+                    DDLogError("\(error)")
+                    DDLogDebug("Full response: \(response)")
                     failure(error)
                 }
             }, failure: {
