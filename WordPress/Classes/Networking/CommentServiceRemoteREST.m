@@ -1,9 +1,8 @@
 #import "CommentServiceRemoteREST.h"
 #import "WordPress-Swift.h"
 #import "RemoteComment.h"
-#import "NSDate+WordPressJSON.h"
-#import <NSObject_SafeExpectations/NSObject+SafeExpectations.h>
-
+@import NSObject_SafeExpectations;
+@import WordPressKit;
 
 
 @implementation CommentServiceRemoteREST

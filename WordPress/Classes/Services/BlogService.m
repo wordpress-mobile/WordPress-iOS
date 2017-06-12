@@ -12,16 +12,13 @@
 #import "BlogServiceRemote.h"
 #import "BlogServiceRemoteXMLRPC.h"
 #import "BlogServiceRemoteREST.h"
-#import "AccountServiceRemote.h"
-#import "AccountServiceRemoteREST.h"
-#import "RemoteBlog.h"
 #import "TodayExtensionService.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
 #import "RemotePostType.h"
 #import "PostType.h"
-#import "RemoteBlogOptionsHelper.h"
-#import <WordPressShared/NSString+XMLExtensions.h>
+@import WordPressKit;
+@import WordPressShared;
 
 NSString *const WPComGetFeatures = @"wpcom.getFeatures";
 NSString *const VideopressEnabled = @"videopress_enabled";
@@ -941,6 +938,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.tagline = remoteSettings.tagline;
     settings.privacy = remoteSettings.privacy ?: settings.privacy;
     settings.languageID = remoteSettings.languageID ?: settings.languageID;
+    settings.iconMediaID = remoteSettings.iconMediaID;
     
     // Writing
     settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;

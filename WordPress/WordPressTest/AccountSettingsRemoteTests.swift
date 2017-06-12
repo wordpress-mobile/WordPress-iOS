@@ -1,6 +1,6 @@
 @testable import WordPress
 
-class AccountSettingsRemoteTests: RemoteTestCase {
+class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 
     // MARK: - Constants
 
@@ -44,11 +44,13 @@ class AccountSettingsRemoteTests: RemoteTestCase {
     override func setUp() {
         super.setUp()
 
-        remote = AccountSettingsRemote.remoteWithApi(restApi)
+        remote = AccountSettingsRemote.remoteWithApi(getRestApi())
     }
 
     override func tearDown() {
         super.tearDown()
+
+        remote = nil
     }
 
     // MARK: - Get Account Settings Tests

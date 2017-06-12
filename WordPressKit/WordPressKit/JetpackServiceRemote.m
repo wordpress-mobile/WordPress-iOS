@@ -1,7 +1,8 @@
 #import "JetpackServiceRemote.h"
 
 #import <AFNetworking/AFNetworking.h>
-#import "WordPress-Swift.h"
+#import <WordPressKit/WordPressKit-Swift.h>
+@import NSObject_SafeExpectations;
 
 NSString * const JetpackServiceRemoteErrorDomain = @"JetpackServiceRemoteError";
 static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.com/get-user-blogs/1.0";
@@ -25,10 +26,12 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
         progress:nil
          success:^(NSURLSessionDataTask *task, id responseObject) {
              NSArray *blogs = [responseObject arrayForKeyPath:@"userinfo.blog"];
-             DDLogInfo(@"Available wp.com/jetpack sites for %@: %@", username, blogs);
+// TODO: Fix logging
+//             DDLogInfo(@"Available wp.com/jetpack sites for %@: %@", username, blogs);
              NSArray *foundBlogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"id = %@", siteID]];
              if (foundBlogs.count > 0) {
-                 DDLogInfo(@"Found blog: %@", foundBlogs);
+                 // TODO: Fix Logging
+                 // DDLogInfo(@"Found blog: %@", foundBlogs);
                  NSArray *blogIDs = [blogs valueForKey:@"id"];
                  if (success) {
                      success(blogIDs);
@@ -38,12 +41,14 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
                      NSError *error = [NSError errorWithDomain:JetpackServiceRemoteErrorDomain
                                                           code:JetpackServiceRemoteErrorNoRecordForBlog
                                                       userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"This site is not connected to that WordPress.com username", @"")}];
-                     DDLogError(@"Error validating Jetpack user: %@", error);
+// TODO: Fix logging
+//                     DDLogError(@"Error validating Jetpack user: %@", error);
                      failure(error);
                  }
              }
          } failure:^(NSURLSessionDataTask *task, NSError *error) {
-             DDLogError(@"Error validating Jetpack user: %@", error);
+             // TODO: Fix Logging
+             //DDLogError(@"Error validating Jetpack user: %@", error);
              if (failure) {
                  NSError *jetpackError = error;
                  NSHTTPURLResponse *httpResponse = nil;

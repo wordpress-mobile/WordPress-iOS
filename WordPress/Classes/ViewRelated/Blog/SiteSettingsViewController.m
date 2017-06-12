@@ -16,7 +16,6 @@
 #import "SVProgressHUD+Dismiss.h"
 #import "WordPress-Swift.h"
 #import "WPWebViewController.h"
-#import "WordPress-Swift.h"
 #import "BlogServiceRemoteXMLRPC.h"
 #import <wpxmlrpc/WPXMLRPC.h>
 
