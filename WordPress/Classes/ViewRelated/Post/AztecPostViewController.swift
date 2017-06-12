@@ -11,7 +11,7 @@ import AVKit
 
 // MARK: - Aztec's Native Editor!
 //
-class AztecPostViewController: UIViewController {
+class AztecPostViewController: UIViewController, PostEditor {
     fileprivate let analyticsEditorSourceValue = "aztec"
 
     /// Closure to be executed when the editor gets closed
@@ -298,14 +298,14 @@ class AztecPostViewController: UIViewController {
 
     // MARK: - Lifecycle Methods
 
-    init(post: AbstractPost) {
+    required init(post: AbstractPost) {
         self.post = post
 
         super.init(nibName: nil, bundle: nil)
 
         self.restorationIdentifier = Restoration.restorationIdentifier
         self.restorationClass = type(of: self)
-        self.shouldRemovePostOnDismiss = shouldRemoveOnDismiss(post: post)
+        self.shouldRemovePostOnDismiss = post.shouldRemoveOnDismiss
 
         addObservers(toPost: post)
     }
@@ -1559,10 +1559,6 @@ fileprivate extension AztecPostViewController {
         }
     }
 
-    func shouldRemoveOnDismiss(post: AbstractPost) -> Bool {
-        return post.isRevision() && post.hasLocalChanges() || post.hasNeverAttemptedToUpload()
-    }
-
     func contentByStrippingMediaAttachments() -> String {
         if mode == .html {
             setHTML(htmlTextView.text)
@@ -2235,29 +2231,13 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 //
 extension AztecPostViewController: UIViewControllerRestoration {
     class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
-        guard let lastIdentifierComponent = identifierComponents.last as? String else {
-            return nil
-        }
-
-        switch lastIdentifierComponent {
-        case Restoration.navigationIdentifier:
-            return restoreNavigation(withCoder: coder)
-        default:
-            return restoreAztec(withCoder: coder)
-        }
+        return restoreAztec(withCoder: coder)
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
         super.encodeRestorableState(with: coder)
         coder.encode(post.objectID.uriRepresentation(), forKey: Restoration.postIdentifierKey)
         coder.encode(shouldRemovePostOnDismiss, forKey: Restoration.shouldRemovePostKey)
-    }
-
-    class func restoreNavigation(withCoder coder: NSCoder) -> UINavigationController? {
-        let navigationController = UINavigationController()
-        navigationController.restorationIdentifier = Restoration.navigationIdentifier
-        navigationController.restorationClass = self
-        return navigationController
     }
 
     class func restoreAztec(withCoder coder: NSCoder) -> AztecPostViewController? {
@@ -2330,7 +2310,6 @@ extension AztecPostViewController {
 
     struct Restoration {
         static let restorationIdentifier    = "AztecPostViewController"
-        static let navigationIdentifier     = "AztecPostNavigationViewController"
         static let postIdentifierKey        = AbstractPost.classNameWithoutNamespaces()
         static let shouldRemovePostKey      = "shouldRemovePostOnDismiss"
     }

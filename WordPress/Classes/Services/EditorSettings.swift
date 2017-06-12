@@ -1,6 +1,12 @@
 import Foundation
 
 class EditorSettings: NSObject {
+    enum Editor {
+        case aztec
+        case hybrid
+        case legacy
+    }
+
     // MARK: - Constants
     fileprivate let newEditorAvailableKey = "kUserDefaultsNewEditorAvailable"
     fileprivate let newEditorEnabledKey = "kUserDefaultsNewEditorEnabled"
@@ -22,6 +28,17 @@ class EditorSettings: NSObject {
 
     // MARK: Public accessors
 
+    var editor: Editor {
+        if visualEditorEnabled {
+            if nativeEditorEnabled {
+                return .aztec
+            } else {
+                return .hybrid
+            }
+        } else {
+            return .legacy
+        }
+    }
 
     var visualEditorEnabled: Bool {
         get {
@@ -65,6 +82,44 @@ class EditorSettings: NSObject {
         }
         set {
             database.set(newValue, forKey: nativeEditorEnabledKey)
+        }
+    }
+
+    // We can't return a type that's both a PostEditor and a UIViewController, so using
+    // a configure block as a hack.
+    // In Swift 4, we'll be able to do `instantiateEditor() -> UIViewController & PostEditor`,
+    // and then let the caller configure the editor.
+    func instantiatePostEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
+        switch editor {
+        case .aztec:
+            let vc = AztecPostViewController(post: post)
+            configure(vc, vc)
+            return vc
+        case .hybrid:
+            let vc = WPPostViewController(post: post, mode: .edit)
+            configure(vc, vc)
+            return vc
+        case .legacy:
+            let vc = WPLegacyEditPostViewController(post: post)
+            configure(vc, vc)
+            return vc
+        }
+    }
+
+    func instantiatePageEditor(page post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
+        switch editor {
+        case .aztec:
+            let vc = AztecPostViewController(post: post)
+            configure(vc, vc)
+            return vc
+        case .hybrid:
+            let vc = EditPageViewController(post: post)
+            configure(vc, vc)
+            return vc
+        case .legacy:
+            let vc = WPLegacyEditPageViewController(post: post)
+            configure(vc, vc)
+            return vc
         }
     }
 }
