@@ -16,7 +16,7 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - Alamofire (4.0.1)
-  - Automattic-Tracks-iOS (0.1.2):
+  - Automattic-Tracks-iOS (0.2.0):
     - CocoaLumberjack (~> 3.2.0)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
@@ -110,7 +110,7 @@ PODS:
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.4)
   - AFNetworking (= 3.1.0)
-  - Automattic-Tracks-iOS (from `../Automattic-Tracks-iOS`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.0`)
   - BuddyBuildSDK (~> 1.0.14)
   - CocoaLumberjack/Swift (~> 3.2.0)
   - Crashlytics
@@ -134,7 +134,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7`)
-  - WordPress-iOS-Editor (from `../WordPress-Editor-iOS/`)
+  - WordPress-iOS-Editor (= 1.9.2)
   - WordPressCom-Analytics-iOS (= 0.1.29)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.17)
@@ -142,7 +142,8 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
-    :path: "../Automattic-Tracks-iOS"
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
+    :tag: 0.2.0
   Starscream:
     :branch: wordpress-ios
     :git: https://github.com/wordpress-mobile/Starscream
@@ -152,13 +153,14 @@ EXTERNAL SOURCES:
   WordPress-Aztec-iOS:
     :commit: 28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPress-iOS-Editor:
-    :path: "../WordPress-Editor-iOS/"
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
 
 CHECKOUT OPTIONS:
+  Automattic-Tracks-iOS:
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
+    :tag: 0.2.0
   Starscream:
     :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
     :git: https://github.com/wordpress-mobile/Starscream
@@ -176,7 +178,7 @@ SPEC CHECKSUMS:
   1PasswordExtension: e775a29310c65851e5a6cec1afc349ab4e334e47
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
-  Automattic-Tracks-iOS: bc0cd6de71d4c1639ac39f2815687766bb9cb9e9
+  Automattic-Tracks-iOS: edc4365d31602490af88dbed181b0b666cbdcf75
   BuddyBuildSDK: 2c5469eee2981a3365386e46393e97068d75e4f4
   CocoaLumberjack: 9b4aed7073d242f29cc2f62068d995faf67f703a
   Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
@@ -206,6 +208,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: a61e85ce289bb99113209091698ead23f7b44f6f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: f5263256e116b621f1cc36e1a90fbaf26ef6d37f
+PODFILE CHECKSUM: cbae2a76e7d98f60cd9452caa0f5cc3f900644d4
 
 COCOAPODS: 1.2.1
