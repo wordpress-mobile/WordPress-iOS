@@ -1,4 +1,4 @@
-// !$*UTF8*$!
+R// !$*UTF8*$!
 {
 	archiveVersion = 1;
 	classes = {
@@ -97,7 +97,6 @@
 		93BD27831EE73944002BB00B /* WordPressRSDParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BD277B1EE73944002BB00B /* WordPressRSDParser.swift */; };
 		93BD27921EE82B30002BB00B /* JetpackServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 93BD27901EE82B30002BB00B /* JetpackServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93BD27931EE82B30002BB00B /* JetpackServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 93BD27911EE82B30002BB00B /* JetpackServiceRemote.m */; };
-		93C674E41EE8334200BFAF05 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C674E31EE8334200BFAF05 /* Test.swift */; };
 		93C674E71EE8345300BFAF05 /* RemoteBlog.h in Headers */ = {isa = PBXBuildFile; fileRef = 93C674E51EE8345300BFAF05 /* RemoteBlog.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		93C674E81EE8345300BFAF05 /* RemoteBlog.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C674E61EE8345300BFAF05 /* RemoteBlog.m */; };
 		93C674EB1EE8348F00BFAF05 /* RemoteBlogOptionsHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 93C674E91EE8348F00BFAF05 /* RemoteBlogOptionsHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -222,7 +221,6 @@
 		93BD277B1EE73944002BB00B /* WordPressRSDParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressRSDParser.swift; sourceTree = "<group>"; };
 		93BD27901EE82B30002BB00B /* JetpackServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackServiceRemote.h; sourceTree = "<group>"; };
 		93BD27911EE82B30002BB00B /* JetpackServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackServiceRemote.m; sourceTree = "<group>"; };
-		93C674E31EE8334200BFAF05 /* Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		93C674E51EE8345300BFAF05 /* RemoteBlog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteBlog.h; sourceTree = "<group>"; };
 		93C674E61EE8345300BFAF05 /* RemoteBlog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteBlog.m; sourceTree = "<group>"; };
 		93C674E91EE8348F00BFAF05 /* RemoteBlogOptionsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteBlogOptionsHelper.h; sourceTree = "<group>"; };
@@ -353,7 +351,6 @@
 				93BD27731EE7388E002BB00B /* WordPressAPI */,
 				9368C77E1EC5EF1B0092CE8E /* WordPressKit.h */,
 				9368C77F1EC5EF1B0092CE8E /* Info.plist */,
-				93C674E31EE8334200BFAF05 /* Test.swift */,
 			);
 			path = WordPressKit;
 			sourceTree = "<group>";
@@ -755,7 +752,6 @@
 				93BD27701EE737A8002BB00B /* ServiceRemoteWordPressComREST.m in Sources */,
 				93BD277F1EE73944002BB00B /* WordPressComOAuthClient.swift in Sources */,
 				93BD27801EE73944002BB00B /* WordPressComRestApi.swift in Sources */,
-				93C674E41EE8334200BFAF05 /* Test.swift in Sources */,
 				93BD277C1EE73944002BB00B /* HTTPAuthenticationAlertController.swift in Sources */,
 				93BD277E1EE73944002BB00B /* NSDate+WordPressJSON.m in Sources */,
 				9368C7B61EC630270092CE8E /* StatsStreak.m in Sources */,
