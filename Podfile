@@ -9,7 +9,7 @@ workspace 'WordPress.xcworkspace'
 ## Pods shared between all the targets
 def shared_with_all_pods
   pod 'CocoaLumberjack', '~> 2.2.0'
-  pod 'FormatterKit', '~> 1.8.1'
+  pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.1'
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'WordPressCom-Analytics-iOS', '0.1.29'
 end
