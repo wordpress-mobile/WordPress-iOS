@@ -42,7 +42,6 @@
 @import Gridicons;
 
 // State Restoration
-NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
 static NSString* const WPPostViewControllerOwnsPostRestorationKey = @"WPPostViewControllerOwnsPostRestorationKey";
 static NSString* const WPPostViewControllerPostRestorationKey = @"WPPostViewControllerPostRestorationKey";
@@ -226,11 +225,7 @@ EditImageDetailsViewControllerDelegate
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
         
-        if ([post isRevision]
-            && [post hasLocalChanges]
-            && post.original.postTitle.length == 0
-            && post.original.content.length == 0) {
-            
+        if (post.shouldRemoveOnDismiss) {
             _ownsPost = YES;
         }
     }
@@ -382,28 +377,14 @@ EditImageDetailsViewControllerDelegate
 
 #pragma mark - Restoration helpers
 
-+ (UIViewController*)restoreParentNavigationController
-{
-    UINavigationController *navController = [[UINavigationController alloc] init];
-    navController.restorationIdentifier = WPEditorNavigationRestorationID;
-    navController.restorationClass = self;
-    
-    return navController;
-}
-
 + (UIViewController*)restoreViewControllerWithIdentifierPath:(NSArray *)identifierComponents
                                                        coder:(NSCoder *)coder
 {
-    UIViewController *restoredViewController = nil;
-    
-    if ([self isParentNavigationControllerIdentifierPath:identifierComponents]) {
-        
-        restoredViewController = [self restoreParentNavigationController];
-    } else if ([self isSelfIdentifierPath:identifierComponents]) {
-        restoredViewController = [self restoreViewControllerWithCoder:coder];
+    if ([self isSelfIdentifierPath:identifierComponents]) {
+        return [self restoreViewControllerWithCoder:coder];
     }
     
-    return restoredViewController;
+    return nil;
 }
 
 + (UIViewController*)restoreViewControllerWithCoder:(NSCoder *)coder
@@ -444,11 +425,6 @@ EditImageDetailsViewControllerDelegate
 }
 
 #pragma mark - State Restoration Helpers
-
-+ (BOOL)isParentNavigationControllerIdentifierPath:(NSArray*)identifierComponents
-{
-    return [[identifierComponents lastObject] isEqualToString:WPEditorNavigationRestorationID];
-}
 
 + (BOOL)isSelfIdentifierPath:(NSArray*)identifierComponents
 {
@@ -1366,7 +1342,7 @@ EditImageDetailsViewControllerDelegate
     [self removePostObserver];
 
     if (self.onClose) {
-        self.onClose(self, changesSaved);
+        self.onClose(changesSaved);
         self.onClose = nil;
     } else if ([self isModal]) {
         [self.presentingViewController dismissViewControllerAnimated:animated completion:nil];
