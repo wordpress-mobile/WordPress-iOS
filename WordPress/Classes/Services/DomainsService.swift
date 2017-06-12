@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 struct DomainsService {
     let remote: DomainsServiceRemote
@@ -38,7 +39,7 @@ struct DomainsService {
             if let existingDomain = managedDomainWithName(remoteDomain.domainName, forSite: siteID),
                 let blog = blogForSiteID(siteID) {
                 existingDomain.updateWith(remoteDomain, blog: blog)
-                DDLogSwift.logDebug("Updated domain \(existingDomain)")
+                DDLogDebug("Updated domain \(existingDomain)")
             } else {
                 createManagedDomain(remoteDomain, forSite: siteID)
             }
@@ -53,7 +54,7 @@ struct DomainsService {
         guard let blog = service.blog(byBlogId: NSNumber(value: siteID)) else {
             let error = "Tried to obtain a Blog for a non-existing site (ID: \(siteID))"
             assertionFailure(error)
-            DDLogSwift.logError(error)
+            DDLogError(error)
             return nil
         }
 
@@ -75,7 +76,7 @@ struct DomainsService {
 
         let managedDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName, into: context) as! ManagedDomain
         managedDomain.updateWith(domain, blog: blog)
-        DDLogSwift.logDebug("Created domain \(managedDomain)")
+        DDLogDebug("Created domain \(managedDomain)")
     }
 
     fileprivate func domainsForSite(_ siteID: Int) -> [Domain] {
@@ -88,7 +89,7 @@ struct DomainsService {
         do {
             domains = try context.fetch(request) as! [ManagedDomain]
         } catch {
-            DDLogSwift.logError("Error fetching domains: \(error)")
+            DDLogError("Error fetching domains: \(error)")
             domains = []
         }
 
@@ -102,7 +103,7 @@ struct DomainsService {
         request.predicate = NSPredicate(format: "%K = %@ AND %K IN %@", ManagedDomain.Relationships.blog, blog, ManagedDomain.Attributes.domainName, domainNames)
         let objects = (try? context.fetch(request) as! [NSManagedObject]) ?? []
         for object in objects {
-            DDLogSwift.logDebug("Removing domain: \(object)")
+            DDLogDebug("Removing domain: \(object)")
             context.delete(object)
         }
     }

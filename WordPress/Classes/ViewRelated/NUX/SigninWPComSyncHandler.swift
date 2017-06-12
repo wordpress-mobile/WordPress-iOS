@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 import WordPressComAnalytics
 
 /// A protocol and extension encapsulating syncing behavior common to WPCom
@@ -83,7 +84,7 @@ extension SigninWPComSyncHandler {
         // Make a note of the error and just dismiss the vc. There might be some
         // wonkiness due to missing data (blogs, account info) but this will eventually
         // resync.
-        DDLogSwift.logError("Error while syncing wpcom account and/or blog details after authentiating. \(String(describing: error))")
+        DDLogError("Error while syncing wpcom account and/or blog details after authentiating. \(String(describing: error))")
         dismiss()
     }
 

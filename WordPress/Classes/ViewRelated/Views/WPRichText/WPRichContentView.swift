@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import CocoaLumberjack
 import WordPressShared
 
 @objc protocol WPRichContentViewDelegate: UITextViewDelegate {
@@ -142,7 +143,7 @@ class WPRichContentView: UITextView {
                     attributedText = mattrTxt
                 }
             } catch let error {
-                DDLogSwift.logError("Error converting post content to attributed string: \(error)")
+                DDLogError("Error converting post content to attributed string: \(error)")
                 text = NSLocalizedString("There was a problem displaying this post.", comment: "A short error message letting the user know about a problem displaying a post.")
             }
         }
@@ -379,8 +380,8 @@ extension WPRichContentView: WPTableImageSourceDelegate {
 
     func tableImageSource(_ tableImageSource: WPTableImageSource!, imageFailedforIndexPath indexPath: IndexPath!, error: Error!) {
         let richMedia = mediaArray[indexPath.row]
-        DDLogSwift.logError("Error loading image: \(richMedia.attachment.src)")
-        DDLogSwift.logError("\(error)")
+        DDLogError("Error loading image: \(richMedia.attachment.src)")
+        DDLogError("\(error)")
     }
 }
 
