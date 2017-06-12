@@ -1,6 +1,6 @@
 #import "MediaServiceRemoteREST.h"
 #import "RemoteMedia.h"
-#import "NSDate+WordPressJSON.h"
+@import WordPressKit;
 #import "WordPress-Swift.h"
 
 const NSInteger WPRestErrorCodeMediaNew = 10;

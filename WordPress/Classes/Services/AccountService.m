@@ -4,10 +4,10 @@
 #import "Blog.h"
 #import "BlogService.h"
 #import "TodayExtensionService.h"
-#import "AccountServiceRemoteREST.h"
 
 #import "NSString+Helpers.h"
-#import <WordPressShared/NSString+XMLExtensions.h>
+@import WordPressKit;
+@import WordPressShared;
 #import "WordPress-Swift.h"
 
 static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
@@ -168,15 +168,19 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (void)requestAuthenticationLink:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     id<AccountServiceRemote> remote = [self remoteForAnonymous];
-    [remote requestWPComAuthLinkForEmail:email success:^{
-        if (success) {
-            success();
-        }
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+    [remote requestWPComAuthLinkForEmail:email
+                                clientID:ApiCredentials.client
+                            clientSecret:ApiCredentials.secret
+                             wpcomScheme:WPComScheme
+                                 success:^{
+                                     if (success) {
+                                         success();
+                                     }
+                                 } failure:^(NSError *error) {
+                                     if (failure) {
+                                         failure(error);
+                                     }
+                                 }];
 }
 
 
@@ -257,7 +261,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
     NSString *username = account.username;
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
-    [remote getDetailsForAccount:account success:^(RemoteUser *remoteUser) {
+    [remote getAccountDetailsWithSuccess:^(RemoteUser *remoteUser) {
         // account.objectID can be temporary, so fetch via username/xmlrpc instead.
         WPAccount *fetchedAccount = [self findAccountWithUsername:username];
         [self updateAccount:fetchedAccount withUserDetails:remoteUser];
@@ -278,7 +282,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (id<AccountServiceRemote>)remoteForAnonymous
 {
-    return [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:[AccountServiceRemoteREST anonymousWordPressComRestApi]];
+    return [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:[AccountServiceRemoteREST anonymousWordPressComRestApiWithUserAgent:WPUserAgent.wordPressUserAgent]];
 }
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
