@@ -18,18 +18,16 @@ class RemoteTestCase: XCTestCase {
 
     // MARK: - Constants
 
-    let timeout             = TimeInterval(1000)
+    let timeout              = TimeInterval(1000)
 
     // MARK: - Properties
 
     var restApi: WordPressComRestApi!
-//    var testContextManager: TestContextManager!
 
     // MARK: - Overridden Methods
 
     override func setUp() {
         super.setUp()
-//        testContextManager = TestContextManager()
         restApi = WordPressComRestApi(oAuthToken: nil, userAgent: nil)
         stubAllNetworkRequestsWithNotConnectedError()
     }
@@ -37,9 +35,6 @@ class RemoteTestCase: XCTestCase {
     override func tearDown() {
         super.tearDown()
 
-//        ContextManager.overrideSharedInstance(nil)
-//        testContextManager.mainContext.reset()
-//        testContextManager = nil
         restApi = nil
         OHHTTPStubs.removeAllStubs()
     }
