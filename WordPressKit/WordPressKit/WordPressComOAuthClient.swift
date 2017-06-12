@@ -34,8 +34,8 @@ public final class WordPressComOAuthClient: NSObject {
     /// Creates a WordPresComOAuthClient initialized with the clientID and secret constants defined in the
     /// ApiCredentials singleton
     ///
-    public class func client() -> WordPressComOAuthClient {
-        let client = WordPressComOAuthClient(clientID: ApiCredentials.client(), secret: ApiCredentials.secret())
+    public class func client(clientID: String, secret: String) -> WordPressComOAuthClient {
+        let client = WordPressComOAuthClient(clientID: clientID, secret: secret)
         return client
     }
 
@@ -73,12 +73,12 @@ public final class WordPressComOAuthClient: NSObject {
             "wpcom_supports_2fa": true as AnyObject
         ]
 
-        if let multifactorCode = multifactorCode, !multifactorCode.isEmpty() {
+        if let multifactorCode = multifactorCode, multifactorCode.characters.count > 0 {
             parameters["wpcom_otp"] = multifactorCode as AnyObject?
         }
 
         sessionManager.post("token", parameters: parameters, progress: nil, success: { (task, responseObject) in
-            DDLogSwift.logVerbose("Received OAuth2 response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
+            //DDLogSwift.logVerbose("Received OAuth2 response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
             guard let responseDictionary = responseObject as? [String: AnyObject],
                 let authToken = responseDictionary["access_token"] as? String else {
                     success(nil)
@@ -88,7 +88,7 @@ public final class WordPressComOAuthClient: NSObject {
 
             }, failure: { (task, error) in
                 failure(error as NSError)
-                DDLogSwift.logError("Error receiving OAuth2 token: \(error)")
+                //DDLogSwift.logError("Error receiving OAuth2 token: \(error)")
             }
         )
     }
