@@ -20,7 +20,7 @@
 	// Project-specific
     #import "WPStyleGuide+ReadableMargins.h"
     #import "WPError.h"
-    #import "WPMapFilterReduce.h"
+    #import <WordPressShared/WPMapFilterReduce.h>
 
 #ifndef IS_IPAD
 #define IS_IPAD   ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)

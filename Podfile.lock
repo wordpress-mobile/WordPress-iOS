@@ -20,7 +20,7 @@ PODS:
     - CocoaLumberjack (~> 2.2.0)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
-  - BuddyBuildSDK (1.0.15)
+  - BuddyBuildSDK (1.0.16)
   - CocoaLumberjack (2.2.0):
     - CocoaLumberjack/Default (= 2.2.0)
     - CocoaLumberjack/Extensions (= 2.2.0)
@@ -34,35 +34,8 @@ PODS:
   - Expecta (1.0.5)
   - Fabric (1.6.11)
   - FLAnimatedImage (1.0.12)
-  - FormatterKit (1.8.2):
-    - FormatterKit/AddressFormatter (= 1.8.2)
-    - FormatterKit/ArrayFormatter (= 1.8.2)
-    - FormatterKit/ColorFormatter (= 1.8.2)
-    - FormatterKit/LocationFormatter (= 1.8.2)
-    - FormatterKit/NameFormatter (= 1.8.2)
-    - FormatterKit/OrdinalNumberFormatter (= 1.8.2)
-    - FormatterKit/Resources (= 1.8.2)
-    - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-    - FormatterKit/UnitOfInformationFormatter (= 1.8.2)
-    - FormatterKit/URLRequestFormatter (= 1.8.2)
-  - FormatterKit/AddressFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/ArrayFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/ColorFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/LocationFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/NameFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/OrdinalNumberFormatter (1.8.2):
-    - FormatterKit/Resources
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/UnitOfInformationFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/URLRequestFormatter (1.8.2):
     - FormatterKit/Resources
   - Gridicons (0.5)
   - HockeySDK (4.1.5):
@@ -97,7 +70,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.7.0)
   - MRProgress/Stopable (0.7.0):
     - MRProgress/Helper
-  - Nimble (5.0.0)
+  - Nimble (7.0.1)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.4)
@@ -143,12 +116,12 @@ DEPENDENCIES:
   - Crashlytics
   - Expecta (= 1.0.5)
   - FLAnimatedImage (~> 1.0)
-  - FormatterKit (~> 1.8.1)
+  - FormatterKit/TimeIntervalFormatter (~> 1.8.1)
   - Gridicons (= 0.5)
   - HockeySDK (~> 4.1.5)
   - MGSwipeTableCell (~> 1.5.6)
   - MRProgress (~> 0.7.0)
-  - Nimble (~> 5.0.0)
+  - Nimble (~> 7.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock (~> 3.0)
@@ -160,7 +133,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `be6802dfbfbd390086bc16b883bf1fc24be036ed`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7`)
   - WordPress-iOS-Editor (= 1.9.1)
   - WordPressCom-Analytics-iOS (= 0.1.29)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
@@ -178,7 +151,7 @@ EXTERNAL SOURCES:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-Aztec-iOS:
-    :commit: be6802dfbfbd390086bc16b883bf1fc24be036ed
+    :commit: 28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
@@ -195,7 +168,7 @@ CHECKOUT OPTIONS:
     :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-Aztec-iOS:
-    :commit: be6802dfbfbd390086bc16b883bf1fc24be036ed
+    :commit: 28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
@@ -206,7 +179,7 @@ SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
   Automattic-Tracks-iOS: 4903e125d88e564c68dedbb66c53a97740e89336
-  BuddyBuildSDK: b3038125612b1ad389c2aa89e4787dcb75cac89a
+  BuddyBuildSDK: 2c5469eee2981a3365386e46393e97068d75e4f4
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
@@ -217,7 +190,7 @@ SPEC CHECKSUMS:
   HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
-  Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
+  Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 35ae71d6a8fcc1b59434d561d1520b9dd4f15765
@@ -235,6 +208,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: a61e85ce289bb99113209091698ead23f7b44f6f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 4bcde0cd2247d6db5b7227d8b425b41f8f048077
+PODFILE CHECKSUM: 0b434f67d6abdead5520d446cc37a950d4e30caf
 
 COCOAPODS: 1.2.1

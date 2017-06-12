@@ -46,8 +46,10 @@ typedef NS_ENUM(NSInteger, ServiceRemoteWordPressComRESTApiVersion)
 
 /**
  *  @brief      An anonoymous API object to use for communications where authentication is not needed.
+ *
+ *  @param      userAgent       The user agent string to use on all requests
  */
-+ (WordPressComRestApi *)anonymousWordPressComRestApi;
++ (WordPressComRestApi *)anonymousWordPressComRestApiWithUserAgent:(NSString *)userAgent;
 
 
 @end

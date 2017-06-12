@@ -642,16 +642,22 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         resetActionButton(likeButton)
         resetActionButton(commentButton)
 
+        guard let post = post else {
+            assertionFailure()
+            return
+        }
+
         // Show likes if logged in, or if likes exist, but not if external
-        if (ReaderHelpers.isLoggedIn() || post!.likeCount.intValue > 0) && !post!.isExternal {
+        if (ReaderHelpers.isLoggedIn() || post.likeCount.intValue > 0) && !post.isExternal {
             configureLikeActionButton()
         }
 
         // Show comments if logged in and comments are enabled, or if comments exist.
         // But only if it is from wpcom (jetpack and external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
-        if post!.isWPCom && !shouldHideComments {
-            if (ReaderHelpers.isLoggedIn() && post!.commentsOpen) || post!.commentCount.intValue > 0 {
+        if post.isWPCom && !shouldHideComments {
+            let commentCount = post.commentCount?.intValue ?? 0
+            if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
                 configureCommentActionButton()
             }
         }

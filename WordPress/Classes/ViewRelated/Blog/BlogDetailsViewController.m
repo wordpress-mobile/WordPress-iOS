@@ -643,12 +643,20 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     self.siteIconPickerPresenter = [[SiteIconPickerPresenter alloc]initWithBlog:self.blog];
     __weak __typeof(self) weakSelf = self;
-    self.siteIconPickerPresenter.onCompletion = ^(UIImage * image) {
-        if (image) {
-            [weakSelf siteIconImageSelected:image];
+    self.siteIconPickerPresenter.onCompletion = ^(Media *media, NSError *error) {
+        if (error) {
+            [weakSelf showErrorForSiteIconUpdate];
+        } else if (media) {
+            [weakSelf updateBlogIconWithMedia:media];
+        } else {
+            // If no media and no error the picker was cancelled
+            [weakSelf dismissViewControllerAnimated:YES completion:nil];
         }
-        [weakSelf dismissViewControllerAnimated:YES completion:nil];
         weakSelf.siteIconPickerPresenter = nil;
+    };
+    self.siteIconPickerPresenter.onIconSelection = ^() {
+        weakSelf.headerView.updatingIcon = YES;
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
     };
     [self.siteIconPickerPresenter presentPickerFrom:self];
 }
@@ -660,28 +668,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self updateBlogSettingsAndRefreshIcon];
 }
 
-- (void)siteIconImageSelected:(UIImage *)newIcon
+- (void)updateBlogIconWithMedia:(Media *)media
 {
-    self.headerView.updatingIcon = YES;
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [mediaService createMediaWithImage:newIcon
-                       forBlogObjectID:self.blog.objectID
-                     thumbnailCallback:nil
-                            completion:^(Media * _Nullable media, NSError * _Nullable error){
-         if (error) {
-             [self showErrorForSiteIconUpdate];
-             return;
-         }
-         NSProgress *progress = nil;
-         [mediaService uploadMedia:media
-                          progress:&progress
-                           success:^{
-              self.blog.settings.iconMediaID = media.mediaID;
-              [self updateBlogSettingsAndRefreshIcon];
-          } failure:^(NSError * _Nonnull error) {
-              [self showErrorForSiteIconUpdate];
-          }];
-     }];
+    self.blog.settings.iconMediaID = media.mediaID;
+    [self updateBlogSettingsAndRefreshIcon];
 }
 
 - (void)updateBlogSettingsAndRefreshIcon

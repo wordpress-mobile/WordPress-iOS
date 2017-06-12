@@ -97,7 +97,7 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
     //
     fileprivate func newImageCropViewController(_ rawGravatar: UIImage) -> ImageCropViewController {
         let imageCropViewController = ImageCropViewController(image: rawGravatar)
-        imageCropViewController.onCompletion = { [weak self] image in
+        imageCropViewController.onCompletion = { [weak self] image, _ in
             self?.onCompletion?(image)
             self?.dismiss(animated: true, completion: nil)
         }

@@ -1,11 +1,3 @@
-//
-//  WPMapFilterReduceTest.m
-//  WordPress
-//
-//  Created by Jorge Bernal on 14/8/15.
-//  Copyright (c) 2015 WordPress. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "WPMapFilterReduce.h"

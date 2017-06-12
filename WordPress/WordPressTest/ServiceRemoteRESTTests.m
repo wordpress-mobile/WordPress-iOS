@@ -1,5 +1,5 @@
 #import <XCTest/XCTest.h>
-#import "ServiceRemoteWordPressComREST.h"
+@import WordPressKit;
 
 @interface ServiceRemoteWordPressComRESTTests : XCTestCase
 @end

@@ -74,7 +74,7 @@
         <scene sceneID="1BJ-CW-C88">
             <objects>
                 <navigationController id="Ck1-vY-O11" customClass="LoginNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mKb-UO-KoA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mKb-UO-KoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1051,7 +1051,7 @@
         <!--Login Epilogue View Controller-->
         <scene sceneID="mq7-wS-hIR">
             <objects>
-                <viewController storyboardIdentifier="epilogue" extendedLayoutIncludesOpaqueBars="YES" id="Mwz-tq-5A8" customClass="LoginEpilogueViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="epilogue" automaticallyAdjustsScrollViewInsets="NO" id="Mwz-tq-5A8" customClass="LoginEpilogueViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Vw0-RX-ERM"/>
                         <viewControllerLayoutGuide type="bottom" id="pCc-dg-bxb"/>
@@ -1083,7 +1083,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="SWX-Rp-5H1" kind="unwind" identifier="unwindOutOfLogin" customClass="EpilogueUnwindSegue" customModule="WordPress" customModuleProvider="target" unwindAction="unwindOutWithSegue:" id="oPV-La-BGA"/>
+                                            <action selector="dismissEpilogue" destination="Mwz-tq-5A8" eventType="touchUpInside" id="YjA-Wy-vFv"/>
                                         </connections>
                                     </button>
                                     <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="cmz-zv-QBQ">
@@ -1116,6 +1116,7 @@
                             <constraint firstItem="Onf-X6-J5w" firstAttribute="top" secondItem="Vw0-RX-ERM" secondAttribute="bottom" id="zHX-lw-7Nx"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="buttonPanel" destination="juu-ng-v2N" id="WUF-SL-5Nq"/>
@@ -1123,7 +1124,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S0K-oR-yFr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="SWX-Rp-5H1" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="4117.6000000000004" y="927.88605697151434"/>
         </scene>
