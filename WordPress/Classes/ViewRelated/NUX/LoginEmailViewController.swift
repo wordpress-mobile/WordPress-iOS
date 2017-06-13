@@ -7,7 +7,6 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var submitButton: NUXSubmitButton!
     @IBOutlet var selfHostedSigninButton: UIButton!
-    @IBOutlet var safariPasswordButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     var onePasswordButton: UIButton!
@@ -39,7 +38,6 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
 
         localizeControls()
         setupOnePasswordButtonIfNeeded()
-        configureSafariPasswordButton(false)
         configureForWPComOnlyIfNeeded()
     }
 
@@ -103,10 +101,6 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         submitButton.setTitle(submitButtonTitle, for: .highlighted)
         submitButton.accessibilityIdentifier = "Next Button"
 
-        let safariButtonTitle = NSLocalizedString("Log in with Safari saved password", comment: "`Safari saved password` is the name of the iOS feature for saving a password for the Safari browser to use later.")
-        safariPasswordButton.setTitle(safariButtonTitle, for: UIControlState())
-        safariPasswordButton.setTitle(safariButtonTitle, for: .highlighted)
-
         let selfHostedTitle = NSLocalizedString("Log into your site by entering your site address instead.", comment: "A button title.")
         selfHostedSigninButton.setTitle(selfHostedTitle, for: UIControlState())
         selfHostedSigninButton.setTitle(selfHostedTitle, for: .highlighted)
@@ -120,29 +114,6 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         WPStyleGuide.configureOnePasswordButtonForTextfield(emailTextField,
                                                             target: self,
                                                             selector: #selector(handleOnePasswordButtonTapped(_:)))
-    }
-
-
-    /// Configures the button for requesting Safari stored credentials.
-    /// The button should only be visible if Safari stored credentials are available.
-    ///
-    func configureSafariPasswordButton(_ animated: Bool) {
-        if safariPasswordButton.isHidden != didFindSafariSharedCredentials {
-            return
-        }
-
-        if !animated {
-            safariPasswordButton.isHidden = !didFindSafariSharedCredentials
-            return
-        }
-
-        UIView.animate(withDuration: 0.2,
-                       delay: 0.0,
-                       options: .beginFromCurrentState,
-                       animations: {
-                        self.safariPasswordButton.isHidden = !self.didFindSafariSharedCredentials
-        },
-                       completion: nil)
     }
 
 
@@ -207,7 +178,6 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     ///
     func handleFetchedWebCredentials(_ found: Bool, username: String?, password: String?) {
         didFindSafariSharedCredentials = found
-        configureSafariPasswordButton(true)
 
         guard let username = username, let password = password else {
             return
@@ -373,11 +343,6 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
 
     @IBAction func handleSelfHostedButtonTapped(_ sender: UIButton) {
         signinToSelfHostedSite()
-    }
-
-
-    @IBAction func handleSafariPasswordButtonTapped(_ sender: UIButton) {
-        fetchSharedWebCredentialsIfAvailable()
     }
 
 
