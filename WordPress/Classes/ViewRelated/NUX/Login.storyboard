@@ -74,7 +74,7 @@
         <scene sceneID="1BJ-CW-C88">
             <objects>
                 <navigationController id="Ck1-vY-O11" customClass="LoginNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mKb-UO-KoA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mKb-UO-KoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
