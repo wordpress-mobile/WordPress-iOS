@@ -1,5 +1,6 @@
 import Foundation
 import Reachability
+import WordPressKit
 
 let AccountSettingsServiceChangeSaveFailedNotification = "AccountSettingsServiceChangeSaveFailed"
 
