@@ -1,11 +1,12 @@
 import Foundation
+import WordPressShared
 
-class AccountSettingsRemote: ServiceRemoteWordPressComREST {
-    static let remotes = NSMapTable<AnyObject, AnyObject>(keyOptions: NSPointerFunctions.Options(), valueOptions: NSPointerFunctions.Options.weakMemory)
+public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
+    public static let remotes = NSMapTable<AnyObject, AnyObject>(keyOptions: NSPointerFunctions.Options(), valueOptions: NSPointerFunctions.Options.weakMemory)
 
     /// Returns an AccountSettingsRemote with the given api, reusing a previous
     /// remote if it exists.
-    static func remoteWithApi(_ api: WordPressComRestApi) -> AccountSettingsRemote {
+    public static func remoteWithApi(_ api: WordPressComRestApi) -> AccountSettingsRemote {
         // We're hashing on the authToken because we don't want duplicate api
         // objects for the same account.
         //
@@ -26,7 +27,7 @@ class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         }
     }
 
-    func getSettings(success: @escaping (AccountSettings) -> Void, failure: @escaping (Error) -> Void) {
+    public func getSettings(success: @escaping (AccountSettings) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "me/settings"
         let parameters = ["context": "edit"]
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
@@ -48,7 +49,7 @@ class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         })
     }
 
-    func updateSetting(_ change: AccountSettingsChange, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+    public func updateSetting(_ change: AccountSettingsChange, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "me/settings"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
         let parameters = [fieldNameForChange(change): change.stringValue]
@@ -79,16 +80,15 @@ class AccountSettingsRemote: ServiceRemoteWordPressComREST {
             let primarySiteID = response["primary_site_ID"] as? Int,
             let webAddress = response["user_URL"] as? String,
             let language = response["language"] as? String else {
-                DDLogSwift.logError("Error decoding me/settings response: \(responseObject)")
                 throw ResponseError.decodingFailure
-        }
+            }
 
-        let aboutMeText = aboutMe.stringByDecodingXMLCharacters()
+        let aboutMeText = aboutMe.decodingXMLCharacters()
 
         return AccountSettings(firstName: firstName,
                                lastName: lastName,
                                displayName: displayName,
-                               aboutMe: aboutMeText,
+                               aboutMe: aboutMeText!,
                                username: username,
                                email: email,
                                emailPendingAddress: emailPendingAddress,
