@@ -25,6 +25,7 @@ SupportSourceTag const SupportSourceTagWPComSignup = @"origin:signup-screen";
 SupportSourceTag const SupportSourceTagWPOrgLogin = @"origin:wporg-login-screen";
 SupportSourceTag const SupportSourceTagJetpackLogin = @"origin:jetpack-login-screen";
 SupportSourceTag const SupportSourceTagGeneralLogin = @"origin:login-screen";
+SupportSourceTag const SupportSourceTagInAppFeedback = @"origin:in-app-feedback";
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
 

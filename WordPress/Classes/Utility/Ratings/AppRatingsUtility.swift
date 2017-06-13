@@ -18,6 +18,10 @@ class AppRatingUtility: NSObject {
     ///
     var appReviewUrl: URL = Constants.defaultAppReviewURL
 
+    /// Sets the number of days that have to pass between AppReview prompts
+    /// Since Apple only allows 3 prompts per year, we are settings this number to 122
+    var numberOfDaysToWaitBetweenPrompts: Int = 122
+
     private let defaults: UserDefaults
     private var sections = [String: Section]()
     private var promptingDisabledRemote = false
@@ -169,6 +173,17 @@ class AppRatingUtility: NSObject {
         defaults.set(1, forKey: Key.numberOfVersionsToSkipPrompting)
     }
 
+    /// Indicates whether enough time has passed since we last prompted the user for their opinion.
+    ///
+    func enoughTimePassedSinceLastPrompt()-> Bool {
+        if let lastPromptDate = defaults.value(forKeyPath: Key.lastPromptToRateDate),
+            let date = lastPromptDate as? Date,
+            let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day {
+            return days > numberOfDaysToWaitBetweenPrompts
+        }
+        return true
+    }
+
     /// Checks if the user should be prompted for an app review based on
     /// `systemWideSignificantEventsCount` and also if the user hasn't been
     /// configured to skip being prompted for this release.
@@ -177,7 +192,8 @@ class AppRatingUtility: NSObject {
     /// global basis have been shut off.
     ///
     func shouldPromptForAppReview() -> Bool {
-        if shouldSkipRatingForCurrentVersion()
+        if !enoughTimePassedSinceLastPrompt()
+            || shouldSkipRatingForCurrentVersion()
             || promptingDisabled {
             return false
         }
@@ -202,7 +218,8 @@ class AppRatingUtility: NSObject {
             return false
         }
 
-        if shouldSkipRatingForCurrentVersion()
+        if !enoughTimePassedSinceLastPrompt()
+            || shouldSkipRatingForCurrentVersion()
             || promptingDisabled
             || !section.enabled {
             return false
@@ -212,6 +229,12 @@ class AppRatingUtility: NSObject {
         let events = defaults.integer(forKey: key)
         let required = section.significantEventCount
         return events >= required
+    }
+
+    /// Records a prompt for a review
+    ///
+    func userWasPromptedToReview() {
+        defaults.set(Date(), forKey:Key.lastPromptToRateDate)
     }
 
     /// Checks if the user has ever indicated that they like the app.
@@ -313,10 +336,17 @@ class AppRatingUtility: NSObject {
     }
 
     // MARK: - Testing
+
     // Overrides promptingDisabledLocal. For testing purposes only.
     //
     func _overridePromptingDisabledLocal(_ disabled: Bool) {
         promptingDisabledLocal = disabled
+    }
+
+    // Overrides lastPromptToRateDate. For testing purposes only.
+    //
+    func _overrideLastPromptToRateDate(_ date: Date) {
+        defaults.set(date, forKey:Key.lastPromptToRateDate)
     }
 
     // MARK: - Subtypes
@@ -343,10 +373,11 @@ class AppRatingUtility: NSObject {
         static let likedCurrentVersion = "AppRatingLikedCurrentVersion"
         static let userLikeCount = "AppRatingUserLikeCount"
         static let userDislikeCount = "AppRatingUserDislikeCount"
+        static let lastPromptToRateDate = "AppRatingLastPromptToRateDate"
     }
 
     private enum Constants {
-        static let defaultAppReviewURL = URL(string: "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=335703880&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8")!
+        static let defaultAppReviewURL = URL(string: "https://itunes.apple.com/app/id335703880?mt=8&action=write-review")!
         static let promptDisabledURL = URL(string: "https://api.wordpress.org/iphoneapp/app-review-prompt-check/1.0/")!
     }
 }
