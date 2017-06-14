@@ -109,7 +109,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         let selfHostedTitle = NSLocalizedString("Log into your site by entering your site address instead.", comment: "A button title.")
         selfHostedSigninButton.setTitle(selfHostedTitle, for: UIControlState())
         selfHostedSigninButton.setTitle(selfHostedTitle, for: .highlighted)
-        selfHostedSigninButton.titleLabel?.numberOfLines = 0;
+        selfHostedSigninButton.titleLabel?.numberOfLines = 0
     }
 
 
@@ -305,20 +305,22 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         configureSubmitButton()
     }
 
+
     @IBAction func handleTextFieldEditingDidBegin(_ sender: UITextField) {
         if !didRequestSafariSharedCredentials {
             fetchSharedWebCredentialsIfAvailable()
         }
     }
-    
+
+
     // MARK: - Keyboard Notifications
-    
-    
+
+
     func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
     }
-    
-    
+
+
     func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
     }
