@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import WordPressShared
 
 class PostTagPickerViewController: UIViewController {
@@ -141,7 +142,7 @@ private extension PostTagPickerViewController {
     }
 
     func tagsFailedLoading(error: Error) {
-        DDLogSwift.logError("Error loading tags for \(String(describing: blog.url)): \(error)")
+        DDLogError("Error loading tags for \(String(describing: blog.url)): \(error)")
         dataSource = FailureDataSource()
     }
 }

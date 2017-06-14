@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import UserNotifications
 
 /// In this class, we'll encapsulate all of the code related to UNNotificationCategory and
@@ -103,7 +104,7 @@ final public class InteractiveNotificationsManager: NSObject {
             if let responseText = responseText {
                 replyToCommentWithCommentID(commentID, noteID: noteID, siteID: siteID, content: responseText)
             } else {
-                DDLogSwift.logError("Tried to reply to a comment notification with no text")
+                DDLogError("Tried to reply to a comment notification with no text")
             }
         }
 
@@ -123,9 +124,9 @@ final public class InteractiveNotificationsManager: NSObject {
     fileprivate func likeCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
         commentService.likeComment(withID: commentID, siteID: siteID, success: {
             self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
-            DDLogSwift.logInfo("Liked comment from push notification")
+            DDLogInfo("Liked comment from push notification")
         }, failure: { error in
-            DDLogSwift.logInfo("Couldn't like comment from push notification")
+            DDLogInfo("Couldn't like comment from push notification")
         })
     }
 
@@ -139,9 +140,9 @@ final public class InteractiveNotificationsManager: NSObject {
     fileprivate func approveCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
         commentService.approveComment(withID: commentID, siteID: siteID, success: {
             self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
-            DDLogSwift.logInfo("Successfully moderated comment from push notification")
+            DDLogInfo("Successfully moderated comment from push notification")
         }, failure: { error in
-            DDLogSwift.logInfo("Couldn't moderate comment from push notification")
+            DDLogInfo("Couldn't moderate comment from push notification")
         })
     }
 
@@ -165,9 +166,9 @@ final public class InteractiveNotificationsManager: NSObject {
     fileprivate func replyToCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber, content: String) {
         commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
             self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
-            DDLogSwift.logInfo("Successfully replied comment from push notification")
+            DDLogInfo("Successfully replied comment from push notification")
         }, failure: { error in
-            DDLogSwift.logInfo("Couldn't reply to comment from push notification")
+            DDLogInfo("Couldn't reply to comment from push notification")
         })
     }
 
