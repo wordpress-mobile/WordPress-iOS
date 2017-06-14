@@ -83,7 +83,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     override func setupStyles() {}
 
 
-    ///
+    /// Hides the self-hosted login option.
     ///
     func configureForWPComOnlyIfNeeded() {
         selfHostedSigninButton.isHidden = restrictToWPCom
@@ -234,18 +234,13 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
             assertionFailure("Form should not be submitted unless there is a valid looking email entered.")
             return
         }
-        validate(email: loginFields.username)
-    }
 
-
-    private func validate(email: String) {
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         configureViewLoading(true)
-
-        service.isPasswordlessAccount(email,
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.isPasswordlessAccount(loginFields.username,
                                       success: { [weak self] (passwordless: Bool) in
                                         self?.configureViewLoading(false)
-                                        // TODO: Flag passwordless in loginfields
+                                        self?.loginFields.passwordless = passwordless
                                         self?.requestLink()
             },
                                       failure: { [weak self] (error: Error) in
