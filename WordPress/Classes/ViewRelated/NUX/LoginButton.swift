@@ -8,6 +8,7 @@ import WordPressShared
     fileprivate let verticalInset: CGFloat = 12
 
     /// Configure the appearance of the button.
+    ///
     override func configureButton() {
         contentEdgeInsets = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
 
@@ -37,6 +38,8 @@ import WordPressShared
         setTitleColor(titleColorNormal, for: .normal)
         setTitleColor(titleColorNormal, for: .highlighted)
         setTitleColor(titleColorDisabled, for: .disabled)
+
+        activityIndicator.activityIndicatorViewStyle = .gray
 
         addSubview(activityIndicator)
     }
