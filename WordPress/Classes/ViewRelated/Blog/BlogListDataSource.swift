@@ -52,19 +52,18 @@ private struct SearchingDataSourceMapper: BlogListDataSourceMapper {
     }
 }
 
-private struct AccountOwnedDataSourceMapper: BlogListDataSourceMapper {
+/// Filters the list to show only a matching blog, or only blogs with an account.
+/// Used by the login epilogue screen.
+///
+private struct LoggedInDataSourceMapper: BlogListDataSourceMapper {
+    let matchingBlog: Blog?
     func map(_ data: [Blog]) -> [[Blog]] {
         return [data.filter({ blog in
-            blog.account != nil
-        })]
-    }
-}
-
-private struct MatchingBlogDataSourceMapper: BlogListDataSourceMapper {
-    let matchingBlog: Blog
-    func map(_ data: [Blog]) -> [[Blog]] {
-        return [data.filter({ blog in
-            blog == matchingBlog
+            if let matchingBlog = matchingBlog {
+                return blog == matchingBlog
+            } else {
+                return blog.account != nil
+            }
         })]
     }
 }
@@ -84,6 +83,9 @@ class BlogListDataSource: NSObject {
     let recentSitesMinCount = 11
 
     // MARK: - Inputs
+
+    // Pass to the LoggedInDataSource to match a specifc blog.
+    var blog: Blog?
 
     var editing: Bool = false {
         didSet {
@@ -114,22 +116,6 @@ class BlogListDataSource: NSObject {
             if selecting != oldValue {
                 dataChanged?()
             }
-        }
-    }
-
-    var accountOwned: Bool = false {
-        didSet {
-            updateMode()
-        }
-    }
-
-    var matchingBlog: Bool {
-        return blog != nil
-    }
-
-    var blog: Blog? = nil {
-        didSet {
-            updateMode()
         }
     }
 
@@ -225,14 +211,11 @@ private extension BlogListDataSource {
         case browsingWithRecent
         case editing
         case searching(String)
-        case loggedIn
-        case matchingBlog(Blog)
-        case accountOwned
+        case loggedIn(Blog?)
 
         var mapper: BlogListDataSourceMapper {
             switch self {
-            case .browsing,
-                 .loggedIn:
+            case .browsing:
                 return BrowsingDataSourceMapper()
             case .browsingWithRecent:
                 return BrowsingWithRecentDataSourceMapper()
@@ -240,11 +223,8 @@ private extension BlogListDataSource {
                 return EditingDataSourceMapper()
             case .searching(let query):
                 return SearchingDataSourceMapper(query: query)
-            case .accountOwned():
-                return AccountOwnedDataSourceMapper()
-            case .matchingBlog(let blog):
-                return MatchingBlogDataSourceMapper(matchingBlog: blog)
-
+            case .loggedIn(let blog):
+                return LoggedInDataSourceMapper(matchingBlog: blog)
             }
         }
 
@@ -252,12 +232,11 @@ private extension BlogListDataSource {
             switch (lhs, rhs) {
             case (.browsing, .browsing),
                  (.browsingWithRecent, .browsingWithRecent),
-                 (.editing, .editing),
-                 (.accountOwned, .accountOwned):
+                 (.editing, .editing):
                 return true
             case let (.searching(lquery), .searching(rquery)):
                 return lquery == rquery
-            case let (.matchingBlog(lblog), .matchingBlog(rblog)):
+            case let (.loggedIn(lblog), .loggedIn(rblog)):
                 return lblog == rblog
             default:
                 return false
@@ -273,15 +252,7 @@ private extension BlogListDataSource {
 
     func modeForCurrentState() -> Mode {
         if loggedIn {
-            return .loggedIn
-        }
-        if accountOwned {
-            return .accountOwned
-        }
-        if matchingBlog {
-            if let blog = blog {
-                return .matchingBlog(blog)
-            }
+            return .loggedIn(blog)
         }
         if editing {
             return .editing
