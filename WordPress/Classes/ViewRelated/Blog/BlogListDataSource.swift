@@ -52,6 +52,22 @@ private struct SearchingDataSourceMapper: BlogListDataSourceMapper {
     }
 }
 
+/// Filters the list to show only a matching blog, or only blogs with an account.
+/// Used by the login epilogue screen.
+///
+private struct LoggedInDataSourceMapper: BlogListDataSourceMapper {
+    let matchingBlog: Blog?
+    func map(_ data: [Blog]) -> [[Blog]] {
+        return [data.filter({ blog in
+            if let matchingBlog = matchingBlog {
+                return blog == matchingBlog
+            } else {
+                return blog.account != nil
+            }
+        })]
+    }
+}
+
 class BlogListDataSource: NSObject {
     override init() {
         super.init()
@@ -67,6 +83,9 @@ class BlogListDataSource: NSObject {
     let recentSitesMinCount = 11
 
     // MARK: - Inputs
+
+    // Pass to the LoggedInDataSource to match a specifc blog.
+    var blog: Blog?
 
     var editing: Bool = false {
         didSet {
@@ -192,12 +211,11 @@ private extension BlogListDataSource {
         case browsingWithRecent
         case editing
         case searching(String)
-        case loggedIn
+        case loggedIn(Blog?)
 
         var mapper: BlogListDataSourceMapper {
             switch self {
-            case .browsing,
-                 .loggedIn:
+            case .browsing:
                 return BrowsingDataSourceMapper()
             case .browsingWithRecent:
                 return BrowsingWithRecentDataSourceMapper()
@@ -205,6 +223,8 @@ private extension BlogListDataSource {
                 return EditingDataSourceMapper()
             case .searching(let query):
                 return SearchingDataSourceMapper(query: query)
+            case .loggedIn(let blog):
+                return LoggedInDataSourceMapper(matchingBlog: blog)
             }
         }
 
@@ -216,6 +236,8 @@ private extension BlogListDataSource {
                 return true
             case let (.searching(lquery), .searching(rquery)):
                 return lquery == rquery
+            case let (.loggedIn(lblog), .loggedIn(rblog)):
+                return lblog == rblog
             default:
                 return false
             }
@@ -230,7 +252,7 @@ private extension BlogListDataSource {
 
     func modeForCurrentState() -> Mode {
         if loggedIn {
-            return .loggedIn
+            return .loggedIn(blog)
         }
         if editing {
             return .editing
