@@ -242,23 +242,20 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         configureViewLoading(true)
 
-        service.isEmailAvailable(email,
-                                 success: { [weak self] (available: Bool) in
-                                    self?.configureViewLoading(false)
-                                    if (available) {
-                                        // No matching email address found.
-                                        // TODO: Show error message.
-                                    } else {
+        service.isPasswordlessAccount(email,
+                                      success: { [weak self] (passwordless: Bool) in
+                                        self?.configureViewLoading(false)
+                                        // TODO: Flag passwordless in loginfields
                                         self?.requestLink()
-                                    }
             },
-                                 failure: { [weak self] (error: Error) in
-                                    DDLogSwift.logError(error.localizedDescription)
-                                    guard let strongSelf = self else {
-                                        return
-                                    }
-                                    strongSelf.configureViewLoading(false)
-                                    strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
+                                      failure: { [weak self] (error: Error) in
+                                        DDLogSwift.logError(error.localizedDescription)
+                                        guard let strongSelf = self else {
+                                            return
+                                        }
+                                        strongSelf.configureViewLoading(false)
+                                        // TODO: Implement new error handling
+                                        strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
         })
     }
 
