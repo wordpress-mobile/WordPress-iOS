@@ -5443,6 +5443,10 @@
 			isa = PBXGroup;
 			children = (
 				436269631ECD0726008692C7 /* LoginButton.swift */,
+				43CC1EBF1ED898E30097E334 /* LoginTextField.swift */,
+				43FB3F441EC1020600FC8A62 /* LoginEpilogueSectionHeader.swift */,
+				4346FD9A1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift */,
+				43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */,
 				E64E17651CA8518800BE7744 /* NUXSubmitButton.swift */,
 				85AD6AEA173CCF9E002CB896 /* WPNUXPrimaryButton.h */,
 				85AD6AEB173CCF9E002CB896 /* WPNUXPrimaryButton.m */,
@@ -5459,21 +5463,13 @@
 		E6417B961CA07B060084050A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				E6D0088D1EF0880C009E5FA3 /* LoginViewController.swift */,
-				433432531E9EE0B100915988 /* EpilogueSegue.swift */,
-				43D2436C1EAFCE3C00D0C77B /* LoginSegueHandler.swift */,
+				E6C1E8441EF1D25D00D139D9 /* Magic Links */,
+				E6C1E8451EF1D28500D139D9 /* SelfHosted */,
+				E6C1E8431EF1D21F00D139D9 /* Epilogue */,
+				436605E11ECE568800EE8882 /* LoginNavigationController.swift */,
+				43F258A91ED7772C0075406B /* LoginPrologueViewController.swift */,
 				434D96051EA92A4A00B90B89 /* Login2FAViewController.swift */,
 				438A80971EA5666B005D4651 /* LoginEmailViewController.swift */,
-				433432511E9ED18900915988 /* LoginEpilogueViewController.swift */,
-				43FB3F461EC10F1E00FC8A62 /* LoginEpilogueTableView.swift */,
-				43FB3F441EC1020600FC8A62 /* LoginEpilogueSectionHeader.swift */,
-				4346FD9A1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift */,
-				43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */,
-				434D96071EA9565D00B90B89 /* LoginLinkAuthViewController.swift */,
-				438A80991EA56DA0005D4651 /* LoginLinkMailViewController.swift */,
-				438A809B1EA5DB88005D4651 /* LoginLinkRequestViewController.swift */,
-				E6C1E8411EF1D1C900D139D9 /* LoginSiteAddressViewController.swift */,
-				434D96091EA959BF00B90B89 /* LoginSelfHostedViewController.swift */,
 				438A809D1EA5DC31005D4651 /* LoginWPComViewController.swift */,
 				E6417B9B1CA07C3C0084050A /* NUXAbstractViewController.swift */,
 				E64E17631CA8493200BE7744 /* NUXNavigationController.swift */,
@@ -5486,9 +5482,6 @@
 				E6417B9F1CA07D540084050A /* SigninSelfHostedViewController.swift */,
 				E6417BA31CA07E260084050A /* SigninWPComViewController.swift */,
 				E6DB765E1CD10D7C0069BC82 /* SignupViewController.swift */,
-				436605E11ECE568800EE8882 /* LoginNavigationController.swift */,
-				43F258A91ED7772C0075406B /* LoginPrologueViewController.swift */,
-				43CC1EBF1ED898E30097E334 /* LoginTextField.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -5561,9 +5554,40 @@
 			name = Reader;
 			sourceTree = "<group>";
 		};
+		E6C1E8431EF1D21F00D139D9 /* Epilogue */ = {
+			isa = PBXGroup;
+			children = (
+				433432531E9EE0B100915988 /* EpilogueSegue.swift */,
+				433432511E9ED18900915988 /* LoginEpilogueViewController.swift */,
+				43FB3F461EC10F1E00FC8A62 /* LoginEpilogueTableView.swift */,
+			);
+			name = Epilogue;
+			sourceTree = "<group>";
+		};
+		E6C1E8441EF1D25D00D139D9 /* Magic Links */ = {
+			isa = PBXGroup;
+			children = (
+				434D96071EA9565D00B90B89 /* LoginLinkAuthViewController.swift */,
+				438A80991EA56DA0005D4651 /* LoginLinkMailViewController.swift */,
+				438A809B1EA5DB88005D4651 /* LoginLinkRequestViewController.swift */,
+			);
+			name = "Magic Links";
+			sourceTree = "<group>";
+		};
+		E6C1E8451EF1D28500D139D9 /* SelfHosted */ = {
+			isa = PBXGroup;
+			children = (
+				E6C1E8411EF1D1C900D139D9 /* LoginSiteAddressViewController.swift */,
+				434D96091EA959BF00B90B89 /* LoginSelfHostedViewController.swift */,
+			);
+			name = SelfHosted;
+			sourceTree = "<group>";
+		};
 		E6C448581CB09E1F00458157 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				E6D0088D1EF0880C009E5FA3 /* LoginViewController.swift */,
+				43D2436C1EAFCE3C00D0C77B /* LoginSegueHandler.swift */,
 				E6C448561CB091AA00458157 /* SigninKeyboardResponder.swift */,
 				E64E17691CA8C71600BE7744 /* SigninWPComSyncHandler.swift */,
 			);
