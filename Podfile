@@ -47,10 +47,6 @@ target 'WordPress' do
   # Temporary until this fix is merged and released
   # https://github.com/daltoniam/Starscream/pull/294
   pod 'Starscream', :git => 'https://github.com/wordpress-mobile/Starscream', :branch => 'wordpress-ios'
-  # ----------------------------
-  # Forked third party libraries
-  # ----------------------------
-  pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '479d05f7d6b963c9b44040e6ea9f190e8bd9a47a'
 
   # --------------------
   # WordPress components

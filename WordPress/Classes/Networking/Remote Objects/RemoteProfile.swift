@@ -22,7 +22,7 @@ open class RemoteProfile {
         nicename = dictionary.string(forKey: "nicename") ?? ""
         nickname = dictionary.string(forKey: "nickname") ?? ""
         url = dictionary.string(forKey: "url") ?? ""
-        userID = dictionary.number(forKey: "user_id").intValue
+        userID = dictionary.number(forKey: "user_id")?.intValue ?? 0
         username = dictionary.string(forKey: "username") ?? ""
     }
 
