@@ -145,12 +145,21 @@
                                                 <color key="textColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qqt-eq-gac">
+                                                <rect key="frame" x="20" y="255" width="343" height="0.0"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                <color key="textColor" red="0.85098039215686272" green="0.30980392156862746" blue="0.30980392156862746" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstItem="Qqt-eq-gac" firstAttribute="top" secondItem="XXO-aV-keK" secondAttribute="bottom" constant="20" id="7Mg-FL-RY2"/>
+                                            <constraint firstItem="Qqt-eq-gac" firstAttribute="leading" secondItem="Ff9-jl-eKh" secondAttribute="leading" constant="20" id="94O-1n-HFL"/>
                                             <constraint firstItem="XXO-aV-keK" firstAttribute="leading" secondItem="Ff9-jl-eKh" secondAttribute="leading" id="Aae-9P-bkG"/>
                                             <constraint firstItem="XXO-aV-keK" firstAttribute="top" secondItem="DKR-9c-zZQ" secondAttribute="bottom" constant="20" id="K5W-wi-lao"/>
                                             <constraint firstItem="DKR-9c-zZQ" firstAttribute="leading" secondItem="Ff9-jl-eKh" secondAttribute="leading" constant="20" id="MWF-1s-IWK"/>
+                                            <constraint firstAttribute="trailing" secondItem="Qqt-eq-gac" secondAttribute="trailing" constant="20" id="XEe-SR-4Um"/>
                                             <constraint firstItem="XXO-aV-keK" firstAttribute="centerY" secondItem="Ff9-jl-eKh" secondAttribute="centerY" id="g79-1R-Vzx"/>
                                             <constraint firstAttribute="trailing" secondItem="XXO-aV-keK" secondAttribute="trailing" id="i4f-1H-u1d"/>
                                             <constraint firstAttribute="trailing" secondItem="DKR-9c-zZQ" secondAttribute="trailing" constant="20" id="odG-1L-fnV"/>
@@ -221,6 +230,7 @@
                     <connections>
                         <outlet property="bottomContentConstraint" destination="ygR-XU-dv4" id="Htk-Pq-5Kc"/>
                         <outlet property="emailTextField" destination="XXO-aV-keK" id="GZQ-cn-hKd"/>
+                        <outlet property="errorLabel" destination="Qqt-eq-gac" id="4mV-5J-TJ2"/>
                         <outlet property="instructionLabel" destination="DKR-9c-zZQ" id="2Rj-ad-hnL"/>
                         <outlet property="selfHostedSigninButton" destination="5Hn-ZK-h9k" id="hZn-AT-eQt"/>
                         <outlet property="submitButton" destination="OZC-xf-OAn" id="k1c-SJ-qiK"/>
