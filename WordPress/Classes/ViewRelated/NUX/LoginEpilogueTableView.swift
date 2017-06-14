@@ -7,11 +7,8 @@ class LoginEpilogueTableView: UITableViewController {
     var blogCount: Int?
     var epilogueUserInfo: LoginEpilogueUserInfo? {
         didSet {
-            if let blog = epilogueUserInfo?.blog {
-                blogDataSource.blog = blog
-            } else {
-                blogDataSource.accountOwned = true
-            }
+            blogDataSource.blog = epilogueUserInfo?.blog
+            blogDataSource.loggedIn = true
         }
     }
 
