@@ -319,7 +319,7 @@ extension BlogListDataSource: UITableViewDataSource {
         }
 
         cell.selectionStyle = tableView.isEditing ? .none : .blue
-        cell.imageView?.setImageWithSiteIcon(blog.icon)
+        cell.imageView?.setImageWithSiteIconFor(blog)
         cell.visibilitySwitch?.accessibilityIdentifier = String(format: "Switch-Visibility-%@", blog.settings?.name ?? "")
         cell.visibilitySwitch?.isOn = blog.visible
         cell.visibilitySwitchToggled = { [visibilityChanged] cell in
