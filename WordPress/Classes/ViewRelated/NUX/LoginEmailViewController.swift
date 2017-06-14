@@ -77,7 +77,9 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     // MARK: - Setup and Configuration
 
 
-    // let the storyboard's style stay
+    /// Let the storyboard's style stay
+    /// TODO: Nuke this and the super implementation once the old signin controllers
+    /// go away. 2017.06.13 - Aerych
     override func setupStyles() {}
 
 
@@ -129,7 +131,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     /// Configures whether appearance of the submit button.
     ///
     func configureSubmitButton() {
-        submitButton.isEnabled = !loginFields.username.isEmpty
+        submitButton.isEnabled = loginFields.username.isValidEmail()
     }
 
 
@@ -223,22 +225,18 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         performSegue(withIdentifier: .startMagicLinkFlow, sender: self)
     }
 
+
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
     func validateForm() {
-        let emailOrUsername = loginFields.username
-
-        guard !emailOrUsername.isEmpty else {
+        guard loginFields.username.isValidEmail() else {
+            assertionFailure("Form should not be submitted unless there is a valid looking email entered.")
             return
         }
-
-        if emailOrUsername.isValidEmail() {
-            validate(email: emailOrUsername)
-        } else {
-            validate(username: emailOrUsername)
-        }
+        validate(email: loginFields.username)
     }
+
 
     private func validate(email: String) {
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
@@ -248,9 +246,8 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
                                  success: { [weak self] (available: Bool) in
                                     self?.configureViewLoading(false)
                                     if (available) {
-                                        // No matching email address found so treat this as a
-                                        // self-hosted sign in.
-                                        self?.signinToSelfHostedSite()
+                                        // No matching email address found.
+                                        // TODO: Show error message.
                                     } else {
                                         self?.requestLink()
                                     }
@@ -262,58 +259,6 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
                                     }
                                     strongSelf.configureViewLoading(false)
                                     strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
-        })
-    }
-
-    private func validate(username: String) {
-        if SigninHelpers.isWPComDomain(username) {
-            signinWithWPComDomain(username)
-        } else if !SigninHelpers.isUsernameReserved(username) {
-            signinWithUsernamePassword()
-        } else if restrictToWPCom {
-            // When restricted, show a prompt then let the user enter a new username.
-            SigninHelpers.promptForWPComReservedUsername(username, callback: {
-                self.loginFields.username = ""
-                self.emailTextField.text = ""
-                self.emailTextField.becomeFirstResponder()
-            })
-        } else {
-            // Switch to the signin flow when not restricted.
-            signinToSelfHostedSite()
-        }
-    }
-
-    private func signinWithWPComDomain(_ domain: String) {
-        let showFailureError = { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.displayErrorMessage(NSLocalizedString("Please enter a valid email address", comment: "A short prompt asking the user to properly fill out all login fields."))
-        }
-
-        let username = SigninHelpers.extractUsername(from: domain)
-        configureViewLoading(true)
-
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.isUsernameAvailable(username,
-                                    success: { [weak self] (available: Bool) in
-                                        guard let strongSelf = self else {
-                                            return
-                                        }
-                                        strongSelf.configureViewLoading(false)
-                                        if (available) {
-                                            // can't login with a username that doesn't exist
-                                            showFailureError()
-                                        } else {
-                                            strongSelf.loginFields.username = username
-                                            strongSelf.signinWithUsernamePassword()
-                                        }
-            },
-                                    failure: { [weak self] (error: Error) in
-                                        showFailureError()
-                                        if let strongSelf = self {
-                                            strongSelf.configureViewLoading(false)
-                                        }
         })
     }
 
