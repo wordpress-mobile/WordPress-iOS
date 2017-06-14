@@ -164,7 +164,7 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.9.1)
   - WordPressCom-Analytics-iOS (= 0.1.29)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
-  - WPMediaPicker (= 0.17)
+  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `14eb8142bba15c74bb4552bbccc7b60a7289f2bd`)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
@@ -180,6 +180,9 @@ EXTERNAL SOURCES:
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
+  WPMediaPicker:
+    :commit: 14eb8142bba15c74bb4552bbccc7b60a7289f2bd
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -194,6 +197,9 @@ CHECKOUT OPTIONS:
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
+  WPMediaPicker:
+    :commit: 14eb8142bba15c74bb4552bbccc7b60a7289f2bd
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: e775a29310c65851e5a6cec1afc349ab4e334e47
@@ -229,6 +235,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: a61e85ce289bb99113209091698ead23f7b44f6f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: ff95f23ce3afa9cbeb8d004d333fec53b83605fa
+PODFILE CHECKSUM: f3d18750e236bf8125625c1194e81ce3c14b83c2
 
 COCOAPODS: 1.2.1
