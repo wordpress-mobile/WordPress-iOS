@@ -555,8 +555,7 @@
         [mediaService syncMediaLibraryForBlog:self.blog
                                       success:^() {
                                           weakSelf.itemsCount = [mediaService getMediaLibraryCountForBlog:self.blog
-                                                        forMediaTypes:mediaTypes];;
-                                          [weakSelf notifyObserversWithIncrementalChanges:NO removed:nil inserted:nil changed:nil moved:nil];
+                                                        forMediaTypes:mediaTypes];
                                       } failure:^(NSError *error) {
                                           DDLogError(@"%@", [error localizedDescription]);
         }];
