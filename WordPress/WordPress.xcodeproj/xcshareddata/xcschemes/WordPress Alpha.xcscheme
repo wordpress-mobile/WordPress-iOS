@@ -38,6 +38,36 @@
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "931CFFD01EBCB016005E6BB4"
+               BuildableName = "WordPressComStatsiOSTests.xctest"
+               BlueprintName = "WordPressComStatsiOSTests"
+               ReferencedContainer = "container:../WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9368C7831EC5EF1B0092CE8E"
+               BuildableName = "WordPressKitTests.xctest"
+               BlueprintName = "WordPressKitTests"
+               ReferencedContainer = "container:../WordPressKit/WordPressKit.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "829DD1461EC9EED200AB8C12"
+               BuildableName = "WordPressSharedTests.xctest"
+               BlueprintName = "WordPressSharedTests"
+               ReferencedContainer = "container:../WordPressShared/WordPressShared.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

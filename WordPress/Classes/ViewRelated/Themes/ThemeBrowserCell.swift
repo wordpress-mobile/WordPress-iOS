@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared.WPStyleGuide
+import CocoaLumberjack
 
 /// Actions provided in cell button triggered action sheet
 ///
@@ -179,7 +180,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
                 if let error = error as NSError?, error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
                     return
                 }
-                DDLogSwift.logError("Error loading theme screenshot: \(String(describing: error?.localizedDescription))")
+                DDLogError("Error loading theme screenshot: \(String(describing: error?.localizedDescription))")
                 self?.showPlaceholder()
         })
     }

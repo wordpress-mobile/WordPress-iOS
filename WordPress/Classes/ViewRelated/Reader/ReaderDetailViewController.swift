@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import WordPressShared
 import WordPressComAnalytics
 import QuartzCore
@@ -294,7 +295,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 self?.textView.alpha = 1.0
                 self?.post = post
             }, failure: {[weak self] (error: Error?) in
-                DDLogSwift.logError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
+                DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
 
                 let title = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
                 WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: self?.view)
@@ -948,7 +949,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let service = ReaderPostService(managedObjectContext: post.managedObjectContext!)
         service.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
             if let anError = error {
-                DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
+                DDLogError("Error (un)liking post: \(anError.localizedDescription)")
             }
         })
     }

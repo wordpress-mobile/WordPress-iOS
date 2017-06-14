@@ -1,4 +1,5 @@
 import AFNetworking
+import CocoaLumberjack
 
 @objc public enum WordPressComOAuthError: Int {
     case unknown
@@ -78,7 +79,7 @@ public final class WordPressComOAuthClient: NSObject {
         }
 
         sessionManager.post("token", parameters: parameters, progress: nil, success: { (task, responseObject) in
-            //DDLogSwift.logVerbose("Received OAuth2 response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
+            DDLogVerbose("Received OAuth2 response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
             guard let responseDictionary = responseObject as? [String: AnyObject],
                 let authToken = responseDictionary["access_token"] as? String else {
                     success(nil)
@@ -88,7 +89,7 @@ public final class WordPressComOAuthClient: NSObject {
 
             }, failure: { (task, error) in
                 failure(error as NSError)
-                //DDLogSwift.logError("Error receiving OAuth2 token: \(error)")
+                DDLogError("Error receiving OAuth2 token: \(error)")
             }
         )
     }
