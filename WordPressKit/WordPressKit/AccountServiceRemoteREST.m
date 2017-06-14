@@ -114,6 +114,27 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
            }];
 }
 
+- (void)isPasswordlessAccount:(NSString *)identifier success:(void (^)(BOOL passwordless))success failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [self pathForEndpoint:[NSString stringWithFormat:@"users/%@/auth-options", identifier]
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    [self.wordPressComRestApi GET:path
+                       parameters:nil
+                          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                              if (!success) {
+                                  return;
+                              }
+                              NSDictionary *dict = (NSDictionary *)responseObject;
+                              BOOL passwordless = [[dict numberForKey:@"passwordlesss"] boolValue];
+                              success(passwordless);
+                              
+                          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                              if (failure) {
+                                  failure(error);
+                              }
+                          }];
+}
+
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
 {
     NSString *path = @"https://public-api.wordpress.com/is-available/email";
