@@ -26,6 +26,7 @@
 		9368C7BC1EC630270092CE8E /* StatsVisits.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7B01EC630270092CE8E /* StatsVisits.m */; };
 		9368C7BF1EC630CE0092CE8E /* StatsStringUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C7BD1EC630CE0092CE8E /* StatsStringUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9368C7C01EC630CE0092CE8E /* StatsStringUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368C7BE1EC630CE0092CE8E /* StatsStringUtilities.m */; };
+		938CF3D81EF1BE3800AF838E /* CocoaLumberjack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938CF3D71EF1BE3800AF838E /* CocoaLumberjack.swift */; };
 		93AB06041EE8838400EF8764 /* RemoteTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AB06031EE8838400EF8764 /* RemoteTestCase.swift */; };
 		93AC8EC41ED32FD000900F5A /* emptyarray.json in Resources */ = {isa = PBXBuildFile; fileRef = 93AC8EA51ED32FD000900F5A /* emptyarray.json */; };
 		93AC8EC51ED32FD000900F5A /* stats-batch.json in Resources */ = {isa = PBXBuildFile; fileRef = 93AC8EA61ED32FD000900F5A /* stats-batch.json */; };
@@ -147,6 +148,7 @@
 		9368C7BD1EC630CE0092CE8E /* StatsStringUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsStringUtilities.h; sourceTree = "<group>"; };
 		9368C7BE1EC630CE0092CE8E /* StatsStringUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsStringUtilities.m; sourceTree = "<group>"; };
 		938A499F0382FA6CE5225F40 /* Pods-WordPressKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKitTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests.debug.xcconfig"; sourceTree = "<group>"; };
+		938CF3D71EF1BE3800AF838E /* CocoaLumberjack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CocoaLumberjack.swift; sourceTree = "<group>"; };
 		93AB06031EE8838400EF8764 /* RemoteTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteTestCase.swift; sourceTree = "<group>"; };
 		93AC8EA51ED32FD000900F5A /* emptyarray.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emptyarray.json; sourceTree = "<group>"; };
 		93AC8EA61ED32FD000900F5A /* stats-batch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "stats-batch.json"; sourceTree = "<group>"; };
@@ -499,6 +501,7 @@
 		93F08F0E1EEF0E86000C2DF6 /* Private */ = {
 			isa = PBXGroup;
 			children = (
+				938CF3D71EF1BE3800AF838E /* CocoaLumberjack.swift */,
 				93F08F0F1EEF0E9B000C2DF6 /* Logging.h */,
 				93F08F101EEF0E9B000C2DF6 /* Logging.m */,
 			);
@@ -779,6 +782,7 @@
 				9368C7B81EC630270092CE8E /* StatsStreakItem.m in Sources */,
 				93C674F21EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m in Sources */,
 				9368C7BC1EC630270092CE8E /* StatsVisits.m in Sources */,
+				938CF3D81EF1BE3800AF838E /* CocoaLumberjack.swift in Sources */,
 				93BD273D1EE73282002BB00B /* AccountServiceRemoteREST.m in Sources */,
 				93BD27811EE73944002BB00B /* WordPressOrgXMLRPCApi.swift in Sources */,
 				9368C7B21EC630270092CE8E /* StatsItem.m in Sources */,
