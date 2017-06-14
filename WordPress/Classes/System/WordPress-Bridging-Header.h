@@ -121,6 +121,7 @@
 
 #import "WordPressAppDelegate.h"
 #import "WordPressComServiceRemote.h"
+#import "WordPressXMLRPCAPIFacade.h"
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"
 #import "WPAnimatedBox.h"
