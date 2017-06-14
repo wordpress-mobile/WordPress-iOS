@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared
 import WordPressComAnalytics
-import WordPress_AppbotX
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -156,7 +155,7 @@ open class AboutViewController: UITableViewController {
         //
         WPAnalytics.track(.appReviewsRatedApp)
         AppRatingUtility.shared.ratedCurrentVersion()
-        ABXAppStore.open(forApp: WPiTunesAppId)
+        UIApplication.shared.open(AppRatingUtility.shared.appReviewUrl)
     }
 
     fileprivate func displayTwitterAccount() {
