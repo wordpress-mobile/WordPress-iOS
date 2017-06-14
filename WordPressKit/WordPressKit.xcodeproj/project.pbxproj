@@ -105,6 +105,8 @@
 		93C674F11EE8351E00BFAF05 /* NSMutableDictionary+Helpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 93C674EF1EE8351E00BFAF05 /* NSMutableDictionary+Helpers.h */; };
 		93C674F21EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C674F01EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m */; };
 		93C882971EEB179600227A59 /* RESTTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C882961EEB179600227A59 /* RESTTestable.swift */; };
+		E6C1E83D1EF1A12E00D139D9 /* is-passwordless-account-success.json in Resources */ = {isa = PBXBuildFile; fileRef = E6C1E83C1EF1A12E00D139D9 /* is-passwordless-account-success.json */; };
+		E6C1E83F1EF1A2BB00D139D9 /* is-passwordless-account-no-account-found.json in Resources */ = {isa = PBXBuildFile; fileRef = E6C1E83E1EF1A2BB00D139D9 /* is-passwordless-account-no-account-found.json */; };
 		FAE63A9F1611DECD81F57707 /* Pods_WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D80394B0062075C00ECBC60 /* Pods_WordPressKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -230,6 +232,8 @@
 		93C674F01EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+Helpers.m"; sourceTree = "<group>"; };
 		93C882961EEB179600227A59 /* RESTTestable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RESTTestable.swift; path = ../../WordPress/WordPressTest/RESTTestable.swift; sourceTree = "<group>"; };
 		AF6C6B3D338F6E0C94E0CFEE /* Pods-WordPressKitTests.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKitTests.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests.release-alpha.xcconfig"; sourceTree = "<group>"; };
+		E6C1E83C1EF1A12E00D139D9 /* is-passwordless-account-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "is-passwordless-account-success.json"; sourceTree = "<group>"; };
+		E6C1E83E1EF1A2BB00D139D9 /* is-passwordless-account-no-account-found.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "is-passwordless-account-no-account-found.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -453,6 +457,8 @@
 				93BD27481EE73442002BB00B /* is-available-email-success.json */,
 				93BD27491EE73442002BB00B /* is-available-username-failure.json */,
 				93BD274A1EE73442002BB00B /* is-available-username-success.json */,
+				E6C1E83C1EF1A12E00D139D9 /* is-passwordless-account-success.json */,
+				E6C1E83E1EF1A2BB00D139D9 /* is-passwordless-account-no-account-found.json */,
 				93BD274B1EE73442002BB00B /* me-auth-failure.json */,
 				93BD274C1EE73442002BB00B /* me-bad-json-failure.json */,
 				93BD274D1EE73442002BB00B /* me-sites-auth-failure.json */,
@@ -619,6 +625,7 @@
 				93AC8ED21ED32FD000900F5A /* stats-v1.1-referrers-day.json in Resources */,
 				93AC8EDA1ED32FD000900F5A /* stats-v1.1-video-plays-day.json in Resources */,
 				93BD275C1EE73442002BB00B /* is-available-username-success.json in Resources */,
+				E6C1E83F1EF1A2BB00D139D9 /* is-passwordless-account-no-account-found.json in Resources */,
 				93AC8ED81ED32FD000900F5A /* stats-v1.1-top-posts-day.json in Resources */,
 				93BD27591EE73442002BB00B /* is-available-email-failure.json in Resources */,
 				93BD27571EE73442002BB00B /* auth-send-login-email-no-user-failure.json in Resources */,
@@ -651,6 +658,7 @@
 				93AC8EDD1ED32FD000900F5A /* stats-v1.1-visits-day.json in Resources */,
 				93AC8EDC1ED32FD000900F5A /* stats-v1.1-visits-day-large.json in Resources */,
 				93AC8ECE1ED32FD000900F5A /* stats-v1.1-latest-post-views.json in Resources */,
+				E6C1E83D1EF1A12E00D139D9 /* is-passwordless-account-success.json in Resources */,
 				93AC8ECC1ED32FD000900F5A /* stats-v1.1-followers-wpcom-day.json in Resources */,
 				93AC8ED11ED32FD000900F5A /* stats-v1.1-referrers-day-large.json in Resources */,
 				93BD27621EE73442002BB00B /* me-sites-success.json in Resources */,
