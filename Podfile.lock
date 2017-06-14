@@ -27,8 +27,6 @@ PODS:
   - CocoaLumberjack/Default (3.2.0)
   - CocoaLumberjack/Extensions (3.2.0):
     - CocoaLumberjack/Default
-  - CocoaLumberjack/Swift (3.2.0):
-    - CocoaLumberjack/Default
   - Crashlytics (3.8.4):
     - Fabric (~> 1.6.3)
   - Expecta (1.0.5)
@@ -112,7 +110,7 @@ DEPENDENCIES:
   - AFNetworking (= 3.1.0)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.0`)
   - BuddyBuildSDK (~> 1.0.14)
-  - CocoaLumberjack/Swift (~> 3.2.0)
+  - CocoaLumberjack (~> 3.2.0)
   - Crashlytics
   - Expecta (= 1.0.5)
   - FLAnimatedImage (~> 1.0)
@@ -208,6 +206,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: a61e85ce289bb99113209091698ead23f7b44f6f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: f533ba3858584b2f11c8424a644094a91645bea2
+PODFILE CHECKSUM: 50cafb7f5fc1baf8b0d544c3873f2696eeee9e74
 
 COCOAPODS: 1.2.1
