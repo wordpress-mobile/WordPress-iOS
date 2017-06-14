@@ -4,6 +4,7 @@ import UIKit
 ///
 class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardResponder, LoginViewController {
     @IBOutlet var instructionLabel: UILabel!
+    @IBOutlet var errorLabel: UILabel!
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var submitButton: NUXSubmitButton!
     @IBOutlet var selfHostedSigninButton: UIButton!
@@ -54,6 +55,8 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         configureEmailField()
         configureSubmitButton()
         configureViewForEditingIfNeeded()
+
+        WPAppAnalytics.track(.loginEmailFormViewed)
     }
 
 
@@ -230,6 +233,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     /// proceeds with the submit action.
     ///
     func validateForm() {
+        displayError(message: "")
         guard loginFields.username.isValidEmail() else {
             assertionFailure("Form should not be submitted unless there is a valid looking email entered.")
             return
@@ -249,9 +253,22 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
                                             return
                                         }
                                         strongSelf.configureViewLoading(false)
-                                        // TODO: Implement new error handling
-                                        strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
+
+                                        let userInfo = (error as NSError).userInfo
+                                        if let errorCode = userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String, errorCode == "unknown_user" {
+                                            let msg = NSLocalizedString("We didn't find a WordPress.com account with that email address. Please double-check it and try again.",
+                                                                        comment: "An error message informing the user the email address they entered did not match a WordPress.com account.")
+                                            self?.displayError(message: msg)
+                                            WPAppAnalytics.track(.loginFailed, error: error)
+                                        } else {
+                                            strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
+                                        }
         })
+    }
+
+
+    func displayError(message: String) {
+        errorLabel.text = message
     }
 
 
