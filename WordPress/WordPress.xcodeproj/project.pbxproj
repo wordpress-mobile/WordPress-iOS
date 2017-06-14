@@ -967,6 +967,9 @@
 		E64ECA4D1CE62041000188A0 /* ReaderSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E64ECA4C1CE62041000188A0 /* ReaderSearchViewController.swift */; };
 		E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */; };
 		E65219FB1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */; };
+		E65824321EEF2E9000089AA6 /* UsersServiceRemoteXMLRPCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65824311EEF2E9000089AA6 /* UsersServiceRemoteXMLRPCTests.swift */; };
+		E65824341EEF31D600089AA6 /* xmlrpc-response-getprofile.xml in Resources */ = {isa = PBXBuildFile; fileRef = E65824331EEF31D600089AA6 /* xmlrpc-response-getprofile.xml */; };
+		E65824361EEF3D2B00089AA6 /* xmlrpc-response-valid-but-unexpected-dictionary.xml in Resources */ = {isa = PBXBuildFile; fileRef = E65824351EEF3D2B00089AA6 /* xmlrpc-response-valid-but-unexpected-dictionary.xml */; };
 		E663D1901C65383E0017F109 /* SharingAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E663D18F1C65383E0017F109 /* SharingAccountViewController.swift */; };
 		E66969C81B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */; };
 		E66969CA1B9E0C4F00EC9C00 /* ReaderTopicServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E66969C91B9E0C4F00EC9C00 /* ReaderTopicServiceRemoteTests.m */; };
@@ -2555,6 +2558,9 @@
 		E64ECA4C1CE62041000188A0 /* ReaderSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSearchViewController.swift; sourceTree = "<group>"; };
 		E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderBlockedSiteCell.xib; sourceTree = "<group>"; };
 		E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderBlockedSiteCell.swift; sourceTree = "<group>"; };
+		E65824311EEF2E9000089AA6 /* UsersServiceRemoteXMLRPCTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersServiceRemoteXMLRPCTests.swift; sourceTree = "<group>"; };
+		E65824331EEF31D600089AA6 /* xmlrpc-response-getprofile.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-getprofile.xml"; sourceTree = "<group>"; };
+		E65824351EEF3D2B00089AA6 /* xmlrpc-response-valid-but-unexpected-dictionary.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-valid-but-unexpected-dictionary.xml"; sourceTree = "<group>"; };
 		E663D18F1C65383E0017F109 /* SharingAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingAccountViewController.swift; sourceTree = "<group>"; };
 		E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTopicServiceTest.swift; sourceTree = "<group>"; };
 		E66969C91B9E0C4F00EC9C00 /* ReaderTopicServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopicServiceRemoteTests.m; sourceTree = "<group>"; };
@@ -3366,6 +3372,7 @@
 				08A2AD741CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m */,
 				598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */,
 				FF34EEA81CF473F600F8B38D /* WordPressComServiceRemoteRestTests.swift */,
+				E65824311EEF2E9000089AA6 /* UsersServiceRemoteXMLRPCTests.swift */,
 			);
 			name = "Remote Services";
 			sourceTree = "<group>";
@@ -5315,6 +5322,8 @@
 				93C8829D1EEB18D700227A59 /* xmlrpc-response-getpost.xml */,
 				93C8829E1EEB18D700227A59 /* xmlrpc-response-newpost.xml */,
 				93C8829F1EEB18D700227A59 /* xmlrpc-response-redirect.html */,
+				E65824331EEF31D600089AA6 /* xmlrpc-response-getprofile.xml */,
+				E65824351EEF3D2B00089AA6 /* xmlrpc-response-valid-but-unexpected-dictionary.xml */,
 				93C882A01EEB18D700227A59 /* xmlrpc-response-system-listmethods.xml */,
 				74F24F641EE8729700E8BFE8 /* xmlrpc-wp-getpost-bad-xml-failure.xml */,
 				74F24F651EE8729700E8BFE8 /* xmlrpc-wp-getpost-invalid-id-failure.xml */,
@@ -6031,6 +6040,7 @@
 				E1EBC3751C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib in Resources */,
 				E15027631E03E51500B847E3 /* notes-action-unsupported.json in Resources */,
 				93C882A21EEB18D700227A59 /* html_page_with_link_to_rsd.html in Resources */,
+				E65824341EEF31D600089AA6 /* xmlrpc-response-getprofile.xml in Resources */,
 				E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */,
 				FF9839AB1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json in Resources */,
 				93C882A51EEB18D700227A59 /* xmlrpc-response-fault.xml in Resources */,
@@ -6062,6 +6072,7 @@
 				E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */,
 				855408881A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json in Resources */,
 				745938461EAFB2600065386E /* me-settings-change-display-name-success.json in Resources */,
+				E65824361EEF3D2B00089AA6 /* xmlrpc-response-valid-but-unexpected-dictionary.xml in Resources */,
 				FF9839AD1CD3F82300E85258 /* WordPressOAuthClientWrongPasswordFail.json in Resources */,
 				FFC347461CF87B1B00B07952 /* WordPressComRestApiMultipleErrors.json in Resources */,
 				93C882A11EEB18D700227A59 /* html_page_with_link_to_rsd_non_standard.html in Resources */,
@@ -7233,6 +7244,7 @@
 				85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */,
 				261FF32C1DDCF58900695BD5 /* MediaServiceRemoteRESTTests.swift in Sources */,
 				08F8CD2D1EBD24600049D0C0 /* MediaExporterTests.swift in Sources */,
+				E65824321EEF2E9000089AA6 /* UsersServiceRemoteXMLRPCTests.swift in Sources */,
 				B532ACD11DC3ABF600FFFA57 /* NotificationSyncServiceRemoteTests.swift in Sources */,
 				B5ECA6CD1DBAAD510062D7E0 /* CoreDataHelperTests.swift in Sources */,
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
