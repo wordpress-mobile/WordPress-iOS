@@ -92,7 +92,6 @@ PODS:
   - Starscream (2.0.2)
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-AppbotX (1.0.6)
   - WordPress-Aztec-iOS (1.0.0-beta.1):
     - Gridicons (= 0.5)
   - WordPress-iOS-Editor (1.9.2):
@@ -130,7 +129,6 @@ DEPENDENCIES:
   - Starscream (from `https://github.com/wordpress-mobile/Starscream`, branch `wordpress-ios`)
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7`)
   - WordPress-iOS-Editor (= 1.9.2)
   - WordPressCom-Analytics-iOS (= 0.1.29)
@@ -145,9 +143,6 @@ EXTERNAL SOURCES:
   Starscream:
     :branch: wordpress-ios
     :git: https://github.com/wordpress-mobile/Starscream
-  WordPress-AppbotX:
-    :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
-    :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-Aztec-iOS:
     :commit: 28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
@@ -162,9 +157,6 @@ CHECKOUT OPTIONS:
   Starscream:
     :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
     :git: https://github.com/wordpress-mobile/Starscream
-  WordPress-AppbotX:
-    :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
-    :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-Aztec-iOS:
     :commit: 28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
@@ -198,7 +190,6 @@ SPEC CHECKSUMS:
   Starscream: 4ee1be18da5170faafce1698225b61f9765634d5
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
   WordPress-Aztec-iOS: b31d933434447a13ce1093bfe359307eb9fddd9c
   WordPress-iOS-Editor: e71fa013ac3bf8f448d0ee43421beed3f56500f0
   WordPressCom-Analytics-iOS: db0e9449bafaaa7beb2c7f663ecc806d45da992e
@@ -206,6 +197,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: a61e85ce289bb99113209091698ead23f7b44f6f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 50cafb7f5fc1baf8b0d544c3873f2696eeee9e74
+PODFILE CHECKSUM: 4239d1f222f28048ae691f9360ce62e27d4214f6
 
 COCOAPODS: 1.2.1

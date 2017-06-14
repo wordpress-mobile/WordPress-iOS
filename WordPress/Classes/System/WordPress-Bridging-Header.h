@@ -155,7 +155,6 @@
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <FormatterKit/FormatterKit-umbrella.h>
-#import <WordPress_AppbotX/ABXPromptView.h>
 #import <WordPressComAnalytics/WPAnalytics.h>
 
 #ifdef BUDDYBUILD_ENABLED

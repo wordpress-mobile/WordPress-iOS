@@ -1,9 +1,9 @@
 import Foundation
 import CoreData
+import StoreKit
 import CocoaLumberjack
 import MGSwipeTableCell
 import WordPressComAnalytics
-import WordPress_AppbotX
 import WordPressShared
 
 
@@ -31,7 +31,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     /// Ratings View
     ///
-    @IBOutlet var ratingsView: ABXPromptView!
+    @IBOutlet var ratingsView: AppFeedbackPromptView!
 
     /// Defines the Height of the Ratings View
     ///
@@ -378,11 +378,6 @@ private extension NotificationsViewController {
     func setupRatingsView() {
         precondition(ratingsView != nil)
 
-        let ratingsFont = WPFontManager.systemRegularFont(ofSize: Ratings.fontSize)
-
-        ratingsView.label.font = ratingsFont
-        ratingsView.leftButton.titleLabel?.font = ratingsFont
-        ratingsView.rightButton.titleLabel?.font = ratingsFont
         ratingsView.delegate = self
         ratingsView.alpha = WPAlphaZero
     }
@@ -1173,8 +1168,10 @@ private extension NotificationsViewController {
         WPAnalytics.track(.appReviewsSawPrompt)
     }
 
-    func hideRatingView() {
-        UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
+    func hideRatingViewWithDelay(_ delay: TimeInterval) {
+        UIView.animate(withDuration: WPAnimationDurationDefault,
+                       delay: delay,
+                       animations: {
             self.ratingsView.alpha = WPAlphaZero
             self.ratingsHeightConstraint.constant = Ratings.heightZero
 
@@ -1326,49 +1323,55 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
     }
 }
 
-// MARK: - ABXPromptViewDelegate Methods
+// MARK: - AppFeedbackPromptViewDelegate Methods
 //
-extension NotificationsViewController: ABXPromptViewDelegate {
-    func appbotPromptForReview() {
-        WPAnalytics.track(.appReviewsRatedApp)
-        AppRatingUtility.shared.ratedCurrentVersion()
-        hideRatingView()
-
-        UIApplication.shared.open(Ratings.reviewURL)
-    }
-
-    func appbotPromptForFeedback() {
-        WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
-        ABXFeedbackViewController.show(from: self, placeholder: nil, delegate: nil)
-        AppRatingUtility.shared.gaveFeedbackForCurrentVersion()
-        hideRatingView()
-    }
-
-    func appbotPromptClose() {
-        WPAnalytics.track(.appReviewsDeclinedToRateApp)
-        AppRatingUtility.shared.declinedToRateCurrentVersion()
-        hideRatingView()
-    }
-
-    func appbotPromptLiked() {
+extension NotificationsViewController: AppFeedbackPromptViewDelegate {
+    func likedApp() {
         WPAnalytics.track(.appReviewsLikedApp)
         AppRatingUtility.shared.likedCurrentVersion()
+        hideRatingViewWithDelay(3.0)
+        // Optimistically assuming our prompting succeeds since we try to stay
+        // in line and not prompt more than three times a year
+        AppRatingUtility.shared.ratedCurrentVersion()
+        AppRatingUtility.shared.userWasPromptedToReview()
+        DispatchQueue.main.async {
+            if #available(iOS 10.3, *) {
+                SKStoreReviewController.requestReview()
+            } else {
+                UIApplication.shared.open(AppRatingUtility.shared.appReviewUrl)
+            }
+        }
+
     }
 
-    func appbotPromptDidntLike() {
+    func dislikedApp() {
         WPAnalytics.track(.appReviewsDidntLikeApp)
         AppRatingUtility.shared.dislikedCurrentVersion()
     }
 
-    func abxFeedbackDidSendFeedback () {
-        WPAnalytics.track(.appReviewsSentFeedback)
+    func gatherFeedback() {
+        WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
+        AppRatingUtility.shared.gaveFeedbackForCurrentVersion()
+        hideRatingViewWithDelay(0.0)
+        if HelpshiftUtils.isHelpshiftEnabled() {
+            let presenter = HelpshiftPresenter.init()
+            presenter.sourceTag = SupportSourceTag.inAppFeedback
+            presenter.presentHelpshiftConversationWindowFromViewController(self,
+                                                                           refreshUserDetails: true,
+                                                                           completion:nil)
+        } else {
+            if let contact = URL(string: NotificationsViewController.contactURL) {
+                UIApplication.shared.open(contact)
+            }
+        }
     }
 
-    func abxFeedbackDidntSendFeedback() {
-        WPAnalytics.track(.appReviewsCanceledFeedbackScreen)
+    func dismissPrompt() {
+        WPAnalytics.track(.appReviewsDeclinedToRateApp)
+        AppRatingUtility.shared.declinedToRateCurrentVersion()
+        hideRatingViewWithDelay(0.0)
     }
 }
-
 
 // MARK: - Details Navigation Datasource
 //
@@ -1409,6 +1412,8 @@ private extension NotificationsViewController {
             userDefaults.synchronize()
         }
     }
+
+    static let contactURL = "https://support.wordpress.com/contact/"
 
     enum Filter: Int {
         case none = 0
@@ -1511,7 +1516,5 @@ private extension NotificationsViewController {
         static let heightFull = CGFloat(100)
         static let heightZero = CGFloat(0)
         static let animationDelay = TimeInterval(0.5)
-        static let fontSize = CGFloat(15.0)
-        static let reviewURL = AppRatingUtility.shared.appReviewUrl
     }
 }
