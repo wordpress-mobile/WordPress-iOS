@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import CocoaLumberjack
 
 public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
     public static let remotes = NSMapTable<AnyObject, AnyObject>(keyOptions: NSPointerFunctions.Options(), valueOptions: NSPointerFunctions.Options.weakMemory)
@@ -80,6 +81,7 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
             let primarySiteID = response["primary_site_ID"] as? Int,
             let webAddress = response["user_URL"] as? String,
             let language = response["language"] as? String else {
+                DDLogError("Error decoding me/settings response: \(responseObject)")
                 throw ResponseError.decodingFailure
             }
 

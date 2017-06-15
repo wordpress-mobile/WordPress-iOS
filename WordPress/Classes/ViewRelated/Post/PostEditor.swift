@@ -1,3 +1,5 @@
+import CocoaLumberjack
+
 /// Common interface to all editors
 ///
 @objc protocol PostEditor: class {
@@ -29,7 +31,7 @@ extension WPLegacyEditPostViewController: PostEditor {
         set {
             // Ignore
             if newValue {
-                DDLogSwift.logWarn("Trying to open legacy editor for photo post")
+                DDLogWarn("Trying to open legacy editor for photo post")
             }
         }
     }

@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 
 /// This service encapsulates the Restful API related to WordPress Notifications.
@@ -89,7 +90,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     ///
     open func registerDeviceForPushNotifications(_ token: String, success: ((_ deviceId: String) -> ())?, failure: ((NSError) -> Void)?) {
         if token.isEmpty {
-            DDLogSwift.logWarn("Error: registerDeviceForPushNotifications called with an empty token!")
+            DDLogWarn("Error: registerDeviceForPushNotifications called with an empty token!")
             return
         }
 
@@ -106,7 +107,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     ///
     open func unregisterDeviceForPushNotifications(_ deviceId: String, success: (() -> ())?, failure: ((NSError) -> Void)?) {
         if deviceId.isEmpty {
-            DDLogSwift.logWarn("Error: unregisterDeviceForPushNotifications called with an empty deviceId!")
+            DDLogWarn("Error: unregisterDeviceForPushNotifications called with an empty deviceId!")
             return
         }
 
