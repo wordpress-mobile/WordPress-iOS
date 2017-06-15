@@ -1,7 +1,8 @@
 import Foundation
+import CocoaLumberjack
 import WordPressShared
 import WordPressComAnalytics
-
+import QuartzCore
 
 open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
 
@@ -294,7 +295,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 self?.textView.alpha = 1.0
                 self?.post = post
             }, failure: {[weak self] (error: Error?) in
-                DDLogSwift.logError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
+                DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
 
                 let title = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
                 WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: self?.view)
@@ -829,7 +830,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             navigationController?.setNavigationBarHidden(true, animated: animated)
             currentPreferredStatusBarStyle = .default
             footerViewHeightConstraint.constant = 0.0
-            UIView.animate(withDuration: animated ? 0.3 : 0,
+            UIView.animate(withDuration: animated ? 0.2 : 0,
                 delay: 0.0,
                 options: [.beginFromCurrentState, .allowUserInteraction],
                 animations: {
@@ -840,20 +841,20 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             // Shows the navbar and footer view
             let pinToBottom = isScrollViewAtBottom()
 
-            navigationController?.setNavigationBarHidden(false, animated: animated)
             currentPreferredStatusBarStyle = .lightContent
             footerViewHeightConstraint.constant = footerViewHeightConstraintConstant
-            UIView.animate(withDuration: animated ? 0.3 : 0,
-                delay: 0.0,
-                options: [.beginFromCurrentState, .allowUserInteraction],
-                animations: {
-                    self.view.layoutIfNeeded()
-                    if pinToBottom {
-                        let y = self.textView.contentSize.height - self.textView.frame.height
-                        self.textView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
-                    }
+            UIView.animate(withDuration: animated ? 0.2 : 0,
+                           delay: 0.0,
+                           options: [.beginFromCurrentState, .allowUserInteraction],
+                           animations: {
+                            self.view.layoutIfNeeded()
+                            if pinToBottom {
+                                self.navigationController?.setNavigationBarHidden(false, animated: animated)
+                                let y = self.textView.contentSize.height - self.textView.frame.height
+                                self.textView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
+                            }
 
-                }, completion: nil)
+            }, completion: nil)
         }
 
     }
@@ -948,7 +949,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let service = ReaderPostService(managedObjectContext: post.managedObjectContext!)
         service.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
             if let anError = error {
-                DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
+                DDLogError("Error (un)liking post: \(anError.localizedDescription)")
             }
         })
     }

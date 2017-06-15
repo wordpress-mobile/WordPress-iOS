@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 
 @objc public enum GravatarServiceError: Int, Error {
@@ -31,7 +32,7 @@ open class GravatarService {
             success(profile)
 
         }, failure: { (error) in
-            DDLogSwift.logError(error.debugDescription)
+            DDLogError(error.debugDescription)
             failure(error as NSError?)
         })
     }
@@ -57,9 +58,9 @@ open class GravatarService {
         let remote = gravatarServiceRemote()
         remote.uploadImage(image, accountEmail: email, accountToken: accountToken) { (error) in
             if let theError = error {
-                DDLogSwift.logError("GravatarService.uploadImage Error: \(theError)")
+                DDLogError("GravatarService.uploadImage Error: \(theError)")
             } else {
-                DDLogSwift.logInfo("GravatarService.uploadImage Success!")
+                DDLogInfo("GravatarService.uploadImage Success!")
             }
 
             completion?(error)

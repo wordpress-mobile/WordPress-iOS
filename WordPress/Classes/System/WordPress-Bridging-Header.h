@@ -26,8 +26,6 @@
 #import "Coordinate.h"
 #import "CustomHighlightButton.h"
 
-#import "DDLogSwift.h"
-
 #import "EditCommentViewController.h"
 #import "EditPageViewController.h"
 
@@ -157,7 +155,6 @@
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <FormatterKit/FormatterKit-umbrella.h>
-#import <WordPress_AppbotX/ABXPromptView.h>
 #import <WordPressComAnalytics/WPAnalytics.h>
 
 #ifdef BUDDYBUILD_ENABLED
