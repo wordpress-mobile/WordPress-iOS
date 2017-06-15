@@ -97,7 +97,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
         submitButton.showActivityIndicator(animating)
 
         submitButton.isEnabled = (
-            !animating && SigninHelpers.validateSiteForSignin(loginFields)
+            !animating && canSubmit()
         )
     }
 
@@ -199,15 +199,26 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     }
 
 
+    /// Sets the text of the error label.
+    ///
     func displayError(message: String) {
         errorLabel.text = message
+    }
+
+
+    /// Whether the form can be submitted.
+    ///
+    func canSubmit() -> Bool {
+        return SigninHelpers.validateSiteForSignin(loginFields)
     }
 
 
     // MARK: - Actions
 
     @IBAction func handleSubmitForm() {
-        validateForm()
+        if canSubmit() {
+            validateForm()
+        }
     }
 
 
