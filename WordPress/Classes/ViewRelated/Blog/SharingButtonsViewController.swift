@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 import WordPressComAnalytics
 import WordPressShared
 
@@ -535,7 +536,7 @@ import WordPressShared
             },
             failure: { [weak self] (error: Error) in
                 let error = error as NSError
-                DDLogSwift.logError(error.description)
+                DDLogError(error.description)
                 self?.showErrorSyncingMessage(error)
             })
     }
@@ -551,7 +552,7 @@ import WordPressShared
                 self?.reloadButtons()
             },
             failure: { (error: NSError?) in
-                DDLogSwift.logError(error?.description)
+                DDLogError((error?.description)!)
         })
     }
 
@@ -566,7 +567,7 @@ import WordPressShared
             },
             failure: { (error: Error) in
                 let error = error as NSError
-                DDLogSwift.logError(error.description)
+                DDLogError(error.description)
         })
     }
 
@@ -659,7 +660,7 @@ import WordPressShared
                 }
             },
             failure: { [weak self] (error: NSError?) in
-                DDLogSwift.logError(error?.description)
+                DDLogError((error?.description)!)
                 self?.showErrorSyncingMessage(error)
         })
     }
