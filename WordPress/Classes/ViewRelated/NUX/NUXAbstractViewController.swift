@@ -20,6 +20,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler {
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
 
     enum SegueIdentifier: String {
+        case showURLUsernamePassword
         case showSelfHostedLogin
         case showWPComLogin
         case startMagicLinkFlow
