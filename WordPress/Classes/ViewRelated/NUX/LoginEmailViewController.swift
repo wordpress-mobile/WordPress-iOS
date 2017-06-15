@@ -248,6 +248,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
                                         self?.requestLink()
             },
                                       failure: { [weak self] (error: Error) in
+                                        WPAppAnalytics.track(.loginFailed, error: error)
                                         DDLogSwift.logError(error.localizedDescription)
                                         guard let strongSelf = self else {
                                             return
@@ -259,7 +260,6 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
                                             let msg = NSLocalizedString("We didn't find a WordPress.com account with that email address. Please double-check it and try again.",
                                                                         comment: "An error message informing the user the email address they entered did not match a WordPress.com account.")
                                             self?.displayError(message: msg)
-                                            WPAppAnalytics.track(.loginFailed, error: error)
                                         } else {
                                             strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
                                         }
