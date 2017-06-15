@@ -147,6 +147,15 @@ class SigninErrorViewController: UIViewController {
 
         DDLogSwift.logError(message)
 
+        if sourceTag == .jetpackLogin && error.domain == WordPressAppErrorDomain && error.code == NSURLErrorBadURL {
+            if HelpshiftUtils.isHelpshiftEnabled() {
+                // TODO: Placeholder Jetpack login error message. Needs updating with final wording. 2017-06-15 Aerych.
+                message = NSLocalizedString("We're not able to connect to the Jetpack site at that URL.  Contact us for assistance.", comment: "Error message shown when having trouble connecting to a Jetpack site.")
+                displayGenericErrorMessageWithHelpshiftButton(message, sourceTag: sourceTag)
+                return;
+            }
+        }
+
         if error.domain != WPXMLRPCFaultErrorDomain && error.code != NSURLErrorBadURL {
             if HelpshiftUtils.isHelpshiftEnabled() {
                 displayGenericErrorMessageWithHelpshiftButton(message, sourceTag: sourceTag)
