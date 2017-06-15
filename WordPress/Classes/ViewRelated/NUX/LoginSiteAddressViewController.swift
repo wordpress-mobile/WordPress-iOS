@@ -152,6 +152,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
                 return
             }
             DDLogSwift.logError(error.localizedDescription)
+            WPAppAnalytics.track(.loginFailed, error: error)
             strongSelf.configureViewLoading(false)
 
             let err = error as NSError
