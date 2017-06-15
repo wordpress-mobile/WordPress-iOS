@@ -2,7 +2,7 @@
 
 @protocol WordPressXMLRPCAPIFacade
 
-extern NSString *const XMLRPCOriginalErrorUserInfoKey;
+extern NSString *const XMLRPCOriginalErrorKey;
 
 - (void)guessXMLRPCURLForSite:(NSString *)url
                       success:(void (^)(NSURL *xmlrpcURL))success
