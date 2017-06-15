@@ -156,7 +156,12 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
             strongSelf.configureViewLoading(false)
 
             let err = error as NSError
-            if err.domain == WordPressAppErrorDomain && err.code == NSURLErrorBadURL {
+            if strongSelf.errorDiscoveringJetpackSite(error: err) {
+                // TODO: Placeholder error message for Jetpack sites. Needs to be replaced with final treatment. - 2017.06.15 Aerych
+                let msg = NSLocalizedString("We're not able to connect to the Jetpack site at that URL. Please contact http://jetpack.com/support for assistance.",
+                                            comment: "Error message shown when a self-hosted Jetpack blog can not be located via the URL provided.")
+                strongSelf.displayError(message: msg)
+            } else if err.domain == WordPressAppErrorDomain && err.code == NSURLErrorBadURL {
                 let msg = NSLocalizedString("We could't find a WordPress website at that address. Please double-check your site address and try again.",
                                             comment: "Error message shown when a self-hosted blog can not be located via the URL provided.")
                 strongSelf.displayError(message: msg)
@@ -164,6 +169,19 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
                 strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
             }
         })
+    }
+
+
+    func errorDiscoveringJetpackSite(error: NSError) -> Bool {
+        guard let userInfo = error.userInfo[XMLRPCOriginalErrorUserInfoKey] as? NSDictionary else {
+            return false
+        }
+
+        if let _ = userInfo[WordPressOrgXMLRPCValidator.UserInfoHasJetpackKey] {
+            return true
+        }
+
+        return false
     }
 
 
