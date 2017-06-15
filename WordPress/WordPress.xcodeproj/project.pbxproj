@@ -1036,8 +1036,6 @@
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
 		FA5C740F1C599BA7000B528C /* TableViewHeaderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5C740E1C599BA7000B528C /* TableViewHeaderDetailView.swift */; };
 		FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */; };
-		FA87F1AC1C4F2DEF004A92D1 /* SiteManagementServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA87F1AB1C4F2DEF004A92D1 /* SiteManagementServiceRemote.swift */; };
-		FA9E74481C50382D00C6B1D2 /* SiteManagementServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E74471C50382D00C6B1D2 /* SiteManagementServiceRemoteTests.swift */; };
 		FACB36F11C5C2BF800C6DF4E /* ThemeWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACB36F01C5C2BF800C6DF4E /* ThemeWebViewController.swift */; };
 		FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */; };
 		FAFB84061BBF3638000BBA8E /* get-multiple-themes-v1.2.json in Resources */ = {isa = PBXBuildFile; fileRef = FAFB84051BBF3638000BBA8E /* get-multiple-themes-v1.2.json */; };
@@ -2637,8 +2635,6 @@
 		FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceTests.swift; sourceTree = "<group>"; };
 		FA5C740E1C599BA7000B528C /* TableViewHeaderDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewHeaderDetailView.swift; sourceTree = "<group>"; };
 		FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserHeaderView.swift; sourceTree = "<group>"; };
-		FA87F1AB1C4F2DEF004A92D1 /* SiteManagementServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceRemote.swift; sourceTree = "<group>"; };
-		FA9E74471C50382D00C6B1D2 /* SiteManagementServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceRemoteTests.swift; sourceTree = "<group>"; };
 		FACB36F01C5C2BF800C6DF4E /* ThemeWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeWebViewController.swift; sourceTree = "<group>"; };
 		FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartOverViewController.swift; sourceTree = "<group>"; };
 		FAFB84051BBF3638000BBA8E /* get-multiple-themes-v1.2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-multiple-themes-v1.2.json"; sourceTree = "<group>"; };
@@ -3387,7 +3383,6 @@
 				74F24F6C1EE872BA00E8BFE8 /* PostServiceRemoteXMLRPCTests.swift */,
 				26A1B59F1DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift */,
 				59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */,
-				FA9E74471C50382D00C6B1D2 /* SiteManagementServiceRemoteTests.swift */,
 				08A2AD741CCEBDBD00E84454 /* TaxonomyServiceRemoteRESTTests.m */,
 				598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */,
 				FF34EEA81CF473F600F8B38D /* WordPressComServiceRemoteRestTests.swift */,
@@ -3749,7 +3744,6 @@
 				E18EE94F19349EC300B0A40C /* ReaderTopicServiceRemote.h */,
 				E18EE95019349EC300B0A40C /* ReaderTopicServiceRemote.m */,
 				E6374DC21C4454EA00F24720 /* SharingServiceRemote.swift */,
-				FA87F1AB1C4F2DEF004A92D1 /* SiteManagementServiceRemote.swift */,
 				93D6D6461924FDAD00A4F44A /* TaxonomyServiceRemote.h */,
 				E1DF5DF919E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.h */,
 				E1DF5DFA19E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.m */,
@@ -6938,7 +6932,6 @@
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
 				E6DB765F1CD10D7C0069BC82 /* SignupViewController.swift in Sources */,
 				0859DCF61CB847F700EB4069 /* RemoteMenu.m in Sources */,
-				FA87F1AC1C4F2DEF004A92D1 /* SiteManagementServiceRemote.swift in Sources */,
 				08216FCA1CDBF96000304BA7 /* MenuItemEditingFooterView.m in Sources */,
 				E64E176A1CA8C71600BE7744 /* SigninWPComSyncHandler.swift in Sources */,
 				E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */,
@@ -7127,7 +7120,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA9E74481C50382D00C6B1D2 /* SiteManagementServiceRemoteTests.swift in Sources */,
 				FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */,
 				E1C3C8551CE4684800D5DB36 /* EmailTypoCheckerTests.swift in Sources */,
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
