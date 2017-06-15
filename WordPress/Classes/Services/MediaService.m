@@ -780,6 +780,25 @@
     return mediaAssets.count;
 }
 
+- (void)getMediaLibraryServerCountForBlog:(Blog *)blog
+                            forMediaTypes:(NSSet *)mediaTypes
+                                  success:(void (^)(NSInteger count))success
+                                  failure:(void (^)(NSError *error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getMediaLibraryCountForType:nil
+                            withSuccess:^(NSInteger count) {
+        if (success) {
+            success(count);
+        }
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
 - (NSPredicate *)predicateForMediaTypes:(NSSet *)mediaTypes blog:(Blog *)blog
 {
     NSMutableArray * filters = [NSMutableArray array];
