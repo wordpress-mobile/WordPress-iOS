@@ -134,7 +134,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     ///
     func validateForm() {
         view.endEditing(true)
-
+        displayError(message: "")
         guard SigninHelpers.validateSiteForSignin(loginFields) else {
             assertionFailure("Form should not be submitted unless there is a valid looking URL entered.")
             return
@@ -145,12 +145,34 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
         let facade = WordPressXMLRPCAPIFacade()
         facade.guessXMLRPCURL(forSite: loginFields.siteUrl, success: { [weak self] (url) in
             self?.configureViewLoading(false)
-            // TOOD: Site found, advance to the next screen.
+            self?.showSelfHostedUsernamePassword()
 
         }, failure: { [weak self] (error) in
-            self?.configureViewLoading(false)
-            // TODO: No site found, show error message.
+            guard let error = error, let strongSelf = self else {
+                return
+            }
+            DDLogSwift.logError(error.localizedDescription)
+            strongSelf.configureViewLoading(false)
+
+            let err = error as NSError
+            if err.domain == WordPressAppErrorDomain && err.code == NSURLErrorBadURL {
+                let msg = NSLocalizedString("We could't find a WordPress website at that address. Please double-check your site address and try again.",
+                                            comment: "Error message shown when a self-hosted blog can not be located via the URL provided.")
+                strongSelf.displayError(message: msg)
+            } else {
+                strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
+            }
         })
+    }
+
+
+    func showSelfHostedUsernamePassword() {
+        performSegue(withIdentifier: .showURLUsernamePassword, sender: self)
+    }
+
+
+    func displayError(message: String) {
+        errorLabel.text = message
     }
 
 
@@ -167,7 +189,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
 
     @IBAction func handleSiteAddressHelpButtonTapped(_ sender: UIButton) {
-        // TODO:
+        // TODO: Wire up when the new help screen is implemented.
     }
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
