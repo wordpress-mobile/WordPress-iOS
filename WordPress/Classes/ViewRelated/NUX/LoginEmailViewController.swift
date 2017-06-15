@@ -249,7 +249,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
             },
                                       failure: { [weak self] (error: Error) in
                                         WPAppAnalytics.track(.loginFailed, error: error)
-                                        DDLogSwift.logError(error.localizedDescription)
+                                        DDLogError(error.localizedDescription)
                                         guard let strongSelf = self else {
                                             return
                                         }
