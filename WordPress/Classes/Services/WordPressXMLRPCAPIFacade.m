@@ -8,7 +8,7 @@
 
 @end
 
-NSString *const XMLRPCOriginalErrorUserInfoKey = @"XMLRPCOriginalErrorUserInfoKey";
+NSString *const XMLRPCOriginalErrorKey = @"XMLRPCOriginalErrorKey";
 
 @implementation WordPressXMLRPCAPIFacade
 
@@ -41,7 +41,7 @@ NSString *const XMLRPCOriginalErrorUserInfoKey = @"XMLRPCOriginalErrorUserInfoKe
         NSDictionary *userInfo = @{
                                    NSLocalizedDescriptionKey: NSLocalizedString(@"Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ.", nil),
                                    NSLocalizedFailureReasonErrorKey: error.localizedDescription,
-                                   XMLRPCOriginalErrorUserInfoKey: error.userInfo
+                                   XMLRPCOriginalErrorKey: error
                                    };
         NSError *err = [NSError errorWithDomain:WordPressAppErrorDomain code:NSURLErrorBadURL userInfo:userInfo];
         return err;
