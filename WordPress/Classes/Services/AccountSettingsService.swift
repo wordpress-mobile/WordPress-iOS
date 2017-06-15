@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import Reachability
 import WordPressKit
 
@@ -63,9 +64,9 @@ class AccountSettingsService {
             failure: { error in
                 let error = error as NSError
                 if error.domain == NSURLErrorDomain {
-                    DDLogSwift.logError("Error refreshing settings (attempt \(count)): \(error)")
+                    DDLogError("Error refreshing settings (attempt \(count)): \(error)")
                 } else {
-                    DDLogSwift.logError("Error refreshing settings (unrecoverable): \(error)")
+                    DDLogError("Error refreshing settings (unrecoverable): \(error)")
                 }
 
                 if error.domain == NSURLErrorDomain && count < Defaults.maxRetries {
@@ -106,9 +107,9 @@ class AccountSettingsService {
                 // revert change
                 try self.applyChange(reverse)
             } catch {
-                DDLogSwift.logError("Error reverting change \(error)")
+                DDLogError("Error reverting change \(error)")
             }
-            DDLogSwift.logError("Error saving account settings change \(error)")
+            DDLogError("Error saving account settings change \(error)")
             // TODO: show/return error to the user (@koke 2015-11-24)
             // What should be showing the error? Let's post a notification for now so something else can handle it
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: AccountSettingsServiceChangeSaveFailedNotification), object: error as NSError)
@@ -128,7 +129,7 @@ class AccountSettingsService {
 
     @discardableResult fileprivate func applyChange(_ change: AccountSettingsChange) throws -> AccountSettingsChange {
         guard let settings = managedAccountSettingsWithID(userID) else {
-            DDLogSwift.logError("Tried to apply a change to nonexistent settings (ID: \(userID)")
+            DDLogError("Tried to apply a change to nonexistent settings (ID: \(userID)")
             throw Errors.notFound
         }
 
@@ -169,7 +170,7 @@ class AccountSettingsService {
     fileprivate func createAccountSettings(_ userID: Int, settings: AccountSettings) {
         let accountService = AccountService(managedObjectContext: context)
         guard let account = accountService.findAccount(withUserID: NSNumber(value: userID)) else {
-            DDLogSwift.logError("Tried to create settings for a missing account (ID: \(userID)): \(settings)")
+            DDLogError("Tried to create settings for a missing account (ID: \(userID)): \(settings)")
             return
         }
 

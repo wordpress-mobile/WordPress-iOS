@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 /// An WordPressRSDParser is able to parse an RSD file and search for the XMLRPC WordPress url.
 open class WordPressRSDParser: NSObject, XMLParserDelegate {
@@ -44,7 +45,7 @@ open class WordPressRSDParser: NSObject, XMLParserDelegate {
     }
 
     open func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
-        //DDLogSwift.logInfo("Error parsing RSD: \(parseError)")
+        DDLogInfo("Error parsing RSD: \(parseError)")
     }
 
 }

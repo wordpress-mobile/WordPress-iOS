@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 import WordPressShared
 import WordPressComAnalytics
 import Gridicons
@@ -237,7 +238,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         guard let account = self.defaultAccount() else {
             let error = "Tried to push My Profile without a default account. This shouldn't happen"
             assertionFailure(error)
-            DDLogSwift.logError(error)
+            DDLogError(error)
             return nil
         }
 

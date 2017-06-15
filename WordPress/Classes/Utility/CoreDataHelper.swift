@@ -1,5 +1,5 @@
 import Foundation
-
+import CocoaLumberjack
 
 // MARK: - NSManagedObject Default entityName Helper
 //
@@ -60,7 +60,7 @@ extension NSManagedObjectContext {
         do {
             result = try count(for: request)
         } catch {
-            DDLogSwift.logError("Error counting objects [\(T.entityName)]: \(error)")
+            DDLogError("Error counting objects [\(T.entityName)]: \(error)")
             assertionFailure()
         }
 
@@ -113,7 +113,7 @@ extension NSManagedObjectContext {
         do {
             result = try existingObject(with: objectID) as? T
         } catch {
-            DDLogSwift.logError("Error loading Object [\(T.entityName)]")
+            DDLogError("Error loading Object [\(T.entityName)]")
         }
 
         return result
@@ -127,7 +127,7 @@ extension NSManagedObjectContext {
         do {
             objects = try fetch(request) as? [T]
         } catch {
-            DDLogSwift.logError("Error loading Objects [\(T.entityName)")
+            DDLogError("Error loading Objects [\(T.entityName)")
             assertionFailure()
         }
 
