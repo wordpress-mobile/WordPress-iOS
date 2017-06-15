@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import Aztec
+import CocoaLumberjack
 import Gridicons
 import WordPressShared
 import AFNetworking
@@ -807,7 +808,7 @@ extension AztecPostViewController {
             generator.prepare()
 
             if let error = error {
-                DDLogSwift.logError("Error publishing post: \(error.localizedDescription)")
+                DDLogError("Error publishing post: \(error.localizedDescription)")
 
                 SVProgressHUD.showDismissibleError(withStatus: self.postEditorStateContext.publishErrorText)
                 generator.notificationOccurred(.error)
@@ -1883,7 +1884,7 @@ extension AztecPostViewController {
                     }
                     self.richTextView.refreshLayout(for: videoAttachment)
                 }, failure: { (error) in
-                    DDLogSwift.logError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+                    DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
                 })
             } else if let videoAttachment = attachment as? VideoAttachment,
                 let videoSrcURL = videoAttachment.srcURL,
@@ -1907,7 +1908,7 @@ extension AztecPostViewController {
                             self.richTextView.refreshLayout(for: videoAttachment)
                         }
                     } catch {
-                        DDLogSwift.logError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
+                        DDLogError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
                     }
                 })
             }
@@ -2104,7 +2105,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
                 self.richTextView.refreshLayout(for: videoAttachment)
                 self.displayVideoPlayer(for: videoURL)
             }, failure: { (error) in
-                DDLogSwift.logError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+                DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
             })
         } else {
             displayVideoPlayer(for: videoURL)

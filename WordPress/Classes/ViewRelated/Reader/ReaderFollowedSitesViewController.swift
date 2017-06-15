@@ -1,6 +1,7 @@
 import Foundation
 import WordPressShared
 import SVProgressHUD
+import CocoaLumberjack
 
 /// Displays the list of sites a user follows in the Reader.  Provides functionality
 /// for following new sites by URL, and unfollowing existing sites via a swipe
@@ -156,7 +157,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             self?.configureNoResultsView()
             self?.refreshControl.endRefreshing()
         }, failure: { [weak self] (error) in
-            DDLogSwift.logError("Could not sync sites: \(String(describing: error))")
+            DDLogError("Could not sync sites: \(String(describing: error))")
             self?.isSyncing = false
             self?.configureNoResultsView()
             self?.refreshControl.endRefreshing()
@@ -186,7 +187,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             self?.syncSites()
             self?.refreshFollowedPosts()
         }, failure: { [weak self] (error) in
-            DDLogSwift.logError("Could not unfollow site: \(String(describing: error))")
+            DDLogError("Could not unfollow site: \(String(describing: error))")
             let title = NSLocalizedString("Could not Unfollow Site", comment: "Title of a prompt.")
             let description = error?.localizedDescription
             self?.promptWithTitle(title, message: description!)
@@ -213,7 +214,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             self?.refreshPostsForFollowedTopic()
 
         }, failure: { [weak self] (error) in
-            DDLogSwift.logError("Could not follow site: \(String(describing: error))")
+            DDLogError("Could not follow site: \(String(describing: error))")
 
             generator.notificationOccurred(.error)
 

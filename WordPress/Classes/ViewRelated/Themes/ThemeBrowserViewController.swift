@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import WordPressComAnalytics
 import WordPressShared.WPStyleGuide
 import WordPressShared.WPNoResultsView
@@ -339,7 +340,7 @@ public protocol ThemePresenter: class {
                 }
             },
             failure: { (error) in
-                DDLogSwift.logError("Error updating active theme: \(String(describing: error?.localizedDescription))")
+                DDLogError("Error updating active theme: \(String(describing: error?.localizedDescription))")
         })
     }
 
@@ -372,7 +373,7 @@ public protocol ThemePresenter: class {
                 }
             },
             failure: { (error) in
-                DDLogSwift.logError("Error syncing themes: \(String(describing: error?.localizedDescription))")
+                DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
                 if let failure = failure,
                     let error = error {
                     failure(error as NSError)
@@ -639,7 +640,7 @@ public protocol ThemePresenter: class {
             themesController.fetchRequest.predicate = browsePredicate()
             try themesController.performFetch()
         } catch {
-            DDLogSwift.logError("Error fetching themes: \(error)")
+            DDLogError("Error fetching themes: \(error)")
         }
     }
 
@@ -680,7 +681,7 @@ public protocol ThemePresenter: class {
                 alertController.presentFromRootViewController()
             },
             failure: { (error) in
-                DDLogSwift.logError("Error activating theme \(theme.themeId): \(String(describing: error?.localizedDescription))")
+                DDLogError("Error activating theme \(theme.themeId): \(String(describing: error?.localizedDescription))")
 
                 let errorTitle = NSLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
