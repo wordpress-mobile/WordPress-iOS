@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import StoreKit
+import CocoaLumberjack
 import MGSwipeTableCell
 import WordPressComAnalytics
 import WordPressShared
@@ -498,7 +499,7 @@ extension NotificationsViewController {
     /// - Parameter note: The Notification that should be rendered.
     ///
     func showDetailsForNotification(_ note: Notification) {
-        DDLogSwift.logInfo("Pushing Notification Details for: [\(note.notificationId)]")
+        DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
         prepareToShowDetailsForNotification(note)
 
@@ -690,7 +691,7 @@ private extension NotificationsViewController {
                 tableView.reloadRows(at: [indexPath], with: .fade)
             }
         } catch {
-            DDLogSwift.logError("Error refreshing Notification Row \(error)")
+            DDLogError("Error refreshing Notification Row \(error)")
         }
     }
 
@@ -1192,20 +1193,20 @@ private extension NotificationsViewController {
         let mediator = NotificationSyncMediator()
         let startDate = Date()
 
-        DDLogSwift.logInfo("Sync'ing Notification [\(noteId)]")
+        DDLogInfo("Sync'ing Notification [\(noteId)]")
 
         mediator?.syncNote(with: noteId) { error, note in
             guard abs(startDate.timeIntervalSinceNow) <= timeout else {
-                DDLogSwift.logError("Error: Timeout while trying to load Notification [\(noteId)]")
+                DDLogError("Error: Timeout while trying to load Notification [\(noteId)]")
                 return
             }
 
             guard let note = note else {
-                DDLogSwift.logError("Error: Couldn't load Notification [\(noteId)]")
+                DDLogError("Error: Couldn't load Notification [\(noteId)]")
                 return
             }
 
-            DDLogSwift.logInfo("Notification Sync'ed in \(startDate.timeIntervalSinceNow) seconds")
+            DDLogInfo("Notification Sync'ed in \(startDate.timeIntervalSinceNow) seconds")
             success(note)
         }
     }
@@ -1272,7 +1273,7 @@ private extension NotificationsViewController {
             try mainContext.save()
             tableView.reloadData()
         } catch {
-            DDLogSwift.logError("Error while trying to nuke Notifications Collection: [\(error)]")
+            DDLogError("Error while trying to nuke Notifications Collection: [\(error)]")
         }
     }
 

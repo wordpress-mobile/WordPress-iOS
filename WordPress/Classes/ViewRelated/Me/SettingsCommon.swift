@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 
 protocol SettingsController: ImmuTableController {}
 
@@ -52,7 +53,7 @@ extension SettingsController {
 
             let change = changeType(value)
             service.saveChange(change)
-            DDLogSwift.logDebug("\(title) changed: \(value)")
+            DDLogDebug("\(title) changed: \(value)")
         }
 
         return controller
@@ -73,7 +74,7 @@ extension SettingsController {
 
             let change = changeType(value)
             service.saveChange(change)
-            DDLogSwift.logDebug("\(title) changed: \(value)")
+            DDLogDebug("\(title) changed: \(value)")
         }
 
         return controller
