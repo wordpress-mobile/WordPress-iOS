@@ -70,14 +70,26 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Raw HTML Editor
     ///
     fileprivate(set) lazy var htmlTextView: UITextView = {
-        let textView = UITextView()
+        let storage = HTMLStorage(defaultFont: Fonts.regular)
+        let layoutManager = NSLayoutManager()
+        let container = NSTextContainer()
 
-        let accessibilityLabel = NSLocalizedString("HTML", comment: "Accessibility label for HTML button on formatting toolbar.")
+        storage.addLayoutManager(layoutManager)
+        layoutManager.addTextContainer(container)
+
+        let textView = UITextView(frame: .zero, textContainer: container)
+
+        let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
+
         textView.isHidden = true
         textView.delegate = self
+        textView.accessibilityIdentifier = "HTMLContentView"
+        textView.autocorrectionType = .no
+        textView.autocapitalizationType = .none
 
         return textView
+
     }()
 
 
@@ -1156,8 +1168,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             insertHorizontalRuler()
         case .more:
             insertMore()
-        case .p:
-            break
         }
 
         updateFormatBar()
