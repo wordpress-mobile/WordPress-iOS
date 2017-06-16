@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
     typealias successBlock = ((WPRichTextEmbed)->Void)
@@ -176,9 +177,9 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
 
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         if let url = contentURL {
-            DDLogSwift.logError("RichTextEmbed failed to load content URL: \(url).")
+            DDLogError("RichTextEmbed failed to load content URL: \(url).")
         }
-        DDLogSwift.logError("Error: \(error.localizedDescription)")
+        DDLogError("Error: \(error.localizedDescription)")
     }
 
 }

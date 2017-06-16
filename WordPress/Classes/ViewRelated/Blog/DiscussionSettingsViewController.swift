@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import WordPressShared
 
 
@@ -69,10 +70,10 @@ open class DiscussionSettingsViewController: UITableViewController {
         service.syncSettings(for: blog,
             success: { [weak self] in
                 self?.tableView.reloadData()
-                DDLogSwift.logInfo("Reloaded Settings")
+                DDLogInfo("Reloaded Settings")
             },
             failure: { (error: Error) in
-                DDLogSwift.logError("Error while sync'ing blog settings: \(error)")
+                DDLogError("Error while sync'ing blog settings: \(error)")
             })
     }
 
@@ -85,7 +86,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         service.updateSettings(for: blog,
             success: nil,
             failure: { (error: Error) -> Void in
-                DDLogSwift.logError("Error while persisting settings: \(error)")
+                DDLogError("Error while persisting settings: \(error)")
         })
     }
 

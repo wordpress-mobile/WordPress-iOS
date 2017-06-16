@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 /// Encapsulates Media functions relative to the local Media directory.
 ///
@@ -186,7 +187,7 @@ extension MediaLibrary {
                     }
                 }
             } catch {
-                DDLogSwift.logError("Error while attempting to clean local media: \(error.localizedDescription)")
+                DDLogError("Error while attempting to clean local media: \(error.localizedDescription)")
                 if let onError = onError {
                     DispatchQueue.main.async {
                         onError(error)
@@ -214,12 +215,12 @@ extension MediaLibrary {
                     try fileManager.removeItem(at: url)
                     removedCount += 1
                 } catch {
-                    DDLogSwift.logError("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
+                    DDLogError("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
                 }
             }
         }
         if removedCount > 0 {
-            DDLogSwift.logInfo("Media: removed \(removedCount) file(s) during cleanup.")
+            DDLogInfo("Media: removed \(removedCount) file(s) during cleanup.")
         }
     }
 }

@@ -1,5 +1,6 @@
 import UIKit
 import Foundation
+import CocoaLumberjack
 
 
 /// Note:
@@ -21,9 +22,9 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
             userDefaults.setValue(username, forKey: defaultDotcomUsernameKey)
             userDefaults.synchronize()
 
-            DDLogSwift.logWarn(">> Migration process matched [\(username)] as the default WordPress.com account")
+            DDLogWarn(">> Migration process matched [\(username)] as the default WordPress.com account")
         } else {
-            DDLogSwift.logError(">> Migration process couldn't locate a default WordPress.com account")
+            DDLogError(">> Migration process couldn't locate a default WordPress.com account")
         }
     }
 
@@ -42,9 +43,9 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
 
         if let defaultAccount = accounts.first {
             setLegacyDefaultWordPressAccount(defaultAccount)
-            DDLogSwift.logInfo(">> Migration process located default account with username [\(defaultUsername)\")")
+            DDLogInfo(">> Migration process located default account with username [\(defaultUsername)\")")
         } else {
-            DDLogSwift.logError(">> Migration process failed to locate default account)")
+            DDLogError(">> Migration process failed to locate default account)")
         }
 
         // Cleanup!
@@ -71,7 +72,7 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         do {
             try defaultAccount = context.existingObject(with: objectID!)
         } catch {
-            DDLogSwift.logError("\(error)")
+            DDLogError("\(error)")
             return nil
         }
 

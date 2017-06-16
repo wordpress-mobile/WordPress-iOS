@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 import WordPressShared
 import wpxmlrpc
 
@@ -145,7 +146,7 @@ class SigninErrorViewController: UIViewController {
 
         var message = error.localizedDescription
 
-        DDLogSwift.logError(message)
+        DDLogError(message)
 
         if error.domain != WPXMLRPCFaultErrorDomain && error.code != NSURLErrorBadURL {
             if HelpshiftUtils.isHelpshiftEnabled() {

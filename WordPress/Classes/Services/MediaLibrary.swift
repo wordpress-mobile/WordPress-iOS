@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 /// Encapsulates interfacing with Media objects and their assets, whether locally on disk or remotely.
 ///
@@ -262,7 +263,7 @@ open class MediaLibrary: LocalCoreDataService {
             errorLogMessage = " with unknown error"
         }
         let nerror = error.toNSError()
-        DDLogSwift.logError("\(errorLogMessage), code: \(nerror.code), error: \(nerror)")
+        DDLogError("\(errorLogMessage), code: \(nerror.code), error: \(nerror)")
 
         // Return the error via the context's queue, and as an NSError to ensure it carries over the right code/message.
         if let errorHandler = errorHandler {

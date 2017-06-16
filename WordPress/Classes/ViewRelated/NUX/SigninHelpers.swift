@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 import NSURL_IDN
 import WordPressComAnalytics
 
@@ -155,13 +156,13 @@ import WordPressComAnalytics
     ///
     class func openAuthenticationURL(_ url: URL, fromRootViewController rootViewController: UIViewController) -> Bool {
         guard let token = url.query?.dictionaryFromQueryString().string(forKey: "token") else {
-            DDLogSwift.logError("Signin Error: The authentication URL did not have the expected path.")
+            DDLogError("Signin Error: The authentication URL did not have the expected path.")
             return false
         }
 
         let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         if let account = accountService.defaultWordPressComAccount() {
-            DDLogSwift.logInfo("App opened with authentication link but there is already an existing wpcom account. \(account)")
+            DDLogInfo("App opened with authentication link but there is already an existing wpcom account. \(account)")
             return false
         }
 
@@ -438,7 +439,7 @@ import WordPressComAnalytics
 
         let completion: OnePasswordFacadeCallback = { (username, password, oneTimePassword, error) in
             if let error = error {
-                DDLogSwift.logError("OnePassword Error: \(error.localizedDescription)")
+                DDLogError("OnePassword Error: \(error.localizedDescription)")
                 WPAppAnalytics.track(.onePasswordFailed)
                 return
             }
@@ -503,7 +504,7 @@ import WordPressComAnalytics
         SecAddSharedWebCredential(LoginSharedWebCredentialFQDN, username, password, { (error: CFError?) in
             guard error == nil else {
                 let err = error
-                DDLogSwift.logError("Error occurred updating shared web credential: \(String(describing: err?.localizedDescription))")
+                DDLogError("Error occurred updating shared web credential: \(String(describing: err?.localizedDescription))")
                 return
             }
             DispatchQueue.main.async(execute: {
@@ -519,14 +520,14 @@ import WordPressComAnalytics
     ///
     class func requestSharedWebCredentials(_ completion: @escaping SharedWebCredentialsCallback) {
         SecRequestSharedWebCredential(LoginSharedWebCredentialFQDN, nil, { (credentials: CFArray?, error: CFError?) in
-            DDLogSwift.logInfo("Completed requesting shared web credentials")
+            DDLogInfo("Completed requesting shared web credentials")
             guard error == nil else {
                 let err = error as Error?
                 if let error = err as NSError?, error.code == -25300 {
                     // An OSStatus of -25300 is expected when no saved credentails are found.
-                    DDLogSwift.logInfo("No shared web credenitals found.")
+                    DDLogInfo("No shared web credenitals found.")
                 } else {
-                    DDLogSwift.logError("Error requesting shared web credentials: \(String(describing: err?.localizedDescription))")
+                    DDLogError("Error requesting shared web credentials: \(String(describing: err?.localizedDescription))")
                 }
                 DispatchQueue.main.async(execute: {
                     completion(false, nil, nil)

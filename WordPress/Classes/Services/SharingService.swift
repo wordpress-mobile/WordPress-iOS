@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import WordPressComAnalytics
 
 /// SharingService is responsible for wrangling publicize services, publicize
@@ -105,7 +106,7 @@ open class SharingService: LocalCoreDataService {
                     })
 
                 } catch let error as NSError {
-                    DDLogSwift.logError("Error creating publicize connection from remote: \(error)")
+                    DDLogError("Error creating publicize connection from remote: \(error)")
                     failure?(error)
                 }
 
@@ -161,7 +162,7 @@ open class SharingService: LocalCoreDataService {
                         })
 
                     } catch let error as NSError {
-                        DDLogSwift.logError("Error creating publicize connection from remote: \(error)")
+                        DDLogError("Error creating publicize connection from remote: \(error)")
                         failure?(error)
                     }
 
@@ -210,7 +211,7 @@ open class SharingService: LocalCoreDataService {
                         })
 
                     } catch let error as NSError {
-                        DDLogSwift.logError("Error creating publicize connection from remote: \(error)")
+                        DDLogError("Error creating publicize connection from remote: \(error)")
                         failure?(error)
                     }
 
@@ -278,7 +279,7 @@ open class SharingService: LocalCoreDataService {
         do {
             services = try managedObjectContext.fetch(request) as! [PublicizeService]
         } catch let error as NSError {
-            DDLogSwift.logError("Error fetching Publicize Service named \(name) : \(error.localizedDescription)")
+            DDLogError("Error fetching Publicize Service named \(name) : \(error.localizedDescription)")
             services = []
         }
 
@@ -299,7 +300,7 @@ open class SharingService: LocalCoreDataService {
         do {
             services = try managedObjectContext.fetch(request) as! [PublicizeService]
         } catch let error as NSError {
-            DDLogSwift.logError("Error fetching Publicize Services: \(error.localizedDescription)")
+            DDLogError("Error fetching Publicize Services: \(error.localizedDescription)")
             services = []
         }
 
@@ -386,7 +387,7 @@ open class SharingService: LocalCoreDataService {
         do {
             services = try managedObjectContext.fetch(request) as! [PublicizeConnection]
         } catch let error as NSError {
-            DDLogSwift.logError("Error fetching Publicize Service with ID \(connectionID) : \(error.localizedDescription)")
+            DDLogError("Error fetching Publicize Service with ID \(connectionID) : \(error.localizedDescription)")
             services = []
         }
 
@@ -409,7 +410,7 @@ open class SharingService: LocalCoreDataService {
         do {
             connections = try managedObjectContext.fetch(request) as! [PublicizeConnection]
         } catch let error as NSError {
-            DDLogSwift.logError("Error fetching Publicize Connections: \(error.localizedDescription)")
+            DDLogError("Error fetching Publicize Connections: \(error.localizedDescription)")
             connections = []
         }
 
@@ -434,7 +435,7 @@ open class SharingService: LocalCoreDataService {
             do {
                 blog = try self.managedObjectContext.existingObject(with: blogObjectID) as! Blog
             } catch let error as NSError {
-                DDLogSwift.logError("Error fetching Blog: \(error)")
+                DDLogError("Error fetching Blog: \(error)")
                 // Because of the error we'll bail early, but we still need to call
                 // the success callback if one was passed.
                 onComplete?()
@@ -580,7 +581,7 @@ open class SharingService: LocalCoreDataService {
             do {
                 blog = try self.managedObjectContext.existingObject(with: blogObjectID) as! Blog
             } catch let error as NSError {
-                DDLogSwift.logError("Error fetching Blog: \(error)")
+                DDLogError("Error fetching Blog: \(error)")
                 // Because of the error we'll bail early, but we still need to call
                 // the success callback if one was passed.
                 onComplete?()
@@ -625,7 +626,7 @@ open class SharingService: LocalCoreDataService {
         do {
             buttons = try managedObjectContext.fetch(request) as! [SharingButton]
         } catch let error as NSError {
-            DDLogSwift.logError("Error fetching Publicize Connections: \(error.localizedDescription)")
+            DDLogError("Error fetching Publicize Connections: \(error.localizedDescription)")
             buttons = []
         }
 
@@ -700,7 +701,7 @@ open class SharingService: LocalCoreDataService {
         do {
             buttons = try managedObjectContext.fetch(request) as! [SharingButton]
         } catch let error as NSError {
-            DDLogSwift.logError("Error fetching shareing button \(buttonID) : \(error.localizedDescription)")
+            DDLogError("Error fetching shareing button \(buttonID) : \(error.localizedDescription)")
             buttons = []
         }
 

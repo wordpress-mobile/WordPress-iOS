@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 class DomainsServiceRemote: ServiceRemoteWordPressComREST {
     enum ResponseError: Error {
@@ -15,7 +16,7 @@ class DomainsServiceRemote: ServiceRemoteWordPressComREST {
                 do {
                     try success(mapDomainsResponse(response))
                 } catch {
-                    DDLogSwift.logError("Error parsing domains response (\(error)): \(response)")
+                    DDLogError("Error parsing domains response (\(error)): \(response)")
                     failure(error)
                 }
             }, failure: {
