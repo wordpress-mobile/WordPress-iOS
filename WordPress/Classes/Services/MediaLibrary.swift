@@ -22,7 +22,7 @@ open class MediaLibrary: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the asset's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func makeMediaWith(blog: Blog, asset: PHAsset, onCompletion: @escaping MediaCompletion, onError: OnError?) {
+    public func makeMediaWith(blog: Blog, asset: PHAsset, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaAssetExporter()
@@ -49,7 +49,7 @@ open class MediaLibrary: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the image's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func makeMediaWith(blog: Blog, image: UIImage, onCompletion: @escaping MediaCompletion, onError: OnError?) {
+    public func makeMediaWith(blog: Blog, image: UIImage, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaImageExporter()
@@ -75,7 +75,7 @@ open class MediaLibrary: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the file's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func makeMediaWith(blog: Blog, url: URL, onCompletion: @escaping MediaCompletion, onError: OnError?) {
+    public func makeMediaWith(blog: Blog, url: URL, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaURLExporter()
@@ -95,6 +95,151 @@ open class MediaLibrary: LocalCoreDataService {
         }
     }
 
+    // MARK: Thumbnails
+
+    /// Completion handler for a thumbnail URL.
+    ///
+    public typealias OnThumbnailURL = (URL?) -> Void
+
+    /// Generate a URL to a thumbnail of the Media, if available.
+    ///
+    /// - Parameters:
+    ///   - media: The Media object the URL should be a thumbnail of.
+    ///   - preferredSize: An ideal size of the thumbnail in points.
+    ///   - onCompletion: Completion handler passing the URL once available, or nil if unavailable.
+    ///   - onError: Error handler.
+    ///
+    /// - Note: Images may be downloaded and resized if required, avoid requesting multiple explicit preferredSizes
+    ///   as several images could be downloaded, resized, and cached, if there are several variations in size.
+    ///
+    func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: @escaping OnError) {
+        // Configure a thumbnail exporter.
+        let exporter = MediaThumbnailExporter()
+        exporter.options.preferredSize = preferredSize
+
+        // Check if there is already an exported thumbnail available.
+        if let identifier = media.localThumbnailIdentifier, let availableThumbnail = exporter.availableThumbnail(with: identifier) {
+            onCompletion(availableThumbnail)
+            return
+        }
+        // Check if a local copy of the asset is available.
+        if let localAssetURL = media.absoluteLocalURL {
+            DispatchQueue.global(qos: .default).async {
+                exporter.exportThumbnail(forFile: localAssetURL,
+                                         onCompletion: { (identifier, export) in
+                                            self.managedObjectContext.perform {
+                                                self.handleThumbnailExport(media: media,
+                                                                           identifier: identifier,
+                                                                           export: export,
+                                                                           onCompletion: onCompletion)
+                                            }
+                }, onError: { (error) in
+                    self.handleExportError(error, errorHandler: onError)
+                })
+            }
+            return
+        }
+        // Try and download a remote thumbnail, and export if available.
+        downloadRemoteThumbnail(forMedia: media, preferredSize: preferredSize, onCompletion: { (image) in
+            guard let image = image else {
+                self.managedObjectContext.perform {
+                    onCompletion(nil)
+                }
+                return
+            }
+            DispatchQueue.global(qos: .default).async {
+                exporter.exportThumbnail(forImage: image,
+                                         onCompletion: { (identifier, export) in
+                                            self.managedObjectContext.perform {
+                                                self.handleThumbnailExport(media: media,
+                                                                           identifier: identifier,
+                                                                           export: export,
+                                                                           onCompletion: onCompletion)
+                                            }
+                }, onError: { (error) in
+                    self.handleExportError(error, errorHandler: onError)
+                })
+            }
+        }, onError: { (error) in
+            self.managedObjectContext.perform {
+                onError(error)
+            }
+        })
+    }
+
+    /// Download a thumbnail image for the Media item, if available.
+    ///
+    fileprivate func downloadRemoteThumbnail(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping (UIImage?) -> Void, onError: @escaping OnError) {
+        var remoteURL: URL?
+        // Check if the Media item is a video or image.
+        if media.mediaType == .video {
+            // If a video, ensure there is a remoteThumbnailURL
+            guard let remoteThumbnailURL = media.remoteThumbnailURL else {
+                // No video thumbnail available.
+                onCompletion(nil)
+                return
+            }
+            remoteURL = URL(string: remoteThumbnailURL)
+        } else {
+            // Check if a remote URL for the media itself is available.
+            guard let remoteAssetURLStr = media.remoteURL, let remoteAssetURL = URL(string: remoteAssetURLStr) else {
+                // No remote asset URL available.
+                onCompletion(nil)
+                return
+            }
+            // Get an expected WP URL, for sizing.
+            if media.blog.isPrivate() {
+                remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
+            } else {
+                remoteURL = WPImageURLHelper.imageURLWithSize(preferredSize, forImageURL: remoteAssetURL)
+            }
+        }
+        guard let imageURL = remoteURL else {
+            // No URL's available, no images available.
+            onCompletion(nil)
+            return
+        }
+        if media.blog.isPrivate() {
+            let accountService = AccountService(managedObjectContext: managedObjectContext)
+            guard let authToken = accountService.defaultWordPressComAccount()?.authToken else {
+                // Don't have an auth token for some reason, return nothing.
+                onCompletion(nil)
+                return
+            }
+            WPImageSource.shared().downloadImage(for: imageURL,
+                                                 authToken: authToken,
+                                                 withSuccess: onCompletion,
+                                                 failure: { (error) in
+                                                    guard let error = error else {
+                                                        onCompletion(nil)
+                                                        return
+                                                    }
+                                                    onError(error)
+            })
+        } else {
+            WPImageSource.shared().downloadImage(for: imageURL,
+                                                 withSuccess: onCompletion,
+                                                 failure: { (error) in
+                                                    guard let error = error else {
+                                                        onCompletion(nil)
+                                                        return
+                                                    }
+                                                    onError(error)
+            })
+        }
+    }
+
+    fileprivate func handleThumbnailExport(media: Media, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaImageExport, onCompletion: @escaping OnThumbnailURL) {
+        // Make sure the Media object hasn't been deleted.
+        guard media.isDeleted == false else {
+            onCompletion(nil)
+            return
+        }
+        media.localThumbnailIdentifier = identifier
+        onCompletion(export.url)
+        ContextManager.sharedInstance().save(managedObjectContext)
+    }
+
     // MARK: - Helpers
 
     /// Handle the OnError callback and logging any errors encountered.
@@ -109,6 +254,8 @@ open class MediaLibrary: LocalCoreDataService {
             errorLogMessage.append(" with image error")
         case is MediaURLExporter.URLExportError:
             errorLogMessage.append(" with URL export error")
+        case is MediaThumbnailExporter.ThumbnailExportError:
+            errorLogMessage.append(" with thumbnail export error")
         case is MediaExportSystemError:
             errorLogMessage.append(" with system error")
         default:
