@@ -43,10 +43,15 @@
                  }];
 }
 
-- (void)getMediaLibraryCountWithSuccess:(void (^)(NSInteger))success
-                                failure:(void (^)(NSError *))failure
+- (void)getMediaLibraryCountForType:(NSString *)mediaType
+                        withSuccess:(void (^)(NSInteger))success
+                            failure:(void (^)(NSError *))failure
 {
-    NSArray *parameters = [self defaultXMLRPCArguments];
+    NSDictionary *data = @{};
+    if (mediaType) {
+        data = @{@"filter":@{ @"media_type": mediaType }};
+    }
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:data];
     [self.api callMethod:@"wp.getMediaLibrary"
               parameters:parameters
                  success:^(id responseObject, NSHTTPURLResponse *httpResponse) {

@@ -1,6 +1,7 @@
 import Foundation
 import WordPressComAnalytics
 import UserNotifications
+import CocoaLumberjack
 
 
 
@@ -116,9 +117,9 @@ final public class PushNotificationsManager: NSObject {
         let newToken = parseTokenFromAppleData(tokenData)
 
         if deviceToken != newToken {
-            DDLogSwift.logInfo("Device Token has changed! OLD Value: \(String(describing: deviceToken)), NEW value: \(newToken)")
+            DDLogInfo("Device Token has changed! OLD Value: \(String(describing: deviceToken)), NEW value: \(newToken)")
         } else {
-            DDLogSwift.logInfo("Device Token received in didRegisterForRemoteNotificationsWithDeviceToken: \(newToken)")
+            DDLogInfo("Device Token received in didRegisterForRemoteNotificationsWithDeviceToken: \(newToken)")
         }
 
         deviceToken = newToken
@@ -127,10 +128,10 @@ final public class PushNotificationsManager: NSObject {
         let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         noteService.registerDeviceForPushNotifications(newToken, success: { deviceId in
-            DDLogSwift.logVerbose("Successfully registered Device ID \(deviceId) for Push Notifications")
+            DDLogVerbose("Successfully registered Device ID \(deviceId) for Push Notifications")
             self.deviceId = deviceId
         }, failure: { error in
-            DDLogSwift.logError("Unable to register Device for Push Notifications: \(error)")
+            DDLogError("Unable to register Device for Push Notifications: \(error)")
         })
     }
 
@@ -141,7 +142,7 @@ final public class PushNotificationsManager: NSObject {
     /// - Parameter error: Details the reason of failure
     ///
     func registrationDidFail(_ error: NSError) {
-        DDLogSwift.logError("Failed to register for push notifications: \(error)")
+        DDLogError("Failed to register for push notifications: \(error)")
         unregisterDeviceToken()
     }
 
@@ -157,12 +158,12 @@ final public class PushNotificationsManager: NSObject {
         let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         noteService.unregisterDeviceForPushNotifications(knownDeviceId, success: {
-            DDLogSwift.logInfo("Successfully unregistered Device ID \(knownDeviceId) for Push Notifications!")
+            DDLogInfo("Successfully unregistered Device ID \(knownDeviceId) for Push Notifications!")
 
             self.deviceToken = nil
             self.deviceId = nil
         }, failure: { error in
-            DDLogSwift.logError("Unable to unregister push for Device ID \(knownDeviceId): \(error)")
+            DDLogError("Unable to unregister push for Device ID \(knownDeviceId): \(error)")
         })
     }
 
@@ -179,8 +180,8 @@ final public class PushNotificationsManager: NSObject {
     ///     - completionHandler: A callback, to be executed on completion
     ///
     func handleNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) {
-        DDLogSwift.logVerbose("Received push notification:\nPayload: \(userInfo)\n")
-        DDLogSwift.logVerbose("Current Application state: \(applicationState.rawValue)")
+        DDLogVerbose("Received push notification:\nPayload: \(userInfo)\n")
+        DDLogVerbose("Current Application state: \(applicationState.rawValue)")
 
         // Badge: Update
         if let badgeCountNumber = userInfo.number(forKeyPath: notificationBadgePath)?.intValue {
@@ -326,10 +327,10 @@ final public class PushNotificationsManager: NSObject {
             return true
         }
 
-        DDLogSwift.logInfo("Running Notifications Background Fetch...")
+        DDLogInfo("Running Notifications Background Fetch...")
 
         mediator.sync { error, newData in
-            DDLogSwift.logInfo("Finished Notifications Background Fetch!")
+            DDLogInfo("Finished Notifications Background Fetch!")
 
             let result = newData ? UIBackgroundFetchResult.newData : .noData
             completionHandler?(result)

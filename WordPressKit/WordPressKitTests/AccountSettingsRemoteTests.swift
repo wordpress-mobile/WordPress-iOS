@@ -1,4 +1,5 @@
-@testable import WordPress
+@testable import WordPressKit
+import XCTest
 
 class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 

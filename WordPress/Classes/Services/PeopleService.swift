@@ -1,5 +1,5 @@
 import Foundation
-
+import CocoaLumberjack
 
 /// Service providing access to the People Management WordPress.com API.
 ///
@@ -44,7 +44,7 @@ struct PeopleService {
             success(users.count, hasMore)
 
         }, failure: { error in
-            DDLogSwift.logError(String(describing: error))
+            DDLogError(String(describing: error))
             failure?(error)
         })
     }
@@ -63,7 +63,7 @@ struct PeopleService {
             success(followers.count, hasMore)
 
         }, failure: { error in
-            DDLogSwift.logError(String(describing: error))
+            DDLogError(String(describing: error))
             failure?(error)
         })
     }
@@ -82,7 +82,7 @@ struct PeopleService {
             success(viewers.count, hasMore)
 
         }, failure: { error in
-            DDLogSwift.logError(String(describing: error))
+            DDLogError(String(describing: error))
             failure?(error)
         })
     }
@@ -107,10 +107,10 @@ struct PeopleService {
         // Hit the Backend
         remote.updateUserRole(siteID, userID: user.ID, newRole: role, success: nil, failure: { error in
 
-            DDLogSwift.logError("### Error while updating person \(user.ID) in blog \(self.siteID): \(error)")
+            DDLogError("### Error while updating person \(user.ID) in blog \(self.siteID): \(error)")
 
             guard let managedPerson = self.managedPersonFromPerson(user) else {
-                DDLogSwift.logError("### Person with ID \(user.ID) deleted before update")
+                DDLogError("### Person with ID \(user.ID) deleted before update")
                 return
             }
 
@@ -142,7 +142,7 @@ struct PeopleService {
         remote.deleteUser(siteID, userID: user.ID, success: {
             success?()
         }, failure: { error in
-            DDLogSwift.logError("### Error while deleting person \(user.ID) from blog \(self.siteID): \(error)")
+            DDLogError("### Error while deleting person \(user.ID) from blog \(self.siteID): \(error)")
 
             // Revert the deletion
             self.createManagedPerson(user)
@@ -170,7 +170,7 @@ struct PeopleService {
         remote.deleteFollower(siteID, userID: person.ID, success: {
             success?()
         }, failure: { error in
-            DDLogSwift.logError("### Error while deleting follower \(person.ID) from blog \(self.siteID): \(error)")
+            DDLogError("### Error while deleting follower \(person.ID) from blog \(self.siteID): \(error)")
 
             // Revert the deletion
             self.createManagedPerson(person)
@@ -198,7 +198,7 @@ struct PeopleService {
         remote.deleteViewer(siteID, userID: person.ID, success: {
             success?()
         }, failure: { error in
-            DDLogSwift.logError("### Error while deleting viewer \(person.ID) from blog \(self.siteID): \(error)")
+            DDLogError("### Error while deleting viewer \(person.ID) from blog \(self.siteID): \(error)")
 
             // Revert the deletion
             self.createManagedPerson(person)
@@ -278,7 +278,7 @@ private extension PeopleService {
         for remotePerson in remotePeople {
             if let existingPerson = managedPersonFromPerson(remotePerson) {
                 existingPerson.updateWith(remotePerson)
-                DDLogSwift.logDebug("Updated person \(existingPerson)")
+                DDLogDebug("Updated person \(existingPerson)")
             } else {
                 createManagedPerson(remotePerson)
             }
@@ -296,7 +296,7 @@ private extension PeopleService {
         do {
             results = try context.fetch(request) as! [ManagedPerson]
         } catch {
-            DDLogSwift.logError("Error fetching all people: \(error)")
+            DDLogError("Error fetching all people: \(error)")
             results = []
         }
 
@@ -333,7 +333,7 @@ private extension PeopleService {
 
         let objects = (try? context.fetch(request) as! [NSManagedObject]) ?? []
         for object in objects {
-            DDLogSwift.logDebug("Removing person: \(object)")
+            DDLogDebug("Removing person: \(object)")
             context.delete(object)
         }
     }
@@ -344,6 +344,6 @@ private extension PeopleService {
         let managedPerson = NSEntityDescription.insertNewObject(forEntityName: "Person", into: context) as! ManagedPerson
         managedPerson.updateWith(person)
         managedPerson.creationDate = Date()
-        DDLogSwift.logDebug("Created person \(managedPerson)")
+        DDLogDebug("Created person \(managedPerson)")
     }
 }
