@@ -15,7 +15,7 @@ def shared_with_all_pods
 end
 
 def shared_with_networking_pods
-  pod 'AFNetworking', '3.1.0'  
+  pod 'AFNetworking', '3.1.0'
   pod 'wpxmlrpc', '0.8.3'
 end
 
@@ -27,7 +27,7 @@ end
 
 target 'WordPress' do
   project 'WordPress/WordPress.xcodeproj'
-  
+
   shared_with_all_pods
   shared_with_networking_pods
 
@@ -56,29 +56,29 @@ target 'WordPress' do
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.17'
   pod 'WordPress-iOS-Editor', '1.9.2'
-  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'f2d38bc52ea6b2b74b0cb0c6f30ceaf46552bc3c'
+  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '646752112ad8de5ad7f6e7f29f2bf9d366abaebb'
 
   target 'WordPressTest' do
     inherit! :search_paths
-    
+
     shared_test_pods
     pod 'Specta', '1.0.5'
     pod 'Expecta', '1.0.5'
     pod 'Nimble', '~> 7.0.0'
   end
-  
+
   target 'WordPressShareExtension' do
     inherit! :search_paths
-    
+
     shared_with_all_pods
     shared_with_networking_pods
-  
+
     pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
   end
 
   target 'WordPressTodayWidget' do
     inherit! :search_paths
-    
+
     shared_with_all_pods
     shared_with_networking_pods
   end
@@ -93,20 +93,20 @@ target 'WordPressComStatsiOS' do
 
   target 'WordPressComStatsiOSTests' do
     inherit! :search_paths
-    
+
     shared_test_pods
   end
 end
 
 target 'WordPressKit' do
   project 'WordPressKit/WordPressKit.xcodeproj'
-  
+
   shared_with_networking_pods
   shared_with_all_pods
-  
+
   target 'WordPressKitTests' do
     inherit! :search_paths
-    
+
     shared_test_pods
   end
 end
@@ -118,7 +118,7 @@ target 'WordPressShared' do
 
   target 'WordPressSharedTests' do
     inherit! :search_paths
-    
+
     shared_test_pods
   end
 end
