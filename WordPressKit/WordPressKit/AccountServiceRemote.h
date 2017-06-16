@@ -35,6 +35,19 @@
                       failure:(void (^)(NSError *error))failure;
 
 /**
+ *  @brief      Query to check if a wpcom account requires a passwordless login option.
+ *  @note       Note that if there is no acccount matching the supplied identifier
+ *              the REST endpoing returns a 404 error code.
+ *
+ *  @param      identifier  May be an email address, username, or user ID.
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+- (void)isPasswordlessAccount:(NSString *)identifier
+                      success:(void (^)(BOOL passwordless))success
+                      failure:(void (^)(NSError *error))failure;
+
+/**
  *  @brief      Query to see if an email address is paired with a wpcom acccount 
  *              or if it is available. Used in the auth link signup flow.
  *

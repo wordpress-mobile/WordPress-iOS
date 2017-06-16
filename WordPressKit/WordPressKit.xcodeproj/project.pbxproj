@@ -108,6 +108,8 @@
 		93F08F111EEF0E9B000C2DF6 /* Logging.h in Headers */ = {isa = PBXBuildFile; fileRef = 93F08F0F1EEF0E9B000C2DF6 /* Logging.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		93F08F121EEF0E9B000C2DF6 /* Logging.m in Sources */ = {isa = PBXBuildFile; fileRef = 93F08F101EEF0E9B000C2DF6 /* Logging.m */; };
 		AFEFF3378CD0A507125E5019 /* Pods_WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */; };
+		E6C1E8491EF21FC100D139D9 /* is-passwordless-account-no-account-found.json in Resources */ = {isa = PBXBuildFile; fileRef = E6C1E8471EF21FC100D139D9 /* is-passwordless-account-no-account-found.json */; };
+		E6C1E84A1EF21FC100D139D9 /* is-passwordless-account-success.json in Resources */ = {isa = PBXBuildFile; fileRef = E6C1E8481EF21FC100D139D9 /* is-passwordless-account-success.json */; };
 		F8B82B9E92C9637430D7D032 /* Pods_WordPressKitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F902B70CBB63DD7EB9D275A /* Pods_WordPressKitTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -235,6 +237,8 @@
 		B459C2F3F70D7C971B441F04 /* Pods-WordPressKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.debug.xcconfig"; sourceTree = "<group>"; };
 		CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5273E8FA8F6117F941D6CC1 /* Pods-WordPressKit.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.release-internal.xcconfig"; sourceTree = "<group>"; };
+		E6C1E8471EF21FC100D139D9 /* is-passwordless-account-no-account-found.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "is-passwordless-account-no-account-found.json"; sourceTree = "<group>"; };
+		E6C1E8481EF21FC100D139D9 /* is-passwordless-account-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "is-passwordless-account-success.json"; sourceTree = "<group>"; };
 		EF1D8EBEFA46779A06F52788 /* Pods-WordPressKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKitTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -460,6 +464,8 @@
 				93BD27481EE73442002BB00B /* is-available-email-success.json */,
 				93BD27491EE73442002BB00B /* is-available-username-failure.json */,
 				93BD274A1EE73442002BB00B /* is-available-username-success.json */,
+				E6C1E8471EF21FC100D139D9 /* is-passwordless-account-no-account-found.json */,
+				E6C1E8481EF21FC100D139D9 /* is-passwordless-account-success.json */,
 				93BD274B1EE73442002BB00B /* me-auth-failure.json */,
 				93BD274C1EE73442002BB00B /* me-bad-json-failure.json */,
 				93BD274D1EE73442002BB00B /* me-sites-auth-failure.json */,
@@ -638,6 +644,7 @@
 				93AC8EDA1ED32FD000900F5A /* stats-v1.1-video-plays-day.json in Resources */,
 				93BD275C1EE73442002BB00B /* is-available-username-success.json in Resources */,
 				93AC8ED81ED32FD000900F5A /* stats-v1.1-top-posts-day.json in Resources */,
+				E6C1E84A1EF21FC100D139D9 /* is-passwordless-account-success.json in Resources */,
 				93BD27591EE73442002BB00B /* is-available-email-failure.json in Resources */,
 				93BD27571EE73442002BB00B /* auth-send-login-email-no-user-failure.json in Resources */,
 				93AC8ED71ED32FD000900F5A /* stats-v1.1-top-posts-day-large.json in Resources */,
@@ -645,6 +652,7 @@
 				93AC8EC91ED32FD000900F5A /* stats-v1.1-comments-day.json in Resources */,
 				93BD27641EE73442002BB00B /* me-sites-visibility-failure.json in Resources */,
 				93AC8EC51ED32FD000900F5A /* stats-batch.json in Resources */,
+				E6C1E8491EF21FC100D139D9 /* is-passwordless-account-no-account-found.json in Resources */,
 				93AC8ED91ED32FD000900F5A /* stats-v1.1-video-plays-day-no-data.json in Resources */,
 				93BD27561EE73442002BB00B /* auth-send-login-email-invalid-secret-failure.json in Resources */,
 				93BD275A1EE73442002BB00B /* is-available-email-success.json in Resources */,
