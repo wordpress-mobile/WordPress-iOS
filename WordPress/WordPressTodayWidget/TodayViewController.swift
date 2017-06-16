@@ -1,5 +1,6 @@
 import UIKit
 import NotificationCenter
+import CocoaLumberjack
 import WordPressComStatsiOS
 import WordPressShared
 
@@ -127,7 +128,7 @@ extension TodayViewController: NCWidgetProviding {
         }
 
         if isConfigured == false {
-            WPDDLogWrapper.logError("Missing site ID, timeZone or oauth2Token")
+            DDLogError("Missing site ID, timeZone or oauth2Token")
 
             completionHandler(NCUpdateResult.failed)
             return
@@ -137,7 +138,7 @@ extension TodayViewController: NCWidgetProviding {
 
         let statsService: WPStatsService = WPStatsService(siteId: siteID, siteTimeZone: timeZone, oauth2Token: oauthToken, andCacheExpirationInterval: 0)
         statsService.retrieveTodayStats(completionHandler: { wpStatsSummary, error in
-            WPDDLogWrapper.logInfo("Downloaded data in the Today widget")
+            DDLogInfo("Downloaded data in the Today widget")
 
             DispatchQueue.main.async {
                 self.visitorCount = (wpStatsSummary?.visitors)!
@@ -149,7 +150,7 @@ extension TodayViewController: NCWidgetProviding {
             }
             completionHandler(NCUpdateResult.newData)
             }, failureHandler: { error in
-                WPDDLogWrapper.logError("\(String(describing: error))")
+                DDLogError("\(String(describing: error))")
 
                 if let error = error as? URLError, error.code == URLError.badServerResponse {
                     self.isConfigured = false

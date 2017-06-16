@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 import WordPressShared
 import WordPressComAnalytics
 
@@ -238,7 +239,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
             tableView.reloadData()
         } catch {
-            DDLogSwift.logError("Error fetching People: \(error)")
+            DDLogError("Error fetching People: \(error)")
         }
     }
 
