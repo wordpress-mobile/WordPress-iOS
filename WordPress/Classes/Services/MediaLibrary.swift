@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 /// Encapsulates interfacing with Media objects and their assets, whether locally on disk or remotely.
 ///
@@ -26,8 +27,8 @@ open class MediaLibrary: LocalCoreDataService {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaAssetExporter()
-            exporter.maximumImageSize = self.exporterMaximumImageSize()
-            exporter.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
+            exporter.imageOptions = self.exporterImageOptions
+            exporter.videoOptions = self.exporterVideoOptions
 
             exporter.exportData(forAsset: asset, onCompletion: { (assetExport) in
                 self.managedObjectContext.perform {
@@ -53,8 +54,7 @@ open class MediaLibrary: LocalCoreDataService {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaImageExporter()
-            exporter.maximumImageSize = self.exporterMaximumImageSize()
-            exporter.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
+            exporter.options = self.exporterImageOptions
 
             exporter.exportImage(image, fileName: nil, onCompletion: { (imageExport) in
                 self.managedObjectContext.perform {
@@ -78,10 +78,10 @@ open class MediaLibrary: LocalCoreDataService {
     ///
     public func makeMediaWith(blog: Blog, url: URL, onCompletion: @escaping MediaCompletion, onError: OnError?) {
         DispatchQueue.global(qos: .default).async {
-            let exporter = MediaURLExporter()
 
-            exporter.maximumImageSize = self.exporterMaximumImageSize()
-            exporter.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
+            let exporter = MediaURLExporter()
+            exporter.imageOptions = self.exporterImageOptions
+            exporter.videoOptions = self.exporterVideoOptions
 
             exporter.exportURL(fileURL: url, onCompletion: { (urlExport) in
                 self.managedObjectContext.perform {
@@ -116,7 +116,7 @@ open class MediaLibrary: LocalCoreDataService {
             errorLogMessage = " with unknown error"
         }
         let nerror = error.toNSError()
-        DDLogSwift.logError("\(errorLogMessage), code: \(nerror.code), error: \(nerror)")
+        DDLogError("\(errorLogMessage), code: \(nerror.code), error: \(nerror)")
 
         // Return the error via the context's queue, and as an NSError to ensure it carries over the right code/message.
         if let errorHandler = errorHandler {
@@ -127,6 +127,19 @@ open class MediaLibrary: LocalCoreDataService {
     }
 
     // MARK: - Media export configurations
+
+    fileprivate var exporterImageOptions: MediaImageExporter.Options {
+        var options = MediaImageExporter.Options()
+        options.maximumImageSize = self.exporterMaximumImageSize()
+        options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
+        return options
+    }
+
+    fileprivate var exporterVideoOptions: MediaVideoExporter.Options {
+        var options = MediaVideoExporter.Options()
+        options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
+        return options
+    }
 
     /// Helper method to return an optional value for a valid MediaSettings max image upload size.
     ///

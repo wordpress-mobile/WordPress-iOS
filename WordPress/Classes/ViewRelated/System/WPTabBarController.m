@@ -740,11 +740,4 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
 }
 
-// this method allows this VC to be a valid unwind destination for this selector
-- (IBAction)unwindOutWithSegue:(UIStoryboardSegue *)segue
-{
-    // unwind segues don't seem to always clean themselves up 😫
-    [self dismissViewControllerAnimated:NO completion:nil];
-}
-
 @end

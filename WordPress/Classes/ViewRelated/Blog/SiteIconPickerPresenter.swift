@@ -11,7 +11,10 @@ class SiteIconPickerPresenter: NSObject {
     /// MARK: - Public Properties
 
     var blog: Blog
-    var onCompletion: ((UIImage?) -> Void)?
+    /// Will be invoked with a Media item from the user library or an error
+    var onCompletion: ((Media?, Error?) -> Void)?
+    var onIconSelection: (() -> Void)?
+    var originalMedia: Media?
 
     /// MARK: - Private Properties
 
@@ -74,8 +77,34 @@ class SiteIconPickerPresenter: NSObject {
             SVProgressHUD.dismiss()
             let imageCropViewController = ImageCropViewController(image: image)
             imageCropViewController.maskShape = .square
-            imageCropViewController.onCompletion = { [weak self] image in
-                self?.onCompletion?(image)
+            imageCropViewController.onCompletion = { [weak self] image, modified in
+                self?.onIconSelection?()
+                if !modified, let media = self?.originalMedia {
+                    self?.onCompletion?(media, nil)
+                } else {
+                    let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+                    guard let blogId = self?.blog.objectID else {
+                        self?.onCompletion?(nil, nil)
+                        return
+                    }
+                    mediaService.createMedia(with: image,
+                                             forBlogObjectID: blogId,
+                                             thumbnailCallback: nil,
+                                             completion: { (media, error) in
+                        guard let media = media, error == nil else {
+                            self?.onCompletion?(nil, error)
+                            return
+                        }
+                        var uploadProgress: Progress?
+                        mediaService.uploadMedia(media,
+                                                 progress: &uploadProgress,
+                                                 success: {
+                            self?.onCompletion?(media, nil)
+                        }, failure: { (error) in
+                            self?.onCompletion?(nil, error)
+                        })
+                    })
+                }
             }
             self.mediaPickerViewController.show(after: imageCropViewController)
         }
@@ -88,7 +117,7 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        onCompletion?(nil)
+        onCompletion?(nil, nil)
     }
 
     /// Retrieves the chosen image and triggers the ImageCropViewController display.
@@ -102,6 +131,7 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
         switch asset {
         case let phAsset as PHAsset:
             showLoadingMessage()
+            originalMedia = nil
             phAsset.exportMaximumSizeImage { [weak self] (image, info) in
                 guard let image = image else {
                     self?.showErrorLoadingImageMessage()
@@ -111,6 +141,7 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
             }
         case let media as Media:
             showLoadingMessage()
+            originalMedia = media
             let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
             mediaService.image(for: media, size: CGSize.zero, success: { [weak self] image in
                 self?.showImageCropViewController(image)

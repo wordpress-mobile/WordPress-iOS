@@ -55,7 +55,7 @@ import Foundation
         }
 
         if api == nil {
-            api = WordPressComRestApi.anonymousApi()
+            api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
         }
 
         return api!

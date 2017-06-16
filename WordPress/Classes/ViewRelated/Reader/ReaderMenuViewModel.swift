@@ -1,5 +1,7 @@
 import Foundation
+import CocoaLumberjack
 import Gridicons
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -202,7 +204,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         do {
             let _ = try defaultsFetchedResultsController.performFetch()
         } catch {
-            DDLogSwift.logError("There was a problem fetching default topics for the menu.")
+            DDLogError("There was a problem fetching default topics for the menu.")
             assertionFailure("There was a problem fetching default topics.")
         }
     }
@@ -330,7 +332,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         do {
             let _ = try teamsFetchedResultsController.performFetch()
         } catch {
-            DDLogSwift.logError("There was a problem fetching team topics for the menu.")
+            DDLogError("There was a problem fetching team topics for the menu.")
             assertionFailure("There was a problem fetching team topics.")
         }
     }
@@ -388,7 +390,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         do {
             let _ = try listsFetchedResultsController.performFetch()
         } catch {
-            DDLogSwift.logError("There was a problem fetching list topics for the menu.")
+            DDLogError("There was a problem fetching list topics for the menu.")
             assertionFailure("There was a problem fetching list topics.")
         }
     }
@@ -446,7 +448,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         do {
             let _ = try tagsFetchedResultsController.performFetch()
         } catch {
-            DDLogSwift.logError("There was a problem fetching tag topics for the menu.")
+            DDLogError("There was a problem fetching tag topics for the menu.")
             assertionFailure("There was a problem fetching tag topics.")
         }
     }
@@ -459,7 +461,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         do {
             let _ = try tagsFetchedResultsController.performFetch()
         } catch {
-            DDLogSwift.logError("There was a problem fetching tag topics for the menu.")
+            DDLogError("There was a problem fetching tag topics for the menu.")
             assertionFailure("There was a problem fetching tag topics.")
         }
     }

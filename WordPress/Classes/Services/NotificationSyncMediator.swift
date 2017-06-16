@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 
 /// Notes:
@@ -163,7 +164,7 @@ class NotificationSyncMediator {
         let noteID = notification.notificationId
         remote.updateReadStatus(noteID, read: true) { error in
             if let error = error {
-                DDLogSwift.logError("Error marking note as read: \(error)")
+                DDLogError("Error marking note as read: \(error)")
                 // Ideally, we'd want to revert to the unread status if this
                 // fails, but if the note is visible, the UI layer will keep
                 // trying to mark this as read and fail.
@@ -192,7 +193,7 @@ class NotificationSyncMediator {
         invalidateCacheForNotification(with: noteID)
         remote.updateReadStatus(noteID, read: true) { error in
             if let error = error {
-                DDLogSwift.logError("Error marking note as read: \(error)")
+                DDLogError("Error marking note as read: \(error)")
             }
             self.syncNote(with: noteID) { _ in
                 completion?(error)
@@ -213,7 +214,7 @@ class NotificationSyncMediator {
 
         remote.updateLastSeen(timestamp) { error in
             if let error = error {
-                DDLogSwift.logError("Error while Updating Last Seen Timestamp: \(error)")
+                DDLogError("Error while Updating Last Seen Timestamp: \(error)")
             }
 
             completion?(error)
