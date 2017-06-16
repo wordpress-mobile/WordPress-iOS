@@ -1,4 +1,5 @@
 import UIKit
+import WordPressKit
 import CocoaLumberjack
 
 protocol SettingsController: ImmuTableController {}
