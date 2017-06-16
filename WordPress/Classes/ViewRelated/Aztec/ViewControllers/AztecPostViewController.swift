@@ -313,6 +313,11 @@ class AztecPostViewController: UIViewController, PostEditor {
     }()
 
 
+    /// Options
+    ///
+    fileprivate var optionsViewController: OptionsTableViewController!
+
+
     /// HTML Pre Processors
     ///
     fileprivate var htmlPreProcessors = [Processor]()
@@ -413,6 +418,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         coordinator.animate(alongsideTransition: { _ in
             self.resizeBlogPickerButton()
         })
+
+        dismissOptionsViewControllerIfNecessary()
     }
 
 
@@ -511,7 +518,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
         textView.accessibilityLabel = accessibilityLabel
         textView.font = Fonts.regular
-        textView.inputAccessoryView = formatBar
         textView.keyboardDismissMode = .interactive
         textView.textColor = UIColor.darkText
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -673,6 +679,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
 
         refreshInsets(forKeyboardFrame: keyboardFrame)
+        dismissOptionsViewControllerIfNecessary()
     }
 
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
@@ -693,7 +700,13 @@ class AztecPostViewController: UIViewController, PostEditor {
             return
         }
 
-        let identifiers = richTextView.formatIdentifiersForTypingAttributes()
+        var identifiers = [FormattingIdentifier]()
+        if richTextView.selectedRange.length > 0 {
+            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+        } else {
+            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+        }
+
         toolbar.selectItemsMatchingIdentifiers(identifiers)
     }
 }
@@ -1057,15 +1070,39 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
 extension AztecPostViewController : UITextViewDelegate {
     func textViewDidChangeSelection(_ textView: UITextView) {
         updateFormatBar()
+        changeRichTextInputView(to: nil)
     }
 
     func textViewDidChange(_ textView: UITextView) {
         mapUIContentToPostAndSave()
-        refreshPlaceholderVisibility()
-        if textView == titleTextField {
+
+        switch textView {
+        case titleTextField:
             updateTitleHeight()
             refreshPlaceholderVisibility()
+        default:
+            break
         }
+    }
+
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        switch textView {
+        case titleTextField:
+            formatBar.enabled = false
+        case richTextView:
+            formatBar.enabled = true
+        case htmlTextView:
+            formatBar.enabled = false
+
+            // Disable the bar, except for the source code button
+            let htmlButton = formatBar.overflowItems.first(where: { $0.identifier == FormattingIdentifier.sourcecode })
+            htmlButton?.isEnabled = true
+        default: break
+        }
+
+        textView.inputAccessoryView = formatBar
+
+        return true
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -1148,7 +1185,11 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController : Aztec.FormatBarDelegate {
 
-    func handleActionForIdentifier(_ identifier: FormattingIdentifier) {
+    func formatBarTouchesBegan(_ formatBar: FormatBar) {
+        dismissOptionsViewControllerIfNecessary()
+    }
+
+    func handleActionForIdentifier(_ identifier: FormattingIdentifier, barItem: FormatBarItem) {
 
         switch identifier {
         case .bold:
@@ -1172,7 +1213,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         case .sourcecode:
             toggleEditingMode()
         case .p, .header1, .header2, .header3, .header4, .header5, .header6:
-            toggleHeader()
+            toggleHeader(fromItem: barItem)
         case .horizontalruler:
             insertHorizontalRuler()
         case .more:
@@ -1181,6 +1222,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
         updateFormatBar()
     }
+
 
     func toggleBold() {
         richTextView.toggleBold(range: richTextView.selectedRange)
@@ -1356,27 +1398,103 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         mode.toggle()
     }
 
-    func toggleHeader() {
-        // check if we already showing a custom view.
-        if richTextView.inputView != nil {
+    fileprivate func dismissOptionsViewControllerIfNecessary() {
+        if let optionsViewController = optionsViewController,
+            presentedViewController == optionsViewController {
+            dismiss(animated: true, completion: nil)
+
+            self.optionsViewController = nil
+        }
+    }
+
+    func toggleHeader(fromItem item: FormatBarItem) {
+        let headerOptions = Constants.headers.map { (headerType) -> OptionsTableViewOption in
+            return OptionsTableViewOption(image: headerType.iconImage,
+                                          title: NSAttributedString(string: headerType.description,
+                                                                    attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize)]))
+        }
+
+        let selectedIndex = Constants.headers.index(of: self.headerLevelForSelectedText())
+
+        showOptionsTableViewControllerWithOptions(headerOptions,
+                                                  fromBarItem: item,
+                                                  selectedRowIndex: selectedIndex,
+                                                  onSelect: { [weak self] selected in
+                                                    guard let range = self?.richTextView.selectedRange else { return }
+
+                                                    self?.richTextView.toggleHeader(Constants.headers[selected], range: range)
+                                                    self?.optionsViewController = nil
+                                                    self?.changeRichTextInputView(to: nil)
+        })
+    }
+
+    func showOptionsTableViewControllerWithOptions(_ options: [OptionsTableViewOption],
+                                                   fromBarItem barItem: FormatBarItem,
+                                                   selectedRowIndex index: Int?,
+                                                   onSelect: OptionsTableViewController.OnSelectHandler?) {
+        // Hide the input view if we're already showing these options
+        if let optionsViewController = optionsViewController, optionsViewController.options == options {
+            if presentedViewController != nil {
+                dismiss(animated: true, completion: nil)
+            }
+
+            self.optionsViewController = nil
             changeRichTextInputView(to: nil)
             return
         }
 
-        let headerOptions = Constants.headers.map { headerType in
-            return NSAttributedString(string: headerType.description, attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize)])
+        optionsViewController = OptionsTableViewController(options: options)
+        optionsViewController.cellDeselectedTintColor = .gray
+        optionsViewController.onSelect = { [weak self] selected in
+            if self?.presentedViewController != nil {
+                self?.dismiss(animated: true, completion: nil)
+            }
+
+            onSelect?(selected)
         }
 
-        let headerPicker = OptionsTableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 200), options: headerOptions)
-        headerPicker.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        headerPicker.onSelect = { selected in
-            self.richTextView.toggleHeader(Constants.headers[selected], range: self.richTextView.selectedRange)
-            self.changeRichTextInputView(to: nil)
+        let selectRow = {
+            guard let index = index else {
+                return
+            }
+
+            self.optionsViewController?.selectRow(at: index)
         }
-        if let selectedHeader = Constants.headers.index(of: headerLevelForSelectedText()) {
-            headerPicker.selectRow(at: IndexPath(row: selectedHeader, section: 0), animated: false, scrollPosition: .top)
+
+        if UIDevice.current.userInterfaceIdiom == .pad  {
+            presentOptionsViewController(optionsViewController, asPopoverFromBarItem: barItem, completion: selectRow)
+        } else {
+            presentOptionsViewControllerAsInputView(optionsViewController)
+            selectRow()
         }
-        changeRichTextInputView(to: headerPicker)
+    }
+
+    private func presentOptionsViewController(_ optionsViewController: OptionsTableViewController,
+                                              asPopoverFromBarItem barItem: FormatBarItem,
+                                              completion: (() -> Void)? = nil) {
+        optionsViewController.modalPresentationStyle = .popover
+        optionsViewController.popoverPresentationController?.permittedArrowDirections = [.down]
+        optionsViewController.popoverPresentationController?.sourceView = view
+
+        let frame = barItem.superview?.convert(barItem.frame, to: UIScreen.main.coordinateSpace)
+
+        optionsViewController.popoverPresentationController?.sourceRect = view.convert(frame!, from: UIScreen.main.coordinateSpace)
+        optionsViewController.popoverPresentationController?.backgroundColor = .white
+        optionsViewController.popoverPresentationController?.delegate = self
+
+        if presentedViewController != nil {
+            dismiss(animated: true, completion: {
+                self.present(self.optionsViewController, animated: true, completion: completion)
+            })
+        } else {
+            present(optionsViewController, animated: true, completion: completion)
+        }
+    }
+
+    private func presentOptionsViewControllerAsInputView(_ optionsViewController: OptionsTableViewController) {
+        self.addChildViewController(optionsViewController)
+        changeRichTextInputView(to: optionsViewController.view)
+        optionsViewController.didMove(toParentViewController: self)
     }
 
     func insertHorizontalRuler() {
@@ -1496,6 +1614,22 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 //
 extension AztecPostViewController: UINavigationControllerDelegate {
 
+}
+
+
+// MARK: - UIPopoverPresentationControllerDelegate
+//
+extension AztecPostViewController: UIPopoverPresentationControllerDelegate {
+
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        if optionsViewController != nil {
+            optionsViewController = nil
+        }
+    }
 }
 
 
