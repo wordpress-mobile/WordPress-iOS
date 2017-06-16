@@ -1205,10 +1205,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             toggleStrikethrough()
         case .blockquote:
             toggleBlockquote()
-        case .unorderedlist:
-            toggleUnorderedList()
-        case .orderedlist:
-            toggleOrderedList()
+        case .unorderedlist, .orderedlist:
+            toggleList(fromItem: barItem)
         case .link:
             toggleLink()
         case .media:
@@ -1247,18 +1245,58 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
 
-    func toggleOrderedList() {
-        richTextView.toggleOrderedList(range: richTextView.selectedRange)
-    }
+    func toggleList(fromItem item: FormatBarItem) {
+        let listOptions = Constants.lists.map { (listType) -> OptionsTableViewOption in
+            return OptionsTableViewOption(image: listType.iconImage, title: NSAttributedString(string: listType.description, attributes: [:]))
+        }
 
+        var index: Int? = nil
+        if let listType = listTypeForSelectedText() {
+            index = Constants.lists.index(of: listType)
+        }
 
-    func toggleUnorderedList() {
-        richTextView.toggleUnorderedList(range: richTextView.selectedRange)
+        showOptionsTableViewControllerWithOptions(listOptions,
+                                                  fromBarItem: item,
+                                                  selectedRowIndex: index,
+                                                  onSelect: { [weak self] selected in
+                                                    guard let range = self?.richTextView.selectedRange else { return }
+
+                                                    let listType = Constants.lists[selected]
+                                                    switch listType {
+                                                    case .unordered:
+                                                        self?.richTextView.toggleUnorderedList(range: range)
+                                                    case .ordered:
+                                                        self?.richTextView.toggleOrderedList(range: range)
+                                                    }
+                                                    
+                                                    self?.optionsViewController = nil
+        })
     }
 
 
     func toggleBlockquote() {
         richTextView.toggleBlockquote(range: richTextView.selectedRange)
+    }
+
+
+    func listTypeForSelectedText() -> TextList.Style? {
+        var identifiers = [FormattingIdentifier]()
+        if (richTextView.selectedRange.length > 0) {
+            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+        } else {
+            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+        }
+        let mapping: [FormattingIdentifier: TextList.Style] = [
+            .orderedlist : .ordered,
+            .unorderedlist : .unordered
+        ]
+        for (key,value) in mapping {
+            if identifiers.contains(key) {
+                return value
+            }
+        }
+
+        return nil
     }
 
 
