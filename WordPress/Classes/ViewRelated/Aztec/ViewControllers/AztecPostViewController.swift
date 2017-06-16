@@ -1075,11 +1075,13 @@ extension AztecPostViewController : UITextViewDelegate {
 
     func textViewDidChange(_ textView: UITextView) {
         mapUIContentToPostAndSave()
+        refreshPlaceholderVisibility()
 
         switch textView {
         case titleTextField:
             updateTitleHeight()
-            refreshPlaceholderVisibility()
+        case richTextView:
+            updateFormatBar()
         default:
             break
         }
@@ -1097,7 +1099,8 @@ extension AztecPostViewController : UITextViewDelegate {
             // Disable the bar, except for the source code button
             let htmlButton = formatBar.overflowItems.first(where: { $0.identifier == FormattingIdentifier.sourcecode })
             htmlButton?.isEnabled = true
-        default: break
+        default:
+            break
         }
 
         textView.inputAccessoryView = formatBar
