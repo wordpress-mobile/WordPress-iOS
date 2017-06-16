@@ -48,8 +48,6 @@ extension FormattingIdentifier {
             return Gridicon.iconOfType(.heading)
         case .header6:
             return Gridicon.iconOfType(.heading)
-        case .p:
-            return Gridicon.iconOfType(.heading)
         }
     }
 
