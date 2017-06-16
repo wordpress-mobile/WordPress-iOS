@@ -9,6 +9,8 @@ class MediaThumbnailExporter: MediaExporter {
     ///
     var mediaDirectoryType: MediaLibrary.MediaDirectory = .cache
 
+    // MARK: Export Options
+
     var options = Options()
 
     /// Available options for an thumbnail export.
@@ -30,6 +32,10 @@ class MediaThumbnailExporter: MediaExporter {
         ///   the intended scale/pixels, depending on the original image.
         ///
         var scale: CGFloat = UIScreen.main.scale
+
+        /// The compression quality of the thumbnail, if the image type support compression.
+        ///
+        var compressionQuality = 0.90
 
         /// The target image type of the exported thumbnail images.
         ///
@@ -56,23 +62,52 @@ class MediaThumbnailExporter: MediaExporter {
         }
     }
 
-    public enum ThumbnailExportError: MediaExportError {
-        case gifThumbnailsUnsupported
+    // MARK: - Types
 
+    /// A generated thumbnail identifier representing a reference to the image files that
+    /// result from a thumbnai export. This ensures unique files are created and URLs
+    /// can be recreated as needed, relative to both the identifier and the configured
+    /// options for an exporter.
+    ///
+    /// - Note: Media objects should store or cache these identifiers in order to reuse
+    ///   previously exported Media files that match the given identifier and configured options.
+    ///
+    typealias ThumbnailIdentifier = String
+
+    /// Completion block with the generated thumbnail identifier and resulting image export.
+    ///
+    typealias OnThumbnailExport = (ThumbnailIdentifier, MediaImageExport) -> Void
+
+    /// Errors specific to exporting thumbnails.
+    ///
+    public enum ThumbnailExportError: MediaExportError {
+        case failedToGenerateThumbnailFileURL
+        case gifThumbnailsUnsupported
         var description: String {
             switch self {
-            default:
+            case .gifThumbnailsUnsupported:
                 return NSLocalizedString("GIF preview unavailable.", comment: "Message shown if a preview of a GIF media item is unavailable.")
+            default:
+                return NSLocalizedString("Thumbnail unavailable.", comment: "Message shown if a thumbnail preview of a media item unavailable.")
             }
         }
     }
 
-    typealias OnThumbnailExport = (MediaImageExport) -> Void
+    // MARK: - Public
 
-    /// The URL the exporter expects to write for the URL and configured export options.
+    /// The available file URL of a thumbnail, if it exists, relative to the identifier
+    /// and exporter's configured options.
     ///
-    func expectedThumbnailURL(forFile url: URL) throws -> URL {
-        return try thumbnailURLWithOptions(for: url)
+    /// - Note: Consider using this URL for cacheing exported images located at the URL.
+    ///
+    func availableThumbnail(with identifier: ThumbnailIdentifier) -> URL? {
+        guard let thumbnail = try? thumbnailURL(withIdentifier: identifier) else {
+            return nil
+        }
+        guard let type = thumbnail.resourceTypeIdentifier, UTTypeConformsTo(type as CFString, options.thumbnailImageType as CFString) else {
+            return nil
+        }
+        return thumbnail
     }
 
     /// Export a thumbnail image for a file at the URL, with an expected type of an image or video.
@@ -95,15 +130,27 @@ class MediaThumbnailExporter: MediaExporter {
         }
     }
 
+    /// Export an existing image as a thumbnail image, based on the exporter options.
+    ///
+    func exportThumbnail(forImage image: UIImage, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
+        let exporter = MediaImageExporter()
+        exporter.mediaDirectoryType = .temporary
+        exporter.options = imageExporterOptions
+        exporter.exportImage(image,
+                             fileName: nil,
+                             onCompletion: { (export) in
+                                self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
+        }, onError: onError)
+    }
+
+    // MARK: - Private
+
     /// Export a thumbnail for a known image at the URL, using self.options for ImageExporter options.
     ///
     fileprivate func exportImageThumbnail(at url: URL, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
         let exporter = MediaImageExporter()
         exporter.mediaDirectoryType = .temporary
-        if let maximumSize = options.preferredMaximumSizeAtScale {
-            exporter.options.maximumImageSize = maximumSize
-        }
-        exporter.options.exportImageType = options.thumbnailImageType
+        exporter.options = imageExporterOptions
         exporter.exportImage(atFile: url,
                              onCompletion: { (export) in
                                 self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
@@ -116,47 +163,57 @@ class MediaThumbnailExporter: MediaExporter {
     fileprivate func exportVideoThumbnail(at url: URL, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
         let exporter = MediaVideoExporter()
         exporter.mediaDirectoryType = .temporary
-        var imageOptions = MediaImageExporter.Options()
-        if let maximumSize = options.preferredMaximumSizeAtScale {
-            imageOptions.maximumImageSize = maximumSize
-        }
-        imageOptions.exportImageType = options.thumbnailImageType
         exporter.exportPreviewImageForVideo(atURL: url,
-                                            imageOptions: imageOptions,
+                                            imageOptions: imageExporterOptions,
                                             onCompletion: { (export) in
                                                 self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
         },
                                             onError: onError)
     }
 
-    /// A thumbnail URL written with the corresponding filename and export options.
+    /// The default options to use for exporting images based on the thumbnail exporter's options.
     ///
-    fileprivate func thumbnailURLWithOptions(for url: URL) throws -> URL {
-        var filename = url.deletingPathExtension().lastPathComponent.appending("-thumbnail")
+    fileprivate var imageExporterOptions: MediaImageExporter.Options {
+        var imageOptions = MediaImageExporter.Options()
+        if let maximumSize = options.preferredMaximumSizeAtScale {
+            imageOptions.maximumImageSize = maximumSize
+        }
+        imageOptions.imageCompressionQuality = options.compressionQuality
+        imageOptions.exportImageType = options.thumbnailImageType
+        return imageOptions
+    }
+
+    /// A thumbnail URL written with the corresponding identifier and configured export options.
+    ///
+    fileprivate func thumbnailURL(withIdentifier identifier: ThumbnailIdentifier) throws -> URL {
+        var filename = "thumbnail-\(identifier)"
         if let preferredSize = options.preferredSizeAtScale {
             filename.append("(\(Int(preferredSize.width))x\(Int(preferredSize.height)))")
         }
         // Get a new URL for the file as a thumbnail within the cache.
         return try MediaLibrary.makeLocalMediaURL(withFilename: filename,
                                                   fileExtension: URL.fileExtensionForUTType(options.thumbnailImageType),
-                                                  type: mediaDirectoryType)
+                                                  type: mediaDirectoryType,
+                                                  incremented: false)
     }
 
     /// Renames and moves an exported thumbnail to the expected directory with the expected thumbnail filenaming convention.
     ///
     fileprivate func exportImageToThumbnailCache(_ export: MediaImageExport, onCompletion: OnThumbnailExport, onError: OnExportError) {
         do {
-            let thumbnailURL = try thumbnailURLWithOptions(for: export.url)
+            // Generate a unique ID
+            let identifier = UUID().uuidString
+            let thumbnail = try thumbnailURL(withIdentifier: identifier)
             let fileManager = FileManager.default
             // Move the exported file at the url to the new URL.
-            try fileManager.moveItem(at: export.url, to: thumbnailURL)
+            try fileManager.moveItem(at: export.url, to: thumbnail)
             // Configure with the new URL
-            let thumbnailExport = MediaImageExport(url: thumbnailURL,
+            let thumbnailExport = MediaImageExport(url: thumbnail,
                                                    fileSize: export.fileSize,
                                                    width: export.width,
                                                    height: export.height)
             // And return.
-            onCompletion(thumbnailExport)
+            onCompletion(identifier, thumbnailExport)
         } catch {
             onError(exporterErrorWith(error: error))
         }
