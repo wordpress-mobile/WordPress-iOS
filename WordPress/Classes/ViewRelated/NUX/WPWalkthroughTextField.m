@@ -3,6 +3,8 @@
 #import <WordPressShared/WPNUXUtility.h>
 #import "WordPress-Swift.h"
 
+NSInteger const LeftImageSpacing = 8;
+
 @import Gridicons;
 
 @interface WPWalkthroughTextField ()
@@ -132,7 +134,7 @@
     
     if (_leftViewImage) {
         CGFloat leftViewWidth = _leftViewImage.size.width;
-        returnRect = CGRectMake(leftViewWidth + 2 * _textInsets.left, _textInsets.top, bounds.size.width - leftViewWidth - 2 * _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
+        returnRect = CGRectMake(leftViewWidth + LeftImageSpacing + _textInsets.left, _textInsets.top, bounds.size.width - leftViewWidth - LeftImageSpacing - _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
     } else {
         returnRect = CGRectMake(_textInsets.left, _textInsets.top, bounds.size.width - _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
     }
