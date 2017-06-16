@@ -1674,6 +1674,38 @@ extension AztecPostViewController: UIPopoverPresentationControllerDelegate {
 }
 
 
+// MARK: - Unknown HTML
+//
+private extension AztecPostViewController {
+
+    func displayUnknownHtmlEditor(for attachment: HTMLAttachment) {
+        let targetVC = UnknownEditorViewController(attachment: attachment)
+        targetVC.onDidSave = { [weak self] html in
+            self?.richTextView.update(attachment: attachment, html: html)
+            self?.dismiss(animated: true, completion: nil)
+        }
+
+        targetVC.onDidCancel = { [weak self] in
+            self?.dismiss(animated: true, completion: nil)
+        }
+
+        let navigationController = UINavigationController(rootViewController: targetVC)
+        displayAsPopover(viewController: navigationController)
+    }
+
+    func displayAsPopover(viewController: UIViewController) {
+        viewController.modalPresentationStyle = .popover
+        viewController.preferredContentSize = view.frame.size
+
+        let presentationController = viewController.popoverPresentationController
+        presentationController?.sourceView = view
+        presentationController?.delegate = self
+
+        present(viewController, animated: true, completion: nil)
+    }
+}
+
+
 // MARK: - Cancel/Dismiss/Persistence Logic
 //
 private extension AztecPostViewController {
@@ -2262,19 +2294,22 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 extension AztecPostViewController: TextViewAttachmentDelegate {
 
     public func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
-        if  !richTextView.isFirstResponder {
+        if !richTextView.isFirstResponder {
             richTextView.becomeFirstResponder()
         }
 
-        if let imgAttachment = attachment as? ImageAttachment {
-            selected(textAttachment: imgAttachment, atPosition: position)
-        }
-
-        if let videoAttachment = attachment as? VideoAttachment {
+        switch attachment {
+        case let attachment as HTMLAttachment:
+            displayUnknownHtmlEditor(for: attachment)
+        case let attachment as ImageAttachment:
+            selected(textAttachment: attachment, atPosition: position)
+        case let attachment as VideoAttachment:
             if let imageAttachment = currentSelectedAttachment {
                 deselected(textAttachment: imageAttachment, atPosition: position)
             }
-            selected(videoAttachment: videoAttachment, atPosition: position)
+            selected(videoAttachment: attachment, atPosition: position)
+        default:
+            break
         }
     }
 
