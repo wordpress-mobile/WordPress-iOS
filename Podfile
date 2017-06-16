@@ -41,7 +41,7 @@ target 'WordPress' do
   pod 'SVProgressHUD', '~>2.1.2'
   pod 'UIDeviceIdentifier', '~> 0.1'
   pod 'Crashlytics'
-  pod 'BuddyBuildSDK', '~> 1.0.14', :configurations => ['Release-Alpha']
+  pod 'BuddyBuildSDK', '~> 1.0.15', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '~> 1.0'
   pod 'MGSwipeTableCell', '~> 1.5.6'
   # Temporary until this fix is merged and released
@@ -54,7 +54,7 @@ target 'WordPress' do
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.0'
   pod 'Gridicons', '0.5'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', '0.17'
+  pod 'WPMediaPicker', '0.18'
   pod 'WordPress-iOS-Editor', '1.9.2'
   pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '100ffac20f4b09fbae0839beab2f48e68b9def18'
 
