@@ -10,31 +10,46 @@ import SVProgressHUD
 import WordPressComAnalytics
 import AVKit
 
+
 // MARK: - Aztec's Native Editor!
 //
 class AztecPostViewController: UIViewController, PostEditor {
+
+    ///
+    ///
     fileprivate let analyticsEditorSourceValue = "aztec"
 
     /// Closure to be executed when the editor gets closed
     ///
     var onClose: ((_ changesSaved: Bool) -> ())?
 
+
+    ///
+    ///
     var isOpenedDirectlyForPhotoPost: Bool = false
+
+
+    ///
+    ///
+    fileprivate(set) lazy var formatBar: Aztec.FormatBar = {
+        return self.createToolbar()
+    }()
+
 
     /// Aztec's Awesomeness
     ///
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
-        let tv = Aztec.TextView(defaultFont: Fonts.regular, defaultMissingImage: Assets.defaultMissingImage)
+        let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultMissingImage: Assets.defaultMissingImage)
 
-        let toolbar = self.createToolbar(htmlMode: false)
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
-        self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
-        tv.delegate = self
-        tv.textAttachmentDelegate = self
-        tv.backgroundColor = Colors.aztecBackground
-        toolbar.formatter = self
+        self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
 
-        return tv
+        textView.delegate = self
+        textView.formattingDelegate = self
+        textView.textAttachmentDelegate = self
+        textView.backgroundColor = Colors.aztecBackground
+
+        return textView
     }()
 
 
@@ -55,16 +70,14 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Raw HTML Editor
     ///
     fileprivate(set) lazy var htmlTextView: UITextView = {
-        let tv = UITextView()
+        let textView = UITextView()
 
-        let toolbar = self.createToolbar(htmlMode: true)
         let accessibilityLabel = NSLocalizedString("HTML", comment: "Accessibility label for HTML button on formatting toolbar.")
-        self.configureDefaultProperties(for: tv, using: toolbar, accessibilityLabel: accessibilityLabel)
-        toolbar.formatter = self
-        tv.isHidden = true
-        tv.delegate = self
+        self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
+        textView.isHidden = true
+        textView.delegate = self
 
-        return tv
+        return textView
     }()
 
 
@@ -83,10 +96,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         textField.isScrollEnabled = false
         textField.backgroundColor = .clear
-
-        let toolbar = self.createToolbar(htmlMode: false)
-        toolbar.formatter = self
-        textField.inputAccessoryView = toolbar
 
         return textField
     }()
@@ -477,7 +486,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
     }
 
-    private func configureDefaultProperties(for textView: UITextView, using formatBar: Aztec.FormatBar, accessibilityLabel: String) {
+    private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
         textView.accessibilityLabel = accessibilityLabel
         textView.font = Fonts.regular
         textView.inputAccessoryView = formatBar
@@ -1054,6 +1063,15 @@ extension AztecPostViewController {
 }
 
 
+// MARK: - TextViewFormattingDelegate methods
+//
+extension AztecPostViewController: Aztec.TextViewFormattingDelegate {
+    func textViewCommandToggledAStyle() {
+        updateFormatBar()
+    }
+}
+
+
 // MARK: - HTML Mode Switch methods
 //
 extension AztecPostViewController {
@@ -1385,6 +1403,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
 
     // MARK: - Toolbar creation
+
     func makeToolbarButton(identifier: FormattingIdentifier) -> FormatBarItem {
         let button = FormatBarItem(image: identifier.iconImage, identifier: identifier)
         button.accessibilityLabel = identifier.accessibilityLabel
@@ -1392,47 +1411,64 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         return button
     }
 
-    func createToolbar(htmlMode: Bool) -> Aztec.FormatBar {
-
-        let scrollableItems = [
-            makeToolbarButton(identifier: .media),
-            makeToolbarButton(identifier: .header),
-            makeToolbarButton(identifier: .bold),
-            makeToolbarButton(identifier: .italic),
-            makeToolbarButton(identifier: .underline),
-            makeToolbarButton(identifier: .strikethrough),
-            makeToolbarButton(identifier: .blockquote),
-            makeToolbarButton(identifier: .unorderedlist),
-            makeToolbarButton(identifier: .orderedlist),
-            makeToolbarButton(identifier: .link),
-            makeToolbarButton(identifier: .horizontalruler),
-            makeToolbarButton(identifier: .more)
-        ]
-
-        let fixedItems = [
-            makeToolbarButton(identifier: .sourcecode)
-        ]
+    func createToolbar() -> Aztec.FormatBar {
+        let mediaItem = makeToolbarButton(identifier: .media)
+        let scrollableItems = scrollableItemsForToolbar
+        let overflowItems = overflowItemsForToolbar
 
         let toolbar = Aztec.FormatBar()
-
-        if htmlMode {
-            let merged = scrollableItems + fixedItems
-            for item in merged {
-                item.isEnabled = item.identifier == .sourcecode
-            }
-        }
-
-        toolbar.scrollableItems = scrollableItems
-        toolbar.fixedItems = fixedItems
-        toolbar.tintColor = WPStyleGuide.greyLighten10()
-        toolbar.topBorderColor = WPStyleGuide.greyLighten10()
+        toolbar.defaultItems = [[mediaItem], scrollableItems]
+        toolbar.overflowItems = overflowItems
+        toolbar.tintColor = .gray
         toolbar.highlightedTintColor = .blue
-        toolbar.selectedTintColor = .darkGray
+        toolbar.selectedTintColor = view.tintColor
         toolbar.disabledTintColor = .lightGray
+        toolbar.dividerTintColor = .gray
+        toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
         toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0)
         toolbar.formatter = self
 
         return toolbar
+    }
+
+    var scrollableItemsForToolbar: [FormatBarItem] {
+        let headerButton = makeToolbarButton(identifier: .p)
+
+        var alternativeIcons = [FormattingIdentifier: UIImage]()
+        let headings = Constants.headers.suffix(from: 1) // Remove paragraph style
+        for heading in headings {
+            alternativeIcons[heading.formattingIdentifier] = heading.iconImage
+        }
+
+        headerButton.alternativeIcons = alternativeIcons
+
+
+        let listButton = makeToolbarButton(identifier: .unorderedlist)
+        var listIcons = [FormattingIdentifier: UIImage]()
+        for list in Constants.lists {
+            listIcons[list.formattingIdentifier] = list.iconImage
+        }
+
+        listButton.alternativeIcons = listIcons
+
+        return [
+            headerButton,
+            listButton,
+            makeToolbarButton(identifier: .blockquote),
+            makeToolbarButton(identifier: .bold),
+            makeToolbarButton(identifier: .italic),
+            makeToolbarButton(identifier: .link)
+        ]
+    }
+
+    var overflowItemsForToolbar: [FormatBarItem] {
+        return [
+            makeToolbarButton(identifier: .underline),
+            makeToolbarButton(identifier: .strikethrough),
+            makeToolbarButton(identifier: .horizontalruler),
+            makeToolbarButton(identifier: .more),
+            makeToolbarButton(identifier: .sourcecode)
+        ]
     }
 }
 
@@ -2263,6 +2299,8 @@ extension AztecPostViewController {
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
         static let moreAttachmentText       = "more"
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
+        static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
+        static let lists                    = [TextList.Style.unordered, .ordered]
     }
 
     struct MoreSheetAlert {
@@ -2460,6 +2498,61 @@ extension FormattingIdentifier {
     }
 
 }
+
+
+// MARK: - Header and List presentation extensions
+
+private extension Header.HeaderType {
+    var formattingIdentifier: FormattingIdentifier {
+        switch self {
+        case .none: return FormattingIdentifier.p
+        case .h1:   return FormattingIdentifier.header1
+        case .h2:   return FormattingIdentifier.header2
+        case .h3:   return FormattingIdentifier.header3
+        case .h4:   return FormattingIdentifier.header4
+        case .h5:   return FormattingIdentifier.header5
+        case .h6:   return FormattingIdentifier.header6
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .none: return NSLocalizedString("Default", comment: "Description of the default paragraph formatting style in the editor.")
+        case .h1: return "Heading 1"
+        case .h2: return "Heading 2"
+        case .h3: return "Heading 3"
+        case .h4: return "Heading 4"
+        case .h5: return "Heading 5"
+        case .h6: return "Heading 6"
+        }
+    }
+
+    var iconImage: UIImage? {
+        return formattingIdentifier.iconImage
+    }
+}
+
+private extension TextList.Style {
+    var formattingIdentifier: FormattingIdentifier {
+        switch self {
+        case .ordered:   return FormattingIdentifier.orderedlist
+        case .unordered: return FormattingIdentifier.unorderedlist
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .ordered: return "Ordered List"
+        case .unordered: return "Unordered List"
+        }
+    }
+
+    var iconImage: UIImage? {
+        return formattingIdentifier.iconImage
+    }
+}
+
+
 
 extension VideoAttachment {
 
