@@ -15,21 +15,17 @@ import AVKit
 //
 class AztecPostViewController: UIViewController, PostEditor {
 
-    ///
-    ///
-    fileprivate let analyticsEditorSourceValue = "aztec"
-
     /// Closure to be executed when the editor gets closed
     ///
     var onClose: ((_ changesSaved: Bool) -> ())?
 
 
+    /// Indicates if Aztec was launched for Photo Posting
     ///
-    ///
-    var isOpenedDirectlyForPhotoPost: Bool = false
+    var isOpenedDirectlyForPhotoPost = false
 
 
-    ///
+    /// Format Bar
     ///
     fileprivate(set) lazy var formatBar: Aztec.FormatBar = {
         return self.createToolbar()
@@ -112,21 +108,36 @@ class AztecPostViewController: UIViewController, PostEditor {
         return textField
     }()
 
+
+    /// Placeholder Label
+    ///
     fileprivate(set) lazy var titlePlaceholderLabel: UILabel = {
         let placeholderText = NSLocalizedString("Title", comment: "Placeholder for the post title.")
         let titlePlaceholderLabel = UILabel()
 
-        titlePlaceholderLabel.attributedText = NSAttributedString(string: placeholderText,
-                                                      attributes: [NSForegroundColorAttributeName: Colors.title, NSFontAttributeName: Fonts.title])
+        let attributes = [NSForegroundColorAttributeName: Colors.title, NSFontAttributeName: Fonts.title]
+        titlePlaceholderLabel.attributedText = NSAttributedString(string: placeholderText, attributes: attributes)
         titlePlaceholderLabel.sizeToFit()
         titlePlaceholderLabel.translatesAutoresizingMaskIntoConstraints = false
 
         return titlePlaceholderLabel
     }()
 
+
+    /// Title's Height Constraint
+    ///
     fileprivate var titleHeightConstraint: NSLayoutConstraint!
+
+
+    /// Title's Top Constraint
+    ///
     fileprivate var titleTopConstraint: NSLayoutConstraint!
+
+
+    /// Placeholder's Top Constraint
+    ///
     fileprivate var textPlaceholderTopConstraint: NSLayoutConstraint!
+
 
     /// Separator View
     ///
@@ -302,19 +313,17 @@ class AztecPostViewController: UIViewController, PostEditor {
     }()
 
 
-    /// Available Header Types
-    ///
-    fileprivate let headers: [Header.HeaderType] = [.none, .h1, .h2, .h3, .h4, .h5, .h6]
-
     /// HTML Pre Processors
     ///
     fileprivate var htmlPreProcessors = [Processor]()
+
 
     /// HTML Post Processors
     ///
     fileprivate var htmlPostProcessors = [Processor]()
 
-    // MARK: - Lifecycle Methods
+
+    // MARK: - Initializers
 
     required init(post: AbstractPost) {
         self.post = post
@@ -340,20 +349,19 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
 
+    // MARK: - Lifecycle Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // TODO: Fix the warnings triggered by this one!
         WPFontManager.loadNotoFontFamily()
 
-        // Attachment Custom Image Providers
         registerAttachmentImageProviders()
-        // Register shortcode processor for WordPress
         registerHTMLProcessors()
-        // New Post Revision!
         createRevisionOfPost()
 
-        // Setup Elements
+        // Setup
         configureNavigationBar()
         configureView()
         configureSubviews()
@@ -409,6 +417,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
 
     // MARK: - Title and Title placeholder position methods
+
     func updateTitlePosition() {
         let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
         titleTopConstraint.constant = -(referenceView.contentOffset.y+referenceView.contentInset.top)
@@ -434,6 +443,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         referenceView.contentInset = contentInset
         referenceView.setContentOffset(CGPoint(x:0, y: -contentInset.top), animated: false)
     }
+
 
     // MARK: - Configuration Methods
 
@@ -466,14 +476,14 @@ class AztecPostViewController: UIViewController, PostEditor {
         NSLayoutConstraint.activate([
             separatorView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: defaultMargin),
             separatorView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -defaultMargin),
-            separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 0),
+            separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: separatorView.frame.height)
             ])
 
         NSLayoutConstraint.activate([
-            richTextView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
-            richTextView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
-            richTextView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            richTextView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            richTextView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            richTextView.topAnchor.constraint(equalTo: view.topAnchor),
             richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -defaultMargin)
             ])
 
@@ -678,7 +688,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         richTextView.contentInset = contentInsets
     }
 
-
     func updateFormatBar() {
         guard let toolbar = richTextView.inputAccessoryView as? Aztec.FormatBar else {
             return
@@ -851,13 +860,13 @@ extension AztecPostViewController {
 
     private func trackPostSave(stat: WPAnalyticsStat) {
         guard stat != .editorSavedDraft && stat != .editorQuickSavedDraft else {
-            WPAppAnalytics.track(stat, withProperties:[WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue], with:post.blog)
+            WPAppAnalytics.track(stat, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with:post.blog)
             return
         }
 
         let originalWordCount = post.original?.content?.wordCount() ?? 0
         let wordCount = post.content?.wordCount() ?? 0
-        var properties: [String: Any] = ["word_count": wordCount, WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue]
+        var properties: [String: Any] = ["word_count": wordCount, WPAppAnalyticsKeyEditorSource: Analytics.editorSource]
         if post.hasRemote() {
             properties["word_diff_count"] = originalWordCount
         }
@@ -1354,17 +1363,17 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             return
         }
 
-        let headerOptions = headers.map { headerType in
+        let headerOptions = Constants.headers.map { headerType in
             return NSAttributedString(string: headerType.description, attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize)])
         }
 
         let headerPicker = OptionsTableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 200), options: headerOptions)
         headerPicker.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         headerPicker.onSelect = { selected in
-            self.richTextView.toggleHeader(self.headers[selected], range: self.richTextView.selectedRange)
+            self.richTextView.toggleHeader(Constants.headers[selected], range: self.richTextView.selectedRange)
             self.changeRichTextInputView(to: nil)
         }
-        if let selectedHeader = headers.index(of: headerLevelForSelectedText()) {
+        if let selectedHeader = Constants.headers.index(of: headerLevelForSelectedText()) {
             headerPicker.selectRow(at: IndexPath(row: selectedHeader, section: 0), animated: false, scrollPosition: .top)
         }
         changeRichTextInputView(to: headerPicker)
@@ -1557,7 +1566,7 @@ private extension AztecPostViewController {
             return
         }
 
-        WPAppAnalytics.track(.editorDiscardedChanges, withProperties:[WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue], with: post)
+        WPAppAnalytics.track(.editorDiscardedChanges, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
 
         post = originalPost
         post.deleteRevision()
@@ -1579,7 +1588,7 @@ private extension AztecPostViewController {
     func dismissOrPopView(didSave: Bool) {
         stopEditing()
 
-        WPAppAnalytics.track(.editorClosed, withProperties:[WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue], with: post)
+        WPAppAnalytics.track(.editorClosed, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
 
         if let onClose = onClose {
             onClose(didSave)
@@ -1865,7 +1874,7 @@ extension AztecPostViewController {
                     return
                 }
 
-                WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: strongSelf.analyticsEditorSourceValue], with: strongSelf.post.blog)
+                WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: strongSelf.post.blog)
 
                 DispatchQueue.main.async {
                     strongSelf.handleError(error as NSError, onAttachment: attachment)
@@ -1998,7 +2007,7 @@ extension AztecPostViewController {
                                                         self.richTextView.refreshLayout(for: attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
 
-                                                        WPAppAnalytics.track(.editorUploadMediaRetried, withProperties: [WPAppAnalyticsKeyEditorSource: self.analyticsEditorSourceValue], with: self.post.blog)
+                                                        WPAppAnalytics.track(.editorUploadMediaRetried, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self.post.blog)
 
                                                         self.upload(media: media, mediaID: mediaID)
                                                     }
@@ -2029,7 +2038,7 @@ extension AztecPostViewController {
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
 
-        WPAppAnalytics.track(.editorEditedImage, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSourceValue], with: post)
+        WPAppAnalytics.track(.editorEditedImage, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
     }
 
     var mediaMessageAttributes: [String: Any] {
@@ -2295,6 +2304,10 @@ extension AztecPostViewController: UIViewControllerRestoration {
 // MARK: - Constants
 //
 extension AztecPostViewController {
+
+    struct Analytics {
+        static let editorSource             = "aztec"
+    }
 
     struct Assets {
         static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
