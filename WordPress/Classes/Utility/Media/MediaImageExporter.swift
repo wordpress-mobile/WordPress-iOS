@@ -18,9 +18,9 @@ class MediaImageExporter: MediaExporter {
         ///
         var maximumImageSize: CGFloat?
 
-        /// Compression quality when an image is being resized, defaulting to 0.9.
+        /// Compression quality if the image type supports compression, defaults to no compression or maximum quality.
         ///
-        var imageCompressionQualityUponResizing = 0.9
+        var imageCompressionQuality = 1.0
 
         /// The target UTType of the exported image, typically a UTTypeJPEG or UTTypePNG,
         /// or nil if the original image's format should be used.
@@ -171,8 +171,8 @@ class MediaImageExporter: MediaExporter {
             var writer = ImageSourceWriter(url: url, sourceUTType: type as CFString)
             if let maximumImageSize = options.maximumImageSize {
                 writer.maximumSize = maximumImageSize as CFNumber
-                writer.lossyCompressionQuality = options.imageCompressionQualityUponResizing as CFNumber
             }
+            writer.lossyCompressionQuality = options.imageCompressionQuality as CFNumber
             writer.nullifyGPSData = options.stripsGeoLocationIfNeeded
             let result = try writer.writeImageSource(source)
             onCompletion(MediaImageExport(url: url,
