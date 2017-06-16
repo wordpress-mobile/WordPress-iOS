@@ -56,7 +56,7 @@ target 'WordPress' do
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.17'
   pod 'WordPress-iOS-Editor', '1.9.2'
-  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '848590729ca27d5c4ea6362dd1859a5fcdd7d233'
+  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '02924873437a21213a180ff4ba64400de8960208'
 
   target 'WordPressTest' do
     inherit! :search_paths
