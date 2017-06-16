@@ -2359,24 +2359,3 @@ extension AztecPostViewController {
         static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
     }
 }
-
-
-
-
-extension VideoAttachment {
-
-    var videoPressID: String? {
-
-        get {
-            return namedAttributes[VideoProcessor.videoPressHTMLAttribute]
-        }
-
-        set {
-            if let nonNilValue = newValue {
-                namedAttributes[VideoProcessor.videoPressHTMLAttribute] = nonNilValue
-            } else {
-                namedAttributes.removeValue(forKey: VideoProcessor.videoPressHTMLAttribute)
-            }
-        }
-    }
-}
