@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressKit
 
 // MARK: - Reflects the user's Account Settings, as stored in Core Data.
 //
@@ -86,40 +87,24 @@ class ManagedAccountSettings: NSManagedObject {
     }
 }
 
-enum AccountSettingsChange {
-    case firstName(String)
-    case lastName(String)
-    case displayName(String)
-    case aboutMe(String)
-    case email(String)
-    case emailRevertPendingChange
-    case primarySite(Int)
-    case webAddress(String)
-    case language(String)
+extension AccountSettings {
+    init(managed: ManagedAccountSettings) {
+        firstName = managed.firstName
+        lastName = managed.lastName
+        displayName = managed.displayName
+        aboutMe = managed.aboutMe
 
-    var stringValue: String {
-        switch self {
-        case .firstName(let value):
-            return value
-        case .lastName(let value):
-            return value
-        case .displayName(let value):
-            return value
-        case .aboutMe(let value):
-            return value
-        case .email(let value):
-            return value
-        case .emailRevertPendingChange:
-            return String(false)
-        case .primarySite(let value):
-            return String(value)
-        case .webAddress(let value):
-            return value
-        case .language(let value):
-            return value
-        }
+        username = managed.username
+        email = managed.email
+        emailPendingAddress = managed.emailPendingAddress
+        emailPendingChange = managed.emailPendingChange
+        primarySiteID = managed.primarySiteID.intValue
+        webAddress = managed.webAddress
+        language = managed.language
+    }
+
+    var emailForDisplay: String {
+        let pendingEmail = emailPendingAddress?.nonEmptyString() ?? email
+        return emailPendingChange ? pendingEmail : email
     }
 }
-
-typealias AccountSettingsChangeWithString = (String) -> AccountSettingsChange
-typealias AccountSettingsChangeWithInt = (Int) -> AccountSettingsChange
