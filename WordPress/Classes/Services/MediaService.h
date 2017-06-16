@@ -173,4 +173,9 @@
 - (NSInteger)getMediaLibraryCountForBlog:(nonnull Blog *)blog
                            forMediaTypes:(nonnull NSSet *)mediaTypes;
 
+- (void)getMediaLibraryServerCountForBlog:(nonnull Blog *)blog
+                            forMediaTypes:(nonnull NSSet *)mediaTypes
+                                  success:(nullable void (^)(NSInteger count))success
+                                  failure:(nullable void (^)(NSError * _Nonnull error))failure;
+
 @end
