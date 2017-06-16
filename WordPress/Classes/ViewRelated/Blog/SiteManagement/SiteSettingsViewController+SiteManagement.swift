@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 import SVProgressHUD
 import WordPressShared
 
@@ -55,7 +56,7 @@ public extension SiteSettingsViewController {
                 SVProgressHUD.showDismissibleSuccess(withStatus: status)
             },
             failure: { error in
-                DDLogSwift.logError("Error exporting content: \(error.localizedDescription)")
+                DDLogError("Error exporting content: \(error.localizedDescription)")
                 WPAppAnalytics.track(.siteSettingsExportSiteResponseError, with: trackedBlog)
                 SVProgressHUD.dismiss()
 
@@ -95,7 +96,7 @@ public extension SiteSettingsViewController {
                 }
             },
             failure: { error in
-                DDLogSwift.logError("Error getting purchases: \(error.localizedDescription)")
+                DDLogError("Error getting purchases: \(error.localizedDescription)")
                 SVProgressHUD.dismiss()
 
                 let errorTitle = NSLocalizedString("Check Purchases Error", comment: "Title of alert when getting purchases fails")

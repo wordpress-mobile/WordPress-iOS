@@ -1,0 +1,1 @@
+Abbiamo reso più semplice gestire gli elementi media del tuo sito con l'aggiunta della nuova sezione Libreria Media. Puoi visualizzare le tue fotografie ed  i tuoi video, fare ricerche, modificare i metadati, cancellare e caricare elementi direttamente dal menu dei dettagli del sito. Tocca semplicemente la voce Media per iniziare.

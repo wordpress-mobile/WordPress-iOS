@@ -126,7 +126,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     /// in `loginFields`.
     ///
     func configureEmailField() {
-        emailTextField.textInsets = UIEdgeInsetsMake(7, 20, 7, 20)
+        emailTextField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         emailTextField.text = loginFields.username
     }
 
@@ -134,7 +134,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     /// Configures whether appearance of the submit button.
     ///
     func configureSubmitButton() {
-        submitButton.isEnabled = loginFields.username.isValidEmail()
+        submitButton.isEnabled = canSubmit()
     }
 
 
@@ -196,7 +196,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         loginFields.safariStoredUsernameHash = username.hash
         loginFields.safariStoredPasswordHash = password.hash
 
-        signinWithUsernamePassword(false)
+        loginWithUsernamePassword(immediately: false)
 
         WPAppAnalytics.track(.loginAutoFillCredentialsFilled)
     }
@@ -206,17 +206,18 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     /// the call to authenticate with the available credentials.
     ///
     /// - Parameters:
-    ///     - immediateSignin: True if the newly loaded controller should immedately attempt
+    ///     - immediately: True if the newly loaded controller should immedately attempt
     ///                        to authenticate the user with the available credentails.  Default is `false`.
     ///
-    func signinWithUsernamePassword(_ immediateSignin: Bool = false) {
+    func loginWithUsernamePassword(immediately: Bool = false) {
+        // TODO: Need to implement the `immediately` portion of this once one wpcom controllers are done.
         performSegue(withIdentifier: .showWPComLogin, sender: self)
     }
 
 
     /// Displays the self-hosted sign in form.
     ///
-    func signinToSelfHostedSite() {
+    func loginToSelfHostedSite() {
         performSegue(withIdentifier: .showSelfHostedLogin, sender: self)
     }
 
@@ -248,7 +249,8 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
                                         self?.requestLink()
             },
                                       failure: { [weak self] (error: Error) in
-                                        DDLogSwift.logError(error.localizedDescription)
+                                        WPAppAnalytics.track(.loginFailed, error: error)
+                                        DDLogError(error.localizedDescription)
                                         guard let strongSelf = self else {
                                             return
                                         }
@@ -256,10 +258,9 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
 
                                         let userInfo = (error as NSError).userInfo
                                         if let errorCode = userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String, errorCode == "unknown_user" {
-                                            let msg = NSLocalizedString("We didn't find a WordPress.com account with that email address. Please double-check it and try again.",
+                                            let msg = NSLocalizedString("This email address is not registered on WordPress.com.",
                                                                         comment: "An error message informing the user the email address they entered did not match a WordPress.com account.")
                                             self?.displayError(message: msg)
-                                            WPAppAnalytics.track(.loginFailed, error: error)
                                         } else {
                                             strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
                                         }
@@ -267,8 +268,17 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     }
 
 
+    /// Sets the text of the error label.
+    ///
     func displayError(message: String) {
         errorLabel.text = message
+    }
+
+
+    /// Whether the form can be submitted.
+    ///
+    func canSubmit() -> Bool {
+        return loginFields.username.isValidEmail()
     }
 
 
@@ -276,7 +286,9 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
 
 
     @IBAction func handleSubmitForm() {
-        validateForm()
+        if canSubmit() {
+            validateForm()
+        }
     }
 
 
@@ -290,13 +302,13 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
 
         SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
             self?.emailTextField.text = loginFields.username
-            self?.signinWithUsernamePassword(true)
+            self?.loginWithUsernamePassword(immediately: true)
         }
     }
 
 
     @IBAction func handleSelfHostedButtonTapped(_ sender: UIButton) {
-        signinToSelfHostedSite()
+        loginToSelfHostedSite()
     }
 
 

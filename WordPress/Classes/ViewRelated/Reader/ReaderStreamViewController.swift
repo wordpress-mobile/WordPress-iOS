@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import SVProgressHUD
 import WordPressShared
 import WordPressComAnalytics
@@ -297,7 +298,7 @@ import WordPressComAnalytics
 
                 let context = ContextManager.sharedInstance().mainContext
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-                    DDLogSwift.logError("Reader: Error retriving an existing site topic by its objectID")
+                    DDLogError("Reader: Error retriving an existing site topic by its objectID")
                     self?.displayLoadingStreamFailed()
                     return
                 }
@@ -323,7 +324,7 @@ import WordPressComAnalytics
 
                 let context = ContextManager.sharedInstance().mainContext
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-                    DDLogSwift.logError("Reader: Error retriving an existing tag topic by its objectID")
+                    DDLogError("Reader: Error retriving an existing tag topic by its objectID")
                     self?.displayLoadingStreamFailed()
                     return
                 }
@@ -592,7 +593,7 @@ import WordPressComAnalytics
     ///
     func postInMainContext(_ post: ReaderPost) -> ReaderPost? {
         guard let post = (try? ContextManager.sharedInstance().mainContext.existingObject(with: post.objectID)) as? ReaderPost else {
-            DDLogSwift.logError("Error retrieving an exsting post from the main context by its object ID.")
+            DDLogError("Error retrieving an exsting post from the main context by its object ID.")
             return nil
         }
         return post
@@ -753,7 +754,7 @@ import WordPressComAnalytics
         do {
             return (try managedObjectContext().existingObject(with: objectID)) as? ReaderPost
         } catch let error as NSError {
-            DDLogSwift.logError(error.localizedDescription)
+            DDLogError(error.localizedDescription)
             return nil
         }
     }
@@ -844,7 +845,7 @@ import WordPressComAnalytics
         let service = ReaderPostService(managedObjectContext: managedObjectContext())
         service.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
             if let anError = error {
-                DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
+                DDLogError("Error (un)liking post: \(anError.localizedDescription)")
             }
         })
     }
@@ -861,7 +862,7 @@ import WordPressComAnalytics
         do {
             try tableViewHandler.resultsController.performFetch()
         } catch let error as NSError {
-            DDLogSwift.logError("Error fetching posts after updating the fetch reqeust predicate: \(error.localizedDescription)")
+            DDLogError("Error fetching posts after updating the fetch reqeust predicate: \(error.localizedDescription)")
         }
     }
 
@@ -958,7 +959,7 @@ import WordPressComAnalytics
         }
 
         guard let post = (try? managedObjectContext().existingObject(with: aPost.objectID)) as? ReaderPost else {
-            DDLogSwift.logError("Error fetching existing post from context.")
+            DDLogError("Error fetching existing post from context.")
             return
         }
 
@@ -1029,7 +1030,7 @@ import WordPressComAnalytics
     func updateLastSyncedForTopic(_ objectID: NSManagedObjectID) {
         let context = ContextManager.sharedInstance().mainContext
         guard let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-            DDLogSwift.logError("Failed to retrive an existing topic when updating last sync date.")
+            DDLogError("Failed to retrive an existing topic when updating last sync date.")
             return
         }
         topic.lastSynced = Date()
@@ -1145,7 +1146,7 @@ import WordPressComAnalytics
 
     func syncItems(_ success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         guard let topic = readerTopic else {
-            DDLogSwift.logError("Error: Reader tried to sync items when the topic was nil.")
+            DDLogError("Error: Reader tried to sync items when the topic was nil.")
             return
         }
 
@@ -1154,7 +1155,7 @@ import WordPressComAnalytics
 
         syncContext.perform { [weak self] in
             guard let topicInContext = (try? syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
-                DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
+                DDLogError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
 
@@ -1198,12 +1199,12 @@ import WordPressComAnalytics
         }
 
         guard let indexPath = indexPathForGapMarker else {
-            DDLogSwift.logError("Error: Tried to sync a gap when the index path for the gap was nil.")
+            DDLogError("Error: Tried to sync a gap when the index path for the gap was nil.")
             return
         }
 
         guard let post = tableViewHandler.resultsController.object(at: indexPath) as? ReaderGapMarker else {
-            DDLogSwift.logError("Error: Unable to retrieve an existing reader gap marker.")
+            DDLogError("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
 
@@ -1216,7 +1217,7 @@ import WordPressComAnalytics
 
         syncContext.perform { [weak self] in
             guard let topicInContext = (try? syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
-                DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
+                DDLogError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
 
@@ -1260,7 +1261,7 @@ import WordPressComAnalytics
         }
 
         guard let post = tableViewHandler.resultsController.fetchedObjects?.last as? ReaderPost else {
-            DDLogSwift.logError("Error: Unable to retrieve an existing reader gap marker.")
+            DDLogError("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
 
@@ -1272,7 +1273,7 @@ import WordPressComAnalytics
         let offset = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
         syncContext.perform {
             guard let topicInContext = (try? syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
-                DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
+                DDLogError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
 
@@ -1340,7 +1341,7 @@ import WordPressComAnalytics
         }
 
         guard let topicInContext = (try? managedObjectContext().existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
-            DDLogSwift.logError("Error: Could not retrieve an existing topic via its objectID")
+            DDLogError("Error: Could not retrieve an existing topic via its objectID")
             return predicateForNilTopic
         }
 
@@ -1737,7 +1738,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
-            DDLogSwift.logError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
+            DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             return
         }
 
