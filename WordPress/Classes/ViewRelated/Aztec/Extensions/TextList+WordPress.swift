@@ -4,7 +4,7 @@ import Aztec
 
 // MARK: - TextList.Style
 //
-private extension TextList.Style {
+extension TextList.Style {
 
     var formattingIdentifier: FormattingIdentifier {
         switch self {
