@@ -1,9 +1,10 @@
 import UIKit
+import CocoaLumberjack
 
 class BlogToBlog32to33: NSEntityMigrationPolicy {
 
     override func createDestinationInstances(forSource sInstance: NSManagedObject, in mapping: NSEntityMapping, manager: NSMigrationManager) throws {
-        DDLogSwift.logInfo("\(type(of: self)) \(#function) \(String(describing: mapping.sourceEntityName)) -> \(String(describing: mapping.destinationEntityName)))")
+        DDLogInfo("\(type(of: self)) \(#function) \(String(describing: mapping.sourceEntityName)) -> \(String(describing: mapping.destinationEntityName)))")
 
         let isWPcom = sInstance.value(forKeyPath: "account.isWpcom") as? Bool ?? false
         let isJetpack = sInstance.value(forKey: "isJetpack") as? Bool ?? false
@@ -27,7 +28,7 @@ class BlogToBlog32to33: NSEntityMigrationPolicy {
             destBlog.setValue(sInstance.value(forKeyPath: "account.username"), forKey: "username")
         } else {
             let xmlrpc = sInstance.value(forKey: "xmlrpc") as? String ?? "<missing xmlrpc>"
-            DDLogSwift.logWarn("Migrating Jetpack blog with unknown username: \(xmlrpc)")
+            DDLogWarn("Migrating Jetpack blog with unknown username: \(xmlrpc)")
         }
 
         // 4. Set isHostedAtWPcom
@@ -38,7 +39,7 @@ class BlogToBlog32to33: NSEntityMigrationPolicy {
             let blogXmlrpc = sInstance.value(forKey: "xmlrpc") as! String
             let accountXmlrpc = sInstance.value(forKeyPath: "account.xmlrpc") as! String
             if blogXmlrpc != accountXmlrpc {
-                DDLogSwift.logError("Blog's XML-RPC doesn't match Account's XML-RPC: \(blogXmlrpc) !== \(accountXmlrpc)")
+                DDLogError("Blog's XML-RPC doesn't match Account's XML-RPC: \(blogXmlrpc) !== \(accountXmlrpc)")
 
                 let username = sInstance.value(forKeyPath: "account.username") as! String
 
@@ -46,7 +47,7 @@ class BlogToBlog32to33: NSEntityMigrationPolicy {
                     let password = try SFHFKeychainUtils.getPasswordForUsername(username, andServiceName: accountXmlrpc)
                     try SFHFKeychainUtils.storeUsername(username, andPassword: password, forServiceName: blogXmlrpc, updateExisting: true)
                 } catch {
-                    DDLogSwift.logError("Error getting/saving password for \(accountXmlrpc): \(error)")
+                    DDLogError("Error getting/saving password for \(accountXmlrpc): \(error)")
                 }
             }
         }

@@ -10,6 +10,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     let email    = "jimthetester@thetestemail.org"
     let token    = "token"
 
+    let authOptionsEndpoint = "users/jimthetester/auth-options"
     let meEndpoint       = "me"
     let meSitesEndpoint  = "me/sites"
     let emailEndpoint    = "/is-available/email"
@@ -28,6 +29,8 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     let setSiteVisibilityBadJsonFailureMockFilename = "me-sites-visibility-bad-json-failure.json"
     let isEmailAvailableSuccessMockFilename         = "is-available-email-success.json"
     let isEmailAvailableFailureMockFilename         = "is-available-email-failure.json"
+    let isPasswordlessAccountSuccessMockFilename    = "is-passwordless-account-success.json"
+    let isPasswordlessAccountNoAccountFoundMockFilename    = "is-passwordless-account-no-account-found.json"
     let isUsernameAvailableSuccessMockFilename      = "is-available-username-success.json"
     let isUsernameAvailableFailureMockFilename      = "is-available-username-failure.json"
     let requestLinkSuccessMockFilename              = "auth-send-login-email-success.json"
@@ -326,6 +329,44 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(emailEndpoint, data: Data(), contentType: .NoContentType, status: 500)
         remote.isEmailAvailable(email, success: { isAvailable in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            guard let error = error as NSError? else {
+                XCTFail("The returned error could not be cast as NSError")
+                expect.fulfill()
+                return
+            }
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    // MARK: - Is Passwordless Account Tests
+
+    func testIsPasswordlessAccountSucceeds() {
+        let expect = expectation(description: "Passwordless check success")
+
+        stubRemoteResponse(authOptionsEndpoint, filename: isPasswordlessAccountSuccessMockFilename, contentType: .JavaScript)
+        remote.isPasswordlessAccount(username, success: { passwordless in
+            XCTAssert(true)
+            expect.fulfill()
+        }, failure: { error  in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testIsPasswordlessAccountNoAccountFound() {
+        let expect = expectation(description: "Passwordless check fails with 404")
+
+        stubRemoteResponse(authOptionsEndpoint, filename: isPasswordlessAccountNoAccountFoundMockFilename, contentType: .JavaScript, status: 404)
+        remote.isPasswordlessAccount(username, success: { passwordless in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in

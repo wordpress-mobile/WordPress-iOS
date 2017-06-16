@@ -1,0 +1,20 @@
+<methodResponse>
+    <params>
+        <param>
+            <value>
+                <struct>
+                    <member>
+                        <name>
+                            foo
+                        </name>
+                        <value>
+                            <string>
+                                1
+                            </string>
+                        </value>
+                    </member>
+                </struct>
+            </value>
+        </param>
+    </params>
+</methodResponse>

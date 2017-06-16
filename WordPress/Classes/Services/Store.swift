@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import StoreKit
 
 enum ProductRequestError: Error {
@@ -90,15 +91,15 @@ class StoreCoordinator<S: Store> {
     }
 
     fileprivate func processTransaction(_ transaction: SKPaymentTransaction) {
-        DDLogSwift.logInfo("[Store] Processing transaction \(transaction)")
+        DDLogInfo("[Store] Processing transaction \(transaction)")
         switch transaction.transactionState {
         case .purchasing: break
         case .restored: break
         case .failed:
-            DDLogSwift.logInfo("[Store] Finishing failed transaction \(transaction)")
+            DDLogInfo("[Store] Finishing failed transaction \(transaction)")
             finishTransaction(transaction)
         case .deferred:
-            DDLogSwift.logInfo("[Store] Transaction is deferred \(transaction)")
+            DDLogInfo("[Store] Transaction is deferred \(transaction)")
         case .purchased:
             verifyTransaction(transaction)
         }
@@ -106,7 +107,7 @@ class StoreCoordinator<S: Store> {
 
     fileprivate func verifyTransaction(_ transaction: SKPaymentTransaction) {
         guard let pendingPayment = pendingPayment else {
-            DDLogSwift.logInfo("[Store] Transaction with no pending payment information \(transaction)")
+            DDLogInfo("[Store] Transaction with no pending payment information \(transaction)")
 
             // TODO: (@frosty 2016-04-27) Still attempt to verify purchase, sending only user info /
             // receipt data – we should at least be able to tell if this is a renewal.
@@ -125,7 +126,7 @@ class StoreCoordinator<S: Store> {
                 return
         }
 
-        DDLogSwift.logInfo("[Store] Verifying purchase for transaction \(transaction)")
+        DDLogInfo("[Store] Verifying purchase for transaction \(transaction)")
         service.verifyPurchase(pendingPayment.siteID, productID: pendingPayment.productID, receipt: receipt, completion: { [weak self] _ in
             // TODO: Handle success / failure of verification attempt
             self?.finishTransaction(transaction)
@@ -133,7 +134,7 @@ class StoreCoordinator<S: Store> {
     }
 
     fileprivate func finishTransaction(_ transaction: SKPaymentTransaction) {
-        DDLogSwift.logInfo("[Store] Finishing transaction \(transaction)")
+        DDLogInfo("[Store] Finishing transaction \(transaction)")
 
         SKPaymentQueue.default().finishTransaction(transaction)
 
@@ -373,7 +374,7 @@ private class ProductRequestDelegate: NSObject, SKProductsRequestDelegate {
 
     @objc func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         if !response.invalidProductIdentifiers.isEmpty {
-            DDLogSwift.logWarn("Invalid product identifiers: \(response.invalidProductIdentifiers)")
+            DDLogWarn("Invalid product identifiers: \(response.invalidProductIdentifiers)")
         }
         onSuccess(response.products)
     }

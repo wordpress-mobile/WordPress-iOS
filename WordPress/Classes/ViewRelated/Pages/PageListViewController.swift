@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import WordPressShared
 import WordPressComAnalytics
 
@@ -515,10 +516,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             pageManagedOjbect = try managedObjectContext().existingObject(with: objectID)
 
         } catch let error as NSError {
-            DDLogSwift.logError("\(NSStringFromClass(type(of: self))), \(#function), \(error)")
+            DDLogError("\(NSStringFromClass(type(of: self))), \(#function), \(error)")
             return nil
         } catch _ {
-            DDLogSwift.logError("\(NSStringFromClass(type(of: self))), \(#function), Could not find Page with ID \(objectID)")
+            DDLogError("\(NSStringFromClass(type(of: self))), \(#function), Could not find Page with ID \(objectID)")
             return nil
         }
 

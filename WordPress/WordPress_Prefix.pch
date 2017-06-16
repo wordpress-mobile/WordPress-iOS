@@ -12,15 +12,15 @@
     #import <MobileCoreServices/MobileCoreServices.h>
 
 	// 3rd Party
-    #import <AFNetworking/AFNetworking.h>
-	#import <CocoaLumberjack/CocoaLumberjack.h>
-    #import <NSObject_SafeExpectations/NSObject+SafeExpectations.h>
-    #import <WordPressComAnalytics/WPAnalytics.h>
+    @import AFNetworking;
+    @import CocoaLumberjack;
+    @import NSObject_SafeExpectations;
+    @import WordPressComAnalytics;
+    @import WordPressShared.WPMapFilterReduce;
 
 	// Project-specific
     #import "WPStyleGuide+ReadableMargins.h"
     #import "WPError.h"
-    #import <WordPressShared/WPMapFilterReduce.h>
 
 #ifndef IS_IPAD
 #define IS_IPAD   ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)

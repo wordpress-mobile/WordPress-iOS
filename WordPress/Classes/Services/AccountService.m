@@ -134,6 +134,20 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return [account.uuid isEqualToString:uuid];
 }
 
+- (void)isPasswordlessAccount:(NSString *)identifier success:(void (^)(BOOL passwordless))success failure:(void (^)(NSError *error))failure
+{
+    id<AccountServiceRemote> remote = [self remoteForAnonymous];
+    [remote isPasswordlessAccount:identifier success:^(BOOL passwordless) {
+        if (success) {
+            success(identifier);
+        }
+    } failure:^(NSError * _Nonnull error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
 {
     id<AccountServiceRemote> remote = [self remoteForAnonymous];
