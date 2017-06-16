@@ -278,6 +278,7 @@ open class MediaLibrary: LocalCoreDataService {
         var options = MediaImageExporter.Options()
         options.maximumImageSize = self.exporterMaximumImageSize()
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
+        options.imageCompressionQuality = 0.9
         return options
     }
 
