@@ -38,4 +38,11 @@ extension WPStyleGuide {
         return UIColor(fromRGBAColorWithRed: 17.0, green: 17.0, blue: 17.0, alpha: alpha)
     }
 
+
+    ///
+    ///
+    class func edgeInsetForLoginTextFields() -> UIEdgeInsets {
+        return UIEdgeInsetsMake(7, 20, 7, 20)
+    }
+
 }

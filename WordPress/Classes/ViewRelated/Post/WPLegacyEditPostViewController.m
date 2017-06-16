@@ -30,14 +30,13 @@
 #import "PostPreviewViewController.h"
 #import "AbstractPost.h"
 #import "Media+HTML.h"
+#import "WordPress-Swift.h"
 
-NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
 NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
-static void *ProgressObserverContext = &ProgressObserverContext;
 
 
-@interface WPLegacyEditPostViewController ()<UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration, WPMediaPickerViewControllerDelegate>
+@interface WPLegacyEditPostViewController ()<UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration, WPMediaPickerViewControllerDelegate, MediaProgressCoordinatorDelegate>
 
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
 @property (nonatomic, assign) EditPostViewControllerMode editMode;
@@ -48,13 +47,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 @property (nonatomic, strong) UIButton *uploadStatusButton;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
-@property (nonatomic, strong) NSProgress * mediaGlobalProgress;
 @property (nonatomic, strong) UIProgressView * mediaProgressView;
-@property (nonatomic, strong) NSMutableDictionary *mediaInProgress;
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaLibraryDataSource;
 @property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
+@property (nonatomic, strong) MediaProgressCoordinator *mediaProgressCoordinator;
 
 @end
 
@@ -66,13 +64,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     if (dontRestoreIfNewEditorIsEnabled) {
         return nil;
-    }
-
-    if ([[identifierComponents lastObject] isEqualToString:WPLegacyEditorNavigationRestorationID]) {
-        UINavigationController *navController = [[UINavigationController alloc] init];
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [self class];
-        return navController;
     }
 
     NSString *postID = [coder decodeObjectForKey:WPLegacyAbstractPostRestorationKey];
@@ -103,8 +94,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)dealloc
 {
-    [_mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.mediaProgressView removeFromSuperview];
 }
 
 - (id)initWithTitle:(NSString *)title andContent:(NSString *)content andTags:(NSString *)tags andImage:(NSString *)image
@@ -168,8 +159,16 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    self.mediaInProgress = [NSMutableDictionary dictionary];
+    self.mediaProgressCoordinator = [[MediaProgressCoordinator alloc] init];
+    self.mediaProgressCoordinator.delegate = self;
     self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+    [self.mediaProgressView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.navigationController.navigationBar addSubview:self.mediaProgressView];
+    [NSLayoutConstraint activateConstraints:@[
+                                              [self.mediaProgressView.topAnchor constraintEqualToAnchor:self.navigationController.navigationBar.bottomAnchor constant:-2],
+                                              [self.mediaProgressView.widthAnchor constraintEqualToAnchor:self.navigationController.navigationBar.widthAnchor constant:0]
+                                              ]
+     ];
     self.delegate = self;
 }
 
@@ -192,26 +191,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [super viewDidAppear:animated];
     [self refreshButtons];
     // setup media progress view on navbar
-    [self.navigationController.navigationBar addSubview:self.mediaProgressView];
-    [self.mediaProgressView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    self.mediaProgressView.hidden = ![self isMediaUploading];
-}
 
-- (void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    [self.mediaProgressView removeFromSuperview];
-}
-
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    
-    //layout mediaProgressView 
-    CGRect frame = self.mediaProgressView.frame;
-    frame.size.width = self.view.frame.size.width;
-    frame.origin.y = self.navigationController.navigationBar.frame.size.height-frame.size.height;
-    self.mediaProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    [self.mediaProgressView setFrame:frame];
+    self.mediaProgressView.hidden = !self.mediaProgressCoordinator.isRunning;
 }
 
 #pragma mark - View Setup
@@ -235,8 +216,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
-    self.mediaProgressView.hidden = ![self isMediaUploading];
-    if ([self isMediaUploading]) {
+    self.mediaProgressView.hidden = !(self.mediaProgressCoordinator.isRunning && self.isViewOnScreen);
+    if (self.mediaProgressCoordinator.isRunning) {
         [self refreshMediaProgress];
         UIButton *titleButton = self.uploadStatusButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server")]                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager systemBoldFontOfSize:14.0] }];
@@ -397,7 +378,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
 
-    if ([self isMediaUploading]) {
+    if (self.mediaProgressCoordinator.isRunning) {
         [self showMediaInUploadingAlert];
         return;
     }
@@ -617,12 +598,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)discardChanges
 {
-    [self.post.original deleteRevision];
+    AbstractPost *original = self.post.original;
+    [original deleteRevision];
 
-    if (self.editMode == EditPostViewControllerModeNewPost) {
-        NSManagedObjectContext* context = self.post.original.managedObjectContext;
+    if (self.editMode == EditPostViewControllerModeNewPost || original.shouldRemoveOnDismiss) {
+        NSManagedObjectContext* context = original.managedObjectContext;
         
-        [self.post.original remove];
+        [original remove];
         
         [[ContextManager sharedInstance] saveContext:context];
     }
@@ -631,7 +613,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)dismissEditView:(BOOL)changesSaved
 {
     if (self.onClose) {
-        self.onClose(self, changesSaved);
+        self.onClose(changesSaved);
         self.onClose = nil;
     } else{
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
@@ -641,12 +623,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)saveAction
 {
-    if ([self isMediaUploading] ) {
+    if (self.mediaProgressCoordinator.isRunning) {
         [self showMediaInUploadingAlert];
         return;
     }
 
-    if ([self hasFailedMedia]) {
+    if (self.mediaProgressCoordinator.hasFailedMedia) {
         [self showFailedMediaAlert];
         return;
     }
@@ -790,14 +772,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)refreshMediaProgress
 {
-    self.mediaProgressView.hidden = ![self isMediaUploading];
-    float fractionOfUploadsCompleted = (float)(self.mediaGlobalProgress.completedUnitCount+1)/(float)self.mediaGlobalProgress.totalUnitCount;
-    self.mediaProgressView.progress = MIN(fractionOfUploadsCompleted ,self.mediaGlobalProgress.fractionCompleted);
+    self.mediaProgressView.hidden = !(self.mediaProgressCoordinator.isRunning && self.isViewOnScreen);
+    self.mediaProgressView.progress = self.mediaProgressCoordinator.totalProgress;
 }
 
 - (void)showMediaProgress
 {
-    WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaGlobalProgress childrenProgress:self.mediaInProgress.allValues];
+    WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaProgressCoordinator.mediaUploadingProgress childrenProgress:self.mediaProgressCoordinator.mediaUploading.allValues];
     
     vc.title = NSLocalizedString(@"Media Uploading", @"Title for view that shows progress of multiple uploads");
     
@@ -847,93 +828,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (BOOL)hasFailedMedia
-{
-    for(NSProgress * progress in self.mediaInProgress.allValues) {
-        if (progress.totalUnitCount == 0){
-            return YES;
-        }
-    }
-    return NO;
-}
-
-- (BOOL)isMediaUploading
-{
-    for(NSProgress * progress in self.mediaInProgress.allValues) {
-        if (!progress.isCancelled && progress.totalUnitCount != 0){
-            return YES;
-        }
-    }
-    return NO;
-}
-
 - (void)cancelMediaUploads
 {
-    [self.mediaGlobalProgress cancel];
-    [self.mediaInProgress removeAllObjects];
+    [self.mediaProgressCoordinator cancelAllPendingUploads];
     [self autosaveContent];
     [self setupNavbar];
-}
-
-- (void)cancelUploadOfMediaWithId:(NSString *)uniqueMediaId
-{
-    NSProgress * progress = self.mediaInProgress[uniqueMediaId];
-    if (!progress) {
-        return;
-    }
-    [progress cancel];
-}
-
-- (void)removeAllFailedMedia
-{
-    NSMutableArray * keys = [NSMutableArray array];
-    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
-        if (progress.totalUnitCount == 0){
-            [keys addObject:key];
-        }
-    }];
-    [self.mediaInProgress removeObjectsForKeys:keys];
-    [self autosaveContent];
-}
-
-- (void)stopTrackingProgressOfMediaWithId:(NSString *)uniqueMediaId
-{
-    NSParameterAssert(uniqueMediaId != nil);
-    if (!uniqueMediaId) {
-        return;
-    }
-    [self.mediaInProgress removeObjectForKey:uniqueMediaId];
-}
-
-- (void)trackMediaWithId:(NSString *)uniqueMediaId usingProgress:(NSProgress *)progress
-{
-    NSParameterAssert(uniqueMediaId != nil);
-    if (!uniqueMediaId) {
-        return;
-    }
-    
-    self.mediaInProgress[uniqueMediaId] = progress;
-}
-
-- (void)prepareMediaProgressForNumberOfAssets:(NSUInteger)count
-{
-    if (self.mediaGlobalProgress.isCancelled ||
-        self.mediaGlobalProgress.completedUnitCount >= self.mediaGlobalProgress.totalUnitCount){
-        [self.mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
-        self.mediaGlobalProgress = nil;
-    }
-    
-    if (!self.mediaGlobalProgress){
-        self.mediaGlobalProgress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress]
-                                                             userInfo:nil];
-        self.mediaGlobalProgress.totalUnitCount = count;
-        [self.mediaGlobalProgress addObserver:self
-                                   forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
-                                      options:NSKeyValueObservingOptionInitial
-                                      context:ProgressObserverContext];
-    } else {
-        self.mediaGlobalProgress.totalUnitCount += count;
-    }
 }
 
 - (void)addMediaAssets:(NSArray *)assets
@@ -941,7 +840,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (assets.count == 0) {
         return;
     }
-    [self prepareMediaProgressForNumberOfAssets:assets.count];
+    [self.mediaProgressCoordinator trackWithNumberOfItems:assets.count];
     for (id<WPMediaAsset> asset in assets) {
         if ([asset isKindOfClass:[PHAsset class]]){
             [self addDeviceMediaAsset:(PHAsset *)asset];
@@ -960,19 +859,21 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
         __weak __typeof__(self) weakSelf = self;
         NSString* imageUniqueId = [self uniqueIdForMedia];
+
         NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
-        createMediaProgress.totalUnitCount = 2;
-        [self trackMediaWithId:imageUniqueId usingProgress:createMediaProgress];
+        createMediaProgress.totalUnitCount = 100;
+        [self.mediaProgressCoordinator trackWithProgress:createMediaProgress ofObject:nil withMediaID:imageUniqueId];
         [mediaService createMediaWithPHAsset:asset forPostObjectID:self.post.objectID thumbnailCallback:nil completion:^(Media *media, NSError * error) {
-            if (error){
-                [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
-                [self stopTrackingProgressOfMediaWithId:imageUniqueId];
-                return;
-            }
             __typeof__(self) strongSelf = weakSelf;
             if (!strongSelf) {
                 return;
             }
+            if (error){
+                [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
+                [strongSelf.mediaProgressCoordinator attachWithError:error toMediaID:imageUniqueId];
+                return;
+            }
+
             createMediaProgress.completedUnitCount++;
             if (media.mediaType == WPMediaTypeImage) {
                 [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
@@ -983,7 +884,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                        withProperties:[WPAppAnalytics propertiesFor:media]
                              withPost:self.post];
             }
+            [self.mediaProgressCoordinator trackWithNumberOfItems:1];
             [self uploadMedia:media trackingId:imageUniqueId];
+            createMediaProgress.completedUnitCount = 100;
         }];
     }
 }
@@ -991,14 +894,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)uploadMedia:(Media *)media trackingId:(NSString *)mediaUniqueId
 {
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [self.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         [self insertMedia:media];
-        [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
     } failure:^(NSError *error) {
         [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueLegacy} withPost:self.post];
-        [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
         if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
             DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
             return;
@@ -1006,11 +906,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
     }];
     UIImage * image = [UIImage imageWithContentsOfFile:media.absoluteThumbnailLocalURL.path];
-    [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
-    uploadProgress.kind = NSProgressKindFile;
-    [uploadProgress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
-    [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
-    [self.mediaGlobalProgress resignCurrent];
+    if (uploadProgress != nil) {
+        [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
+        uploadProgress.kind = NSProgressKindFile;
+        [uploadProgress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
+        [self.mediaProgressCoordinator trackWithProgress:uploadProgress ofObject:media withMediaID:mediaUniqueId];
+    }
 }
 
 - (void)addSiteMediaAsset:(Media *)media
@@ -1022,9 +923,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         } else if ([media mediaType] == MediaTypeVideo) {
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueLegacy} withPost:self.post];
         }
-        [self trackMediaWithId:mediaUniqueID usingProgress:[NSProgress progressWithTotalUnitCount:1]];
         [self insertMedia:media];
-        [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
+        [self.mediaProgressCoordinator finishOneItem];
     } else {
         if (media.mediaType == WPMediaTypeImage) {
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
@@ -1154,20 +1054,19 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - KVO
+#pragma mark - MediaProgressCoordinator
 
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context
-{
-    if (context == ProgressObserverContext && object == self.mediaGlobalProgress) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [self setupNavbar];
-        }];
-    } else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
+- (void)mediaProgressCoordinatorDidFinishUpload:(MediaProgressCoordinator *)mediaProgressCoordinator {
+    [self.mediaProgressCoordinator stopTrackingOfAllUploads];
+}
+
+- (void)mediaProgressCoordinatorDidStartUploading:(MediaProgressCoordinator *)mediaProgressCoordinator {
+
+}
+
+- (void)mediaProgressCoordinator:(MediaProgressCoordinator *)mediaProgressCoordinator progressDidChange:(float)progress {
+    [self setupNavbar];
 }
 
 @end
+

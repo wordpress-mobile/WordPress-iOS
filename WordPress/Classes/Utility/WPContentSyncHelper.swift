@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 
 
 @objc protocol WPContentSyncHelperDelegate: NSObjectProtocol {
@@ -79,7 +80,7 @@ class WPContentSyncHelper: NSObject {
             }
         }, failure: {
             [weak self] (error: NSError) in
-            DDLogSwift.logInfo("Error syncing more: \(error)")
+            DDLogInfo("Error syncing more: \(error)")
             if let weakSelf = self {
                 weakSelf.syncContentEnded(error: true)
             }

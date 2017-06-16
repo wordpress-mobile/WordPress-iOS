@@ -108,101 +108,39 @@ class EditPostViewController: UIViewController {
 
     fileprivate func showEditor() {
         let editorSettings = EditorSettings()
-        let editor: UIViewController
-        if editorSettings.visualEditorEnabled {
-            if editorSettings.nativeEditorEnabled {
-                editor = editPostInNativeVisualEditor()
-            } else {
-                editor = editPostInHybridVisualEditor()
+        let editor = editorSettings.instantiatePostEditor(post: postToEdit()) { (editor, vc) in
+            editor.isOpenedDirectlyForPhotoPost = openWithMediaPicker
+            editor.onClose = { [weak self, weak vc, weak editor] changesSaved in
+                guard let strongSelf = self else {
+                    vc?.dismiss(animated: true) {}
+                    return
+                }
+
+                // NOTE:
+                // We need to grab the latest Post Reference, since it may have changed (ie. revision / user picked a
+                // new blog).
+                if changesSaved {
+                    strongSelf.post = editor?.post as? Post
+                }
+                strongSelf.closeEditor(changesSaved)
             }
-        } else {
-            editor = editPostInTextEditor()
         }
+        // Neutralize iOS's Restoration:
+        // We'll relaunch the editor on our own, on viewDidAppear. Why: Because we need to set up the callbacks!
+        // This effectively prevents double editor instantiation!
+        //
+        editor.restorationClass = nil
+        editor.restorationIdentifier = nil
+
+        let navController = UINavigationController(rootViewController: editor)
+        navController.modalPresentationStyle = .fullScreen
 
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.prepare()
 
-        postPost.present(editor, animated: !showImmediately) {
+        postPost.present(navController, animated: !showImmediately) {
             generator.impactOccurred()
         }
-    }
-
-    fileprivate func editPostInNativeVisualEditor() -> UIViewController {
-        let postViewController = AztecPostViewController(post: postToEdit())
-        postViewController.isOpenedDirectlyForPhotoPost = openWithMediaPicker
-        postViewController.onClose = { [weak self] (changesSaved) in
-            guard let strongSelf = self else {
-                postViewController.dismiss(animated: true) {}
-                return
-            }
-
-            // NOTE:
-            // We need to grab the latest Post Reference, since it may have changed (ie. revision / user picked a 
-            // new blog).
-            if changesSaved {
-                strongSelf.post = postViewController.post as? Post
-            }
-            strongSelf.closeEditor(changesSaved)
-        }
-
-        // Neutralize iOS's Restoration:
-        // We'll relaunch the editor on our own, on viewDidAppear. Why: Because we need to set up the callbacks!
-        // This effectively prevents double editor instantiation!
-        //
-        postViewController.restorationClass = nil
-        postViewController.restorationIdentifier = nil
-
-        let navController = UINavigationController(rootViewController: postViewController)
-        navController.modalPresentationStyle = .fullScreen
-
-        return navController
-    }
-
-    fileprivate func editPostInHybridVisualEditor() -> UIViewController {
-        let postViewController = WPPostViewController(post: postToEdit(), mode: kWPPostViewControllerModeEdit)
-        postViewController?.isOpenedDirectlyForPhotoPost = openWithMediaPicker
-        postViewController?.onClose = { [weak self] (editorVC, changesSaved) in
-            guard let strongSelf = self else {
-                editorVC?.dismiss(animated: true) {}
-                return
-            }
-            if changesSaved {
-                strongSelf.post = editorVC?.post as? Post
-            }
-            strongSelf.closeEditor(changesSaved)
-        }
-
-        // Neutralize iOS's Restoration:
-        // We'll relaunch the editor on our own, on viewDidAppear. Why: Because we need to set up the callbacks!
-        // This effectively prevents double editor instantiation!
-        //
-        postViewController?.restorationClass = nil
-        postViewController?.restorationIdentifier = nil
-
-        let navController = UINavigationController(rootViewController: postViewController!)
-        navController.isToolbarHidden = false // Fixes incorrect toolbar animation.
-        navController.modalPresentationStyle = .fullScreen
-
-        return navController
-    }
-
-    fileprivate func editPostInTextEditor() -> UIViewController {
-        let editPostViewController = WPLegacyEditPostViewController(post: postToEdit())
-        editPostViewController?.onClose = { [weak self] (editorVC, changesSaved) in
-            guard let strongSelf = self else {
-                editorVC?.dismiss(animated: true) {}
-                return
-            }
-            if changesSaved {
-                strongSelf.post = editorVC?.post as? Post
-            }
-            strongSelf.closeEditor(changesSaved)
-        }
-
-        let navController = UINavigationController(rootViewController: editPostViewController!)
-        navController.modalPresentationStyle = .fullScreen
-
-        return navController
     }
 
     func closeEditor(_ changesSaved: Bool = true, from presentingViewController: UIViewController? = nil) {

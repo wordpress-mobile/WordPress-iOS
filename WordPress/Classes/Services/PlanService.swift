@@ -1,4 +1,6 @@
 import Foundation
+import CocoaLumberjack
+
 
 typealias PlanFeatures = [PlanID: [PlanFeature]]
 
@@ -45,13 +47,13 @@ extension PlanService {
         guard let blog = service.blog(byBlogId: NSNumber(value: siteID)) else {
             let error = "Tried to obtain a PlanService for a non-existing site (ID: \(siteID))"
             assertionFailure(error)
-            DDLogSwift.logError(error)
+            DDLogError(error)
             return nil
         }
         guard let account = blog.account else {
             let error = "Tried to obtain a PlanService for a self hosted site"
             assertionFailure(error)
-            DDLogSwift.logError(error)
+            DDLogError(error)
             return nil
         }
 
@@ -73,7 +75,7 @@ struct PlanStorage {
             guard let blog = service.blog(byBlogId: NSNumber(value: siteID)) else {
                 let error = "Tried to activate a plan for a non-existing site (ID: \(siteID))"
                 assertionFailure(error)
-                DDLogSwift.logError(error)
+                DDLogError(error)
                 return
             }
             if blog.planID?.intValue != planID {
