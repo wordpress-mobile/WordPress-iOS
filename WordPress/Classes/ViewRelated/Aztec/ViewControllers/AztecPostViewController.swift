@@ -1464,7 +1464,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             self.optionsViewController?.selectRow(at: index)
         }
 
-        if UIDevice.current.userInterfaceIdiom == .pad  {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             presentOptionsViewController(optionsViewController, asPopoverFromBarItem: barItem, completion: selectRow)
         } else {
             presentOptionsViewControllerAsInputView(optionsViewController)
