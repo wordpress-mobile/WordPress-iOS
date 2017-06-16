@@ -196,7 +196,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         loginFields.safariStoredUsernameHash = username.hash
         loginFields.safariStoredPasswordHash = password.hash
 
-        loginWithUsernamePassword(false)
+        loginWithUsernamePassword(immediately: false)
 
         WPAppAnalytics.track(.loginAutoFillCredentialsFilled)
     }
@@ -209,7 +209,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     ///     - immediately: True if the newly loaded controller should immedately attempt
     ///                        to authenticate the user with the available credentails.  Default is `false`.
     ///
-    func loginWithUsernamePassword(_ immediately: Bool = false) {
+    func loginWithUsernamePassword(immediately: Bool = false) {
         // TODO: Need to implement the `immediately` portion of this once one wpcom controllers are done.
         performSegue(withIdentifier: .showWPComLogin, sender: self)
     }
@@ -302,7 +302,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
 
         SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
             self?.emailTextField.text = loginFields.username
-            self?.loginWithUsernamePassword(true)
+            self?.loginWithUsernamePassword(immediately: true)
         }
     }
 
