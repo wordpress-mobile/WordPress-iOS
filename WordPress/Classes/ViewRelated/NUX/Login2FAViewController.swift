@@ -27,7 +27,6 @@ class Login2FAViewController: Signin2FAViewController, LoginViewController {
             NSParagraphStyleAttributeName: paragraphStyle ]]
 
         let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
-        let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
 
         if let titleLabel = sendCodeButton.titleLabel {
             titleLabel.lineBreakMode = .byWordWrapping
@@ -36,6 +35,6 @@ class Login2FAViewController: Signin2FAViewController, LoginViewController {
         }
 
         sendCodeButton.setAttributedTitle(attributedCode, for: UIControlState())
-        sendCodeButton.setAttributedTitle(attributedCodeHighlighted, for: .highlighted)
+        sendCodeButton.setAttributedTitle(attributedCode, for: .highlighted)
     }
 }
