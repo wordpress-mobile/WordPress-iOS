@@ -24,6 +24,11 @@ class LoginEpilogueViewController: UIViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if let vc = segue.destination as? LoginEpilogueTableView {
@@ -31,9 +36,9 @@ class LoginEpilogueViewController: UIViewController {
         }
     }
 
-    // @IBAction to allow to set the selector for target in the storyboard
-    @IBAction func unwindOut(segue: UIStoryboardSegue) {
+    @IBAction func dismissEpilogue() {
         dismissBlock?(false)
+        navigationController?.dismiss(animated: true, completion: nil)
     }
 
     override func viewDidLayoutSubviews() {

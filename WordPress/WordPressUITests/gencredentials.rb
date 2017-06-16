@@ -8,7 +8,9 @@ static let #{name}Password = "#{password}"
 EOF
 end
 
-def print_class(one_step_user, one_step_password, two_step_user, two_step_password, self_hosted_user, self_hosted_password, self_hosted_site_url, self_hosted_site_name, nux_email_prefix, nux_email_suffix)
+def print_class(one_step_user, one_step_password, two_step_user, two_step_password,
+                self_hosted_user, self_hosted_password, self_hosted_site_url,
+                self_hosted_site_name, nux_email_prefix, nux_email_suffix)
   print <<-EOF
 public class WordPressTestCredentials {
 EOF
@@ -76,4 +78,6 @@ File.open(path) do |f|
   end
 end
 
-print_class(one_step_user, one_step_password, two_step_user, two_step_password, self_hosted_user, self_hosted_password, self_hosted_site_url, self_hosted_site_name, nux_email_prefix, nux_email_suffix)
+print_class(one_step_user, one_step_password, two_step_user, two_step_password,
+            self_hosted_user, self_hosted_password, self_hosted_site_url,
+            self_hosted_site_name, nux_email_prefix, nux_email_suffix)

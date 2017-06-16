@@ -52,7 +52,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 - (void)refreshIconImage
 {
     if (self.blog.hasIcon) {
-        [self.blavatarImageView setImageWithSiteIcon:self.blog.icon placeholderImage:nil];
+        [self.blavatarImageView setImageWithSiteIconForBlog:self.blog placeholderImage:nil];
     } else {
         [self.blavatarImageView setDefaultSiteIconImage];
     }

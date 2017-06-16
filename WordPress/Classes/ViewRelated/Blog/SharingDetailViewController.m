@@ -14,9 +14,15 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) PublicizeConnection *publicizeConnection;
+@property (nonatomic, strong) SharingAuthorizationHelper *helper;
 @end
 
 @implementation SharingDetailViewController
+
+- (void)dealloc
+{
+    self.helper.delegate = nil;
+}
 
 - (instancetype)initWithBlog:(Blog *)blog
          publicizeConnection:(PublicizeConnection *)connection
@@ -27,6 +33,14 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (self) {
         _blog = blog;
         _publicizeConnection = connection;
+        SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+        PublicizeService *publicizeService = [sharingService findPublicizeServiceNamed:connection.service];
+        if (publicizeService) {
+            self.helper = [[SharingAuthorizationHelper alloc] initWithViewController:self
+                                                                                blog:self.blog
+                                                                    publicizeService:publicizeService];
+            self.helper.delegate = self;
+        }
     }
     return self;
 }
@@ -171,8 +185,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
 
     __weak __typeof(self) weakSelf = self;
-    SharingAuthorizationHelper *helper = [self helper];
-    if (helper == nil) {
+    if (self.helper == nil) {
         [sharingService syncPublicizeServicesForBlog:self.blog
                                              success:^{
                                                  [[weakSelf helper] reconnectPublicizeConnection:weakSelf.publicizeConnection];
@@ -181,22 +194,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
                                                  [WPError showNetworkingAlertWithError:error];
                                              }];
     } else {
-        [helper reconnectPublicizeConnection:weakSelf.publicizeConnection];
+        [self.helper reconnectPublicizeConnection:weakSelf.publicizeConnection];
     }
-}
-
-- (SharingAuthorizationHelper *)helper
-{
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    PublicizeService *publicizeService = [sharingService findPublicizeServiceNamed:self.publicizeConnection.service];
-    if (!publicizeService) {
-        return nil;
-    }
-    SharingAuthorizationHelper *helper = [[SharingAuthorizationHelper alloc] initWithViewController:self
-                                                                                               blog:self.blog
-                                                                                   publicizeService:publicizeService];
-    helper.delegate = self;
-    return helper;
 }
 
 - (void)disconnectPublicizeConnection

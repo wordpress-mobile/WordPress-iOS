@@ -1,7 +1,6 @@
 import Foundation
 import CoreData
-
-
+import CocoaLumberjack
 
 // MARK: - Notification Entity
 //
@@ -256,7 +255,7 @@ extension Notification {
         }
 
         guard let timestamp = timestamp, let timestampAsDate = Date.dateWithISO8601String(timestamp) else {
-            DDLogSwift.logError("Error: couldn't parse date [\(String(describing: self.timestamp))] for notification with id [\(notificationId)]")
+            DDLogError("Error: couldn't parse date [\(String(describing: self.timestamp))] for notification with id [\(notificationId)]")
             return Date()
         }
 

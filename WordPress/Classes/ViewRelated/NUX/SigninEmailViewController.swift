@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 import WordPressComAnalytics
 import WordPressShared
 
@@ -308,7 +309,7 @@ import WordPressShared
                                     }
                                  },
                                  failure: { [weak self] (error: Error) in
-                                    DDLogSwift.logError(error.localizedDescription)
+                                    DDLogError(error.localizedDescription)
                                     guard let strongSelf = self else {
                                         return
                                     }
