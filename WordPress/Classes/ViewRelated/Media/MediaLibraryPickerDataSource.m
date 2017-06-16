@@ -544,25 +544,21 @@
             break;
     };
 
-    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] newDerivedContext];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
     NSInteger count = [mediaService getMediaLibraryCountForBlog:self.blog
-                                                   forMediaTypes:mediaTypes];
-    // If we have a count of zero and this is the first time we are checking this group
-    // let's sync with the server
-    if (count == 0 && self.itemsCount == NSNotFound) {
-        __weak __typeof__(self) weakSelf = self;
-        [mediaService syncMediaLibraryForBlog:self.blog
-                                      success:^() {
-                                          weakSelf.itemsCount = [mediaService getMediaLibraryCountForBlog:self.blog
-                                                        forMediaTypes:mediaTypes];;
-                                          [weakSelf notifyObserversWithIncrementalChanges:NO removed:nil inserted:nil changed:nil moved:nil];
-                                      } failure:^(NSError *error) {
-                                          DDLogError(@"%@", [error localizedDescription]);
-        }];
-    } else {
+                                                  forMediaTypes:mediaTypes];
+    // If we have a count diferent of zero assume it's correct but sync with the server always in the background
+    if (count != 0) {
         self.itemsCount = count;
     }
+    __weak __typeof__(self) weakSelf = self;
+    [mediaService getMediaLibraryServerCountForBlog:self.blog forMediaTypes:mediaTypes success:^(NSInteger count) {
+        weakSelf.itemsCount = count;
+    } failure:^(NSError * _Nonnull error) {
+        DDLogError(@"%@", [error localizedDescription]);
+        weakSelf.itemsCount = count;
+    }];
 
     return self.itemsCount;
 }
