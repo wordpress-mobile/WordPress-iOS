@@ -93,8 +93,6 @@ extension FormattingIdentifier {
             return "format_toolbar_toggle_h5"
         case .header6:
             return "format_toolbar_toggle_h6"
-        case .p:
-            return "none"
         }
     }
 
@@ -138,8 +136,6 @@ extension FormattingIdentifier {
             return NSLocalizedString("Header 5", comment: "Accessibility label for selecting h5 paragraph style button on the formatting toolbar.")
         case .header6:
             return NSLocalizedString("Header 6", comment: "Accessibility label for selecting h6 paragraph style button on the formatting toolbar.")
-        case .p:
-            return NSLocalizedString("Paragraph", comment: "Accessibility label for selecting the default paragraph style button on the formatting toolbar.")
         }
     }
 }
