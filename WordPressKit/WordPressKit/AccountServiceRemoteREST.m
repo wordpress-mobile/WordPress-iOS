@@ -1,6 +1,7 @@
 #import "AccountServiceRemoteREST.h"
 #import "RemoteBlog.h"
 #import "RemoteBlogOptionsHelper.h"
+#import "Logging.h"
 #import <WordPressKit/WordPressKit-Swift.h>
 @import NSObject_SafeExpectations;
 @import WordPressShared;

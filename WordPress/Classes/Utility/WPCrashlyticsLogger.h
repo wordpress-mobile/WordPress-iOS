@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <CocoaLumberjack/CocoaLumberjack.h>
+@import CocoaLumberjack;
 
 @interface WPCrashlyticsLogger : DDAbstractLogger
 
