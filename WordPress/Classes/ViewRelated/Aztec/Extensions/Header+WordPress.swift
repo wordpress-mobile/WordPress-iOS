@@ -20,12 +20,12 @@ extension Header.HeaderType {
     var description: String {
         switch self {
         case .none: return NSLocalizedString("Default", comment: "Description of the default paragraph formatting style in the editor.")
-        case .h1: return "Heading 1"
-        case .h2: return "Heading 2"
-        case .h3: return "Heading 3"
-        case .h4: return "Heading 4"
-        case .h5: return "Heading 5"
-        case .h6: return "Heading 6"
+        case .h1: return NSLocalizedString("Heading 1", comment: "H1 Aztec Style")
+        case .h2: return NSLocalizedString("Heading 2", comment: "H2 Aztec Style")
+        case .h3: return NSLocalizedString("Heading 3", comment: "H3 Aztec Style")
+        case .h4: return NSLocalizedString("Heading 4", comment: "H4 Aztec Style")
+        case .h5: return NSLocalizedString("Heading 5", comment: "H5 Aztec Style")
+        case .h6: return NSLocalizedString("Heading 6", comment: "H6 Aztec Style")
         }
     }
 

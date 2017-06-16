@@ -1205,10 +1205,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             toggleStrikethrough()
         case .blockquote:
             toggleBlockquote()
-        case .unorderedlist:
-            toggleUnorderedList()
-        case .orderedlist:
-            toggleOrderedList()
+        case .unorderedlist, .orderedlist:
+            toggleList(fromItem: barItem)
         case .link:
             toggleLink()
         case .media:
@@ -1247,18 +1245,58 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
 
-    func toggleOrderedList() {
-        richTextView.toggleOrderedList(range: richTextView.selectedRange)
-    }
+    func toggleList(fromItem item: FormatBarItem) {
+        let listOptions = Constants.lists.map { (listType) -> OptionsTableViewOption in
+            return OptionsTableViewOption(image: listType.iconImage, title: NSAttributedString(string: listType.description, attributes: [:]))
+        }
 
+        var index: Int? = nil
+        if let listType = listTypeForSelectedText() {
+            index = Constants.lists.index(of: listType)
+        }
 
-    func toggleUnorderedList() {
-        richTextView.toggleUnorderedList(range: richTextView.selectedRange)
+        showOptionsTableViewControllerWithOptions(listOptions,
+                                                  fromBarItem: item,
+                                                  selectedRowIndex: index,
+                                                  onSelect: { [weak self] selected in
+                                                    guard let range = self?.richTextView.selectedRange else { return }
+
+                                                    let listType = Constants.lists[selected]
+                                                    switch listType {
+                                                    case .unordered:
+                                                        self?.richTextView.toggleUnorderedList(range: range)
+                                                    case .ordered:
+                                                        self?.richTextView.toggleOrderedList(range: range)
+                                                    }
+
+                                                    self?.optionsViewController = nil
+        })
     }
 
 
     func toggleBlockquote() {
         richTextView.toggleBlockquote(range: richTextView.selectedRange)
+    }
+
+
+    func listTypeForSelectedText() -> TextList.Style? {
+        var identifiers = [FormattingIdentifier]()
+        if (richTextView.selectedRange.length > 0) {
+            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+        } else {
+            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+        }
+        let mapping: [FormattingIdentifier: TextList.Style] = [
+            .orderedlist: .ordered,
+            .unorderedlist: .unordered
+        ]
+        for (key,value) in mapping {
+            if identifiers.contains(key) {
+                return value
+            }
+        }
+
+        return nil
     }
 
 
@@ -1632,6 +1670,38 @@ extension AztecPostViewController: UIPopoverPresentationControllerDelegate {
         if optionsViewController != nil {
             optionsViewController = nil
         }
+    }
+}
+
+
+// MARK: - Unknown HTML
+//
+private extension AztecPostViewController {
+
+    func displayUnknownHtmlEditor(for attachment: HTMLAttachment) {
+        let targetVC = UnknownEditorViewController(attachment: attachment)
+        targetVC.onDidSave = { [weak self] html in
+            self?.richTextView.update(attachment: attachment, html: html)
+            self?.dismiss(animated: true, completion: nil)
+        }
+
+        targetVC.onDidCancel = { [weak self] in
+            self?.dismiss(animated: true, completion: nil)
+        }
+
+        let navigationController = UINavigationController(rootViewController: targetVC)
+        displayAsPopover(viewController: navigationController)
+    }
+
+    func displayAsPopover(viewController: UIViewController) {
+        viewController.modalPresentationStyle = .popover
+        viewController.preferredContentSize = view.frame.size
+
+        let presentationController = viewController.popoverPresentationController
+        presentationController?.sourceView = view
+        presentationController?.delegate = self
+
+        present(viewController, animated: true, completion: nil)
     }
 }
 
@@ -2224,19 +2294,22 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 extension AztecPostViewController: TextViewAttachmentDelegate {
 
     public func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
-        if  !richTextView.isFirstResponder {
+        if !richTextView.isFirstResponder {
             richTextView.becomeFirstResponder()
         }
 
-        if let imgAttachment = attachment as? ImageAttachment {
-            selected(textAttachment: imgAttachment, atPosition: position)
-        }
-
-        if let videoAttachment = attachment as? VideoAttachment {
+        switch attachment {
+        case let attachment as HTMLAttachment:
+            displayUnknownHtmlEditor(for: attachment)
+        case let attachment as ImageAttachment:
+            selected(textAttachment: attachment, atPosition: position)
+        case let attachment as VideoAttachment:
             if let imageAttachment = currentSelectedAttachment {
                 deselected(textAttachment: imageAttachment, atPosition: position)
             }
-            selected(videoAttachment: videoAttachment, atPosition: position)
+            selected(videoAttachment: attachment, atPosition: position)
+        default:
+            break
         }
     }
 
