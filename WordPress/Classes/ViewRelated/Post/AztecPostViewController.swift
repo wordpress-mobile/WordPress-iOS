@@ -287,7 +287,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Available Header Types
     ///
-    fileprivate let headers: [HeaderFormatter.HeaderType] = [.none, .h1, .h2, .h3, .h4, .h5, .h6]
+    fileprivate let headers: [Header.HeaderType] = [.none, .h1, .h2, .h3, .h4, .h5, .h6]
 
     /// HTML Pre Processors
     ///
@@ -1148,7 +1148,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             presentMediaPicker()
         case .sourcecode:
             toggleEditingMode()
-        case .header, .header1, .header2, .header3, .header4, .header5, .header6:
+        case .p, .header1, .header2, .header3, .header4, .header5, .header6:
             toggleHeader()
         case .horizontalruler:
             insertHorizontalRuler()
@@ -1342,8 +1342,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             return
         }
 
-        let headerOptions = headers.map { (headerType) -> NSAttributedString in
-            NSAttributedString(string: headerType.description, attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize)])
+        let headerOptions = headers.map { headerType in
+            return NSAttributedString(string: headerType.description, attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize)])
         }
 
         let headerPicker = OptionsTableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 200), options: headerOptions)
@@ -1376,14 +1376,14 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         richTextView.becomeFirstResponder()
     }
 
-    func headerLevelForSelectedText() -> HeaderFormatter.HeaderType {
+    func headerLevelForSelectedText() -> Header.HeaderType {
         var identifiers = [FormattingIdentifier]()
         if (richTextView.selectedRange.length > 0) {
             identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
             identifiers = richTextView.formatIdentifiersForTypingAttributes()
         }
-        let mapping: [FormattingIdentifier: HeaderFormatter.HeaderType] = [
+        let mapping: [FormattingIdentifier: Header.HeaderType] = [
             .header1: .h1,
             .header2: .h2,
             .header3: .h3,
@@ -2344,7 +2344,7 @@ extension FormattingIdentifier {
         switch(self) {
         case .media:
             return Gridicon.iconOfType(.addImage)
-        case .header:
+        case .p:
             return Gridicon.iconOfType(.heading)
         case .bold:
             return Gridicon.iconOfType(.bold)
@@ -2389,7 +2389,7 @@ extension FormattingIdentifier {
         switch(self) {
         case .media:
             return "format_toolbar_insert_media"
-        case .header:
+        case .p:
             return "format_toolbar_select_paragraph_style"
         case .bold:
             return "format_toolbar_toggle_bold"
@@ -2434,7 +2434,7 @@ extension FormattingIdentifier {
         switch(self) {
         case .media:
             return NSLocalizedString("Insert media", comment: "Accessibility label for insert media button on formatting toolbar.")
-        case .header:
+        case .p:
             return NSLocalizedString("Select paragraph style", comment: "Accessibility label for selecting paragraph style button on formatting toolbar.")
         case .bold:
             return NSLocalizedString("Bold", comment: "Accessibility label for bold button on formatting toolbar.")
