@@ -19,22 +19,23 @@ extension NSAttributedString {
     class func attributedStringWithHTML(_ htmlString: String, attributes: StyledHTMLAttributes?) -> NSAttributedString {
         let styles = styleTagTextForAttributes(attributes)
         let styledString = styles + htmlString
-        let attributedString = try! NSMutableAttributedString(
+        guard let attributedString = try? NSMutableAttributedString(
             data: styledString.data(using: String.Encoding.utf8)!,
             options: [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: NSNumber(value: String.Encoding.utf8.rawValue) ],
-            documentAttributes: nil)
+            documentAttributes: nil) else {
+                // if creating the html-ed string fails (and it has, thus this change) we return the string without any styling
+                return NSAttributedString(string: htmlString)
+        }
 
         // We can't apply text alignment through CSS, as we need to add a paragraph
         // style to set paragraph spacing (which will override any text alignment
         // set via CSS). So we'll look for a paragraph style specified for the
         // body of the text, so we can copy it use its text alignment.
-        let paragraphStyle: NSMutableParagraphStyle
+        let paragraphStyle = NSMutableParagraphStyle()
         if let attributes = attributes,
             let bodyAttributes = attributes[.BodyAttribute],
             let pStyle = bodyAttributes[NSParagraphStyleAttributeName] as? NSParagraphStyle {
-            paragraphStyle = pStyle.mutableCopy() as! NSMutableParagraphStyle
-        } else {
-            paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.setParagraphStyle(pStyle)
         }
 
         // Remove extra padding at the top and bottom of the text.
@@ -44,8 +45,8 @@ extension NSAttributedString {
         attributedString.addAttribute(NSParagraphStyleAttributeName,
                                    value: paragraphStyle,
                                    range: NSMakeRange(0, attributedString.string.characters.count - 1))
-
-        return attributedString.copy() as! NSAttributedString
+        
+        return NSAttributedString(attributedString: attributedString)
     }
 
     fileprivate class func styleTagTextForAttributes(_ attributes: StyledHTMLAttributes?) -> String {
