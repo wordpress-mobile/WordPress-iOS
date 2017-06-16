@@ -1482,7 +1482,7 @@ extension AztecPostViewController: UINavigationControllerDelegate {
 
 // MARK: - Cancel/Dismiss/Persistence Logic
 //
-fileprivate extension AztecPostViewController {
+private extension AztecPostViewController {
 
     // TODO: Rip this out and put it into the PostService
     func createRevisionOfPost() {
@@ -1595,7 +1595,7 @@ fileprivate extension AztecPostViewController {
         return strippedHTML
     }
 
-    fileprivate func mapUIContentToPostAndSave() {
+    func mapUIContentToPostAndSave() {
         post.postTitle = titleTextField.text
         // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
         if richTextView.isHidden {
@@ -1607,7 +1607,7 @@ fileprivate extension AztecPostViewController {
         ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
 
-    fileprivate func publishPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)? = nil) {
+    func publishPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)? = nil) {
         mapUIContentToPostAndSave()
 
         let managedObjectContext = ContextManager.sharedInstance().mainContext
@@ -1637,6 +1637,7 @@ private extension AztecPostViewController {
         return currentBlogCount <= 1 || post.hasRemote()
     }
 }
+
 
 // MARK: - MediaProgressCoordinatorDelegate
 //
