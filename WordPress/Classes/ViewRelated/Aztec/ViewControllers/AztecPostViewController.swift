@@ -1268,7 +1268,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                     case .ordered:
                                                         self?.richTextView.toggleOrderedList(range: range)
                                                     }
-                                                    
+
                                                     self?.optionsViewController = nil
         })
     }
@@ -1287,8 +1287,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             identifiers = richTextView.formatIdentifiersForTypingAttributes()
         }
         let mapping: [FormattingIdentifier: TextList.Style] = [
-            .orderedlist : .ordered,
-            .unorderedlist : .unordered
+            .orderedlist: .ordered,
+            .unorderedlist: .unordered
         ]
         for (key,value) in mapping {
             if identifiers.contains(key) {
