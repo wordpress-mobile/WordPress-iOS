@@ -1,0 +1,1 @@
+We've made it much easier to manage your site's media, with the addition of the new Media Library section. You can view your photos and videos, search, edit metadata, delete and upload items right from the site detail menu. Just tap Media to get started.

@@ -169,7 +169,7 @@ namespace :git do
   hooks = %w[pre-commit post-checkout post-merge]
 
   desc "Install git hooks"
-  task :instal_hooks do
+  task :install_hooks do
     hooks.each do |hook|
       target = hook_target(hook)
       source = hook_source(hook)

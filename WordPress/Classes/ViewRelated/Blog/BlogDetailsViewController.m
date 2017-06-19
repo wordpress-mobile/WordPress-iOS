@@ -12,11 +12,11 @@
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #import "WPGUIConstants.h"
-#import "WPTableViewCell.h"
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "MenusViewController.h"
 #import <Reachability/Reachability.h>
+#import <WordPressShared/WPTableViewCell.h>
 
 @import WordPressComStatsiOS;
 @import Gridicons;
@@ -108,13 +108,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider>
+@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate>
 
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray *tableSections;
 @property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) BlogService *blogService;
+@property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
 
 /// Used to restore the tableview selection during state restoration, and
 /// also when switching between a collapsed and expanded split view controller presentation
@@ -212,6 +213,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.view.accessibilityIdentifier = @"Blog Details Table";
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
     
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
@@ -326,6 +328,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     return _restorableSelectedIndexPath;
 }
 
+- (SiteIconPickerPresenter *)siteIconPickerPresenter
+{
+    if (!_siteIconPickerPresenter) {
+        _siteIconPickerPresenter = [[SiteIconPickerPresenter alloc]initWithBlog:self.blog];
+    }
+    return _siteIconPickerPresenter;
+}
+
 #pragma mark - Data Model setup
 
 - (void)reloadTableViewPreservingSelection
@@ -414,13 +424,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      [weakSelf showPageList];
                                                  }]];
 
-    if ([Feature enabled:FeatureFlagMediaLibrary]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
-                                                        image:[Gridicon iconOfType:GridiconTypeImage]
-                                                     callback:^{
-                                                         [weakSelf showMediaLibrary];
-                                                     }]];
-    }
+    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
+                                                    image:[Gridicon iconOfType:GridiconTypeImage]
+                                                 callback:^{
+                                                     [weakSelf showMediaLibrary];
+                                                 }]];
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
                                                           image:[Gridicon iconOfType:GridiconTypeComment]
@@ -578,6 +586,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     // Blog detail header view
     BlogDetailHeaderView *headerView = [[BlogDetailHeaderView alloc] init];
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
+    headerView.delegate = self;
     [headerWrapper addSubview:headerView];
 
     UILayoutGuide *readableGuide = headerWrapper.readableContentGuide;
@@ -588,6 +597,102 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                               [headerView.bottomAnchor constraintEqualToAnchor:headerWrapper.bottomAnchor],
                                               ]];
      self.headerView = headerView;
+}
+
+#pragma mark BlogDetailHeaderViewDelegate
+
+- (void)siteIconTapped
+{
+    if (!self.blog.isAdmin || !self.blog.isUploadingFilesAllowed) {
+        // Gracefully ignore the tap for users that can not upload files or
+        // blogs that do not have capabilities since those will not support the REST API icon update
+        return;
+    }
+    [self showUpdateSiteIconAlert];
+}
+
+#pragma mark Site Icon Update Management
+
+- (void)showUpdateSiteIconAlert
+{
+    UIAlertController *updateIconAlertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                       message:nil
+                                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+
+    updateIconAlertController.popoverPresentationController.sourceView = self.headerView.blavatarImageView.superview;
+    updateIconAlertController.popoverPresentationController.sourceRect = self.headerView.blavatarImageView.frame;
+    updateIconAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    
+    [updateIconAlertController addDefaultActionWithTitle:NSLocalizedString(@"Change Site Icon", @"Change site icon button")
+                                                 handler:^(UIAlertAction *action) {
+                                                     [self updateSiteIcon];
+                                                 }];
+    if (self.blog.hasIcon) {
+        [updateIconAlertController addDestructiveActionWithTitle:NSLocalizedString(@"Remove Site Icon", @"Remove site icon button")
+                                                         handler:^(UIAlertAction *action) {
+                                                             [self removeSiteIcon];
+                                                         }];
+    }
+    [updateIconAlertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                handler:nil];
+
+    [self presentViewController:updateIconAlertController animated:YES completion:nil];
+}
+
+- (void)updateSiteIcon
+{
+    self.siteIconPickerPresenter = [[SiteIconPickerPresenter alloc]initWithBlog:self.blog];
+    __weak __typeof(self) weakSelf = self;
+    self.siteIconPickerPresenter.onCompletion = ^(Media *media, NSError *error) {
+        if (error) {
+            [weakSelf showErrorForSiteIconUpdate];
+        } else if (media) {
+            [weakSelf updateBlogIconWithMedia:media];
+        } else {
+            // If no media and no error the picker was cancelled
+            [weakSelf dismissViewControllerAnimated:YES completion:nil];
+        }
+        weakSelf.siteIconPickerPresenter = nil;
+    };
+    self.siteIconPickerPresenter.onIconSelection = ^() {
+        weakSelf.headerView.updatingIcon = YES;
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
+    };
+    [self.siteIconPickerPresenter presentPickerFrom:self];
+}
+
+- (void)removeSiteIcon
+{
+    self.headerView.updatingIcon = YES;
+    self.blog.settings.iconMediaID = @0;
+    [self updateBlogSettingsAndRefreshIcon];
+}
+
+- (void)updateBlogIconWithMedia:(Media *)media
+{
+    self.blog.settings.iconMediaID = media.mediaID;
+    [self updateBlogSettingsAndRefreshIcon];
+}
+
+- (void)updateBlogSettingsAndRefreshIcon
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [blogService updateSettingsForBlog:self.blog
+                               success:^{
+        [blogService syncBlog:self.blog
+                      success:^{
+            self.headerView.updatingIcon = NO;
+            [self.headerView refreshIconImage];
+        } failure:nil];
+     } failure:^(NSError *error){
+         [self showErrorForSiteIconUpdate];
+     }];
+}
+
+- (void)showErrorForSiteIconUpdate
+{
+    [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Icon update failed", @"Message to show when site icon update failed")];
+    self.headerView.updatingIcon = NO;
 }
 
 #pragma mark - Table view data source
@@ -650,11 +755,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                animated:YES
                          scrollPosition:UITableViewScrollPositionNone];
     }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return WPTableViewDefaultRowHeight;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section

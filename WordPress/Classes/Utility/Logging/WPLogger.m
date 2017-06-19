@@ -1,11 +1,6 @@
 #import "WPLogger.h"
 
-// Pods
-#import <CocoaLumberjack/CocoaLumberjack.h>
-#import <CocoaLumberjack/DDASLLogger.h>
-#import <CocoaLumberjack/DDFileLogger.h>
-#import <CocoaLumberjack/DDTTYLogger.h>
-
+@import CocoaLumberjack;
 #import "WPCrashlyticsLogger.h"
 
 @interface WPLogger ()

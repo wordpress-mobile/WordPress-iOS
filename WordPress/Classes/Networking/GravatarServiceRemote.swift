@@ -1,18 +1,49 @@
 import Foundation
-
+import AFNetworking
 
 /// This ServiceRemote encapsulates all of the interaction with the Gravatar endpoint.
 ///
 open class GravatarServiceRemote {
-    /// Designated Initializer
+    let baseGravatarURL = "https://www.gravatar.com/"
+
+    /// This method fetches the Gravatar profile for the specified email address.
     ///
     /// - Parameters:
-    ///     - accountToken: A valid WordPress.com User Token
-    ///     - accountEmail: Account Email
+    ///     - email: The email address of the gravatar profile to fetch.
+    ///     - success: A success block.
+    ///     - failure: A failure block.
     ///
-    public init(accountToken: String, accountEmail: String) {
-        self.accountToken   = accountToken
-        self.accountEmail   = accountEmail
+    open func fetchProfile(_ email: String, success:@escaping ((_ profile: RemoteGravatarProfile) -> Void), failure:@escaping ((_ error: Error?) -> Void)) {
+        guard let hash = (email as NSString).md5() else {
+            assertionFailure()
+            return
+        }
+
+        let path = baseGravatarURL + hash + ".json"
+        guard let targetURL = URL(string: path) else {
+            assertionFailure()
+            return
+        }
+
+        let session = URLSession.shared
+        let task = session.dataTask(with: targetURL) { (data: Data?, response: URLResponse?, error: Error?) in
+            DispatchQueue.main.async {
+                let errPointer: NSErrorPointer = nil
+                if  let response = AFJSONResponseSerializer().responseObject(for: response, data: data, error: errPointer) as? [String: Array<Any>],
+                    let entry = response["entry"],
+                    let profileData = entry.first as? NSDictionary {
+
+                    let profile = RemoteGravatarProfile(dictionary: profileData)
+                    success(profile)
+                    return
+                }
+
+                let err = errPointer?.pointee ?? error
+                failure(err)
+            }
+        }
+
+        task.resume()
     }
 
 
@@ -22,7 +53,7 @@ open class GravatarServiceRemote {
     ///     - image: The new Gravatar Image, to be uploaded
     ///     - completion: An optional closure to be executed on completion.
     ///
-    open func uploadImage(_ image: UIImage, completion: ((_ error: NSError?) -> ())?) {
+    open func uploadImage(_ image: UIImage, accountEmail: String, accountToken: String, completion: ((_ error: NSError?) -> ())?) {
         guard let targetURL = URL(string: UploadParameters.endpointURL) else {
             assertionFailure()
             return
@@ -49,7 +80,6 @@ open class GravatarServiceRemote {
 
         task.resume()
     }
-
 
 
     // MARK: - Private Helpers
@@ -92,11 +122,6 @@ open class GravatarServiceRemote {
         return body as Data
     }
 
-
-
-    // MARK: - Private Properties
-    fileprivate let accountEmail: String
-    fileprivate let accountToken: String
 
     // MARK: - Private Structs
     fileprivate struct UploadParameters {

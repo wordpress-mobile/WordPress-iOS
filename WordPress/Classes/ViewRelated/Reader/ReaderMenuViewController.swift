@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import Gridicons
 import WordPressShared
 
@@ -166,6 +167,7 @@ import WordPressShared
         tableView.register(WPTableViewCell.self, forCellReuseIdentifier: actionCellIdentifier)
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
 
@@ -241,7 +243,7 @@ import WordPressShared
                 self?.cleanupAfterSync()
             }, failure: { [weak self] (error) in
                 self?.cleanupAfterSync()
-                DDLogSwift.logError("Error syncing menu: \(String(describing: error))")
+                DDLogError("Error syncing menu: \(String(describing: error))")
         })
     }
 
@@ -356,7 +358,7 @@ import WordPressShared
     func unfollowTagTopic(_ topic: ReaderTagTopic) {
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.unfollowTag(topic, withSuccess: nil) { (error) in
-            DDLogSwift.logError("Could not unfollow topic \(topic), \(String(describing: error))")
+            DDLogError("Could not unfollow topic \(topic), \(String(describing: error))")
 
             let title = NSLocalizedString("Could Not Remove Tag", comment: "Title of a prompt informing the user there was a probem unsubscribing from a tag in the reader.")
             let message = error?.localizedDescription
@@ -387,7 +389,7 @@ import WordPressShared
             }
 
             }, failure: { (error) in
-                DDLogSwift.logError("Could not follow tag named \(tagName) : \(String(describing: error))")
+                DDLogError("Could not follow tag named \(tagName) : \(String(describing: error))")
 
                 generator.notificationOccurred(.error)
 

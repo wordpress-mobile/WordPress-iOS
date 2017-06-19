@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import CocoaLumberjack
 import WordPressShared
 import WordPressComAnalytics
 
@@ -141,6 +142,7 @@ final class PersonViewController: UITableViewController {
 
         title = person.fullName.nonEmptyString() ?? screenMode.title
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -272,7 +274,7 @@ private extension PersonViewController {
 
     func deleteUser() {
         guard let user = user else {
-            DDLogSwift.logError("Error: Only Users can be deleted here")
+            DDLogError("Error: Only Users can be deleted here")
             assertionFailure()
             return
         }
@@ -295,7 +297,7 @@ private extension PersonViewController {
 
     func deleteFollower() {
         guard let follower = follower, isFollower else {
-            DDLogSwift.logError("Error: Only Followers can be deleted here")
+            DDLogError("Error: Only Followers can be deleted here")
             assertionFailure()
             return
         }
@@ -313,7 +315,7 @@ private extension PersonViewController {
 
     func deleteViewer() {
         guard let viewer = viewer, isViewer else {
-            DDLogSwift.logError("Error: Only Viewers can be deleted here")
+            DDLogError("Error: Only Viewers can be deleted here")
             assertionFailure()
             return
         }
@@ -356,13 +358,13 @@ private extension PersonViewController {
 
     func updateUserRole(_ newRole: Role) {
         guard let user = user else {
-            DDLogSwift.logError("Error: Only Users have Roles!")
+            DDLogError("Error: Only Users have Roles!")
             assertionFailure()
             return
         }
 
         guard let service = PeopleService(blog: blog, context: context) else {
-            DDLogSwift.logError("Couldn't instantiate People Service")
+            DDLogError("Couldn't instantiate People Service")
             return
         }
 

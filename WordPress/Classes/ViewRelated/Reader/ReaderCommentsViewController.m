@@ -7,7 +7,6 @@
 #import "ReaderPostService.h"
 #import "ReaderPostHeaderView.h"
 #import "UIView+Subviews.h"
-#import "WPNoResultsView.h"
 #import "WPImageViewController.h"
 #import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
@@ -15,6 +14,7 @@
 #import "SuggestionService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
+#import <WordPressShared/WPNoResultsView.h>
 #import "WordPress-Swift.h"
 
 

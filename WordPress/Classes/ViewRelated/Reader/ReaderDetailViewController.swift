@@ -1,7 +1,8 @@
 import Foundation
+import CocoaLumberjack
 import WordPressShared
 import WordPressComAnalytics
-
+import QuartzCore
 
 open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
 
@@ -294,7 +295,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 self?.textView.alpha = 1.0
                 self?.post = post
             }, failure: {[weak self] (error: Error?) in
-                DDLogSwift.logError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
+                DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
 
                 let title = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
                 WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: self?.view)
@@ -642,16 +643,22 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         resetActionButton(likeButton)
         resetActionButton(commentButton)
 
+        guard let post = post else {
+            assertionFailure()
+            return
+        }
+
         // Show likes if logged in, or if likes exist, but not if external
-        if (ReaderHelpers.isLoggedIn() || post!.likeCount.intValue > 0) && !post!.isExternal {
+        if (ReaderHelpers.isLoggedIn() || post.likeCount.intValue > 0) && !post.isExternal {
             configureLikeActionButton()
         }
 
         // Show comments if logged in and comments are enabled, or if comments exist.
         // But only if it is from wpcom (jetpack and external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
-        if post!.isWPCom && !shouldHideComments {
-            if (ReaderHelpers.isLoggedIn() && post!.commentsOpen) || post!.commentCount.intValue > 0 {
+        if post.isWPCom && !shouldHideComments {
+            let commentCount = post.commentCount?.intValue ?? 0
+            if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
                 configureCommentActionButton()
             }
         }
@@ -823,7 +830,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             navigationController?.setNavigationBarHidden(true, animated: animated)
             currentPreferredStatusBarStyle = .default
             footerViewHeightConstraint.constant = 0.0
-            UIView.animate(withDuration: animated ? 0.3 : 0,
+            UIView.animate(withDuration: animated ? 0.2 : 0,
                 delay: 0.0,
                 options: [.beginFromCurrentState, .allowUserInteraction],
                 animations: {
@@ -834,20 +841,20 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             // Shows the navbar and footer view
             let pinToBottom = isScrollViewAtBottom()
 
-            navigationController?.setNavigationBarHidden(false, animated: animated)
             currentPreferredStatusBarStyle = .lightContent
             footerViewHeightConstraint.constant = footerViewHeightConstraintConstant
-            UIView.animate(withDuration: animated ? 0.3 : 0,
-                delay: 0.0,
-                options: [.beginFromCurrentState, .allowUserInteraction],
-                animations: {
-                    self.view.layoutIfNeeded()
-                    if pinToBottom {
-                        let y = self.textView.contentSize.height - self.textView.frame.height
-                        self.textView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
-                    }
+            UIView.animate(withDuration: animated ? 0.2 : 0,
+                           delay: 0.0,
+                           options: [.beginFromCurrentState, .allowUserInteraction],
+                           animations: {
+                            self.view.layoutIfNeeded()
+                            if pinToBottom {
+                                self.navigationController?.setNavigationBarHidden(false, animated: animated)
+                                let y = self.textView.contentSize.height - self.textView.frame.height
+                                self.textView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
+                            }
 
-                }, completion: nil)
+            }, completion: nil)
         }
 
     }
@@ -942,7 +949,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let service = ReaderPostService(managedObjectContext: post.managedObjectContext!)
         service.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
             if let anError = error {
-                DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
+                DDLogError("Error (un)liking post: \(anError.localizedDescription)")
             }
         })
     }

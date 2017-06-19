@@ -144,7 +144,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
     }
 
     fileprivate func newVideoMedia() -> Media? {
-        return newMedia(fromResource: "test-video", withExtension:"mp4")
+        return newMedia(fromResource: "test-video-device-gps", withExtension:"m4v")
     }
 
     fileprivate func newMedia(fromResource resource: String, withExtension ext: String) -> Media? {

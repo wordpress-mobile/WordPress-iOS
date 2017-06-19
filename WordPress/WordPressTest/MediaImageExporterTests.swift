@@ -11,7 +11,6 @@ class MediaImageExporterTests: XCTestCase {
         let expect = self.expectation(description: "image export by UIImage")
         let exporter = MediaImageExporter()
         exporter.mediaDirectoryType = .temporary
-        exporter.stripsGeoLocationIfNeeded = false
         exporter.exportImage(image,
                              fileName: nil,
                              onCompletion: { (imageExport) in
@@ -32,7 +31,6 @@ class MediaImageExporterTests: XCTestCase {
         let url = URL(fileURLWithPath: mediaPath)
         let exporter = MediaImageExporter()
         exporter.mediaDirectoryType = .temporary
-        exporter.stripsGeoLocationIfNeeded = false
         exporter.exportImage(atURL: url,
                              onCompletion: { (imageExport) in
                                 self.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
@@ -52,8 +50,7 @@ class MediaImageExporterTests: XCTestCase {
         let exporter = MediaImageExporter()
         let maximumImageSize = CGFloat(200)
         exporter.mediaDirectoryType = .temporary
-        exporter.maximumImageSize = maximumImageSize
-        exporter.stripsGeoLocationIfNeeded = false
+        exporter.options.maximumImageSize = maximumImageSize
         exporter.exportImage(atURL: url,
                              onCompletion: { (imageExport) in
                                 self.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
@@ -73,8 +70,7 @@ class MediaImageExporterTests: XCTestCase {
         let expectedSize = max(image.size.width, image.size.height)
         let maximumImageSize = expectedSize + 200
         exporter.mediaDirectoryType = .temporary
-        exporter.maximumImageSize = maximumImageSize
-        exporter.stripsGeoLocationIfNeeded = false
+        exporter.options.maximumImageSize = maximumImageSize
         exporter.exportImage(image,
                              fileName: nil,
                              onCompletion: { (imageExport) in
@@ -96,7 +92,7 @@ class MediaImageExporterTests: XCTestCase {
         let url = URL(fileURLWithPath: mediaPath)
         let exporter = MediaImageExporter()
         exporter.mediaDirectoryType = .temporary
-        exporter.stripsGeoLocationIfNeeded = true
+        exporter.options.stripsGeoLocationIfNeeded = true
         exporter.exportImage(atURL: url,
                              onCompletion: { (imageExport) in
                                 self.validateImageExportStrippedGPS(imageExport)
@@ -115,7 +111,7 @@ class MediaImageExporterTests: XCTestCase {
         let url = URL(fileURLWithPath: mediaPath)
         let exporter = MediaImageExporter()
         exporter.mediaDirectoryType = .temporary
-        exporter.stripsGeoLocationIfNeeded = false
+        exporter.options.stripsGeoLocationIfNeeded = false
         exporter.exportImage(atURL: url,
                              onCompletion: { (imageExport) in
                                 self.validateImageExportDidNotStripGPS(imageExport)
@@ -135,8 +131,8 @@ class MediaImageExporterTests: XCTestCase {
         let exporter = MediaImageExporter()
         let maximumImageSize = CGFloat(200)
         exporter.mediaDirectoryType = .temporary
-        exporter.stripsGeoLocationIfNeeded = true
-        exporter.maximumImageSize = maximumImageSize
+        exporter.options.stripsGeoLocationIfNeeded = true
+        exporter.options.maximumImageSize = maximumImageSize
         exporter.exportImage(atURL: url,
                              onCompletion: { (imageExport) in
                                 self.validateImageExportStrippedGPS(imageExport)
@@ -157,8 +153,8 @@ class MediaImageExporterTests: XCTestCase {
         let exporter = MediaImageExporter()
         let maximumImageSize = CGFloat(200)
         exporter.mediaDirectoryType = .temporary
-        exporter.stripsGeoLocationIfNeeded = false
-        exporter.maximumImageSize = maximumImageSize
+        exporter.options.stripsGeoLocationIfNeeded = false
+        exporter.options.maximumImageSize = maximumImageSize
         exporter.exportImage(atURL: url,
                              onCompletion: { (imageExport) in
                                 self.validateImageExportDidNotStripGPS(imageExport)
@@ -183,7 +179,6 @@ class MediaImageExporterTests: XCTestCase {
         let expect = self.expectation(description: "image export by UIImage and correcting the orientation")
         let exporter = MediaImageExporter()
         exporter.mediaDirectoryType = .temporary
-        exporter.stripsGeoLocationIfNeeded = false
         exporter.exportImage(image,
                              fileName: nil,
                              onCompletion: { (imageExport) in
@@ -207,8 +202,7 @@ class MediaImageExporterTests: XCTestCase {
         let exporter = MediaImageExporter()
         let maximumImageSize = CGFloat(200)
         exporter.mediaDirectoryType = .temporary
-        exporter.stripsGeoLocationIfNeeded = false
-        exporter.maximumImageSize = maximumImageSize
+        exporter.options.maximumImageSize = maximumImageSize
         exporter.exportImage(image,
                              fileName: nil,
                              onCompletion: { (imageExport) in
@@ -229,8 +223,8 @@ class MediaImageExporterTests: XCTestCase {
         let exporter = MediaImageExporter()
         let maximumImageSize = CGFloat(200)
         exporter.mediaDirectoryType = .temporary
-        exporter.stripsGeoLocationIfNeeded = true
-        exporter.maximumImageSize = maximumImageSize
+        exporter.options.stripsGeoLocationIfNeeded = true
+        exporter.options.maximumImageSize = maximumImageSize
         exporter.exportImage(image,
                              fileName: nil,
                              onCompletion: { (imageExport) in

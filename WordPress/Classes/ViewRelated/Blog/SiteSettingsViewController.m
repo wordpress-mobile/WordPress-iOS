@@ -16,7 +16,6 @@
 #import "SVProgressHUD+Dismiss.h"
 #import "WordPress-Swift.h"
 #import "WPWebViewController.h"
-#import "WordPress-Swift.h"
 #import "BlogServiceRemoteXMLRPC.h"
 #import <wpxmlrpc/WPXMLRPC.h>
 
@@ -105,6 +104,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         _blog = blog;
         _username = blog.usernameForSite;
         _password = blog.password;
+        [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
     }
     return self;
 }
@@ -517,11 +517,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     [WPStyleGuide configureTableViewSectionHeader:view];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return WPTableViewDefaultRowHeight;
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section

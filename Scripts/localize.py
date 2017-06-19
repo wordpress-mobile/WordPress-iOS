@@ -120,7 +120,7 @@ def merge(merged_fname, old_fname, new_fname):
 
 STRINGS_FILE = 'Localizable.strings'
 
-def localize(path, language, include_pods):
+def localize(path, language, include_pods_and_frameworks):
     if "Scripts" in path:
         print "Must run script from the root folder"
         quit()
@@ -132,8 +132,9 @@ def localize(path, language, include_pods):
     old = original + '.old'
     new = original + '.new'
 
-    if include_pods:
-        find_cmd = 'find . ../Pods/WordPress* ../Pods/WPMediaPicker -name "*.m" -o -name "*.swift" | grep -v Vendor'
+    # TODO: This is super ugly, we have to come up with a better way of doing it
+    if include_pods_and_frameworks:
+        find_cmd = 'find . ../Pods/WordPress* ../Pods/WPMediaPicker ../WordPressComStatsiOS/WordPressComStatsiOS ../WordPressShared/WordPressShared -name "*.m" -o -name "*.swift" | grep -v Vendor'
     else:
         find_cmd = 'find . -name "*.m" -o -name "*.swift" | grep -v Vendor'
     filelist = os.popen(find_cmd).read().replace("\n", " ")

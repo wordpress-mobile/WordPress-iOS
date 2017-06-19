@@ -70,17 +70,31 @@ extension WPStyleGuide {
         fileprivate static let gravatarApproved     = UIImage(named: "gravatar")!
         fileprivate static let gravatarUnapproved   = UIImage(named: "gravatar-unapproved")!
 
-        fileprivate static let timestampFont        = WPStyleGuide.subtitleFont()
+        private static var timestampFont: UIFont {
+            return WPStyleGuide.fontForTextStyle(.caption1)
+        }
 
-        fileprivate static let titleFontSize        = CGFloat(14)
-        fileprivate static let titleRegularFont     = WPFontManager.systemRegularFont(ofSize: titleFontSize)
-        fileprivate static let titleBoldFont        = WPFontManager.systemSemiBoldFont(ofSize: titleFontSize)
-        fileprivate static let titleItalicsFont     = WPFontManager.systemItalicFont(ofSize: titleFontSize)
+        private static var titleRegularFont: UIFont {
+            return WPStyleGuide.fontForTextStyle(.footnote)
+        }
 
-        fileprivate static let titleLineSize        = CGFloat(18)
-        fileprivate static let titleParagraph       = NSMutableParagraphStyle(minLineHeight: titleLineSize,
-                                                    maxLineHeight:  titleLineSize,
-                                                    lineBreakMode:  .byTruncatingTail,
-                                                    alignment:      .natural)
+        private static var titleBoldFont: UIFont {
+            return WPStyleGuide.fontForTextStyle(.footnote, fontWeight: UIFontWeightSemibold)
+        }
+
+        private static var titleItalicsFont: UIFont {
+            return WPStyleGuide.fontForTextStyle(.footnote, symbolicTraits: .traitItalic)
+        }
+
+        private static var titleLineSize: CGFloat {
+            return WPStyleGuide.fontSizeForTextStyle(.footnote) * 1.3
+        }
+
+        private static var titleParagraph: NSMutableParagraphStyle {
+            return NSMutableParagraphStyle(minLineHeight: titleLineSize,
+                                           maxLineHeight:  titleLineSize,
+                                           lineBreakMode:  .byTruncatingTail,
+                                           alignment:      .natural)
+        }
     }
 }

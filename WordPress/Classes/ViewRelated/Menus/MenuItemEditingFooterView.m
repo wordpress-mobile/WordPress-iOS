@@ -1,6 +1,6 @@
 #import "MenuItemEditingFooterView.h"
-#import "WPStyleGuide.h"
-#import "WPFontManager.h"
+#import <WordPressShared/WPFontManager.h>
+#import <WordPressShared/WPStyleGuide.h>
 
 @import Gridicons;
 

@@ -3,8 +3,8 @@
 #import "ContextManager.h"
 #import "PhotonImageURLHelper.h"
 #import "WPAccount.h"
-#import "WPImageSource.h"
 #import "UIImage+Resize.h"
+#import <WordPressShared/WPImageSource.h>
 
 static const NSInteger WPTableImageSourceMaxPhotonQuality = 100;
 static const NSInteger WPTableImageSourceMinPhotonQuality = 1;

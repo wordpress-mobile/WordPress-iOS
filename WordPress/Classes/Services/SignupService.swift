@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import WordPressComAnalytics
 import WordPressShared
 
@@ -163,14 +164,14 @@ open class SignupService: LocalCoreDataService {
                                   failure: @escaping SignupFailureBlock) {
 
         status(.authenticating)
-        let client = WordPressComOAuthClient.client()
+        let client = WordPressComOAuthClient.client(clientID: ApiCredentials.client(), secret: ApiCredentials.secret())
         client.authenticateWithUsername(params.username,
                                         password: params.password,
                                         multifactorCode: nil,
                                         success: { (authToken: String?) in
 
                                             guard let authToken = authToken else {
-                                                DDLogSwift.logError("Faied signing in the user. Success block was called but the auth token was nil.")
+                                                DDLogError("Faied signing in the user. Success block was called but the auth token was nil.")
                                                 assertionFailure()
 
                                                 let error = SignupError.invalidResponse as NSError
@@ -209,7 +210,7 @@ open class SignupService: LocalCoreDataService {
                                     failure: @escaping SignupFailureBlock) {
 
         guard let api = account.wordPressComRestApi else {
-            DDLogSwift.logError("Failed to get the REST API from the account.")
+            DDLogError("Failed to get the REST API from the account.")
             assertionFailure()
 
             let error = SignupError.missingRESTAPI as NSError
@@ -232,7 +233,7 @@ open class SignupService: LocalCoreDataService {
                                             WPAppAnalytics.track(.createdAccount)
 
                                             guard let blogOptions = responseDictionary?[self.BlogDetailsKey] as? [String: AnyObject] else {
-                                                DDLogSwift.logError("Failed creating blog. The response dictionary did not contain the expected results")
+                                                DDLogError("Failed creating blog. The response dictionary did not contain the expected results")
                                                 assertionFailure()
 
                                                 let error = SignupError.invalidResponse as NSError
@@ -298,7 +299,7 @@ open class SignupService: LocalCoreDataService {
             let stringID = blogOptions[BlogIDKey] as? String,
             let dotComID = Int(stringID)
             else {
-                DDLogSwift.logError("Failed finishing account creation. The blogOptions dictionary was missing expected data.")
+                DDLogError("Failed finishing account creation. The blogOptions dictionary was missing expected data.")
                 assertionFailure()
 
                 let error = SignupError.invalidResponse as NSError
@@ -307,7 +308,7 @@ open class SignupService: LocalCoreDataService {
         }
 
         guard let defaultAccount = accountService.defaultWordPressComAccount() else {
-            DDLogSwift.logError("Failed finishing account creation. The default wpcom account was not found.")
+            DDLogError("Failed finishing account creation. The default wpcom account was not found.")
             assertionFailure()
 
             let error = SignupError.missingDefaultWPComAccount as NSError

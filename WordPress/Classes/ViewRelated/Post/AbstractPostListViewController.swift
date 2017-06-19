@@ -1,7 +1,9 @@
 import Foundation
+import CocoaLumberjack
 import WordPressComAnalytics
 import WordPressShared
 import wpxmlrpc
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -415,7 +417,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         do {
             try tableViewHandler.resultsController.performFetch()
         } catch {
-            DDLogSwift.logError("Error fetching posts after updating the fetch request predicate: \(error)")
+            DDLogError("Error fetching posts after updating the fetch request predicate: \(error)")
         }
     }
 
@@ -518,7 +520,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func automaticallySyncIfAppropriate() {
         // Only automatically refresh if the view is loaded and visible on the screen
         if !isViewLoaded || view.window == nil {
-            DDLogSwift.logVerbose("View is not visible and will not check for auto refresh.")
+            DDLogVerbose("View is not visible and will not check for auto refresh.")
             return
         }
 
@@ -794,11 +796,19 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func publishPost(_ apost: AbstractPost) {
         WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
 
+        apost.date_created_gmt = Date()
         apost.status = .publish
-        if let date = apost.dateCreated, date == (Date() as NSDate).laterDate(date) {
-            apost.dateCreated = Date()
-        }
+        uploadPost(apost)
+    }
 
+    func schedulePost(_ apost: AbstractPost) {
+        WPAnalytics.track(.postListScheduleAction, withProperties: propertiesForAnalytics())
+
+        apost.status = .scheduled
+        uploadPost(apost)
+    }
+
+    fileprivate func uploadPost(_ apost: AbstractPost) {
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         postService.uploadPost(apost, success: nil) { [weak self] (error: Error?) in
@@ -863,9 +873,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
             if let index = strongSelf.recentlyTrashedPostObjectIDs.index(of: postObjectID) {
                 strongSelf.recentlyTrashedPostObjectIDs.remove(at: index)
-
-                if let indexPath = indexPath {
-                    strongSelf.tableView.reloadRows(at: [indexPath], with: .automatic)
+                // We don't really know what happened here, why did the request fail?
+                // Maybe we could not delete the post or maybe the post was already deleted
+                // It is safer to re fetch the results than to reload that specific row
+                DispatchQueue.main.async {
+                    strongSelf.updateAndPerformFetchRequestRefreshingResults()
                 }
             }
         }
@@ -895,7 +907,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             do {
                 apost = try strongSelf.managedObjectContext().existingObject(with: postObjectID) as! AbstractPost
             } catch {
-                DDLogSwift.logError("\(error)")
+                DDLogError("\(error)")
                 return
             }
 
@@ -947,7 +959,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         return blog.account?.userID
     }
 
-    // MARK - Filtering
+    // MARK: - Filtering
 
     func refreshAndReload() {
         recentlyTrashedPostObjectIDs.removeAll()
@@ -960,6 +972,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         filterSettings.setFilterWithPostStatus(status)
         refreshAndReload()
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
+    }
+
+    func updateFilter(index: Int) {
+        filterSettings.setCurrentFilterIndex(index)
+        refreshAndReload()
     }
 
     func updateFilterTitle() {

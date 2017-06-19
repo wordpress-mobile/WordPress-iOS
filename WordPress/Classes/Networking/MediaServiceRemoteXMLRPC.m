@@ -43,10 +43,15 @@
                  }];
 }
 
-- (void)getMediaLibraryCountWithSuccess:(void (^)(NSInteger))success
-                                failure:(void (^)(NSError *))failure
+- (void)getMediaLibraryCountForType:(NSString *)mediaType
+                        withSuccess:(void (^)(NSInteger))success
+                            failure:(void (^)(NSError *))failure
 {
-    NSArray *parameters = [self defaultXMLRPCArguments];
+    NSDictionary *data = @{};
+    if (mediaType) {
+        data = @{@"filter":@{ @"media_type": mediaType }};
+    }
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:data];
     [self.api callMethod:@"wp.getMediaLibrary"
               parameters:parameters
                  success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
@@ -128,22 +133,18 @@
                                                    success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
           NSDictionary *response = (NSDictionary *)responseObject;
           if (![response isKindOfClass:[NSDictionary class]]) {
-              localProgress.completedUnitCount=0;
-              localProgress.totalUnitCount=0;
               NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
               if (failure) {
                   failure(error);
               }              
           } else {
               localProgress.completedUnitCount=localProgress.totalUnitCount;
-              RemoteMedia * remoteMedia = [self remoteMediaFromUploadXMLRPCDictionary:response];
+              RemoteMedia * remoteMedia = [self remoteMediaFromXMLRPCDictionary:response];
               if (success){
                   success(remoteMedia);
               }
           }
-      } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-          localProgress.completedUnitCount=0;
-          localProgress.totalUnitCount=0;          
+      } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {          
           if (failure) {
               failure(error);
           }
@@ -218,33 +219,28 @@
 - (RemoteMedia *)remoteMediaFromXMLRPCDictionary:(NSDictionary*)xmlRPC
 {
     RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
-    remoteMedia.url = [NSURL URLWithString:[xmlRPC stringForKey:@"link"]];
+    remoteMedia.url = [NSURL URLWithString:[xmlRPC stringForKey:@"link"]] ?: [NSURL URLWithString:[xmlRPC stringForKey:@"url"]];
     remoteMedia.title = [xmlRPC stringForKey:@"title"];
     remoteMedia.width = [xmlRPC numberForKeyPath:@"metadata.width"];
     remoteMedia.height = [xmlRPC numberForKeyPath:@"metadata.height"];
-    remoteMedia.mediaID = [xmlRPC numberForKey:@"attachment_id"];
-    remoteMedia.mimeType = [xmlRPC stringForKeyPath:@"metadata.mime_type"];
-    remoteMedia.file = [[xmlRPC objectForKeyPath:@"link"] lastPathComponent];
-    remoteMedia.date = xmlRPC[@"date_created_gmt"];
+    remoteMedia.mediaID = [xmlRPC numberForKey:@"attachment_id"] ?: [xmlRPC numberForKey:@"id"];
+    remoteMedia.mimeType = [xmlRPC stringForKeyPath:@"metadata.mime_type"] ?: [xmlRPC stringForKey:@"type"];
+    remoteMedia.file = [[xmlRPC objectForKeyPath:@"link"] lastPathComponent] ?: [[xmlRPC objectForKeyPath:@"file"] lastPathComponent];
+
+    if (xmlRPC[@"date_created_gmt"] != nil) {
+        remoteMedia.date = xmlRPC[@"date_created_gmt"];
+    }
+
     remoteMedia.caption = [xmlRPC stringForKey:@"caption"];
     remoteMedia.descriptionText = [xmlRPC stringForKey:@"description"];
     remoteMedia.extension = [remoteMedia.file pathExtension];
     remoteMedia.length = [xmlRPC numberForKeyPath:@"metadata.length"];
-    remoteMedia.postID = [xmlRPC numberForKeyPath:@"parent"];
-    return remoteMedia;
-}
 
-- (RemoteMedia *)remoteMediaFromUploadXMLRPCDictionary:(NSDictionary*)xmlRPC
-{
-    RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
-    remoteMedia.url = [NSURL URLWithString:[xmlRPC stringForKey:@"url"]];
-    remoteMedia.mediaID = [xmlRPC numberForKey:@"id"];
-    remoteMedia.file = [[xmlRPC objectForKeyPath:@"file"] lastPathComponent];
-    remoteMedia.mimeType = [xmlRPC stringForKey:@"type"];
-    remoteMedia.extension = [[[xmlRPC objectForKeyPath:@"file"] lastPathComponent] pathExtension];
-    if (xmlRPC[@"date_created_gmt"] != nil) {
-        remoteMedia.date = xmlRPC[@"date_created_gmt"];
+    NSNumber *parent = [xmlRPC numberForKeyPath:@"parent"];
+    if ([parent integerValue] > 0) {
+        remoteMedia.postID = parent;
     }
+
     return remoteMedia;
 }
 

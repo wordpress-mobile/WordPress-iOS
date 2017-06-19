@@ -16,60 +16,30 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - Alamofire (4.0.1)
-  - Automattic-Tracks-iOS (0.1.2):
-    - CocoaLumberjack (~> 2.2.0)
+  - Automattic-Tracks-iOS (0.2.0):
+    - CocoaLumberjack (~> 3.2.0)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
-  - BuddyBuildSDK (1.0.15)
-  - CocoaLumberjack (2.2.0):
-    - CocoaLumberjack/Default (= 2.2.0)
-    - CocoaLumberjack/Extensions (= 2.2.0)
-  - CocoaLumberjack/Core (2.2.0)
-  - CocoaLumberjack/Default (2.2.0):
-    - CocoaLumberjack/Core
-  - CocoaLumberjack/Extensions (2.2.0):
+  - BuddyBuildSDK (1.0.16)
+  - CocoaLumberjack (3.2.0):
+    - CocoaLumberjack/Default (= 3.2.0)
+    - CocoaLumberjack/Extensions (= 3.2.0)
+  - CocoaLumberjack/Default (3.2.0)
+  - CocoaLumberjack/Extensions (3.2.0):
     - CocoaLumberjack/Default
   - Crashlytics (3.8.4):
     - Fabric (~> 1.6.3)
   - Expecta (1.0.5)
   - Fabric (1.6.11)
   - FLAnimatedImage (1.0.12)
-  - FormatterKit (1.8.2):
-    - FormatterKit/AddressFormatter (= 1.8.2)
-    - FormatterKit/ArrayFormatter (= 1.8.2)
-    - FormatterKit/ColorFormatter (= 1.8.2)
-    - FormatterKit/LocationFormatter (= 1.8.2)
-    - FormatterKit/NameFormatter (= 1.8.2)
-    - FormatterKit/OrdinalNumberFormatter (= 1.8.2)
-    - FormatterKit/Resources (= 1.8.2)
-    - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-    - FormatterKit/UnitOfInformationFormatter (= 1.8.2)
-    - FormatterKit/URLRequestFormatter (= 1.8.2)
-  - FormatterKit/AddressFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/ArrayFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/ColorFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/LocationFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/NameFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/OrdinalNumberFormatter (1.8.2):
-    - FormatterKit/Resources
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
-  - FormatterKit/UnitOfInformationFormatter (1.8.2):
-    - FormatterKit/Resources
-  - FormatterKit/URLRequestFormatter (1.8.2):
-    - FormatterKit/Resources
-  - Gridicons (0.5)
-  - HockeySDK (4.1.4):
-    - HockeySDK/DefaultLib (= 4.1.4)
-  - HockeySDK/DefaultLib (4.1.4)
+  - Gridicons (0.8)
+  - HockeySDK (4.1.5):
+    - HockeySDK/DefaultLib (= 4.1.5)
+  - HockeySDK/DefaultLib (4.1.5)
   - MGSwipeTableCell (1.5.6)
-  - Mixpanel (3.1.3)
   - MRProgress (0.7.0):
     - MRProgress/ActivityIndicator (= 0.7.0)
     - MRProgress/Blur (= 0.7.0)
@@ -98,7 +68,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.7.0)
   - MRProgress/Stopable (0.7.0):
     - MRProgress/Helper
-  - Nimble (5.0.0)
+  - Nimble (7.0.1)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.4)
@@ -122,37 +92,33 @@ PODS:
   - Starscream (2.0.2)
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-AppbotX (1.0.6)
-  - WordPress-Aztec-iOS (1.0.0-beta.1):
-    - Gridicons (= 0.5)
-  - WordPress-iOS-Editor (1.9.1):
-    - CocoaLumberjack (~> 2.2.0)
+  - WordPress-Aztec-iOS (1.0.0-beta.4):
+    - Gridicons (= 0.8)
+  - WordPress-iOS-Editor (1.9.2):
+    - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
-  - WordPress-iOS-Shared (0.8.2):
-    - CocoaLumberjack (~> 2.2.0)
-  - WordPressCom-Analytics-iOS (0.1.25)
+  - WordPressCom-Analytics-iOS (0.1.29)
   - WordPressComKit (0.0.6):
     - Alamofire (= 4.0.1)
-  - WPMediaPicker (0.16)
+  - WPMediaPicker (0.18)
   - wpxmlrpc (0.8.3)
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.4)
   - AFNetworking (= 3.1.0)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.1.2`)
-  - BuddyBuildSDK (~> 1.0.14)
-  - CocoaLumberjack (~> 2.2.0)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.0`)
+  - BuddyBuildSDK (~> 1.0.15)
+  - CocoaLumberjack (~> 3.2.0)
   - Crashlytics
   - Expecta (= 1.0.5)
   - FLAnimatedImage (~> 1.0)
-  - FormatterKit (~> 1.8.1)
-  - Gridicons (= 0.5)
-  - HockeySDK (~> 4.1.3)
+  - FormatterKit/TimeIntervalFormatter (~> 1.8.1)
+  - Gridicons (= 0.8)
+  - HockeySDK (~> 4.1.5)
   - MGSwipeTableCell (~> 1.5.6)
-  - Mixpanel (= 3.1.3)
   - MRProgress (~> 0.7.0)
-  - Nimble (~> 5.0.0)
+  - Nimble (~> 7.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock (~> 3.0)
@@ -163,25 +129,20 @@ DEPENDENCIES:
   - Starscream (from `https://github.com/wordpress-mobile/Starscream`, branch `wordpress-ios`)
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `479d05f7d6b963c9b44040e6ea9f190e8bd9a47a`)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.1)
-  - WordPress-iOS-Editor (= 1.9.1)
-  - WordPress-iOS-Shared (= 0.8.2)
-  - WordPressCom-Analytics-iOS (= 0.1.25)
+  - WordPress-Aztec-iOS (= 1.0.0-beta.4)
+  - WordPress-iOS-Editor (= 1.9.2)
+  - WordPressCom-Analytics-iOS (= 0.1.29)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
-  - WPMediaPicker (= 0.16)
+  - WPMediaPicker (= 0.18)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.1.2
+    :tag: 0.2.0
   Starscream:
     :branch: wordpress-ios
     :git: https://github.com/wordpress-mobile/Starscream
-  WordPress-AppbotX:
-    :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
-    :git: https://github.com/wordpress-mobile/appbotx.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -189,13 +150,10 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.1.2
+    :tag: 0.2.0
   Starscream:
     :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
     :git: https://github.com/wordpress-mobile/Starscream
-  WordPress-AppbotX:
-    :commit: 479d05f7d6b963c9b44040e6ea9f190e8bd9a47a
-    :git: https://github.com/wordpress-mobile/appbotx.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -204,20 +162,19 @@ SPEC CHECKSUMS:
   1PasswordExtension: e775a29310c65851e5a6cec1afc349ab4e334e47
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
-  Automattic-Tracks-iOS: 4903e125d88e564c68dedbb66c53a97740e89336
-  BuddyBuildSDK: b3038125612b1ad389c2aa89e4787dcb75cac89a
-  CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
+  Automattic-Tracks-iOS: edc4365d31602490af88dbed181b0b666cbdcf75
+  BuddyBuildSDK: 2c5469eee2981a3365386e46393e97068d75e4f4
+  CocoaLumberjack: 9b4aed7073d242f29cc2f62068d995faf67f703a
   Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
-  Gridicons: 5c5e928324fa301572ee447b25962d18e7fd7159
-  HockeySDK: 78a3f8bb9100277b531defc56c970369a3ca267a
+  Gridicons: 80b979a3ada21189f96bd7af9f1a5b2751fb50e3
+  HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
-  Mixpanel: 232acf98cecd94fbb58630ff8512a54ff8d99373
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
-  Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
+  Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 35ae71d6a8fcc1b59434d561d1520b9dd4f15765
@@ -227,15 +184,13 @@ SPEC CHECKSUMS:
   Starscream: 4ee1be18da5170faafce1698225b61f9765634d5
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-AppbotX: b5abc0ba45e3da5827f84e9f346c963180f1b545
-  WordPress-Aztec-iOS: b6ab82e2570fe20954a824f8622767cf9f58b156
-  WordPress-iOS-Editor: 995f47fbf745f34fb392103ec97c0edb7f062f21
-  WordPress-iOS-Shared: 999f5bfcf5744f94ebe9cb7459a138f5990fbf3a
-  WordPressCom-Analytics-iOS: ec36976259d733430ba0fc2f8a51765947d2c7ba
+  WordPress-Aztec-iOS: 859ca14e0f6d9cc6d99a173fa07e5862fe67a749
+  WordPress-iOS-Editor: e71fa013ac3bf8f448d0ee43421beed3f56500f0
+  WordPressCom-Analytics-iOS: db0e9449bafaaa7beb2c7f663ecc806d45da992e
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
-  WPMediaPicker: 126e4dc5aca121cf63f0a4096cc3854572d42c19
+  WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 38db18e103e1faac2f988302b9cc55174a83e685
+PODFILE CHECKSUM: 70b9a8221f70f52d395f2753421a19fb618deff7
 
 COCOAPODS: 1.2.1
