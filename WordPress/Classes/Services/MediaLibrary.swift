@@ -140,12 +140,11 @@ open class MediaLibrary: LocalCoreDataService {
             }
             return
         }
+        let downloader = MediaThumbnailDownloader(managedObjectContext: managedObjectContext)
         // Try and download a remote thumbnail, and export if available.
-        downloadRemoteThumbnail(forMedia: media, preferredSize: preferredSize, onCompletion: { (image) in
+        downloader.downloadThumbnail(forMedia: media, preferredSize: preferredSize, onCompletion: { (image) in
             guard let image = image else {
-                self.managedObjectContext.perform {
-                    onCompletion(nil)
-                }
+                onCompletion(nil)
                 return
             }
             DispatchQueue.global(qos: .default).async {
@@ -162,72 +161,8 @@ open class MediaLibrary: LocalCoreDataService {
                 })
             }
         }, onError: { (error) in
-            self.managedObjectContext.perform {
-                onError(error)
-            }
+            onError(error)
         })
-    }
-
-    /// Download a thumbnail image for the Media item, if available.
-    ///
-    fileprivate func downloadRemoteThumbnail(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping (UIImage?) -> Void, onError: @escaping OnError) {
-        var remoteURL: URL?
-        // Check if the Media item is a video or image.
-        if media.mediaType == .video {
-            // If a video, ensure there is a remoteThumbnailURL
-            guard let remoteThumbnailURL = media.remoteThumbnailURL else {
-                // No video thumbnail available.
-                onCompletion(nil)
-                return
-            }
-            remoteURL = URL(string: remoteThumbnailURL)
-        } else {
-            // Check if a remote URL for the media itself is available.
-            guard let remoteAssetURLStr = media.remoteURL, let remoteAssetURL = URL(string: remoteAssetURLStr) else {
-                // No remote asset URL available.
-                onCompletion(nil)
-                return
-            }
-            // Get an expected WP URL, for sizing.
-            if media.blog.isPrivate() {
-                remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
-            } else {
-                remoteURL = WPImageURLHelper.imageURLWithSize(preferredSize, forImageURL: remoteAssetURL)
-            }
-        }
-        guard let imageURL = remoteURL else {
-            // No URL's available, no images available.
-            onCompletion(nil)
-            return
-        }
-        if media.blog.isPrivate() {
-            let accountService = AccountService(managedObjectContext: managedObjectContext)
-            guard let authToken = accountService.defaultWordPressComAccount()?.authToken else {
-                // Don't have an auth token for some reason, return nothing.
-                onCompletion(nil)
-                return
-            }
-            WPImageSource.shared().downloadImage(for: imageURL,
-                                                 authToken: authToken,
-                                                 withSuccess: onCompletion,
-                                                 failure: { (error) in
-                                                    guard let error = error else {
-                                                        onCompletion(nil)
-                                                        return
-                                                    }
-                                                    onError(error)
-            })
-        } else {
-            WPImageSource.shared().downloadImage(for: imageURL,
-                                                 withSuccess: onCompletion,
-                                                 failure: { (error) in
-                                                    guard let error = error else {
-                                                        onCompletion(nil)
-                                                        return
-                                                    }
-                                                    onError(error)
-            })
-        }
     }
 
     fileprivate func handleThumbnailExport(media: Media, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaImageExport, onCompletion: @escaping OnThumbnailURL) {
