@@ -9,7 +9,6 @@
 #import <Reachability/Reachability.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
-#import <WordPress_AppbotX/ABX.h>
 #import <WordPressShared/UIImage+Util.h>
 
 #ifdef BUDDYBUILD_ENABLED
@@ -117,6 +116,23 @@ int ddLogLevel = DDLogLevelInfo;
 
     self.shouldRestoreApplicationState = !isFixingAuthTokenIssue;
 
+    // Temporary force of Aztec to "on" for all internal users
+#ifdef INTERNAL_BUILD
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *defaultsKey = @"AztecInternalForcedOnVersion";
+    NSString *lastBuildAztecForcedOn = [defaults stringForKey:defaultsKey];
+    NSString *currentVersion = [[NSBundle mainBundle] bundleVersion];
+    if (![currentVersion isEqualToString:lastBuildAztecForcedOn]) {
+        [defaults setObject:currentVersion forKey:defaultsKey];
+        [defaults synchronize];
+
+        EditorSettings *settings = [EditorSettings new];
+        [settings setNativeEditorAvailable:TRUE];
+        [settings setVisualEditorEnabled:TRUE];
+        [settings setNativeEditorEnabled:TRUE];
+    }
+#endif
+
     return YES;
 }
 
@@ -127,7 +143,6 @@ int ddLogLevel = DDLogLevelInfo;
     [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
-    [self setupAppbotX];
     [self setupStoreKit];
     [self setupBuddyBuild];
     [self setupPingHub];
@@ -161,13 +176,6 @@ int ddLogLevel = DDLogLevelInfo;
         }
     });
 #endif
-}
-
-- (void)setupAppbotX
-{
-    if ([ApiCredentials appbotXAPIKey].length > 0) {
-        [[ABXApiClient instance] setApiKey:[ApiCredentials appbotXAPIKey]];
-    }
 }
 
 - (void)setupStoreKit
@@ -402,6 +410,12 @@ int ddLogLevel = DDLogLevelInfo;
     completionHandler([shortcutHandler handleShortcutItem:shortcutItem]);
 }
 
+- (UIViewController *)application:(UIApplication *)application viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    NSString *restoreID = [identifierComponents lastObject];
+    return [[Restorer new] viewControllerWithIdentifier:restoreID];
+}
+
 #pragma mark - Application startup
 
 - (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
@@ -527,11 +541,7 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
-    if ([Feature enabled:FeatureFlagNewLogin]) {
-        [SigninHelpers showLoginFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
-    } else {
-        [SigninHelpers showSigninFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
-    }
+    [SigninHelpers showSigninFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
 }
 
 - (BOOL)isWelcomeScreenVisible
@@ -577,8 +587,6 @@ int ddLogLevel = DDLogLevelInfo;
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
     [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
 
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPFontManager systemBoldFontOfSize:17.0]} ];
-
     [[UINavigationBar appearance] setBackgroundImage:[WPStyleGuide navigationBarBackgroundImage] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[WPStyleGuide navigationBarShadowImage]];
     [[UINavigationBar appearance] setBarStyle:[WPStyleGuide navigationBarBarStyle]];
@@ -600,12 +608,11 @@ int ddLogLevel = DDLogLevelInfo;
     [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[ [WPEditorViewController class] ]] setBarTintColor:[UIColor whiteColor]];
 
     // Search
-    [WPStyleGuide configureSearchAppearance];
+    [WPStyleGuide configureSearchBarAppearance];
 
     // SVProgressHUD styles
     [SVProgressHUD setBackgroundColor:[[WPStyleGuide littleEddieGrey] colorWithAlphaComponent:0.95]];
     [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
-    [SVProgressHUD setFont:[WPFontManager systemRegularFontOfSize:18.0]];
     [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
     [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
     
@@ -619,6 +626,18 @@ int ddLogLevel = DDLogLevelInfo;
     [[WPLegacyEditorFormatToolbar appearance] setBarTintColor:[UIColor colorWithHexString:@"F9FBFC"]];
     [[WPLegacyEditorFormatToolbar appearance] setTintColor:[WPStyleGuide greyLighten10]];
     [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[WPLegacyEditorFormatToolbar class]]] setTintColor:[WPStyleGuide greyLighten10]];
+
+    // Customize the appearence of the text elements
+    [self customizeAppearanceForTextElements];
+}
+
+- (void)customizeAppearanceForTextElements
+{
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline symbolicTraits:UIFontDescriptorTraitBold]} ];
+    // Search
+    [WPStyleGuide configureSearchBarTextAppearance];
+    // SVProgressHUD styles
+    [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline]];
 }
 
 #pragma mark - Analytics
@@ -861,6 +880,11 @@ int ddLogLevel = DDLogLevelInfo;
                            selector:@selector(handleLowMemoryWarningNote:)
                                name:UIApplicationDidReceiveMemoryWarningNotification
                              object:nil];
+
+    [notificationCenter addObserver:self
+                           selector:@selector(handleUIContentSizeCategoryDidChangeNotification:)
+                               name:UIContentSizeCategoryDidChangeNotification
+                             object:nil];
 }
 
 - (void)handleDefaultAccountChangedNote:(NSNotification *)notification
@@ -886,6 +910,11 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)handleLowMemoryWarningNote:(NSNotification *)notification
 {
     [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
+}
+
+- (void)handleUIContentSizeCategoryDidChangeNotification:(NSNotification *)notification
+{
+    [self customizeAppearanceForTextElements];
 }
 
 #pragma mark - Extensions

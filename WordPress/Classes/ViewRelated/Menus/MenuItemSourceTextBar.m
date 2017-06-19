@@ -1,8 +1,8 @@
 #import "MenuItemSourceTextBar.h"
-#import "WPStyleGuide.h"
-#import "WPFontManager.h"
 #import "Menu+ViewDesign.h"
 #import <WordPressShared/WPDeviceIdentification.h>
+#import <WordPressShared/WPFontManager.h>
+#import <WordPressShared/WPStyleGuide.h>
 
 @import Gridicons;
 

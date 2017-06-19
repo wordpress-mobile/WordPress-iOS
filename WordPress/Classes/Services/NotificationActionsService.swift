@@ -1,5 +1,5 @@
 import Foundation
-
+import CocoaLumberjack
 
 /// This service encapsulates all of the Actions that can be performed with a NotificationBlock
 ///
@@ -17,12 +17,12 @@ open class NotificationActionsService: LocalCoreDataService {
         }
 
         siteService.followSite(withID: siteID, success: {
-            DDLogSwift.logInfo("Successfully followed site \(siteID)")
+            DDLogInfo("Successfully followed site \(siteID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to follow site: \(String(describing: error))")
+            DDLogError("Error while trying to follow site: \(String(describing: error))")
             block.removeOverrideValueForAction(.Follow)
             completion?(false)
         })
@@ -43,12 +43,12 @@ open class NotificationActionsService: LocalCoreDataService {
         }
 
         siteService.unfollowSite(withID: siteID, success: {
-            DDLogSwift.logInfo("Successfully unfollowed site \(siteID)")
+            DDLogInfo("Successfully unfollowed site \(siteID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to unfollow site: \(String(describing: error))")
+            DDLogError("Error while trying to unfollow site: \(String(describing: error))")
             block.removeOverrideValueForAction(.Follow)
             completion?(false)
         })
@@ -70,12 +70,12 @@ open class NotificationActionsService: LocalCoreDataService {
         }
 
         commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
-            DDLogSwift.logInfo("Successfully replied to comment \(siteID).\(commentID)")
+            DDLogInfo("Successfully replied to comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to reply comment: \(String(describing: error))")
+            DDLogError("Error while trying to reply comment: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -98,12 +98,12 @@ open class NotificationActionsService: LocalCoreDataService {
 
         // Hit the backend
         commentService.updateComment(withID: commentID, siteID: siteID, content: content, success: {
-            DDLogSwift.logInfo("Successfully updated to comment \(siteID).\(commentID)")
+            DDLogInfo("Successfully updated to comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to update comment: \(String(describing: error))")
+            DDLogError("Error while trying to update comment: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -127,12 +127,12 @@ open class NotificationActionsService: LocalCoreDataService {
 
         // Proceed toggling the Like field
         commentService.likeComment(withID: commentID, siteID: siteID, success: {
-            DDLogSwift.logInfo("Successfully liked comment \(siteID).\(commentID)")
+            DDLogInfo("Successfully liked comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to like comment: \(String(describing: error))")
+            DDLogError("Error while trying to like comment: \(String(describing: error))")
             block.removeOverrideValueForAction(.Like)
             completion?(false)
         })
@@ -153,12 +153,12 @@ open class NotificationActionsService: LocalCoreDataService {
         }
 
         commentService.unlikeComment(withID: commentID, siteID: siteID, success: {
-            DDLogSwift.logInfo("Successfully unliked comment \(siteID).\(commentID)")
+            DDLogInfo("Successfully unliked comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to unlike comment: \(String(describing: error))")
+            DDLogError("Error while trying to unlike comment: \(String(describing: error))")
             block.removeOverrideValueForAction(.Like)
             completion?(false)
         })
@@ -179,12 +179,12 @@ open class NotificationActionsService: LocalCoreDataService {
         }
 
         commentService.approveComment(withID: commentID, siteID: siteID, success: {
-            DDLogSwift.logInfo("Successfully approved comment \(siteID).\(commentID)")
+            DDLogInfo("Successfully approved comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to moderate comment: \(String(describing: error))")
+            DDLogError("Error while trying to moderate comment: \(String(describing: error))")
             block.removeOverrideValueForAction(.Approve)
             completion?(false)
         })
@@ -205,12 +205,12 @@ open class NotificationActionsService: LocalCoreDataService {
         }
 
         commentService.unapproveComment(withID: commentID, siteID: siteID, success: {
-            DDLogSwift.logInfo("Successfully unapproved comment \(siteID).\(commentID)")
+            DDLogInfo("Successfully unapproved comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to moderate comment: \(String(describing: error))")
+            DDLogError("Error while trying to moderate comment: \(String(describing: error))")
             block.removeOverrideValueForAction(.Approve)
             completion?(false)
         })
@@ -231,12 +231,12 @@ open class NotificationActionsService: LocalCoreDataService {
         }
 
         commentService.spamComment(withID: commentID, siteID: siteID, success: {
-            DDLogSwift.logInfo("Successfully spammed comment \(siteID).\(commentID)")
+            DDLogInfo("Successfully spammed comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to mark comment as spam: \(String(describing: error))")
+            DDLogError("Error while trying to mark comment as spam: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -254,12 +254,12 @@ open class NotificationActionsService: LocalCoreDataService {
         }
 
         commentService.deleteComment(withID: commentID, siteID: siteID, success: {
-            DDLogSwift.logInfo("Successfully deleted comment \(siteID).\(commentID)")
+            DDLogInfo("Successfully deleted comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
 
         }, failure: { error in
-            DDLogSwift.logError("Error while trying to delete comment: \(String(describing: error))")
+            DDLogError("Error while trying to delete comment: \(String(describing: error))")
             completion?(false)
         })
     }
@@ -284,7 +284,7 @@ private extension NotificationActionsService {
             return
         }
 
-        DDLogSwift.logInfo("Invalidating Cache and Force Sync'ing Notification with ID: \(notificationID)")
+        DDLogInfo("Invalidating Cache and Force Sync'ing Notification with ID: \(notificationID)")
         mediator.invalidateCacheForNotification(with: notificationID)
         mediator.syncNote(with: notificationID)
     }

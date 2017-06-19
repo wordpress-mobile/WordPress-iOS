@@ -4,8 +4,6 @@
 #import "WPWalkthroughTextField.h"
 #import "WPAsyncBlockOperation.h"
 #import "WPWalkthroughOverlayView.h"
-#import "WPNUXUtility.h"
-#import "WPStyleGuide.h"
 #import "UILabel+SuggestSize.h"
 #import "WPAccount.h"
 #import "Blog.h"
@@ -13,9 +11,10 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "ContextManager.h"
-#import "NSString+XMLExtensions.h"
 #import "Constants.h"
-
+#import <WordPressShared/NSString+XMLExtensions.h>
+#import <WordPressShared/WPNUXUtility.h>
+#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
 NSString * const NewWPComBlogCreatedNotification = @"NewWPComBlogCreatedNotification";

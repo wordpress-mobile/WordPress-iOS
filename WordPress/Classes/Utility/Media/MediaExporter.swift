@@ -59,16 +59,13 @@ enum MediaExportSystemError: MediaExportError {
     }
 }
 
+/// Failure block with an ExportError.
+///
+typealias OnExportError = (MediaExportError) -> Void
+
 /// Protocol of required default variables or values for a MediaExporter and passing those values between them.
 ///
 protocol MediaExporter {
-    /// Set a maximumImageSize for resizing images, or nil for exporting the full images.
-    ///
-    var maximumImageSize: CGFloat? { get set }
-
-    /// Strip the geoLocation from assets, if needed.
-    ///
-    var stripsGeoLocationIfNeeded: Bool { get set }
 
     /// The type of MediaDirectory to use for the export destination URL.
     ///
@@ -94,4 +91,13 @@ extension MediaExporter {
             return MediaExportSystemError.failedWith(systemError: error)
         }
     }
+}
+
+/// Protocol of general options available for an export, typically corresponding to a user setting.
+///
+protocol MediaExportingOptions {
+
+    /// Strip the geoLocation from exported media, if needed.
+    ///
+    var stripsGeoLocationIfNeeded: Bool { get set }
 }

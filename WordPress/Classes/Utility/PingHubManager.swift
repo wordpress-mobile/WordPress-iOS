@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import Reachability
 
 // This is added as a top level function to avoid cluttering PingHubManager.init
@@ -209,7 +210,7 @@ fileprivate extension PingHubManager {
             return
         }
         state.connected = true
-        DDLogSwift.logInfo("PingHub connecting")
+        DDLogInfo("PingHub connecting")
         client?.connect()
     }
 
@@ -222,7 +223,7 @@ fileprivate extension PingHubManager {
 
     func disconnect() {
         delayedRetry?.cancel()
-        DDLogSwift.logInfo("PingHub disconnecting")
+        DDLogInfo("PingHub disconnecting")
         client?.disconnect()
         state.connected = false
     }
@@ -230,7 +231,7 @@ fileprivate extension PingHubManager {
 
 extension PingHubManager: PinghubClientDelegate {
     func pingubDidConnect(_ client: PinghubClient) {
-        DDLogSwift.logInfo("PingHub connected")
+        DDLogInfo("PingHub connected")
         delay.reset()
         state.connected = true
         // Trigger a full sync, since we might have missed notes while PingHub was disconnected
@@ -239,9 +240,9 @@ extension PingHubManager: PinghubClientDelegate {
 
     func pinghubDidDisconnect(_ client: PinghubClient, error: Error?) {
         if let error = error {
-            DDLogSwift.logError("PingHub disconnected: \(error)")
+            DDLogError("PingHub disconnected: \(error)")
         } else {
-            DDLogSwift.logInfo("PingHub disconnected")
+            DDLogInfo("PingHub disconnected")
         }
         state.connected = false
     }
@@ -252,16 +253,16 @@ extension PingHubManager: PinghubClientDelegate {
         }
         switch action {
         case .delete(let noteID):
-            DDLogSwift.logInfo("PingHub delete, syncing note \(noteID)")
+            DDLogInfo("PingHub delete, syncing note \(noteID)")
             mediator.deleteNote(noteID: String(noteID))
         case .push(let noteID, _, _, _):
-            DDLogSwift.logInfo("PingHub push, syncing note \(noteID)")
+            DDLogInfo("PingHub push, syncing note \(noteID)")
             mediator.syncNote(with: String(noteID), completion: { _ in })
         }
     }
 
     func pinghub(_ client: PinghubClient, unexpected message: PinghubClient.Unexpected) {
-        DDLogSwift.logError(message.description)
+        DDLogError(message.description)
     }
 }
 
@@ -306,7 +307,7 @@ extension PingHubManager {
                 return
             }
             let diffMessage = diff(old, new)
-            DDLogSwift.logInfo("PingHub state changed \(diffMessage), \(message)")
+            DDLogInfo("PingHub state changed \(diffMessage), \(message)")
         }
     }
 }

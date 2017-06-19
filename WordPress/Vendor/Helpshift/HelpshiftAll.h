@@ -1,6 +1,6 @@
 /*
  *    HelpshiftAll.h
- *    SDK Version 5.10.0
+ *    SDK Version 5.10.1
  *
  *    Get the documentation at http://www.helpshift.com/docs
  *

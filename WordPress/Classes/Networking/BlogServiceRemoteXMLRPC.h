@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "BlogServiceRemote.h"
-#import "ServiceRemoteWordPressXMLRPC.h"
+@import WordPressKit;
 
 typedef void (^OptionsHandler)(NSDictionary *options);
 

@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 60
+- @elibud 2017-05-31
+- `BlogSettings` added `iconMediaID` int_32 property. Stores the mediaID of the site's icon.
+
 ## WordPress 59
 - @kurzee 2017-05-04
 - `MenuItem` added `classes` property.

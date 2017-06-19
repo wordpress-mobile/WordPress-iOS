@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import WordPressComAnalytics
 import WordPressComStatsiOS
 import WordPressShared
@@ -322,7 +323,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let post = postAtIndexPath(indexPath)
 
-        if post.remoteStatus == AbstractPostRemoteStatusPushing {
+        if post.remoteStatus == .pushing {
             // Don't allow editing while pushing changes
             return
         }
@@ -383,16 +384,21 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Post Actions
 
     override func createPost() {
+        let filterIndex = filterSettings.currentFilterIndex()
         let editor = EditPostViewController(blog: blog)
         editor.onClose = { [weak self] changesSaved in
             if changesSaved {
                 if let postStatus = editor.post?.status {
                     self?.updateFilterWithPostStatus(postStatus)
                 }
+            } else {
+                self?.updateFilter(index: filterIndex)
             }
         }
         editor.modalPresentationStyle = .fullScreen
-        present(editor, animated: false, completion: nil)
+        present(editor, animated: false, completion: { [weak self] in
+            self?.updateFilterWithPostStatus(.draft)
+        })
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
     }
 
@@ -454,7 +460,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         assert(viewControllerObject is StatsPostDetailsTableViewController)
         guard let viewController = viewControllerObject as? StatsPostDetailsTableViewController else {
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - The stat details view controller is not of the expected class.")
+            DDLogError("\(#file): \(#function) [\(#line)] - The stat details view controller is not of the expected class.")
             return
         }
 
@@ -476,34 +482,48 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func cell(_ cell: UITableViewCell, handleStatsFor post: AbstractPost) {
-        viewStatsForPost(post)
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            viewStatsForPost(post)
+        }
     }
 
     func cell(_ cell: UITableViewCell, handlePublishPost post: AbstractPost) {
-        publishPost(post)
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            publishPost(post)
+        }
+    }
+
+    func cell(_ cell: UITableViewCell, handleSchedulePost post: AbstractPost) {
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            schedulePost(post)
+        }
     }
 
     func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
-        if (post.status == .trash) {
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            if (post.status == .trash) {
 
-            let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-            let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
-            let messageText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
-            let alertController = UIAlertController(title: nil, message: messageText, preferredStyle: .alert)
+                let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+                let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
+                let messageText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
+                let alertController = UIAlertController(title: nil, message: messageText, preferredStyle: .alert)
 
-            alertController.addCancelActionWithTitle(cancelText)
-            alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-                self?.deletePost(post)
+                alertController.addCancelActionWithTitle(cancelText)
+                alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
+                    self?.deletePost(post)
+                }
+                alertController.presentFromRootViewController()
+
+            } else {
+                deletePost(post)
             }
-            alertController.presentFromRootViewController()
-
-        } else {
-            deletePost(post)
         }
     }
 
     func cell(_ cell: UITableViewCell, handleRestore post: AbstractPost) {
-        restorePost(post)
+        ReachabilityUtils.onAvailableInternetConnectionDo {
+            restorePost(post)
+        }
     }
 
     // MARK: - Refreshing noResultsView

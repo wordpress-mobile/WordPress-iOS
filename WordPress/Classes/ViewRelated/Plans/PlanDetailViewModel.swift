@@ -29,7 +29,7 @@ struct PlanDetailViewModel {
 
     var tableViewModel: ImmuTable {
         switch features {
-        case .loading, .error(_):
+        case .loading, .error:
             return ImmuTable.Empty
         case .ready(let groups):
             return ImmuTable(sections: groups.map { group in
@@ -47,9 +47,9 @@ struct PlanDetailViewModel {
             return WPNoResultsView.Model(
                 title: NSLocalizedString("Loading Plan...", comment: "Text displayed while loading plans details")
             )
-        case .ready(_):
+        case .ready:
             return nil
-        case .error(_):
+        case .error:
             return WPNoResultsView.Model(
                 title: NSLocalizedString("Oops", comment: ""),
                 message: NSLocalizedString("There was an error loading the plan", comment: ""),

@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 
 /// Notes:
@@ -149,7 +150,7 @@ class NotificationSyncMediator {
     }
 
 
-    /// Marks a Notification as Read. On error, proceeds to revert the change.
+    /// Marks a Notification as Read.
     ///
     /// - Note: This method should only be used on the main thread.
     ///
@@ -160,12 +161,20 @@ class NotificationSyncMediator {
     func markAsRead(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
         assert(Thread.isMainThread)
 
-        let original = notification.read
-
-        remote.updateReadStatus(notification.notificationId, read: true) { error in
+        let noteID = notification.notificationId
+        remote.updateReadStatus(noteID, read: true) { error in
             if let error = error {
-                DDLogSwift.logError("Error marking note as read: \(error)")
-                self.updateReadStatus(original, forNoteWithObjectID: notification.objectID)
+                DDLogError("Error marking note as read: \(error)")
+                // Ideally, we'd want to revert to the unread status if this
+                // fails, but if the note is visible, the UI layer will keep
+                // trying to mark this as read and fail.
+                //
+                // While not a perfect UX, the easy way out is to pretend it
+                // worked, but invalidate the cache so it can be reverted in the
+                // next successful sync.
+                //
+                // https://github.com/wordpress-mobile/WordPress-iOS/issues/7216
+                NotificationSyncMediator()?.invalidateCacheForNotification(with: noteID)
             }
 
             completion?(error)
@@ -184,7 +193,7 @@ class NotificationSyncMediator {
         invalidateCacheForNotification(with: noteID)
         remote.updateReadStatus(noteID, read: true) { error in
             if let error = error {
-                DDLogSwift.logError("Error marking note as read: \(error)")
+                DDLogError("Error marking note as read: \(error)")
             }
             self.syncNote(with: noteID) { _ in
                 completion?(error)
@@ -205,7 +214,7 @@ class NotificationSyncMediator {
 
         remote.updateLastSeen(timestamp) { error in
             if let error = error {
-                DDLogSwift.logError("Error while Updating Last Seen Timestamp: \(error)")
+                DDLogError("Error while Updating Last Seen Timestamp: \(error)")
             }
 
             completion?(error)
@@ -292,7 +301,7 @@ private extension NotificationSyncMediator {
     ///     - remoteNotes: Collection of Remote Notes
     ///     - completion: Callback to be executed on completion
     ///
-    func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: ((Void) -> Void)? = nil) {
+    func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (() -> Void)? = nil) {
         let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
 
         derivedContext.perform {
@@ -317,7 +326,7 @@ private extension NotificationSyncMediator {
     ///
     /// - Parameter remoteHashes: Collection of remoteNotifications.
     ///
-    func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: @escaping ((Void) -> Void)) {
+    func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: @escaping (() -> Void)) {
         let derivedContext = type(of: self).sharedDerivedContext(with: contextManager)
 
         derivedContext.perform {

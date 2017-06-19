@@ -107,7 +107,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
 
 
 
-// MARK: -  Private Methods
+// MARK: - Private Methods
 //
 private extension NotificationSyncServiceRemote {
     /// Attempts to parse the `success` field of a given response. When it's missing, or it's false,

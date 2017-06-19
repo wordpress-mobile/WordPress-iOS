@@ -40,6 +40,16 @@
            thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
                   completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion;
 
+- (void)createMediaWithPHAsset:(nonnull PHAsset *)asset
+               forBlogObjectID:(nonnull NSManagedObjectID *)blogObjectID
+             thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
+                    completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion;
+
+- (void)createMediaWithImage:(nonnull UIImage *)image
+             forBlogObjectID:(nonnull NSManagedObjectID *)blogObjectID
+           thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
+                  completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion;
+
 /**
  Get the Media object from the server using the blog and the mediaID as the identifier of the resource
  
@@ -162,5 +172,10 @@
  */
 - (NSInteger)getMediaLibraryCountForBlog:(nonnull Blog *)blog
                            forMediaTypes:(nonnull NSSet *)mediaTypes;
+
+- (void)getMediaLibraryServerCountForBlog:(nonnull Blog *)blog
+                            forMediaTypes:(nonnull NSSet *)mediaTypes
+                                  success:(nullable void (^)(NSInteger count))success
+                                  failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 @end

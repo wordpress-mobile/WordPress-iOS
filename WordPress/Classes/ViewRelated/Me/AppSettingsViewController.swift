@@ -38,6 +38,7 @@ class AppSettingsViewController: UITableViewController {
         reloadViewModel()
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
     override func viewWillAppear(_ animated: Bool) {

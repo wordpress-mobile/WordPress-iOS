@@ -1,4 +1,5 @@
 #import "DisplayableImageHelper.h"
+#import <WordPressShared/NSString+Util.h>
 
 static const NSInteger FeaturedImageMinimumWidth = 150;
 
@@ -103,6 +104,9 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
             imageSrc = src;
             break;
         }
+    }
+    if (imageSrc.length == 0) {
+        imageSrc = [self searchContentBySizeClassForImageToFeature:content];
     }
 
     return imageSrc;

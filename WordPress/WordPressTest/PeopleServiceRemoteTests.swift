@@ -1,6 +1,6 @@
 @testable import WordPress
 
-class PeopleServiceRemoteTests: RemoteTestCase {
+class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     // MARK: - Constants
 
@@ -63,7 +63,14 @@ class PeopleServiceRemoteTests: RemoteTestCase {
 
     override func setUp() {
         super.setUp()
-        remote = PeopleServiceRemote(wordPressComRestApi: restApi)
+
+        remote = PeopleServiceRemote(wordPressComRestApi: getRestApi())
+    }
+
+    override func tearDown() {
+        super.tearDown()
+
+        remote = nil
     }
 
     // MARK: - User Tests

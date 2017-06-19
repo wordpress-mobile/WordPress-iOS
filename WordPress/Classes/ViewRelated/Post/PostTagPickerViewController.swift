@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import WordPressShared
 
 class PostTagPickerViewController: UIViewController {
@@ -46,7 +47,7 @@ class PostTagPickerViewController: UIViewController {
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         reloadTableData()
 
-        textView.autocorrectionType = .no
+        textView.autocorrectionType = .yes
         textView.autocapitalizationType = .none
         textView.font = WPStyleGuide.tableviewTextFont()
         textView.textColor = WPStyleGuide.darkGrey()
@@ -141,7 +142,7 @@ private extension PostTagPickerViewController {
     }
 
     func tagsFailedLoading(error: Error) {
-        DDLogSwift.logError("Error loading tags for \(String(describing: blog.url)): \(error)")
+        DDLogError("Error loading tags for \(String(describing: blog.url)): \(error)")
         dataSource = FailureDataSource()
     }
 }
@@ -203,6 +204,7 @@ extension PostTagPickerViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let original = textView.text as NSString
         if range.length == 0,
+            range.location == original.length,
             text == ",",
             partialTag.isEmpty {
             // Don't allow a second comma if the last tag is blank
@@ -210,10 +212,12 @@ extension PostTagPickerViewController: UITextViewDelegate {
         } else if
             range.length == 1 && text == "", // Deleting last character
             range.location > 0, // Not at the beginning
+            range.location + range.length == original.length, // At the end
             original.substring(with: NSRange(location: range.location - 1, length: 1)) == "," // Previous is a comma
         {
             // Delete the comma as well
-            textView.text = original.substring(to: range.location - 1)
+            textView.text = original.substring(to: range.location - 1) + original.substring(from: range.location + range.length)
+            textView.selectedRange = NSRange(location: range.location - 1, length: 0)
             textViewDidChange(textView)
             return false
         } else if range.length == 0, // Inserting
@@ -224,6 +228,16 @@ extension PostTagPickerViewController: UITextViewDelegate {
             textView.text = original.replacingCharacters(in: range, with: ", ")
             textViewDidChange(textView)
             return false
+        } else if text == "\n", // return
+            range.location == original.length, // at the end
+            !partialTag.isEmpty // with some (partial) tag typed
+        {
+            textView.text = original.replacingCharacters(in: range, with: ", ")
+            textViewDidChange(textView)
+            return false
+        } else if text == "\n" // return anywhere else
+            {
+                return false
         }
         return true
     }

@@ -1,4 +1,4 @@
-#import "ServiceRemoteWordPressComREST.h"
+@import WordPressKit;
 
 @class Blog;
 @class RemoteTheme;

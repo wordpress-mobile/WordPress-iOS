@@ -7,12 +7,14 @@
 #import "MediaServiceRemoteREST.h"
 #import "Blog.h"
 #import "RemoteMedia.h"
-#import "WPImageSource.h"
 #import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WordPress-Swift.h"
 #import "WPXMLRPCDecoder.h"
 #import "PhotonImageURLHelper.h"
+#import <WordPressShared/WPImageSource.h>
+
+@import WordPressComAnalytics;
 
 @implementation MediaService
 
@@ -25,7 +27,7 @@
     NSString *mediaName = [[url pathComponents] lastObject];
 
     [self createMediaWith:url
-          forPostObjectID:postObjectID
+              forObjectID:postObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
                completion:completion
@@ -39,7 +41,7 @@
                   completion:(void (^)(Media *media, NSError *error))completion
 {
     [self createMediaWith:image
-          forPostObjectID:postObjectID
+              forObjectID:postObjectID
                 mediaName:mediaID
         thumbnailCallback:thumbnailCallback
                completion:completion
@@ -54,7 +56,7 @@
     NSString *mediaName = [asset originalFilename];
     
     [self createMediaWith:asset
-          forPostObjectID:postObjectID
+              forObjectID:postObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
                completion:completion
@@ -62,31 +64,41 @@
 }
 
 - (void)createMediaWith:(id<ExportableAsset>)asset
-        forPostObjectID:(NSManagedObjectID *)postObjectID
+            forObjectID:(NSManagedObjectID *)objectID
               mediaName:(NSString *)mediaName
       thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
              completion:(void (^)(Media *media, NSError *error))completion
 {
+    AbstractPost *post = nil;
+    Blog *blog = nil;
     NSError *error = nil;
-    AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
-    if (!post) {
+    NSManagedObject *existingObject = [self.managedObjectContext existingObjectWithID:objectID error:&error];
+
+    if ([existingObject isKindOfClass:[AbstractPost class]]) {
+        post = (AbstractPost *)existingObject;
+        blog = post.blog;
+    } else if ([existingObject isKindOfClass:[Blog class]]) {
+        blog = (Blog *)existingObject;
+    }
+
+    if (!post && !blog) {
         if (completion) {
             completion(nil, error);
         }
         return;
     }
-    
+
     MediaType mediaType = [asset assetMediaType];
     NSString *assetUTI = [asset originalUTI];
     NSString *extension = [self extensionForUTI:assetUTI];
     if (mediaType == MediaTypeImage) {
-        NSSet *allowedFileTypes = post.blog.allowedFileTypes;
+        NSSet *allowedFileTypes = blog.allowedFileTypes;
         if (![allowedFileTypes containsObject:extension]) {
             assetUTI = (__bridge NSString *)kUTTypeJPEG;
             extension = [self extensionForUTI:assetUTI];
         }
     } else if (mediaType == MediaTypeVideo) {
-        if (![post.blog isHostedAtWPcom]) {
+        if (![blog isHostedAtWPcom]) {
             assetUTI = (__bridge NSString *)kUTTypeMPEG4;
             extension = [self extensionForUTI:assetUTI];
         }
@@ -102,10 +114,10 @@
     if (mediaType == MediaTypeImage && maxImageSize > 0) {
         // Only tracking resized photo if the user selected a max size that's not the -1 value for "Original"
         NSDictionary *properties = @{@"resize_width": @(maxImageSize)};
-        [WPAppAnalytics track:WPAnalyticsStatEditorResizedPhoto withProperties:properties withBlog:post.blog];
+        [WPAppAnalytics track:WPAnalyticsStatEditorResizedPhoto withProperties:properties withBlog:blog];
         trackResizedPhotoError = ^() {
             [self.managedObjectContext performBlock:^{
-                [WPAppAnalytics track:WPAnalyticsStatEditorResizedPhotoError withProperties:properties withBlog:post.blog];
+                [WPAppAnalytics track:WPAnalyticsStatEditorResizedPhotoError withProperties:properties withBlog:blog];
             }];
         };
     }
@@ -145,13 +157,13 @@
                          if ([assetUTI isEqual:(__bridge NSString *)kUTTypeGIF]) {
                              // export original gif
                              [asset exportOriginalImage:mediaURL successHandler:^(CGSize resultingSize) {
-                                 [self createMediaForPost:postObjectID
-                                                 mediaURL:mediaURL
-                                        mediaThumbnailURL:mediaThumbnailURL
-                                                mediaType:mediaType
-                                                mediaSize:resultingSize
-                                                    asset:asset
-                                               completion:completion];
+                                 [self createMediaForObjectID:objectID
+                                                     mediaURL:mediaURL
+                                            mediaThumbnailURL:mediaThumbnailURL
+                                                    mediaType:mediaType
+                                                    mediaSize:resultingSize
+                                                        asset:asset
+                                                   completion:completion];
                              } errorHandler:^(NSError * _Nonnull error) {
                                  if (completion){
                                      completion(nil, error);
@@ -164,13 +176,13 @@
                                stripGeoLocation:stripGeoLocation
                                     synchronous:true
                                  successHandler:^(CGSize resultingSize) {
-                                     [self createMediaForPost:postObjectID
-                                                     mediaURL:mediaURL
-                                            mediaThumbnailURL:mediaThumbnailURL
-                                                    mediaType:mediaType
-                                                    mediaSize:resultingSize
-                                                        asset:asset
-                                                   completion:completion];
+                                     [self createMediaForObjectID:objectID
+                                                         mediaURL:mediaURL
+                                                mediaThumbnailURL:mediaThumbnailURL
+                                                        mediaType:mediaType
+                                                        mediaSize:resultingSize
+                                                            asset:asset
+                                                       completion:completion];
                                  } errorHandler:^(NSError *error) {
                                      if (completion){
                                          completion(nil, error);
@@ -192,36 +204,64 @@
     }];
 }
 
-- (void) createMediaForPost:(NSManagedObjectID *)postObjectID
-                   mediaURL:(NSURL *)mediaURL
-          mediaThumbnailURL:(NSURL *)mediaThumbnailURL
-                  mediaType:(MediaType)mediaType
-                  mediaSize:(CGSize)mediaSize
-                      asset:(id <ExportableAsset>)asset
-                 completion:(void (^)(Media *media, NSError *error))completion
+- (void)createMediaWithPHAsset:(PHAsset *)asset
+               forBlogObjectID:(NSManagedObjectID *)blogObjectID
+             thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                    completion:(void (^)(Media *media, NSError *error))completion
 {
- 
+    NSString *mediaName = [asset originalFilename];
+
+    [self createMediaWith:asset
+              forObjectID:blogObjectID
+                mediaName:mediaName
+        thumbnailCallback:thumbnailCallback
+               completion:completion
+     ];
+}
+
+- (void)createMediaWithImage:(nonnull UIImage *)image
+             forBlogObjectID:(nonnull NSManagedObjectID *)blogObjectID
+           thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
+                  completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion
+{
+    [self createMediaWith:image
+              forObjectID:blogObjectID
+                mediaName:[[NSUUID UUID] UUIDString]
+        thumbnailCallback:thumbnailCallback
+               completion:completion];
+}
+
+- (void) createMediaForObjectID:(NSManagedObjectID *)objectID
+                       mediaURL:(NSURL *)mediaURL
+              mediaThumbnailURL:(NSURL *)mediaThumbnailURL
+                      mediaType:(MediaType)mediaType
+                      mediaSize:(CGSize)mediaSize
+                          asset:(id <ExportableAsset>)asset
+                     completion:(void (^)(Media *media, NSError *error))completion
+{
     [self.managedObjectContext performBlock:^{
-        AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
-        Media *media = [Media makeMediaWithPost:post];
-        media.postID = post.postID;
-        media.filename = [mediaURL lastPathComponent];
-        media.absoluteLocalURL = mediaURL;
-        media.absoluteThumbnailLocalURL = mediaThumbnailURL;
-        NSNumber * fileSize;
-        if ([mediaURL getResourceValue:&fileSize forKey:NSURLFileSizeKey error:nil]) {
-            media.filesize = @([fileSize longLongValue] / 1024);
-        } else {
-            media.filesize = 0;
+        Media *media = nil;
+        NSManagedObject *object = [self.managedObjectContext objectWithID:objectID];
+
+        if ([object isKindOfClass:[AbstractPost class]]) {
+            AbstractPost *post = (AbstractPost *)object;
+            media = [Media makeMediaWithPost:post];
+            media.postID = post.postID;
+        } else if ([object isKindOfClass:[Blog class]]) {
+            Blog *blog = (Blog *)object;
+            media = [Media makeMediaWithBlog:blog];
+            media.remoteStatusNumber = @(MediaRemoteStatusLocal);
         }
-        media.width = @(mediaSize.width);
-        media.height = @(mediaSize.height);
-        media.mediaType = mediaType;
-        if (mediaType == WPMediaTypeVideo && [asset isKindOfClass:[PHAsset class]]) {
-            PHAsset *originalAsset = (PHAsset *)asset;
-            media.length = @(originalAsset.duration);
+
+        if (media) {
+            [self configureNewMedia:media
+                       withMediaURL:mediaURL
+                  mediaThumbnailURL:mediaThumbnailURL
+                          mediaType:mediaType
+                          mediaSize:mediaSize
+                              asset:asset];
         }
-        //make sure that we only return when object is properly created and saved
+
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
             if (completion) {
                 completion(media, nil);
@@ -230,12 +270,38 @@
     }];
 }
 
+- (void)configureNewMedia:(Media *)media
+             withMediaURL:(NSURL *)mediaURL
+        mediaThumbnailURL:(NSURL *)mediaThumbnailURL
+                mediaType:(MediaType)mediaType
+                mediaSize:(CGSize)mediaSize
+                    asset:(id <ExportableAsset>)asset
+{
+    media.filename = [mediaURL lastPathComponent];
+    media.absoluteLocalURL = mediaURL;
+    media.absoluteThumbnailLocalURL = mediaThumbnailURL;
+    NSNumber * fileSize;
+    if ([mediaURL getResourceValue:&fileSize forKey:NSURLFileSizeKey error:nil]) {
+        media.filesize = @([fileSize longLongValue] / 1024);
+    } else {
+        media.filesize = 0;
+    }
+    media.width = @(mediaSize.width);
+    media.height = @(mediaSize.height);
+    media.mediaType = mediaType;
+    if (mediaType == WPMediaTypeVideo && [asset isKindOfClass:[PHAsset class]]) {
+        PHAsset *originalAsset = (PHAsset *)asset;
+        media.length = @(originalAsset.duration);
+    }
+}
+
 - (void)uploadMedia:(Media *)media
            progress:(NSProgress **)progress
             success:(void (^)())success
             failure:(void (^)(NSError *error))failure
 {
-    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
+    Blog *blog = media.blog;
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
 
     // Even though jpeg is a valid extension, use jpg instead for the widest possible
@@ -248,6 +314,8 @@
     NSManagedObjectID *mediaObjectID = media.objectID;
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
         [self.managedObjectContext performBlock:^{
+            [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadSuccessful withBlog:blog];
+
             NSError * error = nil;
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
             if (!mediaInContext){
@@ -257,7 +325,7 @@
                 }
                 return;
             }
-            
+
             [self updateMedia:mediaInContext withRemoteMedia:media];
             mediaInContext.remoteStatus = MediaRemoteStatusSync;
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
@@ -269,6 +337,10 @@
     };
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
         [self.managedObjectContext performBlock:^{
+            if (error) {
+                [self trackUploadError:error];
+            }
+
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
             if (mediaInContext) {
                 mediaInContext.remoteStatus = MediaRemoteStatusFailed;
@@ -279,11 +351,22 @@
             }
         }];
     };
-    
+
+    [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadStarted withBlog:blog];
+
     [remote uploadMedia:remoteMedia
                progress:progress
                 success:successBlock
                 failure:failureBlock];
+}
+
+- (void)trackUploadError:(NSError *)error
+{
+    if (error.code == NSURLErrorCancelled) {
+        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadCanceled];
+    } else {
+        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed error:error];
+    }
 }
 
 - (void)updateMedia:(Media *)media
@@ -695,6 +778,51 @@
     NSError *error;
     NSArray *mediaAssets = [self.managedObjectContext executeFetchRequest:request error:&error];
     return mediaAssets.count;
+}
+
+- (void)getMediaLibraryServerCountForBlog:(Blog *)blog
+                            forMediaTypes:(NSSet *)mediaTypes
+                                  success:(void (^)(NSInteger count))success
+                                  failure:(void (^)(NSError *error))failure
+{
+    NSMutableSet *remainingMediaTypes = [NSMutableSet setWithSet:mediaTypes];
+    NSNumber *currentMediaType = [mediaTypes anyObject];
+    NSString *currentMimeType = nil;
+    if (currentMediaType != nil) {
+        currentMimeType = [self mimeTypeForMediaType:currentMediaType];
+        [remainingMediaTypes removeObject:currentMediaType];
+    }
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getMediaLibraryCountForType:currentMimeType
+                            withSuccess:^(NSInteger count) {
+        if( remainingMediaTypes.count == 0) {
+            if (success) {
+                success(count);
+            }
+        } else {
+            [self getMediaLibraryServerCountForBlog:blog forMediaTypes:remainingMediaTypes success:^(NSInteger otherCount) {
+                if (success) {
+                    success(count + otherCount);
+                }
+            } failure:^(NSError * _Nonnull error) {
+                if (failure) {
+                    failure(error);
+                }
+            }];
+        }
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
+- (NSString *)mimeTypeForMediaType:(NSNumber *)mediaType
+{
+    MediaType filter = (MediaType)[mediaType intValue];
+    NSString *mimeType = [Media stringFromMediaType:filter];
+    return mimeType;
 }
 
 - (NSPredicate *)predicateForMediaTypes:(NSSet *)mediaTypes blog:(Blog *)blog

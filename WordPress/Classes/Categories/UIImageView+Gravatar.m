@@ -2,6 +2,8 @@
 #import "UIImageView+AFNetworking.h"
 #import "NSString+Helpers.h"
 #import "Constants.h"
+#import "PhotonImageURLHelper.h"
+#import "PrivateSiteURLProtocol.h"
 
 
 #pragma mark - Constants
@@ -26,17 +28,42 @@ NSString *const BlavatarDefault = @"blavatar-default";
 
 - (void)setImageWithSiteIcon:(NSString *)siteIcon placeholderImage:(UIImage *)placeholderImage
 {
-    if ([self isPhotonURL:siteIcon] || [self isWordPressComFilesURL:siteIcon]) {
-        [self setImageWithURL:[self siteIconURLForSiteIconUrl:siteIcon] placeholderImage:placeholderImage];
-    } else if ([self isBlavatarURL:siteIcon]) {
-        [self setImageWithURL:[self blavatarURLForBlavatarURL:siteIcon] placeholderImage:placeholderImage];
+    [self setImageWithURL:[self URLWithSiteIcon:siteIcon] placeholderImage:placeholderImage];
+}
+
+- (void)setImageWithSiteIconForBlog:(Blog *)blog
+{
+    UIImage *blavatarDefaultImage = [UIImage imageNamed:BlavatarDefault];
+
+    [self setImageWithSiteIconForBlog:blog placeholderImage:blavatarDefaultImage];
+}
+
+- (void)setImageWithSiteIconForBlog:(Blog *)blog placeholderImage:(UIImage *)placeholderImage
+{
+    if (blog.isHostedAtWPcom && blog.isPrivate) {
+        [self setImageWithPrivateSiteIcon:blog.icon placeholderImage:placeholderImage];
     } else {
-        [self setImageWithURL:[self blavatarURLForHost:siteIcon] placeholderImage:placeholderImage];
+        [self setImageWithSiteIcon:blog.icon placeholderImage:placeholderImage];
     }
 }
 
+- (void)setDefaultSiteIconImage
+{
+    self.image = [UIImage imageNamed:BlavatarDefault];
+}
 
 #pragma mark - Site Icon Private Methods
+
+- (NSURL *)URLWithSiteIcon:(NSString *)siteIcon
+{
+    if ([self isPhotonURL:siteIcon] || [self isWordPressComFilesURL:siteIcon]) {
+        return [self siteIconURLForSiteIconUrl:siteIcon];
+    } else if ([self isBlavatarURL:siteIcon]) {
+        return [self blavatarURLForBlavatarURL:siteIcon];
+    } else {
+        return [self URLForResizedImageURL:siteIcon];
+    }
+}
 
 - (NSURL *)siteIconURLForSiteIconUrl:(NSString *)path
 {
@@ -46,20 +73,26 @@ NSString *const BlavatarDefault = @"blavatar-default";
     return urlComponents.URL;
 }
 
-
-#pragma mark - Blavatar Helpers
-
-- (NSURL *)blavatarURLForHost:(NSString *)host
+- (void)setImageWithPrivateSiteIcon:(NSString *)siteIcon placeholderImage:(UIImage *)placeholderImage
 {
-    return [self blavatarURLForHost:host withSize:[self sizeForBlavatarDownload]];
+    NSURLRequest *imageRequest = [PrivateSiteURLProtocol requestForPrivateSiteFromURL:[self URLWithSiteIcon:siteIcon]];
+    [self setImageWithURLRequest:imageRequest
+                placeholderImage:placeholderImage
+                         success:nil
+                         failure:nil];
 }
 
-- (NSURL *)blavatarURLForHost:(NSString *)host withSize:(NSInteger)size
-{
-    NSString *blavatarUrl = [NSString stringWithFormat:@"%@/%@?d=404&s=%d", WPBlavatarBaseURL, [host md5], size];
-    return [NSURL URLWithString:blavatarUrl];
-}
+#pragma mark - Photon Helpers
 
+- (nullable NSURL *)URLForResizedImageURL:(NSString *)urlString
+{
+    CGSize size = CGSizeMake(BlavatarDefaultSize, BlavatarDefaultSize);
+    NSURL *url = [NSURL URLWithString:urlString];
+    if (!url) {
+        return nil;
+    }
+    return [PhotonImageURLHelper photonURLWithSize:size forImageURL:url];
+}
 
 #pragma mark - Blavatar Private Methods
 
@@ -74,9 +107,6 @@ NSString *const BlavatarDefault = @"blavatar-default";
 - (NSInteger)sizeForBlavatarDownload
 {
     NSInteger size = BlavatarDefaultSize;
-    if (!CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
-        size = MAX(self.bounds.size.width, self.bounds.size.height);
-    }
 
     size *= [[UIScreen mainScreen] scale];
 

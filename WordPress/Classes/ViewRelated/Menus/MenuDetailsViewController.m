@@ -1,11 +1,11 @@
 #import "MenuDetailsViewController.h"
 #import "Menu.h"
-#import "WPStyleGuide.h"
-#import "UIColor+Helpers.h"
-#import "WPFontManager.h"
 #import "Menu+ViewDesign.h"
 #import "Blog.h"
 #import "WPAppAnalytics.h"
+#import <WordPressShared/UIColor+Helpers.h>
+#import <WordPressShared/WPFontManager.h>
+#import <WordPressShared/WPStyleGuide.h>
 
 @import Gridicons;
 

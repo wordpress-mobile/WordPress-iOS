@@ -4,17 +4,17 @@
 #import "Menu.h"
 #import "MenuLocation.h"
 #import "MenuItem.h"
-#import "WPStyleGuide.h"
-#import "WPFontManager.h"
 #import "MenuHeaderViewController.h"
 #import "MenuDetailsViewController.h"
 #import "MenuItemsViewController.h"
 #import "MenuItemEditingViewController.h"
-#import "WPNoResultsView.h"
 #import "Menu+ViewDesign.h"
 #import "ContextManager.h"
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
+#import <WordPressShared/WPNoResultsView.h>
+#import <WordPressShared/WPFontManager.h>
+#import <WordPressShared/WPStyleGuide.h>
 
 static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 

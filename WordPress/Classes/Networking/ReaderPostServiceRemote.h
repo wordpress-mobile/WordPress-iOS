@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "ServiceRemoteWordPressComREST.h"
+@import WordPressKit;
 
 @class RemoteReaderPost;
 
