@@ -35,7 +35,7 @@ extension FormattingIdentifier {
         case .sourcecode:
             return Gridicon.iconOfType(.code)
         case .more:
-            return Gridicon.iconOfType(.nextPage)
+            return Gridicon.iconOfType(.readMore)
         case .header1:
             return Gridicon.iconOfType(.headingH1)
         case .header2:
