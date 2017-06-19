@@ -2,7 +2,6 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int {
-    case mediaLibrary
     case nativeEditor
     case exampleFeature
     case newLogin
@@ -12,8 +11,6 @@ enum FeatureFlag: Int {
         switch self {
         case .exampleFeature:
             return true
-        case .mediaLibrary:
-            return build(.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting)
         case .newLogin:
             return build(.localDeveloper, .a8cBranchTest)
         case .nativeEditor:

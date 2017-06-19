@@ -1,5 +1,4 @@
 import Foundation
-import Mixpanel
 import WordPressComAnalytics
 import UserNotifications
 
@@ -101,13 +100,12 @@ final public class PushNotificationsManager: NSObject {
 
     /// Registers the Device Token agains WordPress.com backend, if there's a default account.
     ///
-    /// - Note: Both Helpshift and Mixpanel will also be initialized. The token will be persisted across App Sessions.
+    /// - Note: Helpshift will also be initialized. The token will be persisted across App Sessions.
     ///
     func registerDeviceToken(_ tokenData: Data) {
         // We want to register Helpshift regardless so that way if a user isn't logged in
         // they can still get push notifications that we replied to their support ticket.
         HelpshiftCore.registerDeviceToken(tokenData)
-        Mixpanel.sharedInstance()?.people.addPushDeviceToken(tokenData)
 
         // Don't bother registering for WordPress anything if the user isn't logged in
         guard AccountHelper.isDotcomAvailable() else {

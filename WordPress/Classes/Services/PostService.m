@@ -56,6 +56,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
     Page *page = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Page class]) inManagedObjectContext:self.managedObjectContext];
     page.blog = blog;
+    page.date_created_gmt = [NSDate date];
     page.remoteStatus = AbstractPostRemoteStatusSync;
     return page;
 }
@@ -423,6 +424,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
 - (void)initializeDraft:(AbstractPost *)post {
     post.remoteStatus = AbstractPostRemoteStatusLocal;
+    post.dateModified = [NSDate date];
 }
 
 - (void)mergePosts:(NSArray <RemotePost *> *)remotePosts

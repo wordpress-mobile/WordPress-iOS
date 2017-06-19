@@ -42,13 +42,6 @@ NSString * const WPNewPostURLParamContentKey = @"content";
 NSString * const WPNewPostURLParamTagsKey = @"tags";
 NSString * const WPNewPostURLParamImageKey = @"image";
 
-// Constants for the unread notification dot icon
-static NSInteger const WPNotificationBadgeIconRadius = 5;
-static NSInteger const WPNotificationBadgeIconBorder = 2;
-static NSInteger const WPNotificationBadgeIconSize = (WPNotificationBadgeIconRadius + WPNotificationBadgeIconBorder) * 2;
-static NSInteger const WPNotificationBadgeIconVerticalOffsetFromTop = 6;
-static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 13;
-
 static NSInteger const WPTabBarIconOffsetiPad = 7;
 static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
@@ -70,7 +63,8 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 @property (nonatomic, strong) WPSplitViewController *meSplitViewController;
 @property (nonatomic, strong) WPSplitViewController *notificationsSplitViewController;
 
-@property (nonatomic, strong) UIView *notificationBadgeIconView;
+@property (nonatomic, strong) UIImage *notificationsTabBarImage;
+@property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
 
 @end
 
@@ -117,9 +111,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                    self.notificationsSplitViewController]];
 
         [self setSelectedViewController:self.blogListSplitViewController];
-
-        // adds the orange dot on top of the notification tab
-        [self addNotificationBadgeIcon];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(helpshiftUnreadCountUpdated:)
@@ -295,9 +286,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     _notificationsNavigationController.navigationBar.translucent = NO;
-    UIImage *notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
-    _notificationsNavigationController.tabBarItem.image = [notificationsTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    _notificationsNavigationController.tabBarItem.selectedImage = notificationsTabBarImage;
+    self.notificationsTabBarImage = [[UIImage imageNamed:@"icon-tab-notifications"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.notificationsTabBarImageUnread = [[UIImage imageNamed:@"icon-tab-notifications-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
+    _notificationsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-notifications"];
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     _notificationsNavigationController.tabBarItem.accessibilityIdentifier = @"notificationsTabButton";
     _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
@@ -406,10 +398,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
                                self.newPostViewController,
                                self.meSplitViewController,
                                self.notificationsSplitViewController]];
-
-    // Bring the badge view to the front, while recreating the VCs the TabBarItems are
-    // recreated too, leaving it in the back
-    [self.tabBar bringSubviewToFront:self.notificationBadgeIconView];
 
     // Reset the selectedIndex to the default MySites tab.
     self.selectedIndex = WPTabMySites;
@@ -689,21 +677,13 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)updateNotificationBadgeVisibility
 {
     NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-    UITabBarItem *tabBarItem = self.notificationsNavigationController.tabBarItem;
+    UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
     if (count == 0) {
-        self.notificationBadgeIconView.hidden = YES;
-        tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
-        return;
-    }
-
-    // When the user logs in the VCs are recreated and at the time viewDidLayoutSubviews is
-    // invoked the TabButton frames are not correct, so we need to recalculate the badge position
-    [self updateNotificationBadgeIconPosition];
-    BOOL wasNotificationBadgeHidden = self.notificationBadgeIconView.hidden;
-    self.notificationBadgeIconView.hidden = NO;
-    tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
-    if (wasNotificationBadgeHidden) {
-        [self animateNotificationBadgeIcon];
+        notificationsTabBarItem.image = self.notificationsTabBarImage;
+        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
+    } else {
+        notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
+        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
     }
 }
 
@@ -737,120 +717,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
              ];
 }
 
-#pragma mark - Notification Badge Icon Management
-
-- (void)addNotificationBadgeIcon
-{
-    CGRect badgeFrame = CGRectMake(0, 0, WPNotificationBadgeIconSize, WPNotificationBadgeIconSize);
-    self.notificationBadgeIconView = [[UIView alloc] initWithFrame:badgeFrame];
-    
-    CAShapeLayer *badgeLayer = [CAShapeLayer layer];
-    badgeLayer.contentsScale = [UIScreen mainScreen].scale;
-    CGPoint badgeCenter = CGPointMake(WPNotificationBadgeIconSize / 2.f, WPNotificationBadgeIconSize / 2.f);
-    CGFloat badgeRadius = WPNotificationBadgeIconRadius + WPNotificationBadgeIconBorder / 2.f;
-    badgeLayer.path = [UIBezierPath bezierPathWithArcCenter:badgeCenter radius:badgeRadius startAngle:0 endAngle:M_PI * 2 clockwise:NO].CGPath;
-    badgeLayer.fillColor = [WPStyleGuide jazzyOrange].CGColor;
-    badgeLayer.strokeColor = [UIColor whiteColor].CGColor;
-    badgeLayer.lineWidth = WPNotificationBadgeIconBorder;
-    [self.notificationBadgeIconView.layer addSublayer:badgeLayer];
-
-    self.notificationBadgeIconView.hidden = YES;
-    [self.tabBar addSubview:self.notificationBadgeIconView];
-}
-
-- (void)updateNotificationBadgeIconPosition
-{
-    CGRect notificationsButtonFrame = [self notificationsButtonFrame];
-    CGRect rect = self.notificationBadgeIconView.frame;
-    rect.origin.y = WPNotificationBadgeIconVerticalOffsetFromTop;
-    rect.origin.x = CGRectGetMidX(notificationsButtonFrame) - WPNotificationBadgeIconHorizontalOffsetFromCenter;
-    self.notificationBadgeIconView.frame = rect;
-}
-
-- (void)animateNotificationBadgeIcon
-{
-    // Note:
-    // We need to force a layout pass (*if needed*) right now. Otherwise, the view may get layed out
-    // at the middle of the animation, which may lead to inconsistencies.
-    //
-    [self.view layoutIfNeeded];
-    
-    // Scotty, beam me up!
-    //
-    __weak __typeof(self) weakSelf = self;
-    [UIView animateWithDuration:0.3 animations:^{
-        weakSelf.notificationBadgeIconView.transform = CGAffineTransformMakeScale(1.5, 1.5);
-    } completion:^(BOOL finished) {
-        if (!finished) {
-            weakSelf.notificationBadgeIconView.transform = CGAffineTransformIdentity;
-            return;
-        }
-
-        [UIView animateWithDuration:0.3 animations:^{
-            weakSelf.notificationBadgeIconView.transform = CGAffineTransformMakeScale(0.85, 0.85);
-        } completion:^(BOOL finished) {
-            if (!finished) {
-                weakSelf.notificationBadgeIconView.transform = CGAffineTransformIdentity;
-                return;
-            }
-
-            [UIView animateWithDuration:0.2 animations:^{
-                weakSelf.notificationBadgeIconView.transform = CGAffineTransformIdentity;
-            }];
-        }];
-    }];
-}
-
-- (CGRect)lastTabBarButtonFrame
-{
-    // Hack:
-    // In this method, we determine the UITabBarController's last button frame.
-    // It's proven to be effective in *all* of the available devices to date, even in multitasking mode.
-    // Even better, we don't even need one constant per device.
-    //
-    // On iOS 10, the first time this viewcontroller's view is laid out the tab bar buttons have
-    // a zero origin, so this method can't choose a frame. On subsequent layout passes, the
-    // buttons seem to have a correct frame, so this method still works for now.
-    // (When this viewcontroller's view is first created, `viewDidLayoutSubviews` is called twice -
-    // The second time has the correct frame).
-    //
-    CGRect lastButtonRect = CGRectZero;
-    
-    for (UIView *subview in self.tabBar.subviews) {
-        if ([WPTabBarButtonClassname isEqualToString:NSStringFromClass([subview class])]) {
-            if (CGRectGetMinX(subview.frame) > CGRectGetMinX(lastButtonRect)) {
-                lastButtonRect = subview.frame;
-            }
-        }
-    }
-    
-    return lastButtonRect;
-}
-
-- (CGRect)firstTabBarButtonFrame
-{
-    CGRect firstButtonRect = CGRectInfinite;
-
-    for (UIView *subview in self.tabBar.subviews) {
-        if ([WPTabBarButtonClassname isEqualToString:NSStringFromClass([subview class])]) {
-            if (CGRectGetMaxX(subview.frame) < CGRectGetMaxX(firstButtonRect)) {
-                firstButtonRect = subview.frame;
-            }
-        }
-    }
-
-    return firstButtonRect;
-}
-
-- (CGRect)notificationsButtonFrame
-{
-    if ([self.view userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
-        return [self lastTabBarButtonFrame];
-    } else {
-        return [self firstTabBarButtonFrame];
-    }
-}
-
 #pragma mark - Handling Layout
 
 - (void)viewDidAppear:(BOOL)animated
@@ -862,29 +728,16 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self updateNotificationBadgeIconPosition];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
-    __weak __typeof(self) weakSelf = self;
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-                                                [weakSelf updateNotificationBadgeIconPosition];
-                                            }
-                                 completion:nil];
 }
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
-    
-    __weak __typeof(self) weakSelf = self;
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-                                                [weakSelf updateNotificationBadgeIconPosition];
-                                            }
-                                 completion:nil];
 }
 
 // this method allows this VC to be a valid unwind destination for this selector

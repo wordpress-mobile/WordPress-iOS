@@ -43,7 +43,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
         session.invalidateAndCancel()
     }
 
-    //MARK: - Network requests
+    // MARK: - Network requests
     /**
      Check if username and password are valid credentials for the xmlrpc endpoint.
 
@@ -84,20 +84,27 @@ open class WordPressOrgXMLRPCApi: NSObject {
             return nil
         }
 
+        var progress: Progress?
         // Create task
         let task = session.dataTask(with: request, completionHandler: { (data, urlResponse, error) in
-            DispatchQueue.main.async {
-                do {
-                    let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error as NSError?)
+            if let uploadProgress = progress {
+                uploadProgress.completedUnitCount = uploadProgress.totalUnitCount
+            }
+            do {
+                let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error as NSError?)
+                DispatchQueue.main.async {
                     success(responseObject, urlResponse as? HTTPURLResponse)
-                } catch let error as NSError {
-                    failure(error, urlResponse as? HTTPURLResponse)
-                    return
                 }
+            } catch let error as NSError {
+                DispatchQueue.main.async {
+                    failure(error, urlResponse as? HTTPURLResponse)
+                }
+                return
             }
         })
+        progress = createProgressForTask(task)
         task.resume()
-        return createProgresForTask(task)
+        return progress
     }
 
     /**
@@ -129,6 +136,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
 
         // Create task
         let session = uploadSession
+        var progress: Progress?
         let task = session.uploadTask(with: request, fromFile: fileURL, completionHandler: { (data, urlResponse, error) in
             if session != self.session {
                 session.finishTasksAndInvalidate()
@@ -140,13 +148,17 @@ open class WordPressOrgXMLRPCApi: NSObject {
             } catch let error as NSError {
                 failure(error, urlResponse as? HTTPURLResponse)
             }
+            if let uploadProgress = progress {
+                uploadProgress.completedUnitCount = uploadProgress.totalUnitCount
+            }
         })
         task.resume()
 
-        return createProgresForTask(task)
+        progress = createProgressForTask(task)
+        return progress
     }
 
-    //MARK: - Request Building
+    // MARK: - Request Building
 
     fileprivate func requestWithMethod(_ method: String, parameters: [AnyObject]?) throws -> URLRequest {
         let mutableRequest = NSMutableURLRequest(url: endpoint)
@@ -179,15 +191,16 @@ open class WordPressOrgXMLRPCApi: NSObject {
         return fileURL
     }
 
-    //MARK: - Progress reporting
+    // MARK: - Progress reporting
 
-    fileprivate func createProgresForTask(_ task: URLSessionTask) -> Progress {
+    fileprivate func createProgressForTask(_ task: URLSessionTask) -> Progress {
         // Progress report
         let progress = Progress(parent: Progress.current(), userInfo: nil)
         progress.totalUnitCount = 1
         if let contentLengthString = task.originalRequest?.allHTTPHeaderFields?["Content-Length"],
             let contentLength = Int64(contentLengthString) {
-            progress.totalUnitCount = contentLength
+            // Sergio Estevao: Add an extra 1 unit to the progress to take in account the upload response and not only the uploading of data
+            progress.totalUnitCount = contentLength + 1
         }
         progress.cancellationHandler = {
             task.cancel()
@@ -197,7 +210,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
         return progress
     }
 
-    //MARK: - Handling of data
+    // MARK: - Handling of data
 
     fileprivate func handleResponseWithData(_ originalData: Data?, urlResponse: URLResponse?, error: NSError?) throws -> AnyObject {
         guard let data = originalData,

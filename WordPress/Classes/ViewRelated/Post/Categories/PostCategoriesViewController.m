@@ -7,6 +7,7 @@
 #import "PostCategoryService.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressShared/WPTableViewCell.h>
+#import "WordPress-Swift.h"
 
 static NSString * const CategoryCellIdentifier = @"CategoryCellIdentifier";
 static const CGFloat CategoryCellIndentation = 16.0;
@@ -45,6 +46,8 @@ static const CGFloat CategoryCellIndentation = 16.0;
 
     self.tableView.accessibilityIdentifier = @"CategoriesList";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
+
     // Hide extra cell separators.
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:CategoryCellIdentifier];

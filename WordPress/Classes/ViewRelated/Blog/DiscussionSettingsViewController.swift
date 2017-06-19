@@ -47,6 +47,7 @@ open class DiscussionSettingsViewController: UITableViewController {
 
     fileprivate func setupTableView() {
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         // Note: We really want to handle 'Unselect' manually.
         // Reason: we always reload previously selected rows.

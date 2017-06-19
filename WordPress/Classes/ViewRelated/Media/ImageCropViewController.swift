@@ -8,7 +8,7 @@ import UIKit
 class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Public Properties
     var onCompletion: ((UIImage) -> Void)?
-
+    var maskShape: ImageCropOverlayMaskShape = .circle
 
     // MARK: - Public Initializers
 
@@ -28,7 +28,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         title = NSLocalizedString("Resize & Crop", comment: "")
 
         // Setup: NavigationItem
-        let useButtonTitle = NSLocalizedString("Use", comment: "Use the current image as Gravatar")
+        let useButtonTitle = NSLocalizedString("Use", comment: "Use the current image")
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: useButtonTitle,
                                                             style: .plain,
                                                             target: self,
@@ -45,6 +45,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
 
         // Setup: Overlay
         overlayView.borderColor = WPStyleGuide.mediumBlue()
+        overlayView.maskShape = maskShape
     }
 
 
@@ -97,5 +98,5 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - IBOutlets
     @IBOutlet fileprivate var scrollView: UIScrollView!
     @IBOutlet fileprivate var imageView: UIImageView!
-    @IBOutlet fileprivate var overlayView: GravatarOverlayView!
+    @IBOutlet fileprivate var overlayView: ImageCropOverlayView!
 }

@@ -42,4 +42,10 @@ extension Blog {
     public func isPublishingPostsAllowed() -> Bool {
         return isUserCapableOf(.PublishPosts)
     }
+
+    /// Returns true if the current user is allowed to upload files to the Blog
+    ///
+    public func isUploadingFilesAllowed() -> Bool {
+        return isUserCapableOf(.UploadFiles)
+    }
 }

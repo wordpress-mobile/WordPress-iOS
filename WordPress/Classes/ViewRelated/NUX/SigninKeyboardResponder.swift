@@ -9,8 +9,8 @@ let DefaultSigninFormVerticalOffset: CGFloat = -64.0
 /// Signin controllers.
 ///
 protocol SigninKeyboardResponder: class {
-    var bottomContentConstraint: NSLayoutConstraint! {get}
-    var verticalCenterConstraint: NSLayoutConstraint! {get}
+    var bottomContentConstraint: NSLayoutConstraint? {get}
+    var verticalCenterConstraint: NSLayoutConstraint? {get}
 
     func signinFormVerticalOffset() -> CGFloat
     func registerForKeyboardEvents(keyboardWillShowAction: Selector, keyboardWillHideAction: Selector)
@@ -60,11 +60,11 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController {
     ///
     func adjustViewForKeyboard(_ visibleKeyboard: Bool) {
         if visibleKeyboard && SigninEditingState.signinLastKeyboardHeightDelta > 0 {
-            bottomContentConstraint.constant = SigninEditingState.signinLastKeyboardHeightDelta
-            verticalCenterConstraint.constant = 0
+            bottomContentConstraint?.constant = SigninEditingState.signinLastKeyboardHeightDelta
+            verticalCenterConstraint?.constant = 0
         } else {
-            bottomContentConstraint.constant = 0
-            verticalCenterConstraint.constant = signinFormVerticalOffset()
+            bottomContentConstraint?.constant = 0
+            verticalCenterConstraint?.constant = signinFormVerticalOffset()
         }
     }
 
@@ -81,7 +81,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController {
         SigninEditingState.signinLastKeyboardHeightDelta = heightDeltaFromKeyboardFrame(keyboardInfo.keyboardFrame)
         SigninEditingState.signinEditingStateActive = true
 
-        if bottomContentConstraint.constant == SigninEditingState.signinLastKeyboardHeightDelta {
+        if bottomContentConstraint?.constant == SigninEditingState.signinLastKeyboardHeightDelta {
             return
         }
 
@@ -107,7 +107,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController {
 
         SigninEditingState.signinEditingStateActive = false
 
-        if bottomContentConstraint.constant == 0 {
+        if bottomContentConstraint?.constant == 0 {
             return
         }
 

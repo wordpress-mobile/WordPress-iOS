@@ -91,7 +91,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     }
 
 
-    // MARK: -  Instance Methods
+    // MARK: - Instance Methods
 
 
     func updateHeightConstraint() {

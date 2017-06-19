@@ -30,6 +30,7 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
 
         // Setup tableView
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
     open override func viewWillAppear(_ animated: Bool) {

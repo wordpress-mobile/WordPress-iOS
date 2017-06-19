@@ -1,14 +1,11 @@
 #import "Logging.h"
 #import "WPStatsService.h"
-#import "WPStatsServiceRemote.h"
-#import "StatsItem.h"
-#import "StatsItemAction.h"
 #import "StatsGroup.h"
-#import "StatsVisits.h"
-#import "StatsSummary.h"
 #import "StatsEphemory.h"
 #import "StatsDateUtilities.h"
 #import "StatsSection.h"
+#import "NSBundle+StatsBundleHelper.h"
+@import WordPressKit;
 
 
 NSString *const BatchInsightsCacheKey = @"BatchInsights";
@@ -564,7 +561,18 @@ NSString *const TodayCacheKey = @"Today";
         groupResult.items = items;
         groupResult.moreItemsExist = moreViewsAvailable;
         groupResult.errorWhileRetrieving = error != nil;
-        
+
+        if (statsSection == StatsSectionCountry) {
+            for (StatsItem *item in items) {
+                NSString *key = item.alternateIconValue;
+
+                if (key.length > 0) {
+                    item.iconURL = [[NSBundle statsBundle] URLForResource:key withExtension:@"png"];
+                    item.alternateIconValue = nil;
+                }
+            }
+        }
+
         cacheDictionary[@(statsSection)] = groupResult;
         
         if (groupCompletion) {
