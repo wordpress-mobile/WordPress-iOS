@@ -230,6 +230,9 @@
             completionBlock:(WPMediaAddedBlock)completionBlock
 {
     NSManagedObjectID *objectID = [self.post objectID];
+    if (objectID == nil) {
+        objectID = [self.blog objectID];
+    }
     PHFetchResult *result = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
     PHAsset *asset = [result firstObject];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
@@ -248,6 +251,9 @@
            completionBlock:(WPMediaAddedBlock)completionBlock
 {
     NSManagedObjectID *objectID = [self.post objectID];
+    if (objectID == nil) {
+        objectID = [self.blog objectID];
+    }
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [mediaService createMediaWithURL:url
                      forPostObjectID:objectID
