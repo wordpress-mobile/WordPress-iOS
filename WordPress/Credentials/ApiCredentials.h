@@ -4,7 +4,6 @@
 + (NSString *)client;
 + (NSString *)secret;
 + (NSString *)pocketConsumerKey;
-+ (NSString *)mixpanelAPIToken;
 + (NSString *)crashlyticsApiKey;
 + (NSString *)hockeyappAppId;
 + (NSString *)googlePlusClientId;
@@ -13,5 +12,4 @@
 + (NSString *)helpshiftAppId;
 + (NSString *)debuggingKey;
 + (NSString *)lookbackToken;
-+ (NSString *)appbotXAPIKey;
 @end

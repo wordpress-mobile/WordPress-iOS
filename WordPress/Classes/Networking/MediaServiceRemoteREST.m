@@ -1,6 +1,6 @@
 #import "MediaServiceRemoteREST.h"
 #import "RemoteMedia.h"
-#import "NSDate+WordPressJSON.h"
+@import WordPressKit;
 #import "WordPress-Swift.h"
 
 const NSInteger WPRestErrorCodeMediaNew = 10;
@@ -83,14 +83,18 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
           }];
 }
 
-- (void)getMediaLibraryCountWithSuccess:(void (^)(NSInteger))success
-                                failure:(void (^)(NSError *))failure
+- (void)getMediaLibraryCountForType:(NSString *)mediaType
+                        withSuccess:(void (^)(NSInteger))success
+                            failure:(void (^)(NSError *))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/media", self.siteID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    NSDictionary *parameters = @{ @"number" : @1 };
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{ @"number" : @1 }];
+    if (mediaType) {
+        parameters[@"media_type"] = mediaType;
+    }
     
     [self.wordPressComRestApi GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
@@ -149,13 +153,12 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         }
         
     } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-        localProgress.totalUnitCount = 0;
-        localProgress.completedUnitCount = 0;
         DDLogDebug(@"Error uploading file: %@", [error localizedDescription]);
         if (failure) {
             failure(error);
         }
     }];
+
     *progress = localProgress;
 }
 

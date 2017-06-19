@@ -78,6 +78,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         noticeAnimator = NoticeAnimator(target: view)
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
     override func viewDidLayoutSubviews() {

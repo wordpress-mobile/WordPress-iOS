@@ -1,7 +1,7 @@
 #import "NSURL+Util.h"
-#import "NSString+Util.h"
 #import "NSString+Helpers.h"
 #import "Constants.h"
+#import <WordPressShared/NSString+Util.h>
 
 
 @implementation NSURL (Util)

@@ -8,12 +8,12 @@
 #import "RemotePostCategory.h"
 #import "PostCategoryService.h"
 #import "ContextManager.h"
-#import "NSDate+WordPressJSON.h"
 #import "CommentService.h"
 #import "MediaService.h"
 #import "Media.h"
 #import "DisplayableImageHelper.h"
 #import "WordPress-Swift.h"
+@import WordPressKit;
 
 PostServiceType const PostServiceTypePost = @"post";
 PostServiceType const PostServiceTypePage = @"page";
@@ -56,6 +56,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
     Page *page = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Page class]) inManagedObjectContext:self.managedObjectContext];
     page.blog = blog;
+    page.date_created_gmt = [NSDate date];
     page.remoteStatus = AbstractPostRemoteStatusSync;
     return page;
 }
@@ -423,6 +424,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
 - (void)initializeDraft:(AbstractPost *)post {
     post.remoteStatus = AbstractPostRemoteStatusLocal;
+    post.dateModified = [NSDate date];
 }
 
 - (void)mergePosts:(NSArray <RemotePost *> *)remotePosts
@@ -527,12 +529,16 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.post_thumbnail = remotePost.postThumbnailID;
     post.pathForDisplayImage = remotePost.pathForDisplayImage;
     if (post.pathForDisplayImage.length == 0) {
-        // Let's see if some galleries are available
-        NSSet *mediaIDs = [DisplayableImageHelper searchPostContentForAttachmentIdsInGalleries:post.content];
-        for (Media *media in post.blog.media) {
-            NSNumber *mediaID = media.mediaID;
-            if (mediaID && [mediaIDs containsObject:mediaID]) {
-                post.pathForDisplayImage = media.remoteURL;
+        // First lets check the post content for a suitable image
+        post.pathForDisplayImage = [DisplayableImageHelper searchPostContentForImageToDisplay:post.content];
+        if (post.pathForDisplayImage.length == 0) {
+            // If none found let's see if some galleries are available
+            NSSet *mediaIDs = [DisplayableImageHelper searchPostContentForAttachmentIdsInGalleries:post.content];
+            for (Media *media in post.blog.media) {
+                NSNumber *mediaID = media.mediaID;
+                if (mediaID && [mediaIDs containsObject:mediaID]) {
+                    post.pathForDisplayImage = media.remoteURL;
+                }
             }
         }
     }

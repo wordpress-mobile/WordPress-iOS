@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 
 /// Step one in the auth link flow. This VC displays a form to request a "magic"
 /// authentication link be emailed to the user.  Allows the user to signin via
@@ -9,7 +10,6 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
     @IBOutlet var label: UILabel!
     @IBOutlet var sendLinkButton: NUXSubmitButton!
     @IBOutlet var usePasswordButton: UIButton!
-    var restrictSigninToWPCom = false
 
     override var sourceTag: SupportSourceTag {
         get {
@@ -87,7 +87,7 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
         guard email.isValidEmail() else {
             // This is a bit of paranioa as in practice it should never happen.
             // However, let's make sure we give the user some useful feedback just in case.
-            DDLogSwift.logError("Attempted to request authentication link, but the email address did not appear valid.")
+            DDLogError("Attempted to request authentication link, but the email address did not appear valid.")
             WPError.showAlert(withTitle: NSLocalizedString("Can Not Request Link", comment: "Title of an alert letting the user know"),
                                        message: NSLocalizedString("A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address.", comment: "An error message."))
             return
@@ -118,7 +118,7 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
         SigninHelpers.saveEmailAddressForTokenAuth(loginFields.username)
         let controller = SigninLinkMailViewController.controller(loginFields)
         controller.dismissBlock = dismissBlock
-        controller.restrictSigninToWPCom = restrictSigninToWPCom
+        controller.restrictToWPCom = restrictToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -135,7 +135,7 @@ class SigninLinkRequestViewController: NUXAbstractViewController {
         WPAppAnalytics.track(.loginMagicLinkExited)
         let controller = SigninWPComViewController.controller(loginFields)
         controller.dismissBlock = dismissBlock
-        controller.restrictSigninToWPCom = restrictSigninToWPCom
+        controller.restrictToWPCom = restrictToWPCom
         navigationController?.pushViewController(controller, animated: true)
     }
 

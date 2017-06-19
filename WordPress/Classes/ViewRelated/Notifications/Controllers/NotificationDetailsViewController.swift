@@ -132,7 +132,6 @@ class NotificationDetailsViewController: UIViewController {
         setupReplyTextView()
         setupSuggestionsView()
         setupKeyboardManager()
-        setupNotificationListeners()
 
         AppRatingUtility.shared.incrementSignificantEvent(section: "notifications")
     }
@@ -144,11 +143,14 @@ class NotificationDetailsViewController: UIViewController {
         keyboardManager?.startListeningToKeyboardNotifications()
 
         refreshInterface()
+        markAsReadIfNeeded()
+        setupNotificationListeners()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         keyboardManager?.stopListeningToKeyboardNotifications()
+        tearDownNotificationListeners()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -416,6 +418,13 @@ extension NotificationDetailsViewController {
                        selector: #selector(notificationWasUpdated),
                        name: .NSManagedObjectContextObjectsDidChange,
                        object: note.managedObjectContext)
+    }
+
+    func tearDownNotificationListeners() {
+        let nc = NotificationCenter.default
+        nc.removeObserver(self,
+                          name: .NSManagedObjectContextObjectsDidChange,
+                          object: note.managedObjectContext)
     }
 }
 
@@ -766,7 +775,12 @@ extension NotificationDetailsViewController {
         // Reload the table, if *our* notification got updated + Mark as Read since it's already onscreen!
         if updated.contains(note) || refreshed.contains(note) {
             refreshInterface()
-            markAsReadIfNeeded()
+            // We're being called when the managed context is saved
+            // Let's defer any data changes or we will try to save within a save
+            // and crash 💥
+            DispatchQueue.main.async { [weak self] in
+                self?.markAsReadIfNeeded()
+            }
         } else {
             // Otherwise, refresh the navigation bar as the notes list might have changed
             refreshNavigationBar()

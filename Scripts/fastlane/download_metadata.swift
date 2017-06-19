@@ -2,13 +2,15 @@
 
 import Foundation
 
-let glotPressWhatsNewKey = "standard-whats-new-4"
+let glotPressSubtitleKey = "app_store_subtitle"
+let glotPressWhatsNewKey = "standard-whats-new-2"
 let glotPressDescriptionKey = "app_store_desc"
 let glotPressKeywordsKey = "app_store_keywords"
 let baseFolder = "./metadata"
 
 // iTunes Connect language code: GlotPress code
 let languages = [
+    "da": "da",
     "de-DE": "de",
     "en-AU": "en-au",
     "en-CA": "en-ca",
@@ -62,6 +64,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
                 return
         }
 
+        var subtitle: String?
         var whatsNew: String?
         var keywords: String?
         var storeDescription: String?
@@ -84,6 +87,8 @@ func downloadTranslation(languageCode: String, folderName: String) {
             let translation = languageCode == "en-us" ? originalLanguage : firstValue
             
             switch keyFirstPart {
+            case glotPressSubtitleKey:
+                subtitle = translation
             case glotPressKeywordsKey:
                 keywords = translation
             case glotPressWhatsNewKey:
@@ -101,6 +106,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
         try? fileManager.createDirectory(atPath: languageFolder, withIntermediateDirectories: true, attributes: nil)
 
         do {
+            try subtitle?.write(toFile: "\(languageFolder)/subtitle.txt", atomically: true, encoding: .utf8)
             try whatsNew?.write(toFile: "\(languageFolder)/release_notes.txt", atomically: true, encoding: .utf8)
             try keywords?.write(toFile: "\(languageFolder)/keywords.txt", atomically: true, encoding: .utf8)
             try storeDescription?.write(toFile: "\(languageFolder)/description.txt", atomically: true, encoding: .utf8)

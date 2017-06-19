@@ -1,6 +1,6 @@
 /*
  *    HelpshiftSupport.h
- *    SDK Version 5.10.0
+ *    SDK Version 5.10.1
  *
  *    Get the documentation at http://www.helpshift.com/docs
  *
@@ -349,12 +349,10 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  * Available in SDK version 5.0.0 or later
  *
  */
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 + (void) handleLocalNotification:(UILocalNotification *)notification withController:(UIViewController *)viewController;
 #pragma clang diagnostic pop
-
 /** Clears Breadcrumbs list.
  *
  * Breadcrumbs list stores upto 100 latest actions. You'll receive those in every Issue.

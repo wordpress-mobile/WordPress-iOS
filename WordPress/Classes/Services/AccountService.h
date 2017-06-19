@@ -48,6 +48,19 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (BOOL)isDefaultWordPressComAccount:(WPAccount *)account;
 
 /**
+ Query to check if a wpcom account requires a passwordless login option. Note that
+ if there is no acccount matching the supplied identifier the REST endpoing
+ returns a 404 error code.
+
+ @param identifier - May be an email address, username, or user ID.
+ @param success
+ @param failure
+ */
+- (void)isPasswordlessAccount:(NSString *)identifier
+                      success:(void (^)(BOOL passwordless))success
+                      failure:(void (^)(NSError *error))failure;
+
+/**
  Query to check if an email address is paired to a wpcom account. Used in the 
  magic links signup flow.
 

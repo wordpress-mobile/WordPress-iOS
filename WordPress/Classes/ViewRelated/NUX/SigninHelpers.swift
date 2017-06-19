@@ -1,7 +1,7 @@
 import UIKit
+import CocoaLumberjack
 import NSURL_IDN
 import WordPressComAnalytics
-import Mixpanel
 
 /// A collection of helper methods for NUX.
 ///
@@ -11,7 +11,7 @@ import Mixpanel
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
 
-    //MARK: - Helpers for presenting the signin flow
+    // MARK: - Helpers for presenting the signin flow
 
     // Convenience factory for the signin flow's first vc
     class func createControllerForSigninFlow(showsEditor thenEditor: Bool) -> UIViewController {
@@ -26,8 +26,12 @@ import Mixpanel
         return controller
     }
 
-    // Helper used by the app delegate
+    /// Used to present the signin flow from the app delegate
     class func showSigninFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+        if Feature.enabled(.newLogin) {
+            showLoginFromPresenter(presenter, animated: animated, thenEditor: thenEditor)
+            return
+        }
         let controller = createControllerForSigninFlow(showsEditor: thenEditor)
         let navController = NUXNavigationController(rootViewController: controller)
         presenter.present(navController, animated: animated, completion: nil)
@@ -35,20 +39,28 @@ import Mixpanel
         trackOpenedLogin()
     }
 
-    class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+    /// Used to present the new login flow from the app delegate
+    fileprivate class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+        defer {
+            trackOpenedLogin()
+        }
+
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         if let controller = storyboard.instantiateInitialViewController() {
-            // initial VC is NUXNavigationController
             presenter.present(controller, animated: animated, completion: nil)
         }
-        trackOpenedLogin()
     }
 
 
-    // Helper used by the MeViewController
+    /// Used to present the wpcom-only signin flow from the app delegate
     class func showSigninForJustWPComFromPresenter(_ presenter: UIViewController) {
+        if Feature.enabled(.newLogin) {
+            showLoginForJustWPComFromPresenter(presenter)
+            return
+        }
+
         let controller = SigninEmailViewController.controller()
-        controller.restrictSigninToWPCom = true
+        controller.restrictToWPCom = true
 
         let navController = NUXNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
@@ -56,14 +68,50 @@ import Mixpanel
         trackOpenedLogin()
     }
 
+    /// Used to present the new wpcom-only login flow from the app delegate
+    fileprivate class func showLoginForJustWPComFromPresenter(_ presenter: UIViewController) {
+        defer {
+            trackOpenedLogin()
+        }
 
-    // Helper used by the BlogListViewController
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? NUXAbstractViewController else {
+            return
+        }
+        controller.restrictToWPCom = true
+
+        let navController = NUXNavigationController(rootViewController: controller)
+        presenter.present(navController, animated: true, completion: nil)
+    }
+
+
+    /// Used to present the self-hosted signin flow from BlogListViewController
     class func showSigninForSelfHostedSite(_ presenter: UIViewController) {
+        if Feature.enabled(.newLogin) {
+            showLoginForSelfHostedSite(presenter)
+            return
+        }
+
         let controller = SigninSelfHostedViewController.controller(LoginFields())
         let navController = NUXNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
 
         trackOpenedLogin()
+    }
+
+    /// Used to present the new self-hosted login flow from BlogListViewController
+    fileprivate class func showLoginForSelfHostedSite(_ presenter: UIViewController) {
+        defer {
+            trackOpenedLogin()
+        }
+
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "selfHosted") as? NUXAbstractViewController else {
+            return
+        }
+
+        let navController = NUXNavigationController(rootViewController: controller)
+        presenter.present(navController, animated: true, completion: nil)
     }
 
 
@@ -76,7 +124,7 @@ import Mixpanel
         }
 
         let controller = SigninWPComViewController.controller(loginFields)
-        controller.restrictSigninToWPCom = true
+        controller.restrictToWPCom = true
         controller.dismissBlock = onDismissed
         return NUXNavigationController(rootViewController: controller)
     }
@@ -108,13 +156,13 @@ import Mixpanel
     ///
     class func openAuthenticationURL(_ url: URL, fromRootViewController rootViewController: UIViewController) -> Bool {
         guard let token = url.query?.dictionaryFromQueryString().string(forKey: "token") else {
-            DDLogSwift.logError("Signin Error: The authentication URL did not have the expected path.")
+            DDLogError("Signin Error: The authentication URL did not have the expected path.")
             return false
         }
 
         let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         if let account = accountService.defaultWordPressComAccount() {
-            DDLogSwift.logInfo("App opened with authentication link but there is already an existing wpcom account. \(account)")
+            DDLogInfo("App opened with authentication link but there is already an existing wpcom account. \(account)")
             return false
         }
 
@@ -391,7 +439,7 @@ import Mixpanel
 
         let completion: OnePasswordFacadeCallback = { (username, password, oneTimePassword, error) in
             if let error = error {
-                DDLogSwift.logError("OnePassword Error: \(error.localizedDescription)")
+                DDLogError("OnePassword Error: \(error.localizedDescription)")
                 WPAppAnalytics.track(.onePasswordFailed)
                 return
             }
@@ -456,7 +504,7 @@ import Mixpanel
         SecAddSharedWebCredential(LoginSharedWebCredentialFQDN, username, password, { (error: CFError?) in
             guard error == nil else {
                 let err = error
-                DDLogSwift.logError("Error occurred updating shared web credential: \(String(describing: err?.localizedDescription))")
+                DDLogError("Error occurred updating shared web credential: \(String(describing: err?.localizedDescription))")
                 return
             }
             DispatchQueue.main.async(execute: {
@@ -472,14 +520,14 @@ import Mixpanel
     ///
     class func requestSharedWebCredentials(_ completion: @escaping SharedWebCredentialsCallback) {
         SecRequestSharedWebCredential(LoginSharedWebCredentialFQDN, nil, { (credentials: CFArray?, error: CFError?) in
-            DDLogSwift.logInfo("Completed requesting shared web credentials")
+            DDLogInfo("Completed requesting shared web credentials")
             guard error == nil else {
                 let err = error as Error?
                 if let error = err as NSError?, error.code == -25300 {
                     // An OSStatus of -25300 is expected when no saved credentails are found.
-                    DDLogSwift.logInfo("No shared web credenitals found.")
+                    DDLogInfo("No shared web credenitals found.")
                 } else {
-                    DDLogSwift.logError("Error requesting shared web credentials: \(String(describing: err?.localizedDescription))")
+                    DDLogError("Error requesting shared web credentials: \(String(describing: err?.localizedDescription))")
                 }
                 DispatchQueue.main.async(execute: {
                     completion(false, nil, nil)

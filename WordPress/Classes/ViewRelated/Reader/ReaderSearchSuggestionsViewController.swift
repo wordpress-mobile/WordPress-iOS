@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import WordPressShared
 
 /// Defines methods that a delegate should implement for clearing suggestions
@@ -91,7 +92,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     }
 
 
-    // MARK: -  Instance Methods
+    // MARK: - Instance Methods
 
 
     func updateHeightConstraint() {
@@ -125,7 +126,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         do {
             try tableViewHandler.resultsController.performFetch()
         } catch let error as NSError {
-            DDLogSwift.logError("Error fetching suggestions after updating the fetch reqeust predicate: \(error.localizedDescription)")
+            DDLogError("Error fetching suggestions after updating the fetch reqeust predicate: \(error.localizedDescription)")
         }
         tableView.reloadData()
     }

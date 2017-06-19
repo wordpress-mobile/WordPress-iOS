@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 import WordPress
+import WordPressShared
 
 class PushAuthenticationManagerTests: XCTestCase {
 

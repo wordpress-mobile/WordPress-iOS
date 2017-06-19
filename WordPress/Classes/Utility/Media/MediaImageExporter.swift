@@ -5,17 +5,31 @@ import MobileCoreServices
 ///
 class MediaImageExporter: MediaExporter {
 
-    /// Default filename used when writing media images locally, which may be appended with "-1" or "-thumbnail".
-    ///
-    let defaultImageFilename = "image"
-
-    /// Default compression quality when an image is being resized.
-    ///
-    let defaultImageCompressionUponResizing = 0.9
-
-    var maximumImageSize: CGFloat?
-    var stripsGeoLocationIfNeeded = false
     var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
+
+    /// Export options.
+    ///
+    var options = Options()
+
+    /// Available options for an image export.
+    ///
+    struct Options: MediaExportingOptions {
+        /// Set a maximumImageSize for resizing images, or nil for exporting the full images.
+        ///
+        var maximumImageSize: CGFloat?
+
+        /// Default compression quality when an image is being resized.
+        ///
+        var imageCompressionQualityUponResizing = 0.9
+
+        // MARK: - MediaExporting
+
+        var stripsGeoLocationIfNeeded = false
+    }
+
+    /// Completion block with a MediaImageExport.
+    ///
+    typealias OnImageExport = (MediaImageExport) -> Void
 
     public enum ImageExportError: MediaExportError {
         case imageJPEGDataRepresentationFailed
@@ -37,6 +51,10 @@ class MediaImageExporter: MediaExporter {
         }
     }
 
+    /// Default filename used when writing media images locally, which may be appended with "-1" or "-thumbnail".
+    ///
+    fileprivate let defaultImageFilename = "image"
+
     /// Exports and writes a UIImage to a local Media URL.
     ///
     /// A JPEG or PNG is expected, but not necessarily required. Exporting will fail if a JPEG cannot
@@ -46,7 +64,7 @@ class MediaImageExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     /// - parameter onError: Called if an error was encountered during creation.
     ///
-    func exportImage(_ image: UIImage, fileName: String?, onCompletion: @escaping (MediaImageExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    func exportImage(_ image: UIImage, fileName: String?, onCompletion: @escaping OnImageExport, onError: @escaping OnExportError) {
         do {
             guard let data = UIImageJPEGRepresentation(image, 1.0) else {
                 throw ImageExportError.imageJPEGDataRepresentationFailed
@@ -66,7 +84,7 @@ class MediaImageExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     /// - parameter onError: Called if an error was encountered during creation.
     ///
-    func exportImage(withJPEGData data: Data, fileName: String?, onCompletion: @escaping (MediaImageExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    func exportImage(withJPEGData data: Data, fileName: String?, onCompletion: @escaping OnImageExport, onError: @escaping OnExportError) {
         do {
             let options: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: kUTTypeJPEG]
             guard let source = CGImageSourceCreateWithData(data as CFData, options as CFDictionary) else {
@@ -96,7 +114,7 @@ class MediaImageExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     /// - parameter onError: Called if an error was encountered during creation.
     ///
-    func exportImage(atURL url: URL, onCompletion: @escaping (MediaImageExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    func exportImage(atURL url: URL, onCompletion: @escaping OnImageExport, onError: @escaping OnExportError) {
         do {
             let options: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: kUTTypeJPEG]
             guard let source = CGImageSourceCreateWithURL(url as CFURL, options as CFDictionary)  else {
@@ -121,7 +139,7 @@ class MediaImageExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     /// - parameter onError: Called if an error was encountered during creation.
     ///
-    func exportImageSource(_ source: CGImageSource, filename: String?, type: String, onCompletion: @escaping (MediaImageExport) -> (), onError: @escaping (MediaExportError) -> ()) {
+    func exportImageSource(_ source: CGImageSource, filename: String?, type: String, onCompletion: @escaping OnImageExport, onError: OnExportError) {
         do {
             let filename = filename ?? defaultImageFilename
             // Make a new URL within the local Media directory
@@ -131,11 +149,11 @@ class MediaImageExporter: MediaExporter {
 
             // Check MediaSettings and configure the image writer as needed.
             var writer = ImageSourceWriter(url: url, sourceUTType: type as CFString)
-            if let maximumImageSize = maximumImageSize {
+            if let maximumImageSize = options.maximumImageSize {
                 writer.maximumSize = maximumImageSize as CFNumber
-                writer.lossyCompressionQuality = defaultImageCompressionUponResizing as CFNumber
+                writer.lossyCompressionQuality = options.imageCompressionQualityUponResizing as CFNumber
             }
-            writer.nullifyGPSData = stripsGeoLocationIfNeeded
+            writer.nullifyGPSData = options.stripsGeoLocationIfNeeded
             let result = try writer.writeImageSource(source)
             onCompletion(MediaImageExport(url: url,
                                           fileSize: url.resourceFileSize,

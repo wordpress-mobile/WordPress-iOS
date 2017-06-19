@@ -4,7 +4,6 @@
 #import "PostCategoriesViewController.h"
 #import "FeaturedImageViewController.h"
 #import "LocationService.h"
-#import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
 #import "Media.h"
 #import "PostFeaturedImageCell.h"
@@ -13,7 +12,6 @@
 #import "SettingsSelectionViewController.h"
 #import "SharingDetailViewController.h"
 #import "PublishDatePickerView.h"
-#import "WPTextFieldTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableImageSource.h"
@@ -25,6 +23,8 @@
 #import <Photos/Photos.h>
 #import <Reachability/Reachability.h>
 #import "WPGUIConstants.h"
+#import <WordPressShared/NSString+XMLExtensions.h>
+#import <WordPressShared/WPTextFieldTableViewCell.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;
@@ -120,6 +120,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
 
     self.visibilityList = @[NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
                            NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
@@ -444,7 +445,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         return NSLocalizedString(@"Taxonomy", @"Label for the Taxonomy area (categories, keywords, ...) in post settings.");
 
     } else if (sec == PostSettingsSectionMeta) {
-        return NSLocalizedString(@"Publish", @"The grandiose Publish button in the Post Editor! Should use the same translation as core WP.");
+        return NSLocalizedString(@"Publish", @"Label for the publish (verb) button. Tapping publishes a draft post.");
 
     } else if (sec == PostSettingsSectionFormat) {
         return NSLocalizedString(@"Post Format", @"For setting the format of a post.");
@@ -516,7 +517,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         }
     }
 
-    return CellHeight;
+    return UITableViewAutomaticDimension;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -625,7 +626,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
             cell.detailTextLabel.text = [self.apost.dateCreated shortStringWithTime];
         } else {
-            cell.textLabel.text = NSLocalizedString(@"Publish", @"");
+            cell.textLabel.text = NSLocalizedString(@"Publish", @"Label for the publish (verb) button. Tapping publishes a draft post.");
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
         }
         cell.tag = PostSettingsRowPublishDate;

@@ -1,4 +1,5 @@
 #import "WPNUXHelpBadgeLabel.h"
+#import <WordPressShared/UIColor+Helpers.h>
 #import <WordPressShared/WPFontManager.h>
 
 @implementation WPNUXHelpBadgeLabel

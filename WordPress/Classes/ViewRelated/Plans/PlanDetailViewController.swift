@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 import WordPressShared
 
 class PlanDetailViewController: UIViewController {
@@ -176,7 +177,7 @@ class PlanDetailViewController: UIViewController {
         }
     }
 
-    //MARK: - IBActions
+    // MARK: - IBActions
 
     @IBAction fileprivate func purchaseTapped() {
         guard let identifier = viewModel.plan.productIdentifier else {
@@ -194,7 +195,7 @@ class PlanDetailViewController: UIViewController {
                 } catch {}
             },
             failure: { error in
-                DDLogSwift.logError("Error fetching Store products: \(error)")
+                DDLogError("Error fetching Store products: \(error)")
                 self.purchaseButton?.isSelected = false
         })
     }

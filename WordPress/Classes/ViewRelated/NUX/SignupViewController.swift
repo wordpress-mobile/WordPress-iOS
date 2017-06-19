@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 import WordPressComAnalytics
 import WordPressShared
 
@@ -15,8 +16,8 @@ import WordPressShared
     @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var termsButton: UIButton!
-    @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
-    @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
+    @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
+    @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @IBOutlet var topLayoutGuideAdjustmentConstraint: NSLayoutConstraint!
     @IBOutlet var formTopMarginConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
@@ -413,7 +414,7 @@ import WordPressShared
                                                     completion: { (username, password, error: Error?) in
                                                         if let error = error as NSError? {
                                                             if error.code != WPOnePasswordErrorCodeCancelledByUser {
-                                                                DDLogSwift.logError("Failed to use 1Password App Extension to save a new Login: \(error)")
+                                                                DDLogError("Failed to use 1Password App Extension to save a new Login: \(error)")
                                                                 WPAnalytics.track(.onePasswordFailed)
                                                             }
                                                             return

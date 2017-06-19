@@ -15,7 +15,7 @@
 /*! The options used to start the recording. Modifying these options during recording leads to undefined behavior. */
 @property (nonatomic, readonly, copy) LookbackRecordingOptions *options;
 
-/*! Stop the recording. This is equivalent to saying [Lookback sharedLookback].recording = NO;.*/
+/*! Stop the recording. This is equivalent to saying [LookbackRecorder sharedRecorder].recording = NO;.*/
 - (void)stopRecording;
 
 /*! The name of the recording. The name can be modified by the user on the Preview screen, but may also be

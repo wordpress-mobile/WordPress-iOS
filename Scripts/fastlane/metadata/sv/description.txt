@@ -1,0 +1,9 @@
+Uppdatera din blogg eller webbplats på WordPress direkt från din iOS-enhet: kolla statistik, granska kommentarer, skapa och redigera inlägg och sidor, ladda upp mediafiler. Du behöver bara ha en blogg på WordPress.com eller egen webbplats som kör WordPress 4.0 eller högre.
+
+Med WordPress för iOS kan du publicera direkt från din telefon eller surfplatta. Skriv en haiku-dikt bekvämt tillbakalutad i soffan, ta ett foto under lunchrasten för att delta i veckans foto-utmaning på The Daily Post. Svara på dina senaste kommentarer, eller se varifrån dagens läsare kommer.
+
+Glöm inte att du kan ge dina inlägg etiketten #wponthego så att alla andra kan se vad du skapat i farten.
+
+WordPress för iOS är ett s.k. Open Source-projekt, vilket betyder att även du kan hjälpa till och bidra till dess utveckling. Läs mer på https://apps.wordpress.com/contribute/.
+
+Behöver du hjälp med appen? Besök vårt forum på http://ios.forums.wordpress.org eller nämn @WordPressiOS i ett tweet.

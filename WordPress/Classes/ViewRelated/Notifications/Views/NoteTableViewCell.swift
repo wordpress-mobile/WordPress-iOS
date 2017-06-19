@@ -74,14 +74,6 @@ class NoteTableViewCell: MGSwipeTableCell {
             return noticonLabel.text
         }
     }
-    override var backgroundColor: UIColor? {
-        didSet {
-            // Note: This is done to improve scrolling performance!
-            snippetLabel.backgroundColor = backgroundColor
-            subjectLabel.backgroundColor = backgroundColor
-            separatorsView.backgroundColor = backgroundColor
-        }
-    }
     var onUndelete: (() -> Void)?
 
 
@@ -205,12 +197,8 @@ class NoteTableViewCell: MGSwipeTableCell {
             noticonContainerView.backgroundColor = Style.noteBackgroundUnreadColor
         }
 
-        // Cell Background: Assign only if needed, for performance
-        let newBackgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
-
-        if backgroundColor != newBackgroundColor {
-            backgroundColor = newBackgroundColor
-        }
+        // Cell Background
+        backgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
     }
 
     fileprivate func refreshSelectionStyle() {

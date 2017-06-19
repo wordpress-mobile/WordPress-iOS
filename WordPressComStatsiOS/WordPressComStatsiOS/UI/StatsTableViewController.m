@@ -2,20 +2,19 @@
 #import "WPStatsGraphViewController.h"
 #import "WPStatsService.h"
 #import "StatsGroup.h"
-#import "StatsItem.h"
-#import "StatsItemAction.h"
 #import "WPStyleGuide+Stats.h"
-#import <WordPressShared/WPImageSource.h>
 #import "StatsTableSectionHeaderView.h"
 #import "StatsDateUtilities.h"
 #import "StatsTwoColumnTableViewCell.h"
 #import "StatsViewAllTableViewController.h"
 #import "StatsPostDetailsTableViewController.h"
 #import "StatsSection.h"
-#import <WordPressComAnalytics/WPAnalytics.h>
 #import "UIViewController+SizeClass.h"
 #import "NSBundle+StatsBundleHelper.h"
 #import "AppExtensionUtils.h"
+@import WordPressComAnalytics;
+@import WordPressKit;
+@import WordPressShared;
 
 static CGFloat const StatsTableGraphHeight = 185.0f;
 static CGFloat const StatsTableNoResultsHeight = 100.0f;

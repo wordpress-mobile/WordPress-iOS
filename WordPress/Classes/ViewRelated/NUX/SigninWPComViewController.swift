@@ -12,8 +12,8 @@ import WordPressShared
     @IBOutlet weak var forgotPasswordButton: UIButton!
     @IBOutlet weak var selfHostedButton: UIButton!
     @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint!
-    @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
+    @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint?
     var onePasswordButton: UIButton!
 
     override var sourceTag: SupportSourceTag {
@@ -24,7 +24,7 @@ import WordPressShared
 
     var immediateSignin = false
 
-    var restrictSigninToWPCom = false {
+    override var restrictToWPCom: Bool {
         didSet {
             if isViewLoaded {
                 configureForWPComOnlyIfNeeded()
@@ -104,7 +104,7 @@ import WordPressShared
     ///
     ///
     func configureForWPComOnlyIfNeeded() {
-        selfHostedButton.isHidden = restrictSigninToWPCom
+        selfHostedButton.isHidden = restrictToWPCom
     }
 
 
@@ -234,7 +234,7 @@ import WordPressShared
     ///
     func handleReservedUsername(_ username: String) {
         // If we're restricted to wpcom, just prmopt that the name is reserved.
-        if restrictSigninToWPCom {
+        if restrictToWPCom {
             SigninHelpers.promptForWPComReservedUsername(username, callback: {
                 self.loginFields.username = ""
                 self.usernameField.text = ""

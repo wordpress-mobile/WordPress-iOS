@@ -30,7 +30,9 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var languageID: NSNumber
 
-
+    /// Stores the Blog's Icon Media ID
+    ///
+    @NSManaged var iconMediaID: NSNumber?
 
     // MARK: - Writing
 
