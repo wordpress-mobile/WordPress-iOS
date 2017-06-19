@@ -40,8 +40,8 @@ msgstr ""
 
 msgctxt "v7.9-whats-new"
 msgid ""
-"You can now edit your site's icon by simply tapping on it, go to the site details screen to try it.
-We've added autocorrect support on the post tags field to prevent embarrassing typos."
+"Edit your site's icon on the site details screen, just tap on it to get started.
+We've added autocorrect support on the post tags field."
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
