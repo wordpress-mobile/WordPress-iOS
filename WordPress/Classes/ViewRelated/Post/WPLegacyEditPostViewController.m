@@ -32,7 +32,6 @@
 #import "Media+HTML.h"
 #import "WordPress-Swift.h"
 
-NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
 NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
@@ -65,13 +64,6 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
     
     if (dontRestoreIfNewEditorIsEnabled) {
         return nil;
-    }
-
-    if ([[identifierComponents lastObject] isEqualToString:WPLegacyEditorNavigationRestorationID]) {
-        UINavigationController *navController = [[UINavigationController alloc] init];
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [self class];
-        return navController;
     }
 
     NSString *postID = [coder decodeObjectForKey:WPLegacyAbstractPostRestorationKey];
@@ -481,10 +473,8 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
     if (![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
         if ([self.post isScheduled]) {
             buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
-
         } else if ([self.post.status isEqualToString:PostStatusPublish]) {
-            buttonTitle = NSLocalizedString(@"Post", @"Publish button label.");
-
+            buttonTitle = NSLocalizedString(@"Publish", @"Label for the publish (verb) button. Tapping publishes a draft post.");
         } else {
             buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
         }
@@ -606,12 +596,13 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 - (void)discardChanges
 {
-    [self.post.original deleteRevision];
+    AbstractPost *original = self.post.original;
+    [original deleteRevision];
 
-    if (self.editMode == EditPostViewControllerModeNewPost) {
-        NSManagedObjectContext* context = self.post.original.managedObjectContext;
+    if (self.editMode == EditPostViewControllerModeNewPost || original.shouldRemoveOnDismiss) {
+        NSManagedObjectContext* context = original.managedObjectContext;
         
-        [self.post.original remove];
+        [original remove];
         
         [[ContextManager sharedInstance] saveContext:context];
     }
@@ -620,7 +611,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 - (void)dismissEditView:(BOOL)changesSaved
 {
     if (self.onClose) {
-        self.onClose(self, changesSaved);
+        self.onClose(changesSaved);
         self.onClose = nil;
     } else{
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
@@ -738,7 +729,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
         properties[@"word_diff_count"] = @(wordCount - originalWordCount);
     }
 
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"Post", nil)]) {
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
         properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);

@@ -1,4 +1,5 @@
 import UIKit
+import CocoaLumberjack
 import SVProgressHUD
 import WordPressShared
 import Gridicons
@@ -234,7 +235,7 @@ open class DeleteSiteViewController: UITableViewController {
                                     accountService.updateUserDetails(for: (accountService.defaultWordPressComAccount()!), success: { _ in }, failure: { _ in })
             },
                                   failure: { error in
-                                    DDLogSwift.logError("Error deleting site: \(error.localizedDescription)")
+                                    DDLogError("Error deleting site: \(error.localizedDescription)")
                                     WPAppAnalytics.track(.siteSettingsDeleteSiteResponseError, with: trackedBlog)
                                     SVProgressHUD.dismiss()
 

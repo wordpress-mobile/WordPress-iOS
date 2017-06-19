@@ -14,8 +14,7 @@ import WordPressComAnalytics
 extension WPPostViewController {
     /// What action should be taken when the user taps the editor's save button?
     var currentSaveAction: PostEditorSaveAction {
-        if let post = post,
-            let status = post.status,
+        if let status = post.status,
             let originalStatus = post.original?.status, status != originalStatus || !post.hasRemote() {
             if (post.isScheduled()) {
                 return .schedule
@@ -35,7 +34,7 @@ extension WPPostViewController {
         case .schedule:
             return NSLocalizedString("Schedule", comment: "Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.")
         case .post:
-            return NSLocalizedString("Post", comment: "Publish button label.")
+            return NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
         case .save:
             return NSLocalizedString("Save", comment: "Save button label (saving content, ex: Post, Page, Comment).")
         case .update:

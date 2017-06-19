@@ -1,5 +1,6 @@
 import Foundation
 import Security
+import CocoaLumberjack
 
 private let keychainDebugWipeArgument = "WipeKeychainItem"
 
@@ -30,7 +31,7 @@ final class KeychainTools: NSObject {
             return
         }
 
-        DDLogSwift.logWarn("🔑 Attempting to remove keychain entry for \(item)")
+        DDLogWarn("🔑 Attempting to remove keychain entry for \(item)")
         if let service = serviceForItem(item) {
             removeKeychainItem(forService: service)
         } else {
@@ -57,11 +58,11 @@ final class KeychainTools: NSObject {
         let status = SecItemDelete(query as CFDictionary)
         switch status {
         case errSecSuccess:
-            DDLogSwift.logWarn("🔑 Removed keychain entry for service \(service)")
+            DDLogWarn("🔑 Removed keychain entry for service \(service)")
         case errSecItemNotFound:
-            DDLogSwift.logWarn("🔑 Keychain entry not found for service \(service)")
+            DDLogWarn("🔑 Keychain entry not found for service \(service)")
         default:
-            DDLogSwift.logWarn("🔑 Error removing keychain entry for service \(service): \(status)")
+            DDLogWarn("🔑 Error removing keychain entry for service \(service): \(status)")
         }
     }
 
@@ -72,9 +73,9 @@ final class KeychainTools: NSObject {
         let status = SecItemDelete(query as CFDictionary)
         switch status {
         case errSecSuccess:
-            DDLogSwift.logWarn("🔑 Removed all keychain entries")
+            DDLogWarn("🔑 Removed all keychain entries")
         default:
-            DDLogSwift.logWarn("🔑 Error removing all keychain entries: \(status)")
+            DDLogWarn("🔑 Error removing all keychain entries: \(status)")
         }
     }
 }

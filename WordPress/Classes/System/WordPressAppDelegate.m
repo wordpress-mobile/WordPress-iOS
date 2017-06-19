@@ -9,7 +9,6 @@
 #import <Reachability/Reachability.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
-#import <WordPress_AppbotX/ABX.h>
 #import <WordPressShared/UIImage+Util.h>
 
 #ifdef BUDDYBUILD_ENABLED
@@ -143,7 +142,6 @@ int ddLogLevel = DDLogLevelInfo;
     [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
-    [self setupAppbotX];
     [self setupStoreKit];
     [self setupBuddyBuild];
     [self setupPingHub];
@@ -176,13 +174,6 @@ int ddLogLevel = DDLogLevelInfo;
         }
     });
 #endif
-}
-
-- (void)setupAppbotX
-{
-    if ([ApiCredentials appbotXAPIKey].length > 0) {
-        [[ABXApiClient instance] setApiKey:[ApiCredentials appbotXAPIKey]];
-    }
 }
 
 - (void)setupStoreKit
@@ -410,6 +401,12 @@ int ddLogLevel = DDLogLevelInfo;
 {
     WP3DTouchShortcutHandler *shortcutHandler = [[WP3DTouchShortcutHandler alloc] init];
     completionHandler([shortcutHandler handleShortcutItem:shortcutItem]);
+}
+
+- (UIViewController *)application:(UIApplication *)application viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    NSString *restoreID = [identifierComponents lastObject];
+    return [[Restorer new] viewControllerWithIdentifier:restoreID];
 }
 
 #pragma mark - Application startup

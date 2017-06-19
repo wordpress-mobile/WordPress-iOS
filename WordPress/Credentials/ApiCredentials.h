@@ -12,5 +12,4 @@
 + (NSString *)helpshiftAppId;
 + (NSString *)debuggingKey;
 + (NSString *)lookbackToken;
-+ (NSString *)appbotXAPIKey;
 @end
