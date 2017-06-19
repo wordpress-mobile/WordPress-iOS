@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *password;
 @property (nonatomic, copy) NSString *siteUrl;
 @property (nonatomic, copy) NSString *multifactorCode;
+@property (nonatomic, assign) BOOL passwordless; // only wpcom users will be passwordless.
 @property (nonatomic, assign) BOOL userIsDotCom;
 @property (nonatomic, assign) BOOL shouldDisplayMultifactor;
 @property (nonatomic, assign) NSInteger safariStoredUsernameHash;

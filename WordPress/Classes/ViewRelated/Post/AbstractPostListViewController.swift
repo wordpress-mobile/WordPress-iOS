@@ -1,7 +1,9 @@
 import Foundation
+import CocoaLumberjack
 import WordPressComAnalytics
 import WordPressShared
 import wpxmlrpc
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -415,7 +417,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         do {
             try tableViewHandler.resultsController.performFetch()
         } catch {
-            DDLogSwift.logError("Error fetching posts after updating the fetch request predicate: \(error)")
+            DDLogError("Error fetching posts after updating the fetch request predicate: \(error)")
         }
     }
 
@@ -518,7 +520,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func automaticallySyncIfAppropriate() {
         // Only automatically refresh if the view is loaded and visible on the screen
         if !isViewLoaded || view.window == nil {
-            DDLogSwift.logVerbose("View is not visible and will not check for auto refresh.")
+            DDLogVerbose("View is not visible and will not check for auto refresh.")
             return
         }
 
@@ -905,7 +907,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             do {
                 apost = try strongSelf.managedObjectContext().existingObject(with: postObjectID) as! AbstractPost
             } catch {
-                DDLogSwift.logError("\(error)")
+                DDLogError("\(error)")
                 return
             }
 

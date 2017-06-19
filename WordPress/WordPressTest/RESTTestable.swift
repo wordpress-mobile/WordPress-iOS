@@ -1,4 +1,4 @@
-@testable import WordPress
+@testable import WordPressKit
 
 /// Protocol to be used when testing REST Remotes
 ///

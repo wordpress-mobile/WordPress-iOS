@@ -1,1 +1,1 @@
-Dorénavant, étiqueter vos articles est cool. Allez y, essayez :)
+Nous l’avons rendu plus facile à gérer les médias de votre site avec l’ajout de la nouvelle section Bibliothèque de médias. Vous pouvez voir vos photos et vidéos, chercher, modifier les métadonnées, supprimer et mettre en ligne des éléments directement depuis le menu. Touchez Média et c’est parti.

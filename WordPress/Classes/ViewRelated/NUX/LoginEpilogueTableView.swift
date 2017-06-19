@@ -5,11 +5,15 @@ import WordPressShared
 class LoginEpilogueTableView: UITableViewController {
     var blogDataSource: BlogListDataSource
     var blogCount: Int?
-    var epilogueUserInfo: LoginEpilogueUserInfo?
+    var epilogueUserInfo: LoginEpilogueUserInfo? {
+        didSet {
+            blogDataSource.blog = epilogueUserInfo?.blog
+            blogDataSource.loggedIn = true
+        }
+    }
 
     required init?(coder aDecoder: NSCoder) {
         blogDataSource = BlogListDataSource()
-        blogDataSource.loggedIn = true
         super.init(coder: aDecoder)
     }
 

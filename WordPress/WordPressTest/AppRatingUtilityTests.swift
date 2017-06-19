@@ -272,6 +272,22 @@ class AppRatingUtilityTests: XCTestCase {
         XCTAssertFalse(self.utility.shouldPromptForAppReview(section: "notifications"))
     }
 
+    func testAppReviewPromptedAfterEnoughTime() {
+        let fourMonthsAgo = Calendar.current.date(byAdding: .day, value: -123, to: Date())
+        self.utility._overrideLastPromptToRateDate(fourMonthsAgo!)
+        self.utility.systemWideSignificantEventCountRequiredForPrompt = 1
+        self.utility.incrementSignificantEvent()
+        XCTAssertTrue(self.utility.shouldPromptForAppReview())
+    }
+
+    func testAppReviewNotPromptedBeforeEnoughTime() {
+        let twoMonthsAgo = Calendar.current.date(byAdding: .day, value: -61, to: Date())
+        self.utility._overrideLastPromptToRateDate(twoMonthsAgo!)
+        self.utility.systemWideSignificantEventCountRequiredForPrompt = 1
+        self.utility.incrementSignificantEvent()
+        XCTAssertFalse(self.utility.shouldPromptForAppReview())
+    }
+
     fileprivate func createConditionsForPositiveAppReviewPrompt() {
         self.utility.systemWideSignificantEventCountRequiredForPrompt = 1
         self.utility.incrementSignificantEvent()

@@ -37,6 +37,11 @@
                BlueprintName = "WordPressKitTests"
                ReferencedContainer = "container:WordPressKit.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "RemoteTestCase">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

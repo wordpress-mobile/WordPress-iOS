@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import WordPressComAnalytics
 import WordPressComStatsiOS
 import WordPressShared
@@ -459,7 +460,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         assert(viewControllerObject is StatsPostDetailsTableViewController)
         guard let viewController = viewControllerObject as? StatsPostDetailsTableViewController else {
-            DDLogSwift.logError("\(#file): \(#function) [\(#line)] - The stat details view controller is not of the expected class.")
+            DDLogError("\(#file): \(#function) [\(#line)] - The stat details view controller is not of the expected class.")
             return
         }
 
