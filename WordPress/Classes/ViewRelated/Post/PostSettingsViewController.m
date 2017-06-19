@@ -445,7 +445,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         return NSLocalizedString(@"Taxonomy", @"Label for the Taxonomy area (categories, keywords, ...) in post settings.");
 
     } else if (sec == PostSettingsSectionMeta) {
-        return NSLocalizedString(@"Publish", @"The grandiose Publish button in the Post Editor! Should use the same translation as core WP.");
+        return NSLocalizedString(@"Publish", @"Label for the publish (verb) button. Tapping publishes a draft post.");
 
     } else if (sec == PostSettingsSectionFormat) {
         return NSLocalizedString(@"Post Format", @"For setting the format of a post.");
@@ -626,7 +626,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
             cell.detailTextLabel.text = [self.apost.dateCreated shortStringWithTime];
         } else {
-            cell.textLabel.text = NSLocalizedString(@"Publish", @"");
+            cell.textLabel.text = NSLocalizedString(@"Publish", @"Label for the publish (verb) button. Tapping publishes a draft post.");
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
         }
         cell.tag = PostSettingsRowPublishDate;
