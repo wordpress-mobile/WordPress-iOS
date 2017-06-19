@@ -473,10 +473,8 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
     if (![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
         if ([self.post isScheduled]) {
             buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
-
         } else if ([self.post.status isEqualToString:PostStatusPublish]) {
-            buttonTitle = NSLocalizedString(@"Post", @"Publish button label.");
-
+            buttonTitle = NSLocalizedString(@"Publish", @"Label for the publish (verb) button. Tapping publishes a draft post.");
         } else {
             buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
         }
@@ -731,7 +729,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
         properties[@"word_diff_count"] = @(wordCount - originalWordCount);
     }
 
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"Post", nil)]) {
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
         properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);
