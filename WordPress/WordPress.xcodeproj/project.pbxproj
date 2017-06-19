@@ -5602,9 +5602,9 @@
 				E6DB765E1CD10D7C0069BC82 /* SignupViewController.swift */,
 				436605E11ECE568800EE8882 /* LoginNavigationController.swift */,
 				43F258A91ED7772C0075406B /* LoginPrologueViewController.swift */,
-				43CC1EBF1ED898E30097E334 /* LoginTextField.swift */,
 				4349B2651EE21F560075809A /* LoginProloguePageViewController.swift */,
 				43D2AE431EF704A70009387E /* LoginProloguePromoViewController.swift */,
+				43CC1EBF1ED898E30097E334 /* LoginTextField.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
