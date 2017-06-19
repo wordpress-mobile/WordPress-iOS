@@ -11,7 +11,7 @@ extension FormattingIdentifier {
 
         switch(self) {
         case .media:
-            return Gridicon.iconOfType(.addImage)
+            return Gridicon.iconOfType(.addOutline)
         case .p:
             return Gridicon.iconOfType(.heading)
         case .bold:
@@ -35,19 +35,19 @@ extension FormattingIdentifier {
         case .sourcecode:
             return Gridicon.iconOfType(.code)
         case .more:
-            return Gridicon.iconOfType(.readMore)
+            return Gridicon.iconOfType(.nextPage)
         case .header1:
-            return Gridicon.iconOfType(.heading)
+            return Gridicon.iconOfType(.headingH1)
         case .header2:
-            return Gridicon.iconOfType(.heading)
+            return Gridicon.iconOfType(.headingH2)
         case .header3:
-            return Gridicon.iconOfType(.heading)
+            return Gridicon.iconOfType(.headingH3)
         case .header4:
-            return Gridicon.iconOfType(.heading)
+            return Gridicon.iconOfType(.headingH4)
         case .header5:
-            return Gridicon.iconOfType(.heading)
+            return Gridicon.iconOfType(.headingH5)
         case .header6:
-            return Gridicon.iconOfType(.heading)
+            return Gridicon.iconOfType(.headingH6)
         }
     }
 
