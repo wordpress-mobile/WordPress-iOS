@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 import WordPressShared
 
 class PostTagPickerViewController: UIViewController {
@@ -46,7 +47,7 @@ class PostTagPickerViewController: UIViewController {
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         reloadTableData()
 
-        textView.autocorrectionType = .no
+        textView.autocorrectionType = .yes
         textView.autocapitalizationType = .none
         textView.font = WPStyleGuide.tableviewTextFont()
         textView.textColor = WPStyleGuide.darkGrey()
@@ -141,7 +142,7 @@ private extension PostTagPickerViewController {
     }
 
     func tagsFailedLoading(error: Error) {
-        DDLogSwift.logError("Error loading tags for \(String(describing: blog.url)): \(error)")
+        DDLogError("Error loading tags for \(String(describing: blog.url)): \(error)")
         dataSource = FailureDataSource()
     }
 }

@@ -8,12 +8,12 @@
 #import "RemotePostCategory.h"
 #import "PostCategoryService.h"
 #import "ContextManager.h"
-#import "NSDate+WordPressJSON.h"
 #import "CommentService.h"
 #import "MediaService.h"
 #import "Media.h"
 #import "DisplayableImageHelper.h"
 #import "WordPress-Swift.h"
+@import WordPressKit;
 
 PostServiceType const PostServiceTypePost = @"post";
 PostServiceType const PostServiceTypePage = @"page";

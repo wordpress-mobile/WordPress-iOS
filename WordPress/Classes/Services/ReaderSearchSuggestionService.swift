@@ -1,4 +1,5 @@
 import Foundation
+import CocoaLumberjack
 
 /// Provides functionality for fetching, saving, and deleting search phrases
 /// used to search for content in the reader.
@@ -37,7 +38,7 @@ import Foundation
         do {
             suggestions = try managedObjectContext.fetch(fetchRequest) as! [ReaderSearchSuggestion]
         } catch let error as NSError {
-            DDLogSwift.logError("Error fetching search suggestion for phrase \(phrase) : \(error.localizedDescription)")
+            DDLogError("Error fetching search suggestion for phrase \(phrase) : \(error.localizedDescription)")
         }
 
         return suggestions.first
@@ -62,7 +63,7 @@ import Foundation
         do {
             suggestions = try managedObjectContext.fetch(fetchRequest) as! [ReaderSearchSuggestion]
         } catch let error as NSError {
-            DDLogSwift.logError("Error fetching search suggestions for phrase \(phrase) : \(error.localizedDescription)")
+            DDLogError("Error fetching search suggestions for phrase \(phrase) : \(error.localizedDescription)")
         }
 
         return suggestions
@@ -88,7 +89,7 @@ import Foundation
         do {
             suggestions = try managedObjectContext.fetch(fetchRequest) as! [ReaderSearchSuggestion]
         } catch let error as NSError {
-            DDLogSwift.logError("Error fetching search suggestion : \(error.localizedDescription)")
+            DDLogError("Error fetching search suggestion : \(error.localizedDescription)")
         }
         for suggestion in suggestions {
             managedObjectContext.delete(suggestion)

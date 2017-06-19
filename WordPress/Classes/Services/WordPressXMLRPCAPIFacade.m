@@ -16,7 +16,10 @@
                       failure:(void (^)(NSError *error))failure
 {
     WordPressOrgXMLRPCValidator *validator = [[WordPressOrgXMLRPCValidator alloc] init];
-    [validator guessXMLRPCURLForSite:url success:success failure:^(NSError *error) {
+    [validator guessXMLRPCURLForSite:url
+                           userAgent:WPUserAgent.wordPressUserAgent
+                             success:success
+                             failure:^(NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             failure([self errorForGuessXMLRPCApiFailure:error]);
         });

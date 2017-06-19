@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 #import <WordPressEditor/WPLegacyEditorViewController.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
     EditPostViewControllerModeNewPost,
     EditPostViewControllerModeEditPost
@@ -9,16 +11,14 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 
 @class AbstractPost;
 
-extern NSString *const WPLegacyEditorNavigationRestorationID;
-
 @interface WPLegacyEditPostViewController : WPLegacyEditorViewController
 <UINavigationControllerDelegate, WPLegacyEditorViewControllerDelegate, UIViewControllerRestoration>
 
 /*
  EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.
  */
-typedef void (^WPLegacyEditPostCompletionHandler)(WPLegacyEditPostViewController *viewController, BOOL changesSaved);
-@property (nonatomic, copy, readwrite) WPLegacyEditPostCompletionHandler onClose;
+typedef void (^WPLegacyEditPostCompletionHandler)(BOOL changesSaved);
+@property (nullable, nonatomic, copy, readwrite) WPLegacyEditPostCompletionHandler onClose;
 @property (nonatomic, strong, readonly) AbstractPost *post;
 @property (nonatomic, assign, readonly) EditPostViewControllerMode editMode;
 /*
@@ -43,10 +43,12 @@ typedef void (^WPLegacyEditPostCompletionHandler)(WPLegacyEditPostViewController
  the image will appear at the top of the post with a link pointing to the image at its original location.
  If a valid base64 encoded image is provided, the image will be treated like other media items in the app. 
  */
-- (id)initWithTitle:(NSString *)title
-         andContent:(NSString *)content
-            andTags:(NSString *)tags
-           andImage:(NSString *)image;
+- (id)initWithTitle:(nullable NSString *)title
+         andContent:(nullable NSString *)content
+            andTags:(nullable NSString *)tags
+           andImage:(nullable NSString *)image;
 
 
 @end
+
+NS_ASSUME_NONNULL_END

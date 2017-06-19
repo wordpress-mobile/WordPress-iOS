@@ -1,4 +1,4 @@
-#import "ServiceRemoteWordPressComREST.h"
+@import WordPressKit;
 
 NS_ASSUME_NONNULL_BEGIN
 

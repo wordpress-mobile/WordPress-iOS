@@ -121,15 +121,7 @@ print <<-EOF
 EOF
 end
 
-def print_appbotx_api_key(appbotx_api_key)
-print <<-EOF
-+ (NSString *)appbotXAPIKey {
-  return @"#{appbotx_api_key}";
-}
-EOF
-end
-
-def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, lookback_token, appbotx_api_key)
+def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, lookback_token)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -145,7 +137,6 @@ EOF
   print_helpshift_app_id(helpshift_app_id)
   print_debugging_key(debugging_key)
   print_lookback_token(lookback_token)
-  print_appbotx_api_key(appbotx_api_key)
   printf("@end\n")
 end
 
@@ -172,7 +163,6 @@ helpshift_domain_name = nil
 helpshift_app_id = nil
 debugging_key = nil
 lookback_token = nil
-appbotx_api_key = nil
 File.open(path) do |f|
   f.each_line do |l|
     (k,v) = l.split("=")
@@ -198,8 +188,6 @@ File.open(path) do |f|
       debugging_key = v.chomp
     elsif k == "LOOKBACK_TOKEN"
       lookback_token = v.chomp
-    elsif k == "APPBOTX_API_KEY"
-      appbotx_api_key = v.chomp
     end
   end
 end
@@ -237,10 +225,6 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
     $stderr.puts "warning: Lookback token not found"
   end
 
-  if appbotx_api_key.nil?
-    $stderr.puts "warning: AppbotX API key not found"
-  end
-
   if configuration == "Release-Internal"
     if hockeyapp.nil?
       $stderr.puts "warning: HockeyApp App Id not found"
@@ -248,4 +232,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, lookback_token, appbotx_api_key)
+print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, lookback_token)

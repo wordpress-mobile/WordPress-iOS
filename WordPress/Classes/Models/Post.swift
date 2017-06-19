@@ -1,5 +1,7 @@
 import Foundation
 import CoreData
+import CocoaLumberjack
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -81,7 +83,7 @@ class Post: AbstractPost {
 
         assert(blog.postFormats is [String: String])
         guard let postFormats = blog.postFormats as? [String: String] else {
-            DDLogSwift.logError("Expected blog.postFormats to be \(String(describing: [String: String].self)).")
+            DDLogError("Expected blog.postFormats to be \(String(describing: [String: String].self)).")
             return
         }
 
@@ -128,7 +130,7 @@ class Post: AbstractPost {
 
             assert(blog.categories is Set<PostCategory>)
             guard let blogCategories = blog.categories as? Set<PostCategory> else {
-                DDLogSwift.logError("Expected blog.categories to be \(String(describing: Set<PostCategory>.self)).")
+                DDLogError("Expected blog.categories to be \(String(describing: Set<PostCategory>.self)).")
                 return
             }
 

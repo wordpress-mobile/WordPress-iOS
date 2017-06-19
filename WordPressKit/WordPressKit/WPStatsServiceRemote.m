@@ -4,6 +4,7 @@
 #import "StatsStreak.h"
 #import "StatsStreakItem.h"
 #import "StatsStringUtilities.h"
+#import "Logging.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressComAnalytics/WPAnalytics.h>
 @import NSObject_SafeExpectations;
@@ -758,8 +759,7 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
                 [array addObject:periodSummary];
                 dictionary[periodSummary.date] = periodSummary;
             } else {
-                // TODO: Fix logging
-//                DDLogError(@"operationForVisitsForDate resulted in nil date: raw date: %@", period[periodIndex]);
+                DDLogError(@"operationForVisitsForDate resulted in nil date: raw date: %@", period[periodIndex]);
                 [WPAnalytics track:WPAnalyticsStatLogSpecialCondition withProperties:@{@"error_condition" : @"WPStatsServiceRemote operationForVisitsForDate:andUnit:withCompletionHandler",
                                                                                        @"error_details" : [NSString stringWithFormat:@"Date in raw format: %@, period: %@ ", period[periodIndex], @(unit)],
                                                                                        @"blog_id" : self.siteId}];
@@ -1893,8 +1893,7 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
         return;
     }
 
-    // TODO: Fix logging
-//    DDLogVerbose(@"Canceling %@ operations...", @(self.manager.operationQueue.operationCount));
+    DDLogVerbose(@"Canceling %@ operations...", @(self.manager.operationQueue.operationCount));
     [self.manager.operationQueue cancelAllOperations];
 }
 
