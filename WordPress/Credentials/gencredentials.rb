@@ -57,18 +57,6 @@ def print_pocket(pocket)
 EOF
 end
 
-def print_mixpanel(mixpanel_dev, mixpanel_prod)
-    print <<-EOF
-+ (NSString *)mixpanelAPIToken {
-#ifdef DEBUG
-    return @"#{mixpanel_dev}";
-#else
-    return @"#{mixpanel_prod}";
-#endif
-}
-EOF
-end
-
 def print_crashlytics(crashlytics)
 print <<-EOF
 + (NSString *)crashlyticsApiKey {
@@ -141,7 +129,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, lookback_token, appbotx_api_key)
+def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, lookback_token, appbotx_api_key)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -149,7 +137,6 @@ EOF
   print_client(client)
   print_secret(secret)
   print_pocket(pocket)
-  print_mixpanel(mixpanel_dev, mixpanel_prod)
   print_crashlytics(crashlytics)
   print_hockeyapp(hockeyapp)
   print_googleplus(googleplus)
@@ -177,8 +164,6 @@ end
 client = nil
 secret = nil
 pocket = nil
-mixpanel_dev = nil
-mixpanel_prod = nil
 crashlytics = nil
 hockeyapp = nil
 googleplus = nil
@@ -197,10 +182,6 @@ File.open(path) do |f|
       secret = v.chomp
     elsif k == "POCKET_CONSUMER_KEY"
       pocket = v.chomp
-    elsif k == "MIXPANEL_DEVELOPMENT_API_TOKEN"
-      mixpanel_dev = v.chomp
-    elsif k == "MIXPANEL_PRODUCTION_API_TOKEN"
-      mixpanel_prod = v.chomp
     elsif k == "CRASHLYTICS_API_KEY"
       crashlytics = v.chomp
     elsif k == "HOCKEYAPP_APP_ID"
@@ -236,10 +217,6 @@ end
 configuration = ENV["CONFIGURATION"]
 if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration)
 
-  if mixpanel_dev.nil? || mixpanel_prod.nil?
-    $stderr.puts "warning: Mixpanel keys not found"
-  end
-
   if crashlytics.nil?
     $stderr.puts "warning: Crashlytics API key not found"
   end
@@ -271,4 +248,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, lookback_token, appbotx_api_key)
+print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, lookback_token, appbotx_api_key)

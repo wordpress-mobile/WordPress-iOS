@@ -176,7 +176,7 @@ class PlanDetailViewController: UIViewController {
         }
     }
 
-    //MARK: - IBActions
+    // MARK: - IBActions
 
     @IBAction fileprivate func purchaseTapped() {
         guard let identifier = viewModel.plan.productIdentifier else {

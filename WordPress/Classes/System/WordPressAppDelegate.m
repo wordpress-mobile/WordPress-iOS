@@ -116,6 +116,23 @@ int ddLogLevel = DDLogLevelInfo;
 
     self.shouldRestoreApplicationState = !isFixingAuthTokenIssue;
 
+    // Temporary force of Aztec to "on" for all internal users
+#ifdef INTERNAL_BUILD
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *defaultsKey = @"AztecInternalForcedOnVersion";
+    NSString *lastBuildAztecForcedOn = [defaults stringForKey:defaultsKey];
+    NSString *currentVersion = [[NSBundle mainBundle] bundleVersion];
+    if (![currentVersion isEqualToString:lastBuildAztecForcedOn]) {
+        [defaults setObject:currentVersion forKey:defaultsKey];
+        [defaults synchronize];
+
+        EditorSettings *settings = [EditorSettings new];
+        [settings setNativeEditorAvailable:TRUE];
+        [settings setVisualEditorEnabled:TRUE];
+        [settings setNativeEditorEnabled:TRUE];
+    }
+#endif
+
     return YES;
 }
 
@@ -520,11 +537,7 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
-    if ([Feature enabled:FeatureFlagNewLogin]) {
-        [SigninHelpers showLoginFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
-    } else {
-        [SigninHelpers showSigninFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
-    }
+    [SigninHelpers showSigninFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
 }
 
 - (BOOL)isWelcomeScreenVisible
@@ -570,8 +583,6 @@ int ddLogLevel = DDLogLevelInfo;
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
     [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
 
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPFontManager systemBoldFontOfSize:17.0]} ];
-
     [[UINavigationBar appearance] setBackgroundImage:[WPStyleGuide navigationBarBackgroundImage] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[WPStyleGuide navigationBarShadowImage]];
     [[UINavigationBar appearance] setBarStyle:[WPStyleGuide navigationBarBarStyle]];
@@ -579,7 +590,7 @@ int ddLogLevel = DDLogLevelInfo;
     [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:17.0], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:17.0], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
-    
+
     [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont]} forState:UIControlStateNormal];
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide wordPressBlue]];
@@ -593,12 +604,11 @@ int ddLogLevel = DDLogLevelInfo;
     [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[ [WPEditorViewController class] ]] setBarTintColor:[UIColor whiteColor]];
 
     // Search
-    [WPStyleGuide configureSearchAppearance];
+    [WPStyleGuide configureSearchBarAppearance];
 
     // SVProgressHUD styles
     [SVProgressHUD setBackgroundColor:[[WPStyleGuide littleEddieGrey] colorWithAlphaComponent:0.95]];
     [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
-    [SVProgressHUD setFont:[WPFontManager systemRegularFontOfSize:18.0]];
     [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
     [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
     
@@ -612,6 +622,18 @@ int ddLogLevel = DDLogLevelInfo;
     [[WPLegacyEditorFormatToolbar appearance] setBarTintColor:[UIColor colorWithHexString:@"F9FBFC"]];
     [[WPLegacyEditorFormatToolbar appearance] setTintColor:[WPStyleGuide greyLighten10]];
     [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[WPLegacyEditorFormatToolbar class]]] setTintColor:[WPStyleGuide greyLighten10]];
+
+    // Customize the appearence of the text elements
+    [self customizeAppearanceForTextElements];
+}
+
+- (void)customizeAppearanceForTextElements
+{
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline symbolicTraits:UIFontDescriptorTraitBold]} ];
+    // Search
+    [WPStyleGuide configureSearchBarTextAppearance];
+    // SVProgressHUD styles
+    [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline]];
 }
 
 - (void)create3DTouchShortcutItems
@@ -860,6 +882,11 @@ int ddLogLevel = DDLogLevelInfo;
                            selector:@selector(handleLowMemoryWarningNote:)
                                name:UIApplicationDidReceiveMemoryWarningNotification
                              object:nil];
+
+    [notificationCenter addObserver:self
+                           selector:@selector(handleUIContentSizeCategoryDidChangeNotification:)
+                               name:UIContentSizeCategoryDidChangeNotification
+                             object:nil];
 }
 
 - (void)handleDefaultAccountChangedNote:(NSNotification *)notification
@@ -888,6 +915,10 @@ int ddLogLevel = DDLogLevelInfo;
     [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
 }
 
+- (void)handleUIContentSizeCategoryDidChangeNotification:(NSNotification *)notification
+{
+    [self customizeAppearanceForTextElements];
+}
 
 #pragma mark - Extensions
 

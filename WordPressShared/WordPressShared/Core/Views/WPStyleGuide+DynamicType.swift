@@ -37,7 +37,7 @@ extension WPStyleGuide {
     ///     - traits: The desired UIFontDescriptorSymbolicTraits.
     ///
     public class func configureLabel(_ label: UILabel, textStyle style: UIFontTextStyle, symbolicTraits traits: UIFontDescriptorSymbolicTraits) {
-        label.font = self.fontForTextStyle(style, symbolicTraits: traits)
+        label.font = fontForTextStyle(style, symbolicTraits: traits)
         label.adjustsFontForContentSizeCategory = true
     }
 
@@ -51,7 +51,7 @@ extension WPStyleGuide {
     ///       UIFontWeightHeavy, UIFontWeightBlack).
     ///
     public class func configureLabel(_ label: UILabel, textStyle style: UIFontTextStyle, fontWeight weight: CGFloat) {
-        label.font = self.fontForTextStyle(style, fontWeight: weight)
+        label.font = fontForTextStyle(style, fontWeight: weight)
         label.adjustsFontForContentSizeCategory = true
     }
 
@@ -62,7 +62,7 @@ extension WPStyleGuide {
     ///     - style: The desired UIFontTextStyle.
     ///
     public class func configureLabelForNotoFont(_ label: UILabel, textStyle style: UIFontTextStyle) {
-        label.font = self.notoFontForTextStyle(style)
+        label.font = notoFontForTextStyle(style)
         label.adjustsFontForContentSizeCategory = true
     }
 
@@ -130,7 +130,7 @@ extension WPStyleGuide {
     /// - Returns: The created font.
     ///
     public class func notoFontForTextStyle(_ style: UIFontTextStyle) -> UIFont {
-        return self.customNotoFontNamed("NotoSerif", forTextStyle: style)
+        return customNotoFontNamed("NotoSerif", forTextStyle: style)
     }
 
     /// Creates a NotoSerif Bold UIFont for the user current text size settings.
@@ -141,7 +141,7 @@ extension WPStyleGuide {
     /// - Returns: The created font.
     ///
     public class func notoBoldFontForTextStyle(_ style: UIFontTextStyle) -> UIFont {
-        return self.customNotoFontNamed("NotoSerif-Bold", forTextStyle: style)
+        return customNotoFontNamed("NotoSerif-Bold", forTextStyle: style)
     }
 
     /// Creates a NotoSerif Italic UIFont for the user current text size settings.
@@ -152,7 +152,7 @@ extension WPStyleGuide {
     /// - Returns: The created font.
     ///
     public class func notoItalicFontForTextStyle(_ style: UIFontTextStyle) -> UIFont {
-        return self.customNotoFontNamed("NotoSerif-Italic", forTextStyle: style)
+        return customNotoFontNamed("NotoSerif-Italic", forTextStyle: style)
     }
 
     /// Creates a NotoSerif BoldItalic UIFont for the user current text size settings.
@@ -163,7 +163,7 @@ extension WPStyleGuide {
     /// - Returns: The created font.
     ///
     public class func notoBoldItalicFontForTextStyle(_ style: UIFontTextStyle) -> UIFont {
-        return self.customNotoFontNamed("NotoSerif-BoldItalic", forTextStyle: style)
+        return customNotoFontNamed("NotoSerif-BoldItalic", forTextStyle: style)
     }
 
     /// Creates a Noto UIFont for the user current text size settings.

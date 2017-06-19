@@ -1609,7 +1609,7 @@ EditImageDetailsViewControllerDelegate
     float fractionOfUploadsCompleted = (float)(self.mediaGlobalProgress.completedUnitCount+1)/(float)self.mediaGlobalProgress.totalUnitCount;
     self.mediaProgressView.progress = MIN(fractionOfUploadsCompleted ,self.mediaGlobalProgress.fractionCompleted);
     for(NSProgress * progress in [self.mediaInProgress allValues]){
-        if (progress.totalUnitCount != 0 && !progress.cancelled){
+        if (progress.userInfo[WPProgressMediaError] == nil && !progress.cancelled){
             [self.editorView setProgress:progress.fractionCompleted onImage:progress.userInfo[WPProgressMediaID]];
             [self.editorView setProgress:progress.fractionCompleted onVideo:progress.userInfo[WPProgressMediaID]];
         }
@@ -1619,7 +1619,7 @@ EditImageDetailsViewControllerDelegate
 - (BOOL)hasFailedMedia
 {
     for(NSProgress * progress in self.mediaInProgress.allValues) {
-        if (progress.totalUnitCount == 0){
+        if (progress.userInfo[WPProgressMediaError] != nil){
             return YES;
         }
     }
@@ -1629,7 +1629,7 @@ EditImageDetailsViewControllerDelegate
 - (BOOL)isMediaUploading
 {
     for(NSProgress *progress in self.mediaInProgress.allValues) {
-        if (!progress.isCancelled && progress.totalUnitCount != 0){
+        if (!progress.isCancelled && progress.fractionCompleted != 1){
             return YES;
         }
     }
@@ -1663,7 +1663,7 @@ EditImageDetailsViewControllerDelegate
 {
     NSMutableArray * keys = [NSMutableArray array];
     [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
-        if (progress.totalUnitCount == 0){
+        if (progress.userInfo[WPProgressMediaError]){
             [self.editorView removeImage:key];
             [self.editorView removeVideo:key];
             [keys addObject:key];

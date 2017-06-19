@@ -205,12 +205,8 @@ class NoteTableViewCell: MGSwipeTableCell {
             noticonContainerView.backgroundColor = Style.noteBackgroundUnreadColor
         }
 
-        // Cell Background: Assign only if needed, for performance
-        let newBackgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
-
-        if backgroundColor != newBackgroundColor {
-            backgroundColor = newBackgroundColor
-        }
+        // Cell Background
+        backgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
     }
 
     fileprivate func refreshSelectionStyle() {

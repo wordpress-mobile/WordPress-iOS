@@ -52,7 +52,7 @@ open class NotificationSettings {
     ///
     open func sortedPreferenceKeys(_ stream: Stream?) -> [String] {
         switch channel {
-        case .blog(_):
+        case .blog:
             // Email Streams require a special treatment
             return stream?.kind == .Email ? blogEmailPreferenceKeys : blogPreferenceKeys
         case .other:

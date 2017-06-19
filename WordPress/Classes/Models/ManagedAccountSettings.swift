@@ -64,23 +64,23 @@ class ManagedAccountSettings: NSManagedObject {
 
     fileprivate func reverseChange(_ change: AccountSettingsChange) -> AccountSettingsChange {
         switch change {
-        case .firstName(_):
+        case .firstName:
             return .firstName(self.firstName)
-        case .lastName(_):
+        case .lastName:
             return .lastName(self.lastName)
-        case .displayName(_):
+        case .displayName:
             return .displayName(self.displayName)
-        case .aboutMe(_):
+        case .aboutMe:
             return .aboutMe(self.aboutMe)
-        case .email(_):
+        case .email:
             return .emailRevertPendingChange
-        case .emailRevertPendingChange(_):
+        case .emailRevertPendingChange:
             return .email(self.emailPendingAddress ?? String())
-        case .primarySite(_):
+        case .primarySite:
             return .primarySite(self.primarySiteID.intValue)
-        case .webAddress(_):
+        case .webAddress:
             return .webAddress(self.webAddress)
-        case .language(_):
+        case .language:
             return .language(self.language)
         }
     }

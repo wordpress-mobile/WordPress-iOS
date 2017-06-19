@@ -40,7 +40,7 @@ class BadgeLabel: UILabel {
         return paddedSize
     }
 
-    //  MARK: Computed Properties
+    // MARK: Computed Properties
 
     @IBInspectable var borderColor: UIColor {
         get {

@@ -100,23 +100,23 @@ class AccountSettingsRemote: ServiceRemoteWordPressComREST {
 
     fileprivate func fieldNameForChange(_ change: AccountSettingsChange) -> String {
         switch change {
-        case .firstName(_):
+        case .firstName:
             return "first_name"
-        case .lastName(_):
+        case .lastName:
             return "last_name"
-        case .displayName(_):
+        case .displayName:
             return "display_name"
-        case .aboutMe(_):
+        case .aboutMe:
             return "description"
-        case .email(_):
+        case .email:
             return "user_email"
-        case .emailRevertPendingChange(_):
+        case .emailRevertPendingChange:
             return "user_email_change_pending"
-        case .primarySite(_):
+        case .primarySite:
             return "primary_site_ID"
-        case .webAddress(_):
+        case .webAddress:
             return "user_URL"
-        case .language(_):
+        case .language:
             return "language"
         }
     }

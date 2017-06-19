@@ -794,10 +794,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func publishPost(_ apost: AbstractPost) {
         WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
 
+        apost.date_created_gmt = Date()
         apost.status = .publish
-        if let date = apost.dateCreated, date == (Date() as NSDate).laterDate(date) {
-            apost.dateCreated = Date()
-        }
         uploadPost(apost)
     }
 
@@ -959,7 +957,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         return blog.account?.userID
     }
 
-    // MARK - Filtering
+    // MARK: - Filtering
 
     func refreshAndReload() {
         recentlyTrashedPostObjectIDs.removeAll()
@@ -972,6 +970,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         filterSettings.setFilterWithPostStatus(status)
         refreshAndReload()
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
+    }
+
+    func updateFilter(index: Int) {
+        filterSettings.setCurrentFilterIndex(index)
+        refreshAndReload()
     }
 
     func updateFilterTitle() {

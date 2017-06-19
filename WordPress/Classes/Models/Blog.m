@@ -277,6 +277,13 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [self postFormatTextFromSlug:self.settings.defaultPostFormat];
 }
 
+- (BOOL)hasIcon
+{
+    // A blog without an icon has the blog url in icon, so we can't directly check its
+    // length to determine if we have an icon or not
+    return self.icon.length > 0 ? [NSURL URLWithString:self.icon].pathComponents.count > 1 : NO;
+}
+
 - (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug
 {
     NSDictionary *allFormats = self.postFormats;

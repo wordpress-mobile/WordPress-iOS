@@ -26,7 +26,7 @@ open class WordPressRSDParser: NSObject, XMLParserDelegate {
         throw error
     }
 
-    //MARK: - NSXMLParserDelegate
+    // MARK: - NSXMLParserDelegate
     open func parser(_ parser: XMLParser,
                 didStartElement elementName: String,
                                 namespaceURI: String?,

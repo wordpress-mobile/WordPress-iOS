@@ -322,7 +322,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let post = postAtIndexPath(indexPath)
 
-        if post.remoteStatus == AbstractPostRemoteStatusPushing {
+        if post.remoteStatus == .pushing {
             // Don't allow editing while pushing changes
             return
         }
@@ -383,16 +383,21 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Post Actions
 
     override func createPost() {
+        let filterIndex = filterSettings.currentFilterIndex()
         let editor = EditPostViewController(blog: blog)
         editor.onClose = { [weak self] changesSaved in
             if changesSaved {
                 if let postStatus = editor.post?.status {
                     self?.updateFilterWithPostStatus(postStatus)
                 }
+            } else {
+                self?.updateFilter(index: filterIndex)
             }
         }
         editor.modalPresentationStyle = .fullScreen
-        present(editor, animated: false, completion: nil)
+        present(editor, animated: false, completion: { [weak self] in
+            self?.updateFilterWithPostStatus(.draft)
+        })
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "posts_view"], with: blog)
     }
 

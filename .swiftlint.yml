@@ -31,6 +31,13 @@ whitelist_rules:
   # Prefer checking `isEmpty` over comparing `count` to zero.
   # - empty_count
 
+  # Arguments can be omitted when matching enums with associated types if they
+  # are not used.
+  - empty_enum_arguments
+
+  # Prefer `() -> ` over `Void -> `.
+  - empty_parameters
+
   # Files should not span too many lines.
   # - file_length
 
@@ -63,6 +70,9 @@ whitelist_rules:
 
   # Lines should not span too many characters.
   # - line_length
+
+  # MARK comment should be in valid format.
+  - mark
 
   # Public declarations should be documented.
   # - missing_docs
