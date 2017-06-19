@@ -8,7 +8,7 @@ class LoginProloguePageViewController: UIPageViewController {
         static let topPadding: CGFloat = 20.0
         static let pageControlHeight: CGFloat = 40.0
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
@@ -21,25 +21,25 @@ class LoginProloguePageViewController: UIPageViewController {
         }
         setViewControllers([pages[0]], direction: .forward, animated: false)
         view.backgroundColor = backgroundColor(for: 0)
-        
+
         addPageControl()
     }
-    
+
     func addPageControl() {
         let newControl = UIPageControl()
-        
+
         view.addSubview(newControl)
-        
+
         newControl.translatesAutoresizingMaskIntoConstraints = false
         newControl.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.topPadding).isActive = true
         newControl.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         newControl.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         newControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight).isActive = true
-        
+
         newControl.numberOfPages = pages.count
         pageControl = newControl
     }
-    
+
     fileprivate func animateBackground(for index: Int, duration: TimeInterval = 0.5) {
         bgAnimation?.stopAnimation(true)
         bgAnimation = UIViewPropertyAnimator(duration: 0.5, curve: .easeOut) { [weak self] in
@@ -47,7 +47,7 @@ class LoginProloguePageViewController: UIPageViewController {
         }
         bgAnimation?.startAnimation()
     }
-    
+
     fileprivate func backgroundColor(for index: Int) -> UIColor {
         switch index % 2 {
         case 0:
@@ -71,7 +71,7 @@ extension LoginProloguePageViewController: UIPageViewControllerDataSource {
         }
         return nil
     }
-    
+
     @available(iOS 5.0, *)
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let index = pages.index(of: viewController) else {
@@ -95,7 +95,7 @@ extension LoginProloguePageViewController: UIPageViewControllerDelegate {
             animateBackground(for: index, duration: 0.2)
         }
     }
-    
+
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         let toVC = pendingViewControllers[0]
         guard let index = pages.index(of: toVC) else {

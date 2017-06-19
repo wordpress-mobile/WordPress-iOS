@@ -11,19 +11,17 @@ class LoginPrologueViewController: UIViewController {
             else {
             return
         }
-//        let animation = UIView()
+
         animation.translatesAutoresizingMaskIntoConstraints = false
-//        animation.backgroundColor = UIColor.red
         animation.contentMode = .scaleAspectFit
         holder.addSubview(animation)
-        
+
         // setup autolayout
         animation.leadingAnchor.constraint(equalTo: holder.leadingAnchor).isActive = true
         animation.trailingAnchor.constraint(equalTo: holder.trailingAnchor).isActive = true
         animation.topAnchor.constraint(equalTo: holder.topAnchor).isActive = true
-        //animation.centerXAnchor.constraint(equalTo: holder.centerXAnchor).isActive = true
         animation.bottomAnchor.constraint(equalTo: holder.bottomAnchor).isActive = true
-        
+
         animation.loopAnimation = true
         animation.play()
     }
