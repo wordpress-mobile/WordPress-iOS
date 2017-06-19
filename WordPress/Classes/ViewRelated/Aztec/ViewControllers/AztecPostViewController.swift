@@ -1485,7 +1485,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         }
 
         optionsViewController = OptionsTableViewController(options: options)
-        optionsViewController.cellDeselectedTintColor = .gray
+        optionsViewController.cellDeselectedTintColor = WPStyleGuide.aztecFormatBarInactiveColor
+        optionsViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
         optionsViewController.onSelect = { [weak self] selected in
             if self?.presentedViewController != nil {
                 self?.dismiss(animated: true, completion: nil)
