@@ -23,6 +23,7 @@
 		7403A2FF1EF06FEB00DED7DC /* me-settings-revert-email-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7403A2F21EF06FEB00DED7DC /* me-settings-revert-email-success.json */; };
 		7403A3001EF06FEB00DED7DC /* me-settings-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7403A2F31EF06FEB00DED7DC /* me-settings-success.json */; };
 		7403A3021EF0726E00DED7DC /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7403A3011EF0726E00DED7DC /* AccountSettings.swift */; };
+		74155E251EF87DDF00A06AEA /* ServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74155E241EF87DDF00A06AEA /* ServiceRemoteRESTTests.m */; };
 		74B5F0D71EF8299B00B411E7 /* BlogServiceRemoteREST.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B5F0D31EF8299B00B411E7 /* BlogServiceRemoteREST.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		74B5F0D81EF8299B00B411E7 /* BlogServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 74B5F0D41EF8299B00B411E7 /* BlogServiceRemoteREST.m */; };
 		74B5F0D91EF8299B00B411E7 /* BlogServiceRemoteXMLRPC.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B5F0D51EF8299B00B411E7 /* BlogServiceRemoteXMLRPC.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -186,6 +187,7 @@
 		7403A2F21EF06FEB00DED7DC /* me-settings-revert-email-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "me-settings-revert-email-success.json"; path = "WordPressKitTests/me-settings-revert-email-success.json"; sourceTree = SOURCE_ROOT; };
 		7403A2F31EF06FEB00DED7DC /* me-settings-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "me-settings-success.json"; path = "WordPressKitTests/me-settings-success.json"; sourceTree = SOURCE_ROOT; };
 		7403A3011EF0726E00DED7DC /* AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
+		74155E241EF87DDF00A06AEA /* ServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteRESTTests.m; sourceTree = "<group>"; };
 		74B5F0D31EF8299B00B411E7 /* BlogServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemoteREST.h; sourceTree = "<group>"; };
 		74B5F0D41EF8299B00B411E7 /* BlogServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceRemoteREST.m; sourceTree = "<group>"; };
 		74B5F0D51EF8299B00B411E7 /* BlogServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
@@ -415,6 +417,7 @@
 			children = (
 				93C882961EEB179600227A59 /* RESTTestable.swift */,
 				93AB06031EE8838400EF8764 /* RemoteTestCase.swift */,
+				74155E241EF87DDF00A06AEA /* ServiceRemoteRESTTests.m */,
 				93BD273E1EE732CC002BB00B /* Accounts */,
 				74B5F0DF1EF82AAB00B411E7 /* Blog */,
 				74C473AD1EF2F7BF009918F2 /* Site */,
@@ -992,6 +995,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93AC8EDF1ED32FD000900F5A /* StatsStreakItemTests.m in Sources */,
+				74155E251EF87DDF00A06AEA /* ServiceRemoteRESTTests.m in Sources */,
 				93AC8EE01ED32FD000900F5A /* StatsStreakTests.m in Sources */,
 				74B5F0DE1EF82A9600B411E7 /* BlogServiceRemoteRESTTests.m in Sources */,
 				93AC8EDE1ED32FD000900F5A /* StatsItemTests.m in Sources */,
