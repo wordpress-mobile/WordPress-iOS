@@ -1,1 +1,1 @@
-Hemos hecho que sea mucho más fácil gestionar los medios de tu sitio, al añadir la nueva sección de biblioteca de medios. Puedes ver tus fotos y vídeos, buscar, editar metadatos, borrar y subir elementos desde el mismo menú del sitio. Simplemente toca en Medios para empezar.
+Para esta versión, pulimos algunos pixeles, nos deshicimos de algunos errores y trabajamos entre bambalinas para hacer la experiencia de WordPress más fluida para los usuarios de nuestras aplicaciones.
