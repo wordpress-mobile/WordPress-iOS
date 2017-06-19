@@ -35,7 +35,7 @@ PODS:
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
-  - Gridicons (0.5)
+  - Gridicons (0.8)
   - HockeySDK (4.1.5):
     - HockeySDK/DefaultLib (= 4.1.5)
   - HockeySDK/DefaultLib (4.1.5)
@@ -92,8 +92,8 @@ PODS:
   - Starscream (2.0.2)
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.3):
-    - Gridicons (= 0.5)
+  - WordPress-Aztec-iOS (1.0.0-beta.4):
+    - Gridicons (= 0.8)
   - WordPress-iOS-Editor (1.9.2):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
@@ -114,7 +114,7 @@ DEPENDENCIES:
   - Expecta (= 1.0.5)
   - FLAnimatedImage (~> 1.0)
   - FormatterKit/TimeIntervalFormatter (~> 1.8.1)
-  - Gridicons (= 0.5)
+  - Gridicons (= 0.8)
   - HockeySDK (~> 4.1.5)
   - MGSwipeTableCell (~> 1.5.6)
   - MRProgress (~> 0.7.0)
@@ -129,7 +129,7 @@ DEPENDENCIES:
   - Starscream (from `https://github.com/wordpress-mobile/Starscream`, branch `wordpress-ios`)
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.3)
+  - WordPress-Aztec-iOS (= 1.0.0-beta.4)
   - WordPress-iOS-Editor (= 1.9.2)
   - WordPressCom-Analytics-iOS (= 0.1.29)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
@@ -170,7 +170,7 @@ SPEC CHECKSUMS:
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
-  Gridicons: 5c5e928324fa301572ee447b25962d18e7fd7159
+  Gridicons: 80b979a3ada21189f96bd7af9f1a5b2751fb50e3
   HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
@@ -184,13 +184,13 @@ SPEC CHECKSUMS:
   Starscream: 4ee1be18da5170faafce1698225b61f9765634d5
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 1145da9271f4b85806b6a6b9586211c76524a49b
+  WordPress-Aztec-iOS: 859ca14e0f6d9cc6d99a173fa07e5862fe67a749
   WordPress-iOS-Editor: e71fa013ac3bf8f448d0ee43421beed3f56500f0
   WordPressCom-Analytics-iOS: db0e9449bafaaa7beb2c7f663ecc806d45da992e
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 8720f60db999cb85c42c3b10f5401ced0656ab91
+PODFILE CHECKSUM: 70b9a8221f70f52d395f2753421a19fb618deff7
 
 COCOAPODS: 1.2.1
