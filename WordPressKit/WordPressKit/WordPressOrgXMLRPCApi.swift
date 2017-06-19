@@ -242,11 +242,13 @@ open class WordPressOrgXMLRPCApi: NSObject {
     }
 
     open static let WordPressOrgXMLRPCApiErrorKeyData = "WordPressOrgXMLRPCApiErrorKeyData"
+    open static let WordPressOrgXMLRPCApiErrorKeyDataString = "WordPressOrgXMLRPCApiErrorKeyDataString"
 
     fileprivate func convertError(_ error: NSError, data: Data?) -> NSError {
         if let data = data {
             var userInfo: [AnyHashable: Any] = error.userInfo
             userInfo[type(of: self).WordPressOrgXMLRPCApiErrorKeyData] = data
+            userInfo[type(of: self).WordPressOrgXMLRPCApiErrorKeyDataString] = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
             return NSError(domain: error.domain, code: error.code, userInfo: userInfo)
         }
         return error
