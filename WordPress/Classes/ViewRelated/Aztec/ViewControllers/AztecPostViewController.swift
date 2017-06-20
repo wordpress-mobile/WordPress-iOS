@@ -1192,6 +1192,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         dismissOptionsViewControllerIfNecessary()
     }
 
+    // TODO: Add analytics for tapping the "more items" button in toolbar; awaiting Aztec delegate change to accommodate
     func handleActionForIdentifier(_ identifier: FormattingIdentifier, barItem: FormatBarItem) {
 
         switch identifier {
@@ -1226,21 +1227,25 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
 
     func toggleBold() {
+        WPAppAnalytics.track(.editorTappedBold, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
         richTextView.toggleBold(range: richTextView.selectedRange)
     }
 
 
     func toggleItalic() {
+        WPAppAnalytics.track(.editorTappedItalic, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
         richTextView.toggleItalic(range: richTextView.selectedRange)
     }
 
 
     func toggleUnderline() {
+        WPAppAnalytics.track(.editorTappedUnderline, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
         richTextView.toggleUnderline(range: richTextView.selectedRange)
     }
 
 
     func toggleStrikethrough() {
+        WPAppAnalytics.track(.editorTappedStrikethrough, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
         richTextView.toggleStrikethrough(range: richTextView.selectedRange)
     }
 
@@ -1264,8 +1269,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                     let listType = Constants.lists[selected]
                                                     switch listType {
                                                     case .unordered:
+                                                        WPAppAnalytics.track(.editorTappedUnorderedList, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self?.post)
                                                         self?.richTextView.toggleUnorderedList(range: range)
                                                     case .ordered:
+                                                        WPAppAnalytics.track(.editorTappedOrderedList, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self?.post)
                                                         self?.richTextView.toggleOrderedList(range: range)
                                                     }
 
@@ -1275,6 +1282,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
 
     func toggleBlockquote() {
+        WPAppAnalytics.track(.editorTappedBlockquote, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
         richTextView.toggleBlockquote(range: richTextView.selectedRange)
     }
 
@@ -1301,6 +1309,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
 
     func toggleLink() {
+        WPAppAnalytics.track(.editorTappedLink, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+
         var linkTitle = ""
         var linkURL: URL? = nil
         var linkRange = richTextView.selectedRange
@@ -1383,6 +1393,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let removeAction = UIAlertAction(title: removeButtonTitle,
                                          style: UIAlertActionStyle.destructive,
                                          handler: { [weak self] action in
+                                            WPAppAnalytics.track(.editorTappedUnlink, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self?.post)
                                             self?.richTextView.becomeFirstResponder()
                                             self?.richTextView.removeLink(inRange: range)
             })
@@ -1420,6 +1431,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func presentMediaPicker(animated: Bool = true) {
+        WPAppAnalytics.track(.editorTappedImage, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
 
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
@@ -1436,6 +1448,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             displayMediaIsUploadingAlert()
             return
         }
+
+        WPAppAnalytics.track(.editorTappedHTML, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
         mode.toggle()
     }
 
@@ -1449,6 +1463,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {
+        WPAppAnalytics.track(.editorTappedHeader, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self.post)
+
         let headerOptions = Constants.headers.map { (headerType) -> OptionsTableViewOption in
             return OptionsTableViewOption(image: headerType.iconImage,
                                           title: NSAttributedString(string: headerType.description,
@@ -1462,6 +1478,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                   selectedRowIndex: selectedIndex,
                                                   onSelect: { [weak self] selected in
                                                     guard let range = self?.richTextView.selectedRange else { return }
+
+                                                    WPAppAnalytics.track(.editorTappedHeaderSelection, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self?.post)
 
                                                     self?.richTextView.toggleHeader(Constants.headers[selected], range: range)
                                                     self?.optionsViewController = nil
@@ -1540,10 +1558,12 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func insertHorizontalRuler() {
+        WPAppAnalytics.track(.editorTappedHorizontalRule, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
         richTextView.replaceRangeWithHorizontalRuler(richTextView.selectedRange)
     }
 
     func insertMore() {
+        WPAppAnalytics.track(.editorTappedMore, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
         richTextView.replaceRangeWithCommentAttachment(richTextView.selectedRange, text: Constants.moreAttachmentText)
     }
 
