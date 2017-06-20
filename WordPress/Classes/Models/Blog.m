@@ -28,7 +28,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 @property (nonatomic, strong, readwrite) WordPressOrgXMLRPCApi *xmlrpcApi;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
-@property (nullable, strong, readwrite) WordPressComRestApi *testingWordPressComRestApi;
 
 @end
 
@@ -82,7 +81,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @synthesize isSyncingMedia;
 @synthesize jetpack = _jetpack;
 @synthesize xmlrpcApi = _xmlrpcApi;
-@synthesize testingWordPressComRestApi;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -629,10 +627,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 - (WordPressComRestApi *)wordPressComRestApi
 {
-    if (self.testingWordPressComRestApi) {
-        return self.testingWordPressComRestApi;
-    }
-
     if (self.account) {
         return self.account.wordPressComRestApi;
     } else if ([self jetpackRESTSupported]) {
