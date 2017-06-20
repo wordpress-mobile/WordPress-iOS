@@ -912,8 +912,8 @@ private extension AztecPostViewController {
             guard let blog = self.mainContext.object(with: selectedObjectID) as? Blog else {
                 return
             }
-
             self.recreatePostRevision(in: blog)
+            self.mediaLibraryDataSource = WPAndDeviceMediaLibraryDataSource(post: self.post)
         }
 
         let dismissHandler: BlogSelectorDismissHandler = {
@@ -1485,7 +1485,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         }
 
         optionsViewController = OptionsTableViewController(options: options)
-        optionsViewController.cellDeselectedTintColor = .gray
+        optionsViewController.cellDeselectedTintColor = WPStyleGuide.aztecFormatBarInactiveColor
+        optionsViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
         optionsViewController.onSelect = { [weak self] selected in
             if self?.presentedViewController != nil {
                 self?.dismiss(animated: true, completion: nil)
@@ -1597,11 +1598,11 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let toolbar = Aztec.FormatBar()
         toolbar.defaultItems = [[mediaItem], scrollableItems]
         toolbar.overflowItems = overflowItems
-        toolbar.tintColor = .gray
-        toolbar.highlightedTintColor = .blue
-        toolbar.selectedTintColor = view.tintColor
-        toolbar.disabledTintColor = .lightGray
-        toolbar.dividerTintColor = .gray
+        toolbar.tintColor = WPStyleGuide.aztecFormatBarInactiveColor
+        toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
+        toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor
+        toolbar.disabledTintColor = WPStyleGuide.aztecFormatBarDisabledColor
+        toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDisabledColor
         toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
         toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0)
         toolbar.formatter = self
