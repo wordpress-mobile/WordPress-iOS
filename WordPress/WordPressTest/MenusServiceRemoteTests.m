@@ -13,6 +13,7 @@
 
 - (void)testThatCreateMenuWithNameWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
@@ -47,6 +48,7 @@
 
 - (void)testThatUpdateMenuWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
@@ -77,6 +79,7 @@
 
 - (void)testThatDeleteMenuWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
@@ -104,6 +107,7 @@
 
 - (void)testThatGetMenusWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
