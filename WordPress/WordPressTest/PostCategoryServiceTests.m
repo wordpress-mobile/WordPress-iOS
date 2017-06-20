@@ -1,12 +1,11 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
-#import "Blog+Testing.h"
+#import "Blog.h"
 #import "PostCategory.h"
 #import "PostCategoryService.h"
 #import "TaxonomyServiceRemoteREST.h"
 #import "RemoteTaxonomyPaging.h"
 #import "RemotePostCategory.h"
-#import "TestContextManager.h"
 
 @interface PostCategoryServiceForStubbing : PostCategoryService
 
@@ -25,7 +24,6 @@
 
 @interface PostCategoryServiceTests : XCTestCase
 
-@property (nonatomic, strong) TestContextManager *manager;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) PostCategoryServiceForStubbing *service;
 
@@ -36,17 +34,21 @@
 - (void)setUp
 {
     [super setUp];
-
-    self.manager = [TestContextManager new];
+    
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.manager.mainContext];
-    blog.testingWordPressComRestApi = api;
-    blog.dotComID = @1;
-
+    XCTFail("Bad mocking 🖐");return;
+    Blog *blog = OCMStrictClassMock([Blog class]);
+    
+    OCMStub([blog wordPressComRestApi]).andReturn(api);
+    OCMStub([blog dotComID]).andReturn(@1);
+    OCMStub([blog objectID]).andReturn(nil);
+    
     self.blog = blog;
     
-    PostCategoryServiceForStubbing *service = [[PostCategoryServiceForStubbing alloc] initWithManagedObjectContext:self.manager.mainContext];
+    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
+    
+    PostCategoryServiceForStubbing *service = [[PostCategoryServiceForStubbing alloc] initWithManagedObjectContext:context];
     
     TaxonomyServiceRemoteREST *remoteService = OCMStrictClassMock([TaxonomyServiceRemoteREST class]);
     service.remoteForStubbing = remoteService;
@@ -61,7 +63,6 @@
     
     self.blog = nil;
     self.service = nil;
-    self.manager = nil;
 }
 
 - (void)testThatSyncCategoriesWorks
