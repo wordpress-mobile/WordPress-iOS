@@ -24,6 +24,7 @@
 		7403A3001EF06FEB00DED7DC /* me-settings-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7403A2F31EF06FEB00DED7DC /* me-settings-success.json */; };
 		7403A3021EF0726E00DED7DC /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7403A3011EF0726E00DED7DC /* AccountSettings.swift */; };
 		74155E251EF87DDF00A06AEA /* ServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74155E241EF87DDF00A06AEA /* ServiceRemoteRESTTests.m */; };
+		74B040721EF8B366002C6258 /* rest-site-settings.json in Resources */ = {isa = PBXBuildFile; fileRef = 74B040711EF8B366002C6258 /* rest-site-settings.json */; };
 		74B5F0D71EF8299B00B411E7 /* BlogServiceRemoteREST.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B5F0D31EF8299B00B411E7 /* BlogServiceRemoteREST.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		74B5F0D81EF8299B00B411E7 /* BlogServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 74B5F0D41EF8299B00B411E7 /* BlogServiceRemoteREST.m */; };
 		74B5F0D91EF8299B00B411E7 /* BlogServiceRemoteXMLRPC.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B5F0D51EF8299B00B411E7 /* BlogServiceRemoteXMLRPC.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -188,6 +189,7 @@
 		7403A2F31EF06FEB00DED7DC /* me-settings-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "me-settings-success.json"; path = "WordPressKitTests/me-settings-success.json"; sourceTree = SOURCE_ROOT; };
 		7403A3011EF0726E00DED7DC /* AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
 		74155E241EF87DDF00A06AEA /* ServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteRESTTests.m; sourceTree = "<group>"; };
+		74B040711EF8B366002C6258 /* rest-site-settings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "rest-site-settings.json"; sourceTree = "<group>"; };
 		74B5F0D31EF8299B00B411E7 /* BlogServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemoteREST.h; sourceTree = "<group>"; };
 		74B5F0D41EF8299B00B411E7 /* BlogServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceRemoteREST.m; sourceTree = "<group>"; };
 		74B5F0D51EF8299B00B411E7 /* BlogServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
@@ -596,17 +598,26 @@
 				93BD27521EE73442002BB00B /* me-sites-visibility-failure.json */,
 				93BD27531EE73442002BB00B /* me-sites-visibility-success.json */,
 				93BD27541EE73442002BB00B /* me-success.json */,
+				7403A2E71EF06FEB00DED7DC /* me-settings-auth-failure.json */,
+				7403A2E81EF06FEB00DED7DC /* me-settings-bad-json-failure.json */,
+				7403A2E91EF06FEB00DED7DC /* me-settings-change-aboutme-success.json */,
+				7403A2EA1EF06FEB00DED7DC /* me-settings-change-display-name-bad-json-failure.json */,
+				7403A2EB1EF06FEB00DED7DC /* me-settings-change-display-name-success.json */,
+				7403A2EC1EF06FEB00DED7DC /* me-settings-change-email-success.json */,
+				7403A2ED1EF06FEB00DED7DC /* me-settings-change-firstname-success.json */,
+				7403A2EE1EF06FEB00DED7DC /* me-settings-change-invalid-input-failure.json */,
+				7403A2EF1EF06FEB00DED7DC /* me-settings-change-lastname-success.json */,
+				7403A2F01EF06FEB00DED7DC /* me-settings-change-primary-site-success.json */,
+				7403A2F11EF06FEB00DED7DC /* me-settings-change-web-address-success.json */,
+				7403A2F21EF06FEB00DED7DC /* me-settings-revert-email-success.json */,
+				7403A2F31EF06FEB00DED7DC /* me-settings-success.json */,
+				74B040711EF8B366002C6258 /* rest-site-settings.json */,
 				74C473B01EF31A19009918F2 /* site-delete-success.json */,
 				74C473B21EF3204B009918F2 /* site-delete-auth-failure.json */,
 				74C473B41EF320CC009918F2 /* site-delete-bad-json-failure.json */,
 				74C473B61EF3229B009918F2 /* site-delete-unexpected-json-failure.json */,
 				74C473B81EF325F6009918F2 /* site-delete-missing-status-failure.json */,
 				74C473BA1EF328D8009918F2 /* site-export-success.json */,
-				7403A2E71EF06FEB00DED7DC /* me-settings-auth-failure.json */,
-				7403A2E81EF06FEB00DED7DC /* me-settings-bad-json-failure.json */,
-				7403A2E91EF06FEB00DED7DC /* me-settings-change-aboutme-success.json */,
-				7403A2EA1EF06FEB00DED7DC /* me-settings-change-display-name-bad-json-failure.json */,
-				7403A2EB1EF06FEB00DED7DC /* me-settings-change-display-name-success.json */,
 				74C473C21EF32DD7009918F2 /* site-export-failure.json */,
 				74C473BC1EF329CA009918F2 /* site-export-auth-failure.json */,
 				74C473BE1EF32B64009918F2 /* site-export-bad-json-failure.json */,
@@ -616,14 +627,6 @@
 				74C473C81EF335B8009918F2 /* site-active-purchases-empty-response.json */,
 				74C473CA1EF33696009918F2 /* site-active-purchases-auth-failure.json */,
 				74C473CC1EF336BD009918F2 /* site-active-purchases-bad-json-failure.json */,
-				7403A2EC1EF06FEB00DED7DC /* me-settings-change-email-success.json */,
-				7403A2ED1EF06FEB00DED7DC /* me-settings-change-firstname-success.json */,
-				7403A2EE1EF06FEB00DED7DC /* me-settings-change-invalid-input-failure.json */,
-				7403A2EF1EF06FEB00DED7DC /* me-settings-change-lastname-success.json */,
-				7403A2F01EF06FEB00DED7DC /* me-settings-change-primary-site-success.json */,
-				7403A2F11EF06FEB00DED7DC /* me-settings-change-web-address-success.json */,
-				7403A2F21EF06FEB00DED7DC /* me-settings-revert-email-success.json */,
-				7403A2F31EF06FEB00DED7DC /* me-settings-success.json */,
 			);
 			path = "Mock Data";
 			sourceTree = "<group>";
@@ -841,6 +844,7 @@
 				93AC8ECA1ED32FD000900F5A /* stats-v1.1-country-views-day.json in Resources */,
 				74C473BF1EF32B64009918F2 /* site-export-bad-json-failure.json in Resources */,
 				93AC8ED51ED32FD000900F5A /* stats-v1.1-tags-categories-views-day.json in Resources */,
+				74B040721EF8B366002C6258 /* rest-site-settings.json in Resources */,
 				93BD27611EE73442002BB00B /* me-sites-empty-success.json in Resources */,
 				74C473C11EF32C74009918F2 /* site-export-missing-status-failure.json in Resources */,
 				7403A3001EF06FEB00DED7DC /* me-settings-success.json in Resources */,
