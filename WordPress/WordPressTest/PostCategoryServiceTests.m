@@ -6,6 +6,11 @@
 #import "TaxonomyServiceRemoteREST.h"
 #import "RemoteTaxonomyPaging.h"
 #import "RemotePostCategory.h"
+#import "TestContextManager.h"
+
+@interface WPAccount ()
+@property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;
+@end
 
 @interface PostCategoryServiceForStubbing : PostCategoryService
 
@@ -24,6 +29,7 @@
 
 @interface PostCategoryServiceTests : XCTestCase
 
+@property (nonatomic, strong) TestContextManager *manager;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) PostCategoryServiceForStubbing *service;
 
@@ -34,21 +40,17 @@
 - (void)setUp
 {
     [super setUp];
-    
+
+    self.manager = [TestContextManager new];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    
-    OCMStub([blog wordPressComRestApi]).andReturn(api);
-    OCMStub([blog dotComID]).andReturn(@1);
-    OCMStub([blog objectID]).andReturn(nil);
-    
+
+    WPAccount *account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:self.manager.mainContext];
+    account.wordPressComRestApi = api;
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.manager.mainContext];
+    blog.dotComID = @1;
     self.blog = blog;
-    
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    
-    PostCategoryServiceForStubbing *service = [[PostCategoryServiceForStubbing alloc] initWithManagedObjectContext:context];
+
+    PostCategoryServiceForStubbing *service = [[PostCategoryServiceForStubbing alloc] initWithManagedObjectContext:self.manager.mainContext];
     
     TaxonomyServiceRemoteREST *remoteService = OCMStrictClassMock([TaxonomyServiceRemoteREST class]);
     service.remoteForStubbing = remoteService;
@@ -63,6 +65,7 @@
     
     self.blog = nil;
     self.service = nil;
+    self.manager = nil;
 }
 
 - (void)testThatSyncCategoriesWorks
