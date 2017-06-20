@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *password;
 @property (nonatomic, copy) NSString *siteUrl;
+@property (nonatomic, copy, nullable) NSURL *xmlRPCURL; // Should be the sites xmlrpc endpoint if logging in that way.
 @property (nonatomic, copy) NSString *multifactorCode;
 @property (nonatomic, assign) BOOL passwordless; // only wpcom users will be passwordless.
 @property (nonatomic, assign) BOOL userIsDotCom;
