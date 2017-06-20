@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -74,7 +75,7 @@
         <scene sceneID="1BJ-CW-C88">
             <objects>
                 <navigationController id="Ck1-vY-O11" customClass="LoginNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mKb-UO-KoA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mKb-UO-KoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -98,10 +99,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="383" height="676"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JBb-dd-foh">
-                                <rect key="frame" x="0.0" y="84" width="383" height="592"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="245" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-pW-jTv" userLabel="Wrapper Stack View">
                                 <rect key="frame" x="0.0" y="64" width="383" height="612"/>
                                 <subviews>
@@ -214,13 +211,9 @@
                         </subviews>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="tip-gy-Hwr" firstAttribute="top" secondItem="JBb-dd-foh" secondAttribute="bottom" id="69z-Ci-34m"/>
                             <constraint firstAttribute="trailing" secondItem="ZBL-pW-jTv" secondAttribute="trailing" id="7zD-MO-U4t"/>
                             <constraint firstItem="ZBL-pW-jTv" firstAttribute="top" secondItem="bn3-aC-RIM" secondAttribute="bottom" id="AGv-aa-6ci"/>
                             <constraint firstItem="ZBL-pW-jTv" firstAttribute="leading" secondItem="e5n-Bf-JaL" secondAttribute="leading" id="Zbk-NI-bPR"/>
-                            <constraint firstItem="JBb-dd-foh" firstAttribute="top" secondItem="bn3-aC-RIM" secondAttribute="bottom" constant="20" id="heP-am-Vxb"/>
-                            <constraint firstAttribute="trailing" secondItem="JBb-dd-foh" secondAttribute="trailing" id="jLR-IB-dpg"/>
-                            <constraint firstItem="JBb-dd-foh" firstAttribute="leading" secondItem="e5n-Bf-JaL" secondAttribute="leading" id="sON-Px-Qtf"/>
                             <constraint firstItem="tip-gy-Hwr" firstAttribute="top" secondItem="ZBL-pW-jTv" secondAttribute="bottom" id="ygR-XU-dv4"/>
                         </constraints>
                     </view>
@@ -484,17 +477,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="383" height="676"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5AW-qg-L9w">
-                                <rect key="frame" x="0.0" y="44" width="383" height="632"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="9tM-uJ-hye" userLabel="Wrapper Stack View">
+                                <rect key="frame" x="-4" y="64" width="391" height="612"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Mjx-cz-sDG">
-                                        <rect key="frame" x="0.0" y="114" width="383" height="286"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="391" height="548"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="tW0-In-DwC">
-                                                <rect key="frame" x="0.0" y="72" width="383" height="132"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n8z-Py-Err" customClass="BlogDetailHeaderView">
+                                                <rect key="frame" x="20" y="165" width="351" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="5Kj-rE-Y9W"/>
+                                                </constraints>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="tW0-In-DwC">
+                                                <rect key="frame" x="0.0" y="230" width="391" height="88"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username / Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ESh-DI-dtB" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="383" height="38.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="391" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -510,7 +509,7 @@
                                                         </connections>
                                                     </textField>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oi5-Kd-TEW" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="46.5" width="383" height="39"/>
+                                                        <rect key="frame" x="0.0" y="44" width="391" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="passwordField"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -525,133 +524,102 @@
                                                             <outlet property="delegate" destination="SZS-o3-1P7" id="4VW-gO-0pR"/>
                                                         </connections>
                                                     </textField>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Site Address (URL)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n1u-7J-ObZ" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="93.5" width="383" height="38.5"/>
-                                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <accessibility key="accessibilityConfiguration" identifier="selfHostedURL"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
-                                                            <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-url-field"/>
-                                                        </userDefinedRuntimeAttributes>
-                                                        <connections>
-                                                            <action selector="handleTextFieldDidChange:" destination="SZS-o3-1P7" eventType="editingChanged" id="gp3-nb-MgL"/>
-                                                            <outlet property="delegate" destination="SZS-o3-1P7" id="km3-FK-YEm"/>
-                                                        </connections>
-                                                    </textField>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="132" id="F1M-fZ-NLz"/>
+                                                    <constraint firstAttribute="height" constant="88" id="F1M-fZ-NLz"/>
                                                 </constraints>
                                             </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="159.5" y="220" width="63" height="34"/>
-                                                <accessibility key="accessibilityConfiguration" identifier="submitButton"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="NKL-1C-mN4"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <state key="normal" title="ADD SITE">
-                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="handleSubmitButtonTapped:" destination="SZS-o3-1P7" eventType="touchUpInside" id="9a6-DP-q7L"/>
-                                                </connections>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rvr-W4-OS1">
-                                                <rect key="frame" x="175" y="270" width="33" height="16"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dmn-nh-HTH">
+                                                <rect key="frame" x="20" y="338" width="351" height="0.0"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                <color key="textColor" red="0.85098039219999999" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="tW0-In-DwC" firstAttribute="leading" secondItem="Mjx-cz-sDG" secondAttribute="leading" id="03E-NW-xAt"/>
-                                            <constraint firstItem="SBB-7Z-qWs" firstAttribute="centerX" secondItem="Mjx-cz-sDG" secondAttribute="centerX" id="8lY-1S-hbu"/>
-                                            <constraint firstItem="SBB-7Z-qWs" firstAttribute="top" secondItem="tW0-In-DwC" secondAttribute="bottom" constant="16" id="TJ1-3f-FfW"/>
-                                            <constraint firstAttribute="bottom" secondItem="Rvr-W4-OS1" secondAttribute="bottom" id="ZU8-Wk-OJ2"/>
-                                            <constraint firstItem="tW0-In-DwC" firstAttribute="top" secondItem="Mjx-cz-sDG" secondAttribute="top" constant="72" id="a2i-mr-Psu"/>
+                                            <constraint firstItem="tW0-In-DwC" firstAttribute="top" secondItem="n8z-Py-Err" secondAttribute="bottom" constant="21" id="0Tf-ec-gZB"/>
+                                            <constraint firstAttribute="trailing" secondItem="n8z-Py-Err" secondAttribute="trailing" constant="20" id="0j1-Yt-DL0"/>
+                                            <constraint firstItem="n8z-Py-Err" firstAttribute="leading" secondItem="Mjx-cz-sDG" secondAttribute="leading" constant="20" id="3OP-2Y-cvo"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="5h8-kM-ymL"/>
+                                            <constraint firstItem="tW0-In-DwC" firstAttribute="centerY" secondItem="Mjx-cz-sDG" secondAttribute="centerY" id="IGq-sy-bRJ"/>
+                                            <constraint firstItem="Dmn-nh-HTH" firstAttribute="top" secondItem="tW0-In-DwC" secondAttribute="bottom" constant="20" id="WvE-TC-l7z"/>
                                             <constraint firstAttribute="trailing" secondItem="tW0-In-DwC" secondAttribute="trailing" id="cr8-vI-49m"/>
-                                            <constraint firstItem="Rvr-W4-OS1" firstAttribute="centerX" secondItem="Mjx-cz-sDG" secondAttribute="centerX" id="pz2-Q4-7H8"/>
-                                            <constraint firstItem="Rvr-W4-OS1" firstAttribute="top" secondItem="SBB-7Z-qWs" secondAttribute="bottom" constant="16" id="t2C-fB-OBM"/>
-                                            <constraint firstAttribute="width" constant="320" id="z1p-oR-KF5"/>
+                                            <constraint firstItem="Dmn-nh-HTH" firstAttribute="leading" secondItem="Mjx-cz-sDG" secondAttribute="leading" constant="20" id="exr-hG-jE0"/>
+                                            <constraint firstAttribute="trailing" secondItem="Dmn-nh-HTH" secondAttribute="trailing" constant="20" id="fch-li-UDF"/>
                                         </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="z1p-oR-KF5"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=regular">
-                                            <mask key="constraints">
-                                                <include reference="z1p-oR-KF5"/>
-                                            </mask>
-                                        </variation>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gzk-TE-YfP">
-                                        <rect key="frame" x="128.5" y="588" width="125" height="28"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        <state key="normal" title="Lost your password?">
-                                            <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="handleForgotPasswordButtonTapped:" destination="SZS-o3-1P7" eventType="touchUpInside" id="YFl-yy-9UR"/>
-                                        </connections>
-                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRL-RD-U6n">
+                                        <rect key="frame" x="0.0" y="548" width="391" height="64"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="zbk-h0-lpE">
+                                                <rect key="frame" x="20" y="10" width="351" height="34"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gzk-TE-YfP">
+                                                        <rect key="frame" x="0.0" y="2" width="141" height="30"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <state key="normal" title="Lost your password?">
+                                                            <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="handleForgotPasswordButtonTapped:" destination="SZS-o3-1P7" eventType="touchUpInside" id="YFl-yy-9UR"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                                        <rect key="frame" x="319" y="0.0" width="32" height="34"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="submitButton"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="NKL-1C-mN4"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <state key="normal" title="Next">
+                                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="handleSubmitButtonTapped:" destination="SZS-o3-1P7" eventType="touchUpInside" id="9a6-DP-q7L"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="zbk-h0-lpE" secondAttribute="bottom" constant="20" id="Szt-FI-zE7"/>
+                                            <constraint firstAttribute="height" constant="64" id="jKW-gc-xHR"/>
+                                            <constraint firstItem="zbk-h0-lpE" firstAttribute="leading" secondItem="dRL-RD-U6n" secondAttribute="leading" constant="20" id="sxH-7I-EtY"/>
+                                            <constraint firstAttribute="trailing" secondItem="zbk-h0-lpE" secondAttribute="trailing" constant="20" id="vwI-nG-6xF"/>
+                                            <constraint firstItem="zbk-h0-lpE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="dRL-RD-U6n" secondAttribute="top" constant="10" id="ykz-4R-R7L"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstItem="Mjx-cz-sDG" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5AW-qg-L9w" secondAttribute="top" id="3Js-t7-yPG"/>
-                                    <constraint firstItem="Mjx-cz-sDG" firstAttribute="centerX" secondItem="5AW-qg-L9w" secondAttribute="centerX" id="98r-Gx-edy"/>
-                                    <constraint firstAttribute="bottom" secondItem="Gzk-TE-YfP" secondAttribute="bottom" priority="900" constant="16" id="Y7X-lt-40l"/>
-                                    <constraint firstAttribute="trailing" secondItem="Mjx-cz-sDG" secondAttribute="trailing" id="e7Q-wh-S1Y"/>
-                                    <constraint firstItem="tW0-In-DwC" firstAttribute="centerY" secondItem="5AW-qg-L9w" secondAttribute="centerY" priority="900" constant="-64" id="gJr-NG-5Ge"/>
-                                    <constraint firstItem="Gzk-TE-YfP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="SBB-7Z-qWs" secondAttribute="bottom" constant="16" id="pGO-BI-6Kb"/>
-                                    <constraint firstItem="Gzk-TE-YfP" firstAttribute="centerX" secondItem="5AW-qg-L9w" secondAttribute="centerX" id="vGs-D3-oey"/>
-                                    <constraint firstItem="Mjx-cz-sDG" firstAttribute="leading" secondItem="5AW-qg-L9w" secondAttribute="leading" id="vrg-3c-mtK"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="98r-Gx-edy"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="98r-Gx-edy"/>
-                                        <exclude reference="e7Q-wh-S1Y"/>
-                                        <exclude reference="vrg-3c-mtK"/>
-                                    </mask>
-                                </variation>
-                            </view>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="5AW-qg-L9w" firstAttribute="leading" secondItem="HTO-Y8-god" secondAttribute="leading" id="0Jb-DD-JbH"/>
-                            <constraint firstItem="Ktl-It-Kmo" firstAttribute="top" secondItem="5AW-qg-L9w" secondAttribute="bottom" priority="900" id="Cp7-kV-GwD"/>
-                            <constraint firstAttribute="trailing" secondItem="5AW-qg-L9w" secondAttribute="trailing" id="TZt-Xa-bmg"/>
-                            <constraint firstItem="5AW-qg-L9w" firstAttribute="top" secondItem="Yjk-Cc-Bxb" secondAttribute="bottom" constant="-20" id="goU-S0-Xfs"/>
+                            <constraint firstItem="9tM-uJ-hye" firstAttribute="top" secondItem="Yjk-Cc-Bxb" secondAttribute="bottom" id="2iQ-k5-nKi"/>
+                            <constraint firstItem="Ktl-It-Kmo" firstAttribute="top" secondItem="9tM-uJ-hye" secondAttribute="bottom" id="5dJ-k5-ZLd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9tM-uJ-hye" secondAttribute="trailing" constant="-20" id="kSK-M5-Th3"/>
+                            <constraint firstItem="9tM-uJ-hye" firstAttribute="leading" secondItem="HTO-Y8-god" secondAttribute="leadingMargin" constant="-20" id="tCJ-Hh-wJ8"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="bottomContentConstraint" destination="Cp7-kV-GwD" id="mNb-vQ-DxH"/>
+                        <outlet property="bottomContentConstraint" destination="5dJ-k5-ZLd" id="smR-FD-ynn"/>
+                        <outlet property="errorLabel" destination="Dmn-nh-HTH" id="MdY-kK-o4s"/>
                         <outlet property="forgotPasswordButton" destination="Gzk-TE-YfP" id="yzb-jL-iRE"/>
                         <outlet property="passwordField" destination="oi5-Kd-TEW" id="ONl-tn-LtT"/>
-                        <outlet property="siteURLField" destination="n1u-7J-ObZ" id="daL-F3-ysi"/>
-                        <outlet property="statusLabel" destination="Rvr-W4-OS1" id="Q45-a6-AOn"/>
+                        <outlet property="siteHeaderView" destination="n8z-Py-Err" id="jwf-ai-QSO"/>
                         <outlet property="submitButton" destination="SBB-7Z-qWs" id="jfi-ms-7V1"/>
                         <outlet property="usernameField" destination="ESh-DI-dtB" id="T1z-yJ-peq"/>
-                        <outlet property="verticalCenterConstraint" destination="gJr-NG-5Ge" id="BoC-Nh-oVK"/>
                         <segue destination="bAd-Df-IzS" kind="show" identifier="show2FA" id="fWM-mD-lXg"/>
                         <segue destination="Mwz-tq-5A8" kind="show" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="fA5-mb-vrv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X4T-gd-ISx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="769" y="1947"/>
+            <point key="canvasLocation" x="768.79999999999995" y="1946.6266866566718"/>
         </scene>
         <!--LoginWP Com View Controller-->
         <scene sceneID="brQ-1M-iPT">
@@ -1541,10 +1509,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="383" height="676"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pVw-hK-Pvc">
-                                <rect key="frame" x="0.0" y="84" width="383" height="592"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="245" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="QcA-UD-Exa" userLabel="Wrapper Stack View">
                                 <rect key="frame" x="0.0" y="64" width="383" height="612"/>
                                 <subviews>
@@ -1658,13 +1622,9 @@
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="QcA-UD-Exa" firstAttribute="top" secondItem="pmp-Uj-4NW" secondAttribute="bottom" id="9X7-MZ-Ssf"/>
-                            <constraint firstItem="rYV-q2-blN" firstAttribute="top" secondItem="pVw-hK-Pvc" secondAttribute="bottom" id="TAp-F1-64n"/>
                             <constraint firstItem="QcA-UD-Exa" firstAttribute="leading" secondItem="CvY-vN-fn9" secondAttribute="leading" id="W3t-US-RNS"/>
                             <constraint firstItem="rYV-q2-blN" firstAttribute="top" secondItem="QcA-UD-Exa" secondAttribute="bottom" id="XBS-zC-Hmx"/>
-                            <constraint firstItem="pVw-hK-Pvc" firstAttribute="top" secondItem="pmp-Uj-4NW" secondAttribute="bottom" constant="20" id="Yuh-fN-sYm"/>
-                            <constraint firstItem="pVw-hK-Pvc" firstAttribute="leading" secondItem="CvY-vN-fn9" secondAttribute="leading" id="bxz-d2-mOH"/>
                             <constraint firstAttribute="trailing" secondItem="QcA-UD-Exa" secondAttribute="trailing" id="iTP-9P-d9h"/>
-                            <constraint firstAttribute="trailing" secondItem="pVw-hK-Pvc" secondAttribute="trailing" id="x9k-tq-SPs"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fMh-LG-dbq"/>
@@ -1697,9 +1657,9 @@
         <image name="icon-wp" width="50" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="YhI-TV-jXy"/>
+        <segue reference="avL-c6-SBY"/>
         <segue reference="ySQ-EM-6JI"/>
-        <segue reference="fA5-mb-vrv"/>
         <segue reference="fWM-mD-lXg"/>
+        <segue reference="fA5-mb-vrv"/>
     </inferredMetricsTieBreakers>
 </document>
