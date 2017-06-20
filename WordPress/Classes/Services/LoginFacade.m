@@ -87,7 +87,7 @@
 - (void)signInToSelfHosted:(LoginFields *)loginFields
 {
     void (^guessXMLRPCURLSuccess)(NSURL *) = ^(NSURL *xmlRPCURL) {
-        loginFields.siteUrl = xmlRPCURL.absoluteString;
+        loginFields.xmlRPCURL = xmlRPCURL;
         [self loginToSelfHosted:loginFields];
     };
     
@@ -104,7 +104,7 @@
 
 - (void)loginToSelfHosted:(LoginFields *)loginFields
 {
-    NSURL *xmlRPCURL = [NSURL URLWithString:loginFields.siteUrl];
+    NSURL *xmlRPCURL = loginFields.xmlRPCURL;
     [self.wordpressXMLRPCAPIFacade getBlogOptionsWithEndpoint:xmlRPCURL username:loginFields.username password:loginFields.password success:^(id options) {
         if ([options objectForKey:@"wordpress.com"] != nil) {
             [self signInToWordpressDotCom:loginFields];
