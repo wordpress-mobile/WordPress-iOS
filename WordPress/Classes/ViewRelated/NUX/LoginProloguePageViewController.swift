@@ -14,8 +14,8 @@ class LoginProloguePageViewController: UIPageViewController {
         dataSource = self
         delegate = self
 
-        for ii in 1...5 {
-            if let page = storyboard?.instantiateViewController(withIdentifier: "promo\(ii)") {
+        for promoNum in 1...5 {
+            if let page = storyboard?.instantiateViewController(withIdentifier: "promo\(promoNum)") {
                 pages.append(page)
             }
         }
@@ -28,9 +28,9 @@ class LoginProloguePageViewController: UIPageViewController {
     func addPageControl() {
         let newControl = UIPageControl()
 
+        newControl.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(newControl)
 
-        newControl.translatesAutoresizingMaskIntoConstraints = false
         newControl.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.topPadding).isActive = true
         newControl.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         newControl.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
@@ -61,7 +61,7 @@ class LoginProloguePageViewController: UIPageViewController {
 }
 
 extension LoginProloguePageViewController: UIPageViewControllerDataSource {
-    @available(iOS 5.0, *)
+
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let index = pages.index(of: viewController) else {
             return nil
@@ -72,7 +72,6 @@ extension LoginProloguePageViewController: UIPageViewControllerDataSource {
         return nil
     }
 
-    @available(iOS 5.0, *)
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let index = pages.index(of: viewController) else {
             return nil

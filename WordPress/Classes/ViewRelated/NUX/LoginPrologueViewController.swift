@@ -2,29 +2,6 @@ import UIKit
 import Lottie
 
 class LoginPrologueViewController: UIViewController {
-    @IBOutlet var animationHolder: UIView?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        guard let holder = animationHolder,
-        let animation = LOTAnimationView(name: "notifications")
-            else {
-            return
-        }
-
-        animation.translatesAutoresizingMaskIntoConstraints = false
-        animation.contentMode = .scaleAspectFit
-        holder.addSubview(animation)
-
-        // setup autolayout
-        animation.leadingAnchor.constraint(equalTo: holder.leadingAnchor).isActive = true
-        animation.trailingAnchor.constraint(equalTo: holder.trailingAnchor).isActive = true
-        animation.topAnchor.constraint(equalTo: holder.topAnchor).isActive = true
-        animation.bottomAnchor.constraint(equalTo: holder.bottomAnchor).isActive = true
-
-        animation.loopAnimation = true
-        animation.play()
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
