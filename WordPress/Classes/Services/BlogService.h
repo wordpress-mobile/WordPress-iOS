@@ -5,6 +5,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 extern NSString *const WordPressMinimumVersion;
+extern NSString *const WPBlogUpdatedNotification;
 
 @class WPAccount;
 
