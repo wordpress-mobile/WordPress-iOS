@@ -144,6 +144,9 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
         let facade = WordPressXMLRPCAPIFacade()
         facade.guessXMLRPCURL(forSite: loginFields.siteUrl, success: { [weak self] (url) in
+            if let url = url {
+                self?.loginFields.xmlRPCURL = url
+            }
             self?.configureViewLoading(false)
             self?.showSelfHostedUsernamePassword()
 
