@@ -30,23 +30,20 @@
 
 - (void)testThatGetPostWithIDWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     PostServiceRemoteREST *service = nil;
     
     NSNumber *postID = @1;
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@", [blog dotComID], postID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@", dotComID, postID];
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNotNil]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
     
     [service getPostWithID:postID
                    success:^(RemotePost *post) {}
@@ -67,16 +64,13 @@
 
 - (void)testThatGetPostsOfTypeWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     PostServiceRemoteREST *service = nil;
     
     NSString* postType = @"SomeType";
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts", blog.dotComID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts", dotComID];
     
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
         
@@ -89,7 +83,7 @@
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
 
     [service getPostsOfType:postType
                     success:^(NSArray<RemotePost *> *remotePosts) {}
@@ -98,16 +92,13 @@
 
 - (void)testThatGetPostsOfTypeWithOptionsWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     PostServiceRemoteREST *service = nil;
     
     NSString* postType = @"SomeType";
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts", blog.dotComID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts", dotComID];
     
     NSString *testOptionKey = @"SomeKey";
     NSString *testOptionValue = @"SomeValue";
@@ -125,7 +116,7 @@
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
     
     [service getPostsOfType:postType
                     options:options
@@ -137,10 +128,7 @@
 
 - (void)testThatCreatePostWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     PostServiceRemoteREST *service = nil;
     
@@ -152,14 +140,14 @@
     OCMStub([post type]).andReturn(@"Type");
     OCMStub([post metadata]).andReturn(@[]);
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/new?context=edit", blog.dotComID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/new?context=edit", dotComID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isKindOfClass:[NSDictionary class]]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
     
     [service createPost:post
                 success:^(RemotePost *posts) {}
@@ -180,10 +168,7 @@
 
 - (void)testThatUpdatePostWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     PostServiceRemoteREST *service = nil;
     
@@ -196,14 +181,14 @@
     OCMStub([post type]).andReturn(@"Type");
     OCMStub([post metadata]).andReturn(@[]);
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@?context=edit", blog.dotComID, post.postID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@?context=edit", dotComID, post.postID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isKindOfClass:[NSDictionary class]]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
     
     [service updatePost:post
                 success:^(RemotePost *posts) {}
@@ -224,24 +209,21 @@
 
 - (void)testThatDeletePostWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     PostServiceRemoteREST *service = nil;
     
     RemotePost *post = OCMClassMock([RemotePost class]);
     OCMStub([post postID]).andReturn(@1);
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@/delete", blog.dotComID, post.postID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@/delete", dotComID, post.postID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
     
     [service deletePost:post
                 success:^(RemotePost *posts) {}
@@ -262,24 +244,21 @@
 
 - (void)testThatTrashPostWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     PostServiceRemoteREST *service = nil;
     
     RemotePost *post = OCMClassMock([RemotePost class]);
     OCMStub([post postID]).andReturn(@1);
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@/delete", blog.dotComID, post.postID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@/delete", dotComID, post.postID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
     
     [service trashPost:post
                success:^(RemotePost *posts) {}
@@ -300,24 +279,21 @@
 
 - (void)testThatRestorePostWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     PostServiceRemoteREST *service = nil;
     
     RemotePost *post = OCMClassMock([RemotePost class]);
     OCMStub([post postID]).andReturn(@1);
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@/restore", blog.dotComID, post.postID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@/restore", dotComID, post.postID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
     
     [service restorePost:post
                  success:^(RemotePost *posts) {}
