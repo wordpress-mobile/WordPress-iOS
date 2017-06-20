@@ -36,7 +36,7 @@ class RecentSitesServiceTests: XCTestCase {
     }
 
     func testTouchSiteSendsNotification() {
-        expectation(forNotification: RecentSitesService.WPTouchedBlogNotification, object: nil, handler: nil)
+        expectation(forNotification: RecentSitesService.RecentSitesChanged, object: nil, handler: nil)
         let service = newService()
         service.touch(site: "site1")
         waitForExpectations(timeout: 0.01, handler: nil)
