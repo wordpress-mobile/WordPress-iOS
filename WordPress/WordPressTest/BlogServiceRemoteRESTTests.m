@@ -26,21 +26,18 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
 - (void)testThatCheckMultiAuthorForBlogWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     BlogServiceRemoteREST *service = nil;
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/users", blog.dotComID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/users", dotComID];
 
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isKindOfClass:[NSDictionary class]]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
     
     [service checkMultiAuthorWithSuccess:^(BOOL isMultiAuthor) {}
                                  failure:^(NSError *error) {}];
@@ -50,21 +47,18 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
 - (void)testThatSyncSiteDetailsForBlogWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     BlogServiceRemoteREST *service = nil;
 
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@", blog.dotComID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@", dotComID];
 
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
 
-    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
 
     [service syncBlogWithSuccess:^(RemoteBlog *remoteBlog) {}
                          failure:^(NSError *error) {}];
@@ -74,21 +68,18 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
 - (void)testThatSyncPostTypesForBlogWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     BlogServiceRemoteREST *service = nil;
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/post-types", blog.dotComID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/post-types", dotComID];
     NSDictionary *parameters = @{@"context": @"edit"};
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isEqual:parameters]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
 
     [service syncPostTypesWithSuccess:^(NSArray<RemotePostType *> *postTypes) {}
                               failure:^(NSError *error) {}];
@@ -98,21 +89,18 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
 - (void)testThatSyncPostFormatsForBlogWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     BlogServiceRemoteREST *service = nil;
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/post-formats", blog.dotComID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/post-formats", dotComID];
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
     
     [service syncPostFormatsWithSuccess:^(NSDictionary *options) {}
                                 failure:^(NSError *error) {}];
