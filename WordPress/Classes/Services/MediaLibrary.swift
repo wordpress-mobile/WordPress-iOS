@@ -8,6 +8,12 @@ import CocoaLumberjack
 ///
 open class MediaLibrary: LocalCoreDataService {
 
+    /// Constant for the ideal compression quality used when images are added to the Media Library.
+    ///
+    /// - Note: This value may or may not be honored, depending on the export implementation and underlying data.
+    ///
+    static let preferredImageCompressionQuality = 0.9
+
     /// Completion handler for a created Media object.
     ///
     public typealias MediaCompletion = (Media) -> Void
@@ -132,7 +138,7 @@ open class MediaLibrary: LocalCoreDataService {
         var options = MediaImageExporter.Options()
         options.maximumImageSize = self.exporterMaximumImageSize()
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
-        options.imageCompressionQuality = 0.9
+        options.imageCompressionQuality = MediaLibrary.preferredImageCompressionQuality
         return options
     }
 
