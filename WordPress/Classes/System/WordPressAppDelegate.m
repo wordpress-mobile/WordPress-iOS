@@ -73,6 +73,7 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
+@property (nonatomic, strong, readwrite) WP3DTouchShortcutCreator       *shortcutCreator;
 
 @end
 
@@ -145,6 +146,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self setupStoreKit];
     [self setupBuddyBuild];
     [self setupPingHub];
+    [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
 
     return YES;
@@ -205,6 +207,11 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)setupPingHub
 {
     self.pinghubManager = [PingHubManager new];
+}
+
+- (void)setupShortcutCreator
+{
+    self.shortcutCreator = [WP3DTouchShortcutCreator new];
 }
 
 - (void)setupBackgroundRefresh:(UIApplication *)application {
@@ -457,7 +464,7 @@ int ddLogLevel = DDLogLevelInfo;
     // Configure Extensions
     [self setupWordPressExtensions];
 
-    [self create3DTouchShortcutItems];
+    [self.shortcutCreator createShortcutsIf3DTouchAvailable:[self isLoggedIn]];
     
     self.window.rootViewController = [WPTabBarController sharedInstance];
 }
@@ -631,12 +638,6 @@ int ddLogLevel = DDLogLevelInfo;
     [WPStyleGuide configureSearchBarTextAppearance];
     // SVProgressHUD styles
     [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline]];
-}
-
-- (void)create3DTouchShortcutItems
-{
-    WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
-    [shortcutCreator createShortcutsIf3DTouchAvailable:[self isLoggedIn]];
 }
 
 #pragma mark - Analytics
@@ -900,8 +901,7 @@ int ddLogLevel = DDLogLevelInfo;
         [self removeShareExtensionConfiguration];
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
-    
-    [self create3DTouchShortcutItems];
+
     [self toggleExtraDebuggingIfNeeded];
     
     [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
