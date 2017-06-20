@@ -13,10 +13,7 @@
 
 - (void)testThatCreateMenuWithNameWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     MenusServiceRemote *service = nil;
     
@@ -24,7 +21,7 @@
     OCMStub([menu menuID]).andReturn(@(1));
     OCMStub([menu name]).andReturn(@"Name");
 
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/new", [blog dotComID]];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/new", dotComID];
     NSString *name = @"SomeName";
     
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
@@ -41,17 +38,14 @@
     XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
     
     [service createMenuWithName:name
-                           blog:blog
+                         siteID:dotComID
                         success:^(RemoteMenu *menu) {}
                         failure:^(NSError *error) {}];
 }
 
 - (void)testThatUpdateMenuWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     MenusServiceRemote *service = nil;
     
@@ -59,7 +53,7 @@
     OCMStub([menu menuID]).andReturn(@(1));
     OCMStub([menu name]).andReturn(@"Name");
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@", [blog dotComID], menu.menuID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@", dotComID, menu.menuID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isKindOfClass:[NSDictionary class]]
@@ -69,7 +63,7 @@
     XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
 
     [service updateMenuForID:menu.menuID
-                        blog:blog
+                        siteID:dotComID
                     withName:menu.name
                withLocations:nil
                    withItems:nil
@@ -79,10 +73,7 @@
 
 - (void)testThatDeleteMenuWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     MenusServiceRemote *service = nil;
     
@@ -90,7 +81,7 @@
     OCMStub([menu menuID]).andReturn(@(1));
     OCMStub([menu name]).andReturn(@"Name");
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@/delete", dotComID, menu.menuID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
@@ -100,21 +91,18 @@
     XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
     
     [service deleteMenuForID:menu.menuID
-                        blog:blog
+                      siteID:dotComID
                     success:^{}
                     failure:^(NSError *error) {}];
 }
 
 - (void)testThatGetMenusWorks
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     MenusServiceRemote *service = nil;
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus", [blog dotComID]];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus", dotComID];
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
@@ -123,9 +111,9 @@
     
     XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
     
-    [service getMenusForBlog:blog
-                     success:^(NSArray<RemoteMenu *> *menus, NSArray<RemoteMenuLocation *> *locations) {}
-                     failure:^(NSError *error) {}];
+    [service getMenusForSiteID:dotComID
+                       success:^(NSArray<RemoteMenu *> *menus, NSArray<RemoteMenuLocation *> *locations) {}
+                       failure:^(NSError *error) {}];
 }
 
 @end
