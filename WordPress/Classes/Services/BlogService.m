@@ -146,6 +146,27 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     }];
 }
 
+- (void)fetchSiteInfoForAddress:(NSString *)siteAddress
+                        success:(void (^)(SiteInfo *siteInfo))success
+                        failure:(void (^)(NSError *error))failure
+{
+    WordPressComRestApi *api = [ServiceRemoteWordPressComREST anonymousWordPressComRestApiWithUserAgent:WPUserAgent.wordPressUserAgent];
+
+    BlogServiceRemoteREST *remote = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:@0];
+    [remote fetchSiteInfoForAddress:siteAddress success:^(NSDictionary *responseDict) {
+        SiteInfo *siteInfo = [[SiteInfo alloc] init];
+        siteInfo.name = [responseDict stringForKey:@"name"] ?: @"";
+        siteInfo.tagline = [responseDict stringForKey:@"description"] ?: @"";
+        siteInfo.url = [responseDict stringForKey:@"url"] ?: @"";
+        siteInfo.jetpack = [[responseDict numberForKey:@"jetpack"] boolValue] ?: NO;
+        siteInfo.icon = [responseDict stringForKeyPath:@"icon.img"] ?: @"";
+        success(siteInfo);
+
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
 - (void)syncBlog:(Blog *)blog
          success:(void (^)())success
          failure:(void (^)(NSError *error))failure
