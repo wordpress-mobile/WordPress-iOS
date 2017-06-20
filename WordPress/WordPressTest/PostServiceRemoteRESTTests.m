@@ -30,6 +30,7 @@
 
 - (void)testThatGetPostWithIDWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
@@ -66,6 +67,7 @@
 
 - (void)testThatGetPostsOfTypeWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
@@ -96,6 +98,7 @@
 
 - (void)testThatGetPostsOfTypeWithOptionsWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
@@ -134,6 +137,7 @@
 
 - (void)testThatCreatePostWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
@@ -176,6 +180,7 @@
 
 - (void)testThatUpdatePostWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
@@ -219,6 +224,7 @@
 
 - (void)testThatDeletePostWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
@@ -256,6 +262,7 @@
 
 - (void)testThatTrashPostWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
@@ -293,6 +300,7 @@
 
 - (void)testThatRestorePostWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     

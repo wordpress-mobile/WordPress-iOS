@@ -67,6 +67,7 @@
 {
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     
     OCMStub([blog wordPressComRestApi]).andReturn(api);
@@ -86,6 +87,7 @@
 {
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     
     OCMStub([blog wordPressComRestApi]).andReturn(api);
@@ -105,6 +107,7 @@
 {
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     
     OCMStub([blog wordPressComRestApi]).andReturn(api);
@@ -130,6 +133,7 @@
 {
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     
     OCMStub([blog wordPressComRestApi]).andReturn(api);
@@ -166,6 +170,7 @@
 {
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     
     OCMStub([blog wordPressComRestApi]).andReturn(api);
@@ -219,6 +224,7 @@
 {
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     
     OCMStub([blog wordPressComRestApi]).andReturn(api);
@@ -249,6 +255,7 @@
 {
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     
     OCMStub([blog wordPressComRestApi]).andReturn(api);

@@ -32,6 +32,7 @@
 
 - (void)testThatWordPressBlogSupportsThemeServices
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(YES);
     
@@ -46,6 +47,7 @@
 
 - (void)testThatSelfHostedBlogDoesNotSupportThemeServices
 {    
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(NO);
 
@@ -63,6 +65,7 @@
 - (void)testThatGetActiveThemeForBlogWorks
 {
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeService *service = nil;
@@ -98,6 +101,7 @@
 - (void)testThatGetPurchasedThemesForBlogWorks
 {
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeService *service = nil;
@@ -133,6 +137,7 @@
 - (void)testThatGetThemeIdWorks
 {
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
+    XCTFail("Bad mocking 🖐");return;
     WPAccount *account = OCMStrictClassMock([WPAccount class]);
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeService *service = nil;
@@ -156,6 +161,7 @@
 - (void)testThatGetThemeIdThrowsExceptionWithoutThemeId
 {
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
+    XCTFail("Bad mocking 🖐");return;
     WPAccount *account = OCMStrictClassMock([WPAccount class]);
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeService *service = nil;
@@ -185,6 +191,7 @@
 - (void)testThatGetThemesForAccountWorks
 {
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
+    XCTFail("Bad mocking 🖐");return;
     WPAccount *account = OCMStrictClassMock([WPAccount class]);
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeService *service = nil;
@@ -219,6 +226,7 @@
 - (void)testThatGetThemesForBlogWorks
 {
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     NSNumber *blogId = @1;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
@@ -258,6 +266,7 @@
 - (void)testThatActivateThemeWorks
 {
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     Theme *theme = OCMStrictClassMock([ThemeForStubbing class]);
     NSNumber *blogId = @1;
@@ -286,6 +295,7 @@
 - (void)testThatActivateThemeThrowsExceptionWithoutTheme
 {
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     NSNumber *blogId = @1;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
@@ -304,6 +314,7 @@
 - (void)testThatActivateThemeThrowsExceptionWithoutBlog
 {
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
+    XCTFail("Bad mocking 🖐");return;
     Theme *theme = OCMStrictClassMock([ThemeForStubbing class]);
     ThemeService *service = nil;
     

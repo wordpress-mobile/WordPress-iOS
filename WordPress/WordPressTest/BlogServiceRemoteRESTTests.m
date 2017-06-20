@@ -26,6 +26,7 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
 - (void)testThatCheckMultiAuthorForBlogWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
@@ -49,6 +50,7 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
 - (void)testThatSyncSiteDetailsForBlogWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
 
@@ -72,6 +74,7 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
 - (void)testThatSyncPostTypesForBlogWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
@@ -95,6 +98,7 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
 - (void)testThatSyncPostFormatsForBlogWorks
 {
+    XCTFail("Bad mocking 🖐");return;
     Blog *blog = OCMStrictClassMock([Blog class]);
     OCMStub([blog dotComID]).andReturn(@10);
     
