@@ -18,15 +18,11 @@
 {
     [super setUp];
 
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
+    NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    OCMStub([blog wordPressComRestApi]).andReturn(api);
-    
+
     TaxonomyServiceRemoteREST *service = nil;
-    XCTAssertNoThrow(service = [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
     
     self.service = service;
 }
