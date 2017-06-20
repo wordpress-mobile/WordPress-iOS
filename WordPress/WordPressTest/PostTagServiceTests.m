@@ -4,12 +4,17 @@
 #import "PostTag.h"
 #import "PostTagService.h"
 #import "TaxonomyServiceRemoteREST.h"
+#import "TestContextManager.h"
 #import "RemoteTaxonomyPaging.h"
 
 @interface PostTagServiceForStubbing : PostTagService
 
 @property (nonatomic, strong) TaxonomyServiceRemoteREST *remoteForStubbing;
 
+@end
+
+@interface WPAccount ()
+@property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;
 @end
 
 @implementation PostTagServiceForStubbing
@@ -23,6 +28,7 @@
 
 @interface PostTagServiceTests : XCTestCase
 
+@property (nonatomic, strong) TestContextManager *manager;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) PostTagServiceForStubbing *service;
 
@@ -34,20 +40,19 @@
 {
     [super setUp];
 
+    self.manager = [TestContextManager new];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
-    
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    
-    OCMStub([blog wordPressComRestApi]).andReturn(api);
-    OCMStub([blog dotComID]).andReturn(@1);
-    OCMStub([blog objectID]).andReturn(nil);
+
+    WPAccount *account = [NSEntityDescription insertNewObjectForEntityForName:@"Account"
+                                                       inManagedObjectContext:self.manager.mainContext];
+    account.wordPressComRestApi = api;
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
+                                               inManagedObjectContext:self.manager.mainContext];
+    blog.dotComID = @1;
     
     self.blog = blog;
     
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    
-    PostTagServiceForStubbing *service = [[PostTagServiceForStubbing alloc] initWithManagedObjectContext:context];
+    PostTagServiceForStubbing *service = [[PostTagServiceForStubbing alloc] initWithManagedObjectContext:self.manager.mainContext];
     
     TaxonomyServiceRemoteREST *remoteService = OCMStrictClassMock([TaxonomyServiceRemoteREST class]);
     service.remoteForStubbing = remoteService;
@@ -62,6 +67,7 @@
     
     self.service = nil;
     self.blog = nil;
+    self.manager = nil;
 }
 
 - (void)testThatSyncTagsWorks
