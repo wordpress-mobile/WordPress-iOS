@@ -157,7 +157,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         SiteInfo *siteInfo = [[SiteInfo alloc] init];
         siteInfo.name = [responseDict stringForKey:@"name"] ?: @"";
         siteInfo.tagline = [responseDict stringForKey:@"description"] ?: @"";
-        siteInfo.url = [responseDict stringForKey:@"url"] ?: @"";
+        siteInfo.url = [responseDict stringForKey:@"URL"] ?: @"";
         siteInfo.jetpack = [[responseDict numberForKey:@"jetpack"] boolValue] ?: NO;
         siteInfo.icon = [responseDict stringForKeyPath:@"icon.img"] ?: @"";
         success(siteInfo);
