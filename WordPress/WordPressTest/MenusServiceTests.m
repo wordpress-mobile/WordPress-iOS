@@ -6,6 +6,7 @@
 #import "MenuLocation.h"
 #import "MenuItem.h"
 #import "TestContextManager.h"
+#import "WordPressTest-Swift.h"
 
 @interface WPAccount ()
 @property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;
@@ -32,8 +33,7 @@
 - (void)testThatWordPressBlogSupportsMenusServices
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     blog.account.wordPressComRestApi = api;
     blog.dotComID = @1;
@@ -49,8 +49,7 @@
 - (void)testThatWordPressBlogDoesNotSupportMenusServices
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     blog.account.wordPressComRestApi = api;
     blog.dotComID = @1;
@@ -66,8 +65,7 @@
 - (void)testThatSyncMenusForBlogWorks
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     blog.account.wordPressComRestApi = api;
     blog.dotComID = @1;
@@ -89,8 +87,7 @@
 - (void)testThatCreateMenuWithNameWorks
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     blog.account.wordPressComRestApi = api;
     blog.dotComID = @1;
@@ -123,8 +120,7 @@
 - (void)testThatUpdateMenuWorks
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     blog.account.wordPressComRestApi = api;
     blog.dotComID = @1;
@@ -173,8 +169,7 @@
 - (void)testThatDeleteMenuWithIdWorks
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     blog.account.wordPressComRestApi = api;
     blog.dotComID = @1;
@@ -201,8 +196,7 @@
 - (void)testThatDeleteMenuWithoutIdWorks
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     blog.account.wordPressComRestApi = api;
     blog.dotComID = @1;
