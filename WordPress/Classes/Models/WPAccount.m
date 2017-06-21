@@ -47,6 +47,11 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
     _wordPressComRestApi = nil;
 }
 
++ (NSString *)entityName
+{
+    return @"Account";
+}
+
 #pragma mark - Custom accessors
 
 - (void)setUsername:(NSString *)username
