@@ -48,11 +48,13 @@
 /**
  *  Get the number of media items available in the blog
  *
+ *  @param mediaType the type of media to count for (image, video, audio, application)
  *  @param success a block to be executed when the request finishes with success.
  *  @param failure a block to be execute when the request fails.
  */
-- (void)getMediaLibraryCountWithSuccess:(void (^)(NSInteger))success
-                                failure:(void (^)(NSError *))failure;
+- (void)getMediaLibraryCountForType:(NSString *)mediaType
+                        withSuccess:(void (^)(NSInteger))success
+                            failure:(void (^)(NSError *))failure;
 
 /**
  Retrieves the VideoPress URL for the request videoPressID
