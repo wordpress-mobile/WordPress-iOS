@@ -1439,14 +1439,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         mode.toggle()
     }
 
-    fileprivate func dismissOptionsViewControllerIfNecessary() {
-        if let optionsViewController = optionsViewController,
-            presentedViewController == optionsViewController {
-            dismiss(animated: true, completion: nil)
-            self.optionsViewController = nil
-        }
-    }
-
     func toggleHeader(fromItem item: FormatBarItem) {
         let headerOptions = Constants.headers.map { (headerType) -> OptionsTableViewOption in
             return OptionsTableViewOption(image: headerType.iconImage,
@@ -1468,6 +1460,47 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         })
     }
 
+    func insertHorizontalRuler() {
+        richTextView.replaceRangeWithHorizontalRuler(richTextView.selectedRange)
+    }
+
+    func insertMore() {
+        richTextView.replaceRangeWithCommentAttachment(richTextView.selectedRange, text: Constants.moreAttachmentText)
+    }
+
+    func headerLevelForSelectedText() -> Header.HeaderType {
+        var identifiers = [FormattingIdentifier]()
+        if (richTextView.selectedRange.length > 0) {
+            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+        } else {
+            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+        }
+        let mapping: [FormattingIdentifier: Header.HeaderType] = [
+            .header1: .h1,
+            .header2: .h2,
+            .header3: .h3,
+            .header4: .h4,
+            .header5: .h5,
+            .header6: .h6,
+        ]
+        for (key,value) in mapping {
+            if identifiers.contains(key) {
+                return value
+            }
+        }
+        return .none
+    }
+
+    // MARK: - Present Toolbar related VC
+
+    fileprivate func dismissOptionsViewControllerIfNecessary() {
+        if let optionsViewController = optionsViewController,
+            presentedViewController == optionsViewController {
+            dismiss(animated: true, completion: nil)
+            self.optionsViewController = nil
+        }
+    }
+    
     func showOptionsTableViewControllerWithOptions(_ options: [OptionsTableViewOption],
                                                    fromBarItem barItem: FormatBarItem,
                                                    selectedRowIndex index: Int?,
@@ -1532,14 +1565,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         optionsViewController.didMove(toParentViewController: self)
     }
 
-    func insertHorizontalRuler() {
-        richTextView.replaceRangeWithHorizontalRuler(richTextView.selectedRange)
-    }
-
-    func insertMore() {
-        richTextView.replaceRangeWithCommentAttachment(richTextView.selectedRange, text: Constants.moreAttachmentText)
-    }
-
     func changeRichTextInputView(to: UIView?) {
         guard richTextView.inputView != to else {
             return
@@ -1549,30 +1574,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         richTextView.inputView = to
         richTextView.becomeFirstResponder()
     }
-
-    func headerLevelForSelectedText() -> Header.HeaderType {
-        var identifiers = [FormattingIdentifier]()
-        if (richTextView.selectedRange.length > 0) {
-            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
-        } else {
-            identifiers = richTextView.formatIdentifiersForTypingAttributes()
-        }
-        let mapping: [FormattingIdentifier: Header.HeaderType] = [
-            .header1: .h1,
-            .header2: .h2,
-            .header3: .h3,
-            .header4: .h4,
-            .header5: .h5,
-            .header6: .h6,
-        ]
-        for (key,value) in mapping {
-            if identifiers.contains(key) {
-                return value
-            }
-        }
-        return .none
-    }
-
 
     // MARK: - Toolbar creation
 
