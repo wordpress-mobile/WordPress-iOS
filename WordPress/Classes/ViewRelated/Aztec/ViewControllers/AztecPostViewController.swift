@@ -217,6 +217,21 @@ class AztecPostViewController: UIViewController, PostEditor {
     }()
 
 
+    /// Beta Tag Button
+    ///
+    fileprivate lazy var betaButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        WPStyleGuide.configureBetaButton(button)
+
+        button.setTitle(NSLocalizedString("Beta", comment: "Title for Beta tag button for the new Aztec editor"), for: .normal)
+        button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        button.isEnabled = false
+
+        return button
+    }()
+
+
     /// Active Editor's Mode
     ///
     fileprivate(set) var mode = EditionMode.richText {
@@ -466,10 +481,15 @@ class AztecPostViewController: UIViewController, PostEditor {
         updateTitleHeight()
 
         NSLayoutConstraint.activate([
-            titleTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: defaultMargin),
-            titleTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -defaultMargin),
+            titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: defaultMargin),
             titleTopConstraint,
             titleHeightConstraint
+            ])
+
+        NSLayoutConstraint.activate([
+            betaButton.centerYAnchor.constraint(equalTo: titleTextField.centerYAnchor),
+            betaButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -defaultMargin),
+            titleTextField.trailingAnchor.constraint(equalTo: betaButton.leadingAnchor, constant: -defaultMargin)
             ])
 
         let insets = titleTextField.textContainerInset
@@ -550,6 +570,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         view.addSubview(titlePlaceholderLabel)
         view.addSubview(separatorView)
         view.addSubview(placeholderLabel)
+        view.addSubview(betaButton)
+
         mediaProgressView.isHidden = true
         view.addSubview(mediaProgressView)
     }
