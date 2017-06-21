@@ -444,4 +444,3 @@ extension LoginSelfHostedViewController: UITextFieldDelegate {
         return true
     }
 }
-
