@@ -6,6 +6,7 @@
 #import "ThemeService.h"
 #import "ThemeServiceRemote.h"
 #import "WPAccount.h"
+#import "WordPressTest-Swift.h"
 
 #pragma mark - Support classes
 
@@ -38,8 +39,8 @@
 - (void)testThatWordPressBlogSupportsThemeServices
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
 
     ThemeService *service = [[ThemeService alloc] initWithManagedObjectContext:context];
     BOOL result = NO;
@@ -51,7 +52,7 @@
 - (void)testThatSelfHostedBlogDoesNotSupportThemeServices
 {    
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertSelfHostedBlogWithContext:context];
 
     ThemeService *service = [[ThemeService alloc] initWithManagedObjectContext:context];
     BOOL result = NO;
@@ -65,8 +66,7 @@
 - (void)testThatGetActiveThemeForBlogWorks
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     blog.account.wordPressComRestApi = api;
     ThemeService *service = nil;
@@ -100,8 +100,7 @@
 - (void)testThatGetPurchasedThemesForBlogWorks
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     blog.account.wordPressComRestApi = api;
     ThemeService *service = nil;
@@ -134,7 +133,7 @@
 - (void)testThatGetThemeIdWorks
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    WPAccount *account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    WPAccount *account = [ModelTestHelper insertAccountWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     account.wordPressComRestApi = api;
     ThemeService *service = nil;
@@ -156,7 +155,7 @@
 - (void)testThatGetThemeIdThrowsExceptionWithoutThemeId
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    WPAccount *account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    WPAccount *account = [ModelTestHelper insertAccountWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     account.wordPressComRestApi = api;
     ThemeService *service = nil;
@@ -184,7 +183,7 @@
 - (void)testThatGetThemesForAccountWorks
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    WPAccount *account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    WPAccount *account = [ModelTestHelper insertAccountWithContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     account.wordPressComRestApi = api;
     ThemeService *service = nil;
@@ -217,8 +216,7 @@
 - (void)testThatGetThemesForBlogWorks
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     NSNumber *blogId = @1;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeService *service = nil;
@@ -256,8 +254,7 @@
 - (void)testThatActivateThemeWorks
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     Theme *theme = [NSEntityDescription insertNewObjectForEntityForName:[Theme entityName] inManagedObjectContext:context];
     NSNumber *blogId = @1;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
@@ -284,8 +281,7 @@
 - (void)testThatActivateThemeThrowsExceptionWithoutTheme
 {
     NSManagedObjectContext *context = self.manager.mainContext;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
-    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:context];
     NSNumber *blogId = @1;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeService *service = nil;
