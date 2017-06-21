@@ -1192,7 +1192,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         dismissOptionsViewControllerIfNecessary()
     }
 
-    // TODO: Add analytics for tapping the "more items" button in toolbar; awaiting Aztec delegate change to accommodate
     func handleActionForIdentifier(_ identifier: FormattingIdentifier, barItem: FormatBarItem) {
 
         switch identifier {
@@ -1223,6 +1222,11 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         }
 
         updateFormatBar()
+    }
+
+    func formatBar(_ formatBar: FormatBar, didChangeOverflowState overflowState: FormatBarOverflowState) {
+        let action = overflowState == .visible ? "made_visible" : "made_hidden"
+        WPAppAnalytics.track(.editorTappedMoreItems, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource, "action": action], with: post)
     }
 
 

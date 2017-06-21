@@ -56,7 +56,8 @@ target 'WordPress' do
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.18'
   pod 'WordPress-iOS-Editor', '1.9.2'
-  pod 'WordPress-Aztec-iOS', '1.0.0-beta.4'
+	# Temporarily point at a develop commit to get Frosty's delegate method for tapping the more items/overflow button
+  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '111f22d959e6e0ae6304ef1886413ee0437105a4' # '1.0.0-beta.4'
 
   target 'WordPressTest' do
     inherit! :search_paths
