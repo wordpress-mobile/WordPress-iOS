@@ -35,10 +35,11 @@ PODS:
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
-  - Gridicons (0.5)
+  - Gridicons (0.8)
   - HockeySDK (4.1.5):
     - HockeySDK/DefaultLib (= 4.1.5)
   - HockeySDK/DefaultLib (4.1.5)
+  - lottie-ios (1.5.1)
   - MGSwipeTableCell (1.5.6)
   - MRProgress (0.7.0):
     - MRProgress/ActivityIndicator (= 0.7.0)
@@ -92,8 +93,8 @@ PODS:
   - Starscream (2.0.2)
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.1):
-    - Gridicons (= 0.5)
+  - WordPress-Aztec-iOS (1.0.0-beta.4):
+    - Gridicons (= 0.8)
   - WordPress-iOS-Editor (1.9.2):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
@@ -101,21 +102,22 @@ PODS:
   - WordPressCom-Analytics-iOS (0.1.29)
   - WordPressComKit (0.0.6):
     - Alamofire (= 4.0.1)
-  - WPMediaPicker (0.17)
+  - WPMediaPicker (0.18)
   - wpxmlrpc (0.8.3)
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.4)
   - AFNetworking (= 3.1.0)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.0`)
-  - BuddyBuildSDK (~> 1.0.14)
+  - BuddyBuildSDK (~> 1.0.15)
   - CocoaLumberjack (~> 3.2.0)
   - Crashlytics
   - Expecta (= 1.0.5)
   - FLAnimatedImage (~> 1.0)
   - FormatterKit/TimeIntervalFormatter (~> 1.8.1)
-  - Gridicons (= 0.5)
+  - Gridicons (= 0.8)
   - HockeySDK (~> 4.1.5)
+  - lottie-ios
   - MGSwipeTableCell (~> 1.5.6)
   - MRProgress (~> 0.7.0)
   - Nimble (~> 7.0.0)
@@ -129,11 +131,11 @@ DEPENDENCIES:
   - Starscream (from `https://github.com/wordpress-mobile/Starscream`, branch `wordpress-ios`)
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7`)
+  - WordPress-Aztec-iOS (= 1.0.0-beta.4)
   - WordPress-iOS-Editor (= 1.9.2)
   - WordPressCom-Analytics-iOS (= 0.1.29)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
-  - WPMediaPicker (= 0.17)
+  - WPMediaPicker (= 0.18)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
@@ -143,9 +145,6 @@ EXTERNAL SOURCES:
   Starscream:
     :branch: wordpress-ios
     :git: https://github.com/wordpress-mobile/Starscream
-  WordPress-Aztec-iOS:
-    :commit: 28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -157,9 +156,6 @@ CHECKOUT OPTIONS:
   Starscream:
     :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
     :git: https://github.com/wordpress-mobile/Starscream
-  WordPress-Aztec-iOS:
-    :commit: 28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -176,8 +172,9 @@ SPEC CHECKSUMS:
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
-  Gridicons: 5c5e928324fa301572ee447b25962d18e7fd7159
+  Gridicons: 80b979a3ada21189f96bd7af9f1a5b2751fb50e3
   HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
+  lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
   Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
@@ -190,13 +187,13 @@ SPEC CHECKSUMS:
   Starscream: 4ee1be18da5170faafce1698225b61f9765634d5
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: b31d933434447a13ce1093bfe359307eb9fddd9c
+  WordPress-Aztec-iOS: 859ca14e0f6d9cc6d99a173fa07e5862fe67a749
   WordPress-iOS-Editor: e71fa013ac3bf8f448d0ee43421beed3f56500f0
   WordPressCom-Analytics-iOS: db0e9449bafaaa7beb2c7f663ecc806d45da992e
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
-  WPMediaPicker: a61e85ce289bb99113209091698ead23f7b44f6f
+  WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 4239d1f222f28048ae691f9360ce62e27d4214f6
+PODFILE CHECKSUM: ea87df317ca6af36fb9b70c8ae8ee21c7233cb65
 
 COCOAPODS: 1.2.1

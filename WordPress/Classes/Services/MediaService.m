@@ -780,6 +780,51 @@
     return mediaAssets.count;
 }
 
+- (void)getMediaLibraryServerCountForBlog:(Blog *)blog
+                            forMediaTypes:(NSSet *)mediaTypes
+                                  success:(void (^)(NSInteger count))success
+                                  failure:(void (^)(NSError *error))failure
+{
+    NSMutableSet *remainingMediaTypes = [NSMutableSet setWithSet:mediaTypes];
+    NSNumber *currentMediaType = [mediaTypes anyObject];
+    NSString *currentMimeType = nil;
+    if (currentMediaType != nil) {
+        currentMimeType = [self mimeTypeForMediaType:currentMediaType];
+        [remainingMediaTypes removeObject:currentMediaType];
+    }
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getMediaLibraryCountForType:currentMimeType
+                            withSuccess:^(NSInteger count) {
+        if( remainingMediaTypes.count == 0) {
+            if (success) {
+                success(count);
+            }
+        } else {
+            [self getMediaLibraryServerCountForBlog:blog forMediaTypes:remainingMediaTypes success:^(NSInteger otherCount) {
+                if (success) {
+                    success(count + otherCount);
+                }
+            } failure:^(NSError * _Nonnull error) {
+                if (failure) {
+                    failure(error);
+                }
+            }];
+        }
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
+- (NSString *)mimeTypeForMediaType:(NSNumber *)mediaType
+{
+    MediaType filter = (MediaType)[mediaType intValue];
+    NSString *mimeType = [Media stringFromMediaType:filter];
+    return mimeType;
+}
+
 - (NSPredicate *)predicateForMediaTypes:(NSSet *)mediaTypes blog:(Blog *)blog
 {
     NSMutableArray * filters = [NSMutableArray array];

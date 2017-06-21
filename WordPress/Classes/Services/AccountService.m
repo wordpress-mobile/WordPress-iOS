@@ -139,7 +139,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     id<AccountServiceRemote> remote = [self remoteForAnonymous];
     [remote isPasswordlessAccount:identifier success:^(BOOL passwordless) {
         if (success) {
-            success(identifier);
+            success(passwordless);
         }
     } failure:^(NSError * _Nonnull error) {
         if (failure) {

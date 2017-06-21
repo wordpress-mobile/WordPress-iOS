@@ -24,7 +24,10 @@ NSString *const WPComGetFeatures = @"wpcom.getFeatures";
 NSString *const VideopressEnabled = @"videopress_enabled";
 NSString *const WordPressMinimumVersion = @"4.0";
 NSString *const HttpsPrefix = @"https://";
+NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
+
 CGFloat const OneHourInSeconds = 60.0 * 60.0;
+
 
 @implementation BlogService
 
@@ -683,6 +686,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     BlogSettings *settings = blog.settings;
     settings.name = [remoteBlog.name stringByDecodingXMLCharacters];
     settings.tagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
+    
+    [NSNotificationCenter.defaultCenter postNotificationName:WPBlogUpdatedNotification object:nil];
 }
 
 /**
