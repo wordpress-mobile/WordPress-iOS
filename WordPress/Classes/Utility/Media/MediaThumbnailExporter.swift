@@ -35,7 +35,7 @@ class MediaThumbnailExporter: MediaExporter {
 
         /// The compression quality of the thumbnail, if the image type support compression.
         ///
-        var compressionQuality = 0.90
+        var compressionQuality = 0.70
 
         /// The target image type of the exported thumbnail images.
         ///
@@ -188,7 +188,7 @@ class MediaThumbnailExporter: MediaExporter {
     fileprivate func thumbnailURL(withIdentifier identifier: ThumbnailIdentifier) throws -> URL {
         var filename = "thumbnail-\(identifier)"
         if let preferredSize = options.preferredSizeAtScale {
-            filename.append("(\(Int(preferredSize.width))x\(Int(preferredSize.height)))")
+            filename.append("-\(Int(preferredSize.width))x\(Int(preferredSize.height))")
         }
         // Get a new URL for the file as a thumbnail within the cache.
         return try MediaLibrary.makeLocalMediaURL(withFilename: filename,
