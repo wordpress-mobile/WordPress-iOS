@@ -1,4 +1,5 @@
 import UIKit
+import Lottie
 
 class LoginPrologueViewController: UIViewController {
 
@@ -13,5 +14,4 @@ class LoginPrologueViewController: UIViewController {
 
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
-
 }
