@@ -383,7 +383,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         configureMediaAppearance()
 
         if isOpenedDirectlyForPhotoPost {
-            presentMediaPicker(fromItem: formatBar.defaultItems[0][0], animated: false)
+            presentMediaPickerFullScreen(animated: false)
         }
     }
 
@@ -1434,7 +1434,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         ]
         for item in toolbar.items! {
             item.tintColor = WPStyleGuide.aztecFormatBarActiveColor
-            item.setTitleTextAttributes([NSForegroundColorAttributeName : WPStyleGuide.aztecFormatBarActiveColor], for: .normal)
+            item.setTitleTextAttributes([NSForegroundColorAttributeName: WPStyleGuide.aztecFormatBarActiveColor], for: .normal)
         }
         return toolbar
 
@@ -1448,7 +1448,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         guard let mediaPicker = mediaPickerInputViewController?.mediaPicker else {
             return
         }
-        mediaPickerControllerDidCancel(mediaPicker);
+        mediaPickerControllerDidCancel(mediaPicker)
     }
 
     func mediaAddInputDone(_ sender: UIBarButtonItem) {
@@ -1466,20 +1466,21 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         picker.showMostRecentFirst = true
         picker.filter = WPMediaType.videoOrImage
         picker.delegate = self
-        picker.modalPresentationStyle = .currentContext
+        picker.modalPresentationStyle = .currentContext        
         // Disable the input media picker if we go full screen.
         mediaPickerInputViewController = nil
         present(picker, animated: true)
     }
 
     func presentMediaPicker(fromItem item: FormatBarItem, animated: Bool = true) {
-
+        if !(FeatureFlag.newInputMediaPicker.enabled) {
+            presentMediaPickerFullScreen(animated: animated)
+            return
+        }
         let picker = WPInputMediaPickerViewController()
         mediaPickerInputViewController = picker
-        presentToolbarViewControllerAsInputView(picker)
         richTextView.inputAccessoryView = mediaInputToolbar
-        richTextView.resignFirstResponder()
-        richTextView.becomeFirstResponder()
+        presentToolbarViewControllerAsInputView(picker)
         picker.mediaPicker.viewControllerToUseToPresent = self
         picker.dataSource = WPPHAssetDataSource.sharedInstance()
         picker.mediaPicker.showMostRecentFirst = true
