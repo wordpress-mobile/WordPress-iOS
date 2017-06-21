@@ -481,10 +481,10 @@
                                 <rect key="frame" x="-4" y="64" width="391" height="612"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Mjx-cz-sDG">
-                                        <rect key="frame" x="0.0" y="0.0" width="391" height="548"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="391" height="538"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rFl-BX-tKE" userLabel="Header Stack View">
-                                                <rect key="frame" x="20" y="138" width="351" height="72"/>
+                                                <rect key="frame" x="20" y="133" width="351" height="72"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n8z-Py-Err" customClass="BlogDetailHeaderView">
                                                         <rect key="frame" x="0.0" y="0.0" width="351" height="50"/>
@@ -509,7 +509,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="tW0-In-DwC">
-                                                <rect key="frame" x="0.0" y="230" width="391" height="88"/>
+                                                <rect key="frame" x="0.0" y="225" width="391" height="88"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username / Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ESh-DI-dtB" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="391" height="44"/>
@@ -549,7 +549,7 @@
                                                 </constraints>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dmn-nh-HTH">
-                                                <rect key="frame" x="20" y="338" width="351" height="0.0"/>
+                                                <rect key="frame" x="20" y="333" width="351" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.85098039219999999" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -570,13 +570,13 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRL-RD-U6n">
-                                        <rect key="frame" x="0.0" y="548" width="391" height="64"/>
+                                        <rect key="frame" x="0.0" y="538" width="391" height="74"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="zbk-h0-lpE">
-                                                <rect key="frame" x="20" y="10" width="351" height="34"/>
+                                                <rect key="frame" x="20" y="10" width="351" height="44"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gzk-TE-YfP">
-                                                        <rect key="frame" x="0.0" y="2" width="141" height="30"/>
+                                                        <rect key="frame" x="0.0" y="7" width="141" height="30"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                         <state key="normal" title="Lost your password?">
                                                             <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -586,10 +586,10 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="319" y="0.0" width="32" height="34"/>
+                                                        <rect key="frame" x="319" y="0.0" width="32" height="44"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="submitButton"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="NKL-1C-mN4"/>
+                                                            <constraint firstAttribute="height" constant="44" id="NKL-1C-mN4"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                         <state key="normal" title="Next">
@@ -607,10 +607,10 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="zbk-h0-lpE" secondAttribute="bottom" constant="20" id="Szt-FI-zE7"/>
-                                            <constraint firstAttribute="height" constant="64" id="jKW-gc-xHR"/>
+                                            <constraint firstAttribute="height" constant="74" id="jKW-gc-xHR"/>
                                             <constraint firstItem="zbk-h0-lpE" firstAttribute="leading" secondItem="dRL-RD-U6n" secondAttribute="leading" constant="20" id="sxH-7I-EtY"/>
                                             <constraint firstAttribute="trailing" secondItem="zbk-h0-lpE" secondAttribute="trailing" constant="20" id="vwI-nG-6xF"/>
-                                            <constraint firstItem="zbk-h0-lpE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="dRL-RD-U6n" secondAttribute="top" constant="10" id="ykz-4R-R7L"/>
+                                            <constraint firstItem="zbk-h0-lpE" firstAttribute="top" secondItem="dRL-RD-U6n" secondAttribute="top" constant="10" id="ykz-4R-R7L"/>
                                         </constraints>
                                     </view>
                                 </subviews>
