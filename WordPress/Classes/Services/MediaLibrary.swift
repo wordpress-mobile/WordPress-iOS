@@ -113,7 +113,7 @@ open class MediaLibrary: LocalCoreDataService {
     /// - Note: Images may be downloaded and resized if required, avoid requesting multiple explicit preferredSizes
     ///   as several images could be downloaded, resized, and cached, if there are several variations in size.
     ///
-    func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: @escaping OnError) {
+    func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
         // Configure a thumbnail exporter.
         let exporter = MediaThumbnailExporter()
         exporter.options.preferredSize = preferredSize
@@ -128,7 +128,7 @@ open class MediaLibrary: LocalCoreDataService {
             DispatchQueue.global(qos: .default).async {
                 exporter.exportThumbnail(forFile: localAssetURL,
                                          onCompletion: { (identifier, export) in
-                                            self.managedObjectContext.perform {
+                                             self.managedObjectContext.perform {
                                                 self.handleThumbnailExport(media: media,
                                                                            identifier: identifier,
                                                                            export: export,
@@ -161,7 +161,7 @@ open class MediaLibrary: LocalCoreDataService {
                 })
             }
         }, onError: { (error) in
-            onError(error)
+            onError?(error)
         })
     }
 
@@ -172,8 +172,8 @@ open class MediaLibrary: LocalCoreDataService {
             return
         }
         media.localThumbnailIdentifier = identifier
-        onCompletion(export.url)
         ContextManager.sharedInstance().save(managedObjectContext)
+        onCompletion(export.url)
     }
 
     // MARK: - Helpers
