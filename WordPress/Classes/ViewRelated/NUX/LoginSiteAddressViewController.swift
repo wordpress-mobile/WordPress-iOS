@@ -86,7 +86,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     /// Configures the content of the text fields based on what is saved in `loginFields`.
     ///
     func configureTextFields() {
-        siteURLField.textInsets = UIEdgeInsetsMake(7, 20, 7, 20)
+        siteURLField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         siteURLField.text = loginFields.siteUrl
     }
 
@@ -118,7 +118,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     /// as this method skips animating any change in height.
     ///
     func configureViewForEditingIfNeeded() {
-        // Check the helper to determine whether an editiing state should be assumed.
+        // Check the helper to determine whether an editing state should be assumed.
         adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
         if SigninEditingState.signinEditingStateActive {
             siteURLField.becomeFirstResponder()
@@ -161,8 +161,9 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
             if strongSelf.errorDiscoveringJetpackSite(error: err) {
                 strongSelf.displayError(error as NSError, sourceTag: .jetpackLogin)
 
-            } else if err.domain == NSURLErrorDomain && err.code == NSURLErrorNetworkConnectionLost {
-                // NSURLErrorNetworkConnectionLost is returned when an invalid URL is entered.
+            } else if (err.domain == NSURLErrorDomain && err.code == NSURLErrorCannotFindHost) ||
+                (err.domain == NSURLErrorDomain && err.code == NSURLErrorNetworkConnectionLost) {
+                // NSURLErrorNetworkConnectionLost can be returned when an invalid URL is entered.
                 let msg = NSLocalizedString("Hmm, it doesn't look like there's a WordPress site at this URL. Double-check the spelling and try again.",
                                             comment: "Error message shown a URL does not point to an existing site.")
                 strongSelf.displayError(message: msg)

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Release Notes & Apple Store Description package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-06-14 16:52-0000\n"
+"PO-Revision-Date: 2017-06-19 15:56-0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -38,9 +38,10 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v7.8-whats-new"
+msgctxt "v7.9-whats-new"
 msgid ""
-"We've made it much easier to manage your site's media, with the addition of the new Media Library section. You can view your photos and videos, search, edit metadata, delete and upload items right from the site detail menu. Just tap Media to get started."
+"Edit your site's icon on the site details screen, just tap on it to get started.\n"
+"We've added autocorrect support on the post tags field."
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
