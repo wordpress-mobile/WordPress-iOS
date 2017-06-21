@@ -317,6 +317,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate var optionsViewController: OptionsTableViewController!
 
+    fileprivate var mediaPickerInputViewController: WPInputMediaPickerViewController?
 
     /// HTML Pre Processors
     ///
@@ -382,7 +383,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         configureMediaAppearance()
 
         if isOpenedDirectlyForPhotoPost {
-            presentMediaPicker(animated: false)
+            presentMediaPicker(fromItem: formatBar.defaultItems[0][0], animated: false)
         }
     }
 
@@ -1102,8 +1103,9 @@ extension AztecPostViewController : UITextViewDelegate {
         default:
             break
         }
-
-        textView.inputAccessoryView = formatBar
+        if mediaPickerInputViewController == nil {
+            textView.inputAccessoryView = formatBar
+        }
 
         return true
     }
@@ -1210,7 +1212,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         case .link:
             toggleLink()
         case .media:
-            presentMediaPicker()
+            presentMediaPicker(fromItem: barItem, animated:true)
         case .sourcecode:
             toggleEditingMode()
         case .p, .header1, .header2, .header3, .header4, .header5, .header6:
@@ -1419,16 +1421,71 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         insertAction.isEnabled = !urlFieldText.isEmpty
     }
 
-    func presentMediaPicker(animated: Bool = true) {
+    var mediaInputToolbar: UIToolbar {
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
+        toolbar.barTintColor = WPStyleGuide.aztecFormatBarBackgroundColor
+        toolbar.tintColor = WPStyleGuide.aztecFormatBarActiveColor
+        toolbar.items = [
+            UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(mediaAddInputCancelled)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: Gridicon.iconOfType(.grid), style: .plain ,target: self, action: #selector(mediaAddShowFullScreen)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(mediaAddInputDone))
+        ]
+        for item in toolbar.items! {
+            item.tintColor = WPStyleGuide.aztecFormatBarActiveColor
+            item.setTitleTextAttributes([NSForegroundColorAttributeName : WPStyleGuide.aztecFormatBarActiveColor], for: .normal)
+        }
+        return toolbar
 
+    }
+
+    func mediaAddShowFullScreen(_ sender: UIBarButtonItem) {
+        presentMediaPickerFullScreen(animated: true)
+    }
+
+    func mediaAddInputCancelled(_ sender: UIBarButtonItem) {
+        guard let mediaPicker = mediaPickerInputViewController?.mediaPicker else {
+            return
+        }
+        mediaPickerControllerDidCancel(mediaPicker);
+    }
+
+    func mediaAddInputDone(_ sender: UIBarButtonItem) {
+        guard let mediaPicker = mediaPickerInputViewController?.mediaPicker,
+              let selectedAssets = mediaPicker.selectedAssets as? [Any]
+        else {
+            return
+        }
+        mediaPickerController(mediaPicker, didFinishPickingAssets: selectedAssets)
+    }
+
+    func presentMediaPickerFullScreen(animated: Bool) {
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
         picker.showMostRecentFirst = true
         picker.filter = WPMediaType.videoOrImage
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
+        // Disable the input media picker if we go full screen.
+        mediaPickerInputViewController = nil
+        present(picker, animated: true)
+    }
 
-        present(picker, animated: animated, completion: nil)
+    func presentMediaPicker(fromItem item: FormatBarItem, animated: Bool = true) {
+
+        let picker = WPInputMediaPickerViewController()
+        mediaPickerInputViewController = picker
+        presentToolbarViewControllerAsInputView(picker)
+        richTextView.inputAccessoryView = mediaInputToolbar
+        richTextView.resignFirstResponder()
+        richTextView.becomeFirstResponder()
+        picker.mediaPicker.viewControllerToUseToPresent = self
+        picker.dataSource = WPPHAssetDataSource.sharedInstance()
+        picker.mediaPicker.showMostRecentFirst = true
+        picker.mediaPicker.filter = WPMediaType.videoOrImage
+        picker.mediaPicker.allowMultipleSelection = true
+        picker.mediaPicker.mediaPickerDelegate = self
     }
 
     func toggleEditingMode() {
@@ -2446,13 +2503,21 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
 extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        dismiss(animated: true, completion: nil)
-        richTextView.becomeFirstResponder()
+        if picker != mediaPickerInputViewController?.mediaPicker {
+            dismiss(animated: true, completion: nil)
+        } else {
+            mediaPickerInputViewController = nil
+        }
+        changeRichTextInputView(to: nil)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
-        dismiss(animated: true, completion: nil)
-        richTextView.becomeFirstResponder()
+        if picker != mediaPickerInputViewController?.mediaPicker {
+            dismiss(animated: true, completion: nil)
+        } else {
+            mediaPickerInputViewController = nil
+        }
+        changeRichTextInputView(to: nil)
 
         if assets.isEmpty {
             return
