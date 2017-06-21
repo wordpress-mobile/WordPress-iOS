@@ -1,6 +1,7 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 #import "Blog.h"
+#import "TestContextManager.h"
 #import "Theme.h"
 #import "ThemeService.h"
 #import "ThemeServiceRemote.h"
@@ -8,36 +9,38 @@
 
 #pragma mark - Support classes
 
-// OCMock doesn't properly support CoreData dynamic properties yet.  We can use a subclass
-// to fix this for the tests that need such support.
-//
-// REF: http://stackoverflow.com/questions/24225300/cannot-stub-method-title-because-no-such-method-exist-in-the-mocked-class-ocmo
-//
-@interface ThemeForStubbing : Theme
-@property (nonatomic, strong, readwrite) NSString *themeId;
-@end
-
-@implementation ThemeForStubbing
-@synthesize themeId;
+@interface WPAccount ()
+@property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;
 @end
 
 #pragma mark - Tests
 
 @interface ThemeServiceTests : XCTestCase
+@property (nonatomic, strong) TestContextManager *manager;
 @end
 
 @implementation ThemeServiceTests
+
+- (void)setUp
+{
+    [super setUp];
+    self.manager = [TestContextManager new];
+}
+
+- (void)tearDown
+{
+    self.manager = nil;
+    [super tearDown];
+}
 
 #pragma mark - Themes availability
 
 - (void)testThatWordPressBlogSupportsThemeServices
 {
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(YES);
-    
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    
+    NSManagedObjectContext *context = self.manager.mainContext;
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
+    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+
     ThemeService *service = [[ThemeService alloc] initWithManagedObjectContext:context];
     BOOL result = NO;
     
@@ -47,12 +50,9 @@
 
 - (void)testThatSelfHostedBlogDoesNotSupportThemeServices
 {    
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(NO);
+    NSManagedObjectContext *context = self.manager.mainContext;
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
 
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    
     ThemeService *service = [[ThemeService alloc] initWithManagedObjectContext:context];
     BOOL result = NO;
     
@@ -64,17 +64,16 @@
 
 - (void)testThatGetActiveThemeForBlogWorks
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
+    NSManagedObjectContext *context = self.manager.mainContext;
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
+    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
+    blog.account.wordPressComRestApi = api;
     ThemeService *service = nil;
     NSNumber *blogId = @1;
     NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/mine", blogId];
-    
-    OCMStub([blog wordPressComRestApi]).andReturn(api);
-    OCMStub([blog dotComID]).andReturn(blogId);
-    OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(YES);
+
+    blog.dotComID = blogId;
 
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
@@ -100,18 +99,16 @@
     
 - (void)testThatGetPurchasedThemesForBlogWorks
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
+    NSManagedObjectContext *context = self.manager.mainContext;
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
+    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
+    blog.account.wordPressComRestApi = api;
     ThemeService *service = nil;
     NSNumber *blogId = @1;
     NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/purchased", blogId];
+    blog.dotComID = blogId;
     
-    OCMStub([blog wordPressComRestApi]).andReturn(api);
-    OCMStub([blog dotComID]).andReturn(blogId);
-    OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(YES);
-
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg any]
@@ -136,15 +133,13 @@
 
 - (void)testThatGetThemeIdWorks
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    XCTFail("Bad mocking 🖐");return;
-    WPAccount *account = OCMStrictClassMock([WPAccount class]);
+    NSManagedObjectContext *context = self.manager.mainContext;
+    WPAccount *account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
+    account.wordPressComRestApi = api;
     ThemeService *service = nil;
     NSString *themeId = @"SomeTheme";
     NSString *url = [NSString stringWithFormat:@"v1.1/themes/%@", themeId];
-    
-    OCMStub([account wordPressComRestApi]).andReturn(api);
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
@@ -160,14 +155,12 @@
 
 - (void)testThatGetThemeIdThrowsExceptionWithoutThemeId
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    XCTFail("Bad mocking 🖐");return;
-    WPAccount *account = OCMStrictClassMock([WPAccount class]);
+    NSManagedObjectContext *context = self.manager.mainContext;
+    WPAccount *account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
+    account.wordPressComRestApi = api;
     ThemeService *service = nil;
-    
-    OCMStub([account wordPressComRestApi]).andReturn(api);
-    
+
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
     XCTAssertThrows([service getThemeId:nil
                              forAccount:account
@@ -190,15 +183,13 @@
 
 - (void)testThatGetThemesForAccountWorks
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    XCTFail("Bad mocking 🖐");return;
-    WPAccount *account = OCMStrictClassMock([WPAccount class]);
+    NSManagedObjectContext *context = self.manager.mainContext;
+    WPAccount *account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
+    account.wordPressComRestApi = api;
     ThemeService *service = nil;
     NSString *url = @"v1.2/themes";
-    
-    OCMStub([account wordPressComRestApi]).andReturn(api);
-    
+
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNotNil]
              success:[OCMArg any]
@@ -225,17 +216,16 @@
 
 - (void)testThatGetThemesForBlogWorks
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
+    NSManagedObjectContext *context = self.manager.mainContext;
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
+    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
     NSNumber *blogId = @1;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeService *service = nil;
     NSString *url = [NSString stringWithFormat:@"v1.2/sites/%@/themes", blogId];
-    
-    OCMStub([blog wordPressComRestApi]).andReturn(api);
-    OCMStub([blog dotComID]).andReturn(blogId);
-    OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(YES);
+
+    blog.dotComID = blogId;
+    blog.account.wordPressComRestApi = api;
 
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNotNil]
@@ -265,20 +255,19 @@
 
 - (void)testThatActivateThemeWorks
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    Theme *theme = OCMStrictClassMock([ThemeForStubbing class]);
+    NSManagedObjectContext *context = self.manager.mainContext;
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
+    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
+    Theme *theme = [NSEntityDescription insertNewObjectForEntityForName:[Theme entityName] inManagedObjectContext:context];
     NSNumber *blogId = @1;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeService *service = nil;
     NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/mine", blogId];
     
-    OCMStub([theme themeId]).andReturn(@"SomeThemeId");
-    
-    OCMStub([blog wordPressComRestApi]).andReturn(api);
-    OCMStub([blog dotComID]).andReturn(blogId);
-    OCMStub([blog supports:BlogFeatureWPComRESTAPI]).andReturn(YES);
+    theme.themeId = @"SomeThemeId";
+
+    blog.dotComID = blogId;
+    blog.account.wordPressComRestApi = api;
 
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNotNil]
@@ -294,16 +283,16 @@
 
 - (void)testThatActivateThemeThrowsExceptionWithoutTheme
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    XCTFail("Bad mocking 🖐");return;
-    Blog *blog = OCMStrictClassMock([Blog class]);
+    NSManagedObjectContext *context = self.manager.mainContext;
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:[Blog entityName] inManagedObjectContext:context];
+    blog.account = [NSEntityDescription insertNewObjectForEntityForName:[WPAccount entityName] inManagedObjectContext:context];
     NSNumber *blogId = @1;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeService *service = nil;
-    
-    OCMStub([blog wordPressComRestApi]).andReturn(api);
-    OCMStub([blog dotComID]).andReturn(blogId);
-    
+
+    blog.dotComID = blogId;
+    blog.account.wordPressComRestApi = api;
+
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
     XCTAssertThrows([service activateTheme:nil
                                    forBlog:blog
@@ -313,13 +302,12 @@
 
 - (void)testThatActivateThemeThrowsExceptionWithoutBlog
 {
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    XCTFail("Bad mocking 🖐");return;
-    Theme *theme = OCMStrictClassMock([ThemeForStubbing class]);
+    NSManagedObjectContext *context = self.manager.mainContext;
+    Theme *theme = [NSEntityDescription insertNewObjectForEntityForName:[Theme entityName] inManagedObjectContext:context];
     ThemeService *service = nil;
-    
-    OCMStub([theme themeId]).andReturn(@"SomeThemeId");
-    
+
+    theme.themeId = @"SomeThemeId";
+
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
     XCTAssertThrows([service activateTheme:theme
                                    forBlog:nil
