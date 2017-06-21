@@ -1500,7 +1500,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             self.optionsViewController = nil
         }
     }
-    
+
     func showOptionsTableViewControllerWithOptions(_ options: [OptionsTableViewOption],
                                                    fromBarItem barItem: FormatBarItem,
                                                    selectedRowIndex index: Int?,
@@ -1536,33 +1536,33 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         }
 
         if UIDevice.current.userInterfaceIdiom == .pad {
-            presentOptionsViewController(optionsViewController, asPopoverFromBarItem: barItem, completion: selectRow)
+            presentToolbarViewController(optionsViewController, asPopoverFromBarItem: barItem, completion: selectRow)
         } else {
-            presentOptionsViewControllerAsInputView(optionsViewController)
+            presentToolbarViewControllerAsInputView(optionsViewController)
             selectRow()
         }
     }
 
-    private func presentOptionsViewController(_ optionsViewController: OptionsTableViewController,
+    private func presentToolbarViewController(_ viewController: UIViewController,
                                               asPopoverFromBarItem barItem: FormatBarItem,
                                               completion: (() -> Void)? = nil) {
-        optionsViewController.modalPresentationStyle = .popover
-        optionsViewController.popoverPresentationController?.permittedArrowDirections = [.down]
-        optionsViewController.popoverPresentationController?.sourceView = view
+        viewController.modalPresentationStyle = .popover
+        viewController.popoverPresentationController?.permittedArrowDirections = [.down]
+        viewController.popoverPresentationController?.sourceView = view
 
         let frame = barItem.superview?.convert(barItem.frame, to: UIScreen.main.coordinateSpace)
 
-        optionsViewController.popoverPresentationController?.sourceRect = view.convert(frame!, from: UIScreen.main.coordinateSpace)
-        optionsViewController.popoverPresentationController?.backgroundColor = .white
-        optionsViewController.popoverPresentationController?.delegate = self
+        viewController.popoverPresentationController?.sourceRect = view.convert(frame!, from: UIScreen.main.coordinateSpace)
+        viewController.popoverPresentationController?.backgroundColor = .white
+        viewController.popoverPresentationController?.delegate = self
 
-        present(optionsViewController, animated: true, completion: completion)
+        present(viewController, animated: true, completion: completion)
     }
 
-    private func presentOptionsViewControllerAsInputView(_ optionsViewController: OptionsTableViewController) {
-        self.addChildViewController(optionsViewController)
-        changeRichTextInputView(to: optionsViewController.view)
-        optionsViewController.didMove(toParentViewController: self)
+    private func presentToolbarViewControllerAsInputView(_ viewController: UIViewController) {
+        self.addChildViewController(viewController)
+        changeRichTextInputView(to: viewController.view)
+        viewController.didMove(toParentViewController: self)
     }
 
     func changeRichTextInputView(to: UIView?) {
