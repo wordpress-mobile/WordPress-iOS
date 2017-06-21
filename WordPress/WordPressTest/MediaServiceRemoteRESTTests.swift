@@ -160,7 +160,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
     func testGetMediaLibraryCountPath() {
 
         let expectedPath = "v1.1/sites/\(siteID)/media"
-        mediaServiceRemote.getMediaLibraryCount(success: nil, failure: nil)
+        mediaServiceRemote.getMediaLibraryCount(forType: nil, withSuccess: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Wrong method, expected GET got \(mockRemoteApi.methodCalled())")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
     }
@@ -170,7 +170,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let expectedCount = 3
         let response = ["found": expectedCount]
         var remoteCount = 0
-        mediaServiceRemote.getMediaLibraryCount(success: { (count) in
+        mediaServiceRemote.getMediaLibraryCount(forType: nil, withSuccess: { (count) in
             remoteCount = count
         }, failure: nil)
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())

@@ -118,7 +118,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     /// as this method skips animating any change in height.
     ///
     func configureViewForEditingIfNeeded() {
-        // Check the helper to determine whether an editi.ng state should be assumed.
+        // Check the helper to determine whether an editing state should be assumed.
         adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
         if SigninEditingState.signinEditingStateActive {
             siteURLField.becomeFirstResponder()

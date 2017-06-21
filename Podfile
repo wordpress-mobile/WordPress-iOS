@@ -15,7 +15,7 @@ def shared_with_all_pods
 end
 
 def shared_with_networking_pods
-  pod 'AFNetworking', '3.1.0'  
+  pod 'AFNetworking', '3.1.0'
   pod 'wpxmlrpc', '0.8.3'
 end
 
@@ -27,7 +27,7 @@ end
 
 target 'WordPress' do
   project 'WordPress/WordPress.xcodeproj'
-  
+
   shared_with_all_pods
   shared_with_networking_pods
 
@@ -41,9 +41,10 @@ target 'WordPress' do
   pod 'SVProgressHUD', '~>2.1.2'
   pod 'UIDeviceIdentifier', '~> 0.1'
   pod 'Crashlytics'
-  pod 'BuddyBuildSDK', '~> 1.0.14', :configurations => ['Release-Alpha']
+  pod 'BuddyBuildSDK', '~> 1.0.15', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '~> 1.0'
   pod 'MGSwipeTableCell', '~> 1.5.6'
+  pod 'lottie-ios'
   # Temporary until this fix is merged and released
   # https://github.com/daltoniam/Starscream/pull/294
   pod 'Starscream', :git => 'https://github.com/wordpress-mobile/Starscream', :branch => 'wordpress-ios'
@@ -52,33 +53,33 @@ target 'WordPress' do
   # WordPress components
   # --------------------
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.0'
-  pod 'Gridicons', '0.5'
+  pod 'Gridicons', '0.8'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', '0.17'
+  pod 'WPMediaPicker', '0.18'
   pod 'WordPress-iOS-Editor', '1.9.2'
-  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '28e8cd4eba56efc0080b3fdef7d1a5693e53b1e7'
+  pod 'WordPress-Aztec-iOS', '1.0.0-beta.4'
 
   target 'WordPressTest' do
     inherit! :search_paths
-    
+
     shared_test_pods
     pod 'Specta', '1.0.5'
     pod 'Expecta', '1.0.5'
     pod 'Nimble', '~> 7.0.0'
   end
-  
+
   target 'WordPressShareExtension' do
     inherit! :search_paths
-    
+
     shared_with_all_pods
     shared_with_networking_pods
-  
+
     pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
   end
 
   target 'WordPressTodayWidget' do
     inherit! :search_paths
-    
+
     shared_with_all_pods
     shared_with_networking_pods
   end
@@ -93,20 +94,20 @@ target 'WordPressComStatsiOS' do
 
   target 'WordPressComStatsiOSTests' do
     inherit! :search_paths
-    
+
     shared_test_pods
   end
 end
 
 target 'WordPressKit' do
   project 'WordPressKit/WordPressKit.xcodeproj'
-  
+
   shared_with_networking_pods
   shared_with_all_pods
-  
+
   target 'WordPressKitTests' do
     inherit! :search_paths
-    
+
     shared_test_pods
   end
 end
@@ -118,7 +119,7 @@ target 'WordPressShared' do
 
   target 'WordPressSharedTests' do
     inherit! :search_paths
-    
+
     shared_test_pods
   end
 end

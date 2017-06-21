@@ -4,13 +4,14 @@ import MobileCoreServices
 
 class MediaURLExporterTests: XCTestCase {
 
+    let testDeviceImageName = "test-image-device-photo-gps.jpg"
+    let testDeviceVideoName = "test-video-device-gps.m4v"
+    let testGIFName = "test-gif.gif"
+
     // MARK: - URL export testing
 
     func testThatURLExportingImageWorks() {
-        guard let mediaPath = OHPathForFile("test-image-device-photo-gps.jpg", type(of: self)) else {
-            XCTAssert(false, "Error: failed creating a path to the test image file")
-            return
-        }
+        let mediaPath = MediaImageExporterTests.filePathForTestImageNamed(testDeviceImageName)
         let expect = self.expectation(description: "image export by URL")
         let url = URL(fileURLWithPath: mediaPath)
         let exporter = MediaURLExporter()
@@ -19,7 +20,7 @@ class MediaURLExporterTests: XCTestCase {
                            onCompletion: { (urlExport) in
                             switch urlExport {
                             case .exportedImage(let imageExport):
-                                self.cleanUpExportedMedia(atURL: imageExport.url)
+                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
                             default:
                                 XCTFail("Error: expected the URL export to result in an image export")
                             }
@@ -40,7 +41,7 @@ class MediaURLExporterTests: XCTestCase {
     }
 
     fileprivate func exportTestVideo(removingGPS: Bool) {
-        guard let mediaPath = OHPathForFile("test-video-device-gps.m4v", type(of: self)) else {
+        guard let mediaPath = OHPathForFile(testDeviceVideoName, type(of: self)) else {
             XCTAssert(false, "Error: failed creating a path to the test video file")
             return
         }
@@ -56,8 +57,8 @@ class MediaURLExporterTests: XCTestCase {
                            onCompletion: { (urlExport) in
                             switch urlExport {
                             case .exportedVideo(let videoExport):
-                                self.validateVideoExport(videoExport, exporter: weakExporter!)
-                                self.cleanUpExportedMedia(atURL: videoExport.url)
+                                MediaURLExporterTests.validateVideoExport(videoExport, exporter: weakExporter!)
+                                MediaExporterTests.cleanUpExportedMedia(atURL: videoExport.url)
                             default:
                                 XCTFail("Error: expected the URL export to result in a video export")
                             }
@@ -70,7 +71,7 @@ class MediaURLExporterTests: XCTestCase {
     }
 
     func testThatURLExportingGIFWorks() {
-        guard let mediaPath = OHPathForFile("test-gif.gif", type(of: self)) else {
+        guard let mediaPath = OHPathForFile(testGIFName, type(of: self)) else {
             XCTAssert(false, "Error: failed creating a path to the test image file")
             return
         }
@@ -82,7 +83,7 @@ class MediaURLExporterTests: XCTestCase {
                            onCompletion: { (urlExport) in
                             switch urlExport {
                             case .exportedGIF(let gifExport):
-                                self.cleanUpExportedMedia(atURL: gifExport.url)
+                                MediaExporterTests.cleanUpExportedMedia(atURL: gifExport.url)
                             default:
                                 XCTFail("Error: expected the URL export to result in a GIF export")
                             }
@@ -96,7 +97,7 @@ class MediaURLExporterTests: XCTestCase {
 
     // MARK: - Media export validation
 
-    fileprivate func validateVideoExport(_ export: MediaVideoExport, exporter: MediaURLExporter) {
+    class func validateVideoExport(_ export: MediaVideoExport, exporter: MediaURLExporter) {
         let asset = AVAsset(url: export.url)
         XCTAssertTrue(asset.isPlayable, "Error: exported video asset is unplayble.")
 
@@ -114,17 +115,6 @@ class MediaURLExporterTests: XCTestCase {
             XCTAssert(hasLocationData == false, "The exported video's location data was not removed as expected.")
         } else {
             XCTAssert(hasLocationData == true, "The exported video's location data was unexpectedly removed.")
-        }
-    }
-
-    // MARK: - Media export testing cleanup
-
-    fileprivate func cleanUpExportedMedia(atURL url: URL) {
-        do {
-            let fileManager = FileManager.default
-            try fileManager.removeItem(at: url)
-        } catch {
-            XCTFail("Error: failed to clean up exported media: \(error)")
         }
     }
 }
