@@ -855,6 +855,7 @@
 		E1AFA8C31E8E34230004A323 /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
 		E1B23B081BFB3B370006559B /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B23B071BFB3B370006559B /* MyProfileViewController.swift */; };
 		E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */; };
+		E1B642131EFA5113001DC6D7 /* ModelTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B642121EFA5113001DC6D7 /* ModelTestHelper.swift */; };
 		E1B6A9CC1E54B6B2008FD47E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1B6A9CE1E54B6B2008FD47E /* Localizable.strings */; };
 		E1B84F001E02E94D00BF6434 /* PingHubManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B84EFF1E02E94D00BF6434 /* PingHubManager.swift */; };
 		E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1B912801BB00EFD003C25B9 /* People.storyboard */; };
@@ -2375,6 +2376,7 @@
 		E1B34C0C1CCDFFCE00889709 /* ApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiCredentials.m; sourceTree = "<group>"; };
 		E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebViewController.h; sourceTree = "<group>"; };
 		E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebViewController.m; sourceTree = "<group>"; };
+		E1B642121EFA5113001DC6D7 /* ModelTestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTestHelper.swift; sourceTree = "<group>"; };
 		E1B6A9CD1E54B6B2008FD47E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1B6AA571E54B83D008FD47E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1B6AA581E54B840008FD47E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -5140,6 +5142,7 @@
 			children = (
 				E150520D16CAC75A00D3DDDC /* CoreDataTestHelper.h */,
 				E150520E16CAC75A00D3DDDC /* CoreDataTestHelper.m */,
+				E1B642121EFA5113001DC6D7 /* ModelTestHelper.swift */,
 				93E9050519E6F3D8005513C9 /* TestContextManager.h */,
 				93E9050619E6F3D8005513C9 /* TestContextManager.m */,
 				E15618FB16DB8677006532C4 /* UIKitTestHelper.h */,
@@ -7197,6 +7200,7 @@
 				E63C897A1CB9A0BB00649C8F /* StringHelperTests.swift in Sources */,
 				5DA988061AEEA594002AFB12 /* DisplayableImageHelperTest.m in Sources */,
 				E15027651E03E54100B847E3 /* PinghubTests.swift in Sources */,
+				E1B642131EFA5113001DC6D7 /* ModelTestHelper.swift in Sources */,
 				B566EC751B83867800278395 /* NSMutableAttributedStringTests.swift in Sources */,
 				E6B9B8AF1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift in Sources */,
 				B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */,

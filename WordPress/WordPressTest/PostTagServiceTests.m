@@ -6,6 +6,7 @@
 #import "TaxonomyServiceRemoteREST.h"
 #import "TestContextManager.h"
 #import "RemoteTaxonomyPaging.h"
+#import "WordPressTest-Swift.h"
 
 @interface PostTagServiceForStubbing : PostTagService
 
@@ -43,11 +44,8 @@
     self.manager = [TestContextManager new];
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
 
-    WPAccount *account = [NSEntityDescription insertNewObjectForEntityForName:@"Account"
-                                                       inManagedObjectContext:self.manager.mainContext];
-    account.wordPressComRestApi = api;
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog"
-                                               inManagedObjectContext:self.manager.mainContext];
+    Blog *blog = [ModelTestHelper insertDotComBlogWithContext:self.manager.mainContext];
+    blog.account.wordPressComRestApi = api;
     blog.dotComID = @1;
     
     self.blog = blog;
