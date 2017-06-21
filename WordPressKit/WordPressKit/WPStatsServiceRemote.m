@@ -659,7 +659,8 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
         
         NSNumber *postID = [postDict numberForKey:@"ID"];
         NSString *postTitle = [self.stringUtilities displayablePostTitle:[postDict stringForKey:@"title"]];
-        NSDate *postDate = [self.rfc3339DateFormatter dateFromString:[postDict stringForKey:@"date"]];
+        NSString *postDateString = [postDict stringForKey:@"date"];
+        NSDate *postDate = postDateString != nil ? [self.rfc3339DateFormatter dateFromString:postDateString] : nil;
         NSString *postURL = [postDict stringForKey:@"URL"];
         NSNumber *likesValue = [postDict numberForKey:@"like_count"];
         NSString *likes = [self localizedStringForNumber:likesValue];
@@ -1508,14 +1509,18 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
         
         NSDictionary *longDict = [streakDict dictionaryForKey:@"long"];
         NSNumber *longLengthValue = [longDict numberForKey:@"length"];
-        NSDate *longStartDate = [self.deviceDateFormatter dateFromString:[longDict stringForKey:@"start"]];
-        NSDate *longEndDate = [self.deviceDateFormatter dateFromString:[longDict stringForKey:@"end"]];
+        NSString *longStartDateString = [longDict stringForKey:@"start"];
+        NSString *longEndDateString = [longDict stringForKey:@"end"];
+        NSDate *longStartDate = longStartDateString != nil ? [self.deviceDateFormatter dateFromString:longStartDateString] : nil;
+        NSDate *longEndDate = longEndDateString != nil ? [self.deviceDateFormatter dateFromString:longEndDateString] : nil;
         
         NSDictionary *currentDict = [streakDict dictionaryForKey:@"current"];
         NSNumber *currentLengthValue = [currentDict numberForKey:@"length"];
-        NSDate *currentStartDate = [self.deviceDateFormatter dateFromString:[currentDict stringForKey:@"start"]];
-        NSDate *currentEndDate = [self.deviceDateFormatter dateFromString:[currentDict stringForKey:@"end"]];
-        
+        NSString *currentStartDateString = [currentDict stringForKey:@"start"];
+        NSString *currentEndDateString = [currentDict stringForKey:@"end"];
+        NSDate *currentStartDate = currentStartDateString != nil ? [self.deviceDateFormatter dateFromString:currentStartDateString] : nil;
+        NSDate *currentEndDate = currentEndDateString != nil ? [self.deviceDateFormatter dateFromString:currentEndDateString] : nil;
+
         StatsStreak *statsStreak = [StatsStreak new];
         statsStreak.longestStreakLength = longLengthValue;
         statsStreak.longestStreakStartDate = longStartDate;
@@ -1677,7 +1682,7 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
 #pragma mark - Private convenience methods for data conversion
 
 
-- (NSDate *)deviceLocalDateForString:(NSString *)dateString withPeriodUnit:(StatsPeriodUnit)unit
+- (NSDate * _Nullable)deviceLocalDateForString:(NSString * _Nonnull)dateString withPeriodUnit:(StatsPeriodUnit)unit
 {
     switch (unit) {
         case StatsPeriodUnitDay:
