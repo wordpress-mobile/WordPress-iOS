@@ -15,7 +15,7 @@ public enum PostEditorAction {
     fileprivate var publishActionLabel: String {
         switch self {
         case .publish:
-            return NSLocalizedString("Publish", comment: "Publish button label.")
+            return NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
         case .save:
             return NSLocalizedString("Save", comment: "Save button label (saving content, ex: Post, Page, Comment).")
         case .schedule:

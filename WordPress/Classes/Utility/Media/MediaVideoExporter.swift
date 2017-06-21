@@ -24,7 +24,7 @@ class MediaVideoExporter: MediaExporter {
         /// - Note: the exporter will try to honor the type,
         ///   if both the exporter and AVAsset support the type for exporting.
         ///
-        var preferredExportFileType: String?
+        var preferredExportVideoType: String?
 
         // MARK: - MediaExporting
 
@@ -46,9 +46,6 @@ class MediaVideoExporter: MediaExporter {
             default:
                 return NSLocalizedString("The video could not be added to the Media Library.", comment: "Message shown when a video failed to load while trying to add it to the Media library.")
             }
-        }
-        func toNSError() -> NSError {
-            return NSError(domain: _domain, code: _code, userInfo: [NSLocalizedDescriptionKey: String(describing: self)])
         }
     }
 
@@ -76,7 +73,7 @@ class MediaVideoExporter: MediaExporter {
     ///
     func exportVideo(with session: AVAssetExportSession, filename: String?, onCompletion: @escaping OnVideoExport, onError: @escaping OnExportError) {
         do {
-            var outputType = options.preferredExportFileType ?? supportedExportFileTypes.first!
+            var outputType = options.preferredExportVideoType ?? supportedExportFileTypes.first!
             // Check if the exportFileType is one of the supported types for the exportSession.
             if session.supportedFileTypes.contains(outputType) == false {
                 /* 

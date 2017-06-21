@@ -172,7 +172,7 @@
             NSString *fileName = [NSString stringWithFormat:@"%@_%@", [[NSProcessInfo processInfo] globallyUniqueString], @".jpg"];
             NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
             NSError *error;
-            if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:0.9 metadata:metadata error:&error]){
+            if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:MediaLibrary.preferredImageCompressionQuality metadata:metadata error:&error]){
                 return [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileURL];
             }
             return nil;
@@ -181,7 +181,7 @@
         NSString *fileName = [NSString stringWithFormat:@"%@_%@", [[NSProcessInfo processInfo] globallyUniqueString], @".jpg"];        
         NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
         NSError *error;
-        if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:0.9 metadata:metadata error:&error]){
+        if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:MediaLibrary.preferredImageCompressionQuality metadata:metadata error:&error]){
             [self addMediaFromURL:fileURL completionBlock:completionBlock];
         } else {
             if (completionBlock) {
@@ -230,6 +230,9 @@
             completionBlock:(WPMediaAddedBlock)completionBlock
 {
     NSManagedObjectID *objectID = [self.post objectID];
+    if (objectID == nil) {
+        objectID = [self.blog objectID];
+    }
     PHFetchResult *result = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
     PHAsset *asset = [result firstObject];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
@@ -248,6 +251,9 @@
            completionBlock:(WPMediaAddedBlock)completionBlock
 {
     NSManagedObjectID *objectID = [self.post objectID];
+    if (objectID == nil) {
+        objectID = [self.blog objectID];
+    }
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [mediaService createMediaWithURL:url
                      forPostObjectID:objectID
@@ -544,25 +550,21 @@
             break;
     };
 
-    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] newDerivedContext];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
     NSInteger count = [mediaService getMediaLibraryCountForBlog:self.blog
-                                                   forMediaTypes:mediaTypes];
-    // If we have a count of zero and this is the first time we are checking this group
-    // let's sync with the server
-    if (count == 0 && self.itemsCount == NSNotFound) {
-        __weak __typeof__(self) weakSelf = self;
-        [mediaService syncMediaLibraryForBlog:self.blog
-                                      success:^() {
-                                          weakSelf.itemsCount = [mediaService getMediaLibraryCountForBlog:self.blog
-                                                        forMediaTypes:mediaTypes];;
-                                          [weakSelf notifyObserversWithIncrementalChanges:NO removed:nil inserted:nil changed:nil moved:nil];
-                                      } failure:^(NSError *error) {
-                                          DDLogError(@"%@", [error localizedDescription]);
-        }];
-    } else {
+                                                  forMediaTypes:mediaTypes];
+    // If we have a count diferent of zero assume it's correct but sync with the server always in the background
+    if (count != 0) {
         self.itemsCount = count;
     }
+    __weak __typeof__(self) weakSelf = self;
+    [mediaService getMediaLibraryServerCountForBlog:self.blog forMediaTypes:mediaTypes success:^(NSInteger count) {
+        weakSelf.itemsCount = count;
+    } failure:^(NSError * _Nonnull error) {
+        DDLogError(@"%@", [error localizedDescription]);
+        weakSelf.itemsCount = count;
+    }];
 
     return self.itemsCount;
 }
