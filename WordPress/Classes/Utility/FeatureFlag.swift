@@ -5,6 +5,7 @@ enum FeatureFlag: Int {
     case nativeEditor
     case exampleFeature
     case newLogin
+    case newInputMediaPicker
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -19,7 +20,12 @@ enum FeatureFlag: Int {
                 return true
             }
             return false
+        case .newInputMediaPicker:
+            if build(.a8cBranchTest, .localDeveloper) {
+                return true
+            }
         }
+        return false
     }
 }
 
