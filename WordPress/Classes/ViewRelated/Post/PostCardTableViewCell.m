@@ -578,7 +578,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 - (PostCardActionBarItem *)publishActionBarItemWithInsets:(UIEdgeInsets)imageInsets
 {
     __weak __typeof(self) weakSelf = self;
-    PostCardActionBarItem *item = [self actionBarItemWithTitle:NSLocalizedString(@"Publish", @"Label for the publish button. Tapping publishes a draft post.")
+    PostCardActionBarItem *item = [self actionBarItemWithTitle:NSLocalizedString(@"Publish", @"Label for the publish (verb) button. Tapping publishes a draft post.")
                                                          image:[UIImage imageNamed:@"icon-post-actionbar-publish"]
                                                    imageInsets:imageInsets
                                                    andCallback:^{
