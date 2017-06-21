@@ -364,7 +364,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatEditorTappedMoreItems:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ TracksEventPropertyButtonKey : @"more_items" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"overflow_ellipsis" };
             break;
         case WPAnalyticsStatEditorTappedOrderedList:
             eventName = @"editor_button_tapped";
