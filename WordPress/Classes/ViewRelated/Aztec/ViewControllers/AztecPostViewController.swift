@@ -1482,7 +1482,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                   onSelect: { [weak self] selected in
                                                     guard let range = self?.richTextView.selectedRange else { return }
 
-                                                    WPAppAnalytics.track(.editorTappedHeaderSelection, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self?.post)
+                                                    let selectedStyle = Analytics.headerStyleValues[selected]
+                                                    WPAppAnalytics.track(.editorTappedHeaderSelection, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource, "heading_style": selectedStyle], with: self?.post)
 
                                                     self?.richTextView.toggleHeader(Constants.headers[selected], range: range)
                                                     self?.optionsViewController = nil
@@ -2535,6 +2536,7 @@ extension AztecPostViewController {
 
     struct Analytics {
         static let editorSource             = "aztec"
+        static let headerStyleValues = ["none", "h1", "h2", "h3", "h4", "h5", "h6"]
     }
 
     struct Assets {
