@@ -18,5 +18,8 @@ extern const CGFloat BlogDetailHeaderViewBlavatarSize;
 @property (nonatomic) BOOL updatingIcon;
 
 - (void)refreshIconImage;
+- (void)setTitleText:(NSString *)title;
+- (void)setSubtitleText:(NSString *)subtitle;
+- (void)loadImageAtPath:(NSString *)imagePath;
 
 @end
