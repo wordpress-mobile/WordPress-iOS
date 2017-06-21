@@ -39,6 +39,7 @@ PODS:
   - HockeySDK (4.1.5):
     - HockeySDK/DefaultLib (= 4.1.5)
   - HockeySDK/DefaultLib (4.1.5)
+  - lottie-ios (1.5.1)
   - MGSwipeTableCell (1.5.6)
   - MRProgress (0.7.0):
     - MRProgress/ActivityIndicator (= 0.7.0)
@@ -116,6 +117,7 @@ DEPENDENCIES:
   - FormatterKit/TimeIntervalFormatter (~> 1.8.1)
   - Gridicons (= 0.8)
   - HockeySDK (~> 4.1.5)
+  - lottie-ios
   - MGSwipeTableCell (~> 1.5.6)
   - MRProgress (~> 0.7.0)
   - Nimble (~> 7.0.0)
@@ -129,7 +131,7 @@ DEPENDENCIES:
   - Starscream (from `https://github.com/wordpress-mobile/Starscream`, branch `wordpress-ios`)
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, branch `develop`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `111f22d959e6e0ae6304ef1886413ee0437105a4`)
   - WordPress-iOS-Editor (= 1.9.2)
   - WordPressCom-Analytics-iOS (= 0.1.30)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
@@ -144,7 +146,7 @@ EXTERNAL SOURCES:
     :branch: wordpress-ios
     :git: https://github.com/wordpress-mobile/Starscream
   WordPress-Aztec-iOS:
-    :branch: develop
+    :commit: 111f22d959e6e0ae6304ef1886413ee0437105a4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
@@ -178,6 +180,7 @@ SPEC CHECKSUMS:
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gridicons: 80b979a3ada21189f96bd7af9f1a5b2751fb50e3
   HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
+  lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
   Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
@@ -197,6 +200,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: ea637d883fe31b29c918d112816967f57efc9c1b
+PODFILE CHECKSUM: ae4b1f3dd959dee172b4e7cd1b83068d43c83e76
 
 COCOAPODS: 1.2.1
