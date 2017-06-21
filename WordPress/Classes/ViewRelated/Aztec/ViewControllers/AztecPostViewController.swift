@@ -912,8 +912,8 @@ private extension AztecPostViewController {
             guard let blog = self.mainContext.object(with: selectedObjectID) as? Blog else {
                 return
             }
-
             self.recreatePostRevision(in: blog)
+            self.mediaLibraryDataSource = WPAndDeviceMediaLibraryDataSource(post: self.post)
         }
 
         let dismissHandler: BlogSelectorDismissHandler = {
