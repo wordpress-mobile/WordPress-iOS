@@ -483,12 +483,31 @@
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Mjx-cz-sDG">
                                         <rect key="frame" x="0.0" y="0.0" width="391" height="548"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n8z-Py-Err" customClass="BlogDetailHeaderView">
-                                                <rect key="frame" x="20" y="165" width="351" height="44"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="5Kj-rE-Y9W"/>
-                                                </constraints>
-                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rFl-BX-tKE" userLabel="Header Stack View">
+                                                <rect key="frame" x="20" y="138" width="351" height="72"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n8z-Py-Err" customClass="BlogDetailHeaderView">
+                                                        <rect key="frame" x="0.0" y="0.0" width="351" height="50"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="50" placeholder="YES" id="NyW-2I-Z3P"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="m9N-GQ-6MI">
+                                                        <rect key="frame" x="0.0" y="50" width="351" height="22"/>
+                                                        <subviews>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" image="icon-url-field" translatesAutoresizingMaskIntoConstraints="NO" id="Dfh-U3-cvf">
+                                                                <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
+                                                            </imageView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UL4-G6-7G6">
+                                                                <rect key="frame" x="26" y="0.0" width="325" height="22"/>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                                <color key="textColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                            </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="tW0-In-DwC">
                                                 <rect key="frame" x="0.0" y="230" width="391" height="88"/>
                                                 <subviews>
@@ -539,15 +558,15 @@
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="tW0-In-DwC" firstAttribute="leading" secondItem="Mjx-cz-sDG" secondAttribute="leading" id="03E-NW-xAt"/>
-                                            <constraint firstItem="tW0-In-DwC" firstAttribute="top" secondItem="n8z-Py-Err" secondAttribute="bottom" constant="21" id="0Tf-ec-gZB"/>
-                                            <constraint firstAttribute="trailing" secondItem="n8z-Py-Err" secondAttribute="trailing" constant="20" id="0j1-Yt-DL0"/>
-                                            <constraint firstItem="n8z-Py-Err" firstAttribute="leading" secondItem="Mjx-cz-sDG" secondAttribute="leading" constant="20" id="3OP-2Y-cvo"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="5h8-kM-ymL"/>
                                             <constraint firstItem="tW0-In-DwC" firstAttribute="centerY" secondItem="Mjx-cz-sDG" secondAttribute="centerY" id="IGq-sy-bRJ"/>
                                             <constraint firstItem="Dmn-nh-HTH" firstAttribute="top" secondItem="tW0-In-DwC" secondAttribute="bottom" constant="20" id="WvE-TC-l7z"/>
+                                            <constraint firstItem="tW0-In-DwC" firstAttribute="top" secondItem="rFl-BX-tKE" secondAttribute="bottom" constant="20" id="bGJ-Uq-kxA"/>
                                             <constraint firstAttribute="trailing" secondItem="tW0-In-DwC" secondAttribute="trailing" id="cr8-vI-49m"/>
                                             <constraint firstItem="Dmn-nh-HTH" firstAttribute="leading" secondItem="Mjx-cz-sDG" secondAttribute="leading" constant="20" id="exr-hG-jE0"/>
+                                            <constraint firstAttribute="trailing" secondItem="rFl-BX-tKE" secondAttribute="trailing" constant="20" id="fA6-Tn-cX4"/>
                                             <constraint firstAttribute="trailing" secondItem="Dmn-nh-HTH" secondAttribute="trailing" constant="20" id="fch-li-UDF"/>
+                                            <constraint firstItem="rFl-BX-tKE" firstAttribute="leading" secondItem="Mjx-cz-sDG" secondAttribute="leading" constant="20" id="mht-aX-nWa"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRL-RD-U6n">
@@ -610,6 +629,8 @@
                         <outlet property="errorLabel" destination="Dmn-nh-HTH" id="MdY-kK-o4s"/>
                         <outlet property="forgotPasswordButton" destination="Gzk-TE-YfP" id="yzb-jL-iRE"/>
                         <outlet property="passwordField" destination="oi5-Kd-TEW" id="ONl-tn-LtT"/>
+                        <outlet property="siteAddressLabel" destination="UL4-G6-7G6" id="Vxl-e7-TIl"/>
+                        <outlet property="siteAddressStackView" destination="m9N-GQ-6MI" id="bEm-Uu-R4W"/>
                         <outlet property="siteHeaderView" destination="n8z-Py-Err" id="jwf-ai-QSO"/>
                         <outlet property="submitButton" destination="SBB-7Z-qWs" id="jfi-ms-7V1"/>
                         <outlet property="usernameField" destination="ESh-DI-dtB" id="T1z-yJ-peq"/>

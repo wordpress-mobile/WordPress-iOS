@@ -6,6 +6,8 @@ import WordPressShared
 ///
 class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardResponder, SigninWPComSyncHandler, LoginViewController {
     @IBOutlet var siteHeaderView: BlogDetailHeaderView!
+    @IBOutlet var siteAddressStackView: UIStackView!
+    @IBOutlet var siteAddressLabel: UILabel!
     @IBOutlet var usernameField: WPWalkthroughTextField!
     @IBOutlet var passwordField: WPWalkthroughTextField!
     @IBOutlet var errorLabel: UILabel!
@@ -38,6 +40,7 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configureHeader()
         localizeControls()
         setupOnePasswordButtonIfNeeded()
         displayLoginMessage("")
@@ -174,6 +177,51 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
     /// Noop. Required by wpcom sync handler.
     ///
     func configureStatusLabel(_ message: String) {
+    }
+
+
+    /// Configure the site header.
+    ///
+    func configureHeader() {
+        if let siteInfo = loginFields.siteInfo {
+            configureBlogDetailHeaderView(siteInfo: siteInfo)
+        } else {
+            configureSiteAddressHeader()
+        }
+    }
+
+
+    /// Configure the site header to show the BlogDetailsHeaderView
+    ///
+    func configureBlogDetailHeaderView(siteInfo: SiteInfo) {
+        siteAddressStackView.isHidden = true
+        siteHeaderView.isHidden = false
+
+        let siteAddress = sanitizedSiteAddress(siteAddress: siteInfo.url)
+        siteHeaderView.setTitleText(siteInfo.name)
+        siteHeaderView.setSubtitleText(siteAddress)
+        siteHeaderView.loadImage(atPath: siteInfo.icon)
+    }
+
+
+    /// Configure the site header to show the site address labe.
+    ///
+    func configureSiteAddressHeader() {
+        siteAddressStackView.isHidden = false
+        siteHeaderView.isHidden = true
+
+        siteAddressLabel.text = sanitizedSiteAddress(siteAddress: loginFields.siteUrl)
+    }
+
+
+    /// Sanitize and format the site address we show to users.
+    ///
+    func sanitizedSiteAddress(siteAddress: String) -> String {
+        let baseSiteUrl = SigninHelpers.baseSiteURL(string: siteAddress) as NSString
+        if let str = baseSiteUrl.components(separatedBy: "://").last {
+            return str
+        }
+        return siteAddress
     }
 
 
