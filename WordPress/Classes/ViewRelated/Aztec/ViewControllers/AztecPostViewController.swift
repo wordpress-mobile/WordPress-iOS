@@ -487,7 +487,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
 
         NSLayoutConstraint.activate([
-            betaButton.centerYAnchor.constraint(equalTo: titleTextField.centerYAnchor),
+            betaButton.centerYAnchor.constraint(equalTo: titlePlaceholderLabel.centerYAnchor),
             betaButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -defaultMargin),
             titleTextField.trailingAnchor.constraint(equalTo: betaButton.leadingAnchor, constant: -defaultMargin)
             ])
