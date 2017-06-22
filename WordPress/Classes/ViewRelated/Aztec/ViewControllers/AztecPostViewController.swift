@@ -142,7 +142,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Separator View
     ///
     fileprivate(set) lazy var separatorView: UIView = {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 1))
+        let v = UIView(frame: CGRect(x: 0, y: 0, width: Constants.toolbarHeight, height: 1))
 
         v.backgroundColor = Colors.separator
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -1421,8 +1421,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         insertAction.isEnabled = !urlFieldText.isEmpty
     }
 
-    var mediaInputToolbar: UIToolbar {
-        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
+    private var mediaInputToolbar: UIToolbar {
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight))
         toolbar.barTintColor = WPStyleGuide.aztecFormatBarBackgroundColor
         toolbar.tintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.items = [
@@ -1445,6 +1445,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func mediaAddInputCancelled(_ sender: UIBarButtonItem) {
+
         guard let mediaPicker = mediaPickerInputViewController?.mediaPicker else {
             return
         }
@@ -1452,6 +1453,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func mediaAddInputDone(_ sender: UIBarButtonItem) {
+
         guard let mediaPicker = mediaPickerInputViewController?.mediaPicker,
               let selectedAssets = mediaPicker.selectedAssets as? [Any]
         else {
@@ -1460,7 +1462,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         mediaPickerController(mediaPicker, didFinishPickingAssets: selectedAssets)
     }
 
-    func presentMediaPickerFullScreen(animated: Bool) {
+    fileprivate func presentMediaPickerFullScreen(animated: Bool) {
+
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
         picker.showMostRecentFirst = true
@@ -1472,7 +1475,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         present(picker, animated: true)
     }
 
-    func presentMediaPicker(fromItem item: FormatBarItem, animated: Bool = true) {
+    private func presentMediaPicker(fromItem item: FormatBarItem, animated: Bool = true) {
+
         if !(FeatureFlag.newInputMediaPicker.enabled) {
             presentMediaPickerFullScreen(animated: animated)
             return
@@ -1656,7 +1660,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         toolbar.disabledTintColor = WPStyleGuide.aztecFormatBarDisabledColor
         toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDisabledColor
         toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
-        toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0)
+        toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight)
         toolbar.formatter = self
 
         return toolbar
@@ -2596,6 +2600,7 @@ extension AztecPostViewController {
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
+        static let toolbarHeight = CGFloat(44.0)
     }
 
     struct MoreSheetAlert {
