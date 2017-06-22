@@ -5467,6 +5467,16 @@
 			name = WPRichText;
 			sourceTree = "<group>";
 		};
+		E6304E5A1EFB2254008B9954 /* Prologue */ = {
+			isa = PBXGroup;
+			children = (
+				43F258A91ED7772C0075406B /* LoginPrologueViewController.swift */,
+				4349B2651EE21F560075809A /* LoginProloguePageViewController.swift */,
+				43D2AE431EF704A70009387E /* LoginProloguePromoViewController.swift */,
+			);
+			name = Prologue;
+			sourceTree = "<group>";
+		};
 		E6417B941CA07AD00084050A /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
@@ -5502,11 +5512,10 @@
 		E6417B961CA07B060084050A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E6304E5A1EFB2254008B9954 /* Prologue */,
 				E6C1E8441EF1D25D00D139D9 /* Magic Links */,
 				E6C1E8451EF1D28500D139D9 /* SelfHosted */,
 				E6C1E8431EF1D21F00D139D9 /* Epilogue */,
-				436605E11ECE568800EE8882 /* LoginNavigationController.swift */,
-				43F258A91ED7772C0075406B /* LoginPrologueViewController.swift */,
 				434D96051EA92A4A00B90B89 /* Login2FAViewController.swift */,
 				438A80971EA5666B005D4651 /* LoginEmailViewController.swift */,
 				438A809D1EA5DC31005D4651 /* LoginWPComViewController.swift */,
@@ -5522,9 +5531,6 @@
 				E6417BA31CA07E260084050A /* SigninWPComViewController.swift */,
 				E6DB765E1CD10D7C0069BC82 /* SignupViewController.swift */,
 				436605E11ECE568800EE8882 /* LoginNavigationController.swift */,
-				43F258A91ED7772C0075406B /* LoginPrologueViewController.swift */,
-				4349B2651EE21F560075809A /* LoginProloguePageViewController.swift */,
-				43D2AE431EF704A70009387E /* LoginProloguePromoViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
