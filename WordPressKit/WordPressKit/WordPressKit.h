@@ -9,6 +9,7 @@ FOUNDATION_EXPORT const unsigned char WordPressKitVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <WordPressKit/PublicHeader.h>
 #import "ServiceRemoteWordPressComREST.h"
 #import "ServiceRemoteWordPressXMLRPC.h"
+#import "SiteServiceRemoteWordPressComREST.h"
 
 #import "StatsItem.h"
 #import "StatsItemAction.h"
@@ -20,9 +21,13 @@ FOUNDATION_EXPORT const unsigned char WordPressKitVersionString[];
 #import "WPStatsServiceRemote.h"
 
 #import "AccountServiceRemoteREST.h"
+#import "BlogServiceRemote.h"
+#import "BlogServiceRemoteREST.h"
+#import "BlogServiceRemoteXMLRPC.h"
 #import "JetpackServiceRemote.h"
 #import "RemoteBlog.h"
 #import "RemoteBlogOptionsHelper.h"
+#import "RemotePostType.h"
 #import "RemoteUser.h"
 
 #import "NSDate+WordPressJSON.h"

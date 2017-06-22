@@ -1,5 +1,4 @@
 #import "SiteServiceRemoteWordPressComREST.h"
-#import "WordPress-Swift.h"
 
 @interface SiteServiceRemoteWordPressComREST ()
 @property (nonatomic, strong) NSNumber *siteID;
