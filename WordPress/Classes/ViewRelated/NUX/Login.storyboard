@@ -1396,41 +1396,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="383" height="676"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get a link sent to your email to signin instantly." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CmN-ir-1YK">
-                                <rect key="frame" x="16" y="284" width="351" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="320" id="cYD-Pv-crb"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="cYD-Pv-crb"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="cYD-Pv-crb"/>
-                                    </mask>
-                                </variation>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIy-Sm-1r0" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="155.5" y="321" width="72" height="34"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="34" id="GRI-y6-q3i"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="SEND LINK">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="handleSendLinkTapped:" destination="Kvo-Y2-yhG" eventType="touchUpInside" id="YlN-8X-mwf"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6x-b7-hU9">
                                 <rect key="frame" x="105.5" y="632" width="172" height="28"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -1442,27 +1407,68 @@
                                     <segue destination="lmD-c6-SLs" kind="show" id="0ao-yi-yZI"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="Mq6-n0-6iO">
+                                <rect key="frame" x="20" y="189" width="343" height="258.5"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ukv-qo-ql4" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="121.5" y="0.0" width="100" height="100"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="3wv-b7-gzu"/>
+                                            <constraint firstAttribute="height" constant="100" id="aMT-Sa-KA3"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CmN-ir-1YK">
+                                        <rect key="frame" x="0.0" y="130" width="343" height="64.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="320" id="cYD-Pv-crb"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="cYD-Pv-crb"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <mask key="constraints">
+                                                <include reference="cYD-Pv-crb"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIy-Sm-1r0" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="135.5" y="224.5" width="72" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="GRI-y6-q3i"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <state key="normal" title="SEND LINK">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="handleSendLinkTapped:" destination="Kvo-Y2-yhG" eventType="touchUpInside" id="YlN-8X-mwf"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="CmN-ir-1YK" firstAttribute="width" secondItem="Mq6-n0-6iO" secondAttribute="width" id="Lcr-XS-PSo"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="CmN-ir-1YK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="HnR-5a-suO" secondAttribute="leading" constant="16" id="5rG-T9-D6T"/>
-                            <constraint firstItem="B6x-b7-hU9" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iIy-Sm-1r0" secondAttribute="bottom" constant="16" id="GlC-hz-eb9"/>
-                            <constraint firstItem="iIy-Sm-1r0" firstAttribute="top" secondItem="CmN-ir-1YK" secondAttribute="bottom" constant="16" id="Lez-GU-BbU"/>
+                            <constraint firstAttribute="trailing" secondItem="Mq6-n0-6iO" secondAttribute="trailing" constant="20" id="CoO-Ax-hqg"/>
                             <constraint firstItem="h4a-j8-84P" firstAttribute="top" secondItem="B6x-b7-hU9" secondAttribute="bottom" priority="900" constant="16" id="asJ-6Y-anx"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CmN-ir-1YK" secondAttribute="trailing" constant="16" id="hlU-Eo-HPd"/>
+                            <constraint firstItem="Mq6-n0-6iO" firstAttribute="centerY" secondItem="HnR-5a-suO" secondAttribute="centerY" constant="-20" id="gQ3-og-ak7"/>
                             <constraint firstItem="B6x-b7-hU9" firstAttribute="centerX" secondItem="HnR-5a-suO" secondAttribute="centerX" id="iMu-uo-e9U"/>
-                            <constraint firstItem="iIy-Sm-1r0" firstAttribute="centerY" secondItem="HnR-5a-suO" secondAttribute="centerY" id="qRE-0s-Xrr"/>
-                            <constraint firstItem="CmN-ir-1YK" firstAttribute="centerX" secondItem="HnR-5a-suO" secondAttribute="centerX" id="zYY-ZW-ApJ"/>
-                            <constraint firstItem="iIy-Sm-1r0" firstAttribute="centerX" secondItem="HnR-5a-suO" secondAttribute="centerX" id="zqa-Eh-350"/>
+                            <constraint firstItem="Mq6-n0-6iO" firstAttribute="leading" secondItem="HnR-5a-suO" secondAttribute="leading" constant="20" id="rtb-lw-VMZ"/>
                         </constraints>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <mask key="constraints">
-                                <exclude reference="5rG-T9-D6T"/>
-                                <exclude reference="hlU-Eo-HPd"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
+                        <outlet property="gravatarView" destination="Ukv-qo-ql4" id="8BJ-j2-Ci2"/>
                         <outlet property="label" destination="CmN-ir-1YK" id="Xhc-3L-kvy"/>
                         <outlet property="sendLinkButton" destination="iIy-Sm-1r0" id="9My-fJ-l9S"/>
                         <outlet property="usePasswordButton" destination="B6x-b7-hU9" id="mB8-03-VBa"/>
@@ -1889,7 +1895,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="07g-E6-aeG"/>
-        <segue reference="Jfl-Zm-PRR"/>
+        <segue reference="0ao-yi-yZI"/>
         <segue reference="qLI-qX-rkG"/>
         <segue reference="lIb-sw-yM7"/>
     </inferredMetricsTieBreakers>
