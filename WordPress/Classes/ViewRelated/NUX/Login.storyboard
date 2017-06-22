@@ -106,7 +106,7 @@
         <scene sceneID="1BJ-CW-C88">
             <objects>
                 <navigationController id="Ck1-vY-O11" customClass="LoginNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mKb-UO-KoA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mKb-UO-KoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1485,42 +1485,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="383" height="676"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your magic link is on its way! Check your email on this device, and tap the link in the email you receive from WordPress.com." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkM-xx-821">
-                                <rect key="frame" x="16" y="284" width="351" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="0nV-Yg-je4"/>
-                                    <constraint firstAttribute="width" constant="320" id="2JY-7V-RVK"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="2JY-7V-RVK"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="2JY-7V-RVK"/>
-                                    </mask>
-                                </variation>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Iy-9H-ykD" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="154" y="321" width="75" height="34"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="tyz-kt-Arb"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="OPEN MAIL">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="handleOpenMailTapped:" destination="GSd-vy-rpZ" eventType="touchUpInside" id="aHi-O1-8ah"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b0O-LO-6ax">
                                 <rect key="frame" x="105.5" y="632" width="172" height="28"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -1532,29 +1496,63 @@
                                     <segue destination="lmD-c6-SLs" kind="show" id="Jfl-Zm-PRR"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="login-magic-link" translatesAutoresizingMaskIntoConstraints="NO" id="upR-OL-iQF">
-                                <rect key="frame" x="99" y="110" width="160" height="160"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="L3o-Cy-vXw">
+                                <rect key="frame" x="18" y="159" width="347" height="318.5"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login-magic-link" translatesAutoresizingMaskIntoConstraints="NO" id="upR-OL-iQF">
+                                        <rect key="frame" x="93.5" y="0.0" width="160" height="160"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="160" id="CtE-yp-T3g"/>
+                                            <constraint firstAttribute="width" constant="160" id="LVD-7T-c7k"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your magic link is on its way! Check your email on this device, and tap the link in the email you receive from WordPress.com" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkM-xx-821">
+                                        <rect key="frame" x="2.5" y="190" width="342.5" height="64.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="0nV-Yg-je4"/>
+                                            <constraint firstAttribute="width" constant="320" id="2JY-7V-RVK"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="2JY-7V-RVK"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <mask key="constraints">
+                                                <include reference="2JY-7V-RVK"/>
+                                            </mask>
+                                        </variation>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Iy-9H-ykD" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="136" y="284.5" width="75" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="tyz-kt-Arb"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <state key="normal" title="OPEN MAIL">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="handleOpenMailTapped:" destination="GSd-vy-rpZ" eventType="touchUpInside" id="aHi-O1-8ah"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="pkM-xx-821" firstAttribute="centerX" secondItem="Xyo-MA-Ddd" secondAttribute="centerX" id="55m-cO-8N7"/>
-                            <constraint firstItem="b0O-LO-6ax" firstAttribute="top" relation="greaterThanOrEqual" secondItem="0Iy-9H-ykD" secondAttribute="bottom" constant="16" id="Ltg-vf-Uk9"/>
+                            <constraint firstItem="L3o-Cy-vXw" firstAttribute="leading" secondItem="Xyo-MA-Ddd" secondAttribute="leading" constant="18" id="EG6-tW-icm"/>
                             <constraint firstItem="b0O-LO-6ax" firstAttribute="centerX" secondItem="Xyo-MA-Ddd" secondAttribute="centerX" id="RM7-fX-URR"/>
                             <constraint firstItem="vKK-Mm-0yR" firstAttribute="top" secondItem="b0O-LO-6ax" secondAttribute="bottom" priority="900" constant="16" id="T3w-we-LXY"/>
-                            <constraint firstItem="pkM-xx-821" firstAttribute="leading" secondItem="Xyo-MA-Ddd" secondAttribute="leading" constant="16" id="TGr-wa-ihh"/>
-                            <constraint firstAttribute="trailing" secondItem="pkM-xx-821" secondAttribute="trailing" constant="16" id="tb2-RY-hWk"/>
-                            <constraint firstItem="0Iy-9H-ykD" firstAttribute="top" secondItem="pkM-xx-821" secondAttribute="bottom" constant="16" id="tkc-PT-wao"/>
-                            <constraint firstItem="0Iy-9H-ykD" firstAttribute="centerY" secondItem="Xyo-MA-Ddd" secondAttribute="centerY" priority="900" id="v1Y-wg-MQp"/>
-                            <constraint firstItem="0Iy-9H-ykD" firstAttribute="centerX" secondItem="Xyo-MA-Ddd" secondAttribute="centerX" id="yKP-jv-FUu"/>
+                            <constraint firstItem="L3o-Cy-vXw" firstAttribute="centerY" secondItem="Xyo-MA-Ddd" secondAttribute="centerY" constant="-20" id="ece-WV-24S"/>
+                            <constraint firstAttribute="trailing" secondItem="L3o-Cy-vXw" secondAttribute="trailing" constant="18" id="pS9-2a-bJD"/>
                         </constraints>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <mask key="constraints">
-                                <exclude reference="TGr-wa-ihh"/>
-                                <exclude reference="tb2-RY-hWk"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
                         <outlet property="label" destination="pkM-xx-821" id="nOS-5r-86h"/>
