@@ -1226,30 +1226,30 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
     func formatBar(_ formatBar: FormatBar, didChangeOverflowState overflowState: FormatBarOverflowState) {
         let action = overflowState == .visible ? "made_visible" : "made_hidden"
-        WPAppAnalytics.track(.editorTappedMoreItems, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource, "action": action], with: post)
+        trackFormatBarAnalytics(stat: .editorTappedMoreItems, action: action)
     }
 
 
     func toggleBold() {
-        WPAppAnalytics.track(.editorTappedBold, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+        trackFormatBarAnalytics(stat: .editorTappedBold)
         richTextView.toggleBold(range: richTextView.selectedRange)
     }
 
 
     func toggleItalic() {
-        WPAppAnalytics.track(.editorTappedItalic, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+        trackFormatBarAnalytics(stat: .editorTappedItalic)
         richTextView.toggleItalic(range: richTextView.selectedRange)
     }
 
 
     func toggleUnderline() {
-        WPAppAnalytics.track(.editorTappedUnderline, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+        trackFormatBarAnalytics(stat: .editorTappedUnderline)
         richTextView.toggleUnderline(range: richTextView.selectedRange)
     }
 
 
     func toggleStrikethrough() {
-        WPAppAnalytics.track(.editorTappedStrikethrough, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+        trackFormatBarAnalytics(stat: .editorTappedStrikethrough)
         richTextView.toggleStrikethrough(range: richTextView.selectedRange)
     }
 
@@ -1273,10 +1273,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                     let listType = Constants.lists[selected]
                                                     switch listType {
                                                     case .unordered:
-                                                        WPAppAnalytics.track(.editorTappedUnorderedList, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self?.post)
+                                                        self?.trackFormatBarAnalytics(stat: .editorTappedUnorderedList)
                                                         self?.richTextView.toggleUnorderedList(range: range)
                                                     case .ordered:
-                                                        WPAppAnalytics.track(.editorTappedOrderedList, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self?.post)
+                                                        self?.trackFormatBarAnalytics(stat: .editorTappedOrderedList)
                                                         self?.richTextView.toggleOrderedList(range: range)
                                                     }
 
@@ -1286,7 +1286,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
 
     func toggleBlockquote() {
-        WPAppAnalytics.track(.editorTappedBlockquote, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+        trackFormatBarAnalytics(stat: .editorTappedBlockquote)
         richTextView.toggleBlockquote(range: richTextView.selectedRange)
     }
 
@@ -1313,7 +1313,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
 
     func toggleLink() {
-        WPAppAnalytics.track(.editorTappedLink, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+        trackFormatBarAnalytics(stat: .editorTappedLink)
 
         var linkTitle = ""
         var linkURL: URL? = nil
@@ -1397,7 +1397,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let removeAction = UIAlertAction(title: removeButtonTitle,
                                          style: UIAlertActionStyle.destructive,
                                          handler: { [weak self] action in
-                                            WPAppAnalytics.track(.editorTappedUnlink, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self?.post)
+                                            self?.trackFormatBarAnalytics(stat: .editorTappedUnlink)
                                             self?.richTextView.becomeFirstResponder()
                                             self?.richTextView.removeLink(inRange: range)
             })
@@ -1435,7 +1435,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func presentMediaPicker(animated: Bool = true) {
-        WPAppAnalytics.track(.editorTappedImage, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+        trackFormatBarAnalytics(stat: .editorTappedImage)
 
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
@@ -1453,7 +1453,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             return
         }
 
-        WPAppAnalytics.track(.editorTappedHTML, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+        trackFormatBarAnalytics(stat: .editorTappedHTML)
         mode.toggle()
     }
 
@@ -1466,7 +1466,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {
-        WPAppAnalytics.track(.editorTappedHeader, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self.post)
+        trackFormatBarAnalytics(stat: .editorTappedHeader)
 
         let headerOptions = Constants.headers.map { (headerType) -> OptionsTableViewOption in
             return OptionsTableViewOption(image: headerType.iconImage,
@@ -1483,7 +1483,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                     guard let range = self?.richTextView.selectedRange else { return }
 
                                                     let selectedStyle = Analytics.headerStyleValues[selected]
-                                                    WPAppAnalytics.track(.editorTappedHeaderSelection, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource, "heading_style": selectedStyle], with: self?.post)
+                                                    self?.trackFormatBarAnalytics(stat: .editorTappedHeaderSelection, headingStyle: selectedStyle)
 
                                                     self?.richTextView.toggleHeader(Constants.headers[selected], range: range)
                                                     self?.optionsViewController = nil
@@ -1556,12 +1556,12 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func insertHorizontalRuler() {
-        WPAppAnalytics.track(.editorTappedHorizontalRule, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+        trackFormatBarAnalytics(stat: .editorTappedHorizontalRule)
         richTextView.replaceRangeWithHorizontalRuler(richTextView.selectedRange)
     }
 
     func insertMore() {
-        WPAppAnalytics.track(.editorTappedMore, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
+        trackFormatBarAnalytics(stat: .editorTappedMore)
         richTextView.replaceRangeWithCommentAttachment(richTextView.selectedRange, text: Constants.moreAttachmentText)
     }
 
@@ -1596,6 +1596,20 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             }
         }
         return .none
+    }
+
+    private func trackFormatBarAnalytics(stat: WPAnalyticsStat, action: String? = nil, headingStyle: String? = nil) {
+        var properties = [WPAppAnalyticsKeyEditorSource: Analytics.editorSource]
+
+        if let action = action {
+            properties["action"] = action
+        }
+
+        if let headingStyle = headingStyle {
+            properties["heading_style"] = headingStyle
+        }
+
+        WPAppAnalytics.track(stat, withProperties: properties, with: post)
     }
 
 
