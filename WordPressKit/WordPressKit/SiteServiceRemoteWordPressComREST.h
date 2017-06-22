@@ -1,8 +1,7 @@
-@import WordPressKit;
+#import <Foundation/Foundation.h>
+#import "ServiceRemoteWordPressComREST.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-@class WordPressComRestApi;
 
 @interface SiteServiceRemoteWordPressComREST : ServiceRemoteWordPressComREST
 
