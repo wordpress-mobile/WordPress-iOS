@@ -117,7 +117,7 @@ DEPENDENCIES:
   - FormatterKit/TimeIntervalFormatter (~> 1.8.1)
   - Gridicons (= 0.8)
   - HockeySDK (~> 4.1.5)
-  - lottie-ios
+  - lottie-ios (~> 1.5.1)
   - MGSwipeTableCell (~> 1.5.6)
   - MRProgress (~> 0.7.0)
   - Nimble (~> 7.0.0)
@@ -194,6 +194,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: ea87df317ca6af36fb9b70c8ae8ee21c7233cb65
+PODFILE CHECKSUM: 8dbbacd273aa8622bdfc225c76d1d439da9cd789
 
 COCOAPODS: 1.2.1
