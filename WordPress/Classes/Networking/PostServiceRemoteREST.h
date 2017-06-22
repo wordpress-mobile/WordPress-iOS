@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "PostServiceRemote.h"
-#import "SiteServiceRemoteWordPressComREST.h"
+@import WordPressKit;
 
 @interface PostServiceRemoteREST : SiteServiceRemoteWordPressComREST <PostServiceRemote>
 
