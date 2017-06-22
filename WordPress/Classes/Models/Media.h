@@ -32,7 +32,10 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, strong, nullable) NSNumber *height;
 @property (nonatomic, strong, nullable) NSNumber *length;
 @property (nonatomic, strong, nullable) NSString *localThumbnailIdentifier;
+
+// NOTE: Upcoming deprecation for localThumbnailURL in favor of localThumbnailIdentifier.
 @property (nonatomic, strong, nullable) NSString *localThumbnailURL;
+
 @property (nonatomic, strong, nullable) NSString *localURL;
 @property (nonatomic, strong, nullable) NSNumber *mediaID;
 @property (nonatomic, strong, nullable) NSString *mediaTypeString;
@@ -55,9 +58,13 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, assign) MediaType mediaType;
 @property (nonatomic, assign) MediaRemoteStatus remoteStatus;
 @property (nonatomic, strong, nullable) NSURL *absoluteLocalURL;
+
+// NOTE: Upcoming deprecation for absoluteThumbnailLocalURL in favor of localThumbnailIdentifier.
 @property (nonatomic, strong, nullable) NSURL *absoluteThumbnailLocalURL;
+
 /// Returns true if the media object already exists on the server
 @property (nonatomic, readonly) BOOL hasRemote;
+
 // Helper methods
 
 + (NSString *)stringFromMediaType:(MediaType)mediaType;
