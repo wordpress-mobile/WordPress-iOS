@@ -80,7 +80,7 @@
             } else {
                 NSString *versionString = options[@"software_version"][@"value"];
                 CGFloat version = [versionString floatValue];
-                if (version < [WordPressMinimumVersion floatValue]) {
+                if (version > 0 && version < [WordPressMinimumVersion floatValue]) {
                     NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", nil), [xmlRPCURL host], versionString, WordPressMinimumVersion];
                     NSError *versionError = [NSError errorWithDomain:WordPressAppErrorDomain
                                         code:WordPressAppErrorCodeInvalidVersion
