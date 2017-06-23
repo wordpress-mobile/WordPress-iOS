@@ -92,20 +92,20 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Title's UITextView
     ///
     fileprivate(set) lazy var titleTextField: UITextView = {
-        let textField = UITextView()
+        let textView = UITextView()
 
-        textField.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
-        textField.delegate = self
-        textField.font = Fonts.title
-        textField.returnKeyType = .next
-        textField.textColor = UIColor.darkText
-        textField.typingAttributes = [NSForegroundColorAttributeName: UIColor.darkText, NSFontAttributeName: Fonts.title]
-        textField.translatesAutoresizingMaskIntoConstraints = false
+        textView.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
+        textView.delegate = self
+        textView.font = Fonts.title
+        textView.returnKeyType = .next
+        textView.textColor = UIColor.darkText
+        textView.typingAttributes = [NSForegroundColorAttributeName: UIColor.darkText, NSFontAttributeName: Fonts.title]
+        textView.translatesAutoresizingMaskIntoConstraints = false
 
-        textField.isScrollEnabled = false
-        textField.backgroundColor = .clear
+        textView.isScrollEnabled = false
+        textView.backgroundColor = .clear
 
-        return textField
+        return textView
     }()
 
 
@@ -1068,6 +1068,17 @@ extension AztecPostViewController: PostEditorStateContextDelegate {
 // MARK: - UITextViewDelegate methods
 //
 extension AztecPostViewController : UITextViewDelegate {
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        switch textView {
+        case titleTextField:
+            return shouldChangeTitleText(in: range, replacementText: text)
+
+        default:
+            return true
+        }
+    }
+
     func textViewDidChangeSelection(_ textView: UITextView) {
         updateFormatBar()
         changeRichTextInputView(to: nil)
@@ -1110,6 +1121,61 @@ extension AztecPostViewController : UITextViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updateTitlePosition()
+    }
+
+    // MARK: - Title Input Sanitization
+
+    /// Sanitizes an input for insertion in the title text view.
+    ///
+    /// - Parameters:
+    ///     - input: the input for the title text view.
+    ///
+    /// - Returns: the sanitized string
+    ///
+    private func sanitizeInputForTitle(_ input: String) -> String {
+        var sanitizedText = input
+
+        while let range = sanitizedText.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) {
+            sanitizedText = sanitizedText.replacingCharacters(in: range, with: "")
+        }
+
+        return sanitizedText
+    }
+
+    /// This method performs all necessary checks to verify if the title text can be changed,
+    /// or if some other action should be performed instead.
+    ///
+    /// - Important: this method sanitizes newlines, since they're not allowed in the title.
+    ///
+    /// - Parameters:
+    ///     - range: the range that would be modified.
+    ///     - text: the new text for the specified range.
+    ///
+    /// - Returns: `true` if the moficiation can take place, `false` otherwise.
+    ///
+    private func shouldChangeTitleText(in range: NSRange, replacementText text: String) -> Bool {
+
+        guard text.characters.count > 1 else {
+            guard text.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) == nil else {
+                richTextView.becomeFirstResponder()
+                richTextView.selectedRange = NSRange(location: 0, length: 0)
+                return false
+            }
+
+            return true
+        }
+
+        var sanitizedInput = sanitizeInputForTitle(text)
+
+        let newlinesWereRemoved = sanitizedInput.characters.count != text.characters.count
+
+        guard !newlinesWereRemoved else {
+            titleTextField.insertText(sanitizedInput)
+
+            return false
+        }
+
+        return true
     }
 }
 
