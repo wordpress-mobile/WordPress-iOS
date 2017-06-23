@@ -217,6 +217,21 @@ class AztecPostViewController: UIViewController, PostEditor {
     }()
 
 
+    /// Beta Tag Button
+    ///
+    fileprivate lazy var betaButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        WPStyleGuide.configureBetaButton(button)
+
+        button.setTitle(NSLocalizedString("Beta", comment: "Title for Beta tag button for the new Aztec editor"), for: .normal)
+        button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        button.isEnabled = false
+
+        return button
+    }()
+
+
     /// Active Editor's Mode
     ///
     fileprivate(set) var mode = EditionMode.richText {
@@ -439,7 +454,14 @@ class AztecPostViewController: UIViewController, PostEditor {
     func updateTitleHeight() {
         let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
 
-        let sizeThatShouldFitTheContent = titleTextField.sizeThatFits(CGSize(width:view.frame.width - ( 2 * Constants.defaultMargin), height: CGFloat.greatestFiniteMagnitude))
+        var titleWidth = titleTextField.bounds.width
+        if titleWidth <= 0 {
+            // Use the title text field's width if available, otherwise calculate it.
+            // View's frame minus left and right margins as well as margin between title and beta button
+            titleWidth = view.frame.width - (3 * Constants.defaultMargin) - betaButton.frame.width
+        }
+
+        let sizeThatShouldFitTheContent = titleTextField.sizeThatFits(CGSize(width:titleWidth, height: CGFloat.greatestFiniteMagnitude))
         let insets = titleTextField.textContainerInset
         titleHeightConstraint.constant = max(sizeThatShouldFitTheContent.height, titleTextField.font!.lineHeight + insets.top + insets.bottom)
 
@@ -466,10 +488,15 @@ class AztecPostViewController: UIViewController, PostEditor {
         updateTitleHeight()
 
         NSLayoutConstraint.activate([
-            titleTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: defaultMargin),
-            titleTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -defaultMargin),
+            titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: defaultMargin),
             titleTopConstraint,
             titleHeightConstraint
+            ])
+
+        NSLayoutConstraint.activate([
+            betaButton.centerYAnchor.constraint(equalTo: titlePlaceholderLabel.centerYAnchor),
+            betaButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -defaultMargin),
+            titleTextField.trailingAnchor.constraint(equalTo: betaButton.leadingAnchor, constant: -defaultMargin)
             ])
 
         let insets = titleTextField.textContainerInset
@@ -550,6 +577,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         view.addSubview(titlePlaceholderLabel)
         view.addSubview(separatorView)
         view.addSubview(placeholderLabel)
+        view.addSubview(betaButton)
+
         mediaProgressView.isHidden = true
         view.addSubview(mediaProgressView)
     }
