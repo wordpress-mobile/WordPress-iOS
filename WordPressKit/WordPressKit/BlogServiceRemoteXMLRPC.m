@@ -1,7 +1,10 @@
 #import "BlogServiceRemoteXMLRPC.h"
 #import "NSMutableDictionary+Helpers.h"
-#import "WordPress-Swift.h"
 #import "RemotePostType.h"
+#import "Logging.h"
+#import <WordPressKit/WordPressKit-Swift.h>
+@import NSObject_SafeExpectations;
+@import WordPressShared;
 
 static NSString * const RemotePostTypeNameKey = @"name";
 static NSString * const RemotePostTypeLabelKey = @"label";
