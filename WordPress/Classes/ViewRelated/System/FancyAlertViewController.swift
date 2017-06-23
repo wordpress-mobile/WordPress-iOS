@@ -102,6 +102,7 @@ class FancyAlertViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .clear
 
         dismissGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissTapped))
         view.addGestureRecognizer(dismissGestureRecognizer)
@@ -110,7 +111,6 @@ class FancyAlertViewController: UIViewController {
         wrapperView.layer.cornerRadius = Constants.cornerRadius
 
         headerImageWrapperView.backgroundColor = WPStyleGuide.lightGrey()
-        headerImageWrapperView.superview?.backgroundColor = WPStyleGuide.lightGrey()
         dividerView.backgroundColor = WPStyleGuide.lightGrey()
 
         titleLabel.textColor = WPStyleGuide.darkGrey()
@@ -155,6 +155,8 @@ class FancyAlertViewController: UIViewController {
 
         // If both primary buttons are hidden, the user can tap anywhere on the dialog to dismiss it
         dismissGestureRecognizer.isEnabled = bothButtonsHidden
+
+        view.layoutIfNeeded()
     }
 
     private func updateHeaderImage() {
