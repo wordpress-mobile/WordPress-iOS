@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Modal Info View Controller-->
+        <!--Fancy Alert View Controller-->
         <scene sceneID="C2X-eO-sRb">
             <objects>
-                <viewController id="ZA1-84-qnC" customClass="ModalInfoViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ZA1-84-qnC" customClass="FancyAlertViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bm6-pI-Hpq"/>
                         <viewControllerLayoutGuide type="bottom" id="mtg-gw-blh"/>
