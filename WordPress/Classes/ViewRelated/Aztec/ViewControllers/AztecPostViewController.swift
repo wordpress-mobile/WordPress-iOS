@@ -1136,7 +1136,7 @@ extension AztecPostViewController : UITextViewDelegate {
         var sanitizedText = input
 
         while let range = sanitizedText.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) {
-            sanitizedText = sanitizedText.replacingCharacters(in: range, with: "")
+            sanitizedText = sanitizedText.replacingCharacters(in: range, with: " ")
         }
 
         return sanitizedText
@@ -1151,7 +1151,7 @@ extension AztecPostViewController : UITextViewDelegate {
     ///     - range: the range that would be modified.
     ///     - text: the new text for the specified range.
     ///
-    /// - Returns: `true` if the moficiation can take place, `false` otherwise.
+    /// - Returns: `true` if the modification can take place, `false` otherwise.
     ///
     private func shouldChangeTitleText(in range: NSRange, replacementText text: String) -> Bool {
 
@@ -1165,9 +1165,8 @@ extension AztecPostViewController : UITextViewDelegate {
             return true
         }
 
-        var sanitizedInput = sanitizeInputForTitle(text)
-
-        let newlinesWereRemoved = sanitizedInput.characters.count != text.characters.count
+        let sanitizedInput = sanitizeInputForTitle(text)
+        let newlinesWereRemoved = sanitizedInput != text
 
         guard !newlinesWereRemoved else {
             titleTextField.insertText(sanitizedInput)
