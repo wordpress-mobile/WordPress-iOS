@@ -506,9 +506,6 @@
 		93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E53F1E9E5A180050D489 /* libsqlite3.tbd */; };
 		93F2E5421E9E5A350050D489 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5411E9E5A350050D489 /* QuickLook.framework */; };
 		93F2E5441E9E5A570050D489 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5431E9E5A570050D489 /* CoreSpotlight.framework */; };
-		93F2E54F1E9E5CB70050D489 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E54E1E9E5CB70050D489 /* CoreImage.framework */; };
-		93F2E5511E9E5CCD0050D489 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5501E9E5CCD0050D489 /* CoreVideo.framework */; };
-		93F2E5531E9E5CF00050D489 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5521E9E5CF00050D489 /* VideoToolbox.framework */; };
 		93FA59DD18D88C1C001446BC /* PostCategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DC18D88C1C001446BC /* PostCategoryService.m */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
@@ -2719,9 +2716,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8298F3921EEF3BA7008EB7F0 /* StoreKit.framework in Frameworks */,
-				93F2E5531E9E5CF00050D489 /* VideoToolbox.framework in Frameworks */,
-				93F2E5511E9E5CCD0050D489 /* CoreVideo.framework in Frameworks */,
-				93F2E54F1E9E5CB70050D489 /* CoreImage.framework in Frameworks */,
 				93F2E5441E9E5A570050D489 /* CoreSpotlight.framework in Frameworks */,
 				93F2E5421E9E5A350050D489 /* QuickLook.framework in Frameworks */,
 				931C56281ED323A300C590B5 /* WordPressShared.framework in Frameworks */,
@@ -7897,7 +7891,6 @@
 					"-l\"iconv\"",
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
-					"-framework",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D ALPHA_BUILD -D INTERNAL_BUILD";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.alpha;
@@ -8326,7 +8319,6 @@
 					"-l\"iconv\"",
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
-					"-framework",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D INTERNAL_BUILD";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.internal;
