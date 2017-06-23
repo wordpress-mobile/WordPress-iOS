@@ -3,25 +3,26 @@ import UIKit
 /// A small card-like view displaying helpful information or prompts to the user.
 /// Initialize using the `controllerWithConfiguration` static method.
 ///
-class ModalInfoViewController: UIViewController {
+class FancyAlertViewController: UIViewController {
 
     /// Intended method of initialization
-    static func controllerWithConfiguration(configuration: Config) -> ModalInfoViewController {
+    static func controllerWithConfiguration(configuration: Config) -> FancyAlertViewController {
         let infoController = controller()
         infoController.configuration = configuration
 
         return infoController
     }
 
-    private static func controller() -> ModalInfoViewController {
-        return UIStoryboard(name: "ModalInfo", bundle: Bundle.main).instantiateInitialViewController() as! ModalInfoViewController
+    private static func controller() -> FancyAlertViewController {
+        return UIStoryboard(name: "FancyAlerts", bundle: Bundle.main)
+            .instantiateInitialViewController() as! FancyAlertViewController
     }
 
     /// Enapsulates values for all UI components of the info dialog.
     ///
     struct Config {
         /// Convenience alias for a title and a handler for a UIButton
-        typealias ButtonConfig = (title: String, handler: ModalInfoButtonHandler?)
+        typealias ButtonConfig = (title: String, handler: FancyAlertButtonHandler?)
 
         /// The title of the dialog
         let titleText: String?
@@ -84,9 +85,9 @@ class ModalInfoViewController: UIViewController {
 
     /// Stores handlers for buttons passed in the current configuration
     ///
-    private var buttonHandlers = [UIButton: ModalInfoButtonHandler]()
+    private var buttonHandlers = [UIButton: FancyAlertButtonHandler]()
 
-    typealias ModalInfoButtonHandler = (ModalInfoViewController) -> Void
+    typealias FancyAlertButtonHandler = (FancyAlertViewController) -> Void
 
     /// The configuration determines the content and visibility of all UI
     /// components in the dialog. Changing this value after presenting the
