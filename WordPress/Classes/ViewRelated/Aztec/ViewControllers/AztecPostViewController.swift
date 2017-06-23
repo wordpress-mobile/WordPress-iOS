@@ -1224,23 +1224,32 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         updateFormatBar()
     }
 
+    func formatBar(_ formatBar: FormatBar, didChangeOverflowState overflowState: FormatBarOverflowState) {
+        let action = overflowState == .visible ? "made_visible" : "made_hidden"
+        trackFormatBarAnalytics(stat: .editorTappedMoreItems, action: action)
+    }
+
 
     func toggleBold() {
+        trackFormatBarAnalytics(stat: .editorTappedBold)
         richTextView.toggleBold(range: richTextView.selectedRange)
     }
 
 
     func toggleItalic() {
+        trackFormatBarAnalytics(stat: .editorTappedItalic)
         richTextView.toggleItalic(range: richTextView.selectedRange)
     }
 
 
     func toggleUnderline() {
+        trackFormatBarAnalytics(stat: .editorTappedUnderline)
         richTextView.toggleUnderline(range: richTextView.selectedRange)
     }
 
 
     func toggleStrikethrough() {
+        trackFormatBarAnalytics(stat: .editorTappedStrikethrough)
         richTextView.toggleStrikethrough(range: richTextView.selectedRange)
     }
 
@@ -1264,8 +1273,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                     let listType = Constants.lists[selected]
                                                     switch listType {
                                                     case .unordered:
+                                                        self?.trackFormatBarAnalytics(stat: .editorTappedUnorderedList)
                                                         self?.richTextView.toggleUnorderedList(range: range)
                                                     case .ordered:
+                                                        self?.trackFormatBarAnalytics(stat: .editorTappedOrderedList)
                                                         self?.richTextView.toggleOrderedList(range: range)
                                                     }
 
@@ -1275,6 +1286,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
 
     func toggleBlockquote() {
+        trackFormatBarAnalytics(stat: .editorTappedBlockquote)
         richTextView.toggleBlockquote(range: richTextView.selectedRange)
     }
 
@@ -1301,6 +1313,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
 
     func toggleLink() {
+        trackFormatBarAnalytics(stat: .editorTappedLink)
+
         var linkTitle = ""
         var linkURL: URL? = nil
         var linkRange = richTextView.selectedRange
@@ -1383,6 +1397,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let removeAction = UIAlertAction(title: removeButtonTitle,
                                          style: UIAlertActionStyle.destructive,
                                          handler: { [weak self] action in
+                                            self?.trackFormatBarAnalytics(stat: .editorTappedUnlink)
                                             self?.richTextView.becomeFirstResponder()
                                             self?.richTextView.removeLink(inRange: range)
             })
@@ -1420,6 +1435,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func presentMediaPicker(animated: Bool = true) {
+        trackFormatBarAnalytics(stat: .editorTappedImage)
 
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
@@ -1436,6 +1452,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             displayMediaIsUploadingAlert()
             return
         }
+
+        trackFormatBarAnalytics(stat: .editorTappedHTML)
         mode.toggle()
     }
 
@@ -1448,6 +1466,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {
+        trackFormatBarAnalytics(stat: .editorTappedHeader)
+
         let headerOptions = Constants.headers.map { (headerType) -> OptionsTableViewOption in
             return OptionsTableViewOption(image: headerType.iconImage,
                                           title: NSAttributedString(string: headerType.description,
@@ -1461,6 +1481,9 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                   selectedRowIndex: selectedIndex,
                                                   onSelect: { [weak self] selected in
                                                     guard let range = self?.richTextView.selectedRange else { return }
+
+                                                    let selectedStyle = Analytics.headerStyleValues[selected]
+                                                    self?.trackFormatBarAnalytics(stat: .editorTappedHeaderSelection, headingStyle: selectedStyle)
 
                                                     self?.richTextView.toggleHeader(Constants.headers[selected], range: range)
                                                     self?.optionsViewController = nil
@@ -1533,10 +1556,12 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func insertHorizontalRuler() {
+        trackFormatBarAnalytics(stat: .editorTappedHorizontalRule)
         richTextView.replaceRangeWithHorizontalRuler(richTextView.selectedRange)
     }
 
     func insertMore() {
+        trackFormatBarAnalytics(stat: .editorTappedMore)
         richTextView.replaceRangeWithCommentAttachment(richTextView.selectedRange, text: Constants.moreAttachmentText)
     }
 
@@ -1571,6 +1596,20 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             }
         }
         return .none
+    }
+
+    private func trackFormatBarAnalytics(stat: WPAnalyticsStat, action: String? = nil, headingStyle: String? = nil) {
+        var properties = [WPAppAnalyticsKeyEditorSource: Analytics.editorSource]
+
+        if let action = action {
+            properties["action"] = action
+        }
+
+        if let headingStyle = headingStyle {
+            properties["heading_style"] = headingStyle
+        }
+
+        WPAppAnalytics.track(stat, withProperties: properties, with: post)
     }
 
 
@@ -2511,6 +2550,7 @@ extension AztecPostViewController {
 
     struct Analytics {
         static let editorSource             = "aztec"
+        static let headerStyleValues = ["none", "h1", "h2", "h3", "h4", "h5", "h6"]
     }
 
     struct Assets {
