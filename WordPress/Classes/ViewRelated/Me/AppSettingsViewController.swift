@@ -87,7 +87,7 @@ class AppSettingsViewController: UITableViewController {
 
         if editorSettings.nativeEditorAvailable && editorSettings.visualEditorEnabled {
             let nativeEditor = SwitchRow(
-                title: NSLocalizedString("Native Editor", comment: "Option to enable the native visual editor"),
+                title: NSLocalizedString("Beta Editor", comment: "Option to enable the native visual editor"),
                 value: editorSettings.nativeEditorEnabled,
                 onChange: nativeEditorChanged()
             )
