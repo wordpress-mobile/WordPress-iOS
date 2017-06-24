@@ -3274,13 +3274,19 @@
 				FFC6ADD21B56F295002F3C84 /* AboutViewController.swift */,
 				FFC6ADD31B56F295002F3C84 /* AboutViewController.xib */,
 				E14B40FC1C58B806005046F6 /* AccountSettingsViewController.swift */,
+				93069F571762410B000C966D /* ActivityLogDetailViewController.h */,
+				93069F581762410B000C966D /* ActivityLogDetailViewController.m */,
+				93069F54176237A4000C966D /* ActivityLogViewController.h */,
+				93069F55176237A4000C966D /* ActivityLogViewController.m */,
 				FFA162301CB7031A00E2E110 /* AppSettingsViewController.swift */,
-				E1A8CACA1C22FF7C0038689E /* MeViewController.swift */,
+				B53B02B21CAC3AAC003190A0 /* GravatarPickerViewController.swift */,
 				315FC2C31A2CB29300E7CDA2 /* MeHeaderView.h */,
 				315FC2C41A2CB29300E7CDA2 /* MeHeaderView.m */,
+				E1A8CACA1C22FF7C0038689E /* MeViewController.swift */,
 				E1B23B071BFB3B370006559B /* MyProfileViewController.swift */,
 				E14B40FE1C58B93F005046F6 /* SettingsCommon.swift */,
-				B53B02B21CAC3AAC003190A0 /* GravatarPickerViewController.swift */,
+				93027BB61758332300483FFD /* SupportViewController.h */,
+				93027BB71758332300483FFD /* SupportViewController.m */,
 			);
 			path = Me;
 			sourceTree = "<group>";
@@ -3520,19 +3526,6 @@
 				0879FC151E9301DD00E1EFC8 /* MediaTests.swift */,
 			);
 			name = Models;
-			sourceTree = "<group>";
-		};
-		5D87E10D15F512380012C595 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				93069F571762410B000C966D /* ActivityLogDetailViewController.h */,
-				93069F581762410B000C966D /* ActivityLogDetailViewController.m */,
-				93069F54176237A4000C966D /* ActivityLogViewController.h */,
-				93069F55176237A4000C966D /* ActivityLogViewController.m */,
-				93027BB61758332300483FFD /* SupportViewController.h */,
-				93027BB71758332300483FFD /* SupportViewController.m */,
-			);
-			path = Settings;
 			sourceTree = "<group>";
 		};
 		5D98A1491B6C09730085E904 /* Style */ = {
@@ -3818,7 +3811,6 @@
 				8298F38D1EEF2B15008EB7F0 /* Ratings */,
 				CCB3A03814C8DD5100D43C3F /* Reader */,
 				1719633E1D378D1E00898E8B /* Search */,
-				5D87E10D15F512380012C595 /* Settings */,
 				3792259E12F6DBCC00F2176A /* Stats */,
 				319D6E8219E44C7B0013871C /* Suggestions */,
 				8584FDB619243AC40019C02E /* System */,
@@ -3902,17 +3894,17 @@
 		8584FDB619243AC40019C02E /* System */ = {
 			isa = PBXGroup;
 			children = (
-				310186691A373B01008F7DF6 /* WPTabBarController.h */,
-				3101866A1A373B01008F7DF6 /* WPTabBarController.m */,
-				5DBFC8AA1A9C0EEF00E00DE4 /* WPScrollableViewController.h */,
-				FFA9148D1BA6E5170068F8BF /* RotationAwareNavigationViewController.h */,
-				FFA9148E1BA6E5170068F8BF /* RotationAwareNavigationViewController.m */,
+				B5F641B21E37C36700B7819F /* AdaptiveNavigationController.swift */,
+				171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */,
+				1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */,
 				E1DD4CCA1CAE41B800C3863E /* PagedViewController.swift */,
 				E1DD4CCC1CAE41C800C3863E /* PagedViewController.xib */,
-				B5F641B21E37C36700B7819F /* AdaptiveNavigationController.swift */,
-				1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */,
-				171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */,
+				FFA9148D1BA6E5170068F8BF /* RotationAwareNavigationViewController.h */,
+				FFA9148E1BA6E5170068F8BF /* RotationAwareNavigationViewController.m */,
+				5DBFC8AA1A9C0EEF00E00DE4 /* WPScrollableViewController.h */,
 				176DEEE81D4615FE00331F30 /* WPSplitViewController.swift */,
+				310186691A373B01008F7DF6 /* WPTabBarController.h */,
+				3101866A1A373B01008F7DF6 /* WPTabBarController.m */,
 			);
 			path = System;
 			sourceTree = "<group>";
