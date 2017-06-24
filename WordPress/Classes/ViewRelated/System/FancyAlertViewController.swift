@@ -127,6 +127,16 @@ class FancyAlertViewController: UIViewController {
         updateViewConfiguration()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) {
+            headerImageWrapperView.isHiddenInStackView = true
+        } else if let _ = configuration?.headerImage {
+            headerImageWrapperView.isHiddenInStackView = false
+        }
+    }
+
     private func updateViewConfiguration() {
         guard isViewLoaded else { return }
         guard let configuration = configuration else { return }
