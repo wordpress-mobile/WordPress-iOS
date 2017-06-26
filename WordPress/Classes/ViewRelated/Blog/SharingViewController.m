@@ -15,6 +15,7 @@ typedef NS_ENUM(NSInteger, SharingSectionIdentifier){
 };
 
 static NSString *const CellIdentifier = @"CellIdentifier";
+static NSString *const GooglePlusServiceId = @"google_plus";
 
 @interface SharingViewController ()
 
@@ -123,6 +124,16 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    PublicizeService *publicizer = self.publicizeServices[indexPath.row];
+    if ([publicizer.serviceID isEqualToString:GooglePlusServiceId]) {
+        return 0;
+    } else {
+        return UITableViewAutomaticDimension;
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -150,6 +161,11 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     PublicizeService *publicizer = self.publicizeServices[indexPath.row];
     NSArray *connections = [self connectionsForService:publicizer];
+    
+    if ([publicizer.serviceID isEqualToString:GooglePlusServiceId]) {
+        cell.hidden = YES;
+        return;
+    }
 
     // Configure the image
     UIImage *image = [WPStyleGuide iconForService: publicizer.serviceID];
