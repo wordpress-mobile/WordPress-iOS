@@ -134,6 +134,8 @@ class FancyAlertViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        accessibilityViewIsModal = true
+
         view.backgroundColor = .clear
 
         dismissGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissTapped))
@@ -250,6 +252,11 @@ class FancyAlertViewController: UIViewController {
         if let handler = buttonHandlers[sender] {
             handler(self)
         }
+    }
+
+    override func accessibilityPerformEscape() -> Bool {
+        dismissTapped()
+        return true
     }
 }
 
