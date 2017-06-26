@@ -4,6 +4,6 @@ import Foundation
     var name = ""
     var tagline = ""
     var url = ""
-    var jetpack = false
+    var hasJetpack = false
     var icon = ""
 }
