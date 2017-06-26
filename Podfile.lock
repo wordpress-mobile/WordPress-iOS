@@ -145,9 +145,6 @@ EXTERNAL SOURCES:
   Starscream:
     :branch: wordpress-ios
     :git: https://github.com/wordpress-mobile/Starscream
-  WordPress-Aztec-iOS:
-    :commit: 111f22d959e6e0ae6304ef1886413ee0437105a4
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -159,9 +156,6 @@ CHECKOUT OPTIONS:
   Starscream:
     :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
     :git: https://github.com/wordpress-mobile/Starscream
-  WordPress-Aztec-iOS:
-    :commit: 111f22d959e6e0ae6304ef1886413ee0437105a4
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -200,6 +194,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 3972158f79727b194ffd0adf3fe583f2d859af72
+PODFILE CHECKSUM: e36193f69c750fb5da733962621ad3185abefc14
 
 COCOAPODS: 1.2.1
