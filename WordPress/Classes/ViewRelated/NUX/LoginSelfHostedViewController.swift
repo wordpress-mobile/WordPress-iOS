@@ -5,7 +5,7 @@ import WordPressShared
 /// before presenting this view controller.
 ///
 class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardResponder, SigninWPComSyncHandler, LoginViewController {
-    @IBOutlet var siteHeaderView: BlogDetailHeaderView!
+    @IBOutlet var siteHeaderView: SiteInfoHeaderView!
     @IBOutlet var siteAddressStackView: UIStackView!
     @IBOutlet var siteAddressLabel: UILabel!
     @IBOutlet var usernameField: WPWalkthroughTextField!
