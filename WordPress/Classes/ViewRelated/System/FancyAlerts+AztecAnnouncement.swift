@@ -1,6 +1,19 @@
 import UIKit
 
 extension FancyAlertViewController {
+    private enum Constants {
+        static let successAnimationTransform: CGAffineTransform = {
+            let translate =
+                CGAffineTransform(translationX: 0, y: 60)
+            let scale = CGAffineTransform(scaleX: 0.01, y: 0.01)
+            let rotate = CGAffineTransform(rotationAngle: 0.261799)
+
+            return scale.concatenating(rotate).concatenating(translate)
+        }()
+        static let successAnimationDuration: TimeInterval = 0.8
+        static let successAnimationDampingRaio: CGFloat = 0.6
+    }
+
     static func aztecAnnouncementController() -> FancyAlertViewController {
         struct Strings {
             static let titleText = NSLocalizedString("Try the New Editor", comment: "Title of alert prompting users to try the new Aztec editor")
@@ -17,7 +30,20 @@ extension FancyAlertViewController {
             let settings = EditorSettings(database: UserDefaults.standard)
             settings.nativeEditorEnabled = true
 
-            controller.configuration = aztecAnnouncementSuccessConfig
+            controller.setViewConfiguration(aztecAnnouncementSuccessConfig,
+                                            animated: true,
+                                            alongside: { controller in
+                                                UIView.performWithoutAnimation {
+                                                    controller.headerImageView.transform = Constants.successAnimationTransform
+                                                }
+
+                                                UIViewPropertyAnimator(duration: Constants.successAnimationDuration,
+                                                                       dampingRatio: Constants.successAnimationDampingRaio,
+                                                                       animations: {
+                                                    controller.headerImageView.transform = CGAffineTransform.identity
+                                                }).startAnimation()
+
+            })
         })
 
         let cancelButton = Button(Strings.notNow, { controller in
