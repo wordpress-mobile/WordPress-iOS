@@ -1473,7 +1473,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                    selectedRowIndex index: Int?,
                                                    onSelect: OptionsTableViewController.OnSelectHandler?) {
         // Hide the input view if we're already showing these options
-        if let optionsViewController = optionsViewController ?? (presentedViewController as? OptionsTableViewController), optionsViewController.options == options {            
+        if let optionsViewController = optionsViewController ?? (presentedViewController as? OptionsTableViewController), optionsViewController.options == options {
             self.optionsViewController = nil
             changeRichTextInputView(to: nil)
             return
