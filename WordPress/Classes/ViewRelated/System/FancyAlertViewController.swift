@@ -53,6 +53,10 @@ class FancyAlertViewController: UIViewController {
         static let buttonFont = UIFont.boldSystemFont(ofSize: 14.0)
         static let headerImageVerticalConstraintCompact: CGFloat = 0.0
         static let headerImageVerticalConstraintRegular: CGFloat = 20.0
+
+        static let fadeAnimationDuration: TimeInterval = 0.3
+        static let resizeAnimationDuration: TimeInterval = 0.4
+        static let resizeAnimationDelay: TimeInterval = 0.1
     }
 
     // MARK - IBOutlets
@@ -79,6 +83,8 @@ class FancyAlertViewController: UIViewController {
     @IBOutlet weak var moreInfoButton: UIButton!
     @IBOutlet weak var titleAccessoryButton: UIButton!
 
+    @IBOutlet var contentViews: [UIView]!
+
     /// Gesture recognizer for taps on the dialog if no buttons are present
     ///
     private var dismissGestureRecognizer: UITapGestureRecognizer!
@@ -96,7 +102,20 @@ class FancyAlertViewController: UIViewController {
     ///
     var configuration: Config? {
         didSet {
-            updateViewConfiguration()
+            if oldValue != nil {
+                fadeAllViews(visible: false, completion: { _ in
+                    UIView.animate(withDuration: Constants.resizeAnimationDuration,
+                                   delay: Constants.resizeAnimationDelay,
+                                   options: [],
+                                   animations: {
+                        self.updateViewConfiguration()
+                    }, completion: { _ in
+                        self.fadeAllViews(visible: true)
+                    })
+                })
+            } else {
+                updateViewConfiguration()
+            }
         }
     }
 
@@ -136,6 +155,8 @@ class FancyAlertViewController: UIViewController {
             headerImageWrapperView.isHiddenInStackView = false
         }
     }
+
+    /// MARK: - View configuration
 
     private func updateViewConfiguration() {
         guard isViewLoaded else { return }
@@ -205,6 +226,14 @@ class FancyAlertViewController: UIViewController {
                                                 left: horizontalInset,
                                                 bottom: verticalInset,
                                                 right: horizontalInset)
+    }
+
+    // MARK: - Animation
+
+    func fadeAllViews(visible: Bool, completion: ((Bool) -> Void)? = nil) {
+        UIView.animate(withDuration: Constants.fadeAnimationDuration, animations: {
+            self.contentViews.forEach({ $0.alpha = (visible) ? WPAlphaFull : WPAlphaZero })
+        }, completion: completion)
     }
 
     // MARK: - Actions
