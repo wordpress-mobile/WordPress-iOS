@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "MediaServiceRemote.h"
-#import "SiteServiceRemoteWordPressComREST.h"
+@import WordPressKit;
 
 NS_ASSUME_NONNULL_BEGIN
 
