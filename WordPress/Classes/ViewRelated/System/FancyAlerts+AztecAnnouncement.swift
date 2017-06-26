@@ -48,7 +48,7 @@ extension FancyAlertViewController {
 
         let titleAccessoryButton = Button(Strings.beta, { _ in })
 
-        let image = #imageLiteral(resourceName: "wp-illustration-thank-you")
+        let image = UIImage(named: "wp-illustration-thank-you")
 
         return FancyAlertViewController.Config(titleText: Strings.titleText,
                                                bodyText: Strings.bodyText,
@@ -56,3 +56,21 @@ extension FancyAlertViewController {
                                                defaultButton: nil, cancelButton: nil, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton)
     }()
 }
+
+// MARK: - User Defaults
+
+extension UserDefaults {
+    private enum Keys: String {
+        case aztecAnnouncement = "AztecBetaAnnouncementWasDisplayed"
+    }
+
+    var aztecAnnouncementWasDisplayed: Bool {
+        get {
+            return bool(forKey: Keys.aztecAnnouncement.rawValue)
+        }
+        set {
+            set(newValue, forKey: Keys.aztecAnnouncement.rawValue)
+        }
+    }
+}
+
