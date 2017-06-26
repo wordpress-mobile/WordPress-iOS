@@ -99,7 +99,7 @@ PODS:
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
-  - WordPressCom-Analytics-iOS (0.1.29)
+  - WordPressCom-Analytics-iOS (0.1.30)
   - WordPressComKit (0.0.6):
     - Alamofire (= 4.0.1)
   - WPMediaPicker (0.18)
@@ -117,7 +117,7 @@ DEPENDENCIES:
   - FormatterKit/TimeIntervalFormatter (~> 1.8.1)
   - Gridicons (= 0.8)
   - HockeySDK (~> 4.1.5)
-  - lottie-ios
+  - lottie-ios (~> 1.5.1)
   - MGSwipeTableCell (~> 1.5.6)
   - MRProgress (~> 0.7.0)
   - Nimble (~> 7.0.0)
@@ -131,9 +131,9 @@ DEPENDENCIES:
   - Starscream (from `https://github.com/wordpress-mobile/Starscream`, branch `wordpress-ios`)
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.4)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `111f22d959e6e0ae6304ef1886413ee0437105a4`)
   - WordPress-iOS-Editor (= 1.9.2)
-  - WordPressCom-Analytics-iOS (= 0.1.29)
+  - WordPressCom-Analytics-iOS (= 0.1.30)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.18)
   - wpxmlrpc (= 0.8.3)
@@ -145,6 +145,9 @@ EXTERNAL SOURCES:
   Starscream:
     :branch: wordpress-ios
     :git: https://github.com/wordpress-mobile/Starscream
+  WordPress-Aztec-iOS:
+    :commit: 111f22d959e6e0ae6304ef1886413ee0437105a4
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -156,6 +159,9 @@ CHECKOUT OPTIONS:
   Starscream:
     :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
     :git: https://github.com/wordpress-mobile/Starscream
+  WordPress-Aztec-iOS:
+    :commit: 111f22d959e6e0ae6304ef1886413ee0437105a4
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -187,13 +193,13 @@ SPEC CHECKSUMS:
   Starscream: 4ee1be18da5170faafce1698225b61f9765634d5
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 859ca14e0f6d9cc6d99a173fa07e5862fe67a749
+  WordPress-Aztec-iOS: 991f6bb3aaadda72356620e86eb7702f37973b7d
   WordPress-iOS-Editor: e71fa013ac3bf8f448d0ee43421beed3f56500f0
-  WordPressCom-Analytics-iOS: db0e9449bafaaa7beb2c7f663ecc806d45da992e
+  WordPressCom-Analytics-iOS: b7ecda7af610231c0bc2130849f7c0fdc58c1678
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: ea87df317ca6af36fb9b70c8ae8ee21c7233cb65
+PODFILE CHECKSUM: bfd7010b4612d9f533dd8255fc4d4fa8717c9588
 
 COCOAPODS: 1.2.1

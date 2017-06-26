@@ -70,8 +70,10 @@ open class WordPressOrgXMLRPCValidator: NSObject {
 
         validateXMLRPCURL(xmlrpcURL, success: success, failure: { (error) in
                 DDLogError(error.localizedDescription)
-                if error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication ||
-                   error.domain == String(reflecting: WordPressOrgXMLRPCValidatorError.self) && error.code == WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.rawValue {
+                if (error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication) ||
+                    (error.domain == NSURLErrorDomain && error.code == NSURLErrorCannotFindHost) ||
+                    (error.domain == NSURLErrorDomain && error.code == NSURLErrorNetworkConnectionLost) ||
+                    (error.domain == String(reflecting: WordPressOrgXMLRPCValidatorError.self) && error.code == WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.rawValue) {
                     failure(error)
                     return
                 }
