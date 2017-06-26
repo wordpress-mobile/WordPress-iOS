@@ -201,6 +201,10 @@ class FancyAlertViewController: UIViewController {
         dismissGestureRecognizer.isEnabled = bothButtonsHidden
 
         view.layoutIfNeeded()
+
+        titleLabel.accessibilityHint = (bothButtonsHidden) ? NSLocalizedString("Double tap to dismiss", comment: "Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it") : nil
+
+        UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, titleLabel)
     }
 
     private func updateHeaderImage() {
