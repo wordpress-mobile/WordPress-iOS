@@ -204,7 +204,7 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
     }
 
 
-    /// Configure the site header to show the site address labe.
+    /// Configure the site header to show the site address label.
     ///
     func configureSiteAddressHeader() {
         siteAddressStackView.isHidden = false
