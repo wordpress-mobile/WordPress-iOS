@@ -9,13 +9,9 @@
 #import "PostCategoryService.h"
 #import "CommentService.h"
 #import "PostService.h"
-#import "BlogServiceRemote.h"
-#import "BlogServiceRemoteXMLRPC.h"
-#import "BlogServiceRemoteREST.h"
 #import "TodayExtensionService.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
-#import "RemotePostType.h"
 #import "PostType.h"
 @import WordPressKit;
 @import WordPressShared;
