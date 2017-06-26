@@ -1551,10 +1551,18 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
     }
 
+    // MARK: - Media Input toolbar button actions
+
+    /// Method to be called when the grid icon is pressed on the media input toolbar.
+    ///
+    /// - Parameter sender: the button that was pressed.
     func mediaAddShowFullScreen(_ sender: UIBarButtonItem) {
         presentMediaPickerFullScreen(animated: true)
     }
 
+    /// Method to be called when canceled is pressed.
+    ///
+    /// - Parameter sender: the button that was pressed.
     func mediaAddInputCancelled(_ sender: UIBarButtonItem) {
 
         guard let mediaPicker = mediaPickerInputViewController?.mediaPicker else {
@@ -1563,6 +1571,9 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         mediaPickerControllerDidCancel(mediaPicker)
     }
 
+    /// Method to be called when done is pressed on the media input toolbar.
+    ///
+    /// - Parameter sender: the button that was pressed.
     func mediaAddInputDone(_ sender: UIBarButtonItem) {
 
         guard let mediaPicker = mediaPickerInputViewController?.mediaPicker,
