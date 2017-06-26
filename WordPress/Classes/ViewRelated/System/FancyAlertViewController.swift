@@ -62,28 +62,28 @@ class FancyAlertViewController: UIViewController {
     // MARK - IBOutlets
 
     /// Wraps the entire view to give it a background and rounded corners
-    @IBOutlet weak var wrapperView: UIView!
+    @IBOutlet private weak var wrapperView: UIView!
 
-    @IBOutlet weak var headerImageWrapperView: UIView!
-    @IBOutlet weak var headerImageView: UIImageView!
-    @IBOutlet weak var headerImageViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var headerImageViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var headerImageWrapperView: UIView!
+    @IBOutlet private(set) weak var headerImageView: UIImageView!
+    @IBOutlet private weak var headerImageViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var headerImageViewBottomConstraint: NSLayoutConstraint!
 
-    @IBOutlet weak var titleStackView: UIStackView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var bodyLabel: UILabel!
+    @IBOutlet private weak var titleStackView: UIStackView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var bodyLabel: UILabel!
 
     /// Divides the primary buttons from the rest of the dialog
-    @IBOutlet weak var dividerView: UIView!
-    @IBOutlet weak var buttonWrapperView: UIView!
-    @IBOutlet weak var buttonStackView: UIStackView!
+    @IBOutlet private weak var dividerView: UIView!
+    @IBOutlet private weak var buttonWrapperView: UIView!
+    @IBOutlet private weak var buttonStackView: UIStackView!
 
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var defaultButton: UIButton!
-    @IBOutlet weak var moreInfoButton: UIButton!
-    @IBOutlet weak var titleAccessoryButton: UIButton!
+    @IBOutlet private weak var cancelButton: UIButton!
+    @IBOutlet private weak var defaultButton: UIButton!
+    @IBOutlet private weak var moreInfoButton: UIButton!
+    @IBOutlet private weak var titleAccessoryButton: UIButton!
 
-    @IBOutlet var contentViews: [UIView]!
+    @IBOutlet private var contentViews: [UIView]!
 
     /// Gesture recognizer for taps on the dialog if no buttons are present
     ///
@@ -135,7 +135,7 @@ class FancyAlertViewController: UIViewController {
         titleLabel.textColor = WPStyleGuide.darkGrey()
         bodyLabel.textColor = WPStyleGuide.greyDarken10()
 
-        configureBetaButton(titleAccessoryButton)
+        WPStyleGuide.configureBetaButton(titleAccessoryButton)
 
         defaultButton.titleLabel?.font = Constants.buttonFont
         cancelButton.titleLabel?.font = Constants.buttonFont
@@ -209,23 +209,6 @@ class FancyAlertViewController: UIViewController {
 
         button.setTitle(buttonConfig.title, for: .normal)
         buttonHandlers[button] = buttonConfig.handler
-    }
-
-    func configureBetaButton(_ button: UIButton) {
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 11.0)
-        button.layer.borderWidth = 1.0
-        button.layer.cornerRadius = 3.0
-
-        button.tintColor = WPStyleGuide.darkGrey()
-        button.setTitleColor(WPStyleGuide.darkGrey(), for: .disabled)
-        button.layer.borderColor = WPStyleGuide.greyLighten20().cgColor
-
-        let verticalInset = CGFloat(6.0)
-        let horizontalInset = CGFloat(8.0)
-        button.contentEdgeInsets = UIEdgeInsets(top: verticalInset,
-                                                left: horizontalInset,
-                                                bottom: verticalInset,
-                                                right: horizontalInset)
     }
 
     // MARK: - Animation
