@@ -41,8 +41,4 @@
     return @"";
 }
 
-+ (NSString *)lookbackToken {
-   return @"";
-}
-
 @end
