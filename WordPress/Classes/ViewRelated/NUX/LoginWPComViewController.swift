@@ -44,4 +44,40 @@ class LoginWPComViewController: SigninWPComViewController, LoginViewController {
         forgotPasswordButton.setTitle(forgotPasswordTitle, for: UIControlState())
         forgotPasswordButton.setTitle(forgotPasswordTitle, for: .highlighted)
     }
+
+    /// Sets the text of the error label.
+    /// - Note: this should become part of LoginViewController -nh
+    ///
+    func displayError(message: String) {
+        statusLabel.text = message
+    }
+
+    /// Validates what is entered in the various form fields and, if valid,
+    /// proceeds with the submit action.
+    ///
+    override func validateForm() {
+        view.endEditing(true)
+        displayError(message: "")
+
+        // Is everything filled out?
+        if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
+            let errorMsg = NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields.")
+            displayError(message: errorMsg)
+//            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Title of an error message"),
+//                              message: NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."),
+//                              withSupportButton: false)
+            
+            return
+        }
+        
+        // If the username is not reserved proceed with the signin
+        if SigninHelpers.isUsernameReserved(loginFields.username) {
+            handleReservedUsername(loginFields.username)
+            return
+        }
+        
+        configureViewLoading(true)
+        
+        loginFacade.signIn(with: loginFields)
+    }
 }
