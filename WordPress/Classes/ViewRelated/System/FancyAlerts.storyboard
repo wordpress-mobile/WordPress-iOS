@@ -155,9 +155,9 @@
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstItem="Ut8-yb-neA" firstAttribute="leading" secondItem="fve-0t-icO" secondAttribute="leading" constant="20" id="ZlB-UC-pgR"/>
-                                                            <constraint firstItem="Ut8-yb-neA" firstAttribute="top" secondItem="fve-0t-icO" secondAttribute="top" constant="20" id="dmr-Er-FDx"/>
+                                                            <constraint firstItem="Ut8-yb-neA" firstAttribute="top" secondItem="fve-0t-icO" secondAttribute="top" priority="998" constant="20" id="dmr-Er-FDx"/>
                                                             <constraint firstAttribute="trailing" secondItem="Ut8-yb-neA" secondAttribute="trailing" constant="20" id="nMz-Em-xwW"/>
-                                                            <constraint firstAttribute="bottom" secondItem="Ut8-yb-neA" secondAttribute="bottom" constant="20" id="vQR-bH-LzU"/>
+                                                            <constraint firstAttribute="bottom" secondItem="Ut8-yb-neA" secondAttribute="bottom" priority="999" constant="20" id="vQR-bH-LzU"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>
