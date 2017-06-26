@@ -1778,7 +1778,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         if let headingStyle = headingStyle {
             properties["heading_style"] = headingStyle
         }
-        
         WPAppAnalytics.track(stat, withProperties: properties, with: post)
     }
 
