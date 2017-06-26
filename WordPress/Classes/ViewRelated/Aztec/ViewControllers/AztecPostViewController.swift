@@ -1540,11 +1540,11 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func insertHorizontalRuler() {
-        richTextView.replaceRangeWithHorizontalRuler(richTextView.selectedRange)
+        richTextView.replaceWithHorizontalRuler(at: richTextView.selectedRange)
     }
 
     func insertMore() {
-        richTextView.replaceRangeWithCommentAttachment(richTextView.selectedRange, text: Constants.moreAttachmentText)
+        richTextView.replaceWithComment(at: richTextView.selectedRange, text: Constants.moreAttachmentText)
     }
 
     func changeRichTextInputView(to: UIView?) {
@@ -1917,7 +1917,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func insertDeviceImage(phAsset: PHAsset) {
-        let attachment = richTextView.insertImage(at: self.richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, placeHolderImage:
+        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, placeHolderImage:
                 Assets.defaultMissingImage)
 
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
@@ -1943,7 +1943,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func insertDeviceVideo(phAsset: PHAsset) {
-        let attachment = richTextView.insertVideo(at: richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+        let attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
 
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
@@ -1982,14 +1982,14 @@ extension AztecPostViewController {
             return
         }
         if media.mediaType == .image {
-            let _ = richTextView.insertImage(at: richTextView.selectedRange, sourceURL: remoteURL, placeHolderImage: Assets.defaultMissingImage)
+            let _ = richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: remoteURL, placeHolderImage: Assets.defaultMissingImage)
             WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
         } else if media.mediaType == .video {
             var posterURL: URL?
             if let posterURLString = media.remoteThumbnailURL {
                 posterURL = URL(string: posterURLString)
             }
-            let attachment = richTextView.insertVideo(at: richTextView.selectedRange
+            let attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange
                 , sourceURL: remoteURL, posterURL: posterURL, placeHolderImage: Assets.defaultMissingImage)
             if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
                 attachment.videoPressID = videoPressGUID
@@ -2008,12 +2008,12 @@ extension AztecPostViewController {
         }
         var attachment: MediaAttachment?
         if media.mediaType == .image {
-            attachment = self.richTextView.insertImage(at: richTextView.selectedRange, sourceURL:tempMediaURL, placeHolderImage: Assets.defaultMissingImage)
+            attachment = self.richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL:tempMediaURL, placeHolderImage: Assets.defaultMissingImage)
             WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
         } else if media.mediaType == .video,
             let remoteURLStr = media.remoteURL,
             let remoteURL = URL(string: remoteURLStr) {
-            attachment = richTextView.insertVideo(at: richTextView.selectedRange, sourceURL: remoteURL, posterURL: media.absoluteThumbnailLocalURL, placeHolderImage: Assets.defaultMissingImage)
+            attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: remoteURL, posterURL: media.absoluteThumbnailLocalURL, placeHolderImage: Assets.defaultMissingImage)
             WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
         }
         if let attachment = attachment {
