@@ -14,6 +14,9 @@ extension FancyAlertViewController {
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
         let defaultButton = Button(Strings.tryIt, { controller in
+            let settings = EditorSettings(database: UserDefaults.standard)
+            settings.nativeEditorEnabled = true
+
             controller.configuration = aztecAnnouncementSuccessConfig
         })
 
