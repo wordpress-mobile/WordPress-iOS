@@ -113,15 +113,7 @@ print <<-EOF
 EOF
 end
 
-def print_lookback_token(lookback_token)
-print <<-EOF
-+ (NSString *)lookbackToken {
-  return @"#{lookback_token}";
-}
-EOF
-end
-
-def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, lookback_token)
+def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -136,7 +128,6 @@ EOF
   print_helpshift_domain_name(helpshift_domain_name)
   print_helpshift_app_id(helpshift_app_id)
   print_debugging_key(debugging_key)
-  print_lookback_token(lookback_token)
   printf("@end\n")
 end
 
@@ -162,7 +153,6 @@ helpshift_api_key = nil
 helpshift_domain_name = nil
 helpshift_app_id = nil
 debugging_key = nil
-lookback_token = nil
 File.open(path) do |f|
   f.each_line do |l|
     (k,v) = l.split("=")
@@ -186,8 +176,6 @@ File.open(path) do |f|
       helpshift_app_id = v.chomp
     elsif k == "DEBUGGING_KEY"
       debugging_key = v.chomp
-    elsif k == "LOOKBACK_TOKEN"
-      lookback_token = v.chomp
     end
   end
 end
@@ -221,10 +209,6 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
     $stderr.puts "warning: Helpshift keys not found"
   end
 
-  if lookback_token.nil?
-    $stderr.puts "warning: Lookback token not found"
-  end
-
   if configuration == "Release-Internal"
     if hockeyapp.nil?
       $stderr.puts "warning: HockeyApp App Id not found"
@@ -232,4 +216,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, lookback_token)
+print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
