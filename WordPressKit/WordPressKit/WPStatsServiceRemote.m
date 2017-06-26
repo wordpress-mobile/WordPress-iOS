@@ -1682,8 +1682,12 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
 #pragma mark - Private convenience methods for data conversion
 
 
-- (NSDate * _Nullable)deviceLocalDateForString:(NSString * _Nonnull)dateString withPeriodUnit:(StatsPeriodUnit)unit
+- (NSDate * _Nullable)deviceLocalDateForString:(NSString * _Nullable)dateString withPeriodUnit:(StatsPeriodUnit)unit
 {
+    if (dateString == nil) {
+        return nil;
+    }
+
     switch (unit) {
         case StatsPeriodUnitDay:
         case StatsPeriodUnitMonth:
@@ -1762,8 +1766,8 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
 }
 
 
-- (NSString *)nicePointNameForDate:(NSDate *)date forStatsPeriodUnit:(StatsPeriodUnit)unit {
-    if (!date) {
+- (NSString * _Nonnull)nicePointNameForDate:(NSDate * _Nullable)date forStatsPeriodUnit:(StatsPeriodUnit)unit {
+    if (date == nil) {
         return @"";
     }
     
@@ -1796,9 +1800,9 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
     return [self localizedStringForNumber:number withNumberStyle:NSNumberFormatterDecimalStyle];
 }
 
-- (NSString *)localizedStringForNumber:(NSNumber *)number withNumberStyle:(NSNumberFormatterStyle)numberStyle
+- (NSString * _Nullable)localizedStringForNumber:(NSNumber * _Nullable)number withNumberStyle:(NSNumberFormatterStyle)numberStyle
 {
-    if (!number) {
+    if (number == nil) {
         return nil;
     }
     
