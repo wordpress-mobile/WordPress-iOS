@@ -44,6 +44,9 @@ class FancyAlertViewController: UIViewController {
 
         /// Title handler for a small 'tag' style button displayed next to the title
         let titleAccessoryButton: ButtonConfig?
+
+        /// A block to execute after this view controller has been dismissed
+        let dismissAction: (() -> Void)?
     }
 
     // MARK: - Constants
@@ -233,7 +236,9 @@ class FancyAlertViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func dismissTapped() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: {
+            self.configuration?.dismissAction?()
+        })
     }
 
     @IBAction private func buttonTapped(_ sender: UIButton) {

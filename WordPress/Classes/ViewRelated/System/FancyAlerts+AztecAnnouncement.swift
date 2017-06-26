@@ -58,7 +58,7 @@ extension FancyAlertViewController {
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
                                                      bodyText: Strings.bodyText,
                                                      headerImage: image,
-                                                     defaultButton: defaultButton, cancelButton: cancelButton, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton)
+                                                     defaultButton: defaultButton, cancelButton: cancelButton, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton, dismissAction: nil)
 
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
     }
@@ -82,7 +82,10 @@ extension FancyAlertViewController {
         return FancyAlertViewController.Config(titleText: Strings.titleText,
                                                bodyText: Strings.bodyText,
                                                headerImage: image,
-                                               defaultButton: nil, cancelButton: nil, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton)
+                                               defaultButton: nil, cancelButton: nil, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton,
+                                               dismissAction: {
+                                                WPTabBarController.sharedInstance().showPostTab(animated: true, toMedia: false)
+        })
     }()
 }
 
