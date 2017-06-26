@@ -63,21 +63,38 @@ class LoginWPComViewController: SigninWPComViewController, LoginViewController {
         if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
             let errorMsg = NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields.")
             displayError(message: errorMsg)
-//            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Title of an error message"),
-//                              message: NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."),
-//                              withSupportButton: false)
-            
+
             return
         }
-        
+
         // If the username is not reserved proceed with the signin
         if SigninHelpers.isUsernameReserved(loginFields.username) {
             handleReservedUsername(loginFields.username)
             return
         }
-        
+
         configureViewLoading(true)
-        
+
         loginFacade.signIn(with: loginFields)
+    }
+
+    override func displayLoginMessage(_ message: String!) {
+        // no-op
+    }
+
+    override func displayRemoteError(_ error: Error!) {
+        configureViewLoading(false)
+
+        var message = error.localizedDescription
+
+        if (error as NSError).code == 403 {
+            message = NSLocalizedString("The password you entered is incorrect.", comment: "An error message shown when a user signed in with incorrect credentials.")
+        }
+
+        if message.trim().characters.count == 0 {
+            message = NSLocalizedString("Log in failed. Please try again.", comment: "A generic error message for a failed log in.")
+        }
+
+        displayError(message: message)
     }
 }
