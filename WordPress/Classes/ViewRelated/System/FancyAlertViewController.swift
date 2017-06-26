@@ -55,8 +55,8 @@ class FancyAlertViewController: UIViewController {
         static let headerImageVerticalConstraintRegular: CGFloat = 20.0
 
         static let fadeAnimationDuration: TimeInterval = 0.3
-        static let resizeAnimationDuration: TimeInterval = 0.4
-        static let resizeAnimationDelay: TimeInterval = 0.1
+        static let resizeAnimationDuration: TimeInterval = 0.3
+        static let resizeAnimationDelay: TimeInterval = 0.3
     }
 
     // MARK - IBOutlets
@@ -95,27 +95,37 @@ class FancyAlertViewController: UIViewController {
 
     typealias FancyAlertButtonHandler = (FancyAlertViewController) -> Void
 
+    private(set) var configuration: Config?
+
     /// The configuration determines the content and visibility of all UI
     /// components in the dialog. Changing this value after presenting the
-    /// dialog is supported, and will result in the view fading to the new
-    /// values and resizing itself to fit.
+    /// dialog is supported, and will result in the view (optionally) fading 
+    /// to the new values and resizing itself to fit.
     ///
-    var configuration: Config? {
-        didSet {
-            if oldValue != nil {
-                fadeAllViews(visible: false, completion: { _ in
-                    UIView.animate(withDuration: Constants.resizeAnimationDuration,
-                                   delay: Constants.resizeAnimationDelay,
-                                   options: [],
-                                   animations: {
-                        self.updateViewConfiguration()
-                    }, completion: { _ in
-                        self.fadeAllViews(visible: true)
-                    })
+    /// - parameters:
+    ///   - configuration: A new configuration to display.
+    ///   - animated: If true, the UI will animate as it updates to reflect the new configuration.
+    ///   - alongside: An optional animation block which will be animated 
+    ///                alongside the new configuration's fade in animation.
+    ///
+    func setViewConfiguration(_ configuration: Config,
+                              animated: Bool,
+                              alongside animation: ((FancyAlertViewController) -> Void)? = nil) {
+        self.configuration = configuration
+
+        if animated {
+            fadeAllViews(visible: false, completion: { _ in
+                UIView.animate(withDuration: Constants.resizeAnimationDuration,
+                               delay: Constants.resizeAnimationDelay,
+                               options: [],
+                               animations: {
+                                self.updateViewConfiguration()
+                }, completion: { _ in
+                    self.fadeAllViews(visible: true, alongside: animation)
                 })
-            } else {
-                updateViewConfiguration()
-            }
+            })
+        } else {
+            updateViewConfiguration()
         }
     }
 
@@ -213,9 +223,10 @@ class FancyAlertViewController: UIViewController {
 
     // MARK: - Animation
 
-    func fadeAllViews(visible: Bool, completion: ((Bool) -> Void)? = nil) {
+    func fadeAllViews(visible: Bool, alongside animation: ((FancyAlertViewController) -> Void)? = nil, completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: Constants.fadeAnimationDuration, animations: {
             self.contentViews.forEach({ $0.alpha = (visible) ? WPAlphaFull : WPAlphaZero })
+            animation?(self)
         }, completion: completion)
     }
 
