@@ -11,5 +11,4 @@
 + (NSString *)helpshiftDomainName;
 + (NSString *)helpshiftAppId;
 + (NSString *)debuggingKey;
-+ (NSString *)lookbackToken;
 @end
