@@ -47,10 +47,10 @@ static NSString* const NotoRegularFileName = @"NotoSerif-Regular";
 
 + (void)loadNotoFontFamily
 {
-    [self loadFontResourceNamed:NotoBoldFontName withExtension:FontTypeTTF];
-    [self loadFontResourceNamed:NotoBoldItalicFontName withExtension:FontTypeTTF];
-    [self loadFontResourceNamed:NotoItalicFontName withExtension:FontTypeTTF];
-    [self loadFontResourceNamed:NotoRegularFontName withExtension:FontTypeTTF];
+    [self loadIfNeededFontNamed:NotoRegularFontName resourceNamed:NotoRegularFileName withExtension:FontTypeTTF];
+    [self loadIfNeededFontNamed:NotoBoldFileName resourceNamed:NotoBoldFileName withExtension:FontTypeTTF];
+    [self loadIfNeededFontNamed:NotoBoldItalicFontName resourceNamed:NotoBoldItalicFileName withExtension:FontTypeTTF];
+    [self loadIfNeededFontNamed:NotoItalicFontName resourceNamed:NotoItalicFileName withExtension:FontTypeTTF];
 }
 
 + (UIFont *)notoBoldFontOfSize:(CGFloat)size
@@ -90,6 +90,13 @@ static NSString* const NotoRegularFileName = @"NotoSerif-Regular";
     }
 
     return font;
+}
+
++ (void)loadIfNeededFontNamed:(NSString *)fontName resourceNamed:(NSString *)resourceName withExtension:(NSString *)extension {
+    UIFont *font = [UIFont fontWithName:fontName size:UIFont.systemFontSize];
+    if (!font) {
+        [self loadFontResourceNamed:resourceName withExtension:FontTypeTTF];
+    }
 }
 
 + (void)loadFontResourceNamed:(NSString *)name withExtension:(NSString *)extension
