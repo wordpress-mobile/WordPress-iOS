@@ -1443,7 +1443,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         if let optionsViewController = optionsViewController,
             presentedViewController == optionsViewController {
             dismiss(animated: true, completion: nil)
-
             self.optionsViewController = nil
         }
     }
@@ -1474,11 +1473,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                    selectedRowIndex index: Int?,
                                                    onSelect: OptionsTableViewController.OnSelectHandler?) {
         // Hide the input view if we're already showing these options
-        if let optionsViewController = optionsViewController, optionsViewController.options == options {
-            if presentedViewController != nil {
-                dismiss(animated: true, completion: nil)
-            }
-
+        if let optionsViewController = optionsViewController ?? (presentedViewController as? OptionsTableViewController), optionsViewController.options == options {
             self.optionsViewController = nil
             changeRichTextInputView(to: nil)
             return
@@ -1524,13 +1519,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         optionsViewController.popoverPresentationController?.backgroundColor = .white
         optionsViewController.popoverPresentationController?.delegate = self
 
-        if presentedViewController != nil {
-            dismiss(animated: true, completion: {
-                self.present(self.optionsViewController, animated: true, completion: completion)
-            })
-        } else {
-            present(optionsViewController, animated: true, completion: completion)
-        }
+        present(optionsViewController, animated: true, completion: completion)
     }
 
     private func presentOptionsViewControllerAsInputView(_ optionsViewController: OptionsTableViewController) {
