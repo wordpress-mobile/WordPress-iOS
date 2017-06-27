@@ -848,8 +848,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                            options: [.beginFromCurrentState, .allowUserInteraction],
                            animations: {
                             self.view.layoutIfNeeded()
+                            self.navigationController?.setNavigationBarHidden(false, animated: animated)
                             if pinToBottom {
-                                self.navigationController?.setNavigationBarHidden(false, animated: animated)
                                 let y = self.textView.contentSize.height - self.textView.frame.height
                                 self.textView.setContentOffset(CGPoint(x: 0, y: y), animated: false)
                             }
