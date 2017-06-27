@@ -23,13 +23,13 @@ class CoreDataHelperTests: XCTestCase {
     /// specialized type.
     ///
     func testNewFetchRequestReturnsNewRequestWithGenericEntityName() {
-        let request = DummyEntity.fetchRequest()
+        let request = DummyEntity.safeFetchRequest()
         XCTAssert(request.entityName! == DummyEntity.entityName)
     }
 
     /// Verifies that allObjects returns all of the entities of the specialized kind.
     ///
-    func testAllObjectsReturnsAllOfTheAvailableEntitiesSortedByValue() {
+    func testAllObjectsReturnsAllOfTheAvableEntitiesSortedByValue() {
         insertDummyEntities(100)
 
         let descriptor = NSSortDescriptor(key: "value", ascending: true)
