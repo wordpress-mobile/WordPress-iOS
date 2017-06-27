@@ -244,18 +244,27 @@ class AppSettingsViewController: UITableViewController {
 
     func visualEditorChanged(editor: EditorSettings.Editor) -> ImmuTableAction {
         return { [weak self] row in
+            let currentEditorIsAztec = EditorSettings().nativeEditorEnabled
+
             switch editor {
             case .legacy:
                 EditorSettings().nativeEditorEnabled = false
                 EditorSettings().visualEditorEnabled = false
-                WPAnalytics.track(.editorToggledOff)
+                if currentEditorIsAztec {
+                    WPAnalytics.track(.editorToggledOff)
+                }
             case .hybrid:
                 EditorSettings().nativeEditorEnabled = false
                 EditorSettings().visualEditorEnabled = true
-                WPAnalytics.track(.editorToggledOn)
+                if currentEditorIsAztec {
+                    WPAnalytics.track(.editorToggledOff)
+                }
             case .aztec:
                 EditorSettings().visualEditorEnabled = true
                 EditorSettings().nativeEditorEnabled = true
+                if !currentEditorIsAztec {
+                    WPAnalytics.track(.editorToggledOn)
+                }
             }
 
             self?.reloadViewModel()
