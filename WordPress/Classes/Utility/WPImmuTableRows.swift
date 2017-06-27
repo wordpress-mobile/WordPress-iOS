@@ -87,6 +87,22 @@ struct TextRow: ImmuTableRow {
     }
 }
 
+struct CheckmarkRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
+
+    let title: String
+    let checked: Bool
+    let action: ImmuTableAction?
+
+    func configureCell(_ cell: UITableViewCell) {
+        cell.textLabel?.text = title
+        cell.selectionStyle = .none
+        cell.accessoryType = (checked) ? .checkmark : .none
+
+        WPStyleGuide.configureTableViewCell(cell)
+    }
+}
+
 struct LinkRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
