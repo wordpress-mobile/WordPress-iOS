@@ -1281,14 +1281,6 @@ extension AztecPostViewController {
 // MARK: - FormatBarDelegate Conformance
 //
 extension AztecPostViewController : Aztec.FormatBarDelegate {
-    /// Called when the overflow items in the format bar are either shown or hidden
-    /// as a result of the user tapping the toggle button.
-    ///
-    func formatBar(_ formatBar: FormatBar, didChangeOverflowState overflowState: FormatBarOverflowState) {
-        //plugin analytics calls
-    }
-
-
     func formatBarTouchesBegan(_ formatBar: FormatBar) {
         dismissOptionsViewControllerIfNecessary()
     }
@@ -1325,6 +1317,9 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         updateFormatBar()
     }
 
+    /// Called when the overflow items in the format bar are either shown or hidden
+    /// as a result of the user tapping the toggle button.
+    ///
     func formatBar(_ formatBar: FormatBar, didChangeOverflowState overflowState: FormatBarOverflowState) {
         let action = overflowState == .visible ? "made_visible" : "made_hidden"
         trackFormatBarAnalytics(stat: .editorTappedMoreItems, action: action)
