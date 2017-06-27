@@ -102,91 +102,9 @@ open class MediaLibrary: LocalCoreDataService {
         }
     }
 
-    // MARK: Thumbnails
-
-    /// Completion handler for a thumbnail URL.
-    ///
-    public typealias OnThumbnailURL = (URL?) -> Void
-
-    /// Generate a URL to a thumbnail of the Media, if available.
-    ///
-    /// - Parameters:
-    ///   - media: The Media object the URL should be a thumbnail of.
-    ///   - preferredSize: An ideal size of the thumbnail in points.
-    ///   - onCompletion: Completion handler passing the URL once available, or nil if unavailable.
-    ///   - onError: Error handler.
-    ///
-    /// - Note: Images may be downloaded and resized if required, avoid requesting multiple explicit preferredSizes
-    ///   as several images could be downloaded, resized, and cached, if there are several variations in size.
-    ///
-    func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
-        // Configure a thumbnail exporter.
-        let exporter = MediaThumbnailExporter()
-        exporter.options.preferredSize = preferredSize
-
-        // Check if there is already an exported thumbnail available.
-        if let identifier = media.localThumbnailIdentifier, let availableThumbnail = exporter.availableThumbnail(with: identifier) {
-            onCompletion(availableThumbnail)
-            return
-        }
-        // Check if a local copy of the asset is available.
-        if let localAssetURL = media.absoluteLocalURL {
-            DispatchQueue.global(qos: .default).async {
-                exporter.exportThumbnail(forFile: localAssetURL,
-                                         onCompletion: { (identifier, export) in
-                                             self.managedObjectContext.perform {
-                                                self.handleThumbnailExport(media: media,
-                                                                           identifier: identifier,
-                                                                           export: export,
-                                                                           onCompletion: onCompletion)
-                                            }
-                }, onError: { (error) in
-                    self.handleExportError(error, errorHandler: onError)
-                })
-            }
-            return
-        }
-        let downloader = MediaThumbnailDownloader(managedObjectContext: managedObjectContext)
-        // Try and download a remote thumbnail, and export if available.
-        downloader.downloadThumbnail(forMedia: media, preferredSize: preferredSize, onCompletion: { (image) in
-            guard let image = image else {
-                onCompletion(nil)
-                return
-            }
-            DispatchQueue.global(qos: .default).async {
-                exporter.exportThumbnail(forImage: image,
-                                         onCompletion: { (identifier, export) in
-                                            self.managedObjectContext.perform {
-                                                self.handleThumbnailExport(media: media,
-                                                                           identifier: identifier,
-                                                                           export: export,
-                                                                           onCompletion: onCompletion)
-                                            }
-                }, onError: { (error) in
-                    self.handleExportError(error, errorHandler: onError)
-                })
-            }
-        }, onError: { (error) in
-            onError?(error)
-        })
-    }
-
-    fileprivate func handleThumbnailExport(media: Media, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaImageExport, onCompletion: @escaping OnThumbnailURL) {
-        // Make sure the Media object hasn't been deleted.
-        guard media.isDeleted == false else {
-            onCompletion(nil)
-            return
-        }
-        media.localThumbnailIdentifier = identifier
-        ContextManager.sharedInstance().save(managedObjectContext)
-        onCompletion(export.url)
-    }
-
     // MARK: - Helpers
 
-    /// Handle the OnError callback and logging any errors encountered.
-    ///
-    fileprivate func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
+    class func logExportError(_ error: MediaExportError) {
         // Write an error logging message to help track specific sources of export errors.
         var errorLogMessage = "Error occurred exporting Media"
         switch error {
@@ -205,11 +123,16 @@ open class MediaLibrary: LocalCoreDataService {
         }
         let nerror = error.toNSError()
         DDLogError("\(errorLogMessage), code: \(nerror.code), error: \(nerror)")
+    }
 
+    /// Handle the OnError callback and logging any errors encountered.
+    ///
+    fileprivate func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
+        MediaLibrary.logExportError(error)
         // Return the error via the context's queue, and as an NSError to ensure it carries over the right code/message.
         if let errorHandler = errorHandler {
             self.managedObjectContext.perform {
-                errorHandler(nerror)
+                errorHandler(error.toNSError())
             }
         }
     }
