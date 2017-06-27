@@ -1,10 +1,16 @@
 import Foundation
 import UIKit
+import Gridicons
 import WordPressShared
 import WordPressComAnalytics
 import SVProgressHUD
 
 class AppSettingsViewController: UITableViewController {
+    enum Sections: Int {
+        case media
+        case editor
+        case other
+    }
 
     fileprivate var handler: ImmuTableViewHandler!
 
@@ -25,6 +31,9 @@ class AppSettingsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.register(AppSettingsEditorFooterView.self,
+                           forHeaderFooterViewReuseIdentifier: AppSettingsEditorFooterView.reuseIdentifier)
 
         ImmuTable.registerRows([
             DestructiveButtonRow.self,
@@ -78,18 +87,28 @@ class AppSettingsViewController: UITableViewController {
         let editorSettings = EditorSettings()
         let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
         var editorRows = [ImmuTableRow]()
-        let visualEditor = SwitchRow(
-            title: NSLocalizedString("Visual Editor", comment: "Option to enable the visual editor"),
-            value: editorSettings.visualEditorEnabled,
-            onChange: visualEditorChanged()
+
+        let editor = editorSettings.editor
+
+        let textEditor = CheckmarkRow(
+            title: NSLocalizedString("Plain Text", comment: "Option to enable the plain text (legacy) editor"),
+            checked: (editor == .legacy),
+            action: visualEditorChanged(editor: .legacy)
+        )
+        editorRows.append(textEditor)
+
+        let visualEditor = CheckmarkRow(
+            title: NSLocalizedString("Visual", comment: "Option to enable the hybrid visual editor"),
+            checked: (editor == .hybrid),
+            action: visualEditorChanged(editor: .hybrid)
         )
         editorRows.append(visualEditor)
 
-        if editorSettings.nativeEditorAvailable && editorSettings.visualEditorEnabled {
-            let nativeEditor = SwitchRow(
-                title: NSLocalizedString("Native Editor", comment: "Option to enable the native visual editor"),
-                value: editorSettings.nativeEditorEnabled,
-                onChange: nativeEditorChanged()
+        if editorSettings.nativeEditorAvailable {
+            let nativeEditor = CheckmarkRow(
+                title: NSLocalizedString("Beta", comment: "Option to enable the beta native editor (Aztec)"),
+                checked: (editor == .aztec),
+                action: visualEditorChanged(editor: .aztec)
             )
             editorRows.append(nativeEditor)
         }
@@ -127,6 +146,29 @@ class AppSettingsViewController: UITableViewController {
                 ],
                 footerText: nil)
             ])
+    }
+
+    // MARK: - UITableViewDelegate
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if shouldShowEditorFooterForSection(section) {
+            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: AppSettingsEditorFooterView.reuseIdentifier)
+            return view
+        }
+
+        return nil
+    }
+
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if shouldShowEditorFooterForSection(section) {
+            return AppSettingsEditorFooterView.height
+        }
+
+        return 0
+    }
+
+    private func shouldShowEditorFooterForSection(_ section: Int) -> Bool {
+        return section == Sections.editor.rawValue && EditorSettings().editor == .aztec
     }
 
     // MARK: - Media cache methods
@@ -200,14 +242,22 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func visualEditorChanged() -> (Bool) -> Void {
-        return { [weak self] enabled in
-            if enabled {
-                WPAnalytics.track(.editorToggledOn)
-            } else {
+    func visualEditorChanged(editor: EditorSettings.Editor) -> ImmuTableAction {
+        return { [weak self] row in
+            switch editor {
+            case .legacy:
+                EditorSettings().nativeEditorEnabled = false
+                EditorSettings().visualEditorEnabled = false
                 WPAnalytics.track(.editorToggledOff)
+            case .hybrid:
+                EditorSettings().nativeEditorEnabled = false
+                EditorSettings().visualEditorEnabled = true
+                WPAnalytics.track(.editorToggledOn)
+            case .aztec:
+                EditorSettings().visualEditorEnabled = true
+                EditorSettings().nativeEditorEnabled = true
             }
-            EditorSettings().visualEditorEnabled = enabled
+
             self?.reloadViewModel()
         }
     }
@@ -263,5 +313,44 @@ fileprivate struct MediaSizingRow: ImmuTableRow {
         cell.selectionStyle = .none
 
         (cell.minValue, cell.maxValue) = MediaSettings().allowedImageSizeRange
+    }
+}
+
+fileprivate class AppSettingsEditorFooterView: UITableViewHeaderFooterView {
+    static let height: CGFloat = 38.0
+    static let reuseIdentifier = "AppSettingsEditorFooterView"
+
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.axis = .horizontal
+
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.text = NSLocalizedString("Editor beta release notes & bug reporting", comment: "Label for button linking to release notes and bug reporting help for the new beta Aztec editor")
+        label.textColor = WPStyleGuide.greyDarken10()
+        stackView.addArrangedSubview(label)
+
+        let button = UIButton(type: .custom)
+        button.setImage(Gridicon.iconOfType(.infoOutline), for: .normal)
+        button.tintColor = WPStyleGuide.greyDarken10()
+
+        contentView.addSubview(stackView)
+        stackView.addArrangedSubview(button)
+
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor)
+            ])
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
