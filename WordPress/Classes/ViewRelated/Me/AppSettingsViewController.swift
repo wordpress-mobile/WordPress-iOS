@@ -113,7 +113,14 @@ class AppSettingsViewController: UITableViewController {
             editorRows.append(nativeEditor)
         }
 
-        let aboutHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
+        let usageTrackingHeader = NSLocalizedString("Usage Statistics", comment: "App usage data settings section header")
+        let usageTrackingRow = SwitchRow(
+            title: NSLocalizedString("Send Statistics", comment: "Label for switch to turn on/off sending app usage data"),
+            value: WPAppAnalytics.isTrackingUsage(),
+            onChange: usageTrackingChanged())
+        let usageTrackingFooter = NSLocalizedString("Automatically send usage statistics to help us improve WordPress for iOS", comment: "App usage data settings section footer describing what the setting does.")
+
+        let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
         let settingsRow = NavigationItemRow(
             title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
             action: openApplicationSettings()
@@ -139,7 +146,12 @@ class AppSettingsViewController: UITableViewController {
                 rows: editorRows,
                 footerText: nil),
             ImmuTableSection(
-                headerText: aboutHeader,
+                headerText: usageTrackingHeader,
+                rows: [usageTrackingRow],
+                footerText: usageTrackingFooter
+            ),
+            ImmuTableSection(
+                headerText: otherHeader,
                 rows: [
                     settingsRow,
                     aboutRow
@@ -274,6 +286,13 @@ class AppSettingsViewController: UITableViewController {
     func nativeEditorChanged() -> (Bool) -> Void {
         return { enabled in
             EditorSettings().nativeEditorEnabled = enabled
+        }
+    }
+
+    func usageTrackingChanged() -> (Bool) -> Void {
+        return { enabled in
+            let appAnalytics = WordPressAppDelegate.sharedInstance().analytics
+            appAnalytics?.setTrackingUsage(enabled)
         }
     }
 
