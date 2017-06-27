@@ -181,6 +181,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate lazy var mediaUploadingBarButtonItem: UIBarButtonItem = {
         let barButton = UIBarButtonItem(customView: self.mediaUploadingButton)
+        barButton.accessibilityLabel = NSLocalizedString("Media Uploading...", comment: "Message to indicate progress of uploading media to server")
         return barButton
     }()
 
@@ -227,7 +228,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate lazy var mediaUploadingButton: WPUploadStatusButton = {
         let button = WPUploadStatusButton(frame: CGRect(origin: .zero, size: Constants.uploadingButtonSize))
-        button.titleLabel?.text = NSLocalizedString("Media Uploading...", comment: "Message to indicate progress of uploading media to server")
+        button.setTitle(NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server"), for: .normal)
         button.addTarget(self, action: #selector(displayCancelMediaUploads), for: .touchUpInside)
         return button
     }()
@@ -2700,7 +2701,7 @@ extension AztecPostViewController {
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
-        static let uploadingButtonSize = CGSize(width: 300, height: 30)
+        static let uploadingButtonSize = CGSize(width: 150, height: 30)
         static let moreAttachmentText       = "more"
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
