@@ -226,10 +226,9 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Media Uploading Button
     ///
     fileprivate lazy var mediaUploadingButton: WPUploadStatusButton = {
-        let button = WPUploadStatusButton(frame: .zero)
+        let button = WPUploadStatusButton(frame: CGRect(origin: .zero, size: Constants.uploadingButtonSize))
         button.titleLabel?.text = NSLocalizedString("Media Uploading...", comment: "Message to indicate progress of uploading media to server")
-        button.sizeToFit()
-        button.addTarget(self, action: #selector(blogPickerWasPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(displayCancelMediaUploads), for: .touchUpInside)
         return button
     }()
 
@@ -650,10 +649,10 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func refreshNavigationBar() {
-        if mediaProgressCoordinator.isRunning {
-            navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
-        } else {
+        if postEditorStateContext.isUploadingMedia {
             navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, mediaUploadingBarButtonItem]
+        } else {
+            navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
         }
     }
 
@@ -1053,6 +1052,16 @@ private extension AztecPostViewController {
         let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
         present(alertController, animated: true, completion: nil)
+    }
+
+    @IBAction func displayCancelMediaUploads() {
+        let alertController = UIAlertController(title: MediaUploadingCancelAlert.title, message: MediaUploadingCancelAlert.message, preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle(MediaUploadingCancelAlert.acceptTitle) { alertAction in
+            self.mediaProgressCoordinator.cancelAllPendingUploads()
+        }
+        alertController.addCancelActionWithTitle(MediaUploadingCancelAlert.cancelTitle)
+        present(alertController, animated: true, completion: nil)
+        return
     }
 }
 
@@ -2048,12 +2057,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
     func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         postEditorStateContext.update(isUploadingMedia: true)
-        refreshInterface()
+        refreshNavigationBar()
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         postEditorStateContext.update(isUploadingMedia: false)
-        refreshInterface()
+        refreshNavigationBar()
     }
 }
 
@@ -2255,6 +2264,7 @@ extension AztecPostViewController {
 
         if let error = error {
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
+                self.richTextView.remove(attachmentID: attachment.identifier)
                 return
             }
             mediaProgressCoordinator.attach(error: error, toMediaID: attachment.identifier)
@@ -2690,6 +2700,7 @@ extension AztecPostViewController {
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
+        static let uploadingButtonSize = CGSize(width: 300, height: 30)
         static let moreAttachmentText       = "more"
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
@@ -2748,6 +2759,13 @@ extension AztecPostViewController {
         static let title = NSLocalizedString("Uploads failed", comment: "Title for alert when trying to save post with failed media items")
         static let message = NSLocalizedString("Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", comment: "Confirms with the user if they save the post all media that failed to upload will be removed from it.")
         static let acceptTitle  = NSLocalizedString("Yes", comment: "Accept Action")
+        static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
+    }
+
+    struct MediaUploadingCancelAlert {
+        static let title = NSLocalizedString("Cancel media uploads", comment: "Dialog box title for when the user is cancelling an upload.")
+        static let message = NSLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")
+        static let acceptTitle  = NSLocalizedString("Yes", comment: "Yes")
         static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
     }
 }

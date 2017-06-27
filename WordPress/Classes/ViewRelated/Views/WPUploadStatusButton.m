@@ -12,9 +12,8 @@
     button.backgroundColor = [UIColor clearColor];
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [button setAccessibilityHint:NSLocalizedString(@"Tap to cancel uploading.", nil)];
+    [button setAccessibilityHint:NSLocalizedString(@"Tap to cancel uploading.", @"This is a status indicator on the editor")];
     [button setTitle:NSLocalizedString(@"Uploading...", @"\"Uploading...\" Status text") forState:UIControlStateNormal];
-    [button setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", @"This is the blog picker in the editor")];
     button.titleLabel.numberOfLines = 1;
     button.titleLabel.textAlignment = NSTextAlignmentNatural;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
