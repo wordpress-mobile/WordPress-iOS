@@ -177,6 +177,13 @@ class AztecPostViewController: UIViewController, PostEditor {
         return pickerItem
     }()
 
+    /// Media Uploading Status Button
+    ///
+    fileprivate lazy var mediaUploadingBarButtonItem: UIBarButtonItem = {
+        let barButton = UIBarButtonItem(customView: self.mediaUploadingButton)
+        return barButton
+    }()
+
 
     /// Publish Button
     fileprivate(set) lazy var publishButton: UIBarButtonItem = {
@@ -212,6 +219,16 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate lazy var blogPickerButton: WPBlogSelectorButton = {
         let button = WPBlogSelectorButton(frame: .zero, buttonStyle: .typeSingleLine)
+        button.addTarget(self, action: #selector(blogPickerWasPressed), for: .touchUpInside)
+        return button
+    }()
+
+    /// Media Uploading Button
+    ///
+    fileprivate lazy var mediaUploadingButton: WPUploadStatusButton = {
+        let button = WPUploadStatusButton(frame: .zero)
+        button.titleLabel?.text = NSLocalizedString("Media Uploading...", comment: "Message to indicate progress of uploading media to server")
+        button.sizeToFit()
         button.addTarget(self, action: #selector(blogPickerWasPressed), for: .touchUpInside)
         return button
     }()
@@ -629,6 +646,15 @@ class AztecPostViewController: UIViewController, PostEditor {
         reloadEditorContents()
         resizeBlogPickerButton()
         reloadPublishButton()
+        refreshNavigationBar()
+    }
+
+    func refreshNavigationBar() {
+        if mediaProgressCoordinator.isRunning {
+            navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
+        } else {
+            navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, mediaUploadingBarButtonItem]
+        }
     }
 
     func setHTML(_ html: String) {
@@ -2022,10 +2048,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
     func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         postEditorStateContext.update(isUploadingMedia: true)
+        refreshInterface()
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         postEditorStateContext.update(isUploadingMedia: false)
+        refreshInterface()
     }
 }
 
