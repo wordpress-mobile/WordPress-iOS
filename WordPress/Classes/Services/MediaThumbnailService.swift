@@ -1,5 +1,8 @@
 import Foundation
 
+/// A service for handling the process of retrieving and generating thumbnail images
+/// for existing Media objects, whether remote or locally available.
+///
 class MediaThumbnailService: LocalCoreDataService {
 
     /// Completion handler for a thumbnail URL.

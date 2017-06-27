@@ -65,7 +65,7 @@ class MediaThumbnailExporter: MediaExporter {
     // MARK: - Types
 
     /// A generated thumbnail identifier representing a reference to the image files that
-    /// result from a thumbnai export. This ensures unique files are created and URLs
+    /// result from a thumbnail export. This ensures unique files are created and URLs
     /// can be recreated as needed, relative to both the identifier and the configured
     /// options for an exporter.
     ///
