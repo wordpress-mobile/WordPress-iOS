@@ -92,7 +92,7 @@ class MediaURLExporter: MediaExporter {
         if let options = imageOptions {
             exporter.options = options
         }
-        exporter.exportImage(atURL: url,
+        exporter.exportImage(atFile: url,
                              onCompletion: { (imageExport) in
                                 onCompletion(URLExport.exportedImage(imageExport))
         },
