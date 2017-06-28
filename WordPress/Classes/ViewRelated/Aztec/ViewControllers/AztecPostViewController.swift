@@ -181,7 +181,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate lazy var mediaUploadingBarButtonItem: UIBarButtonItem = {
         let barButton = UIBarButtonItem(customView: self.mediaUploadingButton)
-        barButton.accessibilityLabel = NSLocalizedString("Media Uploading...", comment: "Message to indicate progress of uploading media to server")
+        barButton.accessibilityLabel = NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server")
         return barButton
     }()
 
