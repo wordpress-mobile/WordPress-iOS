@@ -14,12 +14,10 @@ class SiteInfoHeaderView: BlogDetailHeaderView {
 
     func configureStyles() {
 
-        titleLabel.font = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
-        titleLabel.sizeToFit()
+        titleLabel.font = WPStyleGuide.fontForTextStyle(UIFontTextStyle.subheadline, fontWeight: UIFontWeightSemibold)
         titleLabel.textColor = WPStyleGuide.darkGrey()
 
         subtitleLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
-        subtitleLabel.sizeToFit()
         subtitleLabel.textColor = WPStyleGuide.darkGrey()
 
         blavatarImageView.layer.borderColor = WPStyleGuide.greyLighten20().cgColor
