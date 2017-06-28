@@ -2995,13 +2995,13 @@
 		08F8CD281EBD22EF0049D0C0 /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				08B6E5191F036CAD00268F57 /* MediaFileManager.swift */,
 				08F8CD291EBD22EF0049D0C0 /* MediaExporter.swift */,
 				08C388651ED7705E0057BE49 /* MediaAssetExporter.swift */,
 				08F8CD2E1EBD29440049D0C0 /* MediaImageExporter.swift */,
 				086103951EE09C91004D7C01 /* MediaVideoExporter.swift */,
 				08F8CD381EBD2C970049D0C0 /* MediaURLExporter.swift */,
 				08E77F441EE87FCF006F9515 /* MediaThumbnailExporter.swift */,
-				08B6E5191F036CAD00268F57 /* MediaFileManager.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
