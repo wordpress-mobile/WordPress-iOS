@@ -37,23 +37,25 @@ class MediaFileManager: NSObject {
 
     let directory: MediaDirectory
 
-    // MARK: - Init
+    // MARK: - Class init
 
-    init(directory: MediaDirectory = .uploads) {
-        self.directory = directory
-    }
-
-    // MARK: - Class methods
-
+    /// The default instance of a MediaFileManager.
+    ///
     @objc (defaultManager)
     static let `default`: MediaFileManager = {
         return MediaFileManager()
     }()
 
-    /// Helper method for ObjC as a default method with type.
+    // MARK: - Init
+
+    /// Init with default directory of .uploads.
     ///
-    class func uploadsDirectoryURL() throws -> URL {
-        return try MediaFileManager.default.directoryURL()
+    /// - Note: This is particularly because the original Media directory was in the NSFileManager's documents directory.
+    ///   We shouldn't change this default directory lightly as older versions of the app may rely on Media files being in
+    ///   the documents directory for upload.
+    ///
+    init(directory: MediaDirectory = .uploads) {
+        self.directory = directory
     }
 
     // MARK: - Instance methods
@@ -139,7 +141,7 @@ class MediaFileManager: NSObject {
 
     /// Calculates the allocated size of the Media directory, in bytes, or nil if an error was thrown.
     ///
-    func calculateSizeOfDirectory(onCompletion: @escaping (Int64?) -> ()) {
+    func calculateSizeOfDirectory(onCompletion: @escaping (Int64?) -> Void) {
         DispatchQueue.global(qos: .default).async {
             let fileManager = FileManager.default
             let allocatedSize = try? fileManager.allocatedSizeOf(directoryURL: self.directoryURL())
@@ -154,7 +156,7 @@ class MediaFileManager: NSObject {
     /// - Note: These files can show up because of the app being killed while a media object
     ///   was being created or when a CoreData migration fails and the database is recreated.
     ///
-    func clearUnusedFilesFromDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
+    func clearUnusedFilesFromDirectory(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
         purgeMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL"),
                         onCompletion: onCompletion,
                         onError: onError)
@@ -162,17 +164,48 @@ class MediaFileManager: NSObject {
 
     /// Clear the local Media directory of any cached media files that are available remotely.
     ///
-    func clearCachedFilesFromDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
-        purgeMediaFiles(exceptMedia: NSPredicate(format: "remoteURL == NULL"),
-                        onCompletion: onCompletion,
-                        onError: onError)
+    func clearFilesFromDirectory(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+        do {
+            try purgeDirectory(exceptFiles: [])
+            onCompletion?()
+        } catch {
+            onError?(error)
+        }
+    }
+
+    // MARK: - Class methods
+
+    /// Helper method for clearing unused Media upload files.
+    ///
+    class func clearUnusedMediaUploadFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+        MediaFileManager.default.clearUnusedFilesFromDirectory(onCompletion: onCompletion, onError: onError)
+    }
+
+    /// Helper method for calculating the size of the Media cache directory.
+    ///
+    class func calculateSizeOfMediaCacheDirectory(onCompletion: @escaping (Int64?) -> Void) {
+        let cacheManager = MediaFileManager(directory: .cache)
+        cacheManager.calculateSizeOfDirectory(onCompletion: onCompletion)
+    }
+
+    /// Helper method for clearing the Media cache directory.
+    ///
+    class func clearAllMediaCacheFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+        let cacheManager = MediaFileManager(directory: .cache)
+        cacheManager.clearFilesFromDirectory(onCompletion: onCompletion, onError: onError)
+    }
+
+    /// Helper method for getting the default upload directory URL.
+    ///
+    class func uploadsDirectoryURL() throws -> URL {
+        return try MediaFileManager.default.directoryURL()
     }
 
     // MARK: - Private
 
     /// Removes any local Media files, except any Media matching the predicate.
     ///
-    fileprivate func purgeMediaFiles(exceptMedia predicate: NSPredicate, onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
+    fileprivate func purgeMediaFiles(exceptMedia predicate: NSPredicate, onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
         let context = ContextManager.sharedInstance().newDerivedContext()
         context.perform {
             let fetch = NSFetchRequest<NSDictionary>(entityName: Media.classNameWithoutNamespaces())
