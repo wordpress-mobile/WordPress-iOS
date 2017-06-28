@@ -19,7 +19,6 @@ extern NSString * const MenusRemoteKeyItems;
 extern NSString * const MenusRemoteKeyDeleted;
 extern NSString * const MenusRemoteKeyLocationDefaultState;
 
-@class Blog;
 @class RemoteMenu;
 @class RemoteMenuItem;
 @class RemoteMenuLocation;
@@ -37,13 +36,13 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError * _Nonnull error);
  *  @brief      Create a new menu on a blog.
  *
  *  @param      menuName    The name of the new menu to be created.  Cannot be nil.
- *  @param      blog        The blog to create the menu on.  Cannot be nil.
+ *  @param      siteID      The site ID to create the menu on.  Cannot be nil.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  */
 - (void)createMenuWithName:(NSString *)menuName
-                      blog:(Blog *)blog
+                    siteID:(NSNumber *)siteID
                    success:(nullable MenusServiceRemoteMenuRequestSuccessBlock)success
                    failure:(nullable MenusServiceRemoteFailureBlock)failure;
 
@@ -51,13 +50,13 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError * _Nonnull error);
  *  @brief      Update a menu on a blog.
  *
  *  @param      menu        The updated menu object to update remotely.  Cannot be nil.
- *  @param      blog        The blog to update the menu on.  Cannot be nil.
+ *  @param      siteID      The site ID to update the menu on.  Cannot be nil.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  */
 - (void)updateMenuForID:(NSNumber *)menuID
-                   blog:(Blog *)blog
+                 siteID:(NSNumber *)siteID
                withName:(nullable NSString *)updatedName
           withLocations:(nullable NSArray<NSString *> *)locationNames
               withItems:(nullable NSArray<RemoteMenuItem *> *)updatedItems
@@ -68,13 +67,13 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError * _Nonnull error);
  *  @brief      Delete a menu from a blog.
  *
  *  @param      menuId      The menuId of the menu to delete remotely.  Cannot be nil.
- *  @param      blog        The blog to delete the menu from.  Cannot be nil.
+ *  @param      siteID      The site ID to delete the menu from.  Cannot be nil.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  */
 - (void)deleteMenuForID:(NSNumber *)menuID
-                   blog:(Blog *)blog
+                 siteID:(NSNumber *)siteID
                 success:(nullable MenusServiceRemoteSuccessBlock)success
                 failure:(nullable MenusServiceRemoteFailureBlock)failure;
 
@@ -83,12 +82,12 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError * _Nonnull error);
 /**
  *  @brief      Gets the available menus for a specific blog.
  *
- *  @param      blog        The blog to get the available menus for.  Cannot be nil.
+ *  @param      siteID      The site ID to get the available menus for.  Cannot be nil.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  */
-- (void)getMenusForBlog:(Blog *)blog
+- (void)getMenusForSiteID:(NSNumber *)siteID
                 success:(nullable MenusServiceRemoteMenusRequestSuccessBlock)success
                 failure:(nullable MenusServiceRemoteFailureBlock)failure;
 
