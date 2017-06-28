@@ -22,6 +22,9 @@ class OptionsTableViewController: UITableViewController {
 
     var onSelect: OnSelectHandler?
 
+    var cellBackgroundColor: UIColor = .white
+    var cellSelectedBackgroundColor: UIColor = .lightGray
+
     var cellDeselectedTintColor: UIColor? {
         didSet {
             tableView?.reloadData()
@@ -70,6 +73,14 @@ extension OptionsTableViewController {
         cell.accessoryType = .checkmark
         onSelect?(indexPath.row)
     }
+
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = cellBackgroundColor
+
+        let selectedView = UIView()
+        selectedView.backgroundColor = cellSelectedBackgroundColor
+        cell.selectedBackgroundView = selectedView
+    }
 }
 
 extension OptionsTableViewController {
@@ -114,7 +125,8 @@ class OptionsTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        imageView?.tintColor = selected ? tintColor : deselectedTintColor
+        // Icons should always appear deselected
+        imageView?.tintColor = deselectedTintColor
         accessoryType = selected ? .checkmark : .none
     }
 }
