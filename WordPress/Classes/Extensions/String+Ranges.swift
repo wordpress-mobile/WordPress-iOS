@@ -37,7 +37,7 @@ extension String {
         guard let start = Index(utf16Start, within: self), let end = Index(utf16End, within: self) else {
             return nil
         }
-        
+
         return start..<end
     }
 }

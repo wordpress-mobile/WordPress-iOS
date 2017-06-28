@@ -5,7 +5,7 @@ import XCTest
 // MARK: - CalypsoProcessorTests
 //
 class CalypsoProcessorTests: XCTestCase {
-    
+
     let processor = CalypsoProcessor()
 
     /// Verifies that newlines get replaced with Line Break Elements
