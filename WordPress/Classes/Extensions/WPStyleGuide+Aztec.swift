@@ -2,20 +2,24 @@ import UIKit
 import WordPressShared
 
 extension WPStyleGuide {
-    static var aztecFormatBarInactiveColor: UIColor {
-        return UIColor(hexString: "7B9AB1")
+    static let aztecFormatBarInactiveColor = UIColor(hexString: "7B9AB1")
+
+    static let aztecFormatBarActiveColor = WPStyleGuide.wordPressBlue()
+
+    static let aztecFormatBarDisabledColor = WPStyleGuide.greyLighten20()
+
+    static let aztecFormatBarBackgroundColor = UIColor.white
+
+    static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
+        get {
+            return (UIDevice.isPad()) ? WPStyleGuide.lightGrey() : WPStyleGuide.greyLighten30()
+        }
     }
 
-    static var aztecFormatBarActiveColor: UIColor {
-        return WPStyleGuide.darkGrey()
-    }
-
-    static var aztecFormatBarDisabledColor: UIColor {
-        return WPStyleGuide.greyLighten20()
-    }
-
-    static var aztecFormatBarBackgroundColor: UIColor {
-        return .white
+    static var aztecFormatPickerBackgroundColor: UIColor {
+        get {
+            return (UIDevice.isPad()) ? .white : WPStyleGuide.lightGrey()
+        }
     }
 
     static func configureBetaButton(_ button: UIButton) {
