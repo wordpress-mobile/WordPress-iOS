@@ -63,7 +63,7 @@ extension MediaLibrary {
     /// - Note: if a file already exists with the same name, the file name is appended with a number
     ///   and incremented until a unique filename is found.
     ///
-    class func makeLocalMediaURL(withFilename filename: String, fileExtension: String?, type: MediaDirectory) throws -> URL {
+    class func makeLocalMediaURL(withFilename filename: String, fileExtension: String?, type: MediaDirectory, incremented: Bool = true) throws -> URL {
         let media = try localDirectory(type)
         var url: URL
         if let fileExtension = fileExtension {
@@ -75,7 +75,7 @@ extension MediaLibrary {
         }
         // Increment the filename as needed to ensure we're not
         // providing a URL for an existing file of the same name.
-        return url.incrementalFilename()
+        return incremented ? url.incrementalFilename() : url
     }
 
     /// Helper method for ObjC as a default method with type.

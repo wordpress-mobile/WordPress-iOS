@@ -13,10 +13,28 @@
 
 /**
  *  This method will attempt to sign in to a self hosted/.com site.
+ *  XMLRPC endpoint discover is performed.
  *
  *  @param loginFields the fields representing the site we are attempting to login to.
  */
 - (void)signInWithLoginFields:(LoginFields *)loginFields;
+
+
+/**
+ *  This method will attempt to sign in to a self hosted/.com site.
+ *  XMLRPC endpoint discover is NOT performed.
+ *
+ *  @param loginFields the fields representing the site we are attempting to login to.
+ */
+- (void)loginWithLoginFields:(LoginFields *)loginFields;
+
+/**
+ *  This method will attempt to sign in to a self hosted/.com site.
+ *  The XML-RPC endpoint should be present in the loginFields.siteUrl field.
+ *
+ *  @param loginFields the fields representing the site we are attempting to login to.
+ */
+- (void)loginToSelfHosted:(LoginFields *)loginFields;
 
 /**
  *  This method requests a one time code needed for 2fa.
