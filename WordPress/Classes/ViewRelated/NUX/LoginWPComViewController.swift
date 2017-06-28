@@ -85,14 +85,10 @@ class LoginWPComViewController: SigninWPComViewController, LoginViewController {
     override func displayRemoteError(_ error: Error!) {
         configureViewLoading(false)
 
-        var message = error.localizedDescription
-
-        if (error as NSError).code == 403 {
-            message = NSLocalizedString("The password you entered is incorrect.", comment: "An error message shown when a user signed in with incorrect credentials.")
-        }
-
-        if message.trim().characters.count == 0 {
-            message = NSLocalizedString("Log in failed. Please try again.", comment: "A generic error message for a failed log in.")
+        guard (error as NSError).code != 403 else {
+            let message = NSLocalizedString("The password you entered is incorrect.", comment: "An error message shown when a wpcom user provides the wrong password.")
+            displayError(message: message)
+            return
         }
 
         displayError(error as NSError, sourceTag: sourceTag)
