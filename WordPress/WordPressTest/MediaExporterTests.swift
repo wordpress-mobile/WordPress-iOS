@@ -5,7 +5,7 @@ import MobileCoreServices
 class MockMediaExporter: MediaExporter {
     var maximumImageSize: CGFloat?
     var stripsGeoLocationIfNeeded = false
-    var mediaDirectoryType: MediaLibrary.MediaDirectory = .temporary
+    var mediaDirectoryType: MediaFileManager.MediaDirectory = .temporary
 }
 
 class MediaExporterTests: XCTestCase {

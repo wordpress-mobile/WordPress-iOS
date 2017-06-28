@@ -81,7 +81,7 @@ protocol MediaExporter {
     ///
     /// - Note: This would almost always be set to .uploads, but for unit testing we use .temporary.
     ///
-    var mediaDirectoryType: MediaLibrary.MediaDirectory { get set }
+    var mediaDirectoryType: MediaFileManager.MediaDirectory { get set }
 }
 
 /// Extension providing generic helper implementation particular to MediaExporters.

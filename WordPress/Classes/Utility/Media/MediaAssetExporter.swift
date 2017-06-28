@@ -5,7 +5,7 @@ import MobileCoreServices
 ///
 class MediaAssetExporter: MediaExporter {
 
-    var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
+    var mediaDirectoryType: MediaFileManager.MediaDirectory = .uploads
 
     var imageOptions: MediaImageExporter.Options?
     var videoOptions: MediaVideoExporter.Options?
@@ -204,9 +204,9 @@ class MediaAssetExporter: MediaExporter {
             guard UTTypeEqual(resource.uniformTypeIdentifier as CFString, kUTTypeGIF) else {
                 throw AssetExportError.expectedPHAssetGIFType
             }
-            let url = try MediaLibrary.makeLocalMediaURL(withFilename: resource.originalFilename,
-                                                         fileExtension: "gif",
-                                                         type: mediaDirectoryType)
+            let url = try MediaFileManager.makeLocalMediaURL(withFilename: resource.originalFilename,
+                                                             fileExtension: "gif",
+                                                             type: mediaDirectoryType)
             let options = PHAssetResourceRequestOptions()
             options.isNetworkAccessAllowed = true
             let manager = PHAssetResourceManager.default()

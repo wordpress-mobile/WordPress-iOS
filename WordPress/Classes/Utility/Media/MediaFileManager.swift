@@ -3,7 +3,7 @@ import CocoaLumberjack
 
 /// Encapsulates Media functions relative to the local Media directory.
 ///
-extension MediaLibrary {
+class MediaFileManager: NSObject {
 
     fileprivate static let mediaDirectoryName = "Media"
 
