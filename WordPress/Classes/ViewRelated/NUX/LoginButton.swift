@@ -45,6 +45,5 @@ import WordPressShared
     }
 
     override func configureBorderColor() {
-        configureButton()
     }
 }
