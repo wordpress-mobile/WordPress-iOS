@@ -1,4 +1,5 @@
 #import "LoginFields.h"
+#import "WordPress-Swift.h"
 
 @implementation LoginFields
 

@@ -144,8 +144,10 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
         let facade = WordPressXMLRPCAPIFacade()
         facade.guessXMLRPCURL(forSite: loginFields.siteUrl, success: { [weak self] (url) in
-            self?.configureViewLoading(false)
-            self?.showSelfHostedUsernamePassword()
+            if let url = url {
+                self?.loginFields.xmlRPCURL = url
+            }
+            self?.fetchSiteInfo()
 
         }, failure: { [weak self] (error) in
             guard let error = error, let strongSelf = self else {
@@ -178,6 +180,24 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     }
 
 
+    func fetchSiteInfo() {
+        let baseSiteUrl = SigninHelpers.baseSiteURL(string: loginFields.siteUrl) as NSString
+        if let siteAddress = baseSiteUrl.components(separatedBy: "://").last {
+
+            let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            service.fetchSiteInfo(forAddress: siteAddress, success: { [weak self] (siteInfo) in
+                self?.loginFields.siteInfo = siteInfo
+                self?.showSelfHostedUsernamePassword()
+            }, failure: { [weak self] (error) in
+                self?.showSelfHostedUsernamePassword()
+            })
+
+        } else {
+            showSelfHostedUsernamePassword()
+        }
+    }
+
+
     func originalErrorOrError(error: NSError) -> NSError {
         guard let err = error.userInfo[XMLRPCOriginalErrorKey] as? NSError else {
             return error
@@ -196,6 +216,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
 
     func showSelfHostedUsernamePassword() {
+        configureViewLoading(false)
         performSegue(withIdentifier: .showURLUsernamePassword, sender: self)
     }
 

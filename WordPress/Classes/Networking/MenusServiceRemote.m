@@ -1,5 +1,4 @@
 #import "MenusServiceRemote.h"
-#import "Blog.h"
 #import "RemoteMenu.h"
 #import "RemoteMenuItem.h"
 #import "RemoteMenuLocation.h"
@@ -30,15 +29,14 @@ NSString * const MenusRemoteKeyClasses = @"classes";
 #pragma mark - Remote queries: Creating and modifying menus
 
 - (void)createMenuWithName:(NSString *)menuName
-                      blog:(Blog *)blog
+                    siteID:(NSNumber *)siteID
                    success:(nullable MenusServiceRemoteMenuRequestSuccessBlock)success
                    failure:(nullable MenusServiceRemoteFailureBlock)failure
 {
-    NSNumber *blogId = [blog dotComID];
-    NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
+    NSParameterAssert([siteID isKindOfClass:[NSNumber class]]);
     NSParameterAssert([menuName isKindOfClass:[NSString class]]);
     
-    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/new", blogId];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/new", siteID];
     NSString *requestURL = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
@@ -68,18 +66,17 @@ NSString * const MenusRemoteKeyClasses = @"classes";
 }
 
 - (void)updateMenuForID:(NSNumber *)menuID
-                   blog:(Blog *)blog
+                 siteID:(NSNumber *)siteID
                withName:(nullable NSString *)updatedName
           withLocations:(nullable NSArray <NSString *> *)locationNames
               withItems:(nullable NSArray <RemoteMenuItem *> *)updatedItems
                 success:(nullable MenusServiceRemoteMenuRequestSuccessBlock)success
                 failure:(nullable MenusServiceRemoteFailureBlock)failure
 {
-    NSNumber *blogId = [blog dotComID];
-    NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
+    NSParameterAssert([siteID isKindOfClass:[NSNumber class]]);
     NSParameterAssert([menuID isKindOfClass:[NSNumber class]]);
     
-    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@", blogId, menuID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@", siteID, menuID];
     NSString *requestURL = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
@@ -125,15 +122,14 @@ NSString * const MenusRemoteKeyClasses = @"classes";
 }
 
 - (void)deleteMenuForID:(NSNumber *)menuID
-                   blog:(Blog *)blog
+                 siteID:(NSNumber *)siteID
                 success:(nullable MenusServiceRemoteSuccessBlock)success
                 failure:(nullable MenusServiceRemoteFailureBlock)failure
 {
-    NSNumber *blogId = [blog dotComID];
-    NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
+    NSParameterAssert([siteID isKindOfClass:[NSNumber class]]);
     NSParameterAssert([menuID isKindOfClass:[NSNumber class]]);
     
-    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@/delete", blogId, menuID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@/delete", siteID, menuID];
     NSString *requestURL = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     [self.wordPressComRestApi POST:requestURL
@@ -164,14 +160,13 @@ NSString * const MenusRemoteKeyClasses = @"classes";
 
 #pragma mark - Remote queries: Getting menus
 
-- (void)getMenusForBlog:(Blog *)blog
+- (void)getMenusForSiteID:(NSNumber *)siteID
                 success:(nullable MenusServiceRemoteMenusRequestSuccessBlock)success
                 failure:(nullable MenusServiceRemoteFailureBlock)failure
 {
-    NSNumber *blogId = [blog dotComID];
-    NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
+    NSParameterAssert([siteID isKindOfClass:[NSNumber class]]);
     
-    NSString *path = [NSString stringWithFormat:@"sites/%@/menus", blogId];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/menus", siteID];
     NSString *requestURL = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
