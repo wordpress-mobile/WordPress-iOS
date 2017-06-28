@@ -334,6 +334,10 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate var mediaPickerInputViewController: WPInputMediaPickerViewController?
 
+    fileprivate var originalLeadingBarButtonGroup = [UIBarButtonItemGroup]()
+
+    fileprivate var originalTrailingBarButtonGroup = [UIBarButtonItemGroup]()
+
     /// HTML Pre Processors
     ///
     fileprivate var htmlPreProcessors = [Processor]()
@@ -1558,6 +1562,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     /// - Parameter sender: the button that was pressed.
     func mediaAddShowFullScreen(_ sender: UIBarButtonItem) {
         presentMediaPickerFullScreen(animated: true)
+        restoreInputAssistantItems()
     }
 
     /// Method to be called when canceled is pressed.
@@ -1569,6 +1574,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             return
         }
         mediaPickerControllerDidCancel(mediaPicker)
+        restoreInputAssistantItems()
     }
 
     /// Method to be called when done is pressed on the media input toolbar.
@@ -1582,6 +1588,15 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             return
         }
         mediaPickerController(mediaPicker, didFinishPickingAssets: selectedAssets)
+        restoreInputAssistantItems()
+    }
+
+    func restoreInputAssistantItems() {
+
+        richTextView.inputAssistantItem.leadingBarButtonGroups = originalLeadingBarButtonGroup
+        richTextView.inputAssistantItem.trailingBarButtonGroups = originalTrailingBarButtonGroup
+
+        richTextView.autocorrectionType = .yes
     }
 
     fileprivate func presentMediaPickerFullScreen(animated: Bool) {
@@ -1606,6 +1621,15 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let picker = WPInputMediaPickerViewController()
         mediaPickerInputViewController = picker
         richTextView.inputAccessoryView = mediaInputToolbar
+
+        originalLeadingBarButtonGroup = richTextView.inputAssistantItem.leadingBarButtonGroups
+        originalTrailingBarButtonGroup = richTextView.inputAssistantItem.trailingBarButtonGroups
+
+        richTextView.inputAssistantItem.leadingBarButtonGroups = []
+        richTextView.inputAssistantItem.trailingBarButtonGroups = []
+
+        richTextView.autocorrectionType = .no
+
         presentToolbarViewControllerAsInputView(picker)
         picker.mediaPicker.viewControllerToUseToPresent = self
         picker.dataSource = WPPHAssetDataSource.sharedInstance()
