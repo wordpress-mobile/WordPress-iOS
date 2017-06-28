@@ -16,7 +16,7 @@ class LoginWPComViewController: SigninWPComViewController, LoginViewController {
         usernameField.isHidden = true
         selfHostedButton.isHidden = true
     }
-    
+
     override func configureTextFields() {
         super.configureTextFields()
         passwordField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
@@ -34,12 +34,12 @@ class LoginWPComViewController: SigninWPComViewController, LoginViewController {
     override func localizeControls() {
         passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
         passwordField.accessibilityIdentifier = "Password"
-        
+
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
         submitButton.setTitle(submitButtonTitle, for: UIControlState())
         submitButton.setTitle(submitButtonTitle, for: .highlighted)
         submitButton.accessibilityIdentifier = "Log In Button"
-        
+
         let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
         forgotPasswordButton.setTitle(forgotPasswordTitle, for: UIControlState())
         forgotPasswordButton.setTitle(forgotPasswordTitle, for: .highlighted)
@@ -95,6 +95,6 @@ class LoginWPComViewController: SigninWPComViewController, LoginViewController {
             message = NSLocalizedString("Log in failed. Please try again.", comment: "A generic error message for a failed log in.")
         }
 
-        displayError(message: message)
+        displayError(error as NSError, sourceTag: sourceTag)
     }
 }
