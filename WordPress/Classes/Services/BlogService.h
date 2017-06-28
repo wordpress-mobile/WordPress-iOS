@@ -8,6 +8,7 @@ extern NSString *const WordPressMinimumVersion;
 extern NSString *const WPBlogUpdatedNotification;
 
 @class WPAccount;
+@class SiteInfo;
 
 @interface BlogService : LocalCoreDataService
 
@@ -45,6 +46,18 @@ extern NSString *const WPBlogUpdatedNotification;
  Returns the default WPCom blog.
  */
 - (nullable Blog *)primaryBlog;
+
+
+/**
+ *  Fetch site info for the specified site address.
+ *
+ *  @param siteAddress  The address of the site to look up.
+ *  @param success      The block that will be executed on success.  Can be nil.
+ *  @param failure      The block that will be executed on failure.  Can be nil.
+ */
+- (void)fetchSiteInfoForAddress:(NSString *)siteAddress
+                        success:(void (^)(SiteInfo *siteInfo))success
+                        failure:(void (^)(NSError *error))failure;
 
 /**
  *  Sync all available blogs for an acccount
