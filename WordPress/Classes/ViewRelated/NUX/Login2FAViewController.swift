@@ -114,7 +114,7 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
     func configureStatusLabel(_ message: String) {
         statusLabel.text = message
 
-        sendCodeButton.isHidden = !message.isEmpty
+        sendCodeButton.isEnabled = message.isEmpty
     }
 
 
