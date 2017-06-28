@@ -22,7 +22,13 @@ class OptionsTableViewController: UITableViewController {
 
     var onSelect: OnSelectHandler?
 
-    var cellBackgroundColor: UIColor = .white
+    var cellBackgroundColor: UIColor = .white {
+        didSet {
+            tableView.backgroundColor = cellBackgroundColor
+            tableView?.reloadData()
+        }
+    }
+
     var cellSelectedBackgroundColor: UIColor = .lightGray
 
     var cellDeselectedTintColor: UIColor? {
@@ -38,6 +44,8 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.backgroundColor = cellBackgroundColor
 
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         tableView.register(OptionsTableViewCell.self, forCellReuseIdentifier: OptionsTableViewCell.reuseIdentifier)
