@@ -27,7 +27,7 @@ class MediaTests: XCTestCase {
         do {
             let media = newTestMedia()
             let filePath = "sample.jpeg"
-            var expectedAbsoluteURL = try MediaLibrary.localUploadsDirectory()
+            var expectedAbsoluteURL = try MediaFileManager.localUploadsDirectory()
             expectedAbsoluteURL.appendPathComponent(filePath)
             media.absoluteLocalURL = expectedAbsoluteURL
             guard
@@ -49,7 +49,7 @@ class MediaTests: XCTestCase {
         do {
             let media = newTestMedia()
             let filePath = "sample-thumbnail.jpeg"
-            var expectedAbsoluteURL = try MediaLibrary.localUploadsDirectory()
+            var expectedAbsoluteURL = try MediaFileManager.localUploadsDirectory()
             expectedAbsoluteURL.appendPathComponent(filePath)
             media.absoluteThumbnailLocalURL = expectedAbsoluteURL
             guard

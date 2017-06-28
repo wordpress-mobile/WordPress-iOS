@@ -7,7 +7,7 @@ class MediaThumbnailExporter: MediaExporter {
 
     /// Directory type for the ThumbnailExporter, defaults to the .cache directory.
     ///
-    var mediaDirectoryType: MediaLibrary.MediaDirectory = .cache
+    var mediaDirectoryType: MediaFileManager.MediaDirectory = .cache
 
     // MARK: Export Options
 
@@ -191,10 +191,10 @@ class MediaThumbnailExporter: MediaExporter {
             filename.append("-\(Int(preferredSize.width))x\(Int(preferredSize.height))")
         }
         // Get a new URL for the file as a thumbnail within the cache.
-        return try MediaLibrary.makeLocalMediaURL(withFilename: filename,
-                                                  fileExtension: URL.fileExtensionForUTType(options.thumbnailImageType),
-                                                  type: mediaDirectoryType,
-                                                  incremented: false)
+        return try MediaFileManager.makeLocalMediaURL(withFilename: filename,
+                                                      fileExtension: URL.fileExtensionForUTType(options.thumbnailImageType),
+                                                      type: mediaDirectoryType,
+                                                      incremented: false)
     }
 
     /// Renames and moves an exported thumbnail to the expected directory with the expected thumbnail filenaming convention.

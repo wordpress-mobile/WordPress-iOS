@@ -5,7 +5,7 @@ import MobileCoreServices
 ///
 class MediaImageExporter: MediaExporter {
 
-    var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
+    var mediaDirectoryType: MediaFileManager.MediaDirectory = .uploads
 
     /// Export options.
     ///
@@ -166,9 +166,9 @@ class MediaImageExporter: MediaExporter {
         do {
             let filename = filename ?? defaultImageFilename
             // Make a new URL within the local Media directory
-            let url = try MediaLibrary.makeLocalMediaURL(withFilename: filename,
-                                                         fileExtension: URL.fileExtensionForUTType(type),
-                                                         type: mediaDirectoryType)
+            let url = try MediaFileManager.makeLocalMediaURL(withFilename: filename,
+                                                             fileExtension: URL.fileExtensionForUTType(type),
+                                                             type: mediaDirectoryType)
 
             // Check MediaSettings and configure the image writer as needed.
             var writer = ImageSourceWriter(url: url, sourceUTType: type as CFString)
