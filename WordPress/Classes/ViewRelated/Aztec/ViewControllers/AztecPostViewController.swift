@@ -142,7 +142,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Separator View
     ///
     fileprivate(set) lazy var separatorView: UIView = {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: Constants.toolbarHeight, height: 1))
+        let v = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1))
 
         v.backgroundColor = Colors.separator
         v.translatesAutoresizingMaskIntoConstraints = false
