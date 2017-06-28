@@ -1540,10 +1540,12 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight))
         toolbar.barTintColor = WPStyleGuide.aztecFormatBarBackgroundColor
         toolbar.tintColor = WPStyleGuide.aztecFormatBarActiveColor
+        let gridButton = UIBarButtonItem(image: Gridicon.iconOfType(.grid), style: .plain ,target: self, action: #selector(mediaAddShowFullScreen))
+        gridButton.accessibilityLabel = NSLocalizedString("Open full media picker", comment: "Editor button to swich the media picker from quick mode to full picker")
         toolbar.items = [
             UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(mediaAddInputCancelled)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: Gridicon.iconOfType(.grid), style: .plain ,target: self, action: #selector(mediaAddShowFullScreen)),
+            gridButton,
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(mediaAddInputDone))
         ]
