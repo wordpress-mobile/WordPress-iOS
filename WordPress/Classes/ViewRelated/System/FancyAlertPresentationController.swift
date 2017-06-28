@@ -21,9 +21,6 @@ class FancyAlertPresentationController: UIPresentationController, UIViewControll
         containerView.addSubview(dimmingView)
         containerView.pinSubviewToAllEdges(dimmingView)
 
-        dimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dimmingViewTapped)))
-        dimmingView.isUserInteractionEnabled = true
-
         guard let transitionCoordinator = presentingViewController.transitionCoordinator else {
             dimmingView.alpha = WPAlphaFull
             return
@@ -50,10 +47,6 @@ class FancyAlertPresentationController: UIPresentationController, UIViewControll
             _ in
             self.dimmingView.alpha = WPAlphaZero
         })
-    }
-
-    @objc private func dimmingViewTapped() {
-        presentingViewController.dismiss(animated: true, completion: nil)
     }
 
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
