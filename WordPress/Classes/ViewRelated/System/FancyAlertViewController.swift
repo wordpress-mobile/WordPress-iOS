@@ -190,21 +190,20 @@ class FancyAlertViewController: UIViewController {
         update(titleAccessoryButton, with: configuration.titleAccessoryButton)
 
         // If both primary buttons are hidden, we'll hide the bottom area of the dialog
-        let bothButtonsHidden = defaultButton.isHiddenInStackView && cancelButton.isHiddenInStackView
-        buttonWrapperView.isHiddenInStackView = bothButtonsHidden
-        dividerView.isHiddenInStackView = bothButtonsHidden
+        buttonWrapperView.isHiddenInStackView = isAlertCompact
+        dividerView.isHiddenInStackView = isAlertCompact
 
         // If both primary buttons are hidden, we'll shrink the header image view down a little
-        let constant = bothButtonsHidden ? Constants.headerImageVerticalConstraintCompact : Constants.headerImageVerticalConstraintRegular
+        let constant = isAlertCompact ? Constants.headerImageVerticalConstraintCompact : Constants.headerImageVerticalConstraintRegular
         headerImageViewTopConstraint.constant = constant
         headerImageViewBottomConstraint.constant = constant
 
         // If both primary buttons are hidden, the user can tap anywhere on the dialog to dismiss it
-        dismissGestureRecognizer.isEnabled = bothButtonsHidden
+        dismissGestureRecognizer.isEnabled = isAlertCompact
 
         view.layoutIfNeeded()
 
-        titleLabel.accessibilityHint = (bothButtonsHidden) ? NSLocalizedString("Double tap to dismiss", comment: "Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it") : nil
+        titleLabel.accessibilityHint = (isAlertCompact) ? NSLocalizedString("Double tap to dismiss", comment: "Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it") : nil
 
         UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, titleLabel)
     }
@@ -228,6 +227,12 @@ class FancyAlertViewController: UIViewController {
 
         button.setTitle(buttonConfig.title, for: .normal)
         buttonHandlers[button] = buttonConfig.handler
+    }
+
+    /// An alert is compact if both of the bottom buttons are hidden
+    ///
+    private var isAlertCompact: Bool {
+        return defaultButton.isHiddenInStackView && cancelButton.isHiddenInStackView
     }
 
     // MARK: - Animation
