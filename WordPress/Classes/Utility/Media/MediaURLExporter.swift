@@ -5,7 +5,7 @@ import MobileCoreServices
 ///
 class MediaURLExporter: MediaExporter {
 
-    var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
+    var mediaDirectoryType: MediaFileManager.MediaDirectory = .uploads
 
     var imageOptions: MediaImageExporter.Options?
     var videoOptions: MediaVideoExporter.Options?
@@ -120,9 +120,9 @@ class MediaURLExporter: MediaExporter {
     fileprivate func exportGIF(atURL url: URL, onCompletion: @escaping OnURLExport, onError: @escaping OnExportError) {
         do {
             let fileManager = FileManager.default
-            let mediaURL = try MediaLibrary.makeLocalMediaURL(withFilename: url.lastPathComponent,
-                                                              fileExtension: "gif",
-                                                              type: mediaDirectoryType)
+            let mediaURL = try MediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent,
+                                                                  fileExtension: "gif",
+                                                                  type: mediaDirectoryType)
             try fileManager.copyItem(at: url, to: mediaURL)
             onCompletion(URLExport.exportedGIF(MediaGIFExport(url: mediaURL,
                                                               fileSize: mediaURL.resourceFileSize)))

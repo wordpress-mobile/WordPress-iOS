@@ -5,7 +5,7 @@ import MobileCoreServices
 ///
 class MediaVideoExporter: MediaExporter {
 
-    var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
+    var mediaDirectoryType: MediaFileManager.MediaDirectory = .uploads
 
     /// Export options.
     ///
@@ -92,9 +92,9 @@ class MediaVideoExporter: MediaExporter {
             }
 
             // Generate a URL for exported video.
-            let mediaURL = try MediaLibrary.makeLocalMediaURL(withFilename: filename ?? "video",
-                                                              fileExtension: URL.fileExtensionForUTType(outputType),
-                                                              type: mediaDirectoryType)
+            let mediaURL = try MediaFileManager.makeLocalMediaURL(withFilename: filename ?? "video",
+                                                                  fileExtension: URL.fileExtensionForUTType(outputType),
+                                                                  type: mediaDirectoryType)
             session.outputURL = mediaURL
             session.outputFileType = outputType
             session.shouldOptimizeForNetworkUse = true
