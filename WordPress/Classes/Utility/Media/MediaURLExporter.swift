@@ -5,7 +5,7 @@ import MobileCoreServices
 ///
 class MediaURLExporter: MediaExporter {
 
-    var mediaDirectoryType: MediaFileManager.MediaDirectory = .uploads
+    var mediaDirectoryType: MediaDirectory = .uploads
 
     var imageOptions: MediaImageExporter.Options?
     var videoOptions: MediaVideoExporter.Options?

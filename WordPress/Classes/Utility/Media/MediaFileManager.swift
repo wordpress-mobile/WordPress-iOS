@@ -1,39 +1,39 @@
 import Foundation
 import CocoaLumberjack
 
+/// Type of the local Media directory URL in implementation.
+///
+enum MediaDirectory {
+    /// Default, system Documents directory, for persisting media files for upload.
+    case uploads
+    /// System Caches directory, for creating discardable media files, such as thumbnails.
+    case cache
+    /// System temporary directory, used for unit testing or temporary media files.
+    case temporary
+
+    /// Returns the directory URL for the directory type.
+    ///
+    var url: URL {
+        let fileManager = FileManager.default
+        // Get a parent directory, based on the type.
+        let parentDirectory: URL
+        switch self {
+        case .uploads:
+            parentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        case .cache:
+            parentDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        case .temporary:
+            parentDirectory = fileManager.temporaryDirectory
+        }
+        return parentDirectory.appendingPathComponent(MediaFileManager.mediaDirectoryName, isDirectory: true)
+    }
+}
+
 /// Encapsulates Media functions relative to the local Media directory.
 ///
 class MediaFileManager: NSObject {
 
     fileprivate static let mediaDirectoryName = "Media"
-
-    /// Type of the local Media directory URL in implementation.
-    ///
-    enum MediaDirectory {
-        /// Default, system Documents directory, for persisting media files for upload.
-        case uploads
-        /// System Caches directory, for creating discardable media files, such as thumbnails.
-        case cache
-        /// System temporary directory, used for unit testing or temporary media files.
-        case temporary
-
-        /// Returns the directory URL for the directory type.
-        ///
-        var url: URL {
-            let fileManager = FileManager.default
-            // Get a parent directory, based on the type.
-            let parentDirectory: URL
-            switch self {
-            case .uploads:
-                parentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-            case .cache:
-                parentDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
-            case .temporary:
-                parentDirectory = fileManager.temporaryDirectory
-            }
-            return parentDirectory.appendingPathComponent(mediaDirectoryName, isDirectory: true)
-        }
-    }
 
     // MARK: - Class methods
 
