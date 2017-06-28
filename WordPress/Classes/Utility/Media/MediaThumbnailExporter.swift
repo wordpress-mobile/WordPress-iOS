@@ -191,10 +191,9 @@ class MediaThumbnailExporter: MediaExporter {
             filename.append("-\(Int(preferredSize.width))x\(Int(preferredSize.height))")
         }
         // Get a new URL for the file as a thumbnail within the cache.
-        return try MediaFileManager.makeLocalMediaURL(withFilename: filename,
-                                                      fileExtension: URL.fileExtensionForUTType(options.thumbnailImageType),
-                                                      type: mediaDirectoryType,
-                                                      incremented: false)
+        return try mediaFileManager().makeLocalMediaURL(withFilename: filename,
+                                                        fileExtension: URL.fileExtensionForUTType(options.thumbnailImageType),
+                                                        incremented: false)
     }
 
     /// Renames and moves an exported thumbnail to the expected directory with the expected thumbnail filenaming convention.

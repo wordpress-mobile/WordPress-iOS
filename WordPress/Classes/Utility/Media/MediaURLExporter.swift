@@ -120,9 +120,8 @@ class MediaURLExporter: MediaExporter {
     fileprivate func exportGIF(atURL url: URL, onCompletion: @escaping OnURLExport, onError: @escaping OnExportError) {
         do {
             let fileManager = FileManager.default
-            let mediaURL = try MediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent,
-                                                                  fileExtension: "gif",
-                                                                  type: mediaDirectoryType)
+            let mediaURL = try mediaFileManager().makeLocalMediaURL(withFilename: url.lastPathComponent,
+                                                                    fileExtension: "gif")
             try fileManager.copyItem(at: url, to: mediaURL)
             onCompletion(URLExport.exportedGIF(MediaGIFExport(url: mediaURL,
                                                               fileSize: mediaURL.resourceFileSize)))
