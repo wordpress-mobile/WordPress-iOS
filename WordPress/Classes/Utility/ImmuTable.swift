@@ -308,6 +308,22 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
         }
         return tableView.rowHeight
     }
+
+    open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if target.responds(to: #selector(UITableViewDelegate.tableView(_:heightForFooterInSection:))) {
+            return target.tableView(tableView, heightForFooterInSection: section)
+        }
+
+        return 0
+    }
+
+    open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if target.responds(to: #selector(UITableViewDelegate.tableView(_:viewForFooterInSection:))) {
+            return target.tableView(tableView, viewForFooterInSection: section)
+        }
+
+        return nil
+    }
 }
 
 
