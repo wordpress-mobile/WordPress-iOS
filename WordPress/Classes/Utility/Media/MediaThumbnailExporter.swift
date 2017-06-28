@@ -7,7 +7,7 @@ class MediaThumbnailExporter: MediaExporter {
 
     /// Directory type for the ThumbnailExporter, defaults to the .cache directory.
     ///
-    var mediaDirectoryType: MediaFileManager.MediaDirectory = .cache
+    var mediaDirectoryType: MediaDirectory = .cache
 
     // MARK: Export Options
 
