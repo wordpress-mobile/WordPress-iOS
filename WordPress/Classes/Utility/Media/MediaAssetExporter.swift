@@ -1,7 +1,7 @@
 import Foundation
 import MobileCoreServices
 
-/// MediaLibrary export handling of PHAssets
+/// Media export handling of PHAssets
 ///
 class MediaAssetExporter: MediaExporter {
 
