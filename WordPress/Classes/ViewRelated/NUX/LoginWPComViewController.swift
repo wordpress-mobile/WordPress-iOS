@@ -17,6 +17,15 @@ class LoginWPComViewController: SigninWPComViewController, LoginViewController {
         selfHostedButton.isHidden = true
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+                                  keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
+
+        passwordField.becomeFirstResponder()
+    }
+
     override func configureTextFields() {
         super.configureTextFields()
         passwordField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
@@ -86,7 +95,7 @@ class LoginWPComViewController: SigninWPComViewController, LoginViewController {
         configureViewLoading(false)
 
         guard (error as NSError).code != 403 else {
-            let message = NSLocalizedString("The password you entered is incorrect.", comment: "An error message shown when a wpcom user provides the wrong password.")
+            let message = NSLocalizedString("It seems like you've entered an incorrect password. Want to give it another try?", comment: "An error message shown when a wpcom user provides the wrong password.")
             displayError(message: message)
             return
         }
