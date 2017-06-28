@@ -123,9 +123,9 @@
     }
 
     error = nil;
-    NSURL *mediaURL = [MediaFileManager makeLocalMediaURLWithFilename:mediaName
-                                                        fileExtension:extension
-                                                                error:&error];
+    NSURL *mediaURL = [[MediaFileManager defaultManager] makeLocalMediaURLWithFilename:mediaName
+                                                                         fileExtension:extension
+                                                                                 error:&error];
     if (error) {
         if (completion) {
             completion(nil, error);
@@ -133,7 +133,8 @@
         return;
     }
     error = nil;
-    NSURL *mediaThumbnailURL = [MediaFileManager makeLocalMediaURLWithFilename:[MediaFileManager mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
+    MediaFileManager *mediaFileManager = [MediaFileManager defaultManager];
+    NSURL *mediaThumbnailURL = [mediaFileManager makeLocalMediaURLWithFilename:[mediaFileManager mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
                                                                  fileExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]
                                                                          error:&error];
     if (error) {
@@ -673,14 +674,14 @@
         CGSize availableSize = CGSizeZero;
         if (media.mediaType == MediaTypeImage) {
             fileURL = media.absoluteThumbnailLocalURL;
-            availableSize = [MediaFileManager imageSizeForMediaAtFileURL:fileURL];
+            availableSize = [[MediaFileManager defaultManager] imageSizeForMediaAtFileURL:fileURL];
             if (size.height > availableSize.height && size.width > availableSize.width) {
                 fileURL = media.absoluteLocalURL;
-                availableSize = [MediaFileManager imageSizeForMediaAtFileURL:fileURL];
+                availableSize = [[MediaFileManager defaultManager] imageSizeForMediaAtFileURL:fileURL];
             }
         } else if (media.mediaType == MediaTypeVideo) {
             fileURL = media.absoluteThumbnailLocalURL;
-            availableSize = [MediaFileManager imageSizeForMediaAtFileURL:fileURL];
+            availableSize = [[MediaFileManager defaultManager] imageSizeForMediaAtFileURL:fileURL];
         }
 
         // check if the available local image is equal or larger than the requested size
@@ -730,7 +731,8 @@
 
             [self.managedObjectContext performBlock:^{
                 NSError *error = nil;
-                NSURL *fileURL = [MediaFileManager makeLocalMediaURLWithFilename:[MediaFileManager mediaFilenameAppendingThumbnail:media.filename]
+                MediaFileManager *mediaFileManager = [MediaFileManager defaultManager];
+                NSURL *fileURL = [mediaFileManager makeLocalMediaURLWithFilename:[mediaFileManager mediaFilenameAppendingThumbnail:media.filename]
                                                                    fileExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]
                                                                            error:&error];
                 if (error) {
