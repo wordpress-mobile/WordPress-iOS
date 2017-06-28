@@ -90,7 +90,11 @@ class FancyAlertViewController: UIViewController {
 
     /// Gesture recognizer for taps on the dialog if no buttons are present
     ///
-    private var dismissGestureRecognizer: UITapGestureRecognizer!
+    fileprivate var dismissGestureRecognizer: UITapGestureRecognizer!
+
+    /// Allows compact alerts to be dismissed by 'flinging' them offscreen
+    ///
+    fileprivate var handler: FlingableViewHandler!
 
     /// Stores handlers for buttons passed in the current configuration
     ///
@@ -134,6 +138,7 @@ class FancyAlertViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         accessibilityViewIsModal = true
 
         view.backgroundColor = .clear
@@ -159,6 +164,12 @@ class FancyAlertViewController: UIViewController {
         moreInfoButton.tintColor = WPStyleGuide.wordPressBlue()
 
         updateViewConfiguration()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        updateFlingableViewHandler()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -198,6 +209,8 @@ class FancyAlertViewController: UIViewController {
         headerImageViewTopConstraint.constant = constant
         headerImageViewBottomConstraint.constant = constant
 
+        updateFlingableViewHandler()
+
         // If both primary buttons are hidden, the user can tap anywhere on the dialog to dismiss it
         dismissGestureRecognizer.isEnabled = isAlertCompact
 
@@ -229,6 +242,18 @@ class FancyAlertViewController: UIViewController {
         buttonHandlers[button] = buttonConfig.handler
     }
 
+    private func updateFlingableViewHandler() {
+        guard view.superview != nil else { return }
+
+        if handler == nil {
+            handler = FlingableViewHandler(targetView: view)
+            handler.delegate = self
+        }
+
+        // Flingable handler is active if both buttons are hidden
+        handler.isActive = isAlertCompact
+    }
+
     /// An alert is compact if both of the bottom buttons are hidden
     ///
     private var isAlertCompact: Bool {
@@ -246,7 +271,7 @@ class FancyAlertViewController: UIViewController {
 
     // MARK: - Actions
 
-    @objc private func dismissTapped() {
+    @objc fileprivate func dismissTapped() {
         dismiss(animated: true, completion: {
             self.configuration?.dismissAction?()
         })
@@ -262,6 +287,22 @@ class FancyAlertViewController: UIViewController {
     override func accessibilityPerformEscape() -> Bool {
         dismissTapped()
         return true
+    }
+}
+
+// MARK: - FlingableViewHandlerDelegate
+
+extension FancyAlertViewController: FlingableViewHandlerDelegate {
+    func flingableViewHandlerDidBeginRecognizingGesture(_ handler: FlingableViewHandler) {
+        dismissGestureRecognizer.isEnabled = false
+    }
+
+    func flingableViewHandlerWasCancelled(_ handler: FlingableViewHandler) {
+        dismissGestureRecognizer.isEnabled = true
+    }
+
+    func flingableViewHandlerDidEndRecognizingGesture(_ handler: FlingableViewHandler) {
+        dismissTapped()
     }
 }
 
