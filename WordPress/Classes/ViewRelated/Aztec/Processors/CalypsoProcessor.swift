@@ -110,7 +110,7 @@ private extension CalypsoProcessor {
 
         let matches = regex.matches(in: text, options: [], range: text.foundationRangeOfEntireString)
         let ranges = matches.flatMap { text.range(from: $0.range) }
-        
+
         return ranges
     }
 }
