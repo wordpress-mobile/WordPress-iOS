@@ -46,6 +46,13 @@ class MediaFileManager: NSObject {
         return MediaFileManager()
     }()
 
+    /// Helper method for getting a MediaFileManager for the .cache directory.
+    ///
+    @objc (cacheManager)
+    class var cache: MediaFileManager {
+        return MediaFileManager(directory: .cache)
+    }
+
     // MARK: - Init
 
     /// Init with default directory of .uploads.
@@ -151,13 +158,14 @@ class MediaFileManager: NSObject {
         }
     }
 
-    /// Clear the local Media directory of any files that are no longer in use by any managed Media objects.
+    /// Clear the local Media directory of any files that are no longer in use or can be fetched again,
+    /// such as Media without a blog or with a remote URL.
     ///
     /// - Note: These files can show up because of the app being killed while a media object
     ///   was being created or when a CoreData migration fails and the database is recreated.
     ///
     func clearUnusedFilesFromDirectory(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
-        purgeMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL"),
+        purgeMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL || remoteURL == NULL"),
                         onCompletion: onCompletion,
                         onError: onError)
     }

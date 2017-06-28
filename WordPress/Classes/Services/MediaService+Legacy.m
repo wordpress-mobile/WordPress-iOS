@@ -78,8 +78,8 @@
         return;
     }
     error = nil;
-    MediaFileManager *mediaFileManager = [MediaFileManager defaultManager];
-    NSURL *mediaThumbnailURL = [mediaFileManager makeLocalMediaURLWithFilename:[mediaFileManager mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
+    MediaFileManager *cacheFileManager = [MediaFileManager cacheManager];
+    NSURL *mediaThumbnailURL = [cacheFileManager makeLocalMediaURLWithFilename:[cacheFileManager mediaFilenameAppendingThumbnail:[mediaURL lastPathComponent]]
                                                                  fileExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]
                                                                          error:&error];
     if (error) {
@@ -234,14 +234,14 @@
         CGSize availableSize = CGSizeZero;
         if (media.mediaType == MediaTypeImage) {
             fileURL = media.absoluteThumbnailLocalURL;
-            availableSize = [[MediaFileManager defaultManager] imageSizeForMediaAtFileURL:fileURL];
+            availableSize = [[MediaFileManager cacheManager] imageSizeForMediaAtFileURL:fileURL];
             if (size.height > availableSize.height && size.width > availableSize.width) {
                 fileURL = media.absoluteLocalURL;
-                availableSize = [[MediaFileManager defaultManager] imageSizeForMediaAtFileURL:fileURL];
+                availableSize = [[MediaFileManager cacheManager] imageSizeForMediaAtFileURL:fileURL];
             }
         } else if (media.mediaType == MediaTypeVideo) {
             fileURL = media.absoluteThumbnailLocalURL;
-            availableSize = [[MediaFileManager defaultManager] imageSizeForMediaAtFileURL:fileURL];
+            availableSize = [[MediaFileManager cacheManager] imageSizeForMediaAtFileURL:fileURL];
         }
 
         // check if the available local image is equal or larger than the requested size
@@ -291,7 +291,7 @@
 
             [self.managedObjectContext performBlock:^{
                 NSError *error = nil;
-                MediaFileManager *mediaFileManager = [MediaFileManager defaultManager];
+                MediaFileManager *mediaFileManager = [MediaFileManager cacheManager];
                 NSURL *fileURL = [mediaFileManager makeLocalMediaURLWithFilename:[mediaFileManager mediaFilenameAppendingThumbnail:media.filename]
                                                                    fileExtension:[self extensionForUTI:(__bridge NSString*)kUTTypeJPEG]
                                                                            error:&error];
