@@ -122,6 +122,13 @@ class OptionsTableViewCell: UITableViewCell {
         fatalError("Not implemented")
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        // Our Gridicons look slightly better if shifted down one px
+        imageView?.frame.origin.y += 1
+    }
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
