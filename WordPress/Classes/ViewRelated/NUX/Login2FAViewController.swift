@@ -262,13 +262,13 @@ extension Login2FAViewController: LoginFacadeDelegate {
     func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
     }
-    
-    
+
+
     func displayLoginMessage(_ message: String!) {
         configureStatusLabel(message)
     }
-    
-    
+
+
     func displayRemoteError(_ error: Error!) {
         configureStatusLabel("")
         configureViewLoading(false)
