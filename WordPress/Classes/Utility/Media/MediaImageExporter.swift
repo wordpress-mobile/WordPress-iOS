@@ -1,7 +1,7 @@
 import Foundation
 import MobileCoreServices
 
-/// MediaLibrary export handling of UIImages.
+/// Media export handling of UIImages.
 ///
 class MediaImageExporter: MediaExporter {
 
