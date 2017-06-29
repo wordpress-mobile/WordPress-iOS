@@ -48,7 +48,7 @@ extern NSString * const WPAppAnalyticsKeyEditorSource;
  *
  *  @returns    YES if usage is being tracked, NO otherwise.
  */
-- (BOOL)isTrackingUsage;
++ (BOOL)isTrackingUsage;
 
 /**
  *  @brief      Sets usage tracking ON or OFF
