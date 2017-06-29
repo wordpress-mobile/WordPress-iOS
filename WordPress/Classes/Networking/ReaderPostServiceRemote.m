@@ -293,7 +293,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     
     post.author = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyNiceName]]; // typically the author's screen name
     post.authorAvatarURL = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyAvatarURL]];
-    post.authorDisplayName = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyName]]; // Typically the author's given name
+    post.authorDisplayName = [[self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyName]] stringByDecodingXMLCharacters]; // Typically the author's given name
     post.authorEmail = [self authorEmailFromAuthorDictionary:authorDict];
     post.authorURL = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyURL]];
     post.siteIconURL = [self stringOrEmptyString:[dict stringForKeyPath:@"meta.data.site.icon.img"]];
