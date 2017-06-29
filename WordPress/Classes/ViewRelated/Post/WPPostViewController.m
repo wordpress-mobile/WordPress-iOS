@@ -4,6 +4,7 @@
 #import <WordPressEditor/WPEditorField.h>
 #import <WordPressEditor/WPEditorView.h>
 #import <WordPressEditor/WPEditorFormatbarView.h>
+#import <WordPressEditor/WPEditorStat.h>
 #import <WordPressShared/NSString+Util.h>
 #import <WordPressShared/UIImage+Util.h>
 #import <WordPressShared/WPFontManager.h>
@@ -1937,6 +1938,11 @@ MediaProgressCoordinatorDelegate
                                                         @"Title of the edit-image button in the post editor.")];
     
     [self refreshUIForCurrentPost];
+}
+
+- (void)editorTrackStat:(WPEditorStat)stat
+{
+    [WPAnalytics track:[WPEditorStatMap map:stat]];
 }
 
 - (void)editorViewController:(WPEditorViewController *)editorViewController imageReplaced:(NSString *)imageId
