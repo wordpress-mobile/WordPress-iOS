@@ -1,1 +1,2 @@
-Med den nya mediabibliotekssektionen har vi gjort det mycket enklare att hantera mediafiler för din webbplats. Du kan granska dina foton och videoklipp, söka, uppdatera metadata, radera och ladda upp objekt direkt i detaljmenyn för webbplatsen. Du behöver bara knacka på Media för att komma igång.
+Ändra ikonen för din webbplats på sidan med uppgifter om webbplatsen, knacka på ikonen för att komma igång.
+Vi har lagt till stöd från autokorrigering i fältet för inläggsetiketter.
