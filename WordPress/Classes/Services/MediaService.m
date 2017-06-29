@@ -19,16 +19,16 @@
 
 @implementation MediaService
 
+#pragma mark - Creating media
+
 - (void)createMediaWithURL:(NSURL *)url
            forPostObjectID:(NSManagedObjectID *)postObjectID
          thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                 completion:(void (^)(Media *media, NSError *error))completion
 {
-
     NSString *mediaName = [[url pathComponents] lastObject];
-
-    [self createMediaWith:url
-              forObjectID:postObjectID
+    [self exportMediaWith:url
+                 objectID:postObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
                completion:completion
@@ -41,8 +41,8 @@
            thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion
 {
-    [self createMediaWith:image
-              forObjectID:postObjectID
+    [self exportMediaWith:image
+                 objectID:postObjectID
                 mediaName:mediaID
         thumbnailCallback:thumbnailCallback
                completion:completion
@@ -55,9 +55,8 @@
                     completion:(void (^)(Media *media, NSError *error))completion
 {
     NSString *mediaName = [asset originalFilename];
-    
-    [self createMediaWith:asset
-              forObjectID:postObjectID
+    [self exportMediaWith:asset
+                 objectID:postObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
                completion:completion
@@ -70,9 +69,8 @@
                     completion:(void (^)(Media *media, NSError *error))completion
 {
     NSString *mediaName = [asset originalFilename];
-
-    [self createMediaWith:asset
-              forObjectID:blogObjectID
+    [self exportMediaWith:asset
+                 objectID:blogObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
                completion:completion
@@ -84,12 +82,89 @@
            thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
                   completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion
 {
-    [self createMediaWith:image
-              forObjectID:blogObjectID
+    [self exportMediaWith:image
+                 objectID:blogObjectID
                 mediaName:[[NSUUID UUID] UUIDString]
         thumbnailCallback:thumbnailCallback
                completion:completion];
 }
+
+#pragma mark - Private exporting
+
+- (void)exportMediaWith:(id)exportable
+               objectID:(NSManagedObjectID *)objectID
+              mediaName:(nullable NSString *)mediaName
+      thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+             completion:(void (^)(Media *media, NSError *error))completion
+{
+    // Revert to legacy category methods if not using the new exporting services.
+    if (![self supportsNewMediaExports]) {
+        [self createMediaWith:exportable
+                  forObjectID:objectID
+                    mediaName:mediaName
+            thumbnailCallback:thumbnailCallback
+                   completion:completion];
+        return;
+    }
+
+    // Use the new export services as indicated by the FeatureFlag.
+    AbstractPost *post = nil;
+    Blog *blog = nil;
+    NSError *error = nil;
+    NSManagedObject *existingObject = [self.managedObjectContext existingObjectWithID:objectID error:&error];
+    if ([existingObject isKindOfClass:[AbstractPost class]]) {
+        post = (AbstractPost *)existingObject;
+        blog = post.blog;
+    } else if ([existingObject isKindOfClass:[Blog class]]) {
+        blog = (Blog *)existingObject;
+    }
+    if (!post && !blog) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+
+    // Setup completion handlers
+    void(^completionWithMedia)(Media *) = ^(Media *media) {
+        if (completion) {
+            completion(media, nil);
+        }
+    };
+    void(^completionWithError)( NSError *) = ^(NSError *error) {
+        if (completion) {
+            completion(nil, error);
+        }
+    };
+
+    // Export based on the type of the exportable.
+    MediaExportService *exportService = [[MediaExportService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    if ([exportable isKindOfClass:[PHAsset class]]) {
+        [exportService exportMediaWithBlog:blog
+                                     asset:(PHAsset *)exportable
+                              onCompletion:completionWithMedia
+                                   onError:completionWithError];
+    } else if ([exportable isKindOfClass:[UIImage class]]) {
+        [exportService exportMediaWithBlog:blog
+                                     image:(UIImage *)exportable
+                              onCompletion:completionWithMedia
+                                   onError:completionWithError];
+    } else if ([exportable isKindOfClass:[NSURL class]]) {
+        [exportService exportMediaWithBlog:blog
+                                       url:(NSURL *)exportable
+                              onCompletion:completionWithMedia
+                                   onError:completionWithError];
+    } else {
+        completionWithError(nil);
+    }
+}
+
+- (BOOL)supportsNewMediaExports
+{
+    return [Feature enabled:FeatureFlagNewMediaExports];
+}
+
+#pragma mark - Uploading media
 
 - (void)uploadMedia:(Media *)media
            progress:(NSProgress **)progress
@@ -156,6 +231,8 @@
                 failure:failureBlock];
 }
 
+#pragma mark - Private helpers
+
 - (void)trackUploadError:(NSError *)error
 {
     if (error.code == NSURLErrorCancelled) {
@@ -164,6 +241,8 @@
         [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed error:error];
     }
 }
+
+#pragma mark - Updating media
 
 - (void)updateMedia:(Media *)media
             success:(void (^)())success
@@ -252,6 +331,8 @@
     }
 }
 
+#pragma mark - Private helpers
+
 - (NSError *)customMediaUploadError:(NSError *)error remote:(id <MediaServiceRemote>)remote {
     NSString *customErrorMessage = nil;
     if ([remote isKindOfClass:[MediaServiceRemoteXMLRPC class]]) {
@@ -296,6 +377,8 @@
     }
     return error;
 }
+
+#pragma mark - Deleting media
 
 - (void)deleteMedia:(nonnull Media *)media
             success:(nullable void (^)())success
@@ -365,6 +448,8 @@
         }
     });
 }
+
+#pragma mark - Getting media
 
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
             withSuccess:(void (^)(Media *media))success
@@ -496,6 +581,8 @@
                 failure:failure];
 }
 
+#pragma mark - Private helpers
+
 - (NSString *)mimeTypeForMediaType:(NSNumber *)mediaType
 {
     MediaType filter = (MediaType)[mediaType intValue];
@@ -522,8 +609,6 @@
 
     return predicate;
 }
-
-#pragma mark - Private
 
 #pragma mark - Media helpers
 
