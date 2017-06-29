@@ -56,7 +56,7 @@ target 'WordPress' do
   pod 'Gridicons', '0.8'
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.18'
-  pod 'WordPress-iOS-Editor', '1.9.2'
+  pod 'WordPress-iOS-Editor', '1.9.3'
   pod 'WordPress-Aztec-iOS', '1.0.0-beta.5'
 
   target 'WordPressTest' do
