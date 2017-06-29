@@ -1,0 +1,2 @@
+Bewerk de favicon van je site op het site detail scherm, tap er op om te beginnen.
+We hebben auto-correct ondersteuning toegevoegd voor het tag veld van het bericht.

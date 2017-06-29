@@ -1,1 +1,2 @@
-We've made it much easier to manage your site's media, with the addition of the new Media Library section. You can view your photos and videos, search, edit metadata, delete and upload items right from the site detail menu. Just tap Media to get started.
+Edit your site's icon on the site details screen, just tap on it to get started.
+We've added autocorrect support on the post tags field.
