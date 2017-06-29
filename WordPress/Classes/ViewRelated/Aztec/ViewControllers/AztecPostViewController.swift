@@ -599,7 +599,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         view.addSubview(betaButton)
 
         mediaProgressView.isHidden = true
-        navigationController?.navigationBar.addSubview(mediaProgressView)        
+        navigationController?.navigationBar.addSubview(mediaProgressView)
     }
 
     func registerAttachmentImageProviders() {
