@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
-    [remote getMenusForBlog:blog
+    [remote getMenusForSiteID:blog.dotComID
                     success:^(NSArray<RemoteMenu *> * _Nullable remoteMenus, NSArray<RemoteMenuLocation *> * _Nullable remoteLocations) {
         
                         [self.managedObjectContext performBlock:^{
@@ -162,7 +162,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
     [remote deleteMenuForID:menu.menuID
-                       blog:blog
+                     siteID:blog.dotComID
                     success:completeMenuDeletion
                     failure:failure];
 }
@@ -220,7 +220,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
     [remote createMenuWithName:menuName
-                          blog:blog
+                        siteID:blog.dotComID
                        success:^(RemoteMenu * _Nonnull remoteMenu) {
                            [self.managedObjectContext performBlock:^{
                                if (success) {
@@ -253,7 +253,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
     [remote updateMenuForID:menu.menuID
-                       blog:blog
+                       siteID:blog.dotComID
                    withName:menu.name
               withLocations:locationNames
                   withItems:remoteItems

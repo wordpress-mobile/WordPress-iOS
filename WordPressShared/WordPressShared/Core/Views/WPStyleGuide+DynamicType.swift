@@ -3,11 +3,6 @@
 extension WPStyleGuide {
     static let defaultTableViewRowHeight: CGFloat = 44.0
 
-    static let notoLoaded = { () -> Bool in
-        WPFontManager.loadNotoFontFamily()
-        return true
-    }()
-
     /// Configures a table to automatically resize its rows according to their content.
     ///
     /// - Parameters:
@@ -175,7 +170,7 @@ extension WPStyleGuide {
     /// - Returns: The created font point size.
     ///
     private class func customNotoFontNamed(_ fontName: String, forTextStyle style: UIFontTextStyle) -> UIFont {
-        _ = notoLoaded
+        WPFontManager.loadNotoFontFamily()
         let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
         guard let font = UIFont(name: fontName, size: fontDescriptor.pointSize) else {
             // If we can't get the Noto font for some reason we will default to the system font
