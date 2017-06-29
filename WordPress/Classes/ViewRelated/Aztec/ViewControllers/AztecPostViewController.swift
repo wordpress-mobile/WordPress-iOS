@@ -2600,11 +2600,17 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         }
 
         let imageDownloader = AFImageDownloader.defaultInstance()
-        let receipt = imageDownloader.downloadImage(for: request, success: { (request, response, image) in
+        let receipt = imageDownloader.downloadImage(for: request, success: { [weak self](request, response, image) in
+            guard self != nil else {
+                return
+            }
             DispatchQueue.main.async(execute: {
                 success(image)
             })
-        }) { (request, response, error) in
+        }) { [weak self](request, response, error) in
+            guard self != nil else {
+                return
+            }
             DispatchQueue.main.async(execute: {
                 failure()
             })
@@ -2627,6 +2633,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         for receipt in activeMediaRequests {
             imageDownloader.cancelTask(for: receipt)
         }
+        activeMediaRequests.removeAll()
     }
 
     func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
