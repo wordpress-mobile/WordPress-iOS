@@ -63,6 +63,8 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(applicationBecameInactive), name: .UIApplicationWillResignActive, object: nil)
         nc.addObserver(self, selector: #selector(applicationBecameActive), name: .UIApplicationDidBecomeActive, object: nil)
+
+        WPAppAnalytics.track(.loginTwoFactorFormViewed)
     }
 
 
