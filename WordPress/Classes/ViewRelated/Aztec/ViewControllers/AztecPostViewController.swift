@@ -552,11 +552,13 @@ class AztecPostViewController: UIViewController, PostEditor {
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
 
-        NSLayoutConstraint.activate([
-            mediaProgressView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            mediaProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            mediaProgressView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor)
-            ])
+        if let navigationBar = navigationController?.navigationBar {
+            NSLayoutConstraint.activate([
+                mediaProgressView.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor),
+                mediaProgressView.widthAnchor.constraint(equalTo: navigationBar.widthAnchor),
+                mediaProgressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -mediaProgressView.frame.height)
+                ])
+        }
     }
 
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
@@ -597,7 +599,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         view.addSubview(betaButton)
 
         mediaProgressView.isHidden = true
-        view.addSubview(mediaProgressView)
+        navigationController?.navigationBar.addSubview(mediaProgressView)        
     }
 
     func registerAttachmentImageProviders() {
