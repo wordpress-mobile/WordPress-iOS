@@ -87,7 +87,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     
     [analytics setTrackingUsage:YES];
     
-    XCTAssertTrue([analytics isTrackingUsage]);
+    XCTAssertTrue([WPAppAnalytics isTrackingUsage]);
 }
 
 - (void)testIsNotTrackingUsage
@@ -98,7 +98,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     
     [analytics setTrackingUsage:NO];
     
-    XCTAssertFalse([analytics isTrackingUsage]);
+    XCTAssertFalse([WPAppAnalytics isTrackingUsage]);
 }
 
 @end

@@ -1,22 +1,21 @@
 import UIKit
 import WordPressShared
 
-/// Provides a form and functionality to sign-in and add an existing self-hosted
-/// site to the app.
+/// Part two of the self-hosted sign in flow. A valid site address should be acquired
+/// before presenting this view controller.
 ///
 class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardResponder, SigninWPComSyncHandler, LoginViewController {
-    @IBOutlet weak var usernameField: WPWalkthroughTextField?
-    @IBOutlet weak var passwordField: WPWalkthroughTextField?
-    @IBOutlet weak var siteURLField: WPWalkthroughTextField?
-    @IBOutlet weak var submitButton: NUXSubmitButton?
-    @IBOutlet weak var statusLabel: UILabel?
-    @IBOutlet weak var forgotPasswordButton: WPNUXSecondaryButton?
+    @IBOutlet var siteHeaderView: SiteInfoHeaderView!
+    @IBOutlet var siteAddressStackView: UIStackView!
+    @IBOutlet var siteAddressLabel: UILabel!
+    @IBOutlet var usernameField: WPWalkthroughTextField!
+    @IBOutlet var passwordField: WPWalkthroughTextField!
+    @IBOutlet var errorLabel: UILabel!
+    @IBOutlet var submitButton: NUXSubmitButton!
+    @IBOutlet var forgotPasswordButton: WPNUXSecondaryButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
-    var onePasswordButton: UIButton?
-    var gravatarProfile: GravatarProfile?
-    var userProfile: UserProfile?
-    var blog: Blog?
+    var onePasswordButton: UIButton!
 
     lazy var loginFacade: LoginFacade = {
         let facade = LoginFacade()
@@ -30,19 +29,23 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
         }
     }
 
-    // let the storyboard's style stay
-    override func setupStyles() {}
+    var gravatarProfile: GravatarProfile?
+    var userProfile: UserProfile?
+    var blog: Blog?
+
 
     // MARK: - Lifecycle Methods
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configureHeader()
         localizeControls()
         setupOnePasswordButtonIfNeeded()
         displayLoginMessage("")
-        setupNavBarIcon()
     }
+
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -53,6 +56,8 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
         configureTextFields()
         configureSubmitButton(animating: false)
         configureViewForEditingIfNeeded()
+
+        setupNavBarIcon()
     }
 
 
@@ -62,38 +67,51 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
         registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
+
     }
+
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unregisterForKeyboardEvents()
     }
 
-    // MARK: Setup and Configuration
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        // Ensure that the user info is set on the epilogue vc.
+        if let vc = segue.destination as? LoginEpilogueViewController {
+            vc.epilogueUserInfo = epilogueUserInfo()
+        }
+    }
+
+
+    // MARK: - Setup and Configuration
+
+
+    /// let the storyboard's style stay
+    override func setupStyles() {}
 
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     func localizeControls() {
-        usernameField?.placeholder = NSLocalizedString("Username / Email", comment: "Username placeholder")
-        passwordField?.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
-        siteURLField?.placeholder = NSLocalizedString("Site Address (URL)", comment: "Site Address placeholder")
+        usernameField.placeholder = NSLocalizedString("Username", comment: "Username placeholder")
+        passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
 
-        let submitButtonTitle = NSLocalizedString("Add Site", comment: "Title of a button. The text should be uppercase.").localizedUppercase
-        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
+        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
+        submitButton.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton.setTitle(submitButtonTitle, for: .highlighted)
 
         let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
-        forgotPasswordButton?.setTitle(forgotPasswordTitle, for: UIControlState())
-        forgotPasswordButton?.setTitle(forgotPasswordTitle, for: .highlighted)
+        forgotPasswordButton.setTitle(forgotPasswordTitle, for: UIControlState())
+        forgotPasswordButton.setTitle(forgotPasswordTitle, for: .highlighted)
     }
+
 
     /// Sets up a 1Password button if 1Password is available.
     ///
     func setupOnePasswordButtonIfNeeded() {
-        guard let usernameField = usernameField else {
-            return
-        }
         WPStyleGuide.configureOnePasswordButtonForTextfield(usernameField,
                                                             target: self,
                                                             selector: #selector(SigninSelfHostedViewController.handleOnePasswordButtonTapped(_:)))
@@ -103,50 +121,40 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
     /// Configures the content of the text fields based on what is saved in `loginFields`.
     ///
     func configureTextFields() {
-        usernameField?.text = loginFields.username
-        passwordField?.text = loginFields.password
-        siteURLField?.text = loginFields.siteUrl
-    }
-
-    /// Displays the specified text in the status label.
-    ///
-    /// - Parameters:
-    ///     - message: The text to display in the label.
-    ///
-    func configureStatusLabel(_ message: String) {
-        statusLabel?.text = message
+        usernameField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        passwordField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        usernameField.text = loginFields.username
+        passwordField.text = loginFields.password
     }
 
 
     /// Configures the appearance and state of the forgot password button.
     ///
     func configureForgotPasswordButton() {
-        forgotPasswordButton?.isHidden = loginFields.siteUrl.isEmpty || submitButton?.isAnimating ?? false
+        forgotPasswordButton.isEnabled = !submitButton.isAnimating
     }
 
 
     /// Configures the appearance and state of the submit button.
     ///
     func configureSubmitButton(animating: Bool) {
-        submitButton?.showActivityIndicator(animating)
-        submitButton?.isEnabled = enableSubmit(animating: animating)
+        submitButton.showActivityIndicator(animating)
+
+        submitButton.isEnabled = (
+            !animating &&
+                !loginFields.username.isEmpty &&
+                !loginFields.password.isEmpty
+        )
     }
 
-    fileprivate func enableSubmit(animating: Bool) -> Bool {
-        return !animating &&
-            !loginFields.username.isEmpty &&
-            !loginFields.password.isEmpty &&
-            !loginFields.siteUrl.isEmpty
-    }
 
     /// Sets the view's state to loading or not loading.
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
     func configureViewLoading(_ loading: Bool) {
-        usernameField?.isEnabled = !loading
-        passwordField?.isEnabled = !loading
-        siteURLField?.isEnabled = !loading
+        usernameField.isEnabled = !loading
+        passwordField.isEnabled = !loading
 
         configureSubmitButton(animating: loading)
         configureForgotPasswordButton()
@@ -161,24 +169,78 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
         // Check the helper to determine whether an editiing state should be assumed.
         adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
         if SigninEditingState.signinEditingStateActive {
-            usernameField?.becomeFirstResponder()
+            usernameField.becomeFirstResponder()
         }
     }
 
+
+    /// Noop. Required by wpcom sync handler.
+    ///
+    func configureStatusLabel(_ message: String) {
+    }
+
+
+    /// Configure the site header.
+    ///
+    func configureHeader() {
+        if let siteInfo = loginFields.siteInfo {
+            configureBlogDetailHeaderView(siteInfo: siteInfo)
+        } else {
+            configureSiteAddressHeader()
+        }
+    }
+
+
+    /// Configure the site header to show the BlogDetailsHeaderView
+    ///
+    func configureBlogDetailHeaderView(siteInfo: SiteInfo) {
+        siteAddressStackView.isHidden = true
+        siteHeaderView.isHidden = false
+
+        let siteAddress = sanitizedSiteAddress(siteAddress: siteInfo.url)
+        siteHeaderView.setTitleText(siteInfo.name)
+        siteHeaderView.setSubtitleText(siteAddress)
+        siteHeaderView.loadImage(atPath: siteInfo.icon)
+    }
+
+
+    /// Configure the site header to show the site address label.
+    ///
+    func configureSiteAddressHeader() {
+        siteAddressStackView.isHidden = false
+        siteHeaderView.isHidden = true
+
+        siteAddressLabel.text = sanitizedSiteAddress(siteAddress: loginFields.siteUrl)
+    }
+
+
+    /// Sanitize and format the site address we show to users.
+    ///
+    func sanitizedSiteAddress(siteAddress: String) -> String {
+        let baseSiteUrl = SigninHelpers.baseSiteURL(string: siteAddress) as NSString
+        if let str = baseSiteUrl.components(separatedBy: "://").last {
+            return str
+        }
+        return siteAddress
+    }
+
+
     // MARK: - Instance Methods
 
-    ///
+
+    /// Noop.  Required by the SigninWPComSyncHandler protocol but the self-hosted
+    /// controller's implementation does not use safari saved credentials.
     ///
     func updateSafariCredentialsIfNeeded() {
-        // Noop.  Required by the SigninWPComSyncHandler protocol but the self-hosted
-        // controller's implementation does not use safari saved credentials.
     }
+
 
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
     func validateForm() {
         view.endEditing(true)
+        displayError(message: "")
 
         // Is everything filled out?
         if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
@@ -189,105 +251,29 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
             return
         }
 
-        // Was a valid site URL entered.
-        if !SigninHelpers.validateSiteForSignin(loginFields) {
-            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Title of an error message"),
-                              message: NSLocalizedString("The site's URL appears to be mistyped", comment: "A short prompt alerting to a misformatted URL"),
-                              withSupportButton: false)
-
-            return
-        }
-
         configureViewLoading(true)
 
-        loginFacade.signIn(with: loginFields)
+        loginFacade.login(with: loginFields)
     }
 
-    /// Displays an alert prompting that a site address is needed before 1Password can be used.
+
+    /// Sets the text of the error label.
     ///
-    func displayOnePasswordEmptySiteAlert() {
-        let message = NSLocalizedString("A site address is required before 1Password can be used.",
-                                        comment: "Error message displayed when the user is Signing into a self hosted site and tapped the 1Password Button before typing his siteURL")
-
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("OK", comment: "OK Button Title"), handler: nil)
-
-        present(alertController, animated: true, completion: nil)
-    }
-
-    // MARK: - Actions
-
-
-    @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
-        guard let usernameField = usernameField,
-            let passwordField = passwordField,
-            let siteURLField = siteURLField else {
-            return
-        }
-
-        loginFields.username = usernameField.nonNilTrimmedText()
-        loginFields.password = passwordField.nonNilTrimmedText()
-        loginFields.siteUrl = SigninHelpers.baseSiteURL(string: siteURLField.nonNilTrimmedText())
-
-        configureForgotPasswordButton()
-        configureSubmitButton(animating: false)
+    func displayError(message: String) {
+        errorLabel.text = message
     }
 
 
-    @IBAction func handleSubmitButtonTapped(_ sender: UIButton) {
-        validateForm()
-    }
-
-
-    func handleOnePasswordButtonTapped(_ sender: UIButton) {
-        view.endEditing(true)
-
-        if loginFields.userIsDotCom == false && loginFields.siteUrl.isEmpty {
-            displayOnePasswordEmptySiteAlert()
-            return
-        }
-
-        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
-            self.usernameField?.text = loginFields.username
-            self.passwordField?.text = loginFields.password
-            self.validateForm()
-        }
-    }
-
-
-    @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
-        SigninHelpers.openForgotPasswordURL(loginFields)
-    }
-
-
-    // MARK: - Keyboard Notifications
-
-
-    func handleKeyboardWillShow(_ notification: Foundation.Notification) {
-        keyboardWillShow(notification)
-    }
-
-
-    func handleKeyboardWillHide(_ notification: Foundation.Notification) {
-        keyboardWillHide(notification)
-    }
-
-    // MARK: Transitions
-
-    override func dismiss() {
+    /// Advances to the epilogue view controller once the self-hosted site has been added.
+    ///
+    func showEpilogue() {
         configureViewLoading(false)
         performSegue(withIdentifier: .showEpilogue, sender: self)
     }
 
 
+    // MARK: - Epilogue: Gravatar and User Profile Acquisition
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        // Ensure that the user info is set on the epilogue vc.
-        if let vc = segue.destination as? LoginEpilogueViewController {
-            vc.epilogueUserInfo = epilogueUserInfo()
-        }
-    }
 
     /// Returns an instance of LoginEpilogueUserInfo composed from
     /// a user's gravatar profile, and/or self-hosted blog profile.
@@ -320,8 +306,8 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
         service.fetchProfile(blog: blog, success: { [weak self] (profile) in
             self?.userProfile = profile
             self?.fetchGravatarProfileInfo(email: profile.email, completion: completion)
-        }, failure: { [weak self] (_) in
-            self?.dismiss()
+            }, failure: { [weak self] (_) in
+                self?.showEpilogue()
         })
     }
 
@@ -333,9 +319,55 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
         service.fetchProfile(email, success: { [weak self] (profile) in
             self?.gravatarProfile = profile
             completion()
-        }, failure: { [weak self] (_) in
-            self?.dismiss()
+            }, failure: { [weak self] (_) in
+                self?.showEpilogue()
         })
+    }
+
+
+    // MARK: - Actions
+
+
+    @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
+        loginFields.username = usernameField.nonNilTrimmedText()
+        loginFields.password = passwordField.nonNilTrimmedText()
+
+        configureForgotPasswordButton()
+        configureSubmitButton(animating: false)
+    }
+
+
+    @IBAction func handleSubmitButtonTapped(_ sender: UIButton) {
+        validateForm()
+    }
+
+
+    func handleOnePasswordButtonTapped(_ sender: UIButton) {
+        view.endEditing(true)
+
+        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
+            self.usernameField.text = loginFields.username
+            self.passwordField.text = loginFields.password
+            self.validateForm()
+        }
+    }
+
+
+    @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
+        SigninHelpers.openForgotPasswordURL(loginFields)
+    }
+
+
+    // MARK: - Keyboard Notifications
+
+
+    func handleKeyboardWillShow(_ notification: Foundation.Notification) {
+        keyboardWillShow(notification)
+    }
+
+
+    func handleKeyboardWillHide(_ notification: Foundation.Notification) {
+        keyboardWillHide(notification)
     }
 }
 
@@ -345,6 +377,7 @@ extension LoginSelfHostedViewController: LoginFacadeDelegate {
     func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
     }
+
 
     func finishedLogin(withUsername username: String!, password: String!, xmlrpc: String!, options: [AnyHashable: Any]!) {
         displayLoginMessage("")
@@ -356,6 +389,9 @@ extension LoginSelfHostedViewController: LoginFacadeDelegate {
             let service = BlogService(managedObjectContext: context)
             guard let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) else {
                 assertionFailure("A blog was just added but was not found in core data.")
+                // Skip showing the epilogue in this situation. Since there will
+                // be no blog to present to the user the screen is likly to be
+                // confusing. Instead just dismiss.
                 self?.dismiss()
                 return
             }
@@ -363,23 +399,36 @@ extension LoginSelfHostedViewController: LoginFacadeDelegate {
             RecentSitesService().touch(blog: blog)
             self?.blog = blog
             self?.fetchUserProfileInfo(blog: blog, completion: {
-                self?.dismiss()
+                self?.showEpilogue()
             })
         }
     }
 
+
     func displayLoginMessage(_ message: String!) {
-        configureStatusLabel(message)
         configureForgotPasswordButton()
     }
+
 
     func displayRemoteError(_ error: Error!) {
         displayLoginMessage("")
         configureViewLoading(false)
-        displayError(error as NSError, sourceTag: sourceTag)
+        let err = error as NSError
+        if err.code == 403 {
+            displayError(message: NSLocalizedString("It looks like this username/password isn't associated with this site.", comment: "An error message shown during log in when the username or password is incorrect."))
+        } else {
+            displayError(error as NSError, sourceTag: sourceTag)
+        }
     }
 
+
     func needsMultifactorCode() {
+        configureViewLoading(false)
+
+        WPAppAnalytics.track(.twoFactorCodeRequested)
+        // Credentials were good but a 2fa code is needed.
+        loginFields.shouldDisplayMultifactor = true // technically not needed
+
         performSegue(withIdentifier: .show2FA, sender: self)
     }
 }
@@ -388,10 +437,8 @@ extension LoginSelfHostedViewController: LoginFacadeDelegate {
 extension LoginSelfHostedViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == usernameField {
-            passwordField?.becomeFirstResponder()
+            passwordField.becomeFirstResponder()
         } else if textField == passwordField {
-            siteURLField?.becomeFirstResponder()
-        } else if enableSubmit(animating: false) {
             validateForm()
         }
         return true
