@@ -1,0 +1,2 @@
+Edite o ícone do seu site na tela de detalhes, é só tocar para começar.
+Adicionamos autocorreção no campo de tags do post.
