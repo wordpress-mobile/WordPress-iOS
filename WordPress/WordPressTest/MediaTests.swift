@@ -49,7 +49,7 @@ class MediaTests: XCTestCase {
         do {
             let media = newTestMedia()
             let filePath = "sample-thumbnail.jpeg"
-            var expectedAbsoluteURL = try MediaFileManager.uploadsDirectoryURL()
+            var expectedAbsoluteURL = try MediaFileManager.cache.directoryURL()
             expectedAbsoluteURL.appendPathComponent(filePath)
             media.absoluteThumbnailLocalURL = expectedAbsoluteURL
             guard
