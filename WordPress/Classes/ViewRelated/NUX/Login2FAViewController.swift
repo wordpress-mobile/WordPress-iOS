@@ -97,7 +97,7 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
         submitButton.setTitle(submitButtonTitle, for: UIControlState())
         submitButton.setTitle(submitButtonTitle, for: .highlighted)
 
-        sendCodeButton.setTitle(NSLocalizedString("Text a code instead", comment: "Button title"),
+        sendCodeButton.setTitle(NSLocalizedString("Text me a code instead", comment: "Button title"),
                                 for: .normal)
     }
 
