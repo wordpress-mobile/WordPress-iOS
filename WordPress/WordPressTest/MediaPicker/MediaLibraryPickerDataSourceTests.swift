@@ -40,6 +40,10 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
     }
 
     func testImageFetchUsingSizeZero() {
+        guard FeatureFlag.newMediaExports.enabled == false else {
+            // Drop test in favor of MediaExporter tests.
+            return
+        }
         guard let media = newImageMedia() else {
             XCTFail("Media should be created without error")
             return
@@ -60,6 +64,10 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
     }
 
     func testImageFetchUsingFixedSize() {
+        guard FeatureFlag.newMediaExports.enabled == false else {
+            // Drop test in favor of MediaExporter tests.
+            return
+        }
         guard let media = newImageMedia() else {
             XCTFail("Media should be created without error")
             return
@@ -81,6 +89,10 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
     }
 
     func testImageFetchUsingVideoSource() {
+        guard FeatureFlag.newMediaExports.enabled == false else {
+            // Drop test in favor of MediaExporter tests.
+            return
+        }
         guard let video = newVideoMedia() else {
             XCTFail("Media should be created without error")
             return
@@ -99,7 +111,6 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
             XCTAssertTrue(size.height == requestedSize.height , "Height should match requested size")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
-
     }
 
     func testVideoFetchForImage() {
