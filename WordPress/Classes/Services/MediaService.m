@@ -17,6 +17,12 @@
 
 @import WordPressComAnalytics;
 
+@interface MediaService ()
+
+@property (nonatomic, strong) MediaThumbnailService *thumbnailService;
+
+@end
+
 @implementation MediaService
 
 #pragma mark - Creating media
@@ -570,15 +576,79 @@
     }];
 }
 
-- (void)imageForMedia:(nonnull Media *)mediaInRandomContext
-        preferredSize:(CGSize)preferredSize
-              success:(nullable void (^)(UIImage * _Nonnull image))success
-              failure:(nullable void (^)(NSError * _Nonnull error))failure
+#pragma mark - Thumbnails
+
+- (void)localThumbnailURLForMedia:(Media *)mediaInRandomContext
+                    preferredSize:(CGSize)preferredSize
+                       completion:(void (^)(NSURL * _Nullable, NSError * _Nullable))completion
 {
-    [self imageForMedia:mediaInRandomContext
-                   size:preferredSize
-                success:success
-                failure:failure];
+    NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
+    [self.managedObjectContext performBlock:^{
+        /*
+         When using the new Media export services, return the URL via the MediaThumbnailService.
+         Otherwise, use the original implementation's `absoluteThumbnailLocalURL`.
+         */
+        Media *media = (Media *)[self.managedObjectContext objectWithID: mediaID];
+        if ([self supportsNewMediaExports]) {
+            [self.thumbnailService thumbnailURLForMedia:media
+                                          preferredSize:preferredSize
+                                           onCompletion:^(NSURL *url) {
+                                               completion(url, nil);
+                                           }
+                                                onError:^(NSError *error) {
+                                                    completion(nil, error);
+                                                }];
+        } else {
+            completion(media.absoluteThumbnailLocalURL, nil);
+        }
+    }];
+}
+
+- (void)thumbnailImageForMedia:(nonnull Media *)mediaInRandomContext
+                 preferredSize:(CGSize)preferredSize
+                    completion:(void (^)(UIImage * _Nullable image, NSError * _Nullable error))completion
+{
+    NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
+    [self.managedObjectContext performBlock:^{
+        /*
+         When using the new Media export services, generate a thumbnail image from the URL
+         of the MediaThumbnailService.
+         Otherwise, use the legacy category method `imageForMedia:`.
+         */
+        Media *media = (Media *)[self.managedObjectContext objectWithID: mediaID];
+        if ([self supportsNewMediaExports]) {
+            [self.thumbnailService thumbnailURLForMedia:media
+                                          preferredSize:preferredSize
+                                           onCompletion:^(NSURL *url) {
+                                               dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+                                                   UIImage *image = [UIImage imageWithContentsOfFile:url.path];
+                                                   [self.managedObjectContext performBlock:^{
+                                                       completion(image, nil);
+                                                   }];
+                                               });
+                                           }
+                                                onError:^(NSError *error) {
+                                                    completion(nil, error);
+                                                }];
+        } else {
+            [self imageForMedia:mediaInRandomContext
+                           size:preferredSize
+                        success:^(UIImage *image) {
+                            completion(image, nil);
+                        } failure:^(NSError *error) {
+                            completion(nil, error);
+                        }];
+        }
+    }];
+}
+
+- (MediaThumbnailService *)thumbnailService
+{
+    if (_thumbnailService) {
+        return _thumbnailService;
+    }
+    _thumbnailService = [[MediaThumbnailService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    return _thumbnailService;
 }
 
 #pragma mark - Private helpers
