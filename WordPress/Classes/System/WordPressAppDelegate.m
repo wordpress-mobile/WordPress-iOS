@@ -39,7 +39,6 @@
 #import "ContextManager.h"
 #import "HelpshiftUtils.h"
 #import "HockeyManager.h"
-#import "WPLookbackPresenter.h"
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
 
@@ -66,7 +65,6 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
 @property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
 @property (nonatomic, strong, readwrite) WPLogger                       *logger;
-@property (nonatomic, strong, readwrite) WPLookbackPresenter            *lookbackPresenter;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
@@ -142,7 +140,6 @@ int ddLogLevel = DDLogLevelInfo;
 
     [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
-    [self setupLookback];
     [self setupStoreKit];
     [self setupBuddyBuild];
     [self setupPingHub];
@@ -150,32 +147,6 @@ int ddLogLevel = DDLogLevelInfo;
     [self setupBackgroundRefresh:application];
 
     return YES;
-}
-
-- (void)setupLookback
-{
-#ifdef LOOKBACK_ENABLED
-    // Kick this off on a background thread so as to not slow down the app initialization
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        
-        NSString *lookbackToken = [ApiCredentials lookbackToken];
-        
-        if ([lookbackToken length] > 0) {
-            UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            
-            [context performBlock:^{
-                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                WPAccount *account = [accountService defaultWordPressComAccount];
-
-                self.lookbackPresenter = [[WPLookbackPresenter alloc] initWithToken:lookbackToken
-                                                                             userId:account.username
-                                                                             window:keyWindow];
-            }];
-        }
-    });
-#endif
 }
 
 - (void)setupStoreKit

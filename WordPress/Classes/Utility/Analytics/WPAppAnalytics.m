@@ -79,7 +79,7 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
     [WPAnalytics registerTracker:[WPAnalyticsTrackerAutomatticTracks new]];
 
-    if ([self isTrackingUsage]) {
+    if ([WPAppAnalytics isTrackingUsage]) {
         [self beginSession];
     }
 }
@@ -291,16 +291,17 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 #pragma mark - Usage tracking
 
-- (BOOL)isTrackingUsage
++ (BOOL)isTrackingUsage
 {
     return [[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking];
 }
 
 - (void)setTrackingUsage:(BOOL)trackingUsage
 {
-    if (trackingUsage != [self isTrackingUsage]) {
+    if (trackingUsage != [WPAppAnalytics isTrackingUsage]) {
         [[NSUserDefaults standardUserDefaults] setBool:trackingUsage
                                                 forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         
         if (trackingUsage) {
             [self beginSession];
