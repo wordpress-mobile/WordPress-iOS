@@ -27,7 +27,9 @@ class MediaThumbnailService: LocalCoreDataService {
     func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
         // Configure a thumbnail exporter.
         let exporter = MediaThumbnailExporter()
-        exporter.options.preferredSize = preferredSize
+        if preferredSize != CGSize.zero {
+            exporter.options.preferredSize = preferredSize
+        }
 
         // Check if there is already an exported thumbnail available.
         if let identifier = media.localThumbnailIdentifier, let availableThumbnail = exporter.availableThumbnail(with: identifier) {
