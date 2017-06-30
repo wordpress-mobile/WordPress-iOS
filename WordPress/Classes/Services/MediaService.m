@@ -190,7 +190,9 @@
                                                media.absoluteThumbnailLocalURL = url;
                                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                                            }
-                                           thumbnailCallback(url);
+                                           if (thumbnailCallback) {
+                                               thumbnailCallback(url);
+                                           }
                                        }];
                                    }
                                         onError:^(NSError *error) {
