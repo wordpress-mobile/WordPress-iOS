@@ -90,7 +90,7 @@ extension MediaExporter {
 
     /// A MediaFileManager configured with the exporter's set MediaDirectory type.
     ///
-    func mediaFileManager() -> MediaFileManager {
+    var mediaFileManager: MediaFileManager {
         return MediaFileManager(directory: mediaDirectoryType)
     }
 
