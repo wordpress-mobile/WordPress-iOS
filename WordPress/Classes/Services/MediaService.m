@@ -83,10 +83,10 @@
      ];
 }
 
-- (void)createMediaWithImage:(nonnull UIImage *)image
-             forBlogObjectID:(nonnull NSManagedObjectID *)blogObjectID
-           thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
-                  completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion
+- (void)createMediaWithImage:(UIImage *)image
+             forBlogObjectID:(NSManagedObjectID *)blogObjectID
+           thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                  completion:(void (^)(Media *media, NSError *error))completion
 {
     [self exportMediaWith:image
                  objectID:blogObjectID
@@ -99,7 +99,7 @@
 
 - (void)exportMediaWith:(id)exportable
                objectID:(NSManagedObjectID *)objectID
-              mediaName:(nullable NSString *)mediaName
+              mediaName:(NSString *)mediaName
       thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
              completion:(void (^)(Media *media, NSError *error))completion
 {
