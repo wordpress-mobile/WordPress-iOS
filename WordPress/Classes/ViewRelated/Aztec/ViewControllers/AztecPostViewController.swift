@@ -2099,7 +2099,8 @@ extension AztecPostViewController {
 
     fileprivate func insertDeviceVideo(phAsset: PHAsset) {
         let attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
-
+        attachment.progress = 0
+        richTextView.update(attachment: attachment)
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
             DispatchQueue.main.async {
