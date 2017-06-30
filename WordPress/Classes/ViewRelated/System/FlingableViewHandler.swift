@@ -68,7 +68,7 @@ class FlingableViewHandler: NSObject {
             animator.addBehavior(attachmentBehavior)
             break
         case .changed:
-            let anchor = recognizer.location(in: referenceView)
+            let anchor = recognizer.location(ofTouch: 0, in: referenceView)
             attachmentBehavior.anchorPoint = anchor
             break
         case .ended, .cancelled:
