@@ -133,6 +133,9 @@
 
     // Setup completion handlers
     void(^completionWithMedia)(Media *) = ^(Media *media) {
+        // Pre-generate a thumbnail image, see the method notes.
+        [self exportPlaceholderThumbnailForMedia:media
+                                      completion:thumbnailCallback];
         if (completion) {
             completion(media, nil);
         }
@@ -163,6 +166,36 @@
     } else {
         completionWithError(nil);
     }
+}
+
+/**
+ Generate a thumbnail image for the Media asset so that consumers of the absoluteThumbnailLocalURL property
+ will have an image ready to load, without using the async methods provided via MediaThumbnailService.
+ 
+ This is primarily used as a placeholder image throughout the code-base, particulary within the editors.
+ 
+ Note: Ideally we wouldn't need this at all, but the synchronous usage of absoluteThumbnailLocalURL across the code-base
+       to load a thumbnail image is relied on quite heavily. In the future, transitioning to asynchronous thumbnail loading
+       via the new thumbnail service methods is much preferred, but would indeed take a good bit of refactoring away from
+       using absoluteThumbnailLocalURL.
+*/
+- (void)exportPlaceholderThumbnailForMedia:(Media *)media completion:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+{
+    [self.thumbnailService thumbnailURLForMedia:media
+                                  preferredSize:CGSizeZero
+                                   onCompletion:^(NSURL *url) {
+                                       [self.managedObjectContext performBlock:^{
+                                           if (url) {
+                                               // Set the absoluteThumbnailLocalURL with the generated thumbnail's URL.
+                                               media.absoluteThumbnailLocalURL = url;
+                                               [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                           }
+                                           thumbnailCallback(url);
+                                       }];
+                                   }
+                                        onError:^(NSError *error) {
+                                            DDLogError(@"Error occurred exporting placeholder thumbnail: %@", error);
+                                        }];
 }
 
 - (BOOL)supportsNewMediaExports
