@@ -228,6 +228,13 @@ class LoginWPComViewController: NUXAbstractViewController, SigninWPComSyncHandle
     func displayError(message: String) {
         statusLabel?.text = message
     }
+
+    // MARK: Keyboard Events
+
+    func signinFormVerticalOffset() -> CGFloat {
+        // the stackview-based layout shifts fine with this adjustment
+        return 0
+    }
 }
 
 extension LoginWPComViewController: LoginFacadeDelegate {
