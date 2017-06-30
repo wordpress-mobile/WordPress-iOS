@@ -155,19 +155,21 @@
  @discussion If the media asset is a video a frame of the video is returned.
 
  @param mediaInRandomContext the Media object from where to get the thumbnail.
- @param preferredSize the preferred size for the image, if CGSizeZero the image returned has the image original pixel dimensions.
+ @param preferredSize the preferred size for the image in points. If set to CGSizeZero the resulting image will not
+        exceed the maximum dimension of the UIScreen size.
  @param completion block that will be invoked when the thumbnail is ready, if available, or an error if something went wrong.
  */
-- (void)localThumbnailURLForMedia:(nonnull Media *)mediaInRandomContext
-                    preferredSize:(CGSize)preferredSize
-                       completion:(nonnull void (^)(NSURL * _Nullable url, NSError * _Nullable error))completion;
+- (void)thumbnailFileURLForMedia:(nonnull Media *)mediaInRandomContext
+                   preferredSize:(CGSize)preferredSize
+                      completion:(nonnull void (^)(NSURL * _Nullable url, NSError * _Nullable error))completion;
 /**
  Gets a thumbnail image for the Media item, or generates one, if available.
  
  @discussion If the media asset is a video a frame of the video is returned.
 
  @param mediaInRandomContext the Media object from where to get the thumbnail.
- @param preferredSize the preferred size for the image, if CGSizeZero the image returned has the image original pixel dimensions.
+ @param preferredSize the preferred size for the image in points. If set to CGSizeZero the resulting image will not
+        exceed the maximum dimension of the UIScreen size.
  @param completion block that will be invoked when the thumbnail is ready, if available, or an error if something went wrong.
  */
 - (void)thumbnailImageForMedia:(nonnull Media *)mediaInRandomContext
