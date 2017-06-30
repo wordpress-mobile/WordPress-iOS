@@ -1,6 +1,6 @@
 import XCTest
 
-@testable import WordPress
+@testable import WordPressShared
 
 class StringHelperTests: XCTestCase {
 
