@@ -17,7 +17,7 @@ class MediaThumbnailService: LocalCoreDataService {
     ///
     /// - Parameters:
     ///   - media: The Media object the URL should be a thumbnail of.
-    ///   - preferredSize: An ideal size of the thumbnail in points.
+    ///   - preferredSize: An ideal size of the thumbnail in points. If `zero`, the maximum dimension of the UIScreen is used.
     ///   - onCompletion: Completion handler passing the URL once available, or nil if unavailable.
     ///   - onError: Error handler.
     ///
@@ -27,7 +27,13 @@ class MediaThumbnailService: LocalCoreDataService {
     func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
         // Configure a thumbnail exporter.
         let exporter = MediaThumbnailExporter()
-        if preferredSize != CGSize.zero {
+        if preferredSize == CGSize.zero {
+            // When using a zero size, default to the maximum screen dimension.
+            let screenSize = UIScreen.main.bounds
+            let screenSizeMax = max(screenSize.width, screenSize.height)
+            exporter.options.preferredSize = CGSize(width: screenSizeMax, height: screenSizeMax)
+            exporter.options.compressionQuality = 0.9
+        } else {
             exporter.options.preferredSize = preferredSize
         }
 
