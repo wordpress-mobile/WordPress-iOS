@@ -1628,6 +1628,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         richTextView.autocorrectionType = .yes
     }
 
+    @IBAction func presentMediaPicker() {
+        presentMediaPicker(fromItem: formatBar.defaultItems[0][0], animated: true)
+    }
+
     fileprivate func presentMediaPickerFullScreen(animated: Bool) {
 
         let picker = WPNavigationMediaPickerViewController()
