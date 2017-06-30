@@ -3,10 +3,7 @@
 #import "ActivityLogViewController.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
-#import <CocoaLumberjack/DDFileLogger.h>
 #import "HelpshiftSupport.h"
-#import "WPAnalytics.h"
-#import <WordPressShared/WPStyleGuide.h>
 #import "ContextManager.h"
 #import "WPAccount.h"
 #import "AccountService.h"
@@ -15,10 +12,12 @@
 #import "NSBundle+VersionNumberHelper.h"
 #import "WordPress-Swift.h"
 #import "WPTabBarController.h"
-#import "WPAppAnalytics.h"
 #import "HelpshiftUtils.h"
 #import "WPLogger.h"
 #import "WPGUIConstants.h"
+@import CocoaLumberjack;
+@import WordPressComAnalytics;
+@import WordPressShared;
 
 SupportSourceTag const SupportSourceTagWPComLogin = @"origin:wpcom-login-screen";
 SupportSourceTag const SupportSourceTagWPComSignup = @"origin:signup-screen";
@@ -58,7 +57,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
 {
     SettingsSectionSettingsRowVersion,
     SettingsSectionSettingsRowExtraDebug,
-    SettingsSectionSettingsRowTracking,
     SettingsSectionSettingsRowActivityLogs,
     SettingsSectionSettingsRowCount
 };
@@ -195,8 +193,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
 {
     WPTableViewCell *cell = nil;
     if (indexPath.section == SettingsSectionSettings
-        && (indexPath.row == SettingsSectionSettingsRowExtraDebug
-            || indexPath.row == SettingsSectionSettingsRowTracking)) {
+        && indexPath.row == SettingsSectionSettingsRowExtraDebug) {
         // Settings / Extra Debug
         static NSString *CellIdentifierSwitchAccessory = @"SupportViewSwitchAccessoryCell";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierSwitchAccessory];
@@ -294,11 +291,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
             cell.textLabel.text = NSLocalizedString(@"Extra Debug", @"");
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
             aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kExtraDebugDefaultsKey];
-        } else if (indexPath.row == SettingsSectionSettingsRowTracking) {
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = NSLocalizedString(@"Anonymous Usage Tracking", @"Setting for enabling anonymous usage tracking");
-            UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-            aSwitch.on = [[WordPressAppDelegate sharedInstance].analytics isTrackingUsage];
         } else if (indexPath.row == SettingsSectionSettingsRowActivityLogs) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -381,8 +373,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     if (aSwitch.tag == SettingsSectionSettingsRowExtraDebug) {
         [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:kExtraDebugDefaultsKey];
         [NSUserDefaults resetStandardUserDefaults];
-    } else {
-        [[WordPressAppDelegate sharedInstance].analytics setTrackingUsage:aSwitch.on];
     }
 }
 

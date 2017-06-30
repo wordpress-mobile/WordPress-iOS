@@ -603,6 +603,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     func registerHTMLProcessors() {
         htmlPreProcessors.append(VideoProcessor.videoPressPreProcessor)
         htmlPreProcessors.append(VideoProcessor.wordPressVideoPreProcessor)
+        htmlPreProcessors.append(CalypsoProcessor())
 
         htmlPostProcessors.append(VideoProcessor.videoPressPostProcessor)
         htmlPostProcessors.append(VideoProcessor.wordPressVideoPostProcessor)
@@ -692,6 +693,26 @@ class AztecPostViewController: UIViewController, PostEditor {
 
 
     // MARK: - Keyboard Handling
+
+    override var keyCommands: [UIKeyCommand] {
+        if richTextView.isFirstResponder {
+            return [ UIKeyCommand(input:"B", modifierFlags: .command, action:#selector(toggleBold), discoverabilityTitle:NSLocalizedString("Bold", comment: "Discoverability title for bold formatting keyboard shortcut.")),
+                     UIKeyCommand(input:"I", modifierFlags: .command, action:#selector(toggleItalic), discoverabilityTitle:NSLocalizedString("Italic", comment: "Discoverability title for italic formatting keyboard shortcut.")),
+                     UIKeyCommand(input:"S", modifierFlags: [.command], action:#selector(toggleStrikethrough), discoverabilityTitle: NSLocalizedString("Strikethrough", comment:"Discoverability title for strikethrough formatting keyboard shortcut.")),
+                     UIKeyCommand(input:"U", modifierFlags: .command, action:#selector(toggleUnderline(_:)), discoverabilityTitle: NSLocalizedString("Underline", comment:"Discoverability title for underline formatting keyboard shortcut.")),
+                     UIKeyCommand(input:"Q", modifierFlags:[.command,.alternate], action: #selector(toggleBlockquote), discoverabilityTitle: NSLocalizedString("Block Quote", comment: "Discoverability title for block quote keyboard shortcut.")),
+                     UIKeyCommand(input:"K", modifierFlags:.command, action:#selector(toggleLink), discoverabilityTitle: NSLocalizedString("Insert Link", comment: "Discoverability title for insert link keyboard shortcut.")),
+                     UIKeyCommand(input:"M", modifierFlags:[.command,.alternate], action:#selector(presentMediaPicker(animated:)), discoverabilityTitle: NSLocalizedString("Insert Media", comment: "Discoverability title for insert media keyboard shortcut.")),
+                     UIKeyCommand(input:"U", modifierFlags:[.command, .alternate], action:#selector(toggleUnorderedList), discoverabilityTitle:NSLocalizedString("Bullet List", comment: "Discoverability title for bullet list keyboard shortcut.")),
+                     UIKeyCommand(input:"O", modifierFlags:[.command, .alternate], action:#selector(toggleOrderedList), discoverabilityTitle:NSLocalizedString("Numbered List", comment:"Discoverability title for numbered list keyboard shortcut.")),
+                     UIKeyCommand(input:"H", modifierFlags:[.command, .shift], action:#selector(toggleEditingMode), discoverabilityTitle:NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
+            ]
+        } else if htmlTextView.isFirstResponder {
+            return [UIKeyCommand(input:"H", modifierFlags:[.command, .shift], action:#selector(toggleEditingMode), discoverabilityTitle:NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
+            ]
+        }
+        return []
+    }
 
     func keyboardWillShow(_ notification: Foundation.Notification) {
         guard
@@ -1355,6 +1376,15 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         richTextView.toggleStrikethrough(range: richTextView.selectedRange)
     }
 
+    func toggleOrderedList() {
+        trackFormatBarAnalytics(stat: .editorTappedOrderedList)
+        richTextView.toggleOrderedList(range: richTextView.selectedRange)
+    }
+
+    func toggleUnorderedList() {
+        trackFormatBarAnalytics(stat: .editorTappedUnorderedList)
+        richTextView.toggleUnorderedList(range: richTextView.selectedRange)
+    }
 
     func toggleList(fromItem item: FormatBarItem) {
         let listOptions = Constants.lists.map { (listType) -> OptionsTableViewOption in
@@ -1370,16 +1400,13 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                   fromBarItem: item,
                                                   selectedRowIndex: index,
                                                   onSelect: { [weak self] selected in
-                                                    guard let range = self?.richTextView.selectedRange else { return }
 
                                                     let listType = Constants.lists[selected]
                                                     switch listType {
                                                     case .unordered:
-                                                        self?.trackFormatBarAnalytics(stat: .editorTappedUnorderedList)
-                                                        self?.richTextView.toggleUnorderedList(range: range)
+                                                        self?.toggleUnorderedList()
                                                     case .ordered:
-                                                        self?.trackFormatBarAnalytics(stat: .editorTappedOrderedList)
-                                                        self?.richTextView.toggleOrderedList(range: range)
+                                                        self?.toggleOrderedList()
                                                     }
 
                                                     self?.optionsViewController = nil
@@ -1648,6 +1675,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         }
 
         trackFormatBarAnalytics(stat: .editorTappedHTML)
+        formatBar.overflowToolbar(expand: true)
         mode.toggle()
     }
 
@@ -1657,7 +1685,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let headerOptions = Constants.headers.map { (headerType) -> OptionsTableViewOption in
             return OptionsTableViewOption(image: headerType.iconImage,
                                           title: NSAttributedString(string: headerType.description,
-                                                                    attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize)]))
+                                                                    attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize),
+                                                                                NSForegroundColorAttributeName: WPStyleGuide.darkGrey()]))
         }
 
         let selectedIndex = Constants.headers.index(of: self.headerLevelForSelectedText())
@@ -1726,10 +1755,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                    onSelect: OptionsTableViewController.OnSelectHandler?) {
         // Hide the input view if we're already showing these options
         if let optionsViewController = optionsViewController ?? (presentedViewController as? OptionsTableViewController), optionsViewController.options == options {
-            if self.optionsViewController != nil && presentedViewController != nil {
-                dismiss(animated: true, completion: nil)
-            }
-
             self.optionsViewController = nil
             changeRichTextInputView(to: nil)
             return
@@ -1737,6 +1762,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
         optionsViewController = OptionsTableViewController(options: options)
         optionsViewController.cellDeselectedTintColor = WPStyleGuide.aztecFormatBarInactiveColor
+        optionsViewController.cellBackgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
+        optionsViewController.cellSelectedBackgroundColor = WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor
         optionsViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
         optionsViewController.onSelect = { [weak self] selected in
             if self?.presentedViewController != nil {
@@ -1771,9 +1798,9 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
         let frame = barItem.superview?.convert(barItem.frame, to: UIScreen.main.coordinateSpace)
 
-        viewController.popoverPresentationController?.sourceRect = view.convert(frame!, from: UIScreen.main.coordinateSpace)
-        viewController.popoverPresentationController?.backgroundColor = .white
-        viewController.popoverPresentationController?.delegate = self
+        optionsViewController.popoverPresentationController?.sourceRect = view.convert(frame!, from: UIScreen.main.coordinateSpace)
+        optionsViewController.popoverPresentationController?.backgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
+        optionsViewController.popoverPresentationController?.delegate = self
 
         present(viewController, animated: true, completion: completion)
     }

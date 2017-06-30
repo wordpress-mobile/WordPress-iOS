@@ -40,9 +40,12 @@ class MediaVideoExporter: MediaExporter {
         case videoExportSessionDoesNotSupportVideoOutputType
         case failedToInitializeVideoExportSession
         case failedExportingVideoDuringExportSession
+        case failedGeneratingVideoPreviewImage
 
         var description: String {
             switch self {
+            case .failedGeneratingVideoPreviewImage:
+                return NSLocalizedString("Video Preview Unavailable", comment: "Message shown if a video preview image is unavailable while the video is being uploaded.")
             default:
                 return NSLocalizedString("The video could not be added to the Media Library.", comment: "Message shown when a video failed to load while trying to add it to the Media library.")
             }
@@ -113,6 +116,45 @@ class MediaVideoExporter: MediaExporter {
                                               fileSize: mediaURL.resourceFileSize,
                                               duration: session.asset.duration.seconds))
             }
+        } catch {
+            onError(exporterErrorWith(error: error))
+        }
+    }
+
+    /// Generate and export a preview image for a known video at the URL.
+    ///
+    /// - Note: Generates the image asynchronously and could potentially take a bit.
+    ///
+    /// - imageOptions: ImageExporter options for the generated thumbnail image.
+    ///
+    func exportPreviewImageForVideo(atURL url: URL, imageOptions: MediaImageExporter.Options?, onCompletion: @escaping MediaImageExporter.OnImageExport, onError: @escaping OnExportError) {
+        do {
+            let asset = AVURLAsset(url: url)
+            guard asset.isExportable else {
+                throw VideoExportError.videoAssetWasDetectedAsNotExportable
+            }
+            let generator = AVAssetImageGenerator(asset: asset)
+            if let imageOptions = imageOptions, let maxSize = imageOptions.maximumImageSize {
+                generator.maximumSize = CGSize(width: maxSize, height: maxSize)
+            }
+            generator.appliesPreferredTrackTransform = true
+            generator.generateCGImagesAsynchronously(forTimes: [NSValue(time: CMTimeMake(0, 1))],
+                                                     completionHandler: { (time, cgImage, actualTime, result, error) in
+                                                        guard let cgImage = cgImage else {
+                                                            onError(VideoExportError.failedGeneratingVideoPreviewImage)
+                                                            return
+                                                        }
+                                                        let image = UIImage(cgImage: cgImage)
+                                                        let exporter = MediaImageExporter()
+                                                        if let imageOptions = imageOptions {
+                                                            exporter.options = imageOptions
+                                                        }
+                                                        exporter.mediaDirectoryType = self.mediaDirectoryType
+                                                        exporter.exportImage(image,
+                                                                             fileName: url.lastPathComponent,
+                                                                             onCompletion: onCompletion,
+                                                                             onError: onError)
+            })
         } catch {
             onError(exporterErrorWith(error: error))
         }
