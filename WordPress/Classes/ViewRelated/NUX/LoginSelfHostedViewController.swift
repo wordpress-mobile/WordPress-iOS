@@ -10,7 +10,6 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     @IBOutlet var siteAddressLabel: UILabel!
     @IBOutlet var usernameField: WPWalkthroughTextField!
     @IBOutlet var passwordField: WPWalkthroughTextField!
-    @IBOutlet var errorLabel: UILabel!
     @IBOutlet var submitButton: NUXSubmitButton!
     @IBOutlet var forgotPasswordButton: WPNUXSecondaryButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
@@ -254,13 +253,6 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         configureViewLoading(true)
 
         loginFacade.login(with: loginFields)
-    }
-
-
-    /// Sets the text of the error label.
-    ///
-    func displayError(message: String) {
-        errorLabel.text = message
     }
 
 

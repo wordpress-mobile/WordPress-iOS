@@ -2,7 +2,6 @@ import UIKit
 
 class LoginSiteAddressViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var instructionLabel: UILabel!
-    @IBOutlet var errorLabel: UILabel!
     @IBOutlet weak var siteURLField: WPWalkthroughTextField!
     @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet var siteAddressHelpButton: UIButton!
@@ -218,13 +217,6 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     func showSelfHostedUsernamePassword() {
         configureViewLoading(false)
         performSegue(withIdentifier: .showURLUsernamePassword, sender: self)
-    }
-
-
-    /// Sets the text of the error label.
-    ///
-    func displayError(message: String) {
-        errorLabel.text = message
     }
 
 
