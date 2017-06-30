@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "CommentServiceRemote.h"
-@import WordPressKit;
+#import "SiteServiceRemoteWordPressComREST.h"
 
 @interface CommentServiceRemoteREST : SiteServiceRemoteWordPressComREST <CommentServiceRemote>
 
