@@ -60,7 +60,7 @@ class MediaThumbnailService: LocalCoreDataService {
                 return
             }
             // Try and download a remote thumbnail, and export if available.
-            downloadThumbnail(forMedia: media, preferredSize: preferredSize, onCompletion: { (image) in
+            self.downloadThumbnail(forMedia: media, preferredSize: preferredSize, onCompletion: { (image) in
                 guard let image = image else {
                     onCompletion(nil)
                     return
