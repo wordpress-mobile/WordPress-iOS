@@ -1037,7 +1037,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 - (void)editorTrackStat:(WPEditorStat)stat
 {
-    [WPAnalytics track:[WPEditorStatMap map:stat]];
+    [WPAnalytics track:[WPEditorStatMap map:stat] withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueLegacy}];
 }
 
 #pragma mark - WPMediaPickerViewController delegate
