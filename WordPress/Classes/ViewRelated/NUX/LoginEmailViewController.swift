@@ -4,7 +4,6 @@ import UIKit
 ///
 class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var instructionLabel: UILabel!
-    @IBOutlet var errorLabel: UILabel!
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var submitButton: NUXSubmitButton!
     @IBOutlet var selfHostedSigninButton: UIButton!
@@ -265,13 +264,6 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
                                             strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
                                         }
         })
-    }
-
-
-    /// Sets the text of the error label.
-    ///
-    func displayError(message: String) {
-        errorLabel.text = message
     }
 
 

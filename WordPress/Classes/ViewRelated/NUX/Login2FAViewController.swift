@@ -3,7 +3,7 @@ import SVProgressHUD
 import WordPressComAnalytics
 import WordPressShared
 
-class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder, LoginViewController {
+class Login2FAViewController: LoginViewController, SigninWPComSyncHandler, SigninKeyboardResponder {
     @IBOutlet weak var instructionLabel: UILabel!
     @IBOutlet weak var verificationCodeField: LoginTextField!
     @IBOutlet weak var sendCodeButton: UIButton!
