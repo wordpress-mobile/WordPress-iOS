@@ -4,10 +4,9 @@ import WordPressShared
 
 /// Provides a form and functionality for signing a user in to WordPress.com
 ///
-class LoginWPComViewController: LoginViewController, SigninWPComSyncHandler, SigninKeyboardResponder {
+class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet weak var usernameField: WPWalkthroughTextField?
     @IBOutlet weak var passwordField: WPWalkthroughTextField?
-    @IBOutlet weak var submitButton: NUXSubmitButton?
     @IBOutlet weak var forgotPasswordButton: UIButton?
     @IBOutlet weak var statusLabel: UILabel?
     @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
@@ -20,12 +19,6 @@ class LoginWPComViewController: LoginViewController, SigninWPComSyncHandler, Sig
             return .wpComLogin
         }
     }
-
-    lazy var loginFacade: LoginFacade = {
-        let facade = LoginFacade()
-        facade.delegate = self
-        return facade
-    }()
 
     // let the storyboard's style stay
     override func setupStyles() {}
@@ -85,18 +78,18 @@ class LoginWPComViewController: LoginViewController, SigninWPComSyncHandler, Sig
     ///
     /// - Parameter message: The text to display in the label.
     ///
-    func configureStatusLabel(_ message: String) {
+    override func configureStatusLabel(_ message: String) {
         statusLabel?.text = message
     }
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
+    override func configureSubmitButton(animating: Bool) {
         submitButton?.showActivityIndicator(animating)
         submitButton?.isEnabled = enableSubmit(animating: animating)
     }
 
-    fileprivate func enableSubmit(animating: Bool) -> Bool {
+    override func enableSubmit(animating: Bool) -> Bool {
         return !animating &&
             !loginFields.username.isEmpty &&
             !loginFields.password.isEmpty
@@ -106,7 +99,7 @@ class LoginWPComViewController: LoginViewController, SigninWPComSyncHandler, Sig
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    override func configureViewLoading(_ loading: Bool) {
         usernameField?.isEnabled = !loading
         passwordField?.isEnabled = !loading
 
@@ -147,12 +140,6 @@ class LoginWPComViewController: LoginViewController, SigninWPComSyncHandler, Sig
         configureViewLoading(true)
 
         loginFacade.signIn(with: loginFields)
-    }
-
-    // Update safari stored credentials. Call after a successful sign in.
-    ///
-    func updateSafariCredentialsIfNeeded() {
-        SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
     }
 
     // MARK: - Actions
@@ -220,33 +207,6 @@ class LoginWPComViewController: LoginViewController, SigninWPComSyncHandler, Sig
         let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
         forgotPasswordButton?.setTitle(forgotPasswordTitle, for: UIControlState())
         forgotPasswordButton?.setTitle(forgotPasswordTitle, for: .highlighted)
-    }
-}
-
-extension LoginWPComViewController: LoginFacadeDelegate {
-
-    func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
-        syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
-    }
-
-    func displayRemoteError(_ error: Error!) {
-        configureViewLoading(false)
-
-        guard (error as NSError).code != 403 else {
-            let message = NSLocalizedString("It seems like you've entered an incorrect password. Want to give it another try?", comment: "An error message shown when a wpcom user provides the wrong password.")
-            displayError(message: message)
-            return
-        }
-
-        displayError(error as NSError, sourceTag: sourceTag)
-    }
-
-    func needsMultifactorCode() {
-        configureStatusLabel("")
-        configureViewLoading(false)
-
-        WPAppAnalytics.track(.twoFactorCodeRequested)
-        self.performSegue(withIdentifier: .show2FA, sender: self)
     }
 }
 
