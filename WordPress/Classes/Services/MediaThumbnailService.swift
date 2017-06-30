@@ -42,7 +42,7 @@ class MediaThumbnailService: LocalCoreDataService {
             return
         }
         // Check if a local copy of the asset is available.
-        if let localAssetURL = media.absoluteLocalURL {
+        if let localAssetURL = media.absoluteLocalURL, exporter.supportsThumbnailExport(forFile: localAssetURL) {
             DispatchQueue.global(qos: .default).async {
                 exporter.exportThumbnail(forFile: localAssetURL,
                                          onCompletion: { (identifier, export) in
