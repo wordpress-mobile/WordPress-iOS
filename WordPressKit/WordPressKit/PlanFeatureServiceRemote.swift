@@ -1,6 +1,7 @@
 import Foundation
+import WordPressShared
 
-class PlanFeatureServiceRemote: ServiceRemoteWordPressComREST {
+public class PlanFeatureServiceRemote: ServiceRemoteWordPressComREST {
 
     enum ResponseError: Error {
         case decodingFailure
@@ -13,7 +14,7 @@ class PlanFeatureServiceRemote: ServiceRemoteWordPressComREST {
         return "plan-features-\(locale).json"
     }
 
-    func getPlanFeatures(_ success: @escaping (PlanFeatures) -> Void, failure: @escaping (Error) -> Void) {
+    public func getPlanFeatures(_ success: @escaping (RemotePlanFeatures) -> Void, failure: @escaping (Error) -> Void) {
         // First we'll try and return plan features from memory, then check our disk cache,
         // and finally hit the network if we don't have anything recent enough
         if let planFeatures = inMemoryPlanFeatures {
@@ -38,8 +39,8 @@ class PlanFeatureServiceRemote: ServiceRemoteWordPressComREST {
             }, failure: failure)
     }
 
-    fileprivate var _planFeatures: PlanFeatures?
-    fileprivate var inMemoryPlanFeatures: PlanFeatures? {
+    fileprivate var _planFeatures: RemotePlanFeatures?
+    fileprivate var inMemoryPlanFeatures: RemotePlanFeatures? {
         get {
             // If we have something in memory and it's less than a day old, return it.
             if let planFeatures = _planFeatures,
@@ -56,14 +57,14 @@ class PlanFeatureServiceRemote: ServiceRemoteWordPressComREST {
         }
     }
 
-    fileprivate func cachedPlanFeatures() -> PlanFeatures? {
+    fileprivate func cachedPlanFeatures() -> RemotePlanFeatures? {
         guard let (planFeatures, _) = cachedPlanFeaturesWithDate() else { return nil}
 
         return planFeatures
     }
 
     /// - Returns: An optional tuple containing a collection of cached plan features and the date when they were fetched
-    fileprivate func cachedPlanFeaturesWithDate() -> (PlanFeatures, Date)? {
+    fileprivate func cachedPlanFeaturesWithDate() -> (RemotePlanFeatures, Date)? {
         guard let cacheFileURL = cacheFileURL,
             let attributes = try? FileManager.default.attributesOfItem(atPath: cacheFileURL.path),
             let modificationDate = attributes[FileAttributeKey.modificationDate] as? Date, cacheDateIsValid(modificationDate) else { return nil }
@@ -79,7 +80,7 @@ class PlanFeatureServiceRemote: ServiceRemoteWordPressComREST {
         return Calendar.current.isDateInToday(date)
     }
 
-    fileprivate func fetchPlanFeatures(_ success: @escaping (PlanFeatures) -> Void, failure: @escaping (Error) -> Void) {
+    fileprivate func fetchPlanFeatures(_ success: @escaping (RemotePlanFeatures) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "plans/features"
         let path = self.path(forEndpoint: endpoint, with: .version_1_2)
         let locale = languageDatabase.deviceLanguage.slug
@@ -117,12 +118,12 @@ class PlanFeatureServiceRemote: ServiceRemoteWordPressComREST {
     }
 }
 
-private func mapPlanFeaturesResponse(_ response: AnyObject) throws -> PlanFeatures {
+private func mapPlanFeaturesResponse(_ response: AnyObject) throws -> RemotePlanFeatures {
     guard let json = response as? [[String: AnyObject]] else {
         throw PlanFeatureServiceRemote.ResponseError.decodingFailure
     }
 
-    var features = [PlanID: [PlanFeature]]()
+    var features = [Int: [RemotePlanFeature]]()
     for featureDetails in json {
 
         guard let slug = featureDetails["product_slug"] as? String,
@@ -134,7 +135,7 @@ private func mapPlanFeaturesResponse(_ response: AnyObject) throws -> PlanFeatur
             guard let planID = Int(planID) else { throw PlanServiceRemote.ResponseError.decodingFailure }
 
             if features[planID] == nil {
-                features[planID] = [PlanFeature]()
+                features[planID] = [RemotePlanFeature]()
             }
 
             if let planInfo = planInfo as? [String: String],
@@ -146,7 +147,7 @@ private func mapPlanFeaturesResponse(_ response: AnyObject) throws -> PlanFeatur
             if let iconURLString = featureDetails["icon"] as? String {
                 iconURL = URL(string: iconURLString)
             }
-            features[planID]?.append(PlanFeature(slug: slug, title: title, description: description, iconURL: iconURL))
+            features[planID]?.append(RemotePlanFeature(slug: slug, title: title, description: description, iconURL: iconURL))
         }
     }
 
