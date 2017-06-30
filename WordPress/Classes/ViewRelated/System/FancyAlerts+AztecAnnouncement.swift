@@ -16,6 +16,15 @@ extension FancyAlertViewController {
     }
 
     static func aztecAnnouncementController() -> FancyAlertViewController {
+        if EditorSettings().nativeEditorEnabled {
+            return existingTesterAztecAnnouncementController()
+        } else {
+            return newTesterAztecAnnouncementController()
+        }
+    }
+
+    // Shown to users of the app who don't have Aztec enabled
+    private static func newTesterAztecAnnouncementController() -> FancyAlertViewController {
         struct Strings {
             static let titleText = NSLocalizedString("Try the New Editor", comment: "Title of alert prompting users to try the new Aztec editor")
             static let bodyText = NSLocalizedString("The WordPress app now includes a beautiful new editor. Try it out by creating a new post!", comment: "Body text of alert prompting users to try the new Aztec editor")
@@ -69,6 +78,33 @@ extension FancyAlertViewController {
                                                      defaultButton: defaultButton, cancelButton: cancelButton, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton, dismissAction: nil)
 
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
+    }
+
+    // Shown to users of the app who already have Aztec enabled
+    static func existingTesterAztecAnnouncementController() -> FancyAlertViewController {
+        struct Strings {
+            static let titleText = NSLocalizedString("New Editor in Public Beta!", comment: "Title of alert prompting users to try the new Aztec editor")
+            static let bodyText = NSLocalizedString("The WordPress app's beautiful new editor is now in public beta. It looks like you already have it enabled, so you're all set!", comment: "Body text of alert informing existing testers that the new Aztec editor is now in public beta")
+            static let whatsNew = NSLocalizedString("What's new?", comment: "Title of more info button on alert prompting users to try the new Aztec editor")
+            static let beta = NSLocalizedString("Beta", comment: "Used to indicate a feature of the app currently in beta testing.")
+        }
+
+        typealias Button = FancyAlertViewController.Config.ButtonConfig
+
+        let moreInfoButton = Button(Strings.whatsNew, { _ in })
+        let titleAccessoryButton = Button(Strings.beta, { _ in })
+
+        let image = UIImage(named: "wp-illustration-hand-write")
+
+        let config = FancyAlertViewController.Config(titleText: Strings.titleText,
+                                                     bodyText: Strings.bodyText,
+                                                     headerImage: image,
+                                                     defaultButton: nil,
+                                                     cancelButton: nil,
+                                                     moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton, dismissAction: nil)
+
+        return FancyAlertViewController.controllerWithConfiguration(configuration: config)
+        
     }
 
     private static let aztecAnnouncementSuccessConfig: FancyAlertViewController.Config = {
