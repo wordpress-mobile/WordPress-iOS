@@ -92,7 +92,7 @@ class MediaVideoExporter: MediaExporter {
             }
 
             // Generate a URL for exported video.
-            let mediaURL = try mediaFileManager().makeLocalMediaURL(withFilename: filename ?? "video",
+            let mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: filename ?? "video",
                                                                     fileExtension: URL.fileExtensionForUTType(outputType))
             session.outputURL = mediaURL
             session.outputFileType = outputType

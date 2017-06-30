@@ -166,7 +166,7 @@ class MediaImageExporter: MediaExporter {
         do {
             let filename = filename ?? defaultImageFilename
             // Make a new URL within the local Media directory
-            let url = try mediaFileManager().makeLocalMediaURL(withFilename: filename,
+            let url = try mediaFileManager.makeLocalMediaURL(withFilename: filename,
                                                                fileExtension: URL.fileExtensionForUTType(type))
 
             // Check MediaSettings and configure the image writer as needed.
