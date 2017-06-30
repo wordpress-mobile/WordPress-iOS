@@ -5,7 +5,6 @@ import UIKit
 class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var instructionLabel: UILabel!
     @IBOutlet var emailTextField: WPWalkthroughTextField!
-    @IBOutlet var submitButton: NUXSubmitButton!
     @IBOutlet var selfHostedSigninButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
@@ -101,9 +100,9 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         emailTextField.accessibilityIdentifier = "Email address"
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        submitButton.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton.setTitle(submitButtonTitle, for: .highlighted)
-        submitButton.accessibilityIdentifier = "Next Button"
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.accessibilityIdentifier = "Next Button"
 
         let selfHostedTitle = NSLocalizedString("Log into your site by entering your site address instead.", comment: "A button title.")
         selfHostedSigninButton.setTitle(selfHostedTitle, for: UIControlState())
@@ -133,7 +132,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     /// Configures whether appearance of the submit button.
     ///
     func configureSubmitButton() {
-        submitButton.isEnabled = canSubmit()
+        submitButton?.isEnabled = canSubmit()
     }
 
 
@@ -141,10 +140,10 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    override func configureViewLoading(_ loading: Bool) {
         emailTextField.isEnabled = !loading
-        submitButton.isEnabled = !loading
-        submitButton.showActivityIndicator(loading)
+        submitButton?.isEnabled = !loading
+        submitButton?.showActivityIndicator(loading)
     }
 
 

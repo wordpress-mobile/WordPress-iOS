@@ -3,21 +3,14 @@ import SVProgressHUD
 import WordPressComAnalytics
 import WordPressShared
 
-class Login2FAViewController: LoginViewController, SigninWPComSyncHandler, SigninKeyboardResponder {
+class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet weak var instructionLabel: UILabel!
     @IBOutlet weak var verificationCodeField: LoginTextField!
     @IBOutlet weak var sendCodeButton: UIButton!
-    @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     var pasteboardBeforeBackground: String? = nil
-
-    lazy fileprivate var loginFacade: LoginFacade = {
-        let facade = LoginFacade()
-        facade.delegate = self
-        return facade
-    }()
 
     override var sourceTag: SupportSourceTag {
         get {
@@ -96,8 +89,8 @@ class Login2FAViewController: LoginViewController, SigninWPComSyncHandler, Signi
         verificationCodeField.placeholder = NSLocalizedString("Verification code", comment: "two factor code placeholder")
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button.").localizedCapitalized
-        submitButton.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
 
         sendCodeButton.setTitle(NSLocalizedString("Text me a code instead", comment: "Button title"),
                                 for: .normal)
@@ -113,7 +106,7 @@ class Login2FAViewController: LoginViewController, SigninWPComSyncHandler, Signi
     ///
     /// - Parameter message: The text to display in the label.
     ///
-    func configureStatusLabel(_ message: String) {
+    override func configureStatusLabel(_ message: String) {
         statusLabel.text = message
 
         sendCodeButton.isEnabled = message.isEmpty
@@ -122,10 +115,10 @@ class Login2FAViewController: LoginViewController, SigninWPComSyncHandler, Signi
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
-        submitButton.showActivityIndicator(animating)
+    override func configureSubmitButton(animating: Bool) {
+        submitButton?.showActivityIndicator(animating)
 
-        submitButton.isEnabled = (
+        submitButton?.isEnabled = (
             !animating &&
                 !loginFields.multifactorCode.isEmpty
         )
@@ -136,7 +129,7 @@ class Login2FAViewController: LoginViewController, SigninWPComSyncHandler, Signi
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    override func configureViewLoading(_ loading: Bool) {
         verificationCodeField.enablesReturnKeyAutomatically = !loading
 
         configureSubmitButton(animating: loading)
@@ -182,13 +175,6 @@ class Login2FAViewController: LoginViewController, SigninWPComSyncHandler, Signi
         configureViewLoading(true)
 
         loginFacade.signIn(with: loginFields)
-    }
-
-
-    /// Update safari stored credentials. Call after a successful sign in.
-    ///
-    func updateSafariCredentialsIfNeeded() {
-        SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
     }
 
 
@@ -259,19 +245,13 @@ class Login2FAViewController: LoginViewController, SigninWPComSyncHandler, Signi
 }
 
 
-extension Login2FAViewController: LoginFacadeDelegate {
-
-    func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
-        syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
-    }
-
+extension Login2FAViewController {
 
     func displayLoginMessage(_ message: String!) {
         configureStatusLabel(message)
     }
 
-
-    func displayRemoteError(_ error: Error!) {
+    override func displayRemoteError(_ error: Error!) {
         configureStatusLabel("")
         configureViewLoading(false)
         displayError(error as NSError, sourceTag: sourceTag)
