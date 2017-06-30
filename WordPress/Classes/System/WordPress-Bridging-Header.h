@@ -45,7 +45,6 @@
 #import "Media.h"
 #import "MediaLibraryPickerDataSource.h"
 #import "MediaService.h"
-#import "MediaServiceRemoteREST.h"
 #import "MeHeaderView.h"
 
 #import "NavBarTitleDropdownButton.h"
@@ -89,7 +88,6 @@
 #import "ReaderSiteServiceRemote.h"
 #import "ReaderTopicService.h"
 #import "RemotePost.h"
-#import "RemoteMedia.h"
 #import "RemoteReaderPost.h"
 #import "RemoteReaderSite.h"
 #import "RemoteReaderTopic.h"

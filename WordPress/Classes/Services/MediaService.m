@@ -3,10 +3,7 @@
 #import "Media.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
-#import "MediaServiceRemoteXMLRPC.h"
-#import "MediaServiceRemoteREST.h"
 #import "Blog.h"
-#import "RemoteMedia.h"
 #import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WordPress-Swift.h"
@@ -15,6 +12,7 @@
 #import <WordPressShared/WPImageSource.h>
 
 @import WordPressComAnalytics;
+@import WordPressKit;
 
 @implementation MediaService
 
