@@ -104,7 +104,6 @@ extension FancyAlertViewController {
                                                      moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton, dismissAction: nil)
 
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
-        
     }
 
     private static let aztecAnnouncementSuccessConfig: FancyAlertViewController.Config = {
