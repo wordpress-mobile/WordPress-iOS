@@ -221,13 +221,6 @@ class LoginWPComViewController: LoginViewController, SigninWPComSyncHandler, Sig
         forgotPasswordButton?.setTitle(forgotPasswordTitle, for: UIControlState())
         forgotPasswordButton?.setTitle(forgotPasswordTitle, for: .highlighted)
     }
-
-    /// Sets the text of the error label.
-    /// - Note: this should become part of LoginViewController -nh
-    ///
-    func displayError(message: String) {
-        statusLabel?.text = message
-    }
 }
 
 extension LoginWPComViewController: LoginFacadeDelegate {
