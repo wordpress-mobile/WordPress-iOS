@@ -4,7 +4,7 @@ import WordPressShared
 
 /// Provides a form and functionality for signing a user in to WordPress.com
 ///
-class LoginWPComViewController: NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder, LoginViewController {
+class LoginWPComViewController: LoginViewController, SigninWPComSyncHandler, SigninKeyboardResponder {
     @IBOutlet weak var usernameField: WPWalkthroughTextField?
     @IBOutlet weak var passwordField: WPWalkthroughTextField?
     @IBOutlet weak var submitButton: NUXSubmitButton?
