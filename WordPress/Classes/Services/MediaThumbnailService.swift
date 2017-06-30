@@ -116,9 +116,9 @@ class MediaThumbnailService: LocalCoreDataService {
                 }
                 // Get an expected WP URL, for sizing.
                 if media.blog.isPrivate() {
-                    remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
-                } else {
                     remoteURL = WPImageURLHelper.imageURLWithSize(preferredSize, forImageURL: remoteAssetURL)
+                } else {
+                    remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
                 }
             }
             guard let imageURL = remoteURL else {
