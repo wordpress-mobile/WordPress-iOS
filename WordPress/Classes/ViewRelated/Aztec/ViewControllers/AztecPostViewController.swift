@@ -2352,8 +2352,7 @@ extension AztecPostViewController {
             })
         } else if let videoAttachment = attachment as? VideoAttachment,
             mediaProgressCoordinator.error(forMediaID: mediaID) == nil,
-            !mediaProgressCoordinator.isMediaUploading(mediaID: mediaID)
-        {
+            !mediaProgressCoordinator.isMediaUploading(mediaID: mediaID) {
             alertController.preferredAction = alertController.addActionWithTitle(NSLocalizedString("Play Video", comment: "User action to play a video on the editor."),
                                                                                  style: .default,
                                                                                  handler: { (action) in
