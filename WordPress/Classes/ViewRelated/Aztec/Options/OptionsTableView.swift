@@ -22,6 +22,15 @@ class OptionsTableViewController: UITableViewController {
 
     var onSelect: OnSelectHandler?
 
+    var cellBackgroundColor: UIColor = .white {
+        didSet {
+            tableView.backgroundColor = cellBackgroundColor
+            tableView?.reloadData()
+        }
+    }
+
+    var cellSelectedBackgroundColor: UIColor = .lightGray
+
     var cellDeselectedTintColor: UIColor? {
         didSet {
             tableView?.reloadData()
@@ -35,6 +44,8 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.backgroundColor = cellBackgroundColor
 
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         tableView.register(OptionsTableViewCell.self, forCellReuseIdentifier: OptionsTableViewCell.reuseIdentifier)
@@ -69,6 +80,14 @@ extension OptionsTableViewController {
 
         cell.accessoryType = .checkmark
         onSelect?(indexPath.row)
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = cellBackgroundColor
+
+        let selectedView = UIView()
+        selectedView.backgroundColor = cellSelectedBackgroundColor
+        cell.selectedBackgroundView = selectedView
     }
 }
 
@@ -111,10 +130,18 @@ class OptionsTableViewCell: UITableViewCell {
         fatalError("Not implemented")
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        // Our Gridicons look slightly better if shifted down one px
+        imageView?.frame.origin.y += 1
+    }
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        imageView?.tintColor = selected ? tintColor : deselectedTintColor
+        // Icons should always appear deselected
+        imageView?.tintColor = deselectedTintColor
         accessoryType = selected ? .checkmark : .none
     }
 }
