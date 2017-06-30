@@ -204,7 +204,7 @@ class MediaAssetExporter: MediaExporter {
             guard UTTypeEqual(resource.uniformTypeIdentifier as CFString, kUTTypeGIF) else {
                 throw AssetExportError.expectedPHAssetGIFType
             }
-            let url = try mediaFileManager().makeLocalMediaURL(withFilename: resource.originalFilename,
+            let url = try mediaFileManager.makeLocalMediaURL(withFilename: resource.originalFilename,
                                                                fileExtension: "gif")
             let options = PHAssetResourceRequestOptions()
             options.isNetworkAccessAllowed = true
