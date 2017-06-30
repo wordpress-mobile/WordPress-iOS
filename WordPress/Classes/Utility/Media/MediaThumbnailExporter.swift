@@ -137,7 +137,7 @@ class MediaThumbnailExporter: MediaExporter {
         exporter.mediaDirectoryType = .temporary
         exporter.options = imageExporterOptions
         exporter.exportImage(image,
-                             fileName: nil,
+                             fileName: UUID().uuidString,
                              onCompletion: { (export) in
                                 self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
         }, onError: onError)
