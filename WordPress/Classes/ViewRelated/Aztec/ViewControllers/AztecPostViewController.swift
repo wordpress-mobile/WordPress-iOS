@@ -1757,7 +1757,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.disabledTintColor = WPStyleGuide.aztecFormatBarDisabledColor
-        toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDisabledColor
+        toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDividerColor
         toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
         toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0)
         toolbar.formatter = self

@@ -8,6 +8,8 @@ extension WPStyleGuide {
 
     static let aztecFormatBarDisabledColor = WPStyleGuide.greyLighten20()
 
+    static let aztecFormatBarDividerColor = WPStyleGuide.greyLighten30()
+
     static let aztecFormatBarBackgroundColor = UIColor.white
 
     static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
