@@ -18,7 +18,7 @@ class MediaThumbnailExporter: MediaExporter {
     struct Options {
 
         /// The preferred size of the image, in points, typically for the actual display
-        /// of the image within a layout's dimensions.
+        /// of the image within a layout's dimensions. If nil, the image will not be resized.
         ///
         /// - Note: The final size may or may not match the preferred dimensions, depending
         ///   on the original image.
@@ -33,9 +33,9 @@ class MediaThumbnailExporter: MediaExporter {
         ///
         var scale: CGFloat = UIScreen.main.scale
 
-        /// The compression quality of the thumbnail, if the image type support compression.
+        /// The compression quality of the thumbnail, if the image type supports compression.
         ///
-        var compressionQuality = 0.70
+        var compressionQuality = 0.90
 
         /// The target image type of the exported thumbnail images.
         ///
