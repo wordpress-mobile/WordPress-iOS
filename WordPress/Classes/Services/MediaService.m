@@ -578,9 +578,9 @@
 
 #pragma mark - Thumbnails
 
-- (void)localThumbnailURLForMedia:(Media *)mediaInRandomContext
-                    preferredSize:(CGSize)preferredSize
-                       completion:(void (^)(NSURL * _Nullable, NSError * _Nullable))completion
+- (void)thumbnailFileURLForMedia:(Media *)mediaInRandomContext
+                   preferredSize:(CGSize)preferredSize
+                      completion:(void (^)(NSURL * _Nullable, NSError * _Nullable))completion
 {
     NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
     [self.managedObjectContext performBlock:^{
