@@ -1942,7 +1942,7 @@ MediaProgressCoordinatorDelegate
 
 - (void)editorTrackStat:(WPEditorStat)stat
 {
-    [WPAnalytics track:[WPEditorStatMap map:stat]];
+    [WPAnalytics track:[WPEditorStatMap map:stat] withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid}];
 }
 
 - (void)editorViewController:(WPEditorViewController *)editorViewController imageReplaced:(NSString *)imageId
