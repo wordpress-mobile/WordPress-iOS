@@ -3,7 +3,6 @@ import UIKit
 class LoginSiteAddressViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var instructionLabel: UILabel!
     @IBOutlet weak var siteURLField: WPWalkthroughTextField!
-    @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet var siteAddressHelpButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
@@ -71,9 +70,9 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         siteURLField.placeholder = NSLocalizedString("example.wordress.com", comment: "Site Address placeholder")
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        submitButton.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton.setTitle(submitButtonTitle, for: .highlighted)
-        submitButton.accessibilityIdentifier = "Next Button"
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.accessibilityIdentifier = "Next Button"
 
         let siteAddressHelpTitle = NSLocalizedString("Need help finding your site address?", comment: "A button title.")
         siteAddressHelpButton.setTitle(siteAddressHelpTitle, for: UIControlState())
@@ -92,10 +91,10 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
-        submitButton.showActivityIndicator(animating)
+    override func configureSubmitButton(animating: Bool) {
+        submitButton?.showActivityIndicator(animating)
 
-        submitButton.isEnabled = (
+        submitButton?.isEnabled = (
             !animating && canSubmit()
         )
     }
@@ -105,7 +104,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    override func configureViewLoading(_ loading: Bool) {
         siteURLField.isEnabled = !loading
 
         configureSubmitButton(animating: loading)
