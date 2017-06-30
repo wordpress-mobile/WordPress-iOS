@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 61
+- @kurzee 2017-06-16
+- `Media` added `localThumbnailIdentifier` string property. Stores the locally generated thumbnail identifier.
+
 ## WordPress 60
 - @elibud 2017-05-31
 - `BlogSettings` added `iconMediaID` int_32 property. Stores the mediaID of the site's icon.

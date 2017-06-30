@@ -12,6 +12,7 @@
 #import "ApiCredentials.h"
 
 #import "Blog.h"
+#import "BlogDetailHeaderView.h"
 #import "BlogService.h"
 #import "BlogSyncFacade.h"
 #import "BlogSelectorViewController.h"
