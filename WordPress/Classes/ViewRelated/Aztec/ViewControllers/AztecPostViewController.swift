@@ -227,7 +227,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Media Uploading Button
     ///
     fileprivate lazy var mediaUploadingButton: WPUploadStatusButton = {
-        let button = WPUploadStatusButton!(frame: CGRect(origin: .zero, size: Constants.uploadingButtonSize))
+        let button = WPUploadStatusButton(frame: CGRect(origin: .zero, size: Constants.uploadingButtonSize))
         button.setTitle(NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server"), for: .normal)
         button.addTarget(self, action: #selector(displayCancelMediaUploads), for: .touchUpInside)
         return button
