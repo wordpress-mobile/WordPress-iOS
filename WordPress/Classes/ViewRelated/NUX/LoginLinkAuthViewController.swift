@@ -9,7 +9,7 @@ import WordPressShared
 /// The expectation is this controller will be momentarily visible when the app
 /// is resumed/launched via the appropriate custom scheme, and quickly dismiss.
 ///
-class LoginLinkAuthViewController: NUXAbstractViewController, SigninWPComSyncHandler, LoginViewController {
+class LoginLinkAuthViewController: LoginViewController, SigninWPComSyncHandler {
     @IBOutlet weak var statusLabel: UILabel?
     var email: String = ""
     var token: String = ""

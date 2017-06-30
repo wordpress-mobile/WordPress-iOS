@@ -1,6 +1,6 @@
 import UIKit
 
-class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardResponder, LoginViewController {
+class LoginSiteAddressViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var instructionLabel: UILabel!
     @IBOutlet var errorLabel: UILabel!
     @IBOutlet weak var siteURLField: WPWalkthroughTextField!

@@ -2,7 +2,7 @@ import UIKit
 
 /// This is the first screen following the log in prologue screen if the user chooses to log in.
 ///
-class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardResponder, LoginViewController {
+class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var instructionLabel: UILabel!
     @IBOutlet var errorLabel: UILabel!
     @IBOutlet var emailTextField: WPWalkthroughTextField!
