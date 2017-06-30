@@ -1,4 +1,5 @@
 import UIKit
+import WordPressComAnalytics
 
 extension FancyAlertViewController {
     private enum Constants {
@@ -26,9 +27,16 @@ extension FancyAlertViewController {
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
-        let defaultButton = Button(Strings.tryIt, { controller in
+        let enableEditor = {
             let settings = EditorSettings(database: UserDefaults.standard)
+            settings.visualEditorEnabled = true
             settings.nativeEditorEnabled = true
+
+            WPAnalytics.track(.editorToggledOn)
+        }
+
+        let defaultButton = Button(Strings.tryIt, { controller in
+            enableEditor()
 
             controller.setViewConfiguration(aztecAnnouncementSuccessConfig,
                                             animated: true,
