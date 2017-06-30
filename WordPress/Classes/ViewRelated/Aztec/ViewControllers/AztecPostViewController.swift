@@ -1967,7 +1967,7 @@ private extension AztecPostViewController {
             setHTML(htmlTextView.text)
         }
 
-        richTextView.removeTextAttachments()
+        richTextView.removeMediaAttachments()
         let strippedHTML = getHTML()
 
         if mode == .html {
