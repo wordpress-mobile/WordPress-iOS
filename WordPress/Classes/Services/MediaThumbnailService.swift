@@ -32,7 +32,6 @@ class MediaThumbnailService: LocalCoreDataService {
             let screenSize = UIScreen.main.bounds
             let screenSizeMax = max(screenSize.width, screenSize.height)
             exporter.options.preferredSize = CGSize(width: screenSizeMax, height: screenSizeMax)
-            exporter.options.compressionQuality = 0.9
         } else {
             exporter.options.preferredSize = preferredSize
         }
