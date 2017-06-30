@@ -2,6 +2,6 @@
 
 @interface WPUploadStatusButton : UIButton
 
-+ (id)buttonWithFrame:(CGRect)frame;
+- (nonnull instancetype)initWithFrame:(CGRect)frame;
 
 @end
