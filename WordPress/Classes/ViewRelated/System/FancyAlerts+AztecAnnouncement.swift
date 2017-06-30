@@ -89,7 +89,11 @@ extension FancyAlertViewController {
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
-        let moreInfoButton = Button(Strings.appSettings, { _ in })
+        let moreInfoButton = Button(Strings.appSettings, { controller in
+            controller.presentingViewController?.dismiss(animated: true, completion: {
+                WPTabBarController.sharedInstance().switchMeTabToAppSettings()
+            })
+        })
 
         let titleAccessoryButton = Button(Strings.beta, { controller in
             controller.presentWhatsNewWebView()

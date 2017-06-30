@@ -124,6 +124,16 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return headerView
     }
 
+    private var appSettingsRow: NavigationItemRow {
+        let accessoryType: UITableViewCellAccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
+
+        return NavigationItemRow(
+            title: NSLocalizedString("App Settings", comment: "Link to App Settings section"),
+            icon: Gridicon.iconOfType(.phone),
+            accessoryType: accessoryType,
+            action: pushAppSettings())
+    }
+
     fileprivate func tableViewModel(_ loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
         let accessoryType: UITableViewCellAccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
 
@@ -138,12 +148,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             icon: Gridicon.iconOfType(.cog),
             accessoryType: accessoryType,
             action: pushAccountSettings())
-
-        let appSettings = NavigationItemRow(
-            title: NSLocalizedString("App Settings", comment: "Link to App Settings section"),
-            icon: Gridicon.iconOfType(.phone),
-            accessoryType: accessoryType,
-            action: pushAppSettings())
 
         let notificationSettings = NavigationItemRow(
             title: NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section"),
@@ -175,7 +179,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                     ImmuTableSection(rows: [
                         myProfile,
                         accountSettings,
-                        appSettings,
+                        appSettingsRow,
                         notificationSettings
                         ]),
                     ImmuTableSection(rows: [
@@ -191,7 +195,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             return ImmuTable(
                 sections: [
                     ImmuTableSection(rows: [
-                        appSettings,
+                        appSettingsRow,
                         ]),
                     ImmuTableSection(rows: [
                         helpAndSupport
@@ -321,6 +325,29 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
+    /// Selects the App Settings row and pushes the App Settings view controller
+    ///
+    public func navigateToAppSettings() {
+        let matchRow: ((ImmuTableRow) -> Bool) = { [weak self] row in
+            if let row = row as? NavigationItemRow {
+                return row.title == self?.appSettingsRow.title
+            }
+
+            return false
+        }
+
+        let sections = handler.viewModel.sections
+
+        if let section = sections.index(where: { $0.rows.contains(where: matchRow) }),
+            let row = sections[section].rows.index(where: matchRow) {
+            let indexPath = IndexPath(row: row, section: section)
+
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
+            handler.tableView(self.tableView, didSelectRowAt: indexPath)
+        }
+    }
+    
+    
 
     // MARK: - Notification observers
 
