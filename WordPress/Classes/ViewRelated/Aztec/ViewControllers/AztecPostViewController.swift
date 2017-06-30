@@ -2076,9 +2076,12 @@ extension AztecPostViewController {
                 Assets.defaultMissingImage)
 
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
-        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
+        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { [weak self](thumbnailURL) in
+            guard let strongSelf = self else {
+                return
+            }
             DispatchQueue.main.async {
-                self.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: thumbnailURL)
+                strongSelf.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: thumbnailURL)
             }
         }, completion: { [weak self](media, error) in
             guard let strongSelf = self else {
@@ -2102,10 +2105,13 @@ extension AztecPostViewController {
         attachment.progress = 0
         richTextView.update(attachment: attachment)
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
-        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
+        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { [weak self](thumbnailURL) in
+            guard let strongSelf = self else {
+                return
+            }
             DispatchQueue.main.async {
                 attachment.posterURL = thumbnailURL
-                self.richTextView.refreshLayout(for: attachment)
+                strongSelf.richTextView.refreshLayout(for: attachment)
             }
         }, completion: { [weak self](media, error) in
             guard let strongSelf = self else {
