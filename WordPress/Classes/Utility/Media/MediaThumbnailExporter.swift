@@ -110,6 +110,22 @@ class MediaThumbnailExporter: MediaExporter {
         return thumbnail
     }
 
+    /// Check for whether or not a file URL supports a thumbnail export.
+    ///
+    func supportsThumbnailExport(forFile url: URL) -> Bool {
+        do {
+            let expected = try MediaURLExporter.expectedExport(with: url)
+            switch expected {
+            case .image, .video:
+                return true
+            case .gif:
+                return false
+            }
+        } catch {
+            return false
+        }
+    }
+
     /// Export a thumbnail image for a file at the URL, with an expected type of an image or video.
     ///
     /// - Note: GIFs are currently unsupported and throw the .gifThumbnailsUnsupported error.
