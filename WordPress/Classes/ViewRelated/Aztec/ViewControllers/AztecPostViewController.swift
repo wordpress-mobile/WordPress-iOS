@@ -1135,8 +1135,7 @@ extension AztecPostViewController : UITextViewDelegate {
     }
 
     func textViewDidChangeSelection(_ textView: UITextView) {
-        updateFormatBar()
-        changeRichTextInputView(to: nil)
+        updateFormatBar()        
     }
 
     func textViewDidChange(_ textView: UITextView) {
