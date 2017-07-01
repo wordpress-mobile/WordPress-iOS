@@ -226,7 +226,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         button.setTitle(NSLocalizedString("Beta", comment: "Title for Beta tag button for the new Aztec editor"), for: .normal)
         button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
-        button.isEnabled = false
+        button.isEnabled = true
+        button.addTarget(self, action: #selector(betaButtonTapped), for: .touchUpInside)
 
         return button
     }()
@@ -919,6 +920,14 @@ extension AztecPostViewController {
 
     @IBAction func moreWasPressed() {
         displayMoreSheet()
+    }
+
+    @IBAction func betaButtonTapped() {
+        guard let webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL) else { return }
+
+        let navigationController = UINavigationController(rootViewController: webViewController)
+
+        present(navigationController, animated: true, completion: nil)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {
