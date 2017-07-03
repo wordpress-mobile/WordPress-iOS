@@ -51,4 +51,15 @@ class MediaExporterTests: XCTestCase {
         }
         XCTAssert(size == 233139, "Error: unexpected file size found for the test image: \(size)")
     }
+
+    // MARK: - Testing cleanup
+
+    class func cleanUpExportedMedia(atURL url: URL) {
+        do {
+            let fileManager = FileManager.default
+            try fileManager.removeItem(at: url)
+        } catch {
+            XCTFail("Error: failed to clean up exported media: \(error)")
+        }
+    }
 }

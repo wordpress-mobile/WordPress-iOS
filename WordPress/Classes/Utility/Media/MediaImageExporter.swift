@@ -18,9 +18,17 @@ class MediaImageExporter: MediaExporter {
         ///
         var maximumImageSize: CGFloat?
 
-        /// Default compression quality when an image is being resized.
+        /// Compression quality if the image type supports compression, defaults to no compression or maximum quality.
         ///
-        var imageCompressionQualityUponResizing = 0.9
+        var imageCompressionQuality = 1.0
+
+        /// The target UTType of the exported image, typically a UTTypeJPEG or UTTypePNG,
+        /// or nil if the original image's format should be used.
+        ///
+        /// - Note: The exporter may not support exporting the original image as
+        ///   the set type, and will throw an error if it fails.
+        ///
+        var exportImageType: String?
 
         // MARK: - MediaExporting
 
@@ -32,11 +40,10 @@ class MediaImageExporter: MediaExporter {
     typealias OnImageExport = (MediaImageExport) -> Void
 
     public enum ImageExportError: MediaExportError {
-        case imageJPEGDataRepresentationFailed
+        case imageDataRepresentationFailed
         case imageSourceCreationWithDataFailed
         case imageSourceCreationWithURLFailed
         case imageSourceIsAnUnknownType
-        case imageSourceExpectedJPEGImageType
         case imageSourceDestinationWithURLFailed
         case imageSourceThumbnailGenerationFailed
         case imageSourceDestinationWriteFailed
@@ -46,9 +53,6 @@ class MediaImageExporter: MediaExporter {
                 return NSLocalizedString("The image could not be added to the Media Library.", comment: "Message shown when an image failed to load while trying to add it to the Media library.")
             }
         }
-        func toNSError() -> NSError {
-            return NSError(domain: _domain, code: _code, userInfo: [NSLocalizedDescriptionKey: String(describing: self)])
-        }
     }
 
     /// Default filename used when writing media images locally, which may be appended with "-1" or "-thumbnail".
@@ -57,20 +61,35 @@ class MediaImageExporter: MediaExporter {
 
     /// Exports and writes a UIImage to a local Media URL.
     ///
-    /// A JPEG or PNG is expected, but not necessarily required. Exporting will fail if a JPEG cannot
+    /// A PNG or JPEG is expected but not necessarily required. Exporting will fail if a PNG or JPEG cannot
     /// be represented from the UIImage, such as trying to export a GIF.
     ///
-    /// - parameter fileName: Filename if it's known.
-    /// - parameter onCompletion: Called on successful export, with the local file URL of the exported UIImage.
-    /// - parameter onError: Called if an error was encountered during creation.
+    /// - Parameters:
+    ///     - fileName: Filename if it's known.
+    ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
+    ///     - onError: Called if an error was encountered during creation.
     ///
     func exportImage(_ image: UIImage, fileName: String?, onCompletion: @escaping OnImageExport, onError: @escaping OnExportError) {
         do {
-            guard let data = UIImageJPEGRepresentation(image, 1.0) else {
-                throw ImageExportError.imageJPEGDataRepresentationFailed
+            var data: Data?
+            var hint: String?
+            // If the exportImageType is targeting a PNG, try to init PNG data.
+            if let exportType = options.exportImageType, UTTypeEqual(exportType as CFString, kUTTypePNG) {
+                data = UIImagePNGRepresentation(image)
+                hint = kUTTypePNG as String
             }
-            exportImage(withJPEGData: data,
+            // If the data failed to init as PNG, or is another type, try and init as JPEG data.
+            if data == nil {
+                data = UIImageJPEGRepresentation(image, 1.0)
+                hint = kUTTypeJPEG as String
+            }
+            // Ensure that we do indeed have image data.
+            guard let imageData = data else {
+                throw ImageExportError.imageDataRepresentationFailed
+            }
+            exportImage(withData: imageData,
                         fileName: fileName,
+                        typeHint: hint,
                         onCompletion: onCompletion,
                         onError: onError)
         } catch {
@@ -78,27 +97,27 @@ class MediaImageExporter: MediaExporter {
         }
     }
 
-    /// Exports and writes an image's data, expected as JPEG format, to a local Media URL.
+    /// Exports and writes an image's data, expected as PNG or JPEG format, to a local Media URL.
     ///
-    /// - parameter fileName: Filename if it's known.
-    /// - parameter onCompletion: Called on successful export, with the local file URL of the exported UIImage.
-    /// - parameter onError: Called if an error was encountered during creation.
+    /// - Parameters:
+    ///     - fileName: Filename if it's known.
+    ///     - typeHint: Hint towards the UTType of data, such as PNG or JPEG.
+    ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
+    ///     - onError: Called if an error was encountered during creation.
     ///
-    func exportImage(withJPEGData data: Data, fileName: String?, onCompletion: @escaping OnImageExport, onError: @escaping OnExportError) {
+    func exportImage(withData data: Data, fileName: String?, typeHint: String?, onCompletion: @escaping OnImageExport, onError: @escaping OnExportError) {
         do {
-            let options: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: kUTTypeJPEG]
-            guard let source = CGImageSourceCreateWithData(data as CFData, options as CFDictionary) else {
+            let hint = typeHint ?? kUTTypeJPEG as String
+            let sourceOptions: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: hint as CFString]
+            guard let source = CGImageSourceCreateWithData(data as CFData, sourceOptions as CFDictionary) else {
                 throw ImageExportError.imageSourceCreationWithDataFailed
             }
             guard let utType = CGImageSourceGetType(source) else {
                 throw ImageExportError.imageSourceIsAnUnknownType
             }
-            guard UTTypeEqual(utType, kUTTypeJPEG) else {
-                throw ImageExportError.imageSourceExpectedJPEGImageType
-            }
             exportImageSource(source,
                               filename: fileName,
-                              type: utType as String,
+                              type: options.exportImageType ?? utType as String,
                               onCompletion: onCompletion,
                               onError: onError)
         } catch {
@@ -106,18 +125,21 @@ class MediaImageExporter: MediaExporter {
         }
     }
 
-    /// Exports and writes image data located at a URL, to a local Media URL.
+    /// Exports and writes image data located at a file URL, to a local Media URL.
     ///
     /// A JPEG or PNG is expected, but not necessarily required. The export will write the same data format
     /// as found at the URL, or will throw if the type is unknown or fails.
     ///
-    /// - parameter onCompletion: Called on successful export, with the local file URL of the exported UIImage.
-    /// - parameter onError: Called if an error was encountered during creation.
+    /// - Parameters:
+    ///     - url: The fileURL of image.
+    ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
+    ///     - onError: Called if an error was encountered during creation.
     ///
-    func exportImage(atURL url: URL, onCompletion: @escaping OnImageExport, onError: @escaping OnExportError) {
+    func exportImage(atFile url: URL, onCompletion: @escaping OnImageExport, onError: @escaping OnExportError) {
         do {
-            let options: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: kUTTypeJPEG]
-            guard let source = CGImageSourceCreateWithURL(url as CFURL, options as CFDictionary)  else {
+            let identifierHint = url.resourceTypeIdentifierFileExtension ?? kUTTypeJPEG as String
+            let sourceOptions: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: identifierHint as CFString]
+            guard let source = CGImageSourceCreateWithURL(url as CFURL, sourceOptions as CFDictionary)  else {
                 throw ImageExportError.imageSourceCreationWithURLFailed
             }
             guard let utType = CGImageSourceGetType(source) else {
@@ -125,7 +147,7 @@ class MediaImageExporter: MediaExporter {
             }
             exportImageSource(source,
                               filename: url.deletingPathExtension().lastPathComponent,
-                              type: utType as String,
+                              type: options.exportImageType ?? utType as String,
                               onCompletion: onCompletion,
                               onError: onError)
         } catch {
@@ -135,9 +157,10 @@ class MediaImageExporter: MediaExporter {
 
     /// Exports and writes an image source, to a local Media URL.
     ///
-    /// - parameter fileName: Filename if it's known.
-    /// - parameter onCompletion: Called on successful export, with the local file URL of the exported UIImage.
-    /// - parameter onError: Called if an error was encountered during creation.
+    /// - Parameters:
+    ///     - fileName: Filename if it's known.
+    ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
+    ///     - onError: Called if an error was encountered during creation.
     ///
     func exportImageSource(_ source: CGImageSource, filename: String?, type: String, onCompletion: @escaping OnImageExport, onError: OnExportError) {
         do {
@@ -151,8 +174,8 @@ class MediaImageExporter: MediaExporter {
             var writer = ImageSourceWriter(url: url, sourceUTType: type as CFString)
             if let maximumImageSize = options.maximumImageSize {
                 writer.maximumSize = maximumImageSize as CFNumber
-                writer.lossyCompressionQuality = options.imageCompressionQualityUponResizing as CFNumber
             }
+            writer.lossyCompressionQuality = options.imageCompressionQuality as CFNumber
             writer.nullifyGPSData = options.stripsGeoLocationIfNeeded
             let result = try writer.writeImageSource(source)
             onCompletion(MediaImageExport(url: url,
