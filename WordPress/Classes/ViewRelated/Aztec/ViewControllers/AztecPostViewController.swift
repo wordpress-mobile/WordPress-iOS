@@ -7,7 +7,6 @@ import WordPressShared
 import AFNetworking
 import WPMediaPicker
 import SVProgressHUD
-import WordPressComAnalytics
 import AVKit
 
 

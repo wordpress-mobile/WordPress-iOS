@@ -13,8 +13,7 @@
 #import "WPXMLRPCDecoder.h"
 #import "PhotonImageURLHelper.h"
 #import <WordPressShared/WPImageSource.h>
-
-@import WordPressComAnalytics;
+#import <WordPressShared/WPAnalytics.h>
 
 @implementation MediaService
 

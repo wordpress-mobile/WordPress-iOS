@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 import Gridicons
 import WordPressShared
-import WordPressComAnalytics
 import SVProgressHUD
 
 class AppSettingsViewController: UITableViewController {
