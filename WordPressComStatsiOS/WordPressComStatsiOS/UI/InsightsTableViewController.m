@@ -16,7 +16,6 @@
 #import "NSBundle+StatsBundleHelper.h"
 #import "InsightsPostingActivityCollectionViewController.h"
 #import "AppExtensionUtils.h"
-@import WordPressComAnalytics;
 @import WordPressKit;
 @import WordPressShared;
 

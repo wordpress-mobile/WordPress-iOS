@@ -1,5 +1,5 @@
 import Foundation
-import WordPressComAnalytics
+import WordPressShared
 
 /// The various states of the editor interface and all associated UI values
 ///
