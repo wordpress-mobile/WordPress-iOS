@@ -78,7 +78,6 @@ extension FancyAlertViewController {
                                                 })
 
                                                 animator.startAnimation()
-                                                
             })
         })
 
