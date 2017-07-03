@@ -13,6 +13,8 @@ extension FancyAlertViewController {
         }()
         static let successAnimationDuration: TimeInterval = 0.8
         static let successAnimationDampingRaio: CGFloat = 0.6
+        static let confettiViewInset: CGFloat = -40.0
+        static let confettiDuration: TimeInterval = 2.0
     }
 
     static func aztecAnnouncementController() -> FancyAlertViewController {
@@ -44,6 +46,17 @@ extension FancyAlertViewController {
             WPAnalytics.track(.editorToggledOn)
         }
 
+        let addConfetti: (FancyAlertButtonHandler) = { controller in
+            guard let imageView = controller.headerImageView else { return }
+
+            let confettiView = ConfettiView.aztecAnnouncementConfettiView()
+            confettiView.frame = imageView.bounds.insetBy(dx: Constants.confettiViewInset,
+                                                          dy: Constants.confettiViewInset)
+            imageView.superview?.addSubview(confettiView)
+
+            confettiView.start(duration: Constants.confettiDuration)
+        }
+
         let defaultButton = Button(Strings.tryIt, { controller in
             enableEditor()
 
@@ -54,12 +67,18 @@ extension FancyAlertViewController {
                                                     controller.headerImageView.transform = Constants.successAnimationTransform
                                                 }
 
-                                                UIViewPropertyAnimator(duration: Constants.successAnimationDuration,
+                                                let animator = UIViewPropertyAnimator(duration: Constants.successAnimationDuration,
                                                                        dampingRatio: Constants.successAnimationDampingRaio,
                                                                        animations: {
                                                     controller.headerImageView.transform = CGAffineTransform.identity
-                                                }).startAnimation()
+                                                })
 
+                                                animator.addCompletion({ _ in
+                                                    addConfetti(controller)
+                                                })
+
+                                                animator.startAnimation()
+                                                
             })
         })
 
@@ -130,6 +149,20 @@ extension FancyAlertViewController {
                                                 WPTabBarController.sharedInstance().showPostTab(animated: true, toMedia: false)
         })
     }()
+}
+
+private extension ConfettiView {
+    static func aztecAnnouncementConfettiView() -> ConfettiView {
+        let colors: [UIColor] = [ UIColor(hexString: "FCC320"),
+                                  UIColor(hexString: "FDD665"),
+                                  UIColor(hexString: "0083C2"),
+                                  UIColor(hexString: "C0F4FF"),
+                                  UIColor(hexString: "78DFBF"),
+                                  UIColor(hexString: "C976CE"),
+                                  UIColor(hexString: "DAA0DD"),
+                                  UIColor(hexString: "C7D7E3") ]
+        return ConfettiView(colors: colors)
+    }
 }
 
 // MARK: - User Defaults
