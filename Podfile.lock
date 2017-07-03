@@ -93,7 +93,7 @@ PODS:
   - Starscream (2.0.2)
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.5)
+  - WordPress-Aztec-iOS (1.0.0-beta.6)
   - WordPress-iOS-Editor (1.9.3):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
@@ -129,7 +129,7 @@ DEPENDENCIES:
   - Starscream (from `https://github.com/wordpress-mobile/Starscream`, branch `wordpress-ios`)
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `ba5f55cfa861575628882c01af7073e526cad296`)
+  - WordPress-Aztec-iOS (= 1.0.0-beta.6)
   - WordPress-iOS-Editor (= 1.9.3)
   - WordPressCom-Analytics-iOS (= 0.1.30)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
@@ -143,9 +143,6 @@ EXTERNAL SOURCES:
   Starscream:
     :branch: wordpress-ios
     :git: https://github.com/wordpress-mobile/Starscream
-  WordPress-Aztec-iOS:
-    :commit: ba5f55cfa861575628882c01af7073e526cad296
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -157,9 +154,6 @@ CHECKOUT OPTIONS:
   Starscream:
     :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
     :git: https://github.com/wordpress-mobile/Starscream
-  WordPress-Aztec-iOS:
-    :commit: ba5f55cfa861575628882c01af7073e526cad296
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -191,13 +185,13 @@ SPEC CHECKSUMS:
   Starscream: 4ee1be18da5170faafce1698225b61f9765634d5
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 39e508f3dfa5b843ff4ed698eb9ad9142c1ba384
+  WordPress-Aztec-iOS: 5e9592aaeb2592eea3b11d9236696dc95cea9fcb
   WordPress-iOS-Editor: ed02135d783ecb9aa4ee5e2462935432d464d461
   WordPressCom-Analytics-iOS: b7ecda7af610231c0bc2130849f7c0fdc58c1678
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: e9b9bcdafc9b24e38d384b0888ff9c79b7783a5f
+PODFILE CHECKSUM: fc77d04971786a6158aaf9ed13e55a439f43054f
 
 COCOAPODS: 1.2.1
