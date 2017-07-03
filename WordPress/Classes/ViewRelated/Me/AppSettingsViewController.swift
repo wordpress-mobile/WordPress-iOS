@@ -176,7 +176,7 @@ class AppSettingsViewController: UITableViewController {
             return AppSettingsEditorFooterView.height
         }
 
-        return 0
+        return UITableViewAutomaticDimension
     }
 
     private func shouldShowEditorFooterForSection(_ section: Int) -> Bool {
