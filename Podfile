@@ -53,7 +53,7 @@ target 'WordPress' do
   # WordPress components
   # --------------------
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.0'
-  pod 'Gridicons', '0.8'
+  pod 'Gridicons', '0.9'
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.18'
   pod 'WordPress-iOS-Editor', '1.9.3'
