@@ -57,7 +57,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
-static CGFloat const CompactTitleButtonWidth = 125.0f;
+static CGFloat const CompactTitleButtonWidth = 150.0f;
 static CGFloat const RegularTitleButtonWidth = 300.0f;
 static CGFloat const RegularTitleButtonHeight = 30.0f;
 static NSDictionary *DisabledButtonBarStyle;
@@ -1186,8 +1186,8 @@ MediaProgressCoordinatorDelegate
 - (UIBarButtonItem *)uploadStatusButton
 {
     if (!_uploadStatusButton) {
-        UIButton *button = [WPUploadStatusButton buttonWithFrame:CGRectMake(0.0f, 0.0f, CompactTitleButtonWidth , RegularTitleButtonHeight)];
-        button.titleLabel.text = NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server");
+        UIButton *button = [[WPUploadStatusButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CompactTitleButtonWidth , RegularTitleButtonHeight)];
+        [button setTitle:NSLocalizedString(@"Media Uploading", @"Message to indicate progress of uploading media to server") forState: UIControlStateNormal];
         [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
         _uploadStatusButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
