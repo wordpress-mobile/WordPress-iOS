@@ -167,7 +167,7 @@ public class PostEditorStateContext {
         }
     }
 
-    fileprivate var isUploadingMedia = false {
+    fileprivate(set) var isUploadingMedia = false {
         didSet {
             updatePublishActionAllowed()
         }
