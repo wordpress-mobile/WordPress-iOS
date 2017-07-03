@@ -1,6 +1,9 @@
 import UIKit
 import WordPressComAnalytics
 
+let AztecAnnouncementWhatsNewURL = URL(string: "https://make.wordpress.org/mobile/whats-new-in-beta-ios-editor/")
+
+
 extension FancyAlertViewController {
     private enum Constants {
         static let successAnimationTransform: CGAffineTransform = {
@@ -13,6 +16,14 @@ extension FancyAlertViewController {
         }()
         static let successAnimationDuration: TimeInterval = 0.8
         static let successAnimationDampingRaio: CGFloat = 0.6
+    }
+
+    private func presentWhatsNewWebView() {
+        guard let webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL) else { return }
+
+        let navigationController = UINavigationController(rootViewController: webViewController)
+
+        present(navigationController, animated: true, completion: nil)
     }
 
     static func aztecAnnouncementController() -> FancyAlertViewController {
@@ -67,8 +78,13 @@ extension FancyAlertViewController {
             controller.dismiss(animated: true, completion: nil)
         })
 
-        let moreInfoButton = Button(Strings.whatsNew, { _ in })
-        let titleAccessoryButton = Button(Strings.beta, { _ in })
+        let moreInfoButton = Button(Strings.whatsNew, { controller in
+            controller.presentWhatsNewWebView()
+        })
+
+        let titleAccessoryButton = Button(Strings.beta, { controller in
+            controller.presentWhatsNewWebView()
+        })
 
         let image = UIImage(named: "wp-illustration-hand-write")
 
@@ -116,9 +132,15 @@ extension FancyAlertViewController {
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
-        let moreInfoButton = Button(Strings.appSettings, { _ in })
+        let moreInfoButton = Button(Strings.appSettings, { controller in
+            controller.presentingViewController?.dismiss(animated: true, completion: {
+                WPTabBarController.sharedInstance().switchMeTabToAppSettings()
+            })
+        })
 
-        let titleAccessoryButton = Button(Strings.beta, { _ in })
+        let titleAccessoryButton = Button(Strings.beta, { controller in
+            controller.presentWhatsNewWebView()
+        })
 
         let image = UIImage(named: "wp-illustration-thank-you")
 
