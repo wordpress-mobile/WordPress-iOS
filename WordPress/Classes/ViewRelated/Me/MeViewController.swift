@@ -346,8 +346,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             handler.tableView(self.tableView, didSelectRowAt: indexPath)
         }
     }
-    
-    
+
 
     // MARK: - Notification observers
 
