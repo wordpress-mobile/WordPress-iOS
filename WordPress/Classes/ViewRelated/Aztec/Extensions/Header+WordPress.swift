@@ -1,6 +1,7 @@
 import Foundation
 import Aztec
-
+import Gridicons
+import WordPressShared
 
 // MARK: - Header and List presentation extensions
 //
@@ -30,6 +31,9 @@ extension Header.HeaderType {
     }
 
     var iconImage: UIImage? {
-        return formattingIdentifier.iconImage
+        switch self {
+        case .none: return UIImage(color: .clear, havingSize: Gridicon.defaultSize)
+        default: return formattingIdentifier.iconImage
+        }
     }
 }

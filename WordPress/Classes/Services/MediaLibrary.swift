@@ -8,6 +8,12 @@ import CocoaLumberjack
 ///
 open class MediaLibrary: LocalCoreDataService {
 
+    /// Constant for the ideal compression quality used when images are added to the Media Library.
+    ///
+    /// - Note: This value may or may not be honored, depending on the export implementation and underlying data.
+    ///
+    static let preferredImageCompressionQuality = 0.9
+
     /// Completion handler for a created Media object.
     ///
     public typealias MediaCompletion = (Media) -> Void
@@ -23,7 +29,7 @@ open class MediaLibrary: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the asset's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func makeMediaWith(blog: Blog, asset: PHAsset, onCompletion: @escaping MediaCompletion, onError: OnError?) {
+    public func makeMediaWith(blog: Blog, asset: PHAsset, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaAssetExporter()
@@ -50,7 +56,7 @@ open class MediaLibrary: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the image's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func makeMediaWith(blog: Blog, image: UIImage, onCompletion: @escaping MediaCompletion, onError: OnError?) {
+    public func makeMediaWith(blog: Blog, image: UIImage, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaImageExporter()
@@ -76,7 +82,7 @@ open class MediaLibrary: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the file's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func makeMediaWith(blog: Blog, url: URL, onCompletion: @escaping MediaCompletion, onError: OnError?) {
+    public func makeMediaWith(blog: Blog, url: URL, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaURLExporter()
@@ -98,9 +104,7 @@ open class MediaLibrary: LocalCoreDataService {
 
     // MARK: - Helpers
 
-    /// Handle the OnError callback and logging any errors encountered.
-    ///
-    fileprivate func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
+    class func logExportError(_ error: MediaExportError) {
         // Write an error logging message to help track specific sources of export errors.
         var errorLogMessage = "Error occurred exporting Media"
         switch error {
@@ -110,6 +114,8 @@ open class MediaLibrary: LocalCoreDataService {
             errorLogMessage.append(" with image error")
         case is MediaURLExporter.URLExportError:
             errorLogMessage.append(" with URL export error")
+        case is MediaThumbnailExporter.ThumbnailExportError:
+            errorLogMessage.append(" with thumbnail export error")
         case is MediaExportSystemError:
             errorLogMessage.append(" with system error")
         default:
@@ -117,11 +123,16 @@ open class MediaLibrary: LocalCoreDataService {
         }
         let nerror = error.toNSError()
         DDLogError("\(errorLogMessage), code: \(nerror.code), error: \(nerror)")
+    }
 
+    /// Handle the OnError callback and logging any errors encountered.
+    ///
+    fileprivate func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
+        MediaLibrary.logExportError(error)
         // Return the error via the context's queue, and as an NSError to ensure it carries over the right code/message.
         if let errorHandler = errorHandler {
             self.managedObjectContext.perform {
-                errorHandler(nerror)
+                errorHandler(error.toNSError())
             }
         }
     }
@@ -132,6 +143,7 @@ open class MediaLibrary: LocalCoreDataService {
         var options = MediaImageExporter.Options()
         options.maximumImageSize = self.exporterMaximumImageSize()
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
+        options.imageCompressionQuality = MediaLibrary.preferredImageCompressionQuality
         return options
     }
 
