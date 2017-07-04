@@ -17,8 +17,6 @@ class LoginLinkRequestViewController: NUXAbstractViewController, LoginViewContro
         }
     }
 
-    // let the storyboard's style stay
-    override func setupStyles() {}
 
     // MARK: - Lifecycle Methods
 
@@ -74,6 +72,10 @@ class LoginLinkRequestViewController: NUXAbstractViewController, LoginViewContro
 
         sendLinkButton?.isEnabled = !animating
     }
+
+    // let the storyboard's style stay
+    override func setupStyles() {}
+
 
     // MARK: - Instance Methods
 
