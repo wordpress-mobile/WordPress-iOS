@@ -59,4 +59,16 @@
  */
 + (instancetype)webViewControllerWithURL:(NSURL *)url;
 
+/**
+ *	@brief      Helper method to initialize a WebViewController Instance with a 
+ *              custom options button
+ *
+ *	@param		url         The URL that needs to be rendered
+ *  @param      button      A custom options button to display instead of the
+ *                          default share button.
+ *  @returns                A WPWebViewController instance ready to be pushed.
+ */
++ (instancetype)webViewControllerWithURL:(NSURL *)url
+                           optionsButton:(UIBarButtonItem *)button;
+
 @end
