@@ -13,6 +13,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint?
     var onePasswordButton: UIButton!
     @IBOutlet var emailLabel: UILabel?
+    @IBOutlet var emailStackView: UIStackView?
 
     override var sourceTag: SupportSourceTag {
         get {
@@ -68,8 +69,8 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     /// Sets up a 1Password button if 1Password is available.
     /// - note: this could move into NUXAbstractViewController or LoginViewController for better reuse
     func setupOnePasswordButtonIfNeeded() {
-        guard let usernameField = usernameField else { return }
-        WPStyleGuide.configureOnePasswordButtonForTextfield(usernameField,
+        guard let emailStackView = emailStackView else { return }
+        WPStyleGuide.configureOnePasswordButtonForStackView(emailStackView,
                                                             target: self,
                                                             selector: #selector(SigninWPComViewController.handleOnePasswordButtonTapped(_:)))
     }
@@ -168,7 +169,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         view.endEditing(true)
 
         SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
-            self?.usernameField?.text = loginFields.username
+            self?.emailLabel?.text = loginFields.username
             self?.passwordField?.text = loginFields.password
             self?.validateForm()
         }
