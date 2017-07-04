@@ -164,7 +164,14 @@ class AppSettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if shouldShowEditorFooterForSection(section) {
-            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: AppSettingsEditorFooterView.reuseIdentifier)
+            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: AppSettingsEditorFooterView.reuseIdentifier) as! AppSettingsEditorFooterView
+
+            view.tapBlock = { [weak self] in
+                WPAppAnalytics.track(.editorAztecBetaLink)
+
+                WPWebViewController.presentWhatsNewWebView(from: self)
+            }
+
             return view
         }
 
@@ -347,6 +354,7 @@ fileprivate struct MediaSizingRow: ImmuTableRow {
 fileprivate class AppSettingsEditorFooterView: UITableViewHeaderFooterView {
     static let height: CGFloat = 38.0
     static let reuseIdentifier = "AppSettingsEditorFooterView"
+    var tapBlock: (() -> Void)? = nil
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -366,6 +374,7 @@ fileprivate class AppSettingsEditorFooterView: UITableViewHeaderFooterView {
         let button = UIButton(type: .custom)
         button.setImage(Gridicon.iconOfType(.infoOutline), for: .normal)
         button.tintColor = WPStyleGuide.greyDarken10()
+        button.addTarget(self, action: #selector(footerButtonTapped), for: .touchUpInside)
 
         contentView.addSubview(stackView)
         stackView.addArrangedSubview(button)
@@ -380,5 +389,9 @@ fileprivate class AppSettingsEditorFooterView: UITableViewHeaderFooterView {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @IBAction private func footerButtonTapped() {
+        tapBlock?()
     }
 }
