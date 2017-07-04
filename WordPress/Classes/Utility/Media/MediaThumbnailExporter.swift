@@ -1,7 +1,7 @@
 import Foundation
 import MobileCoreServices
 
-/// MediaLibrary export handling of thumbnail images from videos or images.
+/// Media export handling of thumbnail images from videos or images.
 ///
 class MediaThumbnailExporter: MediaExporter {
 

@@ -1,7 +1,7 @@
 import Foundation
 import MobileCoreServices
 
-/// MediaLibrary export handling of URLs.
+/// Media export handling of URLs.
 ///
 class MediaURLExporter: MediaExporter {
 
