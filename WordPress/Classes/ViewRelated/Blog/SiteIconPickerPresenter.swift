@@ -143,7 +143,7 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
             showLoadingMessage()
             originalMedia = media
             let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
-            mediaService.image(for: media, size: CGSize.zero, success: { [weak self] image in
+            mediaService.image(for: media, preferredSize: CGSize.zero, success: { [weak self] image in
                 self?.showImageCropViewController(image)
             }, failure: { [weak self] _ in
                 self?.showErrorLoadingImageMessage()
