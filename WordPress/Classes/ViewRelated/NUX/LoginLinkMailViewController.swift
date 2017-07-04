@@ -14,9 +14,6 @@ class LoginLinkMailViewController: NUXAbstractViewController, LoginViewControlle
         }
     }
 
-    // let the storyboard's style stay
-    override func setupStyles() {}
-
 
     // MARK: - Lifecycle Methods
 
@@ -56,8 +53,11 @@ class LoginLinkMailViewController: NUXAbstractViewController, LoginViewControlle
         usePasswordButton?.setTitle(usePasswordTitle, for: .highlighted)
     }
 
-    // MARK: - Actions
+    // let the storyboard's style stay
+    override func setupStyles() {}
 
+
+    // MARK: - Actions
 
     @IBAction func handleOpenMailTapped(_ sender: UIButton) {
         let url = URL(string: "message://")!
