@@ -953,11 +953,7 @@ extension AztecPostViewController {
     @IBAction func betaButtonTapped() {
         WPAppAnalytics.track(.editorAztecBetaLink)
 
-        guard let webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL) else { return }
-
-        let navigationController = UINavigationController(rootViewController: webViewController)
-
-        present(navigationController, animated: true, completion: nil)
+        WPWebViewController.presentWhatsNewWebView(from: self)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {
