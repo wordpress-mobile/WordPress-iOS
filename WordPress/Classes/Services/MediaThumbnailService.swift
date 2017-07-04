@@ -168,7 +168,7 @@ class MediaThumbnailService: LocalCoreDataService {
     /// Handle the OnError callback and logging any errors encountered.
     ///
     fileprivate func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
-        MediaLibrary.logExportError(error)
+        MediaExportService.logExportError(error)
         if let errorHandler = errorHandler {
             self.managedObjectContext.perform {
                 errorHandler(error.toNSError())
