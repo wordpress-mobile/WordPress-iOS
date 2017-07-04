@@ -169,7 +169,9 @@ class AppSettingsViewController: UITableViewController {
             view.tapBlock = { [weak self] in
                 WPAppAnalytics.track(.editorAztecBetaLink)
 
-                WPWebViewController.presentWhatsNewWebView(from: self)
+                if let controller = self {
+                    WPWebViewController.presentWhatsNewWebView(from: controller)
+                }
             }
 
             return view
