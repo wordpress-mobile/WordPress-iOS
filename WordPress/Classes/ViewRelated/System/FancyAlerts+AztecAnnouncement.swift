@@ -219,8 +219,15 @@ extension WPWebViewController {
     static func presentWhatsNewWebView(from viewController: UIViewController) {
         // Replace the web view's options button with our own bug reporting button
         let bugButton = UIBarButtonItem(image: Gridicon.iconOfType(.bug), style: .plain, target: self, action: #selector(bugButtonTapped))
+        bugButton.accessibilityLabel = NSLocalizedString("Report a bug", comment: "Button allowing the user to report a bug with the beta Aztec editor")
 
-        guard let webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL, optionsButton: bugButton) else { return }
+        var webViewController: WPWebViewController
+
+        if HelpshiftUtils.isHelpshiftEnabled() {
+            webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL, optionsButton: bugButton)
+        } else {
+            webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL)
+        }
 
         let navigationController = UINavigationController(rootViewController: webViewController)
 
@@ -233,19 +240,13 @@ extension WPWebViewController {
             let window = delegate.window,
             let viewController = window?.topmostPresentedViewController else { return }
 
-        if HelpshiftUtils.isHelpshiftEnabled() {
-            // Present a Helpshift window if available
-            let presenter = HelpshiftPresenter()
-            presenter.sourceTag = SupportSourceTag.inAppFeedback
-            presenter.presentHelpshiftConversationWindowFromViewController(viewController,
-                                                                           refreshUserDetails: true,
-                                                                           completion:nil)
-        } else {
-            // Otherwise email
-            if let contact = URL(string: contactURL) {
-                UIApplication.shared.open(contact)
-            }
-        }
+        guard HelpshiftUtils.isHelpshiftEnabled() else { return }
+
+        let presenter = HelpshiftPresenter()
+        presenter.sourceTag = SupportSourceTag.inAppFeedback
+        presenter.presentHelpshiftConversationWindowFromViewController(viewController,
+                                                                       refreshUserDetails: true,
+                                                                       completion:nil)
     }
 }
 
