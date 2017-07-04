@@ -69,6 +69,8 @@ extension FancyAlertViewController {
         }
 
         let defaultButton = Button(Strings.tryIt, { controller in
+            WPAppAnalytics.track(.editorAztecPromoPositive)
+
             enableEditor()
 
             controller.setViewConfiguration(aztecAnnouncementSuccessConfig,
@@ -93,14 +95,17 @@ extension FancyAlertViewController {
         })
 
         let cancelButton = Button(Strings.notNow, { controller in
+            WPAppAnalytics.track(.editorAztecPromoNegative)
             controller.dismiss(animated: true, completion: nil)
         })
 
         let moreInfoButton = Button(Strings.whatsNew, { controller in
+            WPAppAnalytics.track(.editorAztecPromoLink)
             controller.presentWhatsNewWebView()
         })
 
         let titleAccessoryButton = Button(Strings.beta, { controller in
+            WPAppAnalytics.track(.editorAztecBetaLink)
             controller.presentWhatsNewWebView()
         })
 
@@ -109,7 +114,11 @@ extension FancyAlertViewController {
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
                                                      bodyText: Strings.bodyText,
                                                      headerImage: image,
-                                                     defaultButton: defaultButton, cancelButton: cancelButton, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton, dismissAction: nil)
+                                                     defaultButton: defaultButton,
+                                                     cancelButton: cancelButton,
+                                                     moreInfoButton: moreInfoButton,
+                                                     titleAccessoryButton: titleAccessoryButton,
+                                                     dismissAction: nil)
 
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
     }
@@ -125,8 +134,15 @@ extension FancyAlertViewController {
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
-        let moreInfoButton = Button(Strings.whatsNew, { _ in })
-        let titleAccessoryButton = Button(Strings.beta, { _ in })
+        let moreInfoButton = Button(Strings.whatsNew, { controller in
+            WPAppAnalytics.track(.editorAztecPromoLink)
+            controller.presentWhatsNewWebView()
+        })
+
+        let titleAccessoryButton = Button(Strings.beta, { controller in
+            WPAppAnalytics.track(.editorAztecBetaLink)
+            controller.presentWhatsNewWebView()
+        })
 
         let image = UIImage(named: "wp-illustration-hand-write")
 
@@ -157,6 +173,7 @@ extension FancyAlertViewController {
         })
 
         let titleAccessoryButton = Button(Strings.beta, { controller in
+            WPAppAnalytics.track(.editorAztecBetaLink)
             controller.presentWhatsNewWebView()
         })
 
