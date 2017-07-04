@@ -1,12 +1,12 @@
 import Foundation
 import CocoaLumberjack
 
-/// Encapsulates interfacing with Media objects and their assets, whether locally on disk or remotely.
+/// Encapsulates exporting Media objects from assets such as PHAssets, images, videos, or files at URLs.
 ///
 /// - Note: Methods with escaping closures will call back via the configured managedObjectContext
 ///   method and its corresponding thread.
 ///
-open class MediaLibrary: LocalCoreDataService {
+open class MediaExportService: LocalCoreDataService {
 
     /// Constant for the ideal compression quality used when images are added to the Media Library.
     ///
@@ -29,7 +29,7 @@ open class MediaLibrary: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the asset's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func makeMediaWith(blog: Blog, asset: PHAsset, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+    public func exportMediaWith(blog: Blog, asset: PHAsset, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaAssetExporter()
@@ -56,7 +56,7 @@ open class MediaLibrary: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the image's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func makeMediaWith(blog: Blog, image: UIImage, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+    public func exportMediaWith(blog: Blog, image: UIImage, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaImageExporter()
@@ -82,7 +82,7 @@ open class MediaLibrary: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the file's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func makeMediaWith(blog: Blog, url: URL, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+    public func exportMediaWith(blog: Blog, url: URL, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         DispatchQueue.global(qos: .default).async {
 
             let exporter = MediaURLExporter()
@@ -128,7 +128,7 @@ open class MediaLibrary: LocalCoreDataService {
     /// Handle the OnError callback and logging any errors encountered.
     ///
     fileprivate func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
-        MediaLibrary.logExportError(error)
+        MediaExportService.logExportError(error)
         // Return the error via the context's queue, and as an NSError to ensure it carries over the right code/message.
         if let errorHandler = errorHandler {
             self.managedObjectContext.perform {
@@ -143,7 +143,7 @@ open class MediaLibrary: LocalCoreDataService {
         var options = MediaImageExporter.Options()
         options.maximumImageSize = self.exporterMaximumImageSize()
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
-        options.imageCompressionQuality = MediaLibrary.preferredImageCompressionQuality
+        options.imageCompressionQuality = MediaExportService.preferredImageCompressionQuality
         return options
     }
 
@@ -156,7 +156,7 @@ open class MediaLibrary: LocalCoreDataService {
     /// Helper method to return an optional value for a valid MediaSettings max image upload size.
     ///
     /// - Note: Eventually we'll rewrite MediaSettings.imageSizeForUpload to do this for us, but want to leave
-    ///   that class alone while implementing MediaLibrary.
+    ///   that class alone while implementing MediaExportService.
     ///
     fileprivate func exporterMaximumImageSize() -> CGFloat? {
         let maxUploadSize = MediaSettings().imageSizeForUpload
