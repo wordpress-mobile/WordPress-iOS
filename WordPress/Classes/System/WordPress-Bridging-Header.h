@@ -12,6 +12,7 @@
 #import "ApiCredentials.h"
 
 #import "Blog.h"
+#import "BlogDetailHeaderView.h"
 #import "BlogService.h"
 #import "BlogSyncFacade.h"
 #import "BlogSelectorViewController.h"
@@ -128,6 +129,7 @@
 #import "WPAsyncBlockOperation.h"
 #import "WPBlogTableViewCell.h"
 #import "WPBlogSelectorButton.h"
+#import "WPUploadStatusButton.h"
 #import "WPLegacyEditPostViewController.h"
 #import "WPError.h"
 #import "WPGUIConstants.h"

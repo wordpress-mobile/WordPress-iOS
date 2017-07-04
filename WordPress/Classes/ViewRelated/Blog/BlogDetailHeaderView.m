@@ -12,27 +12,34 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIActivityIndicatorView *blavatarUpdateActivityIndicatorView;
 @property (nonatomic, strong) UIStackView *labelsStackView;
-@property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *subtitleLabel;
 
 @end
 
 @implementation BlogDetailHeaderView
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self performSetup];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-
-        self.preservesSuperviewLayoutMargins = YES;
-
-        [self setupStackView];
-        [self setupBlavatarImageView];
-        [self setupLabelsStackView];
-        [self setupTitleLabel];
-        [self setupSubtitleLabel];
+        [self performSetup];
     }
     return self;
+}
+
+- (void)performSetup
+{
+    self.preservesSuperviewLayoutMargins = YES;
+    [self setupStackView];
+    [self setupBlavatarImageView];
+    [self setupLabelsStackView];
+    [self setupTitleLabel];
+    [self setupSubtitleLabel];
 }
 
 #pragma mark - Public Methods
@@ -44,9 +51,27 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
     // if the blog name is missing, we want to show the blog displayURL instead
     NSString *blogName = blog.settings.name;
-    [self.titleLabel setText:((blogName && !blogName.isEmpty) ? blogName : blog.displayURL)];
-    [self.subtitleLabel setText:blog.displayURL];
+    NSString *title = (blogName && !blogName.isEmpty) ? blogName : blog.displayURL;
+    [self setTitleText:title];
+    [self setSubtitleText:blog.displayURL];
     [self.labelsStackView setNeedsLayout];
+}
+
+- (void)setTitleText:(NSString *)title
+{
+    [self.titleLabel setText:title];
+    [self.labelsStackView setNeedsLayout];
+}
+
+- (void)setSubtitleText:(NSString *)subtitle
+{
+    [self.subtitleLabel setText:subtitle];
+    [self.labelsStackView setNeedsLayout];
+}
+
+- (void)loadImageAtPath:(NSString *)imagePath
+{
+    [self.blavatarImageView setImageWithSiteIcon:imagePath];
 }
 
 - (void)refreshIconImage
