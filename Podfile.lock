@@ -35,7 +35,7 @@ PODS:
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
-  - Gridicons (0.9)
+  - Gridicons (0.10)
   - HockeySDK (4.1.5):
     - HockeySDK/DefaultLib (= 4.1.5)
   - HockeySDK/DefaultLib (4.1.5)
@@ -113,7 +113,7 @@ DEPENDENCIES:
   - Expecta (= 1.0.5)
   - FLAnimatedImage (~> 1.0)
   - FormatterKit/TimeIntervalFormatter (~> 1.8.1)
-  - Gridicons (= 0.9)
+  - Gridicons (= 0.10)
   - HockeySDK (~> 4.1.5)
   - lottie-ios (~> 1.5.1)
   - MGSwipeTableCell (~> 1.5.6)
@@ -170,7 +170,7 @@ SPEC CHECKSUMS:
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
-  Gridicons: f3aa1f3977c966354d1aae087b1b43260726cefa
+  Gridicons: e661b35e7d4f0ca79e8b2a2072c0081b91b5d1e0
   HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
   lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
@@ -192,6 +192,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: b4945f1107e7211398bf42c93e1aa8d2fccebaee
+PODFILE CHECKSUM: 7286be426d520cac7c9b52d1921d70dec0f8cc04
 
 COCOAPODS: 1.2.1
