@@ -97,7 +97,7 @@ PODS:
   - WordPress-iOS-Editor (1.9.3):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
-  - WordPressCom-Analytics-iOS (0.1.30)
+  - WordPressCom-Analytics-iOS (0.1.31)
   - WordPressComKit (0.0.6):
     - Alamofire (= 4.0.1)
   - WPMediaPicker (0.18)
@@ -131,7 +131,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-Aztec-iOS (= 1.0.0-beta.6)
   - WordPress-iOS-Editor (= 1.9.3)
-  - WordPressCom-Analytics-iOS (= 0.1.30)
+  - WordPressCom-Analytics-iOS (= 0.1.31)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.18)
   - wpxmlrpc (= 0.8.3)
@@ -187,11 +187,11 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 5e9592aaeb2592eea3b11d9236696dc95cea9fcb
   WordPress-iOS-Editor: ed02135d783ecb9aa4ee5e2462935432d464d461
-  WordPressCom-Analytics-iOS: b7ecda7af610231c0bc2130849f7c0fdc58c1678
+  WordPressCom-Analytics-iOS: a64e051690f9408fd71343625bf68f55389cd42d
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 28d1862732f4c19493f613f935b6e562b7f74efc
+PODFILE CHECKSUM: b4945f1107e7211398bf42c93e1aa8d2fccebaee
 
 COCOAPODS: 1.2.1
