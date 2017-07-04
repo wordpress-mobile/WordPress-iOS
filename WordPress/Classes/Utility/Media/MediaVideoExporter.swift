@@ -1,7 +1,7 @@
 import Foundation
 import MobileCoreServices
 
-/// MediaLibrary export handling of Videos from PHAssets or AVAssets.
+/// Media export handling of Videos from PHAssets or AVAssets.
 ///
 class MediaVideoExporter: MediaExporter {
 
