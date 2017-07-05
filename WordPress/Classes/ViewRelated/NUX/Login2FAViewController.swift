@@ -8,10 +8,10 @@ import WordPressShared
 ///
 class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder, LoginViewController {
     @IBOutlet weak var instructionLabel: UILabel!
+    @IBOutlet var errorLabel: UILabel!
     @IBOutlet weak var verificationCodeField: LoginTextField!
     @IBOutlet weak var sendCodeButton: UIButton!
     @IBOutlet weak var submitButton: NUXSubmitButton!
-    @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     var pasteboardBeforeBackground: String? = nil
@@ -36,7 +36,6 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
         super.viewDidLoad()
 
         localizeControls()
-        configureStatusLabel("")
         configureTextFields()
         configureSubmitButton(animating: false)
         setupNavBarIcon()
@@ -105,14 +104,10 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
     }
 
 
-    /// Displays the specified text in the status label.
-    ///
-    /// - Parameter message: The text to display in the label.
+    /// Required (for now) for protocol conformance.
     ///
     func configureStatusLabel(_ message: String) {
-        statusLabel.text = message
-
-        sendCodeButton.isEnabled = message.isEmpty
+        // no op
     }
 
 
@@ -164,14 +159,13 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
     /// proceeds with the submit action.
     ///
     func validateForm() {
+        displayError(message: "")
         view.endEditing(true)
 
         // Is everything filled out?
         if loginFields.multifactorCode.isEmpty {
-            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Title of an error message"),
-                              message: NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."),
-                              withSupportButton: false)
-
+            displayError(message: NSLocalizedString("Please fill out all the fields",
+                                                    comment: "A short prompt asking the user to properly fill out all login fields."))
             return
         }
 
@@ -185,6 +179,13 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
     ///
     func updateSafariCredentialsIfNeeded() {
         SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
+    }
+
+
+    /// Sets the text of the error label.
+    ///
+    func displayError(message: String) {
+        errorLabel.text = message
     }
 
 
@@ -263,13 +264,19 @@ extension Login2FAViewController: LoginFacadeDelegate {
 
 
     func displayLoginMessage(_ message: String!) {
-        configureStatusLabel(message)
+        // no op
     }
 
 
     func displayRemoteError(_ error: Error!) {
-        configureStatusLabel("")
         configureViewLoading(false)
-        displayError(error as NSError, sourceTag: sourceTag)
+        let err = error as NSError
+        if (err.domain == "WordPressComOAuthError" && err.code == WordPressComOAuthError.invalidOneTimePassword.rawValue) {
+            // Invalid verification code.
+            displayError(message: NSLocalizedString("Whoops, that's not a valid two-factor verification code. Double-check your code and try again!",
+                                                    comment: "Error message shown when an incorrect two factor code is provided."))
+        } else {
+            displayError(error as NSError, sourceTag: sourceTag)
+        }
     }
 }
