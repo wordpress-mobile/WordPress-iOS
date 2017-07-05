@@ -121,6 +121,8 @@
 {
     DDLogMethodParam(error);
 
+    [self stopLoading];
+
     // Watch for NSURLErrorCancelled (aka NSURLErrorDomain error -999). This error is returned
     // when an asynchronous load is canceled. For example, a link is tapped (or some other
     // action that causes a new page to load) before the current page has completed loading.
@@ -129,7 +131,6 @@
         return;
     }
 
-    [self stopLoading];
     [self.generator previewRequestFailedWithError:error];
 }
 
