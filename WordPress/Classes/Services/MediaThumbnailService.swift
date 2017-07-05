@@ -42,45 +42,64 @@ class MediaThumbnailService: LocalCoreDataService {
                 onCompletion(availableThumbnail)
                 return
             }
-            // Check if a local copy of the asset is available.
+
+            // Configure a handler for any thumbnail exports
+            let onThumbnailExport: MediaThumbnailExporter.OnThumbnailExport = { (identifier, export) in
+                self.managedObjectContext.perform {
+                    self.handleThumbnailExport(media: media,
+                                               identifier: identifier,
+                                               export: export,
+                                               onCompletion: onCompletion)
+                }
+            }
+            // Configure an error handler
+            let onThumbnailExportError: OnExportError = { (error) in
+                self.handleExportError(error, errorHandler: onError)
+            }
+
+            // Configure an attempt to download a remote thumbnail and export it as a thumbnail.
+            let attemptDownloadingThumbnail: () -> Void = {
+                self.downloadThumbnail(forMedia: media, preferredSize: preferredSize, onCompletion: { (image) in
+                    guard let image = image else {
+                        onCompletion(nil)
+                        return
+                    }
+                    DispatchQueue.global(qos: .default).async {
+                        exporter.exportThumbnail(forImage: image,
+                                                 onCompletion: onThumbnailExport,
+                                                 onError: onThumbnailExportError)
+                    }
+                }, onError: { (error) in
+                    onError?(error)
+                })
+            }
+
+            // If the Media asset is available locally, export thumbnails from the local asset.
             if let localAssetURL = media.absoluteLocalURL, exporter.supportsThumbnailExport(forFile: localAssetURL) {
                 DispatchQueue.global(qos: .default).async {
                     exporter.exportThumbnail(forFile: localAssetURL,
-                                             onCompletion: { (identifier, export) in
-                                                self.managedObjectContext.perform {
-                                                    self.handleThumbnailExport(media: media,
-                                                                               identifier: identifier,
-                                                                               export: export,
-                                                                               onCompletion: onCompletion)
-                                                }
-                    }, onError: { (error) in
-                        self.handleExportError(error, errorHandler: onError)
+                                             onCompletion: onThumbnailExport,
+                                             onError: onThumbnailExportError)
+                }
+                return
+            }
+
+            // If the Media item is a video and has a remote video URL, try and export from the remote video URL.
+            if media.mediaType == .video, let remoteURLStr = media.remoteURL, let videoURL = URL(string: remoteURLStr) {
+                DispatchQueue.global(qos: .default).async {
+                    exporter.exportThumbnail(forVideoURL: videoURL,
+                                             onCompletion: onThumbnailExport,
+                                             onError: { (error) in
+                                                // If an error occurred with the remote video URL, try and download the Media's
+                                                // remote thumbnail instead.
+                                                attemptDownloadingThumbnail()
                     })
                 }
                 return
             }
-            // Try and download a remote thumbnail, and export if available.
-            self.downloadThumbnail(forMedia: media, preferredSize: preferredSize, onCompletion: { (image) in
-                guard let image = image else {
-                    onCompletion(nil)
-                    return
-                }
-                DispatchQueue.global(qos: .default).async {
-                    exporter.exportThumbnail(forImage: image,
-                                             onCompletion: { (identifier, export) in
-                                                self.managedObjectContext.perform {
-                                                    self.handleThumbnailExport(media: media,
-                                                                               identifier: identifier,
-                                                                               export: export,
-                                                                               onCompletion: onCompletion)
-                                                }
-                    }, onError: { (error) in
-                        self.handleExportError(error, errorHandler: onError)
-                    })
-                }
-            }, onError: { (error) in
-                onError?(error)
-            })
+
+            // Try and download a remote thumbnail, if available.
+            attemptDownloadingThumbnail()
         }
     }
 
