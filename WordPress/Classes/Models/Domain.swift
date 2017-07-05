@@ -1,37 +1,8 @@
 import Foundation
 import CoreData
+import WordPressKit
 
-@objc enum DomainType: Int16 {
-    case registered
-    case mapped
-    case siteRedirect
-    case wpCom
-
-    var description: String {
-        switch self {
-        case .registered:
-            return NSLocalizedString("Registered Domain", comment: "Describes a domain that was registered with WordPress.com")
-        case .mapped:
-            return NSLocalizedString("Mapped Domain", comment: "Describes a domain that was mapped to WordPress.com, but registered elsewhere")
-        case .siteRedirect:
-            return NSLocalizedString("Site Redirect", comment: "Describes a site redirect domain")
-        case .wpCom:
-            return NSLocalizedString("Included with Site", comment: "Describes a standard *.wordpress.com site domain")
-        }
-    }
-}
-
-struct Domain {
-    let domainName: String
-    let isPrimaryDomain: Bool
-    let domainType: DomainType
-}
-
-extension Domain: CustomStringConvertible {
-    var description: String {
-        return "\(domainName) (\(domainType.description))"
-    }
-}
+public typealias Domain = RemoteDomain
 
 extension Domain {
     init(managedDomain: ManagedDomain) {
@@ -74,8 +45,8 @@ class ManagedDomain: NSManagedObject {
 
 extension Domain: Equatable {}
 
-func ==(lhs: Domain, rhs: Domain) -> Bool {
+public func ==(lhs: Domain, rhs: Domain) -> Bool {
     return lhs.domainName == rhs.domainName &&
-    lhs.domainType == rhs.domainType &&
-    lhs.isPrimaryDomain == rhs.isPrimaryDomain
+        lhs.domainType == rhs.domainType &&
+        lhs.isPrimaryDomain == rhs.isPrimaryDomain
 }

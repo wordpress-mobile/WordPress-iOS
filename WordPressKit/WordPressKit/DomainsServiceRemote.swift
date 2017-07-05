@@ -1,12 +1,12 @@
 import Foundation
 import CocoaLumberjack
 
-class DomainsServiceRemote: ServiceRemoteWordPressComREST {
-    enum ResponseError: Error {
+public class DomainsServiceRemote: ServiceRemoteWordPressComREST {
+    public enum ResponseError: Error {
         case decodingFailed
     }
 
-    func getDomainsForSite(_ siteID: Int, success: @escaping ([Domain]) -> Void, failure: @escaping (Error) -> Void) {
+    public func getDomainsForSite(_ siteID: Int, success: @escaping ([RemoteDomain]) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "sites/\(siteID)/domains"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
 
@@ -26,20 +26,20 @@ class DomainsServiceRemote: ServiceRemoteWordPressComREST {
     }
 }
 
-private func mapDomainsResponse(_ response: AnyObject) throws -> [Domain] {
+private func mapDomainsResponse(_ response: AnyObject) throws -> [RemoteDomain] {
     guard let json = response as? [String: AnyObject],
         let domainsJson = json["domains"] as? [[String: AnyObject]] else {
             throw DomainsServiceRemote.ResponseError.decodingFailed
     }
 
-    let domains = try domainsJson.map { domainJson -> Domain in
+    let domains = try domainsJson.map { domainJson -> RemoteDomain in
 
         guard let domainName = domainJson["domain"] as? String,
             let isPrimary = domainJson["primary_domain"] as? Bool else {
                 throw DomainsServiceRemote.ResponseError.decodingFailed
         }
 
-        return Domain(domainName: domainName, isPrimaryDomain: isPrimary, domainType: domainTypeFromDomainJSON(domainJson))
+        return RemoteDomain(domainName: domainName, isPrimaryDomain: isPrimary, domainType: domainTypeFromDomainJSON(domainJson))
     }
 
     return domains
