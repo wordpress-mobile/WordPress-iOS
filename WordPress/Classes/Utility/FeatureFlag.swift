@@ -2,7 +2,6 @@
 /// different builds.
 @objc
 enum FeatureFlag: Int {
-    case nativeEditor
     case exampleFeature
     case newLogin
 
@@ -13,12 +12,6 @@ enum FeatureFlag: Int {
             return true
         case .newLogin:
             return build(.localDeveloper, .a8cBranchTest)
-        case .nativeEditor:
-            // At the moment this is only visible by default in non-app store builds
-            if build(.a8cBranchTest, .localDeveloper, .a8cPrereleaseTesting) {
-                return true
-            }
-            return false
         }
     }
 }
