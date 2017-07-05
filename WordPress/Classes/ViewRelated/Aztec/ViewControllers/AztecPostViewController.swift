@@ -177,6 +177,14 @@ class AztecPostViewController: UIViewController, PostEditor {
         return pickerItem
     }()
 
+    /// Media Uploading Status Button
+    ///
+    fileprivate lazy var mediaUploadingBarButtonItem: UIBarButtonItem = {
+        let barButton = UIBarButtonItem(customView: self.mediaUploadingButton)
+        barButton.accessibilityLabel = NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server")
+        return barButton
+    }()
+
 
     /// Publish Button
     fileprivate(set) lazy var publishButton: UIBarButtonItem = {
@@ -216,6 +224,15 @@ class AztecPostViewController: UIViewController, PostEditor {
         return button
     }()
 
+    /// Media Uploading Button
+    ///
+    fileprivate lazy var mediaUploadingButton: WPUploadStatusButton = {
+        let button = WPUploadStatusButton(frame: CGRect(origin: .zero, size: Constants.uploadingButtonSize))
+        button.setTitle(NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server"), for: .normal)
+        button.addTarget(self, action: #selector(displayCancelMediaUploads), for: .touchUpInside)
+        return button
+    }()
+
 
     /// Beta Tag Button
     ///
@@ -226,7 +243,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         button.setTitle(NSLocalizedString("Beta", comment: "Title for Beta tag button for the new Aztec editor"), for: .normal)
         button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
-        button.isEnabled = false
+        button.isEnabled = true
+        button.addTarget(self, action: #selector(betaButtonTapped), for: .touchUpInside)
 
         return button
     }()
@@ -535,11 +553,13 @@ class AztecPostViewController: UIViewController, PostEditor {
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
 
-        NSLayoutConstraint.activate([
-            mediaProgressView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            mediaProgressView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            mediaProgressView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor)
-            ])
+        if let navigationBar = navigationController?.navigationBar {
+            NSLayoutConstraint.activate([
+                mediaProgressView.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor),
+                mediaProgressView.widthAnchor.constraint(equalTo: navigationBar.widthAnchor),
+                mediaProgressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -mediaProgressView.frame.height)
+                ])
+        }
     }
 
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
@@ -580,7 +600,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         view.addSubview(betaButton)
 
         mediaProgressView.isHidden = true
-        view.addSubview(mediaProgressView)
+        navigationController?.navigationBar.addSubview(mediaProgressView)
     }
 
     func registerAttachmentImageProviders() {
@@ -630,6 +650,15 @@ class AztecPostViewController: UIViewController, PostEditor {
         reloadEditorContents()
         resizeBlogPickerButton()
         reloadPublishButton()
+        refreshNavigationBar()
+    }
+
+    func refreshNavigationBar() {
+        if postEditorStateContext.isUploadingMedia {
+            navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, mediaUploadingBarButtonItem]
+        } else {
+            navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
+        }
     }
 
     func setHTML(_ html: String) {
@@ -921,6 +950,12 @@ extension AztecPostViewController {
         displayMoreSheet()
     }
 
+    @IBAction func betaButtonTapped() {
+        WPAppAnalytics.track(.editorAztecBetaLink)
+
+        WPWebViewController.presentWhatsNewWebView(from: self)
+    }
+
     private func trackPostSave(stat: WPAnalyticsStat) {
         guard stat != .editorSavedDraft && stat != .editorQuickSavedDraft else {
             WPAppAnalytics.track(stat, withProperties:[WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with:post.blog)
@@ -1048,6 +1083,16 @@ private extension AztecPostViewController {
         let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
         present(alertController, animated: true, completion: nil)
+    }
+
+    @IBAction func displayCancelMediaUploads() {
+        let alertController = UIAlertController(title: MediaUploadingCancelAlert.title, message: MediaUploadingCancelAlert.message, preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle(MediaUploadingCancelAlert.acceptTitle) { alertAction in
+            self.mediaProgressCoordinator.cancelAllPendingUploads()
+        }
+        alertController.addCancelActionWithTitle(MediaUploadingCancelAlert.cancelTitle)
+        present(alertController, animated: true, completion: nil)
+        return
     }
 }
 
@@ -1757,7 +1802,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.disabledTintColor = WPStyleGuide.aztecFormatBarDisabledColor
-        toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDisabledColor
+        toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDividerColor
         toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
         toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0)
         toolbar.formatter = self
@@ -2049,10 +2094,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
     func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         postEditorStateContext.update(isUploadingMedia: true)
+        refreshNavigationBar()
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         postEditorStateContext.update(isUploadingMedia: false)
+        refreshNavigationBar()
     }
 }
 
@@ -2261,6 +2308,7 @@ extension AztecPostViewController {
 
         if let error = error {
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
+                self.richTextView.remove(attachmentID: attachment.identifier)
                 return
             }
             mediaProgressCoordinator.attach(error: error, toMediaID: attachment.identifier)
@@ -2581,11 +2629,17 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         }
 
         let imageDownloader = AFImageDownloader.defaultInstance()
-        let receipt = imageDownloader.downloadImage(for: request, success: { (request, response, image) in
+        let receipt = imageDownloader.downloadImage(for: request, success: { [weak self](request, response, image) in
+            guard self != nil else {
+                return
+            }
             DispatchQueue.main.async(execute: {
                 success(image)
             })
-        }) { (request, response, error) in
+        }) { [weak self](request, response, error) in
+            guard self != nil else {
+                return
+            }
             DispatchQueue.main.async(execute: {
                 failure()
             })
@@ -2608,6 +2662,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         for receipt in activeMediaRequests {
             imageDownloader.cancelTask(for: receipt)
         }
+        activeMediaRequests.removeAll()
     }
 
     func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
@@ -2706,6 +2761,7 @@ extension AztecPostViewController {
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
+        static let uploadingButtonSize = CGSize(width: 150, height: 30)
         static let moreAttachmentText       = "more"
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
@@ -2764,6 +2820,13 @@ extension AztecPostViewController {
         static let title = NSLocalizedString("Uploads failed", comment: "Title for alert when trying to save post with failed media items")
         static let message = NSLocalizedString("Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", comment: "Confirms with the user if they save the post all media that failed to upload will be removed from it.")
         static let acceptTitle  = NSLocalizedString("Yes", comment: "Accept Action")
+        static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
+    }
+
+    struct MediaUploadingCancelAlert {
+        static let title = NSLocalizedString("Cancel media uploads", comment: "Dialog box title for when the user is cancelling an upload.")
+        static let message = NSLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")
+        static let acceptTitle  = NSLocalizedString("Yes", comment: "Yes")
         static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
     }
 }
