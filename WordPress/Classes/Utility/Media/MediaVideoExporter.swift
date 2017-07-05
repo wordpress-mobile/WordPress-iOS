@@ -120,7 +120,7 @@ class MediaVideoExporter: MediaExporter {
         }
     }
 
-    /// Generate and export a preview image for a known video at the URL.
+    /// Generate and export a preview image for a known video at the URL, local file or remote resource.
     ///
     /// - Note: Generates the image asynchronously and could potentially take a bit.
     ///
