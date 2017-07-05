@@ -110,7 +110,7 @@
         <scene sceneID="1BJ-CW-C88">
             <objects>
                 <navigationController id="Ck1-vY-O11" customClass="LoginNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mKb-UO-KoA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mKb-UO-KoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -924,7 +924,7 @@
                                 <rect key="frame" x="0.0" y="44" width="383" height="632"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L68-uO-e3A">
-                                        <rect key="frame" x="0.0" y="158" width="383" height="152"/>
+                                        <rect key="frame" x="0.0" y="158" width="383" height="136"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Almost there" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0i-9g-1E6">
                                                 <rect key="frame" x="20" y="34" width="343" height="18"/>
@@ -958,14 +958,14 @@
                                                 </variation>
                                                 <connections>
                                                     <action selector="handleSubmitForm" destination="bAd-Df-IzS" eventType="primaryActionTriggered" id="2LU-aF-Jpd"/>
-                                                    <action selector="handleTextFieldDidChange:" destination="bAd-Df-IzS" eventType="editingChanged" id="GF2-jv-Gg2"/>
+                                                    <action selector="handleTextFieldDidChange:" destination="bAd-Df-IzS" eventType="editingChanged" id="Jxf-Ep-cSb"/>
                                                     <outlet property="delegate" destination="bAd-Df-IzS" id="Bgq-yf-mas"/>
                                                 </connections>
                                             </textField>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhF-jf-Wcv">
-                                                <rect key="frame" x="174.5" y="136" width="33" height="16"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhF-jf-Wcv">
+                                                <rect key="frame" x="20" y="136" width="343" height="0.0"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                <color key="textColor" red="0.85098039215686272" green="0.30980392156862746" blue="0.30980392156862746" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -976,11 +976,12 @@
                                             <constraint firstItem="A2K-lq-6XM" firstAttribute="leading" secondItem="L68-uO-e3A" secondAttribute="leading" id="E9j-hr-Wx1"/>
                                             <constraint firstItem="zhF-jf-Wcv" firstAttribute="top" secondItem="A2K-lq-6XM" secondAttribute="bottom" constant="20" id="GOz-e7-KSV"/>
                                             <constraint firstItem="A2K-lq-6XM" firstAttribute="top" secondItem="L68-uO-e3A" secondAttribute="top" constant="72" id="H1D-YU-X3n"/>
-                                            <constraint firstItem="zhF-jf-Wcv" firstAttribute="centerX" secondItem="L68-uO-e3A" secondAttribute="centerX" id="QKp-In-Bta"/>
                                             <constraint firstAttribute="trailing" secondItem="h0i-9g-1E6" secondAttribute="trailing" constant="20" id="WQ1-kM-YUc"/>
                                             <constraint firstAttribute="trailing" secondItem="A2K-lq-6XM" secondAttribute="trailing" id="Wm5-NI-VWk"/>
+                                            <constraint firstItem="zhF-jf-Wcv" firstAttribute="leading" secondItem="L68-uO-e3A" secondAttribute="leading" constant="20" id="YeU-2C-adU"/>
                                             <constraint firstItem="A2K-lq-6XM" firstAttribute="top" secondItem="h0i-9g-1E6" secondAttribute="bottom" constant="20" id="i3k-6b-Ny2"/>
                                             <constraint firstAttribute="width" constant="320" id="mig-hQ-ky8"/>
+                                            <constraint firstAttribute="trailing" secondItem="zhF-jf-Wcv" secondAttribute="trailing" constant="20" id="nIE-8o-10y"/>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
@@ -1065,9 +1066,9 @@
                     </view>
                     <connections>
                         <outlet property="bottomContentConstraint" destination="tJ5-Do-kBC" id="lfp-1Z-g7f"/>
+                        <outlet property="errorLabel" destination="zhF-jf-Wcv" id="NDc-4E-Aqv"/>
                         <outlet property="instructionLabel" destination="h0i-9g-1E6" id="Sga-zQ-GAo"/>
                         <outlet property="sendCodeButton" destination="309-z3-fPx" id="ML8-O4-ZZs"/>
-                        <outlet property="statusLabel" destination="zhF-jf-Wcv" id="RYg-gQ-1dz"/>
                         <outlet property="submitButton" destination="6eO-V2-a64" id="O2y-fh-zZd"/>
                         <outlet property="verificationCodeField" destination="A2K-lq-6XM" id="U35-Ci-hs6"/>
                         <outlet property="verticalCenterConstraint" destination="cMC-S2-j55" id="FMH-Ok-y2a"/>
@@ -2090,5 +2091,9 @@
         <image name="login-magic-link" width="160" height="160"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="avL-c6-SBY"/>
+        <segue reference="ySQ-EM-6JI"/>
+        <segue reference="qLI-qX-rkG"/>
+        <segue reference="lIb-sw-yM7"/>
     </inferredMetricsTieBreakers>
 </document>
