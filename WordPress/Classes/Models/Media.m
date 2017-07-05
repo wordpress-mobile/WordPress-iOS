@@ -167,7 +167,7 @@
     if (!self.localThumbnailURL.length) {
         return nil;
     }
-    return [self absoluteURLForLocalPath:self.localThumbnailURL];
+    return [self absoluteURLForLocalPath:self.localThumbnailURL cacheDirectory:YES];
 }
 
 - (void)setAbsoluteThumbnailLocalURL:(NSURL *)absoluteLocalURL
@@ -180,7 +180,7 @@
     if (!self.localURL.length) {
         return nil;
     }
-    return [self absoluteURLForLocalPath:self.localURL];
+    return [self absoluteURLForLocalPath:self.localURL cacheDirectory:NO];
 }
 
 - (void)setAbsoluteLocalURL:(NSURL *)absoluteLocalURL
@@ -188,10 +188,15 @@
     self.localURL = absoluteLocalURL.lastPathComponent;
 }
 
-- (NSURL *)absoluteURLForLocalPath:(NSString *)localPath
+- (NSURL *)absoluteURLForLocalPath:(NSString *)localPath cacheDirectory:(BOOL)cacheDirectory
 {
     NSError *error;
-    NSURL *mediaDirectory = [MediaLibrary localUploadsDirectoryAndReturnError:&error];
+    NSURL *mediaDirectory = nil;
+    if (cacheDirectory) {
+        mediaDirectory = [[MediaFileManager cacheManager] directoryURLAndReturnError:&error];
+    } else {
+        mediaDirectory = [MediaFileManager uploadsDirectoryURLAndReturnError:&error];
+    }
     if (error) {
         DDLogInfo(@"Error resolving Media directory: %@", error);
         return nil;

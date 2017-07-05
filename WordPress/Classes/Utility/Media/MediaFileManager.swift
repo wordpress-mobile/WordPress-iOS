@@ -1,47 +1,77 @@
 import Foundation
 import CocoaLumberjack
 
+/// Type of the local Media directory URL in implementation.
+///
+enum MediaDirectory {
+    /// Default, system Documents directory, for persisting media files for upload.
+    case uploads
+    /// System Caches directory, for creating discardable media files, such as thumbnails.
+    case cache
+    /// System temporary directory, used for unit testing or temporary media files.
+    case temporary
+
+    /// Returns the directory URL for the directory type.
+    ///
+    fileprivate var url: URL {
+        let fileManager = FileManager.default
+        // Get a parent directory, based on the type.
+        let parentDirectory: URL
+        switch self {
+        case .uploads:
+            parentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        case .cache:
+            parentDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        case .temporary:
+            parentDirectory = fileManager.temporaryDirectory
+        }
+        return parentDirectory.appendingPathComponent(MediaFileManager.mediaDirectoryName, isDirectory: true)
+    }
+}
+
 /// Encapsulates Media functions relative to the local Media directory.
 ///
-extension MediaLibrary {
+class MediaFileManager: NSObject {
 
     fileprivate static let mediaDirectoryName = "Media"
 
-    /// Type of the local Media directory URL in implementation.
-    ///
-    enum MediaDirectory {
-        /// Default, system Documents directory, for persisting media files for upload.
-        case uploads
-        /// System Caches directory, for creating discardable media files, such as thumbnails.
-        case cache
-        /// System temporary directory, used for unit testing or temporary media files.
-        case temporary
+    let directory: MediaDirectory
 
-        /// Returns the directory URL for the directory type.
-        ///
-        var url: URL {
-            let fileManager = FileManager.default
-            // Get a parent directory, based on the type.
-            let parentDirectory: URL
-            switch self {
-            case .uploads:
-                parentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-            case .cache:
-                parentDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
-            case .temporary:
-                parentDirectory = fileManager.temporaryDirectory
-            }
-            return parentDirectory.appendingPathComponent(mediaDirectoryName, isDirectory: true)
-        }
+    // MARK: - Class init
+
+    /// The default instance of a MediaFileManager.
+    ///
+    @objc (defaultManager)
+    static let `default`: MediaFileManager = {
+        return MediaFileManager()
+    }()
+
+    /// Helper method for getting a MediaFileManager for the .cache directory.
+    ///
+    @objc (cacheManager)
+    class var cache: MediaFileManager {
+        return MediaFileManager(directory: .cache)
     }
 
-    // MARK: - Class methods
+    // MARK: - Init
+
+    /// Init with default directory of .uploads.
+    ///
+    /// - Note: This is particularly because the original Media directory was in the NSFileManager's documents directory.
+    ///   We shouldn't change this default directory lightly as older versions of the app may rely on Media files being in
+    ///   the documents directory for upload.
+    ///
+    init(directory: MediaDirectory = .uploads) {
+        self.directory = directory
+    }
+
+    // MARK: - Instance methods
 
     /// Returns filesystem URL for the local Media directory.
     ///
-    class func localDirectory(_ type: MediaDirectory) throws -> URL {
+    func directoryURL() throws -> URL {
         let fileManager = FileManager.default
-        let mediaDirectory = type.url
+        let mediaDirectory = directory.url
         // Check whether or not the file path exists for the Media directory.
         // If the filepath does not exist, or if the filepath does exist but it is not a directory, try creating the directory.
         // Note: This way, if unexpectedly a file exists but it is not a dir, an error will throw when trying to create the dir.
@@ -52,41 +82,35 @@ extension MediaLibrary {
         return mediaDirectory
     }
 
-    /// Helper method for ObjC as a default method with type.
-    ///
-    class func localUploadsDirectory() throws -> URL {
-        return try localDirectory(.uploads)
-    }
-
     /// Returns a unique filesystem URL for a Media filename and extension, within the local Media directory.
     ///
     /// - Note: if a file already exists with the same name, the file name is appended with a number
     ///   and incremented until a unique filename is found.
     ///
-    class func makeLocalMediaURL(withFilename filename: String, fileExtension: String?, type: MediaDirectory, incremented: Bool = true) throws -> URL {
-        let media = try localDirectory(type)
+    func makeLocalMediaURL(withFilename filename: String, fileExtension: String?, incremented: Bool = true) throws -> URL {
+        let baseURL = try directoryURL()
         var url: URL
         if let fileExtension = fileExtension {
             let basename = (filename as NSString).deletingPathExtension.lowercased()
-            url = media.appendingPathComponent(basename, isDirectory: false)
+            url = baseURL.appendingPathComponent(basename, isDirectory: false)
             url.appendPathExtension(fileExtension)
         } else {
-            url = media.appendingPathComponent(filename, isDirectory: false)
+            url = baseURL.appendingPathComponent(filename, isDirectory: false)
         }
         // Increment the filename as needed to ensure we're not
         // providing a URL for an existing file of the same name.
         return incremented ? url.incrementalFilename() : url
     }
 
-    /// Helper method for ObjC as a default method with type.
+    /// Objc friendly signature without specifying the `incremented` parameter.
     ///
-    class func makeLocalMediaURL(withFilename filename: String, fileExtension: String?) throws -> URL {
-        return try makeLocalMediaURL(withFilename: filename, fileExtension: fileExtension, type: .uploads)
+    func makeLocalMediaURL(withFilename filename: String, fileExtension: String?) throws -> URL {
+        return try makeLocalMediaURL(withFilename: filename, fileExtension: fileExtension, incremented: true)
     }
 
     /// Returns a string appended with the thumbnail naming convention for local Media files.
     ///
-    class func mediaFilenameAppendingThumbnail(_ filename: String) -> String {
+    func mediaFilenameAppendingThumbnail(_ filename: String) -> String {
         var filename = filename as NSString
         let pathExtension = filename.pathExtension
         filename = filename.deletingPathExtension.appending("-thumbnail") as NSString
@@ -97,7 +121,7 @@ extension MediaLibrary {
     ///
     /// - Note: once we drop ObjC, this should be an optional that would return nil instead of zero.
     ///
-    class func imageSizeForMediaAt(fileURL: URL?) -> CGSize {
+    func imageSizeForMediaAt(fileURL: URL?) -> CGSize {
         guard let fileURL = fileURL else {
             return CGSize.zero
         }
@@ -124,40 +148,72 @@ extension MediaLibrary {
 
     /// Calculates the allocated size of the Media directory, in bytes, or nil if an error was thrown.
     ///
-    class func calculateSizeOfLocalDirectory(onCompletion: @escaping (Int64?) -> ()) {
+    func calculateSizeOfDirectory(onCompletion: @escaping (Int64?) -> Void) {
         DispatchQueue.global(qos: .default).async {
             let fileManager = FileManager.default
-            let allocatedSize = try? fileManager.allocatedSizeOf(directoryURL: localUploadsDirectory())
+            let allocatedSize = try? fileManager.allocatedSizeOf(directoryURL: self.directoryURL())
             DispatchQueue.main.async {
                 onCompletion(allocatedSize)
             }
         }
     }
 
-    /// Clear the local Media directory of any files that are no longer in use by any managed Media objects.
+    /// Clear the local Media directory of any files that are no longer in use or can be fetched again,
+    /// such as Media without a blog or with a remote URL.
     ///
     /// - Note: These files can show up because of the app being killed while a media object
     ///   was being created or when a CoreData migration fails and the database is recreated.
     ///
-    class func clearUnusedFilesFromLocalDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
-        purgeLocalMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL"),
-                             onCompletion: onCompletion,
-                             onError: onError)
+    func clearUnusedFilesFromDirectory(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+        purgeMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL || remoteURL == NULL"),
+                        onCompletion: onCompletion,
+                        onError: onError)
     }
 
     /// Clear the local Media directory of any cached media files that are available remotely.
     ///
-    class func clearCachedFilesFromLocalDirectory(onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
-        purgeLocalMediaFiles(exceptMedia: NSPredicate(format: "remoteURL == NULL"),
-                             onCompletion: onCompletion,
-                             onError: onError)
+    func clearFilesFromDirectory(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+        do {
+            try purgeDirectory(exceptFiles: [])
+            onCompletion?()
+        } catch {
+            onError?(error)
+        }
+    }
+
+    // MARK: - Class methods
+
+    /// Helper method for clearing unused Media upload files.
+    ///
+    class func clearUnusedMediaUploadFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+        MediaFileManager.default.clearUnusedFilesFromDirectory(onCompletion: onCompletion, onError: onError)
+    }
+
+    /// Helper method for calculating the size of the Media cache directory.
+    ///
+    class func calculateSizeOfMediaCacheDirectory(onCompletion: @escaping (Int64?) -> Void) {
+        let cacheManager = MediaFileManager(directory: .cache)
+        cacheManager.calculateSizeOfDirectory(onCompletion: onCompletion)
+    }
+
+    /// Helper method for clearing the Media cache directory.
+    ///
+    class func clearAllMediaCacheFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+        let cacheManager = MediaFileManager(directory: .cache)
+        cacheManager.clearFilesFromDirectory(onCompletion: onCompletion, onError: onError)
+    }
+
+    /// Helper method for getting the default upload directory URL.
+    ///
+    class func uploadsDirectoryURL() throws -> URL {
+        return try MediaFileManager.default.directoryURL()
     }
 
     // MARK: - Private
 
     /// Removes any local Media files, except any Media matching the predicate.
     ///
-    fileprivate class func purgeLocalMediaFiles(exceptMedia predicate: NSPredicate, onCompletion: (() -> ())?, onError: ((Error) -> Void)?) {
+    fileprivate func purgeMediaFiles(exceptMedia predicate: NSPredicate, onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
         let context = ContextManager.sharedInstance().newDerivedContext()
         context.perform {
             let fetch = NSFetchRequest<NSDictionary>(entityName: Media.classNameWithoutNamespaces())
@@ -180,7 +236,7 @@ extension MediaLibrary {
                         filesToKeep.insert(localThumbnailURL.lastPathComponent)
                     }
                 }
-                try purgeLocalDirectory(exceptFiles: filesToKeep, type: .uploads)
+                try self.purgeDirectory(exceptFiles: filesToKeep)
                 if let onCompletion = onCompletion {
                     DispatchQueue.main.async {
                         onCompletion()
@@ -197,12 +253,11 @@ extension MediaLibrary {
         }
     }
 
-
     /// Removes files in the Media directory, except any files found in the set.
     ///
-    fileprivate class func purgeLocalDirectory(exceptFiles: Set<String>, type: MediaDirectory) throws {
+    fileprivate func purgeDirectory(exceptFiles: Set<String>) throws {
         let fileManager = FileManager.default
-        let contents = try fileManager.contentsOfDirectory(at: try localDirectory(type),
+        let contents = try fileManager.contentsOfDirectory(at: try directoryURL(),
                                                            includingPropertiesForKeys: nil,
                                                            options: .skipsHiddenFiles)
         var removedCount = 0
