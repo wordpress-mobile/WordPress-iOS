@@ -1,1 +1,2 @@
-I denna utgåva har vi fixat till några pixlar, sagt hejdå till några programfel och bakom kulisserna arbetat på att ge ett smidigare WordPress för dem som använder vår app.
+Ändra ikonen för din webbplats på sidan med uppgifter om webbplatsen, knacka på ikonen för att komma igång.
+Vi har lagt till stöd från autokorrigering i fältet för inläggsetiketter.
