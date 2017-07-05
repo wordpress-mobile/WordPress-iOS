@@ -3,6 +3,9 @@ import SVProgressHUD
 import WordPressComAnalytics
 import WordPressShared
 
+/// Provides a form and functionality for entering a two factor auth code and
+/// signing into WordPress.com
+///
 class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder, LoginViewController {
     @IBOutlet weak var instructionLabel: UILabel!
     @IBOutlet weak var verificationCodeField: LoginTextField!
@@ -25,13 +28,6 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
         }
     }
 
-
-    class func controller(_ loginFields: LoginFields) -> Login2FAViewController {
-        let storyboard = UIStoryboard(name: "Login", bundle: Bundle.main)
-        let controller = storyboard.instantiateViewController(withIdentifier: "Login2FAViewController") as! Login2FAViewController
-        controller.loginFields = loginFields
-        return controller
-    }
 
     // MARK: - Lifecycle Methods
 
