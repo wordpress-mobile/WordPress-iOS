@@ -150,7 +150,7 @@ class MediaVideoExporter: MediaExporter {
                                                         }
                                                         exporter.mediaDirectoryType = self.mediaDirectoryType
                                                         exporter.exportImage(image,
-                                                                             fileName: url.lastPathComponent,
+                                                                             fileName: UUID().uuidString,
                                                                              onCompletion: onCompletion,
                                                                              onError: onError)
             })
