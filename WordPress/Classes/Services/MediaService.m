@@ -679,10 +679,9 @@
 
 - (MediaThumbnailService *)thumbnailService
 {
-    if (_thumbnailService) {
-        return _thumbnailService;
+    if (!_thumbnailService) {
+        _thumbnailService = [[MediaThumbnailService alloc] initWithManagedObjectContext:self.managedObjectContext];
     }
-    _thumbnailService = [[MediaThumbnailService alloc] initWithManagedObjectContext:self.managedObjectContext];
     return _thumbnailService;
 }
 
