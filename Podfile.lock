@@ -143,6 +143,9 @@ EXTERNAL SOURCES:
   Starscream:
     :branch: wordpress-ios
     :git: https://github.com/wordpress-mobile/Starscream
+  WordPress-Aztec-iOS:
+    :commit: 881280ccbd807372b6f3c2b6dd8d2a4f5525a0d8
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -154,6 +157,9 @@ CHECKOUT OPTIONS:
   Starscream:
     :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
     :git: https://github.com/wordpress-mobile/Starscream
+  WordPress-Aztec-iOS:
+    :commit: 881280ccbd807372b6f3c2b6dd8d2a4f5525a0d8
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
