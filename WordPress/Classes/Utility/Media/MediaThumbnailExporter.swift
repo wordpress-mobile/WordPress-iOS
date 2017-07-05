@@ -82,11 +82,9 @@ class MediaThumbnailExporter: MediaExporter {
     ///
     public enum ThumbnailExportError: MediaExportError {
         case failedToGenerateThumbnailFileURL
-        case gifThumbnailsUnsupported
+        case unsupportedThumbnailFromOriginalType
         var description: String {
             switch self {
-            case .gifThumbnailsUnsupported:
-                return NSLocalizedString("GIF preview unavailable.", comment: "Message shown if a preview of a GIF media item is unavailable.")
             default:
                 return NSLocalizedString("Thumbnail unavailable.", comment: "Message shown if a thumbnail preview of a media item unavailable.")
             }
@@ -116,10 +114,8 @@ class MediaThumbnailExporter: MediaExporter {
         do {
             let expected = try MediaURLExporter.expectedExport(with: url)
             switch expected {
-            case .image, .video:
+            case .image, .video, .gif:
                 return true
-            case .gif:
-                return false
             }
         } catch {
             return false
@@ -134,12 +130,10 @@ class MediaThumbnailExporter: MediaExporter {
         do {
             let expected = try MediaURLExporter.expectedExport(with: url)
             switch expected {
-            case .image:
+            case .image, .gif:
                 exportImageThumbnail(at: url, onCompletion: onCompletion, onError: onError)
             case .video:
                 exportVideoThumbnail(at: url, onCompletion: onCompletion, onError: onError)
-            case .gif:
-                throw ThumbnailExportError.gifThumbnailsUnsupported
             }
         } catch {
             onError(exporterErrorWith(error: error))
