@@ -152,7 +152,7 @@ extension FancyAlertViewController {
     private static let aztecAnnouncementSuccessConfig: FancyAlertViewController.Config = {
         struct Strings {
             static let titleText = NSLocalizedString("New Editor Enabled!", comment: "Title of alert informing users that the new Aztec editor has been enabled")
-            static let bodyText = NSLocalizedString("Thanks for trying it out! You can switch editor modes at anytime in", comment: "Body text of alert informing users that the new Aztec editor has been enabled")
+            static let bodyText = NSLocalizedString("Thanks for trying it out! You can switch editor modes at any time in", comment: "Body text of alert informing users that the new Aztec editor has been enabled")
             static let appSettings = NSLocalizedString("Me > App Settings", comment: "Text for button telling user where to find the App Settings section of the app")
             static let beta = NSLocalizedString("Beta", comment: "Used to indicate a feature of the app currently in beta testing.")
         }
