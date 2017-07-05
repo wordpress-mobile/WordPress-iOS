@@ -125,7 +125,6 @@ int ddLogLevel = DDLogLevelInfo;
         [defaults synchronize];
 
         EditorSettings *settings = [EditorSettings new];
-        [settings setNativeEditorAvailable:TRUE];
         [settings setVisualEditorEnabled:TRUE];
         [settings setNativeEditorEnabled:TRUE];
     }
@@ -273,18 +272,6 @@ int ddLogLevel = DDLogLevelInfo;
                 }
 
                 return YES;
-            }
-        } else if ([[url host] isEqualToString:@"editor"] || [[url host] isEqualToString:@"aztec"]) {
-            // Example: wordpress://editor?available=1&enabled=0
-            NSDictionary* params = [[url query] dictionaryFromQueryString];
-
-            if (params.count > 0) {
-                BOOL available = [[params objectForKey:@"available"] boolValue];
-                BOOL enabled = [[params objectForKey:@"enabled"] boolValue];
-
-                EditorSettings *editorSettings = [EditorSettings new];
-                editorSettings.nativeEditorAvailable = available;
-                editorSettings.nativeEditorEnabled = enabled;
             }
         }
     }

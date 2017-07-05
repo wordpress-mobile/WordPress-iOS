@@ -104,14 +104,12 @@ class AppSettingsViewController: UITableViewController {
         )
         editorRows.append(visualEditor)
 
-        if editorSettings.nativeEditorAvailable {
-            let nativeEditor = CheckmarkRow(
-                title: NSLocalizedString("Beta", comment: "Option to enable the beta native editor (Aztec)"),
-                checked: (editor == .aztec),
-                action: visualEditorChanged(editor: .aztec)
-            )
-            editorRows.append(nativeEditor)
-        }
+        let nativeEditor = CheckmarkRow(
+            title: NSLocalizedString("Beta", comment: "Option to enable the beta native editor (Aztec)"),
+            checked: (editor == .aztec),
+            action: visualEditorChanged(editor: .aztec)
+        )
+        editorRows.append(nativeEditor)
 
         let usageTrackingHeader = NSLocalizedString("Usage Statistics", comment: "App usage data settings section header")
         let usageTrackingRow = SwitchRow(
