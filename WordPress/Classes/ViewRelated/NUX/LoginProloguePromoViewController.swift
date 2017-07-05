@@ -63,7 +63,7 @@ class LoginProloguePromoViewController: UIViewController {
         case 2:
             return NSLocalizedString("Watch readers from around the world read and interact with your site — in real time.", comment: "shown in promotional screens during first launch")
         case 3:
-            return NSLocalizedString("Catch up with your favorite sites and join the conversation anywhere, anytime.", comment: "shown in promotional screens during first launch")
+            return NSLocalizedString("Catch up with your favorite sites and join the conversation anywhere, any time.", comment: "shown in promotional screens during first launch")
         case 4:
             return NSLocalizedString("Your notifications travel with you — see comments and likes as they happen.", comment: "shown in promotional screens during first launch")
         case 5:
