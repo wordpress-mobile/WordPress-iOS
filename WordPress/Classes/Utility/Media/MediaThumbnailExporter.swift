@@ -153,6 +153,16 @@ class MediaThumbnailExporter: MediaExporter {
         }, onError: onError)
     }
 
+    /// Export a known video at the URL, being either a file URL or a remote URL.
+    ///
+    func exportThumbnail(forVideoURL url: URL, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
+        if url.isFileURL {
+            exportThumbnail(forFile: url, onCompletion: onCompletion, onError: onError)
+        } else {
+            exportVideoThumbnail(at: url, onCompletion: onCompletion, onError: onError)
+        }
+    }
+
     // MARK: - Private
 
     /// Export a thumbnail for a known image at the URL, using self.options for ImageExporter options.
