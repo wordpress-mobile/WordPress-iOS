@@ -164,7 +164,16 @@ class AppSettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if shouldShowEditorFooterForSection(section) {
-            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: AppSettingsEditorFooterView.reuseIdentifier)
+            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: AppSettingsEditorFooterView.reuseIdentifier) as! AppSettingsEditorFooterView
+
+            view.tapBlock = { [weak self] in
+                WPAppAnalytics.track(.editorAztecBetaLink)
+
+                if let controller = self {
+                    WPWebViewController.presentWhatsNewWebView(from: controller)
+                }
+            }
+
             return view
         }
 
@@ -176,7 +185,7 @@ class AppSettingsViewController: UITableViewController {
             return AppSettingsEditorFooterView.height
         }
 
-        return 0
+        return UITableViewAutomaticDimension
     }
 
     private func shouldShowEditorFooterForSection(_ section: Int) -> Bool {
@@ -225,14 +234,14 @@ class AppSettingsViewController: UITableViewController {
 
     fileprivate func updateMediaCacheSize() {
         setMediaCacheRowDescription(status: .calculatingSize)
-        MediaLibrary.calculateSizeOfLocalDirectory { [weak self] (allocatedSize) in
+        MediaFileManager.calculateSizeOfMediaCacheDirectory { [weak self] (allocatedSize) in
             self?.setMediaCacheRowDescription(allocatedSize: allocatedSize)
         }
     }
 
     fileprivate func clearMediaCache() {
         setMediaCacheRowDescription(status: .clearingCache)
-        MediaLibrary.clearCachedFilesFromLocalDirectory(onCompletion: { [weak self] in
+        MediaFileManager.clearAllMediaCacheFiles(onCompletion: { [weak self] in
             self?.updateMediaCacheSize()
             }, onError: { [weak self] (error) in
                 self?.updateMediaCacheSize()
@@ -347,6 +356,7 @@ fileprivate struct MediaSizingRow: ImmuTableRow {
 fileprivate class AppSettingsEditorFooterView: UITableViewHeaderFooterView {
     static let height: CGFloat = 38.0
     static let reuseIdentifier = "AppSettingsEditorFooterView"
+    var tapBlock: (() -> Void)? = nil
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -366,6 +376,7 @@ fileprivate class AppSettingsEditorFooterView: UITableViewHeaderFooterView {
         let button = UIButton(type: .custom)
         button.setImage(Gridicon.iconOfType(.infoOutline), for: .normal)
         button.tintColor = WPStyleGuide.greyDarken10()
+        button.addTarget(self, action: #selector(footerButtonTapped), for: .touchUpInside)
 
         contentView.addSubview(stackView)
         stackView.addArrangedSubview(button)
@@ -380,5 +391,9 @@ fileprivate class AppSettingsEditorFooterView: UITableViewHeaderFooterView {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @IBAction private func footerButtonTapped() {
+        tapBlock?()
     }
 }
