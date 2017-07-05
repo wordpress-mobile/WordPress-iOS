@@ -125,7 +125,6 @@ int ddLogLevel = DDLogLevelInfo;
         [defaults synchronize];
 
         EditorSettings *settings = [EditorSettings new];
-        [settings setNativeEditorAvailable:TRUE];
         [settings setVisualEditorEnabled:TRUE];
         [settings setNativeEditorEnabled:TRUE];
     }
