@@ -29,8 +29,6 @@ class LoginLinkRequestViewController: LoginViewController {
         if !email.isValidEmail() {
             assert(email.isValidEmail(), "The value of loginFields.username was not a valid email address.")
         }
-
-        setupNavBarIcon()
     }
 
     override func viewWillAppear(_ animated: Bool) {

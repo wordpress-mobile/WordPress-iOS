@@ -6,7 +6,6 @@ import WordPressShared
 class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet weak var passwordField: WPWalkthroughTextField?
     @IBOutlet weak var forgotPasswordButton: UIButton?
-    @IBOutlet weak var statusLabel: UILabel?
     @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint?
     var onePasswordButton: UIButton!
@@ -27,8 +26,6 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
 
         localizeControls()
         setupOnePasswordButtonIfNeeded()
-        configureStatusLabel("")
-        setupNavBarIcon()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -67,14 +64,6 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         WPStyleGuide.configureOnePasswordButtonForStackView(emailStackView,
                                                             target: self,
                                                             selector: #selector(LoginWPComViewController.handleOnePasswordButtonTapped(_:)))
-    }
-
-    /// Displays the specified text in the status label.
-    ///
-    /// - Parameter message: The text to display in the label.
-    ///
-    override func configureStatusLabel(_ message: String) {
-        statusLabel?.text = message
     }
 
     /// Configures the appearance and state of the submit button.
@@ -176,6 +165,20 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
             self?.validateForm()
         }
     }
+
+    override func displayRemoteError(_ error: Error!) {
+        configureViewLoading(false)
+
+        let errorCode = (error as NSError).code
+        let errorDomain = (error as NSError).domain
+        if errorDomain == WordPressComOAuthClient.WordPressComOAuthErrorDomain, errorCode == WordPressComOAuthError.invalidRequest.rawValue {
+            let message = NSLocalizedString("It seems like you've entered an incorrect password. Want to give it another try?", comment: "An error message shown when a wpcom user provides the wrong password.")
+            displayError(message: message)
+        } else {
+            super.displayRemoteError(error)
+        }
+    }
+
 
     // MARK: - Keyboard Notifications
 

@@ -18,8 +18,6 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavBarIcon()
-
         localizeControls()
     }
 

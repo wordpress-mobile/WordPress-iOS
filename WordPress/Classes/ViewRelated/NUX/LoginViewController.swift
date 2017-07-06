@@ -84,7 +84,7 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
         configureViewLoading(false)
 
         guard (error as NSError).code != 403 else {
-            let message = NSLocalizedString("It seems like you've entered an incorrect password. Want to give it another try?", comment: "An error message shown when a wpcom user provides the wrong password.")
+            let message = NSLocalizedString("Whoops, something went wrong and we couldn't log you in. Please try again!", comment: "An error message shown when a wpcom user provides the wrong password.")
             displayError(message: message)
             return
         }
