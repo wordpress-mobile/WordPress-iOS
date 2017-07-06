@@ -85,7 +85,13 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     /// Hides the self-hosted login option.
     ///
     func configureForWPComOnlyIfNeeded() {
-        selfHostedSigninButton.isHidden = restrictToWPCom
+        if restrictToWPCom {
+            selfHostedSigninButton.isEnabled = false
+            selfHostedSigninButton.alpha = 0.0
+        } else {
+            selfHostedSigninButton.isEnabled = true
+            selfHostedSigninButton.alpha = 1.0
+        }
     }
 
 
