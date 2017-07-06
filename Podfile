@@ -120,5 +120,7 @@ target 'WordPressShared' do
     inherit! :search_paths
 
     shared_test_pods
+    pod 'Specta', '1.0.5'
+    pod 'Expecta', '1.0.5'
   end
 end
