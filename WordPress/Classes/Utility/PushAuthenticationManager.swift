@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-import WordPressComAnalytics
+import WordPressShared
 
 
 /// The purpose of this class is to handle WordPress.com Push Authentication Notifications.

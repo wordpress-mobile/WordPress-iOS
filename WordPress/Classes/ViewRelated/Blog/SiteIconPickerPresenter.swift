@@ -1,7 +1,7 @@
 import Foundation
 import SVProgressHUD
 import WPMediaPicker
-import WordPressComAnalytics
+import WordPressShared
 
 
 /// Encapsulates the interactions required to capture a new site icon image, crop it and resize it.

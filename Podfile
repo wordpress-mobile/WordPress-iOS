@@ -11,7 +11,6 @@ def shared_with_all_pods
   pod 'CocoaLumberjack', '~> 3.2.0'
   pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.1'
   pod 'NSObject-SafeExpectations', '0.0.2'
-  pod 'WordPressCom-Analytics-iOS', '0.1.31'
 end
 
 def shared_with_networking_pods
@@ -121,5 +120,7 @@ target 'WordPressShared' do
     inherit! :search_paths
 
     shared_test_pods
+    pod 'Specta', '1.0.5'
+    pod 'Expecta', '1.0.5'
   end
 end
