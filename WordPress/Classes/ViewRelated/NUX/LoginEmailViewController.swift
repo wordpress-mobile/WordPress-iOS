@@ -208,8 +208,11 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     ///                        to authenticate the user with the available credentails.  Default is `false`.
     ///
     func loginWithUsernamePassword(immediately: Bool = false) {
-        // TODO: Need to implement the `immediately` portion of this once one wpcom controllers are done.
-        performSegue(withIdentifier: .showWPComLogin, sender: self)
+        if (immediately) {
+            validateFormAndLogin()
+        } else {
+            performSegue(withIdentifier: .showWPComLogin, sender: self)
+        }
     }
 
 

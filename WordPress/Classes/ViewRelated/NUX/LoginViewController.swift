@@ -40,6 +40,26 @@ class LoginViewController: NUXAbstractViewController {
     override func dismiss() {
         loginDismissal()
     }
+
+    /// Validates what is entered in the various form fields and, if valid,
+    /// proceeds with login.
+    ///
+    func validateFormAndLogin() {
+        view.endEditing(true)
+        displayError(message: "")
+
+        // Is everything filled out?
+        if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
+            let errorMsg = NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields.")
+            displayError(message: errorMsg)
+
+            return
+        }
+
+        configureViewLoading(true)
+
+        loginFacade.signIn(with: loginFields)
+    }
 }
 
 extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {

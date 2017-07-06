@@ -225,21 +225,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     /// proceeds with the submit action.
     ///
     func validateForm() {
-        view.endEditing(true)
-        displayError(message: "")
-
-        // Is everything filled out?
-        if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
-            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Title of an error message"),
-                              message: NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."),
-                              withSupportButton: false)
-
-            return
-        }
-
-        configureViewLoading(true)
-
-        loginFacade.login(with: loginFields)
+        validateFormAndLogin()
     }
 
 

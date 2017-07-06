@@ -20,12 +20,6 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         }
     }
 
-    lazy var loginFacade: LoginFacade = {
-        let facade = LoginFacade()
-        facade.delegate = self
-        return facade
-    }()
-
     // MARK: - Lifecycle Methods
 
 
@@ -33,6 +27,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         super.viewDidLoad()
 
         localizeControls()
+        setupOnePasswordButtonIfNeeded()
         configureStatusLabel("")
         setupNavBarIcon()
     }
@@ -72,7 +67,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         guard let emailStackView = emailStackView else { return }
         WPStyleGuide.configureOnePasswordButtonForStackView(emailStackView,
                                                             target: self,
-                                                            selector: #selector(SigninWPComViewController.handleOnePasswordButtonTapped(_:)))
+                                                            selector: #selector(LoginWPComViewController.handleOnePasswordButtonTapped(_:)))
     }
 
     /// Displays the specified text in the status label.
@@ -101,7 +96,6 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
     override func configureViewLoading(_ loading: Bool) {
-        usernameField?.isEnabled = !loading
         passwordField?.isEnabled = !loading
 
         configureSubmitButton(animating: loading)
@@ -151,20 +145,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     /// proceeds with the submit action.
     ///
     func validateForm() {
-        view.endEditing(true)
-        displayError(message: "")
-
-        // Is everything filled out?
-        if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
-            let errorMsg = NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields.")
-            displayError(message: errorMsg)
-
-            return
-        }
-
-        configureViewLoading(true)
-
-        loginFacade.signIn(with: loginFields)
+        validateFormAndLogin()
     }
 
     // MARK: - Actions
