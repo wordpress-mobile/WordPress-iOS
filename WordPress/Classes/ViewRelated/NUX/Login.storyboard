@@ -264,6 +264,7 @@
                         <outlet property="submitButton" destination="OZC-xf-OAn" id="k1c-SJ-qiK"/>
                         <segue destination="Kvo-Y2-yhG" kind="show" identifier="startMagicLinkFlow" id="db9-5R-Qq7"/>
                         <segue destination="lmD-c6-SLs" kind="show" identifier="showWPComLogin" id="ySQ-EM-6JI"/>
+                        <segue destination="Mwz-tq-5A8" kind="custom" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="gAE-di-Wyf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wWl-qb-1Yp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -738,7 +739,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Bli-Rb-X9m">
-                                <rect key="frame" x="0.0" y="173.5" width="383" height="246.5"/>
+                                <rect key="frame" x="0.0" y="225.5" width="383" height="194.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="48" text="Enter the password for your WordPress.com account." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBi-2N-RAh">
                                         <rect key="frame" x="20" y="0.0" width="343" height="48"/>
@@ -2026,7 +2027,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ySQ-EM-6JI"/>
-        <segue reference="7lv-19-h36"/>
+        <segue reference="gAE-di-Wyf"/>
         <segue reference="qLI-qX-rkG"/>
     </inferredMetricsTieBreakers>
 </document>
