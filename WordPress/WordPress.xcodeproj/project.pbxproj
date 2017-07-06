@@ -119,9 +119,6 @@
 		08F8CD3B1EBD2D020049D0C0 /* MediaURLExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD3A1EBD2D020049D0C0 /* MediaURLExporterTests.swift */; };
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
 		1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDF1CF3034E00766A33 /* DomainsService.swift */; };
-		1702BBE21CF319C600766A33 /* DomainsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBE11CF319C600766A33 /* DomainsServiceTests.swift */; };
-		1702BBE61CF3579900766A33 /* domain-service-valid-domains.json in Resources */ = {isa = PBXBuildFile; fileRef = 1702BBE51CF3579900766A33 /* domain-service-valid-domains.json */; };
-		1702BBE91CF357BB00766A33 /* domain-service-all-domain-types.json in Resources */ = {isa = PBXBuildFile; fileRef = 1702BBE81CF357BB00766A33 /* domain-service-all-domain-types.json */; };
 		171795831D1C65E8002F1EB2 /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */; };
 		171963401D378D5100898E8B /* SearchWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1719633F1D378D5100898E8B /* SearchWrapperView.swift */; };
 		1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */; };
@@ -132,7 +129,6 @@
 		1731BCD31DDA01AF009FE3AE /* HelpshiftPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1731BCD21DDA01AF009FE3AE /* HelpshiftPresenter.swift */; };
 		173BCE731CEB368A00AE8817 /* DomainsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */; };
 		173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 173BCE741CEB369900AE8817 /* Domains.storyboard */; };
-		173BCE771CEB3D8200AE8817 /* DomainsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE761CEB3D8200AE8817 /* DomainsServiceRemote.swift */; };
 		173BCE791CEB780800AE8817 /* Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE781CEB780800AE8817 /* Domain.swift */; };
 		174122051EFDCBBF00AFA901 /* FancyAlertPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174122041EFDCBBF00AFA901 /* FancyAlertPresentationController.swift */; };
 		1746D7771D2165AE00B11D77 /* ForcePopoverPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */; };
@@ -364,6 +360,9 @@
 		743868191EE8B66F00E9286A /* xmlrpc-metaweblog-newpost-bad-xml-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 743868181EE8B66F00E9286A /* xmlrpc-metaweblog-newpost-bad-xml-failure.xml */; };
 		743BF32A1E82CE0700192E40 /* site-viewers-delete-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 743BF3291E82CE0700192E40 /* site-viewers-delete-failure.json */; };
 		743BF32C1E82CEB600192E40 /* site-viewers-delete-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 743BF32B1E82CEB600192E40 /* site-viewers-delete-success.json */; };
+		74585B991F0D58F300E7E667 /* DomainsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74585B981F0D58F300E7E667 /* DomainsServiceTests.swift */; };
+		74585B9C1F0D591D00E7E667 /* domain-service-valid-domains.json in Resources */ = {isa = PBXBuildFile; fileRef = 74585B9A1F0D591D00E7E667 /* domain-service-valid-domains.json */; };
+		74585B9D1F0D591D00E7E667 /* domain-service-all-domain-types.json in Resources */ = {isa = PBXBuildFile; fileRef = 74585B9B1F0D591D00E7E667 /* domain-service-all-domain-types.json */; };
 		7462FD461EE8BF06007E2B80 /* xmlrpc-metaweblog-editpost-success.xml in Resources */ = {isa = PBXBuildFile; fileRef = 7462FD451EE8BF06007E2B80 /* xmlrpc-metaweblog-editpost-success.xml */; };
 		7462FD481EE8C0CB007E2B80 /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 7462FD471EE8C0CB007E2B80 /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml */; };
 		7462FD4A1EE8C1B4007E2B80 /* xmlrpc-metaweblog-editpost-change-type-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 7462FD491EE8C1B4007E2B80 /* xmlrpc-metaweblog-editpost-change-type-failure.xml */; };
@@ -1321,9 +1320,6 @@
 		08F8CD3A1EBD2D020049D0C0 /* MediaURLExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaURLExporterTests.swift; sourceTree = "<group>"; };
 		1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeLabel.swift; sourceTree = "<group>"; };
 		1702BBDF1CF3034E00766A33 /* DomainsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsService.swift; sourceTree = "<group>"; };
-		1702BBE11CF319C600766A33 /* DomainsServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceTests.swift; sourceTree = "<group>"; };
-		1702BBE51CF3579900766A33 /* domain-service-valid-domains.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-valid-domains.json"; sourceTree = "<group>"; };
-		1702BBE81CF357BB00766A33 /* domain-service-all-domain-types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-all-domain-types.json"; sourceTree = "<group>"; };
 		171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlingableViewHandler.swift; sourceTree = "<group>"; };
 		1719633F1D378D5100898E8B /* SearchWrapperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchWrapperView.swift; sourceTree = "<group>"; };
 		1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
@@ -1334,7 +1330,6 @@
 		1731BCD21DDA01AF009FE3AE /* HelpshiftPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpshiftPresenter.swift; sourceTree = "<group>"; };
 		173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsListViewController.swift; sourceTree = "<group>"; };
 		173BCE741CEB369900AE8817 /* Domains.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Domains.storyboard; sourceTree = "<group>"; };
-		173BCE761CEB3D8200AE8817 /* DomainsServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceRemote.swift; sourceTree = "<group>"; };
 		173BCE781CEB780800AE8817 /* Domain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Domain.swift; sourceTree = "<group>"; };
 		174122041EFDCBBF00AFA901 /* FancyAlertPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyAlertPresentationController.swift; sourceTree = "<group>"; };
 		1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForcePopoverPresenter.swift; sourceTree = "<group>"; };
@@ -1679,6 +1674,9 @@
 		743868181EE8B66F00E9286A /* xmlrpc-metaweblog-newpost-bad-xml-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-newpost-bad-xml-failure.xml"; sourceTree = "<group>"; };
 		743BF3291E82CE0700192E40 /* site-viewers-delete-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "site-viewers-delete-failure.json"; path = "WordPressTest/site-viewers-delete-failure.json"; sourceTree = SOURCE_ROOT; };
 		743BF32B1E82CEB600192E40 /* site-viewers-delete-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "site-viewers-delete-success.json"; path = "WordPressTest/site-viewers-delete-success.json"; sourceTree = SOURCE_ROOT; };
+		74585B981F0D58F300E7E667 /* DomainsServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceTests.swift; sourceTree = "<group>"; };
+		74585B9A1F0D591D00E7E667 /* domain-service-valid-domains.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-valid-domains.json"; sourceTree = "<group>"; };
+		74585B9B1F0D591D00E7E667 /* domain-service-all-domain-types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-all-domain-types.json"; sourceTree = "<group>"; };
 		7462FD451EE8BF06007E2B80 /* xmlrpc-metaweblog-editpost-success.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-editpost-success.xml"; sourceTree = "<group>"; };
 		7462FD471EE8C0CB007E2B80 /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-editpost-bad-xml-failure.xml"; sourceTree = "<group>"; };
 		7462FD491EE8C1B4007E2B80 /* xmlrpc-metaweblog-editpost-change-type-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-editpost-change-type-failure.xml"; sourceTree = "<group>"; };
@@ -3044,15 +3042,6 @@
 			name = Media;
 			sourceTree = "<group>";
 		};
-		1702BBE71CF357A200766A33 /* Domains */ = {
-			isa = PBXGroup;
-			children = (
-				1702BBE51CF3579900766A33 /* domain-service-valid-domains.json */,
-				1702BBE81CF357BB00766A33 /* domain-service-all-domain-types.json */,
-			);
-			name = Domains;
-			sourceTree = "<group>";
-		};
 		1719633E1D378D1E00898E8B /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -3730,7 +3719,6 @@
 				E1249B4A1940AECC0035E895 /* CommentServiceRemoteREST.m */,
 				E1249B4419408D0F0035E895 /* CommentServiceRemoteXMLRPC.h */,
 				E1249B4519408D0F0035E895 /* CommentServiceRemoteXMLRPC.m */,
-				173BCE761CEB3D8200AE8817 /* DomainsServiceRemote.swift */,
 				B5772AC71C9C85990031F97E /* GravatarServiceRemote.swift */,
 				E149D64919349E69006A843D /* MediaServiceRemote.h */,
 				E149D64A19349E69006A843D /* MediaServiceRemoteREST.h */,
@@ -4649,6 +4637,7 @@
 				9363113E19FA996700B0C739 /* AccountServiceTests.swift */,
 				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
 				930FD0A519882742000CC81D /* BlogServiceTest.m */,
+				74585B981F0D58F300E7E667 /* DomainsServiceTests.swift */,
 				B5772AC51C9C84900031F97E /* GravatarServiceTests.swift */,
 				59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */,
 				E1C5457F1C6C79BB001CEB0E /* MediaSettingsTests.swift */,
@@ -4664,7 +4653,6 @@
 				E124CE711C86D27100F7BA99 /* StoreTests.swift */,
 				E1A7CA4A1CC9FD7800373E06 /* StoreCoordinatorTests.swift */,
 				59FBD5611B5684F300734466 /* ThemeServiceTests.m */,
-				1702BBE11CF319C600766A33 /* DomainsServiceTests.swift */,
 				932645A31E7C206600134988 /* EditorSettingsTests.swift */,
 			);
 			name = Services;
@@ -5273,7 +5261,8 @@
 				855408891A6F107D00DDBD79 /* app-review-prompt-global-disable.json */,
 				855408871A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json */,
 				93CD939219099BE70049096E /* authtoken.json */,
-				1702BBE71CF357A200766A33 /* Domains */,
+				74585B9A1F0D591D00E7E667 /* domain-service-valid-domains.json */,
+				74585B9B1F0D591D00E7E667 /* domain-service-all-domain-types.json */,
 				932AB00A1D526C1400BE486D /* gallery-reader-post-private.json */,
 				932C6CB21D521DFA006E4A62 /* gallery-reader-post-public.json */,
 				E12BE5ED1C5235DB000FD5CA /* get-me-settings-v1.1.json */,
@@ -6133,6 +6122,7 @@
 				FFB8DCA01CE320C700D4D1B7 /* WordPressComRestApiMedia.json in Resources */,
 				747B1D881EB14DA500BFBF8B /* site-users-delete-bad-json-failure.json in Resources */,
 				93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */,
+				74585B9C1F0D591D00E7E667 /* domain-service-valid-domains.json in Resources */,
 				747B1D7E1EB1312200BFBF8B /* site-users-update-role-bad-json-failure.json in Resources */,
 				93C882A61EEB18D700227A59 /* xmlrpc-response-getpost.xml in Resources */,
 				93C882A81EEB18D700227A59 /* xmlrpc-response-redirect.html in Resources */,
@@ -6164,7 +6154,6 @@
 				FFB8DC9F1CE320C700D4D1B7 /* WordPressComRestApiFailUnauthorized.json in Resources */,
 				E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */,
 				FAFB84061BBF3638000BBA8E /* get-multiple-themes-v1.2.json in Resources */,
-				1702BBE91CF357BB00766A33 /* domain-service-all-domain-types.json in Resources */,
 				743868171EE8B43B00E9286A /* xmlrpc-metaweblog-newpost-invalid-posttype-failure.xml in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
 				93C882A71EEB18D700227A59 /* xmlrpc-response-newpost.xml in Resources */,
@@ -6172,6 +6161,7 @@
 				74F24F691EE8729700E8BFE8 /* xmlrpc-wp-getpost-bad-xml-failure.xml in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
 				740A54311EB108950073FD99 /* site-roles-auth-failure.json in Resources */,
+				74585B9D1F0D591D00E7E667 /* domain-service-all-domain-types.json in Resources */,
 				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,
 				FFB8DC9E1CE320C700D4D1B7 /* WordPressComRestApiFailRequestInvalidToken.json in Resources */,
 				FF34EEAB1CF480F100F8B38D /* WordPressComRestApiFailThrottled.json in Resources */,
@@ -6198,7 +6188,6 @@
 				747B1D861EB14A8D00BFBF8B /* site-users-delete-auth-failure.json in Resources */,
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,
 				740A54371EB116EC0073FD99 /* site-users-update-role-unknown-site-failure.json in Resources */,
-				1702BBE61CF3579900766A33 /* domain-service-valid-domains.json in Resources */,
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				742F95691EB8D70500ED66A0 /* plans-feature-bad-json-failure.json in Resources */,
 				7462FD481EE8C0CB007E2B80 /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml in Resources */,
@@ -6510,7 +6499,6 @@
 				1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */,
 				E102B7901E714F24007928E8 /* RecentSitesService.swift in Sources */,
 				E1D7FF381C74EB0E00E7E5E5 /* PlanService.swift in Sources */,
-				173BCE771CEB3D8200AE8817 /* DomainsServiceRemote.swift in Sources */,
 				5D7DEA2919D488DD0032EE77 /* WPStyleGuide+ReaderComments.swift in Sources */,
 				E1D86E691B2B414300DD2192 /* WordPress-32-33.xcmappingmodel in Sources */,
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
@@ -7268,6 +7256,7 @@
 				B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */,
 				59B48B621B99E132008EBB84 /* JSONLoader.swift in Sources */,
 				9363113F19FA996700B0C739 /* AccountServiceTests.swift in Sources */,
+				74585B991F0D58F300E7E667 /* DomainsServiceTests.swift in Sources */,
 				0879FC161E9301DD00E1EFC8 /* MediaTests.swift in Sources */,
 				26A1B5A01DDB6FC1007BDAC0 /* ReaderSiteServiceRemoteTests.swift in Sources */,
 				B556EFCB1DCA374200728F93 /* DictionaryHelpersTests.swift in Sources */,
@@ -7307,7 +7296,6 @@
 				E6A216931DCE857100E7DF73 /* WPRichTextFormatterTests.swift in Sources */,
 				FF34EEA91CF473F600F8B38D /* WordPressComServiceRemoteRestTests.swift in Sources */,
 				BE1071FF1BC75FFA00906AFF /* WPStyleGuide+BlogTests.swift in Sources */,
-				1702BBE21CF319C600766A33 /* DomainsServiceTests.swift in Sources */,
 				932645A41E7C206600134988 /* EditorSettingsTests.swift in Sources */,
 				933D1F471EA64108009FB462 /* TestingAppDelegate.m in Sources */,
 				B5BC25A01CFCB91800F7D8B9 /* PeopleServiceRemoteTests.swift in Sources */,
