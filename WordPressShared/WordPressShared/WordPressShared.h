@@ -12,6 +12,7 @@ FOUNDATION_EXPORT const unsigned char WordPressSharedVersionString[];
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressShared/UIColor+Helpers.h>
 #import <WordPressShared/UIImage+Util.h>
+#import <WordPressShared/WPAnalytics.h>
 #import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPImageSource.h>

@@ -1,7 +1,7 @@
 import UIKit
 import CocoaLumberjack
 import NSURL_IDN
-import WordPressComAnalytics
+import WordPressShared
 
 /// A collection of helper methods for NUX.
 ///
