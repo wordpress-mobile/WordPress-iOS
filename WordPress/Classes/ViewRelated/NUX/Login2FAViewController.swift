@@ -5,21 +5,13 @@ import WordPressShared
 /// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
-class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder, LoginViewController {
+class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet weak var instructionLabel: UILabel!
-    @IBOutlet var errorLabel: UILabel!
     @IBOutlet weak var verificationCodeField: LoginTextField!
     @IBOutlet weak var sendCodeButton: UIButton!
-    @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     var pasteboardBeforeBackground: String? = nil
-
-    lazy fileprivate var loginFacade: LoginFacade = {
-        let facade = LoginFacade()
-        facade.delegate = self
-        return facade
-    }()
 
     override var sourceTag: SupportSourceTag {
         get {
@@ -37,7 +29,6 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
         localizeControls()
         configureTextFields()
         configureSubmitButton(animating: false)
-        setupNavBarIcon()
     }
 
 
@@ -90,8 +81,8 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
         verificationCodeField.placeholder = NSLocalizedString("Verification code", comment: "two factor code placeholder")
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button.").localizedCapitalized
-        submitButton.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
 
         sendCodeButton.setTitle(NSLocalizedString("Text me a code instead", comment: "Button title"),
                                 for: .normal)
@@ -103,19 +94,12 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
     }
 
 
-    /// Required (for now) for protocol conformance.
-    ///
-    func configureStatusLabel(_ message: String) {
-        // no op
-    }
-
-
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
-        submitButton.showActivityIndicator(animating)
+    override func configureSubmitButton(animating: Bool) {
+        submitButton?.showActivityIndicator(animating)
 
-        submitButton.isEnabled = (
+        submitButton?.isEnabled = (
             !animating &&
                 !loginFields.multifactorCode.isEmpty
         )
@@ -126,7 +110,7 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    override func configureViewLoading(_ loading: Bool) {
         verificationCodeField.enablesReturnKeyAutomatically = !loading
 
         configureSubmitButton(animating: loading)
@@ -158,33 +142,7 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
     /// proceeds with the submit action.
     ///
     func validateForm() {
-        displayError(message: "")
-        view.endEditing(true)
-
-        // Is everything filled out?
-        if loginFields.multifactorCode.isEmpty {
-            displayError(message: NSLocalizedString("Please fill out all the fields",
-                                                    comment: "A short prompt asking the user to properly fill out all login fields."))
-            return
-        }
-
-        configureViewLoading(true)
-
-        loginFacade.signIn(with: loginFields)
-    }
-
-
-    /// Update safari stored credentials. Call after a successful sign in.
-    ///
-    func updateSafariCredentialsIfNeeded() {
-        SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
-    }
-
-
-    /// Sets the text of the error label.
-    ///
-    func displayError(message: String) {
-        errorLabel.text = message
+        validateFormAndLogin()
     }
 
 
@@ -255,19 +213,11 @@ class Login2FAViewController: NUXAbstractViewController, SigninWPComSyncHandler,
 }
 
 
-extension Login2FAViewController: LoginFacadeDelegate {
+extension Login2FAViewController {
 
-    func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
-        syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
-    }
+    override func displayRemoteError(_ error: Error!) {
+        displayError(message: "")
 
-
-    func displayLoginMessage(_ message: String!) {
-        // no op
-    }
-
-
-    func displayRemoteError(_ error: Error!) {
         configureViewLoading(false)
         let err = error as NSError
         if (err.domain == "WordPressComOAuthError" && err.code == WordPressComOAuthError.invalidOneTimePassword.rawValue) {
