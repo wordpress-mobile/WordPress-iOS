@@ -9,6 +9,7 @@ FOUNDATION_EXPORT const unsigned char WordPressSharedVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <WordPressShared/PublicHeader.h>
 
 #import <WordPressShared/NSString+Util.h>
+#import <WordPressShared/NSString+Helpers.h>
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressShared/UIColor+Helpers.h>
 #import <WordPressShared/UIImage+Util.h>
