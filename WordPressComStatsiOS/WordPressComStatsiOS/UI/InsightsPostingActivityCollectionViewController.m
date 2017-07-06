@@ -61,18 +61,18 @@ static NSString *const PostActivityCollectionFooterIdentifier = @"PostingActivit
            viewForSupplementaryElementOfKind:(NSString *)kind
                                  atIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionReusableView *reusableview = nil;
-    
+    NSParameterAssert(kind == UICollectionElementKindSectionHeader || kind == UICollectionElementKindSectionFooter);
+
     if (kind == UICollectionElementKindSectionHeader) {
-        reusableview = [collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                                          withReuseIdentifier:PostActivityCollectionHeaderIdentifier
-                                                                 forIndexPath:indexPath];
-    } else if (kind == UICollectionElementKindSectionFooter) {
-        reusableview = [collectionView dequeueReusableSupplementaryViewOfKind:kind
-                                                          withReuseIdentifier:PostActivityCollectionFooterIdentifier
-                                                                 forIndexPath:indexPath];
+        return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                  withReuseIdentifier:PostActivityCollectionHeaderIdentifier
+                                                         forIndexPath:indexPath];
+    } else {
+        // Implies footer
+        return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter
+                                                  withReuseIdentifier:PostActivityCollectionFooterIdentifier
+                                                         forIndexPath:indexPath];
     }
-    return reusableview;
 }
 
 @end
