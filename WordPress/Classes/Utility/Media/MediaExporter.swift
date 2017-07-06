@@ -79,14 +79,20 @@ protocol MediaExporter {
 
     /// The type of MediaDirectory to use for the export destination URL.
     ///
-    /// - Note: This would almost always be set to .uploads, but for unit testing we use .temporary.
+    /// - Note: This would generally be set to .uploads or .cache, but for unit testing we use .temporary.
     ///
-    var mediaDirectoryType: MediaLibrary.MediaDirectory { get set }
+    var mediaDirectoryType: MediaDirectory { get set }
 }
 
 /// Extension providing generic helper implementation particular to MediaExporters.
 ///
 extension MediaExporter {
+
+    /// A MediaFileManager configured with the exporter's set MediaDirectory type.
+    ///
+    var mediaFileManager: MediaFileManager {
+        return MediaFileManager(directory: mediaDirectoryType)
+    }
 
     /// Handles wrapping into MediaExportError value types when the encountered Error value type is unknown.
     ///
