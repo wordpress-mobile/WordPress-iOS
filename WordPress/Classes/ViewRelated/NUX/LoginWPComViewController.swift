@@ -5,7 +5,6 @@ import WordPressShared
 /// Provides a form and functionality for signing a user in to WordPress.com
 ///
 class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
-    @IBOutlet weak var usernameField: WPWalkthroughTextField?
     @IBOutlet weak var passwordField: WPWalkthroughTextField?
     @IBOutlet weak var forgotPasswordButton: UIButton?
     @IBOutlet weak var statusLabel: UILabel?
@@ -21,8 +20,11 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         }
     }
 
-    // let the storyboard's style stay
-    override func setupStyles() {}
+    lazy var loginFacade: LoginFacade = {
+        let facade = LoginFacade()
+        facade.delegate = self
+        return facade
+    }()
 
     // MARK: - Lifecycle Methods
 
@@ -31,10 +33,8 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         super.viewDidLoad()
 
         localizeControls()
-        setupOnePasswordButtonIfNeeded()
         configureStatusLabel("")
         setupNavBarIcon()
-        usernameField?.isHidden = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -121,6 +121,30 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         }
     }
 
+    func configureTextFields() {
+        passwordField?.text = loginFields.password
+        passwordField?.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        emailLabel?.text = loginFields.username
+    }
+
+    func localizeControls() {
+        passwordField?.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
+        passwordField?.accessibilityIdentifier = "Password"
+
+        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.accessibilityIdentifier = "Log In Button"
+
+        let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
+        forgotPasswordButton?.setTitle(forgotPasswordTitle, for: UIControlState())
+        forgotPasswordButton?.setTitle(forgotPasswordTitle, for: .highlighted)
+    }
+
+    // let the storyboard's style stay
+    override func setupStyles() {}
+
+
     // MARK: - Instance Methods
 
     /// Validates what is entered in the various form fields and, if valid,
@@ -146,12 +170,10 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     // MARK: - Actions
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
-        guard let usernameField = usernameField,
-            let passwordField = passwordField else {
+        guard let passwordField = passwordField else {
                 return
         }
 
-        loginFields.username = usernameField.nonNilTrimmedText()
         loginFields.password = passwordField.nonNilTrimmedText()
 
         configureSubmitButton(animating: false)
@@ -189,33 +211,17 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         self.performSegue(withIdentifier: .showEpilogue, sender: self)
     }
 
-    func configureTextFields() {
-        usernameField?.text = loginFields.username
-        passwordField?.text = loginFields.password
-        passwordField?.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-        emailLabel?.text = usernameField?.text
-    }
+    // MARK: Keyboard Events
 
-    func localizeControls() {
-        passwordField?.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
-        passwordField?.accessibilityIdentifier = "Password"
-
-        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
-        submitButton?.accessibilityIdentifier = "Log In Button"
-
-        let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
-        forgotPasswordButton?.setTitle(forgotPasswordTitle, for: UIControlState())
-        forgotPasswordButton?.setTitle(forgotPasswordTitle, for: .highlighted)
+    func signinFormVerticalOffset() -> CGFloat {
+        // the stackview-based layout shifts fine with this adjustment
+        return 0
     }
 }
 
 extension LoginWPComViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == usernameField {
-            passwordField?.becomeFirstResponder()
-        } else if enableSubmit(animating: false) {
+        if enableSubmit(animating: false) {
             validateForm()
         }
         return true
