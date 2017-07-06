@@ -69,7 +69,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     func localizeControls() {
         instructionLabel.text = NSLocalizedString("Enter the address of your WordPress site you'd like to connect.", comment: "Instruction text on the login's site addresss screen.")
 
-        siteURLField.placeholder = NSLocalizedString("example.wordress.com", comment: "Site Address placeholder")
+        siteURLField.placeholder = NSLocalizedString("example.wordpress.com", comment: "Site Address placeholder")
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
         submitButton.setTitle(submitButtonTitle, for: UIControlState())
