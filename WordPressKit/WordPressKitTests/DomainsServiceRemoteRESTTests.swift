@@ -84,7 +84,7 @@ class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testDeleteSiteWithBadAuthFails() {
+    func testGetDomainsWithBadAuthFails() {
         let expect = expectation(description: "Get domains with bad auth failure")
         
         stubRemoteResponse(domainsEndpoint, filename: domainServiceAuthFailureMockFilename, contentType: .ApplicationJSON, status: 403)
@@ -101,7 +101,7 @@ class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
         waitForExpectations(timeout: timeout, handler: nil)
     }
 
-    func testDeleteSiteWithBadJsonFails() {
+    func testGetDomainsWithBadJsonFails() {
         let expect = expectation(description: "Get domains with invalid json response failure")
         
         stubRemoteResponse(domainsEndpoint, filename: domainServiceBadJsonFailureMockFilename, contentType: .ApplicationJSON, status: 200)
