@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 import OHHTTPStubs
+import WordPressKit
 @testable import WordPress
 
 class DomainsServiceTests: XCTestCase {
