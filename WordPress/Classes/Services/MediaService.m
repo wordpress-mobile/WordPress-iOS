@@ -14,8 +14,7 @@
 #import "PhotonImageURLHelper.h"
 #import <WordPressShared/WPImageSource.h>
 #import "MediaService+Legacy.h"
-
-@import WordPressComAnalytics;
+#import <WordPressShared/WPAnalytics.h>
 
 @implementation MediaService
 
