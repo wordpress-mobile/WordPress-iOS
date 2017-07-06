@@ -6,7 +6,7 @@
 #import "StatsStringUtilities.h"
 #import "Logging.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
-#import <WordPressComAnalytics/WPAnalytics.h>
+#import <WordPressShared/WPAnalytics.h>
 @import NSObject_SafeExpectations;
 @import AFNetworking;
 

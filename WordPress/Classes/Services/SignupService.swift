@@ -1,6 +1,5 @@
 import Foundation
 import CocoaLumberjack
-import WordPressComAnalytics
 import WordPressShared
 
 
