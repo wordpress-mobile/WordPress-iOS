@@ -1,5 +1,6 @@
 import Foundation
 import CocoaLumberjack
+import WordPressKit
 
 struct DomainsService {
     let remote: DomainsServiceRemote
