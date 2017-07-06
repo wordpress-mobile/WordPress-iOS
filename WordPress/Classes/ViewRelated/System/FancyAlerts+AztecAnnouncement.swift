@@ -1,5 +1,5 @@
 import UIKit
-import WordPressComAnalytics
+import WordPressShared
 
 extension FancyAlertViewController {
     private enum Constants {
