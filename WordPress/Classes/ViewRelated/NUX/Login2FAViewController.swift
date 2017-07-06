@@ -1,6 +1,5 @@
 import UIKit
 import SVProgressHUD
-import WordPressComAnalytics
 import WordPressShared
 
 /// Provides a form and functionality for entering a two factor auth code and
@@ -8,10 +7,8 @@ import WordPressShared
 ///
 class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet weak var instructionLabel: UILabel!
-    @IBOutlet var errorLabel: UILabel!
     @IBOutlet weak var verificationCodeField: LoginTextField!
     @IBOutlet weak var sendCodeButton: UIButton!
-    @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     var pasteboardBeforeBackground: String? = nil
@@ -32,7 +29,6 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
         localizeControls()
         configureTextFields()
         configureSubmitButton(animating: false)
-        setupNavBarIcon()
     }
 
 
@@ -98,13 +94,6 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     }
 
 
-    /// Required (for now) for protocol conformance.
-    ///
-    override func displayError(_ message: String) {
-        super.displayError(message)
-    }
-
-
     /// Configures the appearance and state of the submit button.
     ///
     override func configureSubmitButton(animating: Bool) {
@@ -154,20 +143,6 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     ///
     func validateForm() {
         validateFormAndLogin()
-    }
-
-
-    /// Update safari stored credentials. Call after a successful sign in.
-    ///
-    func updateSafariCredentialsIfNeeded() {
-        SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
-    }
-
-
-    /// Sets the text of the error label.
-    ///
-    func displayError(message: String) {
-        errorLabel.text = message
     }
 
 
@@ -240,12 +215,8 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
 
 extension Login2FAViewController {
 
-    func displayLoginMessage(_ message: String!) {
-        // no op
-    }
-
     override func displayRemoteError(_ error: Error!) {
-        displayError("")
+        displayError(message: "")
         
         configureViewLoading(false)
         let err = error as NSError

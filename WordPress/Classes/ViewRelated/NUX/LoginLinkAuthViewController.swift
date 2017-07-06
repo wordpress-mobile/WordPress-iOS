@@ -17,12 +17,6 @@ class LoginLinkAuthViewController: LoginViewController {
     // let the storyboard's style stay
     override func setupStyles() {}
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureStatusLabel("")
-        setupNavBarIcon()
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 

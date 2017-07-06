@@ -33,8 +33,6 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupNavBarIcon()
-
         localizeControls()
         setupOnePasswordButtonIfNeeded()
         configureForWPComOnlyIfNeeded()
