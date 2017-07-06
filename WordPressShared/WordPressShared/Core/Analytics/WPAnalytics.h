@@ -287,6 +287,8 @@ extern NSString *const WPAnalyticsStatEditorPublishedPostPropertyVideo;
 + (void)track:(WPAnalyticsStat)stat;
 + (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties;
 + (void)endSession;
++ (BOOL)enabled;
++ (void)setEnabled:(BOOL)enabled;
 
 @end
 
