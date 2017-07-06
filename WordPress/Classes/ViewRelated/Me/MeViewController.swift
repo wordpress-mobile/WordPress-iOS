@@ -1,7 +1,6 @@
 import UIKit
 import CocoaLumberjack
 import WordPressShared
-import WordPressComAnalytics
 import Gridicons
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {

@@ -1,6 +1,5 @@
 import Foundation
 import WordPressShared.WPStyleGuide
-import WordPressComAnalytics
 
 
 /// The purpose of this class is to retrieve the collection of NotificationSettings from WordPress.com

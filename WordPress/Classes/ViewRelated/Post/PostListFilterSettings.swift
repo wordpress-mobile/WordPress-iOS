@@ -1,5 +1,5 @@
 import Foundation
-import WordPressComAnalytics
+import WordPressShared
 
 /// `PostListFilterSettings` manages settings for filtering posts (by author or status)
 /// - Note: previously found within `AbstractPostListViewController`
