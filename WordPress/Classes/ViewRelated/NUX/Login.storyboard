@@ -680,7 +680,7 @@
         <!--LoginWP Com View Controller-->
         <scene sceneID="brQ-1M-iPT">
             <objects>
-                <viewController storyboardIdentifier="SigninWPComViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lmD-c6-SLs" customClass="LoginWPComViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="lmD-c6-SLs" customClass="LoginWPComViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dAs-4b-ACP"/>
                         <viewControllerLayoutGuide type="bottom" id="kOH-fr-1L0"/>
@@ -692,23 +692,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7OQ-0t-1zq" userLabel="Wrapper View">
                                 <rect key="frame" x="0.0" y="44" width="383" height="632"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZWc-TJ-W9T" userLabel="Login Form Holder View">
-                                        <rect key="frame" x="0.0" y="0.0" width="383" height="426.5"/>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="320" id="8EH-3z-HFm"/>
-                                        </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="8EH-3z-HFm"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=regular">
-                                            <mask key="constraints">
-                                                <include reference="8EH-3z-HFm"/>
-                                            </mask>
-                                        </variation>
-                                    </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="ilv-iW-HgP">
                                         <rect key="frame" x="20" y="578" width="343" height="34"/>
                                         <subviews>
@@ -751,27 +734,11 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="ilv-iW-HgP" secondAttribute="bottom" constant="20" id="3jk-VL-Jxm"/>
                                     <constraint firstItem="ilv-iW-HgP" firstAttribute="leading" secondItem="7OQ-0t-1zq" secondAttribute="leading" constant="20" id="MRn-ON-ojl"/>
-                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="leading" secondItem="7OQ-0t-1zq" secondAttribute="leading" id="P9q-Yk-vce"/>
                                     <constraint firstAttribute="trailing" secondItem="ilv-iW-HgP" secondAttribute="trailing" constant="20" id="S20-aP-lKV"/>
-                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7OQ-0t-1zq" secondAttribute="top" id="VLg-UB-2XP"/>
-                                    <constraint firstAttribute="trailing" secondItem="ZWc-TJ-W9T" secondAttribute="trailing" id="dKJ-Hw-hpF"/>
-                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="centerX" secondItem="7OQ-0t-1zq" secondAttribute="centerX" id="jcM-uc-2PV"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="jcM-uc-2PV"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <exclude reference="P9q-Yk-vce"/>
-                                        <exclude reference="dKJ-Hw-hpF"/>
-                                        <include reference="jcM-uc-2PV"/>
-                                    </mask>
-                                </variation>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Bli-Rb-X9m">
-                                <rect key="frame" x="0.0" y="215" width="383" height="246.5"/>
+                                <rect key="frame" x="0.0" y="173.5" width="383" height="246.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="48" text="Enter the password for your WordPress.com account." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBi-2N-RAh">
                                         <rect key="frame" x="20" y="0.0" width="343" height="48"/>
@@ -803,27 +770,8 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email or username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GLH-TC-M0d" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="112.5" width="383" height="44"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="bh9-YX-siU"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-username-field"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="NO"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="handleTextFieldDidChange:" destination="lmD-c6-SLs" eventType="editingChanged" id="v8D-Ni-JQA"/>
-                                            <outlet property="delegate" destination="lmD-c6-SLs" id="Id1-wX-gEq"/>
-                                        </connections>
-                                    </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BtS-3D-CIU" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="164.5" width="383" height="44"/>
+                                        <rect key="frame" x="0.0" y="112.5" width="383" height="44"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <accessibility key="accessibilityConfiguration" identifier="passwordField"/>
                                         <constraints>
@@ -842,14 +790,14 @@
                                         </connections>
                                     </textField>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IFI-gc-uvn">
-                                        <rect key="frame" x="0.0" y="216.5" width="383" height="4"/>
+                                        <rect key="frame" x="0.0" y="164.5" width="383" height="4"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="4" id="mjA-ul-41x"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-I8-yWG">
-                                        <rect key="frame" x="20" y="228.5" width="343" height="18"/>
+                                        <rect key="frame" x="20" y="176.5" width="343" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="2xK-Aw-MVX"/>
                                         </constraints>
@@ -859,7 +807,6 @@
                                     </label>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="GLH-TC-M0d" firstAttribute="width" secondItem="Bli-Rb-X9m" secondAttribute="width" id="2x4-bA-uj7"/>
                                     <constraint firstItem="bBi-2N-RAh" firstAttribute="width" secondItem="Xgi-ZQ-8YL" secondAttribute="width" id="3yb-zG-vHe"/>
                                     <constraint firstItem="BtS-3D-CIU" firstAttribute="width" secondItem="Bli-Rb-X9m" secondAttribute="width" id="Nj7-Tr-hSq"/>
                                     <constraint firstItem="ZqY-I8-yWG" firstAttribute="width" secondItem="Xgi-ZQ-8YL" secondAttribute="width" id="Pbz-jT-al6"/>
@@ -875,7 +822,7 @@
                             <constraint firstItem="7OQ-0t-1zq" firstAttribute="leading" secondItem="tEh-Nj-xof" secondAttribute="leading" id="2v0-ee-Bno"/>
                             <constraint firstItem="7OQ-0t-1zq" firstAttribute="top" secondItem="dAs-4b-ACP" secondAttribute="bottom" constant="-20" id="6Lb-n5-RrE"/>
                             <constraint firstItem="Bli-Rb-X9m" firstAttribute="width" secondItem="tEh-Nj-xof" secondAttribute="width" id="As6-KN-DJf"/>
-                            <constraint firstItem="Bli-Rb-X9m" firstAttribute="centerY" secondItem="tEh-Nj-xof" secondAttribute="centerY" id="DUU-Ag-uYO"/>
+                            <constraint firstItem="BtS-3D-CIU" firstAttribute="centerY" secondItem="7OQ-0t-1zq" secondAttribute="centerY" id="IE5-A1-KGB"/>
                             <constraint firstItem="kOH-fr-1L0" firstAttribute="top" secondItem="7OQ-0t-1zq" secondAttribute="bottom" priority="900" id="cuz-xK-BSJ"/>
                             <constraint firstItem="Bli-Rb-X9m" firstAttribute="centerX" secondItem="tEh-Nj-xof" secondAttribute="centerX" id="i9z-jd-4DN"/>
                         </constraints>
@@ -888,8 +835,6 @@
                         <outlet property="passwordField" destination="BtS-3D-CIU" id="FjI-Ba-FDh"/>
                         <outlet property="statusLabel" destination="ZqY-I8-yWG" id="JAz-Px-ECW"/>
                         <outlet property="submitButton" destination="E3x-LN-sUk" id="9eE-vi-xgc"/>
-                        <outlet property="usernameField" destination="GLH-TC-M0d" id="wBH-SI-k2G"/>
-                        <outlet property="verticalCenterConstraint" destination="DUU-Ag-uYO" id="2e8-z7-1PQ"/>
                         <segue destination="Mwz-tq-5A8" kind="custom" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="7lv-19-h36"/>
                         <segue destination="bAd-Df-IzS" kind="show" identifier="show2FA" id="qLI-qX-rkG"/>
                     </connections>
@@ -2079,4 +2024,9 @@
         <image name="icon-wp" width="50" height="52"/>
         <image name="login-magic-link" width="160" height="160"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="ySQ-EM-6JI"/>
+        <segue reference="7lv-19-h36"/>
+        <segue reference="qLI-qX-rkG"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -17,8 +17,6 @@ class LoginLinkRequestViewController: LoginViewController {
         }
     }
 
-    // let the storyboard's style stay
-    override func setupStyles() {}
 
     // MARK: - Lifecycle Methods
 
@@ -74,6 +72,10 @@ class LoginLinkRequestViewController: LoginViewController {
 
         sendLinkButton?.isEnabled = !animating
     }
+
+    // let the storyboard's style stay
+    override func setupStyles() {}
+
 
     // MARK: - Instance Methods
 
