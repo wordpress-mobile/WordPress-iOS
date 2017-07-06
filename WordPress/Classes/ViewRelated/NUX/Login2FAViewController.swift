@@ -217,7 +217,7 @@ extension Login2FAViewController {
 
     override func displayRemoteError(_ error: Error!) {
         displayError(message: "")
-        
+
         configureViewLoading(false)
         let err = error as NSError
         if (err.domain == "WordPressComOAuthError" && err.code == WordPressComOAuthError.invalidOneTimePassword.rawValue) {
