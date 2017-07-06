@@ -1,6 +1,6 @@
 import Foundation
 import CocoaLumberjack
-import WordPressComAnalytics
+import WordPressShared.WPAnalytics
 import WordPressShared.WPStyleGuide
 import WordPressShared.WPNoResultsView
 
