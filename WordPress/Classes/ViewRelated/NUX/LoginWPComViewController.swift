@@ -1,11 +1,9 @@
 import UIKit
-import WordPressComAnalytics
 import WordPressShared
 
 /// Provides a form and functionality for signing a user in to WordPress.com
 ///
 class LoginWPComViewController: NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder, LoginViewController {
-    @IBOutlet weak var usernameField: WPWalkthroughTextField?
     @IBOutlet weak var passwordField: WPWalkthroughTextField?
     @IBOutlet weak var submitButton: NUXSubmitButton?
     @IBOutlet weak var forgotPasswordButton: UIButton?
@@ -27,8 +25,6 @@ class LoginWPComViewController: NUXAbstractViewController, SigninWPComSyncHandle
         return facade
     }()
 
-    // let the storyboard's style stay
-    override func setupStyles() {}
 
     // MARK: - Lifecycle Methods
 
@@ -37,10 +33,8 @@ class LoginWPComViewController: NUXAbstractViewController, SigninWPComSyncHandle
         super.viewDidLoad()
 
         localizeControls()
-        setupOnePasswordButtonIfNeeded()
         configureStatusLabel("")
         setupNavBarIcon()
-        usernameField?.isHidden = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -72,15 +66,6 @@ class LoginWPComViewController: NUXAbstractViewController, SigninWPComSyncHandle
 
     // MARK: Setup and Configuration
 
-    /// Sets up a 1Password button if 1Password is available.
-    /// - note: this could move into NUXAbstractViewController or LoginViewController for better reuse
-    func setupOnePasswordButtonIfNeeded() {
-        guard let usernameField = usernameField else { return }
-        WPStyleGuide.configureOnePasswordButtonForTextfield(usernameField,
-                                                            target: self,
-                                                            selector: #selector(SigninWPComViewController.handleOnePasswordButtonTapped(_:)))
-    }
-
     /// Displays the specified text in the status label.
     ///
     /// - Parameter message: The text to display in the label.
@@ -107,7 +92,6 @@ class LoginWPComViewController: NUXAbstractViewController, SigninWPComSyncHandle
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
     func configureViewLoading(_ loading: Bool) {
-        usernameField?.isEnabled = !loading
         passwordField?.isEnabled = !loading
 
         configureSubmitButton(animating: loading)
@@ -126,6 +110,30 @@ class LoginWPComViewController: NUXAbstractViewController, SigninWPComSyncHandle
             passwordField?.becomeFirstResponder()
         }
     }
+
+    func configureTextFields() {
+        passwordField?.text = loginFields.password
+        passwordField?.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        emailLabel?.text = loginFields.username
+    }
+
+    func localizeControls() {
+        passwordField?.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
+        passwordField?.accessibilityIdentifier = "Password"
+
+        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.accessibilityIdentifier = "Log In Button"
+
+        let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
+        forgotPasswordButton?.setTitle(forgotPasswordTitle, for: UIControlState())
+        forgotPasswordButton?.setTitle(forgotPasswordTitle, for: .highlighted)
+    }
+
+    // let the storyboard's style stay
+    override func setupStyles() {}
+
 
     // MARK: - Instance Methods
 
@@ -158,12 +166,10 @@ class LoginWPComViewController: NUXAbstractViewController, SigninWPComSyncHandle
     // MARK: - Actions
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
-        guard let usernameField = usernameField,
-            let passwordField = passwordField else {
+        guard let passwordField = passwordField else {
                 return
         }
 
-        loginFields.username = usernameField.nonNilTrimmedText()
         loginFields.password = passwordField.nonNilTrimmedText()
 
         configureSubmitButton(animating: false)
@@ -181,7 +187,6 @@ class LoginWPComViewController: NUXAbstractViewController, SigninWPComSyncHandle
         view.endEditing(true)
 
         SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
-            self?.usernameField?.text = loginFields.username
             self?.passwordField?.text = loginFields.password
             self?.validateForm()
         }
@@ -199,27 +204,6 @@ class LoginWPComViewController: NUXAbstractViewController, SigninWPComSyncHandle
 
     override func dismiss() {
         self.performSegue(withIdentifier: .showEpilogue, sender: self)
-    }
-
-    func configureTextFields() {
-        usernameField?.text = loginFields.username
-        passwordField?.text = loginFields.password
-        passwordField?.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-        emailLabel?.text = usernameField?.text
-    }
-
-    func localizeControls() {
-        passwordField?.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
-        passwordField?.accessibilityIdentifier = "Password"
-
-        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
-        submitButton?.accessibilityIdentifier = "Log In Button"
-
-        let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
-        forgotPasswordButton?.setTitle(forgotPasswordTitle, for: UIControlState())
-        forgotPasswordButton?.setTitle(forgotPasswordTitle, for: .highlighted)
     }
 
     /// Sets the text of the error label.
@@ -266,9 +250,7 @@ extension LoginWPComViewController: LoginFacadeDelegate {
 
 extension LoginWPComViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == usernameField {
-            passwordField?.becomeFirstResponder()
-        } else if enableSubmit(animating: false) {
+        if enableSubmit(animating: false) {
             validateForm()
         }
         return true

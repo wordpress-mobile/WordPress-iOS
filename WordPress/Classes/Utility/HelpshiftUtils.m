@@ -9,6 +9,7 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
+#import <WordPressShared/WPAnalytics.h>
 
 NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
 NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
