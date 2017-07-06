@@ -1,5 +1,5 @@
 import Foundation
-import WordPressComAnalytics
+import WordPressShared
 
 /// A collection of helper methods used by the Reader.
 ///

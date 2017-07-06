@@ -1,6 +1,5 @@
 import Foundation
 import WordPressShared
-import WordPressComAnalytics
 
 
 /// The purpose of this class is to render a collection of NotificationSettings for a given Stream,

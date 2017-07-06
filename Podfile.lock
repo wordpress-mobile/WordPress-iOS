@@ -97,7 +97,6 @@ PODS:
   - WordPress-iOS-Editor (1.9.3):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
-  - WordPressCom-Analytics-iOS (0.1.31)
   - WordPressComKit (0.0.6):
     - Alamofire (= 4.0.1)
   - WPMediaPicker (0.18)
@@ -131,7 +130,6 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-Aztec-iOS (= 1.0.0-beta.7)
   - WordPress-iOS-Editor (= 1.9.3)
-  - WordPressCom-Analytics-iOS (= 0.1.31)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.18)
   - wpxmlrpc (= 0.8.3)
@@ -143,9 +141,6 @@ EXTERNAL SOURCES:
   Starscream:
     :branch: wordpress-ios
     :git: https://github.com/wordpress-mobile/Starscream
-  WordPress-Aztec-iOS:
-    :commit: 881280ccbd807372b6f3c2b6dd8d2a4f5525a0d8
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -157,9 +152,6 @@ CHECKOUT OPTIONS:
   Starscream:
     :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
     :git: https://github.com/wordpress-mobile/Starscream
-  WordPress-Aztec-iOS:
-    :commit: 881280ccbd807372b6f3c2b6dd8d2a4f5525a0d8
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -193,11 +185,10 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 88c7dd91f7db8f4967606cbf21fd3df67694e297
   WordPress-iOS-Editor: ed02135d783ecb9aa4ee5e2462935432d464d461
-  WordPressCom-Analytics-iOS: a64e051690f9408fd71343625bf68f55389cd42d
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 527bca5102c27a49f1891b618c101b05217965da
+PODFILE CHECKSUM: 7964a7f1504e6b640573d72265d3eca370e2c4c3
 
 COCOAPODS: 1.2.1

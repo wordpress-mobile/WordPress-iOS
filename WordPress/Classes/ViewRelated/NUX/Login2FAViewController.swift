@@ -3,11 +3,15 @@ import SVProgressHUD
 import WordPressComAnalytics
 import WordPressShared
 
+/// Provides a form and functionality for entering a two factor auth code and
+/// signing into WordPress.com
+///
 class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet weak var instructionLabel: UILabel!
+    @IBOutlet var errorLabel: UILabel!
     @IBOutlet weak var verificationCodeField: LoginTextField!
     @IBOutlet weak var sendCodeButton: UIButton!
-    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     var pasteboardBeforeBackground: String? = nil
@@ -19,13 +23,6 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     }
 
 
-    class func controller(_ loginFields: LoginFields) -> Login2FAViewController {
-        let storyboard = UIStoryboard(name: "Login", bundle: Bundle.main)
-        let controller = storyboard.instantiateViewController(withIdentifier: "Login2FAViewController") as! Login2FAViewController
-        controller.loginFields = loginFields
-        return controller
-    }
-
     // MARK: - Lifecycle Methods
 
 
@@ -33,7 +30,6 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
         super.viewDidLoad()
 
         localizeControls()
-        configureStatusLabel("")
         configureTextFields()
         configureSubmitButton(animating: false)
         setupNavBarIcon()
@@ -102,14 +98,10 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     }
 
 
-    /// Displays the specified text in the status label.
+    /// Required (for now) for protocol conformance.
     ///
-    /// - Parameter message: The text to display in the label.
-    ///
-    override func configureStatusLabel(_ message: String) {
-        statusLabel.text = message
-
-        sendCodeButton.isEnabled = message.isEmpty
+    override func displayError(_ message: String) {
+        super.displayError(message)
     }
 
 
@@ -162,6 +154,20 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     ///
     func validateForm() {
         validateFormAndLogin()
+    }
+
+
+    /// Update safari stored credentials. Call after a successful sign in.
+    ///
+    func updateSafariCredentialsIfNeeded() {
+        SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
+    }
+
+
+    /// Sets the text of the error label.
+    ///
+    func displayError(message: String) {
+        errorLabel.text = message
     }
 
 
@@ -235,12 +241,20 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
 extension Login2FAViewController {
 
     func displayLoginMessage(_ message: String!) {
-        configureStatusLabel(message)
+        // no op
     }
 
     override func displayRemoteError(_ error: Error!) {
-        configureStatusLabel("")
+        displayError("")
+        
         configureViewLoading(false)
-        displayError(error as NSError, sourceTag: sourceTag)
+        let err = error as NSError
+        if (err.domain == "WordPressComOAuthError" && err.code == WordPressComOAuthError.invalidOneTimePassword.rawValue) {
+            // Invalid verification code.
+            displayError(message: NSLocalizedString("Whoops, that's not a valid two-factor verification code. Double-check your code and try again!",
+                                                    comment: "Error message shown when an incorrect two factor code is provided."))
+        } else {
+            displayError(error as NSError, sourceTag: sourceTag)
+        }
     }
 }
