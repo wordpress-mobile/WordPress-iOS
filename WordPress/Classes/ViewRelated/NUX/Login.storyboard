@@ -772,7 +772,7 @@
                                 </variation>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Bli-Rb-X9m">
-                                <rect key="frame" x="0.0" y="241" width="383" height="194.5"/>
+                                <rect key="frame" x="0.0" y="225.5" width="383" height="194.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="48" text="Enter the password for your WordPress.com account." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBi-2N-RAh">
                                         <rect key="frame" x="20" y="0.0" width="343" height="48"/>
@@ -856,9 +856,9 @@
                             <constraint firstItem="7OQ-0t-1zq" firstAttribute="leading" secondItem="tEh-Nj-xof" secondAttribute="leading" id="2v0-ee-Bno"/>
                             <constraint firstItem="7OQ-0t-1zq" firstAttribute="top" secondItem="dAs-4b-ACP" secondAttribute="bottom" constant="-20" id="6Lb-n5-RrE"/>
                             <constraint firstItem="Bli-Rb-X9m" firstAttribute="width" secondItem="tEh-Nj-xof" secondAttribute="width" id="As6-KN-DJf"/>
-                            <constraint firstItem="Bli-Rb-X9m" firstAttribute="centerY" secondItem="tEh-Nj-xof" secondAttribute="centerY" id="DUU-Ag-uYO"/>
                             <constraint firstItem="kOH-fr-1L0" firstAttribute="top" secondItem="7OQ-0t-1zq" secondAttribute="bottom" priority="900" id="cuz-xK-BSJ"/>
                             <constraint firstItem="Bli-Rb-X9m" firstAttribute="centerX" secondItem="tEh-Nj-xof" secondAttribute="centerX" id="i9z-jd-4DN"/>
+                            <constraint firstItem="BtS-3D-CIU" firstAttribute="centerY" secondItem="7OQ-0t-1zq" secondAttribute="centerY" id="sV1-hZ-O4b"/>
                         </constraints>
                     </view>
                     <connections>
@@ -869,7 +869,6 @@
                         <outlet property="forgotPasswordButton" destination="0P1-6g-BI3" id="UkJ-jm-n4v"/>
                         <outlet property="passwordField" destination="BtS-3D-CIU" id="FjI-Ba-FDh"/>
                         <outlet property="submitButton" destination="E3x-LN-sUk" id="9eE-vi-xgc"/>
-                        <outlet property="verticalCenterConstraint" destination="DUU-Ag-uYO" id="2e8-z7-1PQ"/>
                         <segue destination="Mwz-tq-5A8" kind="custom" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="7lv-19-h36"/>
                         <segue destination="bAd-Df-IzS" kind="show" identifier="show2FA" id="qLI-qX-rkG"/>
                     </connections>
