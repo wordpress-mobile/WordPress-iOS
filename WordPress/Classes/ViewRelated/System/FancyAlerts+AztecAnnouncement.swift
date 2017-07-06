@@ -1,5 +1,9 @@
 import UIKit
+import Gridicons
 import WordPressShared
+
+let AztecAnnouncementWhatsNewURL = URL(string: "https://make.wordpress.org/mobile/whats-new-in-beta-ios-editor/")
+
 
 extension FancyAlertViewController {
     private enum Constants {
@@ -13,6 +17,8 @@ extension FancyAlertViewController {
         }()
         static let successAnimationDuration: TimeInterval = 0.8
         static let successAnimationDampingRaio: CGFloat = 0.6
+        static let confettiViewInset: CGFloat = -40.0
+        static let confettiDuration: TimeInterval = 2.0
     }
 
     static func aztecAnnouncementController() -> FancyAlertViewController {
@@ -44,7 +50,20 @@ extension FancyAlertViewController {
             WPAnalytics.track(.editorToggledOn)
         }
 
+        let addConfetti: (FancyAlertButtonHandler) = { controller in
+            guard let imageView = controller.headerImageView else { return }
+
+            let confettiView = ConfettiView.aztecAnnouncementConfettiView()
+            confettiView.frame = imageView.bounds.insetBy(dx: Constants.confettiViewInset,
+                                                          dy: Constants.confettiViewInset)
+            imageView.superview?.addSubview(confettiView)
+
+            confettiView.start(duration: Constants.confettiDuration)
+        }
+
         let defaultButton = Button(Strings.tryIt, { controller in
+            WPAppAnalytics.track(.editorAztecPromoPositive)
+
             enableEditor()
 
             controller.setViewConfiguration(aztecAnnouncementSuccessConfig,
@@ -54,28 +73,45 @@ extension FancyAlertViewController {
                                                     controller.headerImageView.transform = Constants.successAnimationTransform
                                                 }
 
-                                                UIViewPropertyAnimator(duration: Constants.successAnimationDuration,
+                                                let animator = UIViewPropertyAnimator(duration: Constants.successAnimationDuration,
                                                                        dampingRatio: Constants.successAnimationDampingRaio,
                                                                        animations: {
                                                     controller.headerImageView.transform = CGAffineTransform.identity
-                                                }).startAnimation()
+                                                })
 
+                                                animator.addCompletion({ _ in
+                                                    addConfetti(controller)
+                                                })
+
+                                                animator.startAnimation()
             })
         })
 
         let cancelButton = Button(Strings.notNow, { controller in
+            WPAppAnalytics.track(.editorAztecPromoNegative)
             controller.dismiss(animated: true, completion: nil)
         })
 
-        let moreInfoButton = Button(Strings.whatsNew, { _ in })
-        let titleAccessoryButton = Button(Strings.beta, { _ in })
+        let moreInfoButton = Button(Strings.whatsNew, { controller in
+            WPAppAnalytics.track(.editorAztecPromoLink)
+            WPWebViewController.presentWhatsNewWebView(from: controller)
+        })
+
+        let titleAccessoryButton = Button(Strings.beta, { controller in
+            WPAppAnalytics.track(.editorAztecBetaLink)
+            WPWebViewController.presentWhatsNewWebView(from: controller)
+        })
 
         let image = UIImage(named: "wp-illustration-hand-write")
 
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
                                                      bodyText: Strings.bodyText,
                                                      headerImage: image,
-                                                     defaultButton: defaultButton, cancelButton: cancelButton, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton, dismissAction: nil)
+                                                     defaultButton: defaultButton,
+                                                     cancelButton: cancelButton,
+                                                     moreInfoButton: moreInfoButton,
+                                                     titleAccessoryButton: titleAccessoryButton,
+                                                     dismissAction: nil)
 
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
     }
@@ -91,8 +127,15 @@ extension FancyAlertViewController {
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
-        let moreInfoButton = Button(Strings.whatsNew, { _ in })
-        let titleAccessoryButton = Button(Strings.beta, { _ in })
+        let moreInfoButton = Button(Strings.whatsNew, { controller in
+            WPAppAnalytics.track(.editorAztecPromoLink)
+            WPWebViewController.presentWhatsNewWebView(from: controller)
+        })
+
+        let titleAccessoryButton = Button(Strings.beta, { controller in
+            WPAppAnalytics.track(.editorAztecBetaLink)
+            WPWebViewController.presentWhatsNewWebView(from: controller)
+        })
 
         let image = UIImage(named: "wp-illustration-hand-write")
 
@@ -116,9 +159,16 @@ extension FancyAlertViewController {
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
-        let moreInfoButton = Button(Strings.appSettings, { _ in })
+        let moreInfoButton = Button(Strings.appSettings, { controller in
+            controller.presentingViewController?.dismiss(animated: true, completion: {
+                WPTabBarController.sharedInstance().switchMeTabToAppSettings()
+            })
+        })
 
-        let titleAccessoryButton = Button(Strings.beta, { _ in })
+        let titleAccessoryButton = Button(Strings.beta, { controller in
+            WPAppAnalytics.track(.editorAztecBetaLink)
+            WPWebViewController.presentWhatsNewWebView(from: controller)
+        })
 
         let image = UIImage(named: "wp-illustration-thank-you")
 
@@ -130,6 +180,20 @@ extension FancyAlertViewController {
                                                 WPTabBarController.sharedInstance().showPostTab(animated: true, toMedia: false)
         })
     }()
+}
+
+private extension ConfettiView {
+    static func aztecAnnouncementConfettiView() -> ConfettiView {
+        let colors: [UIColor] = [ UIColor(hexString: "FCC320"),
+                                  UIColor(hexString: "FDD665"),
+                                  UIColor(hexString: "0083C2"),
+                                  UIColor(hexString: "C0F4FF"),
+                                  UIColor(hexString: "78DFBF"),
+                                  UIColor(hexString: "C976CE"),
+                                  UIColor(hexString: "DAA0DD"),
+                                  UIColor(hexString: "C7D7E3") ]
+        return ConfettiView(colors: colors)
+    }
 }
 
 // MARK: - User Defaults
@@ -148,3 +212,42 @@ extension UserDefaults {
         }
     }
 }
+
+// MARK: - What's New Web View
+
+extension WPWebViewController {
+    static func presentWhatsNewWebView(from viewController: UIViewController) {
+        // Replace the web view's options button with our own bug reporting button
+        let bugButton = UIBarButtonItem(image: Gridicon.iconOfType(.bug), style: .plain, target: self, action: #selector(bugButtonTapped))
+        bugButton.accessibilityLabel = NSLocalizedString("Report a bug", comment: "Button allowing the user to report a bug with the beta Aztec editor")
+
+        var webViewController: WPWebViewController
+
+        if HelpshiftUtils.isHelpshiftEnabled() {
+            webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL, optionsButton: bugButton)
+        } else {
+            webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL)
+        }
+
+        let navigationController = UINavigationController(rootViewController: webViewController)
+
+        viewController.present(navigationController, animated: true, completion: nil)
+    }
+
+    @objc static private func bugButtonTapped() {
+        // Find the topmost view controller that we can present from
+        guard let delegate = UIApplication.shared.delegate,
+            let window = delegate.window,
+            let viewController = window?.topmostPresentedViewController else { return }
+
+        guard HelpshiftUtils.isHelpshiftEnabled() else { return }
+
+        let presenter = HelpshiftPresenter()
+        presenter.sourceTag = SupportSourceTag.inAppFeedback
+        presenter.presentHelpshiftConversationWindowFromViewController(viewController,
+                                                                       refreshUserDetails: true,
+                                                                       completion:nil)
+    }
+}
+
+private let contactURL = "https://support.wordpress.com/contact/"
