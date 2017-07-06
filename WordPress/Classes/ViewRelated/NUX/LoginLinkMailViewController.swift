@@ -26,8 +26,6 @@ class LoginLinkMailViewController: LoginViewController {
         }
 
         localizeControls()
-
-        setupNavBarIcon()
     }
 
     override func viewDidAppear(_ animated: Bool) {
