@@ -161,20 +161,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     /// proceeds with the submit action.
     ///
     func validateForm() {
-        view.endEditing(true)
-
-        // Is everything filled out?
-        if loginFields.multifactorCode.isEmpty {
-            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Title of an error message"),
-                              message: NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."),
-                              withSupportButton: false)
-
-            return
-        }
-
-        configureViewLoading(true)
-
-        loginFacade.signIn(with: loginFields)
+        validateFormAndLogin()
     }
 
 
