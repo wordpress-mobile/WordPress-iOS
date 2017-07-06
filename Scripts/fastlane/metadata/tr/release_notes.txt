@@ -1,1 +1,2 @@
-Bu dağıtım için bir kaç pikseli cilaladık, bir kaç hataya elveda dedik ve uygulama kullanıcılarımız için WordPress deneyimini iyileştirecek arka plan geliştirmeleri yaptık.
+Sitenizin simgesini site detayları ekranında düzenleyin. Başlamak için dokunmanız yeterli.
+Yazı etiketleri alanına otomatik düzeltme desteği ekledik.

@@ -539,6 +539,19 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [blogListVC setSelectedBlog:blog animated:NO];
 }
 
+- (void)switchMeTabToAppSettings
+{
+    [self showMeTab];
+
+    [self.meNavigationController popToRootViewControllerAnimated:NO];
+
+    // If we don't dispatch_async here, the top inset of the app
+    // settings VC isn't correct when pushed...
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.meViewController navigateToAppSettings];
+    });
+}
+
 - (NSString *)currentlySelectedScreen
 {
     // Check which tab is currently selected
