@@ -5,17 +5,22 @@ NSString *const WPAnalyticsStatEditorPublishedPostPropertyPhoto = @"with_photos"
 NSString *const WPAnalyticsStatEditorPublishedPostPropertyTag = @"with_tags";
 NSString *const WPAnalyticsStatEditorPublishedPostPropertyVideo = @"with_videos";
 
+static BOOL WPAnalyticsEnabled = YES;
+
 @implementation WPAnalytics
 
 + (NSMutableArray *)trackers
 {
+    if (![self enabled]) {
+        return [NSMutableArray new];
+    }
     static NSMutableArray *trackers = nil;
     
     static dispatch_once_t predicate;
     dispatch_once(&predicate, ^{
         trackers = [[NSMutableArray alloc] init];
     });
-    
+
     return trackers;
 }
 
@@ -88,6 +93,15 @@ NSString *const WPAnalyticsStatEditorPublishedPostPropertyVideo = @"with_videos"
             [tracker refreshMetadata];
         }
     }
+}
+
++ (BOOL)enabled
+{
+    return WPAnalyticsEnabled;
+}
+
++ (void)setEnabled:(BOOL)enabled {
+    WPAnalyticsEnabled = enabled;
 }
 
 @end
