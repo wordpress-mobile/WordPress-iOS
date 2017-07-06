@@ -10,6 +10,12 @@ class LoginViewController: NUXAbstractViewController {
         return facade
     }()
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        displayError(message: "")
+        setupNavBarIcon()
+    }
+
     /// Places the WordPress logo in the navbar
     ///
     func setupNavBarIcon() {
