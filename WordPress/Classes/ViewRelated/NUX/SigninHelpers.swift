@@ -106,11 +106,11 @@ import WordPressShared
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "selfHosted") as? NUXAbstractViewController else {
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? NUXAbstractViewController else {
             return
         }
 
-        let navController = NUXNavigationController(rootViewController: controller)
+        let navController = LoginNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
     }
 
