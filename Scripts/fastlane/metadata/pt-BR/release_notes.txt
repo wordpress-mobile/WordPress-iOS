@@ -1,1 +1,2 @@
-Para esta versão, nós polimos alguns píxeis, demos adeus a alguns bugs, e trabalhamos nos bastidores para tornar a experiência de WordPress mais suave para nossos usuários do app.
+Edite o ícone do seu site na tela de detalhes, é só tocar para começar.
+Adicionamos autocorreção no campo de tags do post.
