@@ -4,7 +4,7 @@
 #import "WPStyleGuide+Stats.h"
 #import "StatsTableSectionHeaderView.h"
 #import "AppExtensionUtils.h"
-@import WordPressComAnalytics;
+@import WordPressShared;
 @import WordPressKit;
 
 static NSString *const StatsTableSectionHeaderSimpleBorder = @"StatsTableSectionHeaderSimpleBorder";

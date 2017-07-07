@@ -1,6 +1,6 @@
 import Foundation
 import CocoaLumberjack
-import WordPressComAnalytics
+import WordPressShared
 
 /// SharingService is responsible for wrangling publicize services, publicize
 /// connections, and keyring connections.
