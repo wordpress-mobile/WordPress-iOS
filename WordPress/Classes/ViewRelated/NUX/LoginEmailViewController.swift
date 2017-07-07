@@ -234,7 +234,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     ///
     func validateForm() {
         displayError(message: "")
-        guard loginFields.username.isValidEmail() else {
+        guard EmailFormatValidator.validate(string: loginFields.username) else {
             assertionFailure("Form should not be submitted unless there is a valid looking email entered.")
             return
         }
@@ -270,7 +270,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     /// Whether the form can be submitted.
     ///
     func canSubmit() -> Bool {
-        return loginFields.username.isValidEmail()
+        return EmailFormatValidator.validate(string: loginFields.username)
     }
 
 
