@@ -140,7 +140,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KAn-ug-oE6">
                                         <rect key="frame" x="0.0" y="0.0" width="391" height="549"/>
                                         <subviews>
-                                            <view opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ff9-jl-eKh">
+                                            <view opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Ff9-jl-eKh">
                                                 <rect key="frame" x="0.0" y="194.5" width="391" height="122"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKR-9c-zZQ">
@@ -192,9 +192,10 @@
                                             </view>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstItem="Ff9-jl-eKh" firstAttribute="top" relation="greaterThanOrEqual" secondItem="KAn-ug-oE6" secondAttribute="top" constant="20" id="EKx-vI-rSm"/>
                                             <constraint firstAttribute="trailing" secondItem="Ff9-jl-eKh" secondAttribute="trailing" id="Tbw-s4-sXV"/>
                                             <constraint firstItem="Ff9-jl-eKh" firstAttribute="leading" secondItem="KAn-ug-oE6" secondAttribute="leading" id="UlL-49-A8K"/>
-                                            <constraint firstItem="XXO-aV-keK" firstAttribute="centerY" secondItem="KAn-ug-oE6" secondAttribute="centerY" id="ftV-Sq-D3b"/>
+                                            <constraint firstItem="XXO-aV-keK" firstAttribute="centerY" secondItem="KAn-ug-oE6" secondAttribute="centerY" priority="900" id="ftV-Sq-D3b"/>
                                         </constraints>
                                     </view>
                                     <view opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="ecG-o1-wwE">
@@ -636,9 +637,10 @@
                                             </view>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstItem="Mjx-cz-sDG" firstAttribute="top" relation="greaterThanOrEqual" secondItem="y8j-4r-VXw" secondAttribute="top" constant="20" id="f4G-G5-w9e"/>
                                             <constraint firstItem="Mjx-cz-sDG" firstAttribute="leading" secondItem="y8j-4r-VXw" secondAttribute="leading" id="ijo-eO-0zW"/>
                                             <constraint firstAttribute="trailing" secondItem="Mjx-cz-sDG" secondAttribute="trailing" id="jXU-Dw-NSV"/>
-                                            <constraint firstItem="tW0-In-DwC" firstAttribute="centerY" secondItem="y8j-4r-VXw" secondAttribute="centerY" id="mGk-PV-luu"/>
+                                            <constraint firstItem="tW0-In-DwC" firstAttribute="centerY" secondItem="y8j-4r-VXw" secondAttribute="centerY" priority="900" id="mGk-PV-luu"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRL-RD-U6n">
@@ -1685,7 +1687,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PIc-wF-cQF">
                                         <rect key="frame" x="0.0" y="0.0" width="391" height="549"/>
                                         <subviews>
-                                            <view opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="a1t-zo-d5c">
+                                            <view opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="a1t-zo-d5c">
                                                 <rect key="frame" x="0.0" y="194.5" width="391" height="122"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="Enter the address of the WordPress site you'd like to connect." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFO-bF-n1P">
@@ -1738,7 +1740,8 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="a1t-zo-d5c" secondAttribute="trailing" id="1PY-Jw-P0J"/>
-                                            <constraint firstItem="ZrT-CY-qD7" firstAttribute="centerY" secondItem="PIc-wF-cQF" secondAttribute="centerY" id="9ZA-SI-QXw"/>
+                                            <constraint firstItem="ZrT-CY-qD7" firstAttribute="centerY" secondItem="PIc-wF-cQF" secondAttribute="centerY" priority="900" id="9ZA-SI-QXw"/>
+                                            <constraint firstItem="a1t-zo-d5c" firstAttribute="top" relation="greaterThanOrEqual" secondItem="PIc-wF-cQF" secondAttribute="top" constant="20" id="BA4-eI-gjp"/>
                                             <constraint firstItem="a1t-zo-d5c" firstAttribute="leading" secondItem="PIc-wF-cQF" secondAttribute="leading" id="Gsg-hb-SON"/>
                                         </constraints>
                                     </view>
@@ -2165,7 +2168,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Jfl-Zm-PRR"/>
-        <segue reference="7lv-19-h36"/>
-        <segue reference="qLI-qX-rkG"/>
+        <segue reference="fWM-mD-lXg"/>
+        <segue reference="lIb-sw-yM7"/>
     </inferredMetricsTieBreakers>
 </document>
