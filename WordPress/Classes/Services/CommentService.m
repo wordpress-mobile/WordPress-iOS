@@ -6,7 +6,6 @@
 #import "CommentServiceRemoteXMLRPC.h"
 #import "CommentServiceRemoteREST.h"
 #import "ContextManager.h"
-#import "NSString+Helpers.h"
 #import "ReaderPost.h"
 #import "WPAccount.h"
 #import "PostService.h"
