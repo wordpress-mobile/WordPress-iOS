@@ -1,5 +1,4 @@
 import UIKit
-import WordPressComAnalytics
 import WordPressShared
 
 /// A base class for the various NUX related related view controllers.

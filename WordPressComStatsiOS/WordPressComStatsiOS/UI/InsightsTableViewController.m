@@ -16,7 +16,6 @@
 #import "NSBundle+StatsBundleHelper.h"
 #import "InsightsPostingActivityCollectionViewController.h"
 #import "AppExtensionUtils.h"
-@import WordPressComAnalytics;
 @import WordPressKit;
 @import WordPressShared;
 
@@ -1469,7 +1468,7 @@ static CGFloat const InsightsTableSectionFooterHeight = 10.0f;
 {
     NSNumber *subSectionValue = self.selectedSubsections[@(statsSection)];
     
-    if (!subSectionValue) {
+    if (subSectionValue == nil) {
         return StatsSubSectionNone;
     }
     

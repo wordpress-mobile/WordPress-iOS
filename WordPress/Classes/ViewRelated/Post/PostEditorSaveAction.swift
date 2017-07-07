@@ -1,5 +1,5 @@
 import Foundation
-import WordPressComAnalytics
+import WordPressShared
 
 /// Encapsulates the current save action of the editor, based on its
 /// post status, whether it's already been saved, is scheduled, etc.
