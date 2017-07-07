@@ -22,7 +22,6 @@
 
 // Categories & extensions
 #import "NSBundle+VersionNumberHelper.h"
-#import "NSString+Helpers.h"
 #import "UIDevice+Helpers.h"
 
 // Data model
