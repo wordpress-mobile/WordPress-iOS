@@ -80,7 +80,7 @@ import WordPressShared
         }
         controller.restrictToWPCom = true
 
-        let navController = NUXNavigationController(rootViewController: controller)
+        let navController = LoginNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
     }
 
