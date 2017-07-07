@@ -1,7 +1,9 @@
 #import "MediaServiceRemoteREST.h"
 #import "RemoteMedia.h"
-@import WordPressKit;
-#import "WordPress-Swift.h"
+#import "Logging.h"
+#import <WordPressKit/WordPressKit-Swift.h>
+@import WordPressShared;
+@import NSObject_SafeExpectations;
 
 const NSInteger WPRestErrorCodeMediaNew = 10;
 
