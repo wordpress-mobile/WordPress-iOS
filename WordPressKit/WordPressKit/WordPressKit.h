@@ -31,11 +31,15 @@ FOUNDATION_EXPORT const unsigned char WordPressKitVersionString[];
 #import "MediaServiceRemote.h"
 #import "MediaServiceRemoteREST.h"
 #import "MediaServiceRemoteXMLRPC.h"
+#import "MenusServiceRemote.h"
 
 #import "RemoteBlog.h"
 #import "RemoteBlogOptionsHelper.h"
 #import "RemotePostType.h"
 #import "RemoteMedia.h"
+#import "RemoteMenu.h"
+#import "RemoteMenuItem.h"
+#import "RemoteMenuLocation.h"
 #import "RemoteUser.h"
 #import "RemoteComment.h"
 

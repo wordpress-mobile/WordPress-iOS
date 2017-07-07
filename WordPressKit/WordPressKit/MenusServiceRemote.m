@@ -2,7 +2,10 @@
 #import "RemoteMenu.h"
 #import "RemoteMenuItem.h"
 #import "RemoteMenuLocation.h"
-#import "WordPress-Swift.h"
+#import <WordPressKit/WordPressKit-Swift.h>
+#import "Logging.h"
+@import WordPressShared;
+@import NSObject_SafeExpectations;
 
 NS_ASSUME_NONNULL_BEGIN
 
