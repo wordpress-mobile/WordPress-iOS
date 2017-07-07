@@ -15,7 +15,7 @@ NSString *const WPAnalyticsStatEditorPublishedPostPropertyVideo = @"with_videos"
     dispatch_once(&predicate, ^{
         trackers = [[NSMutableArray alloc] init];
     });
-    
+
     return trackers;
 }
 

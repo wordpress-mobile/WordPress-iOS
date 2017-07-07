@@ -8,7 +8,7 @@ import WordPressShared
 /// The expectation is this controller will be momentarily visible when the app
 /// is resumed/launched via the appropriate custom scheme, and quickly dismiss.
 ///
-class LoginLinkAuthViewController: NUXAbstractViewController, SigninWPComSyncHandler, LoginViewController {
+class LoginLinkAuthViewController: LoginViewController {
     @IBOutlet weak var statusLabel: UILabel?
     var email: String = ""
     var token: String = ""
@@ -16,12 +16,6 @@ class LoginLinkAuthViewController: NUXAbstractViewController, SigninWPComSyncHan
 
     // let the storyboard's style stay
     override func setupStyles() {}
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureStatusLabel("")
-        setupNavBarIcon()
-    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -45,17 +39,11 @@ class LoginLinkAuthViewController: NUXAbstractViewController, SigninWPComSyncHan
     ///
     /// - Parameter message: The text to display in the label.
     ///
-    func configureStatusLabel(_ message: String) {
+    override func configureStatusLabel(_ message: String) {
         statusLabel?.text = message
     }
 
-
-    func configureViewLoading(_ loading: Bool) {
-        // Noop
-    }
-
-
-    func updateSafariCredentialsIfNeeded() {
+    override func updateSafariCredentialsIfNeeded() {
         // Noop
     }
 
