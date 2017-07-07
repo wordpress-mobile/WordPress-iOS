@@ -1,9 +1,9 @@
 #import "CommentServiceRemoteREST.h"
-#import "WordPress-Swift.h"
+#import <WordPressKit/WordPressKit-Swift.h>
 #import "RemoteComment.h"
-@import NSObject_SafeExpectations;
-@import WordPressKit;
 
+@import NSObject_SafeExpectations;
+@import WordPressShared;
 
 @implementation CommentServiceRemoteREST
 
@@ -169,7 +169,7 @@
                                 success:(void (^)(NSArray *comments))success
                                 failure:(void (^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies?order=ASC&hierarchical=1&page=%d&number=%d", self.siteID, postID, page, number];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies?order=ASC&hierarchical=1&page=%lu&number=%lu", self.siteID, postID, (unsigned long)page, (unsigned long)number];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
