@@ -1143,7 +1143,6 @@
                     </view>
                     <connections>
                         <outlet property="errorLabel" destination="Bnl-db-peA" id="vfV-dr-NBR"/>
-                        <outlet property="statusLabel" destination="Bnl-db-peA" id="ekO-Re-yc4"/>
                         <segue destination="Mwz-tq-5A8" kind="custom" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="7ky-IR-Xbv"/>
                     </connections>
                 </viewController>
@@ -1160,20 +1159,20 @@
                         <viewControllerLayoutGuide type="bottom" id="pCc-dg-bxb"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="gJB-TV-Tpp">
-                        <rect key="frame" x="0.0" y="64" width="383" height="612"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Onf-X6-J5w">
-                                <rect key="frame" x="0.0" y="0.0" width="383" height="528"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="563"/>
                                 <connections>
                                     <segue destination="0GP-rM-Hvu" kind="embed" id="taY-7m-sQh"/>
                                 </connections>
                             </containerView>
                             <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="juu-ng-v2N">
-                                <rect key="frame" x="0.0" y="528" width="383" height="84"/>
+                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiQ-IN-bzh">
-                                        <rect key="frame" x="20" y="20" width="343" height="44"/>
+                                        <rect key="frame" x="20" y="20" width="335" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="wlF-fo-JMp"/>
                                         </constraints>
@@ -1190,7 +1189,7 @@
                                         </connections>
                                     </button>
                                     <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="cmz-zv-QBQ">
-                                        <rect key="frame" x="0.0" y="-10" width="383" height="10"/>
+                                        <rect key="frame" x="0.0" y="-10" width="375" height="10"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="10" id="P6k-Ic-btx"/>
                                         </constraints>
@@ -1235,16 +1234,16 @@
             <objects>
                 <tableViewController id="0GP-rM-Hvu" customClass="LoginEpilogueTableView" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="154" sectionHeaderHeight="28" sectionFooterHeight="28" id="TzF-S4-1lW">
-                        <rect key="frame" x="0.0" y="0.0" width="383" height="528"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95294117647058818" green="0.96470588235294119" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="userInfo" rowHeight="148" id="rFk-m6-PzB" customClass="LoginEpilogueUserInfoCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="383" height="148"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="148"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rFk-m6-PzB" id="Be1-mM-Agr">
-                                    <rect key="frame" x="0.0" y="0.0" width="383" height="148"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="148"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xKq-ni-wZB" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
@@ -1323,10 +1322,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BlogCell" rowHeight="52" id="Efm-ja-Y8C" customClass="LoginEpilogueBlogCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="176" width="383" height="52"/>
+                                <rect key="frame" x="0.0" y="176" width="375" height="52"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Efm-ja-Y8C" id="Xid-Yh-Kpa">
-                                    <rect key="frame" x="0.0" y="0.0" width="383" height="52"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rtc-ao-Fl6">
@@ -1578,29 +1577,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="383" height="676"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b0O-LO-6ax">
-                                <rect key="frame" x="105.5" y="632" width="172" height="28"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <state key="normal" title="Enter your password instead">
-                                    <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="handleUsePasswordTapped:" destination="GSd-vy-rpZ" eventType="touchUpInside" id="I1f-Mc-BbK"/>
-                                    <segue destination="lmD-c6-SLs" kind="show" id="Jfl-Zm-PRR"/>
-                                </connections>
-                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="L3o-Cy-vXw">
-                                <rect key="frame" x="18" y="159" width="347" height="318.5"/>
+                                <rect key="frame" x="-4" y="159" width="391" height="318.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login-magic-link" translatesAutoresizingMaskIntoConstraints="NO" id="upR-OL-iQF">
-                                        <rect key="frame" x="93.5" y="0.0" width="160" height="160"/>
+                                        <rect key="frame" x="115.5" y="0.0" width="160" height="160"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="160" id="CtE-yp-T3g"/>
                                             <constraint firstAttribute="width" constant="160" id="LVD-7T-c7k"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your magic link is on its way! Check your email on this device, and tap the link in the email you receive from WordPress.com" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkM-xx-821">
-                                        <rect key="frame" x="2.5" y="190" width="342.5" height="64.5"/>
+                                        <rect key="frame" x="8" y="190" width="375.5" height="64.5"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="0nV-Yg-je4"/>
                                             <constraint firstAttribute="width" constant="320" id="2JY-7V-RVK"/>
@@ -1620,7 +1608,7 @@
                                         </variation>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Iy-9H-ykD" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="136" y="284.5" width="75" height="34"/>
+                                        <rect key="frame" x="158" y="284.5" width="75" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="tyz-kt-Arb"/>
                                         </constraints>
@@ -1636,16 +1624,47 @@
                                         </connections>
                                     </button>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="383" id="lQv-V1-jm1"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="lQv-V1-jm1"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="lQv-V1-jm1"/>
+                                    </mask>
+                                </variation>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b0O-LO-6ax">
+                                <rect key="frame" x="105.5" y="628" width="172" height="28"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <state key="normal" title="Enter your password instead">
+                                    <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleUsePasswordTapped:" destination="GSd-vy-rpZ" eventType="touchUpInside" id="I1f-Mc-BbK"/>
+                                    <segue destination="lmD-c6-SLs" kind="show" id="Jfl-Zm-PRR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="L3o-Cy-vXw" firstAttribute="leading" secondItem="Xyo-MA-Ddd" secondAttribute="leading" constant="18" id="EG6-tW-icm"/>
+                            <constraint firstItem="L3o-Cy-vXw" firstAttribute="leading" secondItem="Xyo-MA-Ddd" secondAttribute="leadingMargin" constant="-20" id="EG6-tW-icm"/>
                             <constraint firstItem="b0O-LO-6ax" firstAttribute="centerX" secondItem="Xyo-MA-Ddd" secondAttribute="centerX" id="RM7-fX-URR"/>
-                            <constraint firstItem="vKK-Mm-0yR" firstAttribute="top" secondItem="b0O-LO-6ax" secondAttribute="bottom" priority="900" constant="16" id="T3w-we-LXY"/>
+                            <constraint firstItem="vKK-Mm-0yR" firstAttribute="top" secondItem="b0O-LO-6ax" secondAttribute="bottom" priority="900" constant="20" id="T3w-we-LXY"/>
                             <constraint firstItem="L3o-Cy-vXw" firstAttribute="centerY" secondItem="Xyo-MA-Ddd" secondAttribute="centerY" constant="-20" id="ece-WV-24S"/>
-                            <constraint firstAttribute="trailing" secondItem="L3o-Cy-vXw" secondAttribute="trailing" constant="18" id="pS9-2a-bJD"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="L3o-Cy-vXw" secondAttribute="trailing" constant="-20" id="pS9-2a-bJD"/>
+                            <constraint firstItem="L3o-Cy-vXw" firstAttribute="centerX" secondItem="Xyo-MA-Ddd" secondAttribute="centerX" id="xII-A3-ICI"/>
                         </constraints>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="constraints">
+                                <exclude reference="EG6-tW-icm"/>
+                                <exclude reference="pS9-2a-bJD"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="label" destination="pkM-xx-821" id="nOS-5r-86h"/>
@@ -2154,8 +2173,8 @@
         <image name="login-magic-link" width="160" height="160"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0ao-yi-yZI"/>
+        <segue reference="Jfl-Zm-PRR"/>
         <segue reference="fWM-mD-lXg"/>
-        <segue reference="fA5-mb-vrv"/>
+        <segue reference="7ky-IR-Xbv"/>
     </inferredMetricsTieBreakers>
 </document>
