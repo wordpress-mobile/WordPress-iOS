@@ -61,7 +61,7 @@ open class EmailFormatValidator {
         if !resemblesHostname(domain) {
             return false
         }
-        
+
         return true
     }
 
