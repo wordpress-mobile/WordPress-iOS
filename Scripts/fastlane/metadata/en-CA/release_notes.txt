@@ -1,1 +1,2 @@
-For this release, we polished some pixels, waved a few bugs goodbye, and worked behind the scenes to make the WordPress experience smoother for our app users.
+Edit your site's icon on the site details screen, just tap on it to get started.
+We've added autocorrect support on the post tags field.
