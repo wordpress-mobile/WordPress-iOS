@@ -7,7 +7,8 @@ open class EmailFormatValidator {
 
     /// Validate the specified string.
     ///
-    public class func validate(str: NSString) -> Bool {
+    public class func validate(string: String) -> Bool {
+        let str = string as NSString
         // Test for the minimum length the email can be
         if !isMinEmailLength(str) {
             return false
