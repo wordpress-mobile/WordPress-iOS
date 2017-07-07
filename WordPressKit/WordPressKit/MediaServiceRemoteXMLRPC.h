@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "MediaServiceRemote.h"
-@import WordPressKit;
+#import "ServiceRemoteWordPressXMLRPC.h"
 
 @interface MediaServiceRemoteXMLRPC : ServiceRemoteWordPressXMLRPC <MediaServiceRemote>
 @end

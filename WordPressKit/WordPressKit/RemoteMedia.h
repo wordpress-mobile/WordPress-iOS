@@ -1,3 +1,5 @@
+#import <Foundation/Foundation.h>
+
 @interface RemoteMedia : NSObject
 
 @property (nonatomic, strong) NSNumber *mediaID;
