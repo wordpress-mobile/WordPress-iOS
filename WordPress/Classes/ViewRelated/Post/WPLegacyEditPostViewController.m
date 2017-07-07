@@ -19,8 +19,7 @@
 #import <WordPressShared/WPFontManager.h>
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "WordPress-Swift.h"
-#import "WPAndDeviceMediaLibraryDataSource.h"
-#import "NSString+Helpers.h"	
+#import "WPAndDeviceMediaLibraryDataSource.h"	
 #import "WPAppAnalytics.h"
 @import Gridicons;
 #import <WordPressShared/WPStyleGuide.h>

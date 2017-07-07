@@ -2,7 +2,6 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "SourcePostAttribution.h"
-#import "NSString+Helpers.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
 #import "WPAvatarSource.h"

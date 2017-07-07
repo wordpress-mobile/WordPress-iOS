@@ -1,7 +1,10 @@
 #import "CommentServiceRemoteXMLRPC.h"
+#import <WordPressKit/WordPressKit-Swift.h>
 #import "RemoteComment.h"
-#import "WordPress-Swift.h"
+
 @import wpxmlrpc;
+@import WordPressShared;
+@import NSObject_SafeExpectations;
 
 @implementation CommentServiceRemoteXMLRPC
 
