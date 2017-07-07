@@ -1,5 +1,4 @@
 #import "WordPressComServiceRemote.h"
-#import "NSString+Helpers.h"
 #import "ApiCredentials.h"
 #import "WordPress-Swift.h"
 

@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+import WordPressKit
 @testable import WordPress
 
 

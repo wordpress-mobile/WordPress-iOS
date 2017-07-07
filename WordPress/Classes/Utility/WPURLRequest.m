@@ -1,6 +1,5 @@
 #import "WPURLRequest.h"
-#import "NSString+Helpers.h"
-
+@import WordPressShared;
 
 @implementation WPURLRequest
 
