@@ -138,16 +138,14 @@ static NSInteger const RecommendedYAxisTicks = 2;
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    if ([kind isEqualToString:WPStatsCollectionElementKindGraphBackground]) {
-        WPStatsGraphBackgroundView *background = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:GraphBackgroundView forIndexPath:indexPath];
-        background.maximumYValue = (NSUInteger)self.maximumY;
-        background.numberOfXValues = self.numberOfXValues;
-        background.numberOfYValues = self.numberOfYValues;
-        
-        return background;
-    }
-    
-    return nil;
+    NSParameterAssert([kind isEqualToString:WPStatsCollectionElementKindGraphBackground]);
+
+    WPStatsGraphBackgroundView *background = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:GraphBackgroundView forIndexPath:indexPath];
+    background.maximumYValue = (NSUInteger)self.maximumY;
+    background.numberOfXValues = self.numberOfXValues;
+    background.numberOfYValues = self.numberOfYValues;
+
+    return background;
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout methods

@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-import WordPressComAnalytics
+import WordPressShared
 
 func AccountSettingsViewController(account: WPAccount) -> ImmuTableViewController? {
     guard let api = account.wordPressComRestApi else {
