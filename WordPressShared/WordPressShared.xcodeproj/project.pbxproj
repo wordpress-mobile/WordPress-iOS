@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		74650F7B1F0EA2FA00188EDB /* NSString+Helpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 74650F791F0EA2FA00188EDB /* NSString+Helpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		74650F7C1F0EA2FA00188EDB /* NSString+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 74650F7A1F0EA2FA00188EDB /* NSString+Helpers.m */; };
+		74650F801F0EA4BD00188EDB /* NSMutableData+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74650F7F1F0EA4BD00188EDB /* NSMutableData+Helpers.swift */; };
+		74D44ED91F0EC6230075F96B /* NSStringHelpersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D44ED81F0EC6230075F96B /* NSStringHelpersTests.m */; };
 		76E20BA846247380DFDB836C /* Pods_WordPressSharedTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BBC146D906E974A7086162 /* Pods_WordPressSharedTests.framework */; };
 		820ECCA11ECCE002004C7679 /* WPStyleGuide+DynamicType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820ECCA01ECCE002004C7679 /* WPStyleGuide+DynamicType.swift */; };
 		82706FF11ECA438500155CBF /* WPSharedLoggingPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 82706FED1ECA438500155CBF /* WPSharedLoggingPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -80,6 +84,10 @@
 		3BEDE0D11F9FF330B15F3EBB /* Pods-WordPressShared.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShared.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShared/Pods-WordPressShared.release-internal.xcconfig"; sourceTree = "<group>"; };
 		43E0D903D4F0FD20F82AF73E /* Pods_WordPressShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DFF858893655555943F9A96 /* Pods-WordPressSharedTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressSharedTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressSharedTests/Pods-WordPressSharedTests.debug.xcconfig"; sourceTree = "<group>"; };
+		74650F791F0EA2FA00188EDB /* NSString+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Helpers.h"; path = "WordPressShared/Core/Utility/NSString+Helpers.h"; sourceTree = SOURCE_ROOT; };
+		74650F7A1F0EA2FA00188EDB /* NSString+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Helpers.m"; path = "WordPressShared/Core/Utility/NSString+Helpers.m"; sourceTree = SOURCE_ROOT; };
+		74650F7F1F0EA4BD00188EDB /* NSMutableData+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSMutableData+Helpers.swift"; path = "WordPressShared/Core/Utility/NSMutableData+Helpers.swift"; sourceTree = SOURCE_ROOT; };
+		74D44ED81F0EC6230075F96B /* NSStringHelpersTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringHelpersTests.m; sourceTree = "<group>"; };
 		820ECCA01ECCE002004C7679 /* WPStyleGuide+DynamicType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "WPStyleGuide+DynamicType.swift"; path = "WordPressShared/Core/Views/WPStyleGuide+DynamicType.swift"; sourceTree = SOURCE_ROOT; };
 		82706FED1ECA438500155CBF /* WPSharedLoggingPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPSharedLoggingPrivate.h; path = WordPressShared/Core/Logging/WPSharedLoggingPrivate.h; sourceTree = SOURCE_ROOT; };
 		82706FEE1ECA438500155CBF /* WPSharedLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPSharedLogging.h; path = WordPressShared/Core/Logging/WPSharedLogging.h; sourceTree = SOURCE_ROOT; };
@@ -225,6 +233,9 @@
 				93A73ABA1EE9DD7D00C0F2F9 /* WPMapFilterReduce.h */,
 				93A73ABB1EE9DD7D00C0F2F9 /* WPMapFilterReduce.m */,
 				93C674F41EE83D4B00BFAF05 /* Languages.swift */,
+				74650F7F1F0EA4BD00188EDB /* NSMutableData+Helpers.swift */,
+				74650F791F0EA2FA00188EDB /* NSString+Helpers.h */,
+				74650F7A1F0EA2FA00188EDB /* NSString+Helpers.m */,
 				82706FF61ECA43AA00155CBF /* NSString+Util.h */,
 				82706FF51ECA43AA00155CBF /* NSString+Util.m */,
 				82706FF71ECA43AA00155CBF /* NSString+XMLExtensions.h */,
@@ -260,6 +271,7 @@
 				E18EABE81F0E2C6800BFCB0B /* TestAnalyticsTracker.m */,
 				E18EABE91F0E2C6800BFCB0B /* WPAnalyticsTests.m */,
 				93AB05FC1EE8405A00EF8764 /* LanguagesTests.swift */,
+				74D44ED81F0EC6230075F96B /* NSStringHelpersTests.m */,
 				827070901ECA4E1D00155CBF /* UIColorHelpersTests.swift */,
 				8270708F1ECA4E1C00155CBF /* WordPressSharedTests-Bridging-Header.h */,
 				827070911ECA4E1D00155CBF /* WPImageSourceTest.m */,
@@ -366,6 +378,7 @@
 				93A73ABC1EE9DD7D00C0F2F9 /* WPMapFilterReduce.h in Headers */,
 				E1A444281F063CAB00F6AA8A /* WPAnalytics.h in Headers */,
 				8270700D1ECA43AA00155CBF /* WPFontManager.h in Headers */,
+				74650F7B1F0EA2FA00188EDB /* NSString+Helpers.h in Headers */,
 				82706FF11ECA438500155CBF /* WPSharedLoggingPrivate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -568,6 +581,7 @@
 				827070201ECA43C100155CBF /* WPNUXUtility.m in Sources */,
 				8270701C1ECA43C100155CBF /* WPNoResultsView.m in Sources */,
 				93A73ABD1EE9DD7D00C0F2F9 /* WPMapFilterReduce.m in Sources */,
+				74650F7C1F0EA2FA00188EDB /* NSString+Helpers.m in Sources */,
 				827070031ECA43AA00155CBF /* NSString+Util.m in Sources */,
 				82706FF41ECA438500155CBF /* WPSharedLoggingPrivate.m in Sources */,
 				827070081ECA43AA00155CBF /* UIColor+Helpers.m in Sources */,
@@ -577,6 +591,7 @@
 				827070061ECA43AA00155CBF /* NSString+XMLExtensions.m in Sources */,
 				82706FF31ECA438500155CBF /* WPSharedLogging.m in Sources */,
 				93C882AD1EEB1E2F00227A59 /* NSDate+Helpers.swift in Sources */,
+				74650F801F0EA4BD00188EDB /* NSMutableData+Helpers.swift in Sources */,
 				937BA5881EF1DAC100D301B2 /* CocoaLumberjack.swift in Sources */,
 				93AB06061EE884C000EF8764 /* UIAlertController+Helpers.swift in Sources */,
 				8270700A1ECA43AA00155CBF /* UIImage+Util.m in Sources */,
@@ -587,6 +602,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74D44ED91F0EC6230075F96B /* NSStringHelpersTests.m in Sources */,
 				827070921ECA4E1D00155CBF /* UIColorHelpersTests.swift in Sources */,
 				93A73ABF1EE9DDB000C0F2F9 /* WPMapFilterReduceTest.m in Sources */,
 				827070931ECA4E1D00155CBF /* WPImageSourceTest.m in Sources */,
@@ -659,6 +675,7 @@
 			baseConfigurationReference = 3BEDE0D11F9FF330B15F3EBB /* Pods-WordPressShared.release-internal.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -680,6 +697,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				INFOPLIST_FILE = WordPressSharedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressSharedTests;
@@ -741,6 +759,7 @@
 			baseConfigurationReference = 0F7992C40F884E75E5F6114F /* Pods-WordPressShared.release-alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -762,6 +781,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				INFOPLIST_FILE = WordPressSharedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressSharedTests;
@@ -875,6 +895,7 @@
 			baseConfigurationReference = D9E4960D1C2D0FF7A5A54617 /* Pods-WordPressShared.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -896,6 +917,7 @@
 			baseConfigurationReference = 94914F79BD25CA900E917965 /* Pods-WordPressShared.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -917,6 +939,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				INFOPLIST_FILE = WordPressSharedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressSharedTests;
@@ -933,6 +956,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				INFOPLIST_FILE = WordPressSharedTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressSharedTests;

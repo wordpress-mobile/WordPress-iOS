@@ -1,14 +1,14 @@
 import Foundation
 
-open class RemoteGravatarProfile {
-    let profileID: String
-    let hash: String
-    let requestHash: String
-    let profileUrl: String
-    let preferredUsername: String
-    let thumbnailUrl: String
-    let name: String
-    let displayName: String
+public class RemoteGravatarProfile {
+    public let profileID: String
+    public let hash: String
+    public let requestHash: String
+    public let profileUrl: String
+    public let preferredUsername: String
+    public let thumbnailUrl: String
+    public let name: String
+    public let displayName: String
 
     init(dictionary: NSDictionary) {
         profileID = dictionary.string(forKey: "id") ?? ""
