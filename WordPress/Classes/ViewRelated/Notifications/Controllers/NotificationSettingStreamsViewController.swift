@@ -1,6 +1,5 @@
 import Foundation
 import WordPressShared
-import WordPressComAnalytics
 
 
 /// This class will simply render the collection of Streams available for a given NotificationSettings

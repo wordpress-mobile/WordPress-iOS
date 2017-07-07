@@ -1,1 +1,2 @@
-Para esta versión, pulimos algunos pixeles, nos deshicimos de algunos errores y trabajamos entre bambalinas para hacer la experiencia de WordPress más fluida para los usuarios de nuestras aplicaciones.
+Edita el icono de tu sitio en la pantalla de detalles del sitio, simplemente toca sobre ella para empezar.
+Hemos añadido compatibilidad con autocorrección en el campo de etiquetas de entrada.

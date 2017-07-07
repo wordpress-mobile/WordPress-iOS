@@ -1,6 +1,5 @@
 import Foundation
 import CocoaLumberjack
-import WordPressComAnalytics
 import WordPressComStatsiOS
 import WordPressShared
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.

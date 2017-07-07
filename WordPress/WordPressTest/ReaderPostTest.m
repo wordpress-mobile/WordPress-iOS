@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 #import "ReaderPost.h"
-#import "NSString+Helpers.h"
 #import "TestContextManager.h"
+@import WordPressShared;
 
 @interface ReaderPostTest : XCTestCase
 @end

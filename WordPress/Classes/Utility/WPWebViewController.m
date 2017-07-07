@@ -2,7 +2,6 @@
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
 #import "WPActivityDefaults.h"
-#import "NSString+Helpers.h"
 #import "UIDevice+Helpers.h"
 #import "WPURLRequest.h"
 #import "WPUserAgent.h"
@@ -88,10 +87,14 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.navigationItem.titleView           = self.titleView;
     
     // Buttons
-    self.optionsButton = [[UIBarButtonItem alloc] initWithImage:[Gridicon iconOfType:GridiconTypeShareIOS] style:UIBarButtonItemStylePlain target:self action:@selector(showLinkOptions)];
+    if (!self.optionsButton) {
+        self.optionsButton = [[UIBarButtonItem alloc] initWithImage:[Gridicon iconOfType:GridiconTypeShareIOS] style:UIBarButtonItemStylePlain target:self action:@selector(showLinkOptions)];
+
+        self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share",   @"Spoken accessibility label");
+    }
+
     self.dismissButton = [[UIBarButtonItem alloc] initWithImage:[Gridicon iconOfType:GridiconTypeCross] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
 
-    self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share",   @"Spoken accessibility label");
     self.dismissButton.accessibilityLabel   = NSLocalizedString(@"Dismiss", @"Dismiss a view. Verb");
     self.backButton.accessibilityLabel      = NSLocalizedString(@"Back",    @"Previous web page");
     self.forwardButton.accessibilityLabel   = NSLocalizedString(@"Forward", @"Next web page");
@@ -518,6 +521,17 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     
     WPWebViewController *webViewController = [WPWebViewController new];
     webViewController.url = url;
+    return webViewController;
+}
+
++ (instancetype)webViewControllerWithURL:(NSURL *)url
+                           optionsButton:(UIBarButtonItem *)button
+{
+    NSParameterAssert(url);
+
+    WPWebViewController *webViewController = [WPWebViewController new];
+    webViewController.url = url;
+    webViewController.optionsButton = button;
     return webViewController;
 }
 
