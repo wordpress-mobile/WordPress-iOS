@@ -75,13 +75,23 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 - (void)initializeAppTracking
 {
     [self initializeUsageTrackingIfNecessary];
-    
-    [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
-    [WPAnalytics registerTracker:[WPAnalyticsTrackerAutomatticTracks new]];
 
-    if ([WPAppAnalytics isTrackingUsage]) {
+    BOOL trackingEnabled = [WPAppAnalytics isTrackingUsage];
+    if (trackingEnabled) {
+        [self registerTrackers];
         [self beginSession];
     }
+}
+
+- (void)registerTrackers
+{
+    [WPAnalytics registerTracker:[WPAnalyticsTrackerWPCom new]];
+    [WPAnalytics registerTracker:[WPAnalyticsTrackerAutomatticTracks new]];
+}
+
+- (void)clearTrackers
+{
+    [WPAnalytics clearTrackers];
 }
 
 #pragma mark - Notifications
@@ -304,9 +314,11 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         if (trackingUsage) {
+            [self registerTrackers];
             [self beginSession];
         } else {
             [self endSession];
+            [self clearTrackers];
         }
     }
 }
