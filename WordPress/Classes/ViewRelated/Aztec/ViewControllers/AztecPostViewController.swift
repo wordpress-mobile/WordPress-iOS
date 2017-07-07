@@ -7,7 +7,6 @@ import WordPressShared
 import AFNetworking
 import WPMediaPicker
 import SVProgressHUD
-import WordPressComAnalytics
 import AVKit
 
 
@@ -243,7 +242,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         button.setTitle(NSLocalizedString("Beta", comment: "Title for Beta tag button for the new Aztec editor"), for: .normal)
         button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
-        button.isEnabled = false
+        button.isEnabled = true
+        button.addTarget(self, action: #selector(betaButtonTapped), for: .touchUpInside)
 
         return button
     }()
@@ -947,6 +947,12 @@ extension AztecPostViewController {
 
     @IBAction func moreWasPressed() {
         displayMoreSheet()
+    }
+
+    @IBAction func betaButtonTapped() {
+        WPAppAnalytics.track(.editorAztecBetaLink)
+
+        WPWebViewController.presentWhatsNewWebView(from: self)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {
@@ -1795,7 +1801,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.disabledTintColor = WPStyleGuide.aztecFormatBarDisabledColor
-        toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDisabledColor
+        toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDividerColor
         toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
         toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0)
         toolbar.formatter = self

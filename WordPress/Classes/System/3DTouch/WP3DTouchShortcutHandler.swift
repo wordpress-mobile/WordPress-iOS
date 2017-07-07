@@ -1,5 +1,5 @@
 import UIKit
-import WordPressComAnalytics
+import WordPressShared
 
 open class WP3DTouchShortcutHandler: NSObject {
     enum ShortcutIdentifier: String {

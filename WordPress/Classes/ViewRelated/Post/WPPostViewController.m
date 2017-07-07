@@ -4,11 +4,12 @@
 #import <WordPressEditor/WPEditorField.h>
 #import <WordPressEditor/WPEditorView.h>
 #import <WordPressEditor/WPEditorFormatbarView.h>
+#import <WordPressEditor/WPEditorStat.h>
 #import <WordPressShared/NSString+Util.h>
 #import <WordPressShared/UIImage+Util.h>
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
-#import <WordPressComAnalytics/WPAnalytics.h>
+#import <WordPressShared/WPAnalytics.h>
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "BlogSelectorViewController.h"
 #import "BlogService.h"
@@ -18,7 +19,6 @@
 #import "LocationService.h"
 #import "Media.h"
 #import "MediaService.h"
-#import "NSString+Helpers.h"
 #import "PostPreviewViewController.h"
 #import "PostService.h"
 #import "PostSettingsViewController.h"
@@ -1937,6 +1937,11 @@ MediaProgressCoordinatorDelegate
                                                         @"Title of the edit-image button in the post editor.")];
     
     [self refreshUIForCurrentPost];
+}
+
+- (void)editorTrackStat:(WPEditorStat)stat
+{
+    [WPAnalytics track:[WPEditorStatMap map:stat] withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid}];
 }
 
 - (void)editorViewController:(WPEditorViewController *)editorViewController imageReplaced:(NSString *)imageId

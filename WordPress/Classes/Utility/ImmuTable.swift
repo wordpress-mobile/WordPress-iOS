@@ -314,7 +314,7 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
             return target.tableView(tableView, heightForFooterInSection: section)
         }
 
-        return 0
+        return UITableViewAutomaticDimension
     }
 
     open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

@@ -19,13 +19,13 @@
 #import <WordPressShared/WPFontManager.h>
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "WordPress-Swift.h"
-#import "WPAndDeviceMediaLibraryDataSource.h"
-#import "NSString+Helpers.h"	
+#import "WPAndDeviceMediaLibraryDataSource.h"	
 #import "WPAppAnalytics.h"
 @import Gridicons;
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressEditor/WPLegacyEditorFormatToolbar.h>
+#import <WordPressEditor/WPEditorStat.h>
 #import "PostSettingsViewController.h"
 #import "PostPreviewViewController.h"
 #import "AbstractPost.h"
@@ -1032,6 +1032,11 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 - (void)editorDidPressPreview:(WPLegacyEditorViewController *)editorController
 {
     [self showPreview];
+}
+
+- (void)editorTrackStat:(WPEditorStat)stat
+{
+    [WPAnalytics track:[WPEditorStatMap map:stat] withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueLegacy}];
 }
 
 #pragma mark - WPMediaPickerViewController delegate
