@@ -1,5 +1,5 @@
 import CoreData
-import WordPressComAnalytics
+import WordPressShared
 
 public extension Blog {
     /// Only WordPress.com hosted sites we administer may be managed

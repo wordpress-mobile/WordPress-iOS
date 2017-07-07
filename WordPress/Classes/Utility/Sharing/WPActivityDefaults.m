@@ -1,5 +1,6 @@
 #import "WPActivityDefaults.h"
 #import "SafariActivity.h"
+#import <WordPressShared/WPAnalytics.h>
 
 
 @implementation WPActivityDefaults
