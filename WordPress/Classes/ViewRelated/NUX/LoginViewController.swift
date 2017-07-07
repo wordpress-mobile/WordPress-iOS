@@ -3,6 +3,7 @@ import Foundation
 class LoginViewController: NUXAbstractViewController {
     @IBOutlet var errorLabel: UILabel?
     @IBOutlet var submitButton: NUXSubmitButton?
+    var errorToPresent: Error?
 
     lazy var loginFacade: LoginFacade = {
         let facade = LoginFacade()
@@ -14,6 +15,10 @@ class LoginViewController: NUXAbstractViewController {
         super.viewDidLoad()
         displayError(message: "")
         setupNavBarIcon()
+
+        if let error = errorToPresent {
+            displayRemoteError(error)
+        }
     }
 
     /// Places the WordPress logo in the navbar
@@ -65,6 +70,23 @@ class LoginViewController: NUXAbstractViewController {
         configureViewLoading(true)
 
         loginFacade.signIn(with: loginFields)
+    }
+
+    /// Manages data transfer when seguing to a new VC
+    ///
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let source = segue.source as? LoginViewController else {
+            return
+        }
+
+        if let destination = segue.destination as? LoginEpilogueViewController {
+            destination.dismissBlock = source.dismissBlock
+        } else if let destination = segue.destination as? LoginViewController {
+            destination.loginFields = source.loginFields
+            destination.restrictToWPCom = source.restrictToWPCom
+            destination.dismissBlock = source.dismissBlock
+            destination.errorToPresent = source.errorToPresent
+        }
     }
 }
 
