@@ -3032,15 +3032,6 @@
 			name = Media;
 			sourceTree = "<group>";
 		};
-		1702BBE71CF357A200766A33 /* Domains */ = {
-			isa = PBXGroup;
-			children = (
-				1702BBE51CF3579900766A33 /* domain-service-valid-domains.json */,
-				1702BBE81CF357BB00766A33 /* domain-service-all-domain-types.json */,
-			);
-			name = Domains;
-			sourceTree = "<group>";
-		};
 		1719633E1D378D1E00898E8B /* Search */ = {
 			isa = PBXGroup;
 			children = (
