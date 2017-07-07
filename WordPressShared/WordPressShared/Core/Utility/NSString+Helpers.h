@@ -1,4 +1,3 @@
-
 #import <UIKit/UIKit.h>
 
 @interface NSString (Helpers)
