@@ -744,9 +744,6 @@
 		E11E775A1E72932F0072AD40 /* BlogListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11E77591E72932F0072AD40 /* BlogListDataSource.swift */; };
 		E1209FA41BB4978B00D69778 /* PeopleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1209FA31BB4978B00D69778 /* PeopleService.swift */; };
 		E120D90E1B09D8C300FB9A6E /* JetpackState.m in Sources */ = {isa = PBXBuildFile; fileRef = E120D90D1B09D8C300FB9A6E /* JetpackState.m */; };
-		E1249B4319408C910035E895 /* RemoteComment.m in Sources */ = {isa = PBXBuildFile; fileRef = E1249B4219408C910035E895 /* RemoteComment.m */; };
-		E1249B4619408D0F0035E895 /* CommentServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1249B4519408D0F0035E895 /* CommentServiceRemoteXMLRPC.m */; };
-		E1249B4B1940AECC0035E895 /* CommentServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E1249B4A1940AECC0035E895 /* CommentServiceRemoteREST.m */; };
 		E124CE721C86D27100F7BA99 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E124CE711C86D27100F7BA99 /* StoreTests.swift */; };
 		E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */; };
 		E125445612BF5B3900D87A0A /* PostCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = E125445512BF5B3900D87A0A /* PostCategory.m */; };
@@ -2203,13 +2200,6 @@
 		E120D90D1B09D8C300FB9A6E /* JetpackState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackState.m; sourceTree = "<group>"; };
 		E1225A4C147E6D2400B4F3A0 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1225A4D147E6D2C00B4F3A0 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1249B3D19408C230035E895 /* CommentServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentServiceRemote.h; sourceTree = "<group>"; };
-		E1249B4119408C910035E895 /* RemoteComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteComment.h; path = "Remote Objects/RemoteComment.h"; sourceTree = "<group>"; };
-		E1249B4219408C910035E895 /* RemoteComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteComment.m; path = "Remote Objects/RemoteComment.m"; sourceTree = "<group>"; };
-		E1249B4419408D0F0035E895 /* CommentServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
-		E1249B4519408D0F0035E895 /* CommentServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
-		E1249B491940AECC0035E895 /* CommentServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentServiceRemoteREST.h; sourceTree = "<group>"; };
-		E1249B4A1940AECC0035E895 /* CommentServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentServiceRemoteREST.m; sourceTree = "<group>"; };
 		E124CE711C86D27100F7BA99 /* StoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 2.xcdatamodel"; sourceTree = "<group>"; };
 		E125445412BF5B3900D87A0A /* PostCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCategory.h; sourceTree = "<group>"; };
@@ -3705,11 +3695,6 @@
 				E6D35FFD1C5ABC3D00A46303 /* Remote Helpers */,
 				E1249B4019408C6F0035E895 /* Remote Objects */,
 				B52906981DB929AA007121F3 /* Notifications */,
-				E1249B3D19408C230035E895 /* CommentServiceRemote.h */,
-				E1249B491940AECC0035E895 /* CommentServiceRemoteREST.h */,
-				E1249B4A1940AECC0035E895 /* CommentServiceRemoteREST.m */,
-				E1249B4419408D0F0035E895 /* CommentServiceRemoteXMLRPC.h */,
-				E1249B4519408D0F0035E895 /* CommentServiceRemoteXMLRPC.m */,
 				E149D64919349E69006A843D /* MediaServiceRemote.h */,
 				E149D64A19349E69006A843D /* MediaServiceRemoteREST.h */,
 				E149D64B19349E69006A843D /* MediaServiceRemoteREST.m */,
@@ -5078,8 +5063,6 @@
 				E1A6DBD919DC7D080071AC1E /* RemotePost.m */,
 				E6374DC41C44550700F24720 /* RemotePublicizeConnection.swift */,
 				E6374DC51C44550700F24720 /* RemotePublicizeService.swift */,
-				E1249B4119408C910035E895 /* RemoteComment.h */,
-				E1249B4219408C910035E895 /* RemoteComment.m */,
 				5D12FE1A1988243700378BD6 /* RemoteReaderPost.h */,
 				5D12FE1B1988243700378BD6 /* RemoteReaderPost.m */,
 				E6396E1E1BED91E00058B374 /* RemoteReaderCrossPostMeta.swift */,
@@ -6812,7 +6795,6 @@
 				173BCE791CEB780800AE8817 /* Domain.swift in Sources */,
 				590E873B1CB8205700D1B734 /* PostListViewController.swift in Sources */,
 				E15644EB1CE0E4C500D96E64 /* FeatureItemRow.swift in Sources */,
-				E1249B4B1940AECC0035E895 /* CommentServiceRemoteREST.m in Sources */,
 				E1266D2D1BBE8B9A00FCB6B6 /* Gravatar.swift in Sources */,
 				0857C2791CE5375F0014AE99 /* MenuItemsVisualOrderingView.m in Sources */,
 				437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */,
@@ -6905,7 +6887,6 @@
 				E1A6DBDB19DC7D080071AC1E /* RemotePost.m in Sources */,
 				082AB9D91C4EEEF4000CA523 /* PostTagService.m in Sources */,
 				E62079E11CF7A61200F5CD46 /* ReaderSearchSuggestionService.swift in Sources */,
-				E1249B4619408D0F0035E895 /* CommentServiceRemoteXMLRPC.m in Sources */,
 				171795831D1C65E8002F1EB2 /* FlingableViewHandler.swift in Sources */,
 				85AD6AEF173CCFDC002CB896 /* WPNUXSecondaryButton.m in Sources */,
 				FF8A04E01D9BFE7400523BC4 /* FLAnimatedImageView+Cache.swift in Sources */,
@@ -6960,7 +6941,6 @@
 				E6F66D421E00966000F875A5 /* UIImage+Rotation.swift in Sources */,
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
 				5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */,
-				E1249B4319408C910035E895 /* RemoteComment.m in Sources */,
 				B50C0C511EF429E900372C65 /* HTMLAttachmentRenderer.swift in Sources */,
 				E663D1901C65383E0017F109 /* SharingAccountViewController.swift in Sources */,
 				93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */,
