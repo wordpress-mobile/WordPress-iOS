@@ -14,6 +14,10 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 
 @implementation WPAppAnalyticsTests
 
+- (void)tearDown {
+    [WPAnalytics clearTrackers];
+}
+
 - (void)testInitializationWithWPComTracker
 {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
@@ -52,15 +56,6 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     id analyticsMock = [OCMockObject mockForClass:[WPAnalytics class]];
     id apiCredentialsMock = [OCMockObject mockForClass:[ApiCredentials class]];
     
-    OCMockInvocationBlock registerTrackerInvocationBlock = ^(NSInvocation *invocation) {
-        __unsafe_unretained id<WPAnalyticsTracker> tracker = nil;
-        [invocation getArgument:&tracker atIndex:2];
-        
-        NSAssert([tracker isKindOfClass:[WPAnalyticsTrackerWPCom class]],
-                 @"Expected to have a WPCom tracker.");
-    };
-    
-    [[[analyticsMock expect] andDo:registerTrackerInvocationBlock] registerTracker:OCMOCK_ANY];
     [[analyticsMock reject] beginSession];
     
     WPAppAnalytics *analytics = nil;
@@ -71,7 +66,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:lastVisibleScreenCallback],
                      @"Allocating or initializing this object shouldn't throw an exception");
     XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
-    
+
     [apiCredentialsMock verify];
     [analyticsMock verify];
     
