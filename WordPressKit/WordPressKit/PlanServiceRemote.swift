@@ -1,16 +1,17 @@
 import Foundation
+import WordPressShared
 import CocoaLumberjack
 
-class PlanServiceRemote: ServiceRemoteWordPressComREST {
-    typealias SitePlans = (activePlan: Plan, availablePlans: [Plan])
-    enum ResponseError: Error {
+public class PlanServiceRemote: ServiceRemoteWordPressComREST {
+    public typealias SitePlans = (activePlan: RemotePlan, availablePlans: [RemotePlan])
+
+    public enum ResponseError: Error {
         case decodingFailure
         case unsupportedPlan
         case noActivePlan
     }
 
-
-    func getPlansForSite(_ siteID: Int, success: @escaping (SitePlans) -> Void, failure: @escaping (Error) -> Void) {
+    public func getPlansForSite(_ siteID: Int, success: @escaping (SitePlans) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "sites/\(siteID)/plans"
         let path = self.path(forEndpoint: endpoint, with: .version_1_2)
         let locale = WordPressComLanguageDatabase().deviceLanguage.slug
@@ -36,12 +37,12 @@ class PlanServiceRemote: ServiceRemoteWordPressComREST {
 
 }
 
-private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Plan, availablePlans: [Plan]) {
+private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: RemotePlan, availablePlans: [RemotePlan]) {
     guard let json = response as? [[String: AnyObject]] else {
         throw PlanServiceRemote.ResponseError.decodingFailure
     }
 
-    let parsedResponse: (Plan?, [Plan]) = try json.reduce((nil, []), {
+    let parsedResponse: (RemotePlan?, [RemotePlan]) = try json.reduce((nil, []), {
         (result, planDetails: [String: AnyObject]) in
         guard let planId = planDetails["product_id"] as? Int,
             let title = planDetails["product_name_short"] as? String,
@@ -61,7 +62,7 @@ private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Plan
         let productIdentifier = (planDetails["apple_sku"] as? String).flatMap({ $0.nonEmptyString() })
         let featureGroups = try parseFeatureGroups(featureGroupsJson)
 
-        let plan = Plan(id: planId, title: title, fullTitle: fullTitle, tagline: tagline, iconUrl: iconUrl, activeIconUrl: activeIconUrl, productIdentifier: productIdentifier, featureGroups: featureGroups)
+        let plan = RemotePlan(id: planId, title: title, fullTitle: fullTitle, tagline: tagline, iconUrl: iconUrl, activeIconUrl: activeIconUrl, productIdentifier: productIdentifier, featureGroups: featureGroups)
 
         let plans = result.1 + [plan]
         if let isCurrent = planDetails["current_plan"] as? Bool,
@@ -79,9 +80,9 @@ private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Plan
     return (activePlan, availablePlans)
 }
 
-private func parseFeatureGroups(_ json: [[String: AnyObject]]) throws -> [PlanFeatureGroupPlaceholder] {
+private func parseFeatureGroups(_ json: [[String: AnyObject]]) throws -> [RemotePlanFeatureGroupPlaceholder] {
     return try json.flatMap { groupJson in
         guard let slugs = groupJson["items"] as? [String] else { throw PlanServiceRemote.ResponseError.decodingFailure }
-        return PlanFeatureGroupPlaceholder(title: groupJson["title"] as? String, slugs: slugs)
+        return RemotePlanFeatureGroupPlaceholder(title: groupJson["title"] as? String, slugs: slugs)
     }
 }
