@@ -1,10 +1,8 @@
 import UIKit
 
-class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardResponder, LoginViewController {
+class LoginSiteAddressViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var instructionLabel: UILabel!
-    @IBOutlet var errorLabel: UILabel!
     @IBOutlet weak var siteURLField: WPWalkthroughTextField!
-    @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet var siteAddressHelpButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
@@ -20,8 +18,6 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavBarIcon()
-
         localizeControls()
     }
 
@@ -72,9 +68,9 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
         siteURLField.placeholder = NSLocalizedString("example.wordpress.com", comment: "Site Address placeholder")
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        submitButton.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton.setTitle(submitButtonTitle, for: .highlighted)
-        submitButton.accessibilityIdentifier = "Next Button"
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.accessibilityIdentifier = "Next Button"
 
         let siteAddressHelpTitle = NSLocalizedString("Need help finding your site address?", comment: "A button title.")
         siteAddressHelpButton.setTitle(siteAddressHelpTitle, for: UIControlState())
@@ -93,10 +89,10 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
-        submitButton.showActivityIndicator(animating)
+    override func configureSubmitButton(animating: Bool) {
+        submitButton?.showActivityIndicator(animating)
 
-        submitButton.isEnabled = (
+        submitButton?.isEnabled = (
             !animating && canSubmit()
         )
     }
@@ -106,7 +102,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    override func configureViewLoading(_ loading: Bool) {
         siteURLField.isEnabled = !loading
 
         configureSubmitButton(animating: loading)
@@ -218,13 +214,6 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     func showSelfHostedUsernamePassword() {
         configureViewLoading(false)
         performSegue(withIdentifier: .showURLUsernamePassword, sender: self)
-    }
-
-
-    /// Sets the text of the error label.
-    ///
-    func displayError(message: String) {
-        errorLabel.text = message
     }
 
 

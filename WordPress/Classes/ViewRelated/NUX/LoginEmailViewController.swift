@@ -2,11 +2,9 @@ import UIKit
 
 /// This is the first screen following the log in prologue screen if the user chooses to log in.
 ///
-class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardResponder, LoginViewController {
+class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var instructionLabel: UILabel!
-    @IBOutlet var errorLabel: UILabel!
     @IBOutlet var emailTextField: WPWalkthroughTextField!
-    @IBOutlet var submitButton: NUXSubmitButton!
     @IBOutlet var selfHostedSigninButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
@@ -34,8 +32,6 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupNavBarIcon()
 
         localizeControls()
         setupOnePasswordButtonIfNeeded()
@@ -102,9 +98,9 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         emailTextField.accessibilityIdentifier = "Email address"
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        submitButton.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton.setTitle(submitButtonTitle, for: .highlighted)
-        submitButton.accessibilityIdentifier = "Next Button"
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.accessibilityIdentifier = "Next Button"
 
         let selfHostedTitle = NSLocalizedString("Log into your site by entering your site address instead.", comment: "A button title.")
         selfHostedSigninButton.setTitle(selfHostedTitle, for: UIControlState())
@@ -134,7 +130,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     /// Configures whether appearance of the submit button.
     ///
     func configureSubmitButton() {
-        submitButton.isEnabled = canSubmit()
+        submitButton?.isEnabled = canSubmit()
     }
 
 
@@ -142,10 +138,10 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    override func configureViewLoading(_ loading: Bool) {
         emailTextField.isEnabled = !loading
-        submitButton.isEnabled = !loading
-        submitButton.showActivityIndicator(loading)
+        submitButton?.isEnabled = !loading
+        submitButton?.showActivityIndicator(loading)
     }
 
 
@@ -210,8 +206,11 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     ///                        to authenticate the user with the available credentails.  Default is `false`.
     ///
     func loginWithUsernamePassword(immediately: Bool = false) {
-        // TODO: Need to implement the `immediately` portion of this once one wpcom controllers are done.
-        performSegue(withIdentifier: .showWPComLogin, sender: self)
+        if (immediately) {
+            validateFormAndLogin()
+        } else {
+            performSegue(withIdentifier: .showWPComLogin, sender: self)
+        }
     }
 
 
@@ -265,13 +264,6 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
                                             strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
                                         }
         })
-    }
-
-
-    /// Sets the text of the error label.
-    ///
-    func displayError(message: String) {
-        errorLabel.text = message
     }
 
 
