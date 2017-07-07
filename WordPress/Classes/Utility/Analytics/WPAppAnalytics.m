@@ -85,7 +85,7 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 - (void)registerTrackers
 {
-    [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
+    [WPAnalytics registerTracker:[WPAnalyticsTrackerWPCom new]];
     [WPAnalytics registerTracker:[WPAnalyticsTrackerAutomatticTracks new]];
 }
 
