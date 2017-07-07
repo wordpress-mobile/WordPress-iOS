@@ -41,8 +41,10 @@
 		74585B9F1F0D6E7500E7E667 /* domain-service-bad-json.json in Resources */ = {isa = PBXBuildFile; fileRef = 74585B9E1F0D6E7500E7E667 /* domain-service-bad-json.json */; };
 		74585BA11F0D6F5300E7E667 /* domain-service-empty.json in Resources */ = {isa = PBXBuildFile; fileRef = 74585BA01F0D6F5300E7E667 /* domain-service-empty.json */; };
 		7433BC151EFC45C7002D9E92 /* site-plans-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 7433BC101EFC45C7002D9E92 /* site-plans-failure.json */; };
+		74650F721F0EA1A700188EDB /* GravatarServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74650F711F0EA1A700188EDB /* GravatarServiceRemote.swift */; };
 		7433BC161EFC45C7002D9E92 /* site-plans-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7433BC111EFC45C7002D9E92 /* site-plans-success.json */; };
 		748710A81F06B542008095AB /* RemotePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748710A71F06B542008095AB /* RemotePlan.swift */; };
+		74650F741F0EA1E200188EDB /* RemoteGravatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74650F731F0EA1E200188EDB /* RemoteGravatarProfile.swift */; };
 		74B040721EF8B366002C6258 /* rest-site-settings.json in Resources */ = {isa = PBXBuildFile; fileRef = 74B040711EF8B366002C6258 /* rest-site-settings.json */; };
 		74B5F0D71EF8299B00B411E7 /* BlogServiceRemoteREST.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B5F0D31EF8299B00B411E7 /* BlogServiceRemoteREST.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		74B5F0D81EF8299B00B411E7 /* BlogServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 74B5F0D41EF8299B00B411E7 /* BlogServiceRemoteREST.m */; };
@@ -54,6 +56,13 @@
 		74B5F0E31EF82D2100B411E7 /* SiteServiceRemoteWordPressComREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 74B5F0E11EF82D2100B411E7 /* SiteServiceRemoteWordPressComREST.m */; };
 		74B5F0E61EF8699C00B411E7 /* RemotePostType.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B5F0E41EF8699C00B411E7 /* RemotePostType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		74B5F0E71EF8699C00B411E7 /* RemotePostType.m in Sources */ = {isa = PBXBuildFile; fileRef = 74B5F0E51EF8699C00B411E7 /* RemotePostType.m */; };
+		74BA04F21F06DC0A00ED5CD8 /* CommentServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 74BA04ED1F06DC0A00ED5CD8 /* CommentServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		74BA04F31F06DC0A00ED5CD8 /* CommentServiceRemoteREST.h in Headers */ = {isa = PBXBuildFile; fileRef = 74BA04EE1F06DC0A00ED5CD8 /* CommentServiceRemoteREST.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		74BA04F41F06DC0A00ED5CD8 /* CommentServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BA04EF1F06DC0A00ED5CD8 /* CommentServiceRemoteREST.m */; };
+		74BA04F51F06DC0A00ED5CD8 /* CommentServiceRemoteXMLRPC.h in Headers */ = {isa = PBXBuildFile; fileRef = 74BA04F01F06DC0A00ED5CD8 /* CommentServiceRemoteXMLRPC.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		74BA04F61F06DC0A00ED5CD8 /* CommentServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BA04F11F06DC0A00ED5CD8 /* CommentServiceRemoteXMLRPC.m */; };
+		74BA04F91F06DC3900ED5CD8 /* RemoteComment.h in Headers */ = {isa = PBXBuildFile; fileRef = 74BA04F71F06DC3900ED5CD8 /* RemoteComment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		74BA04FA1F06DC3900ED5CD8 /* RemoteComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BA04F81F06DC3900ED5CD8 /* RemoteComment.m */; };
 		74C473AC1EF2F75E009918F2 /* SiteManagementServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C473AB1EF2F75E009918F2 /* SiteManagementServiceRemote.swift */; };
 		74C473AF1EF2F7D1009918F2 /* SiteManagementServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C473AE1EF2F7D1009918F2 /* SiteManagementServiceRemoteTests.swift */; };
 		74C473B11EF31A19009918F2 /* site-delete-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74C473B01EF31A19009918F2 /* site-delete-success.json */; };
@@ -226,6 +235,8 @@
 		74585BA01F0D6F5300E7E667 /* domain-service-empty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-empty.json"; sourceTree = "<group>"; };
 		7433BC101EFC45C7002D9E92 /* site-plans-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "site-plans-failure.json"; sourceTree = "<group>"; };
 		7433BC111EFC45C7002D9E92 /* site-plans-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "site-plans-success.json"; sourceTree = "<group>"; };
+		74650F711F0EA1A700188EDB /* GravatarServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarServiceRemote.swift; sourceTree = "<group>"; };
+		74650F731F0EA1E200188EDB /* RemoteGravatarProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteGravatarProfile.swift; sourceTree = "<group>"; };
 		748710A71F06B542008095AB /* RemotePlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemotePlan.swift; sourceTree = "<group>"; };
 		74B040711EF8B366002C6258 /* rest-site-settings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "rest-site-settings.json"; sourceTree = "<group>"; };
 		74B5F0D31EF8299B00B411E7 /* BlogServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemoteREST.h; sourceTree = "<group>"; };
@@ -238,6 +249,13 @@
 		74B5F0E11EF82D2100B411E7 /* SiteServiceRemoteWordPressComREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteServiceRemoteWordPressComREST.m; sourceTree = "<group>"; };
 		74B5F0E41EF8699C00B411E7 /* RemotePostType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemotePostType.h; sourceTree = "<group>"; };
 		74B5F0E51EF8699C00B411E7 /* RemotePostType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemotePostType.m; sourceTree = "<group>"; };
+		74BA04ED1F06DC0A00ED5CD8 /* CommentServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentServiceRemote.h; sourceTree = "<group>"; };
+		74BA04EE1F06DC0A00ED5CD8 /* CommentServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentServiceRemoteREST.h; sourceTree = "<group>"; };
+		74BA04EF1F06DC0A00ED5CD8 /* CommentServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentServiceRemoteREST.m; sourceTree = "<group>"; };
+		74BA04F01F06DC0A00ED5CD8 /* CommentServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
+		74BA04F11F06DC0A00ED5CD8 /* CommentServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
+		74BA04F71F06DC3900ED5CD8 /* RemoteComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteComment.h; sourceTree = "<group>"; };
+		74BA04F81F06DC3900ED5CD8 /* RemoteComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteComment.m; sourceTree = "<group>"; };
 		74C473AB1EF2F75E009918F2 /* SiteManagementServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceRemote.swift; sourceTree = "<group>"; };
 		74C473AE1EF2F7D1009918F2 /* SiteManagementServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceRemoteTests.swift; sourceTree = "<group>"; };
 		74C473B01EF31A19009918F2 /* site-delete-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "site-delete-success.json"; sourceTree = "<group>"; };
@@ -557,6 +575,12 @@
 				74B5F0D41EF8299B00B411E7 /* BlogServiceRemoteREST.m */,
 				74B5F0D51EF8299B00B411E7 /* BlogServiceRemoteXMLRPC.h */,
 				74B5F0D61EF8299B00B411E7 /* BlogServiceRemoteXMLRPC.m */,
+				74BA04ED1F06DC0A00ED5CD8 /* CommentServiceRemote.h */,
+				74BA04EE1F06DC0A00ED5CD8 /* CommentServiceRemoteREST.h */,
+				74BA04EF1F06DC0A00ED5CD8 /* CommentServiceRemoteREST.m */,
+				74BA04F01F06DC0A00ED5CD8 /* CommentServiceRemoteXMLRPC.h */,
+				74BA04F11F06DC0A00ED5CD8 /* CommentServiceRemoteXMLRPC.m */,
+				74650F711F0EA1A700188EDB /* GravatarServiceRemote.swift */,
 				74585B8D1F0D51A100E7E667 /* DomainsServiceRemote.swift */,
 				93BD27901EE82B30002BB00B /* JetpackServiceRemote.h */,
 				93BD27911EE82B30002BB00B /* JetpackServiceRemote.m */,
@@ -584,8 +608,11 @@
 				93C674E91EE8348F00BFAF05 /* RemoteBlogOptionsHelper.h */,
 				93C674EA1EE8348F00BFAF05 /* RemoteBlogOptionsHelper.m */,
 				93C674ED1EE834B700BFAF05 /* RemoteBlogSettings.swift */,
+				74BA04F71F06DC3900ED5CD8 /* RemoteComment.h */,
+				74BA04F81F06DC3900ED5CD8 /* RemoteComment.m */,
 				748710A71F06B542008095AB /* RemotePlan.swift */,
 				74585B961F0D54B400E7E667 /* RemoteDomain.swift */,
+				74650F731F0EA1E200188EDB /* RemoteGravatarProfile.swift */,
 				74B5F0E41EF8699C00B411E7 /* RemotePostType.h */,
 				74B5F0E51EF8699C00B411E7 /* RemotePostType.m */,
 				93BD27671EE736A8002BB00B /* RemoteUser.h */,
@@ -767,6 +794,10 @@
 				74B5F0D91EF8299B00B411E7 /* BlogServiceRemoteXMLRPC.h in Headers */,
 				74B5F0E21EF82D2100B411E7 /* SiteServiceRemoteWordPressComREST.h in Headers */,
 				93C674E71EE8345300BFAF05 /* RemoteBlog.h in Headers */,
+				74BA04F91F06DC3900ED5CD8 /* RemoteComment.h in Headers */,
+				74BA04F21F06DC0A00ED5CD8 /* CommentServiceRemote.h in Headers */,
+				74BA04F51F06DC0A00ED5CD8 /* CommentServiceRemoteXMLRPC.h in Headers */,
+				74BA04F31F06DC0A00ED5CD8 /* CommentServiceRemoteREST.h in Headers */,
 				93F08F111EEF0E9B000C2DF6 /* Logging.h in Headers */,
 				93C674EB1EE8348F00BFAF05 /* RemoteBlogOptionsHelper.h in Headers */,
 				9368C7B91EC630270092CE8E /* StatsSummary.h in Headers */,
@@ -1051,6 +1082,7 @@
 				93BD27801EE73944002BB00B /* WordPressComRestApi.swift in Sources */,
 				93BD277C1EE73944002BB00B /* HTTPAuthenticationAlertController.swift in Sources */,
 				7433BC011EFC4505002D9E92 /* PlanServiceRemote.swift in Sources */,
+				74650F721F0EA1A700188EDB /* GravatarServiceRemote.swift in Sources */,
 				74B5F0E31EF82D2100B411E7 /* SiteServiceRemoteWordPressComREST.m in Sources */,
 				93BD277E1EE73944002BB00B /* NSDate+WordPressJSON.m in Sources */,
 				9368C7B61EC630270092CE8E /* StatsStreak.m in Sources */,
@@ -1058,18 +1090,22 @@
 				9368C7BA1EC630270092CE8E /* StatsSummary.m in Sources */,
 				7403A3021EF0726E00DED7DC /* AccountSettings.swift in Sources */,
 				9368C7C01EC630CE0092CE8E /* StatsStringUtilities.m in Sources */,
+				74BA04FA1F06DC3900ED5CD8 /* RemoteComment.m in Sources */,
 				93C674EC1EE8348F00BFAF05 /* RemoteBlogOptionsHelper.m in Sources */,
 				7403A2E41EF06ED500DED7DC /* AccountSettingsRemote.swift in Sources */,
 				93C674E81EE8345300BFAF05 /* RemoteBlog.m in Sources */,
 				93BD27831EE73944002BB00B /* WordPressRSDParser.swift in Sources */,
 				9368C7B81EC630270092CE8E /* StatsStreakItem.m in Sources */,
+				74BA04F61F06DC0A00ED5CD8 /* CommentServiceRemoteXMLRPC.m in Sources */,
 				93C674F21EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m in Sources */,
 				74B5F0E71EF8699C00B411E7 /* RemotePostType.m in Sources */,
 				9368C7BC1EC630270092CE8E /* StatsVisits.m in Sources */,
+				74BA04F41F06DC0A00ED5CD8 /* CommentServiceRemoteREST.m in Sources */,
 				74C473AC1EF2F75E009918F2 /* SiteManagementServiceRemote.swift in Sources */,
 				938CF3D81EF1BE3800AF838E /* CocoaLumberjack.swift in Sources */,
 				74585B971F0D54B400E7E667 /* RemoteDomain.swift in Sources */,
 				93BD273D1EE73282002BB00B /* AccountServiceRemoteREST.m in Sources */,
+				74650F741F0EA1E200188EDB /* RemoteGravatarProfile.swift in Sources */,
 				93BD27811EE73944002BB00B /* WordPressOrgXMLRPCApi.swift in Sources */,
 				9368C7B21EC630270092CE8E /* StatsItem.m in Sources */,
 				93F08F121EEF0E9B000C2DF6 /* Logging.m in Sources */,
@@ -1220,6 +1256,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1242,6 +1279,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1348,6 +1386,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1434,6 +1473,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;

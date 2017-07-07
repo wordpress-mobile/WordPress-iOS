@@ -19,7 +19,6 @@
 #import "LocationService.h"
 #import "Media.h"
 #import "MediaService.h"
-#import "NSString+Helpers.h"
 #import "PostPreviewViewController.h"
 #import "PostService.h"
 #import "PostSettingsViewController.h"
