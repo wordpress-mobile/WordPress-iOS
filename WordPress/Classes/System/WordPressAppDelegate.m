@@ -512,7 +512,8 @@ int ddLogLevel = DDLogLevelInfo;
         return YES;
     }
 
-    return [presentedViewController.visibleViewController isKindOfClass:[NUXAbstractViewController class]];
+    UIViewController *controller = presentedViewController.visibleViewController;
+    return [controller isKindOfClass:[NUXAbstractViewController class]] || [controller isKindOfClass:[LoginPrologueViewController class]];
 }
 
 - (BOOL)noWordPressDotComAccount

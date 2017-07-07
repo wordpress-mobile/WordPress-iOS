@@ -5,7 +5,7 @@ import CocoaLumberjack
 /// authentication link be emailed to the user.  Allows the user to signin via
 /// email instead of their password.
 ///
-class LoginLinkRequestViewController: NUXAbstractViewController, LoginViewController {
+class LoginLinkRequestViewController: LoginViewController {
     @IBOutlet var gravatarView: UIImageView?
     @IBOutlet var label: UILabel?
     @IBOutlet var sendLinkButton: NUXSubmitButton?
@@ -29,8 +29,6 @@ class LoginLinkRequestViewController: NUXAbstractViewController, LoginViewContro
         if !email.isValidEmail() {
             assert(email.isValidEmail(), "The value of loginFields.username was not a valid email address.")
         }
-
-        setupNavBarIcon()
     }
 
     override func viewWillAppear(_ animated: Bool) {
