@@ -16,7 +16,6 @@
 #import "WPLogger.h"
 #import "WPGUIConstants.h"
 @import CocoaLumberjack;
-@import WordPressComAnalytics;
 @import WordPressShared;
 
 SupportSourceTag const SupportSourceTagWPComLogin = @"origin:wpcom-login-screen";
