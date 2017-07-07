@@ -4,11 +4,12 @@
 #import <WordPressEditor/WPEditorField.h>
 #import <WordPressEditor/WPEditorView.h>
 #import <WordPressEditor/WPEditorFormatbarView.h>
+#import <WordPressEditor/WPEditorStat.h>
 #import <WordPressShared/NSString+Util.h>
 #import <WordPressShared/UIImage+Util.h>
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
-#import <WordPressComAnalytics/WPAnalytics.h>
+#import <WordPressShared/WPAnalytics.h>
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "BlogSelectorViewController.h"
 #import "BlogService.h"
@@ -56,7 +57,7 @@ NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
-static CGFloat const CompactTitleButtonWidth = 125.0f;
+static CGFloat const CompactTitleButtonWidth = 150.0f;
 static CGFloat const RegularTitleButtonWidth = 300.0f;
 static CGFloat const RegularTitleButtonHeight = 30.0f;
 static NSDictionary *DisabledButtonBarStyle;
@@ -1185,8 +1186,8 @@ MediaProgressCoordinatorDelegate
 - (UIBarButtonItem *)uploadStatusButton
 {
     if (!_uploadStatusButton) {
-        UIButton *button = [WPUploadStatusButton buttonWithFrame:CGRectMake(0.0f, 0.0f, CompactTitleButtonWidth , RegularTitleButtonHeight)];
-        button.titleLabel.text = NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server");
+        UIButton *button = [[WPUploadStatusButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CompactTitleButtonWidth , RegularTitleButtonHeight)];
+        [button setTitle:NSLocalizedString(@"Media Uploading", @"Message to indicate progress of uploading media to server") forState: UIControlStateNormal];
         [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
         _uploadStatusButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
@@ -1937,6 +1938,11 @@ MediaProgressCoordinatorDelegate
                                                         @"Title of the edit-image button in the post editor.")];
     
     [self refreshUIForCurrentPost];
+}
+
+- (void)editorTrackStat:(WPEditorStat)stat
+{
+    [WPAnalytics track:[WPEditorStatMap map:stat] withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid}];
 }
 
 - (void)editorViewController:(WPEditorViewController *)editorViewController imageReplaced:(NSString *)imageId

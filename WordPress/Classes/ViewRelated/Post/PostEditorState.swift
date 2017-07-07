@@ -1,5 +1,5 @@
 import Foundation
-import WordPressComAnalytics
+import WordPressShared
 
 /// The various states of the editor interface and all associated UI values
 ///
@@ -167,7 +167,7 @@ public class PostEditorStateContext {
         }
     }
 
-    fileprivate var isUploadingMedia = false {
+    fileprivate(set) var isUploadingMedia = false {
         didSet {
             updatePublishActionAllowed()
         }

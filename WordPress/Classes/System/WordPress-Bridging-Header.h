@@ -129,6 +129,7 @@
 #import "WPAsyncBlockOperation.h"
 #import "WPBlogTableViewCell.h"
 #import "WPBlogSelectorButton.h"
+#import "WPUploadStatusButton.h"
 #import "WPLegacyEditPostViewController.h"
 #import "WPError.h"
 #import "WPGUIConstants.h"
@@ -157,7 +158,6 @@
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <FormatterKit/FormatterKit-umbrella.h>
-#import <WordPressComAnalytics/WPAnalytics.h>
 
 #ifdef BUDDYBUILD_ENABLED
 #import <BuddyBuildSDK/BuddyBuildSDK.h>
@@ -171,3 +171,4 @@
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressShared/UIImage+Util.h>
+#import <WordPressShared/WPAnalytics.h>
