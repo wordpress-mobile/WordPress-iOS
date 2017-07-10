@@ -47,7 +47,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     override func setUp() {
         super.setUp()
 
-        remote = AccountServiceRemoteREST(wordPressComRestApi: restApi)
+        remote = AccountServiceRemoteREST(wordPressComRestApi: getRestApi())
     }
 
     override func tearDown() {
