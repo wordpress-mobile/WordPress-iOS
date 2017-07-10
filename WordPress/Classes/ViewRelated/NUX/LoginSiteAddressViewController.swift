@@ -263,8 +263,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     }
 }
 
-extension LoginSiteAddressViewController: UIViewControllerTransitioningDelegate
-{
+extension LoginSiteAddressViewController: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         if presented is FancyAlertViewController {
             return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
