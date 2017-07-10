@@ -1,4 +1,5 @@
-@import WordPressKit;
+#import <Foundation/Foundation.h>
+#import "SiteServiceRemoteWordPressComREST.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -49,7 +50,7 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError * _Nonnull error);
 /**
  *  @brief      Update a menu on a blog.
  *
- *  @param      menu        The updated menu object to update remotely.  Cannot be nil.
+ *  @param      menuID        The updated menu object to update remotely.  Cannot be nil.
  *  @param      siteID      The site ID to update the menu on.  Cannot be nil.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
@@ -66,7 +67,7 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError * _Nonnull error);
 /**
  *  @brief      Delete a menu from a blog.
  *
- *  @param      menuId      The menuId of the menu to delete remotely.  Cannot be nil.
+ *  @param      menuID      The menuId of the menu to delete remotely.  Cannot be nil.
  *  @param      siteID      The site ID to delete the menu from.  Cannot be nil.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
