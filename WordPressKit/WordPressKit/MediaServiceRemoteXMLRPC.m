@@ -94,7 +94,7 @@
  Adds a basic auth header to a request if a credential is stored for that specific host.
  
  The credentials will only be added if a set of credentials for the request host are stored on the shared credential storage
- @param request, the request to where the authentication information will be added.
+ @param request     The request to where the authentication information will be added.
  */
 - (void)addBasicAuthCredentialsIfAvailableToRequest:(NSMutableURLRequest *)request
 {
