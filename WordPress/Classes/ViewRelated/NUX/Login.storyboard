@@ -110,7 +110,7 @@
         <scene sceneID="1BJ-CW-C88">
             <objects>
                 <navigationController id="Ck1-vY-O11" customClass="LoginNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mKb-UO-KoA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mKb-UO-KoA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1064,6 +1064,7 @@
                                     <constraint firstItem="DHF-bN-so0" firstAttribute="top" secondItem="hTY-xb-H5h" secondAttribute="top" id="9hm-xn-6lZ"/>
                                     <constraint firstItem="x1G-Lf-mra" firstAttribute="top" secondItem="DHF-bN-so0" secondAttribute="bottom" constant="10" id="IsJ-Kk-Pdi"/>
                                     <constraint firstAttribute="bottom" secondItem="x1G-Lf-mra" secondAttribute="bottom" constant="20" id="XBv-Gg-JAY"/>
+                                    <constraint firstAttribute="width" constant="383" id="eWE-lA-7Kg"/>
                                     <constraint firstAttribute="trailing" secondItem="DHF-bN-so0" secondAttribute="trailing" id="pId-Zh-c89"/>
                                     <constraint firstItem="x1G-Lf-mra" firstAttribute="leading" secondItem="hTY-xb-H5h" secondAttribute="leading" constant="20" id="yEl-i3-fts"/>
                                 </constraints>
@@ -1072,10 +1073,17 @@
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="hTY-xb-H5h" secondAttribute="trailing" id="23h-QU-eyB"/>
+                            <constraint firstItem="hTY-xb-H5h" firstAttribute="centerX" secondItem="cm5-76-st7" secondAttribute="centerX" id="PRb-I7-O07"/>
                             <constraint firstItem="hTY-xb-H5h" firstAttribute="top" secondItem="959-UQ-1Jm" secondAttribute="bottom" id="lqc-JK-kaQ"/>
                             <constraint firstItem="hTY-xb-H5h" firstAttribute="leading" secondItem="cm5-76-st7" secondAttribute="leading" id="riV-3j-5QK"/>
                             <constraint firstItem="fG1-qw-2YS" firstAttribute="top" secondItem="hTY-xb-H5h" secondAttribute="bottom" id="tJ5-Do-kBC"/>
                         </constraints>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="constraints">
+                                <exclude reference="23h-QU-eyB"/>
+                                <exclude reference="riV-3j-5QK"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="bottomContentConstraint" destination="tJ5-Do-kBC" id="lfp-1Z-g7f"/>
@@ -1228,14 +1236,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xKq-ni-wZB" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                            <rect key="frame" x="157.5" y="20" width="60" height="60"/>
+                                            <rect key="frame" x="161.5" y="20" width="60" height="60"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="60" id="Omr-X8-XDl"/>
                                                 <constraint firstAttribute="width" constant="60" id="pI0-bo-l6s"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ONy-ZJ-GTI">
-                                            <rect key="frame" x="0.0" y="109.5" width="375" height="18"/>
+                                            <rect key="frame" x="0.0" y="109.5" width="383" height="18"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="UkN-Od-n0K"/>
                                             </constraints>
@@ -1244,21 +1252,21 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4RV-hS-DYN" userLabel="bottom hairline">
-                                            <rect key="frame" x="0.0" y="139.5" width="375" height="0.5"/>
+                                            <rect key="frame" x="0.0" y="139.5" width="383" height="0.5"/>
                                             <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.84313725490196079" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="0.5" id="A3O-Oh-nqx"/>
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hv-UB-D9b" userLabel="top hairline">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="0.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383" height="0.5"/>
                                             <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="0.5" id="gaI-rY-zWc"/>
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Full Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Men-mq-jKi">
-                                            <rect key="frame" x="20" y="89" width="335" height="20.5"/>
+                                            <rect key="frame" x="20" y="89" width="343" height="20.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Z2K-dy-J3D"/>
                                             </constraints>
@@ -1267,7 +1275,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zfb-lS-v47" userLabel="bottom pad">
-                                            <rect key="frame" x="0.0" y="140" width="375" height="8"/>
+                                            <rect key="frame" x="0.0" y="140" width="383" height="8"/>
                                             <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="8" id="wB5-3u-5Pm"/>
@@ -2159,7 +2167,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Jfl-Zm-PRR"/>
-        <segue reference="qLI-qX-rkG"/>
-        <segue reference="7ky-IR-Xbv"/>
+        <segue reference="fWM-mD-lXg"/>
+        <segue reference="lIb-sw-yM7"/>
     </inferredMetricsTieBreakers>
 </document>
