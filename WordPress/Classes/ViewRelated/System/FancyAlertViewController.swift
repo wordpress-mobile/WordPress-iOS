@@ -33,6 +33,9 @@ class FancyAlertViewController: UIViewController {
         /// The image displayed at the top of the dialog
         let headerImage: UIImage?
 
+        /// The background color behind the headerImage
+        let headerBackgroundColor: UIColor?
+
         /// Title / handler for the primary button on the dialog
         let defaultButton: ButtonConfig?
 
@@ -149,7 +152,6 @@ class FancyAlertViewController: UIViewController {
         wrapperView.layer.masksToBounds = true
         wrapperView.layer.cornerRadius = Constants.cornerRadius
 
-        headerImageWrapperView.backgroundColor = WPStyleGuide.lightGrey()
         dividerView.backgroundColor = WPStyleGuide.lightGrey()
 
         titleLabel.textColor = WPStyleGuide.darkGrey()
@@ -194,6 +196,7 @@ class FancyAlertViewController: UIViewController {
         bodyLabel.text = configuration.bodyText
 
         updateHeaderImage()
+        headerImageWrapperView.backgroundColor = configuration.headerBackgroundColor ?? WPStyleGuide.lightGrey()
 
         update(defaultButton, with: configuration.defaultButton)
         update(cancelButton, with: configuration.cancelButton)
@@ -225,6 +228,7 @@ class FancyAlertViewController: UIViewController {
         if let headerImage = configuration?.headerImage {
             headerImageView.image = headerImage
             headerImageWrapperView.isHiddenInStackView = false
+            headerImageWrapperView.backgroundColor = configuration?.headerBackgroundColor
         } else {
             headerImageWrapperView.isHiddenInStackView = true
         }
