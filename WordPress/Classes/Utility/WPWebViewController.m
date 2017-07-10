@@ -2,7 +2,6 @@
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
 #import "WPActivityDefaults.h"
-#import "UIDevice+Helpers.h"
 #import "WPURLRequest.h"
 #import "WPUserAgent.h"
 #import "WPCookie.h"
@@ -10,6 +9,7 @@
 #import "WPError.h"
 #import "WPStyleGuide+WebView.h"
 #import <WordPressShared/UIImage+Util.h>
+#import <WordPressShared/UIDevice+Helpers.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;

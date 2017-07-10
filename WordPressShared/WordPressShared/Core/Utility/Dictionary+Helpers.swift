@@ -12,7 +12,7 @@ extension Dictionary {
     ///
     /// - Returns: Value as a String (when possible!)
     ///
-    func valueAsString(forKey key: Key) -> String? {
+    public func valueAsString(forKey key: Key) -> String? {
         let value = self[key]
         switch value {
         case let string as String:
