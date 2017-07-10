@@ -1,5 +1,6 @@
 import Foundation
 import UIDeviceIdentifier
+import WordPressShared
 
 /// The purpose of this class is to encapsulate all of the interaction with the Notifications REST endpoints.
 /// Here we'll deal mostly with the Settings / Push Notifications API.
@@ -64,15 +65,15 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST {
     }
 
 
-
     /// Registers a given Apple Push Token in the WordPress.com Backend.
     ///
     /// - Parameters:
-    ///     - deviceId: The ID of the device to be registered.
+    ///     - token: The token of the device to be registered.
+    ///     - pushNotificationAppId: The app id to be registered.
     ///     - success: Optional closure to be called on success.
     ///     - failure: Optional closure to be called on failure.
     ///
-    open func registerDeviceForPushNotifications(_ token: String, success: ((_ deviceId: String) -> ())?, failure: ((NSError) -> Void)?) {
+    open func registerDeviceForPushNotifications(_ token: String, pushNotificationAppId: String, success: ((_ deviceId: String) -> ())?, failure: ((NSError) -> Void)?) {
         let endpoint = "devices/new"
         let requestUrl = path(forEndpoint: endpoint, with: .version_1_1)
 
@@ -80,7 +81,7 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST {
         let parameters = [
             "device_token": token,
             "device_family": "apple",
-            "app_secret_key": WPPushNotificationAppId,
+            "app_secret_key": pushNotificationAppId,
             "device_name": device.name,
             "device_model": UIDeviceHardware.platform(),
             "os_version": device.systemVersion,
