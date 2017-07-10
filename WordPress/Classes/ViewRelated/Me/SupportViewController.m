@@ -9,7 +9,6 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "Blog.h"
-#import "NSBundle+VersionNumberHelper.h"
 #import "WordPress-Swift.h"
 #import "WPTabBarController.h"
 #import "HelpshiftUtils.h"

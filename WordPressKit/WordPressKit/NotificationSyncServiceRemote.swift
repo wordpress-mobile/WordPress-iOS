@@ -1,10 +1,8 @@
 import Foundation
 
-
-
 // MARK: - NotificationSyncServiceRemote
 //
-class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
+public class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
     // MARK: - Constants
     //
     fileprivate let defaultPageSize = 100
@@ -12,7 +10,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
 
     // MARK: - Errors
     //
-    enum SyncError: Error {
+    public enum SyncError: Error {
         case failed
     }
 
@@ -26,7 +24,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
     ///     - completion: callback to be executed on completion.
     ///
     ///
-    func loadNotes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: @escaping ((Error?, [RemoteNotification]?) -> Void)) {
+    public func loadNotes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: @escaping ((Error?, [RemoteNotification]?) -> Void)) {
         let fields = "id,note_hash,type,unread,body,subject,timestamp,meta"
 
         loadNotes(withNoteIds: noteIds, fields: fields, pageSize: pageSize) { error, notes in
@@ -44,7 +42,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Notes: The RemoteNotification Entity will only have it's ID + Hash populated
     ///
-    func loadHashes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: @escaping ((Error?, [RemoteNotification]?) -> Void)) {
+    public func loadHashes(withPageSize pageSize: Int? = nil, noteIds: [String]? = nil, completion: @escaping ((Error?, [RemoteNotification]?) -> Void)) {
         let fields = "id,note_hash"
 
         loadNotes(withNoteIds: noteIds, fields: fields, pageSize: pageSize) { error, notes in
@@ -60,7 +58,7 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
     ///     - read: The new Read Status to set.
     ///     - completion: Closure to be executed on completion, indicating whether the OP was successful or not.
     ///
-    func updateReadStatus(_ notificationID: String, read: Bool, completion: @escaping ((Error?) -> Void)) {
+    public func updateReadStatus(_ notificationID: String, read: Bool, completion: @escaping ((Error?) -> Void)) {
         let path = "notifications/read"
         let requestUrl = self.path(forEndpoint: path, with: .version_1_1)
 
@@ -84,10 +82,10 @@ class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
     /// Updates the Last Seen Notification's Timestamp.
     ///
     /// - Parameters:
-    ///     - lastSeen: Timestamp of the last seen notification.
+    ///     - timestamp: Timestamp of the last seen notification.
     ///     - completion: Closure to be executed on completion, indicating whether the OP was successful or not.
     ///
-    func updateLastSeen(_ timestamp: String, completion: @escaping ((Error?) -> Void)) {
+    public func updateLastSeen(_ timestamp: String, completion: @escaping ((Error?) -> Void)) {
         let path = "notifications/seen"
         let requestUrl = self.path(forEndpoint: path, with: .version_1_1)
 

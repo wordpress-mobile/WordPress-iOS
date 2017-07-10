@@ -54,6 +54,14 @@
 		74650F721F0EA1A700188EDB /* GravatarServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74650F711F0EA1A700188EDB /* GravatarServiceRemote.swift */; };
 		74650F741F0EA1E200188EDB /* RemoteGravatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74650F731F0EA1E200188EDB /* RemoteGravatarProfile.swift */; };
 		748710A81F06B542008095AB /* RemotePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748710A71F06B542008095AB /* RemotePlan.swift */; };
+		74A44DCB1F13C533006CD8F4 /* NotificationSettingsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A44DC81F13C533006CD8F4 /* NotificationSettingsServiceRemote.swift */; };
+		74A44DCC1F13C533006CD8F4 /* NotificationSyncServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A44DC91F13C533006CD8F4 /* NotificationSyncServiceRemote.swift */; };
+		74A44DCD1F13C533006CD8F4 /* PushAuthenticationServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A44DCA1F13C533006CD8F4 /* PushAuthenticationServiceRemote.swift */; };
+		74A44DD01F13C64B006CD8F4 /* RemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A44DCE1F13C64B006CD8F4 /* RemoteNotification.swift */; };
+		74A44DD11F13C64B006CD8F4 /* RemoteNotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A44DCF1F13C64B006CD8F4 /* RemoteNotificationSettings.swift */; };
+		74A44DD41F13C6D8006CD8F4 /* RemoteNotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A44DD21F13C6D8006CD8F4 /* RemoteNotificationTests.swift */; };
+		74A44DD51F13C6D8006CD8F4 /* PushAuthenticationServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A44DD31F13C6D8006CD8F4 /* PushAuthenticationServiceRemoteTests.swift */; };
+		74A44DD81F13C7AC006CD8F4 /* remote-notification.json in Resources */ = {isa = PBXBuildFile; fileRef = 74A44DD71F13C7AC006CD8F4 /* remote-notification.json */; };
 		74B040721EF8B366002C6258 /* rest-site-settings.json in Resources */ = {isa = PBXBuildFile; fileRef = 74B040711EF8B366002C6258 /* rest-site-settings.json */; };
 		74B335D81F06F1CA0053A184 /* MockWordPressComRestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B335D71F06F1CA0053A184 /* MockWordPressComRestApi.swift */; };
 		74B335DA1F06F3D60053A184 /* WordPressComRestApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B335D91F06F3D60053A184 /* WordPressComRestApiTests.swift */; };
@@ -274,6 +282,14 @@
 		74650F711F0EA1A700188EDB /* GravatarServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarServiceRemote.swift; sourceTree = "<group>"; };
 		74650F731F0EA1E200188EDB /* RemoteGravatarProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteGravatarProfile.swift; sourceTree = "<group>"; };
 		748710A71F06B542008095AB /* RemotePlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemotePlan.swift; sourceTree = "<group>"; };
+		74A44DC81F13C533006CD8F4 /* NotificationSettingsServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsServiceRemote.swift; sourceTree = "<group>"; };
+		74A44DC91F13C533006CD8F4 /* NotificationSyncServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSyncServiceRemote.swift; sourceTree = "<group>"; };
+		74A44DCA1F13C533006CD8F4 /* PushAuthenticationServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationServiceRemote.swift; sourceTree = "<group>"; };
+		74A44DCE1F13C64B006CD8F4 /* RemoteNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteNotification.swift; sourceTree = "<group>"; };
+		74A44DCF1F13C64B006CD8F4 /* RemoteNotificationSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteNotificationSettings.swift; sourceTree = "<group>"; };
+		74A44DD21F13C6D8006CD8F4 /* RemoteNotificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteNotificationTests.swift; sourceTree = "<group>"; };
+		74A44DD31F13C6D8006CD8F4 /* PushAuthenticationServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationServiceRemoteTests.swift; sourceTree = "<group>"; };
+		74A44DD71F13C7AC006CD8F4 /* remote-notification.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "remote-notification.json"; sourceTree = "<group>"; };
 		74B040711EF8B366002C6258 /* rest-site-settings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "rest-site-settings.json"; sourceTree = "<group>"; };
 		74B335D71F06F1CA0053A184 /* MockWordPressComRestApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockWordPressComRestApi.swift; sourceTree = "<group>"; };
 		74B335D91F06F3D60053A184 /* WordPressComRestApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressComRestApiTests.swift; sourceTree = "<group>"; };
@@ -499,6 +515,15 @@
 			name = Domains;
 			sourceTree = "<group>";
 		};
+		74A44DD61F13C6F3006CD8F4 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				74A44DD21F13C6D8006CD8F4 /* RemoteNotificationTests.swift */,
+				74A44DD31F13C6D8006CD8F4 /* PushAuthenticationServiceRemoteTests.swift */,
+			);
+			name = Notifications;
+			sourceTree = "<group>";
+		};
 		74B5F0DF1EF82AAB00B411E7 /* Blog */ = {
 			isa = PBXGroup;
 			children = (
@@ -571,6 +596,7 @@
 				74585B911F0D520700E7E667 /* Domains */,
 				74DA563E1F06ED3900FE9BF4 /* Media */,
 				742362E61F10275E00BD0A7F /* Menu */,
+				74A44DD61F13C6F3006CD8F4 /* Notifications */,
 				7433BC061EFC456B002D9E92 /* Plans */,
 				74C473AD1EF2F7BF009918F2 /* Site */,
 				930F52BB1ECF8A78002F921B /* Stats */,
@@ -664,8 +690,11 @@
 				74DA562F1F06EAF000FE9BF4 /* MediaServiceRemoteREST.m */,
 				74DA56301F06EAF000FE9BF4 /* MediaServiceRemoteXMLRPC.h */,
 				74DA56311F06EAF000FE9BF4 /* MediaServiceRemoteXMLRPC.m */,
+				74A44DC81F13C533006CD8F4 /* NotificationSettingsServiceRemote.swift */,
 				742362D41F10250600BD0A7F /* MenusServiceRemote.h */,
 				742362D51F10250600BD0A7F /* MenusServiceRemote.m */,
+				74A44DC91F13C533006CD8F4 /* NotificationSyncServiceRemote.swift */,
+				74A44DCA1F13C533006CD8F4 /* PushAuthenticationServiceRemote.swift */,
 				7433BBFE1EFC4505002D9E92 /* PlanFeatureServiceRemote.swift */,
 				7433BBFF1EFC4505002D9E92 /* PlanServiceRemote.swift */,
 				93BD276B1EE737A8002BB00B /* ServiceRemoteWordPressComREST.h */,
@@ -703,6 +732,8 @@
 				742362DB1F1025B400BD0A7F /* RemoteMenuItem.m */,
 				742362DC1F1025B400BD0A7F /* RemoteMenuLocation.h */,
 				742362DD1F1025B400BD0A7F /* RemoteMenuLocation.m */,
+				74A44DCE1F13C64B006CD8F4 /* RemoteNotification.swift */,
+				74A44DCF1F13C64B006CD8F4 /* RemoteNotificationSettings.swift */,
 				74B5F0E41EF8699C00B411E7 /* RemotePostType.h */,
 				74B5F0E51EF8699C00B411E7 /* RemotePostType.m */,
 				93BD27671EE736A8002BB00B /* RemoteUser.h */,
@@ -797,6 +828,7 @@
 				7433BC081EFC4598002D9E92 /* plans-feature-empty-success.json */,
 				7433BC091EFC4598002D9E92 /* plans-feature-success.json */,
 				74B040711EF8B366002C6258 /* rest-site-settings.json */,
+				74A44DD71F13C7AC006CD8F4 /* remote-notification.json */,
 				74C473B01EF31A19009918F2 /* site-delete-success.json */,
 				74C473B21EF3204B009918F2 /* site-delete-auth-failure.json */,
 				74C473B41EF320CC009918F2 /* site-delete-bad-json-failure.json */,
@@ -1076,6 +1108,7 @@
 				74585B9F1F0D6E7500E7E667 /* domain-service-bad-json.json in Resources */,
 				74C473C31EF32DD7009918F2 /* site-export-failure.json in Resources */,
 				93AC8ECE1ED32FD000900F5A /* stats-v1.1-latest-post-views.json in Resources */,
+				74A44DD81F13C7AC006CD8F4 /* remote-notification.json in Resources */,
 				74B335E81F06F7200053A184 /* WordPressComRestApiFailUnauthorized.json in Resources */,
 				74C473C91EF335B8009918F2 /* site-active-purchases-empty-response.json in Resources */,
 				93AC8ECC1ED32FD000900F5A /* stats-v1.1-followers-wpcom-day.json in Resources */,
@@ -1193,6 +1226,7 @@
 				7433BC001EFC4505002D9E92 /* PlanFeatureServiceRemote.swift in Sources */,
 				93BD277F1EE73944002BB00B /* WordPressComOAuthClient.swift in Sources */,
 				93BD27801EE73944002BB00B /* WordPressComRestApi.swift in Sources */,
+				74A44DCC1F13C533006CD8F4 /* NotificationSyncServiceRemote.swift in Sources */,
 				93BD277C1EE73944002BB00B /* HTTPAuthenticationAlertController.swift in Sources */,
 				7433BC011EFC4505002D9E92 /* PlanServiceRemote.swift in Sources */,
 				74650F721F0EA1A700188EDB /* GravatarServiceRemote.swift in Sources */,
@@ -1216,10 +1250,12 @@
 				93C674F21EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m in Sources */,
 				74B5F0E71EF8699C00B411E7 /* RemotePostType.m in Sources */,
 				9368C7BC1EC630270092CE8E /* StatsVisits.m in Sources */,
+				74A44DCB1F13C533006CD8F4 /* NotificationSettingsServiceRemote.swift in Sources */,
 				74BA04F41F06DC0A00ED5CD8 /* CommentServiceRemoteREST.m in Sources */,
 				74C473AC1EF2F75E009918F2 /* SiteManagementServiceRemote.swift in Sources */,
 				938CF3D81EF1BE3800AF838E /* CocoaLumberjack.swift in Sources */,
 				74585B971F0D54B400E7E667 /* RemoteDomain.swift in Sources */,
+				74A44DD01F13C64B006CD8F4 /* RemoteNotification.swift in Sources */,
 				93BD273D1EE73282002BB00B /* AccountServiceRemoteREST.m in Sources */,
 				74650F741F0EA1E200188EDB /* RemoteGravatarProfile.swift in Sources */,
 				93BD27811EE73944002BB00B /* WordPressOrgXMLRPCApi.swift in Sources */,
@@ -1227,8 +1263,10 @@
 				93F08F121EEF0E9B000C2DF6 /* Logging.m in Sources */,
 				9368C7A41EC62F800092CE8E /* WPStatsServiceRemote.m in Sources */,
 				93BD27931EE82B30002BB00B /* JetpackServiceRemote.m in Sources */,
+				74A44DCD1F13C533006CD8F4 /* PushAuthenticationServiceRemote.swift in Sources */,
 				742362DF1F1025B400BD0A7F /* RemoteMenu.m in Sources */,
 				74B5F0D81EF8299B00B411E7 /* BlogServiceRemoteREST.m in Sources */,
+				74A44DD11F13C64B006CD8F4 /* RemoteNotificationSettings.swift in Sources */,
 				74DA56331F06EAF000FE9BF4 /* MediaServiceRemoteREST.m in Sources */,
 				74DA563B1F06EB3000FE9BF4 /* RemoteMedia.m in Sources */,
 				93BD27821EE73944002BB00B /* WordPressOrgXMLRPCValidator.swift in Sources */,
@@ -1244,6 +1282,7 @@
 			files = (
 				93AC8EDF1ED32FD000900F5A /* StatsStreakItemTests.m in Sources */,
 				74DA563D1F06ED3200FE9BF4 /* MediaServiceRemoteRESTTests.swift in Sources */,
+				74A44DD41F13C6D8006CD8F4 /* RemoteNotificationTests.swift in Sources */,
 				74155E251EF87DDF00A06AEA /* ServiceRemoteRESTTests.m in Sources */,
 				74585B901F0D51F900E7E667 /* DomainsServiceRemoteRESTTests.swift in Sources */,
 				93AC8EE01ED32FD000900F5A /* StatsStreakTests.m in Sources */,
@@ -1258,6 +1297,7 @@
 				7403A2E61EF06F7000DED7DC /* AccountSettingsRemoteTests.swift in Sources */,
 				93AC8EE11ED32FD000900F5A /* StatsStringUtilitiesTest.m in Sources */,
 				74C473AF1EF2F7D1009918F2 /* SiteManagementServiceRemoteTests.swift in Sources */,
+				74A44DD51F13C6D8006CD8F4 /* PushAuthenticationServiceRemoteTests.swift in Sources */,
 				742362E51F10274600BD0A7F /* MenusServiceRemoteTests.m in Sources */,
 				93AC8EE21ED32FD000900F5A /* WPStatsServiceRemoteTests.m in Sources */,
 				74B335DC1F06F4180053A184 /* WordPressOrgXMLRPCApiTests.swift in Sources */,
