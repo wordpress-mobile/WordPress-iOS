@@ -450,6 +450,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         coordinator.animate(alongsideTransition: { _ in
             self.resizeBlogPickerButton()
+            self.updateTitleHeight()
         })
 
         dismissOptionsViewControllerIfNecessary()
