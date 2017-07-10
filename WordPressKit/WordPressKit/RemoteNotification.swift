@@ -1,66 +1,65 @@
 import Foundation
-
-
+import WordPressShared
 
 // MARK: - RemoteNotification
 //
-struct RemoteNotification {
+public struct RemoteNotification {
     /// Notification's Primary Key
     ///
-    let notificationId: String
+    public let notificationId: String
 
     /// Notification's Hash
     ///
-    let notificationHash: String
+    public let notificationHash: String
 
     /// Indicates whether the note was already read, or not
     ///
-    let read: Bool
+    public let read: Bool
 
     /// Associated Resource's Icon, as a plain string
     ///
-    let icon: String?
+    public let icon: String?
 
     /// Noticon resource, associated with this notification
     ///
-    let noticon: String?
+    public let noticon: String?
 
     /// Timestamp as a String
     ///
-    let timestamp: String?
+    public let timestamp: String?
 
     /// Notification Type
     ///
-    let type: String?
+    public let type: String?
 
     /// Associated Resource's URL
     ///
-    let url: String?
+    public let url: String?
 
     /// Plain Title ("1 Like" / Etc)
     ///
-    let title: String?
+    public let title: String?
 
     /// Raw Subject Blocks
     ///
-    let subject: [AnyObject]?
+    public let subject: [AnyObject]?
 
     /// Raw Header Blocks
     ///
-    let header: [AnyObject]?
+    public let header: [AnyObject]?
 
     /// Raw Body Blocks
     ///
-    let body: [AnyObject]?
+    public let body: [AnyObject]?
 
     /// Raw Associated Metadata
     ///
-    let meta: [String: AnyObject]?
+    public let meta: [String: AnyObject]?
 
 
     /// Designed Initializer
     ///
-    init?(document: [String: AnyObject]) {
+    public init?(document: [String: AnyObject]) {
         guard let noteId = document.valueAsString(forKey: "id"),
             let noteHash = document.valueAsString(forKey: "note_hash") else {
             return nil
