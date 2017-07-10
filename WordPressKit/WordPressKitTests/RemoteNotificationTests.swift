@@ -1,6 +1,5 @@
 import XCTest
-@testable import WordPress
-
+@testable import WordPressKit
 
 // MARK: - RemoteNotification Unit Tests
 //
