@@ -59,6 +59,7 @@ class FancyAlertViewController: UIViewController {
         static let buttonFont = UIFont.boldSystemFont(ofSize: 14.0)
         static let headerImageVerticalConstraintCompact: CGFloat = 0.0
         static let headerImageVerticalConstraintRegular: CGFloat = 20.0
+        static let headerDefaultBackgroundColor = WPStyleGuide.lightGrey()
 
         static let fadeAnimationDuration: TimeInterval = 0.3
         static let resizeAnimationDuration: TimeInterval = 0.3
@@ -196,7 +197,7 @@ class FancyAlertViewController: UIViewController {
         bodyLabel.text = configuration.bodyText
 
         updateHeaderImage()
-        headerImageWrapperView.backgroundColor = configuration.headerBackgroundColor ?? WPStyleGuide.lightGrey()
+        headerImageWrapperView.backgroundColor = configuration.headerBackgroundColor ?? Constants.headerDefaultBackgroundColor
 
         update(defaultButton, with: configuration.defaultButton)
         update(cancelButton, with: configuration.cancelButton)
@@ -228,7 +229,7 @@ class FancyAlertViewController: UIViewController {
         if let headerImage = configuration?.headerImage {
             headerImageView.image = headerImage
             headerImageWrapperView.isHiddenInStackView = false
-            headerImageWrapperView.backgroundColor = configuration?.headerBackgroundColor
+            headerImageWrapperView.backgroundColor = configuration?.headerBackgroundColor ?? Constants.headerDefaultBackgroundColor
         } else {
             headerImageWrapperView.isHiddenInStackView = true
         }
