@@ -108,6 +108,7 @@ extension FancyAlertViewController {
                                                      bodyText: Strings.bodyText,
                                                      headerImage: image,
                                                      headerBackgroundColor: nil,
+                                                     dividerPosition: .bottom,
                                                      defaultButton: defaultButton,
                                                      cancelButton: cancelButton,
                                                      moreInfoButton: moreInfoButton,
@@ -144,6 +145,7 @@ extension FancyAlertViewController {
                                                      bodyText: Strings.bodyText,
                                                      headerImage: image,
                                                      headerBackgroundColor: nil,
+                                                     dividerPosition: .bottom,
                                                      defaultButton: nil,
                                                      cancelButton: nil,
                                                      moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton, dismissAction: nil)
@@ -178,6 +180,7 @@ extension FancyAlertViewController {
                                                bodyText: Strings.bodyText,
                                                headerImage: image,
                                                headerBackgroundColor: nil,
+                                               dividerPosition: .bottom,
                                                defaultButton: nil, cancelButton: nil, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton,
                                                dismissAction: {
                                                 WPTabBarController.sharedInstance().showPostTab(animated: true, toMedia: false)
