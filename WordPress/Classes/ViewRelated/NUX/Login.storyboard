@@ -526,7 +526,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="391" height="548"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rFl-BX-tKE" userLabel="Header Stack View">
-                                                <rect key="frame" x="20" y="138" width="351" height="72"/>
+                                                <rect key="frame" x="20" y="160" width="351" height="72"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n8z-Py-Err" customClass="SiteInfoHeaderView" customModule="WordPress" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="351" height="50"/>
@@ -551,7 +551,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="tW0-In-DwC">
-                                                <rect key="frame" x="0.0" y="230" width="391" height="88"/>
+                                                <rect key="frame" x="0.0" y="252" width="391" height="88"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username / Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ESh-DI-dtB" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="391" height="44"/>
@@ -591,7 +591,7 @@
                                                 </constraints>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dmn-nh-HTH">
-                                                <rect key="frame" x="20" y="338" width="351" height="0.0"/>
+                                                <rect key="frame" x="20" y="360" width="351" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.85098039219999999" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -602,7 +602,7 @@
                                             <constraint firstAttribute="trailing" secondItem="Dmn-nh-HTH" secondAttribute="trailing" constant="20" id="Fnr-1U-uRo"/>
                                             <constraint firstItem="tW0-In-DwC" firstAttribute="top" secondItem="rFl-BX-tKE" secondAttribute="bottom" constant="20" id="Mh1-XM-rZz"/>
                                             <constraint firstItem="tW0-In-DwC" firstAttribute="leading" secondItem="y8j-4r-VXw" secondAttribute="leading" id="UpW-cT-zMt"/>
-                                            <constraint firstItem="tW0-In-DwC" firstAttribute="centerY" secondItem="y8j-4r-VXw" secondAttribute="centerY" priority="900" id="bPH-5g-emV"/>
+                                            <constraint firstItem="ESh-DI-dtB" firstAttribute="centerY" secondItem="y8j-4r-VXw" secondAttribute="centerY" priority="900" id="akh-WO-ER7"/>
                                             <constraint firstItem="rFl-BX-tKE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="y8j-4r-VXw" secondAttribute="top" constant="20" id="c4S-2w-Qws"/>
                                             <constraint firstItem="rFl-BX-tKE" firstAttribute="leading" secondItem="y8j-4r-VXw" secondAttribute="leading" constant="20" id="d1s-fn-y7S"/>
                                             <constraint firstItem="Dmn-nh-HTH" firstAttribute="leading" secondItem="y8j-4r-VXw" secondAttribute="leading" constant="20" id="fJq-9J-ZGR"/>
@@ -1073,20 +1073,20 @@
                         <viewControllerLayoutGuide type="bottom" id="pCc-dg-bxb"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="gJB-TV-Tpp">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="383" height="612"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Onf-X6-J5w">
-                                <rect key="frame" x="0.0" y="20" width="375" height="563"/>
+                                <rect key="frame" x="0.0" y="0.0" width="383" height="528"/>
                                 <connections>
                                     <segue destination="0GP-rM-Hvu" kind="embed" id="taY-7m-sQh"/>
                                 </connections>
                             </containerView>
                             <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="juu-ng-v2N">
-                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
+                                <rect key="frame" x="0.0" y="528" width="383" height="84"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiQ-IN-bzh">
-                                        <rect key="frame" x="20" y="20" width="335" height="44"/>
+                                        <rect key="frame" x="20" y="20" width="343" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="wlF-fo-JMp"/>
                                         </constraints>
@@ -1103,7 +1103,7 @@
                                         </connections>
                                     </button>
                                     <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="cmz-zv-QBQ">
-                                        <rect key="frame" x="0.0" y="-10" width="375" height="10"/>
+                                        <rect key="frame" x="0.0" y="-10" width="383" height="10"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="10" id="P6k-Ic-btx"/>
                                         </constraints>
@@ -1148,16 +1148,16 @@
             <objects>
                 <tableViewController id="0GP-rM-Hvu" customClass="LoginEpilogueTableView" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="154" sectionHeaderHeight="28" sectionFooterHeight="28" id="TzF-S4-1lW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
+                        <rect key="frame" x="0.0" y="0.0" width="383" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95294117647058818" green="0.96470588235294119" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="userInfo" rowHeight="148" id="rFk-m6-PzB" customClass="LoginEpilogueUserInfoCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="148"/>
+                                <rect key="frame" x="0.0" y="28" width="383" height="148"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rFk-m6-PzB" id="Be1-mM-Agr">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="148"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="383" height="148"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xKq-ni-wZB" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
@@ -1236,10 +1236,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BlogCell" rowHeight="52" id="Efm-ja-Y8C" customClass="LoginEpilogueBlogCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="176" width="375" height="52"/>
+                                <rect key="frame" x="0.0" y="176" width="383" height="52"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Efm-ja-Y8C" id="Xid-Yh-Kpa">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="383" height="52"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rtc-ao-Fl6">
@@ -2067,8 +2067,8 @@
         <image name="login-magic-link" width="160" height="160"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="fWM-mD-lXg"/>
+        <segue reference="fA5-mb-vrv"/>
         <segue reference="0ao-yi-yZI"/>
-        <segue reference="qLI-qX-rkG"/>
-        <segue reference="7lv-19-h36"/>
     </inferredMetricsTieBreakers>
 </document>
