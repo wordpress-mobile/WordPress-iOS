@@ -96,9 +96,6 @@ class LoginEpilogueViewController: UIViewController {
 
     @IBAction func handleConnectAnotherButton() {
         dismissBlock?(false)
-//        navigationController?.dismiss(animated: true, completion: {
-//            SigninHelpers.showSigninForSelfHostedSite(WPTabBarController.sharedInstance())
-//        })
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? NUXAbstractViewController else {
             return
