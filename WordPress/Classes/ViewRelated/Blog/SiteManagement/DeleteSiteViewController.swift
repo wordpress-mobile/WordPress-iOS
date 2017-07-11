@@ -78,7 +78,7 @@ open class DeleteSiteViewController: UITableViewController {
         sectionTwoColumnItems.forEach({ $0.textColor = WPStyleGuide.darkGrey() })
 
         sectionTwoHeader.text = NSLocalizedString("these items will be deleted:",
-                                                  comment: "Header of delete screen section listing things that will be deleted.").uppercased()
+                                                  comment: "Header of delete screen section listing things that will be deleted.").uppercased(with: Locale.current)
 
         sectionTwoColumnOneItem.text = NSLocalizedString("• Posts",
                                                          comment: "Item 1 of delete screen section listing things that will be deleted.")
