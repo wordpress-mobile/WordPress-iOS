@@ -43,19 +43,16 @@
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LSs-Y1-hBy">
                                                                 <rect key="frame" x="0.0" y="20" width="315" height="122"/>
                                                                 <subviews>
-                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Krq-uR-e1t">
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Krq-uR-e1t">
                                                                         <rect key="frame" x="20" y="20" width="275" height="82"/>
                                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" priority="750" constant="82" placeholder="YES" id="qrZ-Uu-G6f"/>
-                                                                        </constraints>
                                                                     </imageView>
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstItem="Krq-uR-e1t" firstAttribute="top" secondItem="LSs-Y1-hBy" secondAttribute="top" constant="20" id="DQh-Mz-Xe8"/>
-                                                                    <constraint firstItem="Krq-uR-e1t" firstAttribute="leading" secondItem="LSs-Y1-hBy" secondAttribute="leading" constant="20" id="GM9-Gt-jfJ"/>
-                                                                    <constraint firstAttribute="trailing" secondItem="Krq-uR-e1t" secondAttribute="trailing" constant="20" id="N4S-Gr-Bhc"/>
+                                                                    <constraint firstItem="Krq-uR-e1t" firstAttribute="width" relation="lessThanOrEqual" secondItem="LSs-Y1-hBy" secondAttribute="width" constant="-40" id="GcK-9a-Jqa"/>
+                                                                    <constraint firstItem="Krq-uR-e1t" firstAttribute="centerX" secondItem="LSs-Y1-hBy" secondAttribute="centerX" id="Smd-l5-yYl"/>
                                                                     <constraint firstAttribute="bottom" secondItem="Krq-uR-e1t" secondAttribute="bottom" constant="20" id="ZWi-7r-zDG"/>
                                                                 </constraints>
                                                             </view>
@@ -72,7 +69,7 @@
                                                         <rect key="frame" x="0.0" y="162" width="315" height="1"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="1" id="lCv-jy-vNg"/>
+                                                            <constraint firstAttribute="height" priority="750" constant="1" id="lCv-jy-vNg"/>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rzT-7k-QCD" userLabel="Content Container">

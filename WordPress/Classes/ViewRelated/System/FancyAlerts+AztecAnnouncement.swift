@@ -17,7 +17,7 @@ extension FancyAlertViewController {
         }()
         static let successAnimationDuration: TimeInterval = 0.8
         static let successAnimationDampingRaio: CGFloat = 0.6
-        static let confettiViewInset: CGFloat = -40.0
+        static let confettiViewOffset: CGFloat = -40.0
         static let confettiDuration: TimeInterval = 2.0
     }
 
@@ -51,11 +51,10 @@ extension FancyAlertViewController {
         }
 
         let addConfetti: (FancyAlertButtonHandler) = { controller in
-            guard let imageView = controller.headerImageView else { return }
+            guard let imageView = controller.headerImageView, let imageViewHolder = imageView.superview else { return }
 
             let confettiView = ConfettiView.aztecAnnouncementConfettiView()
-            confettiView.frame = imageView.bounds.insetBy(dx: Constants.confettiViewInset,
-                                                          dy: Constants.confettiViewInset)
+            confettiView.frame = imageViewHolder.bounds.offsetBy(dx: 0, dy: Constants.confettiViewOffset)
             imageView.superview?.addSubview(confettiView)
 
             confettiView.start(duration: Constants.confettiDuration)

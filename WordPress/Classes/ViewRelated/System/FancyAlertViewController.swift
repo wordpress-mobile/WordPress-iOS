@@ -83,6 +83,7 @@ class FancyAlertViewController: UIViewController {
 
     @IBOutlet private weak var headerImageWrapperView: UIView!
     @IBOutlet private(set) weak var headerImageView: UIImageView!
+    private var headerImageViewHeightConstraint: NSLayoutConstraint?
     @IBOutlet private weak var headerImageViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var headerImageViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var headerImageViewWrapperBottomConstraint: NSLayoutConstraint?
@@ -248,9 +249,14 @@ class FancyAlertViewController: UIViewController {
             headerImageWrapperView.isHiddenInStackView = false
             headerImageWrapperView.backgroundColor = configuration?.headerBackgroundColor ?? Constants.headerDefaultBackgroundColor
 
+            if let heightConstraint = headerImageViewHeightConstraint {
+                headerImageView.removeConstraint(heightConstraint)
+            }
+
             // set the aspect ratio constraint
             let imageAspectRatio = headerImage.size.height / headerImage.size.width
-            headerImageView.heightAnchor.constraint(equalTo: headerImageView.widthAnchor, multiplier: imageAspectRatio).isActive = true
+            headerImageViewHeightConstraint = headerImageView.heightAnchor.constraint(equalTo: headerImageView.widthAnchor, multiplier: imageAspectRatio)
+            headerImageViewHeightConstraint?.isActive = true
         } else {
             headerImageWrapperView.isHiddenInStackView = true
         }
