@@ -889,7 +889,7 @@ extension AztecPostViewController {
 
         // If there is any failed media allow it to be removed or cancel publishing
         if mediaProgressCoordinator.hasFailedMedia {
-            displayHasFailedMediaAlert(then:{
+            displayHasFailedMediaAlert(then: {
                 // Failed media is removed, try again.
                 // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
                 self.publishTapped(dismissWhenDone: dismissWhenDone)
