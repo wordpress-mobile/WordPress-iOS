@@ -1,21 +1,44 @@
 import UIKit
+import WordPressShared
 
-class LoginWPComViewController: SigninWPComViewController, LoginViewController {
+/// Provides a form and functionality for signing a user in to WordPress.com
+///
+class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
+    @IBOutlet weak var passwordField: WPWalkthroughTextField?
+    @IBOutlet weak var forgotPasswordButton: UIButton?
+    @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
+    @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint?
+    var onePasswordButton: UIButton!
     @IBOutlet var emailLabel: UILabel?
+    @IBOutlet var emailStackView: UIStackView?
 
-    // let the storyboard's style stay
-    override func setupStyles() {}
-
-    override func dismiss() {
-        self.performSegue(withIdentifier: .showEpilogue, sender: self)
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComLogin
+        }
     }
+
+    // MARK: - Lifecycle Methods
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavBarIcon()
-        usernameField.isHidden = true
-        selfHostedButton.isHidden = true
+
+        localizeControls()
+        setupOnePasswordButtonIfNeeded()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // Update special case login fields.
+        loginFields.userIsDotCom = true
+
+        configureTextFields()
+        configureSubmitButton(animating: false)
+        configureViewForEditingIfNeeded()
+    }
+
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -23,83 +46,168 @@ class LoginWPComViewController: SigninWPComViewController, LoginViewController {
         registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
-        passwordField.becomeFirstResponder()
+        passwordField?.becomeFirstResponder()
     }
 
-    override func configureTextFields() {
-        super.configureTextFields()
-        passwordField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-        emailLabel?.text = usernameField.text
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unregisterForKeyboardEvents()
     }
 
-    override func needsMultifactorCode() {
-        configureStatusLabel("")
-        configureViewLoading(false)
+    // MARK: Setup and Configuration
 
-        WPAppAnalytics.track(.twoFactorCodeRequested)
-        self.performSegue(withIdentifier: .show2FA, sender: self)
+    /// Sets up a 1Password button if 1Password is available.
+    /// - note: this could move into NUXAbstractViewController or LoginViewController for better reuse
+    func setupOnePasswordButtonIfNeeded() {
+        guard let emailStackView = emailStackView else { return }
+        WPStyleGuide.configureOnePasswordButtonForStackView(emailStackView,
+                                                            target: self,
+                                                            selector: #selector(LoginWPComViewController.handleOnePasswordButtonTapped(_:)))
     }
 
-    override func localizeControls() {
-        passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
-        passwordField.accessibilityIdentifier = "Password"
+    /// Configures the appearance and state of the submit button.
+    ///
+    override func configureSubmitButton(animating: Bool) {
+        submitButton?.showActivityIndicator(animating)
+        submitButton?.isEnabled = enableSubmit(animating: animating)
+    }
+
+    override func enableSubmit(animating: Bool) -> Bool {
+        return !animating &&
+            !loginFields.username.isEmpty &&
+            !loginFields.password.isEmpty
+    }
+
+    /// Configure the view's loading state.
+    ///
+    /// - Parameter loading: True if the form should be configured to a "loading" state.
+    ///
+    override func configureViewLoading(_ loading: Bool) {
+        passwordField?.isEnabled = !loading
+
+        configureSubmitButton(animating: loading)
+        navigationItem.hidesBackButton = loading
+    }
+
+
+    /// Configure the view for an editing state. Should only be called from viewWillAppear
+    /// as this method skips animating any change in height.
+    ///
+    func configureViewForEditingIfNeeded() {
+        // Check the helper to determine whether an editiing state should be assumed.
+        // Check the helper to determine whether an editiing state should be assumed.
+        adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
+        if SigninEditingState.signinEditingStateActive {
+            passwordField?.becomeFirstResponder()
+        }
+    }
+
+    func configureTextFields() {
+        passwordField?.text = loginFields.password
+        passwordField?.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        emailLabel?.text = loginFields.username
+    }
+
+    func localizeControls() {
+        passwordField?.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
+        passwordField?.accessibilityIdentifier = "Password"
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        submitButton.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton.setTitle(submitButtonTitle, for: .highlighted)
-        submitButton.accessibilityIdentifier = "Log In Button"
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.accessibilityIdentifier = "Log In Button"
 
         let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
-        forgotPasswordButton.setTitle(forgotPasswordTitle, for: UIControlState())
-        forgotPasswordButton.setTitle(forgotPasswordTitle, for: .highlighted)
+        forgotPasswordButton?.setTitle(forgotPasswordTitle, for: UIControlState())
+        forgotPasswordButton?.setTitle(forgotPasswordTitle, for: .highlighted)
+        forgotPasswordButton?.titleLabel?.numberOfLines = 0
     }
 
-    /// Sets the text of the error label.
-    /// - Note: this should become part of LoginViewController -nh
-    ///
-    func displayError(message: String) {
-        statusLabel.text = message
-    }
+    // let the storyboard's style stay
+    override func setupStyles() {}
+
+
+    // MARK: - Instance Methods
 
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
-    override func validateForm() {
-        view.endEditing(true)
-        displayError(message: "")
-
-        // Is everything filled out?
-        if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
-            let errorMsg = NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields.")
-            displayError(message: errorMsg)
-
-            return
-        }
-
-        // If the username is not reserved proceed with the signin
-        if SigninHelpers.isUsernameReserved(loginFields.username) {
-            handleReservedUsername(loginFields.username)
-            return
-        }
-
-        configureViewLoading(true)
-
-        loginFacade.signIn(with: loginFields)
+    func validateForm() {
+        validateFormAndLogin()
     }
 
-    override func displayLoginMessage(_ message: String!) {
-        // no-op
+    // MARK: - Actions
+
+    @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
+        guard let passwordField = passwordField else {
+                return
+        }
+
+        loginFields.password = passwordField.nonNilTrimmedText()
+
+        configureSubmitButton(animating: false)
+    }
+
+    @IBAction func handleSubmitButtonTapped(_ sender: UIButton) {
+        validateForm()
+    }
+
+    @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
+        SigninHelpers.openForgotPasswordURL(loginFields)
+    }
+
+    func handleOnePasswordButtonTapped(_ sender: UIButton) {
+        view.endEditing(true)
+
+        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
+            self?.emailLabel?.text = loginFields.username
+            self?.passwordField?.text = loginFields.password
+            self?.validateForm()
+        }
     }
 
     override func displayRemoteError(_ error: Error!) {
         configureViewLoading(false)
 
-        guard (error as NSError).code != 403 else {
+        let errorCode = (error as NSError).code
+        let errorDomain = (error as NSError).domain
+        if errorDomain == WordPressComOAuthClient.WordPressComOAuthErrorDomain, errorCode == WordPressComOAuthError.invalidRequest.rawValue {
             let message = NSLocalizedString("It seems like you've entered an incorrect password. Want to give it another try?", comment: "An error message shown when a wpcom user provides the wrong password.")
             displayError(message: message)
-            return
+        } else {
+            super.displayRemoteError(error)
         }
+    }
 
-        displayError(error as NSError, sourceTag: sourceTag)
+
+    // MARK: - Keyboard Notifications
+
+    func handleKeyboardWillShow(_ notification: Foundation.Notification) {
+        keyboardWillShow(notification)
+    }
+
+    func handleKeyboardWillHide(_ notification: Foundation.Notification) {
+        keyboardWillHide(notification)
+    }
+
+    override func dismiss() {
+        self.performSegue(withIdentifier: .showEpilogue, sender: self)
+    }
+
+    // MARK: Keyboard Events
+
+    func signinFormVerticalOffset() -> CGFloat {
+        // the stackview-based layout shifts fine with this adjustment
+        return 0
+    }
+}
+
+extension LoginWPComViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if enableSubmit(animating: false) {
+            validateForm()
+        }
+        return true
     }
 }

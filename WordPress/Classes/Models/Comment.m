@@ -2,7 +2,6 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "BasePost.h"
-#import "NSString+Helpers.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
 

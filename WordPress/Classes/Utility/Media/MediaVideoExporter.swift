@@ -1,11 +1,11 @@
 import Foundation
 import MobileCoreServices
 
-/// MediaLibrary export handling of Videos from PHAssets or AVAssets.
+/// Media export handling of Videos from PHAssets or AVAssets.
 ///
 class MediaVideoExporter: MediaExporter {
 
-    var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
+    var mediaDirectoryType: MediaDirectory = .uploads
 
     /// Export options.
     ///
@@ -92,9 +92,8 @@ class MediaVideoExporter: MediaExporter {
             }
 
             // Generate a URL for exported video.
-            let mediaURL = try MediaLibrary.makeLocalMediaURL(withFilename: filename ?? "video",
-                                                              fileExtension: URL.fileExtensionForUTType(outputType),
-                                                              type: mediaDirectoryType)
+            let mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: filename ?? "video",
+                                                                    fileExtension: URL.fileExtensionForUTType(outputType))
             session.outputURL = mediaURL
             session.outputFileType = outputType
             session.shouldOptimizeForNetworkUse = true
@@ -121,7 +120,7 @@ class MediaVideoExporter: MediaExporter {
         }
     }
 
-    /// Generate and export a preview image for a known video at the URL.
+    /// Generate and export a preview image for a known video at the URL, local file or remote resource.
     ///
     /// - Note: Generates the image asynchronously and could potentially take a bit.
     ///
@@ -151,7 +150,7 @@ class MediaVideoExporter: MediaExporter {
                                                         }
                                                         exporter.mediaDirectoryType = self.mediaDirectoryType
                                                         exporter.exportImage(image,
-                                                                             fileName: url.lastPathComponent,
+                                                                             fileName: UUID().uuidString,
                                                                              onCompletion: onCompletion,
                                                                              onError: onError)
             })

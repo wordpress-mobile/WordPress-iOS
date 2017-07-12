@@ -1,6 +1,6 @@
 import UIKit
 import Gridicons
-import WordPressComAnalytics
+import WordPressShared
 
 let AztecAnnouncementWhatsNewURL = URL(string: "https://make.wordpress.org/mobile/whats-new-in-beta-ios-editor/")
 

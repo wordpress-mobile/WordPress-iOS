@@ -12,7 +12,6 @@
 #import "UIViewController+SizeClass.h"
 #import "NSBundle+StatsBundleHelper.h"
 #import "AppExtensionUtils.h"
-@import WordPressComAnalytics;
 @import WordPressKit;
 @import WordPressShared;
 

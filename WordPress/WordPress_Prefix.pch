@@ -15,7 +15,6 @@
     @import AFNetworking;
     @import CocoaLumberjack;
     @import NSObject_SafeExpectations;
-    @import WordPressComAnalytics;
     @import WordPressShared.WPMapFilterReduce;
 
 	// Project-specific

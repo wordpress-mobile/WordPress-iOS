@@ -21,9 +21,6 @@
 #import "WPCrashlytics.h"
 
 // Categories & extensions
-#import "NSBundle+VersionNumberHelper.h"
-#import "NSString+Helpers.h"
-#import "UIDevice+Helpers.h"
 
 // Data model
 #import "Blog.h"
@@ -416,7 +413,7 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [MediaLibrary clearUnusedFilesFromLocalDirectoryOnCompletion:nil onError:nil];
+        [MediaFileManager clearUnusedMediaUploadFilesOnCompletion:nil onError:nil];
     });
     
     // Configure Extensions
@@ -513,7 +510,8 @@ int ddLogLevel = DDLogLevelInfo;
         return YES;
     }
 
-    return [presentedViewController.visibleViewController isKindOfClass:[NUXAbstractViewController class]];
+    UIViewController *controller = presentedViewController.visibleViewController;
+    return [controller isKindOfClass:[NUXAbstractViewController class]] || [controller isKindOfClass:[LoginPrologueViewController class]];
 }
 
 - (BOOL)noWordPressDotComAccount
