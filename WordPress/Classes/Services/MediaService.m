@@ -94,7 +94,7 @@
 
 #pragma mark - Private exporting
 
-- (void)exportMediaWith:(id)exportable
+- (void)exportMediaWith:(id<ExportableAsset>)exportable
                objectID:(NSManagedObjectID *)objectID
               mediaName:(NSString *)mediaName
       thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
